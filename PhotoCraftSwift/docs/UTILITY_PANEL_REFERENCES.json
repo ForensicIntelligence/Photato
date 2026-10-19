@@ -1,0 +1,66 @@
+{
+  "step": "dev-step-072",
+  "date": "2026-10-09",
+  "status": "Retained utility panel regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+    "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T090841Z-072-utility-panels/tested-source-hashes.json",
+    "sha256": "e6f0b6f23c73c4a7039800f47f0cb14975672b4045086eae989c90edebe1dab4"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T090841Z-072-utility-panels/next-panel-design.json",
+    "sha256": "d53c3685c9f4cb78c8368c514d34044aca0ed996ba9aa4ca46468380f3af8a26"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T090841Z-072-utility-panels/live-qualification.json",
+    "sha256": "bb411a4e72bcc64b8c9c7303706c176bda3ce1de42923e6921b2940968e40e93"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T090841Z-072-utility-panels/offscreen-layout.json",
+    "sha256": "91d615d7b3133b4536fe358c5751f772299ccbd17888319e1f98f62ded06e24e"
+  },
+  "implementation": [
+    "History and Clone Source join retained dock groups, columns and native floating hosts; Window commands reveal their saved locations.",
+    "Native utility icon dock replaces the special History rail; Clone Source remains closed until requested, and both panels follow the active document.",
+    "Versioned panel catalog validates the previous ten-panel topology before migration, preserves existing state and resolves identifier collisions; invalid files remain preserved.",
+    "History lists past/current/future states and navigates backward/forward with draft/busy guards; branch edits and bounded undo history retain existing engine semantics.",
+    "Clone Source content fits minimum dock width and scrolls while retaining shared source/transform/overlay controls; left dock collapse arrows point toward the edge."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/focused-tests-04.log",
+      "sha256": "5d02d603838b769f04f8cc3b428506918877ae0a8d8956780fb3177c428ff9b0",
+      "passed": 130,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.682
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/full-tests.log",
+      "sha256": "dc95cf21bd94f61aa4c42cfc01cc6df306b1db4b32679e7a87e8e358fed041e6",
+      "passed": 695,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 120.138
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-tests.log",
+      "sha256": "75d99b7fd7b4bfea4c2769027c9eb884e5381247a4a9c06068ce9c09658c314b",
+      "passed": 259,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.421
+    },
+    "new_regressions": 10
+  },
+  "limits": [
+    "Actual OS pointer/keyboard/popover input, native window focus and Photoshop visual comparison remain pending while the Mac is locked.",
+    "The new factory utility dock changes canvas width by five points versus the former special rail; exact Photoshop sizing and compact behavior remain unqualified.",
+    "History snapshots, nonlinear history, source-for-history-brush, full panel menus and preferences remain unfinished.",
+    "No Photoshop-wide byte equality, full feature parity, Intel runtime or macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false
+}

@@ -1,0 +1,143 @@
+{
+  "reference": "Installed Adobe Photoshop 2026/Presets/Levels, read-only inspection on 2026-10-07",
+  "packaged_adobe_files": false,
+  "scope": "Native mathematical settings and ALV parse/preserve checks; no rendering-equivalence claim",
+  "presets": [
+    {
+      "name": "Darker",
+      "sha256": "4f56ea00303af5b79de9a12422a764a6d7942c369a0ecf5bb4dc945a7f545ec7",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 15,
+          "input_white": 255,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 100
+        }
+      ]
+    },
+    {
+      "name": "Increase Contrast 1",
+      "sha256": "75343471a0a90695b66ea2483b88a0be1da20b7a7dfa1419b6431982116e95a0",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 10,
+          "input_white": 245,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 100
+        }
+      ]
+    },
+    {
+      "name": "Increase Contrast 2",
+      "sha256": "9002d32585fbeec8b835951f78975b04e81dc4114f9434d720543c637fcd2e9b",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 20,
+          "input_white": 235,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 100
+        }
+      ]
+    },
+    {
+      "name": "Increase Contrast 3",
+      "sha256": "69da4ed86812fb5bd307d1dea06433177d624c379d8c0e9325041626a4a89c9d",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 30,
+          "input_white": 225,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 100
+        }
+      ]
+    },
+    {
+      "name": "Lighten Shadows",
+      "sha256": "6686b1ee40b06bef8c8a55162c9f2250a0aec7f8b706f57ec2ecc134cd0ee725",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 0,
+          "input_white": 255,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 160
+        }
+      ]
+    },
+    {
+      "name": "Lighter",
+      "sha256": "4882e7057da895c9df55251dab21fad59b67b8004818c8fefa160cdd3c0943e0",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 0,
+          "input_white": 230,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 100
+        }
+      ]
+    },
+    {
+      "name": "Midtones Brighter",
+      "sha256": "62a0be38a7325c45e4bea958f547f452117e288d209da218f274a07aa39f88c9",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 0,
+          "input_white": 255,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 125
+        }
+      ]
+    },
+    {
+      "name": "Midtones Darker",
+      "sha256": "a1d9b1f81c3588958d6948ae21006b93e4b805abacf2a2a4971f433dbba0aa98",
+      "bytes": 630,
+      "version": 2,
+      "extension_record_count": 62,
+      "nonidentity_records": [
+        {
+          "index": 0,
+          "input_black": 0,
+          "input_white": 255,
+          "output_black": 0,
+          "output_white": 255,
+          "gamma_hundredths": 75
+        }
+      ]
+    }
+  ]
+}

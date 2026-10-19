@@ -1,0 +1,83 @@
+{
+  "step": "dev-step-082",
+  "date": "2026-10-09",
+  "status": "Native Layers Panel Options size/framing tested and packaged; live Photoshop qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/release-verification.json",
+    "sha256": "05792068c96f71b1a27d12ad5757c6aaebd52fd22e1650486f5e375dd60e94a4"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/tested-source-hashes.json",
+    "sha256": "f5c136d248eff5ba0b07ae43d354afb91f6fa9654a436303e869fe2df7ded222"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/research.json",
+    "sha256": "ef5a63f83766eb02bb1cd891ea597c78e414e7ee9c98531b4f38b5ec4597e18e"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/live-qualification.json",
+    "sha256": "c1dd3ccc13bae8fd018194dfbefee2e32b6f23285355a8b0a031eb18070fc7bd"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/offscreen-layout.json",
+    "sha256": "19f3aac8abea74be02226dd4358d47e1705a1f1c3e61b04b70464522c03048b6"
+  },
+  "implementation": [
+    "Native Layers Panel Options draft/sheet with atomic shared size/framing preferences independent of workspace layouts and image documents.",
+    "None/small/medium/large row sizes and content/mask targets adapt to narrow/deep layer rows; native eye and disclosure controls resize.",
+    "Original size illustrations; installed Adobe static labels/order inform the dialog, no Adobe implementation/assets copied.",
+    "Cancellation-aware native previews sample transformed content in occupied bounds or entire canvas; runtime store/read identity scopes asynchronous results.",
+    "Legacy optional preference migration; failed/cancelled/stale drafts preserve settings; read/close clears drafts."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/focused-04.log",
+      "sha256": "0947a28a1467ee8116635d3746a50c9eb27f7619f39c34710478d82d9401eded",
+      "passed": 234,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.589
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/full-tests.log",
+      "sha256": "c6805d8f92b09e1b24d9a54511453578aee6b43519ee53821c1268f9f1e18697",
+      "passed": 839,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 126.427
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/release-tests.log",
+      "sha256": "d37a6b7d878fc90be68b6d1e766ccb45f1bb1d577d3389aaa0cbc5c6efe967f6",
+      "passed": 414,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 19.792
+    },
+    "new_regressions": 14
+  },
+  "limits": [
+    "Dialog resource establishes static labels/order and preview-example sizes, not actual row dimensions, defaults or live geometry.",
+    "Use provisional medium row geometry consistent with the current native UI; exact2026 factory size and content default need live verification.",
+    "Current Adobe docs confirm thumbnail sizing; CS6 reference confirms historical content choices only. Community/Elements/web results are not used as current desktop defaults.",
+    "Mac was locked at the final081 CUA check; prior unlock request pending.",
+    "Native preview rendering will be deterministic, not yet Photoshop byte-qualified.",
+    "Actual row dimensions, factory defaults, conditional checkbox visibility and None editing targets remain provisional pending live observation.",
+    "Pixel/vector mask previews keep their existing sampling/framing implementation; thumbnail preferences are not complete Photoshop Panel Options parity.",
+    "The other five dialog preferences remain disabled until complete behavior is implemented.",
+    "Preview output is bounded to512 pixels per edge; source rasterization and content-bound scans may still be expensive for large editable layers.",
+    "Universal compilation does not qualify Intel/macOS14 runtime behavior or full accessibility.",
+    "Offscreen Entire Document captures show subpixel text can disappear with current point-based bilinear downsampling; improve preview antialiasing in the next UI increment."
+  ],
+  "full_photoshop_parity": false,
+  "thumbnail_coverage_followup": {
+    "step": "dev-step-083",
+    "reference_manifest": "docs/THUMBNAIL_COVERAGE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/release-verification.json",
+      "sha256": "302a7cdb011a245d00f083a6b4495020dda0deffc78d075f6068a3504ac3b4b4"
+    },
+    "scope": "Minified previews integrate pixel-area coverage. Pixel/vector masks use document coordinates and shared content framing; disabled marks scale to the preview. Factory menus unchanged.",
+    "live_qualified": false
+  }
+}

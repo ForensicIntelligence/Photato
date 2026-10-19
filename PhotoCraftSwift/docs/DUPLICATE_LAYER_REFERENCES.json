@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-075",
+  "date": "2026-10-09",
+  "status": "Duplicate dialog and source/destination regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/release-verification.json",
+    "sha256": "03dc6d81072b2fe047247c994e6283544439fa94f702222a1d2c575f2a87a3fb"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/tested-source-hashes.json",
+    "sha256": "922436a933a3549b1cf7a8e5d54f1f1d363597264729d7d3871ee5b8538abba6"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/research.json",
+    "sha256": "a4fad497dcc5298ba0ca1869f43ebdb02dca5fb8f1cf824018ffe0bd1b3206d7"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/live-qualification.json",
+    "sha256": "f21a3712916b34a15ec49620b67ebf8f9742f37c7a9e9785ad125e45425a7711"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/offscreen-layout.json",
+    "sha256": "f9c3d71ca21162887b3d56172d61e03b4957b2f573f067fe3f7c33a032828ede"
+  },
+  "implementation": [
+    "Same-document selected roots and per-original placement; one atomic undo",
+    "Native Layer/Group/plural dialogs with current/open/New destinations and stale/cancel guards",
+    "Retained coordinates, masks/vectors/properties, pattern remapping, raster/mask depth conversion and source-canvas new documents"
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/focused-tests-06.log",
+      "sha256": "75aad72614e0862a3740f052cc12dbcabb8334cfed9f62f5a984c99aeb360056",
+      "passed": 180,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 10.171
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/full-tests.log",
+      "sha256": "3afebcc6bc5a18eb23c2a78510e00e1d1baee4e4d7829081694314ef6a1def10",
+      "passed": 740,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 118.096
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/release-tests.log",
+      "sha256": "f159c2c182720ec2a1d25b06c2f49d0e3176930187442c663770dcb48df6f0ed",
+      "passed": 315,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.91
+    },
+    "new_regressions": 17
+  },
+  "limits": [
+    "Live Photoshop dialog layout/default naming, different-canvas placement and clipping/Background behavior remain unqualified.",
+    "Different ICC profile transfers rejected pending native profile conversion.",
+    "Background is not yet a distinct native layer type; special duplication semantics remain open.",
+    "New-document resource metadata beyond canvas/depth/resolution/profile and copied layer/pattern data is not propagated.",
+    "Native/PSD round trips and stored sample equality are bounded checks, not independent Photoshop parity.",
+    "No complete Photoshop parity, universal byte equality or actual Intel/macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "layer_panel_followup": {
+    "step": "dev-step-076",
+    "reference_manifest": "docs/LAYER_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T103807Z-076-layer-panel/release-verification.json",
+      "sha256": "17a1ddc94220fb0d2759c151bd5a9e389dd639fcd8548fb2763f67abcae924de"
+    },
+    "scope": "Shared Layers panel/row commands, native inline naming and atomic selected deletion. Rename binds existing factory menu without shortcut changes; exact panel-menu order is unqualified.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

@@ -1,0 +1,4222 @@
+{
+  "step": "dev-step-054",
+  "date": "2026-10-08",
+  "status": "Six native alignments and eight distributions implemented; bounded Photoshop reference equality verified",
+  "references": [
+    {
+      "name": "align-top",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-top.psd",
+      "reference_sha256": "8e4eeb89bf455977d1c0c11126bb3123a3e9770f4e5ee202eecc1187cc32e841",
+      "kind": "align",
+      "edge": "top",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          17,
+          25,
+          19
+        ],
+        [
+          130,
+          17,
+          17,
+          30
+        ],
+        [
+          175,
+          17,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          17,
+          25,
+          19
+        ],
+        [
+          130,
+          17,
+          17,
+          30
+        ],
+        [
+          175,
+          17,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "align-vcenter",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-vcenter.psd",
+      "reference_sha256": "1d9b9e4e8b230c03286e8b3e3fc18d04b3625161668112c14f1ea830e199f007",
+      "kind": "align",
+      "edge": "vcenter",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          73,
+          14,
+          13
+        ],
+        [
+          41,
+          70,
+          25,
+          19
+        ],
+        [
+          130,
+          65,
+          17,
+          30
+        ],
+        [
+          175,
+          71,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          73,
+          14,
+          13
+        ],
+        [
+          41,
+          70,
+          25,
+          19
+        ],
+        [
+          130,
+          64,
+          17,
+          30
+        ],
+        [
+          175,
+          71,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "align-bottom",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-bottom.psd",
+      "reference_sha256": "6275537b5210b31e1b0065b113c6e3bc348e3b15c534856c53896dd57c2a35b6",
+      "kind": "align",
+      "edge": "bottom",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          129,
+          14,
+          13
+        ],
+        [
+          41,
+          123,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          125,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          129,
+          14,
+          13
+        ],
+        [
+          41,
+          123,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          125,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "align-left",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-left.psd",
+      "reference_sha256": "c36a1617a97268f2efdbf0b6465249c4be777a8f3f1b769e4188721c8e9840e1",
+      "kind": "align",
+      "edge": "left",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          11,
+          61,
+          25,
+          19
+        ],
+        [
+          11,
+          112,
+          17,
+          30
+        ],
+        [
+          11,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          11,
+          61,
+          25,
+          19
+        ],
+        [
+          11,
+          112,
+          17,
+          30
+        ],
+        [
+          11,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "align-hcenter",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-hcenter.psd",
+      "reference_sha256": "4b1580b35099a44255fefbb7baf76b7a3ad66686fbdf5074f41575a07004a74e",
+      "kind": "align",
+      "edge": "hcenter",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          97,
+          17,
+          14,
+          13
+        ],
+        [
+          91,
+          61,
+          25,
+          19
+        ],
+        [
+          95,
+          112,
+          17,
+          30
+        ],
+        [
+          93,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          96,
+          17,
+          14,
+          13
+        ],
+        [
+          91,
+          61,
+          25,
+          19
+        ],
+        [
+          95,
+          112,
+          17,
+          30
+        ],
+        [
+          93,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "align-right",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-right.psd",
+      "reference_sha256": "348c9c151202fcbee12791300f404b9b1503b913f3a7b663f20a384ba02acc50",
+      "kind": "align",
+      "edge": "right",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          182,
+          17,
+          14,
+          13
+        ],
+        [
+          171,
+          61,
+          25,
+          19
+        ],
+        [
+          179,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          182,
+          17,
+          14,
+          13
+        ],
+        [
+          171,
+          61,
+          25,
+          19
+        ],
+        [
+          179,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-top",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-top.psd",
+      "reference_sha256": "f24d672e4e6670694890fa0ab5d70a40d15fe57191f551845fe0330889a5109e",
+      "kind": "distribute",
+      "edge": "top",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          80,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          49,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          80,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          49,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-vcenter",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-vcenter.psd",
+      "reference_sha256": "b1a0e4e362141467bf7bf17730ed3a02014053d1ce4854907eebc6deaf35e30e",
+      "kind": "distribute",
+      "edge": "vcenter",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          83,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          50,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          83,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          50,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-bottom",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-bottom.psd",
+      "reference_sha256": "391f829df3a5a96b3a2c10f31f1afd31c377596678019d055e6ff33c3eaa07f8",
+      "kind": "distribute",
+      "edge": "bottom",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          86,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          50,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          86,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          50,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-left",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-left.psd",
+      "reference_sha256": "1f3f7b4b2fef9c94745773dbec9106cbe29e9c8df33858ff4e7b6475ebeba6f4",
+      "kind": "distribute",
+      "edge": "left",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          66,
+          61,
+          25,
+          19
+        ],
+        [
+          120,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          66,
+          61,
+          25,
+          19
+        ],
+        [
+          120,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-hcenter",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-hcenter.psd",
+      "reference_sha256": "3d79ab2d21ab33bd60ca78a0ec8e5f59364eac54f8e8af02caf4eff8906a6e4f",
+      "kind": "distribute",
+      "edge": "hcenter",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          61,
+          61,
+          25,
+          19
+        ],
+        [
+          121,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          61,
+          61,
+          25,
+          19
+        ],
+        [
+          121,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-right",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-right.psd",
+      "reference_sha256": "29ed4f25c8b30709cff49e68bb495c9e68d5fa39c5125863e229db2e6b41b16f",
+      "kind": "distribute",
+      "edge": "right",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          57,
+          61,
+          25,
+          19
+        ],
+        [
+          122,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          57,
+          61,
+          25,
+          19
+        ],
+        [
+          122,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-hspace",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-hspace.psd",
+      "reference_sha256": "ac36a4f4aef01ec911938f7cfe07a784654d78b5c39b7cb1619d4720e3e23bf4",
+      "kind": "distribute",
+      "edge": "hspace",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          61,
+          61,
+          25,
+          19
+        ],
+        [
+          122,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          61,
+          61,
+          25,
+          19
+        ],
+        [
+          122,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "distribute-vspace",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-vspace.psd",
+      "reference_sha256": "ec6dd48ad2ee9f90a3556666a383bab4e30c5418d9dfa1b418ce4993235a47db",
+      "kind": "distribute",
+      "edge": "vspace",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          78,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          45,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          41,
+          78,
+          25,
+          19
+        ],
+        [
+          130,
+          112,
+          17,
+          30
+        ],
+        [
+          175,
+          45,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "overlap-hspace",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-overlap.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-overlap-hspace.psd",
+      "reference_sha256": "906539cdc9bbc4d9c4be6804f430cd563616e1337a721bbc6e882916fe4b33a4",
+      "kind": "distribute",
+      "edge": "hspace",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          12,
+          21,
+          25,
+          19
+        ],
+        [
+          23,
+          24,
+          17,
+          30
+        ],
+        [
+          27,
+          29,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          15,
+          21,
+          25,
+          19
+        ],
+        [
+          12,
+          24,
+          17,
+          30
+        ],
+        [
+          27,
+          29,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "overlap-vspace",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-overlap.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-overlap-vspace.psd",
+      "reference_sha256": "6e44fb01ca0cfb474c496df3c292fd3ef9ddb25b81dd181f3c73a43f8fdce10e",
+      "kind": "distribute",
+      "edge": "vspace",
+      "target": null,
+      "stored_bounds": false,
+      "expected_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          18,
+          13,
+          25,
+          19
+        ],
+        [
+          21,
+          16,
+          17,
+          30
+        ],
+        [
+          27,
+          29,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          11,
+          17,
+          14,
+          13
+        ],
+        [
+          18,
+          16,
+          25,
+          19
+        ],
+        [
+          21,
+          24,
+          17,
+          30
+        ],
+        [
+          27,
+          21,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "single-canvas-hcenter",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-single.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-canvas-hcenter.psd",
+      "reference_sha256": "9fa681693fcf22a3745236488f89602a9bb18b0b1cd944ab5171e3e687dbf1e0",
+      "kind": "align",
+      "edge": "hcenter",
+      "target": [
+        0,
+        0,
+        240,
+        180
+      ],
+      "stored_bounds": true,
+      "expected_bounds": [
+        [
+          113,
+          17,
+          14,
+          13
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          113,
+          17,
+          14,
+          13
+        ]
+      ],
+      "rust_matches_observed": true
+    },
+    {
+      "name": "single-explicit-canvas-center",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-canvas-hcenter.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-explicit-canvas-center.psd",
+      "reference_sha256": "d39f915d6a8883849d2b328b490c10b0b1077d0c3179e1ae6ab55368e17d6219",
+      "kind": "align",
+      "edge": "vcenter",
+      "target": [
+        0,
+        0,
+        240,
+        180
+      ],
+      "stored_bounds": true,
+      "expected_bounds": [
+        [
+          113,
+          84,
+          14,
+          13
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          113,
+          83,
+          14,
+          13
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "all-canvas-selection-left",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-all-canvas-selection-left.psd",
+      "reference_sha256": "c7c80bc01c8bee2b869ce74df3faf15d2198e6a4a45996b59ae2c41b01dc6ea1",
+      "kind": "align",
+      "edge": "left",
+      "target": [
+        0,
+        0,
+        240,
+        180
+      ],
+      "stored_bounds": true,
+      "expected_bounds": [
+        [
+          4,
+          17,
+          14,
+          13
+        ],
+        [
+          4,
+          61,
+          25,
+          19
+        ],
+        [
+          4,
+          112,
+          17,
+          30
+        ],
+        [
+          4,
+          24,
+          21,
+          17
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          0,
+          17,
+          14,
+          13
+        ],
+        [
+          0,
+          61,
+          25,
+          19
+        ],
+        [
+          0,
+          112,
+          17,
+          30
+        ],
+        [
+          0,
+          24,
+          21,
+          17
+        ]
+      ],
+      "rust_matches_observed": false
+    },
+    {
+      "name": "single-selection-right",
+      "input": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-selection-input.psd",
+      "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-selection-right.psd",
+      "reference_sha256": "eeee7c0481f597fb7a68d5fe95956713a4243bb65316863882bf9c39fa67b0a3",
+      "kind": "align",
+      "edge": "right",
+      "target": [
+        29,
+        29,
+        112,
+        62
+      ],
+      "stored_bounds": true,
+      "expected_bounds": [
+        [
+          123,
+          17,
+          14,
+          13
+        ]
+      ],
+      "candidate_bounds_exact": true,
+      "visible_pixels_preserved": true,
+      "merged_pixels_exact": 43200,
+      "rust_arithmetic_bounds": [
+        [
+          127,
+          17,
+          14,
+          13
+        ]
+      ],
+      "rust_matches_observed": false
+    }
+  ],
+  "files": [
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-overlap.psd",
+      "sha256": "b3ac8dcb3a553bad93a6105e46b6bf6bdeddc2d1b84ec12329d9b3963f20fd24",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            14,
+            17,
+            33,
+            27
+          ],
+          "visible_bounds": [
+            18,
+            21,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            17,
+            20,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            21,
+            24,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            23,
+            25,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            27,
+            29,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "68969350867327439aa49aa015bf06df3d0dac667c2cece2e0149648edaf3a71"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-single.psd",
+      "sha256": "657b2cd3a4fbe7925139666475cccba6885454b0186aaf71bfefc9f2e8f17b66",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        }
+      ],
+      "merged_channels_sha256": "4666ba80ed0e9f2e86cfd51a3c64e8488fed2d14e0e63fe840649da766a57e08"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-two.psd",
+      "sha256": "2101df918e2f92f2a27949784eeee92be787db1e456c71a070a1486392d8b898",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            37,
+            57,
+            33,
+            27
+          ],
+          "visible_bounds": [
+            41,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        }
+      ],
+      "merged_channels_sha256": "b764a2455e7a1cc2bf9011d685dda2597688fcdfcc95128d259d5d4e91a24b57"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/input-layout-unequal-four.psd",
+      "sha256": "1114cac7eedd0ab77e1728a7d20395b7aed3e3f0d58b572348ae93f7fd400d6c",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            37,
+            57,
+            33,
+            27
+          ],
+          "visible_bounds": [
+            41,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "31b694c79f8fe5cbe7d83b52373165821eb0f48bd9295623330a0a765bea7a96"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-bottom.psd",
+      "sha256": "6275537b5210b31e1b0065b113c6e3bc348e3b15c534856c53896dd57c2a35b6",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            11,
+            129,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            11,
+            129,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            123,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            123,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            125,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            125,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "5c60c1f2a9dd4a67ba1875e404fc443b099dfb9fa99a3dfbd9ef837495ed57b6"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-hcenter.psd",
+      "sha256": "4b1580b35099a44255fefbb7baf76b7a3ad66686fbdf5074f41575a07004a74e",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            97,
+            17,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            97,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            91,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            91,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            95,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            95,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            93,
+            24,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            93,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "ee27fb6c6d8ca71a9b5501fae93c89a00a793b71a025ef9a0416651021fdde3a"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-left.psd",
+      "sha256": "c36a1617a97268f2efdbf0b6465249c4be777a8f3f1b769e4188721c8e9840e1",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            11,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            11,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            11,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            11,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            11,
+            24,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            11,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "4208c607bb1278708a0fd84eb1d37db06c5a916e11ffc378350bbe0201040e9e"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-right.psd",
+      "sha256": "348c9c151202fcbee12791300f404b9b1503b913f3a7b663f20a384ba02acc50",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            182,
+            17,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            182,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            171,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            171,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            179,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            179,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "a66dd6c1d3c835fd415bdf46929605dc27a071b881072d4ec7e9a2194c5e56a7"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-top.psd",
+      "sha256": "8e4eeb89bf455977d1c0c11126bb3123a3e9770f4e5ee202eecc1187cc32e841",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            17,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            17,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            130,
+            17,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            130,
+            17,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            17,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            17,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "d6cb6aab32e206a40566f6c32a8f4ebd110a71e22f80bbc3bead7629c3c2db42"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-align-vcenter.psd",
+      "sha256": "1d9b9e4e8b230c03286e8b3e3fc18d04b3625161668112c14f1ea830e199f007",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            11,
+            73,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            11,
+            73,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            70,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            70,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            130,
+            65,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            130,
+            65,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            71,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            71,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "f42885fea3e7e9d44522e94436201efe874373e1062b5e9f6e07b9081ce8fc5c"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-all-canvas-selection-left.psd",
+      "sha256": "c7c80bc01c8bee2b869ce74df3faf15d2198e6a4a45996b59ae2c41b01dc6ea1",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            4,
+            17,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            4,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            4,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            4,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            4,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            4,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            4,
+            24,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            4,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "f32e289bca72943c7dda0c6af1b22d372a4bf8bc40c05afe753ade0acbf8a40e"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-bottom.psd",
+      "sha256": "391f829df3a5a96b3a2c10f31f1afd31c377596678019d055e6ff33c3eaa07f8",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            86,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            86,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            50,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            50,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "af4bcb76f40086e4d6a68e796bd844190239b4b4adcaa116695f47de5b6b6852"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-hcenter.psd",
+      "sha256": "3d79ab2d21ab33bd60ca78a0ec8e5f59364eac54f8e8af02caf4eff8906a6e4f",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            61,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            61,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            121,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            121,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "12b73bc1ba52a5e2086776dc679a982796c35629784489d5381bc7226c7c484a"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-hspace.psd",
+      "sha256": "ac36a4f4aef01ec911938f7cfe07a784654d78b5c39b7cb1619d4720e3e23bf4",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            61,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            61,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            122,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            122,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "1189d3a89a113075182f836d847e4ca6bc14a54839888e4d9947c6242654d931"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-left.psd",
+      "sha256": "1f3f7b4b2fef9c94745773dbec9106cbe29e9c8df33858ff4e7b6475ebeba6f4",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            66,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            66,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            120,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            120,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "a6a23bc48444027b7fcf9c3bdac8ac0b4143f8d378af39ada87a5227c65347ad"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-right.psd",
+      "sha256": "29ed4f25c8b30709cff49e68bb495c9e68d5fa39c5125863e229db2e6b41b16f",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            57,
+            61,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            57,
+            61,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            122,
+            112,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            122,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            171,
+            20,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            175,
+            24,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "6605cd939c82773ba77ef15ce4f49284b292839feae730378ca0c9704ccac55d"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-top.psd",
+      "sha256": "f24d672e4e6670694890fa0ab5d70a40d15fe57191f551845fe0330889a5109e",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            80,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            80,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            49,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            49,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "4e7652d9583b9b677b09d643904e89b64078e135e8553d35c899b757287124ba"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-vcenter.psd",
+      "sha256": "b1a0e4e362141467bf7bf17730ed3a02014053d1ce4854907eebc6deaf35e30e",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            83,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            83,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            50,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            50,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "7c42952a1935a3da41edb9978f6b920078187d85a595476739ef506c0c1ff9b7"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-distribute-vspace.psd",
+      "sha256": "ec6dd48ad2ee9f90a3556666a383bab4e30c5418d9dfa1b418ce4993235a47db",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            41,
+            78,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            41,
+            78,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            126,
+            108,
+            25,
+            38
+          ],
+          "visible_bounds": [
+            130,
+            112,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            175,
+            45,
+            21,
+            17
+          ],
+          "visible_bounds": [
+            175,
+            45,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "001be8d38481b3259b0e649a4327bfb2cb9e42df8750dca2d54b3367406ffc5c"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-overlap-hspace.psd",
+      "sha256": "906539cdc9bbc4d9c4be6804f430cd563616e1337a721bbc6e882916fe4b33a4",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            12,
+            21,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            12,
+            21,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            23,
+            24,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            23,
+            24,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            23,
+            25,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            27,
+            29,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "c766713bb1145278fc88c70307a6b558252660425c54790c834517658c4af8a5"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-overlap-vspace.psd",
+      "sha256": "6e44fb01ca0cfb474c496df3c292fd3ef9ddb25b81dd181f3c73a43f8fdce10e",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        },
+        {
+          "name": "Pea",
+          "stored_bounds": [
+            18,
+            13,
+            25,
+            19
+          ],
+          "visible_bounds": [
+            18,
+            13,
+            25,
+            19
+          ],
+          "occupied_pixels": 475,
+          "visible_rgba_sha256": "88a8eba41b9cecb60ade393bce60a646842c670b328113248dff82fad15d0843"
+        },
+        {
+          "name": "Blueberry",
+          "stored_bounds": [
+            21,
+            16,
+            17,
+            30
+          ],
+          "visible_bounds": [
+            21,
+            16,
+            17,
+            30
+          ],
+          "occupied_pixels": 510,
+          "visible_rgba_sha256": "bc7324363b0a5225c40f4f8754e73eea308b0bff7c14b3e0c399a20b5e02bb4f"
+        },
+        {
+          "name": "Saffron",
+          "stored_bounds": [
+            23,
+            25,
+            29,
+            25
+          ],
+          "visible_bounds": [
+            27,
+            29,
+            21,
+            17
+          ],
+          "occupied_pixels": 357,
+          "visible_rgba_sha256": "3943f2c5f5fe76db40905a16d0c2d5100a063596784c4572f1784e3f6b46684f"
+        }
+      ],
+      "merged_channels_sha256": "e0ac2f4963bfeeb4f5ddee73b33b117ce178f9bde0e633e7eb294b99c4e59b46"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-canvas-hcenter.psd",
+      "sha256": "9fa681693fcf22a3745236488f89602a9bb18b0b1cd944ab5171e3e687dbf1e0",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            113,
+            17,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            113,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        }
+      ],
+      "merged_channels_sha256": "dda9ed3265e9ea8242a3f1393231d2c3af8eeeb03a7384bbe4da4b76fe29c9e1"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-explicit-canvas-center.psd",
+      "sha256": "d39f915d6a8883849d2b328b490c10b0b1077d0c3179e1ae6ab55368e17d6219",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            113,
+            84,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            113,
+            84,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        }
+      ],
+      "merged_channels_sha256": "ef7005453fb8e970b5eb4f618e30e90e5d1ba58b2d28be45642b04aab72d89e2"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-selection-input.psd",
+      "sha256": "2e4c98a088b9da9fd57270d900e5e21d0e8d3ab68376582fd05029aff775fd1a",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            7,
+            13,
+            22,
+            21
+          ],
+          "visible_bounds": [
+            11,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        }
+      ],
+      "merged_channels_sha256": "4666ba80ed0e9f2e86cfd51a3c64e8488fed2d14e0e63fe840649da766a57e08"
+    },
+    {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-single-selection-right.psd",
+      "sha256": "eeee7c0481f597fb7a68d5fe95956713a4243bb65316863882bf9c39fa67b0a3",
+      "width": 240,
+      "height": 180,
+      "layers": [
+        {
+          "name": "Paprika",
+          "stored_bounds": [
+            123,
+            17,
+            14,
+            13
+          ],
+          "visible_bounds": [
+            123,
+            17,
+            14,
+            13
+          ],
+          "occupied_pixels": 182,
+          "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+        }
+      ],
+      "merged_channels_sha256": "991e018270cad9a6bf6591bce177766b1c8b236912abe4551ea73d4813e70047"
+    }
+  ],
+  "qualification": {
+    "path": "artifacts/runs/20261008T221201Z-053-layer-layout/qualification-01/qualification.json",
+    "sha256": "660781eda3bf13a08688716e4dbb30a1bb145e38275765a43fc819996927fe83"
+  },
+  "source_package_verification": {
+    "path": "artifacts/runs/20261008T221201Z-053-layer-layout/source-package-verification.json",
+    "sha256": "79fc44de2395ee0906effb65a8ffe579babf9585b52da7d56e057ec1b18bcb4a"
+  },
+  "original_data_license": "MIT OR Apache-2.0; procedural rectangles authored for this project; no Adobe artwork/code/presets bundled",
+  "sources": [
+    "https://www.adobe.com/products/photoshop/features/all.html",
+    "https://helpx.adobe.com/in/photoshop/desktop/create-manage-layers/create-layer-compositions/align-content-of-layers-and-groups.html",
+    "https://helpx.adobe.com/ca/photoshop/desktop/create-manage-layers/create-layer-compositions/distribute-layers-groups-evenly.html"
+  ],
+  "observations": [
+    "All six alignments and eight distributions were invoked through Photoshop 2026 Layer menus and saved separately from inputs.",
+    "Default multi-layer alignment uses nonzero-alpha content bounds for these opaque RGB8 rectangles. Half-pixel alignment displacement rounds toward the larger coordinate, unlike Rust div_euclid(2).",
+    "Even spacing sorts by leading edge in the overlap probes, unlike the Rust center ordering; negative gaps are permitted and the last layer is determined by ordering rather than the union maximum.",
+    "Align Layers to Selection uses padded storage extent on the tested original imported PSDs. The full-canvas selection left-edge result has visible x=4, not x=0. Bounded selection right-edge result uses observed selection bounds [29,29,112,62].",
+    "The default Selection target disables Align for a lone layer without a pixel selection. Explicit Canvas enables Align. Selection presence changes the menu title.",
+    "All eight Distribute commands are disabled for two selected layers in the installed app; the documentation\u2019s two-or-more wording does not describe this observed menu state.",
+    "No shortcuts are shown for these 14 menu commands. Complete keyboard/preferences parity is unqualified.",
+    "All twenty saved operations retain the visible RGBA content hashes; independent recomposition matches 864000 stored merged pixels. This is a reference/model check, not Swift app parity.",
+    "Restored Align To Selection, closed all disposable probes and restored the original Paint Bucket tool (Foreground, Normal, 60%, tolerance32); user Untitled-1 remains open without an edited marker.",
+    "Step054: six fresh holdouts qualify negative coordinates and Canvas padding against the previously derived model.",
+    "A consecutive horizontal-center then full-canvas-selection left alignment requires trimming transparent raster storage after nonzero movement; stationary anchors retain storage padding.",
+    "Native composition and PSD export match all 1166400 merged RGBA pixels in 26 single operations plus one sequence. Four live package exports independently match 172800 merged pixels and every layer stored/visible bound/content hash.",
+    "560 full and 107 optimized regression tests pass, zero failures/skips; fifteen new layout tests span core/imaging/AppKit.",
+    "Live menu, Move/Properties controls, All Layers shortcut, Canvas target, spacing and undo verified. All disposable probes closed; user Photoshop Untitled-1 remains unchanged."
+  ],
+  "limitations": [
+    "Photoshop equality is qualified for 26 single-operation opaque RGB8 raster references plus one consecutive-command reference; no claim about arbitrary documents.",
+    "Native tests preserve editable type/shape, groups, transformed linked/unlinked masks and all three depths, but these content semantics lack equivalent Photoshop references.",
+    "Canvas Solid/Gradient/Pattern Fill layers, including selected groups containing them, explicitly reject layout until bounded/masked semantics are implemented.",
+    "General hidden/clipped/locked layers, mask-derived bounds, tie ordering, more operation sequences and coordinate extremes need independent Photoshop qualification.",
+    "Align To is shared by Move/Properties within a document; global preference persistence, layer linking, complete shortcuts and visual parity remain open.",
+    "Live undo restores original storage geometry but clears layer multiselection; exact Photoshop selection/history interaction remains open.",
+    "512-layer timings are one optimized host sample, not p95 or a Photoshop speed comparison.",
+    "Host runtime is macOS27.0.1 Apple Silicon; universal macOS14 deployment targets compile, but Intel/macOS14/macOS26 runtime checks remain open.",
+    "Full PhotoCraft/Photoshop functionality, byte equality, shortcuts/preferences, generative fill and App Store release gates remain incomplete."
+  ],
+  "next_steps": [
+    "Acquire independent group/mask/type/shape/high-depth and tie/lock/visibility references.",
+    "Implement bounded fill-layer layout semantics; qualify more command sequences and selection/history interaction.",
+    "Finish global target preferences, keyboard/accessibility/visual details and supported-platform runtime matrix."
+  ],
+  "full_photoshop_parity": false,
+  "historical_step053": {
+    "step": "dev-step-053",
+    "status": "Original Photoshop reference qualification; native layout commands remain pending",
+    "limitations": [
+      "Only opaque unmasked RGB8 raster layers; groups, masks, clipped/hidden/locked layers, ties, negative canvas coordinates, other depths, text/shapes/fills and very large coordinates require separate qualification.",
+      "The arithmetic model is derived from this set, with no independent holdout yet.",
+      "The app does not implement these operations yet.",
+      "Research scripts are not shipped app code."
+    ],
+    "next_steps": [
+      "Acquire holdouts covering negative coordinates, fractional center ties, masks/groups and fresh explicit-canvas padding before treating the inferred rules as general.",
+      "Add typed layout operation/target, pure validated integer-translation planning, nested-selection suppression and atomic command application with one undo entry.",
+      "Prepare content or storage bounds asynchronously in the imaging layer, preserving sparse pixels and linked/unlinked masks. Reject unqualified content explicitly instead of silently misplacing it.",
+      "Connect Layer menus, Move toolbar and Properties; share Selection/Canvas target and observed enablement. Preserve selection and selected layer IDs.",
+      "Add independent core/imaging/AppKit regressions from saved references, invalid-input/lock/cancellation/history tests, native/PSD persistence, full and release checks, universal packaging and live UI verification."
+    ],
+    "qualification": {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/qualification-01/qualification.json",
+      "sha256": "660781eda3bf13a08688716e4dbb30a1bb145e38275765a43fc819996927fe83"
+    },
+    "source_package_verification": {
+      "path": "artifacts/runs/20261008T221201Z-053-layer-layout/source-package-verification.json",
+      "sha256": "79fc44de2395ee0906effb65a8ffe579babf9585b52da7d56e057ec1b18bcb4a"
+    }
+  },
+  "holdouts": [
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "sha256": "5d0cb09ca07d14dddfd93554dcd0e26a60f3c65934aa1b736df302e8e59049f6",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              13,
+              67,
+              22,
+              25
+            ],
+            "visible_bounds": [
+              17,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              57,
+              16,
+              31,
+              17
+            ],
+            "visible_bounds": [
+              61,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "ec0433a5c04ccde506364edb482b3ad2c30ab629beb4a83897aab2eb517b0f58"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-hcenter.psd",
+        "sha256": "a69848888b0b91ed4c5de9318121d5823f8bd37b1b979f8e18aedbc25066f6dc",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              52,
+              -13,
+              9,
+              12
+            ],
+            "visible_bounds": [
+              52,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              49,
+              71,
+              14,
+              17
+            ],
+            "visible_bounds": [
+              49,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              45,
+              20,
+              23,
+              9
+            ],
+            "visible_bounds": [
+              45,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              52,
+              101,
+              8,
+              22
+            ],
+            "visible_bounds": [
+              52,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              48,
+              42,
+              17,
+              13
+            ],
+            "visible_bounds": [
+              48,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "96f656942d41be664d05a7c00603a7cd4c07213cd2be042f5b902aa71a63715c"
+      },
+      "case": {
+        "name": "holdout-hcenter",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-hcenter.psd",
+        "reference_sha256": "a69848888b0b91ed4c5de9318121d5823f8bd37b1b979f8e18aedbc25066f6dc",
+        "kind": "align",
+        "edge": "hcenter",
+        "target": null,
+        "stored_bounds": false,
+        "expected_bounds": [
+          [
+            52,
+            -13,
+            9,
+            12
+          ],
+          [
+            49,
+            71,
+            14,
+            17
+          ],
+          [
+            45,
+            20,
+            23,
+            9
+          ],
+          [
+            52,
+            101,
+            8,
+            22
+          ],
+          [
+            48,
+            42,
+            17,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    },
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "sha256": "5d0cb09ca07d14dddfd93554dcd0e26a60f3c65934aa1b736df302e8e59049f6",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              13,
+              67,
+              22,
+              25
+            ],
+            "visible_bounds": [
+              17,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              57,
+              16,
+              31,
+              17
+            ],
+            "visible_bounds": [
+              61,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "ec0433a5c04ccde506364edb482b3ad2c30ab629beb4a83897aab2eb517b0f58"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-vcenter.psd",
+        "sha256": "8468b4442ac519794cc6a7c82c23326fbbf99c040e0dfcc3a6c3f25000450b67",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -23,
+              49,
+              9,
+              12
+            ],
+            "visible_bounds": [
+              -23,
+              49,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              17,
+              47,
+              14,
+              17
+            ],
+            "visible_bounds": [
+              17,
+              47,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              61,
+              51,
+              23,
+              9
+            ],
+            "visible_bounds": [
+              61,
+              51,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              91,
+              44,
+              8,
+              22
+            ],
+            "visible_bounds": [
+              91,
+              44,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              118,
+              49,
+              17,
+              13
+            ],
+            "visible_bounds": [
+              118,
+              49,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "6e9955f9c832b32ac030217e6ab4f34c6cbcfff580dd65a44ce4540756ecf83e"
+      },
+      "case": {
+        "name": "holdout-vcenter",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-vcenter.psd",
+        "reference_sha256": "8468b4442ac519794cc6a7c82c23326fbbf99c040e0dfcc3a6c3f25000450b67",
+        "kind": "align",
+        "edge": "vcenter",
+        "target": null,
+        "stored_bounds": false,
+        "expected_bounds": [
+          [
+            -23,
+            49,
+            9,
+            12
+          ],
+          [
+            17,
+            47,
+            14,
+            17
+          ],
+          [
+            61,
+            51,
+            23,
+            9
+          ],
+          [
+            91,
+            44,
+            8,
+            22
+          ],
+          [
+            118,
+            49,
+            17,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    },
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "sha256": "5d0cb09ca07d14dddfd93554dcd0e26a60f3c65934aa1b736df302e8e59049f6",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              13,
+              67,
+              22,
+              25
+            ],
+            "visible_bounds": [
+              17,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              57,
+              16,
+              31,
+              17
+            ],
+            "visible_bounds": [
+              61,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "ec0433a5c04ccde506364edb482b3ad2c30ab629beb4a83897aab2eb517b0f58"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-hspace.psd",
+        "sha256": "65f8400329104e0d2f016be7b241951c999c405f8b091528995c704ae7b252e2",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              8,
+              71,
+              14,
+              17
+            ],
+            "visible_bounds": [
+              8,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              44,
+              20,
+              23,
+              9
+            ],
+            "visible_bounds": [
+              44,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              88,
+              101,
+              8,
+              22
+            ],
+            "visible_bounds": [
+              88,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "8be218f97f31aa23499c50c786d6bf6a123a8a3b250af23e61386e08db150ade"
+      },
+      "case": {
+        "name": "holdout-hspace",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-hspace.psd",
+        "reference_sha256": "65f8400329104e0d2f016be7b241951c999c405f8b091528995c704ae7b252e2",
+        "kind": "distribute",
+        "edge": "hspace",
+        "target": null,
+        "stored_bounds": false,
+        "expected_bounds": [
+          [
+            -23,
+            -13,
+            9,
+            12
+          ],
+          [
+            8,
+            71,
+            14,
+            17
+          ],
+          [
+            44,
+            20,
+            23,
+            9
+          ],
+          [
+            88,
+            101,
+            8,
+            22
+          ],
+          [
+            118,
+            42,
+            17,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    },
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "sha256": "5d0cb09ca07d14dddfd93554dcd0e26a60f3c65934aa1b736df302e8e59049f6",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              13,
+              67,
+              22,
+              25
+            ],
+            "visible_bounds": [
+              17,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              57,
+              16,
+              31,
+              17
+            ],
+            "visible_bounds": [
+              61,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "ec0433a5c04ccde506364edb482b3ad2c30ab629beb4a83897aab2eb517b0f58"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-vspace.psd",
+        "sha256": "f3cb656152d0f644bc6e44e4ecec78c879e6621d04d6c9a54be1ad5897f6db4f",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              17,
+              68,
+              14,
+              17
+            ],
+            "visible_bounds": [
+              17,
+              68,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              61,
+              15,
+              23,
+              9
+            ],
+            "visible_bounds": [
+              61,
+              15,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              118,
+              40,
+              17,
+              13
+            ],
+            "visible_bounds": [
+              118,
+              40,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "fb86bcfe587dd08fd4ce208026b1f83f187b45f002da05c6d083b82f68d4168c"
+      },
+      "case": {
+        "name": "holdout-vspace",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-vspace.psd",
+        "reference_sha256": "f3cb656152d0f644bc6e44e4ecec78c879e6621d04d6c9a54be1ad5897f6db4f",
+        "kind": "distribute",
+        "edge": "vspace",
+        "target": null,
+        "stored_bounds": false,
+        "expected_bounds": [
+          [
+            -23,
+            -13,
+            9,
+            12
+          ],
+          [
+            17,
+            68,
+            14,
+            17
+          ],
+          [
+            61,
+            15,
+            23,
+            9
+          ],
+          [
+            91,
+            101,
+            8,
+            22
+          ],
+          [
+            118,
+            40,
+            17,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    },
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "sha256": "5d0cb09ca07d14dddfd93554dcd0e26a60f3c65934aa1b736df302e8e59049f6",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              13,
+              67,
+              22,
+              25
+            ],
+            "visible_bounds": [
+              17,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              57,
+              16,
+              31,
+              17
+            ],
+            "visible_bounds": [
+              61,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              87,
+              97,
+              16,
+              30
+            ],
+            "visible_bounds": [
+              91,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "ec0433a5c04ccde506364edb482b3ad2c30ab629beb4a83897aab2eb517b0f58"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-right.psd",
+        "sha256": "d04b1932c77a81bd2bfdc3758074daea8ccfaf5d00e1fc811fdd81668fbc42a2",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              -27,
+              -17,
+              17,
+              20
+            ],
+            "visible_bounds": [
+              -23,
+              -13,
+              9,
+              12
+            ],
+            "occupied_pixels": 108,
+            "visible_rgba_sha256": "644d4733db6a0af6bcefdb22d162227e95e10d14f29f6d40fa230590cc8f84b4"
+          },
+          {
+            "name": "Pea",
+            "stored_bounds": [
+              9,
+              71,
+              14,
+              17
+            ],
+            "visible_bounds": [
+              9,
+              71,
+              14,
+              17
+            ],
+            "occupied_pixels": 238,
+            "visible_rgba_sha256": "19c957a64b7d9c1b0b1de61b0b845dab6d2103df90fa90a9cbb3d8d9046153ea"
+          },
+          {
+            "name": "Blueberry",
+            "stored_bounds": [
+              38,
+              20,
+              23,
+              9
+            ],
+            "visible_bounds": [
+              38,
+              20,
+              23,
+              9
+            ],
+            "occupied_pixels": 207,
+            "visible_rgba_sha256": "d86df1dd91993c3bdb846baae0ab35004336ee50c1ecd5155a8af0fb5dfae7c5"
+          },
+          {
+            "name": "Saffron",
+            "stored_bounds": [
+              90,
+              101,
+              8,
+              22
+            ],
+            "visible_bounds": [
+              90,
+              101,
+              8,
+              22
+            ],
+            "occupied_pixels": 176,
+            "visible_rgba_sha256": "3c8525266ce8b364641d07c791c02bb1f83d9e9834364a363cac3fe7b8a6ba8d"
+          },
+          {
+            "name": "Chive",
+            "stored_bounds": [
+              114,
+              38,
+              25,
+              21
+            ],
+            "visible_bounds": [
+              118,
+              42,
+              17,
+              13
+            ],
+            "occupied_pixels": 221,
+            "visible_rgba_sha256": "2b3443f9a81dbc94ee02613db3a3069b33559cd935ee707b507c45a7efe9c459"
+          }
+        ],
+        "merged_channels_sha256": "b62c9af9f4f5491f5254b02255178e88eac69fcce40dbfaa693529771705364e"
+      },
+      "case": {
+        "name": "holdout-right",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-holdout.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-holdout-right.psd",
+        "reference_sha256": "d04b1932c77a81bd2bfdc3758074daea8ccfaf5d00e1fc811fdd81668fbc42a2",
+        "kind": "distribute",
+        "edge": "right",
+        "target": null,
+        "stored_bounds": false,
+        "expected_bounds": [
+          [
+            -23,
+            -13,
+            9,
+            12
+          ],
+          [
+            9,
+            71,
+            14,
+            17
+          ],
+          [
+            38,
+            20,
+            23,
+            9
+          ],
+          [
+            90,
+            101,
+            8,
+            22
+          ],
+          [
+            118,
+            42,
+            17,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    },
+    {
+      "input": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-single.psd",
+        "sha256": "657b2cd3a4fbe7925139666475cccba6885454b0186aaf71bfefc9f2e8f17b66",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              7,
+              13,
+              22,
+              21
+            ],
+            "visible_bounds": [
+              11,
+              17,
+              14,
+              13
+            ],
+            "occupied_pixels": 182,
+            "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+          }
+        ],
+        "merged_channels_sha256": "4666ba80ed0e9f2e86cfd51a3c64e8488fed2d14e0e63fe840649da766a57e08"
+      },
+      "reference": {
+        "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-single-explicit-canvas-left.psd",
+        "sha256": "3e3ef33629630432599b36e147253892d5397e9532c5f107474fae5d1eeaef8e",
+        "width": 240,
+        "height": 180,
+        "layers": [
+          {
+            "name": "Paprika",
+            "stored_bounds": [
+              4,
+              17,
+              14,
+              13
+            ],
+            "visible_bounds": [
+              4,
+              17,
+              14,
+              13
+            ],
+            "occupied_pixels": 182,
+            "visible_rgba_sha256": "0cb7c45882e6b9d77c2120cd7dc4a11fa6c6da930e239c654dc21b29eb919bc3"
+          }
+        ],
+        "merged_channels_sha256": "2e5d2339d437a2ba88553b1441b26e18ce1651a9a2bfb9c41a3fcb0b1b305412"
+      },
+      "case": {
+        "name": "single-explicit-canvas-left",
+        "input": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/input-layout-single.psd",
+        "reference": "artifacts/runs/20261008T223104Z-054-native-layer-layout/inputs-02/photoshop-single-explicit-canvas-left.psd",
+        "reference_sha256": "3e3ef33629630432599b36e147253892d5397e9532c5f107474fae5d1eeaef8e",
+        "kind": "align",
+        "edge": "left",
+        "target": [
+          0,
+          0,
+          240,
+          180
+        ],
+        "stored_bounds": true,
+        "expected_bounds": [
+          [
+            4,
+            17,
+            14,
+            13
+          ]
+        ],
+        "candidate_bounds_exact": true,
+        "visible_pixels_preserved": true
+      }
+    }
+  ],
+  "consecutive_sequence": {
+    "reference": "artifacts/runs/20261008T221201Z-053-layer-layout/inputs-01/photoshop-sequence-hcenter-selection-left.psd",
+    "copies": [
+      "artifacts/runs/20261008T223104Z-054-native-layer-layout/photoshop-sequence-hcenter-selection-left.psd",
+      "Tests/PhotoCraftImagingTests/Fixtures/layout/sequence-hcenter-selection-left.psd"
+    ],
+    "sha256": "d20c6e6ea2ce3957fb31640ae6c9e6062cdb805c394e28595ce69202abb85750",
+    "actions": [
+      "Open original unequal-four",
+      "Select all layers",
+      "Align Horizontal Centers",
+      "Select Canvas",
+      "Align Layers to Selection Left Edges",
+      "Save As new file"
+    ],
+    "intermediate_save": false,
+    "license": "MIT OR Apache-2.0"
+  },
+  "native_verification": {
+    "path": "artifacts/runs/20261008T223104Z-054-native-layer-layout/release-verification.json",
+    "sha256": "0eb81e0ce1a27fc4781cfd2ef7bd13f69efb42f6d4449ba515fd6cd7a179f745"
+  }
+}

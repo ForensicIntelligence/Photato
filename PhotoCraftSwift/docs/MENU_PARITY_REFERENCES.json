@@ -1,0 +1,424 @@
+{
+  "step": "dev-step-056",
+  "date": "2026-10-08",
+  "status": "Photoshop Defaults installed at launch; current menu preset verified live and all 102 mapped primary / 8 alternate bindings qualified against the unmodified factory preset",
+  "source": "Installed Photoshop 2026 factory macOS shortcut preset and live Photoshop Defaults menu preset",
+  "reference_run": "artifacts/runs/20261008T234124Z-056-photoshop-defaults",
+  "catalog": "Sources/PhotoCraft/PhotoshopMenuCatalog.swift",
+  "bindings": "Sources/PhotoCraft/PhotoshopMenus.swift",
+  "golden_inventory": "Tests/PhotoCraftAppTests/Fixtures/photoshop-menu-inventory.json",
+  "static_entries": 802,
+  "primary_shortcuts": 102,
+  "shortcut_set": "Photoshop Defaults (factory modified=0)",
+  "adaptations": "artifacts/runs/20261008T230714Z-055-photoshop-menus/menu-adaptations.json",
+  "limits": [
+    "At step056, 139 bound leaf entries were partial native operations and 585 unavailable commands remained disabled. At step076, counts were150 bound /574 unavailable; neither menu presence nor a binding establishes full functionality.",
+    "Exact separators, menu glyphs, geometry and all contextual enablement remain unqualified.",
+    "Four installed factory records have no corresponding captured current menu path and are explicitly excluded from mapping.",
+    "The captured active keyboard set remains modified and unchanged; its three differing primary assignments are superseded by the installed factory preset.",
+    "Configurable shortcuts/preferences, complete tool/panel/dialog shortcut behavior, recent documents and many operations remain unfinished.",
+    "Clearly named Photato AI, native export, clipboard, help and support additions remain intentional product adaptations."
+  ],
+  "full_photoshop_parity": false,
+  "official_shortcut_reference": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/view-keyboard-shortcuts.html",
+  "new_tests": 2,
+  "leaf_commands_bound": 152,
+  "unavailable_leaf_commands": 573,
+  "product_additions": [
+    "File > Export > Export Layers to PSD\u2026",
+    "File > New from Clipboard",
+    "File > Place Image\u2026",
+    "Edit > Create with Apple Intelligence\u2026",
+    "Layer > Photato Adjustments",
+    "Type > Type Properties",
+    "Help > Workspace Feature Map\u2026",
+    "Help > Port Status & Shortcuts",
+    "Help > Open Source & Credits\u2026",
+    "Help > Support Development\u2026",
+    "Help > Photato Automation API\u2026"
+  ],
+  "tests": {
+    "full": {
+      "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/full-tests.log",
+      "sha256": "0b5ae8956c112727a98fd895a127364bf5a195f4d67f5121cf11d226d374ebd4",
+      "tests": 568,
+      "failures": 0,
+      "seconds": 106.433,
+      "skipped": 0
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/release-tests.log",
+      "sha256": "fa1af6138f564df51df6bfc39487588dbabd7d05c2a1cb1027c5b384c09b75e5",
+      "tests": 115,
+      "failures": 0,
+      "seconds": 2.98,
+      "skipped": 0
+    },
+    "new_tests": 2
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-verify-cjifafmi/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "dd7723bd50707df48c28cdc9a71d891dbcce8947edd55afccaa396be11bfd6a9",
+    "zip_sha256": "8f72be0509f12bca36f548f298e99d220d80e4076e5e1e6726cbd3a1d43eafe7",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "source_icon_sha256": "ba7e98d71e6af20662d49e74802bb0bcc699426152acca8b55137469666ac112",
+    "clean_zip_signature_verified": true,
+    "license_integrity_verified": true,
+    "desktop_fileprovider_may_readd_finder_metadata_after_launch": true,
+    "bundled_license_names": [
+      "LICENSE-MIT",
+      "LICENSE-APACHE",
+      "LICENSE-psd-tools",
+      "NOTICE",
+      "ATTRIBUTION.md"
+    ],
+    "swiftpm_tests_passed": 568,
+    "historical_render_benchmark_binary_sha256": "3f175139d0b4b0134a7551dc727e71936ce757710dda155c5634e3737b30ed33",
+    "historical_render_benchmark_matches_current_binary": false
+  },
+  "live": {
+    "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/live-ui-verification.json",
+    "sha256": "2434fe66a011ffbc8d5833476982a384a4189d4eac1dadf657b0d6b1bdb0917c"
+  },
+  "observed_menus": {
+    "path": "artifacts/runs/20261008T230714Z-055-photoshop-menus/photoshop-menus.json",
+    "sha256": "0bf44d05f8fbb912bea8a054762ebe5f2cd7c424e4e4430d118d19544d81249c"
+  },
+  "observed_shortcut_summary": {
+    "path": "artifacts/runs/20261008T230714Z-055-photoshop-menus/photoshop-current-shortcuts.htm",
+    "sha256": "e53c23c331c5dc2b2472c37d3619f70ac7da602133ee7f7e04fd1e40b8a8bb56"
+  },
+  "preserved_settings": {
+    "path": "artifacts/runs/20261008T230714Z-055-photoshop-menus/shortcut-preserved.txt",
+    "sha256": "ad19450474ace30a5a439c6d1b8654fae911d81a4236d21d04fe4959bfdf9460"
+  },
+  "captured_menu_tree": {
+    "path": "artifacts/runs/20261008T230714Z-055-photoshop-menus/captured-menu-tree.json",
+    "sha256": "7351f5f64414384af523c9b68e925bf76484db10b835671599dc73a9749718de"
+  },
+  "independent_inventory": {
+    "path": "Tests/PhotoCraftAppTests/Fixtures/photoshop-menu-inventory.json",
+    "sha256": "60afc7485e93a721faf67618385312c0ba03a000ac9b2be6414833f7cc67caee"
+  },
+  "native_report": {
+    "path": "artifacts/menu-parity-report.json",
+    "sha256": "2b5a9f6b9a1de087ac13ef25aaaa8cf2827314572e1ebc493ad8b16871ae0a81"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/tested-source-hashes.json",
+    "sha256": "1793451f4a3224ce28381faa223c41c9049eca88ea80ca65fb3d0289477ab31e"
+  },
+  "default_preset": "Photoshop Defaults",
+  "requires_opt_in": false,
+  "alternative_shortcuts": 8,
+  "factory_shortcuts": {
+    "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/factory-shortcut-comparison.json",
+    "sha256": "fb5c6aa1ab342ccad8cc4f9b4e08fc4b26ee7fd762773fe3bd4b32f44f1cdcaa"
+  },
+  "factory_menu_preset": {
+    "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/photoshop-menu-preset.txt",
+    "sha256": "4fa259f954deee49d0e6533fcfcc89c098f2fa8748636a6b3a12828a46216ab1"
+  },
+  "factory_menu_screenshot": {
+    "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/photoshop-menu-preset.png",
+    "sha256": "ac9a3023290eb9bb90ecc554b2b46dd6485ffeb7e7c6e41beb99b5b42ce35936"
+  },
+  "independent_factory_keys": {
+    "path": "Tests/PhotoCraftAppTests/Fixtures/photoshop-default-shortcuts.json",
+    "sha256": "fb5c6aa1ab342ccad8cc4f9b4e08fc4b26ee7fd762773fe3bd4b32f44f1cdcaa"
+  },
+  "implementation_followup": {
+    "step": "dev-step-057",
+    "reference": "docs/LAYER_VIA_REFERENCES.json",
+    "change": "Bind selected-raster Layer Via Copy and Layer Via Cut; keep factory shortcut defaults",
+    "release_verification": "artifacts/runs/20261008T235917Z-057-layer-via/release-verification.json",
+    "full_tests": 577,
+    "optimized_tests": 124,
+    "live_selected_menu": "artifacts/runs/20261008T235917Z-057-layer-via/native-layer-menu-selected.txt"
+  },
+  "merge_followup": {
+    "step": "dev-step-058",
+    "reference_manifest": "docs/LAYER_MERGE_REFERENCES.json",
+    "commands": [
+      "Merge Layers / Merge Down: Command-E",
+      "Merge Visible: Shift-Command-E"
+    ],
+    "factory_defaults_unchanged": true,
+    "release_verification": "artifacts/runs/20261009T004847Z-058-layer-merging/release-verification.json",
+    "full_tests": 586,
+    "optimized_tests": 133,
+    "live_menu": "artifacts/runs/20261009T004847Z-058-layer-merging/native-layer-menu-down.txt"
+  },
+  "workspace_visibility_followup": {
+    "step": "dev-step-060",
+    "reference_manifest": "docs/WORKSPACE_VISIBILITY_REFERENCES.json",
+    "live_window_menu": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-window-menu.txt",
+    "scope": "Existing Window panel actions now reveal hidden groups and expand a collapsed dock. Static catalog and factory keys unchanged.",
+    "newly_observed_limit": "AppKit injects native window-management items before the curated Window hierarchy on this macOS version. Static 801-entry tests do not cover that dynamic menu content; fix alongside shared document tabs.",
+    "full_live_menu_parity": false
+  },
+  "document_workspace_followup": {
+    "step": "dev-step-061",
+    "reference_manifest": "docs/DOCUMENT_WORKSPACE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/release-verification.json",
+      "sha256": "845f4008ab22bf1907bbf3c504aed3680383a764c01765824d0ff7b82b605661"
+    },
+    "scope": "Curated dynamic Window hierarchy without AppKit extras; native document list; Float/Float All/Consolidate/Minimize/Bring All commands. Factory menu keys unchanged.",
+    "full_live_menu_parity": false
+  },
+  "saved_workspace_followup": {
+    "step": "dev-step-066",
+    "reference_manifest": "docs/SAVED_WORKSPACE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/release-verification.json",
+      "sha256": "b7fe5acdd72d31fcbc0061bec810c84672bc00bcbdcc620d9b67ea5b9867b2ba"
+    },
+    "newly_bound_commands": [
+      "Essentials (Default)",
+      "Reset active workspace",
+      "New Workspace\u2026",
+      "Delete Workspace\u2026"
+    ],
+    "dynamic": "Custom workspace names and active checkmarks",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "panel_dock_followup": {
+    "step": "dev-step-067",
+    "reference_manifest": "docs/PANEL_DOCK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T063436Z-067-panel-dock/release-verification.json",
+      "sha256": "cfb3f6f96d84a03e1ef475ba1014417f7aa6501cbc4e9877169f3d7609e00d1c"
+    },
+    "newly_bound_commands": [
+      "Lock Workspace"
+    ],
+    "scope": "Native right-hand panel grouping and movement locking; additional native group menus are workflow controls, not certified Photoshop panel-menu replicas.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "floating_panel_followup": {
+    "step": "dev-step-068",
+    "reference_manifest": "docs/FLOATING_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/release-verification.json",
+      "sha256": "a3e9066ea66de00bebb1fe30fa4235fa4a49aa39de721c7c4387f52cd84f5109"
+    },
+    "scope": "Native floating panel lifecycle/geometry/active document and docking return; retain registered Services menu identity. No new static Photoshop command bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "panel_tear_off_followup": {
+    "step": "dev-step-069",
+    "reference_manifest": "docs/PANEL_TEAR_OFF_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-verification.json",
+      "sha256": "b4df33d4711a8ff96091cf4cf84aea2d3cd7d168235058a464946bea2f4d1eaf"
+    },
+    "scope": "Native drag tear-off, explicit Command float drops and cancellation/cleanup guards; no new Photoshop menu bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "floating_stack_followup": {
+    "step": "dev-step-070",
+    "reference_manifest": "docs/FLOATING_STACK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+      "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+    },
+    "scope": "Native floating stack topology, native hosts/boundaries and preserved collapsed/hidden geometry; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "new_layer_followup": {
+    "step": "dev-step-073",
+    "reference_manifest": "docs/NEW_LAYER_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T093234Z-073-new-layer/release-verification.json",
+      "sha256": "88b7c96de7a8e02ba5940031bc29036a821e4498bda75b7a82179365d89ca4a3"
+    },
+    "scope": "Existing New Layer selector now opens native options and validates its target; factory menu hierarchy and shortcuts unchanged.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "new_group_followup": {
+    "step": "dev-step-074",
+    "reference_manifest": "docs/NEW_GROUP_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T095137Z-074-new-group/release-verification.json",
+      "sha256": "8f18b051dab8577199e47f0bef02dc780c7d7b1c7f2ca59b6797c6d6db4a0801"
+    },
+    "scope": "New Group/Group from Layers native dialogs distinct from immediate CmdG, complete group options and guarded footer routes; existing menu hierarchy and shortcuts retained.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "duplicate_layer_followup": {
+    "step": "dev-step-075",
+    "reference_manifest": "docs/DUPLICATE_LAYER_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/release-verification.json",
+      "sha256": "03dc6d81072b2fe047247c994e6283544439fa94f702222a1d2c575f2a87a3fb"
+    },
+    "scope": "Duplicate Layer/Group/plural dialog, name and current/open/New destinations; original menu hierarchy and shortcut preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "layer_panel_followup": {
+    "step": "dev-step-076",
+    "reference_manifest": "docs/LAYER_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T103807Z-076-layer-panel/release-verification.json",
+      "sha256": "17a1ddc94220fb0d2759c151bd5a9e389dd639fcd8548fb2763f67abcae924de"
+    },
+    "scope": "Shared Layers panel/row commands, native inline naming and atomic selected deletion. Rename binds existing factory menu without shortcut changes; exact panel-menu order is unqualified.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "layer_editing_ux_followup": {
+    "step": "dev-step-077",
+    "reference_manifest": "docs/LAYER_EDITING_UX_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/release-verification.json",
+      "sha256": "e6eaaa6ff9daab861bc6dbe3f097d505fa1b8f3b18e98fc8152fbcadbd07abca"
+    },
+    "scope": "Native text/document Undo routing, menu focus preservation, contextual delete confirmation and dynamic Rename Group. Factory shortcuts and static inventory unchanged.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "layer_organization_followup": {
+    "step": "dev-step-078",
+    "reference_manifest": "docs/LAYER_ORGANIZATION_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/release-verification.json",
+      "sha256": "97c6b0fc53de7f52ff0d80029b1306c0fa43d821093d10c4da2318b7ae023b78"
+    },
+    "scope": "Selected context color labels, dynamic Hide/Show Layers and Option-eye isolation/restoration. Existing factory Command-comma now binds its visibility operation; static menu and shortcut inventory retained.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false,
+    "numeric_field_capture_correction": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/numeric-field-capture-investigation.json",
+      "sha256": "06445a697f679d99865da5d3192c04da888f7a2d5274463fa1d1b0e3888225da"
+    }
+  },
+  "layer_visibility_drag_followup": {
+    "step": "dev-step-079",
+    "reference_manifest": "docs/LAYER_VISIBILITY_DRAG_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/release-verification.json",
+      "sha256": "3f1a7b98f887515b266c3b896bbf94ab7b724b5c684bef49d947aaaa821cd65e"
+    },
+    "scope": "Native Layers eye-column dragging with transient preview, one undo step, cancellation and native clipped hit targets/autoscroll. Menus and factory shortcuts unchanged.",
+    "live_qualified": false
+  },
+  "group_disclosure_followup": {
+    "step": "dev-step-080",
+    "reference_manifest": "docs/GROUP_DISCLOSURE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/release-verification.json",
+      "sha256": "2c55200da39742d6c5900451fd2b7e40b310d7bffd54f940986e2876784ab9a9"
+    },
+    "scope": "Group expansion is saved view metadata without dirty/history edits; native ordinary/Option triangles and Collapse All Groups. Factory menu bar and shortcuts unchanged; exact Layers flyout order remains unqualified.",
+    "live_qualified": false
+  },
+  "layer_reveal_followup": {
+    "step": "dev-step-081",
+    "reference_manifest": "docs/LAYER_REVEAL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/release-verification.json",
+      "sha256": "72c4ad54fb2381efb68821dc155661ef1af6e5e87d95e16b7060a8046c205171"
+    },
+    "scope": "Active-layer changes reveal closed ancestors and scroll minimally; first-document appearance and unchanged selections preserve manual state. Factory menus unchanged.",
+    "live_qualified": false
+  },
+  "layer_panel_options_followup": {
+    "step": "dev-step-082",
+    "reference_manifest": "docs/LAYER_PANEL_OPTIONS_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/release-verification.json",
+      "sha256": "05792068c96f71b1a27d12ad5757c6aaebd52fd22e1650486f5e375dd60e94a4"
+    },
+    "scope": "Layers panel flyout opens native size/framing preferences; settings are shared across documents and persist independently of workspace layouts. Factory menu bar unchanged.",
+    "live_qualified": false
+  },
+  "thumbnail_coverage_followup": {
+    "step": "dev-step-083",
+    "reference_manifest": "docs/THUMBNAIL_COVERAGE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/release-verification.json",
+      "sha256": "302a7cdb011a245d00f083a6b4495020dda0deffc78d075f6068a3504ac3b4b4"
+    },
+    "scope": "Minified previews integrate pixel-area coverage. Pixel/vector masks use document coordinates and shared content framing; disabled marks scale to the preview. Factory menus unchanged.",
+    "live_qualified": false
+  },
+  "mask_interaction_followup": {
+    "step": "dev-step-084",
+    "reference_manifest": "docs/MASK_INTERACTION_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/release-verification.json",
+      "sha256": "a5d15812090f55d2bf1c5983ef13d35f0e806d19ed4f0a5c454edf5ff457153c"
+    },
+    "scope": "Mask-thumbnail modifiers and canvas presentation. Factory menu inventory unchanged; Load Selection dialog remains pending.",
+    "live_qualified": false
+  },
+  "api_product_addition": {
+    "step": "dev-step-091",
+    "path": "Help > Photato Automation API\u2026",
+    "shortcut": "none",
+    "qualification": "Separate optional local automation control; original Photoshop hierarchy and factory bindings preserved",
+    "evidence": "docs/AUTOMATION_API_REFERENCES.json"
+  }
+}

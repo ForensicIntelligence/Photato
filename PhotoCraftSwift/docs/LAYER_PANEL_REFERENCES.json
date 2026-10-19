@@ -1,0 +1,93 @@
+{
+  "step": "dev-step-076",
+  "date": "2026-10-09",
+  "status": "Layers menu, inline rename and selected-delete regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T103807Z-076-layer-panel/release-verification.json",
+    "sha256": "17a1ddc94220fb0d2759c151bd5a9e389dd639fcd8548fb2763f67abcae924de"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T103807Z-076-layer-panel/tested-source-hashes.json",
+    "sha256": "81d1e475593709311aefef882b530f413b19681a034d53fde22ec89ff8c91d3d"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T103807Z-076-layer-panel/research.json",
+    "sha256": "f6442f30425e9dae49326589c38480a82a6c05021f69f6eedf9f6a2b8477ff56"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T103807Z-076-layer-panel/live-qualification.json",
+    "sha256": "963fa8a4a0725332ee4f729a3937e4eb9f0b1dfc4247756b68ccb153c7a7da1d"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T103807Z-076-layer-panel/offscreen-layout.json",
+    "sha256": "0229a6716a68bc122ce1def04976fe3867c86da8c81f231dd8ef57a826e31700"
+  },
+  "implementation": [
+    "Shared contextual commands in Layers flyout and row menu; panel layout retained separately",
+    "Native inline rename with name-only double-click, Return/Tab/Shift-Tab/outside-focus commit and Escape cancellation",
+    "Atomic selected subtree deletion, final-layer guard and conservative inherited/descendant-lock guard",
+    "Existing factory Rename menu binding without new shortcut"
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T103807Z-076-layer-panel/focused-07.log",
+      "sha256": "2ddbbd2ea002cb0af969057ea6028c1fc9f6d180827a352babd41d3ae72209fb",
+      "passed": 173,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 10.222
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T103807Z-076-layer-panel/full-tests.log",
+      "sha256": "6ec6919310582ef4dc6b5d752a7d3518a6b8c0a7e6a8cdc8fd0869864104ad0f",
+      "passed": 756,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 118.436
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T103807Z-076-layer-panel/release-tests.log",
+      "sha256": "f4ef58141ad0c50f7a70cc963df17cc05ec40fdfd461be82a972a7a2392f2161",
+      "passed": 331,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.973
+    },
+    "new_regressions": 16
+  },
+  "limits": [
+    "Mac locked: live menu hierarchy/order/geometry, gestures and field input remain unqualified",
+    "Exact Photoshop filtered/collapsed/locked/boundary renaming and selected deletion semantics need comparison",
+    "Menu effects, Smart Objects, layer export, linking, flattening and Panel Options remain disabled",
+    "Legacy single-layer core delete can still empty a document; user-facing selected delete retains one layer",
+    "Shift-Tab/no-wrap/visible-row navigation are implementation choices pending live verification",
+    "100% Photoshop parity and broad byte-identical operation results are not established",
+    "Deletion currently executes immediately; Adobe documents confirmation and Option-click bypass, scheduled for the next UI pass",
+    "Dynamic main-menu Rename Group title, row color labels, visibility isolation/drag and recursive disclosure remain gaps",
+    "Native field callbacks/focus are tested; physical shortcuts and main-menu Undo/Redo while typing still need qualification. AppDelegate currently binds Undo/Redo to document actions."
+  ],
+  "full_photoshop_parity": false,
+  "layer_editing_ux_followup": {
+    "step": "dev-step-077",
+    "reference_manifest": "docs/LAYER_EDITING_UX_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/release-verification.json",
+      "sha256": "e6eaaa6ff9daab861bc6dbe3f097d505fa1b8f3b18e98fc8152fbcadbd07abca"
+    },
+    "scope": "Native text/document Undo routing, menu focus preservation, contextual delete confirmation and dynamic Rename Group. Factory shortcuts and static inventory unchanged.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "layer_panel_options_followup": {
+    "step": "dev-step-082",
+    "reference_manifest": "docs/LAYER_PANEL_OPTIONS_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T133544Z-082-layer-panel-options/release-verification.json",
+      "sha256": "05792068c96f71b1a27d12ad5757c6aaebd52fd22e1650486f5e375dd60e94a4"
+    },
+    "scope": "Layers panel flyout opens native size/framing preferences; settings are shared across documents and persist independently of workspace layouts. Factory menu bar unchanged.",
+    "live_qualified": false
+  }
+}

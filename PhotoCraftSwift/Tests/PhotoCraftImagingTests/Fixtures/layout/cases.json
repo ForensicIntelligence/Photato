@@ -1,0 +1,895 @@
+[
+  {
+    "name": "align-top",
+    "kind": "align",
+    "edge": "top",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        41,
+        17,
+        25,
+        19
+      ],
+      [
+        130,
+        17,
+        17,
+        30
+      ],
+      [
+        175,
+        17,
+        21,
+        17
+      ]
+    ],
+    "input": "00-input.psd",
+    "reference": "00-reference.psd"
+  },
+  {
+    "name": "align-vcenter",
+    "kind": "align",
+    "edge": "vcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        73,
+        14,
+        13
+      ],
+      [
+        41,
+        70,
+        25,
+        19
+      ],
+      [
+        130,
+        65,
+        17,
+        30
+      ],
+      [
+        175,
+        71,
+        21,
+        17
+      ]
+    ],
+    "input": "01-input.psd",
+    "reference": "01-reference.psd"
+  },
+  {
+    "name": "align-bottom",
+    "kind": "align",
+    "edge": "bottom",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        129,
+        14,
+        13
+      ],
+      [
+        41,
+        123,
+        25,
+        19
+      ],
+      [
+        130,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        125,
+        21,
+        17
+      ]
+    ],
+    "input": "02-input.psd",
+    "reference": "02-reference.psd"
+  },
+  {
+    "name": "align-left",
+    "kind": "align",
+    "edge": "left",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        11,
+        61,
+        25,
+        19
+      ],
+      [
+        11,
+        112,
+        17,
+        30
+      ],
+      [
+        11,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "03-input.psd",
+    "reference": "03-reference.psd"
+  },
+  {
+    "name": "align-hcenter",
+    "kind": "align",
+    "edge": "hcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        97,
+        17,
+        14,
+        13
+      ],
+      [
+        91,
+        61,
+        25,
+        19
+      ],
+      [
+        95,
+        112,
+        17,
+        30
+      ],
+      [
+        93,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "04-input.psd",
+    "reference": "04-reference.psd"
+  },
+  {
+    "name": "align-right",
+    "kind": "align",
+    "edge": "right",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        182,
+        17,
+        14,
+        13
+      ],
+      [
+        171,
+        61,
+        25,
+        19
+      ],
+      [
+        179,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "05-input.psd",
+    "reference": "05-reference.psd"
+  },
+  {
+    "name": "distribute-top",
+    "kind": "distribute",
+    "edge": "top",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        41,
+        80,
+        25,
+        19
+      ],
+      [
+        130,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        49,
+        21,
+        17
+      ]
+    ],
+    "input": "06-input.psd",
+    "reference": "06-reference.psd"
+  },
+  {
+    "name": "distribute-vcenter",
+    "kind": "distribute",
+    "edge": "vcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        41,
+        83,
+        25,
+        19
+      ],
+      [
+        130,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        50,
+        21,
+        17
+      ]
+    ],
+    "input": "07-input.psd",
+    "reference": "07-reference.psd"
+  },
+  {
+    "name": "distribute-bottom",
+    "kind": "distribute",
+    "edge": "bottom",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        41,
+        86,
+        25,
+        19
+      ],
+      [
+        130,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        50,
+        21,
+        17
+      ]
+    ],
+    "input": "08-input.psd",
+    "reference": "08-reference.psd"
+  },
+  {
+    "name": "distribute-left",
+    "kind": "distribute",
+    "edge": "left",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        66,
+        61,
+        25,
+        19
+      ],
+      [
+        120,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "09-input.psd",
+    "reference": "09-reference.psd"
+  },
+  {
+    "name": "distribute-hcenter",
+    "kind": "distribute",
+    "edge": "hcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        61,
+        61,
+        25,
+        19
+      ],
+      [
+        121,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "10-input.psd",
+    "reference": "10-reference.psd"
+  },
+  {
+    "name": "distribute-right",
+    "kind": "distribute",
+    "edge": "right",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        57,
+        61,
+        25,
+        19
+      ],
+      [
+        122,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "11-input.psd",
+    "reference": "11-reference.psd"
+  },
+  {
+    "name": "distribute-hspace",
+    "kind": "distribute",
+    "edge": "hspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        61,
+        61,
+        25,
+        19
+      ],
+      [
+        122,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "12-input.psd",
+    "reference": "12-reference.psd"
+  },
+  {
+    "name": "distribute-vspace",
+    "kind": "distribute",
+    "edge": "vspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        41,
+        78,
+        25,
+        19
+      ],
+      [
+        130,
+        112,
+        17,
+        30
+      ],
+      [
+        175,
+        45,
+        21,
+        17
+      ]
+    ],
+    "input": "13-input.psd",
+    "reference": "13-reference.psd"
+  },
+  {
+    "name": "overlap-hspace",
+    "kind": "distribute",
+    "edge": "hspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        12,
+        21,
+        25,
+        19
+      ],
+      [
+        23,
+        24,
+        17,
+        30
+      ],
+      [
+        27,
+        29,
+        21,
+        17
+      ]
+    ],
+    "input": "14-input.psd",
+    "reference": "14-reference.psd"
+  },
+  {
+    "name": "overlap-vspace",
+    "kind": "distribute",
+    "edge": "vspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        11,
+        17,
+        14,
+        13
+      ],
+      [
+        18,
+        13,
+        25,
+        19
+      ],
+      [
+        21,
+        16,
+        17,
+        30
+      ],
+      [
+        27,
+        29,
+        21,
+        17
+      ]
+    ],
+    "input": "15-input.psd",
+    "reference": "15-reference.psd"
+  },
+  {
+    "name": "single-canvas-hcenter",
+    "kind": "align",
+    "edge": "hcenter",
+    "target": [
+      0,
+      0,
+      240,
+      180
+    ],
+    "canvas": false,
+    "expected": [
+      [
+        113,
+        17,
+        14,
+        13
+      ]
+    ],
+    "input": "16-input.psd",
+    "reference": "16-reference.psd"
+  },
+  {
+    "name": "single-explicit-canvas-center",
+    "kind": "align",
+    "edge": "vcenter",
+    "target": [
+      0,
+      0,
+      240,
+      180
+    ],
+    "canvas": true,
+    "expected": [
+      [
+        113,
+        84,
+        14,
+        13
+      ]
+    ],
+    "input": "17-input.psd",
+    "reference": "17-reference.psd"
+  },
+  {
+    "name": "all-canvas-selection-left",
+    "kind": "align",
+    "edge": "left",
+    "target": [
+      0,
+      0,
+      240,
+      180
+    ],
+    "canvas": false,
+    "expected": [
+      [
+        4,
+        17,
+        14,
+        13
+      ],
+      [
+        4,
+        61,
+        25,
+        19
+      ],
+      [
+        4,
+        112,
+        17,
+        30
+      ],
+      [
+        4,
+        24,
+        21,
+        17
+      ]
+    ],
+    "input": "18-input.psd",
+    "reference": "18-reference.psd"
+  },
+  {
+    "name": "single-selection-right",
+    "kind": "align",
+    "edge": "right",
+    "target": [
+      29,
+      29,
+      112,
+      62
+    ],
+    "canvas": false,
+    "expected": [
+      [
+        123,
+        17,
+        14,
+        13
+      ]
+    ],
+    "input": "19-input.psd",
+    "reference": "19-reference.psd"
+  },
+  {
+    "name": "holdout-hcenter",
+    "kind": "align",
+    "edge": "hcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        52,
+        -13,
+        9,
+        12
+      ],
+      [
+        49,
+        71,
+        14,
+        17
+      ],
+      [
+        45,
+        20,
+        23,
+        9
+      ],
+      [
+        52,
+        101,
+        8,
+        22
+      ],
+      [
+        48,
+        42,
+        17,
+        13
+      ]
+    ],
+    "input": "20-input.psd",
+    "reference": "20-reference.psd"
+  },
+  {
+    "name": "holdout-vcenter",
+    "kind": "align",
+    "edge": "vcenter",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        -23,
+        49,
+        9,
+        12
+      ],
+      [
+        17,
+        47,
+        14,
+        17
+      ],
+      [
+        61,
+        51,
+        23,
+        9
+      ],
+      [
+        91,
+        44,
+        8,
+        22
+      ],
+      [
+        118,
+        49,
+        17,
+        13
+      ]
+    ],
+    "input": "21-input.psd",
+    "reference": "21-reference.psd"
+  },
+  {
+    "name": "holdout-hspace",
+    "kind": "distribute",
+    "edge": "hspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        -23,
+        -13,
+        9,
+        12
+      ],
+      [
+        8,
+        71,
+        14,
+        17
+      ],
+      [
+        44,
+        20,
+        23,
+        9
+      ],
+      [
+        88,
+        101,
+        8,
+        22
+      ],
+      [
+        118,
+        42,
+        17,
+        13
+      ]
+    ],
+    "input": "22-input.psd",
+    "reference": "22-reference.psd"
+  },
+  {
+    "name": "holdout-vspace",
+    "kind": "distribute",
+    "edge": "vspace",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        -23,
+        -13,
+        9,
+        12
+      ],
+      [
+        17,
+        68,
+        14,
+        17
+      ],
+      [
+        61,
+        15,
+        23,
+        9
+      ],
+      [
+        91,
+        101,
+        8,
+        22
+      ],
+      [
+        118,
+        40,
+        17,
+        13
+      ]
+    ],
+    "input": "23-input.psd",
+    "reference": "23-reference.psd"
+  },
+  {
+    "name": "holdout-right",
+    "kind": "distribute",
+    "edge": "right",
+    "target": null,
+    "canvas": false,
+    "expected": [
+      [
+        -23,
+        -13,
+        9,
+        12
+      ],
+      [
+        9,
+        71,
+        14,
+        17
+      ],
+      [
+        38,
+        20,
+        23,
+        9
+      ],
+      [
+        90,
+        101,
+        8,
+        22
+      ],
+      [
+        118,
+        42,
+        17,
+        13
+      ]
+    ],
+    "input": "24-input.psd",
+    "reference": "24-reference.psd"
+  },
+  {
+    "name": "single-explicit-canvas-left",
+    "kind": "align",
+    "edge": "left",
+    "target": [
+      0,
+      0,
+      240,
+      180
+    ],
+    "canvas": true,
+    "expected": [
+      [
+        4,
+        17,
+        14,
+        13
+      ]
+    ],
+    "input": "25-input.psd",
+    "reference": "25-reference.psd"
+  }
+]

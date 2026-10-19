@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-08",
+  "goal_pass_classification": "progress",
+  "profile": "../artifacts/pattern-fill-profile.txt",
+  "baseline_binary_sha256": "2f6666769d5b120b14d5e4cbecb4de5eaf55f2e02c7d49147ee7503b945eae35",
+  "profile_scope": "Dedicated Photato release benchmark process sampled for five seconds; 2814 of 3514 main-thread samples were within the changed-parameter render. 1372 samples were in its output pixel-write call subtree. This is sampling evidence, not an allocation count.",
+  "implemented": [
+    "Direct default-subscript mutation of Swift COW tile arrays removes optional read/modify/write allocation overhead",
+    "Prepared premultiplied pattern samples capped at 4 MiB per sampler; larger patterns keep the sparse Surface fallback",
+    "Unit mask coverage is proven over pixel-center regions; only the renderer opts in. Continuous edges and group mixing keep their existing paths",
+    "Pattern Fill Auto-Select samples a single stored content pixel without allocating a full canvas"
+  ],
+  "new_tests": {
+    "core": 4,
+    "imaging": 2,
+    "app": 1
+  },
+  "exact_checks": {
+    "prepared_vs_sparse_channel_values": 156000,
+    "original_rust_sampler_channel_values": 27968,
+    "blend_depth_mask_cases": 81,
+    "direct_picking_pixels": 3420
+  },
+  "limits": [
+    "Performance reports have two samples, not p95, and include reference-buffer memory; no live Photoshop comparison",
+    "Large-image parameter previews are still slower than interactive frame rates",
+    "4 MiB pattern preparation is per sampler; large tiles use the existing slower sparse lookup",
+    "Full CPU compositions, group memory budgets, vector/feather preparation, SDR packing and GPU acceleration remain open",
+    "Exactness here means equality to existing native/source behavior in the stated checks, not broad Photoshop output identity",
+    "macOS14/26 and Intel runtime qualification remain pending"
+  ],
+  "full_photoshop_parity": false,
+  "full_package_tests_passed": 456,
+  "full_package_test_seconds": 71.477,
+  "focused_release_tests_passed": 26,
+  "focused_release_seconds": 1.18,
+  "performance_comparison": "../artifacts/render-performance-comparison.json",
+  "final_binary_sha256": "3f175139d0b4b0134a7551dc727e71936ce757710dda155c5634e3737b30ed33",
+  "clean_package_verified": true,
+  "offscreen_snapshots_visually_verified": true
+}

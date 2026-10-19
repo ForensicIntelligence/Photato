@@ -1,0 +1,110 @@
+{
+  "step": "dev-step-109",
+  "recorded_at_utc": "2026-10-19T18:52:41.441991+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions; then minor functions; then final details. Required smaller dependencies belong to their major workflow.",
+  "major_workflow": "D01: document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/tested-source-hashes02.json",
+    "sha256": "b5d64004c41c11a3fff790ff5635ff06f047a07cf2532c8cc3bde41c143f852f"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/release-verification.json",
+    "sha256": "3a3f070d84a28d6a89ae0c177dd155d7562d6755becc274a38cf503c34b045b1"
+  },
+  "tests": {
+    "full01.log": {
+      "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/full01.log",
+      "sha256": "bcdf501144940e92c223d5493ce53e219c62f231aaeb5765c04c52b11d30170d",
+      "passed": 998,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 146.995
+    },
+    "release-focused01.log": {
+      "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/release-focused01.log",
+      "sha256": "5a184907828c7881aee90aa71f33357d5394f8dcc3ea4d66a1e9e79dcfbdae13",
+      "passed": 290,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.537
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-document-workflow-n57d_9co/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "fa00033c9837a33aa6238c3e0e6dfafe2c40b0cca6cd6b82962f2de8b4fd98bd",
+    "zip_sha256": "c0e6ed9653d899b5142bda2d569e36eac2cfea850c18e10512d2300627f5d238",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true,
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/live-ui-verification.json",
+    "sha256": "142e141ae4f7a0828b22850287caece03f6a16245f6a2636a2ee0aad34e6b0d2"
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Explicit supported Open formats and shared document codecs",
+    "Canonical imported-source identity; reopening an unsaved imported file reuses its existing document; saving as native releases that source association",
+    "Optional local authenticated uploads and shared document downloads with resource/session/revision guards",
+    "Native PNG open/edit/native Save/close/reopen and API layout verified live; original probe and shared workspace unchanged"
+  ],
+  "corrections": [
+    "Initial focused compile failed on actor isolation, repaired without unsafe isolation annotations.",
+    "Disabled Open after Go-to-folder highlight alone did not prove a file-format bug. Keyboard selection enabled Open; do not repeat that diagnosis as confirmed.",
+    "Optional revision header is X-Photato-Revision; earlier live copy differs only in API header naming."
+  ],
+  "resume_first": "Read AGENTS.md, WORK_PRIORITIES_108.json, FUNCTION_PHASES_109.json, this checkpoint, STATUS.md, DEVLOG.md step109 and DOCUMENT_IO_REFERENCES.json. Reverify381 source/test hashes and the current package/project. Do not rerun completed tests without source changes or new concerns. Continue D01, beginning with Photoshop source-format saving/Save As/Save a Copy/Revert behavior and representability constraints; do not switch to optional minor/detail work.",
+  "next_source_review": [
+    "NativeDocument.swift: current writableTypes/native-only data and read methods, fileURL/origin identity and NSDocument autosave/save/revert callbacks",
+    "DocumentIO.swift: shared format read/write adapters; preserve image depth, editable structures and explicit unsupported behavior",
+    "RasterIO/PSDCodec: format options, current profile/metadata limits and whether a document can be saved without loss",
+    "Application/PhotoshopMenus: correct File selectors, context validation and factory shortcuts",
+    "AutomationService/AutomationDocumentTransfers: same lifecycle coverage and versioned schema/state/errors; no invented Adobe endpoints"
+  ],
+  "remaining_major_dependencies": [
+    "I01\u2013I04 formats/PSD/PSB/pcraft/export scope",
+    "COL01 profile preservation and color-policy behavior",
+    "D02 crash/autosave/atomic-write/bookmark durability",
+    "Q03 responsiveness and cancellation",
+    "AUT02 API completion; existing Adobe adapter remains partial",
+    "Q04\u2013Q06 independent output/professional/platform qualification across every phase"
+  ],
+  "runtime_cleanup": "Debug validation copy quit; original PhotoCraft remains running. Original Photoshop document untouched. Service never started during live UI check; API integration tests use disposable loopback sessions and have ended.",
+  "limits": [
+    "Source-format Save/Save As/Save a Copy and full format options",
+    "Revert/read-only/external file changes and recent items/bookmarks",
+    "Large/unsupported/unknown PSD metadata, PSB/RAW/PDF and original .pcraft formats",
+    "Crash recovery, production sandbox access and complete independent Photoshop/platform validation"
+  ],
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 109,
+      "evidence_files": 17746,
+      "logs": 10130,
+      "missing_explicit_references": 0
+    },
+    "refresh_log": "artifacts/development-history-audit/20261019-step109-document-workflow/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261019-step109-document-workflow/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step109-document-workflow/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step109-document-workflow/check02.log",
+    "final_note": "Final refresh/check is run after checkpoint and final-consistency record updates; inspect its terminal log for the final outcome."
+  }
+}

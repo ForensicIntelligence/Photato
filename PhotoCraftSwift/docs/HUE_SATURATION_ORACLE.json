@@ -1,0 +1,78 @@
+{
+  "compose_source_sha256": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+  "model_source_sha256": "621534998613769f0e5df422797bd14d5f9090b0b589f6396a8f32c603bb9615",
+  "generator": "scripts/generate-hue-saturation-oracle.py",
+  "cases": 12,
+  "rgb_samples": 8940,
+  "encoded_float_samples": 8940,
+  "scope": "Unchanged source HueRange implementation, HSL conversions, range tables and HueSaturation match arm. Independent encoded/linear mathematical adapter for native float storage. Colorize fixtures use >=25 saturation; native lower values intentionally remove the source's undocumented floor. Source equations are approximations, not Photoshop qualification.",
+  "binary_fixture": "Independent Python struct.pack: version 2, both parameter sets and six wrapped ranges, 100 bytes.",
+  "binary_fixture_sha256": "340319e10eb5c29eb18ad1c233ab1456d729721b37a0331fce96f86036fb0c16",
+  "format_reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "native_identity_exceptions": {
+    "reason": "The source projects extended RGB through HSL even when no setting affects the pixel. Native identity and excluded-color paths preserve input bits instead.",
+    "case_and_sample_indices": [
+      [
+        0,
+        741
+      ],
+      [
+        0,
+        742
+      ],
+      [
+        5,
+        741
+      ],
+      [
+        11,
+        741
+      ],
+      [
+        11,
+        742
+      ]
+    ],
+    "currently_compared_case_and_sample_indices": [
+      [
+        0,
+        741
+      ],
+      [
+        0,
+        742
+      ]
+    ]
+  },
+  "retained_rgb_reference_samples": 2980,
+  "retained_encoded_float_reference_samples": 2980,
+  "superseded_colorize_lightness_cases": [
+    9,
+    10
+  ],
+  "superseded_reason": "Photoshop saved composites contradict the original range/chroma weighting, additive saturation/lightness, positive saturation, processing order and Colorize lightness order. The original vectors remain historical data; retained cases qualify identity, master hue/desaturation and neutral-lightness Colorize.",
+  "retained_rust_case_indices": [
+    0,
+    1,
+    2,
+    8
+  ],
+  "superseded_rust_cases": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11
+  ],
+  "range_approximation": {
+    "source": "https://github.com/psd-tools/psd-tools/blob/1b8c1d404d1b976748e7dbbca33ed5898663371b/src/psd_tools/composite/adjustments.py",
+    "source_sha256": "51b51d26c4ac1f7e5a799ed286c0210f2e05c521d5f40e77f70d3a092e92d1b8",
+    "license": "LICENSE-psd-tools",
+    "scope": "Empirical 21x21 saturation overlap grid and positive range contribution. Native neutral axes stay exact. Master lightness precedes range contraction toward RGB extrema; master and range saturation are sequential. Positive boost uses 1/max(0.01,1-adjustment), an explicitly approximate finite cap, instead of adding 0.01 at all positive settings. No Rust/Python runtime or third-party package is linked.",
+    "photoshop_exact": false,
+    "saved_composite_report": "artifacts/hue-reference-corrected.json"
+  }
+}

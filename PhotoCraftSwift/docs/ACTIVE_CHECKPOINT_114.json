@@ -1,0 +1,140 @@
+{
+  "step": "dev-step-114",
+  "recorded_at_utc": "2026-10-19T21:21:33.177082+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; required dependencies stay with their major workflow",
+  "major_workflow": "D01 document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/tested-source-hashes04.json",
+    "sha256": "e358a18ca2d2eb29d266bb6cff8628687d839505d1867bca8d76775231b87b47"
+  },
+  "source_test_files": 393,
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/release-verification.json",
+    "sha256": "abb80bb426211c9d3aaf939abada817776154fc8ef4f12ef2c4f455707981c53"
+  },
+  "tests": {
+    "full02.log": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/full02.log",
+      "sha256": "e8d28db4da6b8ad7b718695573232283fbb0df2d79a37b9588747073323aa15a",
+      "passed": 1040,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 150.24
+    },
+    "release02.log": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/release02.log",
+      "sha256": "569d2af7628aaa75356ef80d38e55663d003440b95c334d8b2bb8f1fbc6ddded",
+      "passed": 628,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.455
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-linear-package-zr3wragy/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c15fd1a1007663fa7c764e49927725a7837d6c072e1e39024512163148fa4894",
+    "zip_sha256": "5c825c0f50e035466c03e0dfc25a0519db33d14376d588c97fa54e876730bd89",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    }
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/live-ui-verification.json",
+    "sha256": "cc20cc196b65dca7d741639ef9669a93b8745d31cb9197b881f566b9b0170b50"
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "progress",
+  "completed_this_increment": [
+    "Explicit linearRGB storage with versioned backward-readable native archives",
+    "PSD raster input/output preserves supported original Float32 samples",
+    "Direct linear opaque raster/group composition and incremental patch copying",
+    "Both resource-job interfaces support bounded RGB32 preservation alongside native downloads/saves",
+    "Repaired failing precision and incremental regression cases; preserved failed attempts and qualified actual Release UI output"
+  ],
+  "remaining_major_dependencies": [
+    "Measured13,569 merged RGB byte differences versus freshly recalculated Photoshop reference; full color/profile/HDR editing equivalence",
+    "LayerMerge, transforms, adjustments and remaining HDR arithmetic need direct linear storage and independent qualification",
+    "Complete PSD/PSB/RAW/PDF/pcraft format/options/metadata semantics",
+    "Crash-relaunch recovery, external/read-only/sandbox coordination, recent/bookmark durability",
+    "Both complete API contracts, Photoshop preferences/context/shortcuts and supported-platform qualification"
+  ],
+  "resume_first": "Verify393 source/test hashes and package/project against this checkpoint; read AGENTS.md, WORK_PRIORITIES_108.json, FUNCTION_PHASES_109.json, RGB32_STORAGE_REFERENCES.json and DEVLOG step114. Classify this turn as verified progress. Continue D01 with the actual Photoshop-recalculated RGB32 merged/color/profile delta and direct-linear editing dependencies. Do not resume optional minor/detail work or rerun unchanged qualification.",
+  "next_source_review": [
+    "Renderer.compositeLinearPixel and NormalLayerComposite independent Float32 arithmetic",
+    "PSDCodec.convertProfile and output linear ICC versus Photoshop working/rendering CMM precision",
+    "LayerMerge direct linear input/intermediate/output; existing Photoshop merge fixtures currently use RGB tolerance",
+    "GroupRenderer pass-through extraction, RasterGeometry, adjustment/paint kernels and other encoded intermediates",
+    "DocumentSavePolicy review guard, full format options and recovery/platform requirements"
+  ],
+  "independent_samples": {
+    "original_layer_bytes": 122880,
+    "original_layer_differences": 0,
+    "merged_recalculated": {
+      "before_bytes": 98304,
+      "after_bytes": 73728,
+      "different_bytes": 13569,
+      "equal": false,
+      "RGB_different_bytes": 13569,
+      "output_alpha_is_opaque": true,
+      "different_float_samples": 12986,
+      "maximum_absolute_sample_error": 4.470348358154297e-08
+    },
+    "evidence": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/independent-recalculated02.json",
+      "sha256": "f1728120916272e63bfc2d4fbac13ca64c35d4d792603802ba371de351b81cc8"
+    }
+  },
+  "runtime_cleanup": {
+    "isolated_release_app_exited": true,
+    "original_probe_unchanged": true,
+    "workspace_auto_migration_preserved": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/workspace-after-release.json",
+      "sha256": "91b3153615b4c9638e877b76d3eb25e20b3419c07929567d74542f1c6efa1dee"
+    },
+    "exact_original_workspace_bytes_restored": true,
+    "workspace_sha256": "bcac41f6b160420ca026c01f32fd5553338deac63a9008648ed24e29bf2f612e",
+    "photoshop_original_untitled_document_untouched": true,
+    "disposable_photoshop_documents_closed": true
+  },
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "limits": [
+    "Original non-sRGB profile retention remains open; conversion cannot preserve original source bits",
+    "All transforms, fractional compositing, clipped Pass Through extraction, adjustments and editing kernels are not fully migrated or byte-qualified",
+    "LayerMerge still explicitly round-trips through encoded storage and needs direct linear migration with its independent Photoshop references",
+    "PSD masks, merged matting and complete Photoshop HDR numerical equivalence are not newly claimed exact",
+    "RGB32 ordinary source overwrite still requires explicit Save As review",
+    "Complete PSD/PSB/RAW/PDF/pcraft support, document recovery/external coordination and Intel/macOS14 runtime qualification remain open"
+  ],
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 114,
+      "evidence_files": 26564,
+      "logs": 16026,
+      "missing_explicit_references": 0
+    },
+    "refresh_log": "artifacts/development-history-audit/20261019-step114-linear-storage/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261019-step114-linear-storage/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step114-linear-storage/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step114-linear-storage/check02.log",
+    "note": "Final refresh/check runs after this checkpoint and DEVLOG update; inspect terminal logs for final outcome."
+  }
+}

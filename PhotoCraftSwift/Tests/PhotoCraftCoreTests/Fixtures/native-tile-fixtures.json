@@ -1,0 +1,22 @@
+{
+  "native-v6-migration.pcswift": {
+    "sha256": "5a30fd88bf02c5924053cf405d8cba6a34d6766e9927c096c9ca447ae05ced4e",
+    "generated_by": "Photato native archive version 6, release build from the clipboard checkpoint, before changing Surface serialization",
+    "dimensions": [
+      3,
+      2
+    ],
+    "layers": "One raster layer at each of u8/u16/f32, with independent masks and negative offsets; fixed UUIDs 1/2/3. Test reconstructs expected sample values."
+  },
+  "tile-f32-zlib.bin": {
+    "sha256": "d93be2e538b3e4acc0613907738fb6ee11cf255b3658414c1c0c560cbd4af0f2",
+    "generated_by": "Python struct.pack little-endian UInt32 bit patterns and zlib.compress(level=6), independent of Swift codec",
+    "sample_bits": [
+      2147483648,
+      1,
+      1073741824,
+      1056964608
+    ],
+    "pixels": 4096
+  }
+}

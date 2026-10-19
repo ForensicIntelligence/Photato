@@ -1,0 +1,1657 @@
+{
+  "preset": "Photoshop Defaults",
+  "source_path": "/Applications/Adobe Photoshop 2026/Locales/en_US/Support Files/Shortcuts/Mac/Default Keyboard Shortcuts.kys",
+  "source_sha256": "92bad112e5c58b46d2464cef894a375e0c1071579f9a7c38cda131c598697c7d",
+  "source_modified": false,
+  "multi_undo": true,
+  "mapped_commands": [
+    {
+      "path": [
+        "Filter",
+        "Vanishing Point\u2026"
+      ],
+      "factory_command": "Vanishing Point",
+      "primary": {
+        "key": "v",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Filter",
+        "Liquify\u2026"
+      ],
+      "factory_command": "Liquify",
+      "primary": {
+        "key": "x",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Filter",
+        "Lens Correction\u2026"
+      ],
+      "factory_command": "Lens Correction",
+      "primary": {
+        "key": "r",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Filter",
+        "Camera Raw Filter\u2026"
+      ],
+      "factory_command": "Camera Raw Filter",
+      "primary": {
+        "key": "a",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Filter",
+        "Adaptive Wide Angle\u2026"
+      ],
+      "factory_command": "Wide Angle Correction",
+      "primary": {
+        "key": "a",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "New\u2026"
+      ],
+      "factory_command": "New...",
+      "primary": {
+        "key": "n",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Open\u2026"
+      ],
+      "factory_command": "Open...",
+      "primary": {
+        "key": "o",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Save"
+      ],
+      "factory_command": "Save",
+      "primary": {
+        "key": "s",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Close"
+      ],
+      "factory_command": "Close",
+      "primary": {
+        "key": "w",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Save As\u2026"
+      ],
+      "factory_command": "Save As...",
+      "primary": {
+        "key": "s",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Save a Copy\u2026"
+      ],
+      "factory_command": "Save a Copy...",
+      "primary": {
+        "key": "s",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Revert"
+      ],
+      "factory_command": "Revert",
+      "primary": {
+        "key": "\uf70f",
+        "modifiers": []
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Photato",
+        "Quit Photato"
+      ],
+      "factory_command": "Quit Photoshop",
+      "primary": {
+        "key": "q",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Close All"
+      ],
+      "factory_command": "Close All",
+      "primary": {
+        "key": "w",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Close Others"
+      ],
+      "factory_command": "Close Others",
+      "primary": {
+        "key": "p",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Undo"
+      ],
+      "factory_command": "Undo",
+      "primary": {
+        "key": "z",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Redo"
+      ],
+      "factory_command": "Redo",
+      "primary": {
+        "key": "z",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Toggle Last State"
+      ],
+      "factory_command": "Toggle Last State",
+      "primary": {
+        "key": "z",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "\uf704",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "path": [
+        "Edit",
+        "Cut"
+      ],
+      "factory_command": "Cut",
+      "primary": {
+        "key": "x",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "\uf705",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "path": [
+        "Edit",
+        "Copy"
+      ],
+      "factory_command": "Copy",
+      "primary": {
+        "key": "c",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "\uf706",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "path": [
+        "Edit",
+        "Paste"
+      ],
+      "factory_command": "Paste",
+      "primary": {
+        "key": "v",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "\uf707",
+          "modifiers": []
+        }
+      ]
+    },
+    {
+      "path": [
+        "File",
+        "Print One Copy"
+      ],
+      "factory_command": "Print One Copy",
+      "primary": {
+        "key": "p",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Rulers"
+      ],
+      "factory_command": "Rulers",
+      "primary": {
+        "key": "r",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Zoom In"
+      ],
+      "factory_command": "Zoom In",
+      "primary": {
+        "key": "+",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "=",
+          "modifiers": [
+            "command"
+          ]
+        }
+      ]
+    },
+    {
+      "path": [
+        "View",
+        "Zoom Out"
+      ],
+      "factory_command": "Zoom Out",
+      "primary": {
+        "key": "-",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Deselect"
+      ],
+      "factory_command": "Deselect",
+      "primary": {
+        "key": "d",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "All"
+      ],
+      "factory_command": "All",
+      "primary": {
+        "key": "a",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Inverse"
+      ],
+      "factory_command": "Inverse",
+      "primary": {
+        "key": "i",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "\uf70a",
+          "modifiers": [
+            "shift"
+          ]
+        }
+      ]
+    },
+    {
+      "path": [
+        "Filter",
+        "Last Filter"
+      ],
+      "factory_command": "Last Filter",
+      "primary": {
+        "key": "f",
+        "modifiers": [
+          "control",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Brush Settings"
+      ],
+      "factory_command": "Brush",
+      "primary": {
+        "key": "\uf708",
+        "modifiers": []
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Image Size\u2026"
+      ],
+      "factory_command": "Image Size...",
+      "primary": {
+        "key": "i",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Canvas Size\u2026"
+      ],
+      "factory_command": "Canvas Size...",
+      "primary": {
+        "key": "c",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Modify",
+        "Feather\u2026"
+      ],
+      "factory_command": "Feather...",
+      "primary": {
+        "key": "\uf709",
+        "modifiers": [
+          "shift"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Paste Special",
+        "Paste Into"
+      ],
+      "factory_command": "Paste Into",
+      "primary": {
+        "key": "v",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Fill\u2026"
+      ],
+      "factory_command": "Fill...",
+      "primary": {
+        "key": "\uf708",
+        "modifiers": [
+          "shift"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Color"
+      ],
+      "factory_command": "Color",
+      "primary": {
+        "key": "\uf709",
+        "modifiers": []
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Info"
+      ],
+      "factory_command": "Info",
+      "primary": {
+        "key": "\uf70b",
+        "modifiers": []
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Layers"
+      ],
+      "factory_command": "Layers",
+      "primary": {
+        "key": "\uf70a",
+        "modifiers": []
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "New",
+        "Layer\u2026"
+      ],
+      "factory_command": "Layer...",
+      "primary": {
+        "key": "n",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Proof Colors"
+      ],
+      "factory_command": "Proof Colors",
+      "primary": {
+        "key": "y",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Gamut Warning"
+      ],
+      "factory_command": "Gamut Warning",
+      "primary": {
+        "key": "y",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Copy Merged"
+      ],
+      "factory_command": "Copy Merged",
+      "primary": {
+        "key": "c",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Hide Layers"
+      ],
+      "factory_command": "Hide Layers",
+      "primary": {
+        "key": ",",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Select and Mask\u2026"
+      ],
+      "factory_command": "Refine Edge...",
+      "primary": {
+        "key": "r",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "File Info\u2026"
+      ],
+      "factory_command": "File Info...",
+      "primary": {
+        "key": "i",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Merge Visible"
+      ],
+      "factory_command": "Merge Visible",
+      "primary": {
+        "key": "e",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Fade\u2026"
+      ],
+      "factory_command": "Fade...",
+      "primary": {
+        "key": "f",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Merge Layers"
+      ],
+      "factory_command": "Merge Layers",
+      "primary": {
+        "key": "e",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Actions"
+      ],
+      "factory_command": "Actions",
+      "primary": {
+        "key": "\uf70c",
+        "modifiers": [
+          "option"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "100%"
+      ],
+      "factory_command": "100%",
+      "primary": {
+        "key": "1",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "0",
+          "modifiers": [
+            "option",
+            "command"
+          ]
+        }
+      ]
+    },
+    {
+      "path": [
+        "View",
+        "Fit on Screen"
+      ],
+      "factory_command": "Fit on Screen",
+      "primary": {
+        "key": "0",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Paste Special",
+        "Paste in Place"
+      ],
+      "factory_command": "Paste in Place",
+      "primary": {
+        "key": "v",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Browse in Bridge\u2026"
+      ],
+      "factory_command": "Browse in Bridge...",
+      "primary": {
+        "key": "o",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": [
+        {
+          "key": "o",
+          "modifiers": [
+            "shift",
+            "command"
+          ]
+        }
+      ]
+    },
+    {
+      "path": [
+        "File",
+        "Close and Go to Bridge\u2026"
+      ],
+      "factory_command": "Close and Go to Bridge...",
+      "primary": {
+        "key": "w",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Export",
+        "Save for Web\u2026"
+      ],
+      "factory_command": "Save for Web...",
+      "primary": {
+        "key": "s",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Invert"
+      ],
+      "factory_command": "Invert",
+      "primary": {
+        "key": "i",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Levels\u2026"
+      ],
+      "factory_command": "Levels...",
+      "primary": {
+        "key": "l",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Curves\u2026"
+      ],
+      "factory_command": "Curves...",
+      "primary": {
+        "key": "m",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Color Balance\u2026"
+      ],
+      "factory_command": "Color Balance...",
+      "primary": {
+        "key": "b",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Hue/Saturation\u2026"
+      ],
+      "factory_command": "Hue/Saturation...",
+      "primary": {
+        "key": "u",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Auto Tone"
+      ],
+      "factory_command": "Auto Tone",
+      "primary": {
+        "key": "l",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Desaturate"
+      ],
+      "factory_command": "Desaturate",
+      "primary": {
+        "key": "u",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Auto Contrast"
+      ],
+      "factory_command": "Auto Contrast",
+      "primary": {
+        "key": "l",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Auto Color"
+      ],
+      "factory_command": "Auto Color",
+      "primary": {
+        "key": "b",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Adjustments",
+        "Black & White\u2026"
+      ],
+      "factory_command": "Black & White...",
+      "primary": {
+        "key": "b",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Reselect"
+      ],
+      "factory_command": "Reselect",
+      "primary": {
+        "key": "d",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Print\u2026"
+      ],
+      "factory_command": "Print...",
+      "primary": {
+        "key": "p",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Free Transform"
+      ],
+      "factory_command": "Free Transform",
+      "primary": {
+        "key": "t",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Transform",
+        "Again"
+      ],
+      "factory_command": "Again",
+      "primary": {
+        "key": "t",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Content-Aware Scale"
+      ],
+      "factory_command": "Content-Aware Scale",
+      "primary": {
+        "key": "c",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Photato",
+        "Settings\u2026",
+        "General\u2026"
+      ],
+      "factory_command": "General...",
+      "primary": {
+        "key": "k",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Color Settings\u2026"
+      ],
+      "factory_command": "Color Settings...",
+      "primary": {
+        "key": "k",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Arrange",
+        "Bring to Front"
+      ],
+      "factory_command": "Bring to Front",
+      "primary": {
+        "key": "]",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Arrange",
+        "Bring Forward"
+      ],
+      "factory_command": "Bring Forward",
+      "primary": {
+        "key": "]",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Arrange",
+        "Send Backward"
+      ],
+      "factory_command": "Send Backward",
+      "primary": {
+        "key": "[",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Arrange",
+        "Send to Back"
+      ],
+      "factory_command": "Send to Back",
+      "primary": {
+        "key": "[",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Analysis",
+        "Record Measurements"
+      ],
+      "factory_command": "Record Measurements",
+      "primary": {
+        "key": "m",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Guides",
+        "Lock Guides"
+      ],
+      "factory_command": "Lock Guides",
+      "primary": {
+        "key": ";",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Lock Layers\u2026"
+      ],
+      "factory_command": "Lock Layers",
+      "primary": {
+        "key": "/",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Group Layers"
+      ],
+      "factory_command": "Group Layers",
+      "primary": {
+        "key": "g",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Ungroup Layers"
+      ],
+      "factory_command": "Ungroup Layers",
+      "primary": {
+        "key": "g",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "All Layers"
+      ],
+      "factory_command": "All Layers",
+      "primary": {
+        "key": "a",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "New",
+        "Layer Via Copy"
+      ],
+      "factory_command": "Layer via Copy",
+      "primary": {
+        "key": "j",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "New",
+        "Layer Via Cut"
+      ],
+      "factory_command": "Layer via Cut",
+      "primary": {
+        "key": "j",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Create Clipping Mask"
+      ],
+      "factory_command": "Create Clipping Mask",
+      "primary": {
+        "key": "g",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Select",
+        "Find Layers"
+      ],
+      "factory_command": "Find Layers",
+      "primary": {
+        "key": "f",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Extras"
+      ],
+      "factory_command": "Extras",
+      "primary": {
+        "key": "h",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Show",
+        "Target Path"
+      ],
+      "factory_command": "Target Path",
+      "primary": {
+        "key": "h",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Show",
+        "Guides"
+      ],
+      "factory_command": "Guides",
+      "primary": {
+        "key": ";",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Show",
+        "Grid"
+      ],
+      "factory_command": "Grid",
+      "primary": {
+        "key": "'",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "View",
+        "Snap"
+      ],
+      "factory_command": "Snap",
+      "primary": {
+        "key": ";",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Help",
+        "Photato Help\u2026"
+      ],
+      "factory_command": "Photoshop Online Help...",
+      "primary": {
+        "key": "/",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Window",
+        "Arrange",
+        "Minimize"
+      ],
+      "factory_command": "Minimize",
+      "primary": {
+        "key": "m",
+        "modifiers": [
+          "control",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Search"
+      ],
+      "factory_command": "Show Universal Search",
+      "primary": {
+        "key": "f",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Keyboard Shortcuts\u2026"
+      ],
+      "factory_command": "Keyboard Shortcuts...",
+      "primary": {
+        "key": "k",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Edit",
+        "Menus\u2026"
+      ],
+      "factory_command": "Menus...",
+      "primary": {
+        "key": "m",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Photato",
+        "Hide Photato"
+      ],
+      "factory_command": "Hide Photoshop",
+      "primary": {
+        "key": "h",
+        "modifiers": [
+          "control",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Photato",
+        "Hide Others"
+      ],
+      "factory_command": "Hide Others",
+      "primary": {
+        "key": "h",
+        "modifiers": [
+          "option",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "File",
+        "Export",
+        "Export As\u2026"
+      ],
+      "factory_command": "Export As...",
+      "primary": {
+        "key": "w",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Quick Export as PNG"
+      ],
+      "factory_command": "Quick Export PNG",
+      "primary": {
+        "key": "'",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Layer",
+        "Export As\u2026"
+      ],
+      "factory_command": "Quick Export Selection PNG",
+      "primary": {
+        "key": "'",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    },
+    {
+      "path": [
+        "Image",
+        "Generative Upscale\u2026"
+      ],
+      "factory_command": "Generative Upscale...",
+      "primary": {
+        "key": "u",
+        "modifiers": [
+          "option",
+          "shift",
+          "command"
+        ]
+      },
+      "alternatives": []
+    }
+  ],
+  "excluded": [
+    {
+      "command": "Within Selection",
+      "id": "6384",
+      "reason": "Legacy 3D clipping-plane command, not in captured Photoshop 2026 menus"
+    },
+    {
+      "command": "Reveal All",
+      "id": "6386",
+      "reason": "Legacy 3D clipping-plane command; not Image or mask Reveal All"
+    },
+    {
+      "command": "Render",
+      "id": "6545",
+      "reason": "Legacy 3D Render command, not in captured Photoshop 2026 menus"
+    },
+    {
+      "command": "Generative Workspace...",
+      "id": "1774",
+      "reason": "Generative Workspace command absent from captured application menus"
+    }
+  ],
+  "primary_shortcuts": 102,
+  "alternatives": 8,
+  "changes": [
+    {
+      "path": [
+        "Photato",
+        "Hide Photato"
+      ],
+      "before": {
+        "key": "h",
+        "modifiers": [
+          "command"
+        ]
+      },
+      "after": {
+        "key": "h",
+        "modifiers": [
+          "control",
+          "command"
+        ]
+      }
+    },
+    {
+      "path": [
+        "View",
+        "Extras"
+      ],
+      "before": {
+        "key": "h",
+        "modifiers": [
+          "control",
+          "command"
+        ]
+      },
+      "after": {
+        "key": "h",
+        "modifiers": [
+          "command"
+        ]
+      }
+    },
+    {
+      "path": [
+        "Help",
+        "Photato Help\u2026"
+      ],
+      "before": {
+        "key": "",
+        "modifiers": []
+      },
+      "after": {
+        "key": "/",
+        "modifiers": [
+          "shift",
+          "command"
+        ]
+      }
+    }
+  ]
+}

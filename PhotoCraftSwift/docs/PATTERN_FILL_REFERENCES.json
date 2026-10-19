@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-08",
+  "goal_pass_classification": "progress",
+  "native": true,
+  "module_tests": 17,
+  "core_tests": 5,
+  "imaging_tests": 9,
+  "workflow_tests": 3,
+  "source_contracts": [
+    "../photocraft-main/crates/compose/src/pattern.rs",
+    "../photocraft-main/crates/compose/src/lib.rs: fill_frame and render_fill_content"
+  ],
+  "adobe_guides": [
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/manage-patterns-in-the-patterns-panel.html",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ],
+  "fixture_manifest": "../artifacts/psd-pattern-fixture-manifest.json",
+  "saved_reference_metrics": "../artifacts/pattern-fill-reference.json",
+  "evidence_scope": [
+    "One unmodified 32x32 RGB8 PSD identifies Adobe Photoshop CC 2018 (Macintosh) in XMP and matches its merged preview exactly; not Photoshop 2026 parity evidence",
+    "Companion minimal PSD contains a completely clear merged preview; its editable fill renders identically to the full fixture",
+    "The rich patterns.psd fixture still rejects unsupported vogk shape-origin metadata explicitly",
+    "Masked/offset phase is based on the original Rust fill-frame contract and native PSD round trips; live Photoshop comparison pending",
+    "Native RGB8/16/32 round trips retain editable pattern settings and exact native composite samples in the tested cases; ImageIO independently decodes generated merged images",
+    "Group/clipping, crop/resize/rotate/reflect, document/clipboard persistence, registry collisions, locks, malformed/budgeted decode, preview/cancel, AppKit drag/Return/Escape and undo are covered"
+  ],
+  "remaining": [
+    "Live Photoshop 2026 scale/angle/link/snap/phase and RGB16/32 output comparisons",
+    "Current Photoshop interpolation, high-depth/color-profile transfer, partial-alpha and mask-frame exactness",
+    "Pattern overlays/strokes, Pattern Stamp, brush textures, vector shape fills, drag/drop and preset folders",
+    "Direct Pattern Fill Free Transform and PSD export of nonuniform/reflected geometry; native matrices retained, export rejects until rasterized",
+    "Full layer-content-options routing for other fill/adjustment types",
+    "Interactive large-document latency, full preferences/shortcuts, Intel/macOS14/26 runtime acceptance"
+  ],
+  "full_photoshop_parity": false,
+  "live_photoshop_verified": false,
+  "performance_optimization_evidence": "RENDER_PERFORMANCE_REFERENCES.json"
+}

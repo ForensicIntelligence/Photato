@@ -1,0 +1,21 @@
+{
+  "step": "dev-step-092",
+  "record": {
+    "path": "artifacts/runs/20261009T192809Z-092-sheet-panel-state/record.json",
+    "sha256": "09efb52e3409b4340acb61afb345748e6d1974ebde1e039b346089655f3eb991"
+  },
+  "qualified": [
+    "Observed native sheet begin/end invalidation",
+    "Channels options Escape and Return recover menu validation live",
+    "Layers options Cancel button recovers menu validation live",
+    "Multiple-window sheets and retained draft guards in native regression tests",
+    "Document bytes/history unchanged in regression; live workspace preferences restored exactly"
+  ],
+  "not_qualified": [
+    "Panel menu accessibility names revert to generic Drag after dismissal",
+    "Direct live floating utility-window docking/drag/focus qualification",
+    "Independent channel visibility/edit targets and alpha/spot storage",
+    "Complete typed API registry, web workspace, streaming and remote hosting qualification",
+    "All broader Photoshop byte-parity, macOS14/Intel runtime and distribution gates remain"
+  ]
+}

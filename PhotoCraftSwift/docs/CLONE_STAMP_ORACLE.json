@@ -1,0 +1,7 @@
+{
+  "source": "photocraft-main/crates/paint/src/lib.rs",
+  "source_sha256": "6f2507958cbea7f869da7fcb4ed99ffe1055206c5be023f91971999d7eafc690",
+  "cases": 6168,
+  "fixture_sha256": "462c2e42e39f4e64bba308878910abbff12e55a49227383cd20af6850c052013",
+  "scope": "Round-tip coverage only. Full stroke, transformed sampling, blending, UI and Photoshop byte identity are separate gates."
+}

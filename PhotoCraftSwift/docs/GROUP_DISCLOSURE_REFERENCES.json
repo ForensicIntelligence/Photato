@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-080",
+  "date": "2026-10-09",
+  "status": "Native group disclosure and collapse-all tested and packaged; live Photoshop qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/release-verification.json",
+    "sha256": "2c55200da39742d6c5900451fd2b7e40b310d7bffd54f940986e2876784ab9a9"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/tested-source-hashes.json",
+    "sha256": "ddc65da75bf3131685fe49532353bea9d9d71633128181533fe153dc9f00ab47"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/research.json",
+    "sha256": "7c0583820f018c68ed3f46dff49750df9143b7a9c308f59f9b8d8252b89c92ae"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/live-qualification.json",
+    "sha256": "aebd4475e6fcdd7957be414cb3718529c7431e6a5c28dfdb910bfa2eb32179c6"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/offscreen-layout.json",
+    "sha256": "7855fb60f62828ecc99651ad859af1404958a4352607195dd0e6dd6fb58234d2"
+  },
+  "implementation": [
+    "Validated group expansion metadata updates preserve undo/redo snapshots, coalescing, active/multiselection and clean/dirty state.",
+    "Ordinary disclosure toggles one group; Option-click applies its new state to all groups, including locked, hidden and nested groups; Collapse All Groups is a guarded Layers panel action.",
+    "Native 14\u00d736 AppKit disclosure controls draw source-derived filled triangles and own click/modifier/cancel/stale-input handling outside the row reorder region. Mouse-down additionally binds the unique runtime store identity, preventing stale release into a separately opened copy with identical persisted UUIDs.",
+    "Existing row filtering is extracted without semantic changes; search/kind filters still find descendants of collapsed groups.",
+    "Native and PSD open/closed metadata persistence and exact unchanged native rendered samples at all three depths are tested.",
+    "Development-history audit now distinguishes crashed XCTest processes from earlier passing suite summaries."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/focused-06.log",
+      "sha256": "7adf48ab2c90ca80903756d676508b7850cf65251cbf5bdda983a5eff0fa9cb5",
+      "passed": 249,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.288
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/full-tests.log",
+      "sha256": "13e0ad5db496bd3bde01a5629d190067242e4175acb2abe3564d9d20b4404206",
+      "passed": 814,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 122.077
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/release-tests.log",
+      "sha256": "47dfaab6124aa8c426ab8423865d32c8fa1d774f2ba4ec8af05894ecd98fb4a2",
+      "passed": 389,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.917
+    },
+    "new_regressions": 16
+  },
+  "limits": [
+    "Physical pointer/modifier/keyboard and accessibility delivery, exact Photoshop panel menu ordering/geometry and clean/history/lock semantics remain pending an unlocked Mac.",
+    "Native/PSD self-roundtrip and render invariance do not establish Photoshop-wide byte equivalence.",
+    "Undo restores the source history snapshots, which can include earlier group disclosure flags; exact Photoshop behavior remains unqualified.",
+    "Active-layer ancestor reveal/minimal scrolling, Panel Options and remaining professional editing functions are incomplete.",
+    "The failed test sequence was corrected by mirroring product NSApplication/custom-controller-before-NSDocument startup; no production controller change or universal initialization-order guarantee is claimed.",
+    "Universal macOS14+ compilation is not Intel/macOS14 runtime certification; full Photoshop feature parity is not achieved."
+  ],
+  "full_photoshop_parity": false,
+  "layer_reveal_followup": {
+    "step": "dev-step-081",
+    "reference_manifest": "docs/LAYER_REVEAL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/release-verification.json",
+      "sha256": "72c4ad54fb2381efb68821dc155661ef1af6e5e87d95e16b7060a8046c205171"
+    },
+    "scope": "Active-layer changes reveal closed ancestors and scroll minimally; first-document appearance and unchanged selections preserve manual state. Factory menus unchanged.",
+    "live_qualified": false
+  }
+}

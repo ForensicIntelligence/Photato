@@ -1,0 +1,40 @@
+{
+  "retrieved": "2026-10-08",
+  "guide": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/remove-small-spots-with-the-spot-healing-brush.html",
+  "guide_updated": "2026-09-29",
+  "feature_catalogue": "https://www.adobe.com/products/photoshop/features/all.html",
+  "source_algorithms": "../photocraft-main/crates/algo/src/inpaint.rs",
+  "source_workflow": "../photocraft-main/crates/engine/src/retouch_cmds.rs",
+  "source_snapshot_modified": false,
+  "live_comparison": false,
+  "photoshop_exactness_verified": false,
+  "last_live_check": "2026-10-08: CUA reports Mac locked; no Photoshop operation sent",
+  "implemented": [
+    "Content-Aware multi-scale patch matching and weighted voting",
+    "Create Texture block synthesis with feathered overlap",
+    "Proximity Match with content-aware fallback",
+    "Gradient-domain boundary fitting shared with Healing Brush",
+    "Current layer or Sample All Layers, pixel and mask targets",
+    "Document-coordinate synthesis independent of target storage frame",
+    "Temporary stroke marker, cancellable commit, single-step undo"
+  ],
+  "native_limits": {
+    "search_region_pixels": 4194304,
+    "finite_input_magnitude": 1000000000000.0,
+    "channel_count": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "differences_and_remaining": [
+    "Photoshop pixel-identical repair, brush, color and alpha behavior are not qualified",
+    "Selection gates final painting; synthesis still samples the surrounding context outside the selection",
+    "No usable surrounding pixels causes an explicit error; an entirely transparent context is a no-op",
+    "Native blend modes are connected; Replace remains unimplemented",
+    "PatchMatch 16-row bands run sequentially; parallel performance qualification remains open",
+    "Advanced brushes, persistent Photoshop preferences, alpha channels and Quick Mask targets",
+    "Live pointer/tablet feedback, Intel and macOS 14/26 execution are not qualified"
+  ]
+}

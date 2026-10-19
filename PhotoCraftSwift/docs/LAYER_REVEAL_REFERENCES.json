@@ -1,0 +1,77 @@
+{
+  "step": "dev-step-081",
+  "date": "2026-10-09",
+  "status": "Native active-layer reveal and minimal scrolling tested and packaged; live Photoshop qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/release-verification.json",
+    "sha256": "72c4ad54fb2381efb68821dc155661ef1af6e5e87d95e16b7060a8046c205171"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/tested-source-hashes.json",
+    "sha256": "21a0e25166854ccaa1b4c5c561b866c85ac1a7e4534af54ba20e2bab506f1b5e"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/research.json",
+    "sha256": "c8e3b7e778aebfe936299192fdd1d98a6aeed8ffe86f32af7fcccf19bd1f73cc"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/live-qualification.json",
+    "sha256": "694d093efc02d3e05152d39d2d40bc0cb2a8210173f28eff1f3526d2b46d83f4"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/offscreen-layout.json",
+    "sha256": "99bdcdc7fa8f9a9e3a1b9858b8a05887cb34858c0190844c9c193decdf251ed7"
+  },
+  "implementation": [
+    "Panel-owned selection tracker opens only closed ancestors after actual active-layer change.",
+    "First document appearance/read/switch and unchanged selection preserve disclosure and manual scroll.",
+    "Guarded one-shot deferred scrollTo with nil anchor and disabled animation exposes target minimally.",
+    "Read/revert and close rotate ephemeral store generation to invalidate stale requests; copied document UUIDs remain isolated by runtime store identity.",
+    "Explicit inline-name requests remain minimal and bind their draft identity.",
+    "Panel disappearance cancels pending requests while retaining the last observed selection; reappearance reveals hidden-time selection changes and explicit pending Rename targets."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/focused-07.log",
+      "sha256": "5c8b3f1d79801dcd055565886a030e6decc112923c677ae0e4a4abace80c25e8",
+      "passed": 195,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 14.036
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/full-tests.log",
+      "sha256": "9604cc1aac53ea97f2d5cefa6942dc31b3f198b1a7aa5adbe9a9d903a499a780",
+      "passed": 825,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 124.71
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T130235Z-081-layer-reveal/release-tests.log",
+      "sha256": "ea4f9f3ab5fe68f0d6b89ce1d8de29eac06c80d2907d415700a8372da359230c",
+      "passed": 400,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 18.656
+    },
+    "new_regressions": 11
+  },
+  "limits": [
+    "Native-hosted tests are not physical input or exact Photoshop UI qualification.",
+    "Filters may exclude active rows; no forced filter changes or delayed reveal when filters later change.",
+    "Selection changes while editing is blocked are observed but do not queue later automatic reveals.",
+    "Universal macOS14+ compilation is not Intel/macOS14 runtime certification.",
+    "Full Photoshop feature and byte parity remain incomplete."
+  ],
+  "full_photoshop_parity": false,
+  "lifecycle_repair_followup": {
+    "step": "dev-step-085",
+    "reference": "docs/LAYER_REVEAL_LIFECYCLE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/release-verification.json",
+      "sha256": "acbfee83c6b45b29edbf1965e1e5717d29abcb61b589c00cee32022593e5019e"
+    },
+    "live_qualified": false
+  }
+}

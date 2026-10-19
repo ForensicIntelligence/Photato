@@ -1,0 +1,153 @@
+{
+  "step": "dev-step-107",
+  "recorded_at_utc": "2026-10-19T18:21:13.217800+00:00",
+  "reason": "Latest direct user request: pause after debugging the current additions/changes so work can continue elsewhere temporarily.",
+  "checkpoint_status": "Verified user-requested pause boundary; final audit then goal pause, with no feature work pending",
+  "full_goal_achieved": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_hashes": {
+    "path": "artifacts/runs/20261019T175105Z-106-component-integration/tested-source-hashes02.json",
+    "sha256": "704ee58f32c0a5ca36ec380160ec4b8b42426660bf8ee1a2bff50e58528cf67a"
+  },
+  "verified_swift_files": 378,
+  "tests": {
+    "full02.log": {
+      "path": "artifacts/runs/20261019T175105Z-106-component-integration/full02.log",
+      "sha256": "e63cc363bdede06d347b96608bd8ed4a7d31a12c97d0ecde48af11c51fb83180",
+      "passed": 990,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 145.803
+    },
+    "release-focused02.log": {
+      "path": "artifacts/runs/20261019T175105Z-106-component-integration/release-focused02.log",
+      "sha256": "e83b693a204f87d975a044caa043410df381b557e197eb00416bbf89d0674d64",
+      "passed": 279,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.292
+    }
+  },
+  "final_focused": {
+    "path": "artifacts/runs/20261019T175105Z-106-component-integration/focused03.log",
+    "sha256": "c0501a9596ed80f6e944031fdd81c98ce35ecaef2623d4120e931a201ec5c53d",
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1.801
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-component-integration-dijkngk6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "b128793da150ac4260e1ff8b55545f527aee6a91870e790932d10c9ce6c06fec",
+    "zip_sha256": "45a5db64de433bda8df452f6706b7668a30e06c3ece95710df7349891871419f",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T175105Z-106-component-integration/release-verification02.json",
+    "sha256": "a16b3db6d18ceabedf471341effce4df376e8c107e9d8342e2ee0f0b0042f5af"
+  },
+  "app_path": "/private/tmp/photato-component-integration-dijkngk6/Photato.app",
+  "zip_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.zip",
+  "xcode_project": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/Photato.xcodeproj",
+  "xcode_project_sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2",
+  "verification": {
+    "path": "artifacts/runs/20261019T181839Z-107-verified-pause/verification.json",
+    "sha256": "45cde5537bf4aae100031ef478e4b80ad1941d83a58af86de5a000268d9ff6e8"
+  },
+  "no_outstanding_test_or_build_session": true,
+  "no_unfinished_source_edit": true,
+  "repaired_latest_failures": [
+    "Stale API registry-count expectation12 versus14; focused01 failure preserved and repaired.",
+    "Overlapping Fill alert accessory controls; explicit native frame and separated layout verified live.",
+    "Component-incompatible transforms/position/flip/Quick Actions incorrectly available; shared context guards and disabled UI verified.",
+    "Adobe error-envelope detection included request-body UTF8; bounded request-line parsing and invalid-body regression added."
+  ],
+  "completed_increment": [
+    "Separate native RGB8 editing targets, factory Command2\u20135, neutral Normal component Fill opacity and shared history.",
+    "Photato channel.target/channel.fill:14 document commands; existing preview-only semantics preserved.",
+    "Opt-in isolated action jobs through Photato routes and partial Adobe execute-actions/status with resource transport, authenticated assets and revocation.",
+    "Desktop and both job interfaces each match122880 independent Photoshop layer-plane bytes across five original RGB8 cases."
+  ],
+  "runtime_cleanup": {
+    "tested_copy": "artifacts/runs/20261019T175105Z-106-component-integration/ui-copy02.json",
+    "build": "Debug",
+    "source_freeze": "artifacts/runs/20261019T175105Z-106-component-integration/tested-source-hashes02.json",
+    "qualified": [
+      "Channel target selection",
+      "Command2/3/4/5 target routing (two probes)",
+      "Non-overlapping component Fill dialog",
+      "50% Black Red Fill and composite display",
+      "Undo and Redo dirty-state transitions",
+      "Component-incompatible transform/flip/position/mask Quick Actions disabled",
+      "RGB restores control availability"
+    ],
+    "cleanup": "Fill undone; Layers panel restored to initially observed value; CUA inventory confirms both validation copies stopped and original PhotoCraft remains running. Last-tab close click did not establish document closure; app Quit completed without save prompts.",
+    "workspace_preferences": "Only the observed Layers/Channels selection was changed; restored Layers. Other JSON fields equal the pre-second-probe snapshot. Separate bundle identity does not isolate the hardcoded workspace/library paths.",
+    "limits": [
+      "No whole-file/global Photoshop equivalence claim from screenshots",
+      "No Intel/macOS14 runtime check",
+      "Final universal package has not been launched under its production identity",
+      "No live external storage or Adobe service job"
+    ],
+    "screenshots": [
+      "artifacts/runs/20261019T175105Z-106-component-integration/fill-dialog-before.png",
+      "artifacts/runs/20261019T175105Z-106-component-integration/fill-dialog-after.png",
+      "artifacts/runs/20261019T175105Z-106-component-integration/fill-result-ui02.png",
+      "artifacts/runs/20261019T175105Z-106-component-integration/fill-undo-ui02.png"
+    ]
+  },
+  "constraints": [
+    "100% native Swift/macOS; universal macOS14+ editing support",
+    "Optional Apple Silicon on-device AI and authorized Private Cloud Compute; maintain existing gates",
+    "UI, menus, UX, major functions, subfunctions, minor functions, everything else",
+    "Keep both Photato and Adobe-compatible interfaces; do not claim unimplemented endpoints",
+    "All development steps documented; unique failed/passing logs and independent Photoshop evidence",
+    "Do not disturb original modified Photoshop document; new probes must be disposable originals",
+    "Photoshop factory menus/shortcuts by default, complete preference parity except clearly named unique AI functions.",
+    "Preserve Photato/Pantry identity, upstream provenance/licenses, optional App Store IAP tips and existing Xcode project.",
+    "Resume only when the user requests it; no automatic feature expansion during this pause."
+  ],
+  "next_work": [
+    "UI/UX first: investigate observed File > Open PNG disabled state against NativeDocument/document controller and the separate raster import path. Specify shared desktop/API lifecycle before implementing Photoshop-style Open.",
+    "Expand component tools only with independent Photoshop references and matching Photato/Adobe coverage; current RGB16/32, multiple-component, alpha/spot, brush/retouch/filter/clipboard/transform and colored Fill semantics remain open.",
+    "Continue six missing Adobe endpoints, wider action semantics, schema discovery and external-storage/service interoperability; preserve bounded local subset claims.",
+    "Continue recorded UI/menu/preferences/major-feature backlog, universal Intel/macOS14 runtime qualification and optional local/PCC AI work."
+  ],
+  "resume_first": "Read AGENTS.md, CONTRIBUTING.md Development record, this checkpoint, STATUS.md, DEVLOG.md steps106\u2013107 and COMPONENT_EDITING_INTEGRATION_REFERENCES.json. Verify378 source/test hashes plus app/ZIP/project hashes. No test/build session is pending. Inspect the recorded File > Open image workflow gap before choosing the next UI/UX increment. Do not rerun completed tests without source changes or a new concern, and do not disturb the original PhotoCraft or Photoshop user documents.",
+  "qualification_limits": [
+    "Photoshop-style File > Open raster-image workflow: live PNG selection was disabled in the native-document Open panel; inspect separate import path before implementing shared desktop/API support",
+    "Component painting/retouch/filter/clipboard/transforms and multi-component targeting",
+    "RGB16/32, alpha/spot channels, colored Fill conversion and full Fill modes",
+    "Six Adobe endpoints, action/ATN/UXP scope, durable jobs and storage/service interoperability",
+    "Factory preferences and complete keyboard/responder/native UI parity",
+    "Global output equivalence, macOS14/Intel runtime qualification, full Photoshop and optional AI backlog",
+    "No whole-file/global Photoshop equivalence claim from screenshots",
+    "No Intel/macOS14 runtime check",
+    "Final universal package has not been launched under its production identity",
+    "No live external storage or Adobe service job",
+    "Desktop build copy retains File Provider/Finder metadata and fails strict signature verification; clean ZIP extraction verifies. Use the verified extracted app path recorded here or extract the ZIP outside Desktop."
+  ],
+  "evidence_root": "artifacts/runs/20261019T181839Z-107-verified-pause",
+  "implementation_evidence_root": "artifacts/runs/20261019T175105Z-106-component-integration",
+  "tests_rerun_in_pause_step": false,
+  "development_history_check": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 107,
+      "evidence_files": 15910,
+      "logs": 8896,
+      "missing_explicit_references": 0
+    },
+    "logs": "artifacts/development-history-audit/20261019-step107-verified-pause",
+    "final_refresh_check": "Run refresh02/check02 after recording this outcome; goal pause follows successful terminal completion."
+  },
+  "desktop_build_app_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app",
+  "signature_check": "artifacts/runs/20261019T181839Z-107-verified-pause/signature-check.json"
+}

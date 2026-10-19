@@ -1,0 +1,34 @@
+{
+  "rust_source_sha256": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+  "cases": 9,
+  "spline_samples": 36864,
+  "combined_samples": 2322,
+  "combined_table_samples": 36864,
+  "master_input_output_points": [
+    [
+      0,
+      0
+    ],
+    [
+      55,
+      20
+    ],
+    [
+      200,
+      240
+    ],
+    [
+      255,
+      255
+    ]
+  ],
+  "generator": "scripts/generate-curves-oracle.py",
+  "scope": "Unchanged curve_lut and lut, component before composite; source compatibility only, not Photoshop exactness.",
+  "binary_fixtures": {
+    "curves-record.acv": "26da37f904735088c99812252c154d402353e850646b5d1d029385b263ef80f9",
+    "curves-record.curv": "fb8d2282ed8916cb41e653c48419e20bcbf09ff92a560368d463327490401797",
+    "curves-extended.curv": "838dd1f063dc4a3cf63755514a97befc85d3990bb4959236841ba727b2e59467",
+    "curves-bitmap.acv": "840b7e75c2c3debc008119a4c55900c2120046d9e0ba287058ab76957ea48ca8"
+  },
+  "format_reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+}

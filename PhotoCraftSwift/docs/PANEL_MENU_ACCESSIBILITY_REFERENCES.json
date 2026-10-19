@@ -1,0 +1,30 @@
+{
+  "step": "dev-step-098",
+  "scope": "Native panel menu accessible names through SwiftUI/AppKit sheet recreation",
+  "run": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility",
+  "basis": "Live baseline menus change from named titles with description drag to generic Drag after Channels Panel Options Escape. Native NSImage accessibilityDescription supplies the selected panel name.",
+  "APIImpact": "Presentation-only control semantics; existing document API state, capability registry and Adobe compatibility surface unchanged. No new endpoint is applicable.",
+  "qualification": {
+    "candidateLive": "Color, Properties and Channels menu names retained after Channels Options Escape; Layers selection restores its matching name.",
+    "workspaceRGBA": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/visual-comparison.json",
+    "fullTests": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/full02.log",
+    "firstFullFailure": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/full01.log",
+    "isolatedAPI": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/api-investigation01.log",
+    "sourceIsolation": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/source-isolation.json",
+    "packagedLive": {
+      "app": "/private/tmp/photato-menu-ui-07b_r3sp/Photato.app",
+      "channelsEscape": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/live-package-channels-escape.txt",
+      "layersCancel": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/live-package-layers-cancel.txt",
+      "postSheetMoveFloatEnabled": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/live-package-layers-actions.txt"
+    },
+    "optimizedTests": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/release-focused01.log",
+    "universalPackage": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/release-verification.json",
+    "cleanup": "artifacts/runs/20261013T155013Z-098-panel-menu-accessibility/final-cleanup.json"
+  },
+  "limitations": [
+    "Exact cause of the initial API history409/413 conflict remains unproven; full and isolated retries passed without changing assertions or production guards.",
+    "Hosted accessibility traversal probes did not expose SwiftUI menu elements; do not count them as product regression coverage.",
+    "Utility-window live docking and broader channel editing remain pending.",
+    "No new Photoshop image-byte equivalence or complete Photoshop API conformance claim."
+  ]
+}

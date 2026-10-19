@@ -1,0 +1,113 @@
+{
+  "step": "dev-step-067",
+  "date": "2026-10-08",
+  "status": "Editable right-hand panel dock with native controls, persistence and movement locking; regression/package/offscreen checks pass; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T063436Z-067-panel-dock/release-verification.json",
+    "sha256": "cfb3f6f96d84a03e1ef475ba1014417f7aa6501cbc4e9877169f3d7609e00d1c"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T063436Z-067-panel-dock/tested-source-hashes.json",
+    "sha256": "a7960c8bf3877a4af3651457cb46db009529d0f068aafcd7e163e2adaf7c8d13"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T063436Z-067-panel-dock/live-qualification.json",
+    "sha256": "051f7b3dbc168fc09b10fbff9bc61294bfe75b05006c9516c65c268ae7b0921b"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T063436Z-067-panel-dock/references.json",
+    "sha256": "b017af2c4bd72b2ec8d120f74fa6a016a0a680944a0c3ac47c35f3685271a476"
+  },
+  "implementation": [
+    "One retained location for each of ten existing inspector tabs; arbitrary groups with reorder/split/merge, collapse and close/reveal",
+    "Native AppKit private drag payloads, tab/group sources, blue insertion targets, clicks/double-clicks and adjacent splitter tracking",
+    "Keyboard-accessible group menu actions and native tab accessibility labels/selection values",
+    "Shared saved layouts retain topology and sizes; literal previous-schema files migrate without loss",
+    "Application-level Lock Workspace blocks movement while retaining panel selection, collapse and resizing",
+    "Moving a group chooses its visible active tab when the retained previous selection is closed"
+  ],
+  "automated_evidence": [
+    "Eight new PanelDockTests; explicit transfer examples, all tab/target permutations, malformed topology, migration/persistence, unchanged native bytes/undo/viewport, bounded layout, lock/resize/menu behavior, payload rejection and native hosted hit/input routing",
+    "72 focused / 643 full / 201 optimized tests pass, zero failures/skips",
+    "801 static menu entries, 102 primary and eight alternate shortcuts; 149 bound leaves and 575 unavailable",
+    "Normal and regrouped debug/package offscreen renders inspected; tests invoke only their own AppKit controls, not OS events"
+  ],
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T063436Z-067-panel-dock/offscreen-layout.json",
+    "sha256": "d18b0bbefbb3b5973efe24f38a5414fa1f89b92f3ef463eb5844b8e06867522b"
+  },
+  "limits": [
+    "Actual pointer dragging, drop feedback, modifier/Escape behavior, keyboard menu navigation and restart comparison remain pending while the Mac is locked.",
+    "Floating panels, floating stacks, additional dock columns and tool/options-bar docking are still missing. Unsupported outside-dock drops leave the current layout unchanged.",
+    "History and Clone Source retain their existing popover implementations; they are not yet members of the flexible dock. Libraries content is still unavailable; a movable tab does not complete that feature.",
+    "Exact Photoshop group dimensions, panel-specific menus, factory presets, optional shortcut/menu/toolbar capture and complete accessibility remain open.",
+    "Lock behavior is bounded to implemented panel movement; full Photoshop workspace preference parity is not established.",
+    "No image engine or document format changed. No new pixel-equivalence claim."
+  ],
+  "full_photoshop_parity": false,
+  "floating_panel_followup": {
+    "step": "dev-step-068",
+    "reference_manifest": "docs/FLOATING_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/release-verification.json",
+      "sha256": "a3e9066ea66de00bebb1fe30fa4235fa4a49aa39de721c7c4387f52cd84f5109"
+    },
+    "scope": "Native floating panel lifecycle/geometry/active document and docking return; retain registered Services menu identity. No new static Photoshop command bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "panel_tear_off_followup": {
+    "step": "dev-step-069",
+    "reference_manifest": "docs/PANEL_TEAR_OFF_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-verification.json",
+      "sha256": "b4df33d4711a8ff96091cf4cf84aea2d3cd7d168235058a464946bea2f4d1eaf"
+    },
+    "scope": "Native drag tear-off, explicit Command float drops and cancellation/cleanup guards; no new Photoshop menu bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "floating_stack_followup": {
+    "step": "dev-step-070",
+    "reference_manifest": "docs/FLOATING_STACK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+      "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+    },
+    "scope": "Native floating stack topology, native hosts/boundaries and preserved collapsed/hidden geometry; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

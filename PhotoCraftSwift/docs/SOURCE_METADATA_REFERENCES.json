@@ -1,0 +1,119 @@
+{
+  "step": "dev-step-112",
+  "status": "Verified shared metadata preservation and repaired imported TIFF encoding policy; D01 remains open.",
+  "source_freeze": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/tested-source-hashes02.json",
+    "sha256": "85c30a26081c2b782086ce600003fd222eb05af6aa533c4d5b7c09b1b75f84ca"
+  },
+  "baseline": "docs/NATIVE_FILE_EXTENSION_REFERENCES.json",
+  "previous_package": "docs/ACTIVE_CHECKPOINT_110.json",
+  "workflow": "Major D01 source-format saving dependencies; D01 remains open",
+  "behavior": [
+    "Capture ImageIO properties and XMP in native archive sourceMetadata, with16MiB bounds per retained metadata payload",
+    "Raster output preserves supported camera/descriptive/IPTC/copyright/custom XMP metadata and normalizes orientation, pixel dimensions, resolution and sRGB fields",
+    "PSD output preserves original opaque resource names/padding/payloads; regenerates resolution/profile/path/XMP resources and omits known stale preview/layer-index/selection/version/recovery records",
+    "PSD-to-raster and raster-to-PSD XMP transfer uses native ImageIO; no proprietary parser/runtime or external service added",
+    "Current .photato canonical extension and .pcswift aliases preserved from step111",
+    "Imported TIFF compression cannot silently select a lossy encoder; descriptive TIFF tags still survive. Regression verifies source gradient bytes and output compression."
+  ],
+  "api": {
+    "photato_document_commands": 15,
+    "native_copy_and_download": "Existing shared-codec copy/download behavior gains metadata preservation; document/history/dirty state unchanged",
+    "jobs": "Desktop-equivalent output tested byte-for-byte through Photato /v1/action-jobs and partial Adobe /v2/execute-actions, plus Photato file.psd download",
+    "capability": "documentTransfers.metadata describes raster/PSD/profile policy and metadataLimitBytes; type object with string raster/psd/profiles fields and integer metadataLimitBytes=16777216",
+    "adobe_scope": "Two partial endpoints, six missing; no new endpoint or complete conformance claim"
+  },
+  "tests": {
+    "focused04": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/focused04.log",
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.786
+    },
+    "full": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/full02.log",
+      "sha256": "77ddf696131bb4c5a704192836876ef6706baebcc50dc50d9b558f3a4f46d53b",
+      "passed": 1021,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 148.232
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/release-focused02.log",
+      "sha256": "1c251c93c8b69e051884119377ea3dfa7cd4477f2a47d24553644809014b5c97",
+      "passed": 322,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.756
+    },
+    "failures": [
+      "artifacts/runs/20261019T193903Z-112-source-format-preservation/focused01.log",
+      "artifacts/runs/20261019T193903Z-112-source-format-preservation/focused03.log"
+    ],
+    "focused05": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/focused05.log",
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.578
+    },
+    "compression_diagnostic": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/compression-diagnostic01.log",
+      "sha256": "4b62971a929e2d61fa044c33eb5841995a6882eb0912a35d2cafac3ffa17ff4f"
+    },
+    "historical_pre_repair": {
+      "freeze": "artifacts/runs/20261019T193903Z-112-source-format-preservation/tested-source-hashes.json",
+      "full": 1020,
+      "optimized": 321,
+      "qualification": "Passed before the separately discovered TIFF compression defect; preserved as historical evidence, not the accepted final source."
+    },
+    "failure_diagnostic": "compression-diagnostic01.log exposes1445 changed bytes when retaining TIFFCompression7; final regression strips this encoding directive and passes exact pixels for5/7/8."
+  },
+  "independent_reference": {
+    "source": "Three preserved Photoshop-produced RGB16/RGB32/mask fixtures, plus live2026 opening of an original native-generated PSD",
+    "opaque_resources": "Exact retained block bytes; this does not establish semantic support for opaque Photoshop workflows",
+    "pixel_result": "Metadata export matches the existing encoder without resource retention byte-for-byte for all three fixtures. Original decoded-versus-reencoded RGB32 composite differs by96 bytes; RGB16/mask compare exactly. Full float fidelity remains open.",
+    "live": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/photoshop-verification.json",
+      "sha256": "1a54e4322605bef9ad5f4bb360bef6690e1c64d5212c47538f3886116992a020"
+    },
+    "screenshot": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/photoshop-file-info.png",
+      "sha256": "353adceecdd67f8d4cd37ffe95c7cb9593abb16225f6b2b7ebb15cbaf7ea5f39"
+    }
+  },
+  "references": [
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "accessed": "2026-10-19",
+      "scope": "Adobe public2019 PSD resource framing, identifiers and metadata fields; not a full current2026 specification"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/save-your-work.html",
+      "accessed": "2026-10-19",
+      "scope": "Save/Save As/Save a Copy and format-dependent content retention"
+    },
+    {
+      "source": "Xcode27 local ImageIO headers CGImageMetadata.h, CGImageSource.h, CGImageDestination.h",
+      "scope": "Native metadata capture, XMP, image-property mapping and image+metadata destination APIs"
+    }
+  ],
+  "limits": [
+    "Source-format Save/Save As remains native-only; no full D01 closure",
+    "Imported profiles still convert to sRGB working/output; original wide-gamut/CMYK/profile preservation remains required",
+    "Opaque PSD resources may reference unsupported layer/geometry workflows; retention alone does not implement or update them",
+    "PSD binary EXIF resources remain opaque; full embedded-field synchronization and global-layer metadata still require work",
+    "Unsupported destination metadata fields may be omitted by ImageIO; full format/camera/proprietary MakerNote corpus qualification remains open",
+    "RGB32 original round-trip byte mismatch96 in the sampled composite; must resolve broader float fidelity before byte-equivalence claims",
+    "No full Photoshop file-byte equality, preferences/context equivalence or Intel/macOS14 runtime claim"
+  ],
+  "release": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/release-verification.json",
+    "sha256": "d848ea4307ba356afb9bdc80cc7f6fdcdf31bacd66cf3d3bbeece6dda894b043"
+  },
+  "native_live": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/live-ui-verification.json",
+    "sha256": "ae3e86b8a2286997908400c66c25c7bd07347bb70dec2fc940370ee087e6d89d"
+  }
+}

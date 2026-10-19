@@ -1,0 +1,57 @@
+{
+  "step": "dev-step-063",
+  "date": "2026-10-08",
+  "status": "Shared frame implementation, native regressions and universal package verified; live qualification pending",
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T045505Z-063-application-frame/tested-source-hashes.json",
+    "sha256": "121b5f48c45e78ee820a3571cd2c12113a1047efdeaf32bbe074a858d77d3e2d"
+  },
+  "release": {
+    "path": "artifacts/runs/20261009T045505Z-063-application-frame/release-verification.json",
+    "sha256": "dacd2e747b0d71eb49faa5948366ce2f5f5aff83e5eaddf06afc08b902b55a35"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T045505Z-063-application-frame/live-qualification.json",
+    "sha256": "b41b0f7725447028b8402cd2bbd9fbe9f87817601981a9d14a712dbfb6f91cc5"
+  },
+  "reference_application": "Adobe Photoshop 2026 27.2.0; preserved step061 captures, no new reference capture while locked",
+  "reference_captures": [
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-float-one.png",
+      "sha256": "684bb650b91e374c2aae08352e7c02ee67942fe0f9c49c621fb5aaef2f785ac0"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-float-one.txt",
+      "sha256": "17d97abc1624c6222118023bd0e398c2ba2817122e696338399056144b1682e4"
+    }
+  ],
+  "implementation": [
+    "One retained application frame owns tools, panels and editing-sheet presentation",
+    "Canvas-only native floating child windows stay above their frame; each keeps its NSDocument save-sheet ownership",
+    "Global active document is independent from the docked canvas; panel focus retains floating editing target",
+    "Tool/panel preferences transfer across documents and survive active-document close; viewport, pixels, dirty state and undo remain independent",
+    "Float permits the last docked document; new documents dock; consolidation returns to the original frame",
+    "Cross-window Control-Tab and keyboard forwarding preserve native text responders; pending dialogs prevent target switching"
+  ],
+  "automated_evidence": [
+    "42 focused tests; 613 full tests (107.511 seconds); 167 optimized tests (5.757 seconds); zero failures/skips",
+    "Eight new document-workspace regressions; native hosted canvas ownership, window parenting, close review, control dispatch and document state",
+    "Services-menu failure after default NSTextView Tab handling retained; diagnostic and recording text-responder repair preserved"
+  ],
+  "limits": [
+    "Live tab drag from step062 and all changed frame interaction checks remain pending unlock.",
+    "Floating dimensions use provisional document-size padding and screen clamping. Compare the saved 32x24 Photoshop reference (102x108 window) before claiming a geometry match; initial fit zoom and status/scroller activation also remain pending.",
+    "Small/large float sizing, window stacking across Spaces/displays and minimized parents need live reference qualification.",
+    "Frame close currently reviews every open document; exact Photoshop close/autosave semantics and cancelled review require live qualification.",
+    "Final document close dismisses the frame; empty Home screen is not implemented.",
+    "Dragging out to detach, floating tab groups, empty-strip drop, overflow/autoscroll and modifier variants remain open.",
+    "Persistent workspaces, movable/dockable panels, complete accessibility and zoom/view preference parity remain open.",
+    "No editing-pixel algorithm was changed; prior pixel evidence retains its original bounds."
+  ],
+  "full_photoshop_parity": false,
+  "viewport_followup": {
+    "step": "dev-step-064",
+    "reference_manifest": "docs/VIEWPORT_REFERENCES.json",
+    "scope": "Unified zoom, backing-pixel geometry and input targeting; actual monitor/frame geometry remains pending."
+  }
+}

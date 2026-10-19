@@ -1,0 +1,33 @@
+# Current implementation priority
+
+The maintainer’s step108 order is **major functions, then minor functions, then final details**. Complete every major function before the minor-function phase, and every minor function before final polish. Include the UI, menu/shortcut integration, APIs and validation needed to make each function complete. Smaller dependencies needed to close a major function belong to that function; optional polish waits. Keep unresolved parity requirements open. This supersedes the earlier UI-first scheduling. Read `docs/WORK_PRIORITIES_108.json` with the preserved step107 checkpoint before resuming. Do not resume implementation until the user unpauses or explicitly requests it.
+
+# Photato development records
+
+The maintainer requires every development step to be documented from the initial source audit onward. Read `docs/DEVLOG.md`, `docs/STATUS.md`, and the **Development record** section of `CONTRIBUTING.md` before continuing work.
+
+Keep `docs/DEVLOG.md` current as work proceeds, including investigation, decisions and rejected approaches, source/file changes, test commands and their outcomes, failed attempts and repairs, reference provenance, live UI checks, and remaining limitations. Record each meaningful step, not just successful milestones or the final answer. Finish the record before ending a work session.
+
+Use stable `dev-step-NNN` anchors and update the oldest-first index. Preserve previous entries; mark retrospective additions with their reconstruction date and evidence. Never invent missing timestamps, test results, original commits, or pixel-equivalence claims.
+
+Save each test/build/experiment attempt under a unique run path before retrying. Preserve the existing file before rerunning a script that writes a fixed output name. Rolling summaries such as `artifacts/full-tests.log` are convenience pointers, not immutable historical evidence. Keep failures and passing repairs separately and bind release claims to the tested source and binary hashes.
+
+Update `docs/STATUS.md`, `docs/COMMAND_PARITY.csv`, relevant reference manifests and the plan when their facts change. Refresh and check the evidence index with `python3 scripts/audit-development-history.py` and `python3 scripts/audit-development-history.py --check`. Follow `CONTRIBUTING.md` for required record fields and preservation rules. Do not publish local evidence or user documents as part of recording development.
+
+# Photoshop menu parity
+
+The maintainer requires the menu bar and menu items to align with Photoshop 2026. Use the captured menu/shortcut evidence in `docs/MENU_PARITY_REFERENCES.json` and the native `PhotoshopMenuCatalog.swift` when adding commands. Preserve the observed menu order, hierarchy, titles and primary shortcuts; keep unavailable actions disabled. Do not bind a Photoshop command to a different operation merely to make it clickable. Retain clearly named Photato-specific AI, export and support entries. Extend the independent menu regression evidence when the reference changes, and document unqualified context, alternate shortcuts and visual differences.
+
+Photato must launch with Photoshop factory menus and shortcuts by default, without an opt-in mode. Use the installed unmodified factory preset evidence in the menu reference manifest rather than personal changes in the running Photoshop set. Preserve documented primary and alternate bindings and their command validation.
+
+# API coverage for new functionality
+
+Every new or expanded capability must be reflected in the optional API in the same implementation increment. API coverage is part of feature completion, not deferred follow-up work. Add or update the typed operations, observable state/capabilities, parameter and result schemas, availability/error behavior, usage documentation and relevant API tests. Use the same native Swift implementation and transaction/history path as the desktop, with matching results, validation, undo/redo and document-state effects where applicable. Test desktop/API equivalence and invalid/busy/stale-request behavior as relevant to the feature. For presentation-only changes, explicitly record their API impact and update exposed state or metadata where applicable; do not silently omit the API review. Keep executable capabilities distinct from the reference menu inventory. Existing API coverage gaps remain tracked separately and must not be represented as already implemented.
+
+# Published Photoshop API compatibility
+
+The external compatibility target is Adobe's published Photoshop API v2 GA within Firefly Services: [GA guide](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/) and [API reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/). Implement the published HTTP methods/routes, request and response schemas, asynchronous job/status behavior, input/output conventions and errors through the native Swift engine. For features covered by that contract, the Adobe-compatible interface must follow Adobe's contract. Keep the Photato API as a separately maintained interface, not merely a migration source. Pin authoritative contract provenance and add schema/behavior conformance tests before claiming support; track unsupported endpoints and deviations explicitly. Endpoint and credential configuration for a local server must be documented and tested; do not claim Adobe identity-service or proprietary model equivalence. The existing Photato /v1 preview is not Adobe Photoshop v1 and is not yet compatible with Adobe v2. See docs/ADOBE_API_COMPATIBILITY.json for the initial gap plan and unresolved reference issues.
+
+# Maintain both API interfaces
+
+Maintain both interfaces as supported product APIs: the Photato API for native document automation and Photato-specific capabilities, and the Adobe Photoshop v2-compatible API for clients using the published contract. They share the native Swift engine; do not duplicate editing algorithms. Preserve the existing Photato /v1 routes and clients rather than replace or silently repurpose them. Every new capability must include Photato API coverage, schemas, documentation and tests; when Adobe defines the corresponding operation, include its compatible interface and conformance tests in the same increment. Keep Photato-only operations distinct rather than inventing Adobe routes. Test equivalent underlying operations across both interfaces and the desktop while respecting each contract’s document/job lifecycle. Report each interface’s actual coverage independently; support for one does not imply support for the other.

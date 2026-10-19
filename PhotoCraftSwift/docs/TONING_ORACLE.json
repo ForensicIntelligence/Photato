@@ -1,0 +1,18 @@
+{
+  "source": "photocraft-main/crates/algo/src/retouch.rs",
+  "source_sha256": "3b66939fc09d40312ee61100c024e3ba0273f6c3a7cb06b2e6677b57767fc347",
+  "commands_source_sha256": "4fc4cdfff17f0be84722d32e8f7f4641b5bbb9ec77ff3e1541c03fbdc1efa2a0",
+  "fixture_sha256": "a2252bbdeca77c5c27c25760db04c6e3a7ad79fd6b7d6a1c6a4ca79df39922a6",
+  "dab_fixture_sha256": "0a0b4312f029754f346955a29382007ef8694bdab7954a37e9a505f2d211f912",
+  "colors": 523,
+  "kernel_cases": 50208,
+  "kernel_channel_values": 150624,
+  "per_dab_cases": 707,
+  "scope": "Unmodified Rust numerical functions executed by rustc -O. Serde-only enum traits removed. PhotoCraft empirical equations, not a Photoshop reference. Does not qualify full advanced brush dynamics.",
+  "observed_host": "Apple Silicon, macOS 27.0.1, Swift 6.4",
+  "swift_test_tolerance": 2e-06,
+  "observed_exact_debug_values": 151331,
+  "observed_exact_release_values": 151331,
+  "observed_maximum_error": 0.0,
+  "observed_values_scope": "150624 RGB kernel values plus 707 per-dab strengths; full stroke engine and Photoshop output are not qualified by these vectors."
+}

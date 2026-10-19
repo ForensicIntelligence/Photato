@@ -1,0 +1,56 @@
+{
+  "step": "dev-step-089",
+  "scope": "Independent native RGB channel previews and persistent thumbnail options; complete channel operations remain pending",
+  "official_sources": [
+    "https://www.adobe.com/products/photoshop/features/all.html",
+    "https://helpx.adobe.com/photoshop/using/channel-basics.html",
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/manage-channels-in-the-channels-panel.html"
+  ],
+  "upstream_inspected": [
+    "../photocraft-main/crates/ui-egui/src/channels_panel.rs",
+    "../photocraft-main/crates/ui-egui/src/channel_view.rs"
+  ],
+  "record": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/record.json",
+    "sha256": "1574098e409c61d4e49fb0c4feb2996300f8bd95e4ce748e3d9838c16fca8c8f"
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/tested-source-hashes.json",
+    "sha256": "fd1e723127b51b38cfe0438b684e88a69cf8ed218a99e42b98b1394435a4f37b"
+  },
+  "release_verification": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/release-verification.json",
+    "sha256": "b54055cfaa23ecddaeb3a07f0074788ed02e5aa8c1e6194bc098d6aa6ab3fa6b"
+  },
+  "live_qualification": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/live-qualification.json",
+    "sha256": "6f8a606b34b32087eb0991836b5daea5e1e82c1653ac60bd8c5ecc9a7a8f52b3"
+  },
+  "render_review": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/render-review.json",
+    "sha256": "64366dc76abe0bc1f90f2971e15921b6667ad31167ff2881de2006837c637618"
+  },
+  "xcode_source_discovery": {
+    "path": "artifacts/runs/20261009T174556Z-089-channels/xcode-source-discovery.json",
+    "sha256": "fa3607d29652e48ef96b15aca0ebdefeb09d7ae275584f8a7f64d202eb1ee872"
+  },
+  "remaining_gaps": [
+    "Step098 qualifies descriptive native menu names after sheet dismissal. Step099 leaves direct floating utility input unqualified because the tool exposes only the main-window surface.",
+    "Component edit targets, temporary mask rows and their real painting/selection transactions.",
+    "Factory preferences, medium/large/None geometry, Show Channels In Color, exact Photoshop thumbnail/display samples.",
+    "Saved alpha/spot channels and interchange, split/merge, loading selections and eye dragging.",
+    "Broad Photoshop2026 functionality and byte equivalence are incomplete; Intel/macOS14 runtime and App Store distribution remain unqualified."
+  ],
+  "later_sheet_lifecycle_repair": {
+    "path": "docs/SHEET_PANEL_REFERENCES.json",
+    "sha256": "7dcc1cd42e85adb90d754b7c3785ba13408bbca4cd713b28d64a756d2ed0d528"
+  },
+  "later_interaction_reference": {
+    "path": "docs/CHANNEL_INTERACTION_REFERENCES.json",
+    "sha256": "20082432d6c83892fef7092c39558979fb1b60864231b1f9748fd15d12f1bf4c"
+  },
+  "later_channel_view_increment": {
+    "path": "docs/CHANNEL_VIEW_REFERENCES.json",
+    "sha256": "3bea612bafceb95d86bf953877a74187e5f3d3912e33859e1093ba0675ae5fe7"
+  }
+}

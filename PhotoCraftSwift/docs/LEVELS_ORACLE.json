@@ -1,0 +1,9 @@
+{
+  "rust_source_sha256": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+  "vectors": 5418,
+  "generator": "scripts/generate-levels-oracle.py",
+  "scope": "Unchanged levels_q, levels_float and lut; RGB master then channel. This source uses an approximate Photoshop shadow toe.",
+  "binary_fixture": "Python struct.pack, big-endian version 2 and 29 five-short records",
+  "binary_fixture_sha256": "17e628c15644a8014b0fa326499d5fbe8f89dea8ff2b4bd863c5e61baeadb59c",
+  "format_reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+}

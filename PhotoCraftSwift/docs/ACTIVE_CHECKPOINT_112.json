@@ -1,0 +1,118 @@
+{
+  "step": "dev-step-112",
+  "recorded_at_utc": "2026-10-19T20:04:16.509384+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions; then minor functions; then final details. Required smaller dependencies belong to their major workflow.",
+  "major_workflow": "D01: document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/tested-source-hashes02.json",
+    "sha256": "85c30a26081c2b782086ce600003fd222eb05af6aa533c4d5b7c09b1b75f84ca"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/release-verification.json",
+    "sha256": "d848ea4307ba356afb9bdc80cc7f6fdcdf31bacd66cf3d3bbeece6dda894b043"
+  },
+  "tests": {
+    "full02.log": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/full02.log",
+      "sha256": "77ddf696131bb4c5a704192836876ef6706baebcc50dc50d9b558f3a4f46d53b",
+      "passed": 1021,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 148.232
+    },
+    "release-focused02.log": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/release-focused02.log",
+      "sha256": "1c251c93c8b69e051884119377ea3dfa7cd4477f2a47d24553644809014b5c97",
+      "passed": 322,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.756
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-metadata-package-7xk97qij/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "0a39e43afd6ca0c34671c529b3f5eff0569859bc50b4079d4242c7420479328e",
+    "zip_sha256": "4a6c431db4727ec1a2822a4784a43f0e693081c2ef63b68c4ab48cbe21150301",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "native_extension": "photato",
+    "legacy_extension": "pcswift",
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/live-ui-verification.json",
+    "sha256": "ae3e86b8a2286997908400c66c25c7bd07347bb70dec2fc940370ee087e6d89d"
+  },
+  "photoshop_metadata_evidence": {
+    "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/photoshop-verification.json",
+    "sha256": "1a54e4322605bef9ad5f4bb360bef6690e1c64d5212c47538f3886116992a020"
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Native archive/raster/PSD metadata retention and derived-field normalization",
+    "Desktop/Photato download/both job API metadata equivalence and explicit capability/schema documentation",
+    "Repaired inherited TIFF JPEG compression that otherwise changed1445 probe bytes",
+    "Integrated and qualified step111 .photato defaults and .pcswift aliases in the universal app"
+  ],
+  "known_fidelity_gap": "Original decoded/reencoded Photoshop RGB32 composite differs96 bytes in the sampled fixture. Metadata retention itself has zero pixel delta versus control. This is not full Photoshop byte equivalence.",
+  "resume_first": "Read AGENTS.md, WORK_PRIORITIES_108.json, FUNCTION_PHASES_109.json, STATUS.md, DEVLOG.md steps111/112, SOURCE_METADATA_REFERENCES.json and this checkpoint. Verify387 source/test hashes and package/project. Continue major D01 source-format Save/Save As and its representability/color/profile dependencies; no optional minor/detail work. Do not rerun completed tests without a new concern or source change.",
+  "next_source_review": [
+    "NativeDocument.swift: writable types are native-only; source-format ownership/save callbacks still need implementation",
+    "DocumentIO.swift and DocumentPersistence.swift: shared adapters/guards/copy and Revert; preserve .photato/.pcswift aliases",
+    "PSDCodec.swift/PSDImageResources.swift: global-layer metadata, layer IDs/selection and opaque record semantics require representability before overwrite",
+    "RasterMetadata.swift/RasterIO.swift: full format metadata corpus and original ICC/profile/working-space preservation",
+    "RGB32 working representation/linear-sRGB encode/decode cannot yet guarantee original Photoshop byte identity; reproduce and resolve without weakening the objective",
+    "Both APIs: shared output pipeline remains mandatory; add source-save permissions/state/schema if exposing associated-file writes"
+  ],
+  "remaining_major_dependencies": [
+    "I01\u2013I04 formats/PSD/PSB/pcraft/export scope",
+    "COL01 profile preservation and color-policy behavior",
+    "D02 crash/autosave/atomic-write/bookmark durability",
+    "Q03 responsiveness and cancellation",
+    "AUT02 API completion; existing Adobe adapter remains partial",
+    "Q04\u2013Q06 independent output/professional/platform qualification across every phase"
+  ],
+  "runtime_cleanup": "Separate Release validation app quit; original PhotoCraft and Photoshop remain running. Disposable probe closed; API stayed off; source PSD and shared workspace preferences unchanged.",
+  "limits": [
+    "Source-format Save/Save As remains native-only; no full D01 closure",
+    "Imported profiles still convert to sRGB working/output; original wide-gamut/CMYK/profile preservation remains required",
+    "Opaque PSD resources may reference unsupported layer/geometry workflows; retention alone does not implement or update them",
+    "PSD binary EXIF resources remain opaque; full embedded-field synchronization and global-layer metadata still require work",
+    "Unsupported destination metadata fields may be omitted by ImageIO; full format/camera/proprietary MakerNote corpus qualification remains open",
+    "RGB32 original round-trip byte mismatch96 in the sampled composite; must resolve broader float fidelity before byte-equivalence claims",
+    "No full Photoshop file-byte equality, preferences/context equivalence or Intel/macOS14 runtime claim"
+  ],
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 112,
+      "evidence_files": 24904,
+      "logs": 15071,
+      "missing_explicit_references": 0
+    },
+    "refresh_log": "artifacts/development-history-audit/20261019-step112-source-metadata/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261019-step112-source-metadata/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step112-source-metadata/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step112-source-metadata/check02.log",
+    "note": "Final refresh/check runs after this checkpoint and DEVLOG update; inspect terminal logs for final outcome."
+  }
+}

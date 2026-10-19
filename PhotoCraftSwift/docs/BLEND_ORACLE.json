@@ -1,0 +1,5 @@
+{
+  "rust_source_sha256": "deb4d2a68b4f3cc71b33e470350cd5a266639ea5ad4b7e6a4ec2f7850165f58a",
+  "vectors": 972,
+  "generator": "scripts/generate-blend-oracle.py"
+}

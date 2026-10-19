@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-08",
+  "adobe_guides": [
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/blur-specific-areas-with-the-blur-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/enhance-edge-contrast-with-the-sharpen-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/smudge-image-areas.html"
+  ],
+  "implemented": [
+    "Blur, Sharpen and Smudge in the native grouped toolbar",
+    "Strength, round size/hardness/spacing, pressure and flow",
+    "Sample All Layers on a separate empty pixel layer",
+    "Sharpen Protect Detail",
+    "Smudge Finger Painting with captured foreground; Option at stroke start toggles it",
+    "Sequential float working buffer, alpha-aware blur/smudge, scalar masks and cropped target expansion",
+    "Immutable preview settings and samples, cancellation, locks and one-step undo"
+  ],
+  "limits": {
+    "working_region_pixels": 40000000,
+    "footprint_visits": 200000000,
+    "stroke_points": 100000,
+    "dabs": 200000,
+    "max_brush_pixels": 2048
+  },
+  "source_difference": "Blur mixes each dab with premultiplied alpha. The Rust command lerps straight channels after its alpha-aware convolution, causing a dark fringe when revealing transparent pixels. The native regression retains full red chroma at such an edge. Kernel math remains unchanged.",
+  "coordinate_policy": "Effects run on the document pixel grid. Transformed sources/targets use existing bilinear sampling; selected pixels are mixed after neighborhood processing. Broader transformed/HDR/selection-edge Photoshop behavior remains unqualified.",
+  "shortcut_reference_conflict": "Current Adobe Smudge guides mention R; the previously observed Photoshop workspace reserves R for Rotate View and left the focus group without a key. Existing assignments are retained pending live verification. Option is captured at stroke start, not dynamically during a stroke.",
+  "remaining": [
+    "Additional blend modes (current implementation explicitly accepts Normal only)",
+    "Advanced brush tips/dynamics, smoothing and timed airbrush",
+    "Full keyboard and mid-stroke modifier behavior",
+    "Persistent Photoshop-equivalent settings",
+    "Alpha/Quick Mask channels and non-RGB modes",
+    "Photoshop pixel-exact output, transparency, edge and HDR qualification",
+    "Large-stroke and live AppKit performance",
+    "Intel and macOS 14/26 runtime"
+  ],
+  "photoshop_exactness_verified": false,
+  "live_photoshop_ui_verified": false,
+  "live_reference_attempt": "Computer-use access reported Mac locked; no user document was altered and no timed-out AppleEvent was resent.",
+  "kernel_oracle": "FOCUS_ORACLE.json"
+}

@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-083",
+  "date": "2026-10-09",
+  "status": "Native thumbnail area coverage and mask geometry tested/packaged; full Photoshop parity incomplete",
+  "release": {
+    "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/release-verification.json",
+    "sha256": "302a7cdb011a245d00f083a6b4495020dda0deffc78d075f6068a3504ac3b4b4"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/tested-source-hashes.json",
+    "sha256": "596fa44f9756c760a80b76cc2f052fdc7018aed48063c051aaecf1160493e9ca"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/research.json",
+    "sha256": "ed392c8ca1b220c634ae8b3f6a2973955f758c96686ee731d33519ada351a85c"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/live-qualification.json",
+    "sha256": "60fa5ffd4a1da28c944dd496702fc361432067f60d33eda87b5dc325bda661b3"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/offscreen-layout.json",
+    "sha256": "f5d65b44ab722e1148cbf4d71ebfdbec0c370c74315df5dde49ec1ad1bde6da5"
+  },
+  "implementation": [
+    "Premultiplied pixel-area integration for minified content; bilinear enlargement retained, independent of document rendering/resampling.",
+    "Axis-aligned fast path and clipped affine footprints, constant-surface acceleration, per-row cancellation and128-million sample ceiling.",
+    "Pixel masks sample grayscale independently of alpha with document transform, outside values and inversion.",
+    "Vector mask previews rasterize filled white/gray coverage at bounded output size, including disabled/empty/inverted masks.",
+    "Content and mask previews share layer-content/canvas framing and component-aware asynchronous task identity.",
+    "Native disabled-mask crosses scale with the row preview and preserve existing hit targets; Paths-panel outlines unchanged."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/focused-05.log",
+      "sha256": "4d99c61a3f3490d1b7ffbcb0ce12a5e91974a073abd8792445739df21f7e2340",
+      "passed": 251,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.832
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/full-tests.log",
+      "sha256": "3f28cfc75e7b86b7b0372991482f3cc370f016896b7664f6bfed72e464a0991b",
+      "passed": 856,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 126.154
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T140403Z-083-thumbnail-coverage/release-tests.log",
+      "sha256": "16d7a4e21e15982e836c570c5b74a8170efdb898f2a12f9f334f2b0be60b11bf",
+      "passed": 431,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 19.876
+    },
+    "new_regressions": 17
+  },
+  "limits": [
+    "Photoshop thumbnail pixel equivalence and exact defaults remain unqualified.",
+    "Mac was locked at082 check; prior unlock request pending; independent implementation continues.",
+    "Native mask previews show editable coverage, inversion/outside geometry; density and feather remain excluded and unqualified against Photoshop and Rust vector-properties previews.",
+    "Pixel/mask previews share native layer-content framing; exact Photoshop mask-framing behavior remains unqualified.",
+    "128-million sample budget rejects pathological transforms rather than allowing unbounded preview work.",
+    "Box coverage of piecewise-constant source pixels is native analytical correctness, not proof of Photoshop resampling bytes."
+  ],
+  "full_photoshop_parity": false,
+  "mask_interaction_followup": {
+    "step": "dev-step-084",
+    "reference_manifest": "docs/MASK_INTERACTION_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/release-verification.json",
+      "sha256": "a5d15812090f55d2bf1c5983ef13d35f0e806d19ed4f0a5c454edf5ff457153c"
+    },
+    "scope": "Mask-thumbnail modifiers and canvas presentation. Factory menu inventory unchanged; Load Selection dialog remains pending.",
+    "live_qualified": false
+  }
+}

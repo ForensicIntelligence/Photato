@@ -1,0 +1,537 @@
+{
+  "step": "dev-step-057",
+  "date": "2026-10-08",
+  "status": "Native selected-raster extraction verified with declared limits",
+  "run": "artifacts/runs/20261008T235917Z-057-layer-via",
+  "license": "MIT OR Apache-2.0",
+  "original_procedural_data": true,
+  "photoshop": "Adobe Photoshop 2026 27.2.0 on macOS 27.0.1 Apple Silicon",
+  "official_references": [
+    "https://www.adobe.com/products/photoshop/features/all.html",
+    "https://helpx.adobe.com/ca/photoshop/using/create-layers-groups.html",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ],
+  "independent_reference_count": 42,
+  "references": [
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb16.psd",
+      "sha256": "8f9ff707acc8d2e054b178de2ad63350c555b1a954bd4d90e9c2fe50aa6a1647"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb32.psd",
+      "sha256": "da256d180248ccde203467346893f66061137cd43ec01758e89a8481eab5e759"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb8.psd",
+      "sha256": "00cdd9c9fdf875fbb13efe7d7ce785b7bced463744332463ba39be7facb6df88"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-hidden-rgb8.psd",
+      "sha256": "dc74a7df1fdf6666c8ba090e7bb142f31381c177de921f2d216383ba64d34adf"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-matrix-rgb8.psd",
+      "sha256": "f50eca2c577da4a3d090e4cffe1270e1f6412ea03d7480177c5624dacfb23ae4"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-multiply-rgb8.psd",
+      "sha256": "3c2a024609f98008bef331eb38f19a7ede214b7102e41283fc5c2a4073726ca5"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb16.psd",
+      "sha256": "815de4ad7c038be6d84c9405338105dbe7e112d03be5a901d6218d73e492c0de"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb32.psd",
+      "sha256": "3ef5a010a5bca4b244681a4c1613fc194b31c3ca46b61d8365c732d08222a4c2"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb8.psd",
+      "sha256": "ef8fd895ee43086a6e953ca596a4e0ed1bae3b8cfd2fe39654b59e5b020bbbab"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-precision-rgb16.psd",
+      "sha256": "b54ee347a21abb959afab9cdeab1a66c1eee9ca005394cd15ac14abc542bf020"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-precision-rgb32.psd",
+      "sha256": "71f3be92682d98976be48f99ffc4e9721690b4e915aa1b7b0c26f2a90ef2c0ce"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb16.psd",
+      "sha256": "b5126616bf19dd837a68ef48c4cf74ba2127be1f746465247352646e9df958ac"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb32.psd",
+      "sha256": "834f363bc7c13f557eac29ff69307c2825d4b779688103de0549c98505311357"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb8.psd",
+      "sha256": "cf37e2d7e3b7af7e6d056f6ca0e7c002322a1bb69c595c13a346895db7102ac5"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb16.psd",
+      "sha256": "16eb316bb3d0e37b9efb4a34008a2458ea0b375786f81a13d243a91811173788"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb32.psd",
+      "sha256": "974908f44bfc21b9dc72061be9648553d3955ae19bdcd007140df8e43c0bf92a"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb8.psd",
+      "sha256": "c9bd6973bfbf66c059c1d213f6d270dcff417707b4e4e56b4cd1d48a6b96a68a"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-hidden-rgb8.psd",
+      "sha256": "9c3613f4e6fcb785c2bc6c93ba2f7ab097c5f62c0081ef1757191c622f5dd50e"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-matrix-rgb8.psd",
+      "sha256": "517b88a89279a2628c97d081b379dd7a6b27d58c2d948c29a2fda6a89e310791"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-multiply-rgb8.psd",
+      "sha256": "85c4d144a076ceff1cc4bef5070e4f5f3687d55570b5d9c31357e841f2d353c5"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb16.psd",
+      "sha256": "1398169a20f3780c29a2dbde5595987a3ec1450ae43558351d94d5b282ea37c0"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb32.psd",
+      "sha256": "1272db7eed75d07688862739e755269b743387a0aef07ab6f182724dbeee6d1d"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb8.psd",
+      "sha256": "907ee2c043c1bcb2f65ea9824b5172dde5196a115fc9384bce168b4a412892b0"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-precision-rgb16.psd",
+      "sha256": "04508427839d9e61dfbcdfb9fae50102c777e8d5fad7676427bd1280bd33bc17"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-precision-rgb32.psd",
+      "sha256": "be87cd1e45a03212a3594179b635c249d6b3cde3127242db38e13c8c1a24f21b"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb16.psd",
+      "sha256": "1f4ba958cc5fb47cf7dc59e3d0498267c56c17139ec43931aa42f7ab5ce6648b"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb32.psd",
+      "sha256": "776d15932b10496f0900eb49279c1a5888334158700ab7444cba634059ea324b"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb8.psd",
+      "sha256": "6f4ee5e47824f787e120c617c7c5f64524c7ef8a3692db6fb03673d60e8075f9"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-mask-target-copy-locked-rgb8.psd",
+      "sha256": "705186f09d31da16cf3025298e28e33c8146777523e9ad37bca11b8d6aaefbf7"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb16.psd",
+      "sha256": "797f0eba760831010a4f7921b6e8e576a004725515024c94f760470d5cc14be6"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb32.psd",
+      "sha256": "20f59d89fcacc365bd25fb4b86b53408c97247d618aa055dfee069c4d287c4f0"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb8.psd",
+      "sha256": "35e9b25ac2aafad99bbf5a1d3bc2b6066e294213454a2661768d3759dea796d2"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-locked-rgb8.psd",
+      "sha256": "424d0ae35f252136571efa7c1ea712daec7bb781d71ffdbaabab6c8ae9bc6055"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-matrix-rgb8.psd",
+      "sha256": "8c7fb9cad41f4e017cf684918519f12a29aa482f38fddb4b7e59f3a3013e329d"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb16.psd",
+      "sha256": "7599a1af440a4a750df51843a9eb39bc03dcc351e21cb302591c39732dc8be78"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb32.psd",
+      "sha256": "35a705991b417684b9bd1ee75db2a0a48f6ea9687c6b5933f0b887ffe5334129"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb8.psd",
+      "sha256": "22ef9fa1260bde93a80657a85f7b83b1bdbc708b483353553a9afa1f34b9c98b"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-precision-rgb16.psd",
+      "sha256": "69787d8e3b12ec74ef631c6804e228cbbd1da06f8cb618dda2e22f355412c03a"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-precision-rgb32.psd",
+      "sha256": "9e91dc20a5b9ff01e83e6bc234b274723421c0725079ddbca449d14c3feca1dc"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb16.psd",
+      "sha256": "67ead8469b4e43019d676c991fe4fa2a5cd001ec0b73cbbc8c1ff3b1dac5f9a6"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb32.psd",
+      "sha256": "c1fb4923588d10b17cc71b14b722de12d8ae1ce97719f45ff28e4a59c43618b8"
+    },
+    {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb8.psd",
+      "sha256": "4c6b3efbe44d5dcb7c0aeef451f1effd3e3710cbbf65423cea0b81483a817a9a"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-via/photoshop-rgb8.alpha",
+      "sha256": "d1eb86fcd3266e4ac17f1b58808fe1a3b8f6bd4662ed36cc24ac207cb382480b",
+      "depth": 8,
+      "width": 256,
+      "height": 256,
+      "planes": [
+        "source",
+        "copy",
+        "cut-source"
+      ],
+      "encoding": "big-endian unsigned integer or IEEE754 float",
+      "references": [
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-matrix-rgb8.psd",
+          "sha256": "8c7fb9cad41f4e017cf684918519f12a29aa482f38fddb4b7e59f3a3013e329d"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-matrix-rgb8.psd",
+          "sha256": "f50eca2c577da4a3d090e4cffe1270e1f6412ea03d7480177c5624dacfb23ae4"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-matrix-rgb8.psd",
+          "sha256": "517b88a89279a2628c97d081b379dd7a6b27d58c2d948c29a2fda6a89e310791"
+        }
+      ]
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-via/photoshop-rgb16.alpha",
+      "sha256": "74985e91ab934fedb4283ab282798559b841b2eb6690f8bd4052f7e8da5b9ca8",
+      "depth": 16,
+      "width": 256,
+      "height": 256,
+      "planes": [
+        "source",
+        "copy",
+        "cut-source"
+      ],
+      "encoding": "big-endian unsigned integer or IEEE754 float",
+      "references": [
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-precision-rgb16.psd",
+          "sha256": "69787d8e3b12ec74ef631c6804e228cbbd1da06f8cb618dda2e22f355412c03a"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-precision-rgb16.psd",
+          "sha256": "b54ee347a21abb959afab9cdeab1a66c1eee9ca005394cd15ac14abc542bf020"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-precision-rgb16.psd",
+          "sha256": "04508427839d9e61dfbcdfb9fae50102c777e8d5fad7676427bd1280bd33bc17"
+        }
+      ]
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-via/photoshop-rgb32.alpha",
+      "sha256": "8b900826327ddb5e759be09bb1459985954ecd130139623afaaf00734bbffa4c",
+      "depth": 32,
+      "width": 256,
+      "height": 256,
+      "planes": [
+        "source",
+        "copy",
+        "cut-source"
+      ],
+      "encoding": "big-endian unsigned integer or IEEE754 float",
+      "references": [
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-precision-rgb32.psd",
+          "sha256": "9e91dc20a5b9ff01e83e6bc234b274723421c0725079ddbca449d14c3feca1dc"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-precision-rgb32.psd",
+          "sha256": "71f3be92682d98976be48f99ffc4e9721690b4e915aa1b7b0c26f2a90ef2c0ce"
+        },
+        {
+          "path": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-precision-rgb32.psd",
+          "sha256": "be87cd1e45a03212a3594179b635c249d6b3cde3127242db38e13c8c1a24f21b"
+        }
+      ]
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-opaque-rgb8.psd",
+      "sha256": "537c415865467e2d3cfdcd8f5ab02d068d839118ff26cf75f768819d231caab3",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb8.psd",
+      "reference_sha256": "22ef9fa1260bde93a80657a85f7b83b1bdbc708b483353553a9afa1f34b9c98b",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-opaque-rgb8.psd",
+      "sha256": "72f43a83e8e2044c486e01c2d1930cc95ada8f1d37446381b1877e6f786a297d",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb8.psd",
+      "reference_sha256": "ef8fd895ee43086a6e953ca596a4e0ed1bae3b8cfd2fe39654b59e5b020bbbab",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-opaque-rgb8.psd",
+      "sha256": "4d0524f646c43957af08947283c7d9a234402ed7eaee6edb78703a1748a48499",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb8.psd",
+      "reference_sha256": "907ee2c043c1bcb2f65ea9824b5172dde5196a115fc9384bce168b4a412892b0",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-alpha-rgb8.psd",
+      "sha256": "f7efa07435866296fc95bfcca002b060384b505bb3cbb757be5a57c14194cd86",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb8.psd",
+      "reference_sha256": "35e9b25ac2aafad99bbf5a1d3bc2b6066e294213454a2661768d3759dea796d2",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-alpha-rgb8.psd",
+      "sha256": "064609afaf124ea083e922c86cfa89d01720c165d92791128ad9791163f7ec83",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb8.psd",
+      "reference_sha256": "00cdd9c9fdf875fbb13efe7d7ce785b7bced463744332463ba39be7facb6df88",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-alpha-rgb8.psd",
+      "sha256": "8ca5cd4466d38e9b47332c4a920965070b598468adf378ada19de5226246bf73",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb8.psd",
+      "reference_sha256": "c9bd6973bfbf66c059c1d213f6d270dcff417707b4e4e56b4cd1d48a6b96a68a",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-properties-rgb8.psd",
+      "sha256": "0351e5b0a8cfcc6117cfcd4f1ad7e39a25f2ceb5da9b132a4b32dbc06f367d54",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb8.psd",
+      "reference_sha256": "4c6b3efbe44d5dcb7c0aeef451f1effd3e3710cbbf65423cea0b81483a817a9a",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-properties-rgb8.psd",
+      "sha256": "6b11dc806f1db02d374e7608d608f581e463c782ec66327bcf37e580c6277b66",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb8.psd",
+      "reference_sha256": "cf37e2d7e3b7af7e6d056f6ca0e7c002322a1bb69c595c13a346895db7102ac5",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-properties-rgb8.psd",
+      "sha256": "a2a8e0d8652bc9870d6a4567e577d0457084512622b452613a9a85e37a56bea8",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb8.psd",
+      "reference_sha256": "6f4ee5e47824f787e120c617c7c5f64524c7ef8a3692db6fb03673d60e8075f9",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-opaque-rgb16.psd",
+      "sha256": "1ad91c9bd06a85886d155d2c4139e72804346d10c7df2b61714c4d01af0cda51",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb16.psd",
+      "reference_sha256": "7599a1af440a4a750df51843a9eb39bc03dcc351e21cb302591c39732dc8be78",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-opaque-rgb16.psd",
+      "sha256": "92669e409351fd88e05fdf444bd98f736caa0f40b386871e10bf4fd5311918a7",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb16.psd",
+      "reference_sha256": "815de4ad7c038be6d84c9405338105dbe7e112d03be5a901d6218d73e492c0de",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-opaque-rgb16.psd",
+      "sha256": "e480f16a4e0f6f62cebb548f97d362a85bef723030bc0dd0b107800cbd28aa28",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb16.psd",
+      "reference_sha256": "1398169a20f3780c29a2dbde5595987a3ec1450ae43558351d94d5b282ea37c0",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-alpha-rgb16.psd",
+      "sha256": "de436d8d9a2d9ba3d324aac456647d6ee45686565f4ad0d36fd2417768247de4",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb16.psd",
+      "reference_sha256": "797f0eba760831010a4f7921b6e8e576a004725515024c94f760470d5cc14be6",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-alpha-rgb16.psd",
+      "sha256": "a38bb623cadf976cfc4a059c1313c2983a3077fef1244a4db4ab3c840ef7ffb9",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb16.psd",
+      "reference_sha256": "8f9ff707acc8d2e054b178de2ad63350c555b1a954bd4d90e9c2fe50aa6a1647",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-alpha-rgb16.psd",
+      "sha256": "f2267371c312b2cdab5e7e6cab176480ff2d1d1f4a8349b3ee5b73742c39cc58",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb16.psd",
+      "reference_sha256": "16eb316bb3d0e37b9efb4a34008a2458ea0b375786f81a13d243a91811173788",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-properties-rgb16.psd",
+      "sha256": "dabd44e2bd8b55ca8a58b3e77f58f44e3685dd5475b1dba07ddec8957f2a34eb",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb16.psd",
+      "reference_sha256": "67ead8469b4e43019d676c991fe4fa2a5cd001ec0b73cbbc8c1ff3b1dac5f9a6",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-properties-rgb16.psd",
+      "sha256": "0b2f3df7aa431b22772dd5f0bce8ae7c36e8e39a7947111501ff6a7183899488",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb16.psd",
+      "reference_sha256": "b5126616bf19dd837a68ef48c4cf74ba2127be1f746465247352646e9df958ac",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-properties-rgb16.psd",
+      "sha256": "993f81048e555cd1debe424f5e2896db493811f7e527a5e871ed49c0d04ed8cd",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb16.psd",
+      "reference_sha256": "1f4ba958cc5fb47cf7dc59e3d0498267c56c17139ec43931aa42f7ab5ce6648b",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-opaque-rgb32.psd",
+      "sha256": "163e1b24555ac49ebdd0287924fb42033266b492610a7085dc52b831cf9049ec",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-opaque-rgb32.psd",
+      "reference_sha256": "35a705991b417684b9bd1ee75db2a0a48f6ea9687c6b5933f0b887ffe5334129",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-opaque-rgb32.psd",
+      "sha256": "ee6475887726382158c4150090bf73eb46305892d7cfcf41c478731f57b28a85",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-opaque-rgb32.psd",
+      "reference_sha256": "3ef5a010a5bca4b244681a4c1613fc194b31c3ca46b61d8365c732d08222a4c2",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-opaque-rgb32.psd",
+      "sha256": "a6db6e1833fdd539b796f3aea91b6de3d122b07ac7f10cb056749380fb370cd9",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-opaque-rgb32.psd",
+      "reference_sha256": "1272db7eed75d07688862739e755269b743387a0aef07ab6f182724dbeee6d1d",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-alpha-rgb32.psd",
+      "sha256": "6dd7b92d5ef468ece58a93c5d0da79af0d12abad22c3222630052c17f390b39b",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-alpha-rgb32.psd",
+      "reference_sha256": "20f59d89fcacc365bd25fb4b86b53408c97247d618aa055dfee069c4d287c4f0",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-alpha-rgb32.psd",
+      "sha256": "d6f3bef94be6b16389bf402b67c33ce791a7cba05a7be140314ac52ae8b7dd02",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-alpha-rgb32.psd",
+      "reference_sha256": "da256d180248ccde203467346893f66061137cd43ec01758e89a8481eab5e759",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-alpha-rgb32.psd",
+      "sha256": "895e5db32fd41cdd1ae6d8725fc25041f9130ba42383f624a3be0022e7963ff2",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-alpha-rgb32.psd",
+      "reference_sha256": "974908f44bfc21b9dc72061be9648553d3955ae19bdcd007140df8e43c0bf92a",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-source-properties-rgb32.psd",
+      "sha256": "60bf8e6e2adb3d9b17e523ce298e9c2c6aa1685fed08ee3b7b021ced7fd0c19a",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-source-properties-rgb32.psd",
+      "reference_sha256": "c1fb4923588d10b17cc71b14b722de12d8ae1ce97719f45ff28e4a59c43618b8",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-copy-properties-rgb32.psd",
+      "sha256": "1065cd5c593db36419f92be252a0da6de0d7b9c37652523607c7673928265310",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-copy-properties-rgb32.psd",
+      "reference_sha256": "834f363bc7c13f557eac29ff69307c2825d4b779688103de0549c98505311357",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-via/photoshop-cut-properties-rgb32.psd",
+      "sha256": "c6c532ef73eafd2121fea2110752978b8c2c679a650e9b257145007cc98745cc",
+      "reference": "artifacts/runs/20261008T235917Z-057-layer-via/references/photoshop-cut-properties-rgb32.psd",
+      "reference_sha256": "776d15932b10496f0900eb49279c1a5888334158700ab7444cba634059ea324b",
+      "derivation": "Removed last merged saved-selection channel (fourth for opaque composites, fifth with transparency) and related alpha-channel resource metadata; all layer records and samples unchanged; retained merged RGB/RGBA re-encoded raw."
+    }
+  ],
+  "derivation_script": "artifacts/runs/20261008T235917Z-057-layer-via/prepare-fixtures.py",
+  "independent_decoder": "artifacts/runs/20261008T235917Z-057-layer-via/inspect-probes.py",
+  "candidate_comparison": "artifacts/runs/20261008T235917Z-057-layer-via/alpha-arithmetic-05.json",
+  "alpha_reference_samples": 196608,
+  "small_output_cases": 18,
+  "new_tests": 9,
+  "factory_shortcuts": {
+    "Layer Via Copy": "Command-J",
+    "Layer Via Cut": "Shift-Command-J"
+  },
+  "scope": "One selected unlocked untransformed RGB raster layer without clipping/vector mask; masks ignored for extraction and retained on source; opacity/blend retained; new layer visible; selection cleared; one undo transaction; clipboard unchanged.",
+  "limits": [
+    "Full Photoshop parity remains false.",
+    "Selected multiple layers, affine layers, clipped layers, vector masks, mask-target/rich-layer extraction remain unavailable.",
+    "Existing whole-layer Copy remains the previous duplicate path; comprehensive multi-layer/group/lock/name-counter parity is unqualified.",
+    "RGB32 sRGB/linear PSD color conversion is not bit-reversible; native stored RGB and exported alpha are tested independently.",
+    "Selection channels are removed only in test derivatives; native extra alpha-channel PSD import remains unsupported.",
+    "Empty remaining raster storage uses the native representation; Photoshop empty/off-canvas/group/advanced-property and all-context behavior remain unqualified.",
+    "Intel/macOS14/macOS26 execution remains unverified on this host."
+  ],
+  "full_photoshop_parity": false,
+  "tests": {
+    "full": {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/full-tests.log",
+      "sha256": "329c43fe80510a0f280a2c0e52a46ce7ad8aa09ebd0478e59ec7ba91098b30e1",
+      "tests": 577,
+      "failures": 0,
+      "seconds": 106.235,
+      "skipped": 0
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261008T235917Z-057-layer-via/release-tests.log",
+      "sha256": "87da9a8bb647e7267781056d3b3ab1d2b36de5de9f18b7d9bb4927a9a46b2d1a",
+      "tests": 124,
+      "failures": 0,
+      "seconds": 3.177,
+      "skipped": 0
+    },
+    "new_tests": 9
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261008T235917Z-057-layer-via/tested-source-hashes.json",
+    "sha256": "2fe28b6a470743323386204a2eb9435f08b3b40ea1e44f10f65e33a60866e886"
+  },
+  "source_files": {
+    "application": 135,
+    "tests": 124,
+    "total": 259
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-verify-q19e7p0i/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "ea080ff2db258f85e12f8c79107d4f5875774dbb145fff1cad2fea0fe3bd727a",
+    "zip_sha256": "4b5fdfc59b44bbeee01e57271c58df9d6d7d53c3f170d80161fa1c8b5f30abe0",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "source_icon_sha256": "ba7e98d71e6af20662d49e74802bb0bcc699426152acca8b55137469666ac112",
+    "clean_zip_signature_verified": true,
+    "license_integrity_verified": true,
+    "desktop_fileprovider_may_readd_finder_metadata_after_launch": true,
+    "bundled_license_names": [
+      "LICENSE-MIT",
+      "LICENSE-APACHE",
+      "LICENSE-psd-tools",
+      "NOTICE",
+      "ATTRIBUTION.md"
+    ],
+    "swiftpm_tests_passed": 577,
+    "historical_render_benchmark_binary_sha256": "3f175139d0b4b0134a7551dc727e71936ce757710dda155c5634e3737b30ed33",
+    "historical_render_benchmark_matches_current_binary": false
+  },
+  "live": {
+    "path": "artifacts/runs/20261008T235917Z-057-layer-via/live-ui-verification.json",
+    "sha256": "32ceac0fa5e648193c08c0aa4d3af418760eb1d637f615c6c407fa20c6074cb7"
+  },
+  "live_rgba_and_merged_exact": true,
+  "live_canvas_pixels": 4096
+}

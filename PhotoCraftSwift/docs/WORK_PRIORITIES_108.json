@@ -1,0 +1,39 @@
+{
+  "step": "dev-step-108",
+  "recorded_at_utc": "2026-10-19T18:27:13.128804+00:00",
+  "request": "After the user unpauses the master goal, finish all major functions before minor functions, and all minor functions before final small details.",
+  "supersedes": "Earlier UI, menus, UX, major functions, subfunctions, minor functions ordering. This changes scheduling, not the Photoshop/native/API/platform completion requirements.",
+  "implementation_state": "Paused; the user has described their upcoming unpause, not requested implementation in this planning turn.",
+  "phases": [
+    {
+      "order": 1,
+      "name": "Major functions",
+      "scope": "Complete end-to-end primary Photoshop workflows and the native infrastructure they need. Include usable UI, necessary menus/shortcuts, document lifecycle, history, API coverage and output validation.",
+      "exit_gate": "Every tracked major workflow meets its documented acceptance criteria; unresolved major gaps or blockers stay open."
+    },
+    {
+      "order": 2,
+      "name": "Minor functions",
+      "scope": "Secondary tools, options, variations and supporting workflows beyond those needed to close major functions.",
+      "entry_gate": "All major functions closed.",
+      "exit_gate": "Every tracked minor function meets its documented acceptance criteria."
+    },
+    {
+      "order": 3,
+      "name": "Final details",
+      "scope": "Remaining cosmetic polish, fine alignment and small interaction refinements after functional scope is complete.",
+      "entry_gate": "All major and minor functions closed."
+    }
+  ],
+  "dependency_rule": "A smaller change required to make a major function complete, usable or correct belongs to that major function and may be implemented with it. Optional polish does not jump the queue.",
+  "definition_of_closed": [
+    "Working end-to-end native Swift/macOS behavior, with the UI and Photoshop factory menu/shortcut integration needed for that function.",
+    "Shared Photato API support plus the corresponding Adobe-compatible operation where the published contract defines it; documented schemas, state, availability and errors.",
+    "Relevant automated and live workflow validation, including undo/redo, invalid or busy requests and persistence as applicable.",
+    "Independent Photoshop comparisons for relevant output/interaction claims; known failures and unqualified requirements remain open. Passing native tests alone does not establish parity.",
+    "Updated development record, evidence, command coverage and current plan."
+  ],
+  "resume_first": "Read AGENTS.md, STATUS.md, PORTING_PLAN.md, this priority record and the immutable PAUSE_CHECKPOINT_107.json. Verify the saved source/package identity. Classify/reconcile the remaining backlog into major functions, minor functions and final details with acceptance criteria. Start with outstanding major workflows and their dependencies; evaluate the observed File > Open image restriction within major document/file workflows rather than following the former UI-first queue.",
+  "checkpoint": "docs/PAUSE_CHECKPOINT_107.json",
+  "evidence_root": "artifacts/runs/20261019T182713Z-108-function-priorities"
+}

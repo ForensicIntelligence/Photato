@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-08",
+  "development_step": "dev-step-048",
+  "status": "Full tests, optimized tests, universal packaging and live stop-preservation workflow verified",
+  "run_directory": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors",
+  "implementation": "Sources/PhotoCraftImaging/PSDGradientMap.swift",
+  "tests": "Tests/PhotoCraftImagingTests/GradientMapStopLimitTests.swift",
+  "new_tests": 3,
+  "references": {
+    "step": "dev-step-048",
+    "cases": [
+      {
+        "name": "classic-colors100-rgb16",
+        "input": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/input-classic-colors100-rgb16.psd",
+          "sha256": "e7c90830b42b3a01e9b7bb0dbeb4c00a8b17d31e7725aef7d1f855878371b1da"
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/photoshop-classic-colors100-rgb16.psd",
+          "sha256": "8259155cb0e4d1229d53afaae417b9f78ee8fab02b7419b306341f44e5616325"
+        },
+        "input_colors": 100,
+        "saved_colors": 100,
+        "input_opacity": 2,
+        "saved_opacity": 2,
+        "exact_prefix_retained": true
+      },
+      {
+        "name": "classic-colors101-rgb16",
+        "input": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/input-classic-colors101-rgb16.psd",
+          "sha256": "7b7b2bcea27827e9e48fd13f1f3c523d770b50ee4d65d704dc4173994413ce62"
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/photoshop-classic-colors101-rgb16.psd",
+          "sha256": "d262487efb1a0a72bc441ec433d8dc6ad4410762caf693a89511775be193a271"
+        },
+        "input_colors": 101,
+        "saved_colors": 100,
+        "input_opacity": 2,
+        "saved_opacity": 2,
+        "exact_prefix_retained": true
+      },
+      {
+        "name": "stripes-colors101-rgb8",
+        "input": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/input-stripes-colors101-rgb8.psd",
+          "sha256": "60c461f5f13a9e1a1cbfb27e358dfb244ecf2985011078f5d8f7751f9dd957f2"
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/photoshop-stripes-colors101-rgb8.psd",
+          "sha256": "8f1b0bec57cdec3ce43aa908f65dfaa098f046a10ab28d73d290e9c133807afe"
+        },
+        "input_colors": 101,
+        "saved_colors": 100,
+        "input_opacity": 2,
+        "saved_opacity": 2,
+        "exact_prefix_retained": true
+      },
+      {
+        "name": "classic-opacity100-rgb16",
+        "input": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/input-classic-opacity100-rgb16.psd",
+          "sha256": "eec602728b03f375b6fb86fca61e6aa684bbd7480bb1a9794883ead76ce6968d"
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/photoshop-classic-opacity100-rgb16.psd",
+          "sha256": "2bcdf2e8de260dc775670b20aa5e48c5e173178b6999ef725e472bd4ba3c833d"
+        },
+        "input_colors": 2,
+        "saved_colors": 2,
+        "input_opacity": 100,
+        "saved_opacity": 100,
+        "exact_prefix_retained": true
+      },
+      {
+        "name": "classic-opacity101-rgb16",
+        "input": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/input-classic-opacity101-rgb16.psd",
+          "sha256": "a91e2e12f77b7783012b5ea0d8d9d080945d9ff1a1a06f60b185665ae333075f"
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/limits-01/photoshop-classic-opacity101-rgb16.psd",
+          "sha256": "b7a6b89f0edf9f0d0ddbc2750497dfde35bc9063adc53f3a7e4486a7a5d14fc1"
+        },
+        "input_colors": 2,
+        "saved_colors": 2,
+        "input_opacity": 101,
+        "saved_opacity": 100,
+        "exact_prefix_retained": true
+      }
+    ],
+    "source": "Original procedural probes recalculated and saved via Photoshop 2026 UI.",
+    "license": "MIT OR Apache-2.0; no Adobe code or preset libraries copied.",
+    "warning": "Photoshop explicitly warns that excess color/transparency stops will be removed. Warnings were accepted only for disposable original probes.",
+    "scope": "Gradient Map grdm controls only; this does not qualify Gradient Fill, GRD or rendered pixel equality.",
+    "generator": {
+      "path": "scripts/generate-gradient-map-limit-probes.py",
+      "sha256": "51f63708446a1d10a055731157e4ad7f82912ed44d5e4bd9e34732ee51676175"
+    },
+    "inspector": {
+      "path": "scripts/inspect-gradient-map-limits.py",
+      "sha256": "23827103480a07950203ebb490ad5a367f6aba80664359b4a1c32716b34c37f6"
+    }
+  },
+  "fixture": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/gradient-map-stop-limits.json",
+    "sha256": "1458bf944224f205436ec60037f8e692d609326ba7243bf5b73665f96888fdf8",
+    "license": "MIT OR Apache-2.0"
+  },
+  "behavior": [
+    "PSD Gradient Map export rejects more than 100 color stops or more than 100 opacity stops before original-record reuse.",
+    "Native documents and bounded imports retain up to 1000 stops; export failure does not truncate or mutate them.",
+    "100-stop records remain exportable."
+  ],
+  "limitations": [
+    "This qualifies Gradient Map records only, not GRD, Gradient Fill or every Photoshop path.",
+    "Smooth interpolation and previously measured continuous pixel differences remain unresolved.",
+    "Input/output stop preservation is not a rendered-pixel equivalence result."
+  ],
+  "full_photoshop_parity": false,
+  "validation": {
+    "full_tests": 535,
+    "optimized_tests": 82,
+    "failures": 0,
+    "skipped": 0,
+    "live_files": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/live-files-verification.json",
+    "live_ui": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/live-ui-observations.json",
+    "release": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/release-verification.json"
+  }
+}

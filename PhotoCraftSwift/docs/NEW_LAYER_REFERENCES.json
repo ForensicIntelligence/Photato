@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-073",
+  "date": "2026-10-09",
+  "status": "New Layer regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T093234Z-073-new-layer/release-verification.json",
+    "sha256": "88b7c96de7a8e02ba5940031bc29036a821e4498bda75b7a82179365d89ca4a3"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T093234Z-073-new-layer/tested-source-hashes.json",
+    "sha256": "15bf01725416854f4377d5e70784961a570186293a1154ad64bc8ee7afec20a7"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T093234Z-073-new-layer/research.json",
+    "sha256": "839676f99d4d12b2341e5446d6cc93c33e542703aa37406723c28612106d24a3"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T093234Z-073-new-layer/live-qualification.json",
+    "sha256": "bf4a5010ce9150c99e754ede87a8c2aa1b64706362d01ae9abefe4f9c4a6bbd4"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T093234Z-073-new-layer/offscreen-layout.json",
+    "sha256": "3fd2790255e821f2952394a91920fcd9040a256f3fc7e20190dc19afe36dadfb"
+  },
+  "implementation": [
+    "Cmd\u2013Shift\u2013N opens a native New Layer dialog with name, color label, mode, opacity, clipping and neutral fill.",
+    "Creation is one undoable command; cancellation and rejected/stale drafts leave the document untouched. Draft guards preserve active-document ownership and block editing/history.",
+    "Footer plain-click creates immediately; Option opens options, Command inserts below, and both modifiers open options for below insertion. Group descendants remain contiguous and parent locks/caps are enforced.",
+    "PSD lclr color labels are visible in the layer visibility column and survive native/PSD saves without an archive format change; unknown records and reserved bytes are retained.",
+    "Mode-neutral sparse fill uses the existing working-space/depth rules, and names choose an unused Layer N."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T093234Z-073-new-layer/focused-tests-02.log",
+      "sha256": "310977116b6b7bab3c122e7cd0a307bf23857c84d1bd7ef37d07add0964fa5dd",
+      "passed": 145,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.964
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T093234Z-073-new-layer/full-tests.log",
+      "sha256": "b0d4956aeed45a530d22d28bc6bcfd24cfc3d6739b8c9d465ec3023e618d59af",
+      "passed": 709,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 121.317
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T093234Z-073-new-layer/release-tests.log",
+      "sha256": "66172e98cd7c20dd329b9ccc2a5663d5c5618dfefb06e6a313489ffd4b0b8b02",
+      "passed": 273,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.647
+    },
+    "new_regressions": 14
+  },
+  "limits": [
+    "Live sheet, Return/Escape, pointer modifier, focus and VoiceOver checks remain pending while the Mac is locked. Offscreen content and native callback tests do not establish live input parity.",
+    "Exact Photoshop label shades, dialog geometry, numbering/preferences, neutral-fill rounding and high-depth mode restrictions remain unqualified.",
+    "Background-specific ordering/locking, advanced group/clipping/HDR behavior, New Group/Duplicate dialogs and complete panel menus remain unfinished.",
+    "No Photoshop-wide byte equality, full feature parity, Intel runtime or macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "new_group_followup": {
+    "step": "dev-step-074",
+    "reference_manifest": "docs/NEW_GROUP_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T095137Z-074-new-group/release-verification.json",
+      "sha256": "8f18b051dab8577199e47f0bef02dc780c7d7b1c7f2ca59b6797c6d6db4a0801"
+    },
+    "scope": "New Group/Group from Layers native dialogs distinct from immediate CmdG, complete group options and guarded footer routes; existing menu hierarchy and shortcuts retained.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

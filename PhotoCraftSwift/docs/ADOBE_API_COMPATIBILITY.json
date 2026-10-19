@@ -1,0 +1,292 @@
+{
+  "step": "dev-step-095",
+  "recorded_at_utc": "2026-10-09T23:01:26.287879+00:00",
+  "target": "Adobe Photoshop API v2 GA within Firefly Services",
+  "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
+  "implementation_status": "Active step110 document-persistence work retains the partial native /v2/execute-actions and /v2/status adapter from step106. Six other published endpoints remain unimplemented. Photato document transfers/Revert are separate extensions; complete Adobe conformance and external-service interoperability remain unqualified.",
+  "current_api": "Fourteen Photato /v1 document commands plus optional isolated action-job routes; separate Adobe v2 action subset. Neither is complete Photoshop API equivalence.",
+  "references": [
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "observation": "GA adds linked smart objects, UXP scripting and expanded action/document workflows."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+      "observation": "Full schema recovered through official repository metadata in step101; pinned at docs/contracts/adobe-photoshop-v2.json."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/status-migration",
+      "observation": "Documents unified /v2/status/{jobId}, job lifecycle and result/error envelopes."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/v2-api-catalog",
+      "observation": "Groups edit, composite/layer and other operations under v2; some status-envelope details differ from detailed guides."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/fonts/",
+      "observation": "Example submission returns HTTP 202 with jobId and statusUrl; results use result.outputs and destination.url."
+    }
+  ],
+  "reference_limitations": [
+    "Historical step095 embedded-URL failures are preserved. Step101 resolves the schema through the official page repository metadata and immutable Git blob; see contract_baseline.",
+    "The behavior catalog describes outputs/errors fields whereas the detailed status guide uses result/errorDetails; output URL nesting also differs across examples. Resolve against an authoritative schema and verified responses before coding exact envelopes."
+  ],
+  "work_packages": [
+    {
+      "id": "contract_baseline",
+      "work": "Retrieve and pin authoritative v2 OpenAPI/version/provenance; reconcile guide inconsistencies; inventory every endpoint and schema with unsupported/partial/conformant states."
+    },
+    {
+      "id": "native_adapter",
+      "work": "Add Adobe request/response adapters alongside the maintained Photato API over one Swift engine. Preserve existing /v1 clients and separate both versioned contracts."
+    },
+    {
+      "id": "jobs",
+      "work": "Implement durable bounded job submission, execution and status/results lifecycle matching verified v2 responses, errors and availability behavior."
+    },
+    {
+      "id": "assets",
+      "work": "Implement validated input/output media and storage conventions, document manifests, file workflows and lifecycle/resource limits; qualify them against the contract."
+    },
+    {
+      "id": "local_connection",
+      "work": "Specify local base-URL and credential configuration with compatible header shapes; test client interoperability and document service-specific deviations rather than impersonating Adobe identity infrastructure."
+    },
+    {
+      "id": "feature_mapping",
+      "work": "Map every new capability to the Photato API and, wherever Adobe defines it, the corresponding Adobe-compatible operation in the same increment."
+    },
+    {
+      "id": "advanced_workflows",
+      "work": "Track actions, UXP execution, smart objects, text/artboards and generative workflow support explicitly. Reconcile execution requirements with native Swift architecture; API shape alone does not qualify behavior or proprietary generative output equivalence."
+    },
+    {
+      "id": "conformance",
+      "work": "Test schema/protocol and positive/negative cases for each interface, job lifecycle, current Photato-client regression and equivalent underlying behavior across desktop and both APIs."
+    }
+  ],
+  "completion_rule": "Every new feature includes Photato API coverage and tests; wherever Adobe defines the operation, its Adobe-compatible path and conformance tests ship in the same increment. Report actual coverage independently for each interface.",
+  "fetch_failure_evidence": [
+    "artifacts/runs/20261009T225910Z-095-adobe-api-contract/fetch-attempt01.json",
+    "artifacts/runs/20261009T225910Z-095-adobe-api-contract/fetch-attempt02.log"
+  ],
+  "no_credentials_or_adobe_jobs_used": true,
+  "dual_interface_requirement": {
+    "step": "dev-step-096",
+    "decision": "Maintain both APIs as supported interfaces over one native Swift engine; do not replace the Photato API.",
+    "interfaces": [
+      {
+        "name": "Photato API",
+        "current_status": "Fourteen Photato /v1 document commands plus optional isolated action-job routes; separate Adobe v2 action subset. Neither is complete Photoshop API equivalence.",
+        "compatibility": "Preserve current route/client behavior and version intentional changes."
+      },
+      {
+        "name": "Adobe Photoshop API v2-compatible API",
+        "current_status": "Active step109 document-lifecycle work retains the partial native /v2/execute-actions and /v2/status adapter from step106. Six other published endpoints remain unimplemented. Photato document transfers are separate extensions; complete Adobe conformance and external-service interoperability remain unqualified.",
+        "compatibility": "Follow published contracts; add alongside Photato interface."
+      }
+    ],
+    "shared_feature_rule": "Maintain both interfaces as supported product APIs: the Photato API for native document automation and Photato-specific capabilities, and the Adobe Photoshop v2-compatible API for clients using the published contract. They share the native Swift engine; do not duplicate editing algorithms. Preserve the existing Photato /v1 routes and clients rather than replace or silently repurpose them. Every new capability must include Photato API coverage, schemas, documentation and tests; when Adobe defines the corresponding operation, include its compatible interface and conformance tests in the same increment. Keep Photato-only operations distinct rather than inventing Adobe routes. Test equivalent underlying operations across both interfaces and the desktop while respecting each contract\u2019s document/job lifecycle. Report each interface\u2019s actual coverage independently; support for one does not imply support for the other."
+  },
+  "later_reference_recheck": {
+    "step": "dev-step-100",
+    "date": "2026-10-13",
+    "result": "Current reference still embeds the same JSON URL; web retrieval remains unavailable. No schema pin or channel-endpoint conclusion.",
+    "evidence": "artifacts/runs/20261013T161932Z-100-channel-interaction-reference/record.json"
+  },
+  "contract_baseline": {
+    "step": "dev-step-101",
+    "retrieved_date": "2026-10-13",
+    "reference_page": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+    "repository": "https://github.com/AdobeDocs/ffs-photoshop-API",
+    "path": "static/photoshopv2-api.json",
+    "git_blob_sha1": "8db3553512c6a0ff0532c8a009cbb2c8210c8f41",
+    "immutable_source": "https://api.github.com/repos/AdobeDocs/ffs-photoshop-API/git/blobs/8db3553512c6a0ff0532c8a009cbb2c8210c8f41",
+    "sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "bytes": 217311,
+    "openapi": "3.0.1",
+    "info_version": "2.0",
+    "repository_license": "AdobeDocs-LICENSE (Apache-2.0)",
+    "service_license": {
+      "name": "Adobe Creative API License",
+      "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
+    },
+    "license_note": "Repository attribution/redistribution terms are distinct from service usage terms; no service terms acceptance or Adobe job is implied.",
+    "resolved_internal_reference_occurrences": 394,
+    "schema_count": 162,
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/v1/auto-crop",
+        "operation_id": "autoCrop",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/create-artboard",
+        "operation_id": "createArtboard",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/create-composite",
+        "operation_id": "createComposite",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/edit",
+        "operation_id": "edit",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/execute-actions",
+        "operation_id": "executeActions",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "partial native implementation (step106)",
+        "conformance": "bounded actionJSON subset, local bearer/authenticated asset deviations; no Adobe service interoperability claim"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/generate-manifest",
+        "operation_id": "generateManifest",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      },
+      {
+        "method": "GET",
+        "path": "/v2/status/{jobId}",
+        "operation_id": "getJobStatus",
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "404"
+        ],
+        "status": "partial native implementation (step106)",
+        "conformance": "bounded actionJSON subset, local bearer/authenticated asset deviations; no Adobe service interoperability claim"
+      },
+      {
+        "method": "POST",
+        "path": "/v2/remove-background",
+        "operation_id": "removeBackground",
+        "responses": [
+          "202",
+          "400",
+          "401",
+          "403",
+          "422",
+          "429",
+          "500"
+        ],
+        "status": "not implemented",
+        "conformance": "not qualified"
+      }
+    ],
+    "channel_view_review": "No dedicated desktop view-state operation is specified. LocalRange.channelId is a hue-adjustment range, not channel visibility. ActionsOptions accepts actionJSON/ATN/UXP. At the step101 reference checkpoint those workflows were unimplemented; step106 adds a bounded native RGB8 channel select/neutral Fill actionJSON subset. ATN/UXP remain unsupported. Photato per-document display state and PNG preview are Photato-only extensions, not Adobe conformance.",
+    "status_envelope_review": "Pinned JobAcceptedResponse uses jobId/statusUrl; JobStatusResponse uses result/errorDetails and not_started/running/succeeded/failed. Guide inconsistencies must be resolved in endpoint tests; no live service responses tested.",
+    "evidence_root": "artifacts/runs/20261013T163042Z-101-channel-visibility"
+  },
+  "step095_verification": {
+    "native_implementation_unchanged": true,
+    "verified_unchanged_swift_files": 360,
+    "binary_sha256": "e02630693e43a0dc578668e990a161ad3c14014b5e8a5b5aaf1b7e9d8fe389fb",
+    "zip_sha256": "4265d3cfec4a6150c8c030f961517099635710d00be69768c661361c031db49a",
+    "pause_checkpoint_093_sha256": "dc4cf109472d6e70dd5adfac43fbc33d5f3a5c11bbefc26cc096be738b825579"
+  },
+  "component_editing_integration": {
+    "step": "dev-step-106",
+    "evidence": "docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json",
+    "status": "Native target/Fill and both public job interfaces tested; final990 full/279 optimized/39 focused tests and bounded Debug UI pass; universal package verified. See step107 pause checkpoint.",
+    "pause_checkpoint": "docs/PAUSE_CHECKPOINT_107.json"
+  },
+  "document_workflow_integration": {
+    "step": "dev-step-109",
+    "evidence": "docs/DOCUMENT_IO_REFERENCES.json",
+    "photato": "New optional binary document import and shared document downloads;14 document commands remain unchanged.",
+    "adobe": "No dedicated interactive desktop open/save route in the pinned contract. Existing actions PSD/PNG resource input/output remains qualified only within its original subset; no endpoint or credential conformance expansion.",
+    "shared_engine": "DocumentIO delegates to NativeArchive, RasterIO and PSDCodec; Adobe resource adapters retain RasterIO/PSDCodec."
+  },
+  "persistence_step110": {
+    "photato_commands": 15,
+    "copy": "Existing shared-codec document download route",
+    "revert": "Native associated-file lifecycle; no corresponding local-file Adobe v2 endpoint",
+    "adobe_scope": "Unchanged two partial endpoints; six unimplemented; regression includes both API interfaces.",
+    "evidence": "docs/DOCUMENT_PERSISTENCE_REFERENCES.json"
+  },
+  "metadata_preservation_step112": {
+    "evidence": "docs/SOURCE_METADATA_REFERENCES.json",
+    "endpoint_scope": "Two partial and six unimplemented unchanged",
+    "qualification": "Desktop and both HTTP job routes produce equal PSD output with retained opaque metadata; source profiles/full format semantics remain open"
+  },
+  "source_save_step113": {
+    "evidence": "docs/SOURCE_SAVE_REFERENCES.json",
+    "photato_commands": 17,
+    "adobe_scope": "Two partial and six unimplemented endpoints unchanged. No interactive desktop Save/Save As endpoint exists in the pinned contract; no new Adobe route is invented.",
+    "engine": "Photato desktop/API Save shares DocumentIO persistent encoder and NSDocument ownership/history; existing Adobe resource output retains the shared RasterIO/PSDCodec implementation."
+  },
+  "rgb32_storage_step114": {
+    "evidence": "docs/RGB32_STORAGE_REFERENCES.json",
+    "endpoint_counts": "Two partial; six unimplemented",
+    "scope": "Shared job input accepts supported RGB16/32 PSD for composite RGB selection and PSD output preservation. Individual-channel selection/writes requireRGB8; PNG input remainsRGB8 and RGB32 PNG output rejects. HTTP schemas/routes and token/enablement boundaries unchanged. Exact RGB32 bytes tested through both interfaces; live hosted Adobe service equivalence unqualified."
+  }
+}

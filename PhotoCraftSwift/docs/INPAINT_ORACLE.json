@@ -1,0 +1,49 @@
+{
+  "sources": {
+    "inpaint.rs": "5d33064fb91297b60286cd673104f929b3ba77d75ae68f9d4b4762d3b50d8a78",
+    "poisson.rs": "8ce2c3df38eb272ddef90365015b033be24931a274260f50c80e0b8a9b89d12a"
+  },
+  "fixture_sha256": "acaa48b11f52fa0c323743462a9d4ff33d6837095d45b4a6fa54311500d5575c",
+  "regions": 6,
+  "scope": "Original Rust numerical functions are unchanged. The wasm32 cfg selects their existing sequential scheduling paths; execution is native host CPU, not WebAssembly. Cancellation/progress use an inert stub. Includes completion, texture synthesis and proximity offsets; odd grids, 1/3/4 channels, multi-level refinement, no-hole and all-hole cases. No Photoshop output qualification.",
+  "channel_values_compared": 145708,
+  "exact_values_on_apple_silicon_debug": 145708,
+  "maximum_observed_debug_error": 0,
+  "proximity_offsets_compared": 6,
+  "regression_tolerance": 2e-06,
+  "exact_values_on_apple_silicon_release": 145708,
+  "maximum_observed_release_error": 0,
+  "release_tests_log": "../artifacts/spot-healing-release-tests.log",
+  "proximity_outcomes": [
+    {
+      "kind": 0,
+      "offset": null
+    },
+    {
+      "kind": 1,
+      "offset": [
+        12,
+        -13
+      ]
+    },
+    {
+      "kind": 2,
+      "offset": [
+        -24,
+        -24
+      ]
+    },
+    {
+      "kind": 3,
+      "offset": null
+    },
+    {
+      "kind": 4,
+      "offset": null
+    },
+    {
+      "kind": 5,
+      "offset": null
+    }
+  ]
+}

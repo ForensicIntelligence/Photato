@@ -1,0 +1,76 @@
+{
+  "step": "dev-step-084",
+  "date": "2026-10-09",
+  "status": "Native mask-thumbnail gestures and canvas views tested/packaged; full Photoshop parity incomplete",
+  "release": {
+    "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/release-verification.json",
+    "sha256": "a5d15812090f55d2bf1c5983ef13d35f0e806d19ed4f0a5c454edf5ff457153c"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/tested-source-hashes.json",
+    "sha256": "803e5e8d8e93a05247045c95ead2ad89dfa37174a4263c259f59e8261035fae5"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/research.json",
+    "sha256": "1a1a2e9ed923b165b844412ead74a426f0b1049b59ce8d97be744f2ca0570f3f"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/live-qualification.json",
+    "sha256": "35dda8c51bf5c7f985ecb7b889d0317349c398fd784a22d69260e1d28081c034"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/offscreen-layout.json",
+    "sha256": "359f3de7e12f49fc9f69c8718ff3a4d3141cb592e28784918c75ef4873eabbfe"
+  },
+  "implementation": [
+    "Native pixel/vector mask modifier routing with Command precedence; normal click editing, Shift enablement and existing transactional undo.",
+    "Option pixel-mask grayscale and Shift-Option red overlay, toggled per active mask.",
+    "Canvas-only presentation uses separate image/state; composite surface, composite image, export and archive pixels unaffected by view toggles.",
+    "Raw selection loading uses mask geometry/outside/inversion and excludes density/feather/enablement; native 8-bit selection quantization.",
+    "Native mouse-down modifier tracking, drag cancellation, runtime store/generation/layer validation and accessibility press.",
+    "Read/close invalidate presentation and pending prepared edits; vector target selection retains Layers panel.",
+    "Path target changes restart pending renders to avoid orphaned completions and stuck busy indicators; reproduced before repair."
+  ],
+  "automated_evidence": {
+    "tests": {
+      "focused-05.log": {
+        "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/focused-05.log",
+        "sha256": "8fc08effe0391d31bc3190777ec68c459dfa369ccb05d30e872b62b4b615ae45",
+        "passed": 276,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 16.899
+      },
+      "full-tests.log": {
+        "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/full-tests.log",
+        "sha256": "dd98fdfb60f76fc570650736f153ad89a039ab210d29d97aa7c29a0fef39fb1b",
+        "passed": 872,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 127.215
+      },
+      "release-tests.log": {
+        "path": "artifacts/runs/20261009T143658Z-084-mask-interactions/release-tests.log",
+        "sha256": "a56f7cf39706099e1326023b7c86db0a906c5b55052f239da2e2cf72cb172eab",
+        "passed": 465,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 20.114
+      }
+    },
+    "new_regressions": 16
+  },
+  "limits": [
+    "Photoshop byte equivalence and physical gesture/default qualification remain pending while Mac is locked.",
+    "Mask preview/selection conventions exclude density/feather, inferred from Rust source rather than independently measured Photoshop transformed/high-depth references.",
+    "Selection is currently GRAY8; Photoshop high-depth selection precision is not qualified.",
+    "Overlay is red at 50 percent on excluded areas; editable overlay options, Channels temporary mask row, keyboard mask shortcuts and Quick Mask are separate pending workflows.",
+    "Content-transparency Command-click, mask drag/copy/reorder and mask clipboard parity remain open.",
+    "Vector Option-click behavior beyond retaining normal editing is not claimed as Photoshop-equivalent.",
+    "Canvas view creation allocates a document-sized presentation surface; broad large-document latency/memory and platform/accessibility certification remain open.",
+    "Transient brush/retouch overlays retain existing canvas behavior; full mask-tool preview, color defaults and channel-routing parity require the next integration and live qualification.",
+    "One unchanged-source full run failed the pre-existing whole-workspace pixel equality test in a Properties text region (327 RGB bytes, unchanged alpha); isolated rerun passed. Retain this evidence as an offscreen text-stability limitation, not a mask regression or proof of layout equivalence.",
+    "One packaged rename capture missed scrolling its editor into view; two unchanged-binary reruns exactly match083. Treat reveal/capture timing as unresolved and prioritize investigation before more UI expansion."
+  ],
+  "full_photoshop_parity": false
+}

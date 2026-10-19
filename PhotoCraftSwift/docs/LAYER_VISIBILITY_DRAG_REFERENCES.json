@@ -1,0 +1,76 @@
+{
+  "step": "dev-step-079",
+  "date": "2026-10-09",
+  "status": "Native eye-column dragging tested and packaged; live Photoshop qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/release-verification.json",
+    "sha256": "3f1a7b98f887515b266c3b896bbf94ab7b724b5c684bef49d947aaaa821cd65e"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/tested-source-hashes.json",
+    "sha256": "22a043d1912e0992e398d49c5cdbea9ea4b1bb986275e83b1dbeec1509a05757"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/research.json",
+    "sha256": "00b975bd50789b95192f06e9c812e1c2584a6442e9f29293c5196ade2af9bd65"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/live-qualification.json",
+    "sha256": "4f8bde4819aaf461ff87a851dee1253013fecb318bb11f70663aa5e9cff19084"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/offscreen-layout.json",
+    "sha256": "8c5d6503ae56534c02107a0bda06a6012cf723d8e8a973e4856ec30779e04de1"
+  },
+  "implementation": [
+    "Transient per-document visibility preview, unchanged committed bytes/autosave until release, one atomic undo step.",
+    "Native eye controls with click, Option isolation and accessible press routes; skipped-row sweeps and no repeated toggling.",
+    "Panel/window/document-scoped tracking, clipped row bounds, native scroll-edge repetition and cancellation on Escape, deactivation, closure, foreign window or stale document.",
+    "Separate eye tracking from the row selection/reorder gesture; preserve 22\u00d736 native eye geometry."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/focused-07.log",
+      "sha256": "a13c9b131bdb0d2c393f03f05b91334753fec6990404dbc31fbf1210fd9a30ab",
+      "passed": 233,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.114
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/full-tests.log",
+      "sha256": "15d22922026b206946d1bf5b9af7b374e7badf3bc0aa837b494a7533f1dfab4f",
+      "passed": 798,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 121.559
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/release-tests.log",
+      "sha256": "369fa18369a9fc7e0aab24f93c84e950b489cd2d98fd546c08e59034d0e8986c",
+      "passed": 373,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.859
+    },
+    "new_regressions": 13
+  },
+  "limits": [
+    "Live pointer/modifier/scroll timing, Escape delivery, accessibility interaction and Photoshop visual/history behavior need an unlocked Mac.",
+    "Native callback and NSView hit tests are not physical input tests.",
+    "One atomic history entry is a native design choice; the original Rust applies each swept row separately. Photoshop history grouping remains unqualified.",
+    "Recursive disclosure and Panel Options remain next; full feature/byte equivalence and Intel/macOS14 runtime certification remain incomplete.",
+    "Desktop sync has previously reattached FinderInfo and invalidated ad-hoc signatures; clean extracted ZIP is the verified distribution artifact."
+  ],
+  "full_photoshop_parity": false,
+  "group_disclosure_followup": {
+    "step": "dev-step-080",
+    "reference_manifest": "docs/GROUP_DISCLOSURE_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T122819Z-080-group-disclosure/release-verification.json",
+      "sha256": "2c55200da39742d6c5900451fd2b7e40b310d7bffd54f940986e2876784ab9a9"
+    },
+    "scope": "Group expansion is saved view metadata without dirty/history edits; native ordinary/Option triangles and Collapse All Groups. Factory menu bar and shortcuts unchanged; exact Layers flyout order remains unqualified.",
+    "live_qualified": false
+  }
+}

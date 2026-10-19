@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-071",
+  "date": "2026-10-09",
+  "status": "Native dock columns regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+    "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T083422Z-071-dock-columns/tested-source-hashes.json",
+    "sha256": "7e476c2c58c86d911070eb365f08e4b6963852998b89cbb62ce65a40ed2e5546"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T083422Z-071-dock-columns/references.json",
+    "sha256": "310714767a221a54b8435ec6c26a1d549e656157569eef5d4ff24af3bce7d559"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T083422Z-071-dock-columns/live-qualification.json",
+    "sha256": "a5d690b0dd8ec05b87949a061da7147a3ebcebd7ca86dac3e30ebdca9c5c7f56"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T083422Z-071-dock-columns/offscreen-layout.json",
+    "sha256": "8f1853ed837d9137f4e31b8cbeecec38f6e3d61ba78993b4552febc4c62eebc9"
+  },
+  "implementation": [
+    "Persist ordered left/right dock columns and remembered floating-group destinations; migrate absent column fields without resetting layouts.",
+    "Native canvas-edge insertion targets appear only during a panel drag; horizontal dividers resize individual columns and vertical row dividers remain isolated.",
+    "Independent expanded/icon/label presentation and targeted reveal; compact layouts temporarily allocate space to the most recently expanded column without changing saved widths.",
+    "Native icon buttons retain accessibility labels, hit targets and private drag payloads; popovers share existing panel content.",
+    "Preserve document bytes/history, default workspace dimensions and Photoshop menu bindings."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/focused-tests-05.log",
+      "sha256": "c1d338391af29f911775b004fa94801f71baaf96bb335da87d0a300a8cee55fe",
+      "passed": 114,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.014
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/full-tests.log",
+      "sha256": "bcbfba080036a252ecafb906feab5642807845dd472d5cba99679bf13297ecb5",
+      "passed": 685,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 117.514
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-tests.log",
+      "sha256": "31868df771d14bfcb24e10ccfc5179abcd0255ff11ea34ea035d266f3b324f7f",
+      "passed": 243,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 10.929
+    },
+    "new_regressions": 13
+  },
+  "limits": [
+    "Actual OS pointer/modifier/Escape input, live icon popovers and exact Photoshop geometry remain pending while the Mac is locked.",
+    "Automatic compact collapse, custom dock context menus and source grab offsets are provisional, not Photoshop-qualified.",
+    "History/Clone Source integration, complete panel menus, keyboard/accessibility behavior and preferences remain unfinished.",
+    "No full feature parity, Photoshop-wide byte identity, Intel runtime or macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

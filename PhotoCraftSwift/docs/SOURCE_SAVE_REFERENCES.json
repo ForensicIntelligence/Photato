@@ -1,0 +1,111 @@
+{
+  "step": "dev-step-113",
+  "status": "Verified source-format Save/Save As and optional API saving; major D01 remains open",
+  "source_freeze": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/tested-source-hashes04.json",
+    "sha256": "9bde3d7173269e86cd437c2576e1be2165434a55cd9dc61304229ca343376244"
+  },
+  "baseline": "docs/ACTIVE_CHECKPOINT_112.json",
+  "workflow": "D01: Open, edit, save, close and revert",
+  "behavior": [
+    "Associate supported PSD/PNG/JPEG/TIFF files with their source format and URL; preserve canonical open identity",
+    "Command-S and explicit Save As use the shared eligible-format encoder and NSDocument coordinated writing/dirty state/history",
+    "Native Save As popup updates format, extension and preservation notice; choices respect supported editable structure",
+    "AppKit recovery autosaves remain separate native archives; explicit writes pre-encode with cancellation/stale guards",
+    "Imported non-sRGB and RGB32 PSD sources require explicit Save As review while source-fidelity work remains unfinished",
+    "Detect actual raster container without pixel decoding for source association; accept JPEG/TIFF aliases and preserve existing extension on ordinary Save, including legacy native aliases"
+  ],
+  "api": {
+    "commands": 17,
+    "new": [
+      "document.save",
+      "document.saveAs"
+    ],
+    "permission": "Separate default-off native Allow local document saving; Save As requires native-selected directory; session stop clears both",
+    "contracts": "docs/AUTOMATION_API.md",
+    "safety": "No client path argument; filename validation, explicit replacement, symlink/other-document protection, external-change/revision/share/session checks before encoding and writing",
+    "shared_engine": "DocumentIO.encodeForPersistence and CraftNSDocument.persistDocument",
+    "adobe": "No desktop Save/Save As endpoint in pinned v2 contract; two partial and six unimplemented routes unchanged"
+  },
+  "tests": {
+    "focused06": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/focused06.log",
+      "passed": 47,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.059
+    },
+    "failed_attempts": [
+      "artifacts/runs/20261019T200618Z-113-source-save-workflow/focused01.log",
+      "artifacts/runs/20261019T200618Z-113-source-save-workflow/focused03.log",
+      "artifacts/runs/20261019T200618Z-113-source-save-workflow/full01.log",
+      "artifacts/runs/20261019T200618Z-113-source-save-workflow/focused07-alias-reproduction.log"
+    ],
+    "first_full": "1031 executed, three assertions failed across two old-assumption tests. Those test-only expectations are repaired in freeze03; full03 and expanded optimized rerun pass.",
+    "hang": "focused01 deadlocked in AppKit autosave serialization after deferring the callback to a Task; sampled and deliberately terminated. Synchronous recovery delegation repaired it; focused02 and later completed.",
+    "focused08": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/focused08-source-identification.log",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.607
+    },
+    "alias_reproduction": "One regression reproduced27 assertions, including five missing-file reads caused by wrong-format filename normalization. Repair identifies source content and preserves ordinary-save filename.",
+    "full": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/full03.log",
+      "sha256": "280de9e1c5d5f5b3c983bac847151d9f5e637bcbf489ed2a2ce819d7a52350ca",
+      "passed": 1032,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 148.987
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/release-focused03.log",
+      "sha256": "aedadfdcce46274ba42b0b204616355f4e0ecf5b3b6b8ac2bb5bf17d626c00ca",
+      "passed": 533,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 17.181
+    }
+  },
+  "native_debug": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/debug2-live-verification.json",
+    "sha256": "a20c115aa9e5ee6bd71712f946eee58c17f518e63e0b447a3f49398e8eb80df0"
+  },
+  "independent_reference": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/photoshop-verification.json",
+    "sha256": "a85dac8f92955257729ce00e6c75db0bd52758ffbc2fa83400d87939d0052d3e"
+  },
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/save-your-work.html",
+      "accessed": "2026-10-19",
+      "page_updated": "2026-02-23",
+      "scope": "Save association and Save As format/content options; no complete fidelity claim"
+    },
+    {
+      "source": "Xcode27 SDK AppKit NSDocument.h",
+      "scope": "Writable/native/recovery types, Save panel selected type, coordinated save operation and file-access activities"
+    }
+  ],
+  "limits": [
+    "Major D01 is open: full format options, profile/metadata/float exactness and unsupported format/PSD structure coverage remain incomplete",
+    "JPEG saving is intentionally lossy95%; PNG/TIFF save-back is restricted to one eligible full-canvas raster layer",
+    "Known original RGB32 sample round-trip still differs96 composite bytes from step112; no new global byte-equality claim",
+    "Opaque resource retention does not implement or semantically update unsupported Photoshop workflows",
+    "Crash-relaunch recovery, complete external coordination/read-only/sandbox/bookmark workflows remain unqualified",
+    "Intel and macOS14 runtime, full Photoshop preferences/context/output equivalence remain open"
+  ],
+  "release": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/release-verification.json",
+    "sha256": "c25453a682357c62ac80cd1a73c609ae356d29bec7e97bf291b8119ee9845c0d"
+  },
+  "native_release": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/live-ui-verification.json",
+    "sha256": "e5b96d5985ea201db7e0dc34ead801ca0fc292e0decbd3712cccceb9b43e5dd6"
+  },
+  "rgb32_storage_step114": {
+    "evidence": "docs/RGB32_STORAGE_REFERENCES.json",
+    "scope": "Original supported linear raster samples now retained through native/PSD persistence. Original profiles, full editing/merged byte equivalence and broader format preservation remain open; sourceSaveNeedsReview forRGB32 retained."
+  }
+}

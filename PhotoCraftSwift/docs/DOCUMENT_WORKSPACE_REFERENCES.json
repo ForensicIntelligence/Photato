@@ -1,0 +1,108 @@
+{
+  "step": "dev-step-061",
+  "reference_application": "Adobe Photoshop 2026 27.2.0 on macOS 27.0.1",
+  "reference_sources": [
+    {
+      "url": "https://developer.apple.com/documentation/appkit/nswindow/toggletabbar(_:)",
+      "scope": "Public API and local SDK headers; native probe confirms tab bar remains visible with multiple windows."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/rearrange-document-windows.html",
+      "scope": "Search result retrieved; opening full page timed out. Live installed Photoshop is the behavior reference."
+    }
+  ],
+  "reference_captures": [
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-control-shift-tab.png",
+      "sha256": "70708d746c0f891ac711aa3794471b87d663277da4f92860d83055a62932d39a"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-control-shift-tab.txt",
+      "sha256": "794cec9248859cf389a68dd19550e3c18f80c88369f0d6de8782e741829e42ef"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-control-tab.png",
+      "sha256": "ec4f60b7883a627d0637c9fb8388f9918285da5529dbcebc125a93f5ca3eb04a"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-control-tab.txt",
+      "sha256": "cb56a352977d5ce17d7801bb4b76afd97ce58a4f20b93fbecc2b7dbcc7104e04"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-float-one.png",
+      "sha256": "684bb650b91e374c2aae08352e7c02ee67942fe0f9c49c621fb5aaef2f785ac0"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-float-one.txt",
+      "sha256": "17d97abc1624c6222118023bd0e398c2ba2817122e696338399056144b1682e4"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-restored.png",
+      "sha256": "b4589bd0f919bfbcd8329f8a00bf2da69acb6da25476031dfbf6154e3374a84d"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-restored.txt",
+      "sha256": "cb56a352977d5ce17d7801bb4b76afd97ce58a4f20b93fbecc2b7dbcc7104e04"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-three-tabs.png",
+      "sha256": "70708d746c0f891ac711aa3794471b87d663277da4f92860d83055a62932d39a"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-three-tabs.txt",
+      "sha256": "794cec9248859cf389a68dd19550e3c18f80c88369f0d6de8782e741829e42ef"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-two-tabs.png",
+      "sha256": "5af5211918249170b2ecddec6ab5c469ffc640061b922da74b9a76cbf6ea6ea0"
+    },
+    {
+      "path": "artifacts/runs/20261009T034430Z-061-document-windows/photoshop-two-tabs.txt",
+      "sha256": "d9f899db5b8e30374b39887a0a1fb1454755941b8009d0f1796c8c71df68e1cf"
+    }
+  ],
+  "live": {
+    "path": "artifacts/runs/20261009T034430Z-061-document-windows/live-observations.json",
+    "sha256": "7a913b172e4525961bcd5948d05212de5b85154e7c39cc6bcd484e12b085905b"
+  },
+  "release": {
+    "path": "artifacts/runs/20261009T034430Z-061-document-windows/release-verification.json",
+    "sha256": "845f4008ab22bf1907bbf3c504aed3680383a764c01765824d0ff7b82b605661"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T034430Z-061-document-windows/tested-source-hashes.json",
+    "sha256": "3b3cae8b5ee0057fdb91c74c89ed560d7b4e1bc790e9d8f787b2ce30697e35d1"
+  },
+  "qualified_scope": [
+    "One full-sized workspace with one blank tab; sizing/reopen regression repaired.",
+    "Two distinct NSDocuments shown in a single native window.",
+    "Control-Tab and Control-Shift-Tab wrap and show the correct document dimensions.",
+    "Edit the second document, request Close, cancel the native save review; both tabs and layers retained.",
+    "Save each document independently; decoded files retain expected dimensions, layers and every pixel.",
+    "Close the clean first tab and reopen its native file beside the second document.",
+    "Float selected tab; Window document list selects the other independent window.",
+    "Consolidation restores shared tabs; Float All and reconsolidation retain documents.",
+    "Window starts with curated Arrange hierarchy and includes the document list; extra AppKit Fill/Center/Move & Resize entries absent.",
+    "About menu Close and activated Command-W close About and retain both documents; use settled observation.",
+    "After verified activation, canvas Tab hides/restores workspace groups while both document tabs remain.",
+    "Candidate closed; qualified package left open with a clean Untitled-1. Original Photoshop document unchanged."
+  ],
+  "limits": [
+    "Pointer tab reordering and drag-out detachment remain unqualified; coordinator moves are unit-tested.",
+    "Floating windows duplicate workspace chrome instead of Photoshop canvas-only documents in a common application frame.",
+    "Existing NSDocument autosave/save-close wording differs from Photoshop; recovery/restore, global persisted workspaces and global cross-window tool preferences remain open.",
+    "Panel docking, window tiling, New Window views, complete key/AX contexts, exact visual metrics and zoom/checkerboard behavior remain incomplete.",
+    "No editing-pixel algorithm changed and no new Photoshop pixel equivalence is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "native_tab_control_followup": {
+    "step": "dev-step-062",
+    "reference_manifest": "docs/NATIVE_TAB_DRAG_REFERENCES.json",
+    "scope": "Replace implicit SwiftUI drag wrappers with explicit AppKit tab controls; live drag still pending."
+  },
+  "application_frame_followup": {
+    "step": "dev-step-063",
+    "reference_manifest": "docs/APPLICATION_FRAME_REFERENCES.json",
+    "scope": "Shared frame and canvas-only float implementation; live reference qualification pending."
+  }
+}

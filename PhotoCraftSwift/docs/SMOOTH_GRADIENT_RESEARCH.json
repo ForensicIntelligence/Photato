@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-08",
+  "development_step": "dev-step-046",
+  "status": "research; Smooth is not implemented",
+  "full_photoshop_parity": false,
+  "application_changed": false,
+  "run_directory": "artifacts/runs/20261008T191924Z-046-smooth-gradient",
+  "references": {
+    "count": 8,
+    "verification": "artifacts/runs/20261008T191924Z-046-smooth-gradient/reference-verification-02.json",
+    "regenerated_inputs_byte_identical": 8,
+    "saved_controls_match_exact_working_grid_normalization": 8,
+    "files_with_color_stop_changes": 3,
+    "maximum_color_stop_change": 1,
+    "neutral_smoothness_0_and_100_merged_identical": true,
+    "provenance": "Original procedural inputs; saved through the Photoshop 2026 UI. See DEVLOG step 046 for acquisition actions.",
+    "license": "Original probe data contributed under MIT OR Apache-2.0; no Adobe code or preset libraries copied."
+  },
+  "analysis": {
+    "script": "scripts/analyze-smooth-gradient.py",
+    "output": "artifacts/runs/20261008T191924Z-046-smooth-gradient/bezier-fit-01.json",
+    "exploratory_half_curve_bezier": {
+      "control_points": [
+        0.25787734689977015,
+        0.15517907430764025,
+        0.6683203336528916,
+        0.6685689464096265
+      ],
+      "rms": 6.364053891522921e-05,
+      "maximum": 0.00018872217881227282,
+      "warning": "Exploratory fit only; does not identify an algorithm or qualify production behavior"
+    },
+    "not_production_math": true,
+    "color_space_assumption": "Gray values transformed through sRGB decoding and cube-root lightness; this is an analysis assumption, not a proof of the complete Smooth algorithm."
+  },
+  "rejected_approaches": [
+    "Treat Smooth as the existing Perceptual method",
+    "Ship fitted constants as an exact algorithm",
+    "Assume input and saved color-stop records are identical"
+  ],
+  "failures_preserved": [
+    "artifacts/runs/20261008T191924Z-046-smooth-gradient/generate-inputs.log",
+    "artifacts/runs/20261008T191924Z-046-smooth-gradient/reference-verification-01.log",
+    "artifacts/runs/20261008T191924Z-046-smooth-gradient/inspector-at-failure-01.py",
+    "artifacts/runs/20261008T191924Z-046-smooth-gradient/saved-control-differences-01.json"
+  ],
+  "baseline_verification": "artifacts/runs/20261008T191924Z-046-smooth-gradient/baseline-verification-01.json",
+  "remaining_experiments": [
+    "RGB16 tone coordinates are now implemented and tested; resolve remaining ramp rounding/conversion, using the bounded stop-conversion probes.",
+    "Use saved, normalized color stops in every comparison",
+    "Isolate two-stop positional easing from color conversion and sample quantization",
+    "Add analytic three-stop, plateau and coincident probes to identify neighbor influence",
+    "Qualify midpoint and smoothness behavior beyond the bounded pairs tested",
+    "Only then implement and test the shared Swift method and acquire native export/UI evidence"
+  ],
+  "limitations": [
+    "Record scanning is bounded to these single-grdm probes.",
+    "Merged preview validation does not compare base-layer channels or all PSD metadata.",
+    "Input previews are stale and cannot serve as expected renderer outputs.",
+    "No production Smooth tests have been added; prior 532/79 tests belong to step 045.",
+    "Initial exploratory command history is incomplete; surviving outputs are identified without invented timestamps."
+  ],
+  "external_sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/gradient-interpolation.html",
+      "finding": "Describes Classic, Linear and Perceptual; does not supply Smooth math."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/apply-gradient-fill.html",
+      "finding": "Gradient Fill controls, not the Smooth algorithm."
+    },
+    {
+      "url": "https://reference.aspose.com/psd/net/aspose.psd.fileformats.psd.layers.fillsettings/interpolationmethod/",
+      "finding": "Names Smooth/Smoo enum."
+    },
+    {
+      "url": "https://releases.aspose.com/psd/java/release-notes/2026/aspose-psd-for-java-26-4-release-notes/",
+      "finding": "Reports vendor support without disclosing implementation."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/edit-a-gradient.html",
+      "accessed": "2026-10-08",
+      "finding": "Describes on-canvas editing and preset controls; no Smooth interpolation equation."
+    }
+  ],
+  "neighbor_investigation": {
+    "development_step": "dev-step-047",
+    "run_directory": "artifacts/runs/20261008T194500Z-047-smooth-neighbors",
+    "additional_reference_count": 7,
+    "reference_analysis": "artifacts/runs/20261008T194500Z-047-smooth-neighbors/analysis-03.json",
+    "reproduction_and_comparisons": "artifacts/runs/20261008T194500Z-047-smooth-neighbors/boundary-comparisons-02.json",
+    "all_seven_saved_controls_preserved": true,
+    "all_seven_inputs_regenerate_identically": true,
+    "observations": [
+      "Three/five stops collinear in analytical lightness have near-linear interior spans; neighboring stops change endpoint behavior.",
+      "The black/white and limited-gray plateau regions are constant. Six of seven checked regions equal the saved stop color exactly; the final gray region stores 49341 instead of the saved 49343 in all three channels.",
+      "Scaled last-half neutral comparisons still differ on 4 and 3 of 1025 opaque pixels, respectively, by at most two stored levels.",
+      "Neutral outputs can have unequal RGB channels by up to four full-range stored levels in the sampled first rows."
+    ],
+    "exploratory_fits": [
+      "artifacts/runs/20261008T194500Z-047-smooth-neighbors/polynomial-gray-fit-01.json",
+      "artifacts/runs/20261008T194500Z-047-smooth-neighbors/bezier-fit-02.json",
+      "artifacts/runs/20261008T194500Z-047-smooth-neighbors/boundary-fit-01.json"
+    ],
+    "no_exact_algorithm_established": true,
+    "baseline_verification": "artifacts/runs/20261008T194500Z-047-smooth-neighbors/baseline-verification-01.json",
+    "next_experiment": "Use a dense neutral/color stop palette and sample exact stop positions to measure color-conversion round trips separately from interpolation. Then revisit the boundary spline against normalized saved controls.",
+    "failed_assumptions_preserved": [
+      "Neutral RGB channels are always identical",
+      "All constant output regions reproduce their saved stop code exactly"
+    ],
+    "source_reference": {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/manifest-response-reference",
+      "accessed": "2026-10-08",
+      "supports": "Smooth identifier and RGB16 working range 0\u202632768; not the interpolation algorithm."
+    }
+  },
+  "stop_color_investigation": {
+    "development_step": "dev-step-048",
+    "run_directory": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors",
+    "analysis": "artifacts/runs/20261008T200005Z-048-smooth-stop-colors/palette-inspection-01.json",
+    "inputs_regenerated_exactly": 3,
+    "constant_gray_output_difference_stored_levels": 2,
+    "dense_palette_color_stops_before": 513,
+    "dense_palette_color_stops_after": 100,
+    "dense_palettes_usable_as_unchanged_references": false,
+    "application_change": "Separate PSD Gradient Map export guards prevent loss above 100 color or opacity stops; no Smooth renderer added.",
+    "references": "docs/GRADIENT_MAP_LIMIT_REFERENCES.json",
+    "next": "Split exact-stop color probes into chunks of at most 100 stops. Qualify their saved controls before fitting interpolation math."
+  },
+  "bounded_palette_investigation": {
+    "development_step": "dev-step-049",
+    "run_directory": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes",
+    "palette_analysis": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/analysis-02.json",
+    "original_references": 16,
+    "palette_references": 7,
+    "gray65_changed_samples": 2,
+    "color65_changed_samples": 8,
+    "maximum_smooth_stop_error_stored_levels": 4,
+    "reversed_color_context_exact_samples": 65,
+    "plateau_context_exact_samples": 32,
+    "saved_controls_preserved": true,
+    "all_inputs_regenerated": true,
+    "tone_coordinate_finding": "RGB16 fixed 14-bit luma weights and 4097 gradient positions are verified independently across five methods.",
+    "tone_reference": "docs/GRADIENT_MAP_TONE_REFERENCES.json",
+    "native_build_unchanged": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/research-verification.json",
+    "next": "Native RGB16 tone coordinates pass independent regressions; continue Smooth color conversion and interpolation qualification."
+  },
+  "classic_followup": {
+    "development_step": "dev-step-052",
+    "manifest": "CLASSIC_GRADIENT_RESEARCH.json",
+    "status": "Native RGB16 Classic Gradient Map implemented; two one-working-level sample differences remain. Smooth unchanged and unsupported."
+  }
+}

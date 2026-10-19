@@ -1,0 +1,208 @@
+{
+  "step": "dev-step-110",
+  "status": "Verified native Save a Copy, undoable Revert, separate recovery autosave and Save tab-state repair; D01 and Photoshop parity remain open.",
+  "baseline": "docs/ACTIVE_CHECKPOINT_109.json",
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "run": "artifacts/runs/20261019T185746Z-110-document-persistence",
+  "behavior": [
+    "File > Save a Copy with Option-Command-S, native Save panel and Photato/PSD/PNG/JPEG/TIFF format choices",
+    "Copy uses DocumentIO codecs and atomic output without changing file association, dirty flag or history; unconfirmed source aliases rejected; native replacement confirmation may authorize an original-file target",
+    "File > Revert/F12 reloads associated saved/imported file as one undoable edit; retains open document identity; clears dirty state; Undo/Redo restores correct edited/clean state",
+    "AppKit recovery autosave writes separately from the last explicit save",
+    "Background encoding/decoding with failure, stale edit/file association, cancellation and close-generation protection",
+    "Successful explicit Save refreshes the native window and every hosted document-tab unsaved marker without altering the saved model or history."
+  ],
+  "api": {
+    "photato_command_count": 15,
+    "copy": "GET /v1/documents/{id}/file.{format} remains the file-copy operation; no local output path accepted",
+    "revert": "document.revert through the typed command route; empty parameters and current revision required",
+    "enablement": "Native Allow document transfers and Revert is required, off on every session",
+    "state": [
+      "hasRevertSource",
+      "canRevert",
+      "fileOperationBusy"
+    ],
+    "errors": {
+      "403": "Disabled native permission",
+      "409": "Busy, missing saved source, stale revision/concurrent edit, revoked session/share",
+      "413": "Resource limits",
+      "422": "Decode/format error"
+    },
+    "adobe": "Pinned Adobe v2 contract has no local saved-document Revert or Save a Copy lifecycle endpoint. Existing separate action-resource routes and PSD/PNG codecs are unchanged; six endpoints remain missing. Both interfaces included in regression.",
+    "persistence_state_schema": {
+      "type": "object",
+      "required": [
+        "isModified",
+        "hasRevertSource",
+        "canRevert",
+        "fileOperationBusy"
+      ],
+      "properties": {
+        "isModified": {
+          "type": "boolean"
+        },
+        "hasRevertSource": {
+          "type": "boolean"
+        },
+        "canRevert": {
+          "type": "boolean"
+        },
+        "fileOperationBusy": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/save-your-work.html",
+      "read": "2026-10-19",
+      "supports": "Save vs Save As vs Save a Copy; format-dependent options; copy retains open document; replacement warning when original is at risk"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/file-saving-properties-and-preferences.html",
+      "read": "2026-10-19",
+      "supports": "Format/persistence controls remain broader work"
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "scope": "Historical Adobe documentation/search excerpt supports undoable Revert; current Photoshop2026 live Revert remains unqualified"
+    },
+    {
+      "source": "Xcode27 AppKit NSDocument.h",
+      "supports": "autosavesInPlace true replaces original; false routes autosave elsewhere; save operation and type behavior"
+    }
+  ],
+  "photoshop_live": {
+    "evidence": [
+      {
+        "path": "artifacts/runs/20261019T185746Z-110-document-persistence/photoshop-save-copy.txt",
+        "sha256": "daf680b8ca60c26f723dbe46106045f751e47121323a661bbc2088c6c4d0ddcc"
+      },
+      {
+        "path": "artifacts/runs/20261019T185746Z-110-document-persistence/photoshop-save-copy.png",
+        "sha256": "46e9b38403436511989c4f522cdc2a01d58f5f1707f5e5d4759d16c91eb9ab90"
+      },
+      {
+        "path": "artifacts/runs/20261019T185746Z-110-document-persistence/photoshop-save-as.txt",
+        "sha256": "9f7b3b590eb676f8680cb187c33f00aa4f76d86a9cc4abac6fc671453a57f3ad"
+      },
+      {
+        "path": "artifacts/runs/20261019T185746Z-110-document-persistence/photoshop-save-as-formats.txt",
+        "sha256": "c41b1f2b8f57a128319f3522d587fbbcaf5bb1d6ce2cc03b095d042efc957681"
+      },
+      {
+        "path": "artifacts/runs/20261019T185746Z-110-document-persistence/photoshop-cleanup.txt",
+        "sha256": "6ce7f75b6771da253d6be85f39e3a10afab951244b4c66ccee838554b1359f0c"
+      }
+    ],
+    "observed": "Read-only File/Save As/Save a Copy inspection; all dialogs cancelled, user document unchanged",
+    "failed_attempt": "Reference chooser left generated PNG Open disabled despite selection attempts. Cancelled; no decoder diagnosis inferred.",
+    "revert_reference": "No live Photoshop Revert run and no new independent pixel oracle"
+  },
+  "sources": {
+    "first": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/tested-source-hashes.json",
+      "sha256": "55098c57d8bf63be8e155b45df840168499f6a22302b8c8e04320ad5c65df7cd"
+    },
+    "footer_refinement": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/tested-source-hashes02.json",
+      "sha256": "1ce4f9b6e3b5d916f7889a5fc70c97812ea37d3aeb1c220ff73d6af0c9841aa2"
+    },
+    "before_live_save_repair": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/tested-source-hashes03.json",
+      "sha256": "c1681c208e36a2f47ff39a75c86bdb2f5df06c47f5f749548b0c6611421c52b2"
+    },
+    "final": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/tested-source-hashes04.json",
+      "sha256": "0bb95fa6f11e918671423fa6b7527ad760ac66c8e116f256617be1a732511698"
+    }
+  },
+  "tests": {
+    "focused05": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/focused05.log",
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.908
+    },
+    "failed_compile_attempts": [
+      "artifacts/runs/20261019T185746Z-110-document-persistence/focused01.log",
+      "artifacts/runs/20261019T185746Z-110-document-persistence/focused02.log",
+      "artifacts/runs/20261019T185746Z-110-document-persistence/focused03.log"
+    ],
+    "full": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/full03.log",
+      "sha256": "1cea5fa5a3224dba97f423b91be2c522ecb721a81e516f85763cdf974fa66f83",
+      "passed": 1010,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 146.367
+    },
+    "full01_historical": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/full01.log",
+      "passed": 1008,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 147.71,
+      "source_freeze": "tested-source-hashes.json"
+    },
+    "full02_before_live_save_repair": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/full02.log",
+      "passed": 1009,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 147.432,
+      "source_freeze": "tested-source-hashes03.json"
+    },
+    "optimized_before_live_save_repair": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-focused01.log",
+      "passed": 310,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.969,
+      "source_freeze": "tested-source-hashes03.json"
+    },
+    "focused06": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/focused06.log",
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.333
+    },
+    "save_presentation_regression": {
+      "before": "artifacts/runs/20261019T185746Z-110-document-persistence/save-presentation-before02.log",
+      "failed": 1,
+      "scope": "Real hosted tab retains stale unsaved marker despite successful AppKit Save; focused06 repairs this."
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-focused02.log",
+      "sha256": "a1a0191c9de4256e93729305dafc2e8a406f7a5307e05df7f3337995f9d809d4",
+      "passed": 311,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.921
+    }
+  },
+  "limits": [
+    "Source-format Save/Save As remains native-only; PSD representability, metadata/color preservation and full format controls still required",
+    "Current PNG/TIFF copy path flattens and converts32-bit to16-bit; JPEG is8-bit/95%/white matte; native sheet discloses conversions",
+    "No full Photoshop2026 byte equality, complete saved-file/preferences/context parity or complete Adobe conformance claimed",
+    "Exact Photoshop2026 Revert prompt/defaults/history grouping and save-copy default format/name preferences need independent qualification",
+    "Recovery autosave source preservation tested; crash relaunch, sandbox/bookmarks/read-only/external coordination and Intel/macOS14 runtime still open",
+    "Final live validation uses the universal Release binary with a separate ad-hoc-signed identity on arm64; production identity, Intel and macOS14 runtime are unqualified."
+  ],
+  "native_live_initial": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/live-ui-verification.json",
+    "sha256": "ae831140d6c98e79d696e4b890425cfa2dedcb9d0e029b1e88694c53823925f2"
+  },
+  "native_live": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/live-ui-final-verification.json",
+    "sha256": "015b2aa0a26f76722699fdda4030ebfd25e6ed9d1fd9b61320e98086b6470428"
+  },
+  "release_verification": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-verification.json",
+    "sha256": "2c5c137d5c9d7a351b6a3eeb4342bb4272c32c817a4f2083316c258e21f46139"
+  }
+}

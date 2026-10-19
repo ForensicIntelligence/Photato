@@ -1,0 +1,118 @@
+{
+  "step": "dev-step-068",
+  "date": "2026-10-09",
+  "status": "Native floating panel hosts with persistence and dock return; automated and package/offscreen evidence; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T070539Z-068-floating-panels/release-verification.json",
+    "sha256": "a3e9066ea66de00bebb1fe30fa4235fa4a49aa39de721c7c4387f52cd84f5109"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T070539Z-068-floating-panels/tested-source-hashes.json",
+    "sha256": "0e75c2d456f6a2bb501803390692f8fd681c9ffc50acfda4b921777144f3b8ad"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T070539Z-068-floating-panels/references.json",
+    "sha256": "7b0baf6310e107b3462d84f35e21d0b104dc95c8366882f5870d17f2a3e4e17a"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T070539Z-068-floating-panels/live-qualification.json",
+    "sha256": "b025c878e75521bad04c9d91eb25c3fc3264da55531d121c65870b61ddeeeb00"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T070539Z-068-floating-panels/offscreen-layout.json",
+    "sha256": "37716d43a1e36518ec5860a163a0163fd2e29bbae05d68af7666e284d863a7a3"
+  },
+  "implementation": [
+    "Optional per-group expanded window geometry; legacy topology migration, closed location retention, atomic shared workspace saves/reset and bounded multi-screen recovery.",
+    "NSPanel hosts reuse existing native panel bodies, target the globally active document and keep document dialogs in the common frame.",
+    "Native title-bar move/edge resize, movement locking, double-click collapse, close/reveal, Tab visibility and docking into existing or empty dock groups.",
+    "Observation reconciles layout changes without caller refresh; panels avoid becoming main windows or taking canvas focus when shown.",
+    "Retain registered AppKit Services menu while rebuilding menus; preserve native responder routing."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/focused-tests-05.log",
+      "sha256": "750c5a6b89d6ff0f618b02f096ce1cac532bb396fc83f1ebf1daeafd4ec465fa",
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.266
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/full-tests.log",
+      "sha256": "674b70895022c401f83f4a6dc364ebd2881993a0fac1c2736e9a7763169232b8",
+      "passed": 654,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 114.544
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/release-tests.log",
+      "sha256": "ffa4ced9e3b82447c41c7df38fa6aa91ce606e8e68dbe6089430de1f3bac22e3",
+      "passed": 212,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.356
+    },
+    "new_regressions": 11
+  },
+  "limits": [
+    "Live native title/tab dragging, text focus, modifiers, resizing, close/reveal, screen changes and document dialog behavior remain unqualified while the Mac is locked.",
+    "Outside-dock tab tear-off, floating stacks, additional dock columns and exact Photoshop panel menus/appearance remain unfinished.",
+    "Float Panel, Float Panel Group and Dock Panel Group are Photato workflow affordances, not claimed observed Photoshop panel-menu items.",
+    "No new image algorithm parity, full Photoshop parity, Intel runtime or macOS14 runtime qualification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "panel_tear_off_followup": {
+    "step": "dev-step-069",
+    "reference_manifest": "docs/PANEL_TEAR_OFF_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-verification.json",
+      "sha256": "b4df33d4711a8ff96091cf4cf84aea2d3cd7d168235058a464946bea2f4d1eaf"
+    },
+    "scope": "Native drag tear-off, explicit Command float drops and cancellation/cleanup guards; no new Photoshop menu bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "floating_stack_followup": {
+    "step": "dev-step-070",
+    "reference_manifest": "docs/FLOATING_STACK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+      "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+    },
+    "scope": "Native floating stack topology, native hosts/boundaries and preserved collapsed/hidden geometry; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

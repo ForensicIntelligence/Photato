@@ -1,0 +1,362 @@
+{
+  "step": "dev-step-058",
+  "date": "2026-10-08",
+  "status": "Native Normal raster merges verified with explicit remaining limits",
+  "run": "artifacts/runs/20261009T004847Z-058-layer-merging",
+  "license": "MIT OR Apache-2.0",
+  "original_procedural_data": true,
+  "photoshop": "Adobe Photoshop 2026 27.2.0 on macOS 27.0.1 Apple Silicon",
+  "official_references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/flatten-layers-in-an-image.html",
+    "https://helpx.adobe.com/photoshop/using/layers.html"
+  ],
+  "references": [
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-background-stack-rgb8.psd",
+      "sha256": "c09a244ec3d0eb974614b0dfaf26f182df498809689173b39133f68a193950c7"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-normal-rgb16.psd",
+      "sha256": "26f41201562a8c60f7abb73097541c698690eca4b14cbaef5134a92ac33254b2"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-normal-rgb32.psd",
+      "sha256": "cdf3304cf8c3e73e4b25d6c0721c6056a98f353f5417cca8c1032da4d0bc8616"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-normal-rgb8.psd",
+      "sha256": "c7e326dd3724319cb4fc5665ad3d67eb16ba92d972ec1d51c7419468f186f1f8"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-opacity-rgb8.psd",
+      "sha256": "e7dfae1c2f599d9e2908bf39d28c3b30717456191c31661d3df2ede9e9879820"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-rgb16.psd",
+      "sha256": "0fb0d881d76d841ffb165a97a3fd63120f57e151e1782be21b772bd5a8c63fd6"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-rgb32.psd",
+      "sha256": "dddced416a091ffd5b6ecce46833b0aab192e27c0b913c008eb80e6eb6580b9f"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-down-rgb8.psd",
+      "sha256": "228dd788e403853d8bd7ebc6bcef45a0540f8c7def3d3c136de165b73ac97d56"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-geometry-hidden-rgb8.psd",
+      "sha256": "08a761623f3bd8a24f9857251c2ea30937cdc1d259455c7a1f6563efb0d53199"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-normal-rgb16.psd",
+      "sha256": "23dddb59231b05fce75a2632463d5b4da4a560699ac3cb26bbdb95e795571677"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-normal-rgb32.psd",
+      "sha256": "3c106d865cd31dce3129612ce53b0fde3fc4686d185154b43f6eca903adbc964"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-normal-rgb8.psd",
+      "sha256": "31fc630de17e7e29cebdc108f11637149286e95110a2088f6853c2e34c585667"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-opacity-rgb8.psd",
+      "sha256": "b600cfd58e165261a6c85b89c370b4060d0f581b59a1749d0e38ec1706932596"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-rgb16.psd",
+      "sha256": "59ce47f7002359f98cecf8f22647bf4f325a893aa76edaf329c1830eb4332653"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-rgb32.psd",
+      "sha256": "d3eaa345cbdc5cb12a4abb9a1277363fad6195f3aede0f689fd93bd2dc9e9326"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-flat-rgb8.psd",
+      "sha256": "e213fe37247b1d30aba3fd38889d9f97112c2a9908acfd93c464c40bab6dcd20"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-selected-geometry-hidden-rgb8.psd",
+      "sha256": "422efdb886b22799088b824a3377712f04f66c1a0367c12d6a3b04ff59fdf24a"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-selected-rgb16.psd",
+      "sha256": "5c99272a53c337e5d30d7e26ad78b535e4edb9e9f534ab04e37d3c01627bc908"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-selected-rgb32.psd",
+      "sha256": "0b27b9b57f918038f1237544b28b6fb55d1fd016c16d2c32842959457459720a"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-selected-rgb8.psd",
+      "sha256": "544155330ba5e0ae4f6e50c7065ac4282a4a0563d7213b50391aa726d46fa65a"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-bottom-geometry-hidden-rgb8.psd",
+      "sha256": "313975fbdb43e76d8ee8b1bdbf86132fa1a4b2b4fda7f55d0ed8f546338719a6"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-geometry-hidden-rgb8.psd",
+      "sha256": "3b3cb9aaf02b5a0e9bc0895922d5f2ca69a03214ffea743f4cb78a207302320d"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-normal-rgb16.psd",
+      "sha256": "78a2ca2b9280abd10b562c3a24dbc932e16129b908dbb35cae0085ab59121d0d"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-normal-rgb32.psd",
+      "sha256": "1193b4105cb415013f49ef3934f5698dce64c31ccf5336707280a3903e9751f2"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-normal-rgb8.psd",
+      "sha256": "460ff5ee82574d432ddfb47e925e35710b8ab453f05ec92df5b1af898c6459ed"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-opacity-rgb8.psd",
+      "sha256": "a186fef953747ef0d05cde28a5ddea5b9473c6ffd67b64f37208d5c721eabc46"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-rgb16.psd",
+      "sha256": "b73ba4dca417d932e7b5a13277634f87d8848c60afdaf9e4731ed99c56859e66"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-rgb32.psd",
+      "sha256": "c57e15017ed76b34788d884cc9242d9b505f2ce60b6242030adf7f3a1089d8c9"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-source-rgb8.psd",
+      "sha256": "adbccf3236de439c4f9aba1578e0f86447e8119288821627c1d8c74d6da6cdcb"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-visible-bottom-geometry-hidden-rgb8.psd",
+      "sha256": "490bbb1a90df40e89d851ef9c152681a0a62126d8c3bb3357c1376f3d8683fc9"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-visible-geometry-hidden-rgb8.psd",
+      "sha256": "8fc6ec8d0f94207b7751852431b6966e532c780296cb374b390d7eb591a647e1"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-visible-rgb16.psd",
+      "sha256": "dcad453d2a300e2496c82e4c5c0ae5c25560c1f885aadd9b5f7fce155abe0ec3"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-visible-rgb32.psd",
+      "sha256": "96e6f7dd69aed826ae7249dd9f35149089474dbf70f8862f1f4ee3f639d6a409"
+    },
+    {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/references/photoshop-visible-rgb8.psd",
+      "sha256": "d7e107b84ef6f799e0b8b57cab0b2a0854a53eafb19d904650607a4d534dd31f"
+    }
+  ],
+  "independent_reference_count": 34,
+  "fixtures": [
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/normal-rgb8.rgba",
+      "sha256": "6eaba7b9109de6d9d499a68c289995eed58f38b584b0f20028829cf645cb1d48",
+      "depth": 8,
+      "opacity": 255,
+      "pixels": 65536,
+      "source": "photoshop-source-normal-rgb8.psd",
+      "expected": "photoshop-down-normal-rgb8.psd",
+      "layout": "pixel-major, Bottom RGBA / Top RGBA / merged RGBA, big-endian stored channel samples; float is linear"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/normal-rgb16.rgba",
+      "sha256": "9275b7cc57fc0baddcd74a91b6b3d30aeee5a283cdd0ff0a292e6d1c63703fee",
+      "depth": 16,
+      "opacity": 255,
+      "pixels": 65536,
+      "source": "photoshop-source-normal-rgb16.psd",
+      "expected": "photoshop-down-normal-rgb16.psd",
+      "layout": "pixel-major, Bottom RGBA / Top RGBA / merged RGBA, big-endian stored channel samples; float is linear"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/normal-rgb32.rgba",
+      "sha256": "ad1079b18f773373b32069dd0dcef7fd295544bbe8b65c5df0e94e17a5128ea2",
+      "depth": 32,
+      "opacity": 255,
+      "pixels": 65536,
+      "source": "photoshop-source-normal-rgb32.psd",
+      "expected": "photoshop-down-normal-rgb32.psd",
+      "layout": "pixel-major, Bottom RGBA / Top RGBA / merged RGBA, big-endian stored channel samples; float is linear"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/opacity-rgb8.rgba",
+      "sha256": "552504f97fdd97b35c086700067bb2c60b31bcbbc01a149b7a9f577c88e4e738",
+      "depth": 8,
+      "opacity": 153,
+      "pixels": 65536,
+      "source": "photoshop-source-opacity-rgb8.psd",
+      "expected": "photoshop-down-opacity-rgb8.psd",
+      "layout": "pixel-major, Bottom RGBA / Top RGBA / merged RGBA, big-endian stored channel samples; float is linear"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-down-rgb16.psd",
+      "sha256": "0fb0d881d76d841ffb165a97a3fd63120f57e151e1782be21b772bd5a8c63fd6",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-down-rgb32.psd",
+      "sha256": "dddced416a091ffd5b6ecce46833b0aab192e27c0b913c008eb80e6eb6580b9f",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-down-rgb8.psd",
+      "sha256": "228dd788e403853d8bd7ebc6bcef45a0540f8c7def3d3c136de165b73ac97d56",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-selected-geometry-hidden-rgb8.psd",
+      "sha256": "422efdb886b22799088b824a3377712f04f66c1a0367c12d6a3b04ff59fdf24a",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-selected-rgb16.psd",
+      "sha256": "5c99272a53c337e5d30d7e26ad78b535e4edb9e9f534ab04e37d3c01627bc908",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-selected-rgb32.psd",
+      "sha256": "0b27b9b57f918038f1237544b28b6fb55d1fd016c16d2c32842959457459720a",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-selected-rgb8.psd",
+      "sha256": "544155330ba5e0ae4f6e50c7065ac4282a4a0563d7213b50391aa726d46fa65a",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-source-bottom-geometry-hidden-rgb8.psd",
+      "sha256": "313975fbdb43e76d8ee8b1bdbf86132fa1a4b2b4fda7f55d0ed8f546338719a6",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-source-geometry-hidden-rgb8.psd",
+      "sha256": "3b3cb9aaf02b5a0e9bc0895922d5f2ca69a03214ffea743f4cb78a207302320d",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-source-rgb16.psd",
+      "sha256": "b73ba4dca417d932e7b5a13277634f87d8848c60afdaf9e4731ed99c56859e66",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-source-rgb32.psd",
+      "sha256": "c57e15017ed76b34788d884cc9242d9b505f2ce60b6242030adf7f3a1089d8c9",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-source-rgb8.psd",
+      "sha256": "adbccf3236de439c4f9aba1578e0f86447e8119288821627c1d8c74d6da6cdcb",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-visible-bottom-geometry-hidden-rgb8.psd",
+      "sha256": "490bbb1a90df40e89d851ef9c152681a0a62126d8c3bb3357c1376f3d8683fc9",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-visible-geometry-hidden-rgb8.psd",
+      "sha256": "8fc6ec8d0f94207b7751852431b6966e532c780296cb374b390d7eb591a647e1",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-visible-rgb16.psd",
+      "sha256": "dcad453d2a300e2496c82e4c5c0ae5c25560c1f885aadd9b5f7fce155abe0ec3",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-visible-rgb32.psd",
+      "sha256": "96e6f7dd69aed826ae7249dd9f35149089474dbf70f8862f1f4ee3f639d6a409",
+      "original": true
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-visible-rgb8.psd",
+      "sha256": "d7e107b84ef6f799e0b8b57cab0b2a0854a53eafb19d904650607a4d534dd31f",
+      "original": true
+    }
+  ],
+  "kernel_exact_rgba_pixels": 262144,
+  "interpretation": "Original procedural inputs were recalculated and saved by Photoshop through its native UI. Independent Python decoding extracted expected stored samples. Integer cases use encoded RGB; raw RGB32 samples are linear. This does not certify full merge or application parity.",
+  "semantics": [
+    "Merge Down retains the immediate visible lower layer name; hidden lower layer disables the operation.",
+    "Merge Layers retains top selected visible name and off-canvas content; selected hidden layers are removed.",
+    "Merge Visible clips to the canvas and replaces active visible layer, preserving hidden layers and their order.",
+    "Flatten requires distinct Background semantics and confirmation when hidden layers exist; remains unimplemented."
+  ],
+  "limits": [
+    "Full Photoshop parity remains false.",
+    "Only root-level unlocked Normal raster layers without masks, transforms, clipping or groups can merge.",
+    "Entirely transparent merge results remain unsupported; arbitrary hidden-active and lock contexts need qualification.",
+    "All-depth kernel samples match, but native RGB32 encoded/linear transfer is not bit-reversible. Workflow RGB32 checks qualify alpha and bounded color error, not byte-identical RGB.",
+    "The general renderer still uses its previous compositing arithmetic; only merge transactions use the newly measured kernel.",
+    "Additional blends, groups, masks, clipping, color management, fill opacity, locks, Background and Flatten Image remain pending.",
+    "Pixel selection retention is a native invariant; Photoshop selection/history behavior needs independent qualification.",
+    "Intel/macOS14/macOS26 execution is not qualified on this host."
+  ],
+  "full_photoshop_parity": false,
+  "tests": {
+    "full": {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/full-tests.log",
+      "sha256": "0f9ae5b23b4ddf97a1817cd392575625b60a20557e70640786a4e63e2b08b0c4",
+      "tests": 586,
+      "failures": 0,
+      "seconds": 108.783,
+      "skipped": 0
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T004847Z-058-layer-merging/release-tests.log",
+      "sha256": "6c614e4c7b60b903c8065ce5507160a28d5d8ad47e406b233f2e241aeb600938",
+      "tests": 133,
+      "failures": 0,
+      "seconds": 3.453,
+      "skipped": 0
+    },
+    "new_tests": 9
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261009T004847Z-058-layer-merging/tested-source-hashes.json",
+    "sha256": "12e049d945f2b8941beaeacd6b28f1a01fde98c5bbe6d23124f06118d0449040"
+  },
+  "source_files": {
+    "application": 138,
+    "tests": 127,
+    "total": 265
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-verify-l9l3z06g/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "507e45a6739ae1d86106c5ba8cfc539ddabf4bf13718572842cf8cc22fceff1e",
+    "zip_sha256": "c35207cb664683ea90a646de23f5223dbbadfb6e674fb0d4c35ddf2c7582d264",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "source_icon_sha256": "ba7e98d71e6af20662d49e74802bb0bcc699426152acca8b55137469666ac112",
+    "clean_zip_signature_verified": true,
+    "license_integrity_verified": true,
+    "desktop_fileprovider_may_readd_finder_metadata_after_launch": true,
+    "bundled_license_names": [
+      "LICENSE-MIT",
+      "LICENSE-APACHE",
+      "LICENSE-psd-tools",
+      "NOTICE",
+      "ATTRIBUTION.md"
+    ],
+    "swiftpm_tests_passed": 586,
+    "historical_render_benchmark_binary_sha256": "3f175139d0b4b0134a7551dc727e71936ce757710dda155c5634e3737b30ed33",
+    "historical_render_benchmark_matches_current_binary": false
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T004847Z-058-layer-merging/live-ui-verification.json",
+    "sha256": "0f5dbbf5f5f94a2f67ee7d59f80cb83a7cd713d6bddddd49e99d49d07dcabdf0"
+  },
+  "live_rgba_and_merged_exact": true,
+  "live_canvas_pixels": 67072,
+  "post_undo_archive_check": {
+    "path": "artifacts/runs/20261009T004847Z-058-layer-merging/post-live-input-verification.json",
+    "sha256": "5c2a728655cd19f51720331019aea80560ad8f86f71e084d2c4347c56c9b1fbc"
+  }
+}

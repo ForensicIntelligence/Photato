@@ -1,0 +1,137 @@
+{
+  "step": "dev-step-102",
+  "date": "2026-10-13",
+  "status": "Core transaction foundation implemented; complete desktop/dual-API component editing increment still in progress.",
+  "photoshop": {
+    "application": "Adobe Photoshop 2026",
+    "version": "27.2.0",
+    "originals": "Procedural RGB8 PNGs; no user or third-party artwork",
+    "workflow": "Save original PSD; select Red with factory Cmd3; Fill Normal white100/50/33 or black50; save separate PSDs; undo between cases; restore original Fill choices; close disposable probes. Original modified Untitled-1 untouched.",
+    "settings_restored": "Foreground Color, Normal,100%; RGB preview; no save prompt on probe closure"
+  },
+  "evidence_root": "artifacts/runs/20261013T170758Z-102-component-edit-reference",
+  "reference_files": {
+    "component-baseline.psd": "0fb625090c7786f2a9e85c359b6c773292a98cfb5dcdd2b6d76a5264febae8e9",
+    "component-probe.png": "639646eb5bc3c1443ca78d80f37b30c38d3e05340505eac791eb50a9320c7b3f",
+    "component-ramp.png": "689a713d843155e02aa29a19d17d278bfe36e41c630e722014eb2a4eb9b9b98c",
+    "component-red-white-50.psd": "1f395d08e7292248f15599e9693be96ba0bbea405b0088ae41553400b9bb3b93",
+    "component-red-white.psd": "b001768167dcfeea256725498525ad1467109e4cec580d9d637a74c5cdc69430",
+    "component-undo.psd": "de3ec0f1132a6ed391092419d6874d6ce650025835a08d0249f312f7ba30336d",
+    "fill-red-dialog.png": "7448d8ed57ad662f1089c8132bc2e06f06662818ed69b5507d92ad5977ff4fba",
+    "ramp-baseline.psd": "b1fb0258c4408291d69cac3344635bb81b608ca9bf72108a1f15f0734076b1c4",
+    "ramp-red-black-50.psd": "cbe8b164e124e30bdf9f94a750448ff9bfd28d3b6cb301ca9fee7a30d63e2973",
+    "ramp-red-white-33.psd": "363a6eea00a81f5ba89aad5c8dbc8c78fd1bd029d221d6631dfb076a6c866d6b",
+    "ramp-red-white-50.psd": "ad79c1651f63e75be66a5e9885ab903cd835f6d4761b7ae1acf63adf66f29c71",
+    "red-undo.png": "ede0a65cc0d19cc520de817ee61eb4abfb3c18f1a5699ad82798f54c5af39579",
+    "red-white-result.png": "d566e53af3820fd4c34f73b2cf0ed42239b8feaa9edae2a28431bbfdbced7d5c"
+  },
+  "independent_decoder": "artifacts/runs/20261013T170758Z-102-component-edit-reference/inspect-component-reference.py",
+  "ramp_analysis": "artifacts/runs/20261013T170758Z-102-component-edit-reference/ramp-analysis01.json",
+  "observations": [
+    "Original constant Red32 becomes255 for White100 and144 for White50, independent of nonzero alpha.",
+    "Undo restores all12288 constant-fixture layer-plane bytes. Layer bounds remain48x64.",
+    "Across all256 ramp inputs, three Fill results preserve Green/Blue/alpha bytes exactly, including internal alpha-zero samples.",
+    "Opacity rounded to a byte produces every measured Red output; float33% mismatches768 positions and float Black50% mismatches4096 positions.",
+    "The original Rust Normal RGBA composite candidate differs at semitransparent pixels; post-composite channel restoration is insufficient."
+  ],
+  "native": {
+    "command": "Command.fillComponents(UUID, RGBComponentFill)",
+    "source": "Sources/PhotoCraftCore/RGBComponentFill.swift",
+    "depth": "RGB8; higher depths reject pending their arithmetic",
+    "blend_mode": "Normal",
+    "target_model": "Nonempty valid RGBComponents bit set; separate from view state and composite editing; selected color planes only, alpha never written.",
+    "arithmetic": "Integer value/opacity bytes; selected sample=(source*(255-weight)+fill*weight+127)/255. Fractional native selection weight=(opacityByte*selectionByte+127)/255.",
+    "history": "Existing PreparedEdit and EditorSession transaction/history/stale path.",
+    "storage": "Checked cancellable copy-on-write mapping preserves all untargeted stored sample bits, layer bounds and metadata.",
+    "desktop_exposure": false,
+    "photato_api_exposure": false,
+    "adobe_api_exposure": false
+  },
+  "fixture": {
+    "manifest": "Tests/PhotoCraftCoreTests/Fixtures/photoshop-component-fill-rgb8.json",
+    "data": "Tests/PhotoCraftCoreTests/Fixtures/photoshop-component-fill-rgb8.bin",
+    "generator": "scripts/generate-component-fill-reference.py",
+    "cases": 5,
+    "expected_output_bytes": 122880,
+    "provenance": "Expected samples extracted from Photoshop-saved raw layer planes, not generated with native math. Original test data MIT OR Apache-2.0."
+  },
+  "tests": {
+    "focused01": {
+      "log": "artifacts/runs/20261013T170758Z-102-component-edit-reference/focused01.log",
+      "count": 6,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 0.05
+    },
+    "full01": {
+      "log": "artifacts/runs/20261013T170758Z-102-component-edit-reference/full01.log",
+      "count": 953,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 144.504
+    },
+    "release-focused01": {
+      "log": "artifacts/runs/20261013T170758Z-102-component-edit-reference/release-focused01.log",
+      "count": 34,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 0.599
+    }
+  },
+  "api_integration_required_before_feature_completion": [
+    "Per-document real edit-target state and target-aware availability for every writing tool.",
+    "Photato typed component target/fill operations, schemas, observable state and revision/history/busy validation. Preserve existing view-only commands.",
+    "Adobe /v2/execute-actions input/output and asynchronous job/status lifecycle over the same native operation. Pin actual select/fill actionJSON descriptors and qualify errors/options.",
+    "Cross-desktop/Photato/Adobe output equality and undo/state tests; no capability advertising until integrated."
+  ],
+  "limitations": [
+    "No claim of complete component editing or endpoint support. All8 Adobe endpoints still unimplemented.",
+    "No global Photoshop byte equality or full-file PSD equality. Only the identified RGB8 layer-plane samples qualify.",
+    "RGB16/32, other blend modes, color-to-gray conversion, arbitrary gray fill values, fractional selections, transformed geometry and multiple component targets need independent Photoshop output qualification.",
+    "Native tests of unqualified cases establish invariants only.",
+    "UI edit targeting, temporary masks, factory shortcuts/preferences and other tools remain pending.",
+    "Universal step102 package verifies. UI/API behavior is unchanged; no step102 live Photato interaction or Intel/macOS14 runtime qualification. Existing step101 live UI evidence remains scoped to that binary."
+  ],
+  "package": {
+    "extracted_app": "/private/tmp/photato-component-core-0osj0jto/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "9cae0b3ce4aa6d96d083e601e37d0feb4bc05ee8745c11348618e6f41843ab16",
+    "zip_sha256": "4fe6ad411c6f021ff4ae2090db8adcf261254705cde68143a984e034dfea441b",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true,
+    "verification": "artifacts/runs/20261013T170758Z-102-component-edit-reference/release-verification.json"
+  },
+  "build_attempts": [
+    {
+      "log": "artifacts/runs/20261013T170758Z-102-component-edit-reference/build01.log",
+      "exit": 1,
+      "outcome": "Both architectures compile; restricted iconutil rejects generated icon set before packaging."
+    },
+    {
+      "log": "artifacts/runs/20261013T170758Z-102-component-edit-reference/build02.log",
+      "exit": 0,
+      "outcome": "Same tested sources and icon; approved native system access permits conversion and full package/signature verification."
+    }
+  ],
+  "tested_source_hashes": "artifacts/runs/20261013T170758Z-102-component-edit-reference/tested-source-hashes.json",
+  "next_actions": [
+    "Record select-channel and fill actionJSON from Photoshop Actions export on an original disposable probe; preserve/restore workspace and action set state.",
+    "Add native Adobe request/resource/job/status adapters and explicit supported-action validation using the pinned contract; qualify against schemas without claiming Adobe identity or full action support.",
+    "Wire per-document edit-target selection, Photoshop factory shortcuts and target-aware tool availability; add Fill opacity and real component semantics through the same core command.",
+    "Add Photato target/fill commands/state/schemas and equivalent desktop/Photato/Adobe regression and live workflows in this same unfinished component-editing increment.",
+    "Expand independent reference coverage to arbitrary intensity, selected-area coverage, RGB16/32, multiple components and other writing tools; do not infer global parity from RGB8 Normal cases."
+  ],
+  "step103_followup": {
+    "evidence": "docs/ACTION_JOB_REFERENCES.json",
+    "status": "Native actionJSON and complete PSD resource pipeline each match the same122880 independent Photoshop layer-plane output bytes; desktop and public APIs still unintegrated."
+  },
+  "later_integration": {
+    "step": "dev-step-106",
+    "evidence": "docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json",
+    "note": "Historical foundation gaps below describe steps102/103; current partial public integration is tracked in this later evidence."
+  }
+}

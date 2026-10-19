@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-08",
+  "module": "Editable native Gradient Fill layers and PSD merged transparency",
+  "goal_pass_classification": "progress",
+  "full_photoshop_parity": false,
+  "new_tests": 15,
+  "core_tests": 4,
+  "imaging_tests": 8,
+  "workflow_tests": 3,
+  "full_tests": 484,
+  "primary_references": [
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/apply-gradient-fill.html",
+    "../photocraft-main/crates/compose/src/lib.rs: fill_frame",
+    "../photocraft-main/crates/engine/src/gradient_fill_cmds.rs",
+    "../photocraft-main/crates/engine/src/canvas_geom.rs",
+    "../photocraft-main/crates/io/src/blocks.rs: GdFl",
+    "../photocraft-main/crates/io/src/pixels.rs: merged matte/unmatte",
+    "https://github.com/Agamnentzar/ag-psd/blob/master/src/descriptor.ts"
+  ],
+  "implemented": [
+    "Native retained GradientFill document content, strict captured-color validation, typed create/update commands, selection/reveal-all masks, archive/clipboard, locks and one-step undo",
+    "Five shapes; editable color and opacity stops/midpoints, smoothness, three methods, angle/scale/offset/reverse/dither/alignment; preview/cancel and canvas drag",
+    "Layer menu, Layer Content Options, Layers footer, thumbnail double-click and Properties entry points; native swatch thumbnails",
+    "Dynamic aligned pixel/vector mask frame, direct regional composition, cache invalidation when mask bounds change, direct picking and correct document-space clone sampling",
+    "RGB PSD GdFl import/export, strict unsupported settings, original descriptor preservation, stale-tag removal on rasterization",
+    "White-matted merged PSD channels: quantize integer composite before matting; keep linear floating-point HDR; remove white matte before converting a flattened PSD"
+  ],
+  "evidence": {
+    "native_round_trip_matrix": "45 depth/style/interpolation combinations, exact native composites and retained controls; ImageIO independently decodes opaque merged images",
+    "saved_reference": "Unmodified Photoshop CC 2018 32x32 RGB8 Color to Transparent: all 1024 stored merged RGBA pixels agree exactly; newly exported merged channels also agree exactly",
+    "minimal_reference": "Same editable content renders identically; three-channel merged preview is uniformly white and is not a usable pixel reference",
+    "rejected_references": "gradient-fill.psd requires an unrepresented color profile; gradient-sizes.psd and gradient-styles.psd require artd artboard metadata. Tests assert those explicit rejections.",
+    "fixture_manifest": "../artifacts/psd-gradient-fixture-manifest.json",
+    "reference_metrics": "../artifacts/gradient-fill-reference.json",
+    "full_suite": "../artifacts/gradient-fill-full-tests.log",
+    "release_suite": "../artifacts/gradient-fill-release-tests.log",
+    "live_photoshop_verified": false,
+    "ui_scope": "Offscreen native workspace and expanded editor; actual AppKit mouse and Return/Escape event routing exercised in tests. Locked Mac prevents live UI interaction.",
+    "release_focused_tests": {
+      "tests": 67,
+      "failures": 0,
+      "seconds": 1.411,
+      "log": "gradient-fill-release-tests.log",
+      "sha256": "9f2e5b617b85a20690852d8d630920c2ed910830b491a86216b3104092e6fc35"
+    },
+    "package_manifest": "../artifacts/gradient-fill-release-verification.json"
+  },
+  "remaining": [
+    "Live/Classic Gradient and on-canvas endpoints/color stops/midpoints implemented in follow-up. Direct opacity controls, full Photoshop Gradient Editor and pixel/interaction qualification remain open.",
+    "Persistent Gradients library, folders, GRD import/export UI, preset creation and management",
+    "Gradient Map, layer effects, noise gradients and correct CMYK/Lab/profile processing",
+    "General exact Photoshop 2026 gradients: all depths/methods/angles, partial alpha, smoothness, dither, mask alignment, preferences/shortcuts and generative integration",
+    "Complete geometry semantics: current model carries angle/relative center through canvas operations and reflows in mask/canvas frame; nonuniform warps, reflected angle handedness and direct Fill Free Transform need qualification and implementation",
+    "Current-layer fill clone sampling returns document coordinates; broader clone/heal behavior and large-canvas gradient/mask-frame performance require qualification",
+    "GRD/GdFl positions and midpoints quantize to descriptor grids when edited; new native content requires a current Photato build even though archive envelope remains version 7",
+    "Broader RGB16/32 merged-matte Photoshop fixtures, alternative color modes, artboards, multi-OS and Intel runtime coverage; no universal Photoshop equivalence claim"
+  ],
+  "follow_up": "GRADIENT_TOOL_REFERENCES.json",
+  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone."
+}

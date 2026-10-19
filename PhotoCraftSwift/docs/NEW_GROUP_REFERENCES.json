@@ -1,0 +1,80 @@
+{
+  "step": "dev-step-074",
+  "date": "2026-10-09",
+  "status": "New Group dialogs and immediate grouping regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T095137Z-074-new-group/release-verification.json",
+    "sha256": "8f18b051dab8577199e47f0bef02dc780c7d7b1c7f2ca59b6797c6d6db4a0801"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T095137Z-074-new-group/tested-source-hashes.json",
+    "sha256": "c2078122d3055576a4f4f30ec763a4b061198e20e782b0dffa74c70d4539fc04"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T095137Z-074-new-group/research.json",
+    "sha256": "51bd9e994a5282ee9fb015dda5f8aecac1fa2127f81e5b32b68fb1900997467b"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T095137Z-074-new-group/live-qualification.json",
+    "sha256": "7e0d373466b2977eab1fbaf8cf050fe8b90316c17ebd2da2a955dd96a080e597"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T095137Z-074-new-group/offscreen-layout.json",
+    "sha256": "46913c2f902d71354069dcffc817795563495953de497be0f53fa745cb83b56d"
+  },
+  "implementation": [
+    "New Group and New Group from Layers use separate dialog actions; CmdG remains immediate.",
+    "Name/color/optional-mode/opacity defaults and validation, complete transaction and undo.",
+    "Footer Shift groups selected roots; Option requests dialog; Command places empty group below. Shift takes precedence in compound Shift+Command.",
+    "Shared creation guard blocks drafts, geometric work, AI/other sheets, feature map and pending alerts.",
+    "All document/tree mutations stage before publishing; invalid nesting cannot leak a partial new group."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T095137Z-074-new-group/focused-tests-03.log",
+      "sha256": "d2711555ddfa10f6585c87eadce719561c778b6f323a3dde2a6ad2e6d8529b45",
+      "passed": 163,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.925
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T095137Z-074-new-group/full-tests.log",
+      "sha256": "115c98115d3127991438270b090bb9bc64fb3c77141c72f118c8c97bfc768e95",
+      "passed": 723,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 120.482
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T095137Z-074-new-group/release-tests.log",
+      "sha256": "5f16bf18f7e2cfe7007e429952ee09d6653afc9f48197239f277a811761c328f",
+      "passed": 298,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.375
+    },
+    "new_regressions": 14
+  },
+  "limits": [
+    "Live Return/Escape/focus/click/VoiceOver, dialog geometry/defaults and compound modifiers remain pending.",
+    "Noncontiguous grouping preserves root order at the highest selected position, but naturally changes stacking relative to intervening layers; no Photoshop pixel-equivalence claim for that rearrangement.",
+    "Cross-parent selection, locked-layer grouping, Background semantics and full group/clipping/compositing remain restricted or unqualified.",
+    "Direct inherited label-color appearance for children, full group context menus and advanced blend options remain pending.",
+    "No full Photoshop parity, byte equality, Intel runtime or macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "duplicate_layer_followup": {
+    "step": "dev-step-075",
+    "reference_manifest": "docs/DUPLICATE_LAYER_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T101053Z-075-duplicate-layers/release-verification.json",
+      "sha256": "03dc6d81072b2fe047247c994e6283544439fa94f702222a1d2c575f2a87a3fb"
+    },
+    "scope": "Duplicate Layer/Group/plural dialog, name and current/open/New destinations; original menu hierarchy and shortcut preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

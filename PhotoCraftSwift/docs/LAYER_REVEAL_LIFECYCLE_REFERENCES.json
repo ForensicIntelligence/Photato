@@ -1,0 +1,51 @@
+{
+  "step": "dev-step-085",
+  "date": "2026-10-09",
+  "status": "Native Layers reveal lifecycle repaired, tested and packaged; overall Photoshop parity incomplete",
+  "release": {
+    "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/release-verification.json",
+    "sha256": "acbfee83c6b45b29edbf1965e1e5717d29abcb61b589c00cee32022593e5019e"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/tested-source-hashes.json",
+    "sha256": "cdf5bf9171ea4e77ed330676e67a676c9b3a7403f535d7ba929203dae8c842c6"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/research.json",
+    "sha256": "ff5a4f66ed9357448f0ca8ffaba08c5ae9c6aeed26fe16c953845c92f925c256"
+  },
+  "offscreen": {
+    "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/offscreen-layout.json",
+    "sha256": "0723706d81855b4ab0f784b97606d5846f4ecfac102f49818fe98cdaf6e5175e"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T150858Z-085-layout-lifecycle/live-qualification.json",
+    "sha256": "665813b9281cd0b518a8484cc395b84e1c0930e58dc263c80c8123945254fe7e"
+  },
+  "implementation": [
+    "Keep pending reveal observable until the target is actually visible.",
+    "Native passive list bridge reacts to attachment, layout and clip/document/row geometry notifications.",
+    "SwiftUI identity navigation realizes missing or clipped cached rows; native scrolling exposes only the nearest missing edge.",
+    "Confirm native visibleRect, current row height, current store/generation/selection and rename identity before consumption.",
+    "Retire callbacks/observers on completion and dismantling; completed requests never counteract later manual scrolling.",
+    "Opt-in tracing records layout/focus and two same-host captures without changing ordinary launch timing."
+  ],
+  "new_regressions": 6,
+  "limits": [
+    "No new live UI/Photoshop comparison while manual unlock remains pending.",
+    "Bounded repetition and regression cases do not certify all layer counts, zoom/backing scales or macOS runtime versions.",
+    "Properties numeric-field one-pixel height variation is still unresolved; interior glyph pixels match after translation, and no value mutation was observed.",
+    "Full-tree diagnostic call in one async XCTest attempt aborted with Swift concurrency task deallocation; exact cause unproven. The call was removed from that test, and CLI traces plus subsequent tests completed.",
+    "Four inherited native NSAlert offscreen appearance captures remain inconclusive.",
+    "No claim of full Photoshop feature or byte equivalence."
+  ],
+  "full_photoshop_parity": false,
+  "numeric_layout_followup": {
+    "step": "dev-step-086",
+    "reference": "docs/WORKSPACE_FIELD_LAYOUT_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/release-verification.json",
+      "sha256": "3a44b972188d7278cb423723ab33ab8c0c7defc429b155d687025d3f2f398369"
+    }
+  }
+}

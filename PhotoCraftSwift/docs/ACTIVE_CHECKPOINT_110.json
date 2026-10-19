@@ -1,0 +1,113 @@
+{
+  "step": "dev-step-110",
+  "recorded_at_utc": "2026-10-19T19:35:54.679810+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions; then minor functions; then final details. Required smaller dependencies belong to their major workflow.",
+  "major_workflow": "D01: document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/tested-source-hashes04.json",
+    "sha256": "0bb95fa6f11e918671423fa6b7527ad760ac66c8e116f256617be1a732511698"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-verification.json",
+    "sha256": "2c5c137d5c9d7a351b6a3eeb4342bb4272c32c817a4f2083316c258e21f46139"
+  },
+  "tests": {
+    "full03.log": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/full03.log",
+      "sha256": "1cea5fa5a3224dba97f423b91be2c522ecb721a81e516f85763cdf974fa66f83",
+      "passed": 1010,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 146.367
+    },
+    "release-focused02.log": {
+      "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-focused02.log",
+      "sha256": "a1a0191c9de4256e93729305dafc2e8a406f7a5307e05df7f3337995f9d809d4",
+      "passed": 311,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.921
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-persistence-ynf6uxnb/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "3bd60527ab3ccfe4536873e192ca1f27e14cdb0f5900ef9c39885372f4957da7",
+    "zip_sha256": "2b9a3a637b481f69699a61aa9f606b0d990df8629cd19e993e602ba26513a66e",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true,
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T185746Z-110-document-persistence/live-ui-final-verification.json",
+    "sha256": "015b2aa0a26f76722699fdda4030ebfd25e6ed9d1fd9b61320e98086b6470428"
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Native Save a Copy using shared codecs, with atomic output and native replacement confirmation",
+    "Undoable Revert from associated saved/imported file, with permission/revision/session-safe Photato API coverage",
+    "Recovery autosave preserves last explicit Save separately",
+    "Fixed save-only tab refresh; verified actual AppKit Save, hosted button state and final Release interaction"
+  ],
+  "corrections": [
+    "Three initial compile failures repaired; exact attempts preserved.",
+    "Full02/optimized01/package01 passed before Release live inspection exposed a stale tab. It was a UI observation defect; disk and NSDocument state were correct.",
+    "Real tab regression failed before the repair and passed after; source freeze04 and rebuilt package carry the fix.",
+    "Reference Photoshop chooser selection never enabled Open for the disposable PNG; no decoder bug inferred. Read-only Save dialogs were inspected; no new independent Photoshop Revert/pixel equality claim."
+  ],
+  "resume_first": "Read AGENTS.md, WORK_PRIORITIES_108.json, FUNCTION_PHASES_109.json, this checkpoint, STATUS.md, DEVLOG.md step110 and DOCUMENT_PERSISTENCE_REFERENCES.json. Verify383 source/test hashes, package and Xcode project. Continue major D01 with source-format Save/Save As, representability and metadata/profile preservation. Do not repeat completed tests without a source change or new concern; do not advance to optional minor/detail work.",
+  "next_source_review": [
+    "NativeDocument.swift native-only writableTypes/data/save ownership; DocumentPersistence.swift copy/revert guards",
+    "DocumentIO.swift format adapters and explicit representability requirements",
+    "RasterIO.swift sRGB output/depth conversion; PSDCodec.swift rebuilt image resources/profile/global data and unsupported live layer types",
+    "Photoshop Save/Save As format options and independent fixtures before save-back claims",
+    "Shared Photato schemas/desktop state and corresponding Adobe action resource behavior"
+  ],
+  "remaining_major_dependencies": [
+    "I01\u2013I04 formats/PSD/PSB/pcraft/export scope",
+    "COL01 profile preservation and color-policy behavior",
+    "D02 crash/autosave/atomic-write/bookmark durability",
+    "Q03 responsiveness and cancellation",
+    "AUT02 API completion; existing Adobe adapter remains partial",
+    "Q04\u2013Q06 independent output/professional/platform qualification across every phase"
+  ],
+  "runtime_cleanup": "Separate Release validation app quit; original PhotoCraft and Photoshop remain running. Disposable probe closed; API stayed off; no user documents or shared workspace preferences changed.",
+  "limits": [
+    "Source-format Save/Save As remains native-only; PSD representability, metadata/color preservation and full format controls still required",
+    "Current PNG/TIFF copy path flattens and converts32-bit to16-bit; JPEG is8-bit/95%/white matte; native sheet discloses conversions",
+    "No full Photoshop2026 byte equality, complete saved-file/preferences/context parity or complete Adobe conformance claimed",
+    "Exact Photoshop2026 Revert prompt/defaults/history grouping and save-copy default format/name preferences need independent qualification",
+    "Recovery autosave source preservation tested; crash relaunch, sandbox/bookmarks/read-only/external coordination and Intel/macOS14 runtime still open",
+    "Final live validation uses the universal Release binary with a separate ad-hoc-signed identity on arm64; production identity, Intel and macOS14 runtime are unqualified."
+  ],
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 110,
+      "evidence_files": 21335,
+      "logs": 12605,
+      "missing_explicit_references": 0
+    },
+    "refresh_log": "artifacts/development-history-audit/20261019-step110-document-persistence/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261019-step110-document-persistence/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step110-document-persistence/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step110-document-persistence/check02.log",
+    "final_note": "Final refresh/check runs after checkpoint and final-consistency updates; inspect terminal logs for final outcome."
+  }
+}

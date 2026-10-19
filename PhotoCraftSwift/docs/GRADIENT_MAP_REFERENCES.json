@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-08",
+  "status": "Historical Gradient Map milestone; current method/depth scope is superseded by GRADIENT_STRIPES_REFERENCES.json",
+  "sources": [
+    {
+      "path": "../photocraft-main/crates/doc/src/adjust.rs",
+      "scope": "Retained Gradient Map settings"
+    },
+    {
+      "path": "../photocraft-main/crates/compose/src/adjust.rs",
+      "scope": "Tonal mapping, alpha retention and ordered dither; native ramp retains full controls"
+    },
+    {
+      "path": "../photocraft-main/crates/io/src/adjust_map.rs",
+      "scope": "Binary grdm field layout"
+    },
+    {
+      "path": "../photocraft-main/crates/engine/src/adjust_params.rs",
+      "scope": "Adjustment preset application"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/apply-special-color-effects-to-images.html",
+      "accessed": "2026-10-08",
+      "scope": "Tonal mapping, adjustment layer and pixel workflows, Reverse/Dither and preset editing"
+    },
+    {
+      "scope": "Available Photoshop 2026 UI and five canonical saved RGB8 references; Gradient Map method menu includes Perceptual, Linear, Classic, Smooth and Stripes; observed default Smooth",
+      "manifest": "GRADIENT_MAP_FIXTURES.json"
+    }
+  ],
+  "implemented": [
+    "Native retained GradientMapAdjustment and prepared spatial evaluator; RGB8/16/32 paths with preserved alpha and document-coordinate Bayer dither",
+    "Image > Adjustments > Gradient Map preview/cancel/background commit and one-step undo; Layer > New Adjustment Layer > Gradient Map with selection-derived mask",
+    "Properties and pixel sheet provide Classic/Linear/Perceptual, Reverse, Dither, color stops, midpoints and smoothness; preset selection and Save Preset share persistent Gradients library",
+    "Asynchronous preset completion checks a unique draft session ID, preventing stale edits after cancellation/reopening on the same layer",
+    "Native archive version 8 reads versions 1\u20138; clipboard retains editable adjustment and masks",
+    "Bounded PSD grdm v1/v3 supports RGB/HSB/grayscale stops, opacity controls and original-record preservation; unknown methods/color models/noise reject explicitly",
+    "RGB8 tone lookup rounds to a 1/4096 grid; this removes all grayscale differences for the tested Classic reference without asserting global equivalence"
+  ],
+  "evidence": {
+    "new_core_tests": 4,
+    "new_imaging_tests": 4,
+    "new_workflow_tests": 4,
+    "test_logs": [
+      "../artifacts/gradient-map-full-tests.log",
+      "../artifacts/gradient-map-release-tests.log"
+    ],
+    "fixture_manifest": "GRADIENT_MAP_FIXTURES.json",
+    "photoshop_pixel_comparison": "../artifacts/gradient-map-photoshop-comparison.json",
+    "reference_pixels_per_method": 16384,
+    "reference_gray_pixels_per_method": 2048,
+    "changed_pixels": {
+      "Classic": 38,
+      "Linear": 285,
+      "Perceptual": 270
+    },
+    "maximum_difference_8bit_levels": 1,
+    "alpha_differences": 0,
+    "native_export_live_ui": "One preserved RGB8 PSD opened in Photoshop as an editable Gradient Map; Classic, Reverse, Dither, 50% layer opacity, 75% smoothness and mask inspected. Recalculated Photoshop export pixels were not compared.",
+    "native_full_regional_render_checks": "All three native depths with coordinate-stable dither, masks and layer opacity",
+    "release_manifest": "../artifacts/gradient-map-release-verification.json",
+    "snapshot": "../artifacts/gradient-map-workspace.png",
+    "full_photoshop_parity": false,
+    "native_live_ui": {
+      "checked": [
+        "Open original PNG probe",
+        "Image > Adjustments > Gradient Map dialog",
+        "Nested Save Preset opens and cancels",
+        "Gradient Editor controls open",
+        "Numeric midpoint edit",
+        "Escape closes editor popover",
+        "Cancel returns to pixel layer without applying",
+        "Final packaged numeric field displays 35",
+        "Layer-menu creation with editable map and mask properties",
+        "Command-Z removes newly added adjustment layer"
+      ],
+      "finding": "Final packaged recheck passed: entering 35% displays 35. Escape closes the editor, Cancel returns to Pixel Layer, Layer > New Adjustment Layer > Gradient Map exposes map/mask controls, and Command-Z removes the new layer.",
+      "final_binary_sha256": "c90adf975c1c4536b5051a5829b08a322bcdc3424c36b6d4263db6da664512b5",
+      "scope": "Basic menu/dialog/keyboard workflow only; complete Photoshop pointer/shortcut/preferences parity remains unqualified."
+    }
+  },
+  "remaining": [
+    "Smooth (Smoo) and Stripes (GIMs), including Photoshop 2026 default Smooth; unsupported PSDs reject explicitly",
+    "Remaining one-level RGB8 differences; arbitrary multi-stop colors/midpoints/smoothness, reverse, gradient opacity and exact Photoshop dither",
+    "Photoshop RGB16/32 reference pixels, HDR behavior, non-sRGB profiles, CMYK/Lab and noise maps",
+    "Full Gradient Editor pointer/keyboard behavior, defaults/preferences and native live interaction qualification; basic native dialog interactions were checked live, with final packaged layouts also rendered offscreen",
+    "Independent Photoshop recalculation of native PSD exports beyond one RGB8 editable-controls inspection",
+    "Large-document latency and Intel/macOS14/26 runtime qualification",
+    "Gradient overlays/strokes, on-canvas opacity and the broader open Photoshop feature catalogue"
+  ],
+  "superseded_by": "GRADIENT_STRIPES_REFERENCES.json"
+}

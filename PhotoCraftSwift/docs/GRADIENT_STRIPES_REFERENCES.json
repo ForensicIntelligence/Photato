@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-08",
+  "status": "Partial Photoshop 2026 parity: Stripes implemented, bounded RGB8 exactness; Smooth and broader output remain open",
+  "sources": [
+    {
+      "scope": "Photoshop 2026 live UI and original saved output files",
+      "manifest": "GRADIENT_STRIPES_FIXTURES.json"
+    },
+    {
+      "path": "../photocraft-main/crates/io/src/gradient_bake.rs",
+      "scope": "Existing continuous ramp conventions; Stripes is independently implemented from the new saved probes"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/gradient-interpolation.html",
+      "accessed": "2026-10-08",
+      "scope": "Adobe interpolation terminology; this page documents Classic/Linear/Perceptual, not the newly observed Smooth/Stripes algorithms"
+    },
+    {
+      "url": "https://reference.aspose.com/psd/net/aspose.psd.fileformats.psd.layers.fillsettings/interpolationmethod/",
+      "accessed": "2026-10-08",
+      "scope": "Official enum documentation corroborates GIMs and Smoo record codes, not rendering algorithms"
+    }
+  ],
+  "implemented": [
+    "Native Stripes holds each color and opacity stop until the next stop; coincident positions use the last stop; midpoint and smoothness controls remain retained but inactive for Stripes.",
+    "Shared gradient method picker connects Stripes to live and Classic tools, Gradient Fill, Gradient Map, swatches and saved presets; GRD/GdFl/grdm encode GIMs.",
+    "RGB8/16 Gradient Map preview, editable layers, masks, presets, undo and native archive remain available; RGB32 map creation/editing and editable PSD export reject, retaining legacy native content for rendering and recovery.",
+    "Photoshop-saved zero-angle fill descriptors now import at zero instead of the New Fill UI default of 90 degrees.",
+    "Inactive integer noisePreSeed metadata is retained on undithered fill edits; active seeded dither rejects explicitly until represented.",
+    "An empty all-white generated vector-mask record with no real mask is accepted as identity. Nontrivial unsupported rasterized-vector parameters still reject.",
+    "Native full/regional rendering now exercises 120 depth/style/method/dither combinations; 60 native PSD depth/style/method fill round trips retain controls and native pixels."
+  ],
+  "evidence": {
+    "new_core_tests": 2,
+    "new_imaging_tests": 6,
+    "new_workflow_tests": 2,
+    "rgb8_exact_reference_pixels": 51200,
+    "rgb8_references": 4,
+    "photoshop_recalculated_native_rgb8_fill_pixels": 16384,
+    "photoshop_recalculated_native_rgb8_coincident_map_pixels": 2048,
+    "rgb16_reference_pixels": 2048,
+    "rgb16_changed_pixels": 928,
+    "rgb16_changed_bytes": 3712,
+    "rgb16_maximum_stored_channel_steps": 1,
+    "rgb16_changed_opaque_pixels": 0,
+    "rgb16_changed_alpha_samples": 0,
+    "smooth_probe": "Three-stop Smooth outputs at smoothness 0 and 100 have identical stored merged channels. This does not yet identify or implement its transfer function.",
+    "rgb32": "Photoshop warned of unsupported layer data and discarded the Gradient Map when Keep Layers was chosen; its Gradient Map menu was disabled in RGB32. No RGB32 Photoshop output qualifies as a reference.",
+    "native_live_ui": {
+      "status": "passed bounded final-package checks",
+      "final_binary_sha256": "65d5689772906997971ac23edcc2d75b5564eec4fe2ca7dc8c630e7b2c9f4261",
+      "app_path": "/private/tmp/photato-stripes-ui-5mmwivab/Photato.app",
+      "checked": [
+        "Open Photoshop-saved RGB8 three-stop map with editable Stripes controls",
+        "Method picker exposes Perceptual, Linear, Classic and Stripes",
+        "Select Classic and Return updates method and document edited state",
+        "Command-Z restores Stripes and clean document state",
+        "Open legacy native RGB32 map with visible retained content and disabled editor",
+        "Gradient Map disabled in Image > Adjustments on RGB32 pixel layer",
+        "Gradient Map disabled in Layer > New Adjustment Layer in RGB32"
+      ],
+      "cleanup": "Temporary Photato reference documents closed without saving; final app remains on its own blank Untitled-1. User Photoshop document untouched.",
+      "scope": "Basic import, picker, undo and depth validation only. Full Photoshop pointer/shortcut/preference parity remains unqualified."
+    },
+    "fixture_manifest": "GRADIENT_STRIPES_FIXTURES.json",
+    "pixel_metrics": "../artifacts/gradient-stripes-photoshop-comparison.json",
+    "depth_metrics": "../artifacts/gradient-stripes-depth-comparison.json",
+    "release_manifest": "../artifacts/gradient-stripes-release-verification.json",
+    "full_photoshop_parity": false,
+    "full_suite": {
+      "tests": 530,
+      "seconds": 91.219,
+      "failures": 0,
+      "skips": 0
+    },
+    "optimized_focus": {
+      "tests": 77,
+      "seconds": 1.51,
+      "failures": 0,
+      "skips": 0
+    }
+  },
+  "remaining": [
+    "Smooth interpolation, including the observed Photoshop 2026 default; keep unsupported imports explicit until its transfer is qualified.",
+    "RGB16 partial-alpha white matting: 928 of 2048 probe pixels differ by one stored level. Broader RGB16 colors, profiles and fill references remain necessary.",
+    "Classic/Linear/Perceptual RGB8 Gradient Map still differs at 38/285/270 pixels per 16384-pixel probe, with at most one 8-bit level difference.",
+    "Exact Photoshop dither and seeded noise, CMYK/Lab and non-sRGB gradients, high-depth Gradient Fill/HDR behavior.",
+    "Full Gradient Editor pointer/keyboard preferences, on-canvas opacity, overlays/strokes and remaining professional Photoshop workflows.",
+    "Large-document latency and macOS14/macOS26/Intel runtime qualification; current tests run on Apple Silicon/macOS27.",
+    "Shipping App Store signing/configuration and real local/Private Cloud generative image-edit model qualification; existing IAP and AI policy tests do not establish those capabilities."
+  ],
+  "historical_checkpoint_note": "This retains the Stripes milestone observations. RGB16 merged-matte residuals are corrected by the later RGB16_MATTE_REFERENCES.json milestone; its hashes and release evidence qualify the current implementation.",
+  "superseded_rgb16_matte_by": "RGB16_MATTE_REFERENCES.json"
+}

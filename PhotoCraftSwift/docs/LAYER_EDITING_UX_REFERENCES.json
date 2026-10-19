@@ -1,0 +1,90 @@
+{
+  "step": "dev-step-077",
+  "date": "2026-10-09",
+  "status": "Native text history/menu focus and layer confirmation workflows tested; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/release-verification.json",
+    "sha256": "e6eaaa6ff9daab861bc6dbe3f097d505fa1b8f3b18e98fc8152fbcadbd07abca"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/tested-source-hashes.json",
+    "sha256": "93402439f57efb9d52573ab249f30adceedc65ef9485136ed2a23830244a41be"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/research.json",
+    "sha256": "37fa6f9f414f3624623c97506182576deeeddb26d90259da5a72a9a621c7277c"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/live-qualification.json",
+    "sha256": "1ede4ffbfb5e7081434c8d4ff1d394547dbc582195f3d311204d90bcd39749ae"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/offscreen-layout.json",
+    "sha256": "ed73aebb7cba96ea749f76d385dfa16d177d483bc5a6a8ab59984c8c1f245cfe"
+  },
+  "implementation": [
+    "Native text/document history-menu routing, dynamic validation and no fall-through from empty/read-only text history",
+    "Completed native undo/redo notification synchronizes matching layer-name draft without replacing AppKit undo",
+    "Native layer/group delete confirmations with Option-footer bypass and cancellation/stale guards",
+    "Group-only deletion preserves editable children through one existing Ungroup transaction; final-layer and lock guards retained",
+    "Dynamic Rename Group title on existing factory command; shortcuts unchanged",
+    "Menu-bar/windowless and popup mouse events preserve inline editor ownership for Edit menu actions"
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/focused-08.log",
+      "sha256": "b30b828cb4680be8f814093daafcd7ee91f6a08fe40c8e5d1d0ac482e9698b44",
+      "passed": 145,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.791
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/full-tests.log",
+      "sha256": "5c9b9483664fe8e847530bf9a99792f35d10a25c6e6d266df7e301a6039caa7d",
+      "passed": 766,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 118.42
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T110430Z-077-layer-editing-ux/release-tests.log",
+      "sha256": "05ab0bf1c7c36a2256acafdcc149faba607098c5213d4f30a10f6c82f0d4da1b",
+      "passed": 341,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.272
+    },
+    "new_regressions": 10
+  },
+  "limits": [
+    "Mac lock prevents live Photoshop and packaged UI qualification",
+    "Native NSAlert offscreen capture omits background/button-label rendering; raw captures are not visual passes",
+    "Exact Photoshop confirmation wording/geometry/group-only and lock/Background/clipping semantics remain unqualified",
+    "Confirmation suppression preference, drag-to-trash and Delete-key context behavior remain gaps",
+    "Menu clicks, text focus, actual keyboard shortcuts and macOS14/Intel runtime behavior remain pending",
+    "Color labels, visibility isolation/drag/recursive disclosure and Panel Options remain next UI work",
+    "Full Photoshop 2026 feature and byte equivalence are not established",
+    "One pre-repair full run failed the existing hosted-workspace pixel assertion; focused and captured final full comparisons passed, so the original mismatch remains unexplained rather than claimed fixed.",
+    "One packaged History capture omitted the Y coordinate, while an unchanged-binary recheck exactly matched the previous layout. Live native field rendering remains unqualified.",
+    "Desktop sync reattaches FinderInfo to the app bundle after removal and causes later signature failure; use the independently verified clean ZIP/extracted candidate. Binary and archive hashes are unchanged."
+  ],
+  "full_photoshop_parity": false,
+  "layer_organization_followup": {
+    "step": "dev-step-078",
+    "reference_manifest": "docs/LAYER_ORGANIZATION_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/release-verification.json",
+      "sha256": "97c6b0fc53de7f52ff0d80029b1306c0fa43d821093d10c4da2318b7ae023b78"
+    },
+    "scope": "Selected context color labels, dynamic Hide/Show Layers and Option-eye isolation/restoration. Existing factory Command-comma now binds its visibility operation; static menu and shortcut inventory retained.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false,
+    "numeric_field_capture_correction": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/numeric-field-capture-investigation.json",
+      "sha256": "06445a697f679d99865da5d3192c04da888f7a2d5274463fa1d1b0e3888225da"
+    }
+  }
+}

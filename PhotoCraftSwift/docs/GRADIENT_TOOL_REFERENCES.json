@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-08",
+  "status": "partial, native Gradient and Classic Gradient implemented; Photoshop qualification incomplete",
+  "sources": [
+    {
+      "path": "../photocraft-main/crates/algo/src/paint.rs",
+      "scope": "Executed unchanged tool_gradient_t; native compositor integrates document-space selection, depth and mask behavior"
+    },
+    {
+      "path": "../photocraft-main/crates/ui-egui/src/gradient_ui.rs",
+      "scope": "Live fill targeting, draw/redraw, endpoints, stops/midpoints, line translation and click, stop tear-off and double click"
+    },
+    {
+      "path": "../photocraft-main/crates/ui-egui/src/stroke_constraint.rs",
+      "scope": "45-degree projected Shift drag"
+    },
+    {
+      "path": "../photocraft-main/crates/engine/src/gradient_fill_cmds.rs",
+      "scope": "Live layer creation, selection-only mask, captured colors and retained fill edits"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/edit-a-gradient.html",
+      "accessed": "2026-10-08",
+      "scope": "Adobe August 18, 2026 guide describes drag endpoints, color-stop edits/addition/removal and midpoints; Save Preset remains pending"
+    }
+  ],
+  "implemented": [
+    "Gradient (G) with Shift-G cycling Paint Bucket; live Gradient and Classic Gradient mode selector",
+    "Five shapes, retained Classic/Linear/Perceptual ramps, blend mode, opacity, reverse, dither; Classic transparency switch",
+    "Classic paints editable rasters and pixel masks; cropped targets expand within the canvas while masks preserve document positions; rectangular/soft selections and RGB8/16/32",
+    "Live creates Gradient Fill with selection mask only when selected; redraws existing gradient; mask on a gradient fill stays live, other masks use pixel painting",
+    "On-canvas endpoints, 45-degree constraint, line translation, color-stop insertion/drag/crossing/tear-off/deletion, midpoint drag and stop color dialog with preview/cancel",
+    "Captured settings/colors at drag start; cancellable background preview/commit; each completed gesture one undo transaction; click without drag creates nothing",
+    "Three original starter presets in native popover; selected fill edits from options; existing full Gradient Fill editor retains color/opacity/midpoint numeric controls"
+  ],
+  "evidence": {
+    "oracle": "GRADIENT_TOOL_ORACLE.json",
+    "geometry_exact_rust_samples": 12920,
+    "new_core_tests": 6,
+    "new_app_workflow_tests": 6,
+    "test_logs": [
+      "../artifacts/gradient-tool-full-tests.log",
+      "../artifacts/gradient-tool-release-tests.log"
+    ],
+    "snapshots": [
+      "../artifacts/gradient-tool-workspace.png",
+      "../artifacts/classic-gradient-workspace.png"
+    ],
+    "release_manifest": "../artifacts/gradient-tool-release-verification.json",
+    "live_photoshop_verified": false,
+    "ui_qualification": "AppKit mouse/key routing and offscreen native rendering. Computer use reported locked Mac and failed automatic unlock on October 8; manual unlock was requested previously."
+  },
+  "remaining": [
+    "Persistent Gradients library/folders, import/export UI, Save Preset, noise/CMYK/Lab gradients and full preset editor",
+    "On-canvas opacity controls, complete stop navigation/keyboard semantics, full Preferences and persistent tool defaults",
+    "Actual Photoshop 2026 interaction and pixel/byte comparison across depths, interpolation methods, dither, geometry and masks",
+    "Classic native retained ramps use the existing typed interpolation engine; upstream paints a pre-baked RGBA stop list. Geometry oracle is not a proof of full raster equivalence to either upstream or Photoshop",
+    "Large-canvas preview latency/memory, aligned-mask frame scan latency, alpha/Quick Mask channels, brush/library integration, Gradient Map and gradient layer effects",
+    "General fill transform semantics, profile/color-mode qualification, Intel and macOS14/26 runtime matrix; universal compilation is not runtime qualification"
+  ],
+  "superseded_library_scope": "GRADIENT_LIBRARY_REFERENCES.json",
+  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone."
+}

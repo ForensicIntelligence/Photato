@@ -1,0 +1,124 @@
+{
+  "step": "dev-step-103",
+  "date": "2026-10-13",
+  "status": "Native action/resource/job foundation passes full/optimized regression and universal packaging; desktop/public dual-API integration remains incomplete.",
+  "evidence_root": "artifacts/runs/20261013T174202Z-103-actions-component-integration",
+  "provenance": "artifacts/runs/20261013T174202Z-103-actions-component-integration/action-descriptor-provenance.json",
+  "implementation": [
+    "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+    "Sources/PhotoCraft/AdobeActionsRequest.swift",
+    "Sources/PhotoCraft/AdobeActionAssets.swift",
+    "Sources/PhotoCraft/AdobeActionJobs.swift",
+    "Sources/PhotoCraft/AdobeResourceTransfer.swift",
+    "Sources/PhotoCraftImaging/RasterIO.swift",
+    "Sources/PhotoCraft/EditorStore.swift"
+  ],
+  "independent_scope": {
+    "expected_layer_output_bytes": 122880,
+    "cases": 5,
+    "reference": "docs/COMPONENT_FILL_REFERENCES.json",
+    "qualified_paths": [
+      "Core command",
+      "Native actionJSON interpreter",
+      "PSD input/native actions/PSD output with decoded layer-plane comparison"
+    ],
+    "whole_file_equality": false,
+    "png_photoshop_equality": false
+  },
+  "native_scope": [
+    "Strict selected request/schema constraints; unsupported variants reject",
+    "Atomic ordered action resources retaining selection target and history",
+    "FIFO asynchronous jobs; input isolation; success/failure envelopes; output ordering",
+    "Hosted output expiry;16-job/128-MiB stored-output ceilings; generation revoke and restart",
+    "No hosted result publication after failure; remote PUTs are not rollbackable",
+    "Bounded ephemeral HTTP transfer with actual loopback test; URLProtocol covers unknown-length streams, overflow, redirects and cancellation",
+    "Shared file/data codecs and document export retain8/16-bit depth and resolution"
+  ],
+  "runtime_limits": {
+    "jobs": 16,
+    "concurrent_jobs": 1,
+    "resource_bytes": 67108864,
+    "aggregate_output_bytes": 134217728,
+    "stored_output_bytes": 134217728,
+    "canvas_pixels": 4194304,
+    "layers": 64,
+    "document_bytes": 134217728,
+    "completed_job_retention_seconds": 86400
+  },
+  "limits": [
+    "No new HTTP routes or Photato commands exposed",
+    "No live native UI validation of this binary yet",
+    "No Adobe service, Azure, AWS or Dropbox request executed; mocked HTTP and real local GET only",
+    "No new Photoshop action recording; installed factory descriptor facts and terminology only",
+    "Input PSD parser retains its existing512-MiB decode ceiling before local post-decode document checks",
+    "RGB16/32 action editing, composite Fill, arbitrary colors, Preserve Transparency, non-Normal modes, ATN/UXP and other action events unsupported",
+    "Output schemas only partially implemented; embedded-image guide conflict remains unresolved",
+    "Jobs/output storage in memory only; no restart persistence",
+    "Hosted URL serving/authentication and opt-in endpoint configuration still require integration",
+    "Independent action/output qualification uses single-layer originals; imported active-layer metadata and multilayer Photoshop action semantics remain unqualified."
+  ],
+  "next": [
+    "Finish native component target state and route/guard all writing tools",
+    "Expose matching Photato target/fill operations and Adobe execute-actions/status with asset delivery",
+    "Test auth/opt-in/stop, cross-interface exactness/history, live native dialogs and shortcuts"
+  ],
+  "sources": [
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/actionjson-endpoint/",
+    "https://developer.adobe.com/photoshop/uxp/ps_reference/media/batchplay/",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/llm-migration-reference",
+    "https://learn.microsoft.com/en-us/rest/api/storageservices/put-blob",
+    "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html"
+  ],
+  "validation": {
+    "focused": {
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "log": "artifacts/runs/20261013T174202Z-103-actions-component-integration/focused06.log"
+    },
+    "full": {
+      "path": "artifacts/runs/20261013T174202Z-103-actions-component-integration/full01.log",
+      "sha256": "ec0320d844d7bf72906bb9bedb10e4620060062ebec53708a3aaf4c2f3b50bbd",
+      "passed": 980,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 144.372
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261013T174202Z-103-actions-component-integration/release-focused01.log",
+      "sha256": "80f9d4204f8239cc6ba0a8302f3f8272cb8d8d597815d189241399509a75e777",
+      "passed": 80,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.995
+    },
+    "source_hashes": "artifacts/runs/20261013T174202Z-103-actions-component-integration/tested-source-hashes.json",
+    "swift_source_files": 201,
+    "swift_test_files": 173,
+    "packaging": "artifacts/runs/20261013T174202Z-103-actions-component-integration/release-verification.json",
+    "package": {
+      "extracted_app": "/private/tmp/photato-native-actions-3ketlq9n/Photato.app",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "minimum_macos": "14.0",
+      "binary_sha256": "797b754b601918bb39527d85178a4ee41cac9292d8b70a7feb9e82609282f2e8",
+      "zip_sha256": "44c30faa42c02ab176c8d0e8b5b4f2196b3ee5d738bd787b18d766ece62e4fa6",
+      "clean_zip_signature_verified": true,
+      "bundled_licenses_icon_and_links_verified": true
+    },
+    "failed_attempts": {
+      "focused03.log": "Compile failure: optional resolution; repaired before rerun",
+      "focused04.log": "One failed expectation exposed RGB8 export promotion through f32 renderer; shared document export fixed"
+    },
+    "public_api_commands": 12,
+    "adobe_http_endpoints_implemented": 0,
+    "new_live_native_ui_qualification": false
+  },
+  "later_integration": {
+    "step": "dev-step-106",
+    "evidence": "docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json",
+    "note": "Historical foundation gaps below describe steps102/103; current partial public integration is tracked in this later evidence."
+  }
+}

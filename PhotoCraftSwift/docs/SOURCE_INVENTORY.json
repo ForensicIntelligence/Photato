@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-07",
+  "crates": [
+    {
+      "crate": "algo",
+      "files": 75,
+      "lines": 29857,
+      "sha256": "06455219c4a99dd4878800c8553f9e3e40c8e77a35bc99c0bf70619bc3670bc3"
+    },
+    {
+      "crate": "automation",
+      "files": 11,
+      "lines": 3789,
+      "sha256": "cea3208759300a376f746b4dd7d515a82995ff0164613c339ca13e6e700a6acd"
+    },
+    {
+      "crate": "cms",
+      "files": 16,
+      "lines": 5028,
+      "sha256": "42290875be5e1fbf75cd6a6d9fb5f019e47a841f11d960ea0f9e0272a8ff70e7"
+    },
+    {
+      "crate": "codecs",
+      "files": 38,
+      "lines": 8641,
+      "sha256": "51f02c5fbc75f9232e2150d70ac1c3553959d8d55ff1011e7b5b6f74903ce14c"
+    },
+    {
+      "crate": "color",
+      "files": 3,
+      "lines": 1060,
+      "sha256": "03c6cff39f2aa55481234b0cf737ab43d78068e5e7b09dab1c527fe652d333f6"
+    },
+    {
+      "crate": "compose",
+      "files": 17,
+      "lines": 7447,
+      "sha256": "bcfb90502352f04aeab9eed5560b38856eb20fc2637aef4450f02d2dd951de40"
+    },
+    {
+      "crate": "doc",
+      "files": 14,
+      "lines": 4141,
+      "sha256": "9197b45881f3e6ecb7565474f27e1c7ba096885debe68a62f51cd376931b268b"
+    },
+    {
+      "crate": "engine",
+      "files": 142,
+      "lines": 60804,
+      "sha256": "9375834471e3439892b69d610edd4f5070c2e4b2b450474cc11a26060b369b6e"
+    },
+    {
+      "crate": "format",
+      "files": 16,
+      "lines": 3994,
+      "sha256": "5a16a85102ea4b18c1a710f8e4760915f89d8fe40d7fd9a7c7ec057850d83798"
+    },
+    {
+      "crate": "geom",
+      "files": 2,
+      "lines": 1004,
+      "sha256": "93927b1057815c0822e4e503b1ca37db422b5434a9cc68fc95103ee53de72b22"
+    },
+    {
+      "crate": "gpu",
+      "files": 8,
+      "lines": 6244,
+      "sha256": "c5df98e7848e628607956169e10bfd3e8e9ca7afc5bb85dc489e24d39dbbc364"
+    },
+    {
+      "crate": "heif",
+      "files": 1,
+      "lines": 218,
+      "sha256": "8606ca9f79821c305e60cae7eca7ffa63c5abf0e477b3df3ef3af67a66febb1c"
+    },
+    {
+      "crate": "io",
+      "files": 54,
+      "lines": 16688,
+      "sha256": "498f1188ad2e41b1a4bbc29c81b83782c5d890078c12e0e29cebff13d97252fe"
+    },
+    {
+      "crate": "ops",
+      "files": 1,
+      "lines": 366,
+      "sha256": "7a0e85c719d2efa6d04e5901de62dde714fb51b25847ef22bc46320af7fceaba"
+    },
+    {
+      "crate": "paint",
+      "files": 14,
+      "lines": 5561,
+      "sha256": "16c1a3689d1977e1446744644c20b5dc3acc10a2d65624ac854bf0ed9adce007"
+    },
+    {
+      "crate": "plugins",
+      "files": 8,
+      "lines": 1335,
+      "sha256": "a39dcb45108ca235754ee907f0941235eeef8ce39b296f0cec3b2312acb4194e"
+    },
+    {
+      "crate": "psd",
+      "files": 33,
+      "lines": 9574,
+      "sha256": "1b515a1d7715414d6ef57fb2bddb9b0c05ab61e041ce5a8bc32b9620ad93a398"
+    },
+    {
+      "crate": "raster",
+      "files": 2,
+      "lines": 939,
+      "sha256": "b1669dfc1b7a2a40fc3c843a2632b61d366de3c499c388e8ffe768eb28363426"
+    },
+    {
+      "crate": "raw",
+      "files": 26,
+      "lines": 6663,
+      "sha256": "a8dbd2883512c6cdb1703e1d2763ff498106b817895c53afae9b95ebe02abdc6"
+    },
+    {
+      "crate": "tablet",
+      "files": 6,
+      "lines": 994,
+      "sha256": "5c36f898760ff44e767f49624df42cdfe531ab1ae207f6468e1c9c19f493a82a"
+    },
+    {
+      "crate": "testkit",
+      "files": 2,
+      "lines": 199,
+      "sha256": "4af94338f0fcf59bc701cdc8b48e81c3e72266b1d5ebf6678dbe7ff3b014a15b"
+    },
+    {
+      "crate": "text",
+      "files": 17,
+      "lines": 6688,
+      "sha256": "7ecfaa1808605b736a1e119e1a5fd0d774c6c9c612449ea56688cb3a555871a1"
+    },
+    {
+      "crate": "ui-egui",
+      "files": 172,
+      "lines": 74357,
+      "sha256": "85979b2a0999e5902a10ee5ed2e8d97783c141bb3aa67cc624a012041acfb367"
+    },
+    {
+      "crate": "vector",
+      "files": 7,
+      "lines": 2334,
+      "sha256": "2c004ea06ecbd1b2588dae5ea4b79b170f47e99215d89bbce162796fcefbf214"
+    }
+  ],
+  "total_lines": 257925
+}

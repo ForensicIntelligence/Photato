@@ -1,0 +1,113 @@
+{
+  "provenance": "Generated with Python struct/zlib by scripts/generate-psd-channel-oracles.py; original test data, MIT OR Apache-2.0.",
+  "vectors": [
+    {
+      "depth": 8,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 0,
+      "raw": "AAQIDBAUGBwgIycrLzM3Oz9DR0tPU1dbX2Nmam5ydnp+goaKjpKWmp6ipqmtsbW5vcHFyc3R1dnd4eXp7PD0",
+      "encoded": "AAAABAgMEBQYHCAjJysvMzc7P0NHS09TV1tfY2ZqbnJ2en6ChoqOkpaanqKmqa2xtbm9wcXJzdHV2d3h5ens8PQ="
+    },
+    {
+      "depth": 8,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 1,
+      "raw": "AAQIDBAUGBwgIycrLzM3Oz9DR0tPU1dbX2Nmam5ydnp+goaKjpKWmp6ipqmtsbW5vcHFyc3R1dnd4eXp7PD0",
+      "encoded": "AAEACAAIAAgACAAIAAgACAAIAAgGAAQIDBAUGAYcICMnKy8zBjc7P0NHS08GU1dbX2NmagZucnZ6foKGBoqOkpaanqIGpqmtsbW5vQbBxcnN0dXZBt3h5ens8PQ="
+    },
+    {
+      "depth": 8,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 2,
+      "raw": "AAQIDBAUGBwgIycrLzM3Oz9DR0tPU1dbX2Nmam5ydnp+goaKjpKWmp6ipqmtsbW5vcHFyc3R1dnd4eXp7PD0",
+      "encoded": "AAJ4nAE/AMD/AAQIDBAUGBwgIycrLzM3Oz9DR0tPU1dbX2Nmam5ydnp+goaKjpKWmp6ipqmtsbW5vcHFyc3R1dnd4eXp7PD0gfkeEw=="
+    },
+    {
+      "depth": 8,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 3,
+      "raw": "AAQIDBAUGBwgIycrLzM3Oz9DR0tPU1dbX2Nmam5ydnp+goaKjpKWmp6ipqmtsbW5vcHFyc3R1dnd4eXp7PD0",
+      "encoded": "AAN4nGNgAQMZFmYQZQ7hBYMIZpY8CK8LQi0Dq2A5COHdBatgAQB0/wS3"
+    },
+    {
+      "depth": 16,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 0,
+      "raw": "AAAD9QfqC98P1BPJF74bsx+oI50nkiuHL3wzcTdmO1s/UENFRzpLL08kUxlXDlsDXvhi7WbiatduzHLBdrZ6q36ggpWGiop/jnSSaZZemlOeSKI9pjKqJ64cshG2Brn7vfDB5cXayc/NxNG51a7Zo92Y4Y3lgul37WzxYfVW",
+      "encoded": "AAAAAAP1B+oL3w/UE8kXvhuzH6gjnSeSK4cvfDNxN2Y7Wz9QQ0VHOksvTyRTGVcOWwNe+GLtZuJq127McsF2tnqrfqCClYaKin+OdJJpll6aU55Ioj2mMqonrhyyEbYGufu98MHlxdrJz83E0bnVrtmj3ZjhjeWC6XftbPFh9VY="
+    },
+    {
+      "depth": 16,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 1,
+      "raw": "AAAD9QfqC98P1BPJF74bsx+oI50nkiuHL3wzcTdmO1s/UENFRzpLL08kUxlXDlsDXvhi7WbiatduzHLBdrZ6q36ggpWGiop/jnSSaZZemlOeSKI9pjKqJ64cshG2Brn7vfDB5cXayc/NxNG51a7Zo92Y4Y3lgul37WzxYfVW",
+      "encoded": "AAEADwAPAA8ADwAPAA8ADwAPAA8NAAAD9QfqC98P1BPJF74NG7MfqCOdJ5Irhy98M3ENN2Y7Wz9QQ0VHOksvTyQNUxlXDlsDXvhi7WbiatcNbsxywXa2eqt+oIKVhooNin+OdJJpll6aU55Ioj0NpjKqJ64cshG2Brn7vfANweXF2snPzcTRudWu2aMN3ZjhjeWC6XftbPFh9VY="
+    },
+    {
+      "depth": 16,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 2,
+      "raw": "AAAD9QfqC98P1BPJF74bsx+oI50nkiuHL3wzcTdmO1s/UENFRzpLL08kUxlXDlsDXvhi7WbiatduzHLBdrZ6q36ggpWGiop/jnSSaZZemlOeSKI9pjKqJ64cshG2Brn7vfDB5cXayc/NxNG51a7Zo92Y4Y3lgul37WzxYfVW",
+      "encoded": "AAJ4nAF+AIH/AAAD9QfqC98P1BPJF74bsx+oI50nkiuHL3wzcTdmO1s/UENFRzpLL08kUxlXDlsDXvhi7WbiatduzHLBdrZ6q36ggpWGiop/jnSSaZZemlOeSKI9pjKqJ64cshG2Brn7vfDB5cXayc/NxNG51a7Zo92Y4Y3lgul37WzxYfVWTUI/JQ=="
+    },
+    {
+      "depth": 16,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 3,
+      "raw": "AAAD9QfqC98P1BPJF74bsx+oI50nkiuHL3wzcTdmO1s/UENFRzpLL08kUxlXDlsDXvhi7WbiatduzHLBdrZ6q36ggpWGiop/jnSSaZZemlOeSKI9pjKqJ64cshG2Brn7vfDB5cXayc/NxNG51a7Zo92Y4Y3lgul37WzxYfVW",
+      "encoded": "AAN4nGNgYP6KgNKbkXnmaci8YElkXt4ZZF5XPTJvmREy7+BTZN7dGcg8AFiiPF4="
+    },
+    {
+      "depth": 32,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 0,
+      "raw": "voAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAA",
+      "encoded": "AAC+gAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAC+gAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAC+gAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAAAAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAADjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAA="
+    },
+    {
+      "depth": 32,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 1,
+      "raw": "voAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAA",
+      "encoded": "AAEAHQAdAB0AHQAdAB0AHQAdAB0bvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAABsAAAAAONG3Fz4AAAA/AAAAP4AAAEAwAAC+gAAAGzjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAAbvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAABsAAAAAONG3Fz4AAAA/AAAAP4AAAEAwAAC+gAAAGzjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAAbvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAABsAAAAAONG3Fz4AAAA/AAAAP4AAAEAwAAC+gAAAGzjRtxc+AAAAPwAAAD+AAABAMAAAvoAAAAAAAAA="
+    },
+    {
+      "depth": 32,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 2,
+      "raw": "voAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAA",
+      "encoded": "AAJ4nNvXwAAGFhe3i9sBaXsQBoo5GOAW39eAWxwE9g0RMwF6ZyrK"
+    },
+    {
+      "depth": 32,
+      "width": 7,
+      "height": 3,
+      "channels": 3,
+      "compression": 3,
+      "raw": "voAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAAvoAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAAAAAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAA40bcXPgAAAD8AAAA/gAAAQDAAAL6AAAAAAAAA",
+      "encoded": "AAN4nNvnZMHGyMDo0HBRn6FhwwWG7Z4MICD+EkSCpeqcwFIBDcRKMewbImYCANRpOQE="
+    }
+  ]
+}

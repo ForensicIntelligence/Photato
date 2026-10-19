@@ -1,0 +1,152 @@
+{
+  "step": "dev-step-088",
+  "scope": "Native Xcode project for Photato; no editing-feature changes",
+  "project": "Photato.xcodeproj",
+  "specification": "project.yml",
+  "scheme": "Photato",
+  "requirements": {
+    "build": "Xcode 27 / Swift 6.4",
+    "deployment": "macOS 14.0",
+    "generation_only": "XcodeGen 2.45.2"
+  },
+  "official_reference": {
+    "title": "XcodeGen ProjectSpec: synchronized source folders and native targets",
+    "url": "https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md",
+    "access_date": "2026-10-09"
+  },
+  "verification": {
+    "step": "dev-step-088",
+    "status": "passed",
+    "xcode": "Xcode 27.0\nBuild version 27A266a",
+    "app": "/private/tmp/photato-xcode-088-static/Photato.xcarchive/Products/Applications/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "7f656ae5a08b1c91346df14cd135aa1a16e076f0fa848a8d17e230ab2d8e4fd4",
+    "signature_verification": "/private/tmp/photato-xcode-088-static/Photato.xcarchive/Products/Applications/Photato.app: valid on disk\n/private/tmp/photato-xcode-088-static/Photato.xcarchive/Products/Applications/Photato.app: satisfies its Designated Requirement",
+    "static_swift_modules": [
+      "PhotoCraftCore",
+      "PhotoCraftImaging",
+      "PhotoCraftAI"
+    ],
+    "embedded_frameworks": 0,
+    "source_files_compiled": 186,
+    "source_and_test_files_unchanged": 348,
+    "swiftpm_package_and_step087_cli_outputs_unchanged": true,
+    "resources": {
+      "LICENSE-MIT": "1a8f66d8a86b146f5336fa0d4b1186576c8aa98e60823080c85c7811cfd810af",
+      "LICENSE-APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "LICENSE-psd-tools": "79f7e019a30b97542cce6f6482a75ba26771b4204c374fec305dc8cf558d137f",
+      "NOTICE": "f42bf6c652097d1747a6ed270d3fa505b53f4783946149bb4b374803414c0bf2",
+      "ATTRIBUTION.md": "2b8c7019f7f6f0f0317e1610beb2f705c7e3313a20e6d8c1a8654df134518fcb",
+      "ProjectLinks.json": "5cb8ae36b815c468525c35a915ba055550b3773c14938f128c08a5d9f8de8dcd",
+      "Photato.icns": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e"
+    },
+    "existing_info_plist_fields_preserved": true,
+    "project_files": {
+      "Photato.xcodeproj/project.pbxproj": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2",
+      "Photato.xcodeproj/project.xcworkspace/contents.xcworkspacedata": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f",
+      "Photato.xcodeproj/xcshareddata/xcschemes/Photato.xcscheme": "f1ddb5e6b0a99cb39d584720696ec60e64e04d08256c73f8186cbfae2032ac3e"
+    },
+    "project_spec_sha256": "3c4b0ddc3356c681a91c9c3ffa414f9f98c5d35db9b3214445acaedb8556faf5",
+    "icon_script_sha256": "cdd27c4d977847aa22249246bf7d08dad6c1eca2838f5df3a77264d497769ca9",
+    "offscreen_workspace": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/xcode-workspace-small.png",
+      "reference": "artifacts/runs/20261009T164342Z-087-numeric-editing/final-renders/workspace-small.png",
+      "size": [
+        1000,
+        650
+      ],
+      "rgba_sha256": "d80ed629dff17e0ee5ddde266de8c45a99cabca295883c611d7f187fb96c0633",
+      "exact_match": true
+    },
+    "limits": [
+      "Offscreen render is not live Xcode UI or full interaction qualification.",
+      "XCTest remains in the existing SwiftPM and separate StoreKit workflows.",
+      "Ad-hoc development signing does not qualify App Store distribution.",
+      "SwiftPM tests were not rerun for unchanged app/test code; step087 is the retained baseline.",
+      "Intel architecture and deployment metadata verified; no Intel or macOS14 runtime test."
+    ]
+  },
+  "evidence": {
+    "project-list-01.json": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/project-list-01.json",
+      "sha256": "1ae25aac12447b4bf35b10d0b8710b939f7859dafab964412224205f093d629a"
+    },
+    "generate-03.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/generate-03.log",
+      "sha256": "fd474935e4f209e30e556e899a8a59f646364e194de3b4d3b620a7d697dc85ce"
+    },
+    "generate-04.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/generate-04.log",
+      "sha256": "fd474935e4f209e30e556e899a8a59f646364e194de3b4d3b620a7d697dc85ce"
+    },
+    "debug-build-02.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/debug-build-02.log",
+      "sha256": "7bbab681abe7a3a4f65d58cdb7be1dc04fce1fca2d7e73e9b7e02c1d83fbc283"
+    },
+    "release-archive-02.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/release-archive-02.log",
+      "sha256": "f1d62477a64c997b2c201e9250e7739e0cc70cf3161dcc4d4da342abff76d089"
+    },
+    "debug-smoke-02.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/debug-smoke-02.log",
+      "sha256": "afe6c4a9515de6eb79ec58b526c094bd51008b8ee2d9e86d0b1e30566a2cc388"
+    },
+    "release-smoke-02.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/release-smoke-02.log",
+      "sha256": "33ee3830f3934dce6f4d83f307ab53ef69fc62eb895133eb440b3c63f85c301e"
+    },
+    "debug-render-comparison.json": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/debug-render-comparison.json",
+      "sha256": "91693c9f9e4ca0826c340b1ff750af95588fae1ca1ab9bbaae5aa248d57822ea"
+    },
+    "xcode-verification.json": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/xcode-verification.json",
+      "sha256": "20b4306c496ef88192eb4a0cc69de8d3f70724d90bc76d2d6f3314ceb6dd7911"
+    },
+    "verification-02.log": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/verification-02.log",
+      "sha256": "20b4306c496ef88192eb4a0cc69de8d3f70724d90bc76d2d6f3314ceb6dd7911"
+    },
+    "baseline-source-hashes.json": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/baseline-source-hashes.json",
+      "sha256": "2a30faf6a0b080a7c293d6d41aaee70ce9af6657f28b2d7fdd269f4ea753b889"
+    },
+    "baseline-release-verification.json": {
+      "path": "artifacts/runs/20261009T173450Z-088-xcode-project/baseline-release-verification.json",
+      "sha256": "2ef479cb6830bd6a75d6e746de531d98f65f56c8238f6c6693fda16aec1b71bd"
+    }
+  },
+  "commands": [
+    "xcodegen generate",
+    "xcodebuild -project Photato.xcodeproj -scheme Photato -configuration Debug -destination 'platform=macOS,arch=arm64' -derivedDataPath /private/tmp/photato-xcode-088-static build",
+    "xcodebuild -project Photato.xcodeproj -scheme Photato -configuration Release -destination 'generic/platform=macOS' -derivedDataPath /private/tmp/photato-xcode-088-static -archivePath /private/tmp/photato-xcode-088-static/Photato.xcarchive archive",
+    "/private/tmp/photato-xcode-088-static/Build/Products/Debug/Photato.app/Contents/MacOS/Photato --snapshot-small artifacts/runs/20261009T173450Z-088-xcode-project/xcode-debug-workspace-small.png",
+    "/private/tmp/photato-xcode-088-static/Photato.xcarchive/Products/Applications/Photato.app/Contents/MacOS/Photato --snapshot-small artifacts/runs/20261009T173450Z-088-xcode-project/xcode-workspace-small.png",
+    "/Users/johnczlonka/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 artifacts/runs/20261009T173450Z-088-xcode-project/verify-xcode-project.py"
+  ],
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261009T173450Z-088-xcode-project/release-smoke-01.log",
+      "exit_code": 134,
+      "cause": "Ad-hoc dynamic framework rejected by library validation",
+      "repair": "Statically link the three internal Swift modules; preserve hardened-runtime configuration"
+    },
+    {
+      "log": "artifacts/runs/20261009T173450Z-088-xcode-project/verification-01.log",
+      "cause": "Verifier assumed project-root-relative synchronized paths; XcodeGen emits them relative to the parent Sources group",
+      "repair": "Resolve the parent group in the verification script; project itself unchanged"
+    }
+  ],
+  "remaining_build_warnings": [
+    "Existing RasterDecodeBudget Sendable warnings",
+    "AppIntents metadata skipped because no AppIntents dependency",
+    "No App Category; App Store distribution configuration is still outstanding"
+  ],
+  "next_feature_work": "Resume Layers/Channels UI and independent visibility/edit-target state after this bounded build-system request. Preserve the separate pending Photoshop restoration approval."
+}

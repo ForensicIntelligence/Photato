@@ -1,0 +1,48 @@
+{
+  "step": "dev-step-087",
+  "date": "2026-10-09",
+  "status": "Native numeric draft/commit lifecycle implemented; full Photoshop parity incomplete",
+  "release": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/release-verification.json",
+    "sha256": "2ef479cb6830bd6a75d6e746de531d98f65f56c8238f6c6693fda16aec1b71bd"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/tested-source-hashes.json",
+    "sha256": "2a30faf6a0b080a7c293d6d41aaee70ce9af6657f28b2d7fdd269f4ea753b889"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/research.json",
+    "sha256": "3931a0546cf57570bac82b6c68f4155e256ca9cbd7e69dde86871087cfd9e20e"
+  },
+  "photoshop_reference": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/photoshop-numeric-reference.json",
+    "sha256": "937eb848d14c28f84b5120e59f8e4b9936d44757badcd92afe817f38e9937394"
+  },
+  "offscreen": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/offscreen-layout.json",
+    "sha256": "7c9153fb53cc5607a866398677c8779967c0a8b2ecea2c9a7db8fcae19fddfab"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/live-qualification.json",
+    "sha256": "c399fee0c890245269bcc60d032f99df95196078f1055361f14a2f68dd8b6735"
+  },
+  "implementation": [
+    "Native AppKit numeric text remains a draft until Return, end editing or Tab; Escape cancels without touching pixels/history.",
+    "AppKit performs forward/backward field traversal after commit; native text Undo/Redo remains separate from document history.",
+    "A weak active-editor hook commits pending values before shared command/selection/history/save/switch/close-review boundaries, and cancels before read/final close/view retirement.",
+    "Commit checks document identity/generation, active layer, tool, field label and current baseline value; disabled controls stay disabled.",
+    "Finite complete localized input is parsed and clamped only at commit. Existing current-state X/Y translation and13-point line boxes are retained.",
+    "Revalidate document switch/close eligibility after committing pending text; a rejected edit keeps its owning document active/open.",
+    "Return and Escape exit an untouched active field; retiring an inactive field does not dismiss a different field editor.",
+    "Document and floating-panel windows automatically recalculate the native key-view loop as SwiftUI fields appear or change."
+  ],
+  "limits": [
+    "Direct Photoshop reference covers a bounded Properties coordinate workflow, not all numeric tools/preferences.",
+    "Arithmetic expressions, unit suffixes, scrubbing, arrow-key stepping and exact invalid-input dialogs remain unqualified or absent.",
+    "Native engine coordinate/extents limit inconsistency from086 is not changed.",
+    "Other dialog/panel-removal and specialized direct-command boundaries need broader qualification.",
+    "Photoshop pre-existing document restoration is waiting for explicit user approval after automatic review rejected Undo.",
+    "Full Photoshop function/pixel/preference/shortcut/platform parity remains incomplete."
+  ],
+  "full_photoshop_parity": false
+}

@@ -1,0 +1,96 @@
+{
+  "step": "dev-step-111",
+  "status": "Extension change implemented and tested; main-thread package left unchanged",
+  "request": "Use .photato for native files",
+  "native_extension": "photato",
+  "legacy_read_extensions": [
+    "pcswift"
+  ],
+  "archive_and_type_identifier_unchanged": true,
+  "api": {
+    "canonical_native_download": "GET /v1/documents/{id}/file.photato",
+    "legacy_alias": "GET /v1/documents/{id}/file.pcswift",
+    "persistenceFormat": "photato",
+    "media_type": "application/vnd.photato.document",
+    "adobe_contract_unchanged": true
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261019T193353Z-111-native-photato-extension/tested-source-hashes.json",
+    "sha256": "0a81cf5a01443aa127117d017097e37c2a6022ea30eb1eb32e21f657c41ade9c"
+  },
+  "tests": {
+    "path": "artifacts/runs/20261019T193353Z-111-native-photato-extension/focused03.log",
+    "sha256": "7e7b573f26d4a8bc707383daec41097cf20f016ee0ae71b9ecfd9355f044fb24",
+    "passed": 242,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 13.521,
+    "scope": "Selected application/workflow/API tests, including three new extension tests; isolated temporary package and build directory",
+    "command": "swift test --package-path /private/tmp/photato-extension111-l20d2bii --scratch-path /private/tmp/photato-extension111-l20d2bii/.build --disable-sandbox --filter 'NativeFileExtensionTests|DocumentIOWorkflowTests|DocumentPersistenceTests|WorkflowTests|PathWorkflowTests|AutomationTests'"
+  },
+  "failed_attempts": [
+    {
+      "path": "artifacts/runs/20261019T193353Z-111-native-photato-extension/focused01.log",
+      "reason": "NSDocument filename-extension override is nonisolated; nativeType constant was actor-isolated. Mark immutable Sendable constant nonisolated; no tests ran."
+    },
+    {
+      "path": "artifacts/runs/20261019T193353Z-111-native-photato-extension/focused02.log",
+      "reason": "242 tests ran with one failure because the isolated checkout lacked the artifacts output directory. Added that directory and reran unchanged source; extension tests already passed."
+    }
+  ],
+  "changed_files": [
+    "Sources/PhotoCraft/DocumentIO.swift",
+    "Sources/PhotoCraft/NativeDocument.swift",
+    "Sources/PhotoCraft/DocumentPersistence.swift",
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/Application.swift",
+    "Sources/PhotoCraftImaging/PSDCodec.swift",
+    "scripts/Info.plist",
+    "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/NativeFileExtensionTests.swift"
+  ],
+  "macos_registration": {
+    "path": "scripts/Info.plist",
+    "sha256": "3eda421b98a3bcb6f00e5bffd31faca7ae2da01bbce2f56f3a84404001dfe76c"
+  },
+  "webpage": {
+    "path": "/Users/johnczlonka/Desktop/notadobe/nusite/index.html",
+    "sha256": "7103ffd312fcf856b0255ef087f188f288598753fb2da096c60fd381763448e9",
+    "scope": "Native extension text only; no styling/layout/hosting change"
+  },
+  "preserved_package_and_project_hashes": {
+    "build/Photato.zip": "2b9a3a637b481f69699a61aa9f606b0d990df8629cd19e993e602ba26513a66e",
+    "build/Photato.app/Contents/MacOS/Photato": "3bd60527ab3ccfe4536873e192ca1f27e14cdb0f5900ef9c39885372f4957da7",
+    "Photato.xcodeproj/project.pbxproj": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "packaging": "No production package overwrite or live application interaction. Main thread must rebuild and bind its package evidence to a new source freeze including this request. Earlier step110 freeze04 remains historical and must not be described as current source.",
+  "archive_migration": "No file conversion, mass renaming or user document modification. Legacy source files are not renamed by ordinary Save; new Save As/Copy defaults to .photato.",
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 111,
+      "evidence_files": 21340,
+      "logs": 12606,
+      "missing_explicit_references": 0
+    },
+    "final_check_log": "artifacts/development-history-audit/20261019-step111-native-extension/check02.log"
+  },
+  "later_format_clarification": {
+    "date": "2026-10-19",
+    "reference": "docs/DOCUMENT_FORMAT_POLICY.json",
+    "decision": ".photato keeps its own native archive. The user withdrew the temporary PSD-binary requirement; full .psd support remains a separate goal."
+  },
+  "later_universal_integration": {
+    "step": "dev-step-112",
+    "release": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/release-verification.json",
+      "sha256": "d848ea4307ba356afb9bdc80cc7f6fdcdf31bacd66cf3d3bbeece6dda894b043"
+    },
+    "live": {
+      "path": "artifacts/runs/20261019T193903Z-112-source-format-preservation/live-ui-verification.json",
+      "sha256": "ae3e86b8a2286997908400c66c25c7bd07347bb70dec2fc940370ee087e6d89d"
+    },
+    "scope": "Current universal package includes canonical extension and legacy compatibility; original step111 focused evidence remains unchanged."
+  }
+}

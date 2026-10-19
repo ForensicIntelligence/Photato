@@ -1,0 +1,10 @@
+{
+  "generator": "scripts/generate-gradient-tool-oracle.py",
+  "source": "photocraft-main/crates/algo/src/paint.rs",
+  "source_sha256": "ce8269b33103a79a70d1e5284a05f5ef9cdf884839c5e844bcacfe5bcc18d65c",
+  "function_sha256": "bff2b9b16c8cfa441d139e336d54851be97f026e43024926ce32cc4178f561e8",
+  "oracle_sha256": "1a77be3fdeb5b992e4167542b3e0dbd3d0a065d7db66158bf46c60f9ebd3a43f",
+  "oracle_bytes": 413440,
+  "geometry_samples": 12920,
+  "scope": "Original Rust tool_gradient_t executed with Float32 input/output. Not a Photoshop pixel oracle. No Rust code is linked into Photato."
+}

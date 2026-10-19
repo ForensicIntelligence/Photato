@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-08",
+  "adobe_guides": [
+    "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/select-areas-by-color-with-the-magic-wand-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html"
+  ],
+  "source_commands": [
+    "select.magicWand",
+    "paint.bucket"
+  ],
+  "implemented": [
+    "Point-sampled RGBA8 tolerance, four-way contiguous or global matching, source antialiased coverage",
+    "Magic Wand New/Add/Subtract/Intersect with Shift/Option modifiers and W tool group",
+    "Paint Bucket foreground color or selected pattern, opacity and 27 existing native blend modes in G tool group",
+    "Current/all-visible-layer sampling and scalar pixel mask targets",
+    "Cropped raster/mask expansion preserving document coordinates and mask outside coverage",
+    "Immutable background preparation, Escape cancellation, one-step undo and persistence",
+    "Paint Bucket Option-click samples the current canvas preview color"
+  ],
+  "source_extensions": [
+    "Paint Bucket mode and All Layers use existing native blend and immutable composite sampling paths; the original paint.bucket command used Normal and current-target sampling",
+    "RGB/32 compositing uses the existing native linear-light pipeline; mask blending is scalar",
+    "Transformed samples use existing affine interpolation before eight-bit color matching"
+  ],
+  "limits": {
+    "canvas_pixels": 36000000,
+    "canvas_dimension": 32768,
+    "matching_precision_bits": 8
+  },
+  "remaining": [
+    "Photoshop output equality for tolerance, alpha, antialiasing and transformed/HDR pixels",
+    "Averaged Magic Wand sample sizes and Select and Mask",
+    "Layer transparency locking",
+    "Full painting blend-mode catalogue, channels and non-RGB color spaces",
+    "Persistent preferences, full shortcut/input and live UI qualification",
+    "Intel and macOS 14/26 runtime acceptance"
+  ],
+  "live_photoshop_reference": "Not obtained in this pass. Prior reference access failed while the Mac was locked; no queued AppleEvents were retried.",
+  "parity_status": "Partial. Executed source references do not establish Photoshop equivalence.",
+  "mask_interpolation_policy": "Scalar coverage without gamma conversion at all depths, including affine RGB/32 mask sampling. Regression reproduces and fixes the initial color-domain interpolation error.",
+  "pattern_followup": "PATTERN_REFERENCES.json"
+}

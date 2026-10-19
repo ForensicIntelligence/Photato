@@ -1,0 +1,22 @@
+{
+  "generator": "scripts/generate-gradient-oracle.py",
+  "source_files": {
+    "compose/src/effects.rs": "b5b2c256e67e3b4d6a1b1e59b2bb6f47e5fffd1eb02480c8af0c6baec2ceed74",
+    "compose/src/fill_layout.rs": "fe71f68a80eea82f646612dd4848a2838e47c962422e05b2025ac9c2e1ea0cf6",
+    "compose/src/gradient_fill.rs": "119ad9044ffd7af32d2fdc6bf7b59d741241f0d2ec8bd0cb215726df01d38cb9",
+    "io/src/gradient_bake.rs": "31522f019fb7df5fe2d0eb1c360c4af6f97185c78421d70ace210fe8d772a7d1",
+    "color/src/lib.rs": "d0f318cde7c9b1962196d7c4dfb7e981b0f6a03bd50c22fe5478fb9acad1d0f9",
+    "engine/src/preset_import_cmds.rs": "b5af5b5f425fa2d65a36a10128b52c010637edfe9ee3620f8d1858b241f1727f"
+  },
+  "oracle_bytes": 387560,
+  "oracle_sha256": "79823047475fa54d783f55e53d655fc1dcd383f544062c8429f570888c2e238a",
+  "geometry_cases": 120,
+  "geometry_parameters": 34320,
+  "geometry_metadata_values": 1440,
+  "interpolation_cases": 27,
+  "interpolation_rgb_values": 15633,
+  "ramp_dither_values": 2048,
+  "hsb_rgb_values": 405,
+  "opacity_values": 579,
+  "scope": "Executed original Rust functions, not Photoshop output certification. Direct interpolation avoids upstream 97-stop baking; adapters only provide geometry types and output framing."
+}

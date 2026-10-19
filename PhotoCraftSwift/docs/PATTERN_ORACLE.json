@@ -1,0 +1,62 @@
+{
+  "sources": {
+    "photocraft-main/crates/compose/src/pattern.rs": "7226ee9de55be7135dc2cb9d5bbaade7c00d840fe6ae79bed8b278a00f26f83b",
+    "photocraft-main/crates/engine/src/pattern_cmds.rs": "06b1578deefb445507f86ca3cf471ef51cbf738165f0c9dc0a68bc082ac30d46",
+    "photocraft-main/crates/doc/src/pattern.rs": "d39bf28cef09995f76009bc4f4391de1916ac6498a6c7d9acf30791418e2c3b8",
+    "photocraft-main/crates/psd/src/patterns.rs": "64dcb243ccd09460c96184c03934cceec18a4947800414a71b93b7d1305231b0",
+    "photocraft-main/crates/psd/src/compression.rs": "7ee12da4fb19a042fa5f38d3325bc34d6c1020f1150d01e8d812bb6f02924de3"
+  },
+  "fixtures": {
+    "presets": {
+      "bytes": 67428,
+      "sha256": "3df7bff3cd2130720157d9fb6b7ec9623feb269506a76b2c12f440c43e56324f"
+    },
+    "sampling": {
+      "bytes": 116816,
+      "sha256": "47822596621eb18afa8d313c7b64049a1262003f98977078a3e3bcd9337d8ee9"
+    },
+    "pat": {
+      "bytes": 3871,
+      "sha256": "91154b2e7f4e71e3723ff47b2c608882f9e882767a868f9f4cc37b48aba0fd9e",
+      "patterns": 9
+    },
+    "rgb_pat": {
+      "bytes": 2467,
+      "sha256": "3e82127b02c6bf4fec2480e24f5cfc9c4679093692969f398e7d4aaffc7116ea"
+    },
+    "packets_pat": {
+      "bytes": 1111,
+      "sha256": "357c19fc046e9fb79e4ff19113dbcf044fa227a9198528ec0c7d30abd5155f64"
+    }
+  },
+  "method": "Original pattern identity, procedural preset, Tile and Placement methods; original PAT parser/writer and PackBits code with storage and row-plane framing adapters. No Swift implementation used to generate expected values.",
+  "scope": "Source references, not Photoshop render references. Generated preset pixels are original upstream CC0 assets.",
+  "observed": {
+    "debug_preset_ids_exact": 7,
+    "debug_preset_sample_bits_exact": 16752,
+    "debug_sampler_values_exact": 27968,
+    "release_preset_ids_exact": 7,
+    "release_preset_sample_bits_exact": 16752,
+    "release_sampler_values_exact": 27968,
+    "sampler_max_error": 0.0,
+    "test_tolerance": 2e-06,
+    "source_rgb_pat_file_bytes_exact": 2467,
+    "source_packbits_boundary_file_bytes_exact": 1111,
+    "native_exports_verified_by_original_rust_parser": 9,
+    "native_exports_rust_verification_scope": "Every channel byte, identifier, name and dimension after gray/index/bitmap normalization to native RGB",
+    "rust_export_check_log": "../artifacts/pattern-rust-export-check.log"
+  },
+  "tests": {
+    "core_and_oracle": 8,
+    "imaging": 8,
+    "workflow": 5,
+    "release_passed": 21,
+    "release_failed": 0,
+    "release_seconds": 0.091,
+    "full_suite_passed": 432,
+    "full_suite_failed": 0,
+    "full_suite_seconds": 69.462,
+    "full_log": "../artifacts/full-tests.log",
+    "release_log": "../artifacts/pattern-release-tests.log"
+  }
+}

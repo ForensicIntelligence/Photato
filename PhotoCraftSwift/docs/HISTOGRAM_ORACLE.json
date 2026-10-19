@@ -1,0 +1,7 @@
+{
+  "histogram_source_sha256": "419902a50bb5e7d2ce5d80444d4c16f342e43505fb03ee973ed30e751bc196e7",
+  "auto_source_sha256": "fada4a38417eb3c112273f24be3332533a18220b3a13d740cfbe47c19b4192e1",
+  "vectors": 15,
+  "generator": "scripts/generate-histogram-oracle.py",
+  "scope": "Original histogram, clip_points, median and auto_adjust estimator; Auto Color remains a source approximation."
+}

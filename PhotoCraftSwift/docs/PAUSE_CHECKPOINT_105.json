@@ -1,0 +1,125 @@
+{
+  "step": "dev-step-105",
+  "recorded_at_utc": "2026-10-19T17:47:29.848971+00:00",
+  "reason": "User requests pause after debugging the latest function additions/changes so they can use Codex elsewhere. Latest repaired step103 source and package remain unchanged; step105 investigation introduced no application edits.",
+  "checkpoint_status": "verified; pause requested; integration investigation saved",
+  "version": "0.2.0",
+  "build": "2",
+  "full_goal_achieved": false,
+  "source_hashes": "artifacts/runs/20261013T174202Z-103-actions-component-integration/tested-source-hashes.json",
+  "verified_unchanged_swift_files": 374,
+  "tests": {
+    "full01.log": {
+      "path": "artifacts/runs/20261013T174202Z-103-actions-component-integration/full01.log",
+      "sha256": "ec0320d844d7bf72906bb9bedb10e4620060062ebec53708a3aaf4c2f3b50bbd",
+      "passed": 980,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 144.372
+    },
+    "release-focused01.log": {
+      "path": "artifacts/runs/20261013T174202Z-103-actions-component-integration/release-focused01.log",
+      "sha256": "80f9d4204f8239cc6ba0a8302f3f8272cb8d8d597815d189241399509a75e777",
+      "passed": 80,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.995
+    },
+    "focused06.log": {
+      "path": "artifacts/runs/20261013T174202Z-103-actions-component-integration/focused06.log",
+      "sha256": "d8299d2627f261be03020ce6d8d584155c97ee10c62f5eeefddfe6d69fe420be",
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.609
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-native-actions-3ketlq9n/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "797b754b601918bb39527d85178a4ee41cac9292d8b70a7feb9e82609282f2e8",
+    "zip_sha256": "44c30faa42c02ab176c8d0e8b5b4f2196b3ee5d738bd787b18d766ece62e4fa6",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true
+  },
+  "app_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app",
+  "zip_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.zip",
+  "xcode_project": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/Photato.xcodeproj",
+  "xcode_project_sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2",
+  "no_outstanding_test_or_build_session": true,
+  "pending_implementation": [
+    "Genuine component edit targets independent of view-only channel preview and visibility",
+    "Native Fill dialog, factory shortcuts and correct routing/guards for every writing tool",
+    "Photato typed component target/fill operations, schemas/state/docs and shared-history validation",
+    "Adobe execute-actions/status routes, optional resource-job enablement, credentials, HTTP framing budget and authenticated output delivery",
+    "Busy/stale/invalid/cancellation/undo/redo equivalence across desktop and both APIs",
+    "Remaining Photoshop functions, exact byte output, preferences, platform/runtime qualification and optional AI"
+  ],
+  "resume_first": "Read AGENTS.md, CONTRIBUTING.md Development record, this checkpoint, STATUS.md, DEVLOG.md steps103-105 and ACTION_JOB_REFERENCES.json. Revalidate the374-file source freeze and app/ZIP hashes. No test/build session is pending. Continue native component edit targeting and Fill, matching Photato commands and Adobe action/job HTTP integration over the tested modules; preserve existing preview-only API behavior. Do not repeat completed step103 tests unless source changes or a new concern justifies it.",
+  "constraints": [
+    "100% native Swift/macOS; universal macOS14+ editing support",
+    "Optional Apple Silicon on-device AI and authorized Private Cloud Compute; maintain existing gates",
+    "UI, menus, UX, major functions, subfunctions, minor functions, everything else",
+    "Keep both Photato and Adobe-compatible interfaces; do not claim unimplemented endpoints",
+    "All development steps documented; unique failed/passing logs and independent Photoshop evidence",
+    "Do not disturb original modified Photoshop document; new probes must be disposable originals"
+  ],
+  "qualification_limits": [
+    "980 package and80 optimized tests do not prove complete Photoshop parity",
+    "122880 independent layer-plane output bytes in five RGB8 single-layer Fill cases only; not whole-file or global output equivalence",
+    "No new live native UI qualification in step103",
+    "Twelve public Photato commands unchanged; zero of eight Adobe HTTP endpoints implemented",
+    "Native resource/job modules internal, in-memory; real external storage and Adobe service interoperability unqualified",
+    "Intel/macOS14 deployment metadata verified; Intel and macOS14 runtime qualification still open"
+  ],
+  "evidence_root": "artifacts/runs/20261019T174222Z-105-component-ui-api",
+  "repaired_latest_failures": [
+    "Optional document resolution compile failure repaired by using the shared document exporter and pixelsPerInch default.",
+    "RGB8 image export was accidentally promoted to16-bit through the float renderer; shared desktop/API document encoding now retains8/16-bit document depth."
+  ],
+  "development_history_check": "artifacts/development-history-audit/20261019-step105-pause/check02.log",
+  "verification": "artifacts/runs/20261019T174222Z-105-component-ui-api/pause-verification01.json",
+  "tests_rerun_at_this_checkpoint": false,
+  "documentation_only_since_previous_qualification": true,
+  "step105_investigation": {
+    "implementation_started": false,
+    "preserved_before": "artifacts/runs/20261019T174222Z-105-component-ui-api/before",
+    "source_baseline": "artifacts/runs/20261019T174222Z-105-component-ui-api/before-source-hashes.json",
+    "proposed_target_design": "Separate document-local component edit target from RGBChannelView preview/visibility. Selecting a target must invalidate API revision even if the display does not change. Treat this as a proposed design, not implemented behavior.",
+    "native_integration_files": [
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/ChannelPanelOptions.swift",
+      "Sources/PhotoCraft/ChannelsPanel.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/DocumentWorkspace.swift",
+      "Sources/PhotoCraft/FloatingPanelWindows.swift",
+      "Sources/PhotoCraft/CanvasView.swift"
+    ],
+    "transaction_guard_findings": [
+      "EditorStore.executeEditorCommand is the ordinary shared desktop/API command path. Prepared edits also commit directly in TransformEditing, ClipboardEditing and DuplicateLayerControls; all need component-context review before exposing a target.",
+      "Current Fill uses five content choices at Normal100% and routes ordinary layer Fill or maskFill. The independently qualified RGB8 component kernel must replace ordinary RGBA Fill only in the matching context.",
+      "Component edits cannot be emulated by RGBA compositing followed by restoring untargeted channels: independent semitransparent Photoshop fixtures disprove that arithmetic.",
+      "Target selection, mask selection, layer selection, document replacement and gesture/draft/busy lifecycle need coordinated guards. Review remaining reset/input paths before editing.",
+      "Only RGB8 neutral Normal component Fill is independently qualified. Reject unsupported colored Fill and higher-depth component writes explicitly until their semantics are established. Other tools must not silently modify all RGB channels while one is selected."
+    ],
+    "keyboard_findings": "Factory Command2-5 have prior Photoshop evidence. Native routing is in DocumentWorkspaceWindow.sendEvent, FloatingPanelWindows and CanvasView.keyDown; guessed WorkspaceShortcuts.swift/WorkspaceKeyboard.swift files do not exist. Preserve text responder, sheet/modal and floating-document routing.",
+    "photato_api_findings": [
+      "Keep view.channelPreview and view.channelVisibility view-only. Add separate typed target/fill operations with schemas, capabilities and state; twelve existing commands remain available.",
+      "AutomationService currently reports channelView.componentEditing=false. Change advertising only when actual native functionality and both applicable API paths work.",
+      "Use shared history and validation, including stale revision, busy gestures, invalid targets, cancellation and undo/redo."
+    ],
+    "adobe_api_findings": [
+      "AdobeActionJobs, AdobeActionsRequest, AdobeActionAssets, PhotoshopActionProgram and NativeAdobeResourceTransport are tested internal modules only; all eight Adobe HTTP endpoints remain unimplemented.",
+      "Wire published execute-actions/job-status contract, explicit optional resource-job enablement, credential configuration, lifecycle revocation and authenticated output delivery.",
+      "AutomationRequest currently limits all bodies to65536 bytes. Any4MiB Adobe request allowance must be route-specific and preserve the existing Photato bound; request errors and202 response reason need contract review.",
+      "Generated /v2/assets URLs in the internal job module are a local extension, not a published Adobe endpoint. Keep that distinction explicit.",
+      "Jobs are in-memory. Real external upload/storage and Adobe-service interoperability remain unqualified; never advertise internal tests as endpoint conformance."
+    ],
+    "next_validation": "Focused module/workflow/client tests first. Once implementation is final, freeze all Swift source/test hashes, preserve fixed-output artifacts, run appropriate full/optimized regressions and universal packaging, qualify live native UI with disposable original documents, update dual-API/reference evidence and run the history audit."
+  }
+}

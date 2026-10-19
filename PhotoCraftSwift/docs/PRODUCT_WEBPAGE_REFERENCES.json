@@ -1,0 +1,18 @@
+{
+  "step": 97,
+  "date": "2026-10-09",
+  "deliverable": "../../nusite/index.html",
+  "referencePages": [
+    "https://www.forensicintelligence.ca/",
+    "https://www.forensicintelligence.ca/structa/",
+    "https://github.com/storytold/photocraft"
+  ],
+  "run": "artifacts/runs/20261009T230957Z-097-product-webpage",
+  "nativeBinarySha256": "e02630693e43a0dc578668e990a161ad3c14014b5e8a5b5aaf1b7e9d8fe389fb",
+  "sourceVerification": "artifacts/runs/20261009T230957Z-097-product-webpage/static-check01.json",
+  "browserVerification": "artifacts/runs/20261009T230957Z-097-product-webpage/browser-checks.json",
+  "websiteHashes": "artifacts/runs/20261009T230957Z-097-product-webpage/website-file-hashes.json",
+  "publicProvenance": "../../nusite/assets/provenance.json",
+  "developmentState": "Native work remains paused at step093; website separately authorized",
+  "publication": "not published"
+}

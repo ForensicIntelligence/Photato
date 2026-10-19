@@ -1,0 +1,119 @@
+{
+  "step": "dev-step-114",
+  "recorded_at_utc": "2026-10-19T21:09:03.619315+00:00",
+  "status": "Qualified linear raster sample preservation; full major D01/Photoshop HDR fidelity remains open",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "full_photoshop_parity": false,
+  "evidence_root": "artifacts/runs/20261019T204913Z-114-rgb32-preservation",
+  "source_freeze": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/tested-source-hashes04.json",
+  "architecture": [
+    "Explicit linearRGB Float32 Surface storage with encoded-view compatibility and direct linear access",
+    "Packing version2 declares linear sample meaning; native archive version9 reads prior versions",
+    "PSD raster decode/export retains supported linear-sRGB samples; opaque Normal untransformed composition and ordinary group/clipping paths preserve them in merged output",
+    "Incremental snapshot patches copy linear samples directly"
+  ],
+  "original_photoshop_fixture": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-depth-32.psd",
+    "sha256": "a1c4547183b6e7fbd3a92a80b475005c29da91868e4470b0488f98a0f28e40a3",
+    "provenance": "Existing original procedural probe created and saved through Photoshop 2026 in step009. No Adobe implementation or preset data included."
+  },
+  "independent_literals": [
+    "positive and negative zero",
+    "positive and negative smallest subnormal",
+    "largest subnormal and smallest normal",
+    "ordinary fractional values",
+    "value immediately above1",
+    "negative extended-range value",
+    "largest finite Float32"
+  ],
+  "reference_pages": [
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "accessed": "2026-10-19"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/high-dynamic-range-images.html",
+      "accessed": "2026-10-19"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/features-that-support-32-bpc-hdr-images.html",
+      "accessed": "2026-10-19"
+    }
+  ],
+  "api": {
+    "photato_commands": 17,
+    "new_commands": 0,
+    "capabilities": "documentTransfers.float32Storage",
+    "routes": [
+      "/v1/documents/import",
+      "/v1/documents/{id}/file.{format}",
+      "/v1/documents/{id}/commands",
+      "/v1/action-jobs",
+      "/v2/execute-actions"
+    ],
+    "high_depth_jobs": "Composite RGB selection/preservation only; component editing remainsRGB8; RGB32 PNG output rejects; request/response schema unchanged",
+    "adobe_endpoints_partial": 2,
+    "adobe_endpoints_unimplemented": 6
+  },
+  "limits": [
+    "Original non-sRGB profile retention remains open; conversion cannot preserve original source bits",
+    "All transforms, fractional compositing, clipped Pass Through extraction, adjustments and editing kernels are not fully migrated or byte-qualified",
+    "LayerMerge still explicitly round-trips through encoded storage and needs direct linear migration with its independent Photoshop references",
+    "PSD masks, merged matting and complete Photoshop HDR numerical equivalence are not newly claimed exact",
+    "RGB32 ordinary source overwrite still requires explicit Save As review",
+    "Complete PSD/PSB/RAW/PDF/pcraft support, document recovery/external coordination and Intel/macOS14 runtime qualification remain open"
+  ],
+  "tests": {
+    "full02.log": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/full02.log",
+      "sha256": "e8d28db4da6b8ad7b718695573232283fbb0df2d79a37b9588747073323aa15a",
+      "passed": 1040,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 150.24
+    },
+    "release02.log": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/release02.log",
+      "sha256": "569d2af7628aaa75356ef80d38e55663d003440b95c334d8b2bb8f1fbc6ddded",
+      "passed": 628,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.455
+    }
+  },
+  "release": {
+    "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/release-verification.json",
+    "sha256": "abb80bb426211c9d3aaf939abada817776154fc8ef4f12ef2c4f455707981c53"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/live-ui-verification.json",
+    "sha256": "cc20cc196b65dca7d741639ef9669a93b8745d31cb9197b881f566b9b0170b50"
+  },
+  "independent_original_layers": {
+    "bytes": 122880,
+    "different_bytes": 0,
+    "report": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/independent-live02.json",
+      "sha256": "9ff683f19eda15ab569ecba9f5f35850ce5757454d5cd26a908a4d5ab059710d"
+    }
+  },
+  "independent_photoshop_recalculation": {
+    "actions": "Separate copy; opacity100\u219299\u2192100; Save through Photoshop2026; original layer planes unchanged",
+    "report": {
+      "path": "artifacts/runs/20261019T204913Z-114-rgb32-preservation/independent-recalculated02.json",
+      "sha256": "f1728120916272e63bfc2d4fbac13ca64c35d4d792603802ba371de351b81cc8"
+    },
+    "merged": {
+      "before_bytes": 98304,
+      "after_bytes": 73728,
+      "different_bytes": 13569,
+      "equal": false,
+      "RGB_different_bytes": 13569,
+      "output_alpha_is_opaque": true,
+      "different_float_samples": 12986,
+      "maximum_absolute_sample_error": 4.470348358154297e-08
+    }
+  },
+  "next": "Diagnose the measured RGB32 merged/CMM/compositor differences using the freshly recalculated reference; migrate LayerMerge and remaining HDR kernels to direct linear storage. Retain all original-profile/format/lifecycle major requirements."
+}

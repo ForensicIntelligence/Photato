@@ -1,0 +1,104 @@
+{
+  "step": "dev-step-069",
+  "date": "2026-10-09",
+  "status": "Native panel tear-off and cancellation-safe drop lifecycle implemented; automated/package/offscreen qualification, live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-verification.json",
+    "sha256": "b4df33d4711a8ff96091cf4cf84aea2d3cd7d168235058a464946bea2f4d1eaf"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/tested-source-hashes.json",
+    "sha256": "ecf26188e175805a9aa400030f73986e1a2fb01c0156e3cd4579ee7fb04256d6"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/references.json",
+    "sha256": "dbb637eb36a71084e4a643a509508867cfc6bd73cd8c76d0f0ff790b245b7cf8"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/live-qualification.json",
+    "sha256": "60372710eff991519beb3d320279fc27c03a657551f400507158f0ef36fa374c"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/offscreen-layout.json",
+    "sha256": "df7c1989a2da997fb5bf188caab4b84c2e2f90710da4c251de26d96948f4c49b"
+  },
+  "implementation": [
+    "Native NSDraggingSession sources float only through accepted drops; session-ended cleanup never interprets a failed drag as a mutation.",
+    "Native content-ancestor and window/chrome receivers plus temporary transparent desktop receivers; Command routes tab/boundary drops to float instead of dock.",
+    "Captured panel/group anchor and size, private payload validation and active document/library/workspace/layout guards.",
+    "Close temporary surfaces on commit, cancellation, deactivation, screen change and document change; token-checked deferred cleanup survives source-view removal without cancelling a newer drag."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/focused-tests-08.log",
+      "sha256": "7d7acb854951b89112fd3bfc4937fc17cffac856cbf856653565568eacfda04b",
+      "passed": 92,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.515
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/full-tests-02.log",
+      "sha256": "dc0a645d6b3129262e189d703312641d9aef1cfa4c2264ac45787f7e5778dbe7",
+      "passed": 663,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 115.945
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-tests-02.log",
+      "sha256": "f1d2e6bbda87ddb5274c311815cbebf5d33a8b39464b8e36f9225235526a20d4",
+      "passed": 221,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.437
+    },
+    "new_regressions": 9
+  },
+  "limits": [
+    "Actual OS pointer dragging, Escape cancellation, Command-key transitions, desktop target ordering and cross-display placement remain unqualified while the Mac is locked.",
+    "Tear-off default height/title offset and exact Photoshop appearance need direct comparison; this is not a pixel-equivalent UI claim.",
+    "Floating stacks, extra dock columns and full panel menus remain unfinished.",
+    "No Photoshop-wide byte-identical output, full functionality, Intel runtime or macOS14 runtime qualification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "floating_stack_followup": {
+    "step": "dev-step-070",
+    "reference_manifest": "docs/FLOATING_STACK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+      "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+    },
+    "scope": "Native floating stack topology, native hosts/boundaries and preserved collapsed/hidden geometry; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

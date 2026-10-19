@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-08",
+  "development_step": "dev-step-052",
+  "status": "Native Classic RGB16 Gradient Map implemented; two one-working-level sample differences remain",
+  "run_directory": "artifacts/runs/20261008T214911Z-052-classic-native-candidate",
+  "research_verification": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/release-verification.json",
+  "production_changed": true,
+  "qualification": {
+    "new_original_photoshop_references": 6,
+    "regenerated_inputs": 6,
+    "controls_preserved_without_normalization": 2,
+    "midpoint_normalized_references": 4,
+    "independent_ramp_cases": 21,
+    "ramp_samples": 86037,
+    "exact_ramp_cases": 19,
+    "exact_ramp_samples": 77843,
+    "working_and_stored_input_representations": true,
+    "exact_full_composition_and_export_pixels": 114700,
+    "remaining": [
+      {
+        "name": "new-random33-linear",
+        "position": 864,
+        "maximum_working_error": 1
+      },
+      {
+        "name": "midpoints-zero-full",
+        "position": 2089,
+        "maximum_working_error": 1
+      }
+    ]
+  },
+  "candidate": {
+    "source": "Empirical observations from original procedural documents recalculated by Photoshop 2026; no Adobe implementation code copied",
+    "tone_coordinates": "Use the separately qualified fixed-weight RGB16 coordinate rule from GRADIENT_MAP_TONE_REFERENCES.json.",
+    "working_stop_color": "n = round(saved_component * 32768 / 65535)",
+    "nearest_bucket": "center = ((n + 63) // 128) * 128; halfway ties select the lower bucket",
+    "expanded_stop_color": "K = 256*n - center; K represents color scaled by 255",
+    "integer_midpoint": "M = (segment_length * midpoint_percent + 50) // 100; rounds to nearest integer",
+    "piecewise_coordinate": "offset*(0.5/M) when offset<=M, otherwise 0.5+(offset-M)/(segment_length-M)*0.5; preserve operation order.",
+    "cubic_coefficients": "Left: (next_color - previous_color)/2. Right: (following_color - current_color)/2. Endpoint indices clamp to the first/last stop; stop distances do not rescale these coefficients.",
+    "smoothing": "linear*(1-smoothness)+cubic*smoothness, clamped to segment endpoint values",
+    "output": "bucket = floor(K/32640); working_output = clamp(floor((K + 128*bucket)/256), 0, 32768)",
+    "rounding_limit": "All prior 15 references now agree; new independent random/extreme-midpoint references expose two one-working-level positions. These remain measured failures of full parity.",
+    "implementation": "Sources/PhotoCraftCore/ClassicRGB16Gradient.swift",
+    "arithmetic": "Native Swift Double with exact integer-scaled color inputs; no Int128, epsilon or per-pixel exceptions.",
+    "midpoint_normalization": "Clamp percent to 5...95 before rounding its segment location; Photoshop saves the clamped value.",
+    "linear": "x*(1-u)+y*u",
+    "boundary": "At coincident positions, use the last color in stable stop order. Exact stops bypass interpolation."
+  },
+  "failed_candidates": {
+    "coarse_ramp_lookup": "Intervals 2...64 do not explain the residuals.",
+    "uniform_color_clamp_only": "Removes 380-level overshoot but leaves rounding errors.",
+    "midpoint_floor_and_upward_color_ties": "Independent holdouts reject these choices.",
+    "double_operation_orders": "900 equivalent-operation variants did not resolve all linear boundary differences; best has five differing opaque pixels.",
+    "int128": "Swift typechecking rejects the required macOS14 deployment target; Int128 needs macOS15."
+  },
+  "evidence": {
+    "initial_lookup": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/lookup-analysis-01.json",
+    "segment_bounds": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/segment-analysis-02.json",
+    "eight_probes": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/probes-analysis-01.json",
+    "slopes": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/uneven-slopes-01.json",
+    "feasible_endpoints": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/linear-bounds-01.json",
+    "signed_fraction": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/signed-fraction-01.json",
+    "holdout_failure": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/signed-fraction-holdout-01.json",
+    "holdout_repair": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/signed-fraction-holdout-02.json",
+    "rational_rgba": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/rational-candidate-02.json",
+    "double_orders": "artifacts/runs/20261008T211519Z-051-classic-gradient-lookup/double-order-02.json",
+    "native_arithmetic_sweep": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/linear-arithmetic-03.json",
+    "native_candidate": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/native-all-03.json",
+    "saved_control_changes": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/saved-control-differences.json",
+    "new_reference_acquisition": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/boundary-acquisition.json",
+    "fixtures": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/fixture-manifest.json",
+    "live_files": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/live-files-verification.json",
+    "release": "artifacts/runs/20261008T214911Z-052-classic-native-candidate/release-verification.json"
+  },
+  "current_native_build": {
+    "development_step": "dev-step-052",
+    "source_files": 128,
+    "test_files": 117,
+    "full_tests": 545,
+    "optimized_tests": 92,
+    "tests_rerun": true,
+    "package_rebuilt": true,
+    "binary_sha256": "ffb4b711da2c8283e11eaf2c3427be8a9995f054691dd1ddab35ab80bd581c04",
+    "zip_sha256": "6221be4ed980c8ce55c92cfed03ab14c000156a92c579c0f5f623e8329e9c3de"
+  },
+  "next": [
+    "Resolve the two remaining floating-boundary positions using independent holdouts without data-specific exceptions.",
+    "Qualify reverse/dither, richer colors and full interaction with further Photoshop references.",
+    "Continue other gradient methods, Smooth, Gradient Fill/paint pixel qualification and the full professional-workflow backlog."
+  ],
+  "limitations": [
+    "Two one-working-level differences remain in the RGB16 Classic corpus.",
+    "Only Gradient Map RGB16 Classic changed; RGB8/float and other methods retain previous behavior.",
+    "Dither remains the PhotoCraft ordered algorithm and is not Photoshop-qualified.",
+    "Full color-profile, fill/paint, preference/shortcut and runtime parity remains open.",
+    "Smooth remains unsupported; Intel/macOS14/macOS26 runtime testing remains open."
+  ],
+  "license": "Original procedural test data: MIT OR Apache-2.0",
+  "full_photoshop_parity": false,
+  "historical_step_051_qualification": {
+    "new_original_photoshop_references": 14,
+    "regenerated_inputs": 14,
+    "controls_preserved": 14,
+    "exact_complete_ramps": 14,
+    "exact_complete_ramp_rgba_pixels": 229432,
+    "exact_independent_colored_matrix_pixels": 131072,
+    "remaining": {
+      "name": "holdout-random17-linear",
+      "different_positions": 3,
+      "different_rgba_pixels": 12,
+      "pixels": 16388,
+      "maximum_stored_error": 2
+    }
+  },
+  "historical_step_051_build": {
+    "development_step": "dev-step-050",
+    "source_files": 127,
+    "test_files": 115,
+    "full_tests": 540,
+    "optimized_tests": 87,
+    "tests_rerun": false,
+    "package_rebuilt": false,
+    "binary_sha256": "9ff9580c98b487f454703953a840f8383eeba2a60ff884999a5c769c56cfcbc5",
+    "zip_sha256": "21a1e9473dd7c48249fa16058549cce4a8d1a2e168f5dd4d59d7177aaba3c079"
+  }
+}

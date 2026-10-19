@@ -1,0 +1,13 @@
+{
+  "source": "photocraft-main/crates/algo/src/selection.rs",
+  "source_sha256": "cc91ea19312ec378d86df670d5e229d48ef860ee29295e9f2b16d89c959c2d45",
+  "fixture_sha256": "63cd4df4e2386d053279ee4c9c659d17c05f764a8992d7978c80d7c0806c4dfc",
+  "fixture_bytes": 337200,
+  "cases": 240,
+  "mask_bytes": 66096,
+  "method": "Executed original wand_region with Rect/Region storage adapters; upstream sequential row loops selected. No color-match, flood, edge or rounding changes.",
+  "scope": "Source algorithm reference only. Not a Photoshop output reference.",
+  "observed_debug_exact_coverage_bytes": 66096,
+  "observed_release_exact_coverage_bytes": 66096,
+  "verification_date": "2026-10-08"
+}

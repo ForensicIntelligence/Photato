@@ -1,0 +1,121 @@
+{
+  "step": "dev-step-060",
+  "captured_utc": "2026-10-09T03:13:20.553745+00:00",
+  "reference_application": "Adobe Photoshop 2026 27.2.0 on macOS 27.0.1; original Untitled-1 retained without pixel edits",
+  "adobe_reference": "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/hide-show-panels.html",
+  "reference_captures": [
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-mixed-tab.png",
+      "sha256": "d4f05e2c72932227e43226d7e6b829a9a50887cd4c59571af594d28f577ca7b3"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-restored.png",
+      "sha256": "d4f05e2c72932227e43226d7e6b829a9a50887cd4c59571af594d28f577ca7b3"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-shifttab-hidden.png",
+      "sha256": "7260760168fd37ffc8adb6f0292eea257246201ceb12a37d7765fae2b53e4ccd"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-shifttab-then-tab.png",
+      "sha256": "d4f05e2c72932227e43226d7e6b829a9a50887cd4c59571af594d28f577ca7b3"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-tab-hidden.png",
+      "sha256": "b58873cefaffdbc51df9bdd8c2c7501183a058b8c9f9643bc38f379bccc40bf3"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-tab-then-shifttab.png",
+      "sha256": "48ad9a81baaf22cbce478832dfd8d76d78d05f30f96c2154e8bbac96556cd782"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-visible.png",
+      "sha256": "f263239b30ec67638867e15fbfd7799a241f2d3e1dbebd1007c38bc30a3628d1"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/photoshop-window-layers-reveal.png",
+      "sha256": "d905aabaa3ab4b3e86de873c32b1aae528587a2036770eb4d6a74cf36743172e"
+    }
+  ],
+  "native_captures": [
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-collapsed-menu-reveal.png",
+      "sha256": "a1bb5a096460cff3466ca4a8e9a5e02b736bca58d9074d7582d6486e1d4b0a9a"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-collapsed.png",
+      "sha256": "b4a27380a88b4cb4e2c443ce8ae966d2167544188f017dc941d596ca4e27e8c5"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-field-shifttab.png",
+      "sha256": "df13366d0b5c041ff58abe2fbb78c09bb1f94a566b9aec068b0ada21a322078c"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-field-tab.png",
+      "sha256": "2b4e6764f821e8716f52f7ae38359db9be11ba40541826d6d03358c84dbe7129"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-mixed-tab.png",
+      "sha256": "ed380ce9804946e098b8b3a951fcbc66a242d34b654357246f82033b7a85f4cd"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-restored.png",
+      "sha256": "36aa30048428b5084247ca90e0750b3ea9776e08a426ae399bd8776805778f25"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-shifttab-hidden.png",
+      "sha256": "aad2056fd097aec4eb2eb4ef4d5bceefc685ceccdfd7dda2ce697d0bde2d8016"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-shifttab-then-tab.png",
+      "sha256": "078e180093e67262e1a8568d42dfee0d956b2ae4a5058e1f43e716409b10c4f4"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-tab-hidden.png",
+      "sha256": "912d3781b86c4b331f32e9aff5f19793354e4539abdadd752cde1a56fc697909"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-tab-then-shifttab.png",
+      "sha256": "528c55cee9bde9fef4232f5ce59f7c03f315b69089fa67ecfbc3e27b7dfa463e"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-visible.png",
+      "sha256": "259a519ca58736d2f4da8521c09788c83981ef8e69b06bbc0dce347ec7fad751"
+    },
+    {
+      "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/native-window-layers-reveal.png",
+      "sha256": "6756cd36a4acd44ce5058637e3e690ac8810c41f457e92f3e4477ed805f78c24"
+    }
+  ],
+  "live_checks": {
+    "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/live-observations.json",
+    "sha256": "d71e2ecb400d125b85e9b6f8c7bb065469f977822d311dbab801bbe9b1d2cfa4",
+    "binary_sha256": "0a4287b8b4892a7596e23ae2f248b76916aa9a3e47c5aa41461be88fb4941cfc",
+    "pid": 91708,
+    "checks": 10,
+    "all_pass": true
+  },
+  "release": {
+    "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/release-verification.json",
+    "sha256": "7cbadcb754bf89e28738a189b41e935835b87abdf1067933d36c734bec140d81"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T030105Z-060-workspace-visibility/tested-source-hashes.json",
+    "sha256": "db6ebcb7fe6451b38cccabda5bc3ceaf5032e5865e8b29b1f18ae132d55b3ca4"
+  },
+  "qualified_behaviors": [
+    "Canvas Tab hides tools, options and panels; pressing again restores them.",
+    "Shift-Tab toggles panels while preserving current tools/options visibility.",
+    "Tab from either mixed state restores the full workspace.",
+    "Window Layers reveals only its group when all are hidden.",
+    "Window Channels expands a collapsed dock.",
+    "Text-field Tab/Shift-Tab moves X/Y focus and leaves workspace visible."
+  ],
+  "limits": [
+    "Full Photoshop functionality is incomplete.",
+    "Native shared document tabs and AppKit-injected Window menu entries.",
+    "Per-tab closing, detachable/rearrangeable groups, application-wide persistent workspaces, edge-hover reveal.",
+    "Global shortcut/accessibility, exact visual metrics and panel content."
+  ],
+  "full_photoshop_parity": false
+}

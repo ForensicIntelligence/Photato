@@ -1,0 +1,29 @@
+{
+  "sources": {
+    "photocraft-main/crates/algo/src/retouch.rs": "3b66939fc09d40312ee61100c024e3ba0273f6c3a7cb06b2e6677b57767fc347",
+    "photocraft-main/crates/paint/src/retouch.rs": "fc30df6e880cc1136b49d27b6000d1bf2f1f1fac367d12f5fe2f2aecd9bcf5b5",
+    "photocraft-main/crates/paint/src/lib.rs": "6f2507958cbea7f869da7fcb4ed99ffe1055206c5be023f91971999d7eafc690"
+  },
+  "fixtures": {
+    "focus": {
+      "fixture_sha256": "39546bd8cff8c12d9ccda41c7fb6a45ec5b9c0b35b6e1a59392f18bf00a25f22",
+      "bytes": 402112
+    },
+    "smudge": {
+      "fixture_sha256": "9e12393dd37579697effbffbd8178834943e44eeebace2457ef0a1ba18b5221f",
+      "bytes": 416724
+    }
+  },
+  "scope": "Unmodified Rust local blur/sharpen and Smudge methods; standalone Region/Footprint storage adapters replace application dependencies. No Rust is linked into Photato. These source algorithms are not Photoshop references.",
+  "focus_regions": 8,
+  "smudge_strokes": 6,
+  "smudge_dabs": 36,
+  "observed_host": "Apple Silicon, macOS 27.0.1, Swift 6.4",
+  "test_tolerance": 2e-06,
+  "focus_channel_values": 73572,
+  "smudge_channel_values": 85560,
+  "observed_exact_debug_values": 159132,
+  "observed_exact_release_values": 159132,
+  "observed_maximum_error": 0.0,
+  "stroke_blur_alpha_mixing": "Native stroke blending deliberately fixes the upstream straight-RGB transparency fringe; this does not change the isolated kernel equations."
+}

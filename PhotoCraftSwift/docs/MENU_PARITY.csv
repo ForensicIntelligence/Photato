@@ -1,0 +1,802 @@
+menu_path,kind,native_action,key_equivalent,modifier_flags,functionality_claim
+Photato,submenu,submenuAction:,,0,structure only
+Photato > About Photato…,command,about,,0,partial native operation
+Photato > About Plugins,submenu,submenuAction:,,0,structure only
+Photato > Settings…,submenu,submenuAction:,,0,structure only
+Photato > Settings… > General…,command,,k,1048576,unavailable
+Photato > Settings… > Interface…,command,,,0,unavailable
+Photato > Settings… > Workspace…,command,,,0,unavailable
+Photato > Settings… > Notifications…,command,,,0,unavailable
+Photato > Settings… > Tools…,command,,,0,unavailable
+Photato > Settings… > History…,command,,,0,unavailable
+Photato > Settings… > File Handling…,command,,,0,unavailable
+Photato > Settings… > Export…,command,,,0,unavailable
+Photato > Settings… > Performance…,command,,,0,unavailable
+Photato > Settings… > Image Processing…,command,,,0,unavailable
+Photato > Settings… > Scratch Disks…,command,,,0,unavailable
+Photato > Settings… > Cursors…,command,,,0,unavailable
+Photato > Settings… > Transparency & Gamut…,command,,,0,unavailable
+Photato > Settings… > Units & Rulers…,command,,,0,unavailable
+"Photato > Settings… > Guides, Grid & Slices…",command,,,0,unavailable
+Photato > Settings… > Plugins…,command,,,0,unavailable
+Photato > Settings… > Type…,command,,,0,unavailable
+Photato > Settings… > Enhanced Controls…,command,,,0,unavailable
+Photato > Settings… > Technology Previews…,command,,,0,unavailable
+Photato > Settings… > Product Improvement…,command,,,0,unavailable
+Photato > Settings… > Camera Raw…,command,,,0,unavailable
+Photato > Services,submenu,submenuAction:,,0,structure only
+Photato > Hide Photato,command,hide,h,1310720,partial native operation
+Photato > Hide Others,command,hideOthers,h,1572864,partial native operation
+Photato > Show All,command,showAllApplications,,0,partial native operation
+Photato > Quit Photato,command,quit,q,1048576,partial native operation
+File,submenu,submenuAction:,,0,structure only
+File > New…,command,newFile,n,1048576,partial native operation
+File > New from Clipboard,command,newFromClipboard,,0,partial native operation
+File > Open…,command,openFile,o,1048576,partial native operation
+File > Browse in Bridge…,command,,o,1572864,unavailable
+File > Open as Smart Object…,command,,,0,unavailable
+File > Open Recent,submenu,submenuAction:,,0,structure only
+File > Close,command,closeWindow,w,1048576,partial native operation
+File > Close All,command,,w,1572864,unavailable
+File > Close Others,command,,p,1572864,unavailable
+File > Close and Go to Bridge…,command,,w,1179648,unavailable
+File > Save,command,save,s,1048576,partial native operation
+File > Save As…,command,saveAs,s,1179648,partial native operation
+File > Save a Copy…,command,,s,1572864,unavailable
+File > Revert,command,,,0,unavailable
+File > Invite to Edit…,command,,,0,unavailable
+File > Share for Review,command,,,0,unavailable
+File > Export,submenu,submenuAction:,,0,structure only
+File > Export > Quick Export as PNG,command,,,0,unavailable
+File > Export > Export As…,command,export,w,1703936,partial native operation
+File > Export > Export Preferences…,command,,,0,unavailable
+File > Export > Save for Web…,command,,s,1703936,unavailable
+File > Export > Artboards to Files…,command,,,0,unavailable
+File > Export > Artboards to PDF…,command,,,0,unavailable
+File > Export > Layer Comps to Files…,command,,,0,unavailable
+File > Export > Layer Comps to PDF…,command,,,0,unavailable
+File > Export > Layers to Files…,command,,,0,unavailable
+File > Export > Color Lookup Tables…,command,,,0,unavailable
+File > Export > Data Sets as Files…,command,,,0,unavailable
+File > Export > Paths to Illustrator…,command,,,0,unavailable
+File > Export > Render Video…,command,,,0,unavailable
+File > Export > Export Layers to PSD…,command,exportPSD,,0,partial native operation
+File > Search Adobe Stock…,command,,,0,unavailable
+File > Search Adobe Express Templates…,command,,,0,unavailable
+File > Place Embedded…,command,,,0,unavailable
+File > Place Linked…,command,,,0,unavailable
+File > Place Image…,command,place,,0,partial native operation
+File > Place Free Adobe Stock Images…,command,,,0,unavailable
+File > Package…,command,,,0,unavailable
+File > Automate,submenu,submenuAction:,,0,structure only
+File > Automate > Batch…,command,,,0,unavailable
+File > Automate > PDF Presentation…,command,,,0,unavailable
+File > Automate > Create Droplet…,command,,,0,unavailable
+File > Automate > Generator Plugins,submenu,submenuAction:,,0,structure only
+File > Automate > Crop and Straighten Photos,command,,,0,unavailable
+File > Automate > Contact Sheet II…,command,,,0,unavailable
+File > Automate > Conditional Mode Change…,command,,,0,unavailable
+File > Automate > Fit Image…,command,,,0,unavailable
+File > Automate > Lens Correction…,command,,,0,unavailable
+File > Automate > Merge to HDR Pro…,command,,,0,unavailable
+File > Automate > Photomerge…,command,,,0,unavailable
+File > Scripts,submenu,submenuAction:,,0,structure only
+File > Scripts > Image Processor…,command,,,0,unavailable
+File > Scripts > Delete All Empty Layers,command,,,0,unavailable
+File > Scripts > Flatten All Layer Effects,command,,,0,unavailable
+File > Scripts > Flatten All Masks,command,,,0,unavailable
+File > Scripts > Script Events Manager…,command,,,0,unavailable
+File > Scripts > Load Files into Stack…,command,,,0,unavailable
+File > Scripts > Load Multiple DICOM Files…,command,,,0,unavailable
+File > Scripts > Statistics…,command,,,0,unavailable
+File > Scripts > Browse…,command,,,0,unavailable
+File > Import,submenu,submenuAction:,,0,structure only
+File > Import > Variable Data Sets…,command,,,0,unavailable
+File > Import > Video Frames to Layers…,command,,,0,unavailable
+File > Import > Images from Device…,command,,,0,unavailable
+File > Import > Notes…,command,,,0,unavailable
+File > Import from iPhone or iPad,submenu,submenuAction:,,0,structure only
+File > Import from iPhone or iPad > Take Photo,command,,,0,unavailable
+File > Import from iPhone or iPad > Scan Documents,command,,,0,unavailable
+File > Import from iPhone or iPad > Add Sketch,command,,,0,unavailable
+File > File Info…,command,,i,1703936,unavailable
+File > Version History,command,,,0,unavailable
+File > Print…,command,,p,1048576,unavailable
+File > Print One Copy,command,,p,1703936,unavailable
+Edit,submenu,submenuAction:,,0,structure only
+Edit > Undo,command,undo,z,1048576,partial native operation
+Edit > Redo,command,redo,z,1179648,partial native operation
+Edit > Toggle Last State,command,,z,1572864,unavailable
+Edit > Fade…,command,,f,1179648,unavailable
+Edit > Cut,command,cut:,x,1048576,partial native operation
+Edit > Copy,command,copy:,c,1048576,partial native operation
+Edit > Copy Merged,command,copyMerged,c,1179648,partial native operation
+Edit > Paste,command,paste:,v,1048576,partial native operation
+Edit > Paste Special,submenu,submenuAction:,,0,structure only
+Edit > Paste Special > Paste without Formatting,command,,,0,unavailable
+Edit > Paste Special > Paste in Place,command,pasteInPlace,v,1179648,partial native operation
+Edit > Paste Special > Paste Into,command,pasteInto,v,1703936,partial native operation
+Edit > Paste Special > Paste Outside,command,pasteOutside,,0,partial native operation
+Edit > Clear,command,clear,,0,partial native operation
+Edit > Search,command,,f,1048576,unavailable
+Edit > Check Spelling…,command,,,0,unavailable
+Edit > Find and Replace Text…,command,,,0,unavailable
+Edit > Fill…,command,fillDialog,,131072,partial native operation
+Edit > Stroke…,command,,,0,unavailable
+Edit > Content-Aware Fill…,command,,,0,unavailable
+Edit > Generative Fill…,command,,,0,unavailable
+Edit > Generate Image…,command,,,0,unavailable
+Edit > Create with Apple Intelligence…,command,ai,,0,partial native operation
+Edit > Content-Aware Scale,command,,c,1703936,unavailable
+Edit > Puppet Warp,command,,,0,unavailable
+Edit > Perspective Warp,command,,,0,unavailable
+Edit > Free Transform,command,freeTransform,t,1048576,partial native operation
+Edit > Transform,submenu,submenuAction:,,0,structure only
+Edit > Transform > Again,command,,t,1179648,unavailable
+Edit > Transform > Scale,command,freeTransform,,0,partial native operation
+Edit > Transform > Rotate,command,freeTransform,,0,partial native operation
+Edit > Transform > Skew,command,,,0,unavailable
+Edit > Transform > Distort,command,,,0,unavailable
+Edit > Transform > Perspective,command,,,0,unavailable
+Edit > Transform > Warp,command,,,0,unavailable
+Edit > Transform > Split Warp Horizontally,command,,,0,unavailable
+Edit > Transform > Split Warp Vertically,command,,,0,unavailable
+Edit > Transform > Split Warp Crosswise,command,,,0,unavailable
+Edit > Transform > Remove Warp Split,command,,,0,unavailable
+Edit > Transform > Convert warp anchor point,command,,,0,unavailable
+Edit > Transform > Toggle Guides,command,,,0,unavailable
+Edit > Transform > Rotate 180°,command,rotateLayer180,,0,partial native operation
+Edit > Transform > Rotate 90° Clockwise,command,rotateLayerCW,,0,partial native operation
+Edit > Transform > Rotate 90° Counter Clockwise,command,rotateLayerCCW,,0,partial native operation
+Edit > Transform > Flip Horizontal,command,flipH,,0,partial native operation
+Edit > Transform > Flip Vertical,command,flipV,,0,partial native operation
+Edit > Auto-Align Layers…,command,,,0,unavailable
+Edit > Auto-Blend Layers…,command,,,0,unavailable
+Edit > Sky Replacement…,command,,,0,unavailable
+Edit > Define Brush Preset…,command,,,0,unavailable
+Edit > Define Pattern…,command,definePattern,,0,partial native operation
+Edit > Define Custom Shape…,command,,,0,unavailable
+Edit > Purge,submenu,submenuAction:,,0,structure only
+Edit > Purge > Clipboard,command,,,0,unavailable
+Edit > Purge > Histories,command,,,0,unavailable
+Edit > Purge > All,command,,,0,unavailable
+Edit > Purge > Video Cache,command,,,0,unavailable
+Edit > Adobe PDF Presets…,command,,,0,unavailable
+Edit > Presets,submenu,submenuAction:,,0,structure only
+Edit > Presets > Preset Manager…,command,,,0,unavailable
+Edit > Presets > Migrate Presets,command,,,0,unavailable
+Edit > Remote Connections…,command,,,0,unavailable
+Edit > Color Settings…,command,,k,1179648,unavailable
+Edit > OpenColorIO Settings…,command,,,0,unavailable
+Edit > Assign Profile…,command,,,0,unavailable
+Edit > Convert to Profile…,command,,,0,unavailable
+Edit > Keyboard Shortcuts…,command,,k,1703936,unavailable
+Edit > Menus…,command,,m,1703936,unavailable
+Edit > Toolbar…,command,,,0,unavailable
+Image,submenu,submenuAction:,,0,structure only
+Image > Mode,submenu,submenuAction:,,0,structure only
+Image > Mode > Bitmap,command,,,0,unavailable
+Image > Mode > Grayscale,command,,,0,unavailable
+Image > Mode > Duotone,command,,,0,unavailable
+Image > Mode > Indexed Color…,command,,,0,unavailable
+Image > Mode > RGB Color,command,,,0,unavailable
+Image > Mode > CMYK Color,command,,,0,unavailable
+Image > Mode > Lab Color,command,,,0,unavailable
+Image > Mode > Multichannel,command,,,0,unavailable
+Image > Mode > 8 Bits/Channel,command,,,0,unavailable
+Image > Mode > 16 Bits/Channel,command,,,0,unavailable
+Image > Mode > 32 Bits/Channel,command,,,0,unavailable
+Image > Mode > Color Table…,command,,,0,unavailable
+Image > Adjustments,submenu,submenuAction:,,0,structure only
+Image > Adjustments > Brightness/Contrast…,command,,,0,unavailable
+Image > Adjustments > Levels…,command,levels,l,1048576,partial native operation
+Image > Adjustments > Curves…,command,curves,m,1048576,partial native operation
+Image > Adjustments > Exposure…,command,,,0,unavailable
+Image > Adjustments > Vibrance…,command,,,0,unavailable
+Image > Adjustments > Hue/Saturation…,command,hueSaturation,u,1048576,partial native operation
+Image > Adjustments > Color Balance…,command,colorBalance,b,1048576,partial native operation
+Image > Adjustments > Black & White…,command,,b,1703936,unavailable
+Image > Adjustments > Photo Filter…,command,,,0,unavailable
+Image > Adjustments > Channel Mixer…,command,,,0,unavailable
+Image > Adjustments > Color Lookup…,command,,,0,unavailable
+Image > Adjustments > Invert,command,,i,1048576,unavailable
+Image > Adjustments > Posterize…,command,posterize,,0,partial native operation
+Image > Adjustments > Threshold…,command,threshold,,0,partial native operation
+Image > Adjustments > Gradient Map…,command,gradientMap,,0,partial native operation
+Image > Adjustments > Selective Color…,command,,,0,unavailable
+Image > Adjustments > Shadows/Highlights…,command,,,0,unavailable
+Image > Adjustments > HDR Toning…,command,,,0,unavailable
+Image > Adjustments > Desaturate,command,desaturate,u,1179648,partial native operation
+Image > Adjustments > Match Color…,command,,,0,unavailable
+Image > Adjustments > Replace Color…,command,,,0,unavailable
+Image > Adjustments > Equalize,command,,,0,unavailable
+Image > Auto Tone,command,autoTone,l,1179648,partial native operation
+Image > Auto Contrast,command,autoContrast,l,1703936,partial native operation
+Image > Auto Color,command,autoColor,b,1179648,partial native operation
+Image > Image Size…,command,imageSize,i,1572864,partial native operation
+Image > Generative Upscale…,command,,u,1703936,unavailable
+Image > Canvas Size…,command,canvasSize,c,1572864,partial native operation
+Image > Image Rotation,submenu,submenuAction:,,0,structure only
+Image > Image Rotation > 180°,command,rotateCanvas:,,0,partial native operation
+Image > Image Rotation > 90° Clockwise,command,rotateCanvas:,,0,partial native operation
+Image > Image Rotation > 90° Counter Clockwise,command,rotateCanvas:,,0,partial native operation
+Image > Image Rotation > Arbitrary…,command,,,0,unavailable
+Image > Image Rotation > Flip Canvas Horizontal,command,rotateCanvas:,,0,partial native operation
+Image > Image Rotation > Flip Canvas Vertical,command,rotateCanvas:,,0,partial native operation
+Image > Crop,command,crop,,0,partial native operation
+Image > Trim…,command,,,0,unavailable
+Image > Reveal All,command,,,0,unavailable
+Image > Duplicate…,command,,,0,unavailable
+Image > Apply Image…,command,,,0,unavailable
+Image > Calculations…,command,,,0,unavailable
+Image > Variables,submenu,submenuAction:,,0,structure only
+Image > Variables > Define…,command,,,0,unavailable
+Image > Variables > Data Sets…,command,,,0,unavailable
+Image > Apply Data Set…,command,,,0,unavailable
+Image > Trap…,command,,,0,unavailable
+Image > Analysis,submenu,submenuAction:,,0,structure only
+Image > Analysis > Set Measurement Scale,submenu,submenuAction:,,0,structure only
+Image > Analysis > Set Measurement Scale > Default,command,,,0,unavailable
+Image > Analysis > Set Measurement Scale > Custom…,command,,,0,unavailable
+Image > Analysis > Select Data Points,submenu,submenuAction:,,0,structure only
+Image > Analysis > Select Data Points > Custom…,command,,,0,unavailable
+Image > Analysis > Record Measurements,command,,m,1179648,unavailable
+Image > Analysis > Ruler Tool,command,,,0,unavailable
+Image > Analysis > Count Tool,command,,,0,unavailable
+Image > Analysis > Place Scale Marker…,command,,,0,unavailable
+Layer,submenu,submenuAction:,,0,structure only
+Layer > New,submenu,submenuAction:,,0,structure only
+Layer > New > Layer…,command,newLayer,n,1179648,partial native operation
+Layer > New > Background from Layer,command,,,0,unavailable
+Layer > New > Group…,command,newGroup,,0,partial native operation
+Layer > New > Group from Layers…,command,groupFromLayers,,0,partial native operation
+Layer > New > Artboard…,command,,,0,unavailable
+Layer > New > Artboard from Group,command,,,0,unavailable
+Layer > New > Artboard from Layers…,command,,,0,unavailable
+Layer > New > Frame from Layers…,command,,,0,unavailable
+Layer > New > Convert to Frame,command,,,0,unavailable
+Layer > New > Layer Via Copy,command,layerViaCopy,j,1048576,partial native operation
+Layer > New > Layer Via Cut,command,layerViaCut,j,1179648,partial native operation
+Layer > Copy CSS,command,,,0,unavailable
+Layer > Copy SVG,command,,,0,unavailable
+Layer > Duplicate Layer…,command,duplicate,,0,partial native operation
+Layer > Delete,submenu,submenuAction:,,0,structure only
+Layer > Delete > Layer,command,delete,,0,partial native operation
+Layer > Delete > Hidden Layers,command,,,0,unavailable
+Layer > Quick Export as PNG,command,,',1179648,unavailable
+Layer > Export As…,command,,',1703936,unavailable
+Layer > Rename Layer…,command,renameLayer,,0,partial native operation
+Layer > Layer Style,submenu,submenuAction:,,0,structure only
+Layer > Layer Style > Blending Options…,command,,,0,unavailable
+Layer > Layer Style > Bevel & Emboss…,command,,,0,unavailable
+Layer > Layer Style > Stroke…,command,,,0,unavailable
+Layer > Layer Style > Inner Shadow…,command,,,0,unavailable
+Layer > Layer Style > Inner Glow…,command,,,0,unavailable
+Layer > Layer Style > Satin…,command,,,0,unavailable
+Layer > Layer Style > Color Overlay…,command,,,0,unavailable
+Layer > Layer Style > Gradient Overlay…,command,,,0,unavailable
+Layer > Layer Style > Pattern Overlay…,command,,,0,unavailable
+Layer > Layer Style > Outer Glow…,command,,,0,unavailable
+Layer > Layer Style > Drop Shadow…,command,,,0,unavailable
+Layer > Layer Style > Copy Layer Style,command,,,0,unavailable
+Layer > Layer Style > Paste Layer Style,command,,,0,unavailable
+Layer > Layer Style > Clear Layer Style,command,,,0,unavailable
+Layer > Layer Style > Global Light…,command,,,0,unavailable
+Layer > Layer Style > Create Layer,command,,,0,unavailable
+Layer > Layer Style > Hide All Effects,command,,,0,unavailable
+Layer > Layer Style > Scale Effects…,command,,,0,unavailable
+Layer > Smart Filter,submenu,submenuAction:,,0,structure only
+Layer > Smart Filter > Disable Smart Filters,command,,,0,unavailable
+Layer > Smart Filter > Delete Filter Mask,command,,,0,unavailable
+Layer > Smart Filter > Disable Filter Mask,command,,,0,unavailable
+Layer > Smart Filter > Clear Smart Filters,command,,,0,unavailable
+Layer > New Fill Layer,submenu,submenuAction:,,0,structure only
+Layer > New Fill Layer > Solid Color…,command,newSolidColor,,0,partial native operation
+Layer > New Fill Layer > Gradient…,command,newGradientFill,,0,partial native operation
+Layer > New Fill Layer > Pattern…,command,newPatternFill,,0,partial native operation
+Layer > New Adjustment Layer,submenu,submenuAction:,,0,structure only
+Layer > New Adjustment Layer > Color and vibrance…,command,,,0,unavailable
+Layer > New Adjustment Layer > Brightness/Contrast…,command,,,0,unavailable
+Layer > New Adjustment Layer > Levels…,command,newLevels,,0,partial native operation
+Layer > New Adjustment Layer > Curves…,command,newCurves,,0,partial native operation
+Layer > New Adjustment Layer > Exposure…,command,,,0,unavailable
+Layer > New Adjustment Layer > Hue/Saturation…,command,newHueSaturation,,0,partial native operation
+Layer > New Adjustment Layer > Color Balance…,command,newColorBalance,,0,partial native operation
+Layer > New Adjustment Layer > Black & White…,command,,,0,unavailable
+Layer > New Adjustment Layer > Photo Filter…,command,,,0,unavailable
+Layer > New Adjustment Layer > Channel Mixer…,command,,,0,unavailable
+Layer > New Adjustment Layer > Color Lookup…,command,,,0,unavailable
+Layer > New Adjustment Layer > Selective Color…,command,,,0,unavailable
+Layer > New Adjustment Layer > Invert…,command,invert,,0,partial native operation
+Layer > New Adjustment Layer > Posterize…,command,newPosterize,,0,partial native operation
+Layer > New Adjustment Layer > Threshold…,command,newThreshold,,0,partial native operation
+Layer > New Adjustment Layer > Gradient Map…,command,newGradientMap,,0,partial native operation
+Layer > Harmonize,command,,,0,unavailable
+Layer > Layer Content Options…,command,layerContentOptions,,0,partial native operation
+Layer > Layer Mask,submenu,submenuAction:,,0,structure only
+Layer > Layer Mask > Reveal All,command,maskRevealAll,,0,partial native operation
+Layer > Layer Mask > Hide All,command,maskHideAll,,0,partial native operation
+Layer > Layer Mask > Reveal Selection,command,maskRevealSelection,,0,partial native operation
+Layer > Layer Mask > Hide Selection,command,maskHideSelection,,0,partial native operation
+Layer > Layer Mask > From Transparency,command,maskFromTransparency,,0,partial native operation
+Layer > Layer Mask > Delete,command,maskDelete,,0,partial native operation
+Layer > Layer Mask > Apply,command,maskApply,,0,partial native operation
+Layer > Layer Mask > Enable,command,maskEnabled,,0,partial native operation
+Layer > Layer Mask > Unlink,command,maskLinked,,0,partial native operation
+Layer > Vector Mask,submenu,submenuAction:,,0,structure only
+Layer > Vector Mask > Reveal All,command,vectorRevealAll,,0,partial native operation
+Layer > Vector Mask > Hide All,command,vectorHideAll,,0,partial native operation
+Layer > Vector Mask > Current Path,command,vectorCurrentPath,,0,partial native operation
+Layer > Vector Mask > Delete,command,vectorDelete,,0,partial native operation
+Layer > Vector Mask > Enable,command,vectorEnabled,,0,partial native operation
+Layer > Vector Mask > Unlink,command,vectorLinked,,0,partial native operation
+Layer > Create Clipping Mask,command,clippingMask,g,1572864,partial native operation
+Layer > Mask All Objects,command,,,0,unavailable
+Layer > Smart Objects,submenu,submenuAction:,,0,structure only
+Layer > Smart Objects > Convert to Smart Object,command,,,0,unavailable
+Layer > Smart Objects > New Smart Object via Copy,command,,,0,unavailable
+Layer > Smart Objects > Reveal in Finder,command,,,0,unavailable
+Layer > Smart Objects > Update Modified Content,command,,,0,unavailable
+Layer > Smart Objects > Update All Modified Content,command,,,0,unavailable
+Layer > Smart Objects > Edit Contents,command,,,0,unavailable
+Layer > Smart Objects > Reset Transform,command,,,0,unavailable
+Layer > Smart Objects > Relink to File…,command,,,0,unavailable
+Layer > Smart Objects > Relink to Library Graphic…,command,,,0,unavailable
+Layer > Smart Objects > Replace Contents…,command,,,0,unavailable
+Layer > Smart Objects > Export Contents…,command,,,0,unavailable
+Layer > Smart Objects > Embed Linked,command,,,0,unavailable
+Layer > Smart Objects > Embed All Linked,command,,,0,unavailable
+Layer > Smart Objects > Convert to Linked…,command,,,0,unavailable
+Layer > Smart Objects > Convert to Layers,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode,submenu,submenuAction:,,0,structure only
+Layer > Smart Objects > Stack Mode > None,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Entropy,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Kurtosis,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Maximum,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Mean,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Median,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Minimum,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Range,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Skewness,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Standard Deviation,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Summation,command,,,0,unavailable
+Layer > Smart Objects > Stack Mode > Variance,command,,,0,unavailable
+Layer > Smart Objects > Rasterize,command,,,0,unavailable
+Layer > Video Layers,submenu,submenuAction:,,0,structure only
+Layer > Video Layers > New Video Layer from File…,command,,,0,unavailable
+Layer > Video Layers > New Blank Video Layer,command,,,0,unavailable
+Layer > Video Layers > Insert Blank Frame,command,,,0,unavailable
+Layer > Video Layers > Duplicate Frame,command,,,0,unavailable
+Layer > Video Layers > Delete Frame,command,,,0,unavailable
+Layer > Video Layers > Replace Footage…,command,,,0,unavailable
+Layer > Video Layers > Interpret Footage…,command,,,0,unavailable
+Layer > Video Layers > Show Altered Video,command,,,0,unavailable
+Layer > Video Layers > Restore Frame,command,,,0,unavailable
+Layer > Video Layers > Restore All Frames,command,,,0,unavailable
+Layer > Video Layers > Reload Frame,command,,,0,unavailable
+Layer > Video Layers > Rasterize,command,,,0,unavailable
+Layer > Rasterize,submenu,submenuAction:,,0,structure only
+Layer > Rasterize > Type,command,,,0,unavailable
+Layer > Rasterize > Shape,command,,,0,unavailable
+Layer > Rasterize > Fill Content,command,,,0,unavailable
+Layer > Rasterize > Vector Mask,command,,,0,unavailable
+Layer > Rasterize > Smart Object,command,,,0,unavailable
+Layer > Rasterize > Generative,command,,,0,unavailable
+Layer > Rasterize > Video,command,,,0,unavailable
+Layer > Rasterize > 3D,command,,,0,unavailable
+Layer > Rasterize > Layer Style,command,,,0,unavailable
+Layer > Rasterize > Layer,command,rasterize,,0,partial native operation
+Layer > Rasterize > All Layers,command,,,0,unavailable
+Layer > New Layer Based Slice,command,,,0,unavailable
+Layer > Group Layers,command,groupLayers,g,1048576,partial native operation
+Layer > Ungroup Layers,command,ungroupLayers,g,1179648,partial native operation
+Layer > Hide Layers,command,toggleLayerVisibility,",",1048576,partial native operation
+Layer > Arrange,submenu,submenuAction:,,0,structure only
+Layer > Arrange > Bring to Front,command,,],1179648,unavailable
+Layer > Arrange > Bring Forward,command,,],1048576,unavailable
+Layer > Arrange > Send Backward,command,,[,1048576,unavailable
+Layer > Arrange > Send to Back,command,,[,1179648,unavailable
+Layer > Arrange > Reverse,command,,,0,unavailable
+Layer > Combine Shapes,submenu,submenuAction:,,0,structure only
+Layer > Combine Shapes > Unite Shapes,command,,,0,unavailable
+Layer > Combine Shapes > Subtract Front Shape,command,,,0,unavailable
+Layer > Combine Shapes > Unite Shapes at Overlap,command,,,0,unavailable
+Layer > Combine Shapes > Subtract Shapes at Overlap,command,,,0,unavailable
+Layer > Align,submenu,submenuAction:,,0,structure only
+Layer > Align > Top Edges,command,alignLayers:,,0,partial native operation
+Layer > Align > Vertical Centers,command,alignLayers:,,0,partial native operation
+Layer > Align > Bottom Edges,command,alignLayers:,,0,partial native operation
+Layer > Align > Left Edges,command,alignLayers:,,0,partial native operation
+Layer > Align > Horizontal Centers,command,alignLayers:,,0,partial native operation
+Layer > Align > Right Edges,command,alignLayers:,,0,partial native operation
+Layer > Distribute,submenu,submenuAction:,,0,structure only
+Layer > Distribute > Top Edges,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Vertical Centers,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Bottom Edges,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Left Edges,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Horizontal Centers,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Right Edges,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Horizontally,command,distributeLayers:,,0,partial native operation
+Layer > Distribute > Vertically,command,distributeLayers:,,0,partial native operation
+Layer > Lock Layers…,command,,/,1048576,unavailable
+Layer > Link Layers,command,,,0,unavailable
+Layer > Select Linked Layers,command,,,0,unavailable
+Layer > Merge Layers,command,mergeLayers,e,1048576,partial native operation
+Layer > Merge Visible,command,mergeVisible,e,1179648,partial native operation
+Layer > Flatten Image,command,,,0,unavailable
+Layer > Matting,submenu,submenuAction:,,0,structure only
+Layer > Matting > Color Decontaminate…,command,,,0,unavailable
+Layer > Matting > Defringe…,command,,,0,unavailable
+Layer > Matting > Remove Black Matte,command,,,0,unavailable
+Layer > Matting > Remove White Matte,command,,,0,unavailable
+Layer > Photato Adjustments,submenu,submenuAction:,,0,structure only
+Layer > Photato Adjustments > Black & White,command,grayscale,,0,partial native operation
+Layer > Photato Adjustments > Exposure +1,command,exposure,,0,partial native operation
+Type,submenu,submenuAction:,,0,structure only
+Type > More from Adobe Fonts…,command,,,0,unavailable
+Type > Panels,submenu,submenuAction:,,0,structure only
+Type > Panels > Character Panel,command,,,0,unavailable
+Type > Panels > Paragraph Panel,command,,,0,unavailable
+Type > Panels > Glyphs Panel,command,,,0,unavailable
+Type > Panels > Character Styles Panel,command,,,0,unavailable
+Type > Panels > Paragraph Styles Panel,command,,,0,unavailable
+Type > Anti-Alias,submenu,submenuAction:,,0,structure only
+Type > Anti-Alias > None,command,,,0,unavailable
+Type > Anti-Alias > Sharp,command,,,0,unavailable
+Type > Anti-Alias > Crisp,command,,,0,unavailable
+Type > Anti-Alias > Strong,command,,,0,unavailable
+Type > Anti-Alias > Smooth,command,,,0,unavailable
+Type > Anti-Alias > Mac LCD,command,,,0,unavailable
+Type > Anti-Alias > Mac,command,,,0,unavailable
+Type > Orientation,submenu,submenuAction:,,0,structure only
+Type > Orientation > Horizontal,command,,,0,unavailable
+Type > Orientation > Vertical,command,,,0,unavailable
+Type > OpenType,submenu,submenuAction:,,0,structure only
+Type > OpenType > Standard Ligatures,command,,,0,unavailable
+Type > OpenType > Contextual Alternates,command,,,0,unavailable
+Type > OpenType > Discretionary Ligatures,command,,,0,unavailable
+Type > OpenType > Swash,command,,,0,unavailable
+Type > OpenType > Oldstyle,command,,,0,unavailable
+Type > OpenType > Stylistic Alternates,command,,,0,unavailable
+Type > OpenType > Titling Alternates,command,,,0,unavailable
+Type > OpenType > Ornaments,command,,,0,unavailable
+Type > OpenType > Ordinals,command,,,0,unavailable
+Type > OpenType > Fractions,command,,,0,unavailable
+Type > OpenType > Justification Alternates,command,,,0,unavailable
+Type > OpenType > Japanese 78,command,,,0,unavailable
+Type > OpenType > Japanese Expert,command,,,0,unavailable
+Type > OpenType > Japanese Traditional,command,,,0,unavailable
+Type > OpenType > Proportional Metrics,command,,,0,unavailable
+Type > OpenType > Kana,command,,,0,unavailable
+Type > OpenType > Roman Italics,command,,,0,unavailable
+Type > Create Work Path,command,,,0,unavailable
+Type > Convert to Shape,command,,,0,unavailable
+Type > Rasterize Type Layer,command,,,0,unavailable
+Type > Convert Text Shape Type,command,,,0,unavailable
+Type > Convert to Dynamic Text,submenu,submenuAction:,,0,structure only
+Type > Convert to Dynamic Text > Block,command,,,0,unavailable
+Type > Convert to Dynamic Text > Circle,command,,,0,unavailable
+Type > Convert to Dynamic Text > Arch,command,,,0,unavailable
+Type > Convert to Dynamic Text > Bow,command,,,0,unavailable
+Type > Warp Text…,command,,,0,unavailable
+Type > Match Font…,command,,,0,unavailable
+Type > Font Preview Size,submenu,submenuAction:,,0,structure only
+Type > Font Preview Size > None,command,,,0,unavailable
+Type > Font Preview Size > Small,command,,,0,unavailable
+Type > Font Preview Size > Medium,command,,,0,unavailable
+Type > Font Preview Size > Large,command,,,0,unavailable
+Type > Font Preview Size > Extra Large,command,,,0,unavailable
+Type > Font Preview Size > Huge,command,,,0,unavailable
+Type > Language Options,submenu,submenuAction:,,0,structure only
+Type > Language Options > Default Features,command,,,0,unavailable
+Type > Language Options > East Asian Features,command,,,0,unavailable
+Type > Language Options > Middle Eastern Features,command,,,0,unavailable
+Type > Language Options > Standard Vertical Roman Alignment,command,,,0,unavailable
+Type > Language Options > Tate-chu-yoko,command,,,0,unavailable
+Type > Language Options > Top-to-Top Leading,command,,,0,unavailable
+Type > Language Options > Bottom-to-Bottom Leading,command,,,0,unavailable
+Type > Language Options > LTR Arabic Digits - 123%,command,,,0,unavailable
+Type > Language Options > RTL Arabic Digits - %123,command,,,0,unavailable
+Type > Language Options > Hindi Digits,command,,,0,unavailable
+Type > Language Options > Farsi Digits,command,,,0,unavailable
+Type > Language Options > Kashidas,command,,,0,unavailable
+Type > Language Options > Default Direction,command,,,0,unavailable
+Type > Language Options > Left-to-Right Character Direction,command,,,0,unavailable
+Type > Language Options > Right-to-Left Character Direction,command,,,0,unavailable
+Type > Update All Text Layers,command,,,0,unavailable
+Type > Manage Missing Fonts,command,,,0,unavailable
+Type > Paste Lorem Ipsum,command,,,0,unavailable
+Type > Load Default Type Styles,command,,,0,unavailable
+Type > Save Default Type Styles,command,,,0,unavailable
+Type > Type Properties,command,propertiesPanel,,0,partial native operation
+Select,submenu,submenuAction:,,0,structure only
+Select > All,command,selectAll,a,1048576,partial native operation
+Select > Deselect,command,deselect,d,1048576,partial native operation
+Select > Reselect,command,,d,1179648,unavailable
+Select > Inverse,command,invertSelection,i,1179648,partial native operation
+Select > All Layers,command,selectAllLayers,a,1572864,partial native operation
+Select > Deselect Layers,command,,,0,unavailable
+Select > Find Layers,command,,f,1703936,unavailable
+Select > Isolate Layers,command,,,0,unavailable
+Select > Color Range…,command,,,0,unavailable
+Select > Focus Area…,command,,,0,unavailable
+Select > Subject,command,,,0,unavailable
+Select > Sky,command,,,0,unavailable
+Select > Select and Mask…,command,,r,1572864,unavailable
+Select > Modify,submenu,submenuAction:,,0,structure only
+Select > Modify > Border…,command,,,0,unavailable
+Select > Modify > Smooth…,command,,,0,unavailable
+Select > Modify > Expand…,command,,,0,unavailable
+Select > Modify > Contract…,command,,,0,unavailable
+Select > Modify > Feather…,command,featherSelection,,131072,partial native operation
+Select > Grow,command,,,0,unavailable
+Select > Similar,command,,,0,unavailable
+Select > Transform Selection,command,,,0,unavailable
+Select > Edit in Quick Mask Mode,command,,,0,unavailable
+Select > Load Selection…,command,,,0,unavailable
+Select > Save Selection…,command,,,0,unavailable
+Filter,submenu,submenuAction:,,0,structure only
+Filter > Last Filter,command,,f,1310720,unavailable
+Filter > Convert for Smart Filters,command,,,0,unavailable
+Filter > Neural Filters…,command,,,0,unavailable
+Filter > Filter Gallery…,command,,,0,unavailable
+Filter > Adaptive Wide Angle…,command,,a,1703936,unavailable
+Filter > Camera Raw Filter…,command,,a,1179648,unavailable
+Filter > AI Denoise…,command,,,0,unavailable
+Filter > AI Sharpen…,command,,,0,unavailable
+Filter > Lens Correction…,command,,r,1179648,unavailable
+Filter > Liquify…,command,,x,1179648,unavailable
+Filter > Vanishing Point…,command,,v,1572864,unavailable
+Filter > Blur,submenu,submenuAction:,,0,structure only
+Filter > Blur > Average,command,,,0,unavailable
+Filter > Blur > Blur,command,,,0,unavailable
+Filter > Blur > Blur More,command,,,0,unavailable
+Filter > Blur > Box Blur…,command,,,0,unavailable
+Filter > Blur > Gaussian Blur…,command,gaussianBlurDialog,,0,partial native operation
+Filter > Blur > Lens Blur…,command,,,0,unavailable
+Filter > Blur > Motion Blur…,command,,,0,unavailable
+Filter > Blur > Radial Blur…,command,,,0,unavailable
+Filter > Blur > Shape Blur…,command,,,0,unavailable
+Filter > Blur > Smart Blur…,command,,,0,unavailable
+Filter > Blur > Surface Blur…,command,,,0,unavailable
+Filter > Blur Gallery,submenu,submenuAction:,,0,structure only
+Filter > Blur Gallery > Field Blur…,command,,,0,unavailable
+Filter > Blur Gallery > Iris Blur…,command,,,0,unavailable
+Filter > Blur Gallery > Tilt-Shift…,command,,,0,unavailable
+Filter > Blur Gallery > Path Blur…,command,,,0,unavailable
+Filter > Blur Gallery > Spin Blur…,command,,,0,unavailable
+Filter > Distort,submenu,submenuAction:,,0,structure only
+Filter > Distort > Displace…,command,,,0,unavailable
+Filter > Distort > Pinch…,command,,,0,unavailable
+Filter > Distort > Polar Coordinates…,command,,,0,unavailable
+Filter > Distort > Ripple…,command,,,0,unavailable
+Filter > Distort > Shear…,command,,,0,unavailable
+Filter > Distort > Spherize…,command,,,0,unavailable
+Filter > Distort > Twirl…,command,,,0,unavailable
+Filter > Distort > Wave…,command,,,0,unavailable
+Filter > Distort > ZigZag…,command,,,0,unavailable
+Filter > Noise,submenu,submenuAction:,,0,structure only
+Filter > Noise > Add Noise…,command,,,0,unavailable
+Filter > Noise > Despeckle,command,,,0,unavailable
+Filter > Noise > Dust & Scratches…,command,,,0,unavailable
+Filter > Noise > Median…,command,,,0,unavailable
+Filter > Noise > Reduce Noise…,command,,,0,unavailable
+Filter > Pixelate,submenu,submenuAction:,,0,structure only
+Filter > Pixelate > Color Halftone…,command,,,0,unavailable
+Filter > Pixelate > Crystallize…,command,,,0,unavailable
+Filter > Pixelate > Facet,command,,,0,unavailable
+Filter > Pixelate > Fragment,command,,,0,unavailable
+Filter > Pixelate > Mezzotint…,command,,,0,unavailable
+Filter > Pixelate > Mosaic…,command,,,0,unavailable
+Filter > Pixelate > Pointillize…,command,,,0,unavailable
+Filter > Render,submenu,submenuAction:,,0,structure only
+Filter > Render > Flame…,command,,,0,unavailable
+Filter > Render > Picture Frame…,command,,,0,unavailable
+Filter > Render > Tree…,command,,,0,unavailable
+Filter > Render > Clouds,command,,,0,unavailable
+Filter > Render > Difference Clouds,command,,,0,unavailable
+Filter > Render > Fibers…,command,,,0,unavailable
+Filter > Render > Lens Flare…,command,,,0,unavailable
+Filter > Sharpen,submenu,submenuAction:,,0,structure only
+Filter > Sharpen > Sharpen,command,,,0,unavailable
+Filter > Sharpen > Sharpen Edges,command,,,0,unavailable
+Filter > Sharpen > Sharpen More,command,,,0,unavailable
+Filter > Sharpen > Smart Sharpen…,command,,,0,unavailable
+Filter > Sharpen > Unsharp Mask…,command,,,0,unavailable
+Filter > Stylize,submenu,submenuAction:,,0,structure only
+Filter > Stylize > Diffuse…,command,,,0,unavailable
+Filter > Stylize > Emboss…,command,,,0,unavailable
+Filter > Stylize > Extrude…,command,,,0,unavailable
+Filter > Stylize > Find Edges,command,,,0,unavailable
+Filter > Stylize > Oil Paint…,command,,,0,unavailable
+Filter > Stylize > Solarize,command,,,0,unavailable
+Filter > Stylize > Tiles…,command,,,0,unavailable
+Filter > Stylize > Trace Contour…,command,,,0,unavailable
+Filter > Stylize > Wind…,command,,,0,unavailable
+Filter > Video,submenu,submenuAction:,,0,structure only
+Filter > Video > De-Interlace…,command,,,0,unavailable
+Filter > Video > NTSC Colors,command,,,0,unavailable
+Filter > Other,submenu,submenuAction:,,0,structure only
+Filter > Other > Custom…,command,,,0,unavailable
+Filter > Other > High Pass…,command,,,0,unavailable
+Filter > Other > HSB/HSL,command,,,0,unavailable
+Filter > Other > Maximum…,command,,,0,unavailable
+Filter > Other > Minimum…,command,,,0,unavailable
+Filter > Other > Offset…,command,,,0,unavailable
+View,submenu,submenuAction:,,0,structure only
+View > Proof Setup,submenu,submenuAction:,,0,structure only
+View > Proof Setup > Custom…,command,,,0,unavailable
+View > Proof Setup > Working CMYK,command,,,0,unavailable
+View > Proof Setup > Working Cyan Plate,command,,,0,unavailable
+View > Proof Setup > Working Magenta Plate,command,,,0,unavailable
+View > Proof Setup > Working Yellow Plate,command,,,0,unavailable
+View > Proof Setup > Working Black Plate,command,,,0,unavailable
+View > Proof Setup > Working CMY Plates,command,,,0,unavailable
+View > Proof Setup > Legacy Macintosh RGB (Gamma 1.8),command,,,0,unavailable
+View > Proof Setup > Internet Standard RGB (sRGB),command,,,0,unavailable
+View > Proof Setup > Monitor RGB,command,,,0,unavailable
+View > Proof Setup > Color Blindness - Protanopia-type,command,,,0,unavailable
+View > Proof Setup > Color Blindness - Deuteranopia-type,command,,,0,unavailable
+View > Proof Colors,command,,y,1048576,unavailable
+View > Gamut Warning,command,,y,1179648,unavailable
+View > Pixel Aspect Ratio,submenu,submenuAction:,,0,structure only
+View > Pixel Aspect Ratio > Custom Pixel Aspect Ratio…,command,,,0,unavailable
+View > Pixel Aspect Ratio > Delete Pixel Aspect Ratio…,command,,,0,unavailable
+View > Pixel Aspect Ratio > Reset Pixel Aspect Ratios…,command,,,0,unavailable
+View > Pixel Aspect Ratio > Square,command,,,0,unavailable
+View > Pixel Aspect Ratio > D1/DV NTSC (0.91),command,,,0,unavailable
+View > Pixel Aspect Ratio > D1/DV PAL (1.09),command,,,0,unavailable
+View > Pixel Aspect Ratio > D1/DV NTSC Widescreen (1.21),command,,,0,unavailable
+View > Pixel Aspect Ratio > HDV 1080/DVCPRO HD 720 (1.33),command,,,0,unavailable
+View > Pixel Aspect Ratio > D1/DV PAL Widescreen (1.46),command,,,0,unavailable
+View > Pixel Aspect Ratio > Anamorphic 2:1 (2),command,,,0,unavailable
+View > Pixel Aspect Ratio > DVCPRO HD 1080 (1.5),command,,,0,unavailable
+View > Pixel Aspect Ratio Correction,command,,,0,unavailable
+View > 32-bit Preview Options…,command,,,0,unavailable
+View > Zoom In,command,zoomIn,+,1048576,partial native operation
+View > Zoom Out,command,zoomOut,-,1048576,partial native operation
+View > Fit on Screen,command,fit,0,1048576,partial native operation
+View > Fit Layer(s) on Screen,command,,,0,unavailable
+View > Fit Artboard on Screen,command,,,0,unavailable
+View > 100%,command,actual,1,1048576,partial native operation
+View > 200%,command,,,0,unavailable
+View > Print Size,command,,,0,unavailable
+View > Actual Size,command,,,0,unavailable
+View > Flip Horizontal,command,,,0,unavailable
+View > Pattern Preview,command,,,0,unavailable
+View > Screen Mode,submenu,submenuAction:,,0,structure only
+View > Screen Mode > Standard Screen Mode,command,,,0,unavailable
+View > Screen Mode > Full Screen Mode With Menu Bar,command,,,0,unavailable
+View > Screen Mode > Full Screen Mode,command,,,0,unavailable
+View > Extras,command,,h,1048576,unavailable
+View > Show,submenu,submenuAction:,,0,structure only
+View > Show > Layer Edges,command,,,0,unavailable
+View > Show > Selection Edges,command,,,0,unavailable
+View > Show > Target Path,command,,h,1179648,unavailable
+View > Show > Grid,command,,',1048576,unavailable
+View > Show > Guides,command,,;,1048576,unavailable
+View > Show > Canvas Guides,command,,,0,unavailable
+View > Show > Artboard Guides,command,,,0,unavailable
+View > Show > Artboard Names,command,,,0,unavailable
+View > Show > Count,command,,,0,unavailable
+View > Show > Smart Guides,command,,,0,unavailable
+View > Show > Slices,command,,,0,unavailable
+View > Show > Notes,command,,,0,unavailable
+View > Show > Pixel Grid,command,,,0,unavailable
+View > Show > Pattern Preview Tile Bounds,command,,,0,unavailable
+View > Show > Mesh,command,,,0,unavailable
+View > Show > Edit Pins,command,,,0,unavailable
+View > Show > All,command,,,0,unavailable
+View > Show > None,command,,,0,unavailable
+View > Show > Show Extras Options…,command,,,0,unavailable
+View > Rulers,command,rulers,r,1048576,partial native operation
+View > Snap,command,,;,1179648,unavailable
+View > Snap To,submenu,submenuAction:,,0,structure only
+View > Snap To > Guides,command,,,0,unavailable
+View > Snap To > Grid,command,,,0,unavailable
+View > Snap To > Layers,command,,,0,unavailable
+View > Snap To > Slices,command,,,0,unavailable
+View > Snap To > Document Bounds,command,,,0,unavailable
+View > Snap To > All,command,,,0,unavailable
+View > Snap To > None,command,,,0,unavailable
+View > Guides,submenu,submenuAction:,,0,structure only
+View > Guides > Edit Selected Guides,command,,,0,unavailable
+View > Guides > Lock Guides,command,,;,1572864,unavailable
+View > Guides > Clear Guides,command,,,0,unavailable
+View > Guides > Clear Selected Guides,command,,,0,unavailable
+View > Guides > Clear Selected Artboard Guides,command,,,0,unavailable
+View > Guides > Clear Canvas Guides,command,,,0,unavailable
+View > Guides > New Guide…,command,,,0,unavailable
+View > Guides > New Guide Layout…,command,,,0,unavailable
+View > Guides > New Guides From Shape,command,,,0,unavailable
+View > Lock Slices,command,,,0,unavailable
+View > Clear Slices,command,,,0,unavailable
+Plugins,submenu,submenuAction:,,0,structure only
+Plugins > Plugins Panel,command,,,0,unavailable
+Window,submenu,submenuAction:,,0,structure only
+Window > Arrange,submenu,submenuAction:,,0,structure only
+Window > Arrange > Tile All Vertically,command,,,0,unavailable
+Window > Arrange > Tile All Horizontally,command,,,0,unavailable
+Window > Arrange > 2-up Horizontal,command,,,0,unavailable
+Window > Arrange > 2-up Vertical,command,,,0,unavailable
+Window > Arrange > 3-up Horizontal,command,,,0,unavailable
+Window > Arrange > 3-up Vertical,command,,,0,unavailable
+Window > Arrange > 3-up Stacked,command,,,0,unavailable
+Window > Arrange > 4-up,command,,,0,unavailable
+Window > Arrange > 6-up,command,,,0,unavailable
+Window > Arrange > Consolidate All to Tabs,command,consolidateDocumentWindows,,0,partial native operation
+Window > Arrange > Cascade,command,,,0,unavailable
+Window > Arrange > Tile,command,,,0,unavailable
+Window > Arrange > Float in Window,command,floatDocumentWindow,,0,partial native operation
+Window > Arrange > Float All in Windows,command,floatAllDocumentWindows,,0,partial native operation
+Window > Arrange > Match Zoom,command,,,0,unavailable
+Window > Arrange > Match Location,command,,,0,unavailable
+Window > Arrange > Match Rotation,command,,,0,unavailable
+Window > Arrange > Match All,command,,,0,unavailable
+Window > Arrange > New Window,command,,,0,unavailable
+Window > Arrange > Minimize,command,minimizeDocumentWindow,m,1310720,partial native operation
+Window > Arrange > Bring All to Front,command,bringDocumentWindowsToFront,,0,partial native operation
+Window > Workspace,submenu,submenuAction:,,0,structure only
+Window > Workspace > Essentials (Default),command,selectEssentialsWorkspace,,0,partial native operation
+Window > Workspace > Motion,command,,,0,unavailable
+Window > Workspace > Painting,command,,,0,unavailable
+Window > Workspace > Photography,command,,,0,unavailable
+Window > Workspace > Graphic and Web,command,,,0,unavailable
+Window > Workspace > Reset Essentials,command,resetWorkspace,,0,partial native operation
+Window > Workspace > New Workspace…,command,newWorkspace,,0,partial native operation
+Window > Workspace > Delete Workspace…,command,deleteWorkspace,,0,partial native operation
+Window > Workspace > Keyboard Shortcuts & Menus…,command,,,0,unavailable
+Window > Workspace > Lock Workspace,command,lockWorkspace,,0,partial native operation
+Window > Actions,command,,,524288,unavailable
+Window > Adjustments,command,adjustmentsPanel,,0,partial native operation
+Window > Brush Settings,command,,,0,unavailable
+Window > Brushes,command,,,0,unavailable
+Window > Canvas HUD,command,,,0,unavailable
+Window > Channels,command,channelsPanel,,0,partial native operation
+Window > Character,command,,,0,unavailable
+Window > Character Styles,command,,,0,unavailable
+Window > Clone Source,command,cloneSourcePanel,,0,partial native operation
+Window > Color,command,colorPanel,,0,partial native operation
+Window > Comments,command,,,0,unavailable
+Window > Glyphs,command,,,0,unavailable
+Window > Gradients,command,gradientsPanel,,0,partial native operation
+Window > Histogram,command,,,0,unavailable
+Window > History,command,historyPanel,,0,partial native operation
+Window > Info,command,,,0,unavailable
+Window > Layer Comps,command,,,0,unavailable
+Window > Layers,command,layersPanel,,0,partial native operation
+Window > Libraries,command,librariesPanel,,0,partial native operation
+Window > Materials,command,,,0,unavailable
+Window > Measurement Log,command,,,0,unavailable
+Window > Navigator,command,,,0,unavailable
+Window > Notes,command,,,0,unavailable
+Window > Paragraph,command,,,0,unavailable
+Window > Paragraph Styles,command,,,0,unavailable
+Window > Paths,command,pathsPanel,,0,partial native operation
+Window > Patterns,command,patternsPanel,,0,partial native operation
+Window > Properties,command,propertiesPanel,,0,partial native operation
+Window > Shapes,command,,,0,unavailable
+Window > Styles,command,,,0,unavailable
+Window > Swatches,command,swatchesPanel,,0,partial native operation
+Window > Timeline,command,,,0,unavailable
+Window > Tool Presets,command,,,0,unavailable
+Window > Version History,command,,,0,unavailable
+Window > Application Frame,command,,,0,unavailable
+Window > Options,command,,,0,unavailable
+Window > Tools,command,,,0,unavailable
+Window > Contextual Task Bar,command,,,0,unavailable
+Help,submenu,submenuAction:,,0,structure only
+Help > Photato Help…,command,help,/,1179648,partial native operation
+Help > Hands-on Tutorials…,command,,,0,unavailable
+Help > What's New…,command,,,0,unavailable
+Help > System Info…,command,,,0,unavailable
+Help > GPU Compatibility…,command,,,0,unavailable
+Help > Learn more about generative credits,command,,,0,unavailable
+Help > Adobe generative AI user guidelines,command,,,0,unavailable
+Help > Manage My Account…,command,,,0,unavailable
+Help > Sign In…,command,,,0,unavailable
+Help > Updates…,command,,,0,unavailable
+Help > Workspace Feature Map…,command,featureMap,,0,partial native operation
+Help > Port Status & Shortcuts,command,help,,0,partial native operation
+Help > Open Source & Credits…,command,about,,0,partial native operation
+Help > Support Development…,command,supportDevelopment,,0,partial native operation

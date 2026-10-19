@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-08",
+  "adobe_guides": [
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/dodge-or-burn-image-areas.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/adjust-color-saturation-in-selected-image-areas.html"
+  ],
+  "implemented": [
+    "Dodge/Burn Shadows, Midtones and Highlights",
+    "Exposure and Protect Tones",
+    "Sponge Saturate/Desaturate, Flow and Vibrance",
+    "Independent tool settings, O/Shift+O, brackets, Option-at-stroke-start Dodge/Burn swap",
+    "Sequential round dabs with Float32 working pixels; selection and stroke opacity mixed once",
+    "Raster and scalar mask targets, preview/cancel, locks and one-step undo"
+  ],
+  "limits": {
+    "working_tiles": 10240,
+    "tile_side": 64,
+    "footprint_visits": 200000000,
+    "stroke_points": 100000,
+    "dabs": 200000
+  },
+  "pixel_policy": "Encoded native RGB math at all depths follows PhotoCraft retouch kernels; no hidden transparent raster edits. Alpha retained. Mask edits use scalar red regardless of stored alpha. Explicitly not a Photoshop HDR/color qualification.",
+  "remaining": [
+    "Photoshop output references and byte equality",
+    "Timed airbrush buildup",
+    "Full advanced brush tips/dynamics/smoothing",
+    "Complete Photoshop numeric/modifier shortcuts and mid-stroke modifier changes",
+    "Persistent Photoshop-compatible tool preferences",
+    "Alpha/Quick Mask channels and non-RGB color modes",
+    "Live AppKit/Photoshop performance and Intel/macOS 14/26 runtime"
+  ],
+  "photoshop_exactness_verified": false,
+  "live_photoshop_ui_verified": false,
+  "source_oracle": "TONING_ORACLE.json"
+}

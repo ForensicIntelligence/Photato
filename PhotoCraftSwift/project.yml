@@ -1,0 +1,124 @@
+name: Photato
+options:
+  minimumXcodeGenVersion: 2.45.2
+  xcodeVersion: "27.0"
+  projectFormat: xcode16_0
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  defaultConfig: Debug
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+  configs:
+    Debug:
+      ONLY_ACTIVE_ARCH: YES
+    Release:
+      ARCHS: "arm64 x86_64"
+      ONLY_ACTIVE_ARCH: NO
+fileGroups:
+  - README.md
+  - CONTRIBUTING.md
+  - Package.swift
+  - project.yml
+  - scripts
+targets:
+  PhotoCraftCore:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Sources/PhotoCraftCore
+        type: syncedFolder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift.core
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  PhotoCraftImaging:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Sources/PhotoCraftImaging
+        type: syncedFolder
+    dependencies:
+      - target: PhotoCraftCore
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift.imaging
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  PhotoCraftAI:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Sources/PhotoCraftAI
+        type: syncedFolder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift.ai
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  Photato:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/PhotoCraft
+        type: syncedFolder
+      - path: LICENSE-MIT
+        buildPhase: resources
+      - path: LICENSE-APACHE
+        buildPhase: resources
+      - path: LICENSE-psd-tools
+        buildPhase: resources
+      - path: NOTICE
+        buildPhase: resources
+      - path: ATTRIBUTION.md
+        buildPhase: resources
+      - path: scripts/ProjectLinks.json
+        buildPhase: resources
+      - path: Assets/PhotatoIcon.png
+        buildPhase: none
+    dependencies:
+      - target: PhotoCraftCore
+        embed: false
+      - target: PhotoCraftImaging
+        embed: false
+      - target: PhotoCraftAI
+        embed: false
+    settings:
+      base:
+        PRODUCT_NAME: Photato
+        PRODUCT_MODULE_NAME: PhotoCraft
+        PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift
+        INFOPLIST_FILE: scripts/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
+    postBuildScripts:
+      - name: Build Photato icon
+        script: '"$SRCROOT/scripts/build-xcode-icon.sh"'
+        inputFiles:
+          - $(SRCROOT)/Assets/PhotatoIcon.png
+          - $(SRCROOT)/scripts/build-xcode-icon.sh
+        outputFiles:
+          - $(DERIVED_FILE_DIR)/Photato.iconset
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Photato.icns
+schemes:
+  Photato:
+    build:
+      targets:
+        Photato: all
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

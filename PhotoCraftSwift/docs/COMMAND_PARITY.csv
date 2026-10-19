@@ -1,0 +1,646 @@
+id,menu,label,shortcut,swift_status,evidence
+file.new,File,New…,Cmd+N,partial,Native canvas/depth dialog; CoreTests and live UI
+file.open,File,Open…,Cmd+O,partial,"Native/flat/RGB8/16/32 raster PSD with groups, clipping, masks and ZIP/prediction; Photoshop fixtures; rich layers/PSB pending; vector masks and saved/work/Unicode paths with explicit unsupported-path guards Step109 qualifies native PNG open/edit/native save/reopen and adds canonical imported-source identity plus optional API uploads/downloads. Source-format save-back and full lifecycle remain open. docs/DOCUMENT_IO_REFERENCES.json Step111 switches new native files to .photato with legacy .pcswift reads/download alias; 242 isolated focused tests pass. docs/NATIVE_FILE_EXTENSION_REFERENCES.json Step114 linear RGB32 sample/native archive9 preservation; 122880 independent original layer bytes retained through live native/PSD saves; both APIs tested. Full merged/profile/HDR parity remains open. docs/RGB32_STORAGE_REFERENCES.json"
+file.openAs,File,Open As…,Cmd+Alt+Shift+O,pending,
+file.close,File,Close,Cmd+W,partial,Native close with NSDocument unsaved-change handling; live disposable-document checks; Photoshop full lifecycle parity unqualified
+file.closeAll,File,Close All,Alt+Cmd+W,pending,
+file.closeOthers,File,Close Others,Alt+Cmd+P,pending,
+file.save,File,Save,Cmd+S,partial,"Step113 supported source-format Save/Save As, explicit eligible-format popup, native recovery and coordinated association/dirty/history; shared document.save/document.saveAs API with separate native permission and selected folder. Full/optimized/native Release/Photoshop read checks pass; full format options, profile/float fidelity and lifecycle remain open. docs/SOURCE_SAVE_REFERENCES.json Step114 linear RGB32 sample/native archive9 preservation; 122880 independent original layer bytes retained through live native/PSD saves; both APIs tested. Full merged/profile/HDR parity remains open. docs/RGB32_STORAGE_REFERENCES.json"
+file.saveAs,File,Save As…,Shift+Cmd+S,partial,"Step113 supported source-format Save/Save As, explicit eligible-format popup, native recovery and coordinated association/dirty/history; shared document.save/document.saveAs API with separate native permission and selected folder. Full/optimized/native Release/Photoshop read checks pass; full format options, profile/float fidelity and lifecycle remain open. docs/SOURCE_SAVE_REFERENCES.json Step114 linear RGB32 sample/native archive9 preservation; 122880 independent original layer bytes retained through live native/PSD saves; both APIs tested. Full merged/profile/HDR parity remains open. docs/RGB32_STORAGE_REFERENCES.json"
+file.saveACopy,File,Save a Copy…,Alt+Cmd+S,partial,"Step110 native Save a Copy / undoable Revert, factory shortcuts, shared API file-download/document.revert. Verified1010 full/311 optimized/65 focused tests and bounded live universal Release workflow. Full format/context/Photoshop output equivalence remains open. docs/DOCUMENT_PERSISTENCE_REFERENCES.json Step111 switches new native files to .photato with legacy .pcswift reads/download alias; 242 isolated focused tests pass. docs/NATIVE_FILE_EXTENSION_REFERENCES.json Step112 shared raster/PSD metadata preservation and TIFF encoding-policy repair tested across desktop/APIs; full format/profile/fidelity scope remains open. docs/SOURCE_METADATA_REFERENCES.json Step114 linear RGB32 sample/native archive9 preservation; 122880 independent original layer bytes retained through live native/PSD saves; both APIs tested. Full merged/profile/HDR parity remains open. docs/RGB32_STORAGE_REFERENCES.json"
+file.revert,File,Revert,F12,partial,"Step110 native Save a Copy / undoable Revert, factory shortcuts, shared API file-download/document.revert. Verified1010 full/311 optimized/65 focused tests and bounded live universal Release workflow. Full format/context/Photoshop output equivalence remains open. docs/DOCUMENT_PERSISTENCE_REFERENCES.json Step111 switches new native files to .photato with legacy .pcswift reads/download alias; 242 isolated focused tests pass. docs/NATIVE_FILE_EXTENSION_REFERENCES.json"
+file.export.quickExportAsPng,File > Export,Quick Export as PNG,,pending,
+file.export.exportAs,File > Export,Export As…,Alt+Shift+Cmd+W,partial,PNG/JPEG/TIFF flat export; PSD raster/fill/group/mask/path subset; independent Photoshop references; full format parity pending; step103 shared document PNG/TIFF export retains RGB8/RGB16 depth; API resource pipeline uses the same codec; broad Photoshop export parity pending
+file.export.exportPreferences,File > Export,Export Preferences…,,pending,
+file.export.saveForWebLegacy,File > Export,Save for Web…,Alt+Shift+Cmd+S,pending,
+file.export.artboardsToFiles,File > Export,Artboards to Files…,,pending,
+file.export.artboardsToPdf,File > Export,Artboards to PDF…,,pending,
+file.export.layersToFiles,File > Export,Layers to Files…,,pending,
+file.export.layerCompsToFiles,File > Export,Layer Comps to Files…,,pending,
+file.export.colorLookupTables,File > Export,Color Lookup Tables…,,pending,
+file.export.dataSetsAsFiles,File > Export,Data Sets as Files…,,pending,
+file.export.pathsToIllustrator,File > Export,Paths to Illustrator…,,pending,
+file.export.renderVideo,File > Export,Render Video…,,pending,
+file.generate.imageAssets,File > Generate,Image Assets,,pending,
+file.placeEmbedded,File,Place Embedded…,,pending,
+file.placeLinked,File,Place Linked…,,pending,
+file.package,File,Package…,,pending,
+file.automate.batch,File > Automate,Batch…,,pending,
+file.automate.createDroplet,File > Automate,Create Droplet…,,pending,
+file.automate.cropAndStraightenPhotos,File > Automate,Crop and Straighten Photos,,pending,
+file.automate.contactSheetII,File > Automate,Contact Sheet II…,,pending,
+file.automate.conditionalModeChange,File > Automate,Conditional Mode Change…,,pending,
+file.automate.fitImage,File > Automate,Fit Image…,,pending,
+file.automate.lensCorrection,File > Automate,Lens Correction…,,pending,
+file.automate.mergeToHdrPro,File > Automate,Merge to HDR Pro…,,pending,
+file.automate.photomerge,File > Automate,Photomerge…,,pending,
+file.scripts.imageProcessor,File > Scripts,Image Processor…,,pending,
+file.scripts.deleteAllEmptyLayers,File > Scripts,Delete All Empty Layers,,pending,
+file.scripts.flattenAllLayerEffects,File > Scripts,Flatten All Layer Effects,,pending,
+file.scripts.flattenAllMasks,File > Scripts,Flatten All Masks,,pending,
+file.scripts.scriptEventsManager,File > Scripts,Script Events Manager…,,pending,
+file.scripts.loadFilesIntoStack,File > Scripts,Load Files into Stack…,,pending,
+file.scripts.statistics,File > Scripts,Statistics…,,pending,
+file.scripts.browse,File > Scripts,Browse…,,pending,
+file.import.variableDataSets,File > Import,Variable Data Sets…,,pending,
+file.import.videoFramesToLayers,File > Import,Video Frames to Layers…,,pending,
+file.import.notes,File > Import,Notes…,,pending,
+file.import.wiaSupport,File > Import,WIA Support…,,pending,
+file.fileInfo,File,File Info…,Alt+Shift+Cmd+I,pending,
+file.print,File,Print…,Cmd+P,pending,
+file.printOneCopy,File,Print One Copy,Alt+Shift+Cmd+P,pending,
+file.exit,Photato,Quit Photato,Cmd+Q,pending,
+edit.undo,Edit,Undo,Cmd+Z,partial,Transactional/coalesced/bounded history; CoreTests/HistoryGroupingTests/live UI
+edit.redo,Edit,Redo,Shift+Cmd+Z,partial,CoreTests/WorkflowTests/live UI
+edit.toggleLastState,Edit,Toggle Last State,Alt+Cmd+Z,pending,
+edit.fade,Edit,Fade…,Shift+Cmd+F,pending,
+edit.cut,Edit,Cut,Cmd+X,partial,Native async clipboard-before-edit transaction; selected raster alpha or whole selected subtrees; lock/cancel/write-failure/undo tests; special Background and Photoshop exactness pending
+edit.copy,Edit,Copy,Cmd+C,partial,Selected pixels or editable selected layers/groups; source coordinates; native archive plus TIFF/PNG; float-aligned copy is direct; ClipboardTests/ClipboardRenderTests/ClipboardWorkflowTests; mask/path clipboard and Photoshop qualification pending
+edit.copyMerged,Edit,Copy Merged,Shift+Cmd+C,partial,Visible document composite with fractional selection and transparency trimming; native/TIFF/PNG output; renderer regressions; Photoshop byte equivalence pending
+edit.paste,Edit,Paste,Cmd+V,partial,Native layers/groups or external TIFF/PNG; new document when none open; depth conversion; normal text responder chain; cancellation/undo tests; Photoshop placement and broad external interchange qualification pending
+edit.pasteSpecial.pasteInPlace,Edit > Paste Special,Paste in Place,Shift+Cmd+V,partial,Source document coordinates retained; Cmd+Shift+V; depth conversion/ID remapping/masks/off-canvas tests; Photoshop direct comparison pending
+edit.pasteSpecial.pasteInto,Edit > Paste Special,Paste Into,Alt+Shift+Cmd+V,partial,Selection-centered raster paste with independent document-space unlinked mask; fractional coverage; one undo step; Cmd+Alt+Shift+V; native tests; Photoshop direct comparison pending
+edit.pasteSpecial.pasteOutside,Edit > Paste Special,Paste Outside,,partial,Complement selection mask with outside reveal; one undo step; native tests; Photoshop direct comparison pending
+edit.clear,Edit,Clear,,partial,Selection-aware raster clear; typed engine command
+edit.search,Edit,Search,Cmd+F,pending,
+edit.checkSpelling,Edit,Check Spelling…,,pending,
+edit.findAndReplaceText,Edit,Find and Replace Text…,,pending,
+edit.fill,Edit,Fill…,Shift+F5,partial,"Step106: native cancellable Fill; RGB8 component neutral Normal Fill supports opacity using the independently qualified kernel. Composite/mask Fill remains Normal/100%. Other modes, colored component conversion and higher depths remain open. Native target/fill and both isolated job APIs share the engine; 122880 independent Photoshop output bytes across five cases per desktop/job interface. All990 full/279 optimized/39 final focused tests pass; bounded Debug live Fill/Undo/Redo and universal packaging verified. docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json"
+edit.stroke,Edit,Stroke…,,pending,
+edit.contentAwareFill,Edit,Content-Aware Fill…,,pending,
+edit.contentAwareScale,Edit,Content-Aware Scale,Alt+Shift+Cmd+C,pending,
+edit.puppetWarp,Edit,Puppet Warp,,pending,
+edit.perspectiveWarp,Edit,Perspective Warp,,pending,
+edit.freeTransform,Edit,Free Transform,Cmd+T,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.again,Edit > Transform,Again,Shift+Cmd+T,pending,
+edit.transform.scale,Edit > Transform,Scale,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.rotate,Edit > Transform,Rotate,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.skew,Edit > Transform,Skew,,pending,
+edit.transform.distort,Edit > Transform,Distort,,pending,
+edit.transform.perspective,Edit > Transform,Perspective,,pending,
+edit.transform.warp,Edit > Transform,Warp,,pending,
+edit.transform.splitWarpHorizontally,Edit > Transform,Split Warp Horizontally,,pending,
+edit.transform.splitWarpVertically,Edit > Transform,Split Warp Vertically,,pending,
+edit.transform.splitWarpCrosswise,Edit > Transform,Split Warp Crosswise,,pending,
+edit.transform.removeWarpSplit,Edit > Transform,Remove Warp Split,,pending,
+edit.transform.rotate180,Edit > Transform,Rotate 180°,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.rotate90Cw,Edit > Transform,Rotate 90° Clockwise,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.rotate90Ccw,Edit > Transform,Rotate 90° Counter Clockwise,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.flipHorizontal,Edit > Transform,Flip Horizontal,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.transform.flipVertical,Edit > Transform,Flip Vertical,,partial,Single full layer; live affine type/shape + raster/linked masks; GeometryTests/GeometryRenderTests/TransformWorkflowTests; live handle/rotation/undo checks; advanced/multilayer/selected-pixel transforms pending
+edit.autoAlignLayers,Edit,Auto-Align Layers…,,pending,
+edit.autoBlendLayers,Edit,Auto-Blend Layers…,,pending,
+edit.defineBrushPreset,Edit,Define Brush Preset…,,pending,
+edit.definePattern,Edit,Define Pattern…,,partial,Native composite selection-bounds preset at document depth; 4000x4000 limit; PatternDefinition and workflow tests; exact Photoshop behavior unqualified
+edit.defineCustomShape,Edit,Define Custom Shape…,,pending,
+edit.purge.undo,Edit > Purge,Undo,,pending,
+edit.purge.clipboard,Edit > Purge,Clipboard,,pending,
+edit.purge.histories,Edit > Purge,Histories,,pending,
+edit.purge.videoCache,Edit > Purge,Video Cache,,pending,
+edit.purge.all,Edit > Purge,All,,pending,
+edit.presets.presetManager,Edit > Presets,Preset Manager…,,pending,
+edit.presets.migratePresets,Edit > Presets,Migrate Presets,,pending,
+edit.presets.exportImportPresets,Edit > Presets,Export/Import Presets…,,pending,
+edit.colorSettings,Edit,Color Settings…,Shift+Cmd+K,pending,
+edit.assignProfile,Edit,Assign Profile…,,pending,
+edit.convertToProfile,Edit,Convert to Profile…,,pending,
+edit.keyboardShortcuts,Edit,Keyboard Shortcuts…,Alt+Shift+Cmd+K,pending,
+edit.menus,Edit,Menus…,Alt+Shift+Cmd+M,pending,
+edit.toolbar,Edit,Toolbar…,,pending,
+edit.preferences.general,Photato > Settings…,General…,Cmd+K,pending,
+edit.preferences.integrations,Edit > Preferences,AI Integrations…,,pending,
+edit.preferences.interface,Photato > Settings…,Interface…,,pending,
+edit.preferences.workspace,Photato > Settings…,Workspace…,,pending,
+edit.preferences.tools,Photato > Settings…,Tools…,,pending,
+edit.preferences.historyLog,Photato > Settings…,History…,,pending,
+edit.preferences.fileHandling,Photato > Settings…,File Handling…,,pending,
+edit.preferences.export,Photato > Settings…,Export…,,pending,
+edit.preferences.performance,Photato > Settings…,Performance…,,pending,
+edit.preferences.scratchDisks,Photato > Settings…,Scratch Disks…,,pending,
+edit.preferences.cursors,Photato > Settings…,Cursors…,,pending,
+edit.preferences.transparencyAndGamut,Photato > Settings…,Transparency & Gamut…,,pending,
+edit.preferences.unitsAndRulers,Photato > Settings…,Units & Rulers…,,pending,
+edit.preferences.guidesGridAndSlices,Photato > Settings…,"Guides, Grid & Slices…",,pending,
+edit.preferences.plugIns,Photato > Settings…,Plugins…,,pending,
+edit.preferences.type,Photato > Settings…,Type…,,pending,
+edit.preferences.enhancedControls,Photato > Settings…,Enhanced Controls…,,pending,
+edit.preferences.rawDefaults,Edit > Preferences,Raw Defaults…,,pending,
+image.mode.bitmap,Image > Mode,Bitmap,,pending,
+image.mode.grayscale,Image > Mode,Grayscale,,pending,
+image.mode.duotone,Image > Mode,Duotone,,pending,
+image.mode.indexedColor,Image > Mode,Indexed Color,,pending,
+image.mode.rgb,Image > Mode,RGB Color,,pending,
+image.mode.cmyk,Image > Mode,CMYK Color,,pending,
+image.mode.lab,Image > Mode,Lab Color,,pending,
+image.mode.multichannel,Image > Mode,Multichannel,,pending,
+image.mode.bits8,Image > Mode,8 Bits/Channel,,pending,
+image.mode.bits16,Image > Mode,16 Bits/Channel,,pending,
+image.mode.bits32,Image > Mode,32 Bits/Channel,,pending,
+image.mode.colorTable,Image > Mode,Color Table…,,pending,
+image.adjustments.brightnessContrast,Image > Adjustments,Brightness/Contrast…,,pending,
+image.adjustments.levels,Image > Adjustments,Levels…,Cmd+L,partial,"RGB/channel Levels and input histograms; 23 focused tests, 5418 tone vectors and 15 histogram/auto references; ALV load/save and eight Photoshop preset checks; Auto menu; eyedroppers/full Auto Options/Photoshop exactness pending"
+image.adjustments.curves,Image > Adjustments,Curves…,Cmd+M,partial,"RGB/channel point curves, histogram, Cmd+M preview/cancel, masks/undo, ACV presets and PSD curv; 14 tests with Rust/binary/installed-preset references; Auto/eyedroppers/freehand/targeted editing and Photoshop exactness pending"
+image.adjustments.exposure,Image > Adjustments,Exposure…,,pending,
+image.adjustments.vibrance,Image > Adjustments,Vibrance…,,pending,
+image.adjustments.hueSaturation,Image > Adjustments,Hue/Saturation…,Cmd+U,partial,"Master/six feathered ranges, Colorize, range-color swatches, Cmd+U preview/cancel, masks/undo, AHU presets and 100/136-byte PSD hue2; 23 tests and four pinned Photoshop references. Master/lightness ordering and nonlinear saturation overlap corrected; all four saved references still differ. Mixed/near-gray transfer, prominent colors, targeted sampling and live interactions remain open."
+image.adjustments.colorBalance,Image > Adjustments,Color Balance…,Cmd+B,partial,"Native three-tone Color Balance and Preserve Luminosity; Cmd+B preview/cancel/apply, selection masks, locks and undo; RGB PSD blnc and native archive; 11 tests and 15,840 RGB plus 15,840 float Rust samples. Photoshop exact rendering, complete color modes/HDR behavior and live interactions remain unqualified."
+image.adjustments.blackWhite,Image > Adjustments,Black & White…,Alt+Shift+Cmd+B,pending,
+image.adjustments.photoFilter,Image > Adjustments,Photo Filter…,,pending,
+image.adjustments.channelMixer,Image > Adjustments,Channel Mixer…,,pending,
+image.adjustments.colorLookup,Image > Adjustments,Color Lookup…,,pending,
+image.adjustments.invert,Image > Adjustments,Invert,Cmd+I,pending,
+image.adjustments.posterize,Image > Adjustments,Posterize…,,partial,"Native Threshold/Posterize controls, input luminance histogram, pixel preview/cancel/background apply and editable masked layers; coalesced undo, locks, native archives and RGB8/16/32 PSD thrs/post. 11 tests; 65,024 source Posterize samples; four Photoshop reference PSDs leave 1/4/1/3 differing pixels. RGB8 half-level rounding corrected. Full exactness, HDR/color modes and live interactions remain unqualified."
+image.adjustments.threshold,Image > Adjustments,Threshold…,,partial,"Native Threshold/Posterize controls, input luminance histogram, pixel preview/cancel/background apply and editable masked layers; coalesced undo, locks, native archives and RGB8/16/32 PSD thrs/post. 11 tests; 65,024 source Posterize samples; four Photoshop reference PSDs leave 1/4/1/3 differing pixels. RGB8 half-level rounding corrected. Full exactness, HDR/color modes and live interactions remain unqualified."
+image.adjustments.gradientMap,Image > Adjustments,Gradient Map…,,partial,Native pixel preview/cancel/undo and editable layer with masks/presets; RGB8/16 grdm; Classic/Linear/Perceptual/Stripes implemented. RGB32 creation/editable export disabled. PSD export guards 100 color/opacity stops; native saves preserve up to 1000. RGB16 fixed-weight tone coordinates implemented: 131072 independent indices and 196608 forward/reverse/alpha Stripes reference pixels exact. Stripes RGB8 and coincident RGB16 reference pixels exact after PSD matte correction; native Classic RGB16 interpolation implemented: 19 of 21 full reference ramps exact and 114700 composition/export pixels exact; two one-working-level sample positions remain; Smooth and broad pixel exactness pending.
+image.adjustments.selectiveColor,Image > Adjustments,Selective Color…,,pending,
+image.adjustments.shadowsHighlights,Image > Adjustments,Shadows/Highlights…,,pending,
+image.adjustments.hdrToning,Image > Adjustments,HDR Toning…,,pending,
+image.adjustments.desaturate,Image > Adjustments,Desaturate,Shift+Cmd+U,partial,"Shift+Cmd+U; selection-scoped HSL desaturation on active raster layer, background transaction and one undo; automated workflow/shortcut checks pass; Photoshop output qualification pending"
+image.adjustments.matchColor,Image > Adjustments,Match Color…,,pending,
+image.adjustments.replaceColor,Image > Adjustments,Replace Color…,,pending,
+image.adjustments.equalize,Image > Adjustments,Equalize,,pending,
+image.autoTone,Image,Auto Tone,Shift+Cmd+L,partial,"Native source histogram estimator; 15 Rust references; selection/locks, background work, undo and matching shortcut; Photoshop exactness/full options pending"
+image.autoContrast,Image,Auto Contrast,Alt+Shift+Cmd+L,partial,"Native source histogram estimator; 15 Rust references; selection/locks, background work, undo and matching shortcut; Photoshop exactness/full options pending"
+image.autoColor,Image,Auto Color,Shift+Cmd+B,partial,"Native source histogram estimator; 15 Rust references; selection/locks, background work, undo and matching shortcut; Photoshop exactness/full options pending"
+image.imageSize,Image,Image Size…,Alt+Cmd+I,partial,Pixels/percent/physical units; nearest/bilinear/bicubic; resolution-only; geometry suites and live UI; advanced resampling pending
+image.canvasSize,Image,Canvas Size…,Alt+Cmd+C,partial,Nine anchors/relative dimensions; off-canvas retention; colored extension separate layer; GeometryTests and live UI
+image.imageRotation.180,Image > Image Rotation,180°,,partial,Whole document with linked masks/live type/shapes/selection; independent pixel oracles at all depths; rich layer types pending
+image.imageRotation.90cw,Image > Image Rotation,90° Clockwise,,partial,Whole document with linked masks/live type/shapes/selection; independent pixel oracles at all depths; rich layer types pending
+image.imageRotation.90ccw,Image > Image Rotation,90° Counter Clockwise,,partial,Whole document with linked masks/live type/shapes/selection; independent pixel oracles at all depths; rich layer types pending
+image.rotation.arbitrary,Image > Image Rotation,Arbitrary…,,pending,
+image.imageRotation.flipCanvasHorizontal,Image > Image Rotation,Flip Canvas Horizontal,,partial,Whole document with linked masks/live type/shapes/selection; independent pixel oracles at all depths; rich layer types pending
+image.imageRotation.flipCanvasVertical,Image > Image Rotation,Flip Canvas Vertical,,partial,Whole document with linked masks/live type/shapes/selection; independent pixel oracles at all depths; rich layer types pending
+image.crop,Image,Crop,,partial,Rectangular crop; CoreTests
+image.trim,Image,Trim…,,pending,
+image.revealAll,Image,Reveal All,,pending,
+image.duplicate,Image,Duplicate…,,pending,
+image.applyImage,Image,Apply Image…,,pending,
+image.calculations,Image,Calculations…,,pending,
+image.variables.define,Image > Variables,Define…,,pending,
+image.variables.dataSets,Image > Variables,Data Sets…,,pending,
+image.applyDataSet,Image,Apply Data Set…,,pending,
+image.trap,Image,Trap…,,pending,
+image.analysis.setMeasurementScale,Image > Analysis,Set Measurement Scale…,,pending,
+image.analysis.selectDataPoints,Image > Analysis,Select Data Points…,,pending,
+image.analysis.recordMeasurements,Image > Analysis,Record Measurements,Shift+Cmd+M,pending,
+image.analysis.rulerTool,Image > Analysis,Ruler Tool,,pending,
+image.analysis.countTool,Image > Analysis,Count Tool,,pending,
+image.analysis.placeScaleMarker,Image > Analysis,Place Scale Marker…,,pending,
+layer.new.layer,Layer > New,Layer…,Shift+Cmd+N,partial,"Step073 native options dialog; Cmd–Shift–N; name/color/mode/opacity/clipping/neutral fill; footer Option/Command; single undo; stale/cancel/parent guards; all-depth native/PSD metadata. 709 full/273 optimized/145 focused tests. Live input, exact defaults/rounding and Background semantics pending. docs/NEW_LAYER_REFERENCES.json"
+layer.new.layerFromBackground,Layer > New,Layer from Background…,,pending,
+layer.new.group,Layer > New,Group…,,partial,Step074 distinct New Group/Group from Layers dialogs and immediate CmdG; name/color/Pass Through or blend/opacity; footer modifiers; atomic hierarchy/undo; stale/cancel/locks/depth guards; bounded all-depth native/PSD settings. 723 full/298 optimized/163 focused tests. Live input/exact defaults/compound modifiers/cross-parent and Background semantics pending. docs/NEW_GROUP_REFERENCES.json
+layer.new.groupFromLayers,Layer > New,Group from Layers…,,partial,Step074 distinct New Group/Group from Layers dialogs and immediate CmdG; name/color/Pass Through or blend/opacity; footer modifiers; atomic hierarchy/undo; stale/cancel/locks/depth guards; bounded all-depth native/PSD settings. 723 full/298 optimized/163 focused tests. Live input/exact defaults/compound modifiers/cross-parent and Background semantics pending. docs/NEW_GROUP_REFERENCES.json
+layer.new.artboard,Layer > New,Artboard…,,pending,
+layer.new.artboardFromGroup,Layer > New,Artboard from Group…,,pending,
+layer.new.artboardFromLayers,Layer > New,Artboard from Layers…,,pending,
+layer.new.frameFromLayers,Layer > New,Frame from Layers,,pending,
+layer.new.layerViaCopy,Layer > New,Layer via Copy,Cmd+J,partial,Native selected raster copy/cut with independent RGB8/16/32 alpha and stored pixel references; one undo; clipboard unchanged; affine/clipped/vector-mask/multilayer selected contexts unavailable. See LAYER_VIA_REFERENCES.json.
+layer.new.layerViaCut,Layer > New,Layer via Cut,Cmd+Shift+J,partial,Native selected raster copy/cut with independent RGB8/16/32 alpha and stored pixel references; one undo; clipboard unchanged; affine/clipped/vector-mask/multilayer selected contexts unavailable. See LAYER_VIA_REFERENCES.json.
+layer.duplicate,Layer,Duplicate Layer…,,partial,Step075 native Layer/Group/plural dialog; current/open/New destinations; selected subtree IDs/parents/options; cancellable atomic undo and stale/closed/concurrent guards; pattern conflict remap and raster/mask depth conversion.740 full/315 optimized/180 focused tests. Live/exact defaults/placement/ICC conversion/Background/clipping remain pending. docs/DUPLICATE_LAYER_REFERENCES.json
+layer.delete,Layer > Delete,Layer,,partial,"Step077 native layer/group confirmation, Option-footer bypass, cancellation/stale guards and Group Only via atomic Ungroup; step076 selected subtree deletion and final-layer/lock guards retained. Exact Photoshop confirmation preferences, drag-to-trash, keyboard context and group/Background/clipping semantics pending. docs/LAYER_EDITING_UX_REFERENCES.json"
+layer.delete.hiddenLayers,Layer > Delete,Hidden Layers,,pending,
+layer.quickExportAsPng,Layer,Quick Export as PNG,Shift+Cmd+',pending,
+layer.exportAs,Layer,Export As…,Alt+Shift+Cmd+',pending,
+layer.renameLayer,Layer,Rename Layer,,partial,"Step077 native typing Undo/Redo synchronization and Edit-menu routing, menu-bar/popup focus retention and dynamic Rename Group title; step076 inline navigation/commit/save guards retained. Physical input and exact Photoshop contexts pending. docs/LAYER_EDITING_UX_REFERENCES.json Step085 confirms actual native row visibility before completing reveal; initial/large-list rename and thumbnail resizing are tested. docs/LAYER_REVEAL_LIFECYCLE_REFERENCES.json"
+layer.layerStyle.blendingOptions,Layer > Layer Style,Blending Options…,,pending,
+layer.layerStyle.bevelEmboss,Layer > Layer Style,Bevel & Emboss…,,pending,
+layer.layerStyle.stroke,Layer > Layer Style,Stroke…,,pending,
+layer.layerStyle.innerShadow,Layer > Layer Style,Inner Shadow…,,pending,
+layer.layerStyle.innerGlow,Layer > Layer Style,Inner Glow…,,pending,
+layer.layerStyle.satin,Layer > Layer Style,Satin…,,pending,
+layer.layerStyle.colorOverlay,Layer > Layer Style,Color Overlay…,,pending,
+layer.layerStyle.gradientOverlay,Layer > Layer Style,Gradient Overlay…,,pending,
+layer.layerStyle.patternOverlay,Layer > Layer Style,Pattern Overlay…,,pending,
+layer.layerStyle.outerGlow,Layer > Layer Style,Outer Glow…,,pending,
+layer.layerStyle.dropShadow,Layer > Layer Style,Drop Shadow…,,pending,
+layer.layerStyle.copyLayerStyle,Layer > Layer Style,Copy Layer Style,,pending,
+layer.layerStyle.pasteLayerStyle,Layer > Layer Style,Paste Layer Style,,pending,
+layer.layerStyle.clear,Layer > Layer Style,Clear Layer Style,,pending,
+layer.layerStyle.globalLight,Layer > Layer Style,Global Light…,,pending,
+layer.layerStyle.createLayer,Layer > Layer Style,Create Layer,,pending,
+layer.layerStyle.hideAllEffects,Layer > Layer Style,Hide All Effects,,pending,
+layer.layerStyle.scaleEffects,Layer > Layer Style,Scale Effects…,,pending,
+layer.smartFilter.disableSmartFilters,Layer > Smart Filter,Disable Smart Filters,,pending,
+layer.smartFilter.deleteFilterMask,Layer > Smart Filter,Delete Filter Mask,,pending,
+layer.smartFilter.disableFilterMask,Layer > Smart Filter,Disable Filter Mask,,pending,
+layer.smartFilter.blendingOptions,Layer > Smart Filter,Blending Options…,,pending,
+layer.smartFilter.clearSmartFilters,Layer > Smart Filter,Clear Smart Filters,,pending,
+layer.newFillLayer.solidColor,Layer > New Fill Layer,Solid Color…,,partial,Native fill creation with selection/default mask; Properties color; SoCo PSD import/export RGB8/16/32; undo; FillWorkflowTests and PSDSolidColorTests; full Photoshop dialogs remain pending
+layer.newFillLayer.gradient,Layer > New Fill Layer,Gradient…,,partial,Native editable fill dialog; selection masks; preview/cancel/undo; PSD GdFl; 15 new module tests. Photoshop 2026 UI and general pixel parity pending.
+layer.newFillLayer.pattern,Layer > New Fill Layer,Pattern…,,partial,"Native editable Pattern Fill with document-owned tiles; scale/angle/phase/link/preview/drag, masks/undo and RGB PSD PtFl/Patt; live Photoshop output, remaining transforms and complete dialogs/preferences pending"
+layer.newAdjustmentLayer.brightnessContrast,Layer > New Adjustment Layer,Brightness/Contrast…,,pending,
+layer.newAdjustmentLayer.levels,Layer > New Adjustment Layer,Levels…,,partial,"RGB/channel Levels and input histograms; 23 focused tests, 5418 tone vectors and 15 histogram/auto references; ALV load/save and eight Photoshop preset checks; Auto menu; eyedroppers/full Auto Options/Photoshop exactness pending"
+layer.newAdjustmentLayer.curves,Layer > New Adjustment Layer,Curves…,,partial,"RGB/channel point curves, histogram, Cmd+M preview/cancel, masks/undo, ACV presets and PSD curv; 14 tests with Rust/binary/installed-preset references; Auto/eyedroppers/freehand/targeted editing and Photoshop exactness pending"
+layer.newAdjustmentLayer.exposure,Layer > New Adjustment Layer,Exposure…,,partial,Exposure +1 UI; adjustable engine model; ImagingTests
+layer.newAdjustmentLayer.vibrance,Layer > New Adjustment Layer,Vibrance…,,pending,
+layer.newAdjustmentLayer.hueSaturation,Layer > New Adjustment Layer,Hue/Saturation…,,partial,"Master/six feathered ranges, Colorize, range-color swatches, Cmd+U preview/cancel, masks/undo, AHU presets and 100/136-byte PSD hue2; 23 tests and four pinned Photoshop references. Master/lightness ordering and nonlinear saturation overlap corrected; all four saved references still differ. Mixed/near-gray transfer, prominent colors, targeted sampling and live interactions remain open."
+layer.newAdjustmentLayer.colorBalance,Layer > New Adjustment Layer,Color Balance…,,partial,"Native three-tone Color Balance and Preserve Luminosity; Cmd+B preview/cancel/apply, selection masks, locks and undo; RGB PSD blnc and native archive; 11 tests and 15,840 RGB plus 15,840 float Rust samples. Photoshop exact rendering, complete color modes/HDR behavior and live interactions remain unqualified."
+layer.newAdjustmentLayer.blackWhite,Layer > New Adjustment Layer,Black & White…,,partial,Luminance grayscale subset; ImagingTests
+layer.newAdjustmentLayer.photoFilter,Layer > New Adjustment Layer,Photo Filter…,,pending,
+layer.newAdjustmentLayer.channelMixer,Layer > New Adjustment Layer,Channel Mixer…,,pending,
+layer.newAdjustmentLayer.colorLookup,Layer > New Adjustment Layer,Color Lookup…,,pending,
+layer.newAdjustmentLayer.invert,Layer > New Adjustment Layer,Invert…,,partial,Non-destructive invert; ImagingTests
+layer.newAdjustmentLayer.posterize,Layer > New Adjustment Layer,Posterize…,,partial,"Native Threshold/Posterize controls, input luminance histogram, pixel preview/cancel/background apply and editable masked layers; coalesced undo, locks, native archives and RGB8/16/32 PSD thrs/post. 11 tests; 65,024 source Posterize samples; four Photoshop reference PSDs leave 1/4/1/3 differing pixels. RGB8 half-level rounding corrected. Full exactness, HDR/color modes and live interactions remain unqualified."
+layer.newAdjustmentLayer.threshold,Layer > New Adjustment Layer,Threshold…,,partial,"Native Threshold/Posterize controls, input luminance histogram, pixel preview/cancel/background apply and editable masked layers; coalesced undo, locks, native archives and RGB8/16/32 PSD thrs/post. 11 tests; 65,024 source Posterize samples; four Photoshop reference PSDs leave 1/4/1/3 differing pixels. RGB8 half-level rounding corrected. Full exactness, HDR/color modes and live interactions remain unqualified."
+layer.newAdjustmentLayer.gradientMap,Layer > New Adjustment Layer,Gradient Map…,,partial,Native pixel preview/cancel/undo and editable layer with masks/presets; RGB8/16 grdm; Classic/Linear/Perceptual/Stripes implemented. RGB32 creation/editable export disabled. PSD export guards 100 color/opacity stops; native saves preserve up to 1000. RGB16 fixed-weight tone coordinates implemented: 131072 independent indices and 196608 forward/reverse/alpha Stripes reference pixels exact. Stripes RGB8 and coincident RGB16 reference pixels exact after PSD matte correction; native Classic RGB16 interpolation implemented: 19 of 21 full reference ramps exact and 114700 composition/export pixels exact; two one-working-level sample positions remain; Smooth and broad pixel exactness pending.
+layer.newAdjustmentLayer.selectiveColor,Layer > New Adjustment Layer,Selective Color…,,pending,
+layer.layerContentOptions,Layer,Layer Content Options…,,partial,Opens editable Pattern Fill controls; other fill/adjustment types and exact Photoshop dialog behavior remain pending
+layer.layerMask.revealAll,Layer > Layer Mask,Reveal All,,partial,Native Layer > Layer Mask > Reveal All; document-coordinate mask with white outside; locks and undo; MaskCommandTests
+layer.layerMask.hideAll,Layer > Layer Mask,Hide All,,partial,Native Hide All and Option-click footer; black outside; locks and undo; MaskCommandTests
+layer.layerMask.revealSelection,Layer > Layer Mask,Reveal Selection,,partial,Native Reveal Selection uses fractional coverage in document coordinates; clears selection transactionally; undo; transformed layer/group tests
+layer.layerMask.hideSelection,Layer > Layer Mask,Hide Selection,,partial,Native Hide Selection and Option-click footer invert fractional selection coverage; white outside; clears selection; Rust workflow port across 8/16/32 bits
+layer.layerMask.fromTransparency,Layer > Layer Mask,From Transparency,,partial,Pixel alpha becomes editable mask; hidden RGB and off-canvas pixels retained; cancellable background work and undo; Core/Imaging/App tests; direct Photoshop oracle pending
+layer.layerMask.delete,Layer > Layer Mask,Delete,,partial,Separate Delete command in native submenu/context/Properties removes mask without changing content; undo; inherited locks and edit-target reset tested
+layer.layerMask.apply,Layer > Layer Mask,Apply,,partial,Pixel mask bakes into alpha including density/feather/inversion/transforms; vector mask and layer state retained; cancellable background work and undo; non-raster targets require rasterization; direct Photoshop oracle pending
+layer.layerMask.enabled,Layer > Layer Mask,Enable Layer Mask,,partial,Native Layer Mask submenu and Properties; correct dynamic Enable/Disable label; independent mask Move; existing Photoshop PSD fixtures; direct new-menu UI qualification pending
+layer.layerMask.linked,Layer > Layer Mask,Link Layer Mask,,partial,Native Layer Mask submenu and Properties/link control; correct Link/Unlink label; independent mask Move and fixed unlinked mask during layer transform
+layer.maskAllObjects,Layer,Mask All Objects,,pending,
+layer.vectorMask.revealAll,Layer > Vector Mask,Reveal All,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+layer.vectorMask.hideAll,Layer > Vector Mask,Hide All,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+layer.vectorMask.currentPath,Layer > Vector Mask,Current Path,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+layer.vectorMask.delete,Layer > Vector Mask,Delete,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+layer.vectorMask.enabled,Layer > Vector Mask,Enable Vector Mask,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges Step084 native mask-thumbnail Shift/Command/Option gestures, selection combinations and canvas-only mask views are tested; the Load Selection dialog, channel shortcuts and full Photoshop fidelity remain pending. docs/MASK_INTERACTION_REFERENCES.json"
+layer.vectorMask.linked,Layer > Vector Mask,Link Vector Mask,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+layer.createClippingMask,Layer,Create Clipping Mask,Alt+Cmd+G,partial,"Option+Cmd+G, base-underlining/arrows, clipping chains/advanced blend flag; RGB8 Photoshop fixtures and 32 matrix cases; broader blend combinations unqualified"
+layer.smartObjects.convertToSmartObject,Layer > Smart Objects,Convert to Smart Object,,pending,
+layer.smartObjects.newSmartObjectViaCopy,Layer > Smart Objects,New Smart Object via Copy,,pending,
+layer.smartObjects.revealInFinder,Layer > Smart Objects,Reveal in Finder,,pending,
+layer.smartObjects.updateModifiedContent,Layer > Smart Objects,Update Modified Content,,pending,
+layer.smartObjects.updateAllModifiedContent,Layer > Smart Objects,Update All Modified Content,,pending,
+layer.smartObjects.editContents,Layer > Smart Objects,Edit Contents,,pending,
+layer.smartObjects.relinkToFile,Layer > Smart Objects,Relink to File…,,pending,
+layer.smartObjects.replaceContents,Layer > Smart Objects,Replace Contents…,,pending,
+layer.smartObjects.exportContents,Layer > Smart Objects,Export Contents…,,pending,
+layer.smartObjects.convertToLinked,Layer > Smart Objects,Convert to Linked…,,pending,
+layer.smartObjects.convertToEmbedded,Layer > Smart Objects,Convert to Embedded,,pending,
+layer.smartObjects.stackMode.entropy,Layer > Smart Objects > Stack Mode,Entropy,,pending,
+layer.smartObjects.stackMode.kurtosis,Layer > Smart Objects > Stack Mode,Kurtosis,,pending,
+layer.smartObjects.stackMode.maximum,Layer > Smart Objects > Stack Mode,Maximum,,pending,
+layer.smartObjects.stackMode.mean,Layer > Smart Objects > Stack Mode,Mean,,pending,
+layer.smartObjects.stackMode.median,Layer > Smart Objects > Stack Mode,Median,,pending,
+layer.smartObjects.stackMode.minimum,Layer > Smart Objects > Stack Mode,Minimum,,pending,
+layer.smartObjects.stackMode.range,Layer > Smart Objects > Stack Mode,Range,,pending,
+layer.smartObjects.stackMode.skewness,Layer > Smart Objects > Stack Mode,Skewness,,pending,
+layer.smartObjects.stackMode.standardDeviation,Layer > Smart Objects > Stack Mode,Standard Deviation,,pending,
+layer.smartObjects.stackMode.summation,Layer > Smart Objects > Stack Mode,Summation,,pending,
+layer.smartObjects.stackMode.variance,Layer > Smart Objects > Stack Mode,Variance,,pending,
+layer.smartObjects.rasterize,Layer > Smart Objects,Rasterize,,pending,
+layer.smartObjects.warp,Layer > Smart Objects,Warp,,pending,
+layer.smartObjects.perspectiveWarp,Layer > Smart Objects,Perspective Warp,,pending,
+layer.smartObjects.puppetWarp,Layer > Smart Objects,Puppet Warp,,pending,
+layer.videoLayers.newBlankVideoLayer,Layer > Video Layers,New Blank Video Layer,,pending,
+layer.videoLayers.newVideoLayerFromFile,Layer > Video Layers,New Video Layer from File…,,pending,
+layer.videoLayers.insertBlankFrame,Layer > Video Layers,Insert Blank Frame,,pending,
+layer.videoLayers.duplicateFrame,Layer > Video Layers,Duplicate Frame,,pending,
+layer.videoLayers.deleteFrame,Layer > Video Layers,Delete Frame,,pending,
+layer.videoLayers.replaceFootage,Layer > Video Layers,Replace Footage…,,pending,
+layer.videoLayers.interpretFootage,Layer > Video Layers,Interpret Footage…,,pending,
+layer.videoLayers.showAlteredVideo,Layer > Video Layers,Show Altered Video,,pending,
+layer.videoLayers.restoreFrame,Layer > Video Layers,Restore Frame,,pending,
+layer.videoLayers.restoreAllFrames,Layer > Video Layers,Restore All Frames,,pending,
+layer.videoLayers.reloadFrame,Layer > Video Layers,Reload Frame,,pending,
+layer.videoLayers.rasterize,Layer > Video Layers,Rasterize,,pending,
+layer.rasterize.type,Layer > Rasterize,Type,,partial,Basic CoreText to raster; ImagingTests
+layer.rasterize.shape,Layer > Rasterize,Shape,,partial,Rectangle/ellipse only; ImagingTests
+layer.rasterize.fillContent,Layer > Rasterize,Fill Content,,partial,Solid color only
+layer.rasterize.vectorMask,Layer > Rasterize,Vector Mask,,pending,
+layer.rasterize.smartObject,Layer > Rasterize,Smart Object,,pending,
+layer.rasterize.video,Layer > Rasterize,Video,,pending,
+layer.rasterize.layer,Layer > Rasterize,Layer,,partial,Raster/fill/basic text/basic shapes; ImagingTests
+layer.rasterize.allLayers,Layer > Rasterize,All Layers,,pending,
+layer.newLayerBasedSlice,Layer,New Layer Based Slice,,pending,
+layer.groupLayers,Layer,Group Layers,Cmd+G,partial,Step074 distinct New Group/Group from Layers dialogs and immediate CmdG; name/color/Pass Through or blend/opacity; footer modifiers; atomic hierarchy/undo; stale/cancel/locks/depth guards; bounded all-depth native/PSD settings. 723 full/298 optimized/163 focused tests. Live input/exact defaults/compound modifiers/cross-parent and Background semantics pending. docs/NEW_GROUP_REFERENCES.json
+layer.ungroupLayers,Layer,Ungroup Layers,Shift+Cmd+G,partial,Shift+Cmd+G restores children to parent; LayerHierarchyTests
+layer.hideLayers,Layer,Hide Layers,"Cmd+,",partial,"Step078 native selected Hide/Show visibility with dynamic menu title and factory Command-comma; atomic undo and selection retention; Option-eye source-derived isolation/restoration with stale guards. Core/native/shortcut tests pass; live Photoshop mixed/group/clipping/history semantics pending. docs/LAYER_ORGANIZATION_REFERENCES.json Step079 adds native eye-column sweeps with transient preview, atomic undo, cancellation and native scrolling/hit tests; physical input and Photoshop history grouping pending. docs/LAYER_VISIBILITY_DRAG_REFERENCES.json"
+layer.arrange.bringToFront,Layer > Arrange,Bring to Front,Shift+Cmd+],pending,
+layer.arrange.bringForward,Layer > Arrange,Bring Forward,Cmd+],pending,
+layer.arrange.sendBackward,Layer > Arrange,Send Backward,Cmd+[,pending,
+layer.arrange.sendToBack,Layer > Arrange,Send to Back,Shift+Cmd+[,pending,
+layer.arrange.reverse,Layer > Arrange,Reverse,,pending,
+layer.combineShapes.unite,Layer > Combine Shapes,Unite Shapes,,pending,
+layer.combineShapes.subtractFrontShape,Layer > Combine Shapes,Subtract Front Shape,,pending,
+layer.combineShapes.intersectShapeAreas,Layer > Combine Shapes,Intersect Shape Areas,,pending,
+layer.combineShapes.excludeOverlappingShapes,Layer > Combine Shapes,Exclude Overlapping Shapes,,pending,
+layer.combineShapes.mergeShapeComponents,Layer > Combine Shapes,Merge Shape Components,,pending,
+layer.align.topEdges,Layer > Align,Top Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.align.verticalCenters,Layer > Align,Vertical Centers,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.align.bottomEdges,Layer > Align,Bottom Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.align.leftEdges,Layer > Align,Left Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.align.horizontalCenters,Layer > Align,Horizontal Centers,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.align.rightEdges,Layer > Align,Right Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.topEdges,Layer > Distribute,Top Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.verticalCenters,Layer > Distribute,Vertical Centers,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.bottomEdges,Layer > Distribute,Bottom Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.leftEdges,Layer > Distribute,Left Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.horizontalCenters,Layer > Distribute,Horizontal Centers,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.rightEdges,Layer > Distribute,Right Edges,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.horizontally,Layer > Distribute,Horizontally,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.distribute.vertically,Layer > Distribute,Vertically,,partial,Native Core/Imaging/AppKit; 26 Photoshop single-operation references + one sequence exact; 15 tests; live menus/Move/Properties; fill layers rejected and general masks/groups/types/depth/visibility/locks unqualified; docs/LAYER_LAYOUT_REFERENCES.json
+layer.lockLayers,Layer,Lock Layers…,Cmd+/,pending,
+layer.linkLayers,Layer,Link Layers,,pending,
+layer.selectLinkedLayers,Layer,Select Linked Layers,,pending,
+layer.mergeLayers,Layer,Merge Layers,Cmd+E,partial,Native Normal raster Merge Down/selected/visible at RGB8/16/32; factory Cmd-E/Shift-Cmd-E; 262144 independent exact kernel pixels; native/PSD geometry and bounded RGB32 transfer; rich/masked/grouped/clipped/locked/empty contexts pending; docs/LAYER_MERGE_REFERENCES.json
+layer.mergeVisible,Layer,Merge Visible,Shift+Cmd+E,partial,Native Normal raster Merge Down/selected/visible at RGB8/16/32; factory Cmd-E/Shift-Cmd-E; 262144 independent exact kernel pixels; native/PSD geometry and bounded RGB32 transfer; rich/masked/grouped/clipped/locked/empty contexts pending; docs/LAYER_MERGE_REFERENCES.json
+layer.flattenImage,Layer,Flatten Image,,pending,
+layer.matting.colorDecontaminate,Layer > Matting,Color Decontaminate…,,pending,
+layer.matting.defringe,Layer > Matting,Defringe…,,pending,
+layer.matting.removeBlackMatte,Layer > Matting,Remove Black Matte,,pending,
+layer.matting.removeWhiteMatte,Layer > Matting,Remove White Matte,,pending,
+type.panels.character,Type > Panels,Character Panel,,pending,
+type.panels.paragraph,Type > Panels,Paragraph Panel,,pending,
+type.panels.glyphs,Type > Panels,Glyphs Panel,,pending,
+type.panels.characterStyles,Type > Panels,Character Styles Panel,,pending,
+type.panels.paragraphStyles,Type > Panels,Paragraph Styles Panel,,pending,
+type.antiAlias.sharp,Type > Anti-Alias,Sharp,,pending,
+type.antiAlias.crisp,Type > Anti-Alias,Crisp,,pending,
+type.antiAlias.strong,Type > Anti-Alias,Strong,,pending,
+type.antiAlias.smooth,Type > Anti-Alias,Smooth,,pending,
+type.antiAlias.windowsLcd,Type > Anti-Alias,Windows LCD,,pending,
+type.antiAlias.windows,Type > Anti-Alias,Windows,,pending,
+type.orientation.horizontal,Type > Orientation,Horizontal,,pending,
+type.orientation.vertical,Type > Orientation,Vertical,,pending,
+type.openType.standardLigatures,Type > OpenType,Standard Ligatures,,pending,
+type.openType.contextualAlternates,Type > OpenType,Contextual Alternates,,pending,
+type.openType.discretionaryLigatures,Type > OpenType,Discretionary Ligatures,,pending,
+type.openType.swash,Type > OpenType,Swash,,pending,
+type.openType.oldstyle,Type > OpenType,Oldstyle,,pending,
+type.openType.stylisticAlternates,Type > OpenType,Stylistic Alternates,,pending,
+type.openType.titlingAlternates,Type > OpenType,Titling Alternates,,pending,
+type.openType.ornaments,Type > OpenType,Ornaments,,pending,
+type.openType.ordinals,Type > OpenType,Ordinals,,pending,
+type.openType.fractions,Type > OpenType,Fractions,,pending,
+type.createWorkPath,Type,Create Work Path,,pending,
+type.convertToShape,Type,Convert to Shape,,pending,
+type.rasterizeTypeLayer,Type,Rasterize Type Layer,,pending,
+type.convertToParagraphText,Type,Convert to Paragraph Text,,pending,
+type.convertToPointText,Type,Convert to Point Text,,pending,
+type.warpText,Type,Warp Text…,,pending,
+type.fontPreviewSize.small,Type > Font Preview Size,Small,,pending,
+type.fontPreviewSize.medium,Type > Font Preview Size,Medium,,pending,
+type.fontPreviewSize.large,Type > Font Preview Size,Large,,pending,
+type.fontPreviewSize.extraLarge,Type > Font Preview Size,Extra Large,,pending,
+type.fontPreviewSize.huge,Type > Font Preview Size,Huge,,pending,
+type.languageOptions.defaultFeatures,Type > Language Options,Default Features,,pending,
+type.languageOptions.eastAsianFeatures,Type > Language Options,East Asian Features,,pending,
+type.languageOptions.middleEasternFeatures,Type > Language Options,Middle Eastern Features,,pending,
+type.languageOptions.middleEasternAndSouthAsianComposer,Type > Language Options,Middle Eastern & South Asian Composer,,pending,
+type.updateAllTextLayers,Type,Update All Text Layers,,pending,
+type.replaceAllMissingFonts,Type,Replace All Missing Fonts,,pending,
+type.resolveMissingFonts,Type,Resolve Missing Fonts…,,pending,
+type.pasteLoremIpsum,Type,Paste Lorem Ipsum,,pending,
+type.loadDefaultTypeStyles,Type,Load Default Type Styles,,pending,
+type.saveDefaultTypeStyles,Type,Save Default Type Styles,,pending,
+select.all,Select,All,Cmd+A,partial,Rectangular canvas selection; live native menu
+select.deselect,Select,Deselect,Cmd+D,partial,Clears rectangular and coverage selections; undo/archive and live UI checks
+select.reselect,Select,Reselect,Shift+Cmd+D,pending,
+select.inverse,Select,Inverse Selection,,partial,Per-pixel GRAY8 inverse; SelectionTests/SelectionWorkflowTests; native menu; source workflow still partial
+select.convertToShape,Select,Convert to Shape,,pending,
+select.allLayers,Select,All Layers,Alt+Cmd+A,partial,Native Option-Command-A; menu/enablement tests and live four-layer workflow; complete Photoshop hidden/locked/history selection semantics unqualified
+select.deselectLayers,Select,Deselect Layers,,pending,
+select.findLayers,Select,Find Layers,Alt+Shift+Cmd+F,pending,
+select.isolateLayers,Select,Isolate Layers,,pending,Still pending. Source select.isolateLayers filters Layers panel rows; it is distinct from step078 Option-eye visibility isolation and is not bound to that operation.
+select.colorRange,Select,Color Range…,,pending,
+select.focusArea,Select,Focus Area…,,pending,
+select.subject,Select,Subject,,pending,
+select.sky,Select,Sky,,pending,
+select.selectAndMask,Select,Select and Mask…,Alt+Cmd+R,pending,
+select.modify.border,Select > Modify,Border…,,pending,
+select.modify.smooth,Select > Modify,Smooth…,,pending,
+select.modify.expand,Select > Modify,Expand…,,pending,
+select.modify.contract,Select > Modify,Contract…,,pending,
+select.modify.feather,Select > Modify,Feather…,Shift+F6,partial,Gaussian sigma=radius/2; native radius dialog and tool option; 0–100 px cap; source feather cases and live 20 px Fill verification
+select.grow,Select,Grow,,pending,
+select.similar,Select,Similar,,pending,
+select.transformSelection,Select,Transform Selection,,pending,
+select.editInQuickMaskMode,Select,Edit in Quick Mask Mode,Q,pending,
+select.loadSelection,Select,Load Selection…,,pending," Step084 native mask-thumbnail Shift/Command/Option gestures, selection combinations and canvas-only mask views are tested; the Load Selection dialog, channel shortcuts and full Photoshop fidelity remain pending. docs/MASK_INTERACTION_REFERENCES.json"
+select.saveSelection,Select,Save Selection…,,pending,
+filter.lastFilter,Filter,Last Filter,Control+Cmd+F,pending,
+filter.convertForSmartFilters,Filter,Convert for Smart Filters,,pending,
+filter.filterGallery,Filter,Filter Gallery…,,pending,
+filter.cameraRaw,Filter,Camera Raw Filter…,Shift+Cmd+A,pending,
+filter.adaptiveWideAngle,Filter,Adaptive Wide Angle…,Alt+Shift+Cmd+A,pending,
+filter.lensCorrection,Filter,Lens Correction…,Shift+Cmd+R,pending,
+filter.liquify,Filter,Liquify…,Shift+Cmd+X,pending,
+filter.vanishingPoint,Filter,Vanishing Point…,Alt+Cmd+V,pending,
+filter.blur.average,Filter > Blur,Average,,pending,
+filter.blur.blur,Filter > Blur,Blur,,pending,
+filter.blur.blurMore,Filter > Blur,Blur More,,pending,
+filter.blur.boxBlur,Filter > Blur,Box Blur…,,pending,
+filter.blur.gaussianBlur,Filter > Blur,Gaussian Blur…,,partial,"Fixed 5px UI, 0–100px CPU engine; ImagingTests"
+filter.blur.lensBlur,Filter > Blur,Lens Blur…,,pending,
+filter.blur.motionBlur,Filter > Blur,Motion Blur…,,pending,
+filter.blur.radialBlur,Filter > Blur,Radial Blur…,,pending,
+filter.blur.shapeBlur,Filter > Blur,Shape Blur…,,pending,
+filter.blur.smartBlur,Filter > Blur,Smart Blur…,,pending,
+filter.blur.surfaceBlur,Filter > Blur,Surface Blur…,,pending,
+filter.blurGallery.fieldBlur,Filter > Blur Gallery,Field Blur…,,pending,
+filter.blurGallery.irisBlur,Filter > Blur Gallery,Iris Blur…,,pending,
+filter.blurGallery.tiltShift,Filter > Blur Gallery,Tilt-Shift…,,pending,
+filter.blurGallery.pathBlur,Filter > Blur Gallery,Path Blur…,,pending,
+filter.blurGallery.spinBlur,Filter > Blur Gallery,Spin Blur…,,pending,
+filter.distort.displace,Filter > Distort,Displace…,,pending,
+filter.distort.pinch,Filter > Distort,Pinch…,,pending,
+filter.distort.polarCoordinates,Filter > Distort,Polar Coordinates…,,pending,
+filter.distort.ripple,Filter > Distort,Ripple…,,pending,
+filter.distort.shear,Filter > Distort,Shear…,,pending,
+filter.distort.spherize,Filter > Distort,Spherize…,,pending,
+filter.distort.twirl,Filter > Distort,Twirl…,,pending,
+filter.distort.wave,Filter > Distort,Wave…,,pending,
+filter.distort.zigZag,Filter > Distort,ZigZag…,,pending,
+filter.noise.addNoise,Filter > Noise,Add Noise…,,pending,
+filter.noise.despeckle,Filter > Noise,Despeckle,,pending,
+filter.noise.dustAndScratches,Filter > Noise,Dust & Scratches…,,pending,
+filter.noise.median,Filter > Noise,Median…,,pending,
+filter.noise.reduceNoise,Filter > Noise,Reduce Noise…,,pending,
+filter.pixelate.colorHalftone,Filter > Pixelate,Color Halftone…,,pending,
+filter.pixelate.crystallize,Filter > Pixelate,Crystallize…,,pending,
+filter.pixelate.facet,Filter > Pixelate,Facet,,pending,
+filter.pixelate.fragment,Filter > Pixelate,Fragment,,pending,
+filter.pixelate.mezzotint,Filter > Pixelate,Mezzotint…,,pending,
+filter.pixelate.mosaic,Filter > Pixelate,Mosaic…,,pending,
+filter.pixelate.pointillize,Filter > Pixelate,Pointillize…,,pending,
+filter.render.flame,Filter > Render,Flame…,,pending,
+filter.render.pictureFrame,Filter > Render,Picture Frame…,,pending,
+filter.render.tree,Filter > Render,Tree…,,pending,
+filter.render.clouds,Filter > Render,Clouds,,pending,
+filter.render.differenceClouds,Filter > Render,Difference Clouds,,pending,
+filter.render.fibers,Filter > Render,Fibers…,,pending,
+filter.render.lensFlare,Filter > Render,Lens Flare…,,pending,
+filter.render.lightingEffects,Filter > Render,Lighting Effects…,,pending,
+filter.sharpen.sharpen,Filter > Sharpen,Sharpen,,pending,
+filter.sharpen.sharpenEdges,Filter > Sharpen,Sharpen Edges,,pending,
+filter.sharpen.sharpenMore,Filter > Sharpen,Sharpen More,,pending,
+filter.sharpen.smartSharpen,Filter > Sharpen,Smart Sharpen…,,pending,
+filter.sharpen.unsharpMask,Filter > Sharpen,Unsharp Mask…,,pending,
+filter.stylize.diffuse,Filter > Stylize,Diffuse…,,pending,
+filter.stylize.emboss,Filter > Stylize,Emboss…,,pending,
+filter.stylize.extrude,Filter > Stylize,Extrude…,,pending,
+filter.stylize.findEdges,Filter > Stylize,Find Edges,,pending,
+filter.stylize.oilPaint,Filter > Stylize,Oil Paint…,,pending,
+filter.stylize.solarize,Filter > Stylize,Solarize,,pending,
+filter.stylize.tiles,Filter > Stylize,Tiles…,,pending,
+filter.stylize.traceContour,Filter > Stylize,Trace Contour…,,pending,
+filter.stylize.wind,Filter > Stylize,Wind…,,pending,
+filter.video.deInterlace,Filter > Video,De-Interlace…,,pending,
+filter.video.ntscColors,Filter > Video,NTSC Colors,,pending,
+filter.other.custom,Filter > Other…,Custom…,,pending,
+filter.other.hsbHsl,Filter > Other…,HSB/HSL,,pending,
+filter.other.highPass,Filter > Other…,High Pass…,,pending,
+filter.other.maximum,Filter > Other…,Maximum…,,pending,
+filter.other.minimum,Filter > Other…,Minimum…,,pending,
+filter.other.offset,Filter > Other…,Offset…,,pending,
+view.proofSetup.custom,View > Proof Setup,Custom…,,pending,
+view.proofSetup.workingCmyk,View > Proof Setup,Working CMYK,,pending,
+view.proofSetup.workingCyanPlate,View > Proof Setup,Working Cyan Plate,,pending,
+view.proofSetup.workingMagentaPlate,View > Proof Setup,Working Magenta Plate,,pending,
+view.proofSetup.workingYellowPlate,View > Proof Setup,Working Yellow Plate,,pending,
+view.proofSetup.workingBlackPlate,View > Proof Setup,Working Black Plate,,pending,
+view.proofSetup.workingCmyPlate,View > Proof Setup,Working CMY Plate,,pending,
+view.proofSetup.legacyMacintoshRgb,View > Proof Setup,Legacy Macintosh RGB,,pending,
+view.proofSetup.internetStandardRgb,View > Proof Setup,Internet Standard RGB,,pending,
+view.proofSetup.monitorRgb,View > Proof Setup,Monitor RGB,,pending,
+view.proofSetup.colorBlindnessProtanopia,View > Proof Setup,Color Blindness — Protanopia-type,,pending,
+view.proofSetup.colorBlindnessDeuteranopia,View > Proof Setup,Color Blindness — Deuteranopia-type,,pending,
+view.proofColors,View,Proof Colors,Cmd+Y,pending,
+view.gamutWarning,View,Gamut Warning,Shift+Cmd+Y,pending,
+view.pixelAspectRatio.custom,View > Pixel Aspect Ratio,Custom Pixel Aspect Ratio…,,pending,
+view.pixelAspectRatio.square,View > Pixel Aspect Ratio,Square,,pending,
+view.pixelAspectRatio.d1DvNtsc,View > Pixel Aspect Ratio,D1/DV NTSC (0.91),,pending,
+view.pixelAspectRatio.d1DvPal,View > Pixel Aspect Ratio,D1/DV PAL (1.09),,pending,
+view.pixelAspectRatio.d1DvNtscWidescreen,View > Pixel Aspect Ratio,D1/DV NTSC Widescreen (1.21),,pending,
+view.pixelAspectRatio.hdv1080,View > Pixel Aspect Ratio,HDV 1080/DVCPRO HD 720 (1.33),,pending,
+view.pixelAspectRatio.d1DvPalWidescreen,View > Pixel Aspect Ratio,D1/DV PAL Widescreen (1.46),,pending,
+view.pixelAspectRatio.dvcproHd1080,View > Pixel Aspect Ratio,DVCPRO HD 1080/HDV 1080 (1.5),,pending,
+view.pixelAspectRatio.anamorphic2To1,View > Pixel Aspect Ratio,Anamorphic 2:1 (2),,pending,
+view.pixelAspectRatioCorrection,View,Pixel Aspect Ratio Correction,,pending,
+view.thirtyTwoBitPreviewOptions,View,32-bit Preview Options…,,pending,
+view.zoomIn,View,Zoom In,"Cmd++, Cmd+=",partial,"Step064 unified native viewport; source preset steps (220 exact Rust cases), current-scale menu input, one-time initial fit and backing-pixel 100%. 624 full/182 optimized/57 focused tests. Live Photoshop limits/fit/preferences and device checks pending. docs/VIEWPORT_REFERENCES.json"
+view.zoomOut,View,Zoom Out,Cmd+-,partial,"Step064 unified native viewport; source preset steps (220 exact Rust cases), current-scale menu input, one-time initial fit and backing-pixel 100%. 624 full/182 optimized/57 focused tests. Live Photoshop limits/fit/preferences and device checks pending. docs/VIEWPORT_REFERENCES.json"
+view.fitOnScreen,View,Fit on Screen,Cmd+0,partial,"Step064 unified native viewport; source preset steps (220 exact Rust cases), current-scale menu input, one-time initial fit and backing-pixel 100%. 624 full/182 optimized/57 focused tests. Live Photoshop limits/fit/preferences and device checks pending. docs/VIEWPORT_REFERENCES.json"
+view.fitLayersOnScreen,View,Fit Layer(s) on Screen,,pending,
+view.fitArtboardOnScreen,View,Fit Artboard on Screen,,pending,
+view.actualPixels,View,100%,Cmd+1,partial,"Step064 unified native viewport; source preset steps (220 exact Rust cases), current-scale menu input, one-time initial fit and backing-pixel 100%. 624 full/182 optimized/57 focused tests. Live Photoshop limits/fit/preferences and device checks pending. docs/VIEWPORT_REFERENCES.json"
+view.twoHundredPercent,View,200%,,pending,
+view.printSize,View,Print Size,,pending,
+view.flipHorizontal,View,Flip Horizontal,,pending,
+view.screenMode.standard,View > Screen Mode,Standard Screen Mode,,pending,
+view.screenMode.fullScreenWithMenuBar,View > Screen Mode,Full Screen Mode With Menu Bar,,pending,
+view.screenMode.fullScreen,View > Screen Mode,Full Screen Mode,,pending,
+view.extras,View,Extras,Cmd+H,pending,
+view.show.layerEdges,View > Show,Layer Edges,,pending,
+view.show.selectionEdges,View > Show,Selection Edges,,pending,
+view.show.targetPath,View > Show,Target Path,Shift+Cmd+H,pending,
+view.show.grid,View > Show,Grid,Cmd+',pending,
+view.show.guides,View > Show,Guides,Cmd+;,pending,
+view.show.canvasGuides,View > Show,Canvas Guides,,pending,
+view.show.artboardGuides,View > Show,Artboard Guides,,pending,
+view.show.count,View > Show,Count,,pending,
+view.show.smartGuides,View > Show,Smart Guides,,pending,
+view.show.slices,View > Show,Slices,,pending,
+view.show.notes,View > Show,Notes,,pending,
+view.show.pixelGrid,View > Show,Pixel Grid,,pending,
+view.show.brushPreview,View > Show,Brush Preview,,pending,
+view.show.mesh,View > Show,Mesh,,pending,
+view.show.editPins,View > Show,Edit Pins,,pending,
+view.show.all,View > Show,All,,pending,
+view.show.showExtrasOptions,View > Show,Show Extras Options…,,pending,
+view.rulers,View,Rulers,Cmd+R,partial,Native pixel rulers and Cmd+R; live UI check; alternate units/guides pending
+view.snap,View,Snap,Shift+Cmd+;,pending,
+view.snapTo.guides,View > Snap To,Guides,,pending,
+view.snapTo.grid,View > Snap To,Grid,,pending,
+view.snapTo.layers,View > Snap To,Layers,,pending,
+view.snapTo.slices,View > Snap To,Slices,,pending,
+view.snapTo.documentBounds,View > Snap To,Document Bounds,,pending,
+view.snapTo.all,View > Snap To,All,,pending,
+view.lockGuides,View,Lock Guides,Cmd+Alt+;,pending,
+view.clearGuides,View,Clear Guides,,pending,
+view.clearSelectedArtboardGuides,View,Clear Selected Artboard Guides,,pending,
+view.clearCanvasGuides,View,Clear Canvas Guides,,pending,
+view.newGuide,View,New Guide…,,pending,
+view.newGuideLayout,View,New Guide Layout…,,pending,
+view.newGuidesFromShape,View,New Guides From Shape,,pending,
+view.lockSlices,View,Lock Slices,,pending,
+view.clearSlices,View,Clear Slices,,pending,
+view.patternPreview,View,Pattern Preview,,pending,
+view.pixelArtPreview,View,Pixel Art Preview,,pending,
+window.arrange.tileAllVertically,Window > Arrange,Tile All Vertically,,pending,
+window.arrange.tileAllHorizontally,Window > Arrange,Tile All Horizontally,,pending,
+window.arrange.twoUpVertical,Window > Arrange,2-up Vertical,,pending,
+window.arrange.twoUpHorizontal,Window > Arrange,2-up Horizontal,,pending,
+window.arrange.threeUpVertical,Window > Arrange,3-up Vertical,,pending,
+window.arrange.threeUpHorizontal,Window > Arrange,3-up Horizontal,,pending,
+window.arrange.threeUpStacked,Window > Arrange,3-up Stacked,,pending,
+window.arrange.fourUp,Window > Arrange,4-up,,pending,
+window.arrange.sixUp,Window > Arrange,6-up,,pending,
+window.arrange.consolidateAllToTabs,Window > Arrange,Consolidate All to Tabs,,partial,"Step063 retained application frame, canvas-only floating hosts, global active-document and keyboard routing; 613 full/167 optimized/42 focused tests. Live frame/dialog/save/close/geometry qualification pending unlock. docs/APPLICATION_FRAME_REFERENCES.json"
+window.arrange.cascade,Window > Arrange,Cascade,,pending,
+window.arrange.tile,Window > Arrange,Tile,,pending,
+window.arrange.floatInWindow,Window > Arrange,Float in Window,,partial,"Step063 retained application frame, canvas-only floating hosts, global active-document and keyboard routing; 613 full/167 optimized/42 focused tests. Live frame/dialog/save/close/geometry qualification pending unlock. docs/APPLICATION_FRAME_REFERENCES.json"
+window.arrange.floatAllInWindows,Window > Arrange,Float All in Windows,,partial,"Step063 retained application frame, canvas-only floating hosts, global active-document and keyboard routing; 613 full/167 optimized/42 focused tests. Live frame/dialog/save/close/geometry qualification pending unlock. docs/APPLICATION_FRAME_REFERENCES.json"
+window.arrange.newWindowForDocument,Window > Arrange,New Window for Document,,pending,
+window.arrange.matchZoom,Window > Arrange,Match Zoom,,pending,
+window.arrange.matchLocation,Window > Arrange,Match Location,,pending,
+window.arrange.matchRotation,Window > Arrange,Match Rotation,,pending,
+window.arrange.matchAll,Window > Arrange,Match All,,pending,
+window.workspace.essentials,Window > Workspace,Essentials,,partial,Step066 shared saved/last-used layouts and native menu/dialog controls; 635 full/193 optimized/64 focused tests; live input/relaunch and full Photoshop workspace parity pending. docs/SAVED_WORKSPACE_REFERENCES.json
+window.workspace.photography,Window > Workspace,Photography,,pending,
+window.workspace.painting,Window > Workspace,Painting,,pending,
+window.workspace.pixelArt,Window > Workspace,Pixel Art,,pending,
+window.workspace.graphicAndWeb,Window > Workspace,Graphic and Web,,pending,
+window.workspace.motion,Window > Workspace,Motion,,pending,
+window.workspace.resetWorkspace,Window > Workspace,Reset Workspace,,partial,Step066 shared saved/last-used layouts and native menu/dialog controls; 635 full/193 optimized/64 focused tests; live input/relaunch and full Photoshop workspace parity pending. docs/SAVED_WORKSPACE_REFERENCES.json
+window.workspace.newWorkspace,Window > Workspace,New Workspace…,,partial,Step066 shared saved/last-used layouts and native menu/dialog controls; 635 full/193 optimized/64 focused tests; live input/relaunch and full Photoshop workspace parity pending. docs/SAVED_WORKSPACE_REFERENCES.json
+window.workspace.deleteWorkspace,Window > Workspace,Delete Workspace…,,partial,Step066 shared saved/last-used layouts and native menu/dialog controls; 635 full/193 optimized/64 focused tests; live input/relaunch and full Photoshop workspace parity pending. docs/SAVED_WORKSPACE_REFERENCES.json
+edit.keyboardShortcuts,Window > Workspace,Keyboard Shortcuts…,Cmd+Alt+Shift+K,pending,
+window.workspace.lockWorkspace,Window > Workspace,Lock Workspace,,partial,Step067 persistent application-level lock prevents implemented tab/group movement while selection/collapse/resize remain usable; native menu and tests pass; full docking and Photoshop live preference parity pending. docs/PANEL_DOCK_REFERENCES.json
+window.panel.actions,Window,Actions,Alt+F9,pending,
+window.panel.adjustments,Window,Adjustments,,partial,Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete
+window.panel.brushSettings,Window,Brush Settings,F5,pending,
+window.panel.brushes,Window,Brushes,,pending,
+window.panel.channels,Window,Channels,,partial,"Step106: native Channels panel with independent thumbnails/size options, separate RGB preview/visibility and real RGB8 editing targets, Command2–5 and neutral Normal Fill. Photato state/target/fill plus partial Adobe action jobs share native behavior. All990 full/279 optimized/39 final focused tests pass; bounded Debug live shortcuts/Fill/control availability and universal packaging verified. Other component tools/depths, alpha/spot channels, full preferences and global Photoshop equivalence remain open. docs/CHANNEL_VIEW_REFERENCES.json; docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json"
+window.panel.character,Window,Character,,pending,
+window.panel.characterStyles,Window,Character Styles,,pending,
+window.panel.cloneSource,Window,Clone Source,,partial,"Native five-source panel, cross-document/layer sampling, offset/scale/rotation/flips, clipped/full/inverted overlay and blend/opacity controls. 28 Clone Stamp/storage tests and 6,168 source tip samples; cropped pixel/mask expansion and outside-value overlays are exercised. Live Photoshop UI/output, advanced brushes and channel targets remain open. Shared with sampled Healing Brush; independent tool brush/sampling settings, 15 Healing tests and 68,836 Rust solver values. Photoshop Healing options/output are not fully qualified. Step072 adds retained docking/floating placement, validated legacy layout migration and compact controls; automated/offscreen qualification only. docs/UTILITY_PANEL_REFERENCES.json"
+window.panel.color,Window,Color,F6,partial,Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete
+window.panel.glyphs,Window,Glyphs,,pending,
+window.panel.gradients,Window,Gradients,,partial,Native persistent searchable folders; rename/duplicate/delete/reorder; GRD import/export; Save Preset; select/apply workflows; 12 new tests. Full keyboard/view preferences and Photoshop 2026 qualification pending.
+window.panel.histogram,Window,Histogram,,pending,
+window.panel.history,Window,History,,partial,"Step072 retained dock/floating placement, Window reveal, guarded past/current/future state navigation, branching and bounded history. 695 full/259 optimized/130 focused tests. Snapshots, nonlinear history, complete panel menus/preferences and live Photoshop comparison remain open. docs/UTILITY_PANEL_REFERENCES.json"
+window.panel.info,Window,Info,F8,pending,
+window.panel.layerComps,Window,Layer Comps,,pending,
+window.panel.layers,Window,Layers,F7,partial,Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete
+window.panel.measurementLog,Window,Measurement Log,,pending,
+window.panel.modifierKeys,Window,Modifier Keys,,pending,
+window.panel.navigator,Window,Navigator,,pending,
+window.panel.notes,Window,Notes,,pending,
+window.panel.paragraph,Window,Paragraph,,pending,
+window.panel.paragraphStyles,Window,Paragraph Styles,,pending,
+window.panel.paths,Window,Paths,,partial,"Native menu/Paths/Properties controls; bounded cubic paths, saved/work paths, editable vector masks, density/feather/link/enable and undo; VectorPathTests/VectorRenderTests/PathWorkflowTests; Photoshop 8/16/32 fixtures; approximate feathered edges"
+window.panel.patterns,Window,Patterns,,partial,Window menu and native flat library with thumbnails/search/rename/delete/PAT import/export; persistent tiles; folders and full UI parity pending
+window.panel.properties,Window,Properties,,partial,"Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete; step086 fixed field line boxes and current-state absolute X/Y bindings; 8 LayerPositionEditingTests cover rapid values/affine/groups/stale/read/close; numeric history grouping and engine extent limits remain open; docs/WORKSPACE_FIELD_LAYOUT_REFERENCES.json; step087 native draft/commit, Escape, Tab/backtab, single history and document lifecycle guards; 19 NumericFieldEditingTests; arithmetic/units/scrubbing/step keys/validation and engine limits remain incomplete; docs/NUMERIC_FIELD_EDITING_REFERENCES.json"
+window.panel.shapes,Window,Shapes,,pending,
+window.panel.styles,Window,Styles,,pending,
+window.panel.swatches,Window,Swatches,,partial,Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete
+window.panel.timeline,Window,Timeline,,pending,
+window.panel.toolPresets,Window,Tool Presets,,pending,
+window.panel.options,Window,Options,,pending,
+window.panel.tools,Window,Tools,,pending,
+workspace.hidePanels,Workspace,Show/Hide Panels,Tab,partial,"Step060 Photoshop live visibility sequence and WorkspaceTests; canvas responder only; workspace persistence and edge-hover reveal pending; step066 shared layout persistence tested, exact temporary-hide restart semantics and edge-hover remain unqualified"
+workspace.hidePanelsExceptTools,Workspace,Show/Hide Panels Except Tools and Options,Shift+Tab,partial,"Step060 Photoshop live visibility sequence and WorkspaceTests; canvas responder only; workspace persistence and edge-hover reveal pending; step066 shared layout persistence tested, exact temporary-hide restart semantics and edge-hover remain unqualified"
+window.arrange.minimize,Window > Arrange,Minimize,Ctrl+Cmd+M,partial,Step061 native document-window routing and DocumentWorkspaceTests; broader cross-window/shortcut contexts remain unqualified. Full 601 / optimized 155 tests; bounded live evidence: docs/DOCUMENT_WORKSPACE_REFERENCES.json. Pointer drag and full floating-frame parity are unqualified.
+window.arrange.bringAllToFront,Window > Arrange,Bring All to Front,,partial,Step061 native document-window routing and DocumentWorkspaceTests; broader cross-window/shortcut contexts remain unqualified. Full 601 / optimized 155 tests; bounded live evidence: docs/DOCUMENT_WORKSPACE_REFERENCES.json. Pointer drag and full floating-frame parity are unqualified.
+workspace.nextDocument,Workspace,Next Document,Ctrl+Tab,partial,"Step063 retained application frame, canvas-only floating hosts, global active-document and keyboard routing; 613 full/167 optimized/42 focused tests. Live frame/dialog/save/close/geometry qualification pending unlock. docs/APPLICATION_FRAME_REFERENCES.json"
+workspace.previousDocument,Workspace,Previous Document,Ctrl+Shift+Tab,partial,"Step063 retained application frame, canvas-only floating hosts, global active-document and keyboard routing; 613 full/167 optimized/42 focused tests. Live frame/dialog/save/close/geometry qualification pending unlock. docs/APPLICATION_FRAME_REFERENCES.json"
+workspace.reorderDocumentTab,Workspace,Reorder Document Tabs,Drag,partial,"Step062 AppKit source/destination controls, private payload and before/after coordinator moves; 605 full/159 optimized tests; live pointer checks pending Mac unlock. docs/NATIVE_TAB_DRAG_REFERENCES.json"
+workspace.zoomPercentage,Workspace,Canvas Zoom Percentage,,partial,"Step064 editable native field, validation/cancel and document-switch guards; automated tests and offscreen layout pass; live text/pointer/responder behavior pending. docs/VIEWPORT_REFERENCES.json"
+workspace.compactLayout,Workspace,Compact tools and inspector layout,,partial,"Step065 native fixed color footer, scrolling tools and bounded visible-panel allocation; 627 full/185 optimized/56 focused tests and offscreen layout pass; live input and exact Photoshop geometry pending. docs/COMPACT_WORKSPACE_REFERENCES.json"
+workspace.savedLayouts,Window > Workspace,Saved workspace selection and persistence,,partial,"Step066 bounded atomic saves, last-used versus saved reset target, shared visibility/tabs/sizes/tool columns; eight regressions; panel docking/order/factory presets and live qualification pending. docs/SAVED_WORKSPACE_REFERENCES.json; step067 adds dock topology, closed-panel locations and group sizes with literal previous-schema migration tests"
+workspace.panelDock,Workspace,Dock panel tab groups and resizing,,partial,"Step067 native tab/group reorder/split/merge, close/reveal, collapse and adjacent splitters; saved topology; 643 full/201 optimized/72 focused tests; actual pointer input, floating panels/additional docks and exact Photoshop behavior pending. docs/PANEL_DOCK_REFERENCES.json; step068 adds floating native hosts/geometry/dock return (docs/FLOATING_PANEL_REFERENCES.json), with live pointer qualification and further docking work still pending Step092 restores observed Move/Float availability after native sheet dismissal; 937 full/136 optimized tests and bounded live Cancel/OK checks pass. Step098 qualifies descriptive native menu names after Channels Escape and Layers Cancel; step099 rechecks Float/Reset but utility-window input remains unqualified. docs/SHEET_PANEL_REFERENCES.json; docs/PANEL_MENU_ACCESSIBILITY_REFERENCES.json"
+workspace.floatingPanels,Workspace,Native floating panel hosts and docking return,,partial,"Step068 NSPanel ownership, retained geometry, active document, collapse/close/reveal, Lock and native dock targets including empty dock; 654 full/212 optimized/83 focused tests. Tear-off/stacks/extra columns and live qualification pending. docs/FLOATING_PANEL_REFERENCES.json; step069 adds native drag tear-off with committed-drop/cancellation guards and nine regressions; actual pointer/modifier/desktop qualification remains pending (docs/PANEL_TEAR_OFF_REFERENCES.json); step070 adds native stacks and row-sized floating tear-off (docs/FLOATING_STACK_REFERENCES.json), live input still pending"
+workspace.panelTearOff,Workspace,Drag panel tabs and groups to floating windows,Drag; Command prevents docking; Escape cancels,partial,"Step069 native drag source/receiver callbacks, explicit float commits, temporary desktop surfaces and stale/cancel cleanup; 663 full/221 optimized/92 focused tests. Actual OS pointer/Escape/Command and exact Photoshop layout remain pending. docs/PANEL_TEAR_OFF_REFERENCES.json; step070 adds native stacks and row-sized floating tear-off (docs/FLOATING_STACK_REFERENCES.json), live input still pending"
+workspace.floatingStacks,Workspace,Stack floating panel groups,Drag tabs/groups to panel edges,partial,"Step070 native stack hosts, edge placement/reorder, retained collapse/close/reveal/resize and saved workspace topology; 672 full/230 optimized/101 focused tests. Actual OS pointer/modifier/window geometry and Photoshop appearance remain pending. docs/FLOATING_STACK_REFERENCES.json"
+workspace.dockColumns,Workspace,Arrange dock columns and icons,Drag panel tabs/groups to canvas edges,partial,"Step071 native left/right columns, retained widths/order, icon/label presentation and compact reveal; 685 full/243 optimized/114 focused tests. Real pointer/popover behavior and exact Photoshop geometry pending. docs/DOCK_COLUMN_REFERENCES.json"
+layer.setExpanded,Layers panel,Expand/Collapse Group,Option-click disclosure for all groups,partial,"Step080 native source-derived view metadata; ordinary/Option disclosure and Collapse All Groups preserve clean state, selection, undo/redo/coalescing and native pixels. Native/PSD metadata and native hit/cancel/stale tests pass; live Photoshop history, geometry and flyout order pending. docs/GROUP_DISCLOSURE_REFERENCES.json Step081 active-layer changes reveal ancestors without edit history and scroll minimally; initial/manual state and stale read/close scopes covered by hosted native tests. docs/LAYER_REVEAL_REFERENCES.json"
+layer.panelOptions,Layers panel,Panel Options…,,partial,"Step082 native shared thumbnail size/framing preferences with failure/cancel/stale guards and transformed content previews. Fourteen new native tests; factory defaults, live appearance, remaining checkbox behavior and mask-preview framing unqualified. docs/LAYER_PANEL_OPTIONS_REFERENCES.json Step083 minified content uses premultiplied area coverage; pixel/vector mask previews share document/content framing and scaled disabled marks. Density/feather preview convention and exact Photoshop bytes remain unqualified. docs/THUMBNAIL_COVERAGE_REFERENCES.json Step084 native mask-thumbnail Shift/Command/Option gestures, selection combinations and canvas-only mask views are tested; the Load Selection dialog, channel shortcuts and full Photoshop fidelity remain pending. docs/MASK_INTERACTION_REFERENCES.json Step092 restores observed Move/Float availability after native sheet dismissal; 937 full/136 optimized tests and bounded live Cancel/OK checks pass. Step098 qualifies descriptive native menu names after Channels Escape and Layers Cancel; step099 rechecks Float/Reset but utility-window input remains unqualified. docs/SHEET_PANEL_REFERENCES.json; docs/PANEL_MENU_ACCESSIBILITY_REFERENCES.json"
+photato.automationAPI,Help,Photato Automation API…,,partial,"Step106: fourteen native document commands including separate component target/Fill; optional isolated action jobs through Photato routes and partial Adobe execute-actions/status; authenticated local outputs and enable/revoke lifecycle. All990 full/279 optimized/39 final focused tests pass; universal package verified. Six Adobe endpoints, full command coverage, external-service interoperability and complete Adobe conformance remain open. docs/AUTOMATION_API.md; docs/COMPONENT_EDITING_INTEGRATION_REFERENCES.json Step109 adds opt-in binary document import and shared native/PSD/PNG/JPEG/TIFF downloads with revision/revocation/budget guards;14 editing commands unchanged. 998 full/290 optimized tests, bounded Debug workflow and clean universal package pass. docs/DOCUMENT_IO_REFERENCES.json"

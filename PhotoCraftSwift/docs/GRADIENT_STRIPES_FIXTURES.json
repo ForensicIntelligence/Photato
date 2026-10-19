@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-08",
+  "source": "Original procedural probes opened, recalculated and saved through Photoshop 2026 UI",
+  "files": [
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-stripes-three-stop-rgb8.psd",
+      "sha256": "b4ac3d110707db45e111b13bcaa4c3216cff86db0478d8d6d57d373d85ab72bb",
+      "size": 90880,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "GIMs",
+      "width": 256,
+      "height": 64,
+      "depth": 8,
+      "stored_merged_sha256": "dcdcec1515837624421c3d09764c7ab960f4b4f911cb5d522553280a582912e9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-stripes-fill-three-stop-rgb8.psd",
+      "sha256": "8ec59f7a907a6bc5dd1d5f976049ba01f7829b1fe1753737d42175399ec30939",
+      "size": 28780,
+      "photoshop_saved": true,
+      "width": 256,
+      "height": 64,
+      "depth": 8,
+      "stored_merged_sha256": "720e39165b7cc4ab290bc2d291ae0b4b596710d1ea5c213cb032ccae3b12c266"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-stripes-coincident-rgb8.psd",
+      "sha256": "66ca6a543603dd829826f39181260d752d6ff2d6392f6f5317e4a3d13d7e1b74",
+      "size": 28206,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "GIMs",
+      "width": 256,
+      "height": 8,
+      "depth": 8,
+      "stored_merged_sha256": "6a64b3c652abb6b3b0d2692f1689676d8059c418ff3a28a75067b7d309960f32"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-stripes-coincident-rgb16.psd",
+      "sha256": "dd78434ec1926da486be84a69e4e9cd47e02ee3db0a4d16471aa5e42b420bfdd",
+      "size": 39912,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "GIMs",
+      "width": 256,
+      "height": 8,
+      "depth": 16,
+      "stored_merged_sha256": "a67f00d799b8b721302b212310f9976e2accd01e536287595c9aa028cbb12f04"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-smooth-three-stop-0-rgb8.psd",
+      "sha256": "866c3626c199c905ecf1f2668f94ece2d8fad114ee6fca0d4ead83d886c0fd19",
+      "size": 103499,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "Smoo",
+      "width": 256,
+      "height": 64,
+      "depth": 8,
+      "stored_merged_sha256": "3b323e86e83ec2c49531e2770defa5fb77c808608ee0e84715de8bf8ea4f2eff"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-smooth-three-stop-100-rgb8.psd",
+      "sha256": "a82c1d83445b04b1a463a33c83d9d063c8043f12461d9d688bd0c2c4c543007b",
+      "size": 103533,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "Smoo",
+      "width": 256,
+      "height": 64,
+      "depth": 8,
+      "stored_merged_sha256": "3b323e86e83ec2c49531e2770defa5fb77c808608ee0e84715de8bf8ea4f2eff"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-classic-three-stop-0-rgb8.psd",
+      "sha256": "73c1a19bc8d3d76ec9be27388047c1044ef85e4d2702e0667c911ab4cb25ed53",
+      "size": 103170,
+      "photoshop_saved": true,
+      "grdm_version": 3,
+      "grdm_method": "Gcls",
+      "width": 256,
+      "height": 64,
+      "depth": 8,
+      "stored_merged_sha256": "25771fb329ab9f8b96fef96e402a2de65efb943fbddbb0c6f69033ef58bbb7a3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/native-stripes-legacy-rgb32.psd",
+      "sha256": "666da0f4d7d1e975b8a286d72a71b4a5210c766e0dd0070ce3da119a67dc482e",
+      "size": 35054,
+      "photoshop_saved": false,
+      "grdm_version": 3,
+      "grdm_method": "GIMs"
+    }
+  ],
+  "preserved_native_inputs": [
+    {
+      "path": "artifacts/gradient-method-reference/native-stripes-fill-inspected-rgb8.psd",
+      "sha256": "86321ba44a65c1c57f67991e3f8478877b9b61eb9a886059e5bd2f8873a3f7b3"
+    },
+    {
+      "path": "artifacts/gradient-method-reference/native-stripes-coincident-inspected-rgb8.psd",
+      "sha256": "a23253788d62ba9eef1933ae7ede58194b287d33a2e51be3b452643a956114cb"
+    },
+    {
+      "path": "artifacts/gradient-method-reference/native-stripes-coincident-inspected-rgb16.psd",
+      "sha256": "3ccf2e2b97b6cc1811eb1f77a1e616a1b0fb2381fe29147f8b67cf96492f3ff6"
+    },
+    {
+      "path": "artifacts/gradient-method-reference/native-stripes-coincident-inspected-rgb32.psd",
+      "sha256": "666da0f4d7d1e975b8a286d72a71b4a5210c766e0dd0070ce3da119a67dc482e"
+    }
+  ],
+  "supporting_references": [
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-stripes-rgb8.psd",
+      "sha256": "27063570441a2d6c7e795e0b893a8a8d379ca95ecfd39c46722b4d39aff9c0c3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-classic-rgb8.psd",
+      "sha256": "8a9dcf2f471ef33665b0b4fa9719520f88b26f397c1f4ab423a10de9fa92eba4"
+    }
+  ],
+  "native_export_photoshop_recalculation": [
+    {
+      "reference": "photoshop-stripes-fill-three-stop-rgb8",
+      "pixels": 16384,
+      "stored_channels_byte_identical": true
+    },
+    {
+      "reference": "photoshop-stripes-coincident-rgb8",
+      "pixels": 2048,
+      "stored_channels_byte_identical": true
+    }
+  ],
+  "smooth_0_and_100_merged_channels_identical": true,
+  "smooth_is_implemented": false,
+  "rgb32_observation": "Photoshop warned about unsupported layer data, discarded the adjustment after Keep Layers, and disabled Image > Adjustments > Gradient Map. No RGB32 Photoshop output is a reference.",
+  "input_generator": "scripts/generate-gradient-method-probes.py",
+  "input_merged_previews_are_stale": true,
+  "qualification": "Only Photoshop-saved output files serve as pixel references. The legacy RGB32 file is an original native persistence/rejection fixture. No installed preset library or Adobe code is copied. RGB16 partial-alpha white matting remains different.",
+  "historical_checkpoint_note": "This retains the Stripes milestone observations. RGB16 merged-matte residuals are corrected by the later RGB16_MATTE_REFERENCES.json milestone; its hashes and release evidence qualify the current implementation.",
+  "superseded_rgb16_matte_by": "RGB16_MATTE_REFERENCES.json"
+}

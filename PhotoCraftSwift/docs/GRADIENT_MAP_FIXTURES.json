@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-08",
+  "source": "Created in the available Adobe Photoshop 2026 app through its UI from an original generated RGBA probe",
+  "width": 256,
+  "height": 64,
+  "depth": 8,
+  "profile": "Unembedded sRGB working document",
+  "methods_observed": [
+    "Perceptual",
+    "Linear",
+    "Classic",
+    "Smooth",
+    "Stripes"
+  ],
+  "default_observed": "Smooth",
+  "files": [
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-classic-rgb8.psd",
+      "sha256": "8a9dcf2f471ef33665b0b4fa9719520f88b26f397c1f4ab423a10de9fa92eba4",
+      "grdm_version": 3,
+      "grdm_method": "Gcls",
+      "size": 111222
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-linear-rgb8.psd",
+      "sha256": "a45f980e64ef7f3146c9c54208a41e090b10a01336d24d7d22caa0fb6f78e9a5",
+      "grdm_version": 3,
+      "grdm_method": "Lnr ",
+      "size": 115356
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-perceptual-rgb8.psd",
+      "sha256": "052f5cfb5be4ec16e0b240c5aed0af2873879eb9c81ab391b377d73d34a732aa",
+      "grdm_version": 3,
+      "grdm_method": "Perc",
+      "size": 106966
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-smooth-rgb8.psd",
+      "sha256": "7979dd02868dddf951f6ad31da3234e8690ce21c6208c15fdf69180f7cabad2b",
+      "grdm_version": 3,
+      "grdm_method": "Smoo",
+      "size": 107248
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-stripes-rgb8.psd",
+      "sha256": "27063570441a2d6c7e795e0b893a8a8d379ca95ecfd39c46722b4d39aff9c0c3",
+      "grdm_version": 3,
+      "grdm_method": "GIMs",
+      "size": 81954
+    }
+  ],
+  "qualification": "Saved grdm method code checked independently after UI selection settles; only these five canonical fixtures qualify the methods. Earlier captures in artifacts/gradient-map-reference/discarded-ui-race contain stale settings and are excluded.",
+  "native_export_ui": {
+    "path": "artifacts/gradient-map-reference/native-gradient-map-inspected-rgb8.psd",
+    "sha256": "36d7c0f8baccaee5c0654dc744f6b6b324c4aae4ddabdb1a181722e16728ebf8",
+    "opened_as_editable_adjustment": true,
+    "method": "Classic",
+    "reverse": true,
+    "dither": true,
+    "layer_opacity_percent": 50,
+    "gradient_editor_name": "Black, White",
+    "gradient_editor_smoothness_percent": 75,
+    "limitations": "One RGB8 file opened and controls inspected; not pixel equality or all modes/depths. Temporary verification tabs closed, original Untitled-1 left open."
+  },
+  "source_probe": {
+    "path": "artifacts/gradient-map-reference/gradient-map-probe-rgb8.png",
+    "sha256": "7e5a57e1d92f681b00ac7973f2b2a93eb29ab3d3c7158a5ae82360260fbb00a5",
+    "generator": "scripts/generate-gradient-map-probe.py"
+  }
+}

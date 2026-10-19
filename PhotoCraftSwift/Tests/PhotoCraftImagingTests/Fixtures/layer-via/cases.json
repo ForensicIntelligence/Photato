@@ -1,0 +1,65 @@
+[
+  {
+    "depth": 8,
+    "variant": "opaque",
+    "source": "photoshop-source-opaque-rgb8.psd",
+    "copy": "photoshop-copy-opaque-rgb8.psd",
+    "cut": "photoshop-cut-opaque-rgb8.psd"
+  },
+  {
+    "depth": 8,
+    "variant": "alpha",
+    "source": "photoshop-source-alpha-rgb8.psd",
+    "copy": "photoshop-copy-alpha-rgb8.psd",
+    "cut": "photoshop-cut-alpha-rgb8.psd"
+  },
+  {
+    "depth": 8,
+    "variant": "properties",
+    "source": "photoshop-source-properties-rgb8.psd",
+    "copy": "photoshop-copy-properties-rgb8.psd",
+    "cut": "photoshop-cut-properties-rgb8.psd"
+  },
+  {
+    "depth": 16,
+    "variant": "opaque",
+    "source": "photoshop-source-opaque-rgb16.psd",
+    "copy": "photoshop-copy-opaque-rgb16.psd",
+    "cut": "photoshop-cut-opaque-rgb16.psd"
+  },
+  {
+    "depth": 16,
+    "variant": "alpha",
+    "source": "photoshop-source-alpha-rgb16.psd",
+    "copy": "photoshop-copy-alpha-rgb16.psd",
+    "cut": "photoshop-cut-alpha-rgb16.psd"
+  },
+  {
+    "depth": 16,
+    "variant": "properties",
+    "source": "photoshop-source-properties-rgb16.psd",
+    "copy": "photoshop-copy-properties-rgb16.psd",
+    "cut": "photoshop-cut-properties-rgb16.psd"
+  },
+  {
+    "depth": 32,
+    "variant": "opaque",
+    "source": "photoshop-source-opaque-rgb32.psd",
+    "copy": "photoshop-copy-opaque-rgb32.psd",
+    "cut": "photoshop-cut-opaque-rgb32.psd"
+  },
+  {
+    "depth": 32,
+    "variant": "alpha",
+    "source": "photoshop-source-alpha-rgb32.psd",
+    "copy": "photoshop-copy-alpha-rgb32.psd",
+    "cut": "photoshop-cut-alpha-rgb32.psd"
+  },
+  {
+    "depth": 32,
+    "variant": "properties",
+    "source": "photoshop-source-properties-rgb32.psd",
+    "copy": "photoshop-copy-properties-rgb32.psd",
+    "cut": "photoshop-cut-properties-rgb32.psd"
+  }
+]

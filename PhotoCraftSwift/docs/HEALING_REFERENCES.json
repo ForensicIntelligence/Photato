@@ -1,0 +1,26 @@
+{
+  "retrieved": "2026-10-08",
+  "guides": [
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/healing-brush-tool.html",
+    "https://helpx.adobe.com/photoshop/using/tool-techniques/healing-brush-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/set-sample-sources-for-cloning-and-healing.html"
+  ],
+  "feature_catalogue": "https://www.adobe.com/products/photoshop/features/all.html",
+  "source_solver": "../photocraft-main/crates/algo/src/poisson.rs",
+  "live_comparison": false,
+  "photoshop_exactness_verified": false,
+  "last_live_check": "2026-10-08: CUA reports Mac locked; no Photoshop operation was sent",
+  "source_snapshot_modified": false,
+  "implemented": "Sampled gradient-domain repair with shared Clone Source controls and independent brush/sampling settings; immutable source/destination context; masks and 8/16/32-bit pixels; preview/undo; cropped layer storage; full/regional native render equality",
+  "native_policy": "Solve encoded channels independently including alpha; RGB32 resampling/compositing uses existing native linear-light domains; negative healed RGB clamped to zero and integer healed channels to unit range. Selection gates final blending, not solver boundary. New paint is canvas clipped. Solver region limited to 4194304 pixels.",
+  "remaining": [
+    "Photoshop Diffusion algorithm/control",
+    "Pattern source and Replace mode",
+    "Photoshop colour-space, transparency and selection-boundary behavior",
+    "Photoshop brush spacing/edge/dynamics and exact results",
+    "Alpha and Quick Mask channel targets",
+    "Persistent Photoshop-compatible tool preferences",
+    "4 MP repair region limit, large strokes and interactive performance qualification",
+    "Physical tablet, macOS 14/26 and Intel runtime checks"
+  ]
+}

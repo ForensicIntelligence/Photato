@@ -1,0 +1,118 @@
+{
+  "step": "dev-step-066",
+  "date": "2026-10-08",
+  "status": "Shared saved workspace layouts and four native menu actions implemented; automated/package checks pass; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/release-verification.json",
+    "sha256": "b7fe5acdd72d31fcbc0061bec810c84672bc00bcbdcc620d9b67ea5b9867b2ba"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/tested-source-hashes.json",
+    "sha256": "ed095d848c2035ce2f55773fa2f7a8775f7c1372808497f30e0e4bf60c1274ea"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/live-qualification.json",
+    "sha256": "3d9352c1472244d33c6def082367eb1d95329aa9910a6ee2d735110ec485bb5c"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/references.json",
+    "sha256": "eef35f07de28d3f91f5cdf8f0b495fb44d245aaf4424712b8c8c618a34d5e568"
+  },
+  "implementation": [
+    "Shared application layout across all document stores; visibility, selected panel tabs, inspector width/height and tool columns",
+    "Bounded atomic JSON persistence with coalesced layout saves; saved reset target separate from last-used arrangement",
+    "Essentials selection, dynamic custom names/checkmarks, Reset active workspace, native New/Replace/Delete dialogs",
+    "Case-insensitive name protection, current-workspace delete guard and unchanged files on load/write failure",
+    "Configure workspace ownership after AppKit returns its singleton, retaining ordinary controller lookup without reset"
+  ],
+  "automated_evidence": [
+    "Eight new tests exercise persistence, reset versus last used, failed writes, malformed/versioned/oversized files, autosave, shared ownership, unchanged native document bytes/undo/viewport, menu dispatch and native dialog controls",
+    "64 focused / 635 full / 193 optimized tests pass, zero failures/skips",
+    "801 static menu entries, 102 primary and eight alternate shortcuts; 148 bound leaves and 576 unavailable",
+    "Frame Space down/up routes to floating canvas; shared Tab visibility and native text-field responder checks remain covered"
+  ],
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T060813Z-066-saved-workspaces/offscreen-layout.json",
+    "sha256": "bc2a7909fcab6b63d4a63a89d8b64c8fdac38a2262e2bbe124fb4dc05f1b6d7a"
+  },
+  "limits": [
+    "Actual packaged dialogs, input and restart behavior still require live qualification. XCTest alert images contain incomplete native control rendering and do not qualify visual appearance.",
+    "Panel grouping/order, floating panels and docking are not implemented. Lock Workspace remains disabled; original Rust locks group movement but permits splitter resizing.",
+    "Other factory workspace layouts and optional keyboard-shortcut/menu/toolbar capture remain unavailable.",
+    "Essentials uses Photato\u2019s current panel layout; exact installed Photoshop default positions, constraints, preset deletion and preferences are unqualified.",
+    "Current custom workspace deletion is protected following the source; exact Photoshop behavior remains pending.",
+    "Malformed workspace files are preserved and saving is blocked; in-app recovery controls remain a follow-up.",
+    "No image engine or native document format changed; no new Photoshop pixel equivalence is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "panel_dock_followup": {
+    "step": "dev-step-067",
+    "reference_manifest": "docs/PANEL_DOCK_REFERENCES.json",
+    "scope": "Retained topology/group heights/closed-panel locations, literal legacy schema migration and independent application locking. Full floating/docking and live restart remain pending."
+  },
+  "floating_panel_followup": {
+    "step": "dev-step-068",
+    "reference_manifest": "docs/FLOATING_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T070539Z-068-floating-panels/release-verification.json",
+      "sha256": "a3e9066ea66de00bebb1fe30fa4235fa4a49aa39de721c7c4387f52cd84f5109"
+    },
+    "scope": "Native floating panel lifecycle/geometry/active document and docking return; retain registered Services menu identity. No new static Photoshop command bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "panel_tear_off_followup": {
+    "step": "dev-step-069",
+    "reference_manifest": "docs/PANEL_TEAR_OFF_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T072722Z-069-panel-tear-off/release-verification.json",
+      "sha256": "b4df33d4711a8ff96091cf4cf84aea2d3cd7d168235058a464946bea2f4d1eaf"
+    },
+    "scope": "Native drag tear-off, explicit Command float drops and cancellation/cleanup guards; no new Photoshop menu bindings.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "floating_stack_followup": {
+    "step": "dev-step-070",
+    "reference_manifest": "docs/FLOATING_STACK_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+      "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+    },
+    "scope": "Native floating stack topology, native hosts/boundaries and preserved collapsed/hidden geometry; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

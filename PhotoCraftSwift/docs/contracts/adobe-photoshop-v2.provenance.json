@@ -1,0 +1,152 @@
+{
+  "step": "dev-step-101",
+  "retrieved_date": "2026-10-13",
+  "reference_page": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+  "repository": "https://github.com/AdobeDocs/ffs-photoshop-API",
+  "path": "static/photoshopv2-api.json",
+  "git_blob_sha1": "8db3553512c6a0ff0532c8a009cbb2c8210c8f41",
+  "immutable_source": "https://api.github.com/repos/AdobeDocs/ffs-photoshop-API/git/blobs/8db3553512c6a0ff0532c8a009cbb2c8210c8f41",
+  "sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+  "bytes": 217311,
+  "openapi": "3.0.1",
+  "info_version": "2.0",
+  "repository_license": "AdobeDocs-LICENSE (Apache-2.0)",
+  "service_license": {
+    "name": "Adobe Creative API License",
+    "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
+  },
+  "license_note": "Repository attribution/redistribution terms are distinct from service usage terms; no service terms acceptance or Adobe job is implied.",
+  "resolved_internal_reference_occurrences": 394,
+  "schema_count": 162,
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/v1/auto-crop",
+      "operation_id": "autoCrop",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "404",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/create-artboard",
+      "operation_id": "createArtboard",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/create-composite",
+      "operation_id": "createComposite",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/edit",
+      "operation_id": "edit",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/execute-actions",
+      "operation_id": "executeActions",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/generate-manifest",
+      "operation_id": "generateManifest",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/status/{jobId}",
+      "operation_id": "getJobStatus",
+      "responses": [
+        "200",
+        "400",
+        "401",
+        "404"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/remove-background",
+      "operation_id": "removeBackground",
+      "responses": [
+        "202",
+        "400",
+        "401",
+        "403",
+        "422",
+        "429",
+        "500"
+      ],
+      "status": "not implemented",
+      "conformance": "not qualified"
+    }
+  ],
+  "channel_view_review": "No dedicated desktop view-state operation is specified. LocalRange.channelId is a hue-adjustment range, not channel visibility. ActionsOptions accepts actionJSON/ATN/UXP; those general execution workflows could express channel actions but are separately unimplemented. Photato per-document display state and PNG preview are Photato-only extensions, not Adobe conformance.",
+  "status_envelope_review": "Pinned JobAcceptedResponse uses jobId/statusUrl; JobStatusResponse uses result/errorDetails and not_started/running/succeeded/failed. Guide inconsistencies must be resolved in endpoint tests; no live service responses tested.",
+  "evidence_root": "artifacts/runs/20261013T163042Z-101-channel-visibility"
+}

@@ -1,0 +1,16 @@
+{
+  "compose_source_sha256": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+  "color_source_sha256": "0b59ecd379945083a0ca2d12131a413cddb0b0c5115d74796368373ad6351c06",
+  "generator": "scripts/generate-color-balance-oracle.py",
+  "cases": 16,
+  "rgb_samples": 15840,
+  "encoded_float_samples": 15840,
+  "scope": "Unchanged Rust ColorBalance closure and Rec.601 rgb_to_gray. Encoded/linear adapter for native float storage. Both luminosity options, all tones, endpoints, gray ramp and extended/hidden colors. Approximation, not Photoshop pixel qualification.",
+  "intentional_identity_exception": "All-zero settings preserve exact input bits, including HDR colors that Rust clamps/reconstructs. Cases 0 and 1, extended inputs 986 and 987.",
+  "binary_fixture": "Independent Python struct.pack >9hBx, signed tone triples, one-byte luminosity and padding; also checked against psd-tools ColorBalance reader.",
+  "binary_sha256": "2d3e826872d55217754c5cdfad51dcaf68aba43455e234a446a0307454ae66b9",
+  "references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://raw.githubusercontent.com/psd-tools/psd-tools/main/src/psd_tools/psd/adjustments.py"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-078",
+  "date": "2026-10-09",
+  "status": "Native layer labels, selected visibility and Option-eye restoration tested; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T113517Z-078-layer-organization/release-verification.json",
+    "sha256": "97c6b0fc53de7f52ff0d80029b1306c0fa43d821093d10c4da2318b7ae023b78"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T113517Z-078-layer-organization/tested-source-hashes.json",
+    "sha256": "2666b3f94ec73b20d06c42a25fd5bd2b056da1dc09fdcc7078ff22f999e890b1"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T113517Z-078-layer-organization/research.json",
+    "sha256": "9a8426ace1bc8599e717482bdee0d6c7248dc488ee7c208ebd890f23377bfe7e"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T113517Z-078-layer-organization/live-qualification.json",
+    "sha256": "f2c7bebbd4aba5da6c3c6f368cd10055c11c4fec706d0dce81c147aec014b1a7"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T113517Z-078-layer-organization/offscreen-layout.json",
+    "sha256": "fa4f05bf0aa30bf7d98eb5184ecbce442493dc32625d83ec5fe0edae6fd00abf"
+  },
+  "implementation": [
+    "Atomic selected label changes preserve layer content, selection, unrelated tags and reserved lclr bytes; no-op labels do not create undo entries.",
+    "Row context exposes all existing label choices with mixed-state validation; unselected-row context changes target only that row.",
+    "Selected Hide/Show Layers binds the existing factory Command-comma entry and appears in contextual Layers menus.",
+    "Eye-column hidden state uses blank space; Option-click isolates/restores without changing selection; source-derived maps retain descendant flags and reveal ancestor paths. Already-solo layouts with no snapshot reveal all rows; ancestor-alias restoration retains the saved snapshot.",
+    "Isolation snapshots belong to each document, survive unrelated edits and unrelated Undo, and retire after visibility/topology changes or document read/close.",
+    "Snapshot diagnostics freeze the final model after all fixture edits, preventing setup from restarting asynchronous rendering during capture."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/focused-06.log",
+      "sha256": "a6f9c290c2de7ac8a7fd2f01f92fe2588a5539578e6970f4614bb8b6cbca6aa4",
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.098
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/full-tests.log",
+      "sha256": "2082d1f7c44f48bd8a5bfe299523f929bbfdc6f0fb32344c205366b7cd4f82df",
+      "passed": 785,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 122.084
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T113517Z-078-layer-organization/release-tests.log",
+      "sha256": "0a2df7190ca191f99abbc296b4ffc9f2535d2d61b8de1861d7dd619afc46ee8e",
+      "passed": 360,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 13.478
+    },
+    "new_regressions": 19
+  },
+  "limits": [
+    "Actual native pointer/menu/keyboard and Photoshop appearance require an unlocked Mac; callback/offscreen tests do not qualify physical interaction.",
+    "Exact color-menu order/swatches, locked/group label inheritance, mixed-selection Show/Hide policy, group/clipping rendering, topology invalidation and history behavior remain unqualified against Photoshop.",
+    "Eye-column dragging, recursive disclosure, Panel Options and confirmation preferences remain incomplete.",
+    "Native/PSD label round trips and rendering invariance are bounded regression evidence, not Photoshop-wide byte equivalence.",
+    "Earlier step077 pixel/History text capture variation and Desktop FinderInfo signature instability remain tracked; clean ZIP is the qualified distribution artifact.",
+    "Full Photoshop2026 feature/byte equality and macOS14/Intel runtime certification remain incomplete."
+  ],
+  "full_photoshop_parity": false,
+  "layer_visibility_drag_followup": {
+    "step": "dev-step-079",
+    "reference_manifest": "docs/LAYER_VISIBILITY_DRAG_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T120757Z-079-layer-eye-drag/release-verification.json",
+      "sha256": "3f1a7b98f887515b266c3b896bbf94ab7b724b5c684bef49d947aaaa821cd65e"
+    },
+    "scope": "Native Layers eye-column dragging with transient preview, one undo step, cancellation and native clipped hit targets/autoscroll. Menus and factory shortcuts unchanged.",
+    "live_qualified": false
+  }
+}

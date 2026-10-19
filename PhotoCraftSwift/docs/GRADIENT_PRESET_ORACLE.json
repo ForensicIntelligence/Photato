@@ -1,0 +1,11 @@
+{
+  "generator": "scripts/generate-gradient-preset-oracle.py",
+  "source_files": {
+    "grd.rs": "c90ecda7e8cad4f6c123525cb754bc3cb80635c46607cba90ad4ecec65c3de07",
+    "descriptor.rs": "10c87c11a6d3ad9fe2450de7a9f0df4636431752bbdaba7c60091458d20776c9",
+    "io.rs": "06ab9f2d7d4c0d9611f6751e4deb5eea53c9c8943aa4a45033c553cb06042470"
+  },
+  "oracle_bytes": 1324,
+  "oracle_sha256": "bea7937222b5b406dcc86691ef5fe98d520ba6a8dcb9a2fc4acaf507e55fd181",
+  "scope": "Original Rust GRD writer and ActionDescriptor transport; only the error enum is adapted. Native exported files can be verified with the compiled original reader."
+}

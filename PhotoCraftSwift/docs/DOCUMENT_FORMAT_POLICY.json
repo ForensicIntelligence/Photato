@@ -1,0 +1,23 @@
+{
+  "request_date": "2026-10-19",
+  "status": "Current user decision; supersedes the withdrawn request to make .photato a PSD binary",
+  "native": {
+    "extension": ".photato",
+    "encoding": "Photato-specific native archive",
+    "legacy": ".pcswift remains supported",
+    "PSD_binary_compatibility_required": false
+  },
+  "photoshop": {
+    "extension": ".psd",
+    "target": "100% PSD support as a separate file format",
+    "current_status": "Incomplete; full supported-feature, editability, profile/metadata and independent Photoshop interoperability remain required",
+    "acceptance": [
+      "Open, edit, save and reopen PSD as PSD through native Swift and both applicable APIs.",
+      "Preserve Photoshop-editable structures, profiles, resources and rendering across independently verified Photoshop round trips.",
+      "Keep unsupported cases and any data-loss risks explicit until their implementation and qualification are complete.",
+      "Do not treat native .photato support or passing native-archive tests as proof of complete PSD support."
+    ]
+  },
+  "implementation_effect": "Retain the existing distinct native archive and PSD codec paths; no native serializer conversion is requested. Continue separate PSD coverage in the existing major-format workflow.",
+  "supersedes": "The immediately preceding user request for .photato/.psd binary compatibility was explicitly withdrawn. No serializer migration was performed in response."
+}

@@ -1,0 +1,124 @@
+{
+  "step": "dev-step-106",
+  "recorded_at_utc": "2026-10-19T18:01:02.089029+00:00",
+  "status": "Step106 complete within documented RGB8 target/neutral Fill and dual-API subset; paused at user request in step107; full Photoshop parity incomplete",
+  "source_freeze": "artifacts/runs/20261019T175105Z-106-component-integration/tested-source-hashes02.json",
+  "photato_document_commands": 14,
+  "adobe_endpoints": {
+    "POST /v2/execute-actions": "partial native actionJSON RGB8 select/neutral Fill subset",
+    "GET /v2/status/{jobId}": "native job status; local lifecycle/credentials deviations",
+    "other_six": "not implemented"
+  },
+  "local_extensions": [
+    "POST /v1/action-jobs",
+    "GET /v1/action-jobs/{jobId}",
+    "GET /v1/action-assets/{assetId}",
+    "GET /v2/assets/{assetId}"
+  ],
+  "tests": {
+    "focused01": {
+      "log": "artifacts/runs/20261019T175105Z-106-component-integration/focused01.log",
+      "passed": 46,
+      "failed": 1,
+      "reason": "stale existing command-count assertion12 vs14; repaired"
+    },
+    "focused02": {
+      "log": "artifacts/runs/20261019T175105Z-106-component-integration/focused02.log",
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 2.089
+    },
+    "full01": {
+      "log": "artifacts/runs/20261019T175105Z-106-component-integration/full01.log",
+      "sha256": "9ca51ea233f5d72c07328cf3554fbc064a5fa93dc9095b5064e2e37b98b56890",
+      "passed": 988,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 145.931
+    },
+    "focused03": {
+      "path": "artifacts/runs/20261019T175105Z-106-component-integration/focused03.log",
+      "sha256": "c0501a9596ed80f6e944031fdd81c98ce35ecaef2623d4120e931a201ec5c53d",
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.801
+    },
+    "full02": {
+      "path": "artifacts/runs/20261019T175105Z-106-component-integration/full02.log",
+      "sha256": "e63cc363bdede06d347b96608bd8ed4a7d31a12c97d0ecde48af11c51fb83180",
+      "passed": 990,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 145.803
+    },
+    "release_focused02": {
+      "path": "artifacts/runs/20261019T175105Z-106-component-integration/release-focused02.log",
+      "sha256": "e83b693a204f87d975a044caa043410df381b557e197eb00416bbf89d0674d64",
+      "passed": 279,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.292
+    }
+  },
+  "independent_reference": {
+    "fixture": "Tests/PhotoCraftCoreTests/Fixtures/photoshop-component-fill-rgb8.bin",
+    "sha256": "2fc8f16236ec68b0369ba30d4339fc1cbe88a684e585ca69ffd163dbe603c29f",
+    "cases": 5,
+    "output_bytes_per_interface": 122880,
+    "interfaces": [
+      "native EditorStore Fill",
+      "Photato isolated job HTTP",
+      "Adobe-shaped isolated job HTTP"
+    ],
+    "limits": "Single-layer original RGB8 samples only; not whole-file/global equality. Native document-command equivalence separately tested."
+  },
+  "live_ui": {
+    "evidence": "artifacts/runs/20261019T175105Z-106-component-integration/live-ui-verification02.json",
+    "qualified_build": "Repaired Debug validation copy with separate bundle identifier",
+    "scope": "Target shortcuts, neutral Fill at50%, layout, disabled incompatible controls and Undo/Redo; both QA apps quit, user app retained.",
+    "production_identity_universal_app_launched": false
+  },
+  "remaining": [
+    "Photoshop-style File > Open raster-image workflow: live PNG selection was disabled in the native-document Open panel; inspect separate import path before implementing shared desktop/API support",
+    "Component painting/retouch/filter/clipboard/transforms and multi-component targeting",
+    "RGB16/32, alpha/spot channels, colored Fill conversion and full Fill modes",
+    "Six Adobe endpoints, action/ATN/UXP scope, durable jobs and storage/service interoperability",
+    "Factory preferences and complete keyboard/responder/native UI parity",
+    "Global output equivalence, macOS14/Intel runtime qualification, full Photoshop and optional AI backlog"
+  ],
+  "external_references": [
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "result": "read2026-10-19"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/llm-migration-reference",
+      "result": "read2026-10-19; published actions/status/acceptance resource shapes cross-checked with pinned contract"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/actions-migration/",
+      "result": "404; excluded"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/status-migration/",
+      "result": "404; excluded"
+    }
+  ],
+  "no_external_storage_upload_or_adobe_job": true,
+  "finalized_at_utc": "2026-10-19T18:21:13.217800+00:00",
+  "earlier_candidate": {
+    "source_freeze": "artifacts/runs/20261019T175105Z-106-component-integration/tested-source-hashes.json",
+    "release_evidence": "artifacts/runs/20261019T175105Z-106-component-integration/release-verification.json",
+    "limits": "988 full and277 optimized passed before live UI exposed Fill layout and control-availability defects. Superseded by repaired source02 qualification; failed focused01 remains preserved."
+  },
+  "package_verification": "artifacts/runs/20261019T175105Z-106-component-integration/release-verification02.json",
+  "pause_checkpoint": "docs/PAUSE_CHECKPOINT_107.json",
+  "local_package_copy": "Clean ZIP/extracted app signature passes. Desktop build copy has Finder/File Provider metadata and fails strict verification; see pause checkpoint signature-check evidence.",
+  "later_work": {
+    "step": "dev-step-109",
+    "status": "Goal resumed under major-function-first order; document lifecycle and optional transfers extend the API. Step106 tests remain historical evidence for their source, not latest package claims.",
+    "evidence": "docs/DOCUMENT_IO_REFERENCES.json"
+  }
+}

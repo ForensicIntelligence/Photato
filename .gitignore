@@ -1,0 +1,33 @@
+# Local build products and downloaded corpora
+.build/
+.swiftpm/
+build/
+target/
+dist/
+corpus/
+artifacts/
+DerivedData/
+node_modules/
+*.app/
+*.xcarchive/
+*.dSYM/
+*.log
+
+# Machine-specific state and credentials
+.DS_Store
+._*
+xcuserdata/
+*.xcuserstate
+.env
+.env.*
+!.env.example
+!.env.sample
+secrets/
+*.p12
+*.pfx
+*.keychain
+*.keychain-db
+*.mobileprovision
+*.provisionprofile
+__pycache__/
+*.pyc

@@ -1,0 +1,91 @@
+{
+  "step": "dev-step-070",
+  "date": "2026-10-09",
+  "status": "Native floating stacks regression/package/offscreen qualification; live input pending",
+  "release": {
+    "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-verification.json",
+    "sha256": "57a46a7308ae9580a81e8a8ac683929ae5b6e1f75fcc90562226f88076a7436f"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/tested-source-hashes.json",
+    "sha256": "5acaf7bf4eee2e2384a5f2a050f268bf11bed4938220f2fae479c804163962a0"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/references.json",
+    "sha256": "d7d93884845d2583b1a3abda5bab2222551c2db3d8534b557c00dedbeed0806c"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/live-qualification.json",
+    "sha256": "70e835159cfa07a748bce561f1a6d3513d64985644812bde5254cd4ae1f9b654"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/offscreen-layout.json",
+    "sha256": "f4676cd7418dcea34e6ad2d57b6e3b0991c8c586210020aa2398294ef8d624cd"
+  },
+  "implementation": [
+    "Optional persisted stack membership with host identities independent of group IDs; legacy layouts retain standalone panel windows.",
+    "One native NSPanel per stack, native edge drops/reordering and splitters, shared titlebar movement and close/reveal; each group retains tabs and collapse state.",
+    "Retained expanded geometry, visible-window screen fitting, hidden/collapsed row sizes preserved during resize; floating tear-off uses displayed expanded row size.",
+    "Window-menu reveal of floating content preserves unrelated collapsed dock state; no document pixels, undo history or Photoshop menu bindings change."
+  ],
+  "automated_evidence": {
+    "focused": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/focused-tests-05.log",
+      "sha256": "87be9c181ab5aa57e090f1dc635833ac39ecbe98b1670dcde499da695e617f89",
+      "passed": 101,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.845
+    },
+    "full": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/full-tests.log",
+      "sha256": "71faa96f0e36b08358e647b25edd5b4b78a924adb744bba3a0bb793f44b8e483",
+      "passed": 672,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 116.718
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261009T081012Z-070-floating-stacks/release-tests.log",
+      "sha256": "76aa3ad2d3efa12068241bb1214f3d6454130a4a85081fbc1a1f4b213513c547",
+      "passed": 230,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 10.027
+    },
+    "new_regressions": 9
+  },
+  "limits": [
+    "Real OS pointer/Command/Escape dragging and native stack/window geometry remain unqualified while the Mac is locked.",
+    "Offscreen content renders exclude native titlebars and do not establish exact Photoshop appearance.",
+    "Additional dock columns, History/Clone Source integration, complete panel menus, accessibility and exact source grab offsets remain unfinished.",
+    "No Photoshop-wide byte-identical output, full feature parity, Intel runtime or macOS14 runtime certification is claimed."
+  ],
+  "full_photoshop_parity": false,
+  "dock_column_followup": {
+    "step": "dev-step-071",
+    "reference_manifest": "docs/DOCK_COLUMN_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T083422Z-071-dock-columns/release-verification.json",
+      "sha256": "79859af711a83e924a7b9102df6fcea5eeda152917874fd92f8c2d69fccb3a82"
+    },
+    "scope": "Native dock columns, icon/label presentation and independent retained widths; no new Photoshop commands.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  },
+  "utility_panel_followup": {
+    "step": "dev-step-072",
+    "reference_manifest": "docs/UTILITY_PANEL_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T090841Z-072-utility-panels/release-verification.json",
+      "sha256": "526d9e71fe69bde6bd9a1924f5d4224b75b3442c39590a9e7a998e19e5aaaf12"
+    },
+    "scope": "Retained History/Clone Source panels and history-state navigation; existing menu bindings preserved.",
+    "static_entries": 801,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "live_qualified": false
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "step": "dev-step-086",
+  "date": "2026-10-09",
+  "status": "Compact workspace fields stabilized; current-state X/Y editing repaired and tested; overall Photoshop parity incomplete",
+  "release": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/release-verification.json",
+    "sha256": "3a44b972188d7278cb423723ab33ab8c0c7defc429b155d687025d3f2f398369"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/tested-source-hashes.json",
+    "sha256": "513863da754978bcf8f4b8be11104ce4423e11a488329089476b3a4018859d37"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/research.json",
+    "sha256": "dda0518379c74b368a6e4e49c1e8aecc93a75ed6614d4ff3e1190b642b3de982"
+  },
+  "offscreen": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/offscreen-layout.json",
+    "sha256": "e8b95793665391b62ab08cf1fb2f617ab9356baaed0ced75357fe5770ab1ced9"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/live-qualification.json",
+    "sha256": "9b259cd74593b0157898c74f957407e64e60e7248c097cd8a9ce99d6bd94cdb8"
+  },
+  "implementation": [
+    "Explicit top-aligned13-point line boxes for fixed11-point numeric/percentage controls,12-point line box for10-point Layers search.",
+    "Keep field fonts, widths and padding; repair X/Y bindings to resolve current same-generation active-layer geometry per edit.",
+    "Opt-in field geometry trace and delayed same-host test capture; ordinary test timing/assertions unchanged.",
+    "Retained X/Y bindings preserve the current orthogonal coordinate, ignore nonfinite/stale/no-op input and preserve affine/group metadata through existing Move commands."
+  ],
+  "regression_evidence": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/fixed-height-analysis.json",
+    "sha256": "1592b82e0b76fe0ba761aba5ffb8d358d64387570731956481bcc27f37948bec"
+  },
+  "position_regressions": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/position-regressions.json",
+    "sha256": "137a54b9600ebf8f40f80eb66446790a9f9d7cc3ccb2487f522abd24e0265e35"
+  },
+  "channels_followup": {
+    "path": "artifacts/runs/20261009T155226Z-086-numeric-layout/channels-followup-research.json",
+    "sha256": "9eef0cac28e75471a69ad3a6f1101485bc6469990f89864a47098d9977e6a897"
+  },
+  "limits": [
+    "Bounded host/runtime repeatability is not full macOS14\u201327/Intel/Retina qualification.",
+    "Fixed fonts/heights match the normal native baseline; exact Photoshop UI font preferences and geometry remain open.",
+    "No document imaging algorithm or factory menu binding change.",
+    "Full Photoshop feature, preference, shortcut and byte parity remains incomplete.",
+    "A typed numeric entry currently records per-keystroke document history; commit/cancel/coalescing parity remains open.",
+    "The existing engine permits layer origins at one million pixels while transformed extents beyond that coordinate are rejected; recovery through the position field is tested, but engine range consistency remains open.",
+    "Final-package X17/Y-12 and rapid173 entry plus History Undo/Redo are observed live; Shift-Tab, coordinate input, document keyboard Undo and last-tab close/reopen require further qualification."
+  ],
+  "full_photoshop_parity": false,
+  "numeric_lifecycle_followup": {
+    "step": "dev-step-087",
+    "reference": "docs/NUMERIC_FIELD_EDITING_REFERENCES.json",
+    "release": {
+      "path": "artifacts/runs/20261009T164342Z-087-numeric-editing/release-verification.json",
+      "sha256": "2ef479cb6830bd6a75d6e746de531d98f65f56c8238f6c6693fda16aec1b71bd"
+    }
+  }
+}

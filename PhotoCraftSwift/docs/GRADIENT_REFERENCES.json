@@ -1,0 +1,91 @@
+{
+  "module": "Native gradients \u2014 engine, rasterizer and GRD presets",
+  "date": "2026-10-08",
+  "status": "Foundation qualified; editable fill workflow now implemented in follow-up; live/Classic tools and exact Photoshop 2026 coverage remain open",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/edit-a-gradient.html",
+      "observed": "2026-10-08",
+      "scope": "On-canvas endpoints, color stops, midpoint controls and preset saving; updated August 18, 2026"
+    },
+    {
+      "url": "https://helpx.adobe.com/uk/photoshop/desktop/adjust-color/color-effects-techniques/apply-gradient-fill.html",
+      "observed": "2026-10-08",
+      "scope": "Five gradient styles; control workflow"
+    },
+    {
+      "path": "../photocraft-main/crates/compose/src/gradient_fill.rs",
+      "scope": "Source ramp, handles and deterministic dither"
+    },
+    {
+      "path": "../photocraft-main/crates/compose/src/fill_layout.rs",
+      "scope": "Source-inferred whole-pixel endpoints for Linear and Reflected"
+    },
+    {
+      "path": "../photocraft-main/crates/io/src/gradient_bake.rs",
+      "scope": "Source-fitted Classic/sRGB, Linear/linear-light, Perceptual/Oklab and Catmull-Rom smoothness. Native evaluates retained controls directly instead of baking 97 stops."
+    },
+    {
+      "path": "../photocraft-main/crates/psd/src/grd.rs",
+      "scope": "Version 5 preset file and stop encoding"
+    },
+    {
+      "url": "https://github.com/Agamnentzar/ag-psd/blob/master/src/descriptor.ts",
+      "observed": "2026-10-08",
+      "scope": "Independent format identifier cross-check: gradientInterpolationMethodType; Perc, Lnr and Gcls; gs99 layer-style key versus gradientsInterpolationMethod gradient-content key. Reference-only format facts, not imported code."
+    }
+  ],
+  "implementation": [
+    "Five styles: Linear, Radial, Angle, Reflected, Diamond; scale, angle, offset, reverse, snapped or unsnapped endpoints, reversible handles",
+    "Independent retained color and opacity stops, segment midpoints, smoothness, Classic/Linear/Perceptual interpolation; dynamic foreground/background colors captured explicitly",
+    "RGB, HSB and grayscale stop models retained through native and GRD interchange",
+    "Region-aware cancellable RGB/8/16/32 rasterizer with document-coordinate deterministic dither",
+    "Bounded GRD v5 decoding, source-exact unchanged encoding, fresh native writer, nested phry folders, preservation of unavailable preset records with explicit reasons"
+  ],
+  "evidence": {
+    "original_rust_geometry_exact_values": 35760,
+    "original_rust_interpolation_exact_values": 15633,
+    "original_rust_hsb_exact_values": 405,
+    "original_rust_opacity_exact_values": 579,
+    "original_rust_legacy_ramp_dither_exact_values": 2046,
+    "original_rust_legacy_ramp_dither_total_values": 2048,
+    "legacy_endpoint_difference": "Two values differ by one Float32 ULP in the final green endpoint before/after dither. Native preserves the specified endpoint exactly, matching the source PSD interpolation evaluator; legacy Ramp interpolates it and rounds it. This is a recorded divergence, not a byte-exact legacy Ramp claim.",
+    "native_full_regional_cases": 90,
+    "native_full_regional_pixels": 35190,
+    "source_grd_fixture": "Tests/PhotoCraftImagingTests/Fixtures/gradient-presets-oracle.grd",
+    "source_grd_writer_byte_identical": true,
+    "original_rust_reader_checks_native_export": true,
+    "installed_default_presets": 183,
+    "installed_default_renderable": 183,
+    "installed_default_folders": 12,
+    "installed_legacy_presets": 146,
+    "installed_legacy_renderable": 88,
+    "installed_legacy_folders": 12,
+    "installed_legacy_unavailable_cmyk": 47,
+    "installed_legacy_unavailable_noise": 11,
+    "installed_unchanged_export_byte_identical": true,
+    "installed_rebuilt_export_exact_rgba_samples": 69647,
+    "installed_files_redistributed": false,
+    "native_atlas": "../artifacts/gradient-renderer-atlas.png",
+    "live_photoshop_2026_verified": false,
+    "photoshop_output_byte_identical": false
+  },
+  "next_integration_order": [
+    "Add editable Gradient Fill document content and commands, archive/clipboard support, masks and stable layer/canvas geometry; implement GdFl PSD import/export without baking the retained controls.",
+    "Connect G/Shift-G live and Classic Gradient modes, on-canvas endpoints/stops/midpoints/transparency, Properties, Gradient Editor, fill menus, preview/cancel/undo and Gradients preset folders.",
+    "Port Gradient Map and layer-style gradient overlays/strokes, then noise gradients and profile-correct CMYK/Lab behavior.",
+    "Capture Photoshop 2026 operations/files and compare exact pixels and settings at all three depths, including selection/mask boundaries, duplicates, transparency, smoothness, scale and dither. Verify shortcuts and the full macOS platform matrix."
+  ],
+  "limitations": [
+    "Editable Gradient Fill menus, native controls and GdFl are now implemented; see GRADIENT_FILL_REFERENCES.json for scope. Live and Classic tools remain pending.",
+    "The new GRD library API is not yet connected to a persistent user preset panel.",
+    "CMYK/Lab/noise gradients remain unavailable in the native gradient renderer; source records are retained rather than approximated.",
+    "Photoshop UI inspection remains blocked by the locked Mac. Source oracles are not Photoshop rasterization proof.",
+    "High-depth, interpolation, midpoint and dither equivalence to Photoshop 2026 is unverified. Source-derived exactness is tested only on this Apple Silicon host.",
+    "GRD locations and midpoints quantize to 1/4096 and 1/100 when a changed preset is encoded; native Codable controls retain Float values.",
+    "Additional method codes such as Smoo are explicitly unavailable; their Photoshop 2026 behavior must be inspected and ported rather than interpreted as Classic."
+  ],
+  "follow_up": "GRADIENT_FILL_REFERENCES.json",
+  "latest_integration_follow_up": "GRADIENT_TOOL_REFERENCES.json",
+  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone."
+}

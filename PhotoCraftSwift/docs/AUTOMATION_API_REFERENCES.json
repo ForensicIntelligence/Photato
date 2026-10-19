@@ -1,0 +1,94 @@
+{
+  "step": "dev-step-091",
+  "date": "2026-10-09",
+  "status": "Qualified bounded native API and browser demonstration; final endpoint accessibility lifecycle verified",
+  "run": "artifacts/runs/20261009T184214Z-091-automation-api",
+  "sources": [
+    "Sources/PhotoCraft/AutomationHTTP.swift",
+    "Sources/PhotoCraft/AutomationCommands.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/AutomationBrowser.swift",
+    "Sources/PhotoCraft/AutomationView.swift"
+  ],
+  "shared_transaction": "Sources/PhotoCraft/EditorStore.swift",
+  "tests": {
+    "full-final03.log": {
+      "path": "artifacts/runs/20261009T184214Z-091-automation-api/full-final03.log",
+      "sha256": "1fdd862f89edb418a1e798acf4b8ee2b58f107a335fc918b29d4ada54d47cfd8",
+      "passed": 934,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 137.243
+    },
+    "release-focused03.log": {
+      "path": "artifacts/runs/20261009T184214Z-091-automation-api/release-focused03.log",
+      "sha256": "7f9401df4010f2bc5026650d20a745a6d122e65c5a50584289815163384b8041",
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.609
+    }
+  },
+  "menu_addition": "Help > Photato Automation API\u2026",
+  "native_menu_entries": 802,
+  "bound_leaf_entries": 152,
+  "unavailable_leaf_entries": 573,
+  "factory_primary_shortcuts": 102,
+  "factory_alternate_shortcuts": 8,
+  "api_commands": 10,
+  "browser_command_controls": 8,
+  "full_photoshop_parity": false,
+  "references": [
+    "https://developer.apple.com/documentation/network/nwlistener",
+    "https://developer.apple.com/documentation/network/nwparameters/requiredlocalendpoint"
+  ],
+  "reference_note": "Apple web shells provided limited text; actual APIs verified from the installed Xcode27 Network.framework Swift interface and compiler. This is a new Photato capability, not a Photoshop scripting-equivalence claim.",
+  "limits": [
+    "Loopback only; ephemeral IPv4 endpoint; off on each launch",
+    "Explicit session shares and per-start bearer token; tokens never placed in URLs or persistent browser storage",
+    "Ten implemented commands, separate full reference menu catalogue and JSON Schemas",
+    "No LAN/internet hosting, remote users, arbitrary filesystem access, import/export routes, brush streaming, SDK or Photoshop UXP/ExtendScript compatibility",
+    "4,194,304 canvas pixels,64 layers,128MiB estimated data; history restores and new-layer allocation checked",
+    "App Store incoming-network entitlement and sandbox testing remain release work",
+    "Swift desktop/engine/server; separately served HTML/CSS/JavaScript demonstration in an external browser"
+  ],
+  "broader_optimized_before_accessibility_repair": {
+    "log": "artifacts/runs/20261009T184214Z-091-automation-api/release-final02.log",
+    "passed": 378,
+    "failed": 0,
+    "skipped": 0
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-api-ui-4c088y6q/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "e888f6dcf0dd89d0e35f571126aeef155b160604b3cf8211afc8645ae54ba778",
+    "zip_sha256": "07a3b730545db3dfac89dfa28a4dc42ad439ecd275e92d624e925923b453723e",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261009T184214Z-091-automation-api/tested-source-hashes.json",
+    "sha256": "91e40b600e107af072a21857120b5f212728ada70821a78662e076de83f43398"
+  },
+  "live_functional_evidence": "artifacts/runs/20261009T184214Z-091-automation-api/live-functional-check.json",
+  "final_live_accessibility_evidence": "artifacts/runs/20261009T184214Z-091-automation-api/live-final-accessibility-check.json",
+  "xcode_build_log": "artifacts/runs/20261009T184214Z-091-automation-api/xcode-accessibility04.log",
+  "xcode_source_membership": "artifacts/runs/20261009T184214Z-091-automation-api/xcode-source-membership.json",
+  "swift_source_files": 194,
+  "swift_test_files": 165,
+  "api_tests": 14,
+  "server_left_running": false,
+  "later_compatibility_requirement": {
+    "step": "dev-step-095",
+    "path": "docs/ADOBE_API_COMPATIBILITY.json",
+    "implementation_status": "Required target, not yet implemented; original step091 qualification remains Photato-specific"
+  },
+  "later_channel_view_increment": {
+    "path": "docs/CHANNEL_VIEW_REFERENCES.json",
+    "sha256": "3bea612bafceb95d86bf953877a74187e5f3d3912e33859e1093ba0675ae5fe7"
+  }
+}

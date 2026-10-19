@@ -1,0 +1,63 @@
+{
+  "step": "dev-step-064",
+  "date": "2026-10-08",
+  "status": "Native viewport and percentage-entry implementation; automated regression/package/layout verified; live pending",
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/tested-source-hashes.json",
+    "sha256": "8984965b91c162dd5252f15c3525c72fd4dba644e379d7996d761c60a4e87a33"
+  },
+  "release": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/release-verification.json",
+    "sha256": "701b5202df47399c73f882026adf61a89d68af0c3c1ab19bb894e48b892cafa1"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/live-qualification.json",
+    "sha256": "c2f00da88d930e55a1159271b135a55902e951c6122ee41f29fa925b1cb9dae3"
+  },
+  "research": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/references.json",
+    "sha256": "b99ee54ea608419263fd9e0c75ac475359bff9d6b93f3723470526d3626a0800"
+  },
+  "rust_reference": {
+    "path": "Tests/PhotoCraftAppTests/Fixtures/viewport-zoom-rust.json",
+    "sha256": "37f8dbc375464e97a2f814cd6b6b44fc9224fff41f6637253d4db4073df34340"
+  },
+  "rust_harness": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/zoom-oracle.rs",
+    "sha256": "6583347104655fdf492218d6142302b7039f3ef8026bc7a8d2feaadb1a1bc6e6"
+  },
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/offscreen-layout.json",
+    "sha256": "a0d195cffa0e0c41facb11025ff8ffc84a9418d34b164c8b8e0fc478f0a32865"
+  },
+  "implementation": [
+    "Shared viewport geometry for menu, click, wheel, pinch, percentage input and scrollbars",
+    "Ported the original 22-step Rust menu ladder; 220 threshold cases match executed Float bits",
+    "Initial fit resolves once at no more than 100%; explicit Fit uses current bounds; zoom preserves pointer or center",
+    "100% maps image pixels to backing pixels rather than AppKit points; backing-scale transitions retain document center",
+    "Native editable percentage field rejects invalid values, cancels on Escape and prevents stale input from editing another document",
+    "Navigation input activates its document; detached old views cannot overwrite current viewport geometry",
+    "Nearest image sampling at 100% and above; no document raster, undo or archive changes"
+  ],
+  "automated_evidence": [
+    "57 focused, 624 full (105.695 seconds), 182 optimized (5.825 seconds); zero failures/skips",
+    "Eleven new viewport tests plus the existing Wand/cancel fixture at its explicit original magnification",
+    "220 original Rust Float-bit comparisons; UI percentage/geometry assertions use declared numeric tolerances",
+    "Offscreen normal/minimum workspace renders inspected separately from live interactions"
+  ],
+  "limits": [
+    "Installed Photoshop preset/minimum/maximum values and pixel display still need live qualification; the current range is 1\u20133200% from the source ladder and bounded documentation guidance.",
+    "Fit padding comes from the Rust source; exact Photoshop initial/explicit Fit framing remains unqualified.",
+    "Actual native percentage text editing, physical monitors, wheel/pinch devices and responder edge cases require live checks.",
+    "Scrubby/marquee zoom, temporary H zoom, zoom-specific preferences, Navigator, Pixel Grid and synchronized all-window view controls remain open.",
+    "Viewport focus and old queued-view protection do not complete shared-frame or tab-drag live qualification.",
+    "The minimum-size offscreen layout leaves some toolbar/color and panel content below the visible area; verify scrolling and improve the default compact layout.",
+    "Floating dimensions, persistent workspaces, panel docking and remaining Photoshop functionality/exactness gates remain open."
+  ],
+  "full_photoshop_parity": false,
+  "compact_layout_followup": {
+    "step": "dev-step-065",
+    "reference_manifest": "docs/COMPACT_WORKSPACE_REFERENCES.json",
+    "scope": "The footer reachability defect in the step064 minimum render is repaired; actual scrolling and Photoshop compact layout remain unqualified."
+  }
+}

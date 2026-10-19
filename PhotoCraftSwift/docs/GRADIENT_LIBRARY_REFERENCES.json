@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-08",
+  "status": "partial, native persistent gradient library implemented; Photoshop qualification incomplete",
+  "sources": [
+    {
+      "path": "../photocraft-main/crates/engine/src/presets/gradients.rs",
+      "scope": "Selection applies to active Gradient Fill regardless of tool; activation creates a fill; preset/group operations"
+    },
+    {
+      "path": "../photocraft-main/crates/ui-egui/src/preset_panels.rs",
+      "scope": "Gradient panel selection, activation and canvas drop dispatch"
+    },
+    {
+      "path": "../photocraft-main/crates/ui-egui/src/preset_files_ui.rs",
+      "scope": "Preset file workflows"
+    },
+    {
+      "path": "../photocraft-main/crates/psd/src/grd.rs",
+      "scope": "Existing source-derived GRD codec and folder transport"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/migrate-presets-actions-and-settings.html",
+      "accessed": "2026-10-08",
+      "scope": "Panel-based preset transfer across installations, including gradients"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/manage-presets-with-the-preset-manager.html",
+      "accessed": "2026-10-08",
+      "scope": "Preset organization, file loading, subset export, rename and reset/append workflows; guide is not live-version qualification"
+    }
+  ],
+  "implemented": [
+    "Window > Gradients and shared tool/fill popovers; searchable nested folder list, collapse, multi-selection, rename, duplicate, delete, drag and Move To reordering, append three original defaults",
+    "Save Preset from Properties, current tool and in-progress fill editor; captures definition before asynchronous work and does not edit document/history",
+    "Atomic background native persistence at Application Support/Photato/Gradients.pclibrary; exact Float controls, stable identities, hierarchy, current preset and selection survive restart",
+    "Bounded GRD import and selected/all export; imported folders and unsupported records retain descriptors; unchanged entire imported library exports byte-identically through native save/reload",
+    "Unavailable presets are labeled and never silently substituted or applied; renaming retains unavailable semantics and unknown fields",
+    "Click updates an existing Gradient Fill with any active tool; double-click, context command and canvas drop create an editable fill; one document undo step; existing documents retain their own definition after preset deletion",
+    "Worker operations use captured values, busy guards and atomic commit; failed/cancelled writes keep last committed state; corrupt persisted data is preserved",
+    "Native archive preserves empty folders, validates flattened hierarchy before recursive construction, and bounds bytes/count/depth"
+  ],
+  "evidence": {
+    "new_library_tests": 7,
+    "new_workflow_tests": 5,
+    "exact_native_restart_ramp_samples": 2049,
+    "test_logs": [
+      "../artifacts/gradient-library-full-tests.log",
+      "../artifacts/gradient-library-release-tests.log"
+    ],
+    "release_manifest": "../artifacts/gradient-library-release-verification.json",
+    "snapshots": [
+      "../artifacts/gradient-library-workspace.png",
+      "../artifacts/gradient-fill-editor.png"
+    ],
+    "live_photoshop_verified": false,
+    "qualification": "Synthetic descriptor/file fixtures, native persistence and EditorStore workflows; offscreen AppKit/SwiftUI rendering. Actual pointer drag and live Photoshop import/render comparison remain unverified on the locked Mac."
+  },
+  "remaining": [
+    "Noise/CMYK/Lab rendering and full independent preset editor; unsupported definitions remain preserved but unavailable",
+    "Full library keyboard/focus behavior, view modes, recent presets, persistent collapse state, replace/reset choices and naming/modifier parity",
+    "Large-library UI/serialization performance and concurrent-process editing; selection currently writes the complete bounded archive",
+    "Live Photoshop 2026 import/export, geometry/pixels, panel interactions and native canvas pointer drag qualification",
+    "New native fill applies current selection as mask; upstream preset activation uses different selection behavior, so Photoshop semantics remain to be qualified",
+    "Duplicated imported folders retain preset descriptors but do not clone whole-file root metadata; whole-file byte preservation is qualified for original imported root export",
+    "On-canvas opacity, Gradient Map, gradient effects/strokes and complete preferences/shortcuts remain pending",
+    "Intel and macOS14/26 runtime matrix; universal compilation is not runtime qualification"
+  ],
+  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone."
+}

@@ -1,0 +1,8 @@
+{
+  "source": "photocraft-main/crates/algo/src/poisson.rs",
+  "source_sha256": "8ce2c3df38eb272ddef90365015b033be24931a274260f50c80e0b8a9b89d12a",
+  "fixture_sha256": "c2e8258c5527b5d5f54ce4f3635d21bbcf7f6cf8a4bd3e7ed1c52e9d01e3ba45",
+  "cases": 9,
+  "channel_values": 68836,
+  "scope": "Unmodified Rust numerical solver and seamless_clone executed by rustc -O. Only per-channel scheduling/interleaving is sequential in the harness. Tests include inputs and expected outputs. This is not a Photoshop reference."
+}

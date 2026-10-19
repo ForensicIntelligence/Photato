@@ -1,0 +1,14 @@
+{
+  "retrieved": "2026-10-08",
+  "guides": [
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/retouch-images-with-the-clone-stamp-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/set-sample-sources-for-cloning-and-healing.html",
+    "https://helpx.adobe.com/ca/photoshop/desktop/repair-retouch/heal-clone/clone-source-panel.html"
+  ],
+  "feature_catalogue": "https://www.adobe.com/products/photoshop/features/all.html",
+  "live_comparison": false,
+  "reason": "Mac locked; cannot inspect Photoshop UI or obtain current stroke renders",
+  "source_snapshot_modified": false,
+  "last_live_check": "2026-10-08: CUA reports Mac locked; no Photoshop operation was sent",
+  "cropped_target_evidence": "Native full-size target equivalence and persistence tests; direct Photoshop edge/extent output is not yet qualified"
+}

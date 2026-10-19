@@ -1,0 +1,120 @@
+{
+  "step": "dev-step-113",
+  "recorded_at_utc": "2026-10-19T20:46:26.606376+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions; then minor functions; then final details. Required dependencies stay with the major workflow.",
+  "major_workflow": "D01: document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/tested-source-hashes04.json",
+    "sha256": "9bde3d7173269e86cd437c2576e1be2165434a55cd9dc61304229ca343376244"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/release-verification.json",
+    "sha256": "c25453a682357c62ac80cd1a73c609ae356d29bec7e97bf291b8119ee9845c0d"
+  },
+  "tests": {
+    "full03.log": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/full03.log",
+      "sha256": "280de9e1c5d5f5b3c983bac847151d9f5e637bcbf489ed2a2ce819d7a52350ca",
+      "passed": 1032,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 148.987
+    },
+    "release-focused03.log": {
+      "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/release-focused03.log",
+      "sha256": "aedadfdcce46274ba42b0b204616355f4e0ecf5b3b6b8ac2bb5bf17d626c00ca",
+      "passed": 533,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 17.181
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-save-package-v4mhekka/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "9cb49c5b17ad17fd348837063734ba50db28b7f72f6835991631fde2c1e863ef",
+    "zip_sha256": "a4c8eebafae670efa01a6857b1a930bb8260bd60145134c9efd53bf6a899775e",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "native_extension": "photato",
+    "legacy_extension": "pcswift",
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    },
+    "editable_types": [
+      "local.photocraft.swift.document",
+      "com.adobe.photoshop-image",
+      "public.png",
+      "public.jpeg",
+      "public.tiff"
+    ]
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/live-ui-verification.json",
+    "sha256": "e5b96d5985ea201db7e0dc34ead801ca0fc292e0decbd3712cccceb9b43e5dd6"
+  },
+  "photoshop_save_evidence": {
+    "path": "artifacts/runs/20261019T200618Z-113-source-save-workflow/photoshop-verification.json",
+    "sha256": "a85dac8f92955257729ce00e6c75db0bd52758ffbc2fa83400d87939d0052d3e"
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Content-aware source association including common aliases, Save and Save As with explicit eligible-format popup",
+    "Shared coordinated asynchronous explicit saves with synchronous native recovery callbacks",
+    "Separate optional API saving permission/folder plus17 total typed commands and equivalent native history",
+    "Repaired canonical open identity, missing native Save As chooser and old test expectations; preserved failed attempts"
+  ],
+  "remaining_major_dependencies": [
+    "Full format options and PSD/PSB/RAW/PDF/pcraft interoperability",
+    "Original profiles and exact RGB32/pixel/metadata preservation",
+    "Crash-relaunch recovery, external/read-only/sandbox coordination and recent-bookmark durability",
+    "Both API contracts and complete professional/platform qualification"
+  ],
+  "resume_first": "Verify391 source/test hashes and package/project against this checkpoint. Read AGENTS.md, WORK_PRIORITIES_108.json, FUNCTION_PHASES_109.json, SOURCE_SAVE_REFERENCES.json and DEVLOG step113. Continue major D01 profile/float and format preservation; no optional minor/detail work. Do not rerun completed qualification without changed source or a new concern.",
+  "next_source_review": [
+    "PSDCodec.convertProfile and RGB32 transfer at encode/decode: known96 composite-byte mismatch remains",
+    "RasterIO/RasterMetadata working space versus sourceICC: exact source-profile retention remains unfinished",
+    "DocumentSavePolicy: supported structural eligibility and full format options",
+    "NativeDocument/DocumentSaving: sourceSaveNeedsReview is an explicit temporary limit, not complete preservation",
+    "D02 recovery relaunch/external coordination and both API contracts"
+  ],
+  "limits": [
+    "Major D01 is open: full format options, profile/metadata/float exactness and unsupported format/PSD structure coverage remain incomplete",
+    "JPEG saving is intentionally lossy95%; PNG/TIFF save-back is restricted to one eligible full-canvas raster layer",
+    "Known original RGB32 sample round-trip still differs96 composite bytes from step112; no new global byte-equality claim",
+    "Opaque resource retention does not implement or semantically update unsupported Photoshop workflows",
+    "Crash-relaunch recovery, complete external coordination/read-only/sandbox/bookmark workflows remain unqualified",
+    "Intel and macOS14 runtime, full Photoshop preferences/context/output equivalence remain open"
+  ],
+  "runtime_cleanup": "Isolated Release app quit; API stayed off; disposable probes only; shared workspace bytes unchanged; Photoshop original Untitled-1 retained.",
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "history_audit": {
+    "first_pass": {
+      "check": "passed",
+      "milestones": 113,
+      "evidence_files": 25119,
+      "logs": 15094,
+      "missing_explicit_references": 0
+    },
+    "refresh_log": "artifacts/development-history-audit/20261019-step113-source-save/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261019-step113-source-save/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step113-source-save/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step113-source-save/check02.log",
+    "note": "Final refresh/check runs after this checkpoint and DEVLOG update; inspect terminal logs for final outcome."
+  }
+}

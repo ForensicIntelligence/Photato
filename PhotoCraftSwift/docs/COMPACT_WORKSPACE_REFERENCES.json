@@ -1,0 +1,47 @@
+{
+  "step": "dev-step-065",
+  "date": "2026-10-08",
+  "status": "Compact native layout repair; automated and offscreen checks pass; live qualification pending",
+  "release": {
+    "path": "artifacts/runs/20261009T054332Z-065-compact-workspace/release-verification.json",
+    "sha256": "bc71e7a02dbbac28e0f30256e92136299f65ada7e0688da0570cc8d936308285"
+  },
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T054332Z-065-compact-workspace/tested-source-hashes.json",
+    "sha256": "0f853a011cd2c1e06fa18e0544a28629d395a6fc15daab2aa4b5b1a8e634a584"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T054332Z-065-compact-workspace/live-qualification.json",
+    "sha256": "082ed85b63a704cd227694e28f1840859e30a03a3d07a7194d6b9e9f6b14e928"
+  },
+  "observed_defect": "Step064 own 1000\u00d7650 snapshot places tool-rail foreground/background controls below the visible area. Existing inspector uses hard-coded drag limits independent of hidden groups.",
+  "baseline_render": {
+    "path": "artifacts/runs/20261009T051518Z-064-native-viewport/workspace-small.png",
+    "sha256": "ce71822c7d9e0035db3ed0ca2c30185cea1031b9e537a28b9a63d6e1ba312355"
+  },
+  "implementation": [
+    "Separate tool-list scrolling from a visible color/control footer in one- and two-column rails",
+    "Reveal the selected tool group and expose the column toggle state to accessibility",
+    "Constrain long horizontal tool options so fixed right-side controls remain visible",
+    "Allocate panel heights from visible groups; reserve a bounded Layers area and retain requested Properties height across window resize",
+    "Begin divider drags at their displayed position and calculate limits using the actual panel allocation"
+  ],
+  "automated_evidence": [
+    "Three new WorkspaceTests; 192 supported inspector configurations, resize/hidden-group limits and native offscreen color-well containment while the tool list scrolls",
+    "56 focused / 627 full / 185 optimized tests pass with zero failures/skips",
+    "Menu inventory remains 801 static entries, 102 primary and eight alternate shortcuts; 144 bound leaves and 580 unavailable"
+  ],
+  "offscreen_layout": {
+    "path": "artifacts/runs/20261009T054332Z-065-compact-workspace/offscreen-layout.json",
+    "sha256": "15e6b02419702bec8ce910d4184ab33c81dc63d461c7a92c4a9d4af6e44d293a"
+  },
+  "limits": [
+    "Own offscreen rendering and direct test-owned NSScrollView scrolling are not live pointer or Photoshop comparison evidence.",
+    "Compact single-column tools still need scrolling; switching to two columns fits every tool group in the inspected layout.",
+    "Properties and layer rows remain scrollable; not every panel control is simultaneously visible at the minimum size.",
+    "Exact Photoshop dimensions, live selected-tool reveal, divider movement, panel docking, saved workspaces, accessibility completeness and screen modes remain open.",
+    "The existing bottom Fit control is not an implemented Photoshop Screen Mode control; Quick Mask remains unavailable.",
+    "This milestone changes presentation only; no new image-output equivalence is claimed."
+  ],
+  "full_photoshop_parity": false
+}

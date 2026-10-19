@@ -1,0 +1,38 @@
+{
+  "step": "dev-step-101",
+  "scope": "Qualified native RGB visibility and Photato API increment; Photoshop parity incomplete",
+  "record": {
+    "path": "artifacts/runs/20261013T163042Z-101-channel-visibility/record.json",
+    "sha256": "25624c7944130b1e6fde84fcd36af6defe5619265c669afe6d53cda4757bb49c"
+  },
+  "tested_sources": {
+    "path": "artifacts/runs/20261013T163042Z-101-channel-visibility/tested-source-hashes.json",
+    "sha256": "b6d28d6ba741ecb5398068354fa5fc64f993609a9a71fa319bd28d78596b34d3"
+  },
+  "release_verification": {
+    "path": "artifacts/runs/20261013T163042Z-101-channel-visibility/release-verification.json",
+    "sha256": "2f9305ec08cdd184859a8331d596d9b14e8f0c777513ee031ef536158bacf619"
+  },
+  "live_qualification": {
+    "path": "artifacts/runs/20261013T163042Z-101-channel-visibility/live-qualification.json",
+    "sha256": "53c0bbfd756dcb822794d0944f4569671ce4d22da19afc2a2e17c22a975f8e85"
+  },
+  "independent_reference": {
+    "path": "artifacts/runs/20261013T163042Z-101-channel-visibility/photoshop-reference.json",
+    "sha256": "dabd532889b71ecf41d1d80bd7436d2ed3aa08652ad930624d8124503ce853d5"
+  },
+  "remaining_gaps": [
+    "Actual component editing and multi-component edit targets across tools/commands",
+    "Temporary mask rows, alpha/spot channels, split/merge and eye dragging",
+    "Factory channel keyboard shortcuts and complete preferences",
+    "Show Channels In Color, profile/transparency behavior and Photoshop byte-identical output",
+    "Eight Adobe-compatible endpoints, jobs/assets, actionJSON/ATN/UXP execution and conformance",
+    "Intel and macOS14 runtime checks, distribution signing and App Store release",
+    "Previously tracked broad Photoshop feature gaps"
+  ],
+  "later_component_foundation": {
+    "step": "dev-step-102",
+    "reference": "docs/COMPONENT_FILL_REFERENCES.json",
+    "result": "RGB8 Normal component Fill core matches122880 independent Photoshop output bytes;953 full/34 optimized tests and universal package verify. View UI/API behavior is unchanged. Actual edit-target UI and dual-API integration remain unfinished."
+  }
+}

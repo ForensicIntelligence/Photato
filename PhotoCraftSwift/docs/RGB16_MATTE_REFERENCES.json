@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-08",
+  "module": "RGB16 PSD merged transparency",
+  "status": "Bounded exact RGB16 merged-matte qualification; 532 full tests, 79 optimized tests, clean universal package and native UI/Photoshop recalculated export pass",
+  "run_directory": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation",
+  "independent_analysis": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/analysis-03.json",
+  "implemented": [
+    "Merged RGB16 color and alpha map to Photoshop’s 0…32768 working grid.",
+    "White matting subtracts the rounded color distance times alpha from white; exact half ties follow Photoshop.",
+    "Full-range expansion uses integer math before Float storage to avoid newly introduced midpoint rounding errors.",
+    "Straight editable layer samples are retained; existing RGB8 and linear HDR matte paths stay intact."
+  ],
+  "reference": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-rgb16-matte-matrix.psd",
+    "sha256": "e64f296355c948e58e33e950b5d59d20ce6c3655f2637a13c6ddb8c201dd8344",
+    "width": 256,
+    "height": 256,
+    "depth": 16,
+    "pixels": 65536,
+    "stored_rgba_samples": 262144,
+    "source": "Original procedural RGB/alpha matrix; every full-range alpha code, RGB permutations and boundary samples. Recalculated by toggling layer visibility off/on and saved as a distinct document through Photoshop 2026 UI.",
+    "input": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/original-rgb16-matte-matrix.psd",
+    "input_sha256": "bceb762c42bb8d417b9a7f63dea893639eaabf3785519dd92cdacb9912fd0ea6",
+    "generator": "scripts/generate-rgb16-matte-probe.py",
+    "independent_decoder": "scripts/inspect-rgb16-matte-reference.py",
+    "license": "MIT OR Apache-2.0; original procedural test data; excluded from app bundle",
+    "input_preview_is_stale": true
+  },
+  "new_tests": 2,
+  "existing_stripes_rgb16_exact_pixels": 2048,
+  "rejected_candidates": {
+    "full_range_round_differing_pixels": 57617,
+    "working_grid_round_differing_pixels": 8385,
+    "working_grid_floor_differing_pixels": 55402,
+    "working_inputs_continuous_matte_differing_pixels": 57393
+  },
+  "photoshop_cleanup": "Saved probe closed; original user Untitled-1 remains open and unchanged.",
+  "remaining": [
+    "This qualifies PSD merged white matting, not every RGB16 operation, blend or mask computation.",
+    "Smooth interpolation, continuous Gradient Map one-level RGB8 differences and seeded dither remain open.",
+    "Full preferences, keyboard/pointer parity and professional workflows remain open.",
+    "Large-canvas latency, real AI image editing and supported-macOS/Intel runtime qualification remain open."
+  ],
+  "full_photoshop_parity": false,
+  "tests": {
+    "full": {
+      "path": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/full-tests.log",
+      "count": 532,
+      "failures": 0,
+      "seconds": 91.525
+    },
+    "optimized": {
+      "path": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/release-tests.log",
+      "count": 79,
+      "failures": 0,
+      "seconds": 1.609
+    }
+  },
+  "release_verification": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/release-verification.json",
+  "native_live_export_verification": "artifacts/runs/20261008T190318Z-045-rgb16-matte-investigation/live-export-verification.json",
+  "offscreen_layouts": {
+    "count": 10,
+    "visually_inspected": "gradient-stripes-workspace.png",
+    "scope": "Generated from final package; no UI implementation change in this checkpoint."
+  }
+}

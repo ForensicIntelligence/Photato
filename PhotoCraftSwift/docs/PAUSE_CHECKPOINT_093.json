@@ -1,0 +1,72 @@
+{
+  "step": "dev-step-093",
+  "recorded_at_utc": "2026-10-09T19:47:27.068934+00:00",
+  "reason": "User requested a pause once current work is finished and working; step092 is already complete and verified.",
+  "implementation_status": "Paused at completed step092; no new feature work started.",
+  "version": "0.2.0",
+  "build": "2",
+  "completed": [
+    "Step091 optional native Swift loopback API, ten typed commands, schemas, explicit document sharing and browser demonstration",
+    "Step092 sheet lifecycle repair with native regressions and bounded live Cancel/OK checks"
+  ],
+  "validation": {
+    "full01.log": {
+      "path": "artifacts/runs/20261009T192809Z-092-sheet-panel-state/full01.log",
+      "sha256": "137488dbacc7acd87d9f0c3b82e6a39a79a4db3bde42351aac632f8bea2579a4",
+      "passed": 937,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 145.641
+    },
+    "release-focused01.log": {
+      "path": "artifacts/runs/20261009T192809Z-092-sheet-panel-state/release-focused01.log",
+      "sha256": "7bab12e8f0f46374158089006fb8560594e87598484771a1aecbeec69c735783",
+      "passed": 136,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.444
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-sheet-ui-16iu1xkr/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "binary_sha256": "e02630693e43a0dc578668e990a161ad3c14014b5e8a5b5aaf1b7e9d8fe389fb",
+    "zip_sha256": "4265d3cfec4a6150c8c030f961517099635710d00be69768c661361c031db49a",
+    "clean_zip_signature_verified": true,
+    "bundled_licenses_icon_and_links_verified": true
+  },
+  "source_hash_manifest": "artifacts/runs/20261009T192809Z-092-sheet-panel-state/tested-source-hashes.json",
+  "all_360_source_hashes_still_match": true,
+  "source_package_changed_by_pause": false,
+  "xcode_project": "Photato.xcodeproj",
+  "live_evidence": "artifacts/runs/20261009T192809Z-092-sheet-panel-state/live-after.json",
+  "last_verified_cleanup": [
+    "Disposable Photato app exited",
+    "Optional API left off",
+    "Workspace preferences restored byte-for-byte",
+    "Older PhotoCraft process left untouched",
+    "No Photoshop actions during steps091\u2013093"
+  ],
+  "resume_order": [
+    "Repair dynamic panel menu accessibility names that become generic Drag after sheet dismissal",
+    "Qualify separate floating utility-window visibility, docking, drag and focus through live input",
+    "Implement independent channel visibility and edit targets with real painting/selection transactions before enabling channel-target shortcuts",
+    "Continue UI, menus, UX, major functions, subfunctions, minor functions and remaining parity work",
+    "Expand the typed API alongside tested native functions; complete web workspace and remote hosting remain separate backlog items"
+  ],
+  "constraints": [
+    "100% native Swift desktop and editing engine; macOS14+ universal target",
+    "Keep Photoshop factory menus and shortcuts; disabled commands remain honest",
+    "Optional Apple Silicon AI and Private Cloud Compute remain as previously implemented and qualified",
+    "App Store tips through IAP; preserve source licensing and attribution",
+    "Document every development step and preserve failed/passing evidence",
+    "Original Photoshop document restoration decision from step087 remains pending; do not modify it without authorization"
+  ],
+  "full_photoshop_parity": false,
+  "backlog": "docs/PARITY_BACKLOG_2026-10-09.html",
+  "historical_step059_checkpoint_unchanged": "22495b441eea2c2bff5430761c0b684a252e4ec132e553847acd5e43429842cf"
+}

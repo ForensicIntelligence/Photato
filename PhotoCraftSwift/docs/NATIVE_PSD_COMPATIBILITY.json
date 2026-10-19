@@ -1,0 +1,7 @@
+{
+  "status": "WITHDRAWN by the user before implementation",
+  "current_policy": "docs/DOCUMENT_FORMAT_POLICY.json",
+  "decision": ".photato is its own native format. Full .psd support is required independently.",
+  "prior_proposal": "artifacts/runs/20261019T194057Z-112-native-psd-requirement/withdrawn-PSD-native-proposal.json",
+  "serializer_changes_made": false
+}

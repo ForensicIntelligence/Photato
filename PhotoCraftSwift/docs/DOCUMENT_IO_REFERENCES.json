@@ -1,0 +1,90 @@
+{
+  "step": "dev-step-109",
+  "status": "Step109 opening/identity/transfer increment verified:998 full and290 optimized tests; bounded Debug live workflow; clean universal package. Major D01 and full Photoshop parity remain open.",
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "baseline": "docs/PAUSE_CHECKPOINT_107.json",
+  "source_changes": [
+    "DocumentIO shared native/raster decode and native/PSD/PNG/JPEG/TIFF export",
+    "Explicit native Open panel formats and imported-source identity/deduplication",
+    "Optional authenticated document upload/download through native codecs; same shared history",
+    "Public bounded native archive raster decoder for transfer memory limits"
+  ],
+  "adobe_impact": "No dedicated desktop Open/Save endpoint in the pinned Adobe v2 contract. Existing actions resource input/output still uses RasterIO/PSDCodec; no new Adobe route or wider action input claim. Both API suites are included in regression.",
+  "limits": [
+    "D01 full lifecycle not complete: source-format Save/SaveAs/SaveCopy/Revert and full read-only/recent/bookmark semantics remain open",
+    "Uploaded/opened raster documents still save through the native archive workflow; originals remain unchanged",
+    "Native API is a bounded preview (64MiB input;4MP/64layers/128MiB document;one transfer;8shares)",
+    "All format-specific profile/metadata/output issues remain tracked; shared native decoder equivalence is not independent Photoshop byte parity",
+    "Final universal package not launched under production identity; live UI uses separately identified Debug copy with unchanged native UI code.",
+    "Clean ZIP signature verifies; Desktop build copy has recurring Finder/File Provider metadata and fails strict signature verification. Use the clean extracted app recorded in release evidence.",
+    "macOS14 and Intel runtime qualification remains open."
+  ],
+  "references": [
+    {
+      "url": "https://www.adobe.com/products/photoshop/features/all.html",
+      "read": "2026-10-19",
+      "role": "User-designated feature discovery catalogue; scope retained"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/import-files/open-and-import-files-in-photoshop.html",
+      "read": "2026-10-19",
+      "role": "Official open/import workflow reference; legacy URL redirected"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/appkit/nsdocumentcontroller/beginopenpanel(_:fortypes:completionhandler:)",
+      "read": "2026-10-19",
+      "role": "Open-panel customization API; local SDK headers provide readableTypes behavior"
+    }
+  ],
+  "evidence_root": "artifacts/runs/20261019T183010Z-109-major-document-workflow",
+  "source_freeze": "artifacts/runs/20261019T183010Z-109-major-document-workflow/tested-source-hashes02.json",
+  "live_ui": "artifacts/runs/20261019T183010Z-109-major-document-workflow/live-ui-verification.json",
+  "opening_correction": "Go-to-folder highlight alone did not enable Open; actual keyboard selection did. The earlier disabled button does not establish an underlying format/decoder bug. Explicit declarations and imported-source identity are implemented; PNG/native live opening now qualified.",
+  "tests": {
+    "focused01": {
+      "result": "compile failed",
+      "log": "artifacts/runs/20261019T183010Z-109-major-document-workflow/focused01.log",
+      "reason": "NSDocument.fileURL setter nonisolated; origin storage actor violation repaired"
+    },
+    "focused02": {
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.417,
+      "log": "artifacts/runs/20261019T183010Z-109-major-document-workflow/focused02.log"
+    },
+    "focused03": {
+      "passed": 56,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.715,
+      "log": "artifacts/runs/20261019T183010Z-109-major-document-workflow/focused03.log"
+    },
+    "full01": {
+      "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/full01.log",
+      "sha256": "bcdf501144940e92c223d5493ce53e219c62f231aaeb5765c04c52b11d30170d",
+      "passed": 998,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 146.995
+    },
+    "release_focused01": {
+      "path": "artifacts/runs/20261019T183010Z-109-major-document-workflow/release-focused01.log",
+      "sha256": "5a184907828c7881aee90aa71f33357d5394f8dcc3ea4d66a1e9e79dcfbdae13",
+      "passed": 290,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.537
+    }
+  },
+  "release_evidence": "artifacts/runs/20261019T183010Z-109-major-document-workflow/release-verification.json",
+  "live_artifacts": [
+    "artifacts/runs/20261019T183010Z-109-major-document-workflow/open-dialog-before.png",
+    "artifacts/runs/20261019T183010Z-109-major-document-workflow/open-dialog-selected.txt",
+    "artifacts/runs/20261019T183010Z-109-major-document-workflow/native-reopened.png",
+    "artifacts/runs/20261019T183010Z-109-major-document-workflow/api-window.png",
+    "artifacts/runs/20261019T183010Z-109-major-document-workflow/native-ui-save.pcswift"
+  ],
+  "original_fixture_provenance": "Existing original Photoshop PSD fixtures and their repository provenance are unchanged. New96\u00d764 opaque RGBA PNG is procedurally generated: R=x*255/95, G=y*255/63, B=85, A=255 with integer division, unfiltered scanlines and zlib PNG compression.",
+  "later_step110": "Save a Copy/undoable Revert/native and API integration advances in docs/DOCUMENT_PERSISTENCE_REFERENCES.json. The step109 evidence above remains historical."
+}

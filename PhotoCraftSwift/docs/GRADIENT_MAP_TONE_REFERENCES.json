@@ -1,0 +1,219 @@
+{
+  "date": "2026-10-08",
+  "development_step": "dev-step-050",
+  "status": "Native RGB16 tone coordinates verified against independent vectors and bounded Stripes outputs",
+  "implementation_changed": true,
+  "run_directory": "artifacts/runs/20261008T205338Z-050-rgb16-gradient-map-tone",
+  "coordinate": {
+    "input": "Straight RGB16 components represented on the 0...32768 working grid",
+    "weights": [
+      4915,
+      9667,
+      1802
+    ],
+    "weight_denominator": 16384,
+    "gradient_positions": 4097,
+    "index": "(4915*r + 9667*g + 1802*b + 65536) // 131072",
+    "exact_tone_indices": 131072
+  },
+  "validation": {
+    "tone_candidates": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinate-analysis-02.json",
+    "denominator_search": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/tone-denominator-search.json",
+    "initial_lookup": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinate-candidate-comparison-01.json",
+    "independent_holdout": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/holdout-verification-01.json",
+    "research_verification": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/research-verification.json",
+    "all_original_inputs_reproduced": 16,
+    "independent_reference_lookup_pixels": 393216,
+    "methods": [
+      "Classic",
+      "Linear",
+      "Perceptual",
+      "Smooth",
+      "Stripes"
+    ]
+  },
+  "native_candidate_results": [
+    {
+      "case": "tone-identity",
+      "candidate": "before",
+      "pixels": 65536,
+      "different_pixels": 57353,
+      "maximum_stored_level_error": 12,
+      "mean_maximum_pixel_error": 4.208892822265625,
+      "input_sha256": "8f5b42ca52ad8463c6beb9b4a350baf303d3127a7747afd787c6ea75b1104e46"
+    },
+    {
+      "case": "tone-identity",
+      "candidate": "rounded",
+      "pixels": 65536,
+      "different_pixels": 61581,
+      "maximum_stored_level_error": 18,
+      "mean_maximum_pixel_error": 2.429718017578125,
+      "input_sha256": "38cf3bbdcbed65c433a9b1ae59170efd24ceaa201e3902ab91770cd37ffef4d3"
+    },
+    {
+      "case": "tone-identity",
+      "candidate": "fixed",
+      "pixels": 65536,
+      "different_pixels": 61426,
+      "maximum_stored_level_error": 2,
+      "mean_maximum_pixel_error": 1.87457275390625,
+      "input_sha256": "bd5a7615fab3ebf2ac49662fe834b560ac1c0b763e8616cc4ba9b6e192a9e5c3"
+    },
+    {
+      "case": "classic-palette65",
+      "candidate": "before",
+      "pixels": 65536,
+      "different_pixels": 65527,
+      "maximum_stored_level_error": 760,
+      "mean_maximum_pixel_error": 215.68948364257812,
+      "input_sha256": "562b511437e00407488831fbe7c8f10aed8312346346bc396012bb10c57888de"
+    },
+    {
+      "case": "classic-palette65",
+      "candidate": "rounded",
+      "pixels": 65536,
+      "different_pixels": 64391,
+      "maximum_stored_level_error": 996,
+      "mean_maximum_pixel_error": 110.2813720703125,
+      "input_sha256": "4d745bb49af893669424445402a39b937ef52674cf129629ebe212de3331219b"
+    },
+    {
+      "case": "classic-palette65",
+      "candidate": "fixed",
+      "pixels": 65536,
+      "different_pixels": 64340,
+      "maximum_stored_level_error": 760,
+      "mean_maximum_pixel_error": 89.33804321289062,
+      "input_sha256": "aa1ee2cecc6f8782d7b6f6bae18414fa949cc7c9a4d3b73e93485fd2596af754"
+    }
+  ],
+  "provenance": "Original procedural PSD inputs recalculated through Photoshop 2026 UI; no Adobe code or preset libraries copied.",
+  "license": "MIT OR Apache-2.0",
+  "next": [
+    "Resolve Classic lookup rounding and Linear/Perceptual/Smooth conversion/interpolation separately."
+  ],
+  "limitations": [
+    "Reference lookup combines Photoshop-rendered ramps with the new equation; it does not certify a native renderer.",
+    "RGB8 and RGB32 tone rules are not established by these RGB16 probes.",
+    "Three Stripes sRGB references cover forward, reverse and varying alpha without dither/masks; other profiles, compositing and full interaction gates remain open.",
+    "All three existing smooth interpolation methods retain measured ramp errors. Native Smooth remains unsupported."
+  ],
+  "full_photoshop_parity": false,
+  "research_run_directory": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes",
+  "native_regressions": {
+    "fixture_manifest": "artifacts/runs/20261008T205338Z-050-rgb16-gradient-map-tone/fixture-manifest.json",
+    "tone_indices": 131072,
+    "input_representations": [
+      "working grid normalized",
+      "PSD full-range normalized"
+    ],
+    "stripes_full_rgba_reference_pixels": 196608,
+    "cases": [
+      "forward",
+      "reverse opaque",
+      "reverse varying alpha"
+    ],
+    "other_depth_legacy_vectors": 224,
+    "focused_tests_passed": 30,
+    "focused_seconds": 3.641,
+    "full_tests_passed": 540,
+    "full_seconds": 95.322,
+    "optimized_tests_passed": 87,
+    "optimized_seconds": 1.942,
+    "failures": 0,
+    "skips": 0,
+    "live_merged_pixels": 65536,
+    "live_export_and_photoshop_recalculation_exact": true,
+    "release_verification": "artifacts/runs/20261008T205338Z-050-rgb16-gradient-map-tone/release-verification.json",
+    "binary_sha256": "9ff9580c98b487f454703953a840f8383eeba2a60ff884999a5c769c56cfcbc5",
+    "zip_sha256": "21a1e9473dd7c48249fa16058549cce4a8d1a2e168f5dd4d59d7177aaba3c079"
+  },
+  "pinned_fixtures": {
+    "step": "dev-step-050",
+    "vectors": {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/photoshop-gradient-map-tone-rgb16.bin",
+      "sha256": "4ab88b567dbe9d5fc64ba50202a435e98b259856b9a51d544f1147457477ab87",
+      "bytes": 1048588
+    },
+    "vector_count": 131072,
+    "vector_format": "PTGT, u32 version 1, u32 count, then big-endian u16 r/g/b/index. RGB uses 0...32768; index is 0...4096.",
+    "vector_sources": [
+      {
+        "input": {
+          "path": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinates-01/input-coordinate-tone-identity-rgb16.psd",
+          "sha256": "aca40fe9897295707b648c93382c0eca653bf9ef80829967dcf7a4651964a828",
+          "bytes": 1052208
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinates-01/photoshop-coordinate-tone-identity-rgb16.psd",
+          "sha256": "c3a705b9e118a38f2272c6f481361c0521bd147d08e3ea1d0c849961dcc0cc30",
+          "bytes": 533960
+        }
+      },
+      {
+        "input": {
+          "path": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinates-holdout/input-coordinate-tone-identity-rgb16.psd",
+          "sha256": "5dd65d8e0217c9ea09da773c29c5e3fb9289b4b413ea304b0194cec950f13bb7",
+          "bytes": 1052208
+        },
+        "photoshop": {
+          "path": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinates-holdout/photoshop-coordinate-tone-identity-rgb16.psd",
+          "sha256": "14a3799ca3a085dc96f0a97d0f6de5b270cd1b647448785feac638f23da03fa9",
+          "bytes": 826334
+        }
+      }
+    ],
+    "psd_fixtures": [
+      {
+        "source": {
+          "path": "artifacts/runs/20261008T202730Z-049-smooth-color-palettes/coordinates-holdout/photoshop-coordinate-stripes-palette65-rgb16.psd",
+          "sha256": "645c0a62fd561a4e5cf1c459a15d64b8fd2076773a7e39cd654fb5b8d9d87fb2",
+          "bytes": 830370
+        },
+        "fixture": {
+          "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-tone-forward-rgb16.psd",
+          "sha256": "645c0a62fd561a4e5cf1c459a15d64b8fd2076773a7e39cd654fb5b8d9d87fb2",
+          "bytes": 830370
+        },
+        "reverse": false
+      },
+      {
+        "source": {
+          "path": "artifacts/runs/20261008T205338Z-050-rgb16-gradient-map-tone/inputs-01/photoshop-tone-stripes-reverse-opaque-rgb16.psd",
+          "sha256": "1968aacb35112baeb3719f0120a6377ed471b694d178a369e68759bd587adf3f",
+          "bytes": 830336
+        },
+        "fixture": {
+          "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-tone-reverse-opaque-rgb16.psd",
+          "sha256": "1968aacb35112baeb3719f0120a6377ed471b694d178a369e68759bd587adf3f",
+          "bytes": 830336
+        },
+        "reverse": true
+      },
+      {
+        "source": {
+          "path": "artifacts/runs/20261008T205338Z-050-rgb16-gradient-map-tone/inputs-01/photoshop-tone-stripes-reverse-alpha-rgb16.psd",
+          "sha256": "7f144318800b9dc1e5ec3d8308ebaaf7048672912003bd7147241f74e33ebadc",
+          "bytes": 960218
+        },
+        "fixture": {
+          "path": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-gradient-map-tone-reverse-alpha-rgb16.psd",
+          "sha256": "7f144318800b9dc1e5ec3d8308ebaaf7048672912003bd7147241f74e33ebadc",
+          "bytes": 960218
+        },
+        "reverse": true
+      }
+    ],
+    "provenance": "Original procedural PSDs recalculated and saved in Photoshop 2026. Expected tone indices inferred from saved merged samples.",
+    "license": "MIT OR Apache-2.0",
+    "full_photoshop_parity": false
+  },
+  "native_candidate_results_scope": "Historical step-049 isolated candidates; these measurements are not a new general ramp parity claim.",
+  "classic_output_followup": {
+    "development_step": "dev-step-052",
+    "manifest": "CLASSIC_GRADIENT_RESEARCH.json",
+    "tone_equation_unchanged": true,
+    "expected_colors": "Tone tests now use independent Photoshop identity ramp samples after Classic RGB16 conversion, rather than assuming output equals the input tone coordinate."
+  }
+}

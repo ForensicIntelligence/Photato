@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-08",
+  "adobe_guides": [
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/manage-patterns-in-the-patterns-panel.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/define-an-image-as-a-preset-pattern.html",
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ],
+  "implemented": [
+    "Seven original upstream CC0 procedural tiles with source-exact pixels and identifiers",
+    "Premultiplied wrapping bilinear sampler with source scale/angle/phase equations; default canvas-origin placement in Paint Bucket UI",
+    "Persistent native flat library, search/thumbnails, rename/delete, restore built-ins, PAT import/export",
+    "Define Pattern from visible composite selection bounding rectangle or full canvas at document depth",
+    "Pattern Paint Bucket with existing selection, mask, alpha, opacity, blend, cancellation, history and storage-expansion behavior",
+    "RGB8/16/32, gray, indexed and packed 1-bit PAT import; raw/PackBits compression; native RGB PAT export",
+    "Validated modern 8BIM/phry folder descriptor imported as flat patterns with visible notice; unknown layouts reject",
+    "Exact repeated PAT records coalesce by identifier only when names, dimensions, depth and every stored sample bit match; conflicting identifiers reject",
+    "Editable document-owned Pattern Fill layers with selection/default masks, scale/angle/phase/link, preview/cancel, canvas drag, one-step undo and native archives",
+    "RGB8/16/32 PSD PtFl descriptors and Patt/Pat2/Pat3 embedded patterns, raw block preservation when unchanged; mask-relative source fill-frame conversion",
+    "Linked/unlinked layer movement, image/canvas geometry, clipboard ID conflict remapping, clipping/groups, rasterization and regional mask rendering"
+  ],
+  "limits": {
+    "pattern_pixels": 16000000,
+    "pattern_edge": 30000,
+    "define_pattern_edge": 4000,
+    "library_patterns": 1024,
+    "library_pixels": 64000000,
+    "library_estimated_tile_bytes": 1073741824,
+    "input_bytes": 536870912
+  },
+  "remaining": [
+    "Photoshop output identity including RGB32 transfer, interpolation, partial alpha, color modes and selection semantics",
+    "Overlays, strokes, Pattern Stamp and brush textures; additional PSD layouts and fill transforms",
+    "Preset folders, drag/drop, pattern preview, complete preferences and persist-only selection changes",
+    "CMYK/Lab patterns, additional PAT layouts/compression and preservation of original source mode/metadata",
+    "Live Photoshop opening of native PAT exports and complete UI/keyboard behavior",
+    "Large-document interactive performance and Intel/macOS 14/26 runtime acceptance"
+  ],
+  "hierarchy_reference": "Observed read-only in installed Photoshop 2026 Default Patterns.pat and Legacy Patterns and More.pat. Descriptor parsing uses the existing bounded native public-format codec. Folder presentation is not retained.",
+  "live_photoshop_reference": "Fresh CUA access reported locked Mac and failed auto-unlock. No prior timed-out AppleEvent was retried.",
+  "parity_status": "Partial source/workflow compatibility. Source-exact vectors and native import/export do not establish Photoshop rendering or arbitrary byte-exact PAT round trips.",
+  "installed_library_check": "../artifacts/pattern-installed-library-check.json",
+  "pattern_fill_evidence": "PATTERN_FILL_REFERENCES.json"
+}

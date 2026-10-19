@@ -1,0 +1,78 @@
+{
+  "provenance": "Original procedural artwork, saved independently in Adobe Photoshop 2026 27.2.0 on2026-10-13. Direct Python PSD8 plane/PackBits/ZIP decoder; no native output used as expectation. Original test data: MIT OR Apache-2.0. See docs/COMPONENT_FILL_REFERENCES.json for scope and UI evidence.",
+  "layout": "Each case contains width*height*4 interleaved RGBA8 baseline bytes at offset, followed by the same number of independently saved result bytes.",
+  "byteCount": 245760,
+  "sha256": "2fc8f16236ec68b0369ba30d4339fc1cbe88a684e585ca69ffd163dbe603c29f",
+  "cases": [
+    {
+      "name": "component-red-white",
+      "width": 48,
+      "height": 64,
+      "value": 1,
+      "opacity": 1,
+      "offset": 0,
+      "baselinePSD": "component-baseline.psd",
+      "baselineSHA256": "0fb625090c7786f2a9e85c359b6c773292a98cfb5dcdd2b6d76a5264febae8e9",
+      "resultPSD": "component-red-white.psd",
+      "resultSHA256": "b001768167dcfeea256725498525ad1467109e4cec580d9d637a74c5cdc69430",
+      "inputSHA256": "02a3e12ebf61c2ccd5cad63644a6ea7e140a0d4a1a4a92033b1eeee292cc620a",
+      "outputSHA256": "72520d56c832990be53230dbc7900dfb83949ab988122bdede37587ed5f65e7e"
+    },
+    {
+      "name": "component-red-white-50",
+      "width": 48,
+      "height": 64,
+      "value": 1,
+      "opacity": 0.5,
+      "offset": 24576,
+      "baselinePSD": "component-baseline.psd",
+      "baselineSHA256": "0fb625090c7786f2a9e85c359b6c773292a98cfb5dcdd2b6d76a5264febae8e9",
+      "resultPSD": "component-red-white-50.psd",
+      "resultSHA256": "1f395d08e7292248f15599e9693be96ba0bbea405b0088ae41553400b9bb3b93",
+      "inputSHA256": "02a3e12ebf61c2ccd5cad63644a6ea7e140a0d4a1a4a92033b1eeee292cc620a",
+      "outputSHA256": "de80273e2dc385e51b1517cf3d03afed651a419900bce3fb653a9aacf716229a"
+    },
+    {
+      "name": "ramp-red-white-50",
+      "width": 256,
+      "height": 32,
+      "value": 1,
+      "opacity": 0.5,
+      "offset": 49152,
+      "baselinePSD": "ramp-baseline.psd",
+      "baselineSHA256": "b1fb0258c4408291d69cac3344635bb81b608ca9bf72108a1f15f0734076b1c4",
+      "resultPSD": "ramp-red-white-50.psd",
+      "resultSHA256": "ad79c1651f63e75be66a5e9885ab903cd835f6d4761b7ae1acf63adf66f29c71",
+      "inputSHA256": "325effd30d0fd12369fd990ef04668d588dbc6aaa840375d60130cac02c67abe",
+      "outputSHA256": "393bad0c55329277d511a82f5e3dc34497c317dbab16817c05c62a50dbe30df8"
+    },
+    {
+      "name": "ramp-red-white-33",
+      "width": 256,
+      "height": 32,
+      "value": 1,
+      "opacity": 0.33,
+      "offset": 114688,
+      "baselinePSD": "ramp-baseline.psd",
+      "baselineSHA256": "b1fb0258c4408291d69cac3344635bb81b608ca9bf72108a1f15f0734076b1c4",
+      "resultPSD": "ramp-red-white-33.psd",
+      "resultSHA256": "363a6eea00a81f5ba89aad5c8dbc8c78fd1bd029d221d6631dfb076a6c866d6b",
+      "inputSHA256": "325effd30d0fd12369fd990ef04668d588dbc6aaa840375d60130cac02c67abe",
+      "outputSHA256": "ed0a059ed16410d59760cc7c7c827b260b5d0ecc082b72aa520c550082cdb7f5"
+    },
+    {
+      "name": "ramp-red-black-50",
+      "width": 256,
+      "height": 32,
+      "value": 0,
+      "opacity": 0.5,
+      "offset": 180224,
+      "baselinePSD": "ramp-baseline.psd",
+      "baselineSHA256": "b1fb0258c4408291d69cac3344635bb81b608ca9bf72108a1f15f0734076b1c4",
+      "resultPSD": "ramp-red-black-50.psd",
+      "resultSHA256": "cbe8b164e124e30bdf9f94a750448ff9bfd28d3b6cb301ca9fee7a30d63e2973",
+      "inputSHA256": "325effd30d0fd12369fd990ef04668d588dbc6aaa840375d60130cac02c67abe",
+      "outputSHA256": "cdda311a6d1552de8b81a1454980886967d2ff356f276c6b182c10e7981eb425"
+    }
+  ]
+}

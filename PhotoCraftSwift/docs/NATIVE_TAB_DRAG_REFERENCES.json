@@ -1,0 +1,42 @@
+{
+  "step": "dev-step-062",
+  "date": "2026-10-08",
+  "status": "Native pointer/drop implementation and automated tests pass; live UI pending",
+  "source_hashes": {
+    "path": "artifacts/runs/20261009T043636Z-062-native-tab-drag/tested-source-hashes.json",
+    "sha256": "6213f0407b17914886bf8203155c7f9cd1b71aa07644fd2487caa8afa533e797"
+  },
+  "release": {
+    "path": "artifacts/runs/20261009T043636Z-062-native-tab-drag/release-verification.json",
+    "sha256": "46fda467294b941ef4fd880bd2bf3ace89d79b510e584ef8e35531d4215fe861"
+  },
+  "live": {
+    "path": "artifacts/runs/20261009T043636Z-062-native-tab-drag/live-qualification.json",
+    "sha256": "2da1ebedd2537cd2919f8ccad47d646559ef3ffd11654826655305b279c3d899"
+  },
+  "baseline": "docs/DOCUMENT_WORKSPACE_REFERENCES.json",
+  "implementation": [
+    "Native AppKit NSButton with explicit click versus drag tracking",
+    "NSDraggingSource/NSDraggingDestination and private document-tab pasteboard payload",
+    "Before/after insertion indicator and coordinator placement across windows",
+    "Foreign/self/blocked-sheet rejection without editing document data"
+  ],
+  "automated_evidence": [
+    "34 focused tests, including four new native interaction regressions",
+    "605 full tests and 159 optimized tests, zero failures/skips",
+    "Hosted native tab centers receive NSButton hits with correct parent-coordinate conversion",
+    "Before/after/cross-window moves retain independent NSDocument objects, pixels and undo state"
+  ],
+  "limits": [
+    "Real pointer drag, insertion feedback and cross-window drop require live checks after unlock.",
+    "No live drag parity, floating application-frame parity or full accessibility claim.",
+    "Drag-out detachment, trailing empty-strip drop, overflow/autoscroll and modifier variants remain open.",
+    "Photoshop canvas-only floating windows, shared frame/panels, workspace persistence and all remaining parity gates remain open."
+  ],
+  "full_photoshop_parity": false,
+  "application_frame_followup": {
+    "step": "dev-step-063",
+    "reference_manifest": "docs/APPLICATION_FRAME_REFERENCES.json",
+    "scope": "Shared frame and canvas-only float implementation; live reference qualification pending."
+  }
+}
