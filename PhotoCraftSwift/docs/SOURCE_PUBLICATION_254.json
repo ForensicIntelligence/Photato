@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-10-29T17:21:51.260628+00:00",
+  "commit": "4b3fdb6cd08c07a32d8f47f627c4687c838f10d3",
+  "remote_main": "4b3fdb6cd08c07a32d8f47f627c4687c838f10d3",
+  "private": true,
+  "source_manifest": "docs/SOURCE_SNAPSHOT_253.json",
+  "source_inputs_matched": 2374,
+  "tracked_files": 3880,
+  "tree": "922ea96253d55f1b952abd5f578de26e6f9602a8",
+  "source_checkpoint": 253,
+  "full_tests": 2660,
+  "failures": 0,
+  "new_binary_upload": false,
+  "new_installation": false,
+  "goal_complete": false
+}

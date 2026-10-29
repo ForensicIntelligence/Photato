@@ -265,7 +265,8 @@ For a readable account of the project from the beginning, see [Photato developme
 | 250 | 2026-10-29 | [Image Processor](#dev-step-250) |
 | 251 | 2026-10-29 | [Video Frames to Layers](#dev-step-251) |
 | 252 | 2026-10-29 | [generic PDF import in progress](#dev-step-252) |
-| 253 | 2026-10-29 | [Embedded PDF images in progress](#dev-step-253) |
+| 253 | 2026-10-29 | [Embedded PDF images](#dev-step-253) |
+| 254 | 2026-10-29 | [Stable source publication to private GitHub](#dev-step-254) |
 <!-- history-index:end -->
 
 <a id="dev-step-254"></a>
@@ -279,6 +280,10 @@ For a readable account of the project from the beginning, see [Photato developme
 3. **Source identity and curation check.** The isolated checkout retains all1057 tracked Rust files byte-for-byte. All2406 local qualification inputs are unchanged. The first publication assertion correctly stopped on26 Python bytecode caches that were intentionally excluded; adjust the publication inventory to distinguish those caches and6 optional generated model/provenance files from the2374 included inputs. Every included qualified input matches its tested SHA-256. Preserve the failed check in this record; no product repair or native test rerun is needed. Publish the portable source identity in `docs/SOURCE_SNAPSHOT_253.json`; model setup and unavailable-feature behavior remain documented.
 
 4. **Prepared snapshot scan.** Stage the complete update in the isolated checkout, including deletions of withdrawn purchase code/configuration/tests. The bounded scan covers3880 tracked files (133457495 bytes): no tested private-key/GitHub/AWS/OpenAI/Slack credential patterns, excluded paths, symbolic links, files above50MiB or retired-brand references are found. This pattern scan is not a guarantee against every possible secret format. No native code changed after step253 qualification. Check the staged source identities and fast-forward main before publishing; preserve remote privacy and existing commits.
+
+5. **Commit and remote verification.** Commit and push the complete snapshot as `4b3fdb6cd08c07a32d8f47f627c4687c838f10d3` to main without force. The staged Git-object scan verifies all2374 source hashes,3880 tracked blobs/133460282 bytes and tree922ea96253d55f1b952abd5f578de26e6f9602a8; no bounded credential or retired-brand matches. GitHub’s commit endpoint returns that same SHA and repository metadata confirms private visibility. `git diff --cached --check` reports whitespace in original binary RGBA/PDF fixture bytes; preserve those qualified bytes. The text-source check excluding Fixtures passes. Explicitly removed files are DevelopmentTips.swift, DevelopmentTipsView.swift, DevelopmentTipsTests.swift, the former StoreKitHost directory and test-storekit.sh, as already documented by step237. No source tests rerun because every published qualification input is byte-identical to step253. Record the receipt in `SOURCE_PUBLICATION_254.json`, update status/diary/root administration notes and refresh the standalone diary/evidence index. A documentation-only follow-up commit will carry this verified publication receipt; it does not change native code.
+
+6. **Delivery documentation and final checks.** The refreshed standalone diary contains254 milestones and passes25 offline browser checks at1440/768/390/320px, with no external requests or JavaScript/console errors. Its narrative download matches the native diary source. The39-member website ZIP contains only approved public files; the master homepage remains86851 bytes with its prior SHA-256. Recheck all2406 original qualification inputs, the installed221 executable, private243 ZIP and retained artwork: all are unchanged. Finish the history inventory/check and commit the documentation-only receipt. The first inventory attempt stops on a missing254 chronological-index row; add that row and correct the completed253 title, then rerun. No application input is affected. The actual source commit is verified remotely; no app installation, new binary release, website deployment, visibility change or full-parity claim accompanies this task.
 
 <a id="dev-step-253"></a>
 

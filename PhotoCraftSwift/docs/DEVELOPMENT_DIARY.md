@@ -17,6 +17,8 @@ Photato is an independent native Swift implementation, with licensed code ported
 
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
+**Source published (step254):** The complete qualified step253 source is committed and pushed to private GitHub main as [`4b3fdb6`](https://github.com/ForensicIntelligence/Photato/commit/4b3fdb6cd08c07a32d8f47f627c4687c838f10d3). All2374 published qualification inputs match the tested candidate;1057 original Rust files are unchanged. Native source, tests/fixtures, Xcode project, scripts, assets and development records are included. Generated model/cache files, builds, runtime logs and private working documents are excluded. GitHub confirms the commit and private visibility. The source passed2660 full optimized tests; no new app installation or binary upload accompanies this source delivery. [Receipt](SOURCE_PUBLICATION_254.json).
+
 **Current checkpoint (step253):** Embedded PDF images now open through the native Images selector and matching inspection/import/cancel API. Page/Form discovery, reused and inline images, intrinsic dimensions, color/depth controls and atomic editable-document publication share the native engine. 40 focused and2660 full optimized tests pass on2406 unchanged inputs. Independent checks match60 original RGBA channels,8 grayscale endpoint channels and25600 enlarged-thumbnail channels; existing page/crop/rotation comparisons also pass. Exact image ordering/defaults/color/masks, pattern/annotation images, vector Smart Objects, Photoshop PDF editing data and live/platform parity remain open. Installed221/private universal243 are unchanged.
 
 **Earlier native keyframe milestone (step234):** Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged.
@@ -559,6 +561,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-29 | 251 | [Video Frames to Layers](DEVLOG.md#dev-step-251) |
 | 2026-10-29 | 252 | [Native PDF page import](DEVLOG.md#dev-step-252) |
 | 2026-10-29 | 253 | [Embedded PDF images](DEVLOG.md#dev-step-253) |
+| 2026-10-29 | 254 | [Stable source publication](DEVLOG.md#dev-step-254) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1326,3 +1329,12 @@ The extractor copies each selected image’s PDF object graph, including support
 Embedded PDF images now open through the native Images selector and matching inspection/import/cancel API. Page/Form discovery, reused and inline images, intrinsic dimensions, color/depth controls and atomic editable-document publication share the native engine. 40 focused and2660 full optimized tests pass on2406 unchanged inputs. Independent checks match60 original RGBA channels,8 grayscale endpoint channels and25600 enlarged-thumbnail channels; existing page/crop/rotation comparisons also pass. Exact image ordering/defaults/color/masks, pattern/annotation images, vector Smart Objects, Photoshop PDF editing data and live/platform parity remain open. Installed221/private universal243 are unchanged.
 
 These tests establish the listed native workflows and owned samples, not complete Photoshop image semantics or byte equality. Discovery through patterns/annotation appearances, exhaustive codecs/profiles, exact defaults and live/platform acceptance remain open. Retained-vector PDF Smart Objects and Photoshop PDF editing data are the next major PDF gaps. [Detailed record](DEVLOG.md#dev-step-253).
+
+
+## 2026-10-29 — Step254: publish the stable source snapshot
+
+At the maintainer’s request, the complete current Swift source and development records are now on the private GitHub repository. The source includes the new PDF page/image workflows and all intervening implementation work since the19 October snapshot. It passed2,660 full optimized native tests; this is tested development progress, not full Photoshop parity.
+
+**Source published (step254):** The complete qualified step253 source is committed and pushed to private GitHub main as [`4b3fdb6`](https://github.com/ForensicIntelligence/Photato/commit/4b3fdb6cd08c07a32d8f47f627c4687c838f10d3). All2374 published qualification inputs match the tested candidate;1057 original Rust files are unchanged. Native source, tests/fixtures, Xcode project, scripts, assets and development records are included. Generated model/cache files, builds, runtime logs and private working documents are excluded. GitHub confirms the commit and private visibility. The source passed2660 full optimized tests; no new app installation or binary upload accompanies this source delivery. [Receipt](SOURCE_PUBLICATION_254.json).
+
+The update preserves existing repository history and the licensed Rust snapshot. A separate checkout prevents unrelated Desktop files from entering this repository. The bounded scan of3,880 tracked files found no tested credential patterns, excluded working files, oversized blobs, symbolic links or retired branding. Optional model weights can be reconstructed using the included instructions. The standalone diary remains usable without a server; source publication does not deploy the website. Retained-vector PDF Smart Objects remain next in the major-feature plan. [Detailed record](DEVLOG.md#dev-step-254).
