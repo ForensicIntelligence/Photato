@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 
 struct CameraRawSheet: View {
   @Bindable var store: EditorStore
+  private var placement: RawPlacementWorkspace?
   @State private var model = CameraRawWorkspace()
   @State private var group = "Light"
   @State private var band = 0
@@ -14,7 +15,7 @@ struct CameraRawSheet: View {
   @State private var exporting = false
   @State private var exportFile: LUTDocument?
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
-  init(store: EditorStore,workspace: CameraRawWorkspace? = nil) { self.store = store; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
+  init(store: EditorStore,workspace: CameraRawWorkspace? = nil,placement: RawPlacementWorkspace? = nil) { self.store = store; self.placement = placement; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
   private func binding(_ key: String) -> Binding<Double> { Binding(get:{ Double(model.settings[key]) },set:{ var value = model.settings; value[key] = Float($0); model.change(value) }) }
   private func control(_ title: String,_ value: Binding<Double>,_ range: ClosedRange<Double>) -> some View {
     VStack(alignment:.leading,spacing:3) {
@@ -54,8 +55,8 @@ struct CameraRawSheet: View {
         Button("Reset") { model.reset() }
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
-        Button("Cancel") { model.close(); store.cancelFilter() }.keyboardShortcut(.cancelAction)
-        Button("OK") { guard model.ready else { return }; store.filterDraft?.filter.cameraRaw = model.settings; store.filterDraft?.rawDevelopment = model.sensorSettings; model.close(); store.commitFilter() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
+        Button("Cancel") { if let placement {placement.cancel()} else {model.close(); store.cancelFilter()} }.keyboardShortcut(.cancelAction)
+        Button("OK") { guard model.ready else { return }; if let placement {placement.run();return}; store.filterDraft?.filter.cameraRaw = model.settings; store.filterDraft?.rawDevelopment = model.sensorSettings; model.close(); store.commitFilter() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
       }.padding(12)
     }.frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
     .task { guard let draft = store.filterDraft else { return }; model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }; model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }; if draft.rawDevelopment != nil { group = "Sensor" }; await model.prepare(document:store.document,draft:draft) }

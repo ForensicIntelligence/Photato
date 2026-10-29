@@ -13,12 +13,19 @@ struct EmbeddedPlacementDraft: Sendable {
 
 extension EditorStore {
   var layerPanelDocument: CraftDocument { embeddedPlacement?.preview ?? document }
+  var embeddedPlacementState: [String:Any] {
+    ["stage":rawPlacementWorkspace != nil ? "developingRaw":pdfPlacementWorkspace != nil ? "choosingPDF":embeddedPlacement != nil ? (geometryBusy ? "committing":"transform"):embeddedPlacementOperationID != nil ? "preparing":"idle",
+     "layerID":embeddedPlacement?.layer.id.uuidString as Any? ?? NSNull(),
+     "sourceName":embeddedPlacement?.layer.smartObject?.fileName as Any? ?? embeddedPlacementSourceName as Any? ?? NSNull(),
+     "mediaType":embeddedPlacement?.layer.smartObject?.mediaType as Any? ?? NSNull()]
+  }
   var pdfPlacementState: [String:Any] {
-    ["stage":pdfPlacementWorkspace != nil ? "choosing":embeddedPlacement != nil ? (geometryBusy ? "committing":"transform"):pdfPlacementOperationID != nil ? "preparing":"idle",
+    let active = embeddedPlacementIsPDF || embeddedPlacement?.layer.smartObject?.pdfSource != nil
+    return ["stage": !active ? "idle":pdfPlacementWorkspace != nil ? "choosing":embeddedPlacement != nil ? (geometryBusy ? "committing":"transform"):embeddedPlacementOperationID != nil ? "preparing":"idle",
      "content":pdfPlacementWorkspace?.content.rawValue as Any? ?? NSNull(),
      "selected":pdfPlacementWorkspace?.selected.sorted() ?? [],
-     "layerID":embeddedPlacement?.layer.id.uuidString as Any? ?? NSNull(),
-     "sourceName":pdfPlacementWorkspace?.source.name as Any? ?? embeddedPlacement?.layer.smartObject?.fileName as Any? ?? NSNull()]
+     "layerID":active ? (embeddedPlacement?.layer.id.uuidString as Any? ?? NSNull()):NSNull(),
+     "sourceName":active ? (pdfPlacementWorkspace?.source.name as Any? ?? embeddedPlacement?.layer.smartObject?.fileName as Any? ?? NSNull()):NSNull()]
   }
 
 
@@ -39,7 +46,7 @@ extension EditorStore {
     if let draft = embeddedPlacement,restoreSelection,draft.original.id == document.id {
       selectedLayerIDs = draft.selected.intersection(Set(document.layers.map(\.id)))
     }
-    embeddedPlacement = nil
+    embeddedPlacement = nil;embeddedPlacementSourceName = nil;embeddedPlacementIsPDF = false
   }
   func commitEmbeddedPlacement(_ transform: TransformDraft) {
     guard let draft = embeddedPlacement,!geometryBusy else {return}
@@ -48,12 +55,12 @@ extension EditorStore {
       cancelTransform();error = "The document changed during placement. Place the source again.";return
     }
     let operation = UUID()
-    geometryBusy = true;pdfPlacementOperationID = operation;error = nil
+    geometryBusy = true;embeddedPlacementOperationID = operation;error = nil
     geometryTask = Task { [weak self] in
       guard let self else {return}
       defer {
-        if self.pdfPlacementOperationID == operation {
-          self.pdfPlacementOperationID = nil;self.geometryBusy = false;self.geometryTask = nil;self.render()
+        if self.embeddedPlacementOperationID == operation {
+          self.embeddedPlacementOperationID = nil;self.geometryBusy = false;self.geometryTask = nil;self.render()
         }
       }
       do {
@@ -65,18 +72,18 @@ extension EditorStore {
         }
         let prepared = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
         try Task.checkCancellation()
-        guard self.pdfPlacementOperationID == operation,self.embeddedPlacement?.layer.id == draft.layer.id,
+        guard self.embeddedPlacementOperationID == operation,self.embeddedPlacement?.layer.id == draft.layer.id,
           self.transformDraft == transform,self.document == draft.original,
           self.layerPanelGeneration == draft.lifecycle,self.sessionGeneration == draft.session else {
           throw CraftError.invalid("The document or placement changed before commit.")
         }
         try self.executeCompositePreparedEdit(prepared)
         self.transformDraft = nil;self.discardEmbeddedPlacement(restoreSelection:false)
-        self.selectedLayerIDs = [draft.layer.id];self.onChange?(.changeDone);self.status = "PDF artwork placed"
+        self.selectedLayerIDs = [draft.layer.id];self.onChange?(.changeDone);self.status = "Artwork placed"
       } catch is CancellationError {
-        if self.pdfPlacementOperationID == operation {self.status = "Placement preparation cancelled"}
+        if self.embeddedPlacementOperationID == operation {self.status = "Placement preparation cancelled"}
       } catch {
-        if self.pdfPlacementOperationID == operation {self.error = error.localizedDescription}
+        if self.embeddedPlacementOperationID == operation {self.error = error.localizedDescription}
       }
     }
   }
@@ -98,61 +105,12 @@ extension EditorStore {
     } onCancel:{Task {@MainActor in model.cancel()}}
   }
   func placePDF(_ url: URL,replacing layerID: UUID? = nil,frame frameID: UUID? = nil) {
-    guard clipboardTargetAvailable else {return}
-    let original = document,lifecycle = layerPanelGeneration,sessionID = sessionGeneration,operation = UUID()
-    geometryBusy = true;pdfPlacementOperationID = operation;status = "Reading PDF…"
-    geometryTask = Task { [weak self] in
-      guard let self else {return}
-      defer {
-        if self.pdfPlacementOperationID == operation {
-          self.pdfPlacementOperationID = nil;self.geometryBusy = false;self.geometryTask = nil;self.render()
-        }
-      }
-      do {
-        let reader = Task.detached(priority:.userInitiated) {
-          let access = url.startAccessingSecurityScopedResource()
-          defer {if access {url.stopAccessingSecurityScopedResource()}}
-          return try PreparedPDFSource.read(url)
-        }
-        let source = try await withTaskCancellationHandler {try await reader.value} onCancel:{reader.cancel()}
-        var options = try await self.choosePDFPlacement(source);options.layerID = layerID
-        let selection = options,name = url.lastPathComponent
-        let worker = Task.detached(priority:.userInitiated) {
-          let command: Command
-          if let frameID {
-            command = try .frame(.replace(frameID,PDFSmartObjectIO.placed(source.data,fileName:name,in:original,
-              settings:selection.settings,image:selection.image),fit:.fill))
-          } else {command = try PDFSmartObjectAPI.prepare(source.data,name,original,selection)}
-          return command
-        }
-        let command = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
-        try Task.checkCancellation()
-        guard self.pdfPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
-          self.sessionGeneration == sessionID,self.document == original else {
-          throw CraftError.invalid("The document changed while choosing PDF artwork.")
-        }
-        if case .addLayer(let layer) = command {
-          self.geometryBusy = false;try self.beginEmbeddedPlacement(layer)
-        } else {
-          let prepare = Task.detached(priority:.userInitiated) {try PreparedEdit(command:command,document:original)}
-          let edit = try await withTaskCancellationHandler {try await prepare.value} onCancel:{prepare.cancel()}
-          try Task.checkCancellation()
-          guard self.pdfPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
-            self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed before PDF placement completed.")}
-          try self.executeCompositePreparedEdit(edit)
-          self.selectedLayerIDs = Set(self.document.activeLayerID.map{[$0]} ?? [])
-          if self.document != original {self.onChange?(.changeDone)}
-          self.status = "PDF artwork placed"
-        }
-      } catch is CancellationError {
-        if self.pdfPlacementOperationID == operation {self.status = "PDF placement cancelled"}
-      } catch {
-        if self.pdfPlacementOperationID == operation {self.error = error.localizedDescription}
-      }
-    }
+    placeEmbeddedSource(url,replacing:layerID,frame:frameID)
   }
-  func cancelPDFPlacement() {
-    if pdfPlacementOperationID != nil {geometryTask?.cancel();pdfPlacementOperationID = nil;geometryBusy = false}
+  func cancelEmbeddedPlacement() {
+    if embeddedPlacementOperationID != nil {geometryTask?.cancel();embeddedPlacementOperationID = nil;geometryBusy = false}
+    rawPlacementWorkspace?.cancel();rawPlacementWindow?.close();rawPlacementWindow = nil;rawPlacementWorkspace = nil
+    embeddedPlacementSourceName = nil;embeddedPlacementIsPDF = false
     pdfPlacementWorkspace?.cancel();pdfPlacementWindow?.close();pdfPlacementWindow = nil;pdfPlacementWorkspace = nil
     discardEmbeddedPlacement(restoreSelection:false)
   }

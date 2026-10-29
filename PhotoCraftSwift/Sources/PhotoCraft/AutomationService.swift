@@ -55,6 +55,10 @@ import UniformTypeIdentifiers
     try PDFSmartObjectAPI.prepare(data,name,document,options)
   }
   @ObservationIgnored var pdfSmartObjectOperations: [UUID:UUID] = [:]
+  @ObservationIgnored var embeddedSourcePreparation: @Sendable (Data,String,CraftDocument,EmbeddedSourceOptions) async throws -> Command = {data,name,document,options in
+    try EmbeddedSourceAPI.prepare(data,name,document,options)
+  }
+  @ObservationIgnored var embeddedSourceOperations: [UUID:UUID] = [:]
   @ObservationIgnored var pdfImportTask: Task<PDFImportAPI.Prepared,Error>?
   @ObservationIgnored var pdfImportOperationID: UUID?
   @ObservationIgnored var pdfImageDecoder: @Sendable (Data,String,PDFImageImportSettings,String?) throws -> [CraftDocument] = {data,name,settings,password in
@@ -400,6 +404,7 @@ import UniformTypeIdentifiers
       "paintingTools":store.paintingState,
       "regionRetouch": ["available":store.canBeginRegionRetouch,"hasSelection":store.document.selection != nil,"previewOpen":store.regionRetouchDraft != nil,"previewBusy":store.regionRetouchBusy,"previewError":store.regionRetouchError as Any? ?? NSNull()],
       "pdfPlacement":store.pdfPlacementState,
+      "embeddedPlacement":store.embeddedPlacementState,
       "contentAwareScale": ["available":store.canBeginContentAwareScale,"transformOpen":store.transformDraft?.contentAware == true,"previewBusy":store.contentAwareScaleBusy,"previewError":store.contentAwareScaleError as Any? ?? NSNull()],
       "contentAwareFill": ["available":store.canBeginContentAwareFill,"workspaceOpen":store.contentAwareDraft != nil],
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
@@ -499,6 +504,7 @@ import UniformTypeIdentifiers
       if let response = try handleActionJobRequest(request) { return response }
       if let response = try await handleLUTTransfer(request) { return response }
       if let response = try cancelMovieFramesImport(request) {return response}
+      if let response = try await handleEmbeddedSource(request) {return response}
       if let response = try await handlePDFSmartObject(request) {return response}
       if let response = try await handlePDFImport(request) {return response}
       if let response = try await handleDocumentTransfer(request) { return response }
@@ -510,6 +516,7 @@ import UniformTypeIdentifiers
         result["movieFramesImportState"] = ["open":controller.movieFramesWorkspace != nil,"loading":controller.movieFramesWorkspace?.loading ?? false,"importing":controller.movieFramesWorkspace?.busy ?? false,"uploadOperationID":movieFramesImportOperationID?.uuidString as Any? ?? NSNull()]
         result["pdfImportState"] = pdfImportState
         result["pdfSmartObjectOperations"] = Dictionary(uniqueKeysWithValues:pdfSmartObjectOperations.map {($0.key.uuidString,$0.value.uuidString)})
+        result["embeddedSourceOperations"] = Dictionary(uniqueKeysWithValues:embeddedSourceOperations.map {($0.key.uuidString,$0.value.uuidString)})
         result["imageProcessorState"] = ["exportingFromAPI":imageProcessorOperationID != nil]
         result["cropStraightenState"] = ["busy":controller.scanCropOperationID != nil,"creatingFromAPI":scanCropOperationID != nil]
         result["contactSheetState"] = ["open":controller.contactSheetWorkspace != nil,"loading":controller.contactSheetWorkspace?.loading ?? false,"rendering":controller.contactSheetWorkspace?.rendering ?? false,"creatingFromAPI":contactSheetOperationID != nil,"sourceCount":controller.contactSheetWorkspace?.sources.count ?? 0,"ready":controller.contactSheetWorkspace?.ready ?? false]

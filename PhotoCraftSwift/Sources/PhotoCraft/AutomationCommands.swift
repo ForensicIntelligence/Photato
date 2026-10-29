@@ -36,6 +36,7 @@ struct AutomationCommand: Sendable {
     var schema: [String: Any] {
       var properties: [String: Any] = [:]
       for key in parameters.keys {
+        if name == "smartObject.place",key == "transform" {properties[key] = AutomationCommand.frameSchema(key);continue}
         if ImageProcessorAPI.commands.contains(name) {properties[key] = ImageProcessorAPI.schema(key);continue}
         if ScanCropAPI.commands.contains(name) {properties[key] = ScanCropAPI.schema(key);continue}
         if TimelineAudioAPI.commands.contains(name) { properties[key] = TimelineAudioAPI.schema(key,command:name); continue }
@@ -290,7 +291,7 @@ struct AutomationCommand: Sendable {
     .init(name: "text.set", parameters: ["layerID": "Type layer UUID", "text": "Complete native type description"], description: "Replace editable text and formatting, retaining the layer transform, effects and masks."),
     .init(name: "layer.transform", parameters: ["layerID": "layer UUID", "a": "affine coefficient", "b": "affine coefficient", "c": "affine coefficient", "d": "affine coefficient", "tx": "translation in pixels", "ty": "translation in pixels"], description: "Apply an affine delta through native Free Transform. Smart Objects, video and layers with geometry keyframes retain source pixels; other raster layers resample with bicubic interpolation."),
     .init(name: "smartObject.convert", parameters: ["layerIDs": "one to 64 unique UUIDs"], description: "Convert selected layers into one embedded editable Smart Object."),
-    .init(name: "smartObject.place", parameters: ["sourceDocumentID": "shared source UUID", "sourceRevision": "current source revision", "fit": "boolean, default true"], description: "Place an editable snapshot of a shared source document.", optionalParameters: ["fit"]),
+    .init(name: "smartObject.place", parameters: ["sourceDocumentID": "shared source UUID", "sourceRevision": "current source revision", "fit": "boolean, default true", "transform":"Optional document-coordinate matrix after centering/fit"], description: "Place an editable snapshot of a shared source document with optional initial transform in one Undo.", optionalParameters: ["fit","transform"]),
     .init(name: "smartObject.replace", parameters: ["layerID": "Smart Object UUID", "sourceDocumentID": "shared source UUID", "sourceRevision": "current source revision", "preserveSize": "boolean, default true", "allInstances": "boolean, default true"], description: "Replace embedded content from a shared document. Original transforms and masks are retained.", optionalParameters: ["preserveSize", "allInstances"]),
     .init(name: "smartObject.copy", parameters: ["layerID": "Smart Object UUID"], description: "New Smart Object via Copy, with independent source content."),
     .init(name: "smartObject.resetTransform", parameters: ["layerID": "Smart Object UUID"], description: "Restore source dimensions and rotation, retaining the integer layer origin."),

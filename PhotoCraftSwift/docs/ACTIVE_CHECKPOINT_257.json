@@ -1,0 +1,85 @@
+{
+  "step": 257,
+  "recorded_at_utc": "2026-10-29T19:51:14.432590+00:00",
+  "reference": {
+    "reference": "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/import-files/place-a-file-in-photoshop.html",
+    "accessed": "2026-10-29",
+    "page_updated": "2026-09-28",
+    "observed": "Public workflow describes centered embedded or linked placement with initial transformation, Return/Commit and automatic fit for oversized artwork.",
+    "remaining": "This is public workflow documentation, not exact pixel/default/live evidence; RAW dialog details require further qualification."
+  },
+  "source_manifest": "artifacts/runs/20261029T192605Z-257-embedded-placement/source02.json",
+  "source_inputs": 2419,
+  "focused": {
+    "tests": 70,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 8.943,
+    "log": "artifacts/runs/20261029T192605Z-257-embedded-placement/focused02.log",
+    "sha256": "0066437505f7385523d70c1396dc1004442c3b090dc50f2b9013d5922360fd8b"
+  },
+  "full": {
+    "tests": 2690,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 184.592,
+    "log": "artifacts/runs/20261029T192605Z-257-embedded-placement/full01.log",
+    "sha256": "99e33b6d557a659fe3e59e5026f56c477b48ea1b93f2bf5c7a6f143ab3a43e63"
+  },
+  "binary_sha256": "49dcbdd85c77acd1038e8ea57e4b5dd819b5add7bb5014f5e409df5d6fcfe277",
+  "architecture": "arm64",
+  "independent": "artifacts/runs/20261029T192605Z-257-embedded-placement/outputs-full01-independent.json",
+  "offscreen": "artifacts/runs/20261029T192605Z-257-embedded-placement/visual-review02.json",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "implemented": [
+    "Stable bounded original-source loading",
+    "Native transform preview with cancel/one Undo",
+    "Camera RAW pre-placement settings in isolated native workspace",
+    "Original-source HTTP upload/replacement/frame/cancel/state",
+    "Shared-source smartObject.place optional initial transform"
+  ],
+  "remaining": [
+    "Linked sources and full source-editing/PSD/PDF interchange",
+    "Full RAW/PSD formats, XMP and exact decoder/color/default semantics",
+    "Drag-and-drop placement integration and placement preference variants",
+    "Exact Photoshop output and live interaction acceptance",
+    "Universal/minimum OS/physical Intel/macOS26 distribution acceptance"
+  ],
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "status": "Raster/native/PSD/PSB and camera RAW Place Embedded now use an initial transform preview with atomic commit/cancel. RAW sources first open native Camera Raw controls; original bytes and settings survive placement and native62. Binary source upload, replacement/frame/cancel/state and optional shared-source transforms use the same engine. 70 focused and2690 full optimized tests pass on2419 unchanged inputs; the independent rotated fixture matches768 RGBA values. RAW controls are inspected offscreen. Linked sources, full PSD/RAW/PDF interchange, exact Photoshop/default/live/platform fidelity remain open. Installed221, private universal243 and published source255 remain unchanged.",
+  "changed_compiler_inputs": [
+    "Sources/PhotoCraft/AutomationCommands.swift",
+    "Sources/PhotoCraft/AutomationEmbeddedSources.swift",
+    "Sources/PhotoCraft/AutomationHTTP.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/AutomationSmartObjects.swift",
+    "Sources/PhotoCraft/CameraRawSheet.swift",
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/EmbeddedPlacement.swift",
+    "Sources/PhotoCraft/NativeDocument.swift",
+    "Sources/PhotoCraft/PDFPlacement.swift",
+    "Sources/PhotoCraft/RawPlacementWorkspace.swift",
+    "Sources/PhotoCraft/SmartObjectEditing.swift",
+    "Sources/PhotoCraft/TransformEditing.swift",
+    "Sources/PhotoCraftImaging/SmartObjectIO.swift",
+    "Tests/PhotoCraftAppTests/EmbeddedPlacementWorkflowTests.swift"
+  ],
+  "stage": "Qualified general embedded placement workflow",
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 255,
+  "new_package": false,
+  "new_installation": false,
+  "new_source_push": false,
+  "next": "Continue major L05/D01 with genuine PDF source editing and editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence/relink/update/package workflows. Preserve source bytes and stale/cancel/history/API behavior; keep unsupported formats, large-file/color/RAW/XMP limits and exact/live/platform gates open.",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  }
+}

@@ -2,7 +2,7 @@
 
 [Latest private development build](https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7bc5c587b82133536302) — universal macOS14+ preview at checkpoint243. Ad-hoc signed; not a production release. See [build qualification](docs/UNIVERSAL_TIMELINE_PREVIEW_REFERENCES.json).
 
-The source snapshot at checkpoint255 passes **2,682 full optimized tests** and65 focused PDF tests. It includes editable native image workflows, Timeline/media functions and PDF page/image import and retained PDF Smart Object placement with shared APIs. The source is newer than the downloadable build. See [STATUS](docs/STATUS.md) for tested behavior and open gaps; passing native tests does not establish full Photoshop parity. The installed app remains checkpoint221. Photato is a pure FOSS project without purchases or donations. The repository remains private during development and becomes public on release day.
+The source snapshot at checkpoint257 passes **2,690 full optimized tests** and 70 focused placement tests. It includes editable native image workflows, Timeline/media functions and PDF page/image import and retained PDF Smart Object placement, general embedded transform previews and Camera Raw placement controls with shared APIs. The source is newer than the downloadable build. See [STATUS](docs/STATUS.md) for tested behavior and open gaps; passing native tests does not establish full Photoshop parity. The installed app remains checkpoint221. Photato is a pure FOSS project without purchases or donations. The repository remains private during development and becomes public on release day.
 
 The dated notes below describe earlier checkpoints.
 

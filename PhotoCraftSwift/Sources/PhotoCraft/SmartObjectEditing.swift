@@ -34,6 +34,7 @@ extension EditorStore {
   }
   func placeEmbedded(replacing: Bool = false) {
     guard clipboardTargetAvailable, !replacing || canEditSmartObject else { return }
+    let lifecycle = layerPanelGeneration,sessionID = sessionGeneration
     let layerID = replacing ? activeLayer?.id : nil
     let frameID = replacing ? nil : selectedFrame?.id
     let panel = NSOpenPanel()
@@ -42,28 +43,9 @@ extension EditorStore {
       UTType(filenameExtension: "psb") ?? .data, UTType(filenameExtension: "photato") ?? .data]
     panel.canChooseDirectories = false
     panel.begin { [weak self] response in
-      guard response == .OK, let url = panel.url, let self, self.clipboardTargetAvailable else { return }
-      let access = url.startAccessingSecurityScopedResource()
-      let pdf = DocumentOpenFormat.detect(url) == .pdf
-      if access {url.stopAccessingSecurityScopedResource()}
-      if pdf {
-        self.placePDF(url,replacing:layerID,frame:frameID);return
-      }
-      self.performGeometry(label: panel.title, prepare: { original in
-        let access = url.startAccessingSecurityScopedResource()
-        defer { if access { url.stopAccessingSecurityScopedResource() } }
-        let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
-        guard size <= SmartObject.maximumSourceBytes else { throw CraftError.invalid("Source exceeds 64 MiB.") }
-        let data = try Data(contentsOf: url)
-        if let layerID {
-          return try SmartObjectIO.replacement(in: original, layerID: layerID,
-            source: SmartObjectIO.decode(data, fileName: url.lastPathComponent), data: data, fileName: url.lastPathComponent)
-        }
-        if let frameID { return .frame(.replace(frameID, try SmartObjectIO.placed(data: data, fileName: url.lastPathComponent, in: original), fit: .fill)) }
-        return .addLayer(try SmartObjectIO.placed(data: data, fileName: url.lastPathComponent, in: original))
-      }, onSuccess: { [weak self] in
-        self?.selectedLayerIDs = Set(self?.document.activeLayerID.map { [$0] } ?? [])
-      })
+      guard response == .OK, let url = panel.url, let self, self.clipboardTargetAvailable,
+        self.layerPanelGeneration == lifecycle,self.sessionGeneration == sessionID else { return }
+      self.placeEmbeddedSource(url,replacing:layerID,frame:frameID)
     }
   }
   func editSmartObjectContents() {

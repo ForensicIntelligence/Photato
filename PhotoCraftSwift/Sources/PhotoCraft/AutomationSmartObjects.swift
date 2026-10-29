@@ -22,12 +22,12 @@ extension SmartObject {
   static var apiCapabilities: [String: Any] {
     ["embedded": true, "linked": false, "maximumSourceBytes": maximumSourceBytes,
       "maximumSourcePixels": SmartObjectIO.maximumCanvasPixels,
-      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities,
+      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities,
       "commands": ["smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
-      "sourceInput": "place/replace take sourceDocumentID and sourceRevision from another explicitly shared document. Upload a source using document transfers, then share it. Sources are embedded as editable Photato documents.",
+      "sourceInput": "smartObject.place/replace take sourceDocumentID/sourceRevision from an explicitly shared document and embed an editable Photato snapshot. sourcePlacement uploads original file bytes without converting their format; pdfPlacement offers PDF page/image selection.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
-      "limitations": "Embedded raster/native sources and retained PDF page sources. PDF uses native62; filtered and affine rendering reuses the native engine. PDF Warp, editable PSD/PDF interchange, source-editor UI, linked sources and general AI/SVG import remain unqualified or pending."]
+      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PDF Warp, editable PSD/PDF interchange, PDF source-editor UI, linked sources and general AI/SVG import remain unqualified or pending."]
   }
 }
 
@@ -72,7 +72,13 @@ extension AutomationCommand {
       return try .frame(.replace(id(), SmartObjectIO.placed(data: NativeArchive.encodeChunked(source), fileName: "Contents.photato", in: document), fit: frameFit()))
     case "smartObject.place":
       guard let source else { throw AutomationFailure(status: 404, message: "Source document is not shared.") }
-      return .addLayer(try SmartObjectIO.placed(data: NativeArchive.encodeChunked(source), fileName: "Contents.photato", in: document, fit: flag("fit", true)))
+      var options = EmbeddedSourceOptions();options.fit = try flag("fit",true)
+      if let transform = parameters["transform"] {
+        guard case .object(let fields) = transform,Set(fields.keys) == ["a","b","c","d","tx","ty"] else {throw AutomationFailure(status:400,message:"Transform requires a,b,c,d,tx,ty.")}
+        let header = try JSONSerialization.data(withJSONObject:["transform":transform.jsonValue])
+        options.transform = try EmbeddedSourceAPI.options(String(decoding:header,as:UTF8.self)).transform
+      }
+      return try EmbeddedSourceAPI.prepare(NativeArchive.encodeChunked(source),"Contents.photato",document,options,decoded:source)
     case "smartObject.replace":
       guard let source else { throw AutomationFailure(status: 404, message: "Source document is not shared.") }
       return try SmartObjectIO.replacement(in: document, layerID: id(), source: source,

@@ -564,6 +564,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-29 | 254 | [Stable source publication](DEVLOG.md#dev-step-254) |
 | 2026-10-29 | 255 | [Native PDF Smart Object placement](DEVLOG.md#dev-step-255) |
 | 2026-10-29 | 256 | [Publish qualified PDF Smart Object source](DEVLOG.md#dev-step-256) |
+| 2026-10-29 | 257 | [General embedded placement workflow](DEVLOG.md#dev-step-257) |
+| 2026-10-29 | 258 | [Publish qualified embedded placement source](DEVLOG.md#dev-step-258) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1358,3 +1360,21 @@ Continue major L05/D01 PDF Smart Object source editing and editable PSD/PDF inte
 The next complete source snapshot is committed and verified on private GitHub main from the qualified step255 candidate, including retained PDF page/image Smart Objects, initial transform previews, atomic commit/cancel, replacement, frames and matching API support. All2,415 qualification inputs and the built executable still match the candidate that passed65 focused and2,682 full optimized tests. The Xcode project, tests/fixtures, scripts, assets and development records accompany the source. The original Rust snapshot and existing Git history are preserved.
 
 The repository remains private until release day. Generated optional models, build products, runtime evidence and private working documents stay out of source control; reconstruction instructions remain included. This source delivery does not replace the installed app or upload a new binary. Passing native tests does not establish complete Photoshop parity. Source commit: [`f2a9711`](https://github.com/ForensicIntelligence/Photato/commit/f2a9711d0f1e95c4e5bcf713bfa3181d31520057). [Verified receipt](SOURCE_PUBLICATION_256.json). [Detailed record](DEVLOG.md#dev-step-256).
+
+## 2026-10-29 — Step257: place original artwork with a transform preview
+
+Place Embedded now previews raster images, native documents, PSD/PSB files and supported camera RAW artwork before committing. Position, scale or rotate the pending layer, then use Return to accept or Escape to discard it without changing document history. RAW sources first open the existing native Camera Raw controls. The temporary RAW workspace preserves the working document until placement is accepted, and closing either workspace cancels preparation. Original source bytes remain embedded.
+
+The optional API can now upload an original source directly, place or replace artwork, fill a frame and request cancellation. It also exposes placement state and accepts an initial transform on the existing shared-document command. These paths share native preparation/history rather than duplicate the image algorithms. Adobe-compatible file-input and bounds contracts remain unchanged.
+
+The first focused run caught a test setup error: cancellation restored the actual empty selection, while the assertion expected a selected layer. Starting the fixture with an explicit selection repaired the test. Review also prevented an unintended reduction of existing RAW source limits. The failed candidate and passing repair are preserved. An original colored checker fixture verifies the rotation by an independent coordinate calculation; its768 exact RGBA values are not an Adobe pixel oracle. Native Camera Raw controls were inspected offscreen, not through live Photoshop interaction.
+
+Raster/native/PSD/PSB and camera RAW Place Embedded now use an initial transform preview with atomic commit/cancel. RAW sources first open native Camera Raw controls; original bytes and settings survive placement and native62. Binary source upload, replacement/frame/cancel/state and optional shared-source transforms use the same engine. 70 focused and2690 full optimized tests pass on2419 unchanged inputs; the independent rotated fixture matches768 RGBA values. RAW controls are inspected offscreen. Linked sources, full PSD/RAW/PDF interchange, exact Photoshop/default/live/platform fidelity remain open. Installed221, private universal243 and published source255 remain unchanged.
+
+Continue major L05/D01 with genuine PDF source editing and editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence/relink/update/package workflows. Preserve source bytes and stale/cancel/history/API behavior; keep unsupported formats, large-file/color/RAW/XMP limits and exact/live/platform gates open. [Detailed record](DEVLOG.md#dev-step-257).
+
+## 2026-10-29 — Step258: publish the embedded placement source
+
+A complete source snapshot is prepared from the qualified step257 candidate. It includes transform previews for raster, native, PSD/PSB and camera RAW placement; Camera Raw settings before placement; original-source retention; atomic cancellation/history; and the matching API workflows. All 2,419 qualification inputs and the compiled executable match the candidate that passed 70 focused and 2,690 full optimized tests. Sources, tests/fixtures, the Xcode project, scripts, assets, notices and development records are included alongside the unchanged Rust snapshot.
+
+The repository remains private until release day. Generated optional models, build products, runtime evidence and private working documents are excluded; model reconstruction instructions are included. This source delivery does not replace the installed app or upload a new binary. Passing native tests does not establish full Photoshop parity. The verified commit receipt follows after push. [Detailed record](DEVLOG.md#dev-step-258).

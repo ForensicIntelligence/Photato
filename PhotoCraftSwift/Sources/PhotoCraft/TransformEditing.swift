@@ -153,7 +153,7 @@ extension EditorStore {
     render()
   }
   func cancelTransform() {
-    if embeddedPlacement != nil,pdfPlacementOperationID != nil {geometryTask?.cancel();pdfPlacementOperationID = nil;geometryBusy = false}
+    if embeddedPlacement != nil,embeddedPlacementOperationID != nil {geometryTask?.cancel();embeddedPlacementOperationID = nil;geometryBusy = false}
     discardEmbeddedPlacement()
     clearContentAwareScale()
     transformDraft = nil

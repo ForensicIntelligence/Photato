@@ -220,9 +220,14 @@ import UniformTypeIdentifiers
   @ObservationIgnored var cropTask: Task<Void,Never>?
   var transformDraft: TransformDraft?
   var embeddedPlacement: EmbeddedPlacementDraft?
+  var embeddedPlacementSourceName: String?
+  var embeddedPlacementIsPDF = false
+  var rawPlacementWorkspace: RawPlacementWorkspace?
+  @ObservationIgnored var rawPlacementWindow: RawPlacementWindow?
+  @ObservationIgnored var rawPlacementPresenter: (@MainActor (RawPlacementWorkspace) -> Void)?
   var pdfPlacementWorkspace: PDFImportWorkspace?
   @ObservationIgnored var pdfPlacementWindow: PDFImportWindow?
-  @ObservationIgnored var pdfPlacementOperationID: UUID?
+  @ObservationIgnored var embeddedPlacementOperationID: UUID?
   @ObservationIgnored var pdfPlacementPresenter: (@MainActor (PDFImportWorkspace) -> Void)?
   var contentAwareScalePreview: CraftDocument?
   var contentAwareScaleReadyDraft: TransformDraft?

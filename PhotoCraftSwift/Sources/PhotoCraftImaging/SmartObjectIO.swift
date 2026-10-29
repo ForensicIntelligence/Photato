@@ -79,7 +79,10 @@ public enum SmartObjectIO {
       var settings = PDFImportSettings();settings.resolution = 72
       return try PDFSmartObjectIO.placed(data,fileName:fileName,in:parent,settings:settings,fit:fit)
     }
-    let document = try decode(data, fileName: fileName)
+    return try placed(document:decode(data,fileName:fileName),data:data,fileName:fileName,in:parent,fit:fit)
+  }
+  public static func placed(document: CraftDocument, data: Data, fileName: String,
+    in parent: CraftDocument, fit: Bool = true) throws -> Layer {
     let (object, pixels) = try embedded(document: document, in: parent, originalData: data, fileName: fileName)
     var layer = Layer(name: (fileName as NSString).deletingPathExtension, content: .raster(pixels))
     layer.smartObject = object
