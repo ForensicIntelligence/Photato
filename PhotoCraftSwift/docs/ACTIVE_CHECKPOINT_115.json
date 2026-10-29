@@ -1,0 +1,139 @@
+{
+  "step": "dev-step-115",
+  "recorded_at_utc": "2026-10-19T21:54:14.807409+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; required dependencies remain with their major workflow",
+  "major_workflow": "D01 document open/edit/save/close/revert",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T212322Z-115-linear-editing/tested-source-hashes02.json",
+    "sha256": "db36e989156f6d75df45f9c468ada2f0ada8fda7be909497a35436fcaafe739f"
+  },
+  "source_test_files": 395,
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T212322Z-115-linear-editing/release-verification.json",
+    "sha256": "947c89bc7457d0c80a3f6d4125c66e7f7303c9c7313157e382dbd2bde20ca2c0"
+  },
+  "tests": {
+    "full02.log": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/full02.log",
+      "sha256": "42b4a129eb147d0b62da1026511696fe5bdd3bc5d0780c48a4d023986c0f3449",
+      "passed": 1045,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 153.262
+    },
+    "release02.log": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/release02.log",
+      "sha256": "03be7746c6ffe1354decd03271414aebb5b08ffdd68c60802905ac255bd36b7d",
+      "passed": 635,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 16.888
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato-linear-package-xmxywven/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "1e4fc8a07274840639c261aa3ab358df44870a295415ef3eb95223da4c06293f",
+    "zip_sha256": "016da6c2207a1904818738ba610bb0279d6d20a157cc2cb7d43da926b00c44db",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    }
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T212322Z-115-linear-editing/live-ui-verification.json",
+    "sha256": "ae9aafaf20cdb62759a447950c291560a70fefb5752bf33c6c95b14817edb60c"
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "progress",
+  "completed_this_increment": [
+    "Direct linear Float32 LayerMerge input/intermediate/commit storage",
+    "65536 independent raw Photoshop pixels through native merge/archive/history, without codec conversion hiding deltas",
+    "Photato layer.merge with schemas/state/availability/limits and native background transaction/history;18 commands",
+    "Adobe $Mrg2/$MrgV/selectAllLayers with selected-state continuity across resources; two existing partial endpoints",
+    "All-depth desktop and HTTP working-space merge equivalence; raw live profile mismatch discovered and recorded"
+  ],
+  "remaining_major_dependencies": [
+    "Original working-profile retention and display/edit/import/export consistency; live Adobe linear-sRGB conversion changes8736 RGB bytes",
+    "PSD white-matte ordering candidate matches5472 base-only samples and reduces whole-image mismatch12986\u219270; not yet implemented/qualified",
+    "Full merge masks/groups/clipping/transforms/blends/Background/Flatten and remaining HDR kernels",
+    "Complete PSD/PSB/RAW/PDF/pcraft formats/options/metadata semantics",
+    "Crash relaunch recovery, external/read-only/sandbox coordination, recent/bookmark durability",
+    "Complete dual API contracts, preferences/shortcuts/context and Intel/macOS14 runtime qualification"
+  ],
+  "resume_first": "Verify395 source/test hashes and package/project against this checkpoint. Read AGENTS.md, priorities108, FUNCTION_PHASES_109, DEVLOG115 and LAYER_MERGE_REFERENCES.linear_storage_step115. Classify preceding work as verified bounded progress. Continue major D01 original working-profile preservation first; do not claim the converted-working-space PSD comparisons prove raw original-profile parity. Preserve all full-goal requirements.",
+  "next_source_review": [
+    "PSDCodec.convertProfile at~677 converts Adobe linear-sRGB ICC because CGColorSpace identity differs; profile SHA f50ef60e269f9011cec05505c991566e7e41569674b1ecf756deb973acbdad9d; writes Apple42d1e258...",
+    "CraftDocument sourceICC is source metadata; no explicit retained working-profile model; RasterIO/Renderer/canvas currently assume Apple sRGB. A real profile-aware storage/display/export policy is required, not a fixture hash bypass",
+    "PSDMergedSample.encodeLinear currently preserves opaque values; experimental Float32(1-Float32(1-v)) reproduces Photoshop white-matte rounding for base-only pixels",
+    "Renderer.compositeLinearPixel vs NormalLayerComposite; remaining70 matte-candidate sample differences need independent qualification",
+    "GroupRenderer pass-through extraction, RasterGeometry, adjustment/paint kernels; full file options/recovery remain open"
+  ],
+  "independent_evidence": {
+    "native_raw_merge": {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/normal-rgb32.rgba",
+      "sha256": "ad1079b18f773373b32069dd0dcef7fd295544bbe8b65c5df0e94e17a5128ea2",
+      "pixels": 65536,
+      "layout": "Bottom RGBA, top RGBA, expected merged RGBA; big-endian Float32; original Photoshop extraction provenance in step058",
+      "test": "LayerMergeTests.test65536IndependentLinearRGB32MergePixelsThroughArchiveAndHistory"
+    },
+    "live_profile_gap": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/independent-final-live01.json",
+      "sha256": "b528828b245a7ef9a9af819e068c746161b346703138cb5b7ee8890cf6069161"
+    },
+    "profile_analysis": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/merge-profile-review01.json",
+      "sha256": "c9480d2bbc56a74d13e0fcdb371ff89499167148b81eb13bc32970acbe601dcf"
+    },
+    "same_profile_reference": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/icc-and-base-delta01.json",
+      "sha256": "ab0f48b39c4db9e3682f554cbbb9565179729b431536580759225dd5dc522107"
+    },
+    "white_matte_base_experiment": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/white-matte-base-experiment01.json",
+      "sha256": "49f3ea8a551ac972e397d5afd0a5ab028e5f1d49ab07e8b5e973b35bb4913742"
+    },
+    "white_matte_full_experiment": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/white-matte-whole-experiment01.json",
+      "sha256": "f8091b835f2e283d0cd4632a7181de96c1eb75d6eee7a1846cb6b22b019f78f7"
+    }
+  },
+  "runtime_cleanup": {
+    "isolated_app_exited": true,
+    "original_probe_unchanged": true,
+    "original_workspace_bytes_unchanged": true,
+    "workspace_sha256": "bcac41f6b160420ca026c01f32fd5553338deac63a9008648ed24e29bf2f612e",
+    "photoshop_original_document_untouched": true,
+    "disposable_photoshop_and_finder_windows_closed": true
+  },
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "history_audit": {
+    "pending": false,
+    "first_check": {
+      "check": "passed",
+      "milestones": 115,
+      "evidence_files": 27599,
+      "logs": 16653,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/development-history-audit/20261019-step115-linear-merges/check01.log",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step115-linear-merges/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step115-linear-merges/check02.log"
+  }
+}

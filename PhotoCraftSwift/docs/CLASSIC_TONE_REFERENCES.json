@@ -1,0 +1,292 @@
+{
+  "step": "dev-step-219",
+  "date": "2026-10-27",
+  "status": "Native implementation, focused/full regression and universal package verified; exact Photoshop and live/platform qualification remain open.",
+  "scope": [
+    "image.adjustments.shadowsHighlights",
+    "image.adjustments.hdrToning",
+    "image.adjustments.matchColor",
+    "image.adjustments.replaceColor",
+    "image.adjustments.equalize"
+  ],
+  "source_provenance": {
+    "width": 17,
+    "height": 13,
+    "cases": [
+      {
+        "name": "shadows-default",
+        "kind": "shadowsHighlights",
+        "settings": {}
+      },
+      {
+        "name": "shadows-lift",
+        "kind": "shadowsHighlights",
+        "settings": {
+          "shadowAmount": 80,
+          "blackClip": 0,
+          "whiteClip": 0
+        }
+      },
+      {
+        "name": "shadows-highlights",
+        "kind": "shadowsHighlights",
+        "settings": {
+          "shadowAmount": 0,
+          "highlightAmount": 80,
+          "highlightRadius": 4,
+          "blackClip": 0,
+          "whiteClip": 0
+        }
+      },
+      {
+        "name": "shadows-contrast",
+        "kind": "shadowsHighlights",
+        "settings": {
+          "shadowRadius": 3,
+          "highlightRadius": 7,
+          "midtone": 50,
+          "colorCorrection": -35,
+          "blackClip": 3,
+          "whiteClip": 5
+        }
+      },
+      {
+        "name": "replace-hue",
+        "kind": "replaceColor",
+        "settings": {
+          "samples": [
+            {
+              "color": {
+                "r": 0.4,
+                "g": 0.5,
+                "b": 0.6,
+                "a": 1
+              },
+              "subtract": false
+            }
+          ],
+          "fuzziness": 150,
+          "hue": 120,
+          "saturation": 0,
+          "lightness": 0
+        }
+      },
+      {
+        "name": "replace-mixed",
+        "kind": "replaceColor",
+        "settings": {
+          "samples": [
+            {
+              "color": {
+                "r": 0.4,
+                "g": 0.5,
+                "b": 0.6,
+                "a": 1
+              },
+              "subtract": false
+            }
+          ],
+          "fuzziness": 150,
+          "hue": -70,
+          "saturation": 35,
+          "lightness": -30
+        }
+      },
+      {
+        "name": "hdr-default",
+        "kind": "hdrToning",
+        "settings": {}
+      },
+      {
+        "name": "hdr-contrast",
+        "kind": "hdrToning",
+        "settings": {
+          "radius": 4,
+          "strength": 2,
+          "detail": 80,
+          "exposure": 0.5,
+          "gamma": 0.8
+        }
+      },
+      {
+        "name": "hdr-curve",
+        "kind": "hdrToning",
+        "settings": {
+          "curve": [
+            [
+              0,
+              1
+            ],
+            [
+              0.5,
+              0.4
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "vibrance": -30,
+          "hdrSaturation": -20
+        }
+      },
+      {
+        "name": "match-neutral",
+        "kind": "matchColor",
+        "settings": {
+          "neutralize": true
+        }
+      },
+      {
+        "name": "match-luminance",
+        "kind": "matchColor",
+        "settings": {
+          "luminance": 130,
+          "intensity": 60,
+          "fade": 20
+        }
+      },
+      {
+        "name": "match-source",
+        "kind": "matchColor",
+        "settings": {
+          "sourceStatistics": {
+            "mean": [
+              55,
+              12,
+              -8
+            ],
+            "standardDeviation": [
+              18,
+              15,
+              22
+            ]
+          }
+        }
+      }
+    ],
+    "source_hashes": {
+      "crates/algo/src/tone.rs": "e3a7291e62e60dc83429f76d9224618bf843b1a03f95a1f2260025ab6a29bb01",
+      "crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+      "crates/color/src/convert.rs": "0b59ecd379945083a0ca2d12131a413cddb0b0c5115d74796368373ad6351c06",
+      "crates/algo/src/other2.rs": "8b346483623d7aec7008cc5b08f16222a269604936a808ff07d3d3c7a46169cf",
+      "crates/algo/src/selection.rs": "cc91ea19312ec378d86df670d5e229d48ef860ee29295e9f2b16d89c959c2d45"
+    },
+    "license": "MIT OR Apache-2.0",
+    "provenance": "Original unchanged tone.rs bodies plus extracted Gaussian, Lab, HSL and selection helper functions. Removed serde traits/imports and adapted parallel scheduling sequentially. Synthetic RGB8 fixtures; not Adobe output.",
+    "files": {
+      "hdr-contrast.rgba": "553157e7a807acc74d74a246ca0869927c9578a2dc9e72e9112995a1300dc49a",
+      "replace-mixed.rgba": "35bbe0b03342989754e3cacaad9dac2d33080c2e3482c34151c5f667d68b7040",
+      "shadows-lift.rgba": "9dcbd6c76bdb9e77f73b2d42a8d63f181621c68b6d0adf4c77996c6b4bf2f941",
+      "shadows-contrast.rgba": "33e4e2519d3d3444acc8503e6ccf419338588920696aa2ea172ce696be83c9bc",
+      "match-luminance.rgba": "e31c602a1a84dc78e634ae0e859da39cc3a273f08380e4e9db74099020bde258",
+      "shadows-default.rgba": "348da6d344d547b50da370bebcb4161a5f4021d0a6b199d74c352f0b55513a31",
+      "input.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+      "hdr-curve.rgba": "bd1739f26b5323e557e5e32bc27917dfd23a2f9bf8fd0352823f48d33683829b",
+      "replace-hue.rgba": "a1bd342968f7a4cd404f181501195cc8987baedc235aadbb55e43249d55cd7a0",
+      "match-source.rgba": "28699b8165378f41b176cfe560ca41c615fc43d9c685689cbac779f6d0987a77",
+      "shadows-highlights.rgba": "d4463f87fdb7b99fdface99d6418082fb8634a88fca738fd6e9c18ec1c7e1d29",
+      "hdr-default.rgba": "9611238d6e818573bae5ea0e83b82b93986d59aebe6b7c750ca0e8e0df2ea122",
+      "match-neutral.rgba": "3fae4f599929f5a032327a84983d5da4335fedc1971bebb27f6ad29f54e53cbe"
+    }
+  },
+  "references": {
+    "utc": "2026-10-28T04:41:17.926099+00:00",
+    "urls": [
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/adjust-hdr-exposure-and-toning.html",
+      "https://helpx.adobe.com/uk/photoshop/desktop/adjust-color/selective-color-adjustments/match-color-between-two-images.html",
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/equalize-brightness-values-in-an-image.html",
+      "https://helpx.adobe.com/sa_en/photoshop/using/adjust-shadow-highlight-detail.html",
+      "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf"
+    ],
+    "scope": "Public controls/workflow references; no kernel equality claim.",
+    "later_reference_audit": "Adobe Light adjustment layer page September2026 observed; installed menu/catalogue context needs audit, not silent replacement of Brightness/Contrast."
+  },
+  "license": "MIT OR Apache-2.0",
+  "native_workflows": [
+    "Shadows/Highlights Smart Filters and raster edits",
+    "HDR Toning four methods and flatten Undo",
+    "Match Color source/layer/selection statistics",
+    "Replace Color add/subtract samples and mask preview",
+    "Equalize selected-only or whole-target mapping"
+  ],
+  "api": {
+    "typed_commands": 112,
+    "new": [
+      "tone.apply",
+      "tone.statistics"
+    ],
+    "native_version": 45,
+    "actions_version": 18,
+    "adobe_endpoint_change": false
+  },
+  "remaining": [
+    "Exact Photoshop pixels/defaults/depth/ICC semantics and all A03 closure gates",
+    "Semantic HDR Toning Actions, Adobe STA/preset/ActionJSON/ATN/editable PSD descriptors",
+    "Live gestures/file panels/Photoshop comparison, physical Intel and macOS14/macOS26",
+    "8,388,608 pixel budget and bounded native RGB8/16/32 behavior; full other color modes pending"
+  ],
+  "run": "artifacts/runs/20261028T043749Z-219-classic-tone",
+  "tests": {
+    "focused": {
+      "passed": 161,
+      "failed": 0,
+      "log": "artifacts/runs/20261028T043749Z-219-classic-tone/integration04.log"
+    },
+    "full_optimized": {
+      "passed": 2094,
+      "failed": 0,
+      "log": "artifacts/runs/20261028T043749Z-219-classic-tone/release-full01.log"
+    },
+    "original_rust_rgb8": {
+      "cases": 12,
+      "exact": 12,
+      "adobe_output": false
+    }
+  },
+  "package": {
+    "utc": "2026-10-28T05:20:41.466214+00:00",
+    "tests": {
+      "integration04": 161,
+      "release-full01": 2094
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T043749Z-219-classic-tone/Photato219-final01.zip",
+    "zip_sha256": "19150950a6484c326b7463716680c2d897be07ba4df3be69caf922867f1e2b10",
+    "app": "/private/tmp/photato219-verified-46lfw7iw/Photato.app",
+    "executable_sha256": "012304c5080ebcff71cddc1793981323f70a45ddaa8ec3fe793b422eb68fd050",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato219-verified-46lfw7iw/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato219-verified-46lfw7iw/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1891,
+    "source_manifest_sha256": "0bb08c753da0a217ee231a8c185c8a11bc10da0d473ffc4169ab086e198175f5",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 340,
+      "unavailable_leaf_commands": 385,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_classic_tone_reference_cases": 12,
+    "limits": "161 focused Debug and2094 full optimized tests plus universal package on this host.12 synthetic original-Rust RGB8 cases match exactly; not Adobe output equivalence. Physical Intel/macOS14/macOS26, ICC-specific tone behavior, Photoshop defaults/depth behavior/descriptors, native STA, HDR semantic Actions and live workflows remain open. User handoff of verified209 is pending desktop access. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": [],
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "same_document_live_handoff": "Pending manual Mac unlock; installed209 verified separately.",
+    "installed209_and_retained_artwork": "Executable/document hashes unchanged; installed signature verifies. No new live handoff."
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "step": "dev-step-188",
+  "completed_at_utc": "2026-10-27T12:05:30.942995+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Saved perspective planes and connected planes, perspective paste/clone/brush, native preview workspace, local/document Undo, native32 persistence and shared Photato API.",
+  "source_manifest": "artifacts/runs/20261027T112757Z-188-vanishing-point/source01.json",
+  "source_manifest_sha256": "af5340eeecd285305f2007b0d1e92103cda44e9171099c23f222c45a33f424ee",
+  "source_inputs": 1418,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationVanishingPoint.swift",
+      "Sources/PhotoCraft/VanishingSheet.swift",
+      "Sources/PhotoCraft/VanishingWorkspace.swift",
+      "Sources/PhotoCraftCore/VanishingEngine.swift",
+      "Sources/PhotoCraftCore/VanishingPoint.swift",
+      "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/VanishingTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/VectorPath.swift",
+      "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration05": 117,
+    "release-full01": 1816
+  },
+  "last_full_regression": {
+    "step": 188,
+    "tests": 1816,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+    "current_source": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T112757Z-188-vanishing-point/module01.log",
+    "artifacts/runs/20261027T112757Z-188-vanishing-point/integration01.log",
+    "artifacts/runs/20261027T112757Z-188-vanishing-point/integration02.log",
+    "artifacts/runs/20261027T112757Z-188-vanishing-point/integration03.log",
+    "artifacts/runs/20261027T112757Z-188-vanishing-point/records01-failure.txt"
+  ],
+  "package": {
+    "utc": "2026-10-27T12:05:30.942995+00:00",
+    "tests": {
+      "integration05": 117,
+      "release-full01": 1816
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T112757Z-188-vanishing-point/Photato188-final.zip",
+    "zip_sha256": "798172d0e539fc1bc8a40bc8b82d9fcb8527cb36382ed543584a44713cdc605a",
+    "app": "/private/tmp/photato188-verified-vogquzj7/Photato.app",
+    "executable_sha256": "66c2e409ffcbd29f140bed9413a5fd03a3a8d413ceec62f03773ca1d1df93e22",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato188-verified-vogquzj7/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato188-verified-vogquzj7/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1418,
+    "source_manifest_sha256": "af5340eeecd285305f2007b0d1e92103cda44e9171099c23f222c45a33f424ee",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 256,
+      "unavailable_leaf_commands": 469,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Full optimized suite and universal package validation on the current host; not live UI, physical Intel/macOS14/26 or complete Photoshop equivalence evidence."
+  },
+  "api": {
+    "commands": [
+      "filter.vanishingPoint"
+    ],
+    "catalogue_count": 71,
+    "native_archive_version": 32,
+    "state": "Strict settings/operation schemas; document and workspace saved settings plus resolved plane corners/metric dimensions; active tool, selection, preview/rendering, navigation and local history availability. Existing revision/busy/sharing protections apply.",
+    "parameters": [
+      "layerID",
+      "settings",
+      "operations",
+      "newLayer"
+    ]
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No invented Adobe route. Unqualified Vanishing Point actionJSON and editable PSD/PSB plane metadata reject. Rendered raster export remains available."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 256,
+    "unavailable": 469,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Vanishing Point\u2026"
+    ],
+    "shortcut": "Option+Command+V"
+  },
+  "limitations": [
+    "Perspective marquee/floating selections/cut, measurement, healing modes and multi-surface stroke wrapping are absent. Full F05 remains open.",
+    "No recorded Actions integration for this prepared composite operation; playback/recording reports unsupported rather than silently omitting it. Direct desktop and API are implemented.",
+    "Target must be an ordinary raster layer. Native workspace admission currently needs an unlocked image target even when new-layer output would be possible in the engine/API.",
+    "32 planes,256 operations,16,384 supplied points,4,096 per stroke,128MiB embedded sources,8,388,608 canvas/target pixels and134,217,728 raster visits. Larger document performance remains open; API sharing limits apply separately.",
+    "Exact Adobe pixels, full color-mode matrix, complete grid/keyboard/context interactions and nonuniform transformed-camera recalibration are unqualified.",
+    "Native32 preserves planes. Adobe PSD/PSB plane metadata and .vpe interchange are unsupported; explicit save guards prevent silent metadata loss.",
+    "Latest desktop evidence remains locked. No re-probe/bypass. Live UI, physical Intel and macOS14/26 validation remain open; current-host tests and universal builds do not prove these gates."
+  ],
+  "next": "B01 major painting workflow: native Brush Settings, custom tips/dynamics and reusable presets with canvas/API/history integration. Defer exact kernels and cosmetic refinement.",
+  "next_major_plan": "artifacts/runs/20261027T112757Z-188-vanishing-point/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 188,
+    "evidence_files": 38334,
+    "logs": 19359,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T112757Z-188-vanishing-point/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T112757Z-188-vanishing-point/refresh02.log",
+      "artifacts/development-history-audit/20261027T112757Z-188-vanishing-point/check02.log"
+    ],
+    "scope": "Record/reference integrity, not Photoshop parity."
+  }
+}

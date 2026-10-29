@@ -1,0 +1,65 @@
+{
+  "step": "dev-step-167",
+  "completed_at_utc": "2026-10-27T00:16:27.922009+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Usable native alpha channels, saved selections and Quick Mask; C02/S05 full parity remains open.",
+  "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source02.json",
+  "source_manifest_sha256": "0aa0627cd2826a6e84784bd0ee8dee874fe7aedf4ecea9cbc4b84617ff8aed7a",
+  "source_inputs": 1248,
+  "source_delta": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/changes02.json",
+  "tests": {
+    "broad_focused_before_refresh_repair": {
+      "count": 73,
+      "log": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/integration03.log",
+      "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source01.json"
+    },
+    "final_focused": {
+      "count": 28,
+      "log": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/integration04.log",
+      "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source02.json"
+    },
+    "failures": 0,
+    "full_regression": "Deferred to batch major-feature milestone, not claimed for167."
+  },
+  "package": {
+    "utc": "2026-10-27T00:16:27.922009+00:00",
+    "app": "/private/tmp/photato167-verified-s36ykxom/Photato.app",
+    "zip": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/Photato167-final.zip",
+    "zip_sha256": "c1aa9c3afa0dedfcc0873902cd2f993320bf85bf02d6924990956b9b229ffeac",
+    "executable_sha256": "d50f692702e35282cac6fedfd8cd46ebba9f026e59c9745778a146fb58cb3ce2",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1248,
+    "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source02.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "Focused Debug tests only for167; full/optimized/Intel/macOS14/26/live qualification remains open."
+  },
+  "api": {
+    "photato_typed_commands": 44,
+    "adobe": "Five partial/three unimplemented endpoint groups unchanged; channel actionJSON remains unsupported."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 211,
+    "unavailable": 514,
+    "primary": 102,
+    "alternate": 8
+  },
+  "limitations": [
+    "PSD/PSB channel planes/resources and spot inks not ported; native20 saves preserve channels; PSD export fails explicitly.",
+    "Cross-document channels, Calculations/Apply Image, split/merge and richer channel tools remain open.",
+    "Selections use GRAY8; independent Photoshop output and live UI qualification remain open."
+  ],
+  "next": {
+    "workflow": "B06 Content-Aware Fill",
+    "first_step": "Read upstream algo/content_aware.rs/inpaint.rs and engine fill commands. Add native sampling-area workspace, synthesis, preview/cancel, output layers/history and APIs."
+  },
+  "no_running_workers_expected": true,
+  "development_audit": "artifacts/development-history-audit/20261026T234846Z-167-channels-quick-mask/check01.log"
+}

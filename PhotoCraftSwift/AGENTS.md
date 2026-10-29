@@ -2,11 +2,17 @@
 
 The maintainer’s step108 order is **major functions, then minor functions, then final details**. Complete every major function before the minor-function phase, and every minor function before final polish. Include the UI, menu/shortcut integration, APIs and validation needed to make each function complete. Smaller dependencies needed to close a major function belong to that function; optional polish waits. Keep unresolved parity requirements open. This supersedes the earlier UI-first scheduling. Read `docs/WORK_PRIORITIES_108.json` with the preserved step107 checkpoint before resuming. Do not resume implementation until the user unpauses or explicitly requests it.
 
+**Maintainer scheduling correction (step157,2026-10-26):** Prioritize breadth of working major features now. Defer numerical/pixel-exact feather/filter refinements and small fidelity details while major workflows are missing. Deliver each major feature with usable UI, APIs, history and focused tests; batch broader qualification at meaningful milestones. Preserve unresolved full-parity gates honestly rather than spending successive increments polishing one subsystem. The step156 feather research is saved and deferred.
+
 # Photato development records
 
 The maintainer requires every development step to be documented from the initial source audit onward. Read `docs/DEVLOG.md`, `docs/STATUS.md`, and the **Development record** section of `CONTRIBUTING.md` before continuing work.
 
 Keep `docs/DEVLOG.md` current as work proceeds, including investigation, decisions and rejected approaches, source/file changes, test commands and their outcomes, failed attempts and repairs, reference provenance, live UI checks, and remaining limitations. Record each meaningful step, not just successful milestones or the final answer. Finish the record before ending a work session.
+
+Record every meaningful addition, modification, deletion, rename, rollback and replacement, including code, tests, assets, configuration, documentation and API changes. Related edits may share an entry, but identify affected paths/modules, the before/after behavior, reason, validation and unresolved effects. Explicitly name deleted or withdrawn items and any replacement; preserve their prior evidence instead of silently erasing the history. Do not claim an exhaustive historical edit record where evidence is missing.
+
+Maintain `docs/DEVELOPMENT_DIARY.md` as the human-readable chronological companion to DEVLOG. Update its milestone index and material narrative at each completed checkpoint; keep ongoing detailed notes in DEVLOG. Clearly distinguish completed, experimental, failed and in-progress work, and date retrospective reconstructions. The diary is documentation, not a substitute for source control or proof of Photoshop parity.
 
 Use stable `dev-step-NNN` anchors and update the oldest-first index. Preserve previous entries; mark retrospective additions with their reconstruction date and evidence. Never invent missing timestamps, test results, original commits, or pixel-equivalence claims.
 

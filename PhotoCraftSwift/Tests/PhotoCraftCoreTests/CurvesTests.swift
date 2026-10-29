@@ -119,7 +119,7 @@ final class CurvesTests: XCTestCase {
         LevelsTransfer.mix(p, with: changed, coverage: 128.0 / 255, depth: depth).quantized(depth))
       XCTAssertEqual(result.pixel(x: 2, y: 0), p)
       XCTAssertEqual(result.pixel(x: 3, y: 0), p)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
       try session.execute(.addLayer(Layer(name: "Curves", content: .adjustment(.curves(curves)))))
       XCTAssertEqual(

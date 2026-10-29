@@ -1,0 +1,115 @@
+{
+  "step": "dev-step-195",
+  "date": "2026-10-27",
+  "status": "Native Mask All Objects implemented and tested; full S03/Photoshop parity remains open.",
+  "scope": "Single local Vision inference creates separate empty editable Pass Through groups with per-instance masks above the source clipping family. Source pixels/masks/hierarchy and selection preserved; targeted adjustment, native history/archive, Layer/context menu and shared API.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/mask-all-objects-in-a-layer.html",
+      "updated": "2026-02-23",
+      "checked": "2026-10-27",
+      "behavior": "Select a layer and use context-menu Mask All Objects to create separate masks."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-layer-masks-for-all-detected-objects-in-a-layer.html",
+      "updated": "2026-03-17",
+      "checked": "2026-10-27",
+      "behavior": "Layer > Mask All Objects creates per-object layer-mask groups that accept targeted adjustments. This resolves the earlier uncertainty about group-based output."
+    },
+    {
+      "path": "../photocraft-main/crates/engine/src/layer_menu_cmds.rs",
+      "sha256": "96b47e62b8303b9730066966cc0b57447f6df4d5ddb30bbda60d1c7fa159189e",
+      "license": "MIT OR Apache-2.0",
+      "use": "Reviewed source mask_all_objects at189; explicitly creates one combined mask. Independent native implementation deliberately follows Adobe per-object groups rather than preserving that source limitation."
+    },
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Vision.framework/Versions/A/Headers/VNObservation.h",
+      "sha256": "b5a884a017272548da9fc73585b34bb959b026ddb629048dc7947137ad15c470",
+      "use": "Installed SDK declares macOS14 instance labels, allInstances, scaled masks. Public Apple page requires JavaScript; Markdown retrieval failed, recorded honestly."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/vision/vninstancemaskobservation/generatescaledmaskforimage(forinstances:from:)",
+      "checked": "2026-10-27",
+      "use": "API documentation entry point; rendering limitation above."
+    },
+    {
+      "path": "Assets/PhotatoIcon.png",
+      "sha256": "ba7e98d71e6af20662d49e74802bb0bcc699426152acca8b55137469666ac112",
+      "use": "Existing user-provided icon used for actual on-device model smoke test; no new image asset introduced."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "layer.maskAllObjects"
+    ],
+    "catalogue_count": 90,
+    "parameters": {
+      "layerID": "Required raster layer UUID"
+    },
+    "state": "maskAllObjects.available and busy; groups use existing layer/mask/hierarchy state. API explicitly targets layerID independently of desktop multi-selection.",
+    "results": "Standard document-state result plus createdGroupIDs in bottom-to-top order. Schemas and capabilities exposed. Same prepared native command, one Undo transaction, stale/busy/cancel/revoke and post-edit resource checks.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 detected instances,16,777,216 aggregate mask pixels,256MiB worst-case padded tile allocation and512 document layers. API4,194,304 pixels/64 layers/128MiB document data;4MiB requests. Limits reject the entire operation without dropping objects.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "adobe_api": {
+    "new_route": null,
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "status": "Pinned published contract has no dedicated Mask All Objects route. auto-crop object detection yields bounding boxes, not editable masked groups. Mask All Objects actionJSON descriptors remain unqualified and explicitly unsupported; no invented Adobe endpoint. Existing v2 routes unchanged.",
+    "previous_live_contract_review": "artifacts/runs/20261027T152723Z-193-sky/adobe-v2-review01.json"
+  },
+  "menus": {
+    "commands": [
+      "Layer > Mask All Objects",
+      "Layer context > Mask All Objects"
+    ],
+    "new_menu_bindings": 1,
+    "shortcut": "Captured factory order retained; no shortcut invented. Context menu integration tested; exact context order/live appearance not qualified.",
+    "entries": 802,
+    "bound_leaf_commands": 263,
+    "unavailable_leaf_commands": 462,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "actions": "Native Actions records an explicit unsupported entry; it does not silently skip object-mask generation. Replaying it fails without partial edits. Persisted document masks are editable in native archive32.",
+  "qualification": "All82 focused Debug and82 optimized tests pass. Real Apple Vision inference succeeds on the1024\u00d71024 icon with source retention and Undo/Redo. Latest full/universal baseline194 has1903 passing tests and excludes195.",
+  "tests": {
+    "focused_debug": 82,
+    "debug_log": "artifacts/runs/20261027T164305Z-195-mask-objects/integration03.log",
+    "new_workflow_tests": 7,
+    "failed_attempts": [
+      "artifacts/runs/20261027T164305Z-195-mask-objects/integration01.log",
+      "artifacts/runs/20261027T164305Z-195-mask-objects/integration02.log"
+    ],
+    "real_model": "artifacts/runs/20261027T164305Z-195-mask-objects/real-vision01.json",
+    "real_mask": "artifacts/runs/20261027T164305Z-195-mask-objects/real-vision-mask-1.png",
+    "scope": "Independent injected instance masks, RGB8/16/32, source/selection preservation, one-group-targeted adjustment, native archive/Undo/Redo, transformed input/locked source/nested clipping-family placement, invalid masks/budgets, menu/context, native cancellation/reload, HTTP schemas/equivalent masks/invalid/stale/busy/no-object/cancel/revoke and API layer-budget atomicity; existing subject/group/selection/menu/API regression.",
+    "focused_release": 82,
+    "release_log": "artifacts/runs/20261027T164305Z-195-mask-objects/release-focused01.log",
+    "verification": "artifacts/runs/20261027T164305Z-195-mask-objects/verification01.json"
+  },
+  "limitations": [
+    "Apple foreground instances are not Adobe proprietary all-scene semantic segmentation. Background/nonforeground objects may not be detected; edge quality, semantic naming/order and full context support remain unqualified.",
+    "The real model smoke test detects one icon instance. Multi-object transaction behavior uses deterministic injected masks; broader real-photo/model quality remains open.",
+    "Ordinary raster content (including current raster cache) is required; nonraster/group/component targets are unavailable. Input uses SDR/sRGB proxy with transform and mask; layer effects excluded. Parent must be unlocked; source itself may remain locked.",
+    "Actions recording/adaptive replay and corresponding Adobe execute-actions descriptors remain unsupported.",
+    "Full S03 including Object Finder, People/body parts and exact outputs remains open. Numerical/cosmetic refinements deferred behind major workflows.",
+    "Desktop remains locked; no live re-probe. Physical Intel/macOS14/macOS26 and complete Photoshop qualification remain open.194 is the latest full/universal package and excludes195; focused optimized checks qualify current195 sources."
+  ],
+  "next": "Object Finder hover highlighting and click selection with local cached instance detection, refresh/cancellation, selection modes, native controls and API. Then People/body-part selection and other missing major workflows; broader regression/universal package at the next selection milestone.",
+  "subsequent_batch_qualification": {
+    "step": 196,
+    "qualification": "All70 final focused Debug and1920 full optimized tests pass. The universal macOS14+ package verifies and includes195 Mask All Objects. Real local Vision detect/hit/select/save/Undo succeeds.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_196.json",
+    "release_log": "artifacts/runs/20261027T170102Z-196-object-finder/release-full01.log",
+    "verification": "artifacts/runs/20261027T170102Z-196-object-finder/verification01.json"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "step": "dev-step-186",
+  "completed_at_utc": "2026-10-27T11:00:06.602950+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Lens distortion, red/cyan and blue/yellow fringe, profile/custom vignette, perspective, rotation, scale/autoscale and edge modes; native preview/distortion/straighten/grid/pan/zoom/settings/history; editable Smart Filters/native30; typed API and existing recorded Actions/Batch.",
+  "source_manifest": "artifacts/runs/20261027T104508Z-186-lens/source01.json",
+  "source_manifest_sha256": "e2fefff50be2ac643ccc87129f277183f0572946cfd358d0066db954b4cba639",
+  "source_inputs": 1402,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationLensCorrection.swift",
+      "Sources/PhotoCraft/LensCorrectionSheet.swift",
+      "Sources/PhotoCraft/LensCorrectionWorkspace.swift",
+      "Sources/PhotoCraftCore/LensCorrection.swift",
+      "Sources/PhotoCraftCore/LensCorrectionEngine.swift",
+      "Tests/PhotoCraftAppTests/LensCorrectionWorkflowTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration05": 97,
+    "failures": 0
+  },
+  "verification": "artifacts/runs/20261027T104508Z-186-lens/verification01.json",
+  "qualification": "97 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the current packaged candidate remains step185 and does not include Lens Correction.",
+  "last_full_regression": {
+    "step": 184,
+    "tests": 1782,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T094011Z-184-frames/release-full01.log",
+    "current_source": false
+  },
+  "last_packaged_candidate": {
+    "utc": "2026-10-27T10:43:29.627748+00:00",
+    "tests": {
+      "integration04": 90,
+      "release-focused01": 90
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T101322Z-185-blur-gallery/Photato185-final.zip",
+    "zip_sha256": "21050faada77aed581102486101c8d08eee36d37744e09809e0b32b74c46884b",
+    "app": "/private/tmp/photato185-verified-uywpsdvd/Photato.app",
+    "executable_sha256": "ea416ca36a82fbafac612a1551bc651354df8ae9cb84dc26924798c9db7945cc",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1396,
+    "source_manifest_sha256": "3e7e5b8827d1bd044a68cd65e3fd7b9c795fd101d5c29d4dabe1552ab3ab8d84",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 253,
+      "unavailable_leaf_commands": 472,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Focused optimized suite and package validation on the current host; not live UI, physical Intel/macOS14/26 or complete Photoshop equivalence evidence. Last full regression is step184, before this increment."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T104508Z-186-lens/module01.log",
+    "artifacts/runs/20261027T104508Z-186-lens/integration01.log",
+    "artifacts/runs/20261027T104508Z-186-lens/integration02.log",
+    "artifacts/runs/20261027T104508Z-186-lens/integration03.log"
+  ],
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "actions.manage",
+      "actions.play",
+      "actions.batch"
+    ],
+    "filter_kind": "lensCorrection",
+    "parameter": "lens",
+    "catalogue_count": 70,
+    "native_archive_version": 30,
+    "state": "Strict settings/default/schema, generic estimator and custom profile coefficients, native draft settings/tool/preview/grid/zoom/effective scale/history and busy availability. Same engine/transactions/selection/locks and undo. Actions/batch are existing shared routes, not new commands."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "Unqualified lensCorrection actionJSON and editable PSD/PSB descriptors reject explicitly. No Adobe operation was invented. Existing rendered raster exports and other qualified jobs remain."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 254,
+    "unavailable": 471,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Lens Correction\u2026"
+    ],
+    "shortcut": "Shift+Command+R",
+    "unbound": "File > Automate > Lens Correction\u2026 remains unbound. Lens actions can already run through the native Batch workspace and API."
+  },
+  "limitations": [
+    "Exact Adobe pixels, resampling/edge/colour behavior and physical macOS14/Intel/macOS26/live qualification remain open. Last desktop evidence remains locked; no bypass/re-probe.",
+    "Manufacturer calibration database, online profile retrieval, EXIF camera/lens matching, Adobe LCP settings/profile interchange, remembered lens defaults and previous-conversion settings remain open. Custom coefficients and labelled generic estimates are distinct native capabilities.",
+    "Native RGB8/16 uses encoded samples; RGB32 linear support is a Photato extension. The native editor does not yet reproduce the entire Photoshop grayscale/CMYK/Lab document/filter matrix. Existing8,388,608-source-pixel limit remains.",
+    "Smart Object preview resolves post-placement/prior-filter input geometry. Arbitrary later geometry filters, complex mask/warp combinations and exact interactive tool mapping remain unqualified.",
+    "Autoscale samples41 positions on each border for all three colour maps and caps800%; it is a bounded approximation. It can reject extreme transformations instead of claiming coverage.",
+    "Native preset files use JSON, not Adobe settings interchange. Grid/pan/zoom are presentation state; clients implement their own view while consuming the same native correction settings.",
+    "File > Automate > Lens Correction has no dedicated native preset dialog yet. Existing Actions/Batch handles lens filter programs and is tested through desktop/API.",
+    "Editable PSD/PSB Lens Correction and Adobe actionJSON descriptors remain unsupported. Native30 preserves editability; rendered/raster exports are available.",
+    "All97 focused Debug tests pass; current optimized/full/universal validation is deferred to the F05 family milestone. Latest packaged candidate is step185 and excludes Lens Correction. Full F05 remains open."
+  ],
+  "next": "Adaptive Wide Angle, then Vanishing Point. Continue major breadth and batch full/optimized/universal qualification at the F05 milestone.",
+  "next_major_plan": "artifacts/runs/20261027T104508Z-186-lens/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 186,
+    "evidence_files": 38018,
+    "logs": 19346,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T104508Z-186-lens/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T104508Z-186-lens/refresh02.log",
+      "artifacts/development-history-audit/20261027T104508Z-186-lens/check02.log"
+    ],
+    "scope": "Record/reference integrity, not Photoshop parity."
+  }
+}

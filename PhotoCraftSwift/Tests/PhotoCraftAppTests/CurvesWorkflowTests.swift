@@ -40,7 +40,7 @@ final class CurvesWorkflowTests: XCTestCase {
     XCTAssertNotEqual(store.document, d)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.session.undoStack.last?.label, "Curves")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.beginCurves()
     store.curvesDraft?.curves = BuiltInCurvesPreset.negative.curves
@@ -54,7 +54,7 @@ final class CurvesWorkflowTests: XCTestCase {
     XCTAssertNil(store.curvesDraft)
     store.cancelLevels()
   }
-  @MainActor func testAdjustmentLayerSelectionMaskCoalescingAndLocks() throws {
+  @MainActor func testAdjustmentLayerSelectionMaskCoalescingAndLocks() async throws {
     let store = EditorStore(document: try CraftDocument(width: 4, height: 2))
     defer { store.renderTask?.cancel() }
     store.perform(.selection(IntRect(x: 1, y: 0, width: 2, height: 2)))
@@ -77,14 +77,14 @@ final class CurvesWorkflowTests: XCTestCase {
     XCTAssertEqual(
       LevelsAnalysisRequest(document: store.document, layerID: layer.id, pixelLayer: false), request
     )
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.activeLayer?.content, layer.content)
     store.perform(.lock(layer.id, true))
     let locked = store.document
     store.setCurves(layer.id, BuiltInCurvesPreset.negative.curves)
     XCTAssertEqual(store.document, locked)
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testMenusUseCommandMAndLayerEntry() {

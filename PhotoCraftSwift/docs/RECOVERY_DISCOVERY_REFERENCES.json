@@ -1,0 +1,204 @@
+{
+  "step": "dev-step-132",
+  "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_132.json",
+    "sha256": "6c3c4aa5ce189f899bc02b080fc025dda75d2907e60d0cd82ff0acbb6b380d1e"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/recovery",
+      "POST /v1/recovery/retry"
+    ],
+    "new_document_state": "recoveryRegistration",
+    "permission": "Separate native Allow recovery management, default off and revoked on stop/restart",
+    "coverage": "Same native discovery/decoder and lifecycle. Schema, state, permission/revocation, busy/stale/external-index failure and actual HTTP recovery tested. Recovered documents remain unshared. No source paths, names, bookmarks or image contents exposed by discovery state."
+  },
+  "scope": [
+    "Private app-owned native autosave folder independent of original source paths; preserve synchronous AppKit save entry and background image writing",
+    "Bounded atomic index with snapshot/group/document/source binding and intent-before-archive registration; token-checked startup reconciliation",
+    "Recover unsaved and missing/deleted-folder originals; preserve changed/replaced originals; avoid duplicates and early startup blank; collision restores separate unsaved copy",
+    "Native File Handling retry/error state and separately enabled authenticated API state/retry; preserve old recovery/source state and ordinary serialization",
+    "162 focused,1207 Debug and1207 Release tests; two seven-document crash probes, two actual journal interruption boundaries, old-reader compatibility and universal/Intel/output verification"
+  ],
+  "remaining": [
+    "D02: legacy backup migration/retention management, corrupt/unavailable entry repair UX, index capacity management, restoration windows/tabs and live Photoshop comparison",
+    "D02: parent-directory and physical power-loss durability, sandbox bookmark entitlements, network/removable volumes, supported-platform matrix; foreign-identity bookmarks cannot be assumed to locate moved originals",
+    "D01: complete Close All/Others/Quit prompts, Open As/recent items, external-file coordination and full format/profile/metadata/tag/ACL fidelity",
+    "I02: startup full image decode remains synchronous; source hashing, total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14 runtime",
+    "All major workflows remain ahead of minor functions and final details; full Photoshop parity and byte-identical output across all functionality are not achieved"
+  ],
+  "sources": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/external-references01.json",
+    "sha256": "c00848ae48bebe94c4b1891d9f545ddf9d8193d89cc293e81c04b1f021447def"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/tested-source-hashes05.json",
+    "sha256": "4e1a270114033032d38923fd53cd0b7930a2b7d5a34eddd7c0a91761f852b596"
+  },
+  "focused": {
+    "passed": 162,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 10.074,
+    "log": {
+      "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/focused05.log",
+      "sha256": "47fb010ba37f8d46e3da1647ff7c5dda3da91faec8b58fe41f9cf2669d6e4018"
+    }
+  },
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T072425Z-132-recovery-discovery/full02.log",
+      "sha256": "81cb6f114ff6bee1786f0cb8a33507a2e4fd7d32ce80958534f47203f6a2ed3f",
+      "passed": 1207,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 247.921
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T072425Z-132-recovery-discovery/release01.log",
+      "sha256": "f146e6b306e54efa4111d4fc5c60fc9a1f42f3ebe88e72c8d5149db7ccc58d40",
+      "passed": 1207,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 52.938
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato132-verified-o2azc5t6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "520c44ef1b521198dc70d8f155ccd5064dd69ed5d93ebe558b233df12c857465",
+    "zip_sha256": "1ae182a713025d6999e357d54ae5cde5689d74b67f1714a11fb172b2d3cbfb4c",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "same_identity_process": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/process-verification04.json",
+    "sha256": "33444af17c1b6b3e845c3232362429441a31e92b307a7e56c370cec01828e320"
+  },
+  "independent_index_process": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/process-verification03.json",
+    "sha256": "5be92d763f11c8f945ee03db9a67181b7921cccb5211f840c4be9623fbc6c7d9"
+  },
+  "interruption": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/interruption-verification02.json",
+    "sha256": "24db081b3cbc16c1926195d9b03e72616843bf98f9c5d50d00a8e4c68890e04c"
+  },
+  "old_reader": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/old-reader-verification01.json",
+    "sha256": "96c47ac0e7940ae487e75e87f620102b5149adc70b3d187e2e0e8d1f43a0c8a2"
+  },
+  "storage_architectures": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/storage-verification01.json",
+    "sha256": "fbc41e32a7a642b0d59fd10b44dcc258451130ae2a14cacae94ee04c8838a3f0"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T072425Z-132-recovery-discovery/live-ui01.json",
+    "sha256": "128fb789903b302e953edb98525d9655013ba217656fb6e167771dc3961302cf"
+  },
+  "full_parity": false,
+  "document_closing_step133": {
+    "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+    "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-closing",
+        "POST /v1/document-closing",
+        "POST /v1/document-closing/cancel"
+      ],
+      "new_document_state": "closeOperationID",
+      "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+      "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+    }
+  },
+  "recovery_maintenance_step136": {
+    "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+    "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/backups",
+        "POST /v1/recovery/backups/inspect",
+        "POST /v1/recovery/backups/open-copy",
+        "POST /v1/recovery/backups/download",
+        "POST /v1/recovery/backups/trash",
+        "POST /v1/recovery/backups/forget",
+        "POST /v1/recovery/backups/remove-missing"
+      ],
+      "permission": "Separate Allow recovery-backup access, off each API session; gates names, content and maintenance. Existing counts/retry permission unchanged. No arbitrary local paths or implicit sharing.",
+      "coverage": "Shared native coordinator, bounded index/native11 download, complete request/result/state schemas, stale/busy/revocation/confirmation/errors and lifecycle exclusions. Trash retires before moving and finishes cleanup after a begun move even if permission ends; the revoked response is403. No Adobe desktop-maintenance route invented."
+    }
+  },
+  "recovery_salvage_step137": {
+    "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+    "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/salvage",
+        "POST /v1/recovery/salvage/scan",
+        "POST /v1/recovery/salvage/open-copy",
+        "POST /v1/recovery/salvage/download",
+        "POST /v1/recovery/salvage/reset-index"
+      ],
+      "permission": "Existing separate session-off backup access permission now explicitly describes salvage and confirmed reset. No arbitrary paths, source adoption or automatic sharing.",
+      "coverage": "Shared native coordinator, scan-local revision/IDs, exact state/request/result schemas, bounded scan/download/reset, canonical identity matching, stale/busy/confirmation/revocation/error checks. Adobe desktop salvage route not invented."
+    }
+  },
+  "background_recovery_step138": {
+    "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "POST /v1/recovery/cancel"
+      ],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+      "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "recovery_admission_step139": {
+    "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+    "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_state": [
+        "lastDeferred",
+        "operation.memory",
+        "operation.deferredByReason",
+        "accounting phase"
+      ],
+      "permission": "Existing separate recovery-management permission; no automatic sharing.",
+      "coverage": "Shared native coordinator and exact schemas; completed partial retry200 with deferred counts, cancellation/workspace instability409, permission revocation403. No corresponding Adobe desktop recovery endpoint."
+    }
+  }
+}

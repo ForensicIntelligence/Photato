@@ -1,0 +1,74 @@
+{
+  "step": "dev-step-163",
+  "completed_at_utc": "2026-10-26T21:42:09.052546+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Five usable classic adjustment workflows; full A03 and Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T211803Z-163-classic-adjustments/source02.json",
+  "source_manifest_sha256": "a8a120497205161987b9cd344cbcfadb8cd9b8d3099c030437b0c762751d83ee",
+  "source_inputs": 1208,
+  "source_delta": "artifacts/runs/20261026T211803Z-163-classic-adjustments/source-delta02.json",
+  "tests": {
+    "earlier_debug_integration": 46,
+    "final_debug_integration": 36,
+    "full_release_final": 1559,
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T211803Z-163-classic-adjustments/platform01.json",
+    "checks_per_architecture": 90,
+    "retained_failure": "Release01 executed1558 tests with11 stale catalogue/native-version assertions. Corrected before rerun; API creation-limit guard also added and tested. All earlier failures retained."
+  },
+  "package": {
+    "archive_sha256": "0abf33dca64e2346f0bcd2a158bb9a6f0e5da98946632f0be2707e9118ef379d",
+    "executable_sha256": "fa8fbb8d5da388ac8286324b5d5c3eba7fa898dade9b993b1542df83a7f402e1",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato163-verified-fc10dw3h/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato163-verified-fc10dw3h/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato163-verified-fc10dw3h/Photato.app",
+    "attribution_sha256": "0cec29a25200232c3fc5e8b59bbef91c51b78748a0ea5a06f02232db48f1a4b5",
+    "archive": "artifacts/runs/20261026T211803Z-163-classic-adjustments/Photato163-candidate.zip",
+    "verification": "artifacts/runs/20261026T211803Z-163-classic-adjustments/package-verification01.json"
+  },
+  "interfaces": {
+    "photato_typed_commands": 40,
+    "adobe_routes_partial": 5,
+    "adobe_routes_unimplemented": 3,
+    "native_minimum_classic_adjustment_version": 17
+  },
+  "menu": {
+    "entries": 802,
+    "bound": 204,
+    "unavailable": 521,
+    "primary_shortcuts": 102,
+    "alternates": 8,
+    "report": "artifacts/runs/20261026T211803Z-163-classic-adjustments/menu-report01.json"
+  },
+  "preserved": {
+    "state": "artifacts/runs/20261026T211803Z-163-classic-adjustments/preserved-state01.json",
+    "original_rust_files": 754,
+    "root_release": "build117 unchanged",
+    "xcode_project": "Photato.xcodeproj unchanged; synchronized source groups discover additions"
+  },
+  "live": {
+    "status": "Pending Mac unlock. No163 live UI or independent Photoshop adjustment qualification.",
+    "owned159_app": "/private/tmp/photato159-live-689faskh/Photato159Probe.app",
+    "pending_previous": "159 mask/Undo;160 Smart Objects;161 Smart Filters;162 native text. Previous checkpoints retain details.",
+    "pending163": "Each adjustment Image preview/Cancel/OK, Properties layer/mask edits, Undo/Redo, native Save/reopen, Photoshop PSD/PSB import/export. Independent action descriptors and exact numerical kernels unqualified."
+  },
+  "next": {
+    "work_package": "A03",
+    "task": "Continue major adjustments: complete Exposure/Brightness-Contrast, Color and vibrance white-balance controls, Color Lookup, Shadows/Highlights, HDR Toning, Match/Replace Color and Equalize. Preserve all prior gates.",
+    "priority": "Major-feature breadth, then minor functions, then details; A03 remains in progress."
+  },
+  "development_audit": {
+    "observed_pass": "artifacts/development-history-audit/20261026-step163-final/check01.log",
+    "milestones": 163,
+    "evidence_files": 36075,
+    "logs": 19107,
+    "missing": 0,
+    "final_refresh": "artifacts/development-history-audit/20261026-step163-final/refresh02.log",
+    "final_check": "artifacts/development-history-audit/20261026-step163-final/check02.log"
+  }
+}

@@ -1,7 +1,7 @@
 import Foundation
 
 /// PSD `lclr` identifiers (Adobe sheet-color block; psd-tools SheetColorType).
-public enum LayerColorLabel: UInt16, CaseIterable, Sendable {
+public enum LayerColorLabel: UInt16, CaseIterable, Sendable, Codable {
   case none = 0
   case red, orange, yellow, green, blue, violet, gray, seafoam, indigo, magenta, fuchsia
   public var title: String { String(describing: self).capitalized }
@@ -44,7 +44,7 @@ extension BlendMode {
   }
 }
 
-public struct NewPixelLayerOptions: Equatable, Sendable {
+public struct NewPixelLayerOptions: Equatable, Sendable, Codable {
   public var name: String
   public var color: LayerColorLabel = .none
   public var mode: BlendMode = .normal

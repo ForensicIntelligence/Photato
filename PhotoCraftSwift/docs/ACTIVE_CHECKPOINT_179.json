@@ -1,0 +1,133 @@
+{
+  "step": "dev-step-179",
+  "completed_at_utc": "2026-10-27T06:38:03.551642+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Fifteen presets, cubic mesh fit/drag/split/remove, native preview/cancel/local history and single document commit, retained Smart Object Warp, source-size replacement/reset/rasterization, native24 and matching Photato API.",
+  "source_manifest": "artifacts/runs/20261027T055843Z-179-warp/source02.json",
+  "source_manifest_sha256": "42b906a8bbd5aa049bd5089a92eb3e87afd2d70a36a37900e1129b96a498db2e",
+  "source_inputs": 1349,
+  "source_delta": [
+    "artifacts/runs/20261027T055843Z-179-warp/changes01.json",
+    "artifacts/runs/20261027T055843Z-179-warp/changes02.json"
+  ],
+  "tests": {
+    "debug_focused": 55,
+    "optimized_full": 1727,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T055843Z-179-warp/integration07.log",
+    "optimized_log": "artifacts/runs/20261027T055843Z-179-warp/release-full02.log",
+    "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T055843Z-179-warp/integration01.log",
+    "artifacts/runs/20261027T055843Z-179-warp/integration02.log",
+    "artifacts/runs/20261027T055843Z-179-warp/integration03.log",
+    "artifacts/runs/20261027T055843Z-179-warp/integration04.log",
+    "artifacts/runs/20261027T055843Z-179-warp/integration05.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T06:38:03.551642+00:00",
+    "app": "/private/tmp/photato179-verified-4tp014uk/Photato.app",
+    "zip": "artifacts/runs/20261027T055843Z-179-warp/Photato179-final.zip",
+    "zip_sha256": "e923e16e2cad3afd857796fe50846073997274c2ffa55d415b4bda152a1e5f3d",
+    "executable_sha256": "5c855e8a04b6663ce68f9c4cbeb0a39902238a28ed60ef95ef754215561d2bf0",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato179-verified-4tp014uk/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato179-verified-4tp014uk/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1349,
+    "source_manifest": "artifacts/runs/20261027T055843Z-179-warp/source02.json",
+    "source_manifest_sha256": "42b906a8bbd5aa049bd5089a92eb3e87afd2d70a36a37900e1129b96a498db2e",
+    "tests": {
+      "debug_focused": 55,
+      "optimized_full": 1727,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T055843Z-179-warp/integration07.log",
+      "optimized_log": "artifacts/runs/20261027T055843Z-179-warp/release-full02.log",
+      "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+    },
+    "preserved": "Four protected root-build/project/user-state hashes and754 original Rust hashes verified unchanged.",
+    "runtime_qualification": "Universal build metadata and native regression; physical Intel/macOS14/26, live UI and exact Photoshop gates remain open."
+  },
+  "api": {
+    "photato_command": "layer.warp",
+    "command_count": 62,
+    "state": "layers[].warp; warp.available/previewOpen/previewBusy; capabilities.warp settings schema/limits",
+    "persistence": "native24; existing version negotiation, source24 validation and older-reader guard",
+    "adobe": "Dedicated published Warp endpoint absent from pinned contract; unsupported actionJSON remains explicit. No invented route."
+  },
+  "menus": {
+    "bound": [
+      "Edit > Transform > Warp"
+    ],
+    "shortcuts": "No fabricated default shortcut; existing factory catalog retained.",
+    "rust_alias": "The Rust catalogue includes Layer > Smart Objects > Warp; the captured Photoshop factory menu does not. Both ordinary/Smart Object targets use Edit > Transform > Warp. A registered selector alias is not counted as a visible factory command.",
+    "release_report": "artifacts/runs/20261027T055843Z-179-warp/menu-report-release02.json"
+  },
+  "limitations": [
+    "No selection/vector-mask/direct group/type/shape Warp yet; groups/type/shapes can first be converted to Smart Objects.",
+    "Editable PSD/PSB Warp descriptor interchange rejects; use Photato24 or explicitly rasterize.",
+    "Rust preset formulas approximate Photoshop; no exact Adobe output claim. Bicubic mesh fit and256-cell tessellation are bounded approximations.",
+    "No authenticated Firefly actionJSON Warp descriptor or dedicated published route; existing actions reject it. UXP geometry interfaces are distinct from the Firefly service contract.",
+    "Split/remove controls are in the native workspace; Photoshop split-menu contexts, anchor conversion, multi-point control, exact canvas/options-bar layout, shortcuts, accessibility and live/platform qualification remain open.",
+    "16 patches per mesh axis,8,388,608 source/output pixels,134,217,728 triangle/pixel visits; API retains4MP/64-layer/128MiB limits.",
+    "Filter masks remain in document space; nonlinear filter-mask semantics and exact feathered-mask deformation remain unqualified.",
+    "Puppet and Perspective Warp remain missing and next in priority. G02 and full parity remain open."
+  ],
+  "next": {
+    "priority": "Major functions first; preserve complete final parity requirements and defer optional fidelity work.",
+    "next_workflow": "Native Puppet Warp, then Perspective Warp",
+    "source": [
+      {
+        "path": "crates/algo/src/puppet.rs",
+        "sha256": "c14df64d45ff43b53f3b27fdcfe405d7c92901776ea1c0624b4bddc3d4242ec6"
+      },
+      {
+        "path": "crates/algo/src/perspective.rs",
+        "sha256": "ef29f35565237b6870a8aaec2b0b59c0d593fefd5b315cd05e4c6f25a0c4df9f"
+      },
+      {
+        "path": "crates/engine/src/distort_cmds.rs",
+        "sha256": "ff1764d0c74006cf9ada627eb2b4908a290388f0970480b8f08881d570918a07"
+      }
+    ],
+    "puppet": [
+      "Coverage mesh over alpha>0.05, expansion\u2212200\u2026200 and fewer/normal/more density.",
+      "Port local/global ARAP solver, pin barycentric constraints, optional rotations and depth ordering; bound work and cancellation.",
+      "Native pin placement/drag/removal, mesh visibility, preview/cancel/local Undo and one document transaction.",
+      "Retained Smart Filter parameters for Smart Objects, ordinary raster bake; native versioning and explicit interchange limits.",
+      "Shared Photato typed API/settings/state and actual Adobe compatibility only with authenticated contract/descriptor evidence.",
+      "Analytical pin constraints/identity/detached components, Rust oracle, masks/HDR, preview/history/native/HTTP/error coverage."
+    ],
+    "perspective": [
+      "Linked layout quads, homographies/shared edges and straightening, then Warp/preview/commit.",
+      "Preserve editable Smart Object source and shared API/history path; explicit finite geometry and work limits."
+    ],
+    "foundation": "WarpRaster currently exposes regular source-grid mapping. Factor shared bounded arbitrary-triangle UV mapping when needed; avoid a second sampler. Preserve passed179 behavior.",
+    "open": "G02, exact Photoshop output, selection/vector/group contexts, PSD/native platform and live UI qualification remain open. No next-workflow application code changed during frozen179 build.",
+    "primary_reference": {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/distort-specific-image-areas-with-puppet-warp.html",
+      "checked_utc": "2026-10-27",
+      "purpose": "Native workflow reference for density, expansion, pin depth and automatic/fixed rotation. No proprietary algorithm or output equivalence inferred."
+    }
+  },
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T055843Z-179-warp",
+    "passed_iteration": "02",
+    "milestones": 179,
+    "evidence_files": 36791,
+    "logs": 19288,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh03/check03 after this metadata update"
+  },
+  "final_source_verification": "All1349 source02 inputs still match after documentation and verification."
+}

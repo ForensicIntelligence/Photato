@@ -1,0 +1,85 @@
+{
+  "step": "dev-step-165",
+  "date": "2026-10-26",
+  "status": "53 Debug focused,1583 full Release before identity repair,71 final Release checks and29 public checks per architecture pass; universal macOS14+ package verified. F04 and full Photoshop parity remain open.",
+  "provenance": {
+    "upstream": {
+      "crates/algo/src/liquify.rs": "537fdcb4748214adb52d740be00eef9ba58d8b37b6f6b8e376280898cc06847c",
+      "crates/ui-egui/src/liquify_ui.rs": "38590157a30144ef2c8b1781249daef9f6fbe645d5425f50a3446f7346c3542d"
+    },
+    "license": "MIT OR Apache-2.0; Swift displacement port and native workspace; separate Apple Vision landmark detector and independent face warps. No Adobe assets copied.",
+    "adobe": [
+      "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/overview-of-liquify-filter.html",
+      "https://helpx.adobe.com/uk/photoshop/desktop/effects-filters/artistic-stylize-filters/freeze-or-thaw-areas.html",
+      "https://www.adobe.com/learn/photoshop/web/face-aware-liquify"
+    ],
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482"
+  },
+  "desktop": {
+    "features": [
+      "Filter > Liquify\u2026 with factory Shift-Command-X",
+      "Warp/reconstruct/smooth/twirl/pucker/bloat/push-left brushes",
+      "Freeze/thaw/lasso and mask all/none/invert",
+      "Brush size/density/pressure/rate, tablet pressure, held stationary dabs",
+      "Preview/Cancel/OK, local Undo/Redo and shared native document Undo",
+      "Mesh/mask/original-backdrop views, zoom/pan, brush keys",
+      "Local Vision face detection and20 geometry controls",
+      "Photato Liquify mesh-program save/load",
+      "Editable Smart Object filter stacks and blend/opacity on commit"
+    ],
+    "native_version": 19,
+    "maximum_target_pixels": 8388608
+  },
+  "photato_api": {
+    "typed_commands": 41,
+    "commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "liquify.faces"
+    ],
+    "kind": "liquify",
+    "schema": "RasterFilter.apiSchema / LiquifySettings.apiSchema",
+    "state": "Smart Filter state exposes the complete replay program and normalized face geometry",
+    "history": "Filter edits share native transactions; face detection returns geometry without changing content/history/revision. Busy/stale/revoked results reject.",
+    "maximum_command_bytes": 4194304,
+    "maximum_strokes": 2048,
+    "maximum_points": 32768,
+    "maximum_faces": 16,
+    "maximum_node_visits": 250000000
+  },
+  "adobe_api": {
+    "routes_partial": 5,
+    "routes_unimplemented": 3,
+    "liquify_actions": "Explicit unsupported response. No native brush JSON is mislabeled as an Adobe mesh descriptor; contract has no dedicated Liquify endpoint. Existing eight action filters remain supported."
+  },
+  "limits": [
+    "Photoshop .msh and editable PSD/PSB Liquify descriptors are not implemented; native19 preserves editability. Baked pixel-layer results can be exported.",
+    "Independent native face warps do not reproduce Adobe proprietary model/geometry exactly. Direct face handles and advanced backdrop options remain open.",
+    "Workspace uses a1024px proxy, nearest downsampling and bilinear preview; final full-resolution output uses cubic sampling. Exact Photoshop pixel equality remains unqualified.",
+    "Smart Filter blend/opacity/shared mask apply on commit; workspace previews the filter input/result before that shared mask.",
+    "Face controls apply after brush strokes; Restore All clears both. Global reconstruction reduces the brush mesh subject to freezes.",
+    "Physical Intel/macOS14 and live pointer/tablet/keyboard, independent Photoshop output comparison remain unqualified.",
+    "Large-program preview replay/performance requires broader qualification.",
+    "Cross-architecture native-encoding outputs match in the probe. The separate f32-to-sRGB output differs in4/12,288 samples, at most1.1920928955078125e-7/two ULP; exact transfer precision is deferred."
+  ],
+  "verification": {
+    "core": "artifacts/runs/20261026T222626Z-165-liquify/core02.log",
+    "integration": "artifacts/runs/20261026T222626Z-165-liquify/integration06.log",
+    "live": "Pending unlocked Mac; no live165/Photoshop check. Original Photoshop document untouched.",
+    "cross_architecture_precision": "artifacts/runs/20261026T222626Z-165-liquify/float-comparison02.json",
+    "full_release_before_identity_repair": {
+      "log": "artifacts/runs/20261026T222626Z-165-liquify/release-tests02.log",
+      "source": "artifacts/runs/20261026T222626Z-165-liquify/source02.json"
+    },
+    "final_release_focused": {
+      "log": "artifacts/runs/20261026T222626Z-165-liquify/release-focused01.log",
+      "source": "artifacts/runs/20261026T222626Z-165-liquify/source03.json"
+    },
+    "platform": "artifacts/runs/20261026T222626Z-165-liquify/platform03.json",
+    "package": "artifacts/runs/20261026T222626Z-165-liquify/package-verification01.json"
+  },
+  "source_manifest": "artifacts/runs/20261026T222626Z-165-liquify/source03.json",
+  "source_delta": "artifacts/runs/20261026T222626Z-165-liquify/source-delta03.json",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_165.json"
+}

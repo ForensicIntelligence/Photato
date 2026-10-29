@@ -1,0 +1,128 @@
+{
+  "step": "dev-step-171",
+  "status": "Working native three-tool workflow verified by 123 Debug focused/regression and 39 optimized focused tests; universal package verified. Full Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T013351Z-171-retouch-tools",
+  "source_manifest": "artifacts/runs/20261027T013351Z-171-retouch-tools/source01.json",
+  "source_delta": "artifacts/runs/20261027T013351Z-171-retouch-tools/changes01.json",
+  "upstream": [
+    "../photocraft-main/crates/engine/src/retouch_cmds/patch.rs",
+    "../photocraft-main/crates/ui-egui/src/retouch_ui.rs",
+    "Previously ported algo/poisson.rs and content_aware.rs through native HealingSolver and ContentAwareSynthesis"
+  ],
+  "provenance": "Normal Patch adapts the retained MIT OR Apache-2.0 PhotoCraft source. Move/Extend and Red Eye are independent Swift implementations using native shared foundations; no proprietary Adobe code or pixel equivalence is claimed. Original Rust remains unchanged.",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/uk/photoshop/desktop/repair-retouch/clean-restore-images/repair-a-selected-area-with-the-patch-tool.html",
+      "accessed": "2026-10-26",
+      "scope": "Selection dragging, Source/Destination, Normal/Content-Aware and their distinct options"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/use-the-content-aware-move-tool.html",
+      "accessed": "2026-10-26",
+      "scope": "Move/Extend, structure/color, visible-layer sampling and transform-on-drop"
+    },
+    {
+      "url": "https://cdn.edex.adobe.com/exAttachments/115-9-30352.pdf",
+      "accessed": "2026-10-26",
+      "scope": "Historical Adobe CS6 teaching reference for Red Eye pupil size and darkness; current 2026 behavior not independently qualified"
+    }
+  ],
+  "features": [
+    "Patch selection lasso and source/destination drag; native seamless healing, transparency and diffusion controls; content-aware donor sampling with structure/color controls.",
+    "Move/Extend with source-hole filling in Move, destination transform handles/numeric scale/rotation, preview/commit/cancel and transformed selection.",
+    "Red Eye click/drag region, pupil size and darkness; red dominance detection preserves neutral highlights and alpha.",
+    "Three J-group tool bindings and cycling; one prepared history edit per correction; existing native20 persistence.",
+    "Shared RGB8/16/32 processing, layer coordinate/mask preservation and protected transparency; current-layer pixels sampled directly and visible composites normalized at the input boundary."
+  ],
+  "native_archive": 20,
+  "archive_change": "None; ordinary raster/layer/selection records carry the results.",
+  "api": {
+    "count": 50,
+    "commands": [
+      "retouch.patch",
+      "retouch.move",
+      "retouch.redEye"
+    ],
+    "same_engine": true,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "adobe": "No dedicated published retouch endpoint. These execute-actions descriptors remain unsupported; no Adobe route invented. Five partial/three unimplemented endpoint groups unchanged."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "toolbar": "Three existing J-group entries now have native handlers; factory menu order and bindings unchanged.",
+    "report": "artifacts/runs/20261027T013351Z-171-retouch-tools/menu-report05.json",
+    "release_report": "artifacts/runs/20261027T013351Z-171-retouch-tools/menu-report-release01.json"
+  },
+  "tests": {
+    "first_compile_failure": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration01.log",
+    "second_compile_failure": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration02.log",
+    "image_failures": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration03.log",
+    "outdated_shortcut_expectation": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration04.log",
+    "focused": {
+      "count": 123,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration05.log"
+    },
+    "optimized": {
+      "count": 39,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T013351Z-171-retouch-tools/release-focused01.log"
+    },
+    "full_suite": "Last full Release suite was step170 (1,637 tests), before these changes; current full-suite qualification is batched at a later major milestone."
+  },
+  "procedural_image": {
+    "path": "artifacts/runs/20261027T013351Z-171-retouch-tools/original-patch-move-extend-red-eye01.png",
+    "panels_left_to_right": [
+      "Original",
+      "Patch",
+      "Move",
+      "Extend",
+      "Red Eye"
+    ],
+    "type": "Generated synthetic algorithm output, not a live app screenshot or Photoshop reference"
+  },
+  "live": "No new live Photoshop or Photato interaction. Previous locked-session state was not bypassed; native canvas events run in tests.",
+  "limits": [
+    "16MP canvas and 4MP retouch/solve region, including the combined source/destination span. Larger work fails explicitly.",
+    "Ordinary RGB raster image target only. Smart Object editing, mask/alpha-channel retouching and Pattern Patch remain open.",
+    "Patch diffusion, structure/color adaptation, Red Eye detection and all synthesis are native approximations. Exact Adobe numerical/model output and physical-input behavior remain unqualified.",
+    "Patch drag must stay within the canvas. Move/Extend output is limited to canvas coverage and requires some visible destination pixels.",
+    "Options are session state; complete Photoshop preference/preset persistence and every contextual variation remain open.",
+    "Live interaction, physical Intel and macOS14/26 runtime qualification remain open."
+  ],
+  "full_photoshop_parity": false,
+  "package": {
+    "utc": "2026-10-27T01:59:53.626227+00:00",
+    "app": "/private/tmp/photato171-verified-k4zzk589/Photato.app",
+    "zip": "artifacts/runs/20261027T013351Z-171-retouch-tools/Photato171-final.zip",
+    "zip_sha256": "1578a76ca46cbc57bc93040ebdb34b1a0127cd9641357e6a9379c0dc435175f2",
+    "executable_sha256": "acc5a5e6d18456b6a736f073280c6613b8b21fb9bac4012ec51206b080bb940e",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato171-verified-k4zzk589/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato171-verified-k4zzk589/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1281,
+    "source_manifest": "artifacts/runs/20261027T013351Z-171-retouch-tools/source01.json",
+    "source_manifest_sha256": "593b1c240e54b1db7c417049497b8b737644b517029ee8ce41113d30bd5a86bf",
+    "tests": {
+      "debug_focused": 123,
+      "optimized_focused": 39,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration05.log",
+      "optimized_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/release-focused01.log"
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and 754 upstream Rust file hashes verified unchanged.",
+    "runtime_qualification": "Focused native Debug/Release evidence and universal build metadata; current full suite, physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open."
+  }
+}

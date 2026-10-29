@@ -1,0 +1,45 @@
+{
+  "step": 244,
+  "recorded_at_utc": "2026-10-29T07:51:38.364400+00:00",
+  "status": "Trim Document Duration To Work Area now crops/rebases the native Timeline while retaining editable surviving content and fade/interpolation handles. The desktop/API share Undo, native archive 58 persistence and signed pre-roll timing. 208 focused and 2,532 full optimized tests pass on 2,335 unchanged inputs; independent checks match 480 analytic PNG/sequence RGBA channels, 240 movie channels against the pre-trim export, and 48,000 analytic Float32 audio samples. Frame/video conversion, richer interchange, exact Photoshop retention/gesture semantics and live/platform fidelity remain open. Installed build 221 and private universal build 243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T071012Z-244-timeline-trim/source04.json",
+  "source_inputs": 2335,
+  "native_archive": 58,
+  "actions_version": 20,
+  "typed_commands": 172,
+  "tests": {
+    "focused": {
+      "tests": 208,
+      "failures": 0,
+      "seconds": 17.233,
+      "log": "artifacts/runs/20261029T071012Z-244-timeline-trim/focused04.log",
+      "sha256": "93c14484a0012a62e4ea04a7df6aacf8be9776c4caee13741bbfca8c0e6ba1ce"
+    },
+    "full": {
+      "tests": 2532,
+      "failures": 0,
+      "seconds": 172.585,
+      "log": "artifacts/runs/20261029T071012Z-244-timeline-trim/full01.log",
+      "sha256": "86d16cf54d1f6805b9e1c99d866426bc237a6520186faf6348c2790c864995fd"
+    },
+    "unchanged_inputs": 2335,
+    "source_manifest": "artifacts/runs/20261029T071012Z-244-timeline-trim/source04.json",
+    "independent": "artifacts/runs/20261029T071012Z-244-timeline-trim/independent-full01.json",
+    "exact_RGBA_channels": 720,
+    "exact_Float32_audio_values": 48000,
+    "binary_sha256": "90995cf566d3694a57035a8ce5e0880a9fc7fe99a5294624449a6288d2e36df9",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Implement conversion between frame animation and video Timeline with shared native controls/API/history/persistence, retaining editable composition where representable and explicitly handling audio, video frames, transitions and timing. Continue major breadth; all SP01/exact/live/platform gates remain open."
+}

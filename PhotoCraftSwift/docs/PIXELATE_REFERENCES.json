@@ -1,0 +1,159 @@
+{
+  "step": "dev-step-213",
+  "date": "2026-10-27",
+  "status": "Native implementation and focused/full regression/package verified. Exact Photoshop and Adobe interchange remain open.",
+  "scope": [
+    "filter.pixelate.colorHalftone",
+    "filter.pixelate.crystallize",
+    "filter.pixelate.facet",
+    "filter.pixelate.fragment",
+    "filter.pixelate.mezzotint",
+    "filter.pixelate.pointillize"
+  ],
+  "source_provenance": [
+    {
+      "path": "../photocraft-main/crates/algo/src/pixelate.rs",
+      "sha256": "5aed3b8c9b2aae40e9e14f3697cc5f31b8b8478b6fdbde457dcbd4fbd3d64fd0",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/fxutil.rs",
+      "sha256": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/noise.rs",
+      "sha256": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/image.rs",
+      "sha256": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+      "license": "MIT OR Apache-2.0"
+    }
+  ],
+  "implementation": "Native Swift translation of original PhotoCraft pixelate.rs with original hash/cell/unpremultiply helpers; RGB first-three-angle Halftone, deterministic seeded patterns, layer-local cell origins and clamped edges. No Adobe implementation source used.",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/apply-distortion-and-stylize-filters.html",
+      "accessed": "2026-10-27",
+      "use": "Photoshop desktop Color Halftone radius4\u2013127 and example channel angles; not an independent pixel or factory-reset reference."
+    },
+    {
+      "url": "https://www.adobe.com/products/photoshop/halftone-effects.html",
+      "accessed": "2026-10-27",
+      "use": "Halftone workflow overview."
+    },
+    {
+      "url": "https://helpx.adobe.com/ca/photoshop-elements/desktop/guided-edits-effects-and-filters/pixelate-filters.html",
+      "accessed": "2026-10-27",
+      "use": "Adobe Elements family descriptions, angle range and Mezzotint types; not Photoshop2026 live qualification."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "accessed": "2026-10-27",
+      "use": "Inspected published methods; no direct methods for these six filters found. Does not establish actionJSON descriptors."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "accessed": "2026-10-27",
+      "use": "Published execute-actions supports these Pixelate families through recorded actionJSON. Exact descriptor mappings remain required and incomplete."
+    }
+  ],
+  "api": {
+    "native_commands": 107,
+    "extended": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "state": "Pixelate availability/workspace/settings/preview/local history",
+    "native_archive": 40,
+    "actions_archive": 12,
+    "adobe": "Corresponding published execute-actions families exist; unqualified actionJSON and editable PSD mappings explicitly unsupported. Completion gate remains open."
+  },
+  "oracle": {
+    "generator": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/oracle-generator01.py",
+    "harness": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/oracle01.rs",
+    "build_log": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/oracle-build01.log",
+    "fixture_manifest": "Tests/PhotoCraftCoreTests/Fixtures/Pixelate/provenance.json",
+    "cases": 18,
+    "dimensions": [
+      32,
+      24
+    ],
+    "result": "All18 RGBA8 comparisons byte-identical in focused integration01 and02. Independent original-Rust comparison, not Photoshop output proof."
+  },
+  "tests": {
+    "core_cases": 7,
+    "app_cases": 5,
+    "focused_total": 68,
+    "failures": 0,
+    "log": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/integration02.log",
+    "preserved_failure": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/integration01.log",
+    "scope": [
+      "all six filters and RGB8/16/32",
+      "18 independent original-Rust fixtures and analytic alpha/HDR checks",
+      "ten Mezzotint patterns, Halftone angles and Pointillize background",
+      "selections/transparency lock/history/cancellation",
+      "native40 legacy/chunked and Actions12 persistence/playback",
+      "workspace previews/local history/Cancel/re-edit and immediate Facet/Fragment menus",
+      "desktop/HTTP equivalence and invalid/busy/stale guards",
+      "existing distortion/window containment regressions"
+    ],
+    "full_optimized": {
+      "tests": 2015,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/release-full01.log"
+    }
+  },
+  "live": {
+    "status": "Mac locked; no new live Pixelate or same-document window validation claimed.",
+    "offscreen": "Hosted Halftone, Mezzotint and Pointillize views inspected; controls and preview/footer fit. Offscreen renders are not live interaction evidence.",
+    "pending_handoff": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/window-handoff-status01.json"
+  },
+  "evidence_root": "artifacts/runs/20261028T003911Z-213-pixelate-workflows",
+  "source_manifest": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/source01.json",
+  "source_delta": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/changes01.json",
+  "remaining": [
+    "Exact Photoshop output/defaults/depth contexts and every parameter combination",
+    "Recorded Adobe actionJSON and editable PSD/PSB interchange",
+    "Live native filter interactions and physical Intel/macOS14/macOS26 checks",
+    "Remaining F02 Stylize/Render/Other/legacy families; full package remains open"
+  ],
+  "package": {
+    "utc": "2026-10-28T01:06:25.840656+00:00",
+    "tests": {
+      "integration02": 68,
+      "release-full01": 2015
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T003911Z-213-pixelate-workflows/Photato213-final01.zip",
+    "zip_sha256": "f35574d589eeaa96d8b95d9e1d2792a8003aa8efe5dd09b2e55c440a622c611d",
+    "app": "/private/tmp/photato213-verified-w5qpxspv/Photato.app",
+    "executable_sha256": "d0e984beb7027a2289fb58214d4a27cf818e906959fbcba3b28ea21f2e5325a1",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato213-verified-w5qpxspv/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato213-verified-w5qpxspv/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1630,
+    "source_manifest_sha256": "d0240382190cf4a89238adb788911a5e3b0804b3735b033602dc793a81097172",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 300,
+      "unavailable_leaf_commands": 425,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "68 focused Debug and2015 full optimized tests plus universal package on this host.18 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Pixelate remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  }
+}

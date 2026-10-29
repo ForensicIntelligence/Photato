@@ -1,0 +1,54 @@
+{
+  "step": "dev-step-209",
+  "status": "Current app/source/docs/diary/site branding cleaned; focused tests and universal package verify.",
+  "request": "Remove retired family identity, retain Photato and upstream attribution.",
+  "source_manifest": "artifacts/runs/20261027T231627Z-209-brand-cleanup/source01.json",
+  "source_delta": "artifacts/runs/20261027T231627Z-209-brand-cleanup/changes01.json",
+  "text_redactions": "artifacts/runs/20261027T231627Z-209-brand-cleanup/redaction-ledger01.json",
+  "fixture_metadata": "artifacts/runs/20261027T231627Z-209-brand-cleanup/fixture-metadata01.json",
+  "tests": {
+    "focused": "artifacts/runs/20261027T231627Z-209-brand-cleanup/focused01.log",
+    "passed": 50,
+    "failed": 0
+  },
+  "package": {
+    "utc": "2026-10-27T23:31:06.386801+00:00",
+    "tests": {
+      "focused01": 50
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T231627Z-209-brand-cleanup/Photato209-final01.zip",
+    "zip_sha256": "d6065982d9d379236df9d8581e1fdd9f844e9ced0f6d1bff833ffa00bb93c20d",
+    "app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato209-verified-f5yvfup5/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato209-verified-f5yvfup5/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1601,
+    "source_manifest_sha256": "e74df44ba63f9c72783d9fb73952a630adcd3560d09638bcef1b3d3db9cd1fe5",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 285,
+      "unavailable_leaf_commands": 440,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "50 focused Debug checks and refreshed universal package on this host. The prior208 full optimized1991-test result and live title/canvas checks remain historical; engine behavior is unchanged by209 branding/fixture-name edits. Physical Intel/macOS14/macOS26 runtime qualification remains open. Xcode project unchanged; new files use existing synchronized groups.",
+    "retired_brand_matches_in_package": []
+  },
+  "api": "Presentation and sample/test names only. No editing command, schema, result, permission or document behavior changed.",
+  "limits": [
+    "Existing Git history, historical binary build archives and historical screenshots remain immutable evidence; current public-facing text and the refreshed app contain no retired branding.",
+    "Original running app/document was preserved. Use the newly packaged app for the updated About and title/canvas behavior.",
+    "Prior208 full1991 optimized tests are historical;209 runs50 focused checks appropriate to string/fixture metadata changes."
+  ]
+}

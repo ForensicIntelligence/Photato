@@ -306,8 +306,8 @@ for name in ['photato-release-verification.json', 'verification.json']:
     data['pattern_remaining'] = [x for x in data.get('pattern_remaining', []) if x != 'Pattern fill layers and embedded PSD patterns']
     if name == 'verification.json':
         data.update({
-            'tests_passed': count + 3,
-            'tests_passed_scope': f'{count} package tests rerun in full; 3 unchanged historical StoreKit integration results',
+            'tests_passed': count,
+            'tests_passed_scope': f'{count} package tests rerun in full; purchase support removed at step237',
             'package_tests_passed': count, 'package_tests_failed': 0, 'package_tests_skipped': 0,
             'app_icon_sha256': package['icon_sha256'],
         })

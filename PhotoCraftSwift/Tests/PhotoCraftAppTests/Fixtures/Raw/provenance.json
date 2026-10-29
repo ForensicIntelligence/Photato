@@ -1,0 +1,11 @@
+{
+  "size": [
+    512,
+    384
+  ],
+  "bytes": 393862,
+  "sha256": "1928f596838afff8e129f7cc5db6ee3ee81d5e6744097ea3b7da0371795a8fe4",
+  "sensor": "Synthetic RGGB Bayer, single 16-bit CFA plane, 12-bit white level, no embedded preview/JPEG",
+  "provenance": "Generated entirely from this script; no external image or proprietary camera data. MIT OR Apache-2.0, same as Photato source.",
+  "generator": "generate.py"
+}

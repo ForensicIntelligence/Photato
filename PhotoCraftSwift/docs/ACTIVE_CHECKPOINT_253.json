@@ -1,0 +1,44 @@
+{
+  "step": 253,
+  "recorded_at_utc": "2026-10-29T17:06:24.957086+00:00",
+  "status": "Embedded PDF images now open through the native Images selector and matching inspection/import/cancel API. Page/Form discovery, reused and inline images, intrinsic dimensions, color/depth controls and atomic editable-document publication share the native engine. 40 focused and2660 full optimized tests pass on2406 unchanged inputs. Independent checks match60 original RGBA channels,8 grayscale endpoint channels and25600 enlarged-thumbnail channels; existing page/crop/rotation comparisons also pass. Exact image ordering/defaults/color/masks, pattern/annotation images, vector Smart Objects, Photoshop PDF editing data and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T162400Z-253-pdf-images/source05.json",
+  "source_inputs": 2406,
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "tests": {
+    "focused": {
+      "tests": 40,
+      "failures": 0,
+      "seconds": 4.38,
+      "log": "artifacts/runs/20261029T162400Z-253-pdf-images/focused03.log",
+      "sha256": "4e31e3376a0418beb80a6405c23129a71700aa4c2c64118bb7556aceff380e76"
+    },
+    "full": {
+      "tests": 2660,
+      "failures": 0,
+      "seconds": 179.208,
+      "log": "artifacts/runs/20261029T162400Z-253-pdf-images/full01.log",
+      "sha256": "db3126d910270000c90ef9751e6114a7a54a0368066c319c33238d2ce0e832ff"
+    },
+    "source_manifest": "artifacts/runs/20261029T162400Z-253-pdf-images/source05.json",
+    "unchanged_inputs": 2406,
+    "independent": "artifacts/runs/20261029T162400Z-253-pdf-images/outputs-full01-independent.json",
+    "binary_sha256": "2d79f6b624c52a02d16b6306c0acd8228b5e5624a3fbea48dda4fe7d5331a412",
+    "architecture": "arm64",
+    "exact_RGBA_channels": 60,
+    "gray_endpoint_channels": 8,
+    "thumbnail_edge_RGBA_channels": 25600,
+    "page_regression": "artifacts/runs/20261029T162400Z-253-pdf-images/outputs-full01-pages-independent.json"
+  },
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Continue the major PDF workflow with retained-vector PDF Smart Objects through Place/Replace Contents/Edit Contents, native archive/history and both applicable APIs. Reuse source PDF bytes with explicit page/crop metadata and re-render vectors at transform resolution. Preserve editable Photoshop PDF data, image pattern/annotation/codec/color contexts and exact/live/platform qualification as open; do not equate passing tests with Photoshop parity."
+}

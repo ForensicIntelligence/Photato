@@ -1,0 +1,53 @@
+{
+  "step": "dev-step-150",
+  "workflow": "D01/I03",
+  "status": "Original PhotoCraft source graph and all known editing payload references are preserved by a bounded native Swift intermediate reader. Editable native/API import remains open; no major gate is closed.",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_150.json",
+    "sha256": "9ca8a8b78bb04b3b7670592eeda5541b72b97fa9fac84fc5aa70608a129ac82d"
+  },
+  "scope": [
+    "Add internal PcraftJSON, PcraftDirectory and PcraftProject modules: exact raw manifest/numeric tokens and UInt64 identities; all seven source layer kinds retained as JSON; every known version1 surface/blob reference verified without rendering or flattening.",
+    "Original RGB8/16/32 rich fixtures cover48 surfaces and222 independently inventoried payloads, including comp appearance, video, text/shape/smart caches, masks, channels, patterns and metadata. All stored editing payloads are reached; linked external assets are never read.",
+    "Retain unbounded encoded defaults, signed tile coordinates and exact little-endian samples for48 mode/depth/alpha combinations. Bounded no-follow directory reads revalidate identities/content metadata and reject special files/links/traversal/replacement. Add malformed input, limits, cancellation and101/102-group boundary regressions.",
+    "All24 focused,1422 Debug,1422 Release and24 x86_64 Release focused tests pass. Universal macOS14+ package signature/resources verify. Existing692 output/reference files remain byte-identical149. Rosetta is not physical Intel/macOS14 runtime proof.",
+    "Nine source/test/fixture files added; all1100 prior frozen inputs unchanged. Existing app/Core/AI/API/menu/Xcode sources and installed117/user state preserved. Document initial Rust equality assertion failure, large-ID remapping and successful bounded diagnosis."
+  ],
+  "remaining": [
+    "Editable .pcraft import remains unavailable. Next: native partial-lock semantics, explicit sparse-default/profile interpretation and native adapter, with desktop/Photato API/schema/state/history/persistence/error tests in the user-facing increment.",
+    "Smart Objects,artboards,rich text,auxiliary channels,effects,Blend If,comps,timeline and other source features need native editable workflows. Keeping their source JSON/payloads is not rendering or full semantic validation.",
+    "Reader is bounded to16MiB manifest,250000 JSON values,4096 layers,16384 surfaces,256MiB blob and512MiB logical payload totals. Existing ZIP/Zstd limits remain. Optional previews and unreferenced entries are not loaded; unknown version rejects. Larger/streamed migration remains open.",
+    "All Photoshop byte parity,menus/shortcuts/preferences,major workflows and live/supported-platform qualifications remain open. Continue major functions before optional minor functions and final details."
+  ],
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [],
+    "capability_change": "None. Internal source-graph reader is not exposed through native Open or an API; existing .pcraft rejection remains.",
+    "next_requirement": "The user-facing import increment must add shared desktop/Photato upload/open/schema/capability/error/history/persistence coverage. Adobe has no published .pcraft route; do not invent one."
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T181651Z-150-pcraft-documents/tested-source-hashes02.json",
+    "sha256": "33feffb42756ead25791e827f98148c3a578d5368b639f5eeb237594980cc602"
+  },
+  "mapping": {
+    "path": "artifacts/runs/20261020T181651Z-150-pcraft-documents/source-native-map02.json",
+    "sha256": "9872c39c48aa7a1ecbeb84f2c498b2cd5b50704279a5e277cecc52cef54fe612"
+  },
+  "source_oracle": {
+    "path": "artifacts/runs/20261020T181651Z-150-pcraft-documents/rust-oracle02-result.json",
+    "sha256": "06bb6b384edac92b6e680e79b6281d40a752d2dd42979003a269f7d861951afa"
+  },
+  "source_roundtrip_diagnosis": {
+    "path": "artifacts/runs/20261020T181651Z-150-pcraft-documents/source-roundtrip-diagnostic02.json",
+    "sha256": "e60fdc86b8e85f0cfe625098e4a7d728630d04ccafac4e2719148762c621ac9b"
+  },
+  "fixtures": {
+    "path": "artifacts/runs/20261020T181651Z-150-pcraft-documents/rich-fixtures01.json",
+    "sha256": "c1a172b5f73c7be570e4e348fe9c43d7879a9f095ae6e39996eb94716f7c0a0c"
+  },
+  "container_foundation": "docs/PCRAFT_CONTAINER_REFERENCES.json",
+  "no_photoshop_parity_claim": true
+}

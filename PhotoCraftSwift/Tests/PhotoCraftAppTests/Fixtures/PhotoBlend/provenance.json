@@ -1,0 +1,10 @@
+{
+  "source": "../photocraft-main/crates/algo/src/pyramid.rs",
+  "source_sha256": "cc043b136903aac38c6d1f665d3fa0e83e5ff4723c955e06bfb07f85daab26b6",
+  "license": "MIT OR Apache-2.0",
+  "generator": "Original Rust pyramid.rs with serial par_rows shim; no algorithm modifications. 37x23 RGB synthetic modular ramp, 5 levels.",
+  "layout": "Little-endian Float32: gaussian[1] 19x12x3; laplacian[0]37x23x3; collapsed37x23x3.",
+  "fixture_sha256": "d5e977f11ae64bf465ff6854008830ed051cbfa6b69396f582662419d6f0389c",
+  "compiler": "rustc 1.94.0 (4a4ef493e 2026-03-02) (Homebrew)",
+  "run": "artifacts/runs/20261027T032443Z-174-photo-alignment/pyramid-oracle01.rs"
+}

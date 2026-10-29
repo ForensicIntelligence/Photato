@@ -1,0 +1,105 @@
+{
+  "step": "dev-step-130",
+  "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+  "major_workflows": [
+    "D02",
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T061326Z-130-atomic-persistence",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_130.json",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/tested-source-hashes02.json",
+    "sha256": "441806c0c7cd177a674a0e8270033084cdcc5333dbd09b5ca1e944b7aaa8bf5c"
+  },
+  "implementation": [
+    "Retain a search-only parent directory descriptor for relative staging, rename and cleanup; detect observed parent/destination/staging replacement and preserve a replacement temporary name",
+    "Synchronize staged bytes with fsync then F_FULLFSYNC before publication; retry EINTR and fall back only for unsupported full-sync errors; reject actual storage failures",
+    "Use the same native writer for raster Data and native/PSD/PSB staged output, preserving serialized bytes, permissions and initially resolved symlink targets",
+    "Publish atomicPersistence capability metadata; keep native/API recovery failures, state and retry equivalent without new routes or Adobe contract changes",
+    "Verify four owned SIGKILL boundaries, actual OS file-size failure, real ENOSPC on a full32MiB HFS+ image, prior archive preservation and exact retry after freeing space",
+    "Qualify133 focused tests,1178 Debug/Release tests, universal package, Intel engine and unchanged native/PSB outputs; retain all failed probes and cleanup evidence"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T061326Z-130-atomic-persistence/full01.log",
+      "sha256": "ce1515db9d9af132a606e4dbc629e9f785d7fe779888471415e49d31e3db1950",
+      "passed": 1178,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 245.777
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T061326Z-130-atomic-persistence/release01.log",
+      "sha256": "378419ee07f06bb1668d254f952e248a3dfa5de5179f7f9718268663509ca0c3",
+      "passed": 1178,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 51.377
+    }
+  },
+  "focus": {
+    "passed": 133,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 8.069,
+    "log": {
+      "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/focused02.log",
+      "sha256": "3c8cd7ef42e367325c0c0a48f56d3073d7678658a9f5ef077086f3fcf42930a8"
+    }
+  },
+  "process": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/process-verification02.json",
+    "sha256": "83cab1f21f85e28e6b46481023f17b95ed428438970f4c59b48347fd9a2f8254"
+  },
+  "disk_full": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/disk-full-verification03.json",
+    "sha256": "de0640d53a2addfb67ad70ce125394d829901c404658d8fdcfac64bd16b0f108"
+  },
+  "storage_architectures": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/storage-verification01.json",
+    "sha256": "06ebb51929f28a6c860455dbf26b39d17fcdbf4b387ca2816f47a21936fcf053"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/source-scope01.json",
+    "sha256": "9d55dcfcff2961a4732801c4a9f708631a3768be8c12b7add6717d849733416c"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Add atomicPersistence capability policy and recovery/preferences references. Shared local native/API saves and recovery use the same writer. Request/result/state schemas and Adobe wire contracts stay unchanged; Data downloads retain exact bytes."
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/package-verification01.json",
+    "sha256": "988efe44ef7090b0b81d585e8a530ff89a672b929d79df5cf5b870f918026631"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/external-references01.json",
+      "sha256": "699e769c4a5c622a5ae4129ce71e7086acbf0bcd2a23e98e103591759d8bb612"
+    }
+  ],
+  "prior_failures": [
+    "Initial read referenced nonexistent DocumentSaveWorkflow.swift; discovery corrected",
+    "O_RDONLY parent-open permission regression found after first focused pass; O_SEARCH repair passes added real0300-directory regression",
+    "Process01 global RLIMIT_FSIZE interrupted serialization with Cocoa4866; process02 prepares bytes before testing actual EFBIG writer failure",
+    "Disk-image01 invalid blank-image -format argument rejects before creation/mount",
+    "Disk-image02 has212992bytes remaining after1MiB filler ENOSPC; small save correctly succeeds; image03 fills allocation fragments and verifies zero free bytes"
+  ],
+  "remaining": [
+    "D02: parent-directory entry durability, real hardware power loss, APFS/network/external-drive failure matrix, interruption of AppKit registration and complete recovery journal/retention/cleanup",
+    "D02/D01: original-source identity/bookmarks across recovery, window/tab restoration, stale backups, supported-platform and combined native/Photoshop live validation",
+    "D02: exact Photoshop preference controls/defaults/timing and complete File Handling categories; last live access remains separately recorded",
+    "D01: full format/profile/metadata fidelity, filesystem tags/ACL preservation, external-file coordination, recent items/bookmarks, original .pcraft migration and complete lifecycle",
+    "I02: active-document paging, bounded renderer/cache, large-document and total-process memory/latency, physical Intel/macOS14 runtime before raising limits",
+    "All remaining major workflows precede optional minor functions and final details; no full parity or universal power-loss guarantee"
+  ],
+  "limits": "F_FULLFSYNC can add device-wide latency. No new large-document, power-loss or total-memory benchmark; full supported-platform/physical-Intel qualification remains open.",
+  "live_ui": {
+    "path": "artifacts/runs/20261020T061326Z-130-atomic-persistence/live-ui01.json",
+    "sha256": "121319b754115728dded9fbaadc15e6f0b414196b56fb27889d846c347a24036"
+  }
+}

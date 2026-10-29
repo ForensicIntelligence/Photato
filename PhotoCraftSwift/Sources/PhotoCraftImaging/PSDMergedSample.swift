@@ -27,10 +27,11 @@ enum PSDMergedSample {
     return Pixel(p.r * p.a + white, p.g * p.a + white, p.b * p.a + white, p.a)
   }
   static func encodeLinear(_ p: Pixel) -> Pixel {
-    // Preserve the exact opaque sample, including signed zero and full finite HDR range.
-    if p.a == 1 { return p }
-    let white = 1 - p.a
-    return Pixel(p.r * p.a + white, p.g * p.a + white, p.b * p.a + white, p.a)
+    // Original Photoshop RGB32 references round each distance-from-white operation
+    // separately, including opaque samples. Do not fuse these operations or apply
+    // them to the straight layer planes, which retain their original sample bits.
+    func matte(_ color: Float) -> Float { 1 - (1 - color) * p.a }
+    return Pixel(matte(p.r), matte(p.g), matte(p.b), p.a)
   }
   static func decode(_ p: Pixel) -> Pixel {
     guard p.a > 0 else { return Pixel(1, 1, 1, 0) }

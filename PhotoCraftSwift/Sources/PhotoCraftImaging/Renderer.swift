@@ -23,6 +23,7 @@ public enum Renderer {
       return try Surface(
         width: document.width, height: document.height, depth: document.depth, fill: color)
     case .shape(let shape):
+      if let definition=shape.definition { return try ShapeRenderer.surface(definition,layer:layer,document:document) }
       var s = try Surface(width: shape.width, height: shape.height, depth: document.depth)
       if shape.kind == .rectangle {
         return try Surface(
@@ -40,7 +41,7 @@ public enum Renderer {
         }
       }
       return s
-    case .text(let text): return try renderText(text, document: document)
+    case .text(let text): return try text.typography == nil ? renderText(text, document: document) : NativeTextLayout.render(text, document: document)
     case .group:
       return try compositeStack(
         document.children(of: layer.id), in: document, over: emptyCanvas(document))
@@ -50,10 +51,10 @@ public enum Renderer {
   }
   private static func renderText(_ text: TextContent, document: CraftDocument) throws -> Surface {
     let font = CTFontCreateWithName(text.fontName as CFString, text.size, nil)
-    let p = text.color
+    let p = document.depth == .f32 ? SRGBTransfer.linear(text.color) : text.color
     let color =
       CGColor(
-        colorSpace: try RasterIO.colorSpace(),
+        colorSpace: try ColorManagement.space(for: document),
         components: [CGFloat(p.r), CGFloat(p.g), CGFloat(p.b), CGFloat(p.a)])
       ?? CGColor(gray: 0, alpha: 1)
     let attrs =
@@ -73,7 +74,8 @@ public enum Renderer {
     guard
       let context = CGContext(
         data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
-        space: try RasterIO.colorSpace(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        space: try ColorManagement.space(for: document),
+        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
     else { throw CraftError.invalid("Could not render type.") }
     let path = CGPath(rect: CGRect(x: 0, y: 0, width: width, height: height), transform: nil)
     CTFrameDraw(
@@ -81,7 +83,9 @@ public enum Renderer {
     guard let image = context.makeImage() else {
       throw CraftError.invalid("Could not render type.")
     }
-    return try RasterIO.surface(image, depth: document.depth)
+    return try RasterIO.surface(
+      image, depth: document.depth, space: ColorManagement.space(for: document),
+      colorEncoding: document.depth == .f32 ? .linearRGB : .sRGB)
   }
   static func compositePixel(
     _ blend: BlendMode, backdrop: Pixel, source: Pixel,
@@ -110,6 +114,10 @@ public enum Renderer {
   public static func composite(_ d: CraftDocument) throws -> Surface {
     try composite(d, inputTarget: nil)
   }
+  public static func composite(_ d: CraftDocument, videoTime: Double) throws -> Surface {
+    try d.validate()
+    return try compositeValidated(d, videoTime: videoTime)
+  }
   /// The returned surface retains document coordinates and is transparent outside the region.
   public static func composite(_ d: CraftDocument, region: IntRect) throws -> Surface {
     try d.validate()
@@ -120,19 +128,29 @@ public enum Renderer {
     return try compositeValidated(d, inputTarget: inputTarget)
   }
   static func compositeValidated(
-    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil
+    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil
   ) throws -> Surface {
     try Task.checkCancellation()
+    if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
+    var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(d, at:videoTime)
+    for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil {
+      d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
+    }
     let region = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
       .clipped(toWidth: d.width, height: d.height)
     let output = try emptyCanvas(d)
     guard region.width > 0, region.height > 0 else { return output }
-    if d.layers.contains(where: { $0.isGroup || $0.isClipped }) {
+    if inputTarget == nil, videoTransitions == nil,
+      let linear = try RGB32NormalRenderer.composite(d, over: output, region: region)
+    {
+      return linear
+    }
+    if videoTransitions != nil || d.layers.contains(where: { $0.isGroup || $0.isClipped }) {
       // Recursive CPU composition retains parent backdrops, which are not bounded by the
       // document's storage budget. Count whole touched tiles,
       // including both boundary tiles for a region that straddles a tile edge.
       let nesting = d.layers.map { d.ancestors(of: $0.id).count }.max() ?? 0
-      let buffers = max(5, nesting * 2 + 5)
+      let buffers = max(5, nesting * 2 + 5) + (videoTransitions == nil ? 0:6)
       let side = Surface.tileSide
       let canvasBytes =
         ((region.x + region.width - 1) / side - region.x / side + 1)
@@ -141,9 +159,14 @@ public enum Renderer {
         throw CraftError.unsupported(
           "This grouped document exceeds the current CPU compositing memory budget.")
       }
+      if inputTarget == nil, videoTransitions == nil,
+        let linear = try RGB32HierarchyRenderer.composite(d, region: region)
+      {
+        return linear
+      }
       return try compositeStack(
         d.children(of: nil), in: d, over: output,
-        cache: GroupRenderCache(inputTarget: inputTarget, region: region))
+        cache: GroupRenderCache(inputTarget: inputTarget, region: region, video:videoTransitions))
     }
     return try compositeFlat(
       d.layers, in: d, over: output, inputTarget: inputTarget, region: region)
@@ -165,6 +188,10 @@ public enum Renderer {
     for layer in layers where layer.visible && layer.opacity > 0 {
       try Task.checkCancellation()
       if layer.id == inputTarget { throw AdjustmentInputReached(surface: output) }
+      if layer.style != nil {
+        output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region)
+        continue
+      }
       let mask = try LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
       if case .adjustment(let adjustment) = layer.content {
         let evaluate = try adjustment.spatialEvaluator(depth: d.depth)

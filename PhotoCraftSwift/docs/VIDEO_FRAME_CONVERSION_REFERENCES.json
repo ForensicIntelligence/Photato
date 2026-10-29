@@ -1,0 +1,59 @@
+{
+  "step": 246,
+  "recorded_at_utc": "2026-10-29T10:23:12.877774+00:00",
+  "status": "Video Timelines now convert to editable sampled frames and back, retaining content/masks/transitions and a recoverable original with source audio. Native menus, cancellable preparation, shared API, Undo and native60 persistence work together. 249 focused and 2560 full optimized tests pass on 2348 unchanged inputs. Independent output checks match 13056 analytic RGBA channels and 48000 Float32 audio samples. Full animation interchange, exact Photoshop behavior and live/platform fidelity remain open. Installed221 and private universal243 remain unchanged.",
+  "run": "artifacts/runs/20261029T085132Z-246-video-frame-conversion",
+  "source_manifest": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/source09.json",
+  "native_archive": 60,
+  "actions_version": 20,
+  "typed_commands": 172,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/timeline-panel-controls-and-features.html",
+      "finding": "Both conversion directions are exposed via panel icons/menu; interpolated keys may be removed while appearance remains consistent."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/flatten-frames-into-layers.html",
+      "finding": "The distinct flatten command is a separate workflow; fetched correct save/export URL after an incorrect create-animation URL failed."
+    }
+  ],
+  "verification": {
+    "focused": {
+      "tests": 249,
+      "failures": 0,
+      "seconds": 18.129,
+      "log": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/focused09.log",
+      "sha256": "5530c8afe663e0a593505a3ba6e594593bc69f0037f97bad6bb867686b285443"
+    },
+    "full": {
+      "tests": 2560,
+      "failures": 0,
+      "seconds": 172.135,
+      "log": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/full02.log",
+      "sha256": "8068a21520f3a7f9d6b08814e431279428d4100d6b1ef2d0f7a26dd7aa6fa06b"
+    },
+    "unchanged_inputs": 2348,
+    "source_manifest": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/source09.json",
+    "independent": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/independent-temporal-full02.json",
+    "exact_RGBA_channels": 13056,
+    "independent_movie": "artifacts/runs/20261029T085132Z-246-video-frame-conversion/independent-movie-full02.json",
+    "exact_Float32_audio_samples": 48000,
+    "binary_sha256": "8d15c53b5c9c1a41426b3e388cbeefe03efba449f6617c3fb66d607d51a97718",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "provenance": "Independent native Swift implementation on the licensed PhotoCraft fork, public Adobe behavior documentation and owned analytic fixtures. No proprietary Adobe source or binary implementation used.",
+  "exact_photoshop_parity": false,
+  "open": [
+    "Exact Photoshop mode-conversion timing/default/menu/shortcut and output equivalence",
+    "Automatic audio resynchronization after frame reorder/retiming; original media remains retained for explicit recovery",
+    "Rich PSD/Actions animation interchange and complete all-frame geometry/mode/color operations",
+    "Broader animation controls, keyframe clipboard/multiselection, long streaming and complete SP01",
+    "Constant-content frame sharing/edit propagation and combined high-count movie/audio-track contexts require independent Photoshop qualification",
+    "DPX/HDR/aspect/presets and external raw QuickTime readers ignoring rowb",
+    "Live native/Photoshop UI, physical audio, physical Intel/macOS14/macOS26 acceptance"
+  ]
+}

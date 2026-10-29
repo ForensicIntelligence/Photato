@@ -122,7 +122,7 @@ final class ColorBalanceTests: XCTestCase {
         LevelsTransfer.mix(p, with: edited, coverage: 128.0 / 255, depth: depth).quantized(depth))
       XCTAssertEqual(actual.pixel(x: 2, y: 0), p)
       XCTAssertEqual(session.undoStack.last?.label, "Color Balance")
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
       try session.execute(
         .addLayer(Layer(name: "Color Balance", content: .adjustment(.colorBalance(a)))))

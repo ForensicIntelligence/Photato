@@ -1,0 +1,148 @@
+{
+  "origin": "Owned 64x64 synthetic RGB8 document saved via Photoshop 2026 native UI; no user artwork.",
+  "generator": "Original procedural Python PSD framing; R=60+2*x,G=40+3*y,B=160,alpha=[0,64,128,255] in 16px stripes.",
+  "oracle": "This independent Python PSD/PackBits parser; no Photato source imports.",
+  "records": [
+    {
+      "file": "lock-probe-base.psd",
+      "sha256": "f35c27c7f9c5962985dbf66b64c2b6ed7ee68ec38b9947113af87000f78093da",
+      "layerName": "Lock Probe",
+      "flagsOffset": 96,
+      "flags": 0,
+      "protectionOffset": 134,
+      "protection": 0,
+      "planes": {
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744",
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec"
+      }
+    },
+    {
+      "file": "ps-lock-transparency.psd",
+      "sha256": "cc5213a2e6ad9e55fbc2225cd7d14d28c993a12bdce633d5c54088949a7aedbe",
+      "layerName": "Lock Probe",
+      "flagsOffset": 17958,
+      "flags": 9,
+      "protectionOffset": 18136,
+      "protection": 1,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-image.psd",
+      "sha256": "18301276cbdc0f3540bd137b82c92849c8c5eca81cadf077c1e7a3f9ff7459e5",
+      "layerName": "Lock Probe",
+      "flagsOffset": 18408,
+      "flags": 9,
+      "protectionOffset": 18586,
+      "protection": 3,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-position.psd",
+      "sha256": "fff34a84fcdccc24a2d79e2dfd8fdca723dc5234a220be866dff46310f6317a8",
+      "layerName": "Lock Probe",
+      "flagsOffset": 18394,
+      "flags": 8,
+      "protectionOffset": 18572,
+      "protection": 4,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-autonest.psd",
+      "sha256": "c2b782caa8bea0285a64cd4c703f797440e8b6de4d19fbdf38bfb3b5166b05c7",
+      "layerName": "Lock Probe",
+      "flagsOffset": 18400,
+      "flags": 8,
+      "protectionOffset": 18578,
+      "protection": 8,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-all.psd",
+      "sha256": "5f5be0a538e34cb71e90f31e449444edc42b8442e77521180e7deda517a12b0d",
+      "layerName": "Lock Probe",
+      "flagsOffset": 18400,
+      "flags": 9,
+      "protectionOffset": 18578,
+      "protection": 2147483663,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-all-renamed.psd",
+      "sha256": "088ef8c4bc5c6cc3751a595f267cde87fdcb0d157f952892ede974181c063832",
+      "layerName": "Renamed While Locked",
+      "flagsOffset": 18390,
+      "flags": 9,
+      "protectionOffset": 18600,
+      "protection": 2147483663,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-none.psd",
+      "sha256": "2841cf875133348847ac0e0ffba605712cb649f4ab820a761849d0bcdd3d2487",
+      "layerName": "Renamed While Locked",
+      "flagsOffset": 18406,
+      "flags": 8,
+      "protectionOffset": 18616,
+      "protection": 0,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "c654de2f89002ac9c0cb844aeb12b5c74fba3d7f1a2e828df67544af86f708bb",
+        "1": "8d8c17f9a353129fddcc0c990e3e74cb4d8310ae793e7eb39e4624b9835b85c5",
+        "2": "eba73fb29bf345325a0c9009612dc9f8b7e9cfd1aa49b4a7441b8a925eced744"
+      }
+    },
+    {
+      "file": "ps-lock-transparency-fill-black.psd",
+      "sha256": "8d0af56e1e37fedf0dc83ca93c3f8a883761e59a9d9f9e91164bd8c784da8086",
+      "layerName": "Renamed While Locked",
+      "flagsOffset": 18312,
+      "flags": 9,
+      "protectionOffset": 18522,
+      "protection": 1,
+      "planes": {
+        "-1": "af3ca53b006547bcb04b3e884b6eaf74328dc60d8d640218f4b835c9225515ec",
+        "0": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "1": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "2": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+      }
+    }
+  ],
+  "checks": {
+    "all_alpha_planes_identical": true,
+    "lock_and_rename_do_not_change_visible_pixel_channels": true,
+    "transparency_protected_black_fill_retains_exact_alpha": true,
+    "transparent_hidden_rgb_not_claimed_identical": true
+  }
+}

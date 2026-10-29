@@ -1,0 +1,140 @@
+{
+  "step": "dev-step-208",
+  "completed_at_utc": "2026-10-27T23:13:00.184941+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Document window title is Photato - <current doc name>, refreshed after display-name/file changes and active tab changes",
+    "Canvas view/layer and entire CGContext drawing pass clip to viewport bounds, including shadows and overlays",
+    "Native document API state exposes the same windowTitle; document name and all editing semantics remain unchanged"
+  ],
+  "includes": "step207 native Lens Blur depth-of-field workflow",
+  "source_manifest": "artifacts/runs/20261027T225327Z-208-window-title-canvas/source01.json",
+  "source_manifest_sha256": "fa089d208e58e477f418a97815de3f628abde50decd6430786cb6ebeeea065de",
+  "source_inputs": 1601,
+  "source_delta": {
+    "new": [
+      "Tests/PhotoCraftAppTests/CanvasContainmentTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/DocumentWorkspace.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentWorkspaceTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused02": {
+      "passed": 59,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T225327Z-208-window-title-canvas/focused02.log"
+    },
+    "release-full01": {
+      "passed": 1991,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T225327Z-208-window-title-canvas/release-full01.log"
+    }
+  },
+  "test_counts": {
+    "focused02": 59,
+    "release-full01": 1991
+  },
+  "completed_this_increment": [
+    "Document window title is Photato - <current doc name>, refreshed after display-name/file changes and active tab changes",
+    "Canvas view/layer and entire CGContext drawing pass clip to viewport bounds, including shadows and overlays",
+    "Native document API state exposes the same windowTitle; document name and all editing semantics remain unchanged",
+    "Combined Lens Blur/full regression/universal package verification"
+  ],
+  "last_full_regression": {
+    "step": 208,
+    "tests": 1991,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T225327Z-208-window-title-canvas/release-full01.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T225327Z-208-window-title-canvas/reproduction01.log",
+    "artifacts/runs/20261027T225327Z-208-window-title-canvas/focused01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T23:13:00.184941+00:00",
+    "tests": {
+      "focused02": 59,
+      "release-full01": 1991
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T225327Z-208-window-title-canvas/Photato208-final01.zip",
+    "zip_sha256": "fb4e205366606dd7a7b16b2e437962547c3c71f73939029683783da2040994f2",
+    "app": "/private/tmp/photato208-verified-96djfh_r/Photato.app",
+    "executable_sha256": "78296393db3a3c5923ae952b17b5098f8e6de37d5fdfc9fd919ed0a987c2af50",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato208-verified-96djfh_r/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato208-verified-96djfh_r/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1601,
+    "source_manifest_sha256": "fa089d208e58e477f418a97815de3f628abde50decd6430786cb6ebeeea065de",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 285,
+      "unavailable_leaf_commands": 440,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Live isolated Debug title/zoom/scroll/window-resize checks passed on this host; full optimized pixel containment passed. This does not qualify physical Intel/macOS14/macOS26 runtime behavior or Lens Blur live interaction. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "native_commands": 107,
+    "state_field": "documents[].windowTitle",
+    "new_editing_commands": 0,
+    "adobe": "Presentation-only change; no Adobe v2 contract or route change."
+  },
+  "lens_blur_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "kind": "lensBlur",
+    "parameter": "lensBlur",
+    "native_commands": 107,
+    "archive": 38,
+    "actions": 10,
+    "observable_state": "lensBlur availability/workspace/previewBusy/filter/depthSources/history/zoom",
+    "adobe": "No invented route or descriptor. Lens Blur editable Photoshop actionJSON/PSD rejects until independently qualified."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 285,
+    "unavailable_leaf_commands": 440,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "live_validation": "artifacts/runs/20261027T225327Z-208-window-title-canvas/live-validation01.json",
+  "limitations": [
+    "Physical Intel/macOS14/macOS26 runtime matrix",
+    "Full Photoshop parity and other document/workspace workflows outside this correction",
+    "Exact Photoshop kernels, depth occlusion, edge behavior, defaults and numerical output",
+    "Editable Photoshop PSD/PSB and Adobe actionJSON descriptors",
+    "Live desktop interaction and physical Intel/macOS14/macOS26 runtime qualification",
+    "Production-size performance beyond bounded 8 MP and non-RGB/32-bit contexts",
+    "Alpha-channel UUID portability across unrelated documents; missing references explicitly reject",
+    "Remaining F01 variants and full master goal"
+  ],
+  "next": "Major F02 distortion workflows: Displace, Shear, Wave, Pinch, Spherize, Twirl, Ripple, Polar Coordinates and ZigZag, with usable native preview/history/persistence and shared APIs. Minor variants and numerical polish remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T225327Z-208-window-title-canvas/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "refresh_log": "artifacts/runs/20261027T225327Z-208-window-title-canvas/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T225327Z-208-window-title-canvas/development-history-audit/final01-check.log"
+  }
+}

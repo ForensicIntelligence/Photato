@@ -1,0 +1,236 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-145",
+  "recorded_at_utc": "2026-10-20T16:10:37.187587+00:00",
+  "major_workflow": "D01/I04 editable layered TIFF import",
+  "status": "Editable Photoshop-style TIFF import now reaches native Open, Photato upload and both action-job interfaces through the shared PSD engine. Native/PSD persistence preserves supported content; layered TIFF output and full parity remain open.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/tested-source-hashes03.json",
+    "sha256": "ad29ea9281251afad2116f790cfd0835441b52fcc8f2ecfda301ced2ab10de34"
+  },
+  "source_test_files": 506,
+  "validation_inputs": 952,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/packaging-documents03.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato145-attempt03-uglzkg7z/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 55,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 16.336,
+    "log": {
+      "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/focused03.log",
+      "sha256": "60e84d257097055e6ae56bd24f2c38eeacc94c1111ff032ad9b8ba8e8d22225b"
+    }
+  },
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T152518Z-145-layered-tiff/full02.log",
+      "sha256": "3c2418843c1b1f63967909cd415f179ba6b0ee9813eed75c1efa73f3f712a850",
+      "passed": 1376,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 296.372
+    },
+    "release02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T152518Z-145-layered-tiff/release02.log",
+      "sha256": "84801fd5e8d5c213d221baf85841a41399bfa397d62d3c0f426af208e9ddbcb1",
+      "passed": 1376,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 77.005
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato145-verified-qlb866n_/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "6155cceaed30da64bb0c9cdf04dbdbdf5cc234160268ab9f71af0e18f0a96fb1",
+    "zip_sha256": "4029813ea80e4357ed007ff4880ecfc0fd62eafd8a82e60a3adc49a37ae8511c",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/Photato145-candidate.zip",
+    "sha256": "4029813ea80e4357ed007ff4880ecfc0fd62eafd8a82e60a3adc49a37ae8511c"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_144.json",
+    "sha256": "72d47ef167935e2735dd859ae020e53b5108b01b0f85aa7c678191c14efaeecc"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/package-verification02.json",
+    "sha256": "9acd234d7d071cf5b3a1075c231a358dacf8824baa7d0a97a32b0dbc9dac73b7"
+  },
+  "independent_layers": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/independent-layers02.json",
+    "sha256": "3c8c1acd09eb1cac997e8ccd9f675e36b45ebcc724a3d76892a0f32c5c794780"
+  },
+  "independent_storage": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/independent-storage02.json",
+    "sha256": "ada4c3da0e5aae1494d912f46a2eafd7211ba0bbb3e4e30b35a0784e225a472d"
+  },
+  "independent_tiff": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/independent-tiff02.json",
+    "sha256": "99327d04519b80c57d8fddf1680516dbb0d1cabfeffb855bfe0774d494a67b8c"
+  },
+  "independent_psd": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/independent-psd02.json",
+    "sha256": "a1a1d3bc9e3c273cd01ab07bfa3f211cda7c20956e6b5a22b4afdee887e2273c"
+  },
+  "fixture_regeneration": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/fixture-regeneration02.json",
+    "sha256": "b95f4ab69e0f1960739b4a5b50cdda17dd8947b6ae3ecf19646069ba7faa7945"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/public-release-arm6402/verification.json",
+      "sha256": "a56d9cd7954ac412fea80b5ac6c3b32d1b655ad046a47334c2a2405f7a46d764"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/public-release-x86_6402/verification.json",
+      "sha256": "fb9ec793819ad50a43ed4ab5c4888cdbf5bf9706e27c1a56b576485e40d957c1"
+    }
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "Existing Open, Layers, edit/history, native/PSD persistence; unsupported layered TIFF ordinary Save remains guarded. No new menu bindings."
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "POST /v1/documents/import",
+      "POST /v1/action-jobs",
+      "POST /v2/execute-actions"
+    ],
+    "new_fields": [],
+    "capability": "documentTransfers.layeredTIFF input=true/output=false, depths/orders/compressions/scope/limits",
+    "contract": "Pinned Adobe Image external resource request unchanged. TIFF bytes enter the shared decoder; existing action availability, resource limits, output contracts and Photato-only encodingOptions rejection retained.",
+    "coverage": "Distinct TIFF MTrn marker retained; unsupported saved alpha/spot channels reject. Actual authenticated loopback upload with denied/corrupt atomic cases; both job routes at8/16/32-bit preserve layers in PSD output; native Open/edit/Undo/Save As and original-TIFF protection share the implementation."
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Bounded classic TIFF ImageSourceData tag37724 and Photoshop resources34377 import reuses PSD layer/group/mask decoding with a separately decoded TIFF composite. Layer data is never silently replaced by its preview on unknown/malformed content.",
+    "Both endian orders and raw/RLE/ZIP/predicted channels retain tested RGB8/16/32 samples, masks, groups, Unicode names, visibility, locks and positions. Little-endian structural fields are normalized while channel sample bytes stay big endian. Big-endian rich records share existing PSD validation.",
+    "Seven imaging and three native/API tests qualify24 independent fixture combinations plus six independent MTrn marker cases, rich big-endian Levels/mask/surrogate-pair transport, profile/framing/cancellation rejection, native edit/Undo/native and PSD saves, original-source protection, real HTTP uploads and both API jobs.",
+    "Independent pinned psdtags decodes48 resulting PSD exports with every layer/mask sample bit equal to fixture inputs. All40 fixture/expected/provenance files regenerate exactly. Prior88 storage TIFF outputs,18 default Float32 outputs,22 LZW boundary streams and96 PSD compression combinations independently reverify. All161 retained whole outputs match144.",
+    "All1376 Debug and1376 Release tests pass; universal macOS14+ package/signature/resources verify. Public Release24 layered TIFF callbacks and six PSD Save As cases pass on arm64/Rosetta, alongside previous opening/save/storage cases. Installed117/user state/Core/AI/Xcode remain unchanged."
+  ],
+  "remaining_major_dependencies": [
+    "D01/I04 and all major gates remain open. Next is editable layered TIFF output with native Save/Copy options and both API contract handling, sharing PSD serialization without a redundant merged cache.",
+    "Little-endian rich adjustment/fill/vector/opaque blocks, PSB-style TIFF ImageSourceData, BigTIFF, non-default orientation, wider color modes, metadata/profile conversion breadth and full4GB/streaming memory qualification remain open.",
+    "Independent synthetic fixtures and native round trips do not establish Photoshop2026 bytes/rendering/UI parity. Live native/Photoshop reference qualification remains pending unlocked Mac; Rosetta is not physical Intel/macOS14 runtime qualification.",
+    "PSD/PSB Maximize Compatibility/default dialog policy, JPEG quality/scans/matte/depth conversion, original .pcraft migration and all other major workflow dependencies remain open.",
+    "Minor-function and final-detail phases remain deferred until every earlier phase gate is closed."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/source-delta03.json",
+    "sha256": "ceb51aeb6dbfc28b415a60eb511b51467bcfb82408adf72a34b1e145f4803219"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/final-export-compatibility01.json",
+    "sha256": "f1e2a9fcce00f9d6dded06fc5dbc808e7c8a6dae43e36e353600c1a6199aefe8"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/final-inputs01.json",
+    "sha256": "4cae1844ac3ed44825b17f6775584ab23abd6e3f06c7ba9bd7612e7b9edfbfbb"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/next-major-plan01.json",
+    "sha256": "d85e3c136e565d753a9364f852710acd910bb44110d42e04683a32aa8d492639"
+  },
+  "reference_review": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/reference-review02.json",
+    "sha256": "688afcfd76535878301e3bb4381575ed3ee43d2f9e5d9a1c5f8ccef77d4a13a0"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/live-availability01.json",
+    "sha256": "f5f5d60675ff511dfdaf650332945d1d7074a5a2468b0abaf167a45db0554c63"
+  },
+  "prior_failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/tested-source-hashes01.json",
+        "sha256": "1d805abe76aa144246247f57f1eb404f577f9a4cbfd23455a5150e6eb59047d9"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/focused01.log",
+        "sha256": "5334262aff57e2ff87ec19a27f0d63f82e5f43fe4f1754a616ccdb0ee6448642"
+      },
+      "tests_ran": false,
+      "cause": "Missing try markers and switch-pattern where scoping; fixed before focused02."
+    },
+    {
+      "log": {
+        "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/fixtures01.log",
+        "sha256": "f4a1b2b1ffe162bec29f88510828ca31297e0f1877c5145a89c6c9a85004c1d5"
+      },
+      "result": {
+        "path": "artifacts/runs/20261020T152518Z-145-layered-tiff/fixtures01-result.json",
+        "sha256": "0e2d9c64cd37b8c39c10c46d4a72c5b500fb6ab247f49edbf646967ad8b129a0"
+      },
+      "cause": "Independent psdtags surrogate-pair Unicode writer/reader defect; preserved failed fixture attempt and use BMP independent fixtures. Native rich transport separately checks surrogate pairs."
+    }
+  ],
+  "resume_first": "Verify checkpoint145/freeze03/final history audit, candidate145 and installed117. Continue major D01/I04 per next-major-plan01. Preserve user state/UI118 and every unclosed parity requirement.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step145-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step145-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step145-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step145-final/final-inputs01.json"
+  }
+}

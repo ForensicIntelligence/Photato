@@ -1,0 +1,82 @@
+{
+  "step": "dev-step-200",
+  "recorded_at_utc": "2026-10-27T19:31:05.113764+00:00",
+  "status": "Native primary Pen/Paths workflows implemented and tested; full G04 parity remains open.",
+  "scope": [
+    "Freeform Pen fitting/preview/cancel/endpoint continuation",
+    "Curvature Pen smooth/corner/closure and anchor dragging",
+    "Selection-to-work-path tracing with holes and retained cubic geometry",
+    "Foreground Fill Path and current-Brush Stroke Path with optional pressure simulation",
+    "Shared native transactions/history/saving and five strict typed APIs"
+  ],
+  "sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/drawing-tools-overview.html",
+      "use": "Current Pen tool family and drawing workflow"
+    },
+    {
+      "url": "https://helpx.adobe.com/uk/photoshop/desktop/draw-shapes-paths/draw-lines-curves/draw-curves-and-straight-segments-intuitively.html",
+      "use": "Curvature smooth/corner click and closure semantics"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/convert-paths-and-selections.html",
+      "use": "Make Work Path tolerance0.5\u201310 and selection conversion"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/stroke-paths-with-color.html",
+      "use": "Raster target, current brush and optional Simulate Pressure"
+    },
+    {
+      "path": "../photocraft-main/crates/vector/src/trace.rs",
+      "license": "MIT",
+      "use": "Marching squares topology and least-squares cubic fitting approach; fitter independently bounded and omits Newton reparameterization"
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "path.configure",
+      "path.draw",
+      "path.edit",
+      "path.trace",
+      "path.paint"
+    ],
+    "command_count": 104,
+    "state": "paths",
+    "schema": "PathAPI",
+    "native_archive_version": 33,
+    "action_library_version": 5
+  },
+  "adobe_api": "No dedicated path route in pinned v2 contract. Native geometry/raster transactions shared; no claim of added execute-actions path descriptor support.",
+  "limits": [
+    "4096 knots and256 components",
+    "100000 native samples,4096 API samples",
+    "Trace and paint16MP subject to existing API4MP sharing limits",
+    "Fit8million point visits, bounded recursion/corner neighborhoods"
+  ],
+  "limitations": [
+    "Exact Photoshop fitting/curvature/pressure/antialiasing not qualified",
+    "Freeform Magnetic option not implemented",
+    "Multiple-anchor selection, full path transforms and pen modifier variants remain open",
+    "Fill Path is foreground/normal/opacity only; other dialog fills/blends/feather and Stroke Path tool choices remain open",
+    "New path/raster operations do not yet provide semantic Actions recording",
+    "Clipping-path export and wider PSD path forms remain open",
+    "Desktop locked: synthetic native events are not live qualification",
+    "Physical Intel/macOS14/macOS26 qualification remains open"
+  ],
+  "run": "artifacts/runs/20261027T191843Z-200-pen-paths",
+  "tests": {
+    "attempts": [
+      "artifacts/runs/20261027T191843Z-200-pen-paths/module01.log",
+      "artifacts/runs/20261027T191843Z-200-pen-paths/module02.log",
+      "artifacts/runs/20261027T191843Z-200-pen-paths/module03.log",
+      "artifacts/runs/20261027T191843Z-200-pen-paths/integration04.log"
+    ],
+    "status": "Passed focused and full optimized qualification.",
+    "focused": 100,
+    "release_full": 1951,
+    "release_log": "artifacts/runs/20261027T191843Z-200-pen-paths/release-full01.log",
+    "verification": "artifacts/runs/20261027T191843Z-200-pen-paths/verification01.json"
+  },
+  "next": "Next broad major workflow: native vertical/multilingual/OpenType typography; retain remaining path refinements and full G04 gates.",
+  "qualification": "All100 focused Debug and1951 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance."
+}

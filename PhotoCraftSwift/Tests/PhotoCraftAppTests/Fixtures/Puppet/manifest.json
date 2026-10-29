@@ -1,0 +1,7 @@
+{
+  "source": "../photocraft-main/crates/algo/src/puppet.rs",
+  "sha256": "c14df64d45ff43b53f3b27fdcfe405d7c92901776ea1c0624b4bddc3d4242ec6",
+  "license": "MIT OR Apache-2.0",
+  "generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T064058Z-180-puppet/oracle01.py",
+  "adaptation": "Unmodified Csr/BandChol/Bound/PuppetSolver arithmetic extracted; only standalone Mode/Mesh type declarations supplied. Synthetic5\u00d74 mesh, three pins,12-degree fixed rotation, all modes40 iterations and depth ordering. This proves original Rust solver parity, not Photoshop output."
+}

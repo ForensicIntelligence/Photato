@@ -1,0 +1,161 @@
+{
+  "step": "dev-step-141",
+  "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_141.json",
+    "sha256": "879c353374d3c821b9bf9d55f8d1f8676de67e4c4833076410755244ba243609"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.psd",
+      "GET /v1/documents/{id}/file.psb",
+      "POST /v1/action-jobs"
+    ],
+    "new_state": [
+      "psdLayerCompression and psdCompositeCompression in options/capability/state schemas"
+    ],
+    "permission": "Existing save/transfer/resource-job permissions; unchanged default-off session controls.",
+    "coverage": "Native-only encodingOptions expands with raw/rle/zip/zipPrediction for layers and merged image. Both job interfaces share the serializer; Adobe has no corresponding PSD compression field, retains default bytes and rejects the native extension. Cached output keys include choices."
+  },
+  "scope": [
+    "Port original PhotoCraft Rust PackBits packet choices to Swift, with44 independently generated boundary/random oracle cases and retained source/license hashes",
+    "Stream RLE with checked PSD16-bit/PSB32-bit row lengths and bounded row scratch; all four methods work for layer/mask and four-plane merged data with one shared Data/file serializer",
+    "Native Save/Copy accessory exposes per-output choices and separate PSD/PSB drafts; successful settings remembered per open document; ordinary Save ignores cancelled drafts; global Photoshop preference/dialog parity not claimed",
+    "Photato optional command/download/job options and exact schemas; Adobe PSD output keeps published fields/defaults, with explicit native-only extension rejection",
+    "230 focused and1,338 Debug/1,338 Release tests;96 depth/container/compression combinations retain layer/mask/merged sample bytes, profiles and metadata under an independent Python decoder",
+    "Owned high-depth AppKit Save/Copy/cancel/stale plus external HTTP checks; universal macOS14+ package and public Release Open/four-format saving on arm64/Rosetta; nine ordinary whole PSB outputs equal140"
+  ],
+  "remaining": [
+    "D01/I04 remains open: Photoshop global Disable Compression and Maximize PSD/PSB Compatibility preferences, exact compression defaults and Save dialogs are unimplemented/unqualified. Complete merged image remains included; no invented omitted-cache behavior.",
+    "JPEG Photoshop quality0..12/scans, full TIFF layers/RGB32/byte order/predictor, complete metadata/profile and original .pcraft migration remain open major save/import work.",
+    "RLE and ZIP retain the existing rendering/sample path. Rust packet equality and independent decoding of own files do not establish Photoshop whole-file/pixel equivalence or wider app interoperability.",
+    "Existing512MiB decoded channel/composite limits and API resource caps remain. Streaming compression is not global memory/paging or unrestricted large-document support.",
+    "Live Photoshop/native interaction remains unqualified: app inventory works but actual Photoshop UI access reports locked. Physical Intel/macOS14 and complete platform qualification remain open.",
+    "All major gates and earlier recovery/restoration/history/other editing gaps remain open; phase2 minor and phase3 details stay deferred."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Layer and composite compression save/copy accessory choices; global Photoshop preferences and exact modal parity remain open"
+  },
+  "provenance": "PackBits is a Swift translation of original Rust PhotoCraft crates/psd/src/compression.rs (MIT OR Apache-2.0), with unmodified-function oracle extraction. Row framing follows Adobe public file specification; zlib is the system library. Independent Python decoding examines own generated matrix, not Photoshop output. No Adobe code/credentials/jobs used.",
+  "reference_review": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/reference-review01.json",
+    "sha256": "deee538cff0c7b18d209efe83001b201bb679e7104f3a9e3809acda5e0e7bc03"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/tested-source-hashes01.json",
+    "sha256": "645a0173f10b655013d517f0bc56f753c974d365f22ce27ef7cb10a8aeba8ba6"
+  },
+  "focused": {
+    "passed": 230,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 161.415,
+    "log": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/focused01.log",
+      "sha256": "973de85be16d39169e74408aa0762ee57ec424ab0d10d17e17e5b4b7e11c9d65"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T131651Z-141-psd-compression/full01.log",
+      "sha256": "ff4686d1c717a633d4ee8ee15337055a9048888bb1a8db981340268cd9b745e2",
+      "passed": 1338,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 279.958
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T131651Z-141-psd-compression/release01.log",
+      "sha256": "4e78460341327f1f1cca9588126f2eab2c22e7ffbcaec44ba94fbbacfa83e3ea",
+      "passed": 1338,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 69.471
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato141-verified-3p5i4xqd/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "14378a65117915f5e2de9cca5deae086cab48a3b4637baee63a8dca49fd407b6",
+    "zip_sha256": "517b7f83731d893630e78b034f7214508e1fe1dc7ff24f215dd263b405901cb0",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "native_http_process": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/process-options-run01.json",
+    "sha256": "554c2421c25e4f0705b281b5a5217617697de210d6ab38ce93528eeb5c94f717"
+  },
+  "independent_psd": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/independent-psd01.json",
+    "sha256": "a1a1d3bc9e3c273cd01ab07bfa3f211cda7c20956e6b5a22b4afdee887e2273c"
+  },
+  "rust_oracle": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/rust-oracle01.json",
+    "sha256": "01d2f2402ba4fe211a1cc5342d37ec0e7a24e5849e71c0e1c0a515675bcaabce"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/public-release-arm6401/verification.json",
+      "sha256": "2027e0a1147cc00ef9a35078863ac899e5167347011269dd9d678dd898878e5f"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/public-release-x86_6401/verification.json",
+      "sha256": "387756cd7b9ef366e5786cbb51501e8225db6d4a10e86ff19398b4f425d88c1d"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/live-ui-availability01.json",
+    "sha256": "4bf6a4672767b69eddcd243eec575c3c5dcb81d0e882a1d69c0dac1f734e9393"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/source-delta01.json",
+    "sha256": "b6353f65004fb73317409d960ca9be8a962a5eead916289d0714e51efaacc319"
+  },
+  "full_parity": false,
+  "photoshop_file_preferences_step142": {
+    "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+    "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/preferences/photoshop-file-handling",
+        "POST /v1/preferences/photoshop-file-handling"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb"
+      ],
+      "new_state": [
+        "photoshopPreferenceChangesEnabled",
+        "photoshopFilePreferences capability/schema",
+        "effectiveSaveEncodingOptions"
+      ],
+      "permission": "Separate native Allow Photoshop file preference changes, off on each API session; existing recovery/recent permissions do not grant it.",
+      "coverage": "Shared native transaction/default resolution. Exact body schema and state, permission/auth/stale/busy/persistence errors. Stateless Photato and Adobe jobs retain their own output defaults; no Adobe application preference endpoint exists in pinned contract."
+    }
+  }
+}

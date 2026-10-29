@@ -1,0 +1,44 @@
+{
+  "step": "dev-step-158",
+  "completed_at_utc": "2026-10-26T18:43:05.354631+00:00",
+  "goal_status": "active",
+  "scope": "Usable editable native layer styles; full Photoshop parity remains open.",
+  "source_manifest": "artifacts/runs/20261026T180233Z-158-layer-styles/source03.json",
+  "source_manifest_sha256": "a5c6d47dd823fb496863b007f4be2cf332214bf473116ceb4bcf571abc49537d",
+  "source_inputs": 1170,
+  "tests": {
+    "focused_debug": 55,
+    "full_release": 1498,
+    "failures": 0,
+    "platform_cases_per_architecture": 30,
+    "full_debug": "not repeated",
+    "source_scope": "focused/live source02; source03 changes only two old archive-version assertions in one test file. All production sources identical."
+  },
+  "live": "Owned Debug harness; all ten menus, numeric fields, Preview, Cancel, OK, Undo/Redo, copy/clear/paste, discard/Quit verified after exclusivity repair. No packaged Release UI or independent Photoshop style-interchange claim.",
+  "package": {
+    "archive_sha256": "082ea73b30be352f84ccb9dbaaea34218bc1dd8d58223b492b55b681a89ae231",
+    "executable_sha256": "92a70dd27512e36524570a939fbea019d7d63c4097ae9ac3a678d418baacd5fb",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato158-verified-j7hkuqk7/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato158-verified-j7hkuqk7/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato158-verified-j7hkuqk7/Photato.app"
+  },
+  "candidate_archive": "artifacts/runs/20261026T180233Z-158-layer-styles/Photato158-candidate.zip",
+  "preserved": "Installed117, root ZIP, user workspace, Xcode project and754 original Rust files unchanged.",
+  "documentation_recovery": "artifacts/runs/20261026T180233Z-158-layer-styles/command-matrix-repair01.json",
+  "next": {
+    "major_workflow": "S03 automatic subject selection and background removal",
+    "implementation_order": [
+      "Check native Apple Vision availability and supported inputs on macOS14+",
+      "Shared asynchronous subject-mask engine; native selection/background-removal controls, cancellation/history",
+      "Photato API plus published Adobe operation where defined, schema/error/persistence tests",
+      "Continue remaining major workflows before detailed style/filter/feather fidelity"
+    ],
+    "open_style_scope": "Advanced blending/contours/noise/bevel variants, document-wide global light, off-canvas rendering, rich PSD/TIFF/pcraft style interoperability, presets and exact Photoshop results",
+    "completion_rule": "Do not close full parity gates from bounded native approximations or native-only round trips."
+  },
+  "history_audit": "artifacts/development-history-audit/20261026-step158-final"
+}

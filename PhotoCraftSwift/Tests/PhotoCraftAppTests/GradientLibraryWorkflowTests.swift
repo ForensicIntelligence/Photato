@@ -29,9 +29,9 @@ final class GradientLibraryWorkflowTests: XCTestCase {
     try await library.edit { try $0.remove([id]) }
     XCTAssertEqual(store.document, result)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(store.document)), result)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, doc)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
   @MainActor func testSavePresetFromFillDraftCapturesExactControlsWithoutDocumentEdit() async throws
@@ -82,7 +82,7 @@ final class GradientLibraryWorkflowTests: XCTestCase {
     guard case .gradientFill(let fill) = store.activeLayer?.content else { return XCTFail() }
     XCTAssertEqual(fill.gradient, .blackToWhite)
     XCTAssertEqual(store.session.undoStack.count, 2)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testClassicPresetSelectionAndLaterTargetChangeDoNotApplyToWrongLayer()

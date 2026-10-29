@@ -1,0 +1,99 @@
+{
+  "step": "dev-step-173",
+  "completed_at_utc": "2026-10-27T03:23:43.172018+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native RAW sensor development: original-source Smart Objects, source controls/preview/history, native22 and both API paths.",
+  "source_manifest": "artifacts/runs/20261027T024100Z-173-raw-development/source01.json",
+  "source_manifest_sha256": "1e2f9cfaa3cf0488eda18850bc97219c1c6e043b553b06327502e81049a9b11b",
+  "source_inputs": 1298,
+  "source_delta": "artifacts/runs/20261027T024100Z-173-raw-development/changes01.json",
+  "tests": {
+    "debug_focused": 96,
+    "optimized_focused": 96,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T024100Z-173-raw-development/integration07.log",
+    "optimized_log": "artifacts/runs/20261027T024100Z-173-raw-development/release-focused01.log",
+    "full_suite": "Batched; previous172 passed1659 full optimized cases on its own source."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T024100Z-173-raw-development/integration01.log",
+    "artifacts/runs/20261027T024100Z-173-raw-development/integration02.log",
+    "artifacts/runs/20261027T024100Z-173-raw-development/integration03.log",
+    "artifacts/runs/20261027T024100Z-173-raw-development/integration04.log",
+    "artifacts/runs/20261027T024100Z-173-raw-development/integration05.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T03:23:43.172018+00:00",
+    "app": "/private/tmp/photato173-verified-jecyasr7/Photato.app",
+    "zip": "artifacts/runs/20261027T024100Z-173-raw-development/Photato173-final.zip",
+    "zip_sha256": "6db051e1ebe9e804328761a77b2cf19942711340c8590d3e06f328e132256910",
+    "executable_sha256": "9bd10578042a05353b9e554cecea92290be6de8e2a2412fc8624884284e3ce4d",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato173-verified-jecyasr7/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato173-verified-jecyasr7/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1298,
+    "source_manifest": "artifacts/runs/20261027T024100Z-173-raw-development/source01.json",
+    "source_manifest_sha256": "1e2f9cfaa3cf0488eda18850bc97219c1c6e043b553b06327502e81049a9b11b",
+    "tests": {
+      "debug_focused": 96,
+      "optimized_focused": 96,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T024100Z-173-raw-development/integration07.log",
+      "optimized_log": "artifacts/runs/20261027T024100Z-173-raw-development/release-focused01.log",
+      "full_suite": "Batched; previous172 passed1659 full optimized cases on its own source."
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust file hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release evidence and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open."
+  },
+  "api": {
+    "count": 52,
+    "commands": [
+      "raw.inspect",
+      "raw.develop"
+    ],
+    "same_engine": true,
+    "adobe": "Published POST /v2/edit now accepts supported RAW/DNG sensor input and applies the shared native RGB pipeline. Async status and hosted PNG output tested equal to desktop, leaving the shared document unchanged.",
+    "adobe_unsupported": [
+      "DNG output",
+      "XMP",
+      "whiteBalance presets",
+      "autoTone",
+      "autoStraighten",
+      "Camera Raw execute-actions descriptors"
+    ],
+    "endpoint_groups": "Five partial/three unimplemented; no complete endpoint claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 214,
+    "unavailable": 511,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "change": "Existing Open/Place Embedded/Smart Object Edit Contents routes; no new factory menu or shortcut invented.",
+    "release_report": "artifacts/runs/20261027T024100Z-173-raw-development/menu-report-release01.json"
+  },
+  "limitations": [
+    "Apple camera and decoder support varies by OS; generated DNG is functional sensor evidence, not qualification of physical camera formats.",
+    "36 million sensor/output pixels and64MiB source; existing API4MP limit remains. Standard RGB filter remains8,388,608 pixels. Large-image performance unqualified.",
+    "Highlight recovery is gated to macOS26+ and the selected decoder. Unsupported requested lens/highlight modes reject. No cloud fallback or model download.",
+    "Sensor defaults explicitly choose shadowBoost1; fixture decoder default0.9 differs. No Apple/Photoshop factory-default equivalence claim.",
+    "Cancel after File Open retains the default imported source document; Photoshop cancel-before-opening semantics remain unqualified.",
+    "Local RAW masks, further lens corrections/profiles, XMP/Adobe presets, editable PSD RAW interchange and DNG output remain open.",
+    "Exact Adobe pixel identity, live UI, physical Intel and macOS14/26 runtime remain unqualified. Offscreen NSHosting is not live evidence."
+  ],
+  "next": {
+    "workflow": "RAW02 Photo alignment and merging",
+    "prepared_plan": "artifacts/runs/20261027T024100Z-173-raw-development/next-major-plan01.json",
+    "first_step": "Build native Auto-Align/Auto-Blend selected-layer workflows using shared Swift registration/blending/history/API, then Photomerge/HDR/stack statistics. Defer fine RAW polish."
+  },
+  "no_running_build_test_workers_expected": true
+}

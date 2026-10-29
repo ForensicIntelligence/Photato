@@ -1,0 +1,80 @@
+{
+  "step": "dev-step-216",
+  "status": "superseded_by_verified_checkpoint",
+  "goal_status": "active",
+  "last_fully_qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_215.json",
+  "run": "artifacts/runs/20261028T022329Z-216-procedural-render",
+  "version": "0.2.0 build2",
+  "core_attempts": {
+    "core01": {
+      "command": [
+        "./scripts/test.sh",
+        "--disable-build-manifest-caching",
+        "--filter",
+        "ProceduralRenderTests"
+      ],
+      "exit_code": 1,
+      "completed_utc": "2026-10-28T02:34:13.936769+00:00",
+      "summary": []
+    },
+    "core02": {
+      "command": [
+        "./scripts/test.sh",
+        "--disable-build-manifest-caching",
+        "--filter",
+        "ProceduralRenderTests"
+      ],
+      "exit_code": 1,
+      "completed_utc": "2026-10-28T02:36:20.713114+00:00",
+      "summary": [
+        "Executed 7 tests, with 36 failures (0 unexpected) in 3.334 (3.336) seconds"
+      ]
+    }
+  },
+  "reference_comparison": {
+    "cases": 70,
+    "exact": 34,
+    "different_samples": 89,
+    "maximum_byte_difference": 1
+  },
+  "window": {
+    "utc": "2026-10-28T02:43:52.841986+00:00",
+    "gui_result": "CUA app inventory found both Photato Verified and Photato159Probe. Selecting validation159 reported Mac locked; no GUI input was sent. Same-document zoom, scrolling, resizing and old-app handoff remain pending manual unlock.",
+    "files": {
+      "/Users/johnczlonka/Applications/Photato Verified.app/Contents/MacOS/Photato": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753"
+    },
+    "processes": "  PID STARTED                      COMMAND\n39219 Tue Oct 27 17:12:58 2026     /Users/johnczlonka/Applications/Photato Verified.app/Contents/MacOS/Photato\n51407 Wed Oct  7 19:43:35 2026     /Users/johnczlonka/Desktop/notadobe/notphotoshop/PhotoCraftSwift/build/PhotoCraft.app/Contents/MacOS/PhotoCraft\n86429 Mon Oct 26 11:59:59 2026     /private/tmp/photato159-live-689faskh/Photato159Probe.app/Contents/MacOS/SubjectProbe\n",
+    "api_impact": "No change to document data, commands, API contracts or app source. Corrected installed build remains209; current216 procedural renderer is unqualified work in progress.",
+    "codesign": {
+      "exit_code": 0,
+      "output": ""
+    }
+  },
+  "window_focused_tests": {
+    "command": [
+      "./scripts/test.sh",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "CanvasContainmentTests|DocumentWorkspaceTests"
+    ],
+    "exit_code": 0,
+    "completed_utc": "2026-10-28T02:43:58.169653+00:00",
+    "summary": [
+      "Executed 23 tests, with 0 failures (0 unexpected) in 3.760 (3.763) seconds"
+    ]
+  },
+  "source_inputs": "artifacts/runs/20261028T022329Z-216-procedural-render/window-followup01-inputs.json",
+  "resume": [
+    "No test/build worker remains active after window-followup01. Verify source hashes before editing.",
+    "Diagnose core02 reference differences against unchanged licensed Rust and independent adapter; retain existing assertions and expected outputs until cause is established.",
+    "Integrate procedural previews/settings/local history/Cancel/one-step Undo, raster/new-layer behavior, menu commands, Actions15, three typed Photato API operations, capability/state/schema docs and desktop/API tests. Native persistence stays42 for raster output.",
+    "Do not invent a Lighting Effects menu entry; audit current Photoshop availability separately.",
+    "Batch full optimized/universal qualification after focused workflow tests pass. Keep215 and209 evidence separate from WIP216.",
+    "After manual unlock, use CUA to open retained document in Photato Verified, verify title/200%zoom/pan/scroll/resize, restorefit, then close old159 only after unsaved-state checks. Do not quit original PhotoCraft.",
+    "Update docs/site/reference matrix/checkpoint and finish evidence audit; no broad source push or visibility change."
+  ],
+  "recorded_at_utc": "2026-10-28T02:45:26.179458+00:00",
+  "superseded_by": "docs/ACTIVE_CHECKPOINT_216.json",
+  "note": "Historical mid-increment failures and handoff retained. Core04 and integration02 repair the failed attempts; see verified checkpoint for current evidence."
+}

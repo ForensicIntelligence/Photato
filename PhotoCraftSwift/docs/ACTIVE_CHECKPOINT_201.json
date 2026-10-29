@@ -1,0 +1,154 @@
+{
+  "step": "dev-step-201",
+  "completed_at_utc": "2026-10-27T20:21:19.079036+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Native horizontal/vertical point and paragraph type with editable Unicode runs",
+    "Installed OpenType features, variable axes and language attributes",
+    "Glyphs panel with installed font selection, paging and retained glyph insertion",
+    "History, native34/Actions6 persistence and editable PSD orientation/represented feature flags",
+    "Native and published Adobe text operations share the existing Swift/TextKit engine"
+  ],
+  "source_manifest": "artifacts/runs/20261027T194734Z-201-native-typography/source01.json",
+  "source_manifest_sha256": "b5ca9e5009e51c4e922197fdc5289fd7ea504db32a322bf2f7248687f06e7604",
+  "source_inputs": 1524,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AdvancedTypeControls.swift",
+      "Sources/PhotoCraft/AutomationFonts.swift",
+      "Sources/PhotoCraftCore/FontTypography.swift",
+      "Sources/PhotoCraftImaging/NativeFonts.swift",
+      "Tests/PhotoCraftAppTests/AdvancedTypographyWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/AdvancedTypographyTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AdobeTextEdit.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/AutomationText.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/NativeTextEditing.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/TypeControls.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/TextTypography.swift",
+      "Sources/PhotoCraftImaging/NativeTextLayout.swift",
+      "Sources/PhotoCraftImaging/PSDText.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/NativeTypeWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration06": 70,
+    "release-full01": 1959
+  },
+  "last_full_regression": {
+    "step": 201,
+    "tests": 1959,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T194734Z-201-native-typography/release-full01.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T194734Z-201-native-typography/module01.log",
+    "artifacts/runs/20261027T194734Z-201-native-typography/module02.log",
+    "artifacts/runs/20261027T194734Z-201-native-typography/module03.log",
+    "artifacts/runs/20261027T194734Z-201-native-typography/module04.log",
+    "artifacts/runs/20261027T194734Z-201-native-typography/vertical-probe02.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T20:21:19.079036+00:00",
+    "tests": {
+      "integration06": 70,
+      "release-full01": 1959
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T194734Z-201-native-typography/Photato201-final.zip",
+    "zip_sha256": "140c378dff5e3795b437b008718accf897d9e21e5b9971fa7acb0604daa7acd3",
+    "app": "/private/tmp/photato201-verified-p8p1h903/Photato.app",
+    "executable_sha256": "8b840d6eb50ca9c64af8af33b4b6e9ff4d968b0b20b1604b40ead89f4cfcc1ca",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato201-verified-p8p1h903/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato201-verified-p8p1h903/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1524,
+    "source_manifest_sha256": "b5ca9e5009e51c4e922197fdc5289fd7ea504db32a322bf2f7248687f06e7604",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 280,
+      "unavailable_leaf_commands": 445,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "font.inspect",
+      "text.glyph"
+    ],
+    "expanded": [
+      "text.create",
+      "text.set"
+    ],
+    "typed_command_count": 106,
+    "parameters": "font.inspect: installed PostScript font, start/count (1\u2013512). text.glyph: layerID/font/glyphID, optional UTF-16 location/length. Type descriptions: orientation, style.fontOptions features/variations/language and glyphOverride. Omitted font option arrays default empty.",
+    "state": "layers[].text and capabilities.text.fonts expose orientation/options, schemas, installed font inspection and limits. Shared desktop/API glyph insertion retains character/paragraph state.",
+    "guards": "Existing authentication, share, revision, lock and interaction guards; read inspection also requires a settled editor. Invalid scalar splits/axes/options reject before mutation.",
+    "native_version": 34,
+    "actions_version": 6
+  },
+  "adobe_api": {
+    "routes": [
+      "POST /v2/create-composite"
+    ],
+    "scope": "Existing text_layer add/edit now accepts textOrientation horizontal/vertical and capsOption normal_caps/small_caps. Shared native engine and editable PSD job output.",
+    "limits": "Arbitrary OpenType tags, variable axes, glyph IDs and language tags are native-only: the pinned published contract has no matching fields. Other pre-existing text adapter restrictions remain; no full Adobe/cloud/font-service compatibility claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 280,
+    "unavailable_leaf_commands": 445,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Full Photoshop composers, missing-font substitution, language rules, anti-alias/kerning/pixel equality remain open. Fonts provide their own feature coverage; TimesNewRomanPSMT on this host did not substitute fi/ffi.",
+    "Vertical outline conversion rejects explicitly; path/warp/Dynamic Text are next major T04 scope.",
+    "Glyph enumeration maps BMP characters; unmapped glyphs retain explicit IDs using U+FFFC. Supplementary text remains normally typable.",
+    "Semantic Actions recording of arbitrary type edits, complete PSD text forms and FontCaps synthetic behavior remain unqualified.",
+    "Synthetic/offscreen AppKit and host tests only; no unlocked live UI, independent Photoshop save/reopen, IME/accessibility or physical Intel/macOS14/macOS26 qualification."
+  ],
+  "next": "T04: editable text on paths and warped/Dynamic Text; defer phase2 type utilities and exact/cosmetic refinements.",
+  "next_major_plan": "artifacts/runs/20261027T194734Z-201-native-typography/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 201,
+    "evidence_files": 38969,
+    "logs": 19492,
+    "missing_explicit_references": 0,
+    "refresh": "artifacts/runs/20261027T194734Z-201-native-typography/development-history-audit/final01-refresh.log",
+    "check": "artifacts/runs/20261027T194734Z-201-native-typography/development-history-audit/final01-check.log",
+    "final_source_hash_check": true
+  }
+}

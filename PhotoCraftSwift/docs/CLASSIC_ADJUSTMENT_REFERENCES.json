@@ -1,0 +1,103 @@
+{
+  "step": "dev-step-163",
+  "date": "2026-10-26",
+  "status": "Native workflows, both API subsets, all1559 full Release tests and universal package verified. A03 and independent/live Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T211803Z-163-classic-adjustments/source02.json",
+  "source_delta": "artifacts/runs/20261026T211803Z-163-classic-adjustments/source-delta02.json",
+  "provenance": {
+    "upstream": {
+      "crates/doc/src/adjust.rs": "621534998613769f0e5df422797bd14d5f9090b0b589f6396a8f32c603bb9615",
+      "crates/compose/src/adjust.rs": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+      "crates/io/src/adjust_map.rs": "73b6bf6364156e8bab382e356122ee4d6d32bcd04366f7885254d60d40ebc14b"
+    },
+    "license": "MIT OR Apache-2.0; ATTRIBUTION updated. Original Rust unchanged.",
+    "adobe": [
+      "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/adjustment-layers-options.html",
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/selective-color-adjustments/make-selective-color-adjustments.html",
+      "https://helpx.adobe.com/ca/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/correct-color-balance-with-color-and-vibrance.html"
+    ],
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482"
+  },
+  "desktop": {
+    "kinds": [
+      "vibrance",
+      "blackWhite",
+      "photoFilter",
+      "channelMixer",
+      "selectiveColor"
+    ],
+    "features": [
+      "Image preview/Cancel/OK",
+      "editable Properties and adjustment grid",
+      "selection-derived adjustment masks",
+      "coalesced sliders",
+      "Undo/Redo",
+      "layer locks",
+      "RGB8/16/32"
+    ],
+    "factory_bindings_added": 9,
+    "new_color_and_vibrance": "The captured Photoshop Layer menu has Color and vibrance with additional Temperature/Tint/White Balance. It stays unavailable; legacy Vibrance is in Image, the native adjustment grid and API."
+  },
+  "native_archive": {
+    "minimum_version": 17,
+    "legacy_readers": "New values require17; old documents and downloads remain compatible."
+  },
+  "photato_api": {
+    "commands": [
+      "adjustment.create",
+      "adjustment.set",
+      "adjustment.apply"
+    ],
+    "typed_commands": 40,
+    "schema": "capabilities.classicAdjustments.schema",
+    "state": "layers[].classicAdjustment",
+    "validation": "Strict per-kind fields, integer percentages, bounded arrays, opaque finite RGB colors; stale/busy rejection and native history."
+  },
+  "adobe_api": {
+    "routes_partial": 5,
+    "routes_unimplemented": 3,
+    "edit": "POST /v2/edit EditRequest/LightroomEdits.color vibrance/saturation, shared native engine, isolated flattened image, PNG/JPEG outputs and existing destinations/jobs/status. RAW, XMP, presets and remaining edits unsupported.",
+    "actions": "execute-actions supports vibrance, blackAndWhite, photoFilter, channelMixer and selectiveColor descriptor subsets. RGB ordinary pixel layer only; unsupported fields/modes rejected.",
+    "qualification": "Pinned request schema and local job tests; independent Adobe action descriptor/output and Camera Raw numerical fidelity remain unqualified. No hosted Adobe services or credentials used."
+  },
+  "psd_psb": {
+    "blocks": [
+      "vibA",
+      "blwh",
+      "phfl",
+      "mixr",
+      "selc"
+    ],
+    "status": "Native-generated editable transport at8/16/32bit passes; independent Photoshop import/export pending.",
+    "limits": "Photo Filter version2 RGB only;16bit color quantization. Full profile/depth and proprietary adjustment behavior remain open."
+  },
+  "verification": {
+    "focused": {
+      "tests": 46,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T211803Z-163-classic-adjustments/integration04.log"
+    },
+    "retained_failures": [
+      "artifacts/runs/20261026T211803Z-163-classic-adjustments/focused01.log",
+      "artifacts/runs/20261026T211803Z-163-classic-adjustments/focused02.log",
+      "artifacts/runs/20261026T211803Z-163-classic-adjustments/integration03.log",
+      "artifacts/runs/20261026T211803Z-163-classic-adjustments/release-tests01.log"
+    ],
+    "full_release": {
+      "tests": 1559,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T211803Z-163-classic-adjustments/release-tests02.log"
+    },
+    "final_focused": {
+      "tests": 36,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T211803Z-163-classic-adjustments/integration05.log"
+    },
+    "platform": "artifacts/runs/20261026T211803Z-163-classic-adjustments/platform01.json",
+    "package": "artifacts/runs/20261026T211803Z-163-classic-adjustments/package-verification01.json"
+  },
+  "live": "Pending Mac unlock. No163 live UI or independent Photoshop qualification. Prior159\u2013162 live gates retained in their checkpoints.",
+  "next_major": "A03 remaining Exposure/Brightness-Contrast completion, Color and vibrance, Color Lookup, Shadows/Highlights, HDR Toning, Match/Replace Color and Equalize. Exact kernels and optional polish deferred.",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_163.json"
+}

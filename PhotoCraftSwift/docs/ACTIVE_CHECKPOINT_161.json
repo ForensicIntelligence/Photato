@@ -1,0 +1,91 @@
+{
+  "step": "dev-step-161",
+  "completed_at_utc": "2026-10-26T20:30:31.278043+00:00",
+  "goal_status": "active",
+  "scope": "Functional eight-filter editable stack with native UI/history/archives, Photato and Adobe APIs; no complete Photoshop parity claim.",
+  "source_manifest": "artifacts/runs/20261026T195721Z-161-smart-filters/source02.json",
+  "source_manifest_sha256": "31be0aeb395fc424cb639e344c739759e0e3c1b89ea7e88aa17598b5d6a65c7a",
+  "source_inputs": 1189,
+  "source_delta": "artifacts/runs/20261026T195721Z-161-smart-filters/source-delta02.json",
+  "tests": {
+    "focused_debug_integration": 67,
+    "full_release_final": 1536,
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T195721Z-161-smart-filters/platform01.json",
+    "checks_per_architecture": 87,
+    "retained_failure": "release-tests01:1536 executed; one existing test failed two obsolete archive-version assertions. Only that test expectation changed before the full passing rerun."
+  },
+  "live": {
+    "status": "Pending Mac unlock; no161 live UI or independent Photoshop check performed. Do not bypass lock.",
+    "pending": [
+      "161 filter apply/edit/blend/reorder/paint mask/Undo/native Save and Photoshop PSD/PSB check",
+      "160 place/convert/Edit Contents/Save to parent/replace/Undo",
+      "159 Remove Background/mask/Undo and discard/quit owned159 app"
+    ],
+    "owned159_app": "/private/tmp/photato159-live-689faskh/Photato159Probe.app"
+  },
+  "package": {
+    "archive_sha256": "2559451e83c49e7bc4b7cc686e69609cefaef785715a0cb146b32a9e07a9c667",
+    "executable_sha256": "eca5a547230bbd420827b0824b0ccef818d3f7f7a6ac07c4bdd3a5367ef6015e",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato161-verified-ztucx95v/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato161-verified-ztucx95v/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato161-verified-ztucx95v/Photato.app",
+    "attribution_sha256": "6526dff741752cd4d42b8b8eb90c257930b247fa5aff7b7c978e0caf3ca70d79"
+  },
+  "candidate_archive": "artifacts/runs/20261026T195721Z-161-smart-filters/Photato161-candidate.zip",
+  "isolated_source": "/private/tmp/photato161-final-jc2e_tnq/PhotoCraftSwift",
+  "preserved": {
+    "root_build117_zip_and_executable": true,
+    "user_workspace": true,
+    "xcode_project": true,
+    "original_rust_files": 754
+  },
+  "menu": {
+    "bound": 193,
+    "unavailable": 532,
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8
+  },
+  "api": {
+    "photato_typed_commands": 35,
+    "adobe_partial_routes": 4,
+    "adobe_unimplemented_routes": 4
+  },
+  "next": {
+    "major_workflow": "T01 full native text editing",
+    "research_inputs": [
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftImaging/Renderer.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "../photocraft-main/crates/doc/src/text.rs",
+      "../photocraft-main/crates/text/src/layout.rs",
+      "../photocraft-main/crates/text/src/render.rs",
+      "../photocraft-main/crates/text/src/psd.rs",
+      "../photocraft-main/crates/text/src/engine_data.rs",
+      "../photocraft-main/crates/ui-egui/src/type_panels_ui.rs"
+    ],
+    "implementation_order": [
+      "Audit existing native text/Type tool and Rust text source",
+      "Add rich text runs and native on-canvas caret/range editing with Character/Paragraph controls",
+      "Editable persistence, Undo/Redo, native API and published Adobe equivalents together",
+      "Focused workflow checks and broader qualification at the feature milestone"
+    ],
+    "deferred": "Smart Filter numerical parity/additional algorithms and advanced mask tools; independent UI/interchange checks await unlock. Linked/warp Smart Objects and other major families remain open.",
+    "completion_rule": "Prioritize major-feature breadth before optional minor/detail work. Keep unqualified complete-parity and major-family gates open."
+  },
+  "development_record_audit": {
+    "refresh": "artifacts/development-history-audit/20261026-step161-final/refresh01.log",
+    "check": "artifacts/development-history-audit/20261026-step161-final/check01.log",
+    "milestones": 161,
+    "evidence_files": 35999,
+    "logs": 19067,
+    "missing_explicit_references": 0,
+    "final_refresh": "artifacts/development-history-audit/20261026-step161-final/refresh02.log",
+    "final_check": "artifacts/development-history-audit/20261026-step161-final/check02.log"
+  }
+}

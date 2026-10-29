@@ -1,0 +1,122 @@
+{
+  "step": 252,
+  "recorded_at_utc": "2026-10-29T16:16:05.642862+00:00",
+  "status": "PDF pages now open through a native Import PDF chooser with thumbnails, multiselection, passwords, crop, size, resolution, color and depth controls. File > Open and the optional inspect/import/cancel API use the same renderer and atomically create editable unsaved documents. 29 focused and2648 full optimized tests pass on2400 unchanged inputs. Independent checks match201048 flattened RGB channels and62208 analytic RGBA channels. Embedded-image extraction, retained-vector Smart Objects, editable Photoshop PDF data and exact/live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "implementation_stage": "Native/API page workflow qualified by automated tests; PDF major workflow remains open",
+  "source_manifest": "artifacts/runs/20261029T150912Z-252-pdf-import/source06.json",
+  "source_inputs": 2400,
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "tests": {
+    "full": {
+      "tests": 2648,
+      "failures": 0,
+      "seconds": 179.604,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/full02.log",
+      "sha256": "60eb3ff3df3eae89e827ebea457768578cb9a259c0b0e7f5ff01261b37c9dacb"
+    },
+    "focused": {
+      "tests": 29,
+      "failures": 0,
+      "seconds": 3.124,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/focused04.log",
+      "sha256": "da3d429a4c03dfeb7641287968d5841e9cf043651896a35a43f1f73d50d7f0c2"
+    },
+    "earlier_integration": {
+      "tests": 28,
+      "failures": 0,
+      "seconds": 3.515,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/focused03.log",
+      "sha256": "e5ec7228e767f0c80982a517675fa3ad2584d5349d7e3781d7f7e27fa40d8731"
+    },
+    "source_manifest": "artifacts/runs/20261029T150912Z-252-pdf-import/source06.json",
+    "unchanged_inputs": 2400,
+    "independent": "artifacts/runs/20261029T150912Z-252-pdf-import/outputs-full02-independent.json",
+    "exact_flattened_RGB_channels": 201048,
+    "exact_analytic_RGBA_channels": 62208,
+    "binary_sha256": "14922c55b549117653d0934de11c65d9b583c4b64303d538ec7e24bdc6353498",
+    "architecture": "arm64",
+    "offscreen_controls": "artifacts/runs/20261029T150912Z-252-pdf-import/outputs-focused04/pdf-import-controls.png",
+    "live_UI_qualified": false,
+    "Photoshop_output_qualified": false
+  },
+  "pdf_file_open_available": true,
+  "api_contract_changed": true,
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Continue major D01 PDF import with embedded-image discovery/extraction, native Images selection and matching optional API. Use public CoreGraphics scanner/stream APIs and original fixtures, preserving image dimensions/color/masks and source bytes. Then implement retained-vector PDF Smart Objects and editable Photoshop PDF workflows. Full Photoshop equality, live UI and physical Intel/macOS14/macOS26 acceptance remain open.",
+  "run": "artifacts/runs/20261029T150912Z-252-pdf-import",
+  "verification": {
+    "full": {
+      "tests": 2648,
+      "failures": 0,
+      "seconds": 179.604,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/full02.log",
+      "sha256": "60eb3ff3df3eae89e827ebea457768578cb9a259c0b0e7f5ff01261b37c9dacb"
+    },
+    "focused": {
+      "tests": 29,
+      "failures": 0,
+      "seconds": 3.124,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/focused04.log",
+      "sha256": "da3d429a4c03dfeb7641287968d5841e9cf043651896a35a43f1f73d50d7f0c2"
+    },
+    "earlier_integration": {
+      "tests": 28,
+      "failures": 0,
+      "seconds": 3.515,
+      "log": "artifacts/runs/20261029T150912Z-252-pdf-import/focused03.log",
+      "sha256": "e5ec7228e767f0c80982a517675fa3ad2584d5349d7e3781d7f7e27fa40d8731"
+    },
+    "source_manifest": "artifacts/runs/20261029T150912Z-252-pdf-import/source06.json",
+    "unchanged_inputs": 2400,
+    "independent": "artifacts/runs/20261029T150912Z-252-pdf-import/outputs-full02-independent.json",
+    "exact_flattened_RGB_channels": 201048,
+    "exact_analytic_RGBA_channels": 62208,
+    "binary_sha256": "14922c55b549117653d0934de11c65d9b583c4b64303d538ec7e24bdc6353498",
+    "architecture": "arm64",
+    "offscreen_controls": "artifacts/runs/20261029T150912Z-252-pdf-import/outputs-focused04/pdf-import-controls.png",
+    "live_UI_qualified": false,
+    "Photoshop_output_qualified": false
+  },
+  "provenance": "Independent Swift/CoreGraphics implementation guided by public Adobe workflow documentation and Apple APIs. Original ReportLab/pypdf fixtures are checked with Poppler/Pillow and analytic pixel coordinates. No Adobe implementation inspected. No formal clean-room separation or Photoshop equivalence asserted.",
+  "references": [
+    "artifacts/runs/20261029T150912Z-252-pdf-import/research01.json",
+    "artifacts/runs/20261029T150912Z-252-pdf-import/fixtures01.json",
+    "artifacts/runs/20261029T150912Z-252-pdf-import/adobe-contract-review01.json"
+  ],
+  "interface": [
+    "POST /v1/pdf/inspect",
+    "POST /v1/documents/import/pdf",
+    "POST /v1/documents/import/pdf/cancel"
+  ],
+  "adobe_routes_changed": false,
+  "full_feature_complete": false,
+  "exact_photoshop_parity": false,
+  "open": [
+    "Embedded-image extraction and the Import PDF Images tab remain unavailable.",
+    "Retained-vector PDF Smart Objects and editable Photoshop PDF data are not implemented.",
+    "Bounding crop uses rendered alpha within Trim Box; exact Adobe vector bounds/defaults/color/font behavior are unqualified.",
+    "Custom import profiles, PDF UserUnit/annotations/forms/comprehensive metadata and broader resource limits remain open.",
+    "Native64MiB source/4096 pages/32 outputs/512MiB decode; API8 share slots/4MP per page/128MiB limits remain.",
+    "Offscreen chooser rendering and automated lifecycle/HTTP tests do not qualify live UI or physical Intel/macOS14/macOS26 behavior.",
+    "Byte-identical Photoshop rendering, every major workflow and full native/API/platform parity remain active requirements."
+  ],
+  "preserved_failures": [
+    "module01.log",
+    "focused01.log",
+    "focused02.log",
+    "full01.log"
+  ],
+  "subsequent_image_import": {
+    "step": 253,
+    "reference": "docs/PDF_IMAGE_IMPORT_REFERENCES.json"
+  }
+}

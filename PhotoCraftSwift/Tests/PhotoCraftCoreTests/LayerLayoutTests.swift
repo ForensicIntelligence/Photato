@@ -111,9 +111,9 @@ final class LayerLayoutTests: XCTestCase {
       d.layers[0].vectorMask?.path.transformed(.translation(-3, 7)))
     XCTAssertEqual(session.document.layers[1].vectorMask, d.layers[1].vectorMask)
     let changed = session.document
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, d)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, changed)
     try session.execute(.layoutLayers([LayerTranslation(id: group, dx: 0, dy: 0)], .align(.left)))
     XCTAssertEqual(session.undoStack.count, 1)
@@ -179,7 +179,7 @@ final class LayerLayoutTests: XCTestCase {
           linked
             ? Transform2D.translation(5, -3) * layer.maskCoordinateTransform
             : layer.maskCoordinateTransform)
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
         XCTAssertThrowsError(try pixels.cropped(to: IntRect(x: Int.max, y: 0, width: 1, height: 1)))
       }

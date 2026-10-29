@@ -1,0 +1,85 @@
+{
+  "format": "Photato chunked native archive",
+  "version": 11,
+  "authorship": "Original native Swift format for this fork; not Adobe PSD/PSB and not an Adobe standard",
+  "license": "MIT OR Apache-2.0",
+  "legacy": "Readers retain existing PhotoCraftSwift binary-plist versions1\u201310. NativeArchive.encode remains the version10 compatibility encoder. NativeArchive.encodeChunked/write and desktop standard saves emit11.",
+  "byte_order": "Unsigned integers are little endian",
+  "header": [
+    {
+      "offset": 0,
+      "bytes": 8,
+      "value": "PHOTATO followed by NUL"
+    },
+    {
+      "offset": 8,
+      "bytes": 4,
+      "value": 11
+    },
+    {
+      "offset": 12,
+      "bytes": 4,
+      "value": 0,
+      "meaning": "reserved flags; other values reject"
+    }
+  ],
+  "body": "Zero or more contiguous unique blobs, then a binary-plist manifest. No gaps/overlaps/unindexed trailing data. Blob insertion order follows document encoding; tile indices are sorted.",
+  "manifest": {
+    "magic": "PhotatoChunked",
+    "version": 11,
+    "document": "Existing Codable CraftDocument; surface packingVersion3 binds tileData string digests to owned blobs; selection coverage uses historyBytes digest. No filesystem paths are followed.",
+    "blobs": "Ordered array of digest (lowercase SHA256 hex), offset (UInt64), length (UInt64); every entry must be referenced by the decoded document; maximum65536 records.",
+    "tiles": "Existing TileArchive representation: byte0 raw=0 or zlib=1, followed by exactly4096 portable little-endian Float32 RGBA samples after expansion. Exact finite sample bits; no color conversion.",
+    "selection": "Raw canvas-space GRAY8 coverage; dimensions and byte count validate before document publication."
+  },
+  "footer": [
+    {
+      "relative_offset": 0,
+      "bytes": 8,
+      "value": "PHTEND11"
+    },
+    {
+      "relative_offset": 8,
+      "bytes": 8,
+      "value": "manifest absolute offset"
+    },
+    {
+      "relative_offset": 16,
+      "bytes": 8,
+      "value": "manifest length"
+    },
+    {
+      "relative_offset": 24,
+      "bytes": 32,
+      "value": "binary SHA256 of manifest"
+    }
+  ],
+  "integrity": "Validate header/footer, manifest hash/version/table ranges, every referenced blob hash, raster budget and complete document before publication; reject unused entries. SHA256 is corruption detection, not authentication.",
+  "limits": {
+    "file_bytes": 536870912,
+    "logical_raster_decode_bytes": 1073741824,
+    "physical_IO_chunk_bytes": 65536,
+    "API_upload_bytes": 67108864,
+    "API_download_bytes": 134217728,
+    "API_logical_raster_bytes": 134217728,
+    "metadata": "Manifest remains memory resident; current document and selection arrays are materialized. This is not active-tile paging or multi-GB qualification."
+  },
+  "API": {
+    "default_native_download_version": 10,
+    "opt_in_header": "X-Photato-Archive-Version: 11",
+    "native_aliases": [
+      "file.photato",
+      "file.pcswift"
+    ],
+    "both_aliases_equivalent": true,
+    "supported_header_values": [
+      "10",
+      "11"
+    ],
+    "invalid_header_or_nonnative_header_status": 400,
+    "uploads": "Both archive representations accepted with existing resource limits and errors",
+    "Adobe_interface": "No native archive route or proprietary Adobe action invented; published PSD output contracts unchanged"
+  },
+  "persistence": "AtomicFileWriter under existing AppKit coordinated saves; explicit discard on failed writes; recovery file leaf reads/writes supported but crash/relaunch recovery not yet qualified",
+  "backwards_compatibility_notice": "Older Photato readers do not read version11. Existing native files convert only when explicitly saved by the new app. Existing API defaults remain10."
+}

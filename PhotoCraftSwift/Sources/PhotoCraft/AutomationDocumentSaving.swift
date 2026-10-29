@@ -5,6 +5,7 @@ import PhotoCraftCore
 extension AutomationService {
   static var documentSavingCapabilities: [String: Any] {
     [
+      "encodingOptions": DocumentEncodingOptions.capabilities,
       "enablement":
         "Separate native Allow local document saving switch; off on every API session. Save As additionally requires a folder chosen in the native API window.",
       "save":
@@ -92,6 +93,7 @@ extension AutomationService {
       replace = replacement
     }
     let expectedToken = token
+    let options = try DocumentEncodingOptions.parse(command.parameters["options"], format: format)
     let expectedGeneration = documentSaveGeneration
     let initial = try? url.resourceValues(forKeys: [
       .contentModificationDateKey, .fileSizeKey, .isSymbolicLinkKey,
@@ -129,17 +131,9 @@ extension AutomationService {
       }
     }
     try validateDestination()
-    let encoder = document.saveEncoder
     try await document.persistDocument(
-      to: url, format: format, operation: operation, validate: validateDestination,
-      encoder: { model, format in
-        let data = try encoder(model, format)
-        guard data.count <= DocumentIO.maximumDownloadBytes else {
-          throw AutomationFailure(
-            status: 413, message: "Saved output exceeds the 128 MiB API limit.")
-        }
-        return data
-      })
+      to: url, format: format, operation: operation, options: options, validate: validateDestination,
+      maximumPreparedBytes: DocumentIO.maximumDownloadBytes, encoder: document.saveEncoder)
     return true
   }
 }

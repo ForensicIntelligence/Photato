@@ -1,0 +1,149 @@
+{
+  "step": "dev-step-175",
+  "status": "Native Auto-Align verified by56 final Debug and56 optimized focused tests; universal package verified. RAW02 remains open.",
+  "provenance": [
+    {
+      "path": "../photocraft-main/crates/algo/src/features.rs",
+      "sha256": "411fd3ffe55a2950a3308e8485faaa2ced16d28f8f0b33647908b7234c28b6c2",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/panorama.rs",
+      "sha256": "6181d801be6bb775fa3bdf085febe2d8eab45beb2a4d8b4a051c03f6f0572e57",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/photo_util.rs",
+      "sha256": "f62d8ec684935c05c27ed703dca226a24168d0b31c9fd2f1e65892983fe843dd",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/transform.rs",
+      "sha256": "15d7ac0d85b352bfba6fdba5adb7dc6c39b2165bbab09eac8175e93986ad8eec",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/engine/src/align_cmds.rs",
+      "sha256": "97ddf83493d983f3a5aa980f7e23a8e4599a05488718472cf3257508e6a6b971",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/Fixtures/PhotoAlign/provenance.json",
+      "scope": "Original synthetic texture plus unmodified Rust detector/descriptor oracle;289 corners, no Adobe output."
+    },
+    {
+      "path": "artifacts/runs/20261027T035349Z-175-auto-align/adobe-descriptor-source01.json",
+      "scope": "Installed Photoshop2026 action vocabulary; path/hash/line facts, no redistributed Adobe code."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/align-image-layers.html",
+      "accessed": "2026-10-26",
+      "scope": "Six projection workflows and reference anchoring; previously read for RAW02 planning. Not exact algorithm/default evidence."
+    }
+  ],
+  "features": [
+    "Deterministic Harris/steered-BRIEF matching and robust translation/rigid/similarity/homography fitting.",
+    "Six real projection choices, automatic Perspective/Cylindrical selection, fixed reference, maximum-weight connected graph and joint transform refinement.",
+    "Full-resolution RGB8/16/32 raster/mask warp, disconnected-match rejection, cancellation and bounded allocations.",
+    "Native preview/Cancel/OK, reference controls, factory menu, one-step history, native/PSD persistence and same-engine API support."
+  ],
+  "api": {
+    "count": 54,
+    "commands": [
+      "photo.autoAlign"
+    ],
+    "same_engine": true,
+    "schema": "PhotoAlignSettings.apiSchema; bounded unique layerIDs",
+    "adobe": "Both /v1/action-jobs and published /v2/execute-actions interpret installed $Algn content alignment with all six authenticated projection values through the native engine; hosted PNG outputs tested against desktop encoding.",
+    "adobe_unqualified": [
+      "Long-string aliases",
+      "Other descriptors/lens controls",
+      "Proprietary algorithms",
+      "Complete endpoint conformance"
+    ],
+    "endpoint_groups": "Five partial/three unimplemented; no invented standalone route."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 216,
+    "unavailable": 509,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "Edit > Auto-Align Layers\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T035349Z-175-auto-align/menu-report04.json",
+    "release_report": "artifacts/runs/20261027T035349Z-175-auto-align/menu-report-release01.json"
+  },
+  "limits": [
+    "Two to16 visible ordinary raster layers sharing a parent; Smart Objects, effects, vector masks and clipped layers reject explicitly. One locked reference is allowed for planar modes; curved projections require every selected layer unlocked.",
+    "Up to16MP per source/projected layer and32MP combined source/output; registration uses at most900 pixels on the largest dimension with800 corners per input. Production-size performance and difficult/repetitive/low-texture subjects remain unqualified.",
+    "Full-resolution bilinear warp replaces moving source rasters. Effective mask coverage is warped and baked into new editable masks; original values are available through Undo. Canvas dimensions/selection remain fixed; off-canvas raster pixels are retained.",
+    "No lens distortion/vignette correction, manual control-point editor, EXIF focal-length inference or Photoshop proprietary matching/pixel/default equivalence. The reference is first selected or explicitly chosen, with a locked reference taking precedence by default.",
+    "Auto tries Perspective then Cylindrical; Spherical is explicit. Joint transform refinement is bounded to20 iterations, with no joint focal/lens fit. These are deliberate native implementation limits, not asserted Photoshop equality.",
+    "Live UI, physical Intel, macOS14/26 and complete Photoshop equality remain open; native NSHosting tests are offscreen. Universal build metadata does not prove physical platform behavior.",
+    "Photomerge source loading/new-document orchestration, HDR merging/deghosting and Smart Object statistics remain separate major work."
+  ],
+  "tests": {
+    "debug_focused": {
+      "count": 56,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T035349Z-175-auto-align/debug-final01.log"
+    },
+    "previous_failures": [
+      "artifacts/runs/20261027T035349Z-175-auto-align/integration01.log"
+    ],
+    "independent_rust": "artifacts/runs/20261027T035349Z-175-auto-align/oracle01.rs",
+    "independent_fixtures": "Tests/PhotoCraftAppTests/Fixtures/PhotoAlign/provenance.json",
+    "last_full_suite": "Step172 passed1659 full optimized tests on its own source; broader regression for175 remains batched.",
+    "optimized_focused": {
+      "count": 56,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T035349Z-175-auto-align/release-focused01.log"
+    },
+    "earlier_focused": [
+      {
+        "count": 54,
+        "failures": 0,
+        "log": "artifacts/runs/20261027T035349Z-175-auto-align/integration02.log"
+      },
+      {
+        "count": 56,
+        "failures": 0,
+        "log": "artifacts/runs/20261027T035349Z-175-auto-align/integration03.log"
+      }
+    ]
+  },
+  "next_major": "Photomerge, then HDR merge/deghosting",
+  "next_major_plan": "artifacts/runs/20261027T035349Z-175-auto-align/next-major-plan01.json",
+  "package": {
+    "utc": "2026-10-27T04:18:51.878816+00:00",
+    "app": "/private/tmp/photato175-verified-ardcsf5y/Photato.app",
+    "zip": "artifacts/runs/20261027T035349Z-175-auto-align/Photato175-final.zip",
+    "zip_sha256": "e13dfd2855bac69802d2731bfccb8829dab7033f169bda98caae4a703bd682e2",
+    "executable_sha256": "145c4984ef657726341db4f5693dacbf7c3d28b4b826e6b53668f29667ac64b7",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato175-verified-ardcsf5y/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato175-verified-ardcsf5y/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1317,
+    "source_manifest": "artifacts/runs/20261027T035349Z-175-auto-align/source01.json",
+    "source_manifest_sha256": "ccc26653f256aa41e3c9552ec42d3a8365e5a0099986e2f4f631385005c5d28f",
+    "tests": {
+      "debug_focused": 56,
+      "optimized_focused": 56,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T035349Z-175-auto-align/debug-final01.log",
+      "optimized_log": "artifacts/runs/20261027T035349Z-175-auto-align/release-focused01.log",
+      "full_suite": "Batched; previous172 passed1659 full optimized cases on its own source."
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release focused evidence and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop checks remain open."
+  }
+}

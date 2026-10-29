@@ -99,7 +99,7 @@ import SwiftUI
 
   func updateDocumentPresentation() {
     let document = workspace.activeDocument
-    window?.title = document?.displayName ?? "Photato"
+    window?.title = document?.photatoWindowTitle ?? "Photato"
     window?.representedURL = document?.fileURL
     window?.isDocumentEdited = document?.isDocumentEdited ?? false
     workspace.revision &+= 1
@@ -152,7 +152,6 @@ private struct DocumentWorkspaceRoot: View {
   var activeDocument: CraftNSDocument?
   private var sheetStateRevision = 0
   @ObservationIgnored weak var lastActive: DocumentWorkspaceController?
-  @ObservationIgnored private var closing: [UUID: DocumentCloseRequest] = [:]
   @ObservationIgnored lazy var floatingPanels = FloatingPanelWindows(owner: self)
   @ObservationIgnored lazy var panelDragging = PanelTearOffCoordinator(owner: self)
 
@@ -204,12 +203,26 @@ private struct DocumentWorkspaceRoot: View {
     document.store.tool = previous.store.tool
     document.store.unavailableToolID = previous.store.unavailableToolID
     document.store.rememberedTools = previous.store.rememberedTools
+    document.store.adjustmentBrushKind = previous.store.adjustmentBrushKind
+    document.store.adjustmentBrushSubtract = previous.store.adjustmentBrushSubtract
+    document.store.adjustmentBrushObject = previous.store.adjustmentBrushObject
+    document.store.adjustmentBrushOverlay = previous.store.adjustmentBrushOverlay
+    document.store.paintToolOptions = previous.store.paintToolOptions
+    document.store.mixerPaint = previous.store.mixerPaint
+    document.store.patternStampOrigin = previous.store.patternStampOrigin
+    document.store.patternStampID = previous.store.patternStampID
+    document.store.selectedBrushID = previous.store.selectedBrushID
     document.store.brush = previous.store.brush
     document.store.backgroundColor = previous.store.backgroundColor
     document.store.autoSelect = previous.store.autoSelect
     document.store.showLayerBounds = previous.store.showLayerBounds
     document.store.selectionMode = previous.store.selectionMode
     document.store.selectionFeather = previous.store.selectionFeather
+    document.store.selectionPaintMode=previous.store.selectionPaintMode
+    document.store.objectSelectionMode=previous.store.objectSelectionMode
+    document.store.selectionSampleAllLayers=previous.store.selectionSampleAllLayers
+    document.store.selectionEnhanceEdge=previous.store.selectionEnhanceEdge
+    document.store.selectionOverlayColor=previous.store.selectionOverlayColor
     document.store.selectionAntiAlias = previous.store.selectionAntiAlias
     document.store.wandOptions = previous.store.wandOptions
     document.store.wandSampleAllLayers = previous.store.wandSampleAllLayers
@@ -297,43 +310,18 @@ private struct DocumentWorkspaceRoot: View {
   }
 
   func requestClose(_ document: CraftNSDocument, completion: @escaping (Bool) -> Void = { _ in }) {
-    guard closing[document.store.identity] == nil,
-      let group = group(for: document), canChangeDocument
-    else {
+    guard let controller = document.ownerController, group(for: document) != nil, canChangeDocument else {
       completion(false)
       return
     }
-    document.store.finishNumericField()
-    document.store.finishLayerName()
-    guard canChangeDocument else {
-      completion(false)
-      return
+    controller.requestDocumentClose([document], scope: .document) {
+      completion($0?.phase == .completed)
     }
-    group.workspace.select(document)
-    let request = DocumentCloseRequest { [weak self] shouldClose in
-      self?.closing[document.store.identity] = nil
-      if shouldClose { document.close() }
-      completion(shouldClose)
-    }
-    closing[document.store.identity] = request
-    document.canClose(
-      withDelegate: request,
-      shouldClose: #selector(DocumentCloseRequest.document(_:shouldClose:contextInfo:)),
-      contextInfo: nil)
   }
 
   func closeGroup(_ group: DocumentWorkspaceController) {
-    closeSequence(
-      group.workspace.floating
-        ? group.workspace.documents
-        : groups.flatMap { $0.workspace.documents })
-  }
-
-  private func closeSequence(_ documents: [CraftNSDocument]) {
-    guard let document = documents.first else { return }
-    requestClose(document) { [weak self] closed in
-      if closed { self?.closeSequence(Array(documents.dropFirst())) }
-    }
+    let targets = group.workspace.floating ? group.workspace.documents : groups.flatMap { $0.workspace.documents }
+    targets.first?.ownerController?.requestDocumentClose(targets, scope: .window)
   }
 
   func float(_ document: CraftNSDocument) {
@@ -414,15 +402,5 @@ private struct DocumentWorkspaceRoot: View {
     destination.workspace.documents.insert(document, at: index + (after ? 1 : 0))
     destination.workspace.select(document)
     return true
-  }
-}
-
-@MainActor private final class DocumentCloseRequest: NSObject {
-  let completion: (Bool) -> Void
-  init(completion: @escaping (Bool) -> Void) { self.completion = completion }
-  @objc func document(
-    _ document: NSDocument, shouldClose: Bool, contextInfo: UnsafeMutableRawPointer?
-  ) {
-    completion(shouldClose)
   }
 }

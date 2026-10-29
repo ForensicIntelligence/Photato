@@ -86,7 +86,7 @@ public struct RGBHistogram: Equatable, Sendable {
   }
 }
 
-public enum AutoCorrection: String, CaseIterable, Sendable {
+public enum AutoCorrection: String, CaseIterable, Sendable, Codable {
   case tone = "Auto Tone"
   case contrast = "Auto Contrast"
   case color = "Auto Color"

@@ -1,0 +1,164 @@
+{
+  "step": "dev-step-183",
+  "completed_at_utc": "2026-10-27T09:37:47.473578+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Create/from group/from layers, resize/move/duplicate/backgrounds, clipping/logical coordinates, local guides, native27 persistence, per-board image/native and multipage PDF export, Photato commands and bounded published Adobe jobs.",
+  "source_manifest": "artifacts/runs/20261027T084848Z-183-artboards/source01.json",
+  "source_manifest_sha256": "6299942e40ea4d1f6a59cba32e776843ca63aeaa5525c9b012a0ca7055370e17",
+  "source_inputs": 1383,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AdobeArtboards.swift",
+      "Sources/PhotoCraft/ArtboardCanvas.swift",
+      "Sources/PhotoCraft/ArtboardControls.swift",
+      "Sources/PhotoCraft/ArtboardExport.swift",
+      "Sources/PhotoCraft/AutomationArtboards.swift",
+      "Sources/PhotoCraftCore/Artboards.swift",
+      "Tests/PhotoCraftAppTests/AdobeArtboardTests.swift",
+      "Tests/PhotoCraftAppTests/ArtboardIntegrationTests.swift",
+      "Tests/PhotoCraftAppTests/ArtboardWorkflowTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AdobeActionAssets.swift",
+      "Sources/PhotoCraft/AdobeActionJobs.swift",
+      "Sources/PhotoCraft/AdobeActionsRequest.swift",
+      "Sources/PhotoCraft/AdobeRemoveBackground.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationActionJobs.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationHTTP.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/GradientEditing.swift",
+      "Sources/PhotoCraft/GradientFillControls.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/Geometry.swift",
+      "Sources/PhotoCraftCore/GradientFill.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftImaging/GradientFillRenderer.swift",
+      "Sources/PhotoCraftImaging/GroupRenderer.swift",
+      "Sources/PhotoCraftImaging/LayerLayoutRenderer.swift",
+      "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "Sources/PhotoCraftImaging/RGB32HierarchyRenderer.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration05": 149,
+    "release-focused01": 149
+  },
+  "last_full_regression": {
+    "step": 182,
+    "tests": 1759,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T080231Z-182-actions/release-full01.log",
+    "note": "Prior source; broader regression intentionally batched while major workflows remain missing."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T084848Z-183-artboards/module03.log",
+    "artifacts/runs/20261027T084848Z-183-artboards/integration01.log",
+    "artifacts/runs/20261027T084848Z-183-artboards/integration02.log",
+    "artifacts/runs/20261027T084848Z-183-artboards/integration04.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T09:37:47.473578+00:00",
+    "tests": {
+      "integration05": 149,
+      "release-focused01": 149
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T084848Z-183-artboards/Photato183-final.zip",
+    "zip_sha256": "41c098d4519d7e9fcf4412b9f4a4e97e0154ae72f77b9d1fe5ac10a91984d1f4",
+    "app": "/private/tmp/photato183-verified-pa36hmgx/Photato.app",
+    "executable_sha256": "db9c514377c057741c627b3bda0cf2b3a5aa111c2c93fe55e02dd1acf7b46618",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato183-verified-pa36hmgx/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato183-verified-pa36hmgx/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1383,
+    "source_manifest_sha256": "6299942e40ea4d1f6a59cba32e776843ca63aeaa5525c9b012a0ca7055370e17",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 246,
+      "unavailable_leaf_commands": 479,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Focused regression and package validation; not current full-suite/live/physical-platform or complete Photoshop parity evidence."
+  },
+  "api": {
+    "commands": [
+      "artboard.edit",
+      "artboard.export"
+    ],
+    "catalogue_count": 68,
+    "native_archive_version": 27,
+    "state": "Each layer exposes artboard metadata; document exposes logical origin, availability and names/guides visibility. UI visibility toggles have no document mutation; their API impact is exposed state."
+  },
+  "adobe_api": {
+    "submit": "POST /v2/create-artboard",
+    "status": "GET /v2/status/{jobId}",
+    "output_types": [
+      "image/png",
+      "image/jpeg",
+      "image/tiff",
+      "application/json"
+    ],
+    "engine": "Same native ArtboardCommand and compositing; existing authenticated job/asset lifecycle, limits and output transport."
+  },
+  "menus": {
+    "new_bindings": 9,
+    "entries": 802,
+    "bound": 246,
+    "unavailable": 479,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "tool": "Artboard in Move/V group; Shift-V cycles existing factory group."
+  },
+  "limitations": [
+    "Frames, shape/type frames and replaceable frame contents are the next major work; L07 remains open.",
+    "Editable PSD/PSB artboard import/export is not implemented. Native27 retains editability; PNG/JPEG/TIFF/PDF render artboards. Existing unsupported PSD artd input is rejected explicitly.",
+    "Adobe create-artboard is a bounded URL-input, PNG/JPEG/TIFF/JSON-output subset: sources render to independent raster children, default spacing50 or0\u201332768; cloud/embedded storage, PSD/PSDC, output scaling/scan and richer manifest fidelity are unsupported.",
+    "Native tool has create/move/corner resize, properties, presets, backgrounds, local guides, duplication and fit. Auto-nesting/drop rules, adjacent plus buttons, rich Properties panel/New Document integration and full shortcut/preferences/visual fidelity remain open.",
+    "API:4,194,304 canvas pixels,64 layers,128MiB document/exports. Native canvas uses existing36MP/32768-edge limits. Expansion does not auto-shrink the allocated canvas.",
+    "General rotated/scaled layer geometry with artboards remains constrained to supported axis-aligned whole-document operations. More crop/resize contexts and logical-origin rotation fidelity need qualification.",
+    "New artboard operations currently record explicit unsupported Actions markers; complete recording coverage remains open.",
+    "Live Photoshop/UI comparison, independent Adobe output/manifest equivalence, physical Intel/macOS14/26 qualification and exact pixel parity are unqualified. Last desktop evidence remains locked; no re-probe or bypass was attempted.",
+    "Per-artboard folder export preserves completed outputs if a later output fails; it refuses existing names and requires atomic hard-link publication. Native PDF is rendered multipage output, not editable vector/text PDF.",
+    "Minor UI follow-up: Artboard from Group currently retains the source group name even if the conversion-sheet name field is edited; rename the created board through Layers. This does not block creation/conversion and is deferred under major-functions-first scheduling."
+  ],
+  "next": "L07 Frames: inspect Rust frame_cmds and published Photoshop Frame workflows, implement native Frame tool/Frame from Layers, shape/type conversion and replaceable contents with shared API/history/persistence/tests. Keep minor polish and pixel-exact research deferred.",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T084848Z-183-artboards",
+    "passed_iteration": "02",
+    "milestones": 183,
+    "evidence_files": 37185,
+    "logs": 19322,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh03/check03 after this metadata update"
+  },
+  "prior_documentation_repair": "Step182 command-matrix reconstruction retained; exact unpreserved historical wording was not claimed recovered.",
+  "final_source_verification": "All1383 source01 inputs match after documentation and package verification."
+}

@@ -64,13 +64,13 @@ final class CloneWorkflowTests: XCTestCase {
     XCTAssertEqual(pixel(store, 19), pixel(store, 3))
     XCTAssertEqual(store.session.undoStack.count, 3)
     let edited = store.document
-    store.undo()
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertTrue(store.document == original)
-    store.redo()
-    store.redo()
-    store.redo()
+    await store.redo()
+    await store.redo()
+    await store.redo()
     XCTAssertTrue(store.document == edited)
   }
   @MainActor func testCancellationToolSwitchAndMissingSourcesDoNotEdit() async throws {
@@ -202,7 +202,8 @@ final class CloneWorkflowTests: XCTestCase {
     XCTAssertTrue(store.chooseShortcut("s", cycle: false))
     XCTAssertEqual(store.tool, .cloneStamp)
     XCTAssertTrue(store.chooseShortcut("s", cycle: true))
-    XCTAssertEqual(store.unavailableToolID, "patternStamp")
+    XCTAssertEqual(store.tool, .patternStamp)
+    XCTAssertNil(store.unavailableToolID)
   }
   @MainActor func testOverlayTransformControlsAndWindowMenu() async throws {
     let state = CloneSources()

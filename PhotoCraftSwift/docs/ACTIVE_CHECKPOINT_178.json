@@ -1,0 +1,134 @@
+{
+  "step": "dev-step-178",
+  "completed_at_utc": "2026-10-27T05:57:05.725256+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native source-loading/Statistics workspace, eleven persisted per-instance Smart Object modes, optional alignment, Undo/source edits/native23 and both API paths.",
+  "source_manifest": "artifacts/runs/20261027T052544Z-178-smart-stacks/source02.json",
+  "source_manifest_sha256": "4c7a9e1d55bf49b648d25464e2cadb83988d5b16f51bd6667b7a8e6e6d430a70",
+  "source_inputs": 1342,
+  "source_delta": [
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/changes01.json",
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/changes02.json"
+  ],
+  "tests": {
+    "debug_focused": 79,
+    "optimized_full": 1720,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T052544Z-178-smart-stacks/integration04.log",
+    "optimized_log": "artifacts/runs/20261027T052544Z-178-smart-stacks/release-full02.log",
+    "qualification": "Debug79 passed source01; final source02 changes only two legacy native-version test expectations. Production code is identical. Final optimized1720 pass source02. Original Rust/analytical and native/offscreen evidence; no new live/physical qualification."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/oracle01.log",
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/integration01.log",
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/integration02.log",
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/integration03.log",
+    "artifacts/runs/20261027T052544Z-178-smart-stacks/release-full01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T05:57:05.725256+00:00",
+    "app": "/private/tmp/photato178-verified-cm4lp9u1/Photato.app",
+    "zip": "artifacts/runs/20261027T052544Z-178-smart-stacks/Photato178-final.zip",
+    "zip_sha256": "8182fc326125e7891c5bb71a50f354895bb6f04b087f055a500213130869d2bf",
+    "executable_sha256": "77b935051f35d94c9b0b177a3760702c74b3c4c07d8122dff8f59f8f63dfd5f7",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato178-verified-cm4lp9u1/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato178-verified-cm4lp9u1/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1342,
+    "source_manifest": "artifacts/runs/20261027T052544Z-178-smart-stacks/source02.json",
+    "source_manifest_sha256": "4c7a9e1d55bf49b648d25464e2cadb83988d5b16f51bd6667b7a8e6e6d430a70",
+    "tests": {
+      "debug_focused": 79,
+      "optimized_full": 1720,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T052544Z-178-smart-stacks/integration04.log",
+      "optimized_log": "artifacts/runs/20261027T052544Z-178-smart-stacks/release-full02.log",
+      "qualification": "Debug79 passed source01; final source02 changes only two legacy native-version test expectations. Production code is identical. Final optimized1720 pass source02. Original Rust/analytical and native/offscreen evidence; no new live/physical qualification."
+    },
+    "original_build_project_user_state_and_rust": "Four protected state hashes and754 original Rust hashes verified unchanged.",
+    "runtime_qualification": "Native optimized full regression and universal build metadata; physical Intel/macOS14/26, live UI and exact Photoshop parity remain open."
+  },
+  "api": {
+    "count": 61,
+    "commands": [
+      "document.imageStack",
+      "document.imageStack.cancel",
+      "smartObject.stackMode"
+    ],
+    "same_engine": true,
+    "state": "Per-layer smartObject.stackMode and revision; document imageStack operationID/source; global imageStackState open/loading/rendering/creatingFromAPI/sourceCount/ready.",
+    "schema": "ImageStackSettings.apiSchema; ordered unique shared id/revision sources; align/createSmartObject/mode; optional name; per-instance mode string or none.",
+    "adobe": "Published execute-actions and preserved /v1/action-jobs interpret applyImageStackPluginRenderer with imageStackPlugin class codes. Eleven modes on the active RGB embedded Smart Object. Existing async lifecycle/resource/output contracts. No new route or dedicated stack creation endpoint invented.",
+    "adobe_codes": [
+      "$avrg",
+      "$summ",
+      "$minn",
+      "$maxx",
+      "$medn",
+      "$vari",
+      "$stdv",
+      "$skew",
+      "$kurt",
+      "$rang",
+      "$entr"
+    ],
+    "endpoint_groups": "Five partial/three unimplemented; hosted Adobe interoperability and proprietary outputs unqualified."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 232,
+    "unavailable": 493,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "bindings": [
+      "File > Scripts > Load Files into Stack\u2026",
+      "File > Scripts > Statistics\u2026",
+      "Layer > Smart Objects > Stack Mode > None and11 statistics"
+    ],
+    "shortcut": "No factory bindings; none invented.",
+    "release_report": "artifacts/runs/20261027T052544Z-178-smart-stacks/menu-report-release02.json"
+  },
+  "limitations": [
+    "Desktop2\u201316 sources;8,388,608px source/canvas,16,777,216px combined sample grid,256MiB decoded Smart Object,64MiB embedded source,8 nesting levels. API2\u20137 explicitly shared sources with one free output share, transfer permission and existing4MP/64layer/128MiB limits.",
+    "Source files/documents remain unchanged. Source snapshots flatten individually into retained photo layers using first input profile/depth. Canvas uses maximum source dimensions; optional Auto alignment retains that canvas, so transformed portions outside it are clipped in the rendered preview but retained in embedded layers.",
+    "Visible root subtrees are individual samples. A sole outer group exposes children while retaining its masks/visibility; outer sample blend/clipping are neutralized. Standalone adjustment samples reject; place adjustments inside source groups.",
+    "Population variance and normalized entropy/skewness/kurtosis follow the Rust port.8/16-bit output clamps/quantizes;32-bit sums retain HDR range. Adobe exact statistical normalization, signed/high-range behavior and byte equality remain open.",
+    "Per-instance modes survive source edits/replacement, filters/masks/transforms remain; replacement rejects RAW when a mode would be lost. Native23 preserves metadata and cached pixels. Direct PSD/PSB stack export fails explicitly; imported Photoshop statistical metadata has not been independently qualified. Flattened raster exports remain available.",
+    "No new live Photato/Photoshop or physical Intel/macOS14/26 qualification; complete alignment/large-production behavior and remaining RAW02 controls remain open."
+  ],
+  "next": {
+    "workflow": "G02 native Warp, then Puppet Warp and Perspective Warp",
+    "first_step": "Inspect current transform/Smart Object geometry and upstream mesh/pin/projective implementations. Deliver usable native canvas controls, preview/cancel, Undo, source preservation and both APIs; keep exact numerical/visual qualification open.",
+    "read_only_preparation": {
+      "sources": [
+        "../photocraft-main/crates/geom/src/warp.rs",
+        "../photocraft-main/crates/algo/src/warp.rs",
+        "../photocraft-main/crates/engine/src/warp_cmds.rs",
+        "../photocraft-main/crates/algo/src/puppet.rs",
+        "../photocraft-main/crates/algo/src/perspective.rs",
+        "Sources/PhotoCraft/TransformEditing.swift",
+        "Sources/PhotoCraft/TransformOptions.swift"
+      ],
+      "observed": "Original Warp combines15 named presets and custom bicubic Bezier grids/splits. Raster layers resample once; Smart Objects retain warp in source space and render from original content. Puppet Warp uses a coverage triangle mesh/pins with ARAP deformation; Perspective Warp links plane corners and corrects shared edges. Current Swift transform controls cover affine geometry and Content-Aware Scale; image-stack state is now another source/cache integration to preserve.",
+      "implementation_order": [
+        "Native Warp geometry/sampling and persisted Smart Object state with source-cache rendering",
+        "Canvas controls for presets/grid/control points, preview/cancel/local history and one document transaction",
+        "Photato schema/operation/state and authenticated Adobe descriptor subset where supported",
+        "Puppet Warp pin mesh workspace",
+        "Perspective Warp layout/warp plane workspace"
+      ],
+      "not_started": "Read-only preparation during frozen178 validation; no179 source mutation or worker."
+    }
+  },
+  "no_running_build_test_workers_expected": true
+}

@@ -32,7 +32,7 @@ final class LevelsWorkflowTests: XCTestCase {
     await store.geometryTask?.value
     XCTAssertNotEqual(store.document, d)
     XCTAssertEqual(store.session.undoStack.count, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.beginLevels()
     store.levelsDraft?.levels.red.gamma = 0.5
@@ -42,7 +42,7 @@ final class LevelsWorkflowTests: XCTestCase {
     XCTAssertEqual(store.document, d)
     XCTAssertFalse(store.geometryBusy)
   }
-  @MainActor func testSelectionMaskLayerEditUndoAndLocks() throws {
+  @MainActor func testSelectionMaskLayerEditUndoAndLocks() async throws {
     let store = EditorStore(document: try CraftDocument(width: 8, height: 4))
     defer { store.renderTask?.cancel() }
     store.perform(.selection(IntRect(x: 2, y: 1, width: 3, height: 2)))
@@ -55,9 +55,9 @@ final class LevelsWorkflowTests: XCTestCase {
     XCTAssertFalse(store.canBeginLevels)
     store.setLevels(layer.id, .init(blue: .init(gamma: 1.4)))
     XCTAssertEqual(store.activeLayer?.content, .adjustment(.levels(.init(blue: .init(gamma: 1.4)))))
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.activeLayer?.content, layer.content)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
     store.perform(.lock(store.document.layers[0].id, true))
     XCTAssertFalse(store.canBeginLevels)

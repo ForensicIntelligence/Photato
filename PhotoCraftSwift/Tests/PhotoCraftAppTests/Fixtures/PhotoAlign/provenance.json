@@ -1,0 +1,15 @@
+{
+  "license": "MIT OR Apache-2.0",
+  "texture": "Original synthetic random-disc fixture, Python random seed175, 256x192 float32 little endian; no photographs or Adobe output.",
+  "oracle": "Unmodified original features.rs, extracted original Homography, serial par_map adapter.",
+  "inputs": {
+    "photocraft-main/crates/algo/src/features.rs": "411fd3ffe55a2950a3308e8485faaa2ced16d28f8f0b33647908b7234c28b6c2",
+    "photocraft-main/crates/algo/src/transform.rs": "15d7ac0d85b352bfba6fdba5adb7dc6c39b2165bbab09eac8175e93986ad8eec"
+  },
+  "outputs": {
+    "texture.bin": "99e553bbeea91012e5f12f5baf3d14a3acc0c4f65f9e5e79ce0d9be02e14b11e",
+    "corners.json": "9bf5207390cfe36a89257b0bc2d46812aa406fab979785b2fe55a378c3e34953"
+  },
+  "corners": 289,
+  "rustc": "rustc 1.94.0 (4a4ef493e 2026-03-02) (Homebrew)"
+}

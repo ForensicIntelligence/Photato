@@ -41,7 +41,7 @@ final class HueSaturationWorkflowTests: XCTestCase {
     XCTAssertNotEqual(store.document, d)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.session.undoStack.last?.label, "Hue/Saturation")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.beginHueSaturation()
     store.hueSaturationDraft?.adjustment.master.hue = 90
@@ -55,7 +55,7 @@ final class HueSaturationWorkflowTests: XCTestCase {
     XCTAssertNil(store.hueSaturationDraft)
     store.cancelCurves()
   }
-  @MainActor func testSelectionMaskRangeEditsCoalescingAndLocks() throws {
+  @MainActor func testSelectionMaskRangeEditsCoalescingAndLocks() async throws {
     let store = EditorStore(document: try CraftDocument(width: 4, height: 2))
     defer { store.renderTask?.cancel() }
     store.perform(.selection(IntRect(x: 1, y: 0, width: 2, height: 2)))
@@ -74,14 +74,14 @@ final class HueSaturationWorkflowTests: XCTestCase {
       store.setHueSaturation(layer.id, a)
     }
     store.coalesce(false)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.activeLayer?.content, layer.content)
     store.perform(.lock(layer.id, true))
     let locked = store.document
     store.setHueSaturation(layer.id, BuiltInHueSaturationPreset.sepia.adjustment)
     XCTAssertEqual(store.document, locked)
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testCommandUAndLayerMenus() {
@@ -155,7 +155,7 @@ final class HueSaturationWorkflowTests: XCTestCase {
     XCTAssertEqual(gray.g, gray.b)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.session.undoStack.last?.label, "Desaturate")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.perform(.lock(d.layers[0].id, true))
     let locked = store.document

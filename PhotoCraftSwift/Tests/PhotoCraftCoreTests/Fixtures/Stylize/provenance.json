@@ -1,0 +1,387 @@
+{
+  "source": "Unmodified original stylize.rs/stylize2.rs/oil.rs plus original hash/Gaussian/premultiply helpers. Synthetic RGB adapters with read_clamped-equivalent halos; not Photoshop output evidence. Wide Oil Paint follows original lib.rs auto_tile=256 rather than one whole-image call.",
+  "license": "MIT OR Apache-2.0",
+  "sources": {
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/stylize.rs": "5fd3a54071a0f1daf53aaf7bb07923ece9aa1db2f30478bf8d612a240b7e27a2",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/stylize2.rs": "dc955e0c889e40b45cfd3847e3181986c6ea3d9c4c1b6418eb7aceb941e89e46",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/oil.rs": "34f9251cbb7699e9f547355eea8961bb9da479a1866bb018df2f96052c6e2f02",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/image.rs": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle01.rs": "47c4523bec560b0dd6e337d43ddea77b47ac914f4ead81a3104a438d8feda4ca",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle-tile-diagnostic01.rs": "37623e523a4f7acabaef06aa7844d8d63a8abce1a2648b42305bd092595c9fd6",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/lib.rs": "7f9644e6e70553e8ec568ee2a1885bf1fa6bef153b1ea0a97047348f9b7f264a"
+  },
+  "cases": [
+    {
+      "name": "diffuse-normal",
+      "kind": "diffuse",
+      "settings": {
+        "mode": "normal",
+        "seed": 42
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "758705a4a02bbefb9f3bd2a89badc16bd648be8e5ecbd1033269e8332eb49a26"
+    },
+    {
+      "name": "diffuse-darkenOnly",
+      "kind": "diffuse",
+      "settings": {
+        "mode": "darkenOnly",
+        "seed": 42
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "99d81ef8d618b097286a6db82c9e3eae1331a20675caa9755875065fb5d62ae4"
+    },
+    {
+      "name": "diffuse-lightenOnly",
+      "kind": "diffuse",
+      "settings": {
+        "mode": "lightenOnly",
+        "seed": 42
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "dc998242a707a6138ab0a0ffc916645edea875500c1a23a030330f6713f196e7"
+    },
+    {
+      "name": "diffuse-anisotropic",
+      "kind": "diffuse",
+      "settings": {
+        "mode": "anisotropic",
+        "seed": 42
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "bfaf851a7930a8879e9b5af9daf96dde63312a63b03b5855c577ce0e098fc93c"
+    },
+    {
+      "name": "emboss",
+      "kind": "emboss",
+      "settings": {},
+      "width": 32,
+      "height": 24,
+      "sha256": "3e09b3b3d68a3acc6476651610efbebdcd9e069aec28707feed193b91f337182"
+    },
+    {
+      "name": "emboss-angle",
+      "kind": "emboss",
+      "settings": {
+        "angle": -35,
+        "height": 5,
+        "amount": 180
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "6709bb6b92ff99749d75694f38d117543297e74aedb165c2b6de10e2a64f356a"
+    },
+    {
+      "name": "findEdges",
+      "kind": "findEdges",
+      "settings": {},
+      "width": 32,
+      "height": 24,
+      "sha256": "96c0dbdc889a0ceac0d0016204bf120003e8ada473d1a0dd6e807f762e0c1cdd"
+    },
+    {
+      "name": "solarize",
+      "kind": "solarize",
+      "settings": {},
+      "width": 32,
+      "height": 24,
+      "sha256": "2017b524d47bfe8eb409c75e8a1cf30d81e7882e96c60a076c51421af29cb842"
+    },
+    {
+      "name": "extrude-blocks-random",
+      "kind": "extrude",
+      "settings": {
+        "type": "blocks",
+        "size": 7,
+        "depth": 80,
+        "depthMode": "random",
+        "solidFrontFaces": false,
+        "maskIncompleteBlocks": false,
+        "seed": 17
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "2c947c448341c3e44166913b5ac07726fad23dc8eb49cc473da435b0ee1d6a57"
+    },
+    {
+      "name": "extrude-blocks-level",
+      "kind": "extrude",
+      "settings": {
+        "type": "blocks",
+        "size": 7,
+        "depth": 80,
+        "depthMode": "levelBased",
+        "solidFrontFaces": true,
+        "maskIncompleteBlocks": true,
+        "seed": 17
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "26bbf5e4b0d64287c2fb47b208598e3266a8009c1766acfcb6e2aaea3e687aec"
+    },
+    {
+      "name": "extrude-pyramids-random",
+      "kind": "extrude",
+      "settings": {
+        "type": "pyramids",
+        "size": 7,
+        "depth": 80,
+        "depthMode": "random",
+        "solidFrontFaces": false,
+        "maskIncompleteBlocks": false,
+        "seed": 17
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "cc5b69c1840e79bacdf6b351e026b376b102e7a4a2b247b3be924d953c9f23da"
+    },
+    {
+      "name": "extrude-pyramids-level",
+      "kind": "extrude",
+      "settings": {
+        "type": "pyramids",
+        "size": 7,
+        "depth": 80,
+        "depthMode": "levelBased",
+        "solidFrontFaces": false,
+        "maskIncompleteBlocks": true,
+        "seed": 17
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "36bdb5faafdadf62949cd968e11798f578395092d0b5cc4ed1c357b93326881f"
+    },
+    {
+      "name": "tiles-background",
+      "kind": "tiles",
+      "settings": {
+        "count": 5,
+        "maxOffset": 45,
+        "fill": "background",
+        "seed": 17,
+        "foreground": {
+          "r": 0.1,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "background": {
+          "r": 0.7,
+          "g": 0.2,
+          "b": 0.4,
+          "a": 1
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "087be6ce5b670b50362e4c7b9830a9497adc8c7c538bb1893dde9790736727ae"
+    },
+    {
+      "name": "tiles-foreground",
+      "kind": "tiles",
+      "settings": {
+        "count": 5,
+        "maxOffset": 45,
+        "fill": "foreground",
+        "seed": 17,
+        "foreground": {
+          "r": 0.1,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "background": {
+          "r": 0.7,
+          "g": 0.2,
+          "b": 0.4,
+          "a": 1
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "d6359338c25f8ce610560f6dd11de77979a69348bedf8387013340ace3d68a5e"
+    },
+    {
+      "name": "tiles-inverse",
+      "kind": "tiles",
+      "settings": {
+        "count": 5,
+        "maxOffset": 45,
+        "fill": "inverse",
+        "seed": 17,
+        "foreground": {
+          "r": 0.1,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "background": {
+          "r": 0.7,
+          "g": 0.2,
+          "b": 0.4,
+          "a": 1
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "451784a9e244f3755ff31878d2d914e833450fd20c6ef8ae7f76058209b98694"
+    },
+    {
+      "name": "tiles-unaltered",
+      "kind": "tiles",
+      "settings": {
+        "count": 5,
+        "maxOffset": 45,
+        "fill": "unaltered",
+        "seed": 17,
+        "foreground": {
+          "r": 0.1,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "background": {
+          "r": 0.7,
+          "g": 0.2,
+          "b": 0.4,
+          "a": 1
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "7e7543ae0678e79466e119d6c1331925f5c76453c984b45f667993205d3c1d7e"
+    },
+    {
+      "name": "traceContour-lower",
+      "kind": "traceContour",
+      "settings": {
+        "level": 100,
+        "edge": "lower"
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "11716ba0a3a522b372bf1a8a5ab6843adf6571c94e50a5dd7491376669e2493f"
+    },
+    {
+      "name": "traceContour-upper",
+      "kind": "traceContour",
+      "settings": {
+        "level": 100,
+        "edge": "upper"
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "17c69b17058382727b0be8c9df9aacbd36ebbea8743f02a9e99189ee03cb0b92"
+    },
+    {
+      "name": "wind-wind-fromRight",
+      "kind": "wind",
+      "settings": {
+        "method": "wind",
+        "direction": "fromRight",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "2004d604dea7bcc6f5255b90b7422a8ca605256eddff4891ef1d79130d3cf465"
+    },
+    {
+      "name": "wind-wind-fromLeft",
+      "kind": "wind",
+      "settings": {
+        "method": "wind",
+        "direction": "fromLeft",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "2ba06364d1921cbdfc04a630eb2876e63b34541a31530797c39d1d444139e7bd"
+    },
+    {
+      "name": "wind-blast-fromRight",
+      "kind": "wind",
+      "settings": {
+        "method": "blast",
+        "direction": "fromRight",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "12b5c14e8c81b742f8aede29563ce9ccb6fbce4733794f29090891b46f6c064a"
+    },
+    {
+      "name": "wind-blast-fromLeft",
+      "kind": "wind",
+      "settings": {
+        "method": "blast",
+        "direction": "fromLeft",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "581aea3cf424ff228c2f0a8e5046572009186e8d6345a793d3e24ef02b33653c"
+    },
+    {
+      "name": "wind-stagger-fromRight",
+      "kind": "wind",
+      "settings": {
+        "method": "stagger",
+        "direction": "fromRight",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "432f6b7382e7afd6085d24d2c4a70ba8b7ad99127bfcfd6fe5ca184a08973a44"
+    },
+    {
+      "name": "wind-stagger-fromLeft",
+      "kind": "wind",
+      "settings": {
+        "method": "stagger",
+        "direction": "fromLeft",
+        "seed": 31
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "1d7850d82267bb9118354dc8f32b46296fa59ff21c9c62431c5f3a73228c590f"
+    },
+    {
+      "name": "oilPaint",
+      "kind": "oilPaint",
+      "settings": {
+        "lighting": true
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "b09dede65988ed56788a715cb9d0483d0c5c388819c319283ca798a45fd43aa3"
+    },
+    {
+      "name": "oilPaint-unlit",
+      "kind": "oilPaint",
+      "settings": {
+        "lighting": false
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "a57b404116666ebff263a72e7d2563d1f8b1b40139a58dbbdd440144776a249f"
+    },
+    {
+      "name": "oilPaint-wide",
+      "kind": "oilPaint",
+      "settings": {
+        "lighting": true
+      },
+      "width": 520,
+      "height": 8,
+      "sha256": "e9d26520c131c147c8910417991a824dbbb8c5f0a323004ba067c29fa87113d1",
+      "whole_image_reference_sha256": "f33b15d1eab0a0068ed3620f9ad76c2dfff5524106dc74002e7101e62bab9c32",
+      "source_render": "Original Oil Paint algorithm with its default256-pixel tiles; whole-image diagnostic differs by15 samples/max4 and is retained in the immutable run."
+    }
+  ]
+}

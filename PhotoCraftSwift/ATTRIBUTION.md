@@ -1,9 +1,18 @@
 # Attribution
 
-Photato, part of the Pantry family, is an independent native Swift fork/port of [PhotoCraft](https://github.com/storytold/photocraft), originally developed in Rust by the ArtCraft Team and PhotoCraft contributors. Native Swift source and documentation are distributed under **MIT OR Apache-2.0**, at the recipient’s option. Original copyright notices and both license texts are retained. Third-party portions retain the licenses listed below.
+Photato, is an independent native Swift fork/port of [PhotoCraft](https://github.com/storytold/photocraft), originally developed in Rust by the ArtCraft Team and PhotoCraft contributors. Native Swift source and documentation are distributed under **MIT OR Apache-2.0**, at the recipient’s option. Original copyright notices and both license texts are retained. Third-party portions retain the licenses listed below.
 
 | Content | Source | License / terms |
 |---|---|---|
+| Lens Blur | PhotoCraft crates/algo/src/blur2.rs polygon iris/depth/highlight/noise equations and engine/src/filters_ext.rs; native Swift prefix-sum implementation with explicit clamped edges, live mask/channel references and independent SwiftUI/API integration. Exact Rust/Adobe pixel equivalence is unqualified. | MIT OR Apache-2.0 |
+| Filter Gallery catalogue, 47 artistic effects, procedural textures and synthetic reference images | PhotoCraft crates/algo/src/{artistic,artistic_fx,fxutil,noise}.rs; native Swift translation with independent SwiftUI workspace and shared command/API integration. Fixtures execute original Rust kernels through sequential/RGBA adapters. These are upstream clean-room approximations, not Adobe algorithms or artwork. | MIT OR Apache-2.0 |
+| Live shapes | Rectangle/ellipse/polygon geometry adapted from PhotoCraft crates/vector/src/shapes.rs; independent native Swift arrows, retained components, stroke/paint renderer, UI, presets and API. Adobe desktop documentation guides interaction; no Adobe preset artwork copied. | MIT OR Apache-2.0 |
+| Object Finder | Independent native Swift instance cache, hover preview, selection, lifecycle and API using Apple Vision and Adobe's documented desktop workflow. No Rust Object Finder implementation was found; builds on existing native selection/mask infrastructure. No Adobe model/assets bundled. | Native Swift: MIT OR Apache-2.0; Apple system framework |
+| Mask All Objects | Independent native per-instance Vision mask/group integration following Adobe's documented workflow. PhotoCraft engine/src/layer_menu_cmds.rs was reviewed; its combined-mask limitation is not reproduced. Uses Apple system Vision; no Adobe model or assets bundled. | Native Swift: MIT OR Apache-2.0; Apple framework supplied by macOS |
+| Select and Mask guided matting, edge refinement and color decontamination | PhotoCraft crates/algo/src/matting.rs and engine/src/smartselect_cmds.rs; native Swift translation, Accelerate convolution and independent brush/workspace integration | MIT OR Apache-2.0 |
+| Editable type and PSD TySh/EngineData | PhotoCraft crates/doc/src/text.rs and crates/text/src/{engine_data,psd}.rs; bounded native model/codec translation, including vertical orientation, OpenType flags and small capitals, with Apple TextKit rendering and editing | MIT OR Apache-2.0 |
+| Editable Smart Filter pipeline and filterFX/FEid cache/mask records | PhotoCraft engine/src/smart_cmds.rs, io/src/smart_map.rs and psd/src/filter_effects.rs; bounded native Swift translation in SmartFilters and PSDSmartFilters | MIT OR Apache-2.0 |
+| Embedded Smart Object source/cache model and PSD linked/placed records | PhotoCraft crates/doc/src/lib.rs, engine/src/smart_cmds.rs, io/src/linked.rs and smart_map.rs; bounded native Swift translation in SmartObject and PSDSmartObjects | MIT OR Apache-2.0 |
 | Ported blend math and architectural behavior | [PhotoCraft](https://github.com/storytold/photocraft), ../photocraft-main; see retained NOTICE and licenses | MIT OR Apache-2.0 |
 | Local Blur, Sharpen and Smudge kernels | PhotoCraft crates/algo/src/retouch.rs and paint/src/retouch.rs; numerical Swift port with native sequential editing and alpha-aware stroke mixing | MIT OR Apache-2.0 |
 | Pattern sampling, identity and PAT interchange | PhotoCraft crates/compose/src/pattern.rs, doc/src/pattern.rs, psd/src/patterns.rs and compression.rs; bounded native Swift port | MIT OR Apache-2.0 |
@@ -16,6 +25,10 @@ Photato, part of the Pantry family, is an independent native Swift fork/port of 
 | Gradient geometry, ramp, interpolation, dither and preset transport | PhotoCraft crates/compose/src/gradient_fill.rs, fill_layout.rs, effects.rs; crates/io/src/gradient_bake.rs; crates/color/src/lib.rs; crates/engine/src/preset_import_cmds.rs; crates/psd/src/grd.rs and descriptor.rs; translated/adapted to retained Swift controls | MIT OR Apache-2.0 |
 | Classic Gradient paint geometry and live canvas interactions | PhotoCraft crates/algo/src/paint.rs, crates/ui-egui/src/gradient_ui.rs and stroke_constraint.rs, crates/engine/src/gradient_fill_cmds.rs; translated/adapted into native Swift commands, gesture drafts and AppKit/SwiftUI controls | MIT OR Apache-2.0 |
 | Gradient library organization and preset application | PhotoCraft crates/engine/src/presets/gradients.rs, crates/ui-egui/src/preset_panels.rs and preset_files_ui.rs; adapted into native Swift persistence, folders and AppKit/SwiftUI controls | MIT OR Apache-2.0 |
+| Color Lookup LUT parsers, interpolation and PSD clrL mapping | PhotoCraft crates/cms/src/lutfile.rs, compose/src/adjust.rs and io/src/adjust_map.rs; native Swift with retained domains, shapers and source files | MIT OR Apache-2.0 |
+| Liquify brush displacement, freeze masks, reconstruction and mesh sampling | PhotoCraft crates/algo/src/liquify.rs and ui-egui/src/liquify_ui.rs; native Swift port with separate Apple Vision face detection and native feature deformation | MIT OR Apache-2.0 |
+| Eight generated Photato grading looks | PhotoCraft cms/lutfile.rs builtin formulas, explicitly dedicated to CC0; no Adobe LUT assets redistributed | CC0 |
+| Classic color adjustments (Vibrance, Black & White, Photo Filter, Channel Mixer, Selective Color) | PhotoCraft crates/doc/src/adjust.rs, compose/src/adjust.rs and io/src/adjust_map.rs; translated to native Swift, with explicit validation and neutral-gray preservation | MIT OR Apache-2.0 |
 | Gradient Map controls, adjustment integration and PSD grdm transport | PhotoCraft crates/doc/src/adjust.rs, compose/src/adjust.rs, io/src/adjust_map.rs and engine/src/adjust_params.rs; native retained controls and reference-qualified RGB8 tone lookup | MIT OR Apache-2.0 |
 | PSD prediction and HDR metadata | PhotoCraft crates/psd/src/compression.rs and hdr.rs, translated to Swift | MIT OR Apache-2.0 |
 | DEFLATE compression | macOS system zlib, dynamically linked; no library source or binary redistributed | zlib license |
@@ -27,7 +40,7 @@ Photato, part of the Pantry family, is an independent native Swift fork/port of 
 
 No Adobe, Photoshop, ArtCraft or third-party brand artwork is bundled.
 
-The Photato application icon is the project maintainer's supplied `../PhotatoIcon.png`, copied unchanged to `Assets/PhotatoIcon.png`. The build produces macOS icon sizes from this artwork. This is Photato/Pantry branding, separate from the upstream authors' artwork and notices.
+The Photato application icon is the project maintainer's supplied `../PhotatoIcon.png`, copied unchanged to `Assets/PhotatoIcon.png`. The build produces macOS icon sizes from this artwork. This is Photato branding, separate from the upstream authors' artwork and notices.
 
 ## Test material
 
@@ -72,3 +85,75 @@ The Layer Via fixtures contain original procedural source/copy/cut documents sav
 The native implementation lives in `Sources/`; tests, packaging and documentation here are new or adapted for this fork. It replaces the Rust application/engine with Swift, AppKit, SwiftUI, CoreGraphics, CoreText and ImageIO, with optional system AI integration. See `docs/DEVLOG.md` and `docs/STATUS.md` for the implemented scope and known gaps. The original Rust snapshot in the sibling directory has not been modified.
 
 The layer-merge corpus contains original procedural RGB8/16/32 two-layer color/alpha matrices and small off-canvas/hidden-layer workflow documents saved by Photoshop 2026. Four independent matrices supply 262,144 exact raw RGBA kernel expectations. The fixtures, independent extraction scripts and newly derived Swift arithmetic use MIT OR Apache-2.0 terms; no Adobe implementation code or user artwork is included. Provenance, hashes and limits are recorded in `docs/LAYER_MERGE_REFERENCES.json`. Test fixtures are excluded from the app bundle.
+
+
+The step116 `original-profile-down-rgb32.rgba` test fixture is a direct channel extraction from the existing procedural Photoshop step058 `photoshop-down-rgb32.psd` reference. It introduces no external artwork or implementation. Source/output hashes, extraction layout and provenance are recorded in `docs/WORKING_PROFILE_REFERENCES.json`.
+
+Step119 adds native PSD/PSB framing informed by PhotoCraft `crates/psd/src/header.rs`, `tagged.rs` and `compression.rs` under MIT OR Apache-2.0. Twelve original procedural PSB files exercise version2 framing/compression; their generator and provenance are included under the same project terms. Ten unmodified PSD/PSB pairs from psd-tools commit `b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b` are test-only interoperability resources under the included MIT license. `Tests/PhotoCraftImagingTests/Fixtures/psb-corpus/provenance.json` records their original paths and hashes. Their Photoshop capture dates/versions are not asserted; one pair remains explicitly unsupported. None of these test documents is packaged into Photato.
+
+Original PhotoCraft content-address decoding uses a native Swift BLAKE3-256 implementation following the official CC0 reference algorithm (BLAKE3-team/BLAKE3, commit f55849f89cd85083c1c9daa2c5de20766f309c00). Official unkeyed test vectors are distributed under CC0; their license is retained with the Pcraft test fixtures. https://github.com/BLAKE3-team/BLAKE3 . Zstandard framing and entropy decoding follow RFC 8878 and the official format specification; no Rust or external Zstandard library is linked into Photato.
+
+
+Step154 adds six original procedural mask-boundary documents under `Tests/PhotoCraftImagingTests/Fixtures/MaskBoundary`, opened and saved through Photoshop2026 to observe feathering at canvas and off-canvas raster edges. They contain only generated white/black/gray test pixels and document metadata, under MIT OR Apache-2.0. Their manifest records each source, hash and capture provenance. No Adobe code, installed preset, user image or third-party artwork is included; these fixtures are excluded from the app bundle. The native mask-boundary correction is independently implemented from these observations, and broader feather-kernel/vector/Photoshop byte equivalence remains unqualified.
+
+
+Step175 Auto-Align translates/adapts PhotoCraft `crates/algo/src/features.rs`, `panorama.rs`, `photo_util.rs`, `transform.rs` and `crates/engine/src/align_cmds.rs` under MIT OR Apache-2.0. Harris/steered-BRIEF descriptors, robust motion fits, projection geometry and graph/joint registration run entirely in Swift. The test-only PhotoAlign synthetic texture and original-Rust corner/descriptor oracle use the same license, with source hashes and generation provenance. The installed Photoshop scripts supplied only action vocabulary facts; no Adobe code, presets or photos are redistributed. Lens fitting, exact Photoshop algorithms and full parity remain unqualified.
+
+Step176 Photomerge source collection, union-canvas/new-document construction and layer output are informed by PhotoCraft `crates/engine/src/photo_cmds.rs` (MIT OR Apache-2.0), using the existing native Swift alignment/blending engines. Color conversion uses Apple ColorSync. New workflow tests crop the original step175 synthetic texture; no Adobe code, images or user documents are redistributed. Published Photoshop API routes are not extended with invented Photomerge endpoints.
+
+
+## Step177: Native HDR merge
+
+`HDRMergeMath.swift`, `HDRToneMapping.swift` and the native HDR workflow translate PhotoCraft’s `algo/hdr.rs`, HDR portions of `tone.rs`, and `engine/photo_cmds.rs` (MIT OR Apache-2.0). Dense response recovery uses Apple Accelerate from Swift. The synthetic HDRMerge fixture and original-Rust oracle are documented in `Tests/PhotoCraftAppTests/Fixtures/HDRMerge/manifest.json`. This is source-port evidence, not a Photoshop pixel oracle; no Adobe binary code or private image was copied.
+
+## Step178: Native image stacks
+
+`ImageStackMode.swift` and `ImageStack.swift` translate the eleven operators and source-layer sampling in PhotoCraft `algo/stack.rs`, `engine/smart_cmds.rs` and `engine/automate_cmds.rs` (MIT OR Apache-2.0). Synthetic fixtures and the original-Rust oracle are recorded in `Tests/PhotoCraftAppTests/Fixtures/ImageStack/manifest.json`. Adobe public documentation and read-only installed Statistics.jsx protocol inspection inform workflow/action interoperability; no proprietary implementation code or private images are copied. Native32-bit summation retains extended values; exact Photoshop normalization and PSD statistical metadata remain unqualified.
+
+### Warp (step179)
+
+`Sources/PhotoCraftCore/Warp.swift` translates `photocraft-main/crates/geom/src/warp.rs` (MIT OR Apache-2.0), including preset approximations and exact Bézier subdivision. `WarpRaster.swift` follows the triangle/UV overlap convention of `crates/algo/src/warp.rs`, with native bounded work and HDR sampling. These upstream preset formulas are approximations, not Adobe algorithms. Synthetic oracle fixtures preserve their source hashes and adapter provenance in `Tests/PhotoCraftAppTests/Fixtures/Warp/manifest.json`.
+
+### Puppet Warp (step180)
+
+`Sources/PhotoCraftCore/PuppetWarp.swift`, `PuppetSolver.swift` and `PuppetEngine.swift` translate the coverage-mesh and cotangent ARAP/ASAP pin workflow in `photocraft-main/crates/algo/src/puppet.rs` (MIT OR Apache-2.0). The native implementation adds bounded work, cancellation, HDR-aware sampling and native Smart Filter integration. Synthetic solver fixtures use original Rust matrix/solver arithmetic; see `Tests/PhotoCraftAppTests/Fixtures/Puppet/manifest.json`. This does not establish Adobe algorithm or pixel equivalence.
+
+### Perspective Warp (step181)
+
+`Sources/PhotoCraftCore/PerspectiveWarp.swift` and `PerspectiveEngine.swift` translate linked-plane homographies, shared-edge correction and straightening from the original PhotoCraft `crates/algo/src/perspective.rs` and `transform.rs` (MIT OR Apache-2.0). The native implementation reuses the Swift homography and HDR sampler, adds validation/work limits and persistent edge locks, and shares the native preview/history/API path. Synthetic fixtures use original Rust geometry arithmetic. This does not establish Photoshop pixel equivalence.
+
+Selection tools (step192): `SelectionGraph.swift`, `SelectionColorModel.swift`, `SelectionSegmentation.swift`, `QuickSelection.swift` and `ObjectSelection.swift` translate the original PhotoCraft `crates/algo/src/segment/{maxflow,gmm,mod,quick,grabcut}.rs` implementations into native Swift under the same MIT OR Apache-2.0 terms. They retain graph-cut/GMM/geodesic and full-resolution boundary refinement concepts; native cancellation, bounds and lasso integration are additions. No Adobe source or assets are incorporated.
+
+The native sky segmentation in `SkySelection.swift` translates PhotoCraft `crates/algo/src/segment/sky.rs` under MIT OR Apache-2.0, reusing its color-model and guided-filter work. Native bounds/cancellation and two-stage tile halos are added. Sky replacement composition uses native editable masks/adjustment layers; no Adobe images, presets or model weights are bundled.
+
+Focus Area (step194) translates the local Laplacian-energy, percentile normalization, guided cleanup and upsampling design from `photocraft-main/crates/algo/src/segment/focus.rs` (MIT OR Apache-2.0) into native Swift. Range direction follows Adobe's documented UI rather than the source's reversed convention. Auto threshold/noise estimation and the native workflow are Photato additions; exact Adobe equivalence is unqualified.
+
+Select People (step197): independently implemented Swift integration of Apple Vision person-instance masks, native thumbnails/hover/picker, multi-person selection and shared API. No third-party model weights or runtime bundled. NASA photographs used only for local non-promotional validation are retained with provenance outside application/source assets.
+
+Optional person-feature model (step198): Google MediaPipe multiclass selfie segmentation, model card May10,2023, author Adel Ahmadyan/Google; the official model card specifies Apache License2.0. Original TFLite SHA256 `c6748b1253a99067ef71f7e26ca71096cd449baefa8f101900ea23016507e0e0`. Independently translated into Core ML operations with original learned weights; changed format and native preprocessing/postprocessing are documented in `docs/PEOPLE_FEATURE_REFERENCES.json`. The model is not suitable as proof of pixel-perfect or Photoshop-equivalent masks. Generated weights are excluded from source PRs and may be included as an optional validated resource in app distributions. Python/TensorFlow/TFLite/CoreMLTools are build-time tools, not shipped runtimes.
+
+### Native Pen and selection tracing (step200)
+
+`Sources/PhotoCraftCore/PathConstruction.swift` and `Sources/PhotoCraftImaging/PathTracing.swift` adapt the cubic least-squares and marching-squares approach from PhotoCraft `crates/vector/src/trace.rs` (MIT; upstream notices retained). The native fitter omits Newton reparameterization and adds independent work limits. Curvature tool interactions and AppKit/API integration are new native Swift work, informed by Adobe documentation; no proprietary Adobe code or assets are used.
+
+Step202 editable shaped text reuses the native Warp formulas translated from PhotoCraft `crates/geom/src/warp.rs`, following the editable outline approach in `crates/text/src/{warp,render}.rs` (MIT OR Apache-2.0). Core Text supplies glyph shaping and font outlines; path placement, fitting, anchored history and native Swift controls are original port integration. Adobe documentation informs workflow vocabulary only; no Adobe code, fonts or artwork is redistributed. Warp formulas and fit behavior are not claimed to be Adobe-identical.
+
+Step212 native distortion filters translate inverse-map mathematics and deterministic noise from PhotoCraft `crates/algo/src/{distort,distort2,noise}.rs` under MIT OR Apache-2.0. Premultiplied high-depth sampling, embedded map storage, native controls, history and API integration are Swift additions. Wave evaluates the full supported generator range; Displace uses byte128 as neutral. These differences and unqualified Photoshop numerical/descriptor equivalence remain documented. No Adobe implementation code is incorporated.
+
+Step213 native Pixelate filters translate PhotoCraft `crates/algo/src/pixelate.rs`, with the deterministic hash, jittered cells and unpremultiplication helpers from `noise.rs`/`fxutil.rs` (MIT OR Apache-2.0). Original Rust code generates18 synthetic reference fixtures through whole-layer RGB/clamped-edge adapters. Native settings, previews, history and APIs are Swift integration. These source references are not independent Adobe output; Photoshop numerical and descriptor qualification remains open.
+
+The native Stylize and Oil Paint engines translate `crates/algo/src/stylize.rs`, `stylize2.rs`, `oil.rs` and their `fxutil.rs`/`noise.rs` helpers from PhotoCraft (MIT OR Apache-2.0). Emboss PSD descriptors follow `crates/io/src/smart_map.rs`. Synthetic Stylize reference images are generated from that original Rust code with documented RGB input adapters; they are not Adobe output fixtures.
+
+Native Render filters translate PhotoCraft engine `extra_cmds.rs` (Clouds) and algo `render.rs`/`noise.rs`/`fxutil.rs` (Fibers/Lens Flare), MIT OR Apache-2.0. Synthetic original-Rust RGB fixtures retain their source and generator hashes. This does not imply Adobe output equivalence or incorporate Adobe implementation code.
+
+Flame, Tree and Picture Frame translate PhotoCraft `crates/algo/src/render2.rs` and the path/render integration in `crates/engine/src/render_cmds.rs` (MIT OR Apache-2.0). The native Swift engine retains the original SplitMix seeds, primitive geometry, color/compositing and nearest-rounded Rust Float PI constant. Seventy synthetic original-Rust RGB8 fixtures are generated with documented Rect/source-over adapters. They demonstrate source parity for those cases, not Photoshop output equivalence. Native dialogs, history, Actions15 and API integration are independently implemented Swift code.
+
+The native Other/Video filters in `OtherVideoEngine.swift` translate PhotoCraft `crates/algo/src/other.rs`, `other2.rs`, and `video.rs` (MIT OR Apache-2.0). Their synthetic reference fixtures are generated from those original algorithms with an RGB8/clamped-halo adapter; they are not Adobe Photoshop output.
+
+### Remaining Blur, Noise and Sharpen workflows (step218)
+
+`ClassicDetailEngine.swift` ports Gaussian presets, radial/shape/Smart/Surface blur, disc median/Dust and fixed sharpening from PhotoCraft `crates/algo/src/blur.rs`, `blur2.rs`, `noise.rs`, `sharpen.rs` and `crates/engine/src/filters.rs` (MIT OR Apache-2.0). The original source snapshot is unchanged. RGB8 references come from unchanged selected Rust functions with documented image/geometry/type and sequential-iterator adapters. Native sliding rank histograms retain median results while avoiding repeated sorting; radial Draft/Good sampling budgets extend the original Best path. This is independent implementation of a Photoshop work-alike, not copied Adobe implementation code or a claim of Photoshop pixel equality.
+
+## Step219 classic tone workflows
+
+`ClassicToneEngine.swift` translates PhotoCraft `crates/algo/src/tone.rs`, Gaussian helpers from `fxutil.rs`, Lab conversion from `crates/color/src/convert.rs`, HSL helpers from `other2.rs`, and Equalize behavior from `crates/engine/src/extra_cmds.rs` (MIT OR Apache-2.0). The synthetic ClassicTone fixtures execute the original Rust functions with standalone scheduling/type adapters; they are not Photoshop output references. Native UI, integration and multi-sample controls are new Swift code.

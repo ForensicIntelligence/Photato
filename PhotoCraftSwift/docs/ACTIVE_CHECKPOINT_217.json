@@ -1,0 +1,419 @@
+{
+  "step": "dev-step-217",
+  "completed_at_utc": "2026-10-28T03:59:47.627338+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T031912Z-217-other-video/source02.json",
+  "source_inputs": 1817,
+  "source_manifest_sha256": "22f75f572c408d2416402bd94ebda6d6fd1608370f971828160d2715123e6b17",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/OtherVideoWorkspace.swift",
+      "Sources/PhotoCraftCore/OtherVideoEngine.swift",
+      "Sources/PhotoCraftCore/OtherVideoSettings.swift",
+      "Tests/PhotoCraftAppTests/OtherVideoWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-blur.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-identity.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-negative.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-offset.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-sharpen.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-shift.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/custom-zero.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/deinterlace-even-duplication.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/deinterlace-even-interpolation.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/deinterlace-odd-duplication.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/deinterlace-odd-interpolation.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsb-hsb.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsb-hsl.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsb-rgb.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsl-hsb.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsl-hsl.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/hsl-rgb.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/input.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-roundness-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-roundness-1.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-roundness-2.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-roundness-5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-squareness-1.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-squareness-4.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/maximum-squareness-500.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-roundness-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-roundness-1.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-roundness-2.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-roundness-5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-squareness-1.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-squareness-4.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/minimum-squareness-500.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/ntsc.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-repeatEdge--20-16.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-repeatEdge-0-0.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-repeatEdge-4--3.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-transparent--20-16.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-transparent-0-0.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-transparent-4--3.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-wrap--20-16.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-wrap-0-0.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/offset-wrap-4--3.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/provenance.json",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/rgb-hsb.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/rgb-hsl.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/OtherVideo/rgb-rgb.rgba",
+      "Tests/PhotoCraftCoreTests/OtherVideoTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration05": {
+      "passed": 124,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T031912Z-217-other-video/integration05.log",
+      "current_source": true,
+      "note": "Only subsequent native change is the broad DocumentIO expectations for readable43 and unsupported44, covered by full02."
+    },
+    "full_optimized02": {
+      "passed": 2068,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T031912Z-217-other-video/release-full02.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration05": 124,
+    "release-full02": 2068
+  },
+  "package": {
+    "utc": "2026-10-28T03:59:47.267567+00:00",
+    "tests": {
+      "integration05": 124,
+      "release-full02": 2068
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T031912Z-217-other-video/Photato217-final02.zip",
+    "zip_sha256": "eee48aa850ffeac38c14470c87f0264d411aad555b45728a9ffa1f32bb3b7171",
+    "app": "/private/tmp/photato217-verified-j_j_5m3y/Photato.app",
+    "executable_sha256": "6f8913173cef1d49301139c9df9825facd96c5bb6f9a42317197fd793c811de3",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato217-verified-j_j_5m3y/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato217-verified-j_j_5m3y/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1817,
+    "source_manifest_sha256": "22f75f572c408d2416402bd94ebda6d6fd1608370f971828160d2715123e6b17",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 323,
+      "unavailable_leaf_commands": 402,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_other_video_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-identity"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-zero"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-offset"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-sharpen"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-blur"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-shift"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "custom-negative"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "rgb-rgb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "rgb-hsb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "rgb-hsl"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsb-rgb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsb-hsb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsb-hsl"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsl-rgb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsl-hsb"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "hsl-hsl"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-squareness-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-squareness-4"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-squareness-500"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-roundness-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-roundness-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-roundness-2.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "maximum-roundness-5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-squareness-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-squareness-4"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-squareness-500"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-roundness-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-roundness-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-roundness-2.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "minimum-roundness-5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-wrap-4--3"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-wrap--20-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-wrap-0-0"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-repeatEdge-4--3"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-repeatEdge--20-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-repeatEdge-0-0"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-transparent-4--3"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-transparent--20-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "offset-transparent-0-0"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "deinterlace-odd-duplication"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "deinterlace-odd-interpolation"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "deinterlace-even-duplication"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "deinterlace-even-interpolation"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "ntsc"
+      }
+    ],
+    "limits": "124 focused Debug and2068 full optimized tests plus universal package on this host.44 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Other/Video remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 323,
+    "unavailable_leaf_commands": 402,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Seven native Other/Video filters with settings/previews/Cancel/local history and document Undo",
+    "44 original-Rust RGB8 references matched exactly without changing expected pixels",
+    "Custom JSON presets, expanded cropped storage, selection/transparency handling, native/PSD raster persistence, editable Smart Filters/native43/Actions16 and shared API guards/equivalence",
+    "Corrected legacy Actions version hint to1\u201316; preserved failed broad version assertions and passing rerun",
+    "Current corrected app still inaccessible while Mac locked; no new live handoff"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect title/zoom/pan/scroll/window resize, then safely close obsolete159 probe after checking current unsaved state",
+    "Live Render controls and Photoshop descriptor/reference capture"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "window_handoff_evidence": "artifacts/runs/20261028T031912Z-217-other-video/window-handoff-status01.json",
+  "github": "Private draft remains209;215 package local only; no source push or visibility change.",
+  "remaining": [
+    "Exact Photoshop output/default/control/color-mode/depth qualification",
+    "Adobe ACF preset import/export; native JSON presets are implemented",
+    "ActionJSON/ATN and editable Photoshop Smart Filter descriptors",
+    "Original-source fractional Roundness radius below1 is a no-op; native clamp/edge/selection behavior requires Adobe comparison",
+    "Live modal workflows and physical Intel/macOS14/macOS26 checks",
+    "Large document/bounded roundness processing limits",
+    "Full F02 and all previously open parity gates",
+    "Window handoff of corrected209 remains pending manual unlock"
+  ],
+  "next_major_workflow": {
+    "id": "F02",
+    "name": "Remaining Blur, Noise and Sharpen workflows",
+    "scope": "Blur/Blur More/Radial/Shape/Smart/Surface Blur; Despeckle/Dust & Scratches/Median; Sharpen/Edges/More. Include usable native controls, menus, preview/history/persistence and shared APIs. Preserve Last Filter repeat, Lighting Effects context and all earlier parity gates."
+  },
+  "evidence_root": "artifacts/runs/20261028T031912Z-217-other-video"
+}

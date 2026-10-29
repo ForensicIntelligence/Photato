@@ -37,7 +37,7 @@ extension EditorStore {
   var canBeginLayerCreation: Bool {
     !geometryBusy && !hasToneDraft && transformDraft == nil && geometrySheet == nil
       && !showAI && !showGaps && !showFeatherSelection && patternNameDraft == nil
-      && gradientNameDraft == nil && error == nil
+      && gradientNameDraft == nil && layerProtectionDraft == nil && error == nil
   }
   func canCreatePixelLayer(below: Bool = false) -> Bool {
     guard !editingComponent, canBeginLayerCreation else { return false }

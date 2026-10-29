@@ -1,0 +1,150 @@
+{
+  "step": "dev-step-184",
+  "completed_at_utc": "2026-10-27T10:11:51.884613+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Frame tool K, rectangle/ellipse/triangle/polygon/custom placeholders, frame-from-layers and shape/type conversion, retained embedded image placement and replacement, fill/fit/original sizing, independent frame/content/both transforms, strokes, native28 persistence and Photato edit/place APIs.",
+  "source_manifest": "artifacts/runs/20261027T094011Z-184-frames/source01.json",
+  "source_manifest_sha256": "dd2af9d26e85c1e761bb6226e451a356796a843cbb4bf7adc665a16d4af852c0",
+  "source_inputs": 1390,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationFrames.swift",
+      "Sources/PhotoCraft/FrameCanvas.swift",
+      "Sources/PhotoCraft/FrameControls.swift",
+      "Sources/PhotoCraftCore/Frames.swift",
+      "Sources/PhotoCraftImaging/FrameRenderer.swift",
+      "Tests/PhotoCraftAppTests/FrameIntegrationTests.swift",
+      "Tests/PhotoCraftAppTests/FrameWorkflowTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/SmartObjectEditing.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceLayers.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftImaging/GroupRenderer.swift",
+      "Sources/PhotoCraftImaging/LayerLayoutRenderer.swift",
+      "Sources/PhotoCraftImaging/NativeTextLayout.swift",
+      "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "Sources/PhotoCraftImaging/RGB32HierarchyRenderer.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration01": 140,
+    "release-full01": 1782
+  },
+  "last_full_regression": {
+    "step": 184,
+    "tests": 1782,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T094011Z-184-frames/release-full01.log"
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T094011Z-184-frames/module01.log",
+    "artifacts/runs/20261027T094011Z-184-frames/module02.log",
+    "artifacts/runs/20261027T094011Z-184-frames/module03.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T10:11:51.884613+00:00",
+    "tests": {
+      "integration01": 140,
+      "release-full01": 1782
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T094011Z-184-frames/Photato184-final.zip",
+    "zip_sha256": "77cf2e2917601f07bbfdab185ca2baf34dcdb0c5587b9fabe15f9f5af525009f",
+    "app": "/private/tmp/photato184-verified-sskvjp5f/Photato.app",
+    "executable_sha256": "020e79b2c6756fb540ea21f7612a7cc5461ab43325d1cf8d717f64481d6ed078",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato184-verified-sskvjp5f/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato184-verified-sskvjp5f/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1390,
+    "source_manifest_sha256": "dd2af9d26e85c1e761bb6226e451a356796a843cbb4bf7adc665a16d4af852c0",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 248,
+      "unavailable_leaf_commands": 477,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Full optimized suite and package validation on the current host; not live UI, physical Intel/macOS14/26 or complete Photoshop equivalence evidence."
+  },
+  "api": {
+    "commands": [
+      "frame.edit",
+      "frame.place"
+    ],
+    "catalogue_count": 70,
+    "native_archive_version": 28,
+    "state": "Frame metadata per layer, definition schema/capabilities, target/shape/sides/availability; source sharing and revision checks before placement and immediately before commit."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "Photato-only frame operations; no dedicated operation in pinned published Adobe contract. Existing Adobe Smart Object operations remain bounded as documented. Editable PSD frame transport remains unsupported and explicitly rejected."
+  },
+  "menus": {
+    "new_bindings": 2,
+    "entries": 802,
+    "bound": 248,
+    "unavailable": 477,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "tool": "Frame/K",
+    "paths": [
+      "Layer > New > Frame from Layers\u2026",
+      "Layer > New > Convert to Frame"
+    ]
+  },
+  "limitations": [
+    "Full Photoshop/live/physical-platform/pixel equivalence remains unqualified; desktop last observed locked, no re-probe or bypass. Native controller/model tests are not live interactions.",
+    "Editable PSD/PSB frame descriptors, linked external image placement, drag-and-drop replacement and generative Fill within Frames are not implemented. Save editable frame documents in native28; rendered exports retain appearance.",
+    "Canvas gestures preview outlines then commit the image result. Rich selection handles, contextual tasks, all Photoshop preferences and exact frame/content thumbnail layouts remain open. Frame Properties changes outline dimensions without automatically refitting content; Fit is explicit.",
+    "Text frames use native TextKit/CoreText outlines; glyphs without outlines reject. Font fallback, complex scripts, vertical/warped/path typography and exact Adobe glyph positions are unqualified.",
+    "Frame from Layers preserves original editable children, following the Rust grouping workflow. Drawing around a selected image embeds it first; Place replaces all descendants with one retained Smart Object. Fit requires one image child.",
+    "Frames use physical canvas coordinates, delta affine transforms and existing canvas/resource limits. Strokes use document-pixel width after transform. Photoshop stroke scaling and additional rotated/nonuniform contexts need independent qualification.",
+    "New frame commands record explicit unsupported Actions markers; exhaustive Actions capture remains open.",
+    "Custom vector paths are limited to4096 knots/256 components and normalized controls within\u00b110. Ordinary native canvas36MP/32768edge; shared API4MP/64layers/128MiB; Smart Object64MiB/8MP.",
+    "L07 remains open for broader artboard/frame qualification and interchange. Minor cosmetic/numerical refinements remain deferred under the major-first schedule."
+  ],
+  "next": "F03 native Blur Gallery: field/iris/tilt-shift/path/spin workflows with usable controls, preview/cancel, history, editable Smart Filters and both API coverage where the published contract defines operations.",
+  "next_major_plan": "artifacts/runs/20261027T094011Z-184-frames/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T094011Z-184-frames",
+    "passed_iteration": "01",
+    "milestones": 184,
+    "evidence_files": 37470,
+    "logs": 19329,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "prior_documentation_repair": "Step182 command-matrix reconstruction retained; exact unpreserved historical wording was not claimed recovered.",
+  "final_source_verification": "All1390 source01 inputs match after documentation and package verification."
+}

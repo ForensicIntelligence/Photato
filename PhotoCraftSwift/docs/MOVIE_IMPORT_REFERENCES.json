@@ -1,0 +1,70 @@
+{
+  "step": 233,
+  "status": "Native MOV/MP4 import and video-layer placement, rational variable-frame timing, orientation, retained source/audio, native52 and matching API upload/place/cancel pass 62 focused and 2,435 full optimized tests on 2,297 unchanged inputs. Independent normal/rotated movie comparisons match 6,144 RGBA8 channel values. Audio playback/editing, keyframes/transitions, Render Video, long/HDR footage and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/organize-and-manage-video-groups/import-video-files-and-image-sequences.html",
+      "role": "Public File/Open and New Video Layer from File workflow; no Adobe implementation copied."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/avfoundation/avassetreadertrackoutput",
+      "role": "Native sample decoding API; local Xcode27 SDK headers also inspected for reference restrictions."
+    }
+  ],
+  "scope": "Native MOV/MP4 source decode, rational PTS, original audio retention, native52, File/Open and Photoshop video layer action, shared API uploads/placement/cancellation. Not complete Photoshop video parity.",
+  "run": "artifacts/runs/20261029T001940Z-233-movie-import",
+  "first_source_manifest": "artifacts/runs/20261029T001940Z-233-movie-import/source02.json",
+  "known_gaps": [
+    "Audio playback/editing",
+    "Keyframes/transitions/Render Video",
+    "Long disk-backed clips beyond512 frames/64MiB source and existing memory budgets",
+    "HDR color preservation (decoded editable frames are SDR sRGB16)",
+    "All supported host codecs independent acceptance",
+    "Photoshop-byte-equivalent pixels and timing, live factory preferences/shortcuts and universal/macOS14 runtime"
+  ],
+  "recorded_at_utc": "2026-10-29T00:46:08.605144+00:00",
+  "source_manifest": "artifacts/runs/20261029T001940Z-233-movie-import/source04.json",
+  "source_changes": "artifacts/runs/20261029T001940Z-233-movie-import/changes05.json",
+  "native_archive": 52,
+  "actions_archive": 20,
+  "typed_commands": 163,
+  "tests": {
+    "utc": "2026-10-29T00:46:08.605144+00:00",
+    "tests": 2435,
+    "failures": 0,
+    "suite_seconds": 173.747,
+    "focused_tests": 62,
+    "source_manifest": "artifacts/runs/20261029T001940Z-233-movie-import/source04.json",
+    "unchanged_inputs": 2297,
+    "log": "artifacts/runs/20261029T001940Z-233-movie-import/release06.log",
+    "log_sha256": "372336d2a7b931bba28d1a132c104a4410e6290416030e3a5709a1e644bb6b02",
+    "binaries": {
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "f83a91fca8dff4bcc842f735a70c462c8f8cede836e27cda6fc853fd3eb65707",
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "570818e75946429111bb14dbe13a7efd75ed190269a9ea6eb4e9824e4c45f41f"
+    },
+    "independent": "artifacts/runs/20261029T001940Z-233-movie-import/independent05.json",
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "independent_output": "artifacts/runs/20261029T001940Z-233-movie-import/independent05.json",
+  "failures": [
+    "artifacts/runs/20261029T001940Z-233-movie-import/focused02.log",
+    "artifacts/runs/20261029T001940Z-233-movie-import/focused03.log",
+    "artifacts/runs/20261029T001940Z-233-movie-import/independent03.log"
+  ],
+  "repairs": "Replace host-unsupported QuickTime Animation fixture codec with original uncompressed ARGB; correct FFmpeg rotation flag; fix Core Image/AVFoundation coordinate conversion and archive52 header admission. Preserve every prior input and failure. Ordinary128x96 H.264/AAC also passes; tiny16x12 H.264 is a preserved host rejection.",
+  "installed_package_step": 221,
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "live_ui": false,
+  "new_package": false,
+  "goal_complete": false,
+  "next": "artifacts/runs/20261029T001940Z-233-movie-import/next-major05.json",
+  "standalone_diary": {
+    "entries": 233,
+    "initial_verification": "artifacts/runs/20261029T001940Z-233-movie-import/diary-browser08.json",
+    "final_verification": "artifacts/runs/20261029T001940Z-233-movie-import/diary-browser10.json",
+    "history_refresh": "artifacts/development-history-audit/movie233-refresh11.log",
+    "history_check": "artifacts/development-history-audit/movie233-check11.log"
+  }
+}

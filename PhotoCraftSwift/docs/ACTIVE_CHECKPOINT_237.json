@@ -1,0 +1,40 @@
+{
+  "step": 237,
+  "recorded_at_utc": "2026-10-29T02:04:30.172069+00:00",
+  "status": "The purchase UI, StoreKit adapter/listeners, product IDs and purchase-only tests are removed for the maintainer\u2019s pure FOSS release. All2,440 optimized tests pass on2,293 unchanged inputs; the new binary has no direct StoreKit linkage or purchase implementation symbols. About, menus, API inventory, release docs and website reflect the decision. REL02 is withdrawn, leaving104 active work packages. Installed221 and private universal232 remain unchanged.",
+  "source_manifest": "artifacts/runs/20261029T015500Z-237-foss-release/source01.json",
+  "source_inputs": 2293,
+  "native_archive": 53,
+  "actions_version": 20,
+  "typed_commands": 164,
+  "tests": {
+    "utc": "2026-10-29T02:01:30.858384+00:00",
+    "tests": 2440,
+    "failures": 0,
+    "suite_seconds": 168.516,
+    "build_seconds": [
+      "255.88"
+    ],
+    "log": "artifacts/runs/20261029T015500Z-237-foss-release/full-tests01.log",
+    "log_sha256": "a47e61f81d252b87ca1c4d1c842174cea61b788e9af4b2f162835e655c367897",
+    "source_manifest": "artifacts/runs/20261029T015500Z-237-foss-release/source01.json",
+    "unchanged_inputs": 2293,
+    "binary_sha256": "781ab55c1015e71ee808908ba832b021cacfcf0e2e30db41eb4d3f2b0b2bfc08",
+    "test_binary_sha256": "cc36968908392283d14ba9c495a7cbac7ff559ab920f02b2fe0f01611d03decb",
+    "direct_storekit_link": false,
+    "purchase_implementation_symbols": false,
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/FOSS_RELEASE_REFERENCES.json",
+  "next_action": "Resume step235 video-group arrangement/splitting and transitions, then audio and Render Video. Preserve full master parity requirements.",
+  "website": "../../forensicintelligence-site/index.html"
+}

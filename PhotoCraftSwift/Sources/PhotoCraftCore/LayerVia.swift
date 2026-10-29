@@ -95,6 +95,9 @@ public enum LayerVia {
     var candidate = document
     if operation == .cut {
       candidate.layers[index].content = .raster(remaining)
+      if let native = original.nativeMode {
+        candidate.layers[index].nativeMode = try native.reconciled(with: remaining, previous: source)
+      }
       try LayerLayout.trimMovedRaster(&candidate.layers[index])
     }
     var number = 1
@@ -106,10 +109,20 @@ public enum LayerVia {
     layer.parentID = original.parentID
     layer.opacity = original.opacity
     layer.blendMode = original.blendMode
+    if let native = original.nativeMode {
+      var retained = try native.cropped(to: IntRect(x: left - original.x + bounds.x,
+        y: top - original.y + bounds.y, width: bounds.width, height: bounds.height))
+      for y in 0..<bounds.height { try Task.checkCancellation(); for x in 0..<bounds.width {
+        try retained.set(extracted.pixel(x: bounds.x + x, y: bounds.y + y).a,
+          component: retained.mode.componentCount, index: y * bounds.width + x)
+      } }
+      layer.nativeMode = retained; layer.content = .raster(try retained.surface())
+    }
     candidate.layers.insert(layer, at: index + 1)
     candidate.activeLayerID = layer.id
     candidate.selection = nil
     candidate.selectionMask = nil
+    try candidate.reconcileModeStorage(from: document)
     try candidate.validate()
     try Task.checkCancellation()
     document = candidate

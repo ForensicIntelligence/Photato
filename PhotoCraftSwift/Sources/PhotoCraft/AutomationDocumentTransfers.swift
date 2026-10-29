@@ -2,24 +2,20 @@ import AppKit
 import Foundation
 import ImageIO
 import PhotoCraftCore
+import PhotoCraftImaging
 
 extension DocumentIO {
   static func decodeUpload(_ data: Data, native: Bool, name: String) throws -> CraftDocument {
     guard !data.isEmpty, data.count <= maximumUploadBytes else {
       throw AutomationFailure(status: 413, message: "Upload must contain 1 byte to 64 MiB.")
     }
+    if !native, MovieIO.recognizes(data) { return try MovieIO.decode(data,name:name,maximumBytes:128*1024*1024,maximumPixels:4_194_304) }
     let width: Int
     let height: Int
     if native {
-      struct Header: Decodable {
-        struct Document: Decodable {
-          let width: Int
-          let height: Int
-        }
-        let document: Document
-      }
-      let header = try PropertyListDecoder().decode(Header.self, from: data)
-      (width, height) = (header.document.width, header.document.height)
+      (width, height) = try NativeArchive.dimensions(data)
+    } else if PcraftImport.recognizes(data) {
+      (width, height) = try PcraftImport.dimensions(data)
     } else if data.starts(with: Data("8BPS".utf8)) {
       guard data.count >= 26 else {
         throw AutomationFailure(status: 422, message: "Truncated PSD header.")
@@ -46,9 +42,15 @@ extension DocumentIO {
 extension AutomationService {
   static var documentTransferCapabilities: [String: Any] {
     [
+      "encodingOptions": DocumentEncodingOptions.capabilities,
+      "movieFramesImport": MovieFramesAPI.capabilities,
+      "pdfImport": PDFImportAPI.capabilities,
       "import": [
         "method": "POST", "path": "/v1/documents/import", "successStatus": 201,
         "contentTypes": DocumentIO.uploadTypes,
+        "formatHeader": ["name": "X-Photato-Open-Format", "required": false,
+          "schema": ["type": "string", "enum": DocumentOpenFormat.allCases.filter{$0 != .pdf}.map(\.rawValue)],
+          "untypedBody": "application/octet-stream is accepted only when the format header is present"],
         "bodySchema": [
           "type": "string", "format": "binary", "minLength": 1,
           "maxLength": DocumentIO.maximumUploadBytes,
@@ -68,7 +70,91 @@ extension AutomationService {
         "maxBytes": DocumentIO.maximumDownloadBytes,
         "revisionHeader": "Optional X-Photato-Revision must equal the current document revision.",
         "result":
-          "Binary snapshot; native archives retain editable structure, PSD retains supported structures, raster outputs flatten.",
+          "Binary snapshot; native archives retain editable structure, PSD/PSB retain supported structures, raster outputs flatten.",
+      ],
+      "multichannelPhotoshop": [
+        "formats": ["psd", "psb"], "bitsPerChannel": [8, 16], "maximumChannels": 56,
+        "maximumPixels": 8_388_608, "compression": ["raw", "rle", "zip", "zipPrediction"],
+        "preserves": ["numeric ink samples", "alpha masks", "channel order within ink/mask groups", "Unicode names", "spot display colors", "solidity", "saved paths", "resolution"],
+        "limits": "Flat Multichannel mode7. Display colors quantize to16-bit RGB and opacity/solidity to whole percentages when changed; imported supported color records are reused unchanged. Active Quick Mask, private color-book records and Duotone PSD remain unsupported. Exact Photoshop composite rendering is unqualified.",
+        "routes": ["GET /v1/documents/{id}/file.psd", "GET /v1/documents/{id}/file.psb", "POST /v1/documents/import", "document.saveAs", "POST /v1/action-jobs", "POST /v2/execute-actions"],
+      ],
+      "nativeArchives": [
+        "writeVersion": 11, "readVersions": Array(1...61), "partialProtectionVersion": 12, "layerStyleVersion": 13, "smartObjectVersion": 14, "smartFilterVersion": 15, "richTextVersion": 16, "classicAdjustmentVersion": 17, "colorLookupVersion": 18, "liquifyVersion": 19, "alphaChannelVersion": 20, "cameraRawVersion": 21, "rawSourceVersion": 22, "imageStackVersion": 23, "warpVersion": 24, "puppetVersion": 25, "perspectiveVersion": 26, "artboardVersion": 27, "frameVersion": 28, "blurGalleryVersion": 29, "lensCorrectionVersion": 30, "wideAngleVersion": 31, "vanishingPointVersion": 32, "liveShapeVersion":33,"advancedTypographyVersion":34,"shapedTextVersion":35,"filterGalleryVersion":36,"photoDetailVersion":37,"lensBlurVersion":38,"distortionVersion":39,"pixelateVersion":40,"stylizeVersion":41,"renderVersion":42,"otherVideoVersion":43,"classicDetailVersion":44,"shadowsHighlightsVersion":45,"documentModeVersion":46,"restrictedModeVersion":47,"inkModeVersion":48,"untaggedProfileVersion":49,"animationVersion":50,"videoVersion":51,"movieVersion":52,"keyframeVersion":53,"arrangementVersion":54,"transitionVersion":55,"timelineAudioVersion":56,"timelineWorkspaceVersion":57,"timelineTrimVersion":58,"frameTimelineConversionVersion":59,"sampledFrameVersion":60,"variablesVersion":61,
+        "downloadDefaultVersion": 10,
+        "downloadVersionHeader": [
+          "name": "X-Photato-Archive-Version", "required": false,
+          "schema": ["type": "string", "enum": ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"], "default": "10"],
+          "scope":
+            "Native downloads only; both file.photato and file.pcswift remain equivalent aliases",
+        ],
+        "extension": "photato", "legacyExtension": "pcswift",
+        "layout":
+          "Version11/12/13 indexed tile/selection blobs with binary-plist metadata and SHA256 integrity checks",
+        "fileIO":
+          "Native Open/Save/Copy/autosave use bounded64KiB physical reads/writes; Data API output uses the identical serializer",
+        "samplePreservation":
+          "Exact stored Float32 bits, profiles, editable structure and metadata",
+        "maxFileBytes": NativeArchive.maximumBytes,
+        "legacyEncode":
+          "Core encode emits10, desktop saves11; partial protection requires12, layer styles13, Smart Objects14 and Smart Filters15. Native downloads require explicit opt-in to the required version.",
+        "limits":
+          "Metadata, selection and active document remain resident; full paging, crash-relaunch recovery, large-file and live platform qualification remain open",
+      ],
+      "layeredTIFF": [
+        "input": true, "output": true,
+        "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
+        "depths": [8, 16, 32], "byteOrders": ["bigEndian", "littleEndian"],
+        "layerCompression": ["raw", "rle", "zip", "zipPrediction"],
+        "outputLayerCompression": ["rle", "zip"],
+        "scope": "Classic TIFF Photoshop ImageSourceData: RGB/Gray/CMYK/Lab raster layers, groups, masks and Unicode names in both byte orders. RGB additionally supports numeric adjustments and vector masks. Retained global mask-display metadata survives TIFF/PSD/PSB output. Big-endian records share supported PSD rich-layer decoding.",
+        "limits": "Little-endian fill/path descriptors and opaque blocks, PSB-style ImageSourceData, non-default layered orientation, non-RGB rich content, spot inks, indexed/bitmap modes and native-mode tiled/JPEG-compressed input remain unsupported. Unsupported records reject instead of flattening. Classic output is bounded to512MiB and1024 layer records including group markers. Flattened Gray/CMYK components remain numerical; Lab16 composite chroma is quantized to the TIFF signed 1/256 scale (up to one native code step). Layer planes remain exact. Multi-layer mode previews still use RGB composition/reseparation. Full Photoshop byte parity remains unqualified.",
+        "api": "Native Open, Photato import, and both action-job inputs share the decoder. Native Save and Photato save commands default to preserving layers. Copy/download and Photato jobs preserve layers with encodingOptions.tiffLayers=true; default exports remain flattened. TIFF layer compression is rle or zip and requires tiffLayers=true. Omitted layered byte order is bigEndian. The Adobe TiffOutput contract has no preservation field; its flattened output stays unchanged.",
+      ],
+      "restrictedFormats": [
+        "modes": ["indexed": 8, "bitmap": 1], "nativeArchive": 47,
+        "inputOutput": ["psd", "psb", "png", "tiff"],
+        "storage": "One flat palette-index or packed bilevel raster; duplicate palette indices and a single transparent index are retained. Native47 preserves the complete restricted store. TIFF supports both byte orders and interleaved/per-channel unassociated alpha; palette count/transparency use Photoshop resources.",
+        "psdCompression": ["indexed": ["raw", "rle", "zip", "zipPrediction"], "bitmap": ["raw", "rle", "zip"]],
+        "png": "Indexed1/2/4/8-bit and grayscale1-bit input; indexed8-bit or grayscale1-bit output; all scanline filters/Adam7 decode and optional Adam7 output.",
+        "tiff": "Palette1/2/4/8-bit and bilevel strip/tile input, raw/LZW/ZIP/PackBits;8-bit palette or1-bit bilevel output with raw/LZW/ZIP. Single transparent index can use unassociated alpha samples. Rotated raster samples retain index/bit identity.",
+        "api": "Native Open/Save and Photato import/download use shared codecs. Existing Photato/Adobe action-job resource paths share the same native decoder/encoder; conversion commands are not yet advertised.",
+        "limits": "8,388,608 pixels before the lower existing API/job budgets. Flat storage only. No auxiliary channels, PSD layers, restricted TIFF ImageSourceData, CCITT, non-square pixels or high-precision TIFF ColorMap. PNG multiple/partial alpha, animated PNG, TIFF transfer tables and rotated saved paths reject explicitly. Full Photoshop numerical/file equivalence and broader contexts remain unqualified."
+      ],
+      "photoshopContainers": [
+        "readVersions": [1, 2], "writeFormats": ["psd", "psb"],
+        "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16], "indexed": [8], "bitmap": [1], "multichannel": [8, 16]],
+        "psbMediaType": "application/x-photoshop",
+        "maximumFileBytes": PSDCodec.maximumInputBytes,
+        "maximumDimension": Surface.maxDimension, "maximumPixels": Surface.maxPixels,
+        "streamingLargeFiles": false,
+        "fileInput": [
+          "boundedReads": true, "readWindowBytes": PSDCodec.fileReadWindowBytes,
+          "maximumCacheBytes": PSDCodec.maximumFileCacheBytes,
+          "consistency":
+            "Owned regular-file descriptor; detects observed changes, truncation and replacement before accepting decoded content.",
+          "scope":
+            "Native PSD/PSB file opens and reverts share the memory-backed API parser. Retained metadata/tiles and all existing input/output limits still apply.",
+        ],
+        "fileOutput": [
+          "boundedWrites": true, "maximumWriteBytes": AtomicFileWriter.chunkBytes,
+          "rowBasedCompression": true, "checkedLengthBackpatching": true,
+          "atomicReplacement": true,
+          "scope":
+            "Native PSD/PSB Save, Save As, Save a Copy and API local saves stage private files. API downloads and both job interfaces share the serializer with Data output. Metadata and rendered tiles still use memory; existing limits remain.",
+        ],
+        "channelDecoding": [
+          "rowBased": true, "nestedSectionViews": true, "zipInputChunkBytes": 65536,
+          "unusedMergedCache": "Validated row-by-row without retaining decoded cache bytes.",
+          "limits":
+            "API input Data, retained metadata and decoded editable tiles still require the existing budgets. Native PSD/PSB files use bounded reads/writes and row compression; native archives are not streaming.",
+        ],
+        "scope":
+          "RGB8/16/32 plus native Grayscale8/16/32 and CMYK/Lab8/16 raster layers, groups, masks and ICC profiles in PSD/PSB. Non-RGB editable type/fill/adjustment/Smart Object records remain unsupported. Native-mode limits:8,388,608 pixels; existing API transfer/job budgets also apply. PSB uses64bit lengths and32bit RLE row tables. Mode blend/composite fidelity remains unqualified.",
+        "adobeJobs":
+          "Both job interfaces can decode PSB resource inputs. The published image/vnd.adobe.photoshop output remains PSD; PSB output is available through Photato file.psb and document.saveAs format psb.",
+        "limits":
+          "Full300000-pixel and multi-gigabyte streaming PSB workflows, unsupported Photoshop content and independent live PSB qualification remain open.",
       ],
       "metadata": [
         "raster":
@@ -76,16 +162,32 @@ extension AutomationService {
         "psd":
           "Retains opaque image-resource blocks except regenerated profile/resolution/paths and stale thumbnail, layer-index, selection, version and recovery records. Retention does not implement unsupported Photoshop workflows.",
         "profiles":
-          "Working/output samples remain sRGB (linear sRGB for RGB32 PSD). Original non-sRGB profile preservation is not yet supported.",
+          "PSD and native archives retain actual RGB working profiles separately from source provenance. RGB32 uses linear matrix profiles. Integer raster exports retain working profiles; HDR raster exports convert to SDR sRGB. Display previews convert to sRGB. Full Photoshop conversion-policy and rendering equivalence remain unqualified.",
         "metadataLimitBytes": 16 * 1024 * 1024,
+        "workingProfileLimitBytes": ICCProfile.maximumBytes,
+        "workingProfileMaximumTags": ICCProfile.maximumTags,
       ],
       "float32Storage": [
-        "nativeArchiveVersion": 9,
+        "nativeArchiveVersion": 10, "nativeArchiveWriteVersions": [10, 11, 12, 13, 14, 15, 16],
         "encoding": "linearRGB",
         "preservation":
-          "Supported linear-sRGB RGB32 PSD raster samples retain their IEEE754 bits through native archives, metadata-only edits and PSD layer output. Opaque untransformed Normal raster composition and ordinary groups retain exact samples in merged output.",
+          "Supported RGB32 PSD raster samples retain their IEEE754 bits through native archives, metadata-only edits and straight PSD layer output. PSD merged color samples use separately rounded white-distance matting, including opaque samples.",
+        "normalRasterComposition": [
+          "scope":
+            "Root untransformed Normal raster stacks; linear Float32 mask-before-opacity, fused alpha and color interpolation. Original Photoshop references cover opaque/translucent HDR samples, Cartesian alpha pairs, offset masks, layer opacity and three-layer stacks.",
+          "mergedEncoding":
+            "Big-endian planar Float32 RGB with white matte and straight alpha; opaque Photoshop references may omit the alpha plane.",
+          "exactWholePSDFile": false,
+        ],
+        "normalHierarchyComposition": [
+          "scope":
+            "Untransformed Normal RGB32 raster layers in Pass Through and isolated groups, group opacity/masks, and raster clipping chains with Blend Clipped Layers as Group enabled. Shared linear evaluation preserves measured Photoshop rounding.",
+          "limitations":
+            "Independent clipping blending, clipping groups, non-Normal blends, affine/rich layers and arbitrary profiles remain unqualified.",
+          "exactWholePSDFile": false,
+        ],
         "limits":
-          "Original non-sRGB profiles, transforms, adjustments, fractional blending and all HDR editing operations are not fully qualified for exact Photoshop output. Source RGB32 replacement still requires Save As review.",
+          "Complete group/clipping combinations, transforms, non-Normal blends, adjustments, arbitrary profiles and all HDR edits are not fully qualified for exact Photoshop output. Finite-range composition overflow reports an error. Source RGB32 replacement still requires Save As review.",
         "interfaces": [
           "document downloads", "document.save", "document.saveAs", "/v1/action-jobs",
           "/v2/execute-actions",
@@ -133,6 +235,9 @@ extension AutomationService {
     guard importing || downloading, request.path == "/" + parts.joined(separator: "/") else {
       return nil
     }
+    if importing, controller.recoveryIndex.isBusy || controller.documentClosing.isActive || controller.documentOpening.isActive || controller.documentOpening.hasPendingRequests {
+      throw AutomationFailure(status: 409, message: "Wait for document opening or closing before importing.")
+    }
     guard documentTransfersEnabled else {
       throw AutomationFailure(
         status: 403, message: "Enable document uploads and downloads in the native API window.")
@@ -142,6 +247,10 @@ extension AutomationService {
     }
     let expectedGeneration = documentTransferGeneration
     let expectedToken = token
+    let closingOperation = controller.documentClosing.state?.id
+    let openingOperation = controller.documentOpening.generation
+    let maintenanceGeneration = controller.recoveryMaintenance.generation
+    let discoveryGeneration = controller.recoveryDiscovery.generation
     documentTransferBusy = true
     defer { documentTransferBusy = false }
     func validateSession() throws {
@@ -156,11 +265,13 @@ extension AutomationService {
       guard
         let contentType = request.headers["content-type"]?.lowercased().split(separator: ";").first
           .map(String.init),
-        DocumentIO.uploadTypes.contains(contentType)
+        (DocumentIO.uploadTypes.contains(contentType) || (contentType == "application/octet-stream" && request.headers["x-photato-open-format"] != nil))
       else {
         throw AutomationFailure(
           status: 415, message: "Choose a supported image or Photato document Content-Type.")
       }
+      if MovieIO.mediaTypes.contains(contentType), !MovieIO.recognizes(request.body) {throw AutomationFailure(status:422,message:"Expected a supported movie container.")}
+      if RawSourceIO.mediaTypes.contains(contentType), !RawSourceIO.recognizes(request.body) { throw AutomationFailure(status:422,message:"Expected supported camera RAW sensor data.") }
       let name = request.headers["x-photato-name"] ?? "Imported Image"
       guard !name.trimmingCharacters(in: .whitespaces).isEmpty, name.count <= 256,
         name.utf8.allSatisfy({ (32...126).contains($0) })
@@ -175,21 +286,67 @@ extension AutomationService {
         throw AutomationFailure(
           status: 409, message: "Finish the modal dialog before opening a document.")
       }
+      let selection: DocumentOpenFormat?
+      if let raw = request.headers["x-photato-open-format"] {
+        guard let format = DocumentOpenFormat(rawValue: raw) else {
+          throw AutomationFailure(status: 400, message: "Unknown X-Photato-Open-Format.")
+        }
+        selection = format
+      } else { selection = nil }
+      if selection == .pdf {
+        throw AutomationFailure(status:422,message:"Use POST /v1/documents/import/pdf with X-Photato-PDF-Options to select PDF pages; ordinary import returns a single document.")
+      }
+      let frameOptions = try MovieFramesAPI.options(request.headers[MovieFramesAPI.header])
+      if frameOptions != nil {
+        guard MovieIO.mediaTypes.contains(contentType) || (contentType == "application/octet-stream" && selection == .movie),MovieIO.recognizes(request.body) else {throw AutomationFailure(status:415,message:"Movie-frame import requires a supported movie Content-Type and container.")}
+        guard controller.canFinishMovieFrames else {throw AutomationFailure(status:409,message:"Finish the current document workflow before importing movie frames.")}
+      }
       let native = contentType == DocumentIO.Format.native.mediaType
       let decoder = documentDecoder
-      let worker = Task.detached(priority: .utility) { try decoder(request.body, native, name) }
+      let colorSettings = controller.colorSettings.value
+      let colorChoice = try ColorPolicyAPI.choice(request.headers["x-photato-color-decision"], opening: true)
+      let worker = Task.detached(priority: .utility) {
+        let usesNative: Bool
+        if let selection {
+          let actual = DocumentOpenFormat.detect(request.body)
+          try selection.validate(actual)
+          guard actual != .pdf else {throw AutomationFailure(status:422,message:"Use POST /v1/documents/import/pdf to choose PDF pages and render settings.")}
+          usesNative = actual == .native
+        } else { usesNative = native }
+        if let frameOptions {
+          guard colorChoice == nil else {throw AutomationFailure(status:400,message:"Movie-frame import creates sRGB layers; omit X-Photato-Color-Decision.")}
+          return try MovieFrames.decode(request.body,name:name,options:frameOptions,maximumBytes:128*1024*1024,maximumPixels:4_194_304,maximumLayers:64)
+        }
+        var decoded = try decoder(request.body, usesNative, name)
+        if usesNative {
+          guard colorChoice == nil else { throw AutomationFailure(status: 400, message: "Native Photato imports retain their saved interpretation; omit X-Photato-Color-Decision.") }
+          return decoded
+        }
+        if [.psd, .psb].contains(DocumentOpenFormat.detect(request.body)), decoded.sourceICC == nil { decoded.profileIsUntagged = true }
+        return try ColorPolicyInput.opening(decoded, settings: colorSettings, choice: colorChoice)
+      }
+      let frameOperation = frameOptions == nil ? nil:UUID()
+      if let frameOperation {movieFramesImportOperationID = frameOperation;movieFramesImportTask = worker}
+      defer {if let frameOperation,movieFramesImportOperationID == frameOperation {movieFramesImportOperationID = nil;movieFramesImportTask = nil}}
       let model = try await withTaskCancellationHandler(
         operation: { try await worker.value }, onCancel: { worker.cancel() })
+      if frameOptions != nil {guard !worker.isCancelled,controller.canFinishMovieFrames else {throw CancellationError()}}
       try validateSession()
       try Self.checkLimits(model)
-      guard NSApp?.modalWindow == nil else {
-        throw AutomationFailure(status: 409, message: "A modal dialog opened during the transfer.")
+      guard NSApp?.modalWindow == nil, !controller.documentClosing.isActive,
+        !controller.documentOpening.isActive, !controller.documentOpening.hasPendingRequests,
+        controller.documentClosing.state?.id == closingOperation,
+        controller.documentOpening.generation == openingOperation,
+        !controller.recoveryIndex.isBusy, controller.recoveryMaintenance.generation == maintenanceGeneration,
+        controller.recoveryDiscovery.generation == discoveryGeneration else {
+        throw AutomationFailure(status: 409, message: "A document lifecycle operation started during the transfer.")
       }
       guard shares.count < 8 else {
         throw AutomationFailure(
           status: 429, message: "Document sharing capacity changed during upload.")
       }
       let document = CraftNSDocument(model: model)
+      if frameOptions != nil {document.store.timelineVisible = model.animation != nil}
       controller.addDocument(document)
       do { try share(document) } catch {
         controller.removeDocument(document)
@@ -218,9 +375,104 @@ extension AutomationService {
     else {
       throw AutomationFailure(status: 409, message: "Stale document revision.")
     }
+    let requestedArchiveVersion = request.headers["x-photato-archive-version"]
+    if let requestedArchiveVersion {
+      guard format == .native, ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion) else {
+        throw AutomationFailure(
+          status: 400, message: "X-Photato-Archive-Version must be 10 through61 on native downloads.")
+      }
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 61, requestedArchiveVersion != "61" {
+      throw AutomationFailure(status: 422, message: "Variables and data sets require X-Photato-Archive-Version: 61.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 60, !["60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Sampled frame animation requires X-Photato-Archive-Version: 60.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 59, !["59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Converted frame Timelines require X-Photato-Archive-Version: 59.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 58, !["58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Trimmed Timelines require X-Photato-Archive-Version: 58.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 57, !["57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Timeline work areas/onion settings require X-Photato-Archive-Version: 57.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 56, !["56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Timeline audio requires X-Photato-Archive-Version: 56.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 55, !["55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Video transitions require X-Photato-Archive-Version: 55.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 54, !["54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Video arrangement requires X-Photato-Archive-Version: 54.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 53, !["53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Video keyframes require X-Photato-Archive-Version: 53.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 52, !["52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Movie sources require X-Photato-Archive-Version: 52.")}
+    if format == .native, document.store.document.videoTimeline != nil, !["51","52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Video requires X-Photato-Archive-Version: 51.") }
+    if format == .native, document.store.document.animation != nil, !["50","51","52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status: 422, message: "Frame animation requires X-Photato-Archive-Version: 50.") }
+    if format == .native, document.store.document.requiresPartialProtectionArchive,
+      !["12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422,
+        message: "Partial layer protection requires X-Photato-Archive-Version: 12.")
+    }
+    if format == .native, document.store.document.requiresLayerStylesArchive, !["13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Layer styles require X-Photato-Archive-Version: 13.")
+    }
+    if format == .native, document.store.document.profileIsUntagged == true, !["49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status: 422, message: "Untagged documents require X-Photato-Archive-Version: 49.") }
+    if format == .native, document.store.document.inkMode != nil, !["48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Duotone and Multichannel require X-Photato-Archive-Version: 48.")
+    }
+    if format == .native, document.store.document.restrictedMode != nil, !["47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Indexed Color and Bitmap require X-Photato-Archive-Version: 47.")
+    }
+    if format == .native, document.store.document.hasNativeModeStorage, !["46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Native color components require X-Photato-Archive-Version: 46.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 45, !["45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Shadows/Highlights Smart Filters require X-Photato-Archive-Version: 45.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 44, !["44","45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Blur/Noise/Sharpen Smart Filters require X-Photato-Archive-Version: 44.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 43, !["43","44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Other/Video Smart Filters require X-Photato-Archive-Version: 43.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 42, !["42","43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Render Smart Filters require X-Photato-Archive-Version: 42.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 41, !["41","42","43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Stylize Smart Filters require X-Photato-Archive-Version: 41.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 40, !["40","41", "42","43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Pixelate Smart Filters require X-Photato-Archive-Version: 40.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 39, !["39","40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Distortion Smart Filters require X-Photato-Archive-Version: 39.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 38, !["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Lens Blur requires X-Photato-Archive-Version: 38.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 37, !["37","38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {throw AutomationFailure(status:422,message:"Photo detail requires X-Photato-Archive-Version: 37.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 36, !["36","37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Editable Filter Gallery requires X-Photato-Archive-Version: 36.") }
+    if format == .native, document.store.document.hasShapedText,!["35","36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? ""){throw AutomationFailure(status:422,message:"Shaped text requires X-Photato-Archive-Version: 35.")}
+    if format == .native, document.store.document.hasAdvancedTypography,!["34","35","36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? ""){throw AutomationFailure(status:422,message:"Advanced typography requires X-Photato-Archive-Version: 34.")}
+    if format == .native, document.store.document.minimumArchiveVersion >= 33, !["33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Live shapes require X-Photato-Archive-Version: 33.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 32, !["32","33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Vanishing Point planes require X-Photato-Archive-Version: 32.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 31, !["31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Adaptive Wide Angle requires X-Photato-Archive-Version: 31.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 30, !["30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Lens Correction requires X-Photato-Archive-Version: 30.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 29, !["29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Blur Gallery requires X-Photato-Archive-Version: 29.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 28, !["28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Frames require X-Photato-Archive-Version: 28.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 27, !["27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Artboards require X-Photato-Archive-Version: 27.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 26, !["26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Editable Perspective Warp requires X-Photato-Archive-Version: 26.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 25, !["25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Editable Puppet Warp requires X-Photato-Archive-Version: 25.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 24, !["24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Editable Warp requires X-Photato-Archive-Version: 24.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 23, !["23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") { throw AutomationFailure(status:422,message:"Image stacks require X-Photato-Archive-Version: 23.") }
+    if format == .native, document.store.document.minimumArchiveVersion >= 22, !["22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status:422,message:"RAW sources require X-Photato-Archive-Version: 22.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 21, !["21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status:422,message:"Camera Raw Smart Filters require X-Photato-Archive-Version: 21.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 20, !["20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status:422,message:"Alpha channels and Quick Mask require X-Photato-Archive-Version: 20.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 19, !["19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Liquify Smart Filters require X-Photato-Archive-Version: 19.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 18, !["18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Color Lookup requires X-Photato-Archive-Version: 18.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 17, !["17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Classic adjustments require X-Photato-Archive-Version: 17.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 16, !["16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Rich text requires X-Photato-Archive-Version: 16.")
+    }
+    if format == .native, document.store.document.minimumArchiveVersion >= 15, !["15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Smart Filters require X-Photato-Archive-Version: 15.")
+    }
+    if format == .native, document.store.document.requiresSmartObjectArchive, !["14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52","53","54","55","56","57","58","59","60","61"].contains(requestedArchiveVersion ?? "") {
+      throw AutomationFailure(status: 422, message: "Embedded Smart Objects require X-Photato-Archive-Version: 14 or15.")
+    }
+    let legacyNative = format == .native && (requestedArchiveVersion == nil || requestedArchiveVersion == "10")
+    let options = document.effectiveEncodingOptions(
+      try DocumentEncodingOptions.header(request.headers["x-photato-export-options"], format: format),
+      format: format)
     let snapshot = document.store.document
     let worker = Task.detached(priority: .utility) {
-      try DocumentIO.encode(snapshot, format: format)
+      if format == .native, let version = requestedArchiveVersion.flatMap(Int.init), version >= 12 {
+        return try NativeArchive.encodeChunked(snapshot, minimumVersion: version)
+      }
+      return legacyNative
+        ? try NativeArchive.encode(snapshot) : try DocumentIO.encode(snapshot, format: format, options: options)
     }
     let data = try await withTaskCancellationHandler(
       operation: { try await worker.value }, onCancel: { worker.cancel() })

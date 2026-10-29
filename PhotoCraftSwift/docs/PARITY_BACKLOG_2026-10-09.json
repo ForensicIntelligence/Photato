@@ -623,12 +623,13 @@
       "id": "B05",
       "area": "Painting and retouch",
       "title": "Patch, Content-Aware Move and Red Eye",
-      "status": "Missing",
+      "status": "Partial",
       "weeks_low": 4,
       "weeks_high": 8,
       "scope": "Patch source/destination/adaptation, content-aware move/extend, red-eye controls and full-resolution protected-region behavior.",
       "dependencies": "B04",
-      "estimate_note": ""
+      "estimate_note": "",
+      "latest_evidence": "docs/REGION_RETOUCH_REFERENCES.json"
     },
     {
       "id": "B06",
@@ -15848,17 +15849,20 @@
     {
       "id": "patch",
       "title": "Patch",
-      "native_handler_present": false
+      "native_handler_present": true,
+      "latest_evidence": "docs/REGION_RETOUCH_REFERENCES.json"
     },
     {
       "id": "contentAwareMove",
       "title": "Content-Aware Move",
-      "native_handler_present": false
+      "native_handler_present": true,
+      "latest_evidence": "docs/REGION_RETOUCH_REFERENCES.json"
     },
     {
       "id": "redEye",
       "title": "Red Eye",
-      "native_handler_present": false
+      "native_handler_present": true,
+      "latest_evidence": "docs/REGION_RETOUCH_REFERENCES.json"
     },
     {
       "id": "brush",

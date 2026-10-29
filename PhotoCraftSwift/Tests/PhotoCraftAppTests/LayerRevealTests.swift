@@ -43,7 +43,7 @@ final class LayerRevealTests: XCTestCase {
     XCTAssertEqual(store.document, before)
   }
 
-  @MainActor func testNestedLockedAncestorRevealPreservesHistoryDirtyStateAndPixels() throws {
+  @MainActor func testNestedLockedAncestorRevealPreservesHistoryDirtyStateAndPixels() async throws {
     let document = try fixture()
     defer { document.close() }
     let store = document.store
@@ -51,13 +51,13 @@ final class LayerRevealTests: XCTestCase {
     let outer = store.document.layers[3].id
     store.perform(.lock(outer, true))
     store.perform(.opacity(store.document.layers[0].id, 0.5))
-    store.undo()
+    await store.undo()
     document.updateChangeCount(.changeCleared)
     store.select(store.document.layers[0].id)
     let tracker = LayerRevealTracker()
     _ = tracker.appear(store)
-    let undo = store.session.undoStack.map(\.document)
-    let redo = store.session.redoStack.map(\.document)
+    let undo = try store.session.undoStack.map { try $0.restoredDocument() }
+    let redo = try store.session.redoStack.map { try $0.restoredDocument() }
     let pixels = try Renderer.composite(store.document)
     let revision = store.revision
     store.select(child)
@@ -69,8 +69,8 @@ final class LayerRevealTests: XCTestCase {
     XCTAssertTrue(
       tracker.consume(request, store: store, visibleIDs: store.layersInPanel().map(\.id)))
     XCTAssertEqual(store.selectedLayerIDs, [child])
-    XCTAssertEqual(store.session.undoStack.map(\.document), undo)
-    XCTAssertEqual(store.session.redoStack.map(\.document), redo)
+    XCTAssertEqual(try store.session.undoStack.map { try $0.restoredDocument() }, undo)
+    XCTAssertEqual(try store.session.redoStack.map { try $0.restoredDocument() }, redo)
     XCTAssertEqual(store.revision, revision)
     XCTAssertFalse(document.isDocumentEdited)
     XCTAssertEqual(try Renderer.composite(store.document), pixels)
@@ -135,7 +135,7 @@ final class LayerRevealTests: XCTestCase {
     XCTAssertNil(tracker.track(store), "Closing a modal does not create a new selection")
   }
 
-  @MainActor func testHistorySelectionUsesSameRevealWithoutAnotherUndoEntry() throws {
+  @MainActor func testHistorySelectionUsesSameRevealWithoutAnotherUndoEntry() async throws {
     let document = try fixture()
     defer { document.close() }
     let store = document.store
@@ -144,13 +144,13 @@ final class LayerRevealTests: XCTestCase {
     store.select(store.document.layers[0].id)
     let tracker = LayerRevealTracker()
     _ = tracker.appear(store)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document.activeLayerID, child)
     XCTAssertEqual(try XCTUnwrap(tracker.track(store)).layerID, child)
     XCTAssertTrue(store.session.undoStack.isEmpty)
     XCTAssertEqual(store.session.redoStack.count, 1)
     XCTAssertTrue(store.document.layers[3].group!.expanded)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(try XCTUnwrap(tracker.track(store)).layerID, store.document.layers[0].id)
     XCTAssertNil(tracker.track(store), "Unchanged active layer must not force disclosure")
   }

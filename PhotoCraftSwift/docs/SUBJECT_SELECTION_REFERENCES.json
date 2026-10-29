@@ -1,0 +1,173 @@
+{
+  "step": "dev-step-159",
+  "date": "2026-10-26",
+  "status": "Functional native/API/Release/universal checkpoint verified; remaining live mask check awaits unlock; full parity open.",
+  "run": "artifacts/runs/20261026T185147Z-159-subject-background",
+  "provider": "Apple Vision VNGenerateForegroundInstanceMaskRequest, local system model",
+  "minimum_macos": "14.0",
+  "limits": {
+    "dimension": 6000,
+    "canvas_pixels": 8388608,
+    "resource_bytes": 67108864,
+    "document_bytes": 134217728
+  },
+  "sources": [
+    {
+      "url": "https://developer.apple.com/documentation/vision/vngenerateforegroundinstancemaskrequest",
+      "use": "Native macOS14 foreground-instance request; SDK header confirms availability."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/vision/vninstancemaskobservation/generatescaledmaskforimage(forinstances:from:)",
+      "use": "Input-sized foreground alpha mask."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/remove-background/",
+      "use": "Published modes and background/trim/decontamination."
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "use": "Pinned RemoveBackgroundV2Request, JobAcceptedResponse and JobStatus contracts."
+    }
+  ],
+  "fixture_provenance": "Existing maintainer-provided Assets/PhotatoIcon.png; no external user photo or cloud inference.",
+  "source_manifest": "artifacts/runs/20261026T185147Z-159-subject-background/source03.json",
+  "verification": {
+    "focused": {
+      "tests": 56,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T185147Z-159-subject-background/focused05.log"
+    },
+    "real_model": "artifacts/runs/20261026T185147Z-159-subject-background/model-arm64/native-model.json",
+    "live": "artifacts/runs/20261026T185147Z-159-subject-background/live-checks01.json",
+    "release": {
+      "tests": 1510,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T185147Z-159-subject-background/release-tests02.log"
+    },
+    "focused_followup": {
+      "tests": 26,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T185147Z-159-subject-background/focused06.log",
+      "scope": "Final parser/default/result-schema repair and foreground/native HTTP tests"
+    },
+    "platform": "artifacts/runs/20261026T185147Z-159-subject-background/platform01.json",
+    "package": "artifacts/runs/20261026T185147Z-159-subject-background/package-verification01.json",
+    "real_model_release": {
+      "arm64_seconds": 0.6160939931869507,
+      "rosetta_x86_64_seconds": 2.7141189575195312,
+      "resolution": "1024x1024",
+      "result": "center1/corner0, native Undo/Redo pass on both",
+      "qualification": "Current host only; no physical Intel/macOS14 or Adobe equality claim."
+    }
+  },
+  "photato": {
+    "commands": [
+      "selection.subject",
+      "layer.removeBackground"
+    ],
+    "document_state_schema": {
+      "type": "object",
+      "properties": {
+        "selection": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "width",
+                "height"
+              ],
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        },
+        "selectionHasSoftCoverage": {
+          "type": "boolean"
+        },
+        "subjectDetection": {
+          "type": "object",
+          "properties": {
+            "canSelectSubject": {
+              "type": "boolean"
+            },
+            "canRemoveBackground": {
+              "type": "boolean"
+            },
+            "sampleAllLayers": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "layer_state_properties": {
+      "hasMask": {
+        "type": "boolean"
+      },
+      "maskEnabled": {
+        "type": "boolean"
+      },
+      "maskDensity": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "maskFeather": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "errors": {
+      "400": "invalid parameters",
+      "404": "missing layer",
+      "409": "busy/stale/cancelled/revoked",
+      "422": "wrong target/locked/existing mask/no subject/model unavailable/size limit"
+    }
+  },
+  "adobe": {
+    "submit": "POST /v2/remove-background",
+    "status": "GET /v2/status/{jobId}",
+    "request_schema": "#/components/schemas/RemoveBackgroundV2Request",
+    "response_schemas": [
+      "JobAcceptedResponse",
+      "JobStatusResponse"
+    ],
+    "scope": "cutout/mask/psd, optional trim and RGBA background, approximate edge decontamination; hosted results reuse authenticated local jobs.",
+    "deviations": [
+      "Native Apple model, no Adobe identity/service/model equivalence.",
+      "Local8.4MP/64MiB/128MiB bounds.",
+      "WebP decoding depends on native ImageIO; WebP encoding unsupported.",
+      "TIFF/WebP input requires explicit supported output instead of input-format default.",
+      "PSD mode infers PSD output; explicit incompatible output rejects.",
+      "Native masks are8-bit; original editing pixels retain their depth.",
+      "Background color applies to cutout/psd, not grayscale masks.",
+      "Transient hosted output lifetime3600s; no remote output destination in this endpoint envelope."
+    ]
+  },
+  "open": [
+    "Independent Photoshop selection/model/output comparison",
+    "Physical Intel/macOS14 runtime qualification",
+    "Object finder, quick-selection brush, sky and person-part masks, Select All Objects",
+    "Select and Mask/refine-edge workspace",
+    "Pixel-exact edges/decontamination/Adobe hosted behavior"
+  ],
+  "full_photoshop_parity": false,
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_159.json"
+}

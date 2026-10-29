@@ -219,7 +219,7 @@ final class WorkspaceTests: XCTestCase {
     let store = EditorStore(document: try CraftNSDocument.blankModel(width: 12, height: 12))
     store.renderTask?.cancel()
     store.chooseTool(WorkspaceCatalog.tool("brush"))
-    store.chooseTool(WorkspaceCatalog.tool("patch"))
+    store.chooseTool(WorkspaceCatalog.tool("remove"))
     let before = store.document
     let canvas = CraftCanvas(store: store)
     canvas.frame = NSRect(x: 0, y: 0, width: 300, height: 300)
@@ -229,7 +229,7 @@ final class WorkspaceTests: XCTestCase {
         windowNumber: 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1))
     canvas.mouseDown(with: down)
     canvas.mouseUp(with: down)
-    XCTAssertEqual(store.selectedTool.id, "patch")
+    XCTAssertEqual(store.selectedTool.id, "remove")
     XCTAssertEqual(store.document, before)
     XCTAssertTrue(store.session.undoStack.isEmpty)
     store.chooseTool(WorkspaceCatalog.tool("brush"))
@@ -246,7 +246,8 @@ final class WorkspaceTests: XCTestCase {
     _ = store.chooseShortcut("u", cycle: false)
     XCTAssertEqual(store.tool, .ellipse)
     _ = store.chooseShortcut("u", cycle: true)
-    XCTAssertEqual(store.unavailableToolID, "triangle")
+    XCTAssertNil(store.unavailableToolID)
+    XCTAssertEqual(store.tool,.triangle)
     XCTAssertFalse(store.chooseShortcut("?", cycle: false))
     XCTAssertEqual(Set(WorkspaceCatalog.tools.map(\.id)).count, WorkspaceCatalog.tools.count)
     for tool in EditorTool.allCases {
@@ -304,7 +305,7 @@ final class WorkspaceTests: XCTestCase {
     let restored = try RasterIO.surface(XCTUnwrap(store.image)).pixel(x: 1, y: 1)
     XCTAssertEqual(restored.b, 0.9, accuracy: 0.01)
   }
-  @MainActor func testTransparentNewDocumentAndCropRoundTrip() throws {
+  @MainActor func testTransparentNewDocumentAndCropRoundTrip() async throws {
     let document = try CraftNSDocument.blankModel(width: 12, height: 10, background: .clear)
     guard case .raster(let raster) = document.layers[0].content else {
       return XCTFail("Expected pixel layer")
@@ -314,10 +315,11 @@ final class WorkspaceTests: XCTestCase {
     store.renderTask?.cancel()
     store.perform(.selection(IntRect(x: 2, y: 3, width: 4, height: 5)))
     store.cropToSelection()
+    await store.geometryTask?.value
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.width, 4)
     XCTAssertEqual(store.document.height, 5)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.width, 12)
     XCTAssertEqual(store.document.height, 10)

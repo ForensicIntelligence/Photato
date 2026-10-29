@@ -14,32 +14,54 @@ enum AdobeActionAssets {
     let output: AdobeActionsRequest.Output
     let data: Data
   }
+  private struct EncodingKey: Hashable {
+    let type: AdobeActionsRequest.MediaType
+    let options: RasterEncodingOptions
+    let profile: AdobeOutputProfile?
+  }
 
-  static func decode(_ data: Data) throws -> CraftDocument {
+  static func decode(_ data: Data, allowPhotatoInput: Bool = false) throws -> CraftDocument {
     try Task.checkCancellation()
     guard data.count <= maximumResourceBytes else {
       throw AdobeAPIError.invalid("Input exceeds the local 64 MiB resource limit.")
     }
+    if allowPhotatoInput && PcraftImport.recognizes(data) {
+      let (w, h) = try PcraftImport.dimensions(data)
+      guard w > 0, h > 0, w <= maximumCanvasPixels / h else {
+        throw AdobeAPIError.invalid("Input exceeds the local 4,194,304 pixel canvas limit.")
+      }
+      let document = try DocumentIO.decode(data, native: false, name: "Action Input",
+        rasterByteLimit: 128 * 1_024 * 1_024)
+      try check(document)
+      return document
+    }
     let width: Int
     let height: Int
+    let isTIFF = data.starts(with: [73, 73, 42, 0]) || data.starts(with: [77, 77, 0, 42])
     if data.starts(with: Data("8BPS".utf8)) {
       guard data.count >= 26 else { throw AdobeAPIError.invalid("Truncated PSD header.") }
       func number(_ start: Int, _ count: Int) -> Int {
         data[start..<(start + count)].reduce(0) { ($0 << 8) | Int($1) }
       }
-      guard number(4, 2) == 1, [8, 16, 32].contains(number(22, 2)), number(24, 2) == 3 else {
-        throw AdobeAPIError.unsupported("Actions require a supported RGB8/16/32 PSD or RGB8 PNG.")
+      let mode = number(24, 2), depth = number(22, 2)
+      let component = [1, 3, 4, 9].contains(mode) && [8, 16, 32].contains(depth)
+        && (depth != 32 || [1, 3].contains(mode))
+      let restricted = (mode == 0 && depth == 1) || (mode == 2 && depth == 8)
+      guard [1, 2].contains(number(4, 2)), component || restricted || (mode == 7 && [8,16].contains(depth))
+      else {
+        throw AdobeAPIError.unsupported(
+          "Actions require a supported component, Indexed Color, Bitmap or Multichannel PSD/PSB/TIFF/PNG image.")
       }
       width = number(18, 4)
       height = number(14, 4)
     } else {
-      guard data.starts(with: Data([137, 80, 78, 71, 13, 10, 26, 10])),
+      guard isTIFF || data.starts(with: Data([137, 80, 78, 71, 13, 10, 26, 10])),
         let source = CGImageSourceCreateWithData(data as CFData, nil),
         let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
         let w = properties[kCGImagePropertyPixelWidth] as? Int,
         let h = properties[kCGImagePropertyPixelHeight] as? Int
       else {
-        throw AdobeAPIError.unsupported("The input must contain a supported PSD or PNG image.")
+        throw AdobeAPIError.unsupported("The input must contain a supported PSD/PSB, TIFF or PNG image.")
       }
       width = w
       height = h
@@ -48,7 +70,7 @@ enum AdobeActionAssets {
       throw AdobeAPIError.invalid("Input exceeds the local 4,194,304 pixel canvas limit.")
     }
     let document = try RasterIO.read(data, name: "Action Input")
-    if !data.starts(with: Data("8BPS".utf8)), document.depth != .u8 {
+    if !isTIFF && !data.starts(with: Data("8BPS".utf8)), document.depth != .u8 {
       throw AdobeAPIError.unsupported("PNG action input currently requires RGB8.")
     }
     try check(document)
@@ -67,30 +89,45 @@ enum AdobeActionAssets {
 
   /// Encode every output before publishing any of them. This prevents an invalid
   /// later output from exposing a misleading partial successful result.
-  static func execute(_ request: AdobeActionsRequest, input: Data) throws -> [Encoded] {
-    let document = try decode(input)
-    let edited = try request.applying(to: document).session.document
+  static func execute(_ request: AdobeActionsRequest, input: Data, resources: [URL: Data] = [:]) throws -> [Encoded] {
+    let document = try request.creation?.document(resources: resources)
+      ?? decode(input, allowPhotatoInput: request.allowsPhotatoInput)
+    return try execute(request, document: document, resources: resources)
+  }
+  static func execute(_ request: AdobeActionsRequest, document: CraftDocument, resources: [URL: Data] = [:]) throws -> [Encoded] {
+    let edited = try request.applying(to: document, resources: resources).session.document
+    return try encode(request, document: edited, resources: resources)
+  }
+  static func encode(_ request: AdobeActionsRequest, document edited: CraftDocument, resources: [URL: Data] = [:]) throws -> [Encoded] {
     try check(edited)
-    var cache: [AdobeActionsRequest.MediaType: Data] = [:]
+    var cache: [EncodingKey: Data] = [:]
     var total = 0
     return try request.outputs.map { output in
       try Task.checkCancellation()
       let data: Data
-      if let existing = cache[output.mediaType] {
+      let key = EncodingKey(type: output.mediaType, options: output.encodingOptions, profile: output.colorProfile)
+      if let existing = cache[key] {
         data = existing
       } else {
+        let converted = try output.colorProfile?.convert(edited, resources: resources, rasterOutput: output.mediaType != .psd) ?? edited
+        if output.colorProfile != nil, [.png, .jpeg].contains(output.mediaType), converted.colorMode != .rgb {
+          throw AdobeAPIError.unsupported("Non-RGB output ICC profiles currently require PSD or TIFF.")
+        }
         switch output.mediaType {
-        case .psd: data = try PSDCodec.writeRasterLayers(edited)
-        case .png:
-          guard edited.depth != .f32 else {
-            throw AdobeAPIError.unsupported("PNG cannot retain RGB32 action output; request PSD.")
+        case .json:
+          data = try AdobeArtboardRequest.manifest(edited)
+        case .psd, .jpeg:
+          data = try DocumentIO.encode(converted, format: output.mediaType.format!, options: output.encodingOptions)
+        case .png, .tiff:
+          guard edited.depth != .f32 || output.mediaType == .tiff else {
+            throw AdobeAPIError.unsupported("This PNG encoder cannot retain RGB32 action output; request PSD or TIFF.")
           }
-          data = try RasterIO.encoded(edited)
+          data = try DocumentIO.encode(converted, format: output.mediaType.format!, options: output.encodingOptions)
         }
         guard data.count <= maximumResourceBytes else {
           throw AdobeAPIError.invalid("Encoded output exceeds the local 64 MiB resource limit.")
         }
-        cache[output.mediaType] = data
+        cache[key] = data
       }
       total += data.count
       guard total <= maximumOutputBytes else {

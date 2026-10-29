@@ -33,9 +33,9 @@ final class LayerOrganizationTests: XCTestCase {
     XCTAssertEqual(edited.layers.map(\.locked), original.layers.map(\.locked))
     XCTAssertEqual(edited.activeLayerID, original.activeLayerID)
     XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, edited)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(edited)), edited)
   }
@@ -81,7 +81,7 @@ final class LayerOrganizationTests: XCTestCase {
     XCTAssertFalse(session.document.isVisible(original.layers[2].id))
     XCTAssertEqual(session.document.layers.map(\.content), original.layers.map(\.content))
     XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
   }
 

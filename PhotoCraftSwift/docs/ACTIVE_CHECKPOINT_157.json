@@ -1,0 +1,44 @@
+{
+  "step": "dev-step-157",
+  "completed_at_utc": "2026-10-26T17:56:01.269434+00:00",
+  "goal_status": "active",
+  "scope": "Eight usable raster filters; major-feature breadth resumes. Full Photoshop parity remains open.",
+  "source_manifest": "artifacts/runs/20261026T173017Z-157-native-filters/source04.json",
+  "source_manifest_sha256": "030f4eda5dcf4fac820e4f6aed0e917d3567442159740e690a7ad5761f95e581",
+  "source_inputs": 1162,
+  "swift_inputs": 556,
+  "timestamp_note": "source04 inherited the source03 utc field; this checkpoint records final verification time. Source04 differs only in eight API inventory test expectations.",
+  "tests": {
+    "focused_debug": 59,
+    "full_release": 1483,
+    "failures": 0,
+    "platform_cases_per_architecture": 24,
+    "full_debug": "not repeated this increment"
+  },
+  "live": "All eight sheets and Gaussian editing/Preview/Escape; Mosaic Apply/Undo/Redo/discard in owned Debug object harness. See FILTER_REFERENCES for exact source scope.",
+  "package": {
+    "archive_sha256": "5a71c621a78cf90e3883e8f9d4d586ca8411d243276920cf57932f82b88c9191",
+    "executable_sha256": "54c79f6d53f3893fd4a0a87ae4011022f919c4ee88478c68687651b0613243cb",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato157-verified-ihmo5izs/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato157-verified-ihmo5izs/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato157-verified-ihmo5izs/Photato.app"
+  },
+  "candidate_archive": "artifacts/runs/20261026T173017Z-157-native-filters/Photato157-candidate.zip",
+  "installed117_and_user_workspace": "unchanged; preserved-state01.json",
+  "xcode_project": "Photato.xcodeproj remains present; synchronized source groups discover additions",
+  "next": {
+    "major_workflow": "L04 Layer styles and effects",
+    "implementation_order": [
+      "Shared editable style model and native rendering for common layer effects",
+      "Native Layer Style editor, Photoshop menu bindings, copy/paste/clear and undo",
+      "Native archive/interchange behavior and both APIs with focused functional tests",
+      "Continue other missing major workflows before numerical/cosmetic refinement"
+    ],
+    "deferred": "Step156 feather kernels and exact filter pixel matching; preserve all research.",
+    "completion_rule": "Usable functions first; do not mark full Photoshop parity gates closed from approximation or native-only tests."
+  }
+}

@@ -12,6 +12,10 @@ struct PathsPanel: View {
           ForEach(store.document.paths ?? []) { saved in
             row(saved.name, path: saved.path, target: .saved(saved.id))
               .contextMenu {
+                Button("Fill Path") {store.selectPath(.saved(saved.id));store.paintSelectedPath(stroke:false)}
+                Button("Stroke Path…") {store.selectPath(.saved(saved.id));store.showStrokePath()}
+                Button("Make Selection") {store.selectPath(.saved(saved.id));store.pathToSelection()}
+                Divider()
                 Button("Save / Rename Path…") {
                   store.selectPath(.saved(saved.id))
                   store.renamePath()
@@ -67,6 +71,11 @@ struct PathsPanel: View {
           .foregroundStyle(.secondary).padding(12)
       }
       Divider()
+      HStack {
+        Button("Fill Path") {store.paintSelectedPath(stroke:false)}.disabled(store.selectedVectorPath == nil || store.activeLayer == nil)
+        Button("Stroke Path…") {store.showStrokePath()}.disabled(store.selectedVectorPath == nil || store.activeLayer == nil)
+        Button("Make Work Path…") {store.showMakeWorkPath()}.disabled(store.document.selection == nil && store.document.selectionMask == nil)
+      }.controlSize(.mini).padding(6)
       HStack(spacing: 16) {
         action("circle.dashed", "Load path as selection", enabled: store.selectedVectorPath != nil)
         {

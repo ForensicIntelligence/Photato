@@ -1,0 +1,695 @@
+{
+  "width": 17,
+  "height": 13,
+  "cases": [
+    {
+      "name": "custom-identity",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "name": "custom-zero",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "offset": 33
+        }
+      }
+    },
+    {
+      "name": "custom-offset",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 2,
+          "offset": 34
+        }
+      }
+    },
+    {
+      "name": "custom-sharpen",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            -1,
+            5,
+            -1,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "name": "custom-blur",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "scale": 25,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "name": "custom-shift",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "offset": 0
+        }
+      }
+    },
+    {
+      "name": "custom-negative",
+      "filter": {
+        "kind": "customFilter",
+        "otherVideo": {
+          "kernel": [
+            -999,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 9999,
+          "offset": -9999
+        }
+      }
+    },
+    {
+      "name": "rgb-rgb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "rgb",
+          "outputMode": "rgb"
+        }
+      }
+    },
+    {
+      "name": "rgb-hsb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "rgb",
+          "outputMode": "hsb"
+        }
+      }
+    },
+    {
+      "name": "rgb-hsl",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "rgb",
+          "outputMode": "hsl"
+        }
+      }
+    },
+    {
+      "name": "hsb-rgb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsb",
+          "outputMode": "rgb"
+        }
+      }
+    },
+    {
+      "name": "hsb-hsb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsb",
+          "outputMode": "hsb"
+        }
+      }
+    },
+    {
+      "name": "hsb-hsl",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsb",
+          "outputMode": "hsl"
+        }
+      }
+    },
+    {
+      "name": "hsl-rgb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsl",
+          "outputMode": "rgb"
+        }
+      }
+    },
+    {
+      "name": "hsl-hsb",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsl",
+          "outputMode": "hsb"
+        }
+      }
+    },
+    {
+      "name": "hsl-hsl",
+      "filter": {
+        "kind": "hsbHsl",
+        "otherVideo": {
+          "inputMode": "hsl",
+          "outputMode": "hsl"
+        }
+      }
+    },
+    {
+      "name": "maximum-squareness-1",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 1,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "maximum-squareness-4",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 4,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "maximum-squareness-500",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 500,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "maximum-roundness-0.2",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 0.2,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "maximum-roundness-1",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 1,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "maximum-roundness-2.5",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 2.5,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "maximum-roundness-5",
+      "filter": {
+        "kind": "maximum",
+        "otherVideo": {
+          "radius": 5,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "minimum-squareness-1",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 1,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "minimum-squareness-4",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 4,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "minimum-squareness-500",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 500,
+          "preserve": "squareness"
+        }
+      }
+    },
+    {
+      "name": "minimum-roundness-0.2",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 0.2,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "minimum-roundness-1",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 1,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "minimum-roundness-2.5",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 2.5,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "minimum-roundness-5",
+      "filter": {
+        "kind": "minimum",
+        "otherVideo": {
+          "radius": 5,
+          "preserve": "roundness"
+        }
+      }
+    },
+    {
+      "name": "offset-wrap-4--3",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 4,
+          "vertical": -3,
+          "undefinedAreas": "wrap"
+        }
+      }
+    },
+    {
+      "name": "offset-wrap--20-16",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": -20,
+          "vertical": 16,
+          "undefinedAreas": "wrap"
+        }
+      }
+    },
+    {
+      "name": "offset-wrap-0-0",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 0,
+          "vertical": 0,
+          "undefinedAreas": "wrap"
+        }
+      }
+    },
+    {
+      "name": "offset-repeatEdge-4--3",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 4,
+          "vertical": -3,
+          "undefinedAreas": "repeatEdge"
+        }
+      }
+    },
+    {
+      "name": "offset-repeatEdge--20-16",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": -20,
+          "vertical": 16,
+          "undefinedAreas": "repeatEdge"
+        }
+      }
+    },
+    {
+      "name": "offset-repeatEdge-0-0",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 0,
+          "vertical": 0,
+          "undefinedAreas": "repeatEdge"
+        }
+      }
+    },
+    {
+      "name": "offset-transparent-4--3",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 4,
+          "vertical": -3,
+          "undefinedAreas": "transparent"
+        }
+      }
+    },
+    {
+      "name": "offset-transparent--20-16",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": -20,
+          "vertical": 16,
+          "undefinedAreas": "transparent"
+        }
+      }
+    },
+    {
+      "name": "offset-transparent-0-0",
+      "filter": {
+        "kind": "offset",
+        "otherVideo": {
+          "horizontal": 0,
+          "vertical": 0,
+          "undefinedAreas": "transparent"
+        }
+      }
+    },
+    {
+      "name": "deinterlace-odd-duplication",
+      "filter": {
+        "kind": "deInterlace",
+        "otherVideo": {
+          "eliminate": "odd",
+          "createBy": "duplication"
+        }
+      }
+    },
+    {
+      "name": "deinterlace-odd-interpolation",
+      "filter": {
+        "kind": "deInterlace",
+        "otherVideo": {
+          "eliminate": "odd",
+          "createBy": "interpolation"
+        }
+      }
+    },
+    {
+      "name": "deinterlace-even-duplication",
+      "filter": {
+        "kind": "deInterlace",
+        "otherVideo": {
+          "eliminate": "even",
+          "createBy": "duplication"
+        }
+      }
+    },
+    {
+      "name": "deinterlace-even-interpolation",
+      "filter": {
+        "kind": "deInterlace",
+        "otherVideo": {
+          "eliminate": "even",
+          "createBy": "interpolation"
+        }
+      }
+    },
+    {
+      "name": "ntsc",
+      "filter": {
+        "kind": "ntscColors",
+        "otherVideo": {}
+      }
+    }
+  ],
+  "source_hashes": {
+    "crates/algo/src/other.rs": "95c010866178f9fed6afffa69b79bc9ebe46a59f8f8c4d11ffb91bb024bf3381",
+    "crates/algo/src/other2.rs": "8b346483623d7aec7008cc5b08f16222a269604936a808ff07d3d3c7a46169cf",
+    "crates/algo/src/video.rs": "5d50ad1789840b96b5c7fa15e35ab6233840849fd40a803f3a93e75aeaca9480"
+  },
+  "license": "MIT OR Apache-2.0",
+  "provenance": "Original unchanged algorithm function bodies from PhotoCraft other.rs/other2.rs/video.rs. Imports/type helpers adapted. Image adapter supplies repeated canvas-edge halo (matching original Image.read_clamped); full RGB8 canvas, alpha last. Quantization clamp/round to8-bit. No Photoshop reference outputs.",
+  "files": {
+    "minimum-squareness-1.rgba": "0778a16eb35d51e54b61e0fccee531aa14a0ded75776063816dd323211d9fc94",
+    "custom-offset.rgba": "924816efd9add176d42e01ad3c5a653e0f471ef1e9e4586dc56195fef8eb71bc",
+    "maximum-squareness-4.rgba": "371fcf098053e97df540db1cb1476c0d9115683c4dd1c0fd3c66a06d01b2ba7d",
+    "minimum-roundness-5.rgba": "2ceb435a8024ed6bb0d14d871b448eabc296a3956edf66ee31ee2a4f29473575",
+    "hsb-rgb.rgba": "50fbb5e214e4adea9db08f866d063913beeec71d046aa7e05ffbc624e9a9ebf7",
+    "maximum-roundness-1.rgba": "dcfe270cfbfb06913eadf0f5330529b3e0bf4065ceae7e19098b893518c3d3ba",
+    "ntsc.rgba": "a15a71a4368486658eccac759763f1bf03ae44c6b2db242caa7b19d27874f827",
+    "offset-wrap-4--3.rgba": "13f7ab8f07e77c8b99ffed700bb5978a73479a84f287306074cc33a9c39f2998",
+    "maximum-squareness-500.rgba": "c3bcff461ea3f1bd5c18c12631c513e8689267f24c33c78ef2205b7d369b90c6",
+    "deinterlace-even-duplication.rgba": "55217c9f9e7db39d46a2e149125f7ce7e51f255c026ad9dfd7bd695160e00a8e",
+    "minimum-roundness-0.2.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "offset-transparent--20-16.rgba": "6ca83adefc47fc9ab71637c150b95b33083e61e507dff2ee5f2692aa27e1453e",
+    "rgb-hsb.rgba": "deb3c6d90783d5c5f8b69976c8c769217cc2061129a9d953451d3dd4b7d77305",
+    "custom-identity.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "hsb-hsl.rgba": "8e220753ec1c01af15ed02a845c78dbb8d5f51b0ee76ea7da88e8949ce88a3d7",
+    "offset-repeatEdge-0-0.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "hsl-hsb.rgba": "785d755751eee4f7548ce0804312212a279c40290df7fb53bb702d15f3909673",
+    "offset-wrap-0-0.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "deinterlace-even-interpolation.rgba": "f4d6aea407c86c19b5a0a4efa915a81d8576ceec5c07935ff156839cbb045c52",
+    "minimum-squareness-500.rgba": "6ca83adefc47fc9ab71637c150b95b33083e61e507dff2ee5f2692aa27e1453e",
+    "minimum-roundness-2.5.rgba": "62511ee0b7bfc50b86b41454594e6d9a6cdba385a945a94d1a2ef5be470d1fbc",
+    "offset-transparent-0-0.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "custom-sharpen.rgba": "f94b2862e93cd90ef07ac0401fcaec9efb49370dd9824e37adfc12981ea885c4",
+    "custom-shift.rgba": "4c25ebdba73f825d06c829c9a5240e98ea23edd31fca4ecc7d60888860db7d36",
+    "custom-zero.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "maximum-roundness-5.rgba": "9fa21da6015b1f490982350505264c5f21f1add767e3eada29961f1e4f388479",
+    "input.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "minimum-roundness-1.rgba": "8a8df5475af1874ebfc6c5bb5362c1bd8fbbfc9d47e8688dc0db551f31b10343",
+    "maximum-roundness-0.2.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "hsl-hsl.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "hsb-hsb.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "deinterlace-odd-duplication.rgba": "08b767682b51414af2efaebdde01e11daaa81b02bbeeb0dbe14879d8dab43350",
+    "rgb-hsl.rgba": "e25e1b8ea279509ed306bd721953907fea42b855085d6a9d06016a85d5018641",
+    "offset-transparent-4--3.rgba": "5d80d571c4d9cb8bcadba24717b597b3b96293d8ba7f62083aa871977b052178",
+    "minimum-squareness-4.rgba": "7946a97ace10a1a6cfd30df92f7be2cfe759838da11e9f6907a781d747d048c1",
+    "custom-blur.rgba": "8a57e40296d70954a41f96e5043135adb4ceb130abea9813f9905831770f286d",
+    "maximum-squareness-1.rgba": "4ad443d2f094e849bceda60284860933a081b5095fd98667c6a59ff4007c9590",
+    "offset-repeatEdge--20-16.rgba": "092462a31013f969a016357851f53606ad809cb413c8d0ef353dd190fa06ab0a",
+    "rgb-rgb.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "maximum-roundness-2.5.rgba": "c7abb017ddf9ef652f03d982f6fbf6dd4f3391dcd6d891c63bbd4da82b6d33d4",
+    "offset-wrap--20-16.rgba": "be1e5326f8117f583114786564429090f74820078d1eeaacb8b6f5b3f9253855",
+    "hsl-rgb.rgba": "2a82f771c5ef50b900074b7a1119643a6c941b1ca29695610ebadbd90798dab0",
+    "offset-repeatEdge-4--3.rgba": "3a7d4d84adabb12abb35d904e8097b5f28f436357990766bbe3e9e6c62389220",
+    "custom-negative.rgba": "c1c9e9a81a072b6eb26b74486e5469020ce96be2bebb5c49166c91210ccdc42e",
+    "deinterlace-odd-interpolation.rgba": "ed172f4f87c8cd3e3af98ac70cf1a46c2a33167ebab8fe2fee242a624534d503"
+  }
+}

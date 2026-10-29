@@ -1,0 +1,7 @@
+{
+  "source": "../photocraft-main/crates/algo/src/stack.rs",
+  "sha256": "d459f79e5dea71fb1ec7f919888269aefe9b769cfe42ab8de01e7268f89e8dbf",
+  "license": "MIT OR Apache-2.0",
+  "generator": "artifacts/runs/20261027T052544Z-178-smart-stacks/oracle02.py",
+  "adaptation": "Converted inner module docs to regular comments and removed serde import/serialization derives. Original combine/stat arithmetic unchanged. Synthetic inputs. Native32-bit unbounded sum differs intentionally."
+}

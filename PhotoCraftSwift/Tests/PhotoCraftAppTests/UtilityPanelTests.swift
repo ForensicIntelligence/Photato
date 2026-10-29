@@ -152,7 +152,7 @@ final class UtilityPanelTests: XCTestCase {
   }
 
   @MainActor func testHistoryNavigatesBackwardForwardAndBranchesWithoutChangingOtherDocuments()
-    throws
+    async throws
   {
     let store = EditorStore(document: try CraftDocument(width: 3, height: 2))
     let other = EditorStore(document: try CraftDocument(width: 2, height: 2))
@@ -171,15 +171,15 @@ final class UtilityPanelTests: XCTestCase {
     XCTAssertEqual(
       store.historyStateLabels,
       ["Earliest available state", "Rename Layer", "Layer Opacity", "Layer Visibility"])
-    store.selectHistoryState(1)
+    await store.selectHistoryState(1).value
     XCTAssertEqual(store.document, first)
     XCTAssertEqual(store.session.redoStack.count, 2)
     XCTAssertEqual(store.historyStateLabels.count, 4)
-    store.selectHistoryState(3)
+    await store.selectHistoryState(3).value
     XCTAssertEqual(store.document, last)
-    store.selectHistoryState(0)
+    await store.selectHistoryState(0).value
     XCTAssertEqual(store.document, original)
-    store.selectHistoryState(1)
+    await store.selectHistoryState(1).value
     store.perform(.renameLayer(id, "Branch"))
     XCTAssertTrue(store.session.redoStack.isEmpty)
     XCTAssertEqual(store.historyStateLabels.count, 3)
@@ -187,30 +187,32 @@ final class UtilityPanelTests: XCTestCase {
     XCTAssertTrue(other.session.undoStack.isEmpty)
   }
 
-  @MainActor func testHistoryRejectsDraftBusyAndInvalidTargetsWithoutCancellingTheDraft() throws {
+  @MainActor func testHistoryRejectsDraftBusyAndInvalidTargetsWithoutCancellingTheDraft()
+    async throws
+  {
     let store = EditorStore(document: try CraftNSDocument.blankModel(width: 3, height: 2))
     defer { store.renderTask?.cancel() }
     let id = try XCTUnwrap(store.activeLayer?.id)
     store.perform(.renameLayer(id, "Edited"))
     let before = store.document
-    for index in [-1, 99] { store.selectHistoryState(index) }
+    for index in [-1, 99] { await store.selectHistoryState(index).value }
     XCTAssertEqual(store.document, before)
     store.beginLevels()
     XCTAssertNotNil(store.levelsDraft)
     XCTAssertFalse(store.canNavigateHistory)
-    store.selectHistoryState(0)
+    await store.selectHistoryState(0).value
     XCTAssertNotNil(store.levelsDraft)
     XCTAssertEqual(store.document, before)
     store.cancelLevels()
     store.geometryBusy = true
-    store.selectHistoryState(0)
+    await store.selectHistoryState(0).value
     XCTAssertEqual(store.document, before)
     store.geometryBusy = false
-    store.selectHistoryState(0)
+    await store.selectHistoryState(0).value
     XCTAssertNotEqual(store.document, before)
   }
 
-  @MainActor func testHistoryUsesEarliestRetainedStateAfterHistoryLimitTrimming() throws {
+  @MainActor func testHistoryUsesEarliestRetainedStateAfterHistoryLimitTrimming() async throws {
     let store = EditorStore(document: try CraftDocument(width: 2, height: 2))
     defer { store.renderTask?.cancel() }
     store.session = EditorSession(document: store.document, historyLimit: 2)
@@ -222,9 +224,9 @@ final class UtilityPanelTests: XCTestCase {
     store.perform(.renameLayer(id, "Four"))
     let latest = store.document
     XCTAssertEqual(store.historyStateLabels.count, 3)
-    store.selectHistoryState(0)
+    await store.selectHistoryState(0).value
     XCTAssertEqual(store.document, earliest)
-    store.selectHistoryState(2)
+    await store.selectHistoryState(2).value
     XCTAssertEqual(store.document, latest)
   }
 

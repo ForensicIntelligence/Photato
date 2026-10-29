@@ -1,0 +1,29 @@
+{
+  "step": "dev-step-155",
+  "utc": "2026-10-20T22:47:51.588882+00:00",
+  "reason": "Explicit user pause",
+  "status": "paused during independent feather-kernel reference capture",
+  "last_verified_product_checkpoint": "docs/ACTIVE_CHECKPOINT_154.json",
+  "checkpoint154_sha256": "885e0c6ea4ca21d7db83317ff11a853d3a62d5fb1058e917bcd7e029d7cd33e1",
+  "application_sources_and_tests_unchanged_from154": true,
+  "run": "artifacts/runs/20261020T224523Z-155-mask-feather",
+  "completed": [
+    "Reverified checkpoint154, audit, candidate and all1154 frozen inputs",
+    "Generated owned1024x16 RGB32 impulse PSD for16 feather radii0\u2013100 using native154 Release engine"
+  ],
+  "failed_attempts": [
+    "Input01 compile failed due two argument labels out of order; input02 repaired and completed",
+    "First Photoshop Go To action stopped by UI state-change guard; refreshed before retry",
+    "After selecting impulse-input.psd and pressing Open, Photoshop displayed: Could not update smart object files because Photoshop does not recognize this type of file."
+  ],
+  "current_ui": "Photoshop alert remains open; OK not clicked after user pause. Last observed user document before owned Open was Untitled-1; no edits made to it. No Photoshop reference save completed.",
+  "live_processes": "No owned test/build process remains running; generator34664 confirmed terminal before Photoshop Open. Photoshop itself remains open.",
+  "resume_first": [
+    "Read this checkpoint and DEVLOG step155; verify product154 hashes.",
+    "Inspect current Photoshop UI before acting. Resolve the observed alert and determine whether owned impulse-input.psd opened; do not assume reference capture succeeded.",
+    "Inspect file/source/PSD encoding and any Photoshop context that explains the alert; preserve failed evidence.",
+    "Complete independent Float32 kernel reference capture and measurement before changing renderer.",
+    "Continue major functions before minor functions and final details."
+  ],
+  "history_audit": "Checkpoint154 audit is last completed audit; refresh/check step155 evidence when resumed. No new product qualification claimed."
+}

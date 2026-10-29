@@ -1,0 +1,200 @@
+{
+  "origin": "Original Python-authored procedural PSB fixtures; no production encoder and no live Photoshop save.",
+  "license": "MIT OR Apache-2.0",
+  "specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "purpose": "Independent binary framing, sample-plane and compression conformance; not Photoshop rendering equivalence.",
+  "cases": [
+    {
+      "file": "rgb8-compression0.psb",
+      "depth": 8,
+      "compression": 0,
+      "width": 4,
+      "height": 3,
+      "sha256": "05e3258ff859fd31898bb9b70af6d2efacf922bd74b5239e064e40f8aa3b7987",
+      "planes": [
+        "004080ff004080ff004080ff",
+        "ff804000ff804000ff804000",
+        "808080808080808080808080",
+        "ffffffffffffffffffffffff"
+      ],
+      "mask": "004080ff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb8-compression1.psb",
+      "depth": 8,
+      "compression": 1,
+      "width": 4,
+      "height": 3,
+      "sha256": "275159d8ac68e72c4e5358e89e1fd0f6708f3f2bf29097056d7fb0000aca7f9b",
+      "planes": [
+        "004080ff004080ff004080ff",
+        "ff804000ff804000ff804000",
+        "808080808080808080808080",
+        "ffffffffffffffffffffffff"
+      ],
+      "mask": "004080ff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb8-compression2.psb",
+      "depth": 8,
+      "compression": 2,
+      "width": 4,
+      "height": 3,
+      "sha256": "accfa2f894b94a42512a8e2d539f74d0c867535649f90c51036815c8aa9358d8",
+      "planes": [
+        "004080ff004080ff004080ff",
+        "ff804000ff804000ff804000",
+        "808080808080808080808080",
+        "ffffffffffffffffffffffff"
+      ],
+      "mask": "004080ff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb8-compression3.psb",
+      "depth": 8,
+      "compression": 3,
+      "width": 4,
+      "height": 3,
+      "sha256": "fec70668eabb0b5a7d441180a011ba20ae7b7c9bfaf20bb684977d20eb4a8d5a",
+      "planes": [
+        "004080ff004080ff004080ff",
+        "ff804000ff804000ff804000",
+        "808080808080808080808080",
+        "ffffffffffffffffffffffff"
+      ],
+      "mask": "004080ff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb16-compression0.psb",
+      "depth": 16,
+      "compression": 0,
+      "width": 4,
+      "height": 3,
+      "sha256": "804f43f32afbd029122e00c1c19e88206f18160543764ea88fa807ebd66bf18d",
+      "planes": [
+        "000040008000ffff000040008000ffff000040008000ffff",
+        "ffff800040000000ffff800040000000ffff800040000000",
+        "800080008000800080008000800080008000800080008000",
+        "ffffffffffffffffffffffffffffffffffffffffffffffff"
+      ],
+      "mask": "000040008000ffff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb16-compression1.psb",
+      "depth": 16,
+      "compression": 1,
+      "width": 4,
+      "height": 3,
+      "sha256": "3cebe913c49e68f44a3edc6bf7d1584eb72b86c0ce8423b9cffc27665accd65f",
+      "planes": [
+        "000040008000ffff000040008000ffff000040008000ffff",
+        "ffff800040000000ffff800040000000ffff800040000000",
+        "800080008000800080008000800080008000800080008000",
+        "ffffffffffffffffffffffffffffffffffffffffffffffff"
+      ],
+      "mask": "000040008000ffff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb16-compression2.psb",
+      "depth": 16,
+      "compression": 2,
+      "width": 4,
+      "height": 3,
+      "sha256": "45ed22915aa0e95940c41254a842420d4c034d4cdce2497c3c5e96f2b8a6f6f5",
+      "planes": [
+        "000040008000ffff000040008000ffff000040008000ffff",
+        "ffff800040000000ffff800040000000ffff800040000000",
+        "800080008000800080008000800080008000800080008000",
+        "ffffffffffffffffffffffffffffffffffffffffffffffff"
+      ],
+      "mask": "000040008000ffff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb16-compression3.psb",
+      "depth": 16,
+      "compression": 3,
+      "width": 4,
+      "height": 3,
+      "sha256": "faf19e1e70d0a529598a53a1eba94880be1ca99cc4c92d44c77d13b6c3ad12d9",
+      "planes": [
+        "000040008000ffff000040008000ffff000040008000ffff",
+        "ffff800040000000ffff800040000000ffff800040000000",
+        "800080008000800080008000800080008000800080008000",
+        "ffffffffffffffffffffffffffffffffffffffffffffffff"
+      ],
+      "mask": "000040008000ffff",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb32-compression0.psb",
+      "depth": 32,
+      "compression": 0,
+      "width": 4,
+      "height": 3,
+      "sha256": "611329310d1ad5c4c48bc4e7a5e0c56babbf2aa95e678d07615632ccfce3f9d7",
+      "planes": [
+        "000000003e8000003f0000003f800000000000003e8000003f0000003f800000000000003e8000003f0000003f800000",
+        "3f8000003f0000003e800000000000003f8000003f0000003e800000000000003f8000003f0000003e80000000000000",
+        "3f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f000000",
+        "3f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f800000"
+      ],
+      "mask": "000000003e8000003f0000003f800000",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb32-compression1.psb",
+      "depth": 32,
+      "compression": 1,
+      "width": 4,
+      "height": 3,
+      "sha256": "33dc708923f8d1a3b75811f295dc7cf341e8e48be53f4d1fa0db0112d42c82a3",
+      "planes": [
+        "000000003e8000003f0000003f800000000000003e8000003f0000003f800000000000003e8000003f0000003f800000",
+        "3f8000003f0000003e800000000000003f8000003f0000003e800000000000003f8000003f0000003e80000000000000",
+        "3f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f000000",
+        "3f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f800000"
+      ],
+      "mask": "000000003e8000003f0000003f800000",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb32-compression2.psb",
+      "depth": 32,
+      "compression": 2,
+      "width": 4,
+      "height": 3,
+      "sha256": "2f894a1adfcaa2f85aa96589a30577d0ad80a3175040645277652da081d5732d",
+      "planes": [
+        "000000003e8000003f0000003f800000000000003e8000003f0000003f800000000000003e8000003f0000003f800000",
+        "3f8000003f0000003e800000000000003f8000003f0000003e800000000000003f8000003f0000003e80000000000000",
+        "3f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f000000",
+        "3f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f800000"
+      ],
+      "mask": "000000003e8000003f0000003f800000",
+      "layerCount": 2
+    },
+    {
+      "file": "rgb32-compression3.psb",
+      "depth": 32,
+      "compression": 3,
+      "width": 4,
+      "height": 3,
+      "sha256": "1e14a2cab222e96b8cbed26bda6bf7c5f69dc2b374512fe1c8c775d4a1bc29b2",
+      "planes": [
+        "000000003e8000003f0000003f800000000000003e8000003f0000003f800000000000003e8000003f0000003f800000",
+        "3f8000003f0000003e800000000000003f8000003f0000003e800000000000003f8000003f0000003e80000000000000",
+        "3f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f0000003f000000",
+        "3f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f8000003f800000"
+      ],
+      "mask": "000000003e8000003f0000003f800000",
+      "layerCount": 2
+    }
+  ]
+}

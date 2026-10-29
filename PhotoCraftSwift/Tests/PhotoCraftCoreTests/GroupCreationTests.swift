@@ -13,7 +13,7 @@ final class GroupCreationTests: XCTestCase {
     let group = try XCTUnwrap(session.document.activeLayerID)
     XCTAssertEqual(session.document.children(of: group).map(\.name), ["A", "C"])
     XCTAssertEqual(session.document.children(of: nil).map(\.name), ["B", "Grouped", "D"])
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, document)
   }
   func testEmptyGroupDefaultsInsertionAndNaming() throws {
@@ -35,9 +35,9 @@ final class GroupCreationTests: XCTestCase {
     XCTAssertEqual(
       session.document.layers.map(\.name), ["Background", "Below", "Group 2", "Group 1"])
     XCTAssertNil(session.document.layers[1].parentID)
-    session.undo()
-    session.undo()
-    session.undo()
+    try session.undo()
+    try session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, document)
   }
 
@@ -76,9 +76,9 @@ final class GroupCreationTests: XCTestCase {
     XCTAssertEqual(session.undoStack.count, 1)
     XCTAssertEqual(session.undoStack.last?.label, "Group Layers")
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(grouped)), grouped)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, document)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, grouped)
   }
 

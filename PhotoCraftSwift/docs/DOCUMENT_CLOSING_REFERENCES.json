@@ -1,0 +1,104 @@
+{
+  "step": "dev-step-133",
+  "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_133.json",
+    "sha256": "2dfcd4e4237b5cf1a51cd5c725d5fc5e4b9e6cd3ce418da1ffef19e871497e5f"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/document-closing",
+      "POST /v1/document-closing",
+      "POST /v1/document-closing/cancel"
+    ],
+    "new_document_state": "closeOperationID",
+    "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+    "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+  },
+  "scope": [
+    "One serial coordinator for single-document/frame/batch/system close, stable object targets, retained Close Others identity and partial-progress cancellation",
+    "Native Save/Save As delegates preserve existing format/source policy; failed/cancelled saving keeps documents; recovery writes and target API edits are blocked during ownership",
+    "Factory Close All and Close Others menu bindings with existing Option-Command-W and Option-Command-P shortcuts; API permission/window/schema/status/cancel integrated",
+    "209 focused and1232 Debug/1232 Release tests; six Debug process Quit modes with fresh relaunch; four public controller/sheet/save cases against final arm64 and x86_64 Release objects",
+    "Universal macOS14+ candidate verified; ordinary engine/AI sources unchanged and nine full PSB outputs byte-identical to132"
+  ],
+  "remaining": [
+    "D01: live Photoshop close prompt/apply-to-all/shortcut comparison and accessibility; multiwindow visual behavior, Save As/format-error UI and supported-platform matrix remain unqualified",
+    "D01: Open As/recent items, full format/profile/metadata/tag/ACL fidelity and broader external-file coordination",
+    "D02: recovery maintenance/legacy migration, corrupt/unavailable/capacity UX, full window/tab restoration and live comparison; physical power-loss, sandbox/network/removable-volume qualification",
+    "I02: synchronous full startup decode, source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14 runtime",
+    "All major workflows remain ahead of minor functions and final details; full Photoshop parity and universal byte-identical results remain unmet"
+  ],
+  "sources": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/external-references01.json",
+    "sha256": "6267fe0bb5cbb585d83b63be9b3eb03a244f4ca5e6e3a16b12aa5bebea2b7408"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/tested-source-hashes03.json",
+    "sha256": "3c800a6f5699d4a070cdb9ec1061c0235198633e417f687e6d90e812122b5f54"
+  },
+  "focused": {
+    "passed": 209,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 19.189,
+    "log": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/focused03.log",
+      "sha256": "bde1b41c6e1dffedc576020b92e3c5a9a2a70b07b835f7256fb0bad40a5d9608"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T080503Z-133-document-closing/full01.log",
+      "sha256": "6c2cc97a51f4f27579f8eb00beb6b358f988245bb6bc300e1e3f35c932788343",
+      "passed": 1232,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 255.353
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T080503Z-133-document-closing/release01.log",
+      "sha256": "5b4d6a4d56161693d770434af66fa05454e48478b32517783fc01e779d51faf1",
+      "passed": 1232,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 59.738
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato133-verified-4w573iw6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "dfc8db2a4bb138d48cf62c81781e0067bb2977717db7b2cf581f78f784071652",
+    "zip_sha256": "336b6ad0c84e582ddb25c3cee61ff7c1946a01db31c2afc2d5466f5f23c7bf8e",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "debug_process": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/process-close-verification06.json",
+    "sha256": "1d67e50665fb8dcdbc3228ee2b61e74a91a2655400fbd3935fa3a89463edaabd"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/public-release-arm6401/verification.json",
+      "sha256": "1c0103912f2f539b4b68d3edd13620e9f45857a019c80d2d75078d28fea3acbc"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/public-release-x86_6401/verification.json",
+      "sha256": "e202d21c3807c380a8f284a65aeecf3872cb974c76e5876e7472d6d38becd963"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/source-delta-and-ui01.json",
+    "sha256": "d86a2e1614a9164d0a5eadeedaee6f8e7a0d3e269d709c1e8880bf837900f16c"
+  },
+  "full_parity": false
+}

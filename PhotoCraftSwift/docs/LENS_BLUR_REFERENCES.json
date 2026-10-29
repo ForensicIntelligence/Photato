@@ -1,0 +1,96 @@
+{
+  "step": "dev-step-207",
+  "date": "2026-10-27",
+  "status": "Native Lens Blur implemented;53 focused/1990 full optimized tests passed at207. Included in208 1991 full optimized tests and verified universal package. Full F01/Photoshop parity open.",
+  "scope": [
+    "Iris shapes with 3\u20138 blades, radius/curvature/rotation",
+    "Live transparency, raw layer mask and named alpha-channel depth, focal picker/invert",
+    "Specular highlight threshold/brightness and seeded uniform/Gaussian monochrome/color noise",
+    "Native preview/zoom/local history/Cancel/one commit, editable Smart Filters, native38/Actions10 and shared APIs"
+  ],
+  "provenance": {
+    "original": [
+      "../photocraft-main/crates/algo/src/blur2.rs",
+      "../photocraft-main/crates/engine/src/filters_ext.rs"
+    ],
+    "sha256": {
+      "../photocraft-main/crates/algo/src/blur2.rs": "df060a6cddd56b6a31f4d27a0b7eeea5a65e79e877e8a34c8b75be0c2bd9b9a7",
+      "../photocraft-main/crates/engine/src/filters_ext.rs": "f2793c0eaf27957974a16d80d472342f4ac6b2f13044965ffcac15bc28f4dbe1"
+    },
+    "license": "MIT OR Apache-2.0",
+    "primary_references": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/create-depth-of-field-with-lens-blur.html",
+        "accessed": "2026-10-27",
+        "use": "Desktop depth/iris/highlight/noise workflow; page updated February23,2026."
+      },
+      {
+        "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+        "accessed": "2026-10-27",
+        "use": "applyLensBlur ranges/defaults and unsupported RGB32; UXP DOM is not the Firefly actionJSON contract."
+      },
+      {
+        "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+        "accessed": "2026-10-27",
+        "use": "Published execute-actions workflow and tested subset; exact Lens Blur descriptors not independently qualified."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html",
+        "accessed": "2026-10-27",
+        "use": "Explicitly lists Lens Blur as unavailable in Photoshop Smart Filter mode; Photato editable Lens Blur is a native extension."
+      }
+    ],
+    "native_differences": [
+      "Clamped edges and transformed live depth sources are native behavior; not claimed original Rust or Adobe pixel parity.",
+      "Uses threshold default0 from current Adobe UXP reference versus original Rust255; desktop factory default not independently qualified.",
+      "Adobe explicitly excludes Lens Blur from Smart Filter support. Photato editable Lens Blur is a native extension, not Photoshop context parity."
+    ]
+  },
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "kind": "lensBlur",
+    "parameter": "lensBlur",
+    "native_commands": 107,
+    "archive": 38,
+    "actions": 10,
+    "observable_state": "lensBlur availability/workspace/previewBusy/filter/depthSources/history/zoom",
+    "adobe": "No invented route or descriptor. Lens Blur editable Photoshop actionJSON/PSD rejects until independently qualified."
+  },
+  "menus": [
+    "Filter > Blur > Lens Blur\u2026"
+  ],
+  "evidence": {
+    "focused": "artifacts/runs/20261027T223411Z-207-lens-blur/integration03.log",
+    "focused_passed": 53,
+    "failures": [
+      "artifacts/runs/20261027T223411Z-207-lens-blur/module01.log",
+      "artifacts/runs/20261027T223411Z-207-lens-blur/integration01.log",
+      "artifacts/runs/20261027T223411Z-207-lens-blur/integration02.log"
+    ],
+    "crash": "artifacts/runs/20261027T223411Z-207-lens-blur/integration02-xctest-crash.ips",
+    "offscreen": [
+      "artifacts/lens-blur-offscreen/lensBlur-4AC65E3B-8D12-4C42-AB3C-3BB08A809E02.png",
+      "artifacts/lens-blur-offscreen/lensBlur-26AE7138-C927-4E27-9873-A9C0D74796FD.png"
+    ],
+    "desktop": "Lens Blur itself has only offscreen workflow validation. Later208 live inspection supersedes the locked-session state and verifies window presentation, not Lens Blur interaction.",
+    "full": "artifacts/runs/20261027T223411Z-207-lens-blur/release-full01.log",
+    "source_manifest": "artifacts/runs/20261027T223411Z-207-lens-blur/source01.json",
+    "source_delta": "artifacts/runs/20261027T223411Z-207-lens-blur/changes01.json",
+    "packaging_deferred": "artifacts/runs/20261027T223411Z-207-lens-blur/packaging-batched-with208.json",
+    "combined_full": "artifacts/runs/20261027T225327Z-208-window-title-canvas/release-full01.log",
+    "combined_package_verification": "artifacts/runs/20261027T225327Z-208-window-title-canvas/verification01.json"
+  },
+  "remaining": [
+    "Exact Photoshop kernels, depth occlusion, edge behavior, defaults and numerical output",
+    "Editable Photoshop PSD/PSB and Adobe actionJSON descriptors",
+    "Live desktop interaction and physical Intel/macOS14/macOS26 runtime qualification",
+    "Production-size performance beyond bounded 8 MP and non-RGB/32-bit contexts",
+    "Alpha-channel UUID portability across unrelated documents; missing references explicitly reject",
+    "Remaining F01 variants and full master goal"
+  ],
+  "package_checkpoint": "docs/ACTIVE_CHECKPOINT_208.json",
+  "next": "Major F02 distortion workflows: Displace, Shear, Wave, Pinch, Spherize, Twirl, Ripple, Polar Coordinates and ZigZag, with usable native preview/history/persistence and shared APIs. Minor variants and numerical polish remain deferred."
+}

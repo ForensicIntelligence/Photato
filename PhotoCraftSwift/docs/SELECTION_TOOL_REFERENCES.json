@@ -1,0 +1,104 @@
+{
+  "step": "dev-step-192",
+  "date": "2026-10-27",
+  "status": "Object Selection, Quick Selection and Selection Brush implemented and tested; full S03/Photoshop parity remains open.",
+  "scope": "Object rectangle/lasso/point targeting, stroke-seeded Quick Selection and soft Selection Brush coverage, with native controls, previews, cancellation, Undo, Actions and shared API.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/paint-a-selection-with-quick-selection-tool.html",
+      "checked": "2026-10-27",
+      "use": "Primary Adobe behavior reference, not a pixel oracle; no Adobe code or assets copied."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/freehand-selections/create-quick-selections-with-selection-brush-tool.html",
+      "checked": "2026-10-27",
+      "use": "Primary Adobe behavior reference, not a pixel oracle; no Adobe code or assets copied."
+    },
+    {
+      "url": "https://www.adobe.com/learn/photoshop/web/object-selection-tool",
+      "checked": "2026-10-27",
+      "use": "Primary Adobe behavior reference, not a pixel oracle; no Adobe code or assets copied."
+    },
+    {
+      "path": "artifacts/runs/20261027T144806Z-192-selection-tools/shortcut-reference01.json",
+      "use": "Installed factory shortcut evidence."
+    },
+    {
+      "source": "../photocraft-main/crates/algo/src/segment/{mod,gmm,maxflow,quick,grabcut}.rs",
+      "sha256": {
+        "../photocraft-main/crates/algo/src/segment/gmm.rs": "8a95c53a1f9704cc5c92f1e9bb4b90e1f413323468d293e9432ac7ffcbce6306",
+        "../photocraft-main/crates/algo/src/segment/grabcut.rs": "040f0feb67cd5cd57a3dd4d6df2efa0c4998e51b82418378f28833097d7aa50d",
+        "../photocraft-main/crates/algo/src/segment/maxflow.rs": "9bf73f1e9126a2fe86f85e5a49a8fc9351bf3ce4a5dcf0fa720190bbf113bc07",
+        "../photocraft-main/crates/algo/src/segment/mod.rs": "47f8712455b2f2fc952c0069621448c8b108b2f2ed4765afc2294337a79be4e6",
+        "../photocraft-main/crates/algo/src/segment/quick.rs": "fe56a6ad1eb089571dc279242ca6d16251161c7299e2987a77e52e7bc951db6b"
+      },
+      "license": "MIT OR Apache-2.0",
+      "use": "Native Swift translation of graph cut, full-covariance mixture fitting, geodesic barriers, iterative region classification and boundary recut; ATTRIBUTION.md updated. Original sources read-only. Bounds/cancellation and lasso initialization added."
+    },
+    {
+      "url": "https://developer.apple.com/videos/play/wwdc2023/10176/?time=489",
+      "use": "Point-specific Vision instance labels, as documented and implemented in191. Physical model inference remains unqualified."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "selection.configure",
+      "selection.quick",
+      "selection.object",
+      "selection.brush"
+    ],
+    "catalogue_count": 85,
+    "state": "selectionTools: availability, object mode, object/paint selection modes, sampleAllLayers, enhanceEdge, overlayColor, previewActive; existing selection and soft-coverage state retained.",
+    "schemas": "Strict parameter, state and result schemas in discovery. Shared native preparation/selection transaction; matching revision, busy, cancellation and revoked-sharing handling.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "limits": "API shared-document ceiling4,194,304 canvas pixels and4MiB request; native selection ceiling16MP. Stroke/polygon4096 samples, graph160000 working pixels. Enhance Edge8,388,608 pixels; point inference same pixel ceiling and6000 per side. Native brush size1\u20132048."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated selection-tool route in the pinned published v2 contract. Tool/actionJSON descriptors remain unqualified; no invented Adobe route or model equivalence claim. Existing interfaces retain their coverage."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar": "Existing Object Selection/Quick Selection W entries now execute; Selection Brush is in the Lasso group. Native options include selection modes, source sampling, refinement and Select and Mask where applicable.",
+    "shortcut": "Factory W group retained. Selection Brush has no primary shortcut. Full L-group cycling equivalence is unqualified.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "actions": "Version4 stores explicit resulting selection coverage and original canvas dimensions; replay does not repeat image detection. Versions1\u20133 remain readable; downgrading a coverage action rejects. Existing16MiB native library and60000-character base64 API import limits remain; large masks can exceed import limits.",
+  "qualification": "All155 broad focused Debug checks,7 final dedicated workflow checks and1876 full optimized tests pass. The universal macOS14+ package verifies and includes191 Adjustment Brush.",
+  "tests": {
+    "core": 6,
+    "focused_debug": 155,
+    "final_workflows": 7,
+    "debug_log": "artifacts/runs/20261027T144806Z-192-selection-tools/integration03.log",
+    "final_log": "artifacts/runs/20261027T144806Z-192-selection-tools/integration04.log",
+    "core_log": "artifacts/runs/20261027T144806Z-192-selection-tools/module02.log",
+    "failed_attempts": [],
+    "scope": "Independent exhaustive enumeration of140 small graphs; textured geometry/IoU fixtures, reduced-resolution/full-resolution recut, native previews/Undo/archive at8/16/32-bit, synthetic gestures, sampling and HTTP equivalence/lifecycle. No Rust/Photoshop byte oracle or live desktop test.",
+    "release_full": 1876,
+    "release_log": "artifacts/runs/20261027T144806Z-192-selection-tools/release-full01.log",
+    "verification": "artifacts/runs/20261027T144806Z-192-selection-tools/verification01.json"
+  },
+  "limitations": [
+    "People/person-part selection, Select/Mask All Objects, Object Finder hover/catalogue and broader S03 workflows remain open.",
+    "Exact Photoshop model/pixels/defaults, source Rust byte parity, real-photo quality/performance and full supported contexts remain unqualified.",
+    "Latest authoritative desktop state is locked; no re-probe. Offscreen layout and synthetic events are not live UI evidence. Physical Intel/macOS14/macOS26 and actual point Vision inference remain open.",
+    "Native analysis uses SDR/sRGB proxies and RGB-document targets. Channels/component-specific analysis is not implemented; nonraster source selection uses visible composite.",
+    "Actions save coverage on original canvas dimensions; adaptive redetection and full Adobe selection-tool action descriptors remain open."
+  ],
+  "next": "Major Sky Selection and Sky Replacement workflow, with imported skies, native preview/refinement, editable output and API. Fine numerical/cosmetic refinements remain deferred.",
+  "source_manifest": "artifacts/runs/20261027T144806Z-192-selection-tools/source01.json",
+  "source_manifest_sha256": "9199994062640f4bd8607cb37a78868b41d1ec76da5f392c0bcf4fefe390727c",
+  "source_delta": "artifacts/runs/20261027T144806Z-192-selection-tools/changes01.json"
+}

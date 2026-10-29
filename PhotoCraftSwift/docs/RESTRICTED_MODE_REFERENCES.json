@@ -1,0 +1,492 @@
+{
+  "step": 221,
+  "status": "Qualified native development preview; remaining Photoshop/API/live/platform parity gates open.",
+  "complete": false,
+  "checkpoint": "docs/WORKING_CHECKPOINT_221.json",
+  "storage": [
+    "Authoritative UInt8 palette indices plus RGB palette, optional transparent entry and ICC",
+    "Canonical MSB-first black=1 packed bitmap rows with zero padding",
+    "Native47 legacy/chunked archives regenerate RGB caches from authoritative samples"
+  ],
+  "algorithms": [
+    "Licensed Exact/System/Web/Uniform/Adaptive/Perceptual/Selective palette generation and None/Diffusion/Pattern/Noise dithering",
+    "Native master/custom/previous palettes, forced colors, matte, Preserve Exact and transparent-index exclusion",
+    "Threshold/ordered/diffusion/six halftone shapes and native custom threshold pattern",
+    "Resolution-aware native-gray resampling and one prepared history transaction"
+  ],
+  "tests": {
+    "final_focused": 215,
+    "failures": 0,
+    "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls21.log",
+    "new_restricted_tests": 42,
+    "new_lab_profile_regression": 1,
+    "original_rust_indexed_reference_cases": 124,
+    "original_rust_bitmap_reference_cases": 21,
+    "independent_input_files": 37,
+    "final_export_emission": {
+      "tests": 2,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/emit-final16.log"
+    },
+    "independent_outputs": {
+      "psd_psb_png": 18,
+      "tiff": 24,
+      "total_stored_samples": 11934,
+      "reports": [
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/independent-formats02.json",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/independent-tiff02.json"
+      ],
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/source03.json"
+    },
+    "prior_formats_focused": {
+      "tests": 166,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-integration15.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/source03.json"
+    },
+    "new_workflow_tests": 9,
+    "controls_repair": {
+      "tests": 82,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls20.log"
+    },
+    "offscreen_captures": [
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-indexed-1660D175-C926-488E-BB11-69DD3421F859.png",
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-bitmap-C9421F71-1977-47F6-A2AC-0F1C841BCF75.png",
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-colorTable-3ABCD3ED-FAE1-4CA9-ADAB-30680965E4B4.png"
+    ]
+  },
+  "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source19.json",
+  "licensed_sources": {
+    "crates/algo/src/quantize.rs": "6525aaa7040233fbafa13bc721723e160d595562d69d82f0b74c15351e3282bf",
+    "crates/color/src/convert.rs": "0b59ecd379945083a0ca2d12131a413cddb0b0c5115d74796368373ad6351c06"
+  },
+  "fixture_provenance": "Tests/PhotoCraftCoreTests/Fixtures/RestrictedModes/provenance.json",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/conversion-options-for-indexed-color-images.html",
+      "kind": "Primary Adobe user documentation",
+      "observed": "Palette choices include exact, system, web, uniform, local/master perceptual/selective/adaptive, custom and previous. Controls include color count, forced colors, transparency/matte and no/diffusion/pattern/noise dithering. This describes options, not proprietary quantizer implementation."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/convert-an-image-to-bitmap-mode.html",
+      "kind": "Primary Adobe user documentation",
+      "observed": "Start from Grayscale; output resolution and units are configurable. Methods include threshold, pattern/diffusion dithering, halftone frequency/angle/shape and custom pattern."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/print/adjust-duotone-ink-curves.html",
+      "kind": "Primary Adobe user documentation; updated October2,2026",
+      "observed": "Start with8-bit Grayscale. Per-ink curves support graph/numerical editing, preview, curve save/load and Actual Color ink readout."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/choose-colors/color-modes-in-photoshop.html",
+      "kind": "Primary Adobe user documentation",
+      "observed": "Indexed uses up to256 colors. Duotone uses one through four inks. Multichannel flattens layers into spot channels; Indexed and32-bit cannot convert directly. Page describes256 gray levels per channel."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "kind": "Primary Adobe interchange specification",
+      "observed": "PSD header distinguishes Bitmap0, Indexed2, Multichannel7 and Duotone8. Indexed color-mode data is a768-byte planar RGB table. Embedded duotone specification is undocumented; preserve unknown raw data rather than claiming decoded ink support. Restricted codecs also use resource1046 palette count,1047 transparent index and TIFF34377 Photoshop resources. Reopened2026-10-28."
+    },
+    {
+      "url": "https://www.w3.org/TR/png-3/",
+      "kind": "W3C PNG Third Edition Recommendation,24June2025; accessed2026-10-28",
+      "observed": "Palette1/2/4/8 and grayscale1 sample packing, PNG black/white polarity, filters, Adam7, PLTE/tRNS/iCCP/pHYs and XMP iTXt."
+    },
+    {
+      "url": "https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf",
+      "kind": "Original TIFF6 specification archived by ITU; accessed2026-10-28",
+      "observed": "Palette Photometric3/ColorMap16-bit triples, bilevel Photometric0/1, packed rows, byte order, strips/tiles, PackBits and ExtraSamples unassociated alpha."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "kind": "Primary Adobe API guide; accessed2026-10-28",
+      "observed": "Existing published asynchronous action workflow remains target. No route/request extension added for restricted resource samples; existing contract fixtures retained. Linked raw JSON retrieval failed in web reader during this checkpoint, not claimed newly verified."
+    }
+  ],
+  "remaining": [
+    "Published Adobe restricted creation/action conversion descriptors, grounded in primary evidence with conformance tests. Existing file/job paths support restricted files; no new Adobe conversion descriptor is yet qualified.",
+    "Restricted-mode geometry and clipboard now pass focused native/API/history/file checks. Mode/clipboard Actions19 now pass; complete tool contexts, other Actions and selection behavior remain; every Photoshop mode/context is not qualified.",
+    "Desktop Previous palette currently retains the last accepted palette in that document session; master dialogs use all eligible open-document snapshots. Persisted shared palette preferences, full Color Table presets/range editing and exact Photoshop settings/UI remain open.",
+    "Format gaps: CCITT, higher-precision TIFF ColorMap, transfer tables, non-square pixels, rotated saved paths, extra channels/layers, PNG partial/multiple alpha and APNG; profile/ancillary variants and full corpus interoperability.",
+    "Byte-identical Photoshop quantization/halftone/resampling and custom-pattern behavior. Rust source comparisons and independent file decoding do not prove Photoshop equality.",
+    "Full optimized2259-test and universal-package qualification pass. Live conversion/color-picker/file-panel and same-artwork window acceptance, physical Intel/macOS14/macOS26 runtime checks remain open.",
+    "Duotone/Multichannel and other missing major workflows after Indexed/Bitmap integration; the overall goal remains active.",
+    "Clipboard:2MiB inline API payload limit, full component-mode copying/Background behavior, document-lifecycle Actions, exact Photoshop clipboard algorithms and live cross-application qualification remain."
+  ],
+  "photoshop_byte_equivalence_proven": false,
+  "file_interchange": {
+    "nativeArchive": 47,
+    "typed_commands": 118,
+    "new_commands": 0,
+    "new_routes": 0,
+    "shared_existing_paths": [
+      "Native Open/Save/Save As/Copy",
+      "Photato HTTP import/download and save commands",
+      "Photato /v1/action-jobs resource IO",
+      "Adobe /v2/execute-actions resource IO"
+    ],
+    "format_pairs": {
+      "psd_psb": [
+        "indexed8",
+        "bitmap1"
+      ],
+      "png": [
+        "indexed8 output,1/2/4/8 input",
+        "bitmap1"
+      ],
+      "tiff": [
+        "indexed8 output,1/2/4/8 input",
+        "bitmap1"
+      ]
+    },
+    "advertised_conversion_commands": false,
+    "flat_tiff_save_default": true,
+    "native47_header_required_for_restricted_download": true
+  },
+  "format_fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/RestrictedFormats/provenance.json",
+  "lab_profile_stability": {
+    "probe": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/lab-profile-probe01/result.json",
+    "scope": "Retain the first system default Lab ICC within a process; custom/imported bytes unchanged; no cross-process metadata or Photoshop colorimetric identity claim."
+  },
+  "native_workflow": {
+    "controls": [
+      "Indexed Color\u2026",
+      "Bitmap",
+      "Color Table\u2026"
+    ],
+    "api": {
+      "nativeArchive": 47,
+      "typed_commands": 124,
+      "new_commands": 6,
+      "new_routes": 0,
+      "shared_existing_paths": [
+        "Native Open/Save/Save As/Copy",
+        "Photato HTTP import/download and save commands",
+        "Photato /v1/action-jobs resource IO",
+        "Adobe /v2/execute-actions resource IO"
+      ],
+      "format_pairs": {
+        "psd_psb": [
+          "indexed8",
+          "bitmap1"
+        ],
+        "png": [
+          "indexed8 output,1/2/4/8 input",
+          "bitmap1"
+        ],
+        "tiff": [
+          "indexed8 output,1/2/4/8 input",
+          "bitmap1"
+        ]
+      },
+      "advertised_conversion_commands": true,
+      "flat_tiff_save_default": true,
+      "native47_header_required_for_restricted_download": true,
+      "commands": [
+        "document.convertIndexed",
+        "document.convertBitmap",
+        "indexed.colorTable.read",
+        "indexed.colorTable.write",
+        "indexed.indices.read",
+        "indexed.indices.write"
+      ],
+      "schemas": "restrictedModes capabilities plus documentMode state",
+      "adobe_restricted_conversion": false
+    },
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 350,
+      "unavailable_leaf_commands": 375,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "live_qualified": false,
+    "evidence": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-checkpoint04.json",
+    "source_snapshots": "Desktop master palette inputs are captured when the dialog opens. API master sources are checked against share, revision and full source snapshots at commit.",
+    "remembered_save_defaults": "Adapt only remembered flat TIFF/predictor/PSD options after conversion; explicit output options retain their normal validation."
+  },
+  "controls_primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/conversion-options-for-indexed-color-images.html",
+      "scope": "Public conversion options; successful initial retrieval, follow-up detail fetches timed out."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/convert-an-image-to-bitmap-mode.html",
+      "scope": "Public workflow and method names; live 2026 UI not inspected this increment."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/objects/conversionoptions/indexedconversionoptions/",
+      "scope": "Public UXP options; not proof of Firefly action descriptor schema."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "scope": "Color Table section: ACT 768/772-byte RGB triplets and count/transparency fields."
+    }
+  ],
+  "geometry": {
+    "utc": "2026-10-28T12:43:42.562928+00:00",
+    "status": "Focused Debug development checkpoint; increment not complete",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry-source06.json",
+    "source_inputs": 2164,
+    "source_delta": {
+      "new": 241,
+      "modified": 52,
+      "removed": 0
+    },
+    "tests": {
+      "new_geometry_tests": 9,
+      "geometry22": {
+        "tests": 68,
+        "failures": 1,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry22.log"
+      },
+      "geometry23": {
+        "tests": 68,
+        "failures": 0,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry23.log"
+      },
+      "geometry24": {
+        "tests": 260,
+        "failures": 0,
+        "seconds": 30.045,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry24.log",
+        "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry-test-command24.json"
+      }
+    },
+    "commands": [
+      "document.resize",
+      "document.canvasSize",
+      "document.rotate",
+      "document.resolution"
+    ],
+    "typed_commands": 128,
+    "native_archive": 47,
+    "behavior": "Crop, resize, canvas extent and five canvas turns update actual indices/bits. Exact grid transforms and nearest sampling retain duplicate index identity. Interpolation remaps to the retained palette or black/white. Whole-document paths/selections follow the shared transforms; crop clears selection. Crop fill changes only new gaps in the existing flat layer. Resolution-only changes retain samples.",
+    "adobe": "Published GA/reference reviewed; linked OpenAPI JSON unavailable through web tool. No new Adobe descriptor or route qualified. Existing unsupported geometry action descriptors remain explicit.",
+    "remaining": [
+      "Semantic Actions for mode conversions, full tool/clipboard contexts",
+      "Primary-grounded Adobe geometry/restricted conversion descriptors and conformance",
+      "Exact Photoshop interpolation/quantization behavior and broader file variants",
+      "Full optimized/universal qualification and physical platform/live checks"
+    ],
+    "window_handoff": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/window-handoff04.json",
+    "latest_qualified_package": 220,
+    "installed_corrected_app": 209,
+    "live_acceptance": false,
+    "source_inputs_unchanged_after_tests": true
+  },
+  "clipboard": {
+    "utc": "2026-10-28T13:16:59.218792+00:00",
+    "status": "Focused Debug development checkpoint; increment not complete",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard-source13.json",
+    "source_inputs": 2169,
+    "source_delta": {
+      "new": 246,
+      "modified": 57,
+      "removed": 0
+    },
+    "tests": {
+      "final": 317,
+      "failures": 0,
+      "seconds": 34.69,
+      "new_clipboard_tests": 16,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard31.log",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard-test-command31.json",
+      "prior_focused": [
+        {
+          "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard26.log",
+          "tests": 64,
+          "failures": 0
+        },
+        {
+          "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard27.log",
+          "tests": 68,
+          "failures": 0
+        }
+      ],
+      "failures_preserved": [
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard25.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard28.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard29.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard30.log"
+      ]
+    },
+    "commands": [
+      "clipboard.copy",
+      "clipboard.cut",
+      "clipboard.paste",
+      "clipboard.newDocument"
+    ],
+    "typed_commands": 132,
+    "native_archive": 47,
+    "clipboard_envelopes": [
+      1,
+      2
+    ],
+    "maximum_api_payload_bytes": 2097152,
+    "behavior": "Envelope2 retains palette/bit identity alongside selection alpha. Opaque matching-palette copies preserve duplicate indices. Flat-mode paste composites and quantizes into the existing image. Cut retains the layer and clears to transparency, or quantizes the chosen background. Exact New from Clipboard retains mode; coverage needing extra alpha remains RGB. Profile conversion invalidates direct sample identity. No-op edits do not mark the document modified.",
+    "api": "Explicit payloads; no system pasteboard access. Read/cut return payload metadata; new documents require transfer permission. Decode extent/data limits precede flattening. Revision/source equality, busy, revocation and lifecycle guards protect commits.",
+    "source_reference": {
+      "path": "../photocraft-main/crates/engine/src/edit_cmds.rs",
+      "sha256": "fada4a38417eb3c112273f24be3332533a18220b3a13d740cfbe47c19b4192e1",
+      "scope": "Read licensed copy/paste/lift/new-document and chosen-background Cut source/tests; no new Rust differential execution claimed."
+    },
+    "primary_references": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/copy-and-paste-layers.html",
+        "scope": "General layer copying, merged content, pixel dimensions and profiles; not evidence of mode-specific numerical equality."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/choose-colors/color-modes-in-photoshop.html",
+        "scope": "Indexed palette storage and restricted editing; not exact clipboard algorithms."
+      }
+    ],
+    "remaining": [
+      "Semantic Actions for mode conversions/clipboard, complete tool contexts",
+      "Adobe action descriptors and cross-interface conformance",
+      "Large clipboard binary/resource API beyond2MiB inline payload; native clipboard retains512MiB limit",
+      "Full Photoshop background/tool/selection behavior and exact output, live cross-application clipboard and platform checks",
+      "Full optimized/universal milestone qualification"
+    ],
+    "latest_qualified_package": 220,
+    "installed_corrected_app": 209,
+    "live_desktop_checked": false,
+    "source_unchanged_after_tests": true
+  },
+  "actions_221": {
+    "utc": "2026-10-28T14:23:16.732515+00:00",
+    "status": "Focused development checkpoint; full milestone/release/live qualification remains open",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+    "source_inputs": 2174,
+    "source_delta": {
+      "new": 251,
+      "modified": 64,
+      "removed": 0
+    },
+    "source_delta_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source-delta18.json",
+    "actions_format": 19,
+    "readable_actions_versions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "native_archive": 47,
+    "typed_commands": 132,
+    "new_commands": 0,
+    "new_workflow_tests": 12,
+    "combined": {
+      "tests": 523,
+      "failures": 0,
+      "seconds": 106.369,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions38.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source17.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command38.json"
+    },
+    "final": {
+      "tests": 34,
+      "failures": 0,
+      "seconds": 1.587,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions39.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command39.json"
+    },
+    "final_source_difference": "Only Actions result-schema capability metadata and its existing test assertion changed after source17; playback behavior is unchanged.",
+    "earlier_focused": {
+      "tests": 52,
+      "failures": 0,
+      "seconds": 4.623,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions36.log"
+    },
+    "failed_attempts": [
+      "actions32.log",
+      "actions33.log",
+      "actions34.log",
+      "actions35.log"
+    ],
+    "recording": [
+      "Component mode/depth/ICC/intent, merge-visible and HDR clipping consent",
+      "Indexed palette/dither/transparency/forced settings, explicit Previous palette",
+      "Bitmap resolution/method/halftone/custom pattern and Color Table",
+      "Copy/Copy Merged, Cut with selected background, Paste placement/center without recording clipboard images"
+    ],
+    "runtime": "Shared RecordedActionRenderer applies operations to each source document with per-step validation and one source-checked document transaction. Native playback stages the clipboard and commits only on success; API and Batch use private buffers.",
+    "master_palettes": "Desktop snapshots eligible open documents; API requires explicit additional shares/revisions; Batch freezes eligible source files once and excludes the current input by its batch source identity. Pixel/storage limits remain.",
+    "palette_state": "Commit last accepted indexed/color-table palette after successful playback even if a later step returns to RGB. Actions Previous stores an explicit palette.",
+    "api": {
+      "actions.play": [
+        "Optional clipboardPayloadBase64 initial native payload (2MiB)",
+        "Optional sources with shared IDs/revisions for master palettes",
+        "Optional clipboardPayloadBase64 output after Copy/Cut (2MiB)",
+        "No Mac clipboard access; per-step clipboard/document extent and storage validation",
+        "Response schema exposed in actions.playback.resultSchema"
+      ],
+      "actions.batch": [
+        "Optional explicit initial clipboard reused independently per source; internal Copy/Cut never publish the system clipboard"
+      ],
+      "clipboard.copy": "Successful Copy now records a semantic operation while leaving document/history unchanged.",
+      "indexed.settings": "Optional forcedColors/customPalette arrays accept empty defaults; choosing Custom still requires colors."
+    },
+    "primary_references": [
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/create-record-actions/record-an-action.html",
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/play-actions-in-the-actions-panel.html",
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/conversion-options-for-indexed-color-images.html"
+    ],
+    "reference_scope": "General recording/playback and master/Previous palette behavior; not exact numerical equivalence or a Firefly descriptor schema.",
+    "adobe": "Existing component color-mode actionJSON job contracts remain separately tested. No new Adobe clipboard/restricted conversion descriptors, routes or ATN interoperability are claimed.",
+    "remaining": [
+      "New from Clipboard/document switching and other unsupported commands in recorded Actions",
+      "Complete restricted mode/tool/selection contexts and channel Actions",
+      "Primary-grounded Adobe restricted/clipboard descriptors and conformance",
+      "Exact Photoshop parameters, palette/clipboard/resampling results, UI/platform/live validation",
+      "Full optimized/universal221 qualification;220 remains the latest qualified package",
+      "Remaining major workflows including Duotone and Multichannel"
+    ],
+    "latest_qualified_package": 220,
+    "live_window_acceptance": false,
+    "source_unchanged_after_tests": true
+  },
+  "painting_221": {
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source19.json",
+    "test_file": "Tests/PhotoCraftAppTests/ModePaintingWorkflowTests.swift",
+    "focused": {
+      "tests": 39,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools44.log"
+    },
+    "full_release": {
+      "tests": 2259,
+      "failures": 0,
+      "seconds": 161.264,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools45-release.log"
+    },
+    "new_workflow_methods": 6,
+    "mode_depth_contexts": 12,
+    "tool_context_combinations": 84,
+    "api": "Existing paint.tool shared engine; additive painting.modeStorage capability text and corrected target wording. No new command or route.",
+    "repair": "Reconcile authoritative native samples before validating/returning PaintingEdit; preview, commit and reopening agree.",
+    "limits": "Exact Photoshop numeric results, all mode-specific tool/menu availability, brush Actions/Adobe descriptors and live/platform checks remain open."
+  },
+  "qualification_221": {
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_221.json",
+    "verification": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/verification46.json",
+    "full_optimized_tests": 2259,
+    "universal_minimum_macos": "14.0",
+    "current_live_acceptance": false
+  }
+}

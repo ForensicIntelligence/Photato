@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LayerMaskCreation: Sendable {
+public enum LayerMaskCreation: Sendable, Codable {
   case revealAll, hideAll, revealSelection, hideSelection, fromTransparency
 }
 

@@ -1,0 +1,45 @@
+{
+  "step": 250,
+  "recorded_at_utc": "2026-10-29T14:17:58.715125+00:00",
+  "status": "Image Processor now converts open images or file/folder batches to JPEG, PSD and TIFF, with per-format resizing, profiles, Actions, copyright, settings files and shared API ZIP export/cancel. 26 focused and 2623 full optimized tests pass on 2385 unchanged inputs. Independent lossless outputs match 32,000 analytic RGBA channels; the JPEG fixture has a maximum one-level channel error. Source preservation, unique output names and cancellation are tested. Exact Photoshop output/defaults, first-image Camera Raw, optional PSD composites, broader limits and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T133301Z-250-image-processor/source06.json",
+  "source_inputs": 2385,
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "tests": {
+    "full": {
+      "tests": 2623,
+      "failures": 0,
+      "seconds": 175.727,
+      "log": "artifacts/runs/20261029T133301Z-250-image-processor/full01.log",
+      "sha256": "4efeed6266ce2d05cea0888d115a475d70f4e9bba304b4c16c352fa67ac91232"
+    },
+    "focused": {
+      "tests": 26,
+      "failures": 0,
+      "seconds": 2.008,
+      "log": "artifacts/runs/20261029T133301Z-250-image-processor/focused06.log",
+      "sha256": "b23cb5551b5c44a79ef500018b960def8f107cf703da9049e2a1432d7dccbc06"
+    },
+    "unchanged_inputs": 2385,
+    "source_manifest": "artifacts/runs/20261029T133301Z-250-image-processor/source06.json",
+    "independent": "artifacts/runs/20261029T133301Z-250-image-processor/outputs-full01-independent.json",
+    "exact_lossless_RGBA_channels": 32000,
+    "jpeg_max_channel_error": 1,
+    "binary_sha256": "b00ca7435d82477ab5de2760d13425458622cc6da7633617c274c3cabaf98289",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Implement File > Import > Video Frames to Layers as the next major SP01 workflow: full/selected movie ranges, every-N-frame sampling, editable layers and optional frame animation, native preview/cancellation/new-document publication and shared API. Start with next-video-frames-research01.json and existing AVFoundation/Timeline engines. Preserve installed221/private243, owned artwork and87KB homepage; retain all exact/live/platform gaps."
+}

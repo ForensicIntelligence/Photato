@@ -52,5 +52,16 @@
   "later_channel_view_increment": {
     "path": "docs/CHANNEL_VIEW_REFERENCES.json",
     "sha256": "3bea612bafceb95d86bf953877a74187e5f3d3912e33859e1093ba0675ae5fe7"
+  },
+  "alpha_channels_step167": {
+    "reference": "docs/ALPHA_CHANNEL_REFERENCES.json",
+    "commands": [
+      "channel.edit",
+      "channel.view"
+    ],
+    "api_command_count": 44,
+    "bound_menus": 211,
+    "unavailable_menus": 514,
+    "note": "Native shared transactions and native20 saving. Published Adobe channel action descriptors remain unsupported; no new Adobe endpoint is invented. Full parity remains open."
   }
 }

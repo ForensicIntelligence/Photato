@@ -1,0 +1,112 @@
+{
+  "step": "dev-step-161",
+  "date": "2026-10-26",
+  "status": "Functional native/API/Release/universal checkpoint verified; independent/live checks pending unlock.",
+  "source_manifest": "artifacts/runs/20261026T195721Z-161-smart-filters/source02.json",
+  "source_delta": "artifacts/runs/20261026T195721Z-161-smart-filters/source-delta02.json",
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/engine/src/smart_cmds.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Placement then filters, per-filter blending and premultiplied mask mixing"
+    },
+    {
+      "source": "../photocraft-main/crates/io/src/smart_map.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "filterFX descriptor mapping"
+    },
+    {
+      "source": "../photocraft-main/crates/psd/src/filter_effects.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "FEid/FXid framing, unfiltered planes and mask transport"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "use": "Published select-layer-by-name plus gaussianBlur actionJSON workflow on prepared Smart Object input"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html",
+      "use": "Editable Smart Filter stack workflow"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/mask-smart-filter-effects.html",
+      "use": "Shared effect mask and black/white painting"
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+      "use": "Existing execute-actions job/resource contract retained"
+    }
+  ],
+  "desktop": {
+    "filter_kinds": [
+      "gaussianBlur",
+      "boxBlur",
+      "motionBlur",
+      "unsharpMask",
+      "highPass",
+      "addNoise",
+      "mosaic",
+      "average"
+    ],
+    "behavior": "Filters on Smart Objects append editable stack entries; raster layers retain destructive filter behavior. Layer rows expose stack/individual visibility, editing and blend/opacity, move-up/down/delete. First filter creates white or selection-based mask. Brush, Fill, density, feather, enabled/link settings, mask view and deletion use shared native history. Source cache/embedded bytes remain unchanged. Rasterize bakes the visible filter result.",
+    "menus": [
+      "Filter > Convert for Smart Filters",
+      "Layer > Smart Filter > Disable Smart Filters",
+      "Layer > Smart Filter > Delete Filter Mask",
+      "Layer > Smart Filter > Disable Filter Mask",
+      "Layer > Smart Filter > Clear Smart Filters"
+    ],
+    "limits": "32 filters,8,388,608 pixels in the union of canvas and placed bounds; native mask property and source limits remain. Unsupported mask tool targets explicitly reject. Smart filter rendering currently recomputes the stack rather than keeping a separate persistent result cache."
+  },
+  "persistence": {
+    "native_version": 15,
+    "old_readers": "Explicit version15 download negotiation prevents older clients from silently losing stacks.",
+    "psd_psb": "Seven mapped filters, per-filter visibility/blend/opacity, stack visibility, filter masks and bounded FEid source planes. Average descriptor, fractional Motion Blur angles and mask density/feather/inversion/fractional-outside settings explicitly reject layered export; native archives retain them. Mask geometry is rasterized into document coordinates for PSD export.",
+    "qualification": "Own generated RGB8/16/32 PSD/PSB round trips only. Independent Photoshop interoperability and pixel equality are not claimed."
+  },
+  "photato": {
+    "typed_commands": 35,
+    "added": [
+      "smartFilter.set",
+      "smartFilter.maskStroke",
+      "smartFilter.maskFill"
+    ],
+    "expanded": [
+      "filter.apply"
+    ],
+    "state": "layers[].smartFilters exposes ordered filter IDs/settings/enabled/blend/opacity, stack enabled, mask presence/settings/document transform. capabilities.smartFilters publishes input and state schemas.",
+    "history": "Same command/prepared-edit/Undo path as desktop; busy/stale handling and cancellation inherited from the shared service."
+  },
+  "adobe": {
+    "route": "POST /v2/execute-actions",
+    "scope": "Existing options.actions[].source.content actionJSON now selects an exact unique layer name. Supported filter actions preserve editable stacks on Smart Object input; PSD/PSB output uses filterFX/FEid, raster output renders. Same native engine as desktop and Photato API.",
+    "limitations": "Eight local algorithms, seven mapped PSD descriptors, existing partial action language and job limits. Does not claim all91 listed Adobe Smart Filters, hosted identity/model behavior or pixel equivalence."
+  },
+  "verification": {
+    "focused": {
+      "tests": 67,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T195721Z-161-smart-filters/integration02.log"
+    },
+    "live": "Pending unlock; no live161 UI or independent Photoshop check performed.",
+    "full_release": {
+      "tests": 1536,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T195721Z-161-smart-filters/release-tests02.log"
+    },
+    "platform": "artifacts/runs/20261026T195721Z-161-smart-filters/platform01.json",
+    "package": "artifacts/runs/20261026T195721Z-161-smart-filters/package-verification01.json"
+  },
+  "open": [
+    "Additional Smart Filter algorithms and adjustment filters",
+    "Gradient, bucket, retouch and Wand on Smart Filter masks",
+    "Independent Photoshop UI/PSD/PSB comparisons and exact numeric kernels",
+    "Large-document performance/cache and larger linked metadata limits",
+    "Average and remaining mask-option PSD mappings",
+    "Physical Intel/macOS14 qualification"
+  ],
+  "full_photoshop_parity": false,
+  "next_major": "T01 full native text editing",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_161.json"
+}

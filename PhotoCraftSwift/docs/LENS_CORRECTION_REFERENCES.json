@@ -1,0 +1,106 @@
+{
+  "step": "dev-step-186",
+  "status": "Native Lens Correction workflow implemented with focused Debug qualification. Complete F05/Photoshop parity remains open. Optimized/universal qualification is batched with the remaining F05 workspaces.",
+  "run": "artifacts/runs/20261027T104508Z-186-lens",
+  "scope": "Lens distortion, red/cyan and blue/yellow fringe, profile/custom vignette, perspective, rotation, scale/autoscale and edge modes; native preview/distortion/straighten/grid/pan/zoom/settings/history; editable Smart Filters/native30; typed API and existing recorded Actions/Batch.",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/lens.rs",
+    "../photocraft-main/crates/engine/src/lens_cmds.rs"
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/correct-lens-distortion-and-perspective.html",
+      "read": "2026-10-27",
+      "updated": "2026-09-30",
+      "note": "Native manual controls follow documented semantics, including lower vignette midpoint affecting more area. Rust source used the opposite midpoint direction."
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "finding": "No dedicated lens route or qualified typed lensCorrection descriptor. Unqualified actionJSON rejects explicitly."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "actions.manage",
+      "actions.play",
+      "actions.batch"
+    ],
+    "filter_kind": "lensCorrection",
+    "parameter": "lens",
+    "catalogue_count": 70,
+    "native_archive_version": 30,
+    "state": "Strict settings/default/schema, generic estimator and custom profile coefficients, native draft settings/tool/preview/grid/zoom/effective scale/history and busy availability. Same engine/transactions/selection/locks and undo. Actions/batch are existing shared routes, not new commands."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "Unqualified lensCorrection actionJSON and editable PSD/PSB descriptors reject explicitly. No Adobe operation was invented. Existing rendered raster exports and other qualified jobs remain."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 254,
+    "unavailable": 471,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Lens Correction\u2026"
+    ],
+    "shortcut": "Shift+Command+R",
+    "unbound": "File > Automate > Lens Correction\u2026 remains unbound. Lens actions can already run through the native Batch workspace and API."
+  },
+  "qualification": "97 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the current packaged candidate remains step185 and does not include Lens Correction.",
+  "tests": {
+    "debug_focused": 97,
+    "debug_log": "artifacts/runs/20261027T104508Z-186-lens/integration05.log",
+    "earlier_passing": {
+      "module02": 6,
+      "integration04": 97
+    },
+    "failed_attempts": [
+      "artifacts/runs/20261027T104508Z-186-lens/module01.log",
+      "artifacts/runs/20261027T104508Z-186-lens/integration01.log",
+      "artifacts/runs/20261027T104508Z-186-lens/integration02.log",
+      "artifacts/runs/20261027T104508Z-186-lens/integration03.log"
+    ],
+    "verification": "artifacts/runs/20261027T104508Z-186-lens/verification01.json",
+    "independent_evidence": "Analytically derived Rust geometry coordinates, chromatic mapping, perspective ordering, straighten angle, bounded autoscale and Adobe-documented midpoint direction. All-depth identity/selection/locks/history, strict parsing, native30/source retention, transformed Smart Object coordinates, native model/Cancel, HTTP and Actions/Batch agreement. No independent Photoshop pixel oracle.",
+    "offscreen_directory": "artifacts/lens-correction-offscreen",
+    "offscreen_limit": "Image/controls are captured; native buttons incompletely render offscreen. No live pointer/keyboard or exact visual qualification."
+  },
+  "limitations": [
+    "Exact Adobe pixels, resampling/edge/colour behavior and physical macOS14/Intel/macOS26/live qualification remain open. Last desktop evidence remains locked; no bypass/re-probe.",
+    "Manufacturer calibration database, online profile retrieval, EXIF camera/lens matching, Adobe LCP settings/profile interchange, remembered lens defaults and previous-conversion settings remain open. Custom coefficients and labelled generic estimates are distinct native capabilities.",
+    "Native RGB8/16 uses encoded samples; RGB32 linear support is a Photato extension. The native editor does not yet reproduce the entire Photoshop grayscale/CMYK/Lab document/filter matrix. Existing8,388,608-source-pixel limit remains.",
+    "Smart Object preview resolves post-placement/prior-filter input geometry. Arbitrary later geometry filters, complex mask/warp combinations and exact interactive tool mapping remain unqualified.",
+    "Autoscale samples41 positions on each border for all three colour maps and caps800%; it is a bounded approximation. It can reject extreme transformations instead of claiming coverage.",
+    "Native preset files use JSON, not Adobe settings interchange. Grid/pan/zoom are presentation state; clients implement their own view while consuming the same native correction settings.",
+    "File > Automate > Lens Correction has no dedicated native preset dialog yet. Existing Actions/Batch handles lens filter programs and is tested through desktop/API.",
+    "Editable PSD/PSB Lens Correction and Adobe actionJSON descriptors remain unsupported. Native30 preserves editability; rendered/raster exports are available.",
+    "All97 focused Debug tests pass; current optimized/full/universal validation is deferred to the F05 family milestone. Latest packaged candidate is step185 and excludes Lens Correction. Full F05 remains open."
+  ],
+  "next": "Adaptive Wide Angle, then Vanishing Point. Continue major breadth and batch full/optimized/universal qualification at the F05 milestone.",
+  "development_audit": {
+    "status": "passed",
+    "milestones": 186,
+    "evidence_files": 38018,
+    "logs": 19346,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T104508Z-186-lens/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T104508Z-186-lens/refresh02.log",
+      "artifacts/development-history-audit/20261027T104508Z-186-lens/check02.log"
+    ],
+    "scope": "Record/reference integrity, not Photoshop parity."
+  },
+  "later_family_qualification": {
+    "step": "dev-step-188",
+    "tests": 1816,
+    "failures": 0,
+    "source_manifest": "artifacts/runs/20261027T112757Z-188-vanishing-point/source01.json",
+    "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+    "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json",
+    "note": "Later family batch includes Lens Correction, Adaptive Wide Angle and Vanishing Point. Earlier milestone records remain historical. Exact/live/platform parity remains open."
+  }
+}

@@ -194,7 +194,7 @@ extension EditorStore {
   }
   var canBeginLevels: Bool {
     guard !editingComponent, !geometryBusy, transformDraft == nil, !hasToneDraft, !editingMask,
-      let layer = activeLayer, !document.isLocked(layer.id),
+      let layer = activeLayer, layer.smartObject == nil, !document.isImageLocked(layer.id),
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id], case .raster = layer.content
     else { return false }
     return true

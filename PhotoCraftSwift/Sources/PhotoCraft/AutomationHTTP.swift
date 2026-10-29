@@ -1,3 +1,5 @@
+import PhotoCraftCore
+import PhotoCraftImaging
 import Foundation
 import Network
 
@@ -73,8 +75,14 @@ struct AutomationRequest: Sendable {
   }
   static func maximumBodyBytes(method: String, path: String) -> Int {
     guard method == "POST" else { return 65_536 }
+    let parts = path.split(separator: "/")
+    if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString: String(parts[2])) != nil, parts[3] == "commands" { return max(LiquifyMeshFile.maximumBytes, (ICCProfile.maximumBytes + 2) / 3 * 4 + 16_384) }
+    if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil, parts[3] == "audio" { return TimelineAudioSource.maximumBytes }
+    if path == "/v1/preferences/color-settings" { return ColorSettings.maximumArchiveBytes }
+    if path == "/v1/luts" { return ColorLUT.maximumFileBytes }
     if path == "/v1/documents/import" { return DocumentIO.maximumUploadBytes }
-    if ["/v2/execute-actions", "/v1/action-jobs"].contains(path) {
+    if [PDFImportAPI.inspectPath,PDFImportAPI.importPath,PDFImageImportAPI.inspectPath,PDFImageImportAPI.importPath].contains(path) {return DocumentIO.maximumUploadBytes}
+    if ["/v2/create-artboard", "/v2/edit", "/v2/execute-actions", "/v2/create-composite", "/v2/remove-background", "/v1/action-jobs"].contains(path) {
       return AdobeActionsRequest.maximumBodyBytes
     }
     return 65_536
@@ -85,6 +93,7 @@ struct AutomationResponse: Sendable {
   let status: Int
   let contentType: String
   let body: Data
+  var didSend: (@MainActor @Sendable (Bool) -> Void)? = nil
   static func json(_ value: [String: Any], status: Int = 200) -> Self {
     Self(
       status: status, contentType: "application/json",
@@ -220,7 +229,10 @@ struct AutomationResponse: Sendable {
             self.work = Task { [weak self] in
               guard let self, !self.finished else { return }
               let response = await self.handler(request)
-              guard !self.finished, !Task.isCancelled else { return }
+              guard !self.finished, !Task.isCancelled else {
+                response.didSend?(false)
+                return
+              }
               self.send(response)
             }
           } else if complete || error != nil {
@@ -235,19 +247,30 @@ struct AutomationResponse: Sendable {
     }
   }
   func send(_ response: AutomationResponse) {
-    guard !finished else { return }
+    guard !finished else { response.didSend?(false); return }
+    pendingDelivery = response.didSend
     connection.send(
       content: response.wire,
-      completion: .contentProcessed { [weak self] _ in
-        Task { @MainActor in self?.finish() }
+      completion: .contentProcessed { [weak self] error in
+        Task { @MainActor in
+          guard let self, !self.finished else { return }
+          let callback = self.pendingDelivery
+          self.pendingDelivery = nil
+          self.finish()
+          callback?(error == nil)
+        }
       })
   }
+  var pendingDelivery: (@MainActor @Sendable (Bool) -> Void)?
   func finish() {
     guard !finished else { return }
     finished = true
     timeout?.cancel()
     work?.cancel()
     connection.cancel()
+    let callback = pendingDelivery
+    pendingDelivery = nil
+    callback?(false)
     onFinish()
   }
 }

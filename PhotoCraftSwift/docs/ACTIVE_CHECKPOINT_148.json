@@ -1,0 +1,276 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-148",
+  "recorded_at_utc": "2026-10-20T17:41:55.779867+00:00",
+  "major_workflow": "D01/I04 JPEG native and API output",
+  "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes04.json",
+    "sha256": "e3456bc1973d1865c0b2f460b87cf2e1dae04fbbf058209a87033fe9c3268412"
+  },
+  "source_test_files": 515,
+  "validation_inputs": 991,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/packaging-documents04.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato148-attempt04-k7m_q5gl/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 47,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 5.998,
+    "log": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused04.log",
+      "sha256": "c25b8673a406f7e10f1ec7dac6e81a60725ff72b9439db62a092558691154bbb"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T171024Z-148-jpeg-options/full01.log",
+      "sha256": "6f1308969add98fd6bacedbe2c4e313ac0078c4079a86d1b3460cc2840461fc2",
+      "passed": 1398,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 295.559
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T171024Z-148-jpeg-options/release01.log",
+      "sha256": "f8e564b47330457a203eb22aaa8f80f63fccd88192b089ad7c6777919dfd7ede",
+      "passed": 1398,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 84.187
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato148-verified-28mtvg9b/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "a8e2ab6cb4e690fab7ab69e8cd2094ad3f3b14c291c2c52429b5a27191051091",
+    "zip_sha256": "066492f701ae990d278125ba3c774c595a8caa94d39dcb927fef6c0895c5547f",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/Photato148-candidate.zip",
+    "sha256": "066492f701ae990d278125ba3c774c595a8caa94d39dcb927fef6c0895c5547f"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_147.json",
+    "sha256": "e3627d199b53f7bef406bcd0666aabff5b449a5350780f215e79d830204ade28"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/package-verification01.json",
+    "sha256": "4debc23457ec14913ecc21e071f331241e7f3ffe46d75659a9c38edb6687f3ec"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/public-release-arm6401/verification.json",
+      "sha256": "31384751ae5b842975246db918c93eb854d864042a337b51ad0491c837abe385"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/public-release-x86_6401/verification.json",
+      "sha256": "a43eb1296b26a6b952a6fd08e8d74bfa1c0dd0260713ac4e354e714681227914"
+    }
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "Native Save/Copy JPEG accessory; existing menu hierarchy/shortcuts unchanged, no new binding."
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [
+      "Photato jpegQuality",
+      "Photato jpegFormat",
+      "Photato jpegMatte",
+      "Photato jpegEmbedProfile",
+      "Adobe JpegOutput.quality"
+    ],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.jpeg",
+      "POST /v1/action-jobs",
+      "POST /v2/execute-actions"
+    ],
+    "capability": "documentTransfers.encodingOptions and actionJobs encodingOptions/outputs expose shared native choices and remaining parity limits",
+    "contract": "Pinned JpegOutput seven named qualities map locally to0/2/4/6/8/10/12. Execute-actions excludes scan (400). Adobe rejects Photato encodingOptions (422). No Adobe quantization/default equivalence claimed.",
+    "coverage": "Native Save accessory, remembered state, Copy/ownership/history, failed save, actual HTTP download/save/invalid/busy, seven quality outputs on both jobs and Photato-only format/matte/profile options. JPEG action input remains unsupported."
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Native JPEG quality0\u202612, Baseline Standard/Baseline Optimized/Progressive, custom sRGB matte and explicit ICC embedding/removal share the same options/encoder across native Save/Copy and Photato API output. Omitted controls preserve established defaults.",
+    "Original bounded Swift two-pass canonical Huffman optimization preserves quantized DCT coefficients, metadata, sampling, quantization and restart interval semantics. Explicit ICC insertion/splitting/removal preserves other markers and entropy; default EXIF sRGB signaling is retained when options are omitted.",
+    "Adobe-compatible execute-actions now supports image/jpeg output and the published quality enum, with operation-specific scan rejection. Native Photato options remain distinct. Local quality mapping is documented as unqualified against Adobe quantization.",
+    "All47 focused,1398 Debug and1398 Release tests pass on991 inputs/515 Swift files. Independent JPEG checks cover116 outputs,26 coefficient/metadata canonical pairs,26 integer IDCT sample pairs and36 red-matte outputs;58 Debug/Release JPEG bytes match.",
+    "Previous TIFF/PSD independent suites reverify. All161 retained unrelated exports and three default JPEG depth outputs equal147. Universal macOS14+ package/signature/resources and production Release public JPEG saves/reopen pass on arm64/Rosetta. Installed117, user state, Core/AI and Xcode stay unchanged."
+  ],
+  "remaining_major_dependencies": [
+    "All major workflow gates remain open. Photoshop JPEG quantization, factory native dialogs/defaults,3\u20135 progressive scan schedule/selection, exact output bytes and live UI remain unqualified.",
+    "JPEG action input, other Adobe JPEG-output endpoints and their scan/optimized fields remain unimplemented. Do not confuse local named-quality mapping with proprietary Adobe encoder equivalence.",
+    "Continue D01/I04: PSD/PSB Maximize Compatibility and native save/export policy, original .pcraft migration, broader modes/formats, profiles and large-file qualification. TIFF descriptor/opaque records, Save Transparency/pyramids and preferences remain open.",
+    "Live Photoshop JPEG references now exist (five quality8 variants); broader live checks remain open. Synthetic/third-party codec checks do not establish Photoshop rendering or file bytes. Rosetta does not substitute for physical Intel/macOS14 runtime qualification.",
+    "Keep remaining major workflows first; minor functions and final details are deferred."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/source-delta04.json",
+    "sha256": "9f3d0f95c518c56e742b00dec78f0a5574ffa1a7fa94075c4d15d18f0e9af833"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/final-export-compatibility01.json",
+    "sha256": "fbec683bc9649118142ca5033230f606a821e43ab384c5e2a255f55b4cd8a714"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/final-inputs01.json",
+    "sha256": "483200d0aa7c541ab89e4063fd74d6a51cc4367ee2442875bc529b00ef5c2c34"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/next-major-plan01.json",
+    "sha256": "a6904b786e0396906f5133100f4e44a8782415b99edce2dae656b46c5d57a05f"
+  },
+  "reference_review": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/reference-review01.json",
+    "sha256": "96984b1efd0785d57c9f34f60cf353f497bcc176b61119d94932407fc226e1fd"
+  },
+  "photoshop_jpeg_reference": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/photoshop-jpeg-reference01.json",
+    "sha256": "0ddf08da9c9cf84f323802e78a19743d930ce3ee8855a9da851b89cd38d9e3d3"
+  },
+  "photoshop_scan_comparison": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/photoshop-scan-comparison01.json",
+    "sha256": "cb5bd7a592e42fd267046dfaa89cb8ac066841f7453d66ec6cf8ec34a7da22cb"
+  },
+  "next_pcraft_review": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/next-pcraft-review01.json",
+    "sha256": "e4299ec24b54daef9f2fc7ec15c98e066391f9d4917e016026b2f9eb7c926754"
+  },
+  "primary_reference_provenance": [
+    {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/references01/provenance.json",
+      "sha256": "853dfcb452d5c0b937858aaf2fdbb6cbc2bd652b1d1a7052a5fe4b29a56a88eb"
+    }
+  ],
+  "prior_failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes01.json",
+        "sha256": "789edf353c19b4e9b991ceb2c45fec961ff8a62772e5c413bee83a61af969885"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused01.log",
+        "sha256": "c37520c1cbf9b9c643697b98da180489a6c7f50044a7d58c096f46144c3c230b"
+      },
+      "cause": "Compile ambiguity in CGFloat conversion; explicit closure repaired"
+    },
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes02.json",
+        "sha256": "60aae24a6dff48854bcb31a2c8402fc209cda7668d2db7a415b203d244dd29cf"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused02.log",
+        "sha256": "8faf5ef13dac91ec0fcd2c1465d3ebdb5fd814e2190966639de27bb1cfacf6d4"
+      },
+      "cause": "Nonzero restart interval and missing optional sRGB ICC assumption; implement restarts and explicit ICC"
+    },
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes03.json",
+        "sha256": "7ef06148d6ff09c193ccbf1bf1d5b99738bc8b7e15bc221d4c14253103a6b5dd"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused03.log",
+        "sha256": "3d1af3e5afc7ce21f04fa0856abb8bf86bb5ac383a459cac0bdc32206d1c89a1"
+      },
+      "cause": "Owned HTTP helper starts transparent; preserve422 rejection then fill before successful ordinary Save"
+    }
+  ],
+  "resume_first": "Verify checkpoint148/freeze04/final audit, candidate148 and installed117. Continue major D01/I04; preserve every open parity requirement.",
+  "independent_jpeg": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-jpeg01.json",
+    "sha256": "d17ad706c89b4ae2a423ae1e1f30de957f3fe9470a974cc696aec95eb718365d"
+  },
+  "independent_rich": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-rich01.json",
+    "sha256": "df6f29572c7af52eec54170daac1fd1d864272235a2162d33073027cb1426e33"
+  },
+  "independent_layer_output": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-layer-output01.json",
+    "sha256": "28a5408df3367e26208987a3a1e51e261c72213ca1606dcd7ece101da5c08be4"
+  },
+  "independent_layers": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-layers01.json",
+    "sha256": "cb0349d279a04f96b2622f2249d7f1e9388ba94f1a7bad347545886b45ddbdc7"
+  },
+  "independent_storage": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-storage01.json",
+    "sha256": "ce47c509aa2844b2e370371ee1c3368d0080d809a0a6937cab80ad3a6b62720e"
+  },
+  "independent_tiff": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-tiff01.json",
+    "sha256": "f9248f07eb2d3cc59abba07cf1051d239706e1221452dc44a8edec48ca80c152"
+  },
+  "independent_psd": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-psd01.json",
+    "sha256": "a1a1d3bc9e3c273cd01ab07bfa3f211cda7c20956e6b5a22b4afdee887e2273c"
+  },
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step148-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step148-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step148-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step148-final/final-inputs01.json"
+  }
+}

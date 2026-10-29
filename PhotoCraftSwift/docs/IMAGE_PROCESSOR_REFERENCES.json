@@ -1,0 +1,58 @@
+{
+  "step": 250,
+  "recorded_at_utc": "2026-10-29T14:17:58.715125+00:00",
+  "status": "Image Processor now converts open images or file/folder batches to JPEG, PSD and TIFF, with per-format resizing, profiles, Actions, copyright, settings files and shared API ZIP export/cancel. 26 focused and 2623 full optimized tests pass on 2385 unchanged inputs. Independent lossless outputs match 32,000 analytic RGBA channels; the JPEG fixture has a maximum one-level channel error. Source preservation, unique output names and cancellation are tested. Exact Photoshop output/defaults, first-image Camera Raw, optional PSD composites, broader limits and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T133301Z-250-image-processor/source06.json",
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "run": "artifacts/runs/20261029T133301Z-250-image-processor",
+  "commands": [
+    "document.imageProcessor",
+    "document.imageProcessor.cancel"
+  ],
+  "adobe_routes_changed": false,
+  "references": [
+    "artifacts/runs/20261029T133301Z-250-image-processor/references01.json",
+    "artifacts/runs/20261029T133301Z-250-image-processor/api-reference-review01.json"
+  ],
+  "verification": {
+    "full": {
+      "tests": 2623,
+      "failures": 0,
+      "seconds": 175.727,
+      "log": "artifacts/runs/20261029T133301Z-250-image-processor/full01.log",
+      "sha256": "4efeed6266ce2d05cea0888d115a475d70f4e9bba304b4c16c352fa67ac91232"
+    },
+    "focused": {
+      "tests": 26,
+      "failures": 0,
+      "seconds": 2.008,
+      "log": "artifacts/runs/20261029T133301Z-250-image-processor/focused06.log",
+      "sha256": "b23cb5551b5c44a79ef500018b960def8f107cf703da9049e2a1432d7dccbc06"
+    },
+    "unchanged_inputs": 2385,
+    "source_manifest": "artifacts/runs/20261029T133301Z-250-image-processor/source06.json",
+    "independent": "artifacts/runs/20261029T133301Z-250-image-processor/outputs-full01-independent.json",
+    "exact_lossless_RGBA_channels": 32000,
+    "jpeg_max_channel_error": 1,
+    "binary_sha256": "b00ca7435d82477ab5de2760d13425458622cc6da7633617c274c3cabaf98289",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "provenance": "Licensed Rust Image Processor wrapper and public Adobe behavior guide informed independent native Swift orchestration using existing codecs/Actions/ColorSync. Owned mathematical fixtures; no proprietary Photoshop implementation examined. Native and analytic checks do not prove Photoshop equality.",
+  "exact_photoshop_parity": false,
+  "full_feature_complete": false,
+  "open": [
+    "Owned Photoshop2026 comparisons for exact encoders, profiles, resampling, preferences/defaults and interaction remain required.",
+    "Interactive first-image Camera Raw settings and original-source-location orchestration are not implemented; first-profile reuse is supported.",
+    "Maximize Compatibility cannot be disabled: PSD output always includes its merged composite.",
+    "Still-image8MP/source512MiB/output128MiB limits, all format/depth contexts and clipboard/master-palette Actions remain open.",
+    "Native settings files use Photato JSON; Adobe Image Processor settings interchange is unqualified.",
+    "No dedicated Image Processor endpoint exists in the pinned Adobe contract; existing edit/execute-actions routes remain distinct.",
+    "Live native/Photoshop interaction, physical Intel/macOS14 and Apple Silicon/macOS26 acceptance remain open.",
+    "All remaining major/minor/detail workflows and byte-identical Photoshop acceptance stay active."
+  ]
+}

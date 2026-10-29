@@ -1,0 +1,59 @@
+{
+  "step": 237,
+  "date": "2026-10-28",
+  "decision": "Free and open-source release; no tips, donations, purchases, subscriptions or paid feature unlocks.",
+  "licenses": "MIT OR Apache-2.0; retained upstream/third-party notices",
+  "repository": "https://github.com/ForensicIntelligence/Photato",
+  "repository_policy": "Private during development, public on the same day the software is released.",
+  "verification": {
+    "utc": "2026-10-29T02:01:30.858384+00:00",
+    "tests": 2440,
+    "failures": 0,
+    "suite_seconds": 168.516,
+    "build_seconds": [
+      "255.88"
+    ],
+    "log": "artifacts/runs/20261029T015500Z-237-foss-release/full-tests01.log",
+    "log_sha256": "a47e61f81d252b87ca1c4d1c842174cea61b788e9af4b2f162835e655c367897",
+    "source_manifest": "artifacts/runs/20261029T015500Z-237-foss-release/source01.json",
+    "unchanged_inputs": 2293,
+    "binary_sha256": "781ab55c1015e71ee808908ba832b021cacfcf0e2e30db41eb4d3f2b0b2bfc08",
+    "test_binary_sha256": "cc36968908392283d14ba9c495a7cbac7ff559ab920f02b2fe0f01611d03decb",
+    "direct_storekit_link": false,
+    "purchase_implementation_symbols": false,
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "removed_files": "artifacts/runs/20261029T015500Z-237-foss-release/withdrawn-files.json",
+  "source_changes": "artifacts/runs/20261029T015500Z-237-foss-release/changes01.json",
+  "api_impact": {
+    "menu_records": 801,
+    "typed_commands": 164,
+    "removed_product_menu": "Help > Support Development\u2026",
+    "adobe_routes": "unchanged",
+    "purchase_endpoints": "none"
+  },
+  "active_ledger": "docs/FUNCTION_PHASES_237.json",
+  "withdrawn_work_package": "REL02",
+  "active_work_packages": 104,
+  "dashboard_checks": {
+    "tests": 8,
+    "failures": 0,
+    "path": "../photato-dashboard/evidence/foss-ledger237-tests.log"
+  },
+  "installed_build_step": 221,
+  "qualified_private_build_step": 232,
+  "limitations": [
+    "No new installed or distributed app; running user app/documents left untouched.",
+    "No fresh native live UI or universal/Intel/macOS14 qualification for this change.",
+    "Full Photoshop parity remains incomplete; native53/Actions20 unchanged."
+  ],
+  "completion": "artifacts/runs/20261029T015500Z-237-foss-release/completion01.json",
+  "current_distribution": {
+    "qualified_and_uploaded_step": 243,
+    "reference": "docs/UNIVERSAL_TIMELINE_PREVIEW_REFERENCES.json",
+    "both_architectures_no_direct_storekit_or_purchase_symbols": true,
+    "installed_step": 221
+  }
+}

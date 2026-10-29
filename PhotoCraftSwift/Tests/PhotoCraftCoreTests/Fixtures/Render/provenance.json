@@ -1,0 +1,190 @@
+{
+  "source": "Original Rust hash/clouds_value/value_noise/fibers/lens_flare/smoothstep functions extracted unchanged; original Ghost structure. RGB-only Image/Ctx adapters and source-equivalent Clouds color/alpha loop. Synthetic inputs, not Photoshop output references.",
+  "license": "MIT OR Apache-2.0",
+  "source_hashes": {
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/engine/src/extra_cmds.rs": "ad946097a4207a9f0ec6232ebf225d51e7ca88d41ae062de423a80f0c47989cf",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/render.rs": "d4d5722219d01011796c6b29018a7218d62053bc34794c0ffd4ca317fa62e7cc",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T014514Z-215-render-workflows/oracle01.rs": "273bed3b31c5e1a187444f993ed41866a3af8dc6fbf0b12e465ab5f64232089e"
+  },
+  "cases": [
+    {
+      "name": "clouds-default",
+      "kind": "clouds",
+      "settings": {
+        "seed": 0
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "170f7590969e78a51f44ed604edd7e76b5bd301cea0b7a451ef3a8365a0ba393"
+    },
+    {
+      "name": "clouds-colors",
+      "kind": "clouds",
+      "settings": {
+        "seed": 42,
+        "foreground": {
+          "r": 0.15,
+          "g": 0.7,
+          "b": 0.25,
+          "a": 0.3
+        },
+        "background": {
+          "r": 0.8,
+          "g": 0.1,
+          "b": 0.6,
+          "a": 0.5
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "846cf5da9635713e656e0f96c4daa5f78f8cdd9b9080191d56e6b9532a49e39d"
+    },
+    {
+      "name": "differenceClouds-default",
+      "kind": "differenceClouds",
+      "settings": {
+        "seed": 0
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "6b95fa990b798fb2dfbaf6cee3408bd1025c1b0a6fc89dc22aa36ac42a4d0326"
+    },
+    {
+      "name": "differenceClouds-colors",
+      "kind": "differenceClouds",
+      "settings": {
+        "seed": 42,
+        "foreground": {
+          "r": 0.15,
+          "g": 0.7,
+          "b": 0.25,
+          "a": 0.3
+        },
+        "background": {
+          "r": 0.8,
+          "g": 0.1,
+          "b": 0.6,
+          "a": 0.5
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "566f700361a8cf4791a426355b92cd966fbb610efe76829604a8e5d861a46b12"
+    },
+    {
+      "name": "fibers-default",
+      "kind": "fibers",
+      "settings": {
+        "variance": 16,
+        "strength": 4,
+        "seed": 0
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "9038af9df2c287ab04d08ed24baa496ab0bab57f59274e7855e6cd98657abe77"
+    },
+    {
+      "name": "fibers-colors",
+      "kind": "fibers",
+      "settings": {
+        "variance": 47,
+        "strength": 31,
+        "seed": 123,
+        "foreground": {
+          "r": 0.15,
+          "g": 0.7,
+          "b": 0.25,
+          "a": 0.3
+        },
+        "background": {
+          "r": 0.8,
+          "g": 0.1,
+          "b": 0.6,
+          "a": 0.5
+        }
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "5e2fac499278d98a55d9e1a472766decb3d4a0333bec8ec96e163e05ddbc3b01"
+    },
+    {
+      "name": "fibers-limits",
+      "kind": "fibers",
+      "settings": {
+        "variance": 64,
+        "strength": 1,
+        "seed": 4294967295
+      },
+      "width": 32,
+      "height": 24,
+      "sha256": "4a224d3a36d288235df9d0dce20e463f02098fded1fb86e4d564822f2d30593d"
+    },
+    {
+      "name": "lensFlare-zoom",
+      "kind": "lensFlare",
+      "settings": {
+        "brightness": 175,
+        "centerX": 0.23,
+        "centerY": 0.37,
+        "lens": "zoom"
+      },
+      "width": 128,
+      "height": 96,
+      "sha256": "a6e5a443f6e2bd0a58391bd7cc89044ed0a56eb820f39b6bf3d1da9ae97d15cc"
+    },
+    {
+      "name": "lensFlare-prime35",
+      "kind": "lensFlare",
+      "settings": {
+        "brightness": 175,
+        "centerX": 0.23,
+        "centerY": 0.37,
+        "lens": "prime35"
+      },
+      "width": 128,
+      "height": 96,
+      "sha256": "bb19daf1a4c9ecf9bdc7e2c25906dee147b100ddc56a19193453b5299a5b5f4b"
+    },
+    {
+      "name": "lensFlare-prime105",
+      "kind": "lensFlare",
+      "settings": {
+        "brightness": 175,
+        "centerX": 0.23,
+        "centerY": 0.37,
+        "lens": "prime105"
+      },
+      "width": 128,
+      "height": 96,
+      "sha256": "49a3d791e4f7a926e1d1222cf50251720d630c18c48f8a3f764c1e0387ee248e"
+    },
+    {
+      "name": "lensFlare-moviePrime",
+      "kind": "lensFlare",
+      "settings": {
+        "brightness": 175,
+        "centerX": 0.23,
+        "centerY": 0.37,
+        "lens": "moviePrime"
+      },
+      "width": 128,
+      "height": 96,
+      "sha256": "ed033d3024e7c29ce4ccf187a3f835cebe5dc0c95b710c521bd161abee0c14bd"
+    },
+    {
+      "name": "lensFlare-outside",
+      "kind": "lensFlare",
+      "settings": {
+        "brightness": 300,
+        "centerX": 1.25,
+        "centerY": -0.15,
+        "lens": "moviePrime"
+      },
+      "width": 128,
+      "height": 96,
+      "sha256": "b525e2e900c4cffbc36db5482a4afc4fc359f7aa78530db8ed42b219e7fc49db"
+    }
+  ]
+}

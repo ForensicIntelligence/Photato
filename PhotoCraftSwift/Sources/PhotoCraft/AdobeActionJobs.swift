@@ -1,4 +1,5 @@
 import Foundation
+import PhotoCraftImaging
 
 protocol AdobeResourceTransport: Sendable {
   func fetch(_ url: URL) async throws -> Data
@@ -45,12 +46,17 @@ protocol AdobeResourceTransport: Sendable {
     let mediaType: AdobeActionsRequest.MediaType
     let expires: Date
   }
+  private enum Request: Sendable {
+    case actions(AdobeActionsRequest), background(AdobeRemoveBackgroundRequest), colorEdit(AdobeColorEditRequest), artboards(AdobeArtboardRequest)
+    var input: URL? { switch self { case .actions(let r): r.input; case .background(let r): r.input; case .colorEdit(let r): r.input; case .artboards(let r): r.input } }
+  }
   private struct Job {
-    let request: AdobeActionsRequest
+    let request: Request
     let baseURL: URL
     let assetPath: String
     var snapshot: Snapshot
   }
+  private let detector: any ForegroundDetecting
   private let transport: any AdobeResourceTransport
   private let now: @Sendable () -> Date
   private let maximumJobs: Int
@@ -62,11 +68,12 @@ protocol AdobeResourceTransport: Sendable {
   private var generation = UUID()
 
   init(
-    transport: any AdobeResourceTransport, maximumJobs: Int = 16,
+    transport: any AdobeResourceTransport, detector: any ForegroundDetecting = VisionForegroundDetector(), maximumJobs: Int = 16,
     maximumStoredBytes: Int = 128 * 1_024 * 1_024,
     now: @escaping @Sendable () -> Date = { Date() }
   ) {
     self.transport = transport
+    self.detector = detector
     self.maximumJobs = maximumJobs
     self.maximumStoredBytes = maximumStoredBytes
     self.now = now
@@ -75,6 +82,18 @@ protocol AdobeResourceTransport: Sendable {
   func submit(_ request: AdobeActionsRequest, baseURL: URL, assetPath: String = "v2/assets") throws
     -> Snapshot
   {
+    try submit(.actions(request), baseURL: baseURL, assetPath: assetPath)
+  }
+  func submit(_ request: AdobeRemoveBackgroundRequest, baseURL: URL) throws -> Snapshot {
+    try submit(.background(request), baseURL: baseURL, assetPath: "v2/assets")
+  }
+  func submit(_ request: AdobeColorEditRequest, baseURL: URL) throws -> Snapshot {
+    try submit(.colorEdit(request), baseURL: baseURL, assetPath: "v2/assets")
+  }
+  func submit(_ request: AdobeArtboardRequest, baseURL: URL) throws -> Snapshot {
+    try submit(.artboards(request), baseURL: baseURL, assetPath: "v2/assets")
+  }
+  private func submit(_ request: Request, baseURL: URL, assetPath: String) throws -> Snapshot {
     prune()
     guard jobs.count < maximumJobs else {
       throw AdobeAPIError(
@@ -136,11 +155,46 @@ protocol AdobeResourceTransport: Sendable {
     jobs[id] = job
     do {
       try check(expected)
-      let input = try await transport.fetch(job.request.input)
+      let input: Data
+      if let url = job.request.input { input = try await transport.fetch(url) }
+      else { input = Data() }
       try check(expected)
       let request = job.request
+      let detector = detector
+      var fetched: [URL: Data] = [:]
+      if case .actions(let action) = request {
+        var total = input.count
+        let resourceURLs = (action.layerEdits ?? []).compactMap(\.resource)
+          + (action.creation?.resource.map { [$0] } ?? [])
+          + action.outputs.compactMap { $0.colorProfile?.resource }
+        for url in Set(resourceURLs) {
+          let data = try await transport.fetch(url)
+          try check(expected)
+          total += data.count
+          guard data.count <= AdobeActionAssets.maximumResourceBytes, total <= AdobeActionAssets.maximumOutputBytes else {
+            throw AdobeAPIError.invalid("Job resources exceed the local 128 MiB aggregate limit.")
+          }
+          fetched[url] = data
+        }
+      }
+      if case .artboards(let artboards) = request {
+        var total = input.count
+        guard input.count <= AdobeActionAssets.maximumResourceBytes else { throw AdobeAPIError.invalid("Input exceeds64MiB.") }
+        for url in Set(artboards.images.map(\.source) + artboards.request.outputs.compactMap { $0.colorProfile?.resource }).subtracting([artboards.input]) {
+          let data = try await transport.fetch(url); try check(expected); total += data.count
+          guard data.count <= AdobeActionAssets.maximumResourceBytes, total <= AdobeActionAssets.maximumOutputBytes else { throw AdobeAPIError.invalid("Artboard inputs exceed the128MiB aggregate limit.") }
+          fetched[url] = data
+        }
+        fetched[artboards.input] = input
+      }
+      let resources = fetched
       let computation = Task.detached(priority: .utility) {
-        try AdobeActionAssets.execute(request, input: input)
+        switch request {
+        case .artboards(let request): return try request.execute(resources: resources)
+        case .actions(let request): return try AdobeActionAssets.execute(request, input: input, resources: resources)
+        case .colorEdit(let request): return try request.execute(input: input)
+        case .background(let request): return try await request.execute(input: input, detector: detector)
+        }
       }
       let encoded = try await withTaskCancellationHandler(
         operation: { try await computation.value }, onCancel: { computation.cancel() })

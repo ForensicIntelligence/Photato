@@ -1,0 +1,124 @@
+{
+  "step": "dev-step-137",
+  "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_137.json",
+    "sha256": "a179fd0dddf6530ecdec0a5d9a7d586d701670b2eb221ca744890390b276dde5"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/recovery/salvage",
+      "POST /v1/recovery/salvage/scan",
+      "POST /v1/recovery/salvage/open-copy",
+      "POST /v1/recovery/salvage/download",
+      "POST /v1/recovery/salvage/reset-index"
+    ],
+    "permission": "Existing separate session-off backup access permission now explicitly describes salvage and confirmed reset. No arbitrary paths, source adoption or automatic sharing.",
+    "coverage": "Shared native coordinator, scan-local revision/IDs, exact state/request/result schemas, bounded scan/download/reset, canonical identity matching, stale/busy/confirmation/revocation/error checks. Adobe desktop salvage route not invented."
+  },
+  "scope": [
+    "Explicit native Find Recovery Copies window in File Handling, bounded nonrecursive private-folder scan even with damaged index, current/legacy/absent/unverified context classification and canonical registration matching",
+    "Full background document decode for independent fresh-ID unsaved copies and exact ordinary native11 Save Copy/download; private source/recovery association discarded and image corruption rejected",
+    "Confirmed index reset only with no open documents, fresh scan and unreadable regular index up to2MiB; exact old bytes preserved before atomic empty-index commit, archives/originals untouched and no automatic re-registration",
+    "Five separately permissioned application API routes, complete schemas/state/errors, shared lifecycle exclusion, stale filesystem/index/revision/cancellation and revocation checks",
+    "158 focused and1289 Debug/1289 Release tests; nine owned process outcomes cover native layout/copy/export/API reset, before/after-commit SIGKILL and fresh relaunches without automatic orphan restoration",
+    "Universal macOS14+ package verified and six public Open callbacks pass on each Release architecture; Core/Imaging/AI unchanged, nine full PSB outputs byte-identical to136"
+  ],
+  "remaining": [
+    "D02/I02: full indexed recovery decoding still runs on MainActor; next implement background preparation with progress/cancellation and unchanged dirty/source/autosave identity semantics",
+    "D02: legacy locations outside private Archives, scans beyond1024 immediate entries and reset of indexes larger than2MiB are outside this increment; no arbitrary-folder scan or automatic reconstruction",
+    "D02: complete window/tab restoration, sandbox/network/removable-volume and power-loss qualification; live recovery and Photoshop UX unverified",
+    "D01: complete format/profile/metadata/tag/ACL fidelity, import options, configurable save-format preferences and external coordination; recent count20/default and system/Dock integration remain unqualified",
+    "I02: source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14 validation",
+    "File metadata/fingerprint checks do not establish filesystem compare-and-swap; cached availability can become stale until the next operation checks files",
+    "Programmatic native salvage fitting size1093x430 is recorded; live layout/accessibility and Photoshop parity are not established. Public Release opening under Rosetta is not full new salvage-runtime qualification on physical Intel.",
+    "All major gates remain open; minor functions and final details remain deferred. Passing tests and unchanged sample outputs do not establish universal Photoshop byte equivalence."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Photato Find Recovery Copies button in existing File Handling; no invented Photoshop factory command"
+  },
+  "design": {
+    "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/design01.json",
+    "sha256": "ceaa02de94de5e328899786408e424888e47011dba3d3e54d27ed3a009707323"
+  },
+  "provenance": "Original Swift using existing native archive/recovery/atomic modules; no external code copied. Manual salvage is a Photato affordance, not a claimed Photoshop factory window.",
+  "freeze": {
+    "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/tested-source-hashes03.json",
+    "sha256": "2696d061983c5a75800a1aedb8b31506deb1dae9c0aa03c717460375a581bd4e"
+  },
+  "focused": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 18.668,
+    "log": {
+      "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/focused03.log",
+      "sha256": "4fea9990006805028efcea5d1c56c40a9485d79613500d2f7da0aa40b25f7e3b"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T104618Z-137-recovery-salvage/full01.log",
+      "sha256": "44fbe7d5a4dbadd1fd245d76fcb7c3d6f515d0b57a6feb088dc89fe993a769cf",
+      "passed": 1289,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 261.872
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T104618Z-137-recovery-salvage/release01.log",
+      "sha256": "1f99ce5b982236090fd2dffac7c85bd2e805bb9a014b7ef3785e7da50bb64313",
+      "passed": 1289,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 65.071
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato137-verified-uup7lrc3/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "ab4b87eb65e2de4edbec061d3bc5e0c21016d0984710c650ed40d16d4809923d",
+    "zip_sha256": "f4957b243605f1bc288aeca355b5a8065b9dd99b1827662e55f7031e62001c89",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "debug_process": {
+    "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/process-salvage-verification01.json",
+    "sha256": "f8da24a23da3a4d159e2a06e397a0633178a884b2ed46476692877cc005269c8"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/public-release-arm6401/verification.json",
+      "sha256": "d0c9c30267d902608e9090131a56f7883409218c22219b5c9b0ebf2e8266787b"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/public-release-x86_6401/verification.json",
+      "sha256": "c7724aa498f637f7583d67aeef56081853a7e331df62d828a774ede4a32bbd8f"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/live-ui-availability02.json",
+    "sha256": "c7781c02340d7e898da0f6895f9d5b366475077d10223478886ebff308ba97d7"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T104618Z-137-recovery-salvage/source-delta01.json",
+    "sha256": "23da331f427b4aa66a4440626d5415d90316fd21a34599c4cfa51c7a1628cecd"
+  },
+  "full_parity": false
+}

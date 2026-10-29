@@ -32,6 +32,16 @@ public struct GradientFill: Codable, Equatable, Sendable {
       ? try layer.fillFrame(width: width, height: height)
       : IntRect(x: 0, y: 0, width: width, height: height)
   }
+  /// Artboard fills use the containing board as their canvas. Mask-based alignment
+  /// is intersected with that frame so extracting a board preserves its appearance.
+  public func frame(for layer: Layer, in document: CraftDocument) throws -> IntRect {
+    let canvas = try frame(for: layer, width: document.width, height: document.height)
+    guard let board = document.artboard(containing: layer.id)?.artboardBounds else { return canvas }
+    guard aligned else { return board }
+    let x0 = max(board.x, canvas.x), y0 = max(board.y, canvas.y)
+    let x1 = min(board.x + board.width, canvas.x + canvas.width), y1 = min(board.y + board.height, canvas.y + canvas.height)
+    return x1 > x0 && y1 > y0 ? IntRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0) : board
+  }
   /// Carry the editable angle/relative center through canvas turns and flips. Positive
   /// axis scaling keeps fractional offsets unchanged; fills adapt to their new frame.
   /// This is a parameter transform, not an affine warp of a rasterized gradient.

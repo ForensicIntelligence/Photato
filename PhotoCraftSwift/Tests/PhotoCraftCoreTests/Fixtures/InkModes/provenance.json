@@ -1,0 +1,185 @@
+{
+  "license": "MIT OR Apache-2.0",
+  "source": "../photocraft-main/crates/doc/src/mode.rs",
+  "source_sha256": "799604b29a92b37e96fdf6de0023f12ea1602bf98892b9a4a78fd796d8258e07",
+  "reference": "curve_eval, DuotoneInk.density and Duotone.render extracted unchanged; standalone fixture types omit unrelated fields/serialization.",
+  "scope": "Four configurations, all256 gray samples; byte comparisons of rendered RGB8 and each ink separation. Does not qualify Photoshop numerical output or custom overprint display.",
+  "cases": [
+    {
+      "name": "black",
+      "inks": [
+        {
+          "name": "Black",
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cyan-magenta",
+      "inks": [
+        {
+          "name": "Cyan",
+          "color": [
+            0,
+            1,
+            1
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "name": "Magenta",
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "half-black",
+      "inks": [
+        {
+          "name": "Half black",
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "curved-tritone",
+      "inks": [
+        {
+          "name": "Black",
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              0.25,
+              0.1
+            ],
+            [
+              0.6,
+              0.7
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "name": "Brown",
+          "color": [
+            0.62,
+            0.38,
+            0.18
+          ],
+          "curve": [
+            [
+              0,
+              0
+            ],
+            [
+              0.2,
+              0.5
+            ],
+            [
+              0.75,
+              0.25
+            ],
+            [
+              1,
+              0.8
+            ]
+          ]
+        },
+        {
+          "name": "Blue",
+          "color": [
+            0.27,
+            0.38,
+            0.58
+          ],
+          "curve": [
+            [
+              0,
+              0.15
+            ],
+            [
+              0.5,
+              0.8
+            ],
+            [
+              1,
+              0.4
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "black.plates": "cd6816b77f68d70001fc3eaa4d42bdd67cb5973b3151cc5292ecc02a3daac6ab",
+    "black.rgb": "72432263dbfe17abc40ed269f24c7a344e077e3671007dfc8a2f3851f8193dc2",
+    "curved-tritone.plates": "91cf97d99b9ac35f0e4f0362483938ef455b180e2ebeb45f0f90b169c866b990",
+    "curved-tritone.rgb": "b9818c627f8abcfa88e114270a97fad96bb809e679762ea7cdd121a2f5db45ab",
+    "cyan-magenta.plates": "410f8672586b1c7d5b9053bdeb1091f1624cfec56c9a8b0662bd0f4df386ff4f",
+    "cyan-magenta.rgb": "ad589543a2700e0d7ad6895500a7e540222adb8f8189fba6583e9df6517a21e5",
+    "half-black.plates": "cbc749111d73cbfe45dfaece09173ad05bf8f4710915375307c26ab897ea830b",
+    "half-black.rgb": "3f49b9a26b3c5e57e1d83f2874e2229f0b4f028be66e79e72911a29182b56f7f"
+  }
+}

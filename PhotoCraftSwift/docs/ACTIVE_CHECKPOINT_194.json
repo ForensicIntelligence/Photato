@@ -1,0 +1,148 @@
+{
+  "step": "dev-step-194",
+  "completed_at_utc": "2026-10-27T16:41:08.867899+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Sharp-region detection with Auto/manual range and noise, soft edges, manual Add/Subtract brushes, preview/local history, six output modes and draft-only Select and Mask handoff. Factory menu, native history/Actions selection and shared API.",
+  "source_manifest": "artifacts/runs/20261027T161119Z-194-focus/source01.json",
+  "source_manifest_sha256": "1349370f891d1f470e21903bb409bf12679de5c1da4a8840f495990d05663cdf",
+  "source_inputs": 1470,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationFocusArea.swift",
+      "Sources/PhotoCraft/FocusAreaControls.swift",
+      "Sources/PhotoCraftCore/FocusArea.swift",
+      "Sources/PhotoCraftImaging/FocusAreaInput.swift",
+      "Tests/PhotoCraftAppTests/FocusAreaWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/FocusAreaTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationSelectMask.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/SelectMaskCanvas.swift",
+      "Sources/PhotoCraft/SelectMaskEditing.swift",
+      "Sources/PhotoCraft/SelectMaskSheet.swift",
+      "Sources/PhotoCraft/SelectMaskWorkspace.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/MattingFilters.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Sources/PhotoCraftCore/SelectionSegmentation.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration04": 83,
+    "release-full01": 1903
+  },
+  "last_full_regression": {
+    "step": 194,
+    "tests": 1903,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T161119Z-194-focus/release-full01.log",
+    "current_source": true,
+    "includes_step193": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T161119Z-194-focus/integration02.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T16:41:08.867899+00:00",
+    "tests": {
+      "integration04": 83,
+      "release-full01": 1903
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T161119Z-194-focus/Photato194-final.zip",
+    "zip_sha256": "1d53f2f8bd4049a8ce3b6eaad0541355ae4914a2f96db6da5b624c046ffdf9c7",
+    "app": "/private/tmp/photato194-verified-jfrkgo8h/Photato.app",
+    "executable_sha256": "96fc7f25ef54189d45b4829cee489313875adb7c775877b74977cc4e00bb8d64",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato194-verified-jfrkgo8h/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato194-verified-jfrkgo8h/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1470,
+    "source_manifest_sha256": "1349370f891d1f470e21903bb409bf12679de5c1da4a8840f495990d05663cdf",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 262,
+      "unavailable_leaf_commands": 463,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host, including193 Sky. No live desktop/physical Intel/macOS14/macOS26 or complete Photoshop qualification."
+  },
+  "api": {
+    "commands": [
+      "selection.focus"
+    ],
+    "catalogue_count": 89,
+    "state": "focusArea includes availability/workspace/preview state, requested/effective settings, stroke count, output and error. selectionRefinement.workspaceOpen now distinguishes Focus Area mode.",
+    "schemas": "Strict settings, stroke, output, state and result discovery. Ordinary editing and new-document outputs share native preparation/refinement output and lifecycle guards.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "limits": "Native8,388,608 canvas/source pixels;1MP working analysis. API shared-document4,194,304 canvas pixels/64 layers/128MiB and4MiB request.1024 strokes,4096 points per stroke,16384 total points,250000000 brush pixel visits. Ordinary raster targets; sampling/analysis uses SDR/sRGB proxy."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Focus Area route in pinned Photoshop v2 contract. Focus actionJSON descriptors remain unqualified. Existing Adobe routes are unchanged; native API support does not establish Adobe conformance."
+  },
+  "menus": {
+    "new_menu_bindings": 1,
+    "commands": [
+      "Select > Focus Area\u2026"
+    ],
+    "shortcut": "Captured factory menu order retained; no primary shortcut invented. Local Undo/Redo routing shared with Select and Mask.",
+    "entries": 802,
+    "bound_leaf_commands": 262,
+    "unavailable_leaf_commands": 463,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Exact Adobe focus detection, Auto estimates, numeric/default ranges and pixels remain unqualified; native range0\u201310 and noise0\u20131 are explicit current controls, not a verified factory-default claim.",
+    "Real-photo noise/depth-of-field quality and large-image performance require broader independent qualification. Source-derived heuristics are not Adobe proprietary inference.",
+    "Native outputs currently require an ordinary raster layer. Smart Object/live type/group/component targets require appropriate conversion; broader contexts remain open.",
+    "Nonselection Actions/Adobe descriptors and complete S02 Color Range/Magnetic Lasso requirements remain open.",
+    "Offscreen synthetic preview is not live UI qualification. Latest authoritative desktop state remains locked; no re-probe. Physical Intel/macOS14/macOS26 and full Photoshop equivalence remain open."
+  ],
+  "actions": "Focus selection output records explicit resulting coverage in Actions4. Mask/new-layer outputs create visible unsupported recording entries. No adaptive re-detection or complete Focus Actions/Batch claim.",
+  "next": "Major Mask All Objects with local per-instance detection, editable masked groups, original image retention, factory menu/context entry, native history and API. Then broader Object Finder/People workflows; fine numerical/cosmetic work remains deferred.",
+  "next_major_plan": "artifacts/runs/20261027T161119Z-194-focus/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "first_check": "passed",
+    "counts": {
+      "check": "passed",
+      "milestones": 194,
+      "evidence_files": 38630,
+      "logs": 19426,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/runs/20261027T161119Z-194-focus/development-history-audit/audit01-check.log",
+    "final_refresh_log": "artifacts/runs/20261027T161119Z-194-focus/development-history-audit/audit02-refresh.log",
+    "final_check_log": "artifacts/runs/20261027T161119Z-194-focus/development-history-audit/audit02-check.log",
+    "scope": "Development documentation/evidence inventory, not Photoshop parity."
+  }
+}

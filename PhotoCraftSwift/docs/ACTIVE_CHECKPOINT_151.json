@@ -1,0 +1,210 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-151",
+  "recorded_at_utc": "2026-10-20T19:29:32.414127+00:00",
+  "major_workflow": "D01/I03 native protection prerequisite for editable document migration",
+  "status": "Independent Photoshop protection references and isolated native value/PSD/Adobe-field parsers are tested. Runtime layer protection integration remains open; no major gate is closed.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/tested-source-hashes01.json",
+    "sha256": "61f4425f6427b818322080e8ec29d7e3277184569f217b07d7309871effc4f92"
+  },
+  "source_test_files": 533,
+  "validation_inputs": 1126,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/packaging-documents01.json",
+    "sha256": "5cdedb1e12b45ee33e4508827f8aa3ad7fc55c9516d2cf617c345a3fec46c03e"
+  },
+  "validation_isolation": "/private/tmp/photato151-attempt01-h2gni41a/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 0.011,
+    "log": {
+      "path": "artifacts/runs/20261020T185700Z-151-layer-locks/focused01.log",
+      "sha256": "ac98b3f7d0d30410b4c2d2f380cc259aeae821de86a154e77f820e4a192e8641"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T185700Z-151-layer-locks/full01.log",
+      "sha256": "2648b3a5354aaa994daa98304003e990cb92ae5c3269685828894d9c4c12d936",
+      "passed": 1432,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 411.391
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T185700Z-151-layer-locks/release01.log",
+      "sha256": "2d595202c30ad0453426483b6702d2ce52dc51a0d0f6483397de648eec24652e",
+      "passed": 1432,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 81.752
+    }
+  },
+  "intel_focused_tests": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 0.015,
+    "log": {
+      "path": "artifacts/runs/20261020T185700Z-151-layer-locks/intel-tests02.log",
+      "sha256": "cc146cb90f3e48ef6a683a6a37372a49785cd345cca4bc7252a703231961b05b"
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato151-verified-uym0e5ig/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "b8adbcd47c98990c7cb0377e2f1ce635846c0dcbbe3f4f5d99f2ff5a11a48695",
+    "zip_sha256": "2745a8002c96a139823f51374b0b911a91a649e556fb7e55d050303604589c49",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/Photato151-candidate.zip",
+    "sha256": "2745a8002c96a139823f51374b0b911a91a649e556fb7e55d050303604589c49"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_150.json",
+    "sha256": "9ca8a8b78bb04b3b7670592eeda5541b72b97fa9fac84fc5aa70608a129ac82d"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/package-verification01.json",
+    "sha256": "92af5fce9c2b751d005647ea14014a139bd096f224c45fdb43be2d5531834946"
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "No UI/menu/shortcut changes; internal protection prerequisites only."
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [],
+    "capability_change": "None. AdobeLayerProtection is a field-parser prerequisite only; create-composite remains unimplemented. No new route, mutation, schema field or executable capability is exposed.",
+    "next_requirement": "Activate layer protection with desktop/Photato typed commands/state/schema/history and published Adobe create-composite job/contract tests together."
+  },
+  "completed": [
+    "Nine owned synthetic PSD references retain transparency/image/position/auto-nest/full/none, fully locked rename and transparency-protected black fill. Independent PSD/PackBits inventory verifies all alpha bytes and visible pixel behavior.",
+    "Three isolated modules distinguish independent protection bits, dialog versus shortcut transitions, legacy transparency and published Adobe add/edit absence semantics. Unknown flags and malformed records fail explicitly. No runtime import/editing behavior is changed.",
+    "All10 focused,1432 Debug,1432 Release and10 x86_64 Release focused tests pass, with universal macOS14+ packaging verification and692 output/reference files byte-identical150. Rosetta does not qualify a physical Intel Mac or macOS14 runtime.",
+    "Seventeen files added, all1109 prior frozen inputs unchanged. Original Rust, installed117, Xcode and user workspace/recovery state preserved. Current official Adobe contract remains byte-identical to the pinned217311-byte schema."
+  ],
+  "remaining": [
+    "Layer still stores one locked Bool. Existing PSDCodec still collapses partial bits and writes7 for a locked layer. New protection modules are deliberately inactive until native model, every editing guard, desktop controls and both APIs can activate together.",
+    "Implement shared pixel/position/mask/group/descendant permissions, alpha-preserving painting and removal, fully locked rename, Layers controls/dialog/shortcut, native/PSD/PSB/TIFF/history persistence, Photato typed commands/state and Adobe create-composite protection edits.",
+    "Independent group/mask/type/shape behavior, protected brush/eraser/selection/RGB16/RGB32 references, live native workflows and broad supported-platform qualifications remain open.",
+    "Editable .pcraft import remains unavailable. Next: native partial-lock semantics, explicit sparse-default/profile interpretation and native adapter, with desktop/Photato API/schema/state/history/persistence/error tests in the user-facing increment.",
+    "Smart Objects,artboards,rich text,auxiliary channels,effects,Blend If,comps,timeline and other source features need native editable workflows. Keeping their source JSON/payloads is not rendering or full semantic validation.",
+    "Reader is bounded to16MiB manifest,250000 JSON values,4096 layers,16384 surfaces,256MiB blob and512MiB logical payload totals. Existing ZIP/Zstd limits remain. Optional previews and unreferenced entries are not loaded; unknown version rejects. Larger/streamed migration remains open.",
+    "All Photoshop byte parity,menus/shortcuts/preferences,major workflows and live/supported-platform qualifications remain open. Continue major functions before optional minor functions and final details."
+  ],
+  "export_compatibility": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/final-export-compatibility01.json",
+    "sha256": "454092b86958136bc69b27efcce27af6a4e8b014085cef6722ee7a15a6b5a710"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/final-inputs01.json",
+    "sha256": "d40fb71eed72b85cd451279033b6b9b47db39a1a1712d1d72eca0ef439e39758"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/next-major-plan02.json",
+    "sha256": "34c27f35faecc4a8466b21c943c674e57b43d9d16114e0c4629405737a84421e"
+  },
+  "references": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/reference-inventory03.json",
+    "sha256": "819d05961f7b28be43d4c200ba813c90160ee04d5f8f9a9afbad7516c865b6bf"
+  },
+  "primary_references": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/primary-references01.json",
+    "sha256": "158405219dd02800461ff13da4f82740b0a0a3fcea3314f09db93abd5415c838"
+  },
+  "contract_verification": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/adobe-contract-fetch01.json",
+    "sha256": "ad0f9f2fc82c26a8e019717fe86d7fcac84c47421f7096ff8d58e36e3214e464"
+  },
+  "contract_interpretation": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/adobe-protection-contract-analysis01.json",
+    "sha256": "6db617c158c6b54aaf4eda87474ffdf7194f2b9106fc9358c254b09b86ed596d"
+  },
+  "source_delta": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/source-delta01.json",
+    "sha256": "da5f418ea1b35f6aeffe3d41d39fb4f8350dcbcd911291df9ad8f743ef353d72"
+  },
+  "upstream_unchanged": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/upstream-verification01.json",
+    "sha256": "72419cdef09b65603e3c130954e56f51108e3ee8094eac827e7e347a46f45291"
+  },
+  "research_failures": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/research-failures01.json",
+    "sha256": "612056ee09c61252be8bb76cc7bd031ccd9e4b2a5f7e46fc577ae4e0e9bc8df5"
+  },
+  "prior_failed_attempts": [
+    {
+      "log": {
+        "path": "artifacts/runs/20261020T185700Z-151-layer-locks/intel-build-tests01.log",
+        "sha256": "a25593cd7da710a5425b6287f9edb3bf9d28c28e2c4ab5225b375e53a9f94956"
+      },
+      "cause": "swift build --build-tests Release omits testable imports. Retry02 adds -Xswiftc -enable-testing with unchanged frozen source."
+    }
+  ],
+  "resume_first": "Verify checkpoint151/freeze01/candidate151/final audit and installed117. Continue the six-part protection activation plan: native Layer/archive model and complete permission/painter/UI/dual-API integration before activating new PSD semantics. Then continue editable .pcraft defaults/profile/adapter. All major gates remain open.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step151-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step151-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step151-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step151-final/final-inputs01.json"
+  }
+}

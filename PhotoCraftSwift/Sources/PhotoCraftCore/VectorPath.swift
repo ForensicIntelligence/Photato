@@ -165,6 +165,7 @@ public struct VectorMask: Codable, Equatable, Sendable {
 }
 extension CraftDocument {
   mutating func transformSavedPaths(by t: Transform2D) {
+    vanishingPoint=vanishingPoint?.transformed(t)
     guard var paths else { return }
     for i in paths.indices { paths[i].path = paths[i].path.transformed(t) }
     self.paths = paths

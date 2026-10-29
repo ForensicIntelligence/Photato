@@ -1,0 +1,173 @@
+{
+  "step": "dev-step-147",
+  "status": "Numeric adjustments and vector masks now survive both TIFF byte orders through the shared PSD engine; retained global mask-display metadata survives TIFF/PSD/PSB output. Native/API automated qualification passes. Descriptor/opaque records, live Photoshop comparison and all major workflow gates remain open.",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_147.json",
+    "sha256": "e3627d199b53f7bef406bcd0666aabff5b449a5350780f215e79d830204ade28"
+  },
+  "previous_layer_reference": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/previous-layer-reference01.json",
+    "sha256": "725918d902f704d6f5d7349e55e31c4afcbb6a818065741e65b99330dd335acf"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [],
+    "expanded_routes": [
+      "POST /v1/documents/import",
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.tiff",
+      "POST /v1/action-jobs",
+      "POST /v2/execute-actions"
+    ],
+    "capability": "documentTransfers.layeredTIFF documents numeric adjustments/vector masks/global LMsk and remaining descriptor guards",
+    "contract": "Existing Photato encodingOptions and native engine; Adobe input-to-PSD support expands without adding Adobe output fields. Photato-only TIFF options remain rejected422 on Adobe v2.",
+    "coverage": "Native Open/history/Save/Copy, actual HTTP upload/download/save, both job inputs-to-PSD, and Photato little-endian TIFF output. Existing invalid/busy/stale/atomic guards remain covered."
+  },
+  "scope": [
+    "Original Swift structural transport converts represented Levels, point Curves, Hue/Saturation, Color Balance, Threshold, Posterize, Gradient Map and vector-mask records between TIFF orders. Shared PSD semantic validation remains authoritative; Gradient Map editable export remains restricted to8/16-bit.",
+    "Global LMsk source bytes are re-emitted with validated framing in PSD/PSB and layered TIFF; native archives already retained them. Default output with no source LMsk stays unchanged.",
+    "Six independent synthetic TIFF fixtures and22 literal payloads cover signed values, Unicode, vector coordinates and nondefault global mask display. Independent psdtags parses base pixels/LMsk; a separate bounded record parser handles extended-mask and PSB-tag limitations in that oracle. Rich-payload equality is checked separately and is not independent rendering or Photoshop-file proof.",
+    "All96 focused,1390 Debug and1390 Release tests pass on986 inputs/510 Swift files. Independent checks cover48 rich TIFF/PSD/PSB outputs,72 prior layered TIFF,48 layered PSD,88 storage TIFF,18 Float32 TIFF,22 LZW boundaries and96 PSD/PSB compression outputs. All161 retained unrelated outputs equal146.",
+    "Universal macOS14+ package/signature/resources verify. Production Release public native callbacks/save controls verify six rich inputs and saves plus PSB data on arm64/Rosetta, alongside previous opening/format/layer/storage checks. Installed117/user state/Core/AI/Xcode are preserved."
+  ],
+  "remaining": [
+    "All major workflows remain open. Descriptor-backed little-endian fills/saved paths, embedded patterns and opaque metadata need reliable byte-order evidence and independent qualification; the contradictory-reference draft is preserved outside production.",
+    "TIFF PSB-style ImageSourceData/BigTIFF, broader color modes/orientations, saved alpha/spot channels, profile-conversion breadth, other global metadata and full large-file/streaming memory qualification remain open.",
+    "Save Transparency, pyramids, Ask Before Saving Layered TIFF Files and exact Photoshop dialogs/defaults remain open.",
+    "Synthetic fixtures and native round trips do not establish Photoshop2026 rendering/whole-file/UI parity. Live reference work awaits an unlocked Mac; Rosetta does not substitute for physical Intel/macOS14 runtime qualification.",
+    "Continue major save/export dependencies including JPEG options and PSD/PSB Maximize Compatibility; original .pcraft migration and the other major workflows stay open. Minor functions and final details remain deferred."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "Existing TIFF Save/Copy controls admit represented numeric/vector layers in both orders; no new menu bindings."
+  },
+  "reference_review": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/reference-review01.json",
+    "sha256": "e703afa0b340dc2c837f613553da15aad93b9a2fac732b8eba7aee84d5969842"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/references01/provenance.json",
+      "sha256": "49bceef707fb65c684d85cfc580015753420c3f9b5225bc915b2ccead1099a1b"
+    },
+    {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/references02/provenance.json",
+      "sha256": "ca79a3e2a85c166e4317906a419b8b79a15413b3ca72941be6f75a278ccb1502"
+    },
+    {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/references03/provenance.json",
+      "sha256": "28c6220bcd2c5b4a0fc6b819f18f027b01d73ebdd0a48c0729def9b559455305"
+    },
+    {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/references04/provenance.json",
+      "sha256": "f2bbf604dd4a0e4037f61f74ee18e2fb698f9ba259c0de97fcbfbd09d323f7b8"
+    }
+  ],
+  "fixtures": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/tiff-rich/provenance.json",
+    "sha256": "5fddfb3979d2e985f2affe733c4063c0c34cec763922da8a982114876ec14cb0"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/tested-source-hashes02.json",
+    "sha256": "ec27ea1e903feb71ef6f047612aae338d02262809a8dbdfe032d19fe9e9def07"
+  },
+  "focused": {
+    "passed": 96,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 25.289,
+    "log": {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/focused02.log",
+      "sha256": "afcb1111453343a72b15a508a4e9cb7a67a31d276ac9c7e3b25865ec5f786f21"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T163959Z-147-tiff-rich-records/full01.log",
+      "sha256": "53c360c2d6b3995ddc63b8d49229227269312a9add800219abf944e04f814058",
+      "passed": 1390,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 298.123
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T163959Z-147-tiff-rich-records/release01.log",
+      "sha256": "720adf87dfde523922b3ac2cfd5a8834305fdbfa18741baa8cf092ce5f34b112",
+      "passed": 1390,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 78.684
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato147-verified-04k0osxt/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "dc200436305e76b00c9a7423ef8e558ac6bfb9362db5a2092cad20e0f680b404",
+    "zip_sha256": "a8f18cba9794e5114e397d0e08aebf03150bdd6c1c74a98338aa14232ce7df6b",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "independent_rich": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/independent-rich01.json",
+    "sha256": "df6f29572c7af52eec54170daac1fd1d864272235a2162d33073027cb1426e33"
+  },
+  "independent_layer_output": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/independent-layer-output01.json",
+    "sha256": "28a5408df3367e26208987a3a1e51e261c72213ca1606dcd7ece101da5c08be4"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/public-release-arm6401/verification.json",
+      "sha256": "86038cc106020ffb08bac1a297238a5a4d7a428a2a951027869ff54e02f5bcbf"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/public-release-x86_6401/verification.json",
+      "sha256": "51f1c5107eee882fe3455c6bf07514d1b2d966aafcdbae713d403355af25c67c"
+    }
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/source-delta02.json",
+    "sha256": "71adae9ba1c6c8795779e21ef4bc964a219e9f0f08b5ff40fee0608a4cba33ec"
+  },
+  "failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/tested-source-hashes01.json",
+        "sha256": "d234936300f2f4b0041a5316316f6c77e12f8117b56174855e0daadeab45111c"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T163959Z-147-tiff-rich-records/focused01.log",
+        "sha256": "0743f46273483a36a894da766c18415d1bc4440fec6ee0e932fb4d08518599db"
+      },
+      "tests_run": 96,
+      "failures": 5,
+      "unexpected": 4,
+      "cause": "Synthetic32-bit Gradient Map fixture conflicts with existing supported Photoshop export policy; correct fixture, keep rejection regression, do not weaken production guard."
+    }
+  ],
+  "full_parity": false,
+  "document_modes_step220": {
+    "status": "Native Gray/CMYK/Lab raster/group/mask TIFF modes implemented within the stated strip/depth bounds; full mode fidelity remains open.",
+    "reference": "docs/DOCUMENT_MODE_REFERENCES.json",
+    "tests": "artifacts/runs/20261028T052601Z-220-document-modes/mode-tiff03.json",
+    "independent": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-independent03.json",
+    "imageio": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-imageio03.json",
+    "limits": "Native-mode tiled/JPEG-compressed TIFF, spot-ink/extra-channel variants and non-RGB editable rich PSD/TIFF records remain unsupported. Native Lab16 TIFF chroma is rounded to the public signed1/256 scale; layered planes retain exact bytes. Merged multi-layer mode caches still use RGB composition/reseparation; exact native blend/ink output remains open."
+  }
+}

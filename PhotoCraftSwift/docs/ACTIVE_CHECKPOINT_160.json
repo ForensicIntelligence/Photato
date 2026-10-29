@@ -1,0 +1,60 @@
+{
+  "step": "dev-step-160",
+  "completed_at_utc": "2026-10-26T19:54:54.202267+00:00",
+  "goal_status": "active",
+  "scope": "Functional embedded Smart Object subset; broader Photoshop parity, linked/warp/Smart Filters and live UI checks remain open.",
+  "source_manifest": "artifacts/runs/20261026T192208Z-160-smart-objects/source01.json",
+  "source_manifest_sha256": "410b609929aefea06628c0cd7af62d8e71e741f7d04a0ce8926c754b2662cda6",
+  "source_inputs": 1183,
+  "tests": {
+    "focused_debug_integration": 57,
+    "focused_debug_final": 14,
+    "full_release_final": 1524,
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T192208Z-160-smart-objects/platform01.json",
+    "checks_per_architecture": 36
+  },
+  "live": {
+    "status": "Not executed: Mac remains locked, unlock question pending from159. No UI bypass.",
+    "pending": [
+      "Place Embedded, Convert, Edit Contents, Save to parent, Replace, Undo/Redo in the owned native app",
+      "Independent Photoshop Smart Object import/export comparison",
+      "Finish159 Remove Background/mask check and discard/quit owned159 app after unlock"
+    ],
+    "owned159_app": "/private/tmp/photato159-live-689faskh/Photato159Probe.app"
+  },
+  "package": {
+    "archive_sha256": "1fc9707e2c42df2ed625ef083ae9882ba0272bebee3269918c715f9ef37af63e",
+    "executable_sha256": "e43aec99fe9cd8b4833f1f69d71c788aa977a0e1ca6256c272e6e1a0d699fc8d",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato160-verified-w_qoqic3/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato160-verified-w_qoqic3/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato160-verified-w_qoqic3/Photato.app"
+  },
+  "candidate_archive": "artifacts/runs/20261026T192208Z-160-smart-objects/Photato160-candidate.zip",
+  "isolated_source": "/private/tmp/photato160-final-a1_i0xhn/PhotoCraftSwift",
+  "preserved": "Installed117/root ZIP, user workspace, Xcode project and754 original Rust files unchanged.",
+  "next": {
+    "major_workflow": "L06 Smart Filters",
+    "implementation_order": [
+      "Read existing raster-filter and new Smart Object cache paths plus Rust smart-filter source/PSD descriptors",
+      "Preserve editable filter stack over original Smart Object source; enable/disable/reorder/edit and masks with history",
+      "Native UI/factory filter actions, native persistence and both APIs through shared engine",
+      "Focused workflow tests, meaningful Release milestone and native checks when Mac is unlocked"
+    ],
+    "small_followups_to_batch": "Refresh older float32Storage.nativeArchiveWriteVersions capability list (primary nativeArchives already advertises14). Larger imported linked-file metadata, recovery parent-child links and exact interpolation remain open.",
+    "completion_rule": "All major functions before optional minor/detail work. Do not claim full Photoshop parity or major family closure from bounded native tests."
+  },
+  "history_audit": {
+    "status": "first refresh/check passed",
+    "milestones": 160,
+    "evidence_files": 35965,
+    "logs": 19049,
+    "missing_explicit_references": 0,
+    "final_refresh_log": "artifacts/development-history-audit/20261026-step160-final/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261026-step160-final/check02.log"
+  }
+}

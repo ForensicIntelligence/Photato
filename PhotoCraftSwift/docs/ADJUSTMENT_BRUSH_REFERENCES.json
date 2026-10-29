@@ -1,0 +1,103 @@
+{
+  "step": "dev-step-191",
+  "date": "2026-10-27",
+  "status": "Native Adjustment Brush implemented and tested; full B08/Photoshop parity remains open.",
+  "scope": "Editable masked local adjustments, Add/Subtract painting, on-device clicked-object application, native controls/preview/history and four shared API commands.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/use-the-adjustment-brush-tool.html",
+      "updated": "2026-09-29",
+      "checked": "2026-10-27",
+      "use": "Behavior reference: masked editable adjustment, brush controls, object targeting, replacement, overlay and new adjustment. Current guide says K; factory evidence assigns Frame/K. No source/assets copied."
+    },
+    {
+      "url": "https://developer.apple.com/videos/play/wwdc2023/10176/?time=489",
+      "checked": "2026-10-27",
+      "use": "Vision instance labels use UInt8 buffers; point coordinates are measured from the top left. Native document coordinates use the same origin."
+    },
+    {
+      "source": "Apple SDK Vision.framework/Headers/VNObservation.h",
+      "use": "macOS14 instanceMask and scaled-mask interfaces; implementation uses Apple framework, no external model weights."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "checked": "2026-10-27",
+      "use": "Published v2 compatibility boundary; pinned endpoint contract remains unchanged."
+    },
+    {
+      "path": "artifacts/runs/20261027T140953Z-191-adjustment-brush/shortcut-reference01.json",
+      "use": "Installed unmodified factory shortcut evidence."
+    },
+    {
+      "source": "Original Rust snapshot ../photocraft-main, read-only search and existing native brush/mask/adjustment implementations",
+      "use": "No upstream Adjustment Brush implementation found. New integration uses existing native Swift engines; all754 original source hashes remain protected."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "adjustmentBrush.configure",
+      "adjustmentBrush.stroke",
+      "adjustmentBrush.object",
+      "adjustmentBrush.edit"
+    ],
+    "catalogue_count": 81,
+    "state": "kind/settings, current target/mask density/feather/enabled/inverted, next-new flag, subtract, object mode, overlay and availability",
+    "schemas": "Fifteen typed adjustment settings/defaults, nested validation and brush options. Shared native prepared operation, revision/busy/cancellation/revocation guards. Configure changes defaults; edit replace changes an existing adjustment. edit.mask patches density/feather using the same native maskProperties transaction.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3
+      ]
+    },
+    "limits": "4MiB request; 1\u20134096 stroke points; existing native dab/work bounds. Vision proxy <=8388608 canvas pixels and6000 per side. Object stored mask <=16MP."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Adjustment Brush endpoint in the pinned published contract. Masked freehand tool/actionJSON descriptors remain unqualified/unsupported; existing classic adjustment routes retain their bounded coverage."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar": "Adjustment Brush after ordinary Brush group; no invented menu command or conflicting shortcut. Existing Properties, masks and Brush Settings controls reused.",
+    "shortcut": "Factory Frame/K preserved; Adjustment Brush unassigned.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "actions": "Version3 records semantic target strokes/object coverage and adjustment replacement. Object masks replay explicit saved coverage without silently running a model again. Older versions1/2 remain readable; incorrect downgrade rejects. Existing16MiB native library and60000-character base64 API-import limits remain; large object masks can exceed the API-import limit.",
+  "qualification": "All156 focused Debug and156 focused optimized checks pass. Full regression and universal packaging are batched with the next major selection increment; the last verified package190 does not contain191.",
+  "limitations": [
+    "Native15 adjustment types do not establish complete Photoshop2026 adjustment/default/preset catalogue; newer Light/Clarity/Dehaze/Grain remain open.",
+    "Exact Photoshop output/brush/model/defaults, physical tablet and live UI qualification remain open. Desktop last authoritative state remains locked; no re-probe. Offscreen layouts and synthetic events are not live desktop evidence.",
+    "Actual point-specific Vision inference and physical Intel/macOS14/macOS26 qualification remain open; detector injection and label-buffer mapping are tested.",
+    "High-resolution performance, richer target contexts, adjustment-specific preset libraries and Adobe masked-paint action descriptors remain open.",
+    "Shared mask density/feather and ordinary brush presets work; complete Photoshop contextual controls and tool shortcut conflict remain unresolved."
+  ],
+  "next": "S03 major selection tools: Object Selection, Quick Selection and Selection Brush, with native controls/preview/history/API. Fine numerical/cosmetic refinements remain deferred.",
+  "source_manifest": "artifacts/runs/20261027T140953Z-191-adjustment-brush/source02.json",
+  "source_manifest_sha256": "392a5aa6d9eaeabdf1b5b601809745913e94fb241321a05987d355f26c9512ff",
+  "source_delta": "artifacts/runs/20261027T140953Z-191-adjustment-brush/changes02.json",
+  "tests": {
+    "focused_debug": 156,
+    "debug_log": "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration05.log",
+    "focused_optimized": 156,
+    "optimized_log": "artifacts/runs/20261027T140953Z-191-adjustment-brush/release-focused02.log",
+    "failed_attempts": [
+      "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration01.log",
+      "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration02.log",
+      "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration03.log"
+    ],
+    "verification": "artifacts/runs/20261027T140953Z-191-adjustment-brush/verification01.json",
+    "qualification_limits": "Focused Debug and optimized checks on this host. Full regression/universal packaging deliberately batched with next major selection workflow; live UI/model/physical platform and exact Photoshop parity remain open."
+  },
+  "subsequent_batch_qualification": {
+    "step": 192,
+    "qualification": "All155 broad focused Debug checks,7 final dedicated workflow checks and1876 full optimized tests pass. The universal macOS14+ package verifies and includes191 Adjustment Brush.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_192.json",
+    "release_log": "artifacts/runs/20261027T144806Z-192-selection-tools/release-full01.log",
+    "verification": "artifacts/runs/20261027T144806Z-192-selection-tools/verification01.json"
+  }
+}

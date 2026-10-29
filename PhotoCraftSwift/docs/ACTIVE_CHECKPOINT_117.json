@@ -1,0 +1,165 @@
+{
+  "step": "dev-step-117",
+  "recorded_at_utc": "2026-10-19T23:35:21.743413+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/tested-source-hashes02.json",
+    "sha256": "601a2902756721b778c230a14e820b8629b74226730f1e0f4217cae151b67bff"
+  },
+  "source_test_files": 402,
+  "validation_inputs": 723,
+  "validation_isolation": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/isolation01.json",
+    "sha256": "592b0a03e3ef78bf672859542d5edef430dae857b3590bad8e3f16c974f4bb7f"
+  },
+  "tests": {
+    "full02": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/full02.log",
+      "sha256": "8a3768b9253e491afe1cab7135c8080229ec12adc4839be9d33742e9f3f363e4",
+      "passed": 1058,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 156.154
+    },
+    "release02": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/release02.log",
+      "sha256": "8bc62c0f115b34359b02b65bd1eb1cf1848b735b09564c399d424e52a1899512",
+      "passed": 1058,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 43.613
+    }
+  },
+  "focus_tests": {
+    "passed": 156,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 19.352,
+    "evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/focused05.log",
+      "sha256": "606856cd57d3121be39dc6ad549dd313df2080ccdec778026358e1abdd6d8354"
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/package-verification01.json",
+    "sha256": "a25dcaab32ef14561adaaaf7450ab5225c924cb76392729746a7f0ae80db8e62"
+  },
+  "intel_numerical_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/intel-golden01.json",
+    "sha256": "7067713657e2c31cf57841d1dd684f5bfcd9de8f6f485a5ac9dff81ea5fef91d"
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "live_ui": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/live-final-verification02.json",
+    "sha256": "1e2010e7ae0370c48e023a5184ba773cd8f46a041811b7dfef0ffec3fec50eec"
+  },
+  "independent_live": {
+    "each_PSD_layer_and_mask_bytes": 209136,
+    "each_PSD_merged_RGBA_bytes": 65536,
+    "different_bytes": 0,
+    "working_profile_exact": true,
+    "native_archive_version": 10,
+    "evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/live-native-verification01.json",
+      "sha256": "f353effbd29be913bbf6e8b2d04591a94f84cd7fbe947415b42f0e9d778be733"
+    }
+  },
+  "api": {
+    "photato_typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Shared precision capability exposed; desktop/download/both job outputs match an independent Photoshop golden; state/history unchanged."
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "Verified bounded major-workflow progress; goal remains active",
+  "completed_this_increment": [
+    "Measured Normal RGB32 raster composition and separately rounded PSD merged white-matte encoding",
+    "Ten independent Photoshop reference files, all380928 normalized RGBA bytes exact; straight layers/masks preserved",
+    "Full Debug/Release tests, universal package, x86_64 numerical proof and native save/reopen/Photoshop read qualification",
+    "Dual API capability/equivalence coverage, preserved failures and reversible stale-cache repair"
+  ],
+  "remaining_major_dependencies": [
+    "Groups/clipping/transforms/non-Normal blends/adjustments and other rich layer rendering still use the general path and are not byte-qualified.",
+    "Broader profiles, arbitrary masks and complete HDR edits still require comparison.",
+    "Extreme finite subtraction overflow returns an error; Photoshop overflow behavior not qualified.",
+    "PSD container structure, metadata, HDR toning and optional alpha-plane representation differ; no full-file equivalence claim.",
+    "Physical Intel and macOS14 full-application runtime checks remain open; current x86_64 numerical proof runs under Rosetta.",
+    "Native Open/Save keyboard automation failures were preserved; direct accessible file-open and filename controls succeeded, without claiming complete dialog/keyboard parity.",
+    "Complete colour settings/Assign/Convert Profile, intent/BPC/dither and Adobe ACE byte equivalence",
+    "Complete formats/options/metadata, external-file/recent-item/bookmark/recovery workflows",
+    "Full major workflows, both API endpoint coverage and Photoshop menu/shortcut/preferences behavior"
+  ],
+  "resume_first": "Verify402 source/test files and723 input hashes, installed package and project against this checkpoint. Read AGENTS/priorities108/FUNCTION_PHASES109 and DEVLOG117. Continue major D01 from next-major-qualification02.json. Preserve the current root and original user documents. Do not infer full-file or complex-stack equivalence from the ten measured Normal raster goldens.",
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "runtime_cleanup": {
+    "isolated_app_exited": true,
+    "original_probe_unchanged": true,
+    "workspace_bytes_unchanged": true,
+    "original_photoshop_document_untouched": true,
+    "disposable_photoshop_and_finder_windows_closed": true
+  },
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/next-major-qualification02.json",
+    "sha256": "1653f3dd64c9d320a46bb5d5c577830ea9029babe1ab3e8e6eb32adb7f828180"
+  },
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261019-step117-final",
+    "initial_check": {
+      "check": "passed",
+      "milestones": 117,
+      "evidence_files": 29885,
+      "logs": 17926,
+      "missing_explicit_references": 0
+    },
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "final_refresh_log": "artifacts/development-history-audit/20261019-step117-final/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261019-step117-final/check02.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261019-step117-final/final-inputs01.json"
+  }
+}

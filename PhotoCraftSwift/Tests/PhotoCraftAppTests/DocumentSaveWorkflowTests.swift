@@ -59,9 +59,9 @@ final class DocumentSaveWorkflowTests: XCTestCase {
       XCTAssertEqual(doc.fileURL, native)
       XCTAssertEqual(try NativeArchive.decode(Data(contentsOf: native)), snapshot)
       XCTAssertEqual(try Data(contentsOf: source), expected)
-      doc.store.undo()
+      await doc.store.undo()
       XCTAssertTrue(doc.isDocumentEdited)
-      doc.store.redo()
+      await doc.store.redo()
       XCTAssertEqual(doc.store.document, snapshot)
     }
   }
@@ -76,7 +76,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
     )
     let doc = CraftNSDocument(model: model)
     defer { doc.close() }
-    XCTAssertEqual(doc.saveFormats, [.native, .psd])
+    XCTAssertEqual(doc.saveFormats, [.native, .psd, .psb, .tiff])
     let target = folder.appendingPathComponent("existing.png")
     try Data("existing".utf8).write(to: target)
     do {
@@ -90,7 +90,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
       XCTAssertNotNil(DocumentIO.persistenceIssue(model, format: .jpeg))
       if depth == .f32 {
         XCTAssertNotNil(DocumentIO.persistenceIssue(model, format: .png))
-        XCTAssertNotNil(DocumentIO.persistenceIssue(model, format: .tiff))
+        XCTAssertNil(DocumentIO.persistenceIssue(model, format: .tiff))
       }
       XCTAssertNil(DocumentIO.persistenceIssue(model, format: .psd))
     }
@@ -102,7 +102,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
     moved.layers[0].x = 1
     XCTAssertNotNil(DocumentIO.persistenceIssue(moved, format: .png))
     XCTAssertTrue(DocumentIO.Format.jpeg.saveNotice.contains("changes pixels"))
-    XCTAssertTrue(DocumentIO.Format.psd.saveNotice.contains("32-bit precision"))
+    XCTAssertTrue(DocumentIO.Format.psd.saveNotice.contains("32-bit output equivalence"))
   }
   @MainActor func testSourceFormatUsesImageContentAndCommonFilenameAliases() async throws {
     _ = NSApplication.shared
@@ -113,6 +113,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
       ("jpg", .jpeg), ("JPG", .jpeg), ("jpe", .jpeg),
       ("tif", .tiff), ("TIF", .tiff), ("jpeg", .png),
       ("pcswift", .native), ("PCSWIFT", .native),
+      ("psd", .psb), ("psb", .psd), ("PSB", .psb),
     ]
     for (index, item) in cases.enumerated() {
       let (suffix, format) = item
@@ -232,50 +233,55 @@ final class DocumentSaveWorkflowTests: XCTestCase {
   @MainActor func testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory() async throws {
     let folder = try directory()
     defer { try? FileManager.default.removeItem(at: folder) }
-    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, doc in
-      try service.share(doc)
-      let api = AutomationTests()
-      var reply = try await api.edit(service, doc, "document.save")
-      XCTAssertEqual(reply, 403)
-      XCTAssertFalse(service.documentSavesEnabled)
-      XCTAssertNil(service.saveDirectoryURL)
-      service.setDocumentSavesEnabled(true)
-      reply = try await api.edit(service, doc, "document.save")
-      XCTAssertEqual(reply, 409)
-      let args: [String: Any] = ["name": "API saved", "format": "psd", "replace": false]
-      reply = try await api.edit(service, doc, "document.saveAs", args)
-      XCTAssertEqual(reply, 403)
-      service.setSaveDirectory(folder)
-      let before = doc.store.document
-      reply = try await api.edit(service, doc, "document.saveAs", args)
-      XCTAssertEqual(reply, 200)
-      let target = folder.appendingPathComponent("API saved.psd")
-      XCTAssertEqual(doc.fileURL, target)
-      XCTAssertEqual(doc.persistenceFormat, .psd)
-      XCTAssertEqual(
-        try Data(contentsOf: target), try DocumentIO.encodeForPersistence(before, format: .psd))
-      XCTAssertFalse(doc.isDocumentEdited)
-      XCTAssertEqual(doc.store.document, before)
-      try doc.store.executeEditorCommand(
-        .opacity(try XCTUnwrap(doc.store.document.activeLayerID), 0.75))
-      let edited = doc.store.document
-      reply = try await api.edit(service, doc, "document.save")
-      XCTAssertEqual(reply, 200)
-      XCTAssertEqual(
-        try Data(contentsOf: target), try DocumentIO.encodeForPersistence(edited, format: .psd))
-      XCTAssertFalse(doc.isDocumentEdited)
-      XCTAssertEqual(doc.store.session.undoStack.count, 1)
-      let stateReply = try await api.request(
-        service, path: "/v1/documents/\(try XCTUnwrap(service.shares.first?.id))")
-      let state = try XCTUnwrap(JSONSerialization.jsonObject(with: stateReply.1) as? [String: Any])
-      XCTAssertEqual(state["persistenceFormat"] as? String, "psd")
-      XCTAssertEqual(state["canSave"] as? Bool, true)
-      doc.store.undo()
-      doc.store.redo()
-      XCTAssertEqual(doc.store.document, edited)
-      service.stop()
-      XCTAssertFalse(service.documentSavesEnabled)
-      XCTAssertNil(service.saveDirectoryURL)
+    for format in [DocumentIO.Format.psd, .psb] {
+      try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, doc in
+        try service.share(doc)
+        let api = AutomationTests()
+        var reply = try await api.edit(service, doc, "document.save")
+        XCTAssertEqual(reply, 403)
+        XCTAssertFalse(service.documentSavesEnabled)
+        XCTAssertNil(service.saveDirectoryURL)
+        service.setDocumentSavesEnabled(true)
+        reply = try await api.edit(service, doc, "document.save")
+        XCTAssertEqual(reply, 409)
+        let args: [String: Any] = [
+          "name": "API saved", "format": format.rawValue, "replace": false,
+        ]
+        reply = try await api.edit(service, doc, "document.saveAs", args)
+        XCTAssertEqual(reply, 403)
+        service.setSaveDirectory(folder)
+        let before = doc.store.document
+        reply = try await api.edit(service, doc, "document.saveAs", args)
+        XCTAssertEqual(reply, 200)
+        let target = folder.appendingPathComponent("API saved." + format.rawValue)
+        XCTAssertEqual(doc.fileURL, target)
+        XCTAssertEqual(doc.persistenceFormat, format)
+        XCTAssertEqual(
+          try Data(contentsOf: target), try DocumentIO.encodeForPersistence(before, format: format))
+        XCTAssertFalse(doc.isDocumentEdited)
+        XCTAssertEqual(doc.store.document, before)
+        try doc.store.executeEditorCommand(
+          .opacity(try XCTUnwrap(doc.store.document.activeLayerID), 0.75))
+        let edited = doc.store.document
+        reply = try await api.edit(service, doc, "document.save")
+        XCTAssertEqual(reply, 200)
+        XCTAssertEqual(
+          try Data(contentsOf: target), try DocumentIO.encodeForPersistence(edited, format: format))
+        XCTAssertFalse(doc.isDocumentEdited)
+        XCTAssertEqual(doc.store.session.undoStack.count, 1)
+        let stateReply = try await api.request(
+          service, path: "/v1/documents/\(try XCTUnwrap(service.shares.first?.id))")
+        let state = try XCTUnwrap(
+          JSONSerialization.jsonObject(with: stateReply.1) as? [String: Any])
+        XCTAssertEqual(state["persistenceFormat"] as? String, format.rawValue)
+        XCTAssertEqual(state["canSave"] as? Bool, true)
+        await doc.store.undo()
+        await doc.store.redo()
+        XCTAssertEqual(doc.store.document, edited)
+        service.stop()
+        XCTAssertFalse(service.documentSavesEnabled)
+        XCTAssertNil(service.saveDirectoryURL)
+      }
     }
   }
   @MainActor func testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards() async throws {
@@ -386,7 +392,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
     panel.nameFieldStringValue = "Editable.photato"
     XCTAssertTrue(doc.prepareSavePanel(panel))
     let control = try XCTUnwrap(doc.saveAccessory)
-    XCTAssertEqual(control.availableFormats, [.native, .psd])
+    XCTAssertEqual(control.availableFormats, [.native, .psd, .psb, .tiff])
     XCTAssertTrue(panel.accessoryView === control.view)
     control.formats.selectItem(at: 1)
     control.updateFormat()

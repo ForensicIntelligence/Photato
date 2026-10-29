@@ -6,7 +6,7 @@ public enum SelectionMode: String, CaseIterable, Codable, Sendable {
   case subtract = "Subtract"
   case intersect = "Intersect"
 }
-public struct SelectionPoint: Equatable, Sendable {
+public struct SelectionPoint: Equatable, Sendable, Codable {
   public var x: Double
   public var y: Double
   public init(_ x: Double, _ y: Double) {
@@ -14,7 +14,7 @@ public struct SelectionPoint: Equatable, Sendable {
     self.y = y
   }
 }
-public enum SelectionShape: Sendable {
+public enum SelectionShape: Sendable, Codable {
   case rectangle(IntRect)
   case ellipse(IntRect)
   case polygon([SelectionPoint])
@@ -37,18 +37,34 @@ public struct SelectionMask: Equatable, Sendable, Codable {
     self.bytes = bytes
     self.bounds = try Self.findBounds(bytes, width: width, height: height)
   }
-  enum CodingKeys: CodingKey { case width, height, bytes }
+  enum CodingKeys: CodingKey { case width, height, bytes, historyBytes }
   public init(from decoder: Decoder) throws {
     let c = try decoder.container(keyedBy: CodingKeys.self)
+    let data: Data
+    if c.contains(.historyBytes) {
+      guard !c.contains(.bytes),
+        let context = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding
+      else {
+        throw CraftError.invalid("Selection blob data requires its owned raster context.")
+      }
+      data = try context.bytes(
+        c.decode(String.self, forKey: .historyBytes), maximumBytes: Surface.maxPixels)
+    } else {
+      data = try c.decode(Data.self, forKey: .bytes)
+    }
     try self.init(
       width: c.decode(Int.self, forKey: .width), height: c.decode(Int.self, forKey: .height),
-      bytes: Array(c.decode(Data.self, forKey: .bytes)))
+      bytes: Array(data))
   }
   public func encode(to encoder: Encoder) throws {
     var c = encoder.container(keyedBy: CodingKeys.self)
     try c.encode(width, forKey: .width)
     try c.encode(height, forKey: .height)
-    try c.encode(Data(bytes), forKey: .bytes)
+    if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
+      try c.encode(context.storeBytes(Data(bytes)), forKey: .historyBytes)
+    } else {
+      try c.encode(Data(bytes), forKey: .bytes)
+    }
   }
   @inline(__always) public func coverage(x: Int, y: Int) -> Float {
     guard x >= 0, y >= 0, x < width, y < height else { return 0 }

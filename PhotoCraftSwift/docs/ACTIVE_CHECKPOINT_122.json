@@ -1,0 +1,197 @@
+{
+  "step": "dev-step-122",
+  "recorded_at_utc": "2026-10-20T02:08:18.543761+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/tested-source-hashes04.json",
+    "sha256": "6d7f5207193e68414d4ff6d911d3d11d3257b897e01420c2bc891c2d9c0727f2"
+  },
+  "source_test_files": 417,
+  "validation_inputs": 809,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/packaging-documents01.json",
+    "sha256": "02b1878aca5d1020377f2821f71a6450b799a765178d4460585515ecac32e7dd"
+  },
+  "validation_isolation": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/isolation01.json",
+    "sha256": "76966024632119aee3eb5a9906ad9924fba55d8b2d7ef9ff712dbada9a516e61"
+  },
+  "focus_tests": {
+    "passed": 79,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 77.648,
+    "evidence": {
+      "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/focused04.log",
+      "sha256": "fce2f46588bc27334940bf3b038da0e2c9277c51b61c71edb223ebdb162ce5af"
+    },
+    "source_freeze": "tested-source-hashes04.json"
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T014805Z-122-psd-file-output/full01.log",
+      "sha256": "bc449f358a93221bc96f63925b2052d6b180cecc93ebe538c4916eeec56ad6f1",
+      "passed": 1092,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 237.79
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T014805Z-122-psd-file-output/release01.log",
+      "sha256": "80cb323c9ea85ffbc7eb1bf39dd1c9d8bf89dd46b4de70e9772d335638dd2b14",
+      "passed": 1092,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.09
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato122-verified-21h0qozi/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "162f20e271e3396e51875aad2f1e92db11e821111571bc5cdf6e267e93680c50",
+    "zip_sha256": "39d9d8724a74f716f4ffd35d28469f8b3aca0f0ef609be657f50a4460db098ec",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/Photato122-candidate.zip",
+    "sha256": "39d9d8724a74f716f4ffd35d28469f8b3aca0f0ef609be657f50a4460db098ec"
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "previous_candidate_checkpoint": "docs/ACTIVE_CHECKPOINT_121.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/package-verification01.json",
+    "sha256": "adab7e33813d4f86cd028f6637a0006cc38948e4fd7ba235ad0f0f27647f95cf"
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "intel_scope": {
+    "PSB_inputs": 21,
+    "PSB_roundtrips": 63,
+    "decoded_plane_bytes": 31765088,
+    "RGB32_group_cases": 10,
+    "group_merged_bytes": 655360,
+    "different_bytes": 0,
+    "physical_Intel_or_macOS14_full_app": false,
+    "file_input_qualified": true,
+    "file_output_qualified": true,
+    "complete_file_Data_equality_cases": 73
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "api": {
+    "photato_typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "18 typed commands/two partial/six unimplemented Adobe endpoints unchanged. Desktop PSD/PSB Save/SaveAs/Copy/API local saves stage files; Data downloads and both jobs use same row serializer. Additive fileOutput capabilities;128MiB API local-save output cap retained."
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "live_ui": {
+    "status": "pending unlocked Mac",
+    "native122_launched": false,
+    "old118_window_and_cleanup_not_verified": true,
+    "combined118_through122_workflow_pending": true,
+    "evidence": {
+      "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/live-status01.json",
+      "sha256": "c076279de34952620b4b5c5690fc76356c8d10ab7ad69578da304a77e3734d65"
+    }
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "Progress: recovered final121 audit and confirmed terminal verified checkpoint; current122 implements next major dependency",
+  "completed_this_increment": [
+    "Native shared memory/file serializer and checked PSD/PSB section/channel backpatching",
+    "Raw/ZIP/prediction row encoder and merged row output without whole compressed layer sections",
+    "Private prepared-file handoff through NSDocument coordinated saves, Save a Copy and optional API local saves",
+    "Atomic sibling-file writes,64KiB physical chunks, observed-destination-change rejection, cancellation and failed transaction guards",
+    "Eight new tests plus HTTP/capability/desktop equality; final1092 Debug/1092 Release, universal and current Intel engine checks",
+    "All nine small exports and both four-layer RGB32 outputs match previous121 complete bytes; measured memory evidence preserved"
+  ],
+  "remaining_major_dependencies": [
+    "I02: scratch-backed tiles and shared history/cache lifetime with disk-error propagation; native archive streaming and recovery",
+    "I02: multi-GB corpus, greater-than2GB selection/edit/history/save/reopen workflows before raising512MiB/32768/36MP limits",
+    "D01: complete file/profile/metadata/format interoperability, external-file coordination, recent items/bookmarks and crash recovery",
+    "Latest combined native/Photoshop live qualification and installation; dispose only old118 validation app",
+    "Full Photoshop functions/menus/shortcuts/preferences, physical Intel/macOS14 runtime and optional AI qualification"
+  ],
+  "resume_first": "Use checkpoint122/freeze04. All product tests/builds/postflight are terminal. Preserve installed117 and user workspace/original dirty Photoshop document. Continue scratch/tile/history/archive architecture while UI is locked; when unlocked, run combined latest live save/copy/reopen/Photoshop verification before installing. No Git mutation or directory rename.",
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/next-major-qualification01.json",
+    "sha256": "1397760fec017294ab72a82d3ba3cb9f7fc9358633711798740465f5a5a8bc0c"
+  },
+  "source_provenance": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/output-api-provenance01.json",
+    "sha256": "29387de234f5e08b7181e14b60b2af6145f1e84206b707ec0de6d2eb1b529eae"
+  },
+  "memory_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/output-memory-comparison01.json",
+    "sha256": "83578e3d887e00e3cf8a92ecf0ef6a15c0af51a6c7931882c60eb3d3faf3f02a"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/final-export-compatibility01.json",
+    "sha256": "819c96e3c8c03e2c874763f84b7b46ca04b4113e258f06f149eba20e6b4bc684"
+  },
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step122-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step122-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step122-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step122-final/final-inputs01.json"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "step": 226,
+  "recorded_at_utc": "2026-10-28T20:56:58.724134+00:00",
+  "status": "Persistent working RGB/CMYK/Gray profiles, native Color Settings and shared API defaults pass28 initial focused and2,374 full optimized tests, including10 new settings regressions. All2,253 source03 inputs are unchanged. Import/paste policies, working proof integration, presets/Spot/advanced blending and exact/live/platform COL01 acceptance remain open. Installed221 and qualified/uploaded224 are unchanged.",
+  "full_photoshop_parity": false,
+  "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source03.json",
+  "inputs": 2253,
+  "native_archive": 49,
+  "actions_version": 20,
+  "typed_commands": 151,
+  "official_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/color-working-spaces.html",
+      "retrieved": "2026-10-28",
+      "updated": "2026-09-30",
+      "basis": "RGB, CMYK and gray working profiles establish new-document interpretation; embedded-profile policies, untagged documents, Spot settings and CSF presets are separately tracked."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+      "contract": "docs/contracts/adobe-photoshop-v2.json",
+      "basis": "No desktop Color Settings preference endpoint is defined. Resource jobs remain isolated from desktop state; existing published output ICC conversion stays supported."
+    }
+  ],
+  "tests": {
+    "focused": {
+      "utc": "2026-10-28T20:49:26.818265+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 28,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T204354Z-226-color-settings/focused02.log",
+      "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source02.json"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T20:56:58.724134+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 2374,
+      "passed": 2374,
+      "failures": 0,
+      "seconds_test_execution": 164.232,
+      "seconds_suite_wall": 164.447,
+      "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source03.json",
+      "unchanged_inputs": 2253,
+      "log": "artifacts/runs/20261028T204354Z-226-color-settings/release03.log",
+      "log_sha256": "2a01c87f285559d3881f2822138dc307a7cfd7ee4299936bac16ac86f83e269f",
+      "host": "arm64 macOS",
+      "new_universal_package": false,
+      "live_acceptance": false
+    }
+  },
+  "api": {
+    "path": "/v1/preferences/color-settings",
+    "permission": "colorSettingsChangesEnabled; separate/default off/reset on stop",
+    "schemas": "Sources/PhotoCraft/AutomationColorSettings.swift",
+    "effects": [
+      "File New snapshots selected working ICC, custom override/reset and linear32 equivalents.",
+      "Image Mode and shared document.convertMode snapshot destination working profile and intent; precision-only conversion retains the source ICC.",
+      "Assign Profile working choice and removeProfile use the snapshot; Convert to Profile supplies working target, intent and BPC defaults.",
+      "Native and API updates use the same atomic store and stale/external-change guards without document/history changes."
+    ],
+    "stateless_jobs": "Existing explicit/contract defaults; no dependency on desktop Color Settings."
+  },
+  "limits": [
+    "Import/paste missing and mismatched profile policies/warnings are still pending; existing imports keep their prior behavior.",
+    "Working CMYK proof presets still resolve Generic CMYK; bind them to a settings snapshot next.",
+    "Spot dot gain, CSF presets, dither, advanced blending and Adobe ACE/Photoshop numerical equivalence remain open.",
+    "Existing untagged documents retain their saved interpretation; changing settings does not reinterpret open documents.",
+    "Image Mode retains its existing conversion engine; the BPC preference supplies Convert to Profile defaults.",
+    "Full installed-app/live/macOS14/Intel and broader COL01 acceptance remain open."
+  ],
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 368,
+    "unavailable_leaf_commands": 357,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "menu_report": "artifacts/runs/20261028T204354Z-226-color-settings/menus-release09.json",
+  "changes": "artifacts/runs/20261028T204354Z-226-color-settings/changes04.json",
+  "follow_up_227": {
+    "reference": "docs/COLOR_POLICY_REFERENCES.json",
+    "status": "Subsequent working source adds open/paste policies and actual working-CMYK proof capture; earlier checkpoint results remain historical."
+  }
+}

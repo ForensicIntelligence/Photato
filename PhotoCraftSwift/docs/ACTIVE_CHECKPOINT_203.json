@@ -1,0 +1,197 @@
+{
+  "step": "dev-step-203",
+  "completed_at_utc": "2026-10-27T21:36:12.971050+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "47 native effects across Artistic, Brush Strokes, Distort, Sketch, Stylize and Texture",
+    "Asynchronous actual thumbnails, image preview, zoom, effect controls/colors and ordered visible stack",
+    "Cancel/local Undo/Redo, one document commit, editable Smart Filters, Actions and Batch",
+    "Native36 and Actions8 saving, shared filter.apply/smartFilter.set API and state/capability schemas"
+  ],
+  "source_manifest": "artifacts/runs/20261027T210315Z-203-filter-gallery/source01.json",
+  "source_manifest_sha256": "efa5a9cfd4d56b84fa484b6bc90611fa06528d87819bfd0c00be56bb397b0d92",
+  "source_inputs": 1589,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/ArtisticGalleryWorkspace.swift",
+      "Sources/PhotoCraftCore/ArtisticGallery.swift",
+      "Sources/PhotoCraftCore/ArtisticGalleryEngine.swift",
+      "Sources/PhotoCraftCore/GalleryArtistic.swift",
+      "Sources/PhotoCraftCore/GalleryBrushDistort.swift",
+      "Sources/PhotoCraftCore/GalleryCatalogue.swift",
+      "Sources/PhotoCraftCore/GalleryMath.swift",
+      "Sources/PhotoCraftCore/GallerySketch.swift",
+      "Sources/PhotoCraftCore/GalleryTexture.swift",
+      "Tests/PhotoCraftAppTests/ArtisticGalleryWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ArtisticGalleryTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/accentedEdges.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/angledStrokes.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/basRelief.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/chalkCharcoal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/charcoal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/chrome.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/coloredPencil.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/conteCrayon.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/craquelure.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/crosshatch.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/cutout.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/darkStrokes.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/diffuseGlow.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/dryBrush.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/filmGrain.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/fresco.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/glass.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/glowingEdges.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/grain.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/graphicPen.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/halftonePattern.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/inkOutlines.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/mosaicTiles.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/neonGlow.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/notePaper.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/oceanRipple.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/paintDaubs.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/paletteKnife.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/patchwork.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/photocopy.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/plaster.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/plasticWrap.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/posterEdges.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/provenance.json",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/reticulation.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/roughPastels.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/smudgeStick.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/spatter.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/sponge.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/sprayedStrokes.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/stainedGlass.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/stamp.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/sumiE.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/texturizer.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/tornEdges.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/underpainting.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/waterPaper.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Gallery/watercolor.rgba"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration05": 42,
+    "release-full01": 1973
+  },
+  "last_full_regression": {
+    "step": 203,
+    "tests": 1973,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T210315Z-203-filter-gallery/release-full01.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T210315Z-203-filter-gallery/module01.log",
+    "artifacts/runs/20261027T210315Z-203-filter-gallery/integration04.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T21:36:12.971050+00:00",
+    "tests": {
+      "integration05": 42,
+      "release-full01": 1973
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T210315Z-203-filter-gallery/Photato203-final.zip",
+    "zip_sha256": "8d2a4a641a6fbb28be78a43b77bb7f1fa94b90a3ce08b5f19d8b060fafb74d65",
+    "app": "/private/tmp/photato203-verified-qa0i3kuq/Photato.app",
+    "executable_sha256": "ce9f58e2d9ad81d9c62ade11793f7e711cbe4d0eacaf8e9e2fd8702e74016ec6",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato203-verified-qa0i3kuq/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato203-verified-qa0i3kuq/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1589,
+    "source_manifest_sha256": "efa5a9cfd4d56b84fa484b6bc90611fa06528d87819bfd0c00be56bb397b0d92",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 282,
+      "unavailable_leaf_commands": 443,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "typed_command_count": 107,
+    "filter_kind": "filterGallery",
+    "parameter": "artistic",
+    "settings": "effects array in application order, first runs first. Each has filter, visible, values, foreground/background/glowColor. Integer controls and zero-based choices; boolean controls0/1; colors RGBA0...1. Omitted controls use catalogue defaults.",
+    "state": "capabilities.filters.filterGallery includes full47-effect catalogue, typed schemas, defaults/choice lists, limits and qualification; document filterGallery exposes availability/workspace/preview/selection/local-history and settings. Existing Smart Filter state exposes saved settings.",
+    "history": "Shared cancellable prepared native command; selection and locks preserved, Smart Object source retained; stale/busy409, malformed400.",
+    "native_version": 36,
+    "actions_version": 8
+  },
+  "adobe_api": {
+    "routes": [],
+    "existing_route": "Published /v2/execute-actions covers artistic filters but exact Gallery descriptors are not independently qualified. Existing supported descriptors remain unchanged; Gallery returns explicit unsupported rather than invented Adobe fields.",
+    "limits": "Adobe-compatible Gallery actions and editable PSD mappings remain tracked gaps. Native APIs are complete for this increment; no Adobe parity claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 282,
+    "unavailable_leaf_commands": 443,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Full F06/Photoshop output equality, color-profile/numeric/platform/live qualification remain open. Original source labels effects approximations.",
+    "Independent original Rust default tests match47 synthetic32x24 RGBA8 images exactly; this does not establish arbitrary-input or Adobe parity.",
+    "Gallery presets may be retained through Actions/native Smart Filters; separate preset UI and loaded texture files are deferred.",
+    "No component/channel/mask targeting; no external texture resources; document-coordinate tiling/large-workspace and cross-profile behavior remain unqualified.",
+    "Adobe-compatible Gallery actions and editable PSD/PSB descriptors remain unsupported pending independent evidence.",
+    "Synthetic hidden-window tests only; last authoritative desktop state locked. No desktop re-probe, live Photoshop check or physical Intel/macOS14/macOS26 claim."
+  ],
+  "next": "Major photo finishing: Smart Sharpen and Reduce Noise, with native controls/preview, editable Smart Filters, history and both API interfaces where qualified; remaining minor filter variants/polish deferred.",
+  "next_major_plan": "artifacts/runs/20261027T210315Z-203-filter-gallery/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "final01 refresh/check passed",
+    "milestones": 203,
+    "evidence_files": 39066,
+    "logs": 19510,
+    "missing_explicit_references": 0,
+    "refresh_log": "artifacts/runs/20261027T210315Z-203-filter-gallery/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T210315Z-203-filter-gallery/development-history-audit/final01-check.log",
+    "closing_record": "A second refresh/check follows this closing record."
+  }
+}

@@ -115,5 +115,18 @@
       "maximum_absolute_sample_error": 4.470348358154297e-08
     }
   },
-  "next": "Diagnose the measured RGB32 merged/CMM/compositor differences using the freshly recalculated reference; migrate LayerMerge and remaining HDR kernels to direct linear storage. Retain all original-profile/format/lifecycle major requirements."
+  "next": "Original working-profile preservation, including Adobe linear sRGB; PSDMergedSample white-matte arithmetic and remaining compositor differences; other HDR editing kernels and full format/lifecycle scope.",
+  "linear_merge_step115": {
+    "evidence": "docs/LAYER_MERGE_REFERENCES.json",
+    "native_raw_reference_pixels": 65536,
+    "live_profile_gap_RGB_bytes": 8736,
+    "scope": "Direct linear native merge storage/transaction qualified. Adobe linear-sRGB profile conversion changes original RGB samples and remains open; earlier opaque sample preservation applies to recognized Apple linear-sRGB profiles, not every sRGB-labelled ICC."
+  },
+  "working_profiles_step116": {
+    "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
+    "native_archive_version": 10,
+    "original_profile_layer_bytes": 28672,
+    "different_bytes": 0,
+    "full_profile_parity": false
+  }
 }

@@ -1,0 +1,121 @@
+{
+  "step": "dev-step-135",
+  "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_135.json",
+    "sha256": "ef01fa82d94b0ec086a86292fa1915e04f3ade719d6e52aadaa9689f57f057fa"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/recent-documents",
+      "POST /v1/recent-documents/limit",
+      "POST /v1/recent-documents/clear",
+      "POST /v1/recent-documents/open"
+    ],
+    "extended_routes": [
+      "GET /v1/document-opening adds queuedFiles and lastError",
+      "POST /v1/document-opening/cancel accepts an operation owned by the enabled recent-file session"
+    ],
+    "permission": "Separate Allow recent-file access, off each session, gates filenames/list/limit/clear/known-ID reopening. No arbitrary paths or implicit document sharing.",
+    "coverage": "Shared native atomic settings/history and background opening, exact request/state schemas, revision/busy/session/revocation/error tests. Recovery-preference POST preserves the recent count. No Adobe desktop-history route invented."
+  },
+  "scope": [
+    "Successful Open/Save/Save As maintain bounded persistent recents with canonical deduplication, stable IDs and bookmark relocation; copies, recovery-only opens, unsaved uploads and failed/cancelled reads stay out",
+    "Native Open Recent and Clear Recent File List; File Handling count0\u2013100 with OK/Cancel, atomic trimming, version1 read/version2 write and failure preservation",
+    "Four optional application API routes share native behavior; separately permissioned names/known-ID reopening, no automatic sharing, schemas and owned-operation cancellation",
+    "Public SDK requests queue across startup recovery/active reads; cancelled batches complete every callback, later batches continue, pending opens guard close/import",
+    "135 focused and1261 Debug/1261 Release tests; owned LaunchServices/recovery/Save As/three-process persistence/API Clear; six public Release callbacks on arm64/Rosetta with exact model/source checks",
+    "Universal macOS14+ candidate verified; Core/Imaging/AI unchanged and nine complete PSB outputs byte-identical to134"
+  ],
+  "remaining": [
+    "D01: live Photoshop menu/default/settings/accessibility/Finder/multiwindow qualification. Default recent limit20 is provisional; Dock/system recent-list integration remains absent.",
+    "D01: full format/profile/metadata/tag/ACL fidelity, import options, configurable save-format preferences and external-file coordination",
+    "D02: recovery maintenance/legacy migration, corrupt/unavailable/capacity UX and full window/tab restoration; sandbox/network/removable-volume and power-loss qualification",
+    "I02: synchronous startup recovery decode, source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14",
+    "Version2 settings intentionally reject in older readers; external changes require restart to reload. Bookmarks across sandbox/volume/authorization changes are unqualified.",
+    "ImageIO binary dictionary ordering is noncanonical; semantic metadata equality and bounded sample comparisons do not establish universal byte-identical output",
+    "All major workflows remain ahead of minor functions and final details; no major gate is closed"
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "dynamic_recent_items": "Stable-ID file items and Clear Recent File List populate the existing Open Recent submenu; dynamic entries are outside the static catalog counts."
+  },
+  "sources": {
+    "path": "artifacts/runs/20261020T092743Z-135-recent-documents/external-references01.json",
+    "sha256": "890b17e0075d85c5c0a5be5dd457e4d007b30964be6f10fcdf7ed7966c8647ef"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T092743Z-135-recent-documents/tested-source-hashes02.json",
+    "sha256": "99b97b3d7d8c9120833c4bad481131a0e76c8d5d038dacc6c2b691c7b53a178a"
+  },
+  "focused": {
+    "passed": 135,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 18.111,
+    "log": {
+      "path": "artifacts/runs/20261020T092743Z-135-recent-documents/focused02.log",
+      "sha256": "4d9ab4bc83c63b61410c1358122426f5ae716619f56b6f509b88a0cd645ab7d1"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T092743Z-135-recent-documents/full01.log",
+      "sha256": "5367612a220bb89bd3e03eee802b825b404b0e6de8cf959eefb34897866a72e9",
+      "passed": 1261,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 258.453
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T092743Z-135-recent-documents/release01.log",
+      "sha256": "65e684c6ac4ac648c3c9e6b1c755314da42993ba1190c77aea0e4ada05c22b84",
+      "passed": 1261,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 62.053
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato135-verified-t43k8hax/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "77ef435ac80cdf98aabca35076c62eaec710f45d0274958b7b2783c948761f2a",
+    "zip_sha256": "b91dc3df5f4b933dd583c3dca95b4e2f5b18d21be8149f886ee15c6bec536b3b",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "debug_process": {
+    "path": "artifacts/runs/20261020T092743Z-135-recent-documents/process-recent-verification03.json",
+    "sha256": "853bad28bd10019d0f7597103e98c52116e5b912d9c76eb7c61719f485f0ef7d"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T092743Z-135-recent-documents/public-release-arm6401/verification.json",
+      "sha256": "c1883fbbedc8b121d26c7a19e1d14b54f560a76ece07b17546988472a2714696"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T092743Z-135-recent-documents/public-release-x86_6401/verification.json",
+      "sha256": "937d741a1f9e1aad9b87e20b0ef837f953686986e60e01923a8c259b1bd5ea7e"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T092743Z-135-recent-documents/source-delta-and-ui01.json",
+    "sha256": "358dc0a69cc9ea259afca2a30251757f4dff662e560b36b69a1b638783b1a431"
+  },
+  "full_parity": false
+}

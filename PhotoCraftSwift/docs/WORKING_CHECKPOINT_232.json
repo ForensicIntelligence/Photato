@@ -1,0 +1,62 @@
+{
+  "step": 232,
+  "recorded_at_utc": "2026-10-29T00:08:21.299863+00:00",
+  "status": "Native PNG sequence export from frame animation/video Timelines, range/numbering/timing controls, staged folder publication and two shared ZIP APIs pass55 focused and2428 full optimized tests on2284 unchanged source04 inputs. Independent ZIP/Pillow checks verify seven frames/336 pixel-channel samples plus timing/order/CRCs. The universal macOS14+ package is verified and uploaded as a private draft; installed221 is unchanged. Full SP01 and exact/live/platform parity remain open.",
+  "source_manifest": "artifacts/runs/20261028T233908Z-232-sequence-export/source04.json",
+  "source_inputs": 2284,
+  "native_archive": 51,
+  "actions_version": 20,
+  "typed_commands": 161,
+  "tests": {
+    "focused": {
+      "tests": 55,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T233908Z-232-sequence-export/focused04.log"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T23:55:35.170463+00:00",
+      "tests": 2428,
+      "failures": 0,
+      "suite_seconds": 170.229,
+      "source_manifest": "artifacts/runs/20261028T233908Z-232-sequence-export/source04.json",
+      "unchanged_inputs": 2284,
+      "log": "artifacts/runs/20261028T233908Z-232-sequence-export/release06.log",
+      "log_sha256": "4a83b9d8444d9d95d1890e604ca963f590f455e225e88603e77d6f1c3c8ee30f",
+      "binaries": {
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "baefbfee395cbe46135e46a778e7109dc19ed86d4d7b0f69f7797df93d8f76b2",
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "ea276eb96261274e252da29fa7352193dabe0dd22448071d4c6491e5e7e35689"
+      },
+      "focused_tests": 55,
+      "independent": "artifacts/runs/20261028T233908Z-232-sequence-export/independent05.json",
+      "full_photoshop_parity": false,
+      "commands": {
+        "focused": "PHOTATO_SEQUENCE_OUTPUT_DIR=<run>/exports04 ./scripts/test.sh -c release --disable-build-manifest-caching --filter 'ImageSequenceExportTests|StoredZIPTests|VideoTimelineTests|VideoSequenceWorkflowTests|AnimationGIFTests|AnimationInterchangeTests|TimelineWorkflowTests|FrameAnimationTests|AutomationTests'",
+        "full": "./scripts/test.sh -c release --disable-build-manifest-caching"
+      }
+    },
+    "independent": "artifacts/runs/20261028T233908Z-232-sequence-export/independent05.json",
+    "failed_attempts": [
+      "artifacts/runs/20261028T233908Z-232-sequence-export/focused02.log"
+    ]
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": true,
+  "package_verification": "artifacts/runs/20261028T233908Z-232-sequence-export/package-verification09.json",
+  "private_release": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7cde29c1ad993258aa5e",
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/IMAGE_SEQUENCE_EXPORT_REFERENCES.json",
+  "next_action": "Implement AVFoundation movie import and matched optional file transfer from next-major05; continue keyframes/audio/Render Video and all remaining parity gates.",
+  "verification": "artifacts/runs/20261028T233908Z-232-sequence-export/verification07.json",
+  "source_changes": "artifacts/runs/20261028T233908Z-232-sequence-export/changes05.json",
+  "standalone_diary": {
+    "entries": 232,
+    "initial_verification": "artifacts/runs/20261028T233908Z-232-sequence-export/diary-browser13.json",
+    "final_verification": "artifacts/runs/20261028T233908Z-232-sequence-export/diary-browser15.json",
+    "history_refresh": "artifacts/development-history-audit/sequence232-refresh16.log",
+    "history_check": "artifacts/development-history-audit/sequence232-check16.log"
+  }
+}

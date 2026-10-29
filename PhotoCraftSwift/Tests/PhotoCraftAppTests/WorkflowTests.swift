@@ -46,17 +46,17 @@ final class WorkflowTests: XCTestCase {
     XCTAssertTrue(doc.isDocumentEdited)
     XCTAssertEqual(try Data(contentsOf: url), original)
   }
-  @MainActor func testLayerSelectionAndUndoRedoFromStore() throws {
+  @MainActor func testLayerSelectionAndUndoRedoFromStore() async throws {
     let store = EditorStore(document: try CraftDocument(width: 5, height: 5))
     store.renderTask?.cancel()
     let before = store.document
     store.addPixelLayer()
     store.renderTask?.cancel()
     let selected = try XCTUnwrap(store.document.activeLayerID)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, before)
-    store.redo()
+    await store.redo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.activeLayerID, selected)
   }
@@ -109,7 +109,7 @@ extension WorkflowTests {
     XCTAssertNotNil(store.aiError)
     XCTAssertEqual(store.document, before)
   }
-  @MainActor func testGeneratedImageBecomesUndoableLayer() throws {
+  @MainActor func testGeneratedImageBecomesUndoableLayer() async throws {
     let url = FileManager.default.temporaryDirectory.appendingPathComponent(
       UUID().uuidString + ".png")
     defer { try? FileManager.default.removeItem(at: url) }
@@ -124,7 +124,7 @@ extension WorkflowTests {
     XCTAssertEqual(store.document.layers.count, 2)
     XCTAssertEqual(store.document.layers.last?.x, 2)
     XCTAssertEqual(store.document.layers.last?.y, 2)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.layers.count, 1)
   }

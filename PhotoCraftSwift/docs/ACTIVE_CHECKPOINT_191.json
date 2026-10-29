@@ -1,0 +1,155 @@
+{
+  "step": "dev-step-191",
+  "completed_at_utc": "2026-10-27T14:46:20.201834+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Editable masked local adjustments, Add/Subtract painting, on-device clicked-object application, native controls/preview/history and four shared API commands.",
+  "source_manifest": "artifacts/runs/20261027T140953Z-191-adjustment-brush/source02.json",
+  "source_manifest_sha256": "392a5aa6d9eaeabdf1b5b601809745913e94fb241321a05987d355f26c9512ff",
+  "source_inputs": 1444,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AdjustmentBrushEditing.swift",
+      "Sources/PhotoCraft/AutomationAdjustmentBrush.swift",
+      "Sources/PhotoCraftCore/AdjustmentBrush.swift",
+      "Sources/PhotoCraftImaging/AdjustmentBrushPreparation.swift",
+      "Tests/PhotoCraftAppTests/AdjustmentBrushWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/AdjustmentBrushTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationActions.swift",
+      "Sources/PhotoCraft/AutomationBrushes.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/ComponentEditing.swift",
+      "Sources/PhotoCraft/DocumentWorkspace.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/MaskInteractions.swift",
+      "Sources/PhotoCraft/PaintingTools.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspacePanels.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Sources/PhotoCraftImaging/ForegroundSelection.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration05": 156,
+    "release-focused02": 156
+  },
+  "last_full_regression": {
+    "step": 190,
+    "tests": 1851,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T131318Z-190-paint-tools/release-full02.log",
+    "current_source": false
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration01.log",
+    "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration02.log",
+    "artifacts/runs/20261027T140953Z-191-adjustment-brush/integration03.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T14:06:58.384567+00:00",
+    "tests": {
+      "integration06": 184,
+      "release-full02": 1851
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T131318Z-190-paint-tools/Photato190-final.zip",
+    "zip_sha256": "8a1062aa166f39118427d217c5ab1b0f55c64344c83bb5ca572ee21a260573e7",
+    "app": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app",
+    "executable_sha256": "cc76694801ef08f9cd9c8cd181656b5034e3f763703d6bdd99394392d08a6e92",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1438,
+    "source_manifest_sha256": "f56948ece59fafb07f5fd8a4ac53dd27fccd13bf2b550e70f6f8cd7c82ee4781",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 259,
+      "unavailable_leaf_commands": 466,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Full optimized suite and universal package on this host; not live desktop/physical tablet, physical Intel/macOS14/macOS26 or complete Photoshop equivalence.",
+    "current_source": false,
+    "contains_step191": false
+  },
+  "package_step": 190,
+  "new_package_built": false,
+  "batch_qualification": "Run full optimized regression and universal packaging after next major selection increment, including191. Current156 Debug/156 optimized tests do not establish full regression/platform/Photoshop equivalence.",
+  "api": {
+    "commands": [
+      "adjustmentBrush.configure",
+      "adjustmentBrush.stroke",
+      "adjustmentBrush.object",
+      "adjustmentBrush.edit"
+    ],
+    "catalogue_count": 81,
+    "state": "kind/settings, current target/mask density/feather/enabled/inverted, next-new flag, subtract, object mode, overlay and availability",
+    "schemas": "Fifteen typed adjustment settings/defaults, nested validation and brush options. Shared native prepared operation, revision/busy/cancellation/revocation guards. Configure changes defaults; edit replace changes an existing adjustment. edit.mask patches density/feather using the same native maskProperties transaction.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3
+      ]
+    },
+    "limits": "4MiB request; 1\u20134096 stroke points; existing native dab/work bounds. Vision proxy <=8388608 canvas pixels and6000 per side. Object stored mask <=16MP."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Adjustment Brush endpoint in the pinned published contract. Masked freehand tool/actionJSON descriptors remain unqualified/unsupported; existing classic adjustment routes retain their bounded coverage."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar": "Adjustment Brush after ordinary Brush group; no invented menu command or conflicting shortcut. Existing Properties, masks and Brush Settings controls reused.",
+    "shortcut": "Factory Frame/K preserved; Adjustment Brush unassigned.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Native15 adjustment types do not establish complete Photoshop2026 adjustment/default/preset catalogue; newer Light/Clarity/Dehaze/Grain remain open.",
+    "Exact Photoshop output/brush/model/defaults, physical tablet and live UI qualification remain open. Desktop last authoritative state remains locked; no re-probe. Offscreen layouts and synthetic events are not live desktop evidence.",
+    "Actual point-specific Vision inference and physical Intel/macOS14/macOS26 qualification remain open; detector injection and label-buffer mapping are tested.",
+    "High-resolution performance, richer target contexts, adjustment-specific preset libraries and Adobe masked-paint action descriptors remain open.",
+    "Shared mask density/feather and ordinary brush presets work; complete Photoshop contextual controls and tool shortcut conflict remain unresolved."
+  ],
+  "actions": "Version3 records semantic target strokes/object coverage and adjustment replacement. Object masks replay explicit saved coverage without silently running a model again. Older versions1/2 remain readable; incorrect downgrade rejects. Existing16MiB native library and60000-character base64 API-import limits remain; large object masks can exceed the API-import limit.",
+  "next": "S03 major selection tools: Object Selection, Quick Selection and Selection Brush, with native controls/preview/history/API. Fine numerical/cosmetic refinements remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T140953Z-191-adjustment-brush/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "first_check": "passed",
+    "counts": {
+      "check": "passed",
+      "milestones": 191,
+      "evidence_files": 38496,
+      "logs": 19397,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/runs/20261027T140953Z-191-adjustment-brush/development-history-audit/audit01-check.log",
+    "final_refresh_log": "artifacts/runs/20261027T140953Z-191-adjustment-brush/development-history-audit/audit02-refresh.log",
+    "final_check_log": "artifacts/runs/20261027T140953Z-191-adjustment-brush/development-history-audit/audit02-check.log",
+    "scope": "Documentation/evidence inventory, not independent Photoshop comparison."
+  }
+}

@@ -71,8 +71,10 @@
 		2F046021F4D65C5C30DE6925 /* generate-tonal-steps-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-tonal-steps-oracle.py"; sourceTree = "<group>"; };
 		33115301B828302FED7E1037 /* inspect-gradient-map-limits.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-map-limits.cpython-314.pyc"; sourceTree = "<group>"; };
 		33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ATTRIBUTION.md; sourceTree = "<group>"; };
+		3613398636F7BA15630737AD /* validate.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = validate.py; sourceTree = "<group>"; };
 		371BDE46A9E2AE068F404052 /* verify-app-package.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-app-package.py"; sourceTree = "<group>"; };
 		3B449462E698F7FD635D62C4 /* generate-healing-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-healing-oracle.py"; sourceTree = "<group>"; };
+		3B89C3AB704AD720D4570BC1 /* generate-psb-reference-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psb-reference-fixtures.py"; sourceTree = "<group>"; };
 		3E1056D38CADC8F07BC7A1D5 /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F81E4870E3EF86DC9404954 /* inspect-gradient-map-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-map-reference.cpython-314.pyc"; sourceTree = "<group>"; };
 		405B129060151DD64114C76F /* generate-descriptor-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-descriptor-oracle.py"; sourceTree = "<group>"; };
@@ -100,14 +102,16 @@
 		7741290629D5FA9CDC67EBBD /* generate-smooth-neighbor-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-smooth-neighbor-probes.py"; sourceTree = "<group>"; };
 		7827EA160741A495B093EE46 /* inspect-gradient-map-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-gradient-map-reference.py"; sourceTree = "<group>"; };
 		7ED41D753E91F4CA622F3A51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7FC22B3B62746343BC1772D4 /* verify-people-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-people-model.py"; sourceTree = "<group>"; };
+		800C49CD70B97DD476E45C58 /* convert.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = convert.py; sourceTree = "<group>"; };
 		8312A948D501F66B09C3D2FB /* LICENSE-MIT */ = {isa = PBXFileReference; path = "LICENSE-MIT"; sourceTree = "<group>"; };
 		8A332958D09537569C919212 /* generate-blend-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-blend-oracle.py"; sourceTree = "<group>"; };
 		8A380EB9F5709CC646080E8D /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		8C847D4534E01E99359851F5 /* verify-app-package.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-app-package.cpython-314.pyc"; sourceTree = "<group>"; };
 		8D833FE991B9F0F1174B65D9 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
-		8DCA4E73E108F598C605AFAA /* test-storekit.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "test-storekit.sh"; sourceTree = "<group>"; };
 		8EA61AE5945B2D87D8BEC240 /* analyze-smooth-neighbors.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "analyze-smooth-neighbors.py"; sourceTree = "<group>"; };
 		91FF8181552020F7B29B121E /* audit-development-history.cpython-314.pyc */ = {isa = PBXFileReference; path = "audit-development-history.cpython-314.pyc"; sourceTree = "<group>"; };
+		92CCE703AC1A82CE65310A07 /* generate-psd-stream-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psd-stream-fixtures.py"; sourceTree = "<group>"; };
 		92D3743736613E0F5B55B1E5 /* libPhotoCraftCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		954120E2C6159FACEB17389C /* verify-gradient-tool.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-tool.py"; sourceTree = "<group>"; };
 		97D68880DB7FA72FAC1840C5 /* generate-histogram-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-histogram-oracle.py"; sourceTree = "<group>"; };
@@ -127,8 +131,11 @@
 		D00794B479D4C5973E63A560 /* generate-color-balance-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-color-balance-oracle.py"; sourceTree = "<group>"; };
 		D2ED4811F87158509C37F730 /* analyze-smooth-gradient.cpython-314.pyc */ = {isa = PBXFileReference; path = "analyze-smooth-gradient.cpython-314.pyc"; sourceTree = "<group>"; };
 		D695CAAF04AC697228DDA498 /* generate-smooth-gradient-probes.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-smooth-gradient-probes.cpython-314.pyc"; sourceTree = "<group>"; };
+		D7E6F7D032A7D9381124BF9E /* requirements.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
 		DAA706F226E4E7E0FCB353F7 /* generate-gradient-tool-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-tool-oracle.py"; sourceTree = "<group>"; };
+		DC2777689D7A89D6313653A0 /* prepare-people-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "prepare-people-model.py"; sourceTree = "<group>"; };
 		DCF830E1FDD481F89CCA4319 /* NOTICE */ = {isa = PBXFileReference; path = NOTICE; sourceTree = "<group>"; };
+		E39DC6110BB3197C16659BD8 /* generate-component-fill-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-component-fill-reference.py"; sourceTree = "<group>"; };
 		E6C0DD0D7170482139184E0C /* generate-rgb16-matte-probe.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-rgb16-matte-probe.py"; sourceTree = "<group>"; };
 		EA647A57E1094B83D7FAB083 /* verify-gradient-stripes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-stripes.py"; sourceTree = "<group>"; };
 		EC5837E9677024FE4F9BE1A4 /* verify-gradient-map.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-map.cpython-314.pyc"; sourceTree = "<group>"; };
@@ -140,6 +147,7 @@
 		F35828DD417398FB04E9755C /* generate-levels-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-levels-oracle.py"; sourceTree = "<group>"; };
 		F3DF3170481F20EE48A10CCC /* fetch-pattern-fixtures.cpython-314.pyc */ = {isa = PBXFileReference; path = "fetch-pattern-fixtures.cpython-314.pyc"; sourceTree = "<group>"; };
 		F8196FFE6233909937893D42 /* build-app.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-app.sh"; sourceTree = "<group>"; };
+		FA199405C53DF623B10604F9 /* copy-people-model.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-people-model.sh"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -215,6 +223,7 @@
 				47F15F18808A340B326E5108 /* audit-development-history.py */,
 				F8196FFE6233909937893D42 /* build-app.sh */,
 				CA9C5A152E60D96CA3BECCCB /* build-xcode-icon.sh */,
+				FA199405C53DF623B10604F9 /* copy-people-model.sh */,
 				2B4A00D08E4D2EB26ACFB2E6 /* fetch-adjustment-fixtures.py */,
 				9A16B120AC489221182D0BCC /* fetch-gradient-fixtures.py */,
 				661A30D78EF6398ED1654D2E /* fetch-pattern-fixtures.py */,
@@ -224,6 +233,7 @@
 				03047F2D5718367D6E608C03 /* generate-clone-oracle.py */,
 				D00794B479D4C5973E63A560 /* generate-color-balance-oracle.py */,
 				144B189B82879403FCCEE047 /* generate-color-region-oracle.py */,
+				E39DC6110BB3197C16659BD8 /* generate-component-fill-reference.py */,
 				9C8829F2D6FDF63ADB0F1AD7 /* generate-curves-oracle.py */,
 				405B129060151DD64114C76F /* generate-descriptor-oracle.py */,
 				73FE5CAC9F03213ECF61E800 /* generate-focus-oracle.py */,
@@ -240,7 +250,9 @@
 				F141843DBA7C77A9760F7CCC /* generate-inpaint-oracle.py */,
 				F35828DD417398FB04E9755C /* generate-levels-oracle.py */,
 				BD3C155362B89C68D673DEA8 /* generate-pattern-oracle.py */,
+				3B89C3AB704AD720D4570BC1 /* generate-psb-reference-fixtures.py */,
 				0E20C58868021ED75AE65ED0 /* generate-psd-channel-oracles.py */,
+				92CCE703AC1A82CE65310A07 /* generate-psd-stream-fixtures.py */,
 				E6C0DD0D7170482139184E0C /* generate-rgb16-matte-probe.py */,
 				677EFD307BBA6E35F04A3BF3 /* generate-smooth-gradient-probes.py */,
 				7741290629D5FA9CDC67EBBD /* generate-smooth-neighbor-probes.py */,
@@ -254,8 +266,8 @@
 				BE9B7D456CF36B08CB33A55F /* inspect-gradient-method-reference.py */,
 				21575FFED931A12E3776C713 /* inspect-rgb16-matte-reference.py */,
 				4E7648FA0CE94E167A7321B2 /* inspect-smooth-gradient-probes.py */,
+				DC2777689D7A89D6313653A0 /* prepare-people-model.py */,
 				C4A78ACF4208028644F39007 /* ProjectLinks.json */,
-				8DCA4E73E108F598C605AFAA /* test-storekit.sh */,
 				8A380EB9F5709CC646080E8D /* test.sh */,
 				371BDE46A9E2AE068F404052 /* verify-app-package.py */,
 				19D7A808863FBA2E65CA8D33 /* verify-gradient-fill.py */,
@@ -263,8 +275,10 @@
 				6A5776DEBEE2D2E351157F86 /* verify-gradient-map.py */,
 				EA647A57E1094B83D7FAB083 /* verify-gradient-stripes.py */,
 				954120E2C6159FACEB17389C /* verify-gradient-tool.py */,
+				7FC22B3B62746343BC1772D4 /* verify-people-model.py */,
 				F1E52008D0B0C8DA55558220 /* verify-rgb16-matte.py */,
 				A0F477110EF3BA601031688D /* __pycache__ */,
+				D72EC7707195EC664C12898B /* people-model */,
 			);
 			path = scripts;
 			sourceTree = "<group>";
@@ -337,6 +351,16 @@
 				3E1056D38CADC8F07BC7A1D5 /* Photato.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D72EC7707195EC664C12898B /* people-model */ = {
+			isa = PBXGroup;
+			children = (
+				800C49CD70B97DD476E45C58 /* convert.py */,
+				D7E6F7D032A7D9381124BF9E /* requirements.txt */,
+				3613398636F7BA15630737AD /* validate.py */,
+			);
+			path = "people-model";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -414,6 +438,7 @@
 				1D2D59B91B386724835060AF /* Resources */,
 				4768EFF765884782BFB00909 /* Frameworks */,
 				C4EE6E293E21FA55E015C393 /* Build Photato icon */,
+				0EA62C60183E290946B30961 /* Copy optional person feature model */,
 			);
 			buildRules = (
 			);
@@ -515,6 +540,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0EA62C60183E290946B30961 /* Copy optional person feature model */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Assets/GeneratedModels",
+				"$(SRCROOT)/scripts/copy-people-model.sh",
+				"$(SRCROOT)/scripts/verify-people-model.py",
+			);
+			name = "Copy optional person feature model";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.mlmodelc",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.provenance.json",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/scripts/copy-people-model.sh\" \"$SRCROOT\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"";
+		};
 		C4EE6E293E21FA55E015C393 /* Build Photato icon */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

@@ -1,0 +1,23 @@
+{
+  "created": "2026-10-20",
+  "source": "Independently authored Python TIFF fixture generator; no application writer or ImageIO encoder is used. Synthetic pixels from the step143 owned Float32 probe; system Apple linear-sRGB ICC copied by CGColorSpace. No user document content.",
+  "license": "Photato-authored generator and synthetic pixel fixtures: MIT OR Apache-2.0; embedded system ICC is retained as format metadata, not an independently claimed profile design.",
+  "references": [
+    "https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf",
+    "https://gitlab.com/libtiff/libtiff/-/raw/a63e18ca432e1ee4761309a53019e32bcc446b1d/libtiff/tif_predict.c"
+  ],
+  "regenerate": "python3 generate.py /path/to/new/output-directory",
+  "sha256": {
+    "expected.icc": "42d1e258eddfda5492ad878a0077e1365c9662cfe90789c9663333f24bf3c3ff",
+    "expected.rgba32le": "3651d27706edf5d853cae379eccd8f20adefa5a1d03f1c99bf3d5a3bda28ad80",
+    "generate.py": "b8c5f6ab8728267858d377f3b0735b16484d89fb9080bcc852d50e2541f8c76b",
+    "little0-planar0-predict0.tiff": "03cd5c7eb0d0b7bfd7eb572b1f1b35353adf79910ed43388ae1f31e4c12ab2f8",
+    "little0-planar0-predict1.tiff": "9a7dfcebfd81b7b52f3340525aaffffcfb05f946c534ddd9d8017b088ac648d0",
+    "little0-planar1-predict0.tiff": "ed0fc1cdc318215a9b48ed61b76ab0dec44ea0025df527246bb515f2a2e27bf1",
+    "little0-planar1-predict1.tiff": "8471ca51b445ab056031aa8b3809b06b09d8034f5b776cde794a06f630d7b917",
+    "little1-planar0-predict0.tiff": "00e3eff0cce44961adca8b0a2e6bbd54adbe68ab8dcc320a7efc817df970a055",
+    "little1-planar0-predict1.tiff": "04e6042c2c33e3afd88627330d5e19a419eb90033e32674b7d590a6a33645065",
+    "little1-planar1-predict0.tiff": "ec56f0e97c02bdf51e9dd67e3c8790bdd8a3f58e941ab511435d966cb89e59e6",
+    "little1-planar1-predict1.tiff": "054a2c9bc2926c5a9aaab1a8bcc8b2daece96516d283ced132b9b34ff81c35db"
+  }
+}

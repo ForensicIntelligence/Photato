@@ -92,5 +92,21 @@
       "sha256": "ae3e86b8a2286997908400c66c25c7bd07347bb70dec2fc940370ee087e6d89d"
     },
     "scope": "Current universal package includes canonical extension and legacy compatibility; original step111 focused evidence remains unchanged."
+  },
+  "document_opening_step134": {
+    "reference": "docs/DOCUMENT_OPENING_REFERENCES.json",
+    "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-opening",
+        "POST /v1/document-opening/cancel"
+      ],
+      "extended_route": "POST /v1/documents/import: optional X-Photato-Open-Format plus conditional application/octet-stream",
+      "permission": "Existing document-transfer permission explicitly includes native-opening cancellation; default off each session; may affect unshared pending reads",
+      "coverage": "Shared container detection/selection, unchanged decoders, authenticated path-free state, exact-ID cancellation, schemas and invalid/busy/stale/revoked/completed-lifecycle guards. Legacy uploads without selection keep Content-Type routing. No Adobe desktop-dialog route invented."
+    }
   }
 }

@@ -76,9 +76,9 @@ final class LayerViaTests: XCTestCase {
       XCTAssertEqual(session.undoStack.count, 1)
       guard case .raster(let pixels) = result.layers[0].content else { return XCTFail() }
       XCTAssertEqual(pixels.pixel(x: 1, y: 1), Pixel(1, 1, 1, 0))
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, result)
     }
   }

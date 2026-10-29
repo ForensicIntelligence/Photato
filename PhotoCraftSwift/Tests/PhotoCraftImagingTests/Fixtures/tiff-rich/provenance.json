@@ -1,0 +1,76 @@
+{
+  "origin": "Owned synthetic numeric fixtures. psdtags independently decodes framing, channels and LMsk; rich records are independently constructed opaque bytes, not independently rendered or Adobe-produced.",
+  "references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://www.amyspark.me/blog/posts/2021/11/14/reading-and-writing-tiff-psds.html"
+  ],
+  "psdtags_revision": "3b72663b375b60dbadaedfa6eefe5bb4c5cd9e7a",
+  "psdtags_sha256": "b0d73a6e24ecfbbf9fecd563c9f4edb0019d87117bfcc13478f752fbe854be28",
+  "dependencies": {
+    "numpy": "2.4.1",
+    "tifffile": "2026.1.28",
+    "imagecodecs": "2026.1.14"
+  },
+  "fixtures": [
+    {
+      "file": "8-big.tiff",
+      "depth": 8,
+      "order": "big",
+      "sha256": "847d074c3501cea41aaf0fb5d93d7039e2932d5ba4904e17781a58c9bc53c06b"
+    },
+    {
+      "file": "16-big.tiff",
+      "depth": 16,
+      "order": "big",
+      "sha256": "3eecd7c4b5745446ce72cb3cb0abb92b919843e1f979c4669e1d5509cda5ff55"
+    },
+    {
+      "file": "32-big.tiff",
+      "depth": 32,
+      "order": "big",
+      "sha256": "5059bb9fc044d73d7d6b7ae3e070c58e90938fc14f4d9991c5e97d049b429efd"
+    },
+    {
+      "file": "8-little.tiff",
+      "depth": 8,
+      "order": "little",
+      "sha256": "ee34aa0222785d247266f72b9beda2359e99ce015c920a346961e5709ed9a20c"
+    },
+    {
+      "file": "16-little.tiff",
+      "depth": 16,
+      "order": "little",
+      "sha256": "3fa2b1209ffef335727ebf8d5ea684f7bffdd1c8c73dd3efa5e2115a39b607eb"
+    },
+    {
+      "file": "32-little.tiff",
+      "depth": 32,
+      "order": "little",
+      "sha256": "a7863aa8e5bf9ef4a732e157cdf320552f3b6c1f70600d988a7f513ce44cdafb"
+    }
+  ],
+  "payloads": {
+    "blnc-big.bin": "9cbe3c8c0c3101d95eed94b81775c8334d94da3cf3f2f24f201fc7a85a808ade",
+    "blnc-little.bin": "bc830a799bbd1ad16b49cc929ff9af8dbf2add6b4ea473d57ad46c2b6b2a94c2",
+    "curv-big.bin": "fee13fc656c5c840250db57cc43d23e94eabc31c4d867232a0e66cb6d2281000",
+    "curv-extension-big.bin": "da8b2d966fcd76f40bfc7e50dc295365a8aeb10d3c549ed2261010b1c32b42df",
+    "curv-extension-little.bin": "380c44b1c653edb5d954822cd20f3cb2fc66dfe3977c885e975c240049eee01b",
+    "curv-little.bin": "27306ec0717d317a6818f964058d1432aead69cc340f35157015b41a63342bfc",
+    "grdm-big.bin": "f208e7b3e592e9117621de7121101899f0b55ac678b56a627ce4f0044ad14293",
+    "grdm-little.bin": "9f9964f6835c2e1dc3a8de39adc6ca87cc52e2fc01a8502dc948de3370339fd9",
+    "hue2-big.bin": "f627f5b38baddba863cf482e3603ac4e98c3b3c96082e9125189f703237b7755",
+    "hue2-little.bin": "380532ea51983b6efca59c5a1b26049518748a14a00c2c1da68a72c5fe758c64",
+    "levl-big.bin": "482768e7784fc8c9a95be7883643d93f099f04937246cc123ae2ac705c34922c",
+    "levl-extension-big.bin": "8d6b657ad2fd049b3a54c466313f33186783f0daa7a24b4d61db35af88337440",
+    "levl-extension-little.bin": "79e4b11f5bc88ea72e541dea30288987c5129e8e28e9e44ae5f7888a6354d9af",
+    "levl-little.bin": "c3437b4819ae776457a5df79d5e14d8631fbcfc7fb2c52208517a9dcbe88433d",
+    "post-big.bin": "5d8fc333ec5a5b1540f7327ee488023e6e83c7c0b2eb4ef19ba1711c455d1730",
+    "post-little.bin": "e8613f5a5bc9f9feeda32a8e7c80b69dd4878e47b6a91723fb15eb84236b6a2b",
+    "thrs-big.bin": "e4032bf214c1596ac58f3c0f797542364874e2b621062dedbe48eb8e044fc90b",
+    "thrs-little.bin": "229ba167c2752f2f401b2f6b862630b27302bf137b95b5ec114e6f38bfa66b47",
+    "vmsk-big.bin": "4e702d2f3d3a03f9fa88d0b3b04084d900e408578c2ebccb16f06a6519950cc0",
+    "vmsk-little.bin": "10a22ffc1aa8314a23afd2af238a609b67642c7e6873ed2baac3090b1a6e73a9",
+    "vsms-big.bin": "4e702d2f3d3a03f9fa88d0b3b04084d900e408578c2ebccb16f06a6519950cc0",
+    "vsms-little.bin": "10a22ffc1aa8314a23afd2af238a609b67642c7e6873ed2baac3090b1a6e73a9"
+  }
+}

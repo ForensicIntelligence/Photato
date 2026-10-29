@@ -1,0 +1,183 @@
+{
+  "step": "dev-step-219",
+  "completed_at_utc": "2026-10-28T05:20:41.965065+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T043749Z-219-classic-tone/source01.json",
+  "source_inputs": 1891,
+  "source_manifest_sha256": "0bb08c753da0a217ee231a8c185c8a11bc10da0d473ffc4169ab086e198175f5",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationClassicTone.swift",
+      "Sources/PhotoCraft/ClassicToneEditing.swift",
+      "Sources/PhotoCraft/ClassicToneSheet.swift",
+      "Sources/PhotoCraft/ClassicToneWorkspace.swift",
+      "Sources/PhotoCraftCore/ClassicToneEngine.swift",
+      "Sources/PhotoCraftCore/ClassicToneSettings.swift",
+      "Sources/PhotoCraftImaging/ClassicToneInput.swift",
+      "Tests/PhotoCraftAppTests/ClassicToneWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ClassicToneTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/hdr-contrast.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/hdr-curve.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/hdr-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/input.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/match-luminance.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/match-neutral.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/match-source.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/provenance.json",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/replace-hue.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/replace-mixed.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/shadows-contrast.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/shadows-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/shadows-highlights.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicTone/shadows-lift.rgba"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration04": {
+      "passed": 161,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T043749Z-219-classic-tone/integration04.log",
+      "current_source": true
+    },
+    "full_optimized01": {
+      "passed": 2094,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T043749Z-219-classic-tone/release-full01.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration04": 161,
+    "release-full01": 2094
+  },
+  "package": {
+    "utc": "2026-10-28T05:20:41.466214+00:00",
+    "tests": {
+      "integration04": 161,
+      "release-full01": 2094
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T043749Z-219-classic-tone/Photato219-final01.zip",
+    "zip_sha256": "19150950a6484c326b7463716680c2d897be07ba4df3be69caf922867f1e2b10",
+    "app": "/private/tmp/photato219-verified-46lfw7iw/Photato.app",
+    "executable_sha256": "012304c5080ebcff71cddc1793981323f70a45ddaa8ec3fe793b422eb68fd050",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato219-verified-46lfw7iw/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato219-verified-46lfw7iw/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1891,
+    "source_manifest_sha256": "0bb08c753da0a217ee231a8c185c8a11bc10da0d473ffc4169ab086e198175f5",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 340,
+      "unavailable_leaf_commands": 385,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_classic_tone_reference_cases": 12,
+    "limits": "161 focused Debug and2094 full optimized tests plus universal package on this host.12 synthetic original-Rust RGB8 cases match exactly; not Adobe output equivalence. Physical Intel/macOS14/macOS26, ICC-specific tone behavior, Photoshop defaults/depth behavior/descriptors, native STA, HDR semantic Actions and live workflows remain open. User handoff of verified209 is pending desktop access. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": [],
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "same_document_live_handoff": "Pending manual Mac unlock; installed209 verified separately.",
+    "installed209_and_retained_artwork": "Executable/document hashes unchanged; installed signature verifies. No new live handoff."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 340,
+    "unavailable_leaf_commands": 385,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Five native tone/color workflows with previews/history and two typed APIs",
+    "12 original-Rust RGB8 references match exactly; alpha/depth/selection/source statistics tests pass",
+    "Native45 editable Shadows Smart Filters; Actions18 ordinary tone playback; HDR full-compositor transaction/Undo",
+    "Strict presets and API settings/result schemas; unknown/invalid/stale/busy cases verified",
+    "Installed209 and retained artwork preserved; old159 window still pending live handoff"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect title/zoom/pan/scroll/window resize, then safely close obsolete159 probe after checking current unsaved state",
+    "Live filter dialogs/gestures and Photoshop descriptor/reference capture",
+    "Live tone/color controls, eyedropper/source/preset/curve workflows and Photoshop comparisons"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "window_handoff_evidence": "artifacts/runs/20261028T043749Z-219-classic-tone/window-handoff-status02.json",
+  "github": "Private draft remains209;219 package local only; no source push or visibility change.",
+  "remaining": [
+    "Exact Photoshop pixels/defaults/depth/ICC semantics and all A03 closure gates",
+    "Semantic HDR Toning Actions, Adobe STA/preset/ActionJSON/ATN/editable PSD descriptors",
+    "Live gestures/file panels/Photoshop comparison, physical Intel and macOS14/macOS26",
+    "8,388,608 pixel budget and bounded native RGB8/16/32 behavior; full other color modes pending"
+  ],
+  "next_major_workflow": {
+    "id": "COL02",
+    "title": "Document color modes and separations",
+    "priority": "Major workflow breadth",
+    "next": "Audit remaining native document mode/depth conversions and original licensed implementations; implement usable mode workflows with history, persistence, menus, APIs and focused tests. Preserve explicit CMYK/Lab/Indexed/Bitmap/Duotone/Multichannel and colorimetric exactness gates; no fake RGB-only mode labels.",
+    "window_handoff": "Open retained artwork in verified installed app and check title/zoom/pan/scroll/resize when desktop access resumes; safely close obsolete159 only after unsaved-state review."
+  },
+  "evidence_root": "artifacts/runs/20261028T043749Z-219-classic-tone"
+}

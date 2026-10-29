@@ -1,0 +1,214 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-141",
+  "recorded_at_utc": "2026-10-20T13:41:17.551349+00:00",
+  "major_workflow": "D01/I04 PSD/PSB compression",
+  "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/tested-source-hashes01.json",
+    "sha256": "645a0173f10b655013d517f0bc56f753c974d365f22ce27ef7cb10a8aeba8ba6"
+  },
+  "source_test_files": 491,
+  "validation_inputs": 884,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/packaging-documents01.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato141-attempt01-8g8aznau/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 230,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 161.415,
+    "log": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/focused01.log",
+      "sha256": "973de85be16d39169e74408aa0762ee57ec424ab0d10d17e17e5b4b7e11c9d65"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T131651Z-141-psd-compression/full01.log",
+      "sha256": "ff4686d1c717a633d4ee8ee15337055a9048888bb1a8db981340268cd9b745e2",
+      "passed": 1338,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 279.958
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T131651Z-141-psd-compression/release01.log",
+      "sha256": "4e78460341327f1f1cca9588126f2eab2c22e7ffbcaec44ba94fbbacfa83e3ea",
+      "passed": 1338,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 69.471
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato141-verified-3p5i4xqd/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "14378a65117915f5e2de9cca5deae086cab48a3b4637baee63a8dca49fd407b6",
+    "zip_sha256": "517b7f83731d893630e78b034f7214508e1fe1dc7ff24f215dd263b405901cb0",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/Photato141-candidate.zip",
+    "sha256": "517b7f83731d893630e78b034f7214508e1fe1dc7ff24f215dd263b405901cb0"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_140.json",
+    "sha256": "9156ac3a6646bea1530c5ec0a9716fd7e09dd06773cb84147567118184a1aa00"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/package-verification01.json",
+    "sha256": "5733a6303a6ef9d4ce834ee5de9c20c3500419cdbf21e8c74e9634394081a000"
+  },
+  "process_options": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/process-options-run01.json",
+    "sha256": "554c2421c25e4f0705b281b5a5217617697de210d6ab38ce93528eeb5c94f717"
+  },
+  "independent_psd": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/independent-psd01.json",
+    "sha256": "a1a1d3bc9e3c273cd01ab07bfa3f211cda7c20956e6b5a22b4afdee887e2273c"
+  },
+  "rust_oracle": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/rust-oracle01.json",
+    "sha256": "01d2f2402ba4fe211a1cc5342d37ec0e7a24e5849e71c0e1c0a515675bcaabce"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/public-release-arm6401/verification.json",
+      "sha256": "2027e0a1147cc00ef9a35078863ac899e5167347011269dd9d678dd898878e5f"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T131651Z-141-psd-compression/public-release-x86_6401/verification.json",
+      "sha256": "387756cd7b9ef366e5786cbb51501e8225db6d4a10e86ff19398b4f425d88c1d"
+    }
+  },
+  "intel_runtime_limit": "Production Release public Open and PNG/TIFF/PSD/PSB Save As controls under Rosetta; no physical Intel/macOS14 full UI claim",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Layer and composite compression save/copy accessory choices; global Photoshop preferences and exact modal parity remain open"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.psd",
+      "GET /v1/documents/{id}/file.psb",
+      "POST /v1/action-jobs"
+    ],
+    "new_state": [
+      "psdLayerCompression and psdCompositeCompression in options/capability/state schemas"
+    ],
+    "permission": "Existing save/transfer/resource-job permissions; unchanged default-off session controls.",
+    "coverage": "Native-only encodingOptions expands with raw/rle/zip/zipPrediction for layers and merged image. Both job interfaces share the serializer; Adobe has no corresponding PSD compression field, retains default bytes and rejects the native extension. Cached output keys include choices."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/live-ui-availability01.json",
+    "sha256": "4bf6a4672767b69eddcd243eec575c3c5dcb81d0e882a1d69c0dac1f734e9393"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Port original PhotoCraft Rust PackBits packet choices to Swift, with44 independently generated boundary/random oracle cases and retained source/license hashes",
+    "Stream RLE with checked PSD16-bit/PSB32-bit row lengths and bounded row scratch; all four methods work for layer/mask and four-plane merged data with one shared Data/file serializer",
+    "Native Save/Copy accessory exposes per-output choices and separate PSD/PSB drafts; successful settings remembered per open document; ordinary Save ignores cancelled drafts; global Photoshop preference/dialog parity not claimed",
+    "Photato optional command/download/job options and exact schemas; Adobe PSD output keeps published fields/defaults, with explicit native-only extension rejection",
+    "230 focused and1,338 Debug/1,338 Release tests;96 depth/container/compression combinations retain layer/mask/merged sample bytes, profiles and metadata under an independent Python decoder",
+    "Owned high-depth AppKit Save/Copy/cancel/stale plus external HTTP checks; universal macOS14+ package and public Release Open/four-format saving on arm64/Rosetta; nine ordinary whole PSB outputs equal140"
+  ],
+  "remaining_major_dependencies": [
+    "D01/I04 remains open: Photoshop global Disable Compression and Maximize PSD/PSB Compatibility preferences, exact compression defaults and Save dialogs are unimplemented/unqualified. Complete merged image remains included; no invented omitted-cache behavior.",
+    "JPEG Photoshop quality0..12/scans, full TIFF layers/RGB32/byte order/predictor, complete metadata/profile and original .pcraft migration remain open major save/import work.",
+    "RLE and ZIP retain the existing rendering/sample path. Rust packet equality and independent decoding of own files do not establish Photoshop whole-file/pixel equivalence or wider app interoperability.",
+    "Existing512MiB decoded channel/composite limits and API resource caps remain. Streaming compression is not global memory/paging or unrestricted large-document support.",
+    "Live Photoshop/native interaction remains unqualified: app inventory works but actual Photoshop UI access reports locked. Physical Intel/macOS14 and complete platform qualification remain open.",
+    "All major gates and earlier recovery/restoration/history/other editing gaps remain open; phase2 minor and phase3 details stay deferred."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/source-delta01.json",
+    "sha256": "b6353f65004fb73317409d960ca9be8a962a5eead916289d0714e51efaacc319"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/final-export-compatibility01.json",
+    "sha256": "87cef475a07adf9e33e051dc08a452716ff018128285f8b14ae643ba79e1847f"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/final-inputs01.json",
+    "sha256": "13a46bb59194d7e22de3fc080f181aaf34d4d4f450ace807358bef431a7ba9e7"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T131651Z-141-psd-compression/next-major-plan01.json",
+    "sha256": "2ef7e93b92851697b789eb114df9d7ac32bc3e9afef35d0e3da976c325d091f3"
+  },
+  "prior_failed_attempts": [
+    {
+      "kind": "documentation audit",
+      "attempt": "refresh01",
+      "log": "artifacts/development-history-audit/20261020-step141-final/refresh01.log",
+      "cause": "Step141 heading used ### instead of the required ##; index and anchor already existed.",
+      "repair": "Normalize milestone heading; preserve failure and pre-repair records; retry as refresh02/check02."
+    }
+  ],
+  "resume_first": "Verify checkpoint141/freeze01/audit, candidate141 and installed117. Continue major D01/I04 File Handling preferences per next-major-plan01; retain native/API transactional validation and honest independent Photoshop limits. Preserve user state/UI118, no Git mutation; all major gates remain open.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step141-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step141-final/refresh02.log",
+    "check_log": "artifacts/development-history-audit/20261020-step141-final/check02.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step141-final/final-inputs02.json"
+  }
+}

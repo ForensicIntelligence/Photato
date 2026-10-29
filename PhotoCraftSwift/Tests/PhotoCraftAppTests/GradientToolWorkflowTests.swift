@@ -79,9 +79,9 @@ final class GradientToolWorkflowTests: XCTestCase {
     XCTAssertNotNil(store.activeLayer?.mask)
     XCTAssertEqual(store.session.undoStack.count, 1)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, doc)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
     canvas.keyDown(with: try key("G", 5, flags: .shift))
     XCTAssertEqual(store.tool, .paintBucket)
@@ -170,7 +170,7 @@ final class GradientToolWorkflowTests: XCTestCase {
     store.finishGradient()
     await store.geometryTask?.value
     XCTAssertEqual(store.activeGradientWidget?.fill.gradient.colors.count, 5)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
     store.beginGradient(at: .init(30, 40), zoom: 4)
     XCTAssertEqual(store.gradientGesture?.grip, .color(1))
@@ -186,7 +186,7 @@ final class GradientToolWorkflowTests: XCTestCase {
     store.finishGradient()
     await store.geometryTask?.value
     XCTAssertEqual(store.activeGradientWidget?.fill.gradient.colors.count, 3)
-    store.undo()
+    await store.undo()
     store.beginGradient(at: widget.point(try XCTUnwrap(widget.midpoint(1))), zoom: 4)
     XCTAssertEqual(store.gradientGesture?.grip, .midpoint(1))
     store.dragGradient(to: widget.point(0.15))

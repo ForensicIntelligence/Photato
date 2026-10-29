@@ -1,0 +1,16 @@
+{
+  "upstream": [
+    {
+      "path": "../photocraft-main/crates/algo/src/perspective.rs",
+      "sha256": "ef29f35565237b6870a8aaec2b0b59c0d593fefd5b315cd05e4c6f25a0c4df9f",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/transform.rs",
+      "sha256": "15d7ac0d85b352bfba6fdba5adb7dc6c39b2165bbab09eac8175e93986ad8eec",
+      "license": "MIT OR Apache-2.0"
+    }
+  ],
+  "generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T072932Z-181-perspective/oracle01.py",
+  "adaptation": "Original Homography and PerspectiveMap/straighten arithmetic, with serde derives omitted for standalone compilation. Synthetic adjacent planes, shared-edge/interior/exterior samples and three straightening modes. No Photoshop output equivalence claim."
+}

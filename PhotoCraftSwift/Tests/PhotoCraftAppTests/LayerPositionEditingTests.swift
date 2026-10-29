@@ -30,7 +30,7 @@ final class LayerPositionEditingTests: XCTestCase {
     XCTAssertEqual(store.activeLayerBounds?.x, 27)
   }
 
-  @MainActor func testAffineBoundsPositionPreservesTransformAndUndoRedo() throws {
+  @MainActor func testAffineBoundsPositionPreservesTransformAndUndoRedo() async throws {
     let store = try TransformWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     var model = store.document
@@ -46,16 +46,16 @@ final class LayerPositionEditingTests: XCTestCase {
     XCTAssertEqual(store.activeLayer?.affine, layer.affine)
     XCTAssertEqual(store.activeLayer?.content, layer.content)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.activeLayerBounds?.x, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, model)
-    store.redo()
-    store.redo()
+    await store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
 
-  @MainActor func testGroupPositionMovesSubtreeToEachRequestedVisibleOrigin() throws {
+  @MainActor func testGroupPositionMovesSubtreeToEachRequestedVisibleOrigin() async throws {
     let store = try TransformWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     var model = store.document
@@ -71,8 +71,8 @@ final class LayerPositionEditingTests: XCTestCase {
     XCTAssertEqual(store.document.layers[0].x, 17)
     XCTAssertEqual(store.document.layers[0].y, 3)
     XCTAssertEqual(store.document.layers[0].parentID, group.id)
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, model)
   }
 
@@ -108,7 +108,7 @@ final class LayerPositionEditingTests: XCTestCase {
     XCTAssertTrue(store.session.undoStack.isEmpty)
   }
 
-  @MainActor func testUnchangedAndNonfiniteInputDoNotCreateHistoryAndRangeIsClamped() throws {
+  @MainActor func testUnchangedAndNonfiniteInputDoNotCreateHistoryAndRangeIsClamped() async throws {
     let store = try TransformWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let binding = WorkspaceView(store: store).layerPositionBinding(
@@ -128,9 +128,9 @@ final class LayerPositionEditingTests: XCTestCase {
     XCTAssertEqual(binding.wrappedValue, 1_000_000)
     binding.wrappedValue = 17
     XCTAssertEqual(store.activeLayerBounds?.x, 17)
-    store.undo()
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
 

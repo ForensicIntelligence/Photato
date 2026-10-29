@@ -1,0 +1,147 @@
+{
+  "step": "dev-step-160",
+  "date": "2026-10-26",
+  "status": "Functional native/API/Release/universal checkpoint verified; manual UI/interoperability checks pending unlock; complete parity remains open.",
+  "source_manifest": "artifacts/runs/20261026T192208Z-160-smart-objects/source01.json",
+  "source_delta": "artifacts/runs/20261026T192208Z-160-smart-objects/source-delta01.json",
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/doc/src/lib.rs",
+      "use": "Embedded source plus rendered cache design",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "source": "../photocraft-main/crates/engine/src/smart_cmds.rs",
+      "use": "Native edit/replace and shared-source behavior reference",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "source": "../photocraft-main/crates/io/src/linked.rs",
+      "use": "Bounded native lnk2 embedded-file port",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "source": "../photocraft-main/crates/io/src/smart_map.rs",
+      "use": "Affine SoLd descriptor port",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "use": "Published PSD descriptor and linked-source layouts"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/edit-the-contents-of-a-smart-object.html",
+      "use": "Native Edit Contents/Save workflow"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/smart-objects-and-the-api/",
+      "use": "Published resource placement/replacement behavior"
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+      "schemas": [
+        "AddSmartObjectLayer",
+        "EditSmartObjectLayer",
+        "SmartObject",
+        "EditSmartObject",
+        "SmartObjectFile",
+        "OperationBase",
+        "AddOperation",
+        "Placement"
+      ]
+    }
+  ],
+  "desktop": {
+    "menus": [
+      "File > Place Embedded\u2026",
+      "Layer > Smart Objects > Convert to Smart Object",
+      "Layer > Smart Objects > New Smart Object via Copy",
+      "Layer > Smart Objects > Edit Contents",
+      "Layer > Smart Objects > Reset Transform",
+      "Layer > Smart Objects > Replace Contents\u2026",
+      "Layer > Smart Objects > Export Contents\u2026",
+      "Layer > Rasterize > Smart Object"
+    ],
+    "behavior": "Source-space cache and original embedded bytes. Affine transforms do not resample the source. Normal duplicates share replacements; via Copy and cross-document copies use independent source IDs. Edit Contents opens a native child document; Save updates the parent and shared instances in one Undo transaction. Save As creates an independent file. Busy, changed or closed parents reject Save instead of overwriting. Source child recovery currently returns an independent document, not a restored parent link.",
+    "limits": "64 MiB per embedded source; 8,388,608 source canvas pixels; 256 MiB decoded source; eight nested decode levels. Converting layers requires unlocked roots in one parent and retained clipping bases. Painting/applying destructive adjustments requires rasterization or editing the source. Masks remain editable.",
+    "reset": "Restore original source dimensions/rotation while retaining integer layer origin; exact Photoshop anchoring unqualified."
+  },
+  "persistence": {
+    "native_version": 14,
+    "old_readers": "Downloads of source-bearing documents require X-Photato-Archive-Version: 14. Older readers reject rather than discard source metadata.",
+    "psd_psb": "lnk2 embedded file records plus affine SoLd; native/non-PSD-supported sources transcode to an editable PSB where supported. Native Export Contents retains original bytes. Unsupported rich source exports fail rather than flatten.",
+    "qualified": "Own generated RGB8/16/32 PSD/PSB round trips; no independent Photoshop Smart Object save/reopen or pixel-match claim."
+  },
+  "photato": {
+    "typed_command_count": 32,
+    "commands": [
+      "smartObject.convert",
+      "smartObject.place",
+      "smartObject.replace",
+      "smartObject.copy",
+      "smartObject.resetTransform",
+      "layer.rasterize",
+      "layer.transform"
+    ],
+    "source_download": "GET /v1/documents/{documentID}/smart-objects/{layerID}/source",
+    "source_edit": "Download source, upload/open/edit/share a source document, then smartObject.replace using sourceDocumentID/sourceRevision. Desktop and API use SmartObjectIO and the prepared history transaction.",
+    "state": "Layers expose kind, full affine transform and nullable smartObject metadata: sourceID, SHA256 revision, filename, mediaType, byteLength, dimensions, resolution, embedded. Schema advertised by capabilities.smartObjects.layerStateSchema.",
+    "errors": {
+      "400": "Invalid parameters",
+      "404": "Missing layer or unshared source",
+      "409": "Busy, stale, cancelled or revoked target/source",
+      "422": "Unsupported source/operation, protection or native validation",
+      "413": "Overall API document limits"
+    }
+  },
+  "adobe": {
+    "submit": "POST /v2/create-composite",
+    "status": "GET /v2/status/{jobId}",
+    "scope": "Add embedded smart_object_layer with operation.placement.type=top; edit an existing embedded object by unique name or signed32-bit PSD id. Resolve smartObject.smartObjectFile.source.url via the existing enabled resource job transport. autoResize defaults true and resizes source canvas/dpi; false keeps replacement dimensions. Changes affect the targeted instance. transformMode none/fit/fill, visibility, clipping, supported dropShadow/protection fields.",
+    "limits": [
+      "Linked objects, custom transform object, other insertion placement, SVG/PDF/AI inputs, warp/Smart Filters and layer comps are not implemented.",
+      "Input/output/resource and local job limits remain; aggregate fetched input+sources is bounded to128 MiB.",
+      "Published general create-composite, hosted Adobe execution, identities and exact rendering remain partial/unqualified."
+    ]
+  },
+  "verification": {
+    "focused04": {
+      "tests": 12,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T192208Z-160-smart-objects/focused04.log"
+    },
+    "focused05": {
+      "tests": 57,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T192208Z-160-smart-objects/focused05.log"
+    },
+    "focused06": {
+      "tests": 14,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T192208Z-160-smart-objects/focused06.log"
+    },
+    "live": "Pending Mac unlock; no live Smart Object check performed. Step159 owned app and mask/cleanup checks remain pending.",
+    "release": {
+      "tests": 1524,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T192208Z-160-smart-objects/release-tests01.log",
+      "source_manifest": "artifacts/runs/20261026T192208Z-160-smart-objects/source01.json"
+    },
+    "platform": "artifacts/runs/20261026T192208Z-160-smart-objects/platform01.json",
+    "package": "artifacts/runs/20261026T192208Z-160-smart-objects/package-verification01.json"
+  },
+  "open": [
+    "Linked Smart Objects/update/relink/package",
+    "Smart Filters and editable filter masks/stacks",
+    "Warp, perspective, quilt/puppet transforms",
+    "Vector/PDF/AI sources and all rich-source PSD export",
+    "Independent Photoshop UI/interchange/rendering validation",
+    "Physical Intel/macOS14 qualification",
+    "Parent-child restoration after crash recovery",
+    "Broader source and document memory/size qualification",
+    "Existing16MiB imported source-metadata bound still limits large PSD linked-file blocks; raising all large-file limits is not qualified."
+  ],
+  "full_photoshop_parity": false,
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_160.json"
+}

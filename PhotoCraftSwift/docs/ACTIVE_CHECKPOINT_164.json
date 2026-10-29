@@ -1,0 +1,82 @@
+{
+  "step": "dev-step-164",
+  "completed_at_utc": "2026-10-26T22:20:54.150417+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Usable Color Lookup workflow; A03 and full Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T214621Z-164-color-lookup/source02.json",
+  "source_manifest_sha256": "9002efd4250ef05a48ae93448d36a012ad57593545df7b4d632990afdb663d73",
+  "source_inputs": 1217,
+  "source_delta": "artifacts/runs/20261026T214621Z-164-color-lookup/source-delta02.json",
+  "tests": {
+    "debug_integration": 34,
+    "full_release_before_metadata_repair": {
+      "tests": 1569,
+      "source": "artifacts/runs/20261026T214621Z-164-color-lookup/source01.json",
+      "log": "artifacts/runs/20261026T214621Z-164-color-lookup/release-tests01.log"
+    },
+    "final_release_focused": {
+      "tests": 35,
+      "source": "artifacts/runs/20261026T214621Z-164-color-lookup/source02.json",
+      "log": "artifacts/runs/20261026T214621Z-164-color-lookup/release-focused01.log"
+    },
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T214621Z-164-color-lookup/platform01.json",
+    "checks_per_architecture": 27,
+    "qualification": "Final source differs from the full-suite snapshot only in PSD Color Lookup metadata interpretation and its added regression; final focused tests and universal Release probes/package bind source02. No redundant full-suite rerun."
+  },
+  "package": {
+    "archive": "artifacts/runs/20261026T214621Z-164-color-lookup/Photato164-candidate-final.zip",
+    "archive_sha256": "1a2933e4b6f810159470386fc35ba30c37e809fd093e566a80249ee5c0178662",
+    "executable_sha256": "27e71f865068e8d684404b5ec248e60621b7c7d923a7cac5851039499839a0a3",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato164-verified-6nwgpyuk/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato164-verified-6nwgpyuk/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato164-verified-6nwgpyuk/Photato.app",
+    "attribution_sha256": "3340077c3d95e768b550b14fe215c8eb9d016fc24716cd9d1245937184e0f84b"
+  },
+  "interfaces": {
+    "photato_typed_commands": 40,
+    "adobe_routes_partial": 5,
+    "adobe_routes_unimplemented": 3,
+    "native_color_lookup_version": 18
+  },
+  "menu": {
+    "entries": 802,
+    "bound": 206,
+    "unavailable": 519,
+    "primary_shortcuts": 102,
+    "alternates": 8,
+    "report": "artifacts/runs/20261026T214621Z-164-color-lookup/menu-report01.json"
+  },
+  "preserved": {
+    "state": "artifacts/runs/20261026T214621Z-164-color-lookup/preserved-state01.json",
+    "original_rust_files": 754,
+    "root_release": "build117 unchanged",
+    "xcode_project": "Photato.xcodeproj unchanged; synchronized source groups include new files"
+  },
+  "live": {
+    "status": "Pending Mac unlock. No164 live UI or independent Photoshop output qualification.",
+    "pending_previous": "See checkpoints159\u2013163; original Photoshop Untitled-1 untouched.",
+    "pending164": "Native import/preview/Cancel/OK, Properties, selection masks/history, Save/reopen and Photoshop clrL interchange/render comparison.",
+    "installed_luts": "Three Adobe LUT files read for parser acceptance/exact source retention on both architectures. No assets copied or redistributed."
+  },
+  "next": {
+    "work_package": "F04",
+    "task": "Build the native Liquify workspace: mesh deformation tools, preview/Cancel/OK, freeze/thaw/reconstruct, persistence, history and both API paths; keep face-aware and exact behavior gates explicit. Remaining A03 adjustments stay open.",
+    "priority": "Major breadth, then minor functions, then small details; all unresolved parity gates remain open."
+  },
+  "no_unfinished_source_edit": true,
+  "no_outstanding_test_or_build_session": true,
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/20261026-step164-final/refresh02.log",
+    "check": "artifacts/development-history-audit/20261026-step164-final/check02.log",
+    "milestones": 164,
+    "evidence_files": 36113,
+    "logs": 19126,
+    "missing_explicit_references": 0
+  }
+}

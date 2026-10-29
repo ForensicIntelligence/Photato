@@ -1,0 +1,77 @@
+{
+  "step": 226,
+  "recorded_at_utc": "2026-10-28T20:56:58.724134+00:00",
+  "status": "Persistent working RGB/CMYK/Gray profiles, native Color Settings and shared API defaults pass28 initial focused and2,374 full optimized tests, including10 new settings regressions. All2,253 source03 inputs are unchanged. Import/paste policies, working proof integration, presets/Spot/advanced blending and exact/live/platform COL01 acceptance remain open. Installed221 and qualified/uploaded224 are unchanged.",
+  "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source03.json",
+  "inputs": 2253,
+  "native_archive": 49,
+  "actions_version": 20,
+  "typed_commands": 151,
+  "tests": {
+    "focused": {
+      "utc": "2026-10-28T20:49:26.818265+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 28,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T204354Z-226-color-settings/focused02.log",
+      "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source02.json"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T20:56:58.724134+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 2374,
+      "passed": 2374,
+      "failures": 0,
+      "seconds_test_execution": 164.232,
+      "seconds_suite_wall": 164.447,
+      "source_manifest": "artifacts/runs/20261028T204354Z-226-color-settings/source03.json",
+      "unchanged_inputs": 2253,
+      "log": "artifacts/runs/20261028T204354Z-226-color-settings/release03.log",
+      "log_sha256": "2a01c87f285559d3881f2822138dc307a7cfd7ee4299936bac16ac86f83e269f",
+      "host": "arm64 macOS",
+      "new_universal_package": false,
+      "live_acceptance": false
+    }
+  },
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": false,
+  "reference": "docs/COLOR_SETTINGS_REFERENCES.json",
+  "remaining": [
+    "Import/paste missing and mismatched profile policies/warnings are still pending; existing imports keep their prior behavior.",
+    "Working CMYK proof presets still resolve Generic CMYK; bind them to a settings snapshot next.",
+    "Spot dot gain, CSF presets, dither, advanced blending and Adobe ACE/Photoshop numerical equivalence remain open.",
+    "Existing untagged documents retain their saved interpretation; changing settings does not reinterpret open documents.",
+    "Image Mode retains its existing conversion engine; the BPC preference supplies Convert to Profile defaults.",
+    "Full installed-app/live/macOS14/Intel and broader COL01 acceptance remain open."
+  ],
+  "next_action": "Integrate working-space proof snapshots and actual open/paste missing/mismatch policies with native decisions and shared API review, while preserving source identities and untouched originals.",
+  "qualified_stage": "Source-tested persistent working color settings; full optimized suite passed",
+  "source_inputs": 2253,
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 368,
+    "unavailable_leaf_commands": 357,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "source_delta": "artifacts/runs/20261028T204354Z-226-color-settings/changes04.json",
+  "workers": [],
+  "next_major_plan": "artifacts/runs/20261028T204354Z-226-color-settings/next-policies07.json",
+  "completed_this_increment": [
+    "Persistent working RGB/CMYK/Gray profiles with native Shift+Cmd+K dialog, atomic persistence and Cancel/stale protection.",
+    "Native creation/mode/profile defaults and matching shared-document API snapshots, with stateless resource jobs isolated.",
+    "Permissioned Color Settings read/update API, strict schemas and scoped body cap.",
+    "28 initial focused and2374 full optimized tests pass, including10 new settings regressions."
+  ],
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/settings226-refresh10.log",
+    "check": "artifacts/development-history-audit/settings226-check10.log"
+  }
+}

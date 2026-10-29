@@ -289,7 +289,7 @@
     "Full Photoshop parity remains false.",
     "Only root-level unlocked Normal raster layers without masks, transforms, clipping or groups can merge.",
     "Entirely transparent merge results remain unsupported; arbitrary hidden-active and lock contexts need qualification.",
-    "All-depth kernel samples match, but native RGB32 encoded/linear transfer is not bit-reversible. Workflow RGB32 checks qualify alpha and bounded color error, not byte-identical RGB.",
+    "Step058 RGB32 workflow transfer tolerance is superseded by step115 direct linear storage and exact independent layer-sample tests; full HDR arithmetic/output qualification remains open.",
     "The general renderer still uses its previous compositing arithmetic; only merge transactions use the newly measured kernel.",
     "Additional blends, groups, masks, clipping, color management, fill opacity, locks, Background and Flatten Image remain pending.",
     "Pixel selection retention is a native invariant; Photoshop selection/history behavior needs independent qualification.",
@@ -358,5 +358,73 @@
   "post_undo_archive_check": {
     "path": "artifacts/runs/20261009T004847Z-058-layer-merging/post-live-input-verification.json",
     "sha256": "5c2a728655cd19f51720331019aea80560ad8f86f71e084d2c4347c56c9b1fbc"
+  },
+  "linear_storage_step115": {
+    "status": "Direct-linear native merge and dual API increment qualified; original-profile and full Photoshop/D01 fidelity remain open",
+    "run": "artifacts/runs/20261019T212322Z-115-linear-editing",
+    "source_freeze": "tested-source-hashes02.json",
+    "scope": "Direct linear Float32 input/intermediate/output for root Normal raster merges.65536 raw Photoshop RGBA samples verified through native merge/archive/history without a PSD decoder. PSD/API comparisons check converted working-space samples; original-profile RGB preservation remains open.",
+    "api": {
+      "photato": "layer.merge; 18 typed document commands; selection/availability schemas; background shared native transaction with revision/token/share guards",
+      "adobe": "$Mrg2/$MrgV/selectAllLayers via two existing partial job endpoints; selection persists across action resources; shared engine with explicit context/allocation rejection"
+    },
+    "automated": "1045 full and635 optimized tests pass;48 integration and10 final focused tests pass; raw65536-pixel native reference qualifies1,048,576 RGBA bytes without a PSD/profile decoder",
+    "limits": [
+      "Root Normal unlocked raster subset only; broader groups/clipping/masks/transforms/blends/Background/Flatten/transparent-output semantics remain open",
+      "General renderer/PSD merged-cache byte equivalence remains open, independently of exact merge-layer samples",
+      "Arbitrary Adobe layer-reference/selection/stamp/duplicate descriptors and hosted Adobe service equivalence remain unqualified",
+      "Intel/macOS14 runtime still unqualified"
+    ],
+    "independent_live_gap": {
+      "report": "artifacts/runs/20261019T212322Z-115-linear-editing/independent-live01.json",
+      "exact_alpha_bytes": 7168,
+      "different_RGB_bytes": 8736,
+      "reason": "Original Adobe linear-sRGB profile is converted to the Apple working profile; test comparison through PSDCodec on both sides masked the raw source-profile delta."
+    },
+    "tests": {
+      "full02.log": {
+        "path": "artifacts/runs/20261019T212322Z-115-linear-editing/full02.log",
+        "sha256": "42b4a129eb147d0b62da1026511696fe5bdd3bc5d0780c48a4d023986c0f3449",
+        "passed": 1045,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 153.262
+      },
+      "release02.log": {
+        "path": "artifacts/runs/20261019T212322Z-115-linear-editing/release02.log",
+        "sha256": "03be7746c6ffe1354decd03271414aebb5b08ffdd68c60802905ac255bd36b7d",
+        "passed": 635,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 16.888
+      }
+    },
+    "release": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/release-verification.json",
+      "sha256": "947c89bc7457d0c80a3f6d4125c66e7f7303c9c7313157e382dbd2bde20ca2c0"
+    },
+    "live_ui": {
+      "path": "artifacts/runs/20261019T212322Z-115-linear-editing/live-ui-verification.json",
+      "sha256": "ae9aafaf20cdb62759a447950c291560a70fefb5752bf33c6c95b14817edb60c"
+    },
+    "raw_reference": {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/layer-merge/normal-rgb32.rgba",
+      "sha256": "ad1079b18f773373b32069dd0dcef7fd295544bbe8b65c5df0e94e17a5128ea2",
+      "pixels": 65536,
+      "layout": "Bottom RGBA, top RGBA, expected merged RGBA; big-endian Float32; original Photoshop extraction provenance in step058",
+      "test": "LayerMergeTests.test65536IndependentLinearRGB32MergePixelsThroughArchiveAndHistory"
+    },
+    "next": "Preserve and render original working profiles through native archive/PSD/API workflows; independently qualify Adobe linear-sRGB fixture raw output. Then qualify PSD white-matte output ordering and the remaining70 candidate composite samples."
+  },
+  "working_profiles_step116": {
+    "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
+    "raw_reference_bytes": 28672,
+    "different_bytes_focused": 0,
+    "status": "Original-profile merge regression and final live output qualified; full merge/rendering scope remains open",
+    "qualification": "1053 full Debug and1053 full optimized tests pass; final universal build and bounded native/Photoshop live checks verified",
+    "live_evidence": {
+      "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/live-ui-verification.json",
+      "sha256": "7fd7c24eed842b0d8ab0cd93eb68a7f86159f07d1103ce6dfaa4f07eb0d112ad"
+    }
   }
 }

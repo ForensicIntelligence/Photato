@@ -1,0 +1,168 @@
+{
+  "step": "dev-step-190",
+  "completed_at_utc": "2026-10-27T14:06:58.384567+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Pencil with Auto Erase, Color Replacement, Mixer Brush, Pattern Stamp, Background Eraser and Magic Eraser; native toolbar/options/preview/history and shared APIs. Brush/Pencil create a transparent paint layer over nonraster content.",
+  "source_manifest": "artifacts/runs/20261027T131318Z-190-paint-tools/source02.json",
+  "source_manifest_sha256": "f56948ece59fafb07f5fd8a4ac53dd27fccd13bf2b550e70f6f8cd7c82ee4781",
+  "source_inputs": 1438,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationPainting.swift",
+      "Sources/PhotoCraft/PaintingTools.swift",
+      "Sources/PhotoCraftCore/PaintToolPainter.swift",
+      "Sources/PhotoCraftCore/PaintTools.swift",
+      "Sources/PhotoCraftImaging/PaintingPreparation.swift",
+      "Tests/PhotoCraftAppTests/PaintingWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/PaintToolTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AutomationBrushes.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/ComponentEditing.swift",
+      "Sources/PhotoCraft/DocumentWorkspace.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraftCore/CloneStamp.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/CloneWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration06": 184,
+    "release-full02": 1851
+  },
+  "last_full_regression": {
+    "step": 190,
+    "tests": 1851,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T131318Z-190-paint-tools/release-full02.log",
+    "current_source": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T131318Z-190-paint-tools/module01.log",
+    "artifacts/runs/20261027T131318Z-190-paint-tools/module02.log",
+    "artifacts/runs/20261027T131318Z-190-paint-tools/integration02.log",
+    "artifacts/runs/20261027T131318Z-190-paint-tools/integration04.log",
+    "artifacts/runs/20261027T131318Z-190-paint-tools/release-full01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T14:06:58.384567+00:00",
+    "tests": {
+      "integration06": 184,
+      "release-full02": 1851
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T131318Z-190-paint-tools/Photato190-final.zip",
+    "zip_sha256": "8a1062aa166f39118427d217c5ab1b0f55c64344c83bb5ca572ee21a260573e7",
+    "app": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app",
+    "executable_sha256": "cc76694801ef08f9cd9c8cd181656b5034e3f763703d6bdd99394392d08a6e92",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato190-verified-j5ilu1g2/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1438,
+    "source_manifest_sha256": "f56948ece59fafb07f5fd8a4ac53dd27fccd13bf2b550e70f6f8cd7c82ee4781",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 259,
+      "unavailable_leaf_commands": 466,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Full optimized suite and universal package on this host; not live desktop/physical tablet, physical Intel/macOS14/macOS26 or complete Photoshop equivalence."
+  },
+  "api": {
+    "commands": [
+      "paint.configure",
+      "paint.tool",
+      "paint.mixer"
+    ],
+    "catalogue_count": 77,
+    "existing_expansion": "paint.stroke now automatically creates an ordinary pixel layer above a nonraster target for Brush; erasing still requires pixels.",
+    "state": "Per-tool settings, Mixer reservoir/pickup/amount/sampled-tip dimensions, pattern IDs/phase and active gesture. Normal shared-document revision and busy/lifecycle guards apply.",
+    "targets": [
+      "pixels",
+      "layerMask",
+      "smartFilterMask",
+      "alpha",
+      "quickMask"
+    ],
+    "target_limits": "Color Replacement, Background Eraser and Magic Eraser require RGB pixels; all-layer sampling rejects grayscale targets. Other tools support masks and grayscale channels.",
+    "limits": "API body4MiB;1\u20134096 samples, Magic Eraser exactly1;200000 generated dabs and134217728 raster visits; one footprint and Magic canvas at most16MP. Mixer sampled tip at most256x256.",
+    "formats": {
+      "native_archive": 32,
+      "brush_presets": 1,
+      "recorded_actions": [
+        1,
+        2
+      ]
+    }
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated new freehand painting endpoint in pinned Photoshop v2 contract. Published execute-actions brush resources and tool/actionJSON descriptors remain unsupported; no compatibility claim or invented route. Existing conformance regressions run in the full suite."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar_bindings": [
+      "Pencil",
+      "Color Replacement",
+      "Mixer Brush",
+      "Pattern Stamp",
+      "Background Eraser",
+      "Magic Eraser"
+    ],
+    "shortcut_groups": [
+      "B / Shift-B",
+      "S / Shift-S",
+      "E / Shift-E"
+    ],
+    "note": "Existing factory tool entries now have actual implementations. Menu titles/order/shortcuts unchanged; these are tools, not invented menu commands.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Exact Photoshop pixels, linear/HDR paint/color semantics and proprietary Mixer wet-media/Impressionist algorithms remain unqualified.",
+    "Mixer physical bristle behavior and transferred wetness/mix jitter remain open. Current finite reservoir/pickup model is deterministic and bounded.",
+    "Background conversion uses the upstream name/position/transparency-lock representation, narrowed to an identity-transformed bottom root layer matching canvas bounds; dedicated native Background identity remains open.",
+    "New-tool Actions/Batch recording, tool-specific preset capture and Adobe brush-resource/actionJSON job compatibility remain open.",
+    "Complete live Photoshop UI/tablet comparison and physical Intel/macOS14/macOS26 qualification remain open.",
+    "High-resolution incremental preview/performance and secondary brush controls remain open; smaller fidelity details stay deferred while major workflows are missing."
+  ],
+  "actions": "Prepared painting commands are explicit unsupported recorded steps in the existing Actions recorder. New-tool Actions playback/Batch coverage remains open; existing ordinary paint.stroke recording is preserved.",
+  "next": "B08 Adjustment Brush: editable local adjustment layers/masks, additive/subtractive painting, object targeting, controls/history and shared API. Exact numeric and cosmetic polishing stays deferred.",
+  "next_major_plan": "artifacts/runs/20261027T131318Z-190-paint-tools/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "first_check": "passed",
+    "counts": {
+      "check": "passed",
+      "milestones": 190,
+      "evidence_files": 38461,
+      "logs": 19388,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/runs/20261027T131318Z-190-paint-tools/development-history-audit/audit01-check.log",
+    "final_refresh_log": "artifacts/runs/20261027T131318Z-190-paint-tools/development-history-audit/audit02-refresh.log",
+    "final_check_log": "artifacts/runs/20261027T131318Z-190-paint-tools/development-history-audit/audit02-check.log",
+    "scope": "Documentation/evidence inventory; not an independent Photoshop comparison."
+  }
+}

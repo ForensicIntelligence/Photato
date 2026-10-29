@@ -1,0 +1,90 @@
+{
+  "step": "dev-step-171",
+  "completed_at_utc": "2026-10-27T01:59:53.626227+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native Patch, Content-Aware Move/Extend and Red Eye with canvas controls, preview/commit/cancel/history and three typed API operations.",
+  "source_manifest": "artifacts/runs/20261027T013351Z-171-retouch-tools/source01.json",
+  "source_manifest_sha256": "593b1c240e54b1db7c417049497b8b737644b517029ee8ce41113d30bd5a86bf",
+  "source_inputs": 1281,
+  "source_delta": "artifacts/runs/20261027T013351Z-171-retouch-tools/changes01.json",
+  "tests": {
+    "debug_focused": 123,
+    "optimized_focused": 39,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration05.log",
+    "optimized_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/release-focused01.log"
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T013351Z-171-retouch-tools/integration01.log",
+    "artifacts/runs/20261027T013351Z-171-retouch-tools/integration02.log",
+    "artifacts/runs/20261027T013351Z-171-retouch-tools/integration03.log",
+    "artifacts/runs/20261027T013351Z-171-retouch-tools/integration04.log"
+  ],
+  "full_suite": "Last full suite passed in170 on the previous source; current broader qualification is batched at a major milestone, not claimed by171.",
+  "package": {
+    "utc": "2026-10-27T01:59:53.626227+00:00",
+    "app": "/private/tmp/photato171-verified-k4zzk589/Photato.app",
+    "zip": "artifacts/runs/20261027T013351Z-171-retouch-tools/Photato171-final.zip",
+    "zip_sha256": "1578a76ca46cbc57bc93040ebdb34b1a0127cd9641357e6a9379c0dc435175f2",
+    "executable_sha256": "acc5a5e6d18456b6a736f073280c6613b8b21fb9bac4012ec51206b080bb940e",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato171-verified-k4zzk589/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato171-verified-k4zzk589/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1281,
+    "source_manifest": "artifacts/runs/20261027T013351Z-171-retouch-tools/source01.json",
+    "source_manifest_sha256": "593b1c240e54b1db7c417049497b8b737644b517029ee8ce41113d30bd5a86bf",
+    "tests": {
+      "debug_focused": 123,
+      "optimized_focused": 39,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/integration05.log",
+      "optimized_log": "artifacts/runs/20261027T013351Z-171-retouch-tools/release-focused01.log"
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and 754 upstream Rust file hashes verified unchanged.",
+    "runtime_qualification": "Focused native Debug/Release evidence and universal build metadata; current full suite, physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open."
+  },
+  "api": {
+    "count": 50,
+    "commands": [
+      "retouch.patch",
+      "retouch.move",
+      "retouch.redEye"
+    ],
+    "same_engine": true,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "adobe": "No dedicated published retouch endpoint. These execute-actions descriptors remain unsupported; no Adobe route invented. Five partial/three unimplemented endpoint groups unchanged."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "toolbar": "Three existing J-group entries now have native handlers; factory menu order and bindings unchanged.",
+    "report": "artifacts/runs/20261027T013351Z-171-retouch-tools/menu-report05.json",
+    "release_report": "artifacts/runs/20261027T013351Z-171-retouch-tools/menu-report-release01.json"
+  },
+  "limitations": [
+    "16MP canvas and 4MP retouch/solve region, including the combined source/destination span. Larger work fails explicitly.",
+    "Ordinary RGB raster image target only. Smart Object editing, mask/alpha-channel retouching and Pattern Patch remain open.",
+    "Patch diffusion, structure/color adaptation, Red Eye detection and all synthesis are native approximations. Exact Adobe numerical/model output and physical-input behavior remain unqualified.",
+    "Patch drag must stay within the canvas. Move/Extend output is limited to canvas coverage and requires some visible destination pixels.",
+    "Options are session state; complete Photoshop preference/preset persistence and every contextual variation remain open.",
+    "Live interaction, physical Intel and macOS14/26 runtime qualification remain open."
+  ],
+  "next": {
+    "workflow": "RAW01 Camera Raw development and Camera Raw Filter",
+    "prepared_plan": "artifacts/runs/20261027T013351Z-171-retouch-tools/next-major-plan01.json",
+    "first_step": "Read retained CameraRaw model/develop pipeline and UI; map native adjustments/Smart Filters and Adobe edit schema. Implement the next major development workflow before fine retouch fidelity."
+  },
+  "no_running_build_test_workers_expected": true
+}

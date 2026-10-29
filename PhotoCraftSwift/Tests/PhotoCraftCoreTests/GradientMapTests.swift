@@ -60,7 +60,7 @@ final class GradientMapTests: XCTestCase {
     XCTAssertNotEqual(result.pixel(x: 1, y: 1), source.quantized(.u16))
     XCTAssertEqual(
       try NativeArchive.decode(NativeArchive.encode(session.document)), session.document)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, doc)
   }
 }

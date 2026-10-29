@@ -13,15 +13,18 @@ extension DocumentIO.Format {
   var saveNotice: String {
     switch self {
     case .native: return "Keeps all editable Photato content."
-    case .psd:
+    case .psd, .psb:
       return
-        "Keeps supported editable layers and masks. Uses sRGB (linear sRGB for 32-bit). Full source-profile, metadata and 32-bit precision preservation are still in development."
-    case .png, .tiff:
+        "Keeps supported editable layers, masks and the RGB working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
+    case .png:
       return
-        "Saves a single pixel layer at its current 8- or 16-bit depth, using sRGB. Use Save a Copy for a flattened version of a layered document."
+        "Saves a single pixel layer at its current 8- or 16-bit depth, using its RGB working profile. Use Save a Copy for a flattened version of a layered document."
+    case .tiff:
+      return
+        "Keeps supported editable layers, masks and paths at 8-, 16- or 32-bit depth. Both byte orders retain supported numeric adjustments and vector masks. Fill/path descriptors and opaque records currently require big-endian TIFF."
     case .jpeg:
       return
-        "Saves a single opaque 8-bit pixel layer using sRGB and 95% JPEG quality. JPEG compression changes pixels."
+        "Saves a single opaque 8-bit pixel layer using the selected JPEG quality, format and color-profile settings. JPEG compression changes pixels."
     }
   }
 }
@@ -29,19 +32,66 @@ extension DocumentIO.Format {
 extension DocumentIO {
   /// Save/Save As preserve the editable content representable by the chosen format.
   /// Copy/export intentionally has a different, flattening contract.
-  static func persistenceIssue(_ document: CraftDocument, format: Format) -> String? {
+  static func persistenceIssue(_ document: CraftDocument, format: Format,
+    options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
-    if format == .psd {
-      guard document.width <= 30_000, document.height <= 30_000, document.pixelsPerInch < 65_536
+    if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }
+    if document.videoTimeline != nil { return "Save as Photato to retain video frames and timing. Still-image copies contain only the current frame." }
+    if document.animation != nil { return "Save as Photato to retain animation. Still-image copies contain only the selected frame." }
+    if document.vanishingPoint != nil { return "Save as Photato to retain Vanishing Point planes, or export a rendered copy." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .adaptiveWideAngle }) == true }) { return "Save as Photato to retain editable Adaptive Wide Angle, or export a rendered copy." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .lensCorrection }) == true }) { return "Save as Photato to retain editable Lens Correction, or export a rendered copy." }
+    if document.layers.contains(where:{$0.smartFilters?.filters.contains(where:{$0.filter.kind.isRender}) == true}) {return "Save as Photato to retain editable Render settings."}
+    if document.layers.contains(where:{$0.smartFilters?.filters.contains(where:{$0.filter.kind.isStylize && $0.filter.kind != .emboss}) == true}) {return "Save as Photato to retain editable Stylize settings."}
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind.isPixelate }) == true }) { return "Save as Photato to retain editable Pixelate settings." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind.isDistortion }) == true }) { return "Save as Photato to retain editable distortion settings and displacement maps." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .lensBlur }) == true }) { return "Save as Photato to retain editable Lens Blur settings and depth references." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .smartSharpen || $0.filter.kind == .reduceNoise }) == true }) { return "Save as Photato to retain editable Smart Sharpen / Reduce Noise settings." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .filterGallery }) == true }) { return "Save as Photato to retain editable Filter Gallery effects." }
+    if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .blurGallery }) == true }) { return "Save as Photato to retain editable Blur Gallery, or export a rendered copy." }
+    if document.hasFrames { return "Save as Photato to retain editable frames, or export a rendered copy." }
+    if document.hasArtboards { return "Save as Photato to retain artboards. Export individual artboards for other formats." }
+    if document.inkMode != nil {
+      guard document.colorMode == .multichannel, format == .psd || format == .psb else {
+        return "Save as Photato to retain ink settings. Multichannel also supports PSD/PSB; use Save a Copy for rendered raster output."
+      }
+      if document.quickMask != nil { return "Exit Quick Mask or save as Photato to retain the temporary ink selection." }
+      let maximum = format == .psb ? PSDFileFormat.psb.maximumDimension : PSDFileFormat.psd.maximumDimension
+      if document.width > maximum || document.height > maximum || document.pixelsPerInch >= 65536 {
+        return "Dimensions or resolution exceed the selected Photoshop format's limits."
+      }
+      return nil
+    }
+    if document.hasAuxiliaryChannels { return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image." }
+    if document.restrictedMode != nil {
+      if format == .jpeg { return "JPEG cannot retain Indexed Color or Bitmap mode. Use Save a Copy or convert the document to RGB." }
+      if format == .png, !(document.paths ?? []).isEmpty { return "Save as Photato, PSD or TIFF to retain saved paths." }
+      if format == .tiff, options.tiffLayers == true || options.tiffPredictor == true { return "Indexed Color and Bitmap TIFF use flat samples without a floating-point predictor." }
+      if format == .psd || format == .psb {
+        let maximum = format == .psb ? PSDFileFormat.psb.maximumDimension : PSDFileFormat.psd.maximumDimension
+        if document.width > maximum || document.height > maximum || document.pixelsPerInch >= 65536 { return "Dimensions or resolution exceed the selected Photoshop format's limits." }
+        if document.colorMode == .bitmap, options.psdCompositeCompression == .zipPrediction { return "Bitmap Photoshop files support None, RLE or ZIP compression." }
+      }
+      return nil
+    }
+    if format == .psd || format == .psb || (format == .tiff && options.tiffLayers != false) {
+      let maximum =
+        format == .psb ? PSDFileFormat.psb.maximumDimension : PSDFileFormat.psd.maximumDimension
+      guard document.width <= maximum, document.height <= maximum, document.pixelsPerInch < 65_536
       else {
-        return "PSD dimensions or resolution exceed the supported format limits."
+        return "Dimensions or resolution exceed the selected Photoshop format's limits."
       }
       for layer in document.layers {
         switch layer.content {
         case .raster where layer.affine == nil, .group, .fill, .gradientFill, .patternFill: break
+        case .text(let t):
+          if let space = try? ColorManagement.space(for: document), let srgb = try? RasterIO.colorSpace(),
+            space != srgb && !(document.depth == .f32 && space == CGColorSpace(name: CGColorSpace.linearSRGB)) { return "Editable PSD type requires an sRGB working profile." }
+          let type = t.promoted(dpi: document.pixelsPerInch).typography!
+          if type.defaultParagraph.direction == .rightToLeft || type.runs.contains(where: { $0.paragraph.direction == .rightToLeft }) { return "RTL type requires Photato format until its PSD mapping is qualified." }
         case .adjustment(let adjustment):
           switch adjustment {
-          case .levels, .curves, .hueSaturation, .colorBalance, .tonalSteps: break
+          case .levels, .curves, .hueSaturation, .colorBalance, .classic, .tonalSteps: break
           case .gradientMap where document.depth != .f32: break
           default: return "This adjustment is not yet editable in PSD. Save as Photato."
           }
@@ -68,7 +118,7 @@ extension DocumentIO {
       return
         "Save as Photato or PSD to keep editable layers, masks and paths. Use Save a Copy for a flattened image."
     }
-    guard document.depth != .f32 else {
+    guard document.depth != .f32 || format == .tiff else {
       return
         "This format's current encoder cannot retain 32-bit pixels. Save as Photato or PSD, or use Save a Copy to convert to 16-bit."
     }
@@ -78,16 +128,23 @@ extension DocumentIO {
       }
       for y in 0..<pixels.height {
         for x in 0..<pixels.width where pixels.pixel(x: x, y: y).a != 1 {
-          return "JPEG cannot retain transparency. Use Save a Copy for a white-matte version."
+          return "JPEG cannot retain transparency. Use Save a Copy to choose a matte."
         }
       }
     }
     return nil
   }
-  static func encodeForPersistence(_ document: CraftDocument, format: Format) throws -> Data {
-    if let issue = persistenceIssue(document, format: format) {
+  static func encodeForPersistence(_ document: CraftDocument, format: Format,
+    options: RasterEncodingOptions = .init()) throws -> Data {
+    let options = persistenceOptions(options, format: format, document: document)
+    if let issue = persistenceIssue(document, format: format, options: options) {
       throw CraftError.unsupported(issue)
     }
-    return try encode(document, format: format)
+    return try encode(document, format: format, options: options)
+  }
+  static func persistenceOptions(_ requested: RasterEncodingOptions, format: Format, document: CraftDocument? = nil) -> RasterEncodingOptions {
+    var result = requested
+    if format == .tiff, result.tiffLayers == nil { result.tiffLayers = document?.restrictedMode == nil }
+    return result
   }
 }

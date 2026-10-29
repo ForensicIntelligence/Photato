@@ -1,0 +1,542 @@
+{
+  "step": "dev-step-221",
+  "recorded_at_utc": "2026-10-28T15:11:11.904423+00:00",
+  "status": "Qualified development preview; remaining parity gates stay open.",
+  "goal_status": "active",
+  "goal_complete": false,
+  "increment_complete": false,
+  "qualified_stage": "Indexed/Bitmap storage, controls, Color Table, files, geometry, clipboard, semantic Actions19 and canonical painting;2259 full optimized tests and universal package. Exact/live/platform and remaining feature gates open.",
+  "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source19.json",
+  "source_inputs": 2175,
+  "source_delta": {
+    "new": 252,
+    "modified": 66,
+    "removed": 0
+  },
+  "source_delta_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source-delta19.json",
+  "tests": {
+    "final_focused": 39,
+    "failures": 0,
+    "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools44.log",
+    "new_restricted_tests": 42,
+    "new_lab_profile_regression": 1,
+    "original_rust_indexed_reference_cases": 124,
+    "original_rust_bitmap_reference_cases": 21,
+    "independent_input_files": 37,
+    "final_export_emission": {
+      "tests": 2,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/emit-final16.log"
+    },
+    "independent_outputs": {
+      "psd_psb_png": 18,
+      "tiff": 24,
+      "total_stored_samples": 11934,
+      "reports": [
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/independent-formats02.json",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/independent-tiff02.json"
+      ],
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/source03.json"
+    },
+    "prior_formats_focused": {
+      "tests": 166,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-integration15.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/source03.json"
+    },
+    "new_workflow_tests": 9,
+    "controls_repair": {
+      "tests": 82,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls20.log"
+    },
+    "offscreen_captures": [
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-indexed-1660D175-C926-488E-BB11-69DD3421F859.png",
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-bitmap-C9421F71-1977-47F6-A2AC-0F1C841BCF75.png",
+      "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls-colorTable-3ABCD3ED-FAE1-4CA9-ADAB-30680965E4B4.png"
+    ],
+    "new_geometry_tests": 9,
+    "new_clipboard_tests": 16,
+    "combined_focused": 523,
+    "combined_log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions38.log",
+    "combined_source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source17.json",
+    "new_action_workflow_tests": 12,
+    "prior_actions_final": {
+      "tests": 34,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions39.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json"
+    },
+    "full_optimized": {
+      "tests": 2259,
+      "failures": 0,
+      "seconds": 161.264,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools45-release.log"
+    }
+  },
+  "failed_attempts": [
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/core-document02.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/component-integration06.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-focused08.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/external-formats01.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-focused11.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-integration12.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/formats-integration14.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls17.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls18.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/controls19.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry22.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard25.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard28.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard29.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard30.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions32.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions33.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions34.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions35.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools41.log",
+    "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools43.log"
+  ],
+  "native_archive": 47,
+  "api": {
+    "nativeArchive": 47,
+    "typed_commands": 132,
+    "new_commands": 14,
+    "new_routes": 0,
+    "shared_existing_paths": [
+      "Native Open/Save/Save As/Copy",
+      "Photato HTTP import/download and save commands",
+      "Photato /v1/action-jobs resource IO",
+      "Adobe /v2/execute-actions resource IO"
+    ],
+    "format_pairs": {
+      "psd_psb": [
+        "indexed8",
+        "bitmap1"
+      ],
+      "png": [
+        "indexed8 output,1/2/4/8 input",
+        "bitmap1"
+      ],
+      "tiff": [
+        "indexed8 output,1/2/4/8 input",
+        "bitmap1"
+      ]
+    },
+    "advertised_conversion_commands": true,
+    "flat_tiff_save_default": true,
+    "native47_header_required_for_restricted_download": true,
+    "commands": [
+      "document.convertIndexed",
+      "document.convertBitmap",
+      "indexed.colorTable.read",
+      "indexed.colorTable.write",
+      "indexed.indices.read",
+      "indexed.indices.write",
+      "document.resize",
+      "document.canvasSize",
+      "document.rotate",
+      "document.resolution",
+      "clipboard.copy",
+      "clipboard.cut",
+      "clipboard.paste",
+      "clipboard.newDocument"
+    ],
+    "schemas": "restrictedModes, geometry and clipboard capabilities/result schemas; documentMode and clipboard state",
+    "adobe_restricted_conversion": false,
+    "clipboardEnvelopes": [
+      1,
+      2
+    ],
+    "actions_format": 19,
+    "actions_playback": {
+      "actions.play": [
+        "Optional clipboardPayloadBase64 initial native payload (2MiB)",
+        "Optional sources with shared IDs/revisions for master palettes",
+        "Optional clipboardPayloadBase64 output after Copy/Cut (2MiB)",
+        "No Mac clipboard access; per-step clipboard/document extent and storage validation",
+        "Response schema exposed in actions.playback.resultSchema"
+      ],
+      "actions.batch": [
+        "Optional explicit initial clipboard reused independently per source; internal Copy/Cut never publish the system clipboard"
+      ],
+      "clipboard.copy": "Successful Copy now records a semantic operation while leaving document/history unchanged.",
+      "indexed.settings": "Optional forcedColors/customPalette arrays accept empty defaults; choosing Custom still requires colors."
+    },
+    "painting_mode_storage": "Existing paint.tool shared engine; additive painting.modeStorage capability text and corrected target wording. No new command or route."
+  },
+  "remaining": [
+    "Published Adobe restricted creation/action conversion descriptors, grounded in primary evidence with conformance tests. Existing file/job paths support restricted files; no new Adobe conversion descriptor is yet qualified.",
+    "Restricted-mode geometry and clipboard now pass focused native/API/history/file checks. Mode/clipboard Actions19 now pass; complete tool contexts, other Actions and selection behavior remain; every Photoshop mode/context is not qualified.",
+    "Desktop Previous palette currently retains the last accepted palette in that document session; master dialogs use all eligible open-document snapshots. Persisted shared palette preferences, full Color Table presets/range editing and exact Photoshop settings/UI remain open.",
+    "Format gaps: CCITT, higher-precision TIFF ColorMap, transfer tables, non-square pixels, rotated saved paths, extra channels/layers, PNG partial/multiple alpha and APNG; profile/ancillary variants and full corpus interoperability.",
+    "Byte-identical Photoshop quantization/halftone/resampling and custom-pattern behavior. Rust source comparisons and independent file decoding do not prove Photoshop equality.",
+    "Full optimized2259-test and universal-package qualification pass. Live conversion/color-picker/file-panel and same-artwork window acceptance, physical Intel/macOS14/macOS26 runtime checks remain open.",
+    "Duotone/Multichannel and other missing major workflows after Indexed/Bitmap integration; the overall goal remains active.",
+    "Clipboard:2MiB inline API payload limit, full component-mode copying/Background behavior, document-lifecycle Actions, exact Photoshop clipboard algorithms and live cross-application qualification remain."
+  ],
+  "next_action": "Implement the remaining major Duotone/Multichannel workflows using next-major-plan48. Retain open restricted-mode tool contexts, Adobe descriptors and exact/live/platform gates; complete same-artwork window handoff after manual unlock.",
+  "last_fully_qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_221.json",
+  "latest_qualified_package_step": 221,
+  "installed_corrected_build_step": 209,
+  "live_window_handoff": "Same-document handoff still pending manual unlock; renewed app selection failed and one inventory confirmed Mac locked. No new live acceptance or window code change.",
+  "workers": "Test and package workers terminal; source freeze unchanged.",
+  "format_interchange": {
+    "status": "focused tests and independent sample validation pass",
+    "supersedes_unqualified_draft": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/source-window-report02.json",
+    "limitations": "Format gaps: CCITT, higher-precision TIFF ColorMap, transfer tables, non-square pixels, rotated saved paths, extra channels/layers, PNG partial/multiple alpha and APNG; profile/ancillary variants and full corpus interoperability. No silent loss is claimed supported."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 350,
+    "unavailable_leaf_commands": 375,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "geometry": {
+    "utc": "2026-10-28T12:43:42.562928+00:00",
+    "status": "Focused Debug development checkpoint; increment not complete",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry-source06.json",
+    "source_inputs": 2164,
+    "source_delta": {
+      "new": 241,
+      "modified": 52,
+      "removed": 0
+    },
+    "tests": {
+      "new_geometry_tests": 9,
+      "geometry22": {
+        "tests": 68,
+        "failures": 1,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry22.log"
+      },
+      "geometry23": {
+        "tests": 68,
+        "failures": 0,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry23.log"
+      },
+      "geometry24": {
+        "tests": 260,
+        "failures": 0,
+        "seconds": 30.045,
+        "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry24.log",
+        "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/geometry-test-command24.json"
+      }
+    },
+    "commands": [
+      "document.resize",
+      "document.canvasSize",
+      "document.rotate",
+      "document.resolution"
+    ],
+    "typed_commands": 128,
+    "native_archive": 47,
+    "behavior": "Crop, resize, canvas extent and five canvas turns update actual indices/bits. Exact grid transforms and nearest sampling retain duplicate index identity. Interpolation remaps to the retained palette or black/white. Whole-document paths/selections follow the shared transforms; crop clears selection. Crop fill changes only new gaps in the existing flat layer. Resolution-only changes retain samples.",
+    "adobe": "Published GA/reference reviewed; linked OpenAPI JSON unavailable through web tool. No new Adobe descriptor or route qualified. Existing unsupported geometry action descriptors remain explicit.",
+    "remaining": [
+      "Semantic Actions for mode conversions, full tool/clipboard contexts",
+      "Primary-grounded Adobe geometry/restricted conversion descriptors and conformance",
+      "Exact Photoshop interpolation/quantization behavior and broader file variants",
+      "Full optimized/universal qualification and physical platform/live checks"
+    ],
+    "window_handoff": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/window-handoff04.json",
+    "latest_qualified_package": 220,
+    "installed_corrected_app": 209,
+    "live_acceptance": false,
+    "source_inputs_unchanged_after_tests": true
+  },
+  "clipboard": {
+    "utc": "2026-10-28T13:16:59.218792+00:00",
+    "status": "Focused Debug development checkpoint; increment not complete",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard-source13.json",
+    "source_inputs": 2169,
+    "source_delta": {
+      "new": 246,
+      "modified": 57,
+      "removed": 0
+    },
+    "tests": {
+      "final": 317,
+      "failures": 0,
+      "seconds": 34.69,
+      "new_clipboard_tests": 16,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard31.log",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard-test-command31.json",
+      "prior_focused": [
+        {
+          "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard26.log",
+          "tests": 64,
+          "failures": 0
+        },
+        {
+          "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard27.log",
+          "tests": 68,
+          "failures": 0
+        }
+      ],
+      "failures_preserved": [
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard25.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard28.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard29.log",
+        "artifacts/runs/20261028T101734Z-221-indexed-bitmap/clipboard30.log"
+      ]
+    },
+    "commands": [
+      "clipboard.copy",
+      "clipboard.cut",
+      "clipboard.paste",
+      "clipboard.newDocument"
+    ],
+    "typed_commands": 132,
+    "native_archive": 47,
+    "clipboard_envelopes": [
+      1,
+      2
+    ],
+    "maximum_api_payload_bytes": 2097152,
+    "behavior": "Envelope2 retains palette/bit identity alongside selection alpha. Opaque matching-palette copies preserve duplicate indices. Flat-mode paste composites and quantizes into the existing image. Cut retains the layer and clears to transparency, or quantizes the chosen background. Exact New from Clipboard retains mode; coverage needing extra alpha remains RGB. Profile conversion invalidates direct sample identity. No-op edits do not mark the document modified.",
+    "api": "Explicit payloads; no system pasteboard access. Read/cut return payload metadata; new documents require transfer permission. Decode extent/data limits precede flattening. Revision/source equality, busy, revocation and lifecycle guards protect commits.",
+    "source_reference": {
+      "path": "../photocraft-main/crates/engine/src/edit_cmds.rs",
+      "sha256": "fada4a38417eb3c112273f24be3332533a18220b3a13d740cfbe47c19b4192e1",
+      "scope": "Read licensed copy/paste/lift/new-document and chosen-background Cut source/tests; no new Rust differential execution claimed."
+    },
+    "primary_references": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/copy-and-paste-layers.html",
+        "scope": "General layer copying, merged content, pixel dimensions and profiles; not evidence of mode-specific numerical equality."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/choose-colors/color-modes-in-photoshop.html",
+        "scope": "Indexed palette storage and restricted editing; not exact clipboard algorithms."
+      }
+    ],
+    "remaining": [
+      "Semantic Actions for mode conversions/clipboard, complete tool contexts",
+      "Adobe action descriptors and cross-interface conformance",
+      "Large clipboard binary/resource API beyond2MiB inline payload; native clipboard retains512MiB limit",
+      "Full Photoshop background/tool/selection behavior and exact output, live cross-application clipboard and platform checks",
+      "Full optimized/universal milestone qualification"
+    ],
+    "latest_qualified_package": 220,
+    "installed_corrected_app": 209,
+    "live_desktop_checked": false,
+    "source_unchanged_after_tests": true
+  },
+  "window_followup": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/window-handoff06.json",
+  "actions": {
+    "utc": "2026-10-28T14:23:16.732515+00:00",
+    "status": "Focused development checkpoint; full milestone/release/live qualification remains open",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+    "source_inputs": 2174,
+    "source_delta": {
+      "new": 251,
+      "modified": 64,
+      "removed": 0
+    },
+    "source_delta_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source-delta18.json",
+    "actions_format": 19,
+    "readable_actions_versions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "native_archive": 47,
+    "typed_commands": 132,
+    "new_commands": 0,
+    "new_workflow_tests": 12,
+    "combined": {
+      "tests": 523,
+      "failures": 0,
+      "seconds": 106.369,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions38.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source17.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command38.json"
+    },
+    "final": {
+      "tests": 34,
+      "failures": 0,
+      "seconds": 1.587,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions39.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command39.json"
+    },
+    "final_source_difference": "Only Actions result-schema capability metadata and its existing test assertion changed after source17; playback behavior is unchanged.",
+    "earlier_focused": {
+      "tests": 52,
+      "failures": 0,
+      "seconds": 4.623,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions36.log"
+    },
+    "failed_attempts": [
+      "actions32.log",
+      "actions33.log",
+      "actions34.log",
+      "actions35.log"
+    ],
+    "recording": [
+      "Component mode/depth/ICC/intent, merge-visible and HDR clipping consent",
+      "Indexed palette/dither/transparency/forced settings, explicit Previous palette",
+      "Bitmap resolution/method/halftone/custom pattern and Color Table",
+      "Copy/Copy Merged, Cut with selected background, Paste placement/center without recording clipboard images"
+    ],
+    "runtime": "Shared RecordedActionRenderer applies operations to each source document with per-step validation and one source-checked document transaction. Native playback stages the clipboard and commits only on success; API and Batch use private buffers.",
+    "master_palettes": "Desktop snapshots eligible open documents; API requires explicit additional shares/revisions; Batch freezes eligible source files once and excludes the current input by its batch source identity. Pixel/storage limits remain.",
+    "palette_state": "Commit last accepted indexed/color-table palette after successful playback even if a later step returns to RGB. Actions Previous stores an explicit palette.",
+    "api": {
+      "actions.play": [
+        "Optional clipboardPayloadBase64 initial native payload (2MiB)",
+        "Optional sources with shared IDs/revisions for master palettes",
+        "Optional clipboardPayloadBase64 output after Copy/Cut (2MiB)",
+        "No Mac clipboard access; per-step clipboard/document extent and storage validation",
+        "Response schema exposed in actions.playback.resultSchema"
+      ],
+      "actions.batch": [
+        "Optional explicit initial clipboard reused independently per source; internal Copy/Cut never publish the system clipboard"
+      ],
+      "clipboard.copy": "Successful Copy now records a semantic operation while leaving document/history unchanged.",
+      "indexed.settings": "Optional forcedColors/customPalette arrays accept empty defaults; choosing Custom still requires colors."
+    },
+    "primary_references": [
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/create-record-actions/record-an-action.html",
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/play-actions-in-the-actions-panel.html",
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/conversion-options-for-indexed-color-images.html"
+    ],
+    "reference_scope": "General recording/playback and master/Previous palette behavior; not exact numerical equivalence or a Firefly descriptor schema.",
+    "adobe": "Existing component color-mode actionJSON job contracts remain separately tested. No new Adobe clipboard/restricted conversion descriptors, routes or ATN interoperability are claimed.",
+    "remaining": [
+      "New from Clipboard/document switching and other unsupported commands in recorded Actions",
+      "Complete restricted mode/tool/selection contexts and channel Actions",
+      "Primary-grounded Adobe restricted/clipboard descriptors and conformance",
+      "Exact Photoshop parameters, palette/clipboard/resampling results, UI/platform/live validation",
+      "Full optimized/universal221 qualification;220 remains the latest qualified package",
+      "Remaining major workflows including Duotone and Multichannel"
+    ],
+    "latest_qualified_package": 220,
+    "live_window_acceptance": false,
+    "source_unchanged_after_tests": true
+  },
+  "pending_painting_regression": {
+    "status": "Repaired and verified; failed reproduction retained.",
+    "original_log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools41.log",
+    "passing_log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools44.log"
+  },
+  "stage_qualification_complete": true,
+  "painting": {
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source19.json",
+    "test_file": "Tests/PhotoCraftAppTests/ModePaintingWorkflowTests.swift",
+    "focused": {
+      "tests": 39,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools44.log"
+    },
+    "full_release": {
+      "tests": 2259,
+      "failures": 0,
+      "seconds": 161.264,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools45-release.log"
+    },
+    "new_workflow_methods": 6,
+    "mode_depth_contexts": 12,
+    "tool_context_combinations": 84,
+    "api": "Existing paint.tool shared engine; additive painting.modeStorage capability text and corrected target wording. No new command or route.",
+    "repair": "Reconcile authoritative native samples before validating/returning PaintingEdit; preview, commit and reopening agree.",
+    "limits": "Exact Photoshop numeric results, all mode-specific tool/menu availability, brush Actions/Adobe descriptors and live/platform checks remain open."
+  },
+  "previous_fully_qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_220.json",
+  "latest_uploaded_package_step": 220,
+  "package": {
+    "utc": "2026-10-28T15:11:01.964256+00:00",
+    "tests": {
+      "full_release": 2259,
+      "failures": 0,
+      "seconds": 161.264,
+      "focused_debug": 39,
+      "new_mode_painting_workflow_methods": 6
+    },
+    "source_manifest": "painting-source19.json",
+    "source_manifest_sha256": "e1cace8700254edae293c529ddb844a4c988da266e9d77e7308d5bb1d56b6c03",
+    "source_inputs": 2175,
+    "supplemental_licenses": {
+      "LICENSE-MIT": "1a8f66d8a86b146f5336fa0d4b1186576c8aa98e60823080c85c7811cfd810af",
+      "LICENSE-APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "LICENSE-psd-tools": "79f7e019a30b97542cce6f6482a75ba26771b4204c374fec305dc8cf558d137f"
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T101734Z-221-indexed-bitmap/Photato221-final01.zip",
+    "zip_sha256": "d78bda56e2328f6ec95fea2288fffb545a0e03411b991ae2740a9638e7126d7c",
+    "app": "/private/tmp/photato221-verified-inc_rt1u/Photato.app",
+    "executable_sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato221-verified-inc_rt1u/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato221-verified-inc_rt1u/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "optional_ai_frameworks_weak_linked": {
+      "x86_64": [
+        "ImagePlayground"
+      ],
+      "arm64": [
+        "FoundationModels",
+        "ImagePlayground"
+      ]
+    },
+    "optional_ai_frameworks_not_linked": {
+      "x86_64": [
+        "FoundationModels"
+      ],
+      "arm64": []
+    },
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 3,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 350,
+      "unavailable_leaf_commands": 375,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "retired_brand_matches_in_package": [],
+    "current_source": true,
+    "limits": "Full optimized suite and universal package verified on this host. Installed209 and saved artwork unchanged. No current live handoff, physical Intel/macOS14/macOS26 runtime coverage, complete Photoshop numerical/context/default parity or complete Adobe descriptor coverage. Existing Debug-only Layers focus regression remains separately recorded; optimized success does not resolve it."
+  },
+  "package_verification": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/verification46.json",
+  "next_major_plan": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/next-major-plan48.json",
+  "development_audit": {
+    "refresh_log": "artifacts/development-history-audit/painting221-48-refresh.log",
+    "check_log": "artifacts/development-history-audit/painting221-48-check.log"
+  },
+  "completed_at_utc": "2026-10-28T15:11:11.904423+00:00",
+  "completed_this_increment": [
+    "Native Indexed/Bitmap samples, controls, Color Table and file interchange",
+    "Stored-sample geometry and clipboard",
+    "Semantic conversion/clipboard Actions19 across desktop/API/Batch",
+    "Canonical painting preview/commit/storage across12 mode/depth contexts",
+    "2259 full optimized tests,39 final focused tests and universal macOS14+ package"
+  ],
+  "no_running_build_test_workers_expected": true
+}

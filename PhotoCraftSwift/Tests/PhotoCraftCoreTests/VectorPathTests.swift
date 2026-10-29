@@ -79,11 +79,11 @@ final class VectorPathTests: XCTestCase {
     invalid.path.components[0].knots[0].anchor.x = .nan
     XCTAssertThrowsError(try session.execute(.savePath(invalid)))
     XCTAssertEqual(session.document, d)
-    session.undo()
-    session.undo()
+    try session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
-    session.redo()
-    session.redo()
+    try session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, d)
     var locked = d
     locked.layers[0].locked = true

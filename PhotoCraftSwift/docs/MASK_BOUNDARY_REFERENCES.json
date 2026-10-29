@@ -1,0 +1,105 @@
+{
+  "step": "dev-step-154",
+  "status": "Off-canvas unscaled raster masks now feather across the canvas edge; ordinary cropped/full-canvas controls retain their behavior. Kernel/full rendering parity remains open.",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_154.json",
+  "original_source_comparison": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/render-comparison01.json",
+    "sha256": "06a453e93a5f354797705912c7066e76ed213a608eb76bdbb260c7e6beafc8f7"
+  },
+  "photoshop_provenance": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/photoshop-provenance01.json",
+    "sha256": "eefc7bb9797b62021941d9a524ba6ec02e43b730f9c64f95d1d8b693f519264c"
+  },
+  "source_provenance": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/source-provenance01.json",
+    "sha256": "2f98f27c7abca8a45d3dcd214ee4d7260302687737f05804c1a614ab2ec8355e"
+  },
+  "postfix_comparison": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/postfix-comparison01.json",
+    "sha256": "17c48be3157185b399d9aecf5c05b829dfbfe7523547ae72a4927e8eb7d5374e"
+  },
+  "tests": {
+    "debug": {
+      "passed": 1460,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 609.054,
+      "log": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/full01.log",
+        "sha256": "1b5642c9e3ef6b50502ac988fd8e29a37b0739a76952d8b9b274f3d905f3d245"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/full01-result.json",
+        "sha256": "f686fb8060620e89a652e9f28c5207508af550b98c7b2a231ef36b386a0fdfd9"
+      }
+    },
+    "release": {
+      "passed": 1460,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 87.731,
+      "log": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/release01.log",
+        "sha256": "8c117ce727ab8c8bba999d0cb1a10d1adc1c9d11b86716a847a2d2c207964e9a"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/release01-result.json",
+        "sha256": "c05e90afe69d91641b0c45e11e01e95b42a3510cd69b8f18ce392d80cbcba323"
+      }
+    }
+  },
+  "focus": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 69.084,
+    "log": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/focused02.log",
+      "sha256": "7451958d471bbe7b03928bbf5514a488f32ab67ac6c7befcefe5d2e6b2613767"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/focused02-result.json",
+      "sha256": "d26ceb24d142e4a955c23e3376b572b9cb2f7133373c9090ad4620bf169031b0"
+    }
+  },
+  "intel": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1.542,
+    "log": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/intel-tests02.log",
+      "sha256": "db9132e4deafbaf67ee94d7851970ef3496ff99e8df6902a28a0a4a738ef406c"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/intel-tests02-result.json",
+      "sha256": "fab3b62982532996e895b145273d65e26afa54cd337b660c476f2b0e0f28919e"
+    }
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/package-verification02.json",
+    "sha256": "1a9ca646cb43675f605ec0379db0a973ec5a758cc5591ff04d9e5f1989b6427f"
+  },
+  "live": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/live-verification01.json",
+    "sha256": "230de48d12506807a6c95d6a773455d2af529356293ce0f1fff0dcbe0b2934e8"
+  },
+  "api": {
+    "new_routes": [],
+    "new_schema_fields": [],
+    "photato_typed_commands": 21,
+    "adobe_partial_endpoints": 3,
+    "adobe_unimplemented_endpoints": 5,
+    "impact": "Shared renderer correction reaches native preview/Apply Mask/persistence, Photato uploads/previews/downloads and both action-job outputs. Existing permission/validation/isolation rules remain unchanged."
+  },
+  "remaining": [
+    "Every major workflow gate remains open. This closes a reproduced unscaled raster boundary defect, not full mask or source-import parity.",
+    "The Gaussian feather kernel still differs from Photoshop. Independent source/Rust and Photoshop comparisons measure remaining errors; no broad byte-equivalence claim.",
+    "Vector-mask rasterization, scaled/rotated raster and group/other-content mask boundaries require further independent references and implementation.",
+    "Rich original-project content, fill opacity, effects, artboards, auxiliary channels, complete source metadata and .pcraft writing remain unfinished. Preserve editability and explicit rejection while extending major workflows.",
+    "Both APIs share the corrected renderer and pass preview/persistence/job tests; API coverage remains 21 typed commands, three partial Adobe endpoints and five unimplemented endpoints.",
+    "Complete Photoshop menus, factory shortcuts/preferences, all file/lifecycle/colour/large-file behavior and physical Intel/macOS14 runtime qualification remain open.",
+    "Minor functions and final cosmetic details remain deferred behind every major function."
+  ],
+  "no_photoshop_parity_claim": true
+}

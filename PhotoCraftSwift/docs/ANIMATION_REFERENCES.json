@@ -1,0 +1,150 @@
+{
+  "step": 230,
+  "date": "2026-10-28",
+  "workflow": "SP01 Timeline, frame animation and video",
+  "status": "Native animated GIF import/export, Timeline entry and two shared API commands pass48 focused and2410 full optimized tests on2268 unchanged source05 inputs. Pillow independently verifies five files/960 RGBA samples, delays and loop counts. Full SP01, Save for Web palette controls and exact/live/platform parity remain open; installed221 and qualified/uploaded224 are unchanged.",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/create-frame-based-animations.html",
+      "accessed": "2026-10-28",
+      "use": "Frame composition properties, duplicate-frame workflow and playback/loop controls; independently implemented in Swift."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/timeline-panel-controls-and-features.html",
+      "accessed": "2026-10-28",
+      "use": "Frame thumbnails/selection/play/tween/delete/delay controls, distinct continuous video timeline scope."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+      "accessed": "2026-10-28",
+      "use": "Wrapper schema URL404; current official repository blob recovered and compared with pinned contract. See adobe-review09."
+    },
+    {
+      "url": "https://www.w3.org/Graphics/GIF/spec-gif89a.txt",
+      "use": "Public container, timing, rectangles, transparency/disposal and LZW fixture design."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/imageio/kcgimagepropertygifunclampeddelaytime",
+      "use": "Zero-capable native frame delays; Markdown saved locally after web tool content-type rejection."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/create-frame-based-animations.html",
+      "use": "Observable animation workflow; no Adobe implementation code."
+    }
+  ],
+  "implementation": [
+    "Sources/PhotoCraftCore/FrameAnimation.swift",
+    "Sources/PhotoCraft/TimelinePanel.swift",
+    "Sources/PhotoCraft/AutomationAnimation.swift",
+    "Shared Document/Engine/history/archive50, renderer preview, docked WorkspaceView, menu and save paths",
+    "Sources/PhotoCraft/AnimationExport.swift",
+    "Sources/PhotoCraftImaging/AnimationGIF.swift",
+    "Tests/PhotoCraftAppTests/AnimationInterchangeTests.swift",
+    "Tests/PhotoCraftImagingTests/AnimationGIFTests.swift",
+    "Tests/PhotoCraftImagingTests/Fixtures/animation/README.md",
+    "Tests/PhotoCraftImagingTests/Fixtures/animation/owned-disposal.gif"
+  ],
+  "api": {
+    "commands": [
+      "animation.edit",
+      "animation.view",
+      "animation.export",
+      "animation.export.cancel"
+    ],
+    "typed_commands": 155,
+    "state": "animation",
+    "native_archive": 50,
+    "actions_archive": 20,
+    "adobe": "Current official schema matches the pinned blob and has no dedicated Timeline route. Generic execute-actions animation descriptors remain unimplemented.",
+    "adobe_review": "../artifacts/runs/20261028T215501Z-229-frame-animation/adobe-review09.json"
+  },
+  "tests": {
+    "focused": {
+      "tests": 48,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T224003Z-230-animation-interchange/focused05.log"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T22:59:50.531926+00:00",
+      "tests": 2410,
+      "failures": 0,
+      "suite_seconds": 170.534,
+      "source_manifest": "artifacts/runs/20261028T224003Z-230-animation-interchange/source05.json",
+      "unchanged_inputs": 2268,
+      "log": "artifacts/runs/20261028T224003Z-230-animation-interchange/release07.log",
+      "log_sha256": "487841b386bce8808d2de0c34e47e55711f157fe88123052188a99e5aca491bb",
+      "binaries": {
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "4bbefcaba23b86ac0f1c3fb402ea63fc69a71da2f59f6a61fe4552008adfa27d",
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "91bb4196ead3cf33ce5dca338690750ce843734c85a420661af07a9889501d14"
+      },
+      "qualified_universal_package": false,
+      "live_acceptance": false,
+      "full_photoshop_parity": false
+    },
+    "independent_gif": "../artifacts/runs/20261028T224003Z-230-animation-interchange/independent06.json",
+    "failed_loop_boundary": "../artifacts/runs/20261028T224003Z-230-animation-interchange/focused02.log",
+    "prior_step229": "../artifacts/runs/20261028T224003Z-230-animation-interchange/animation-references-before07.json"
+  },
+  "source_manifest": "../artifacts/runs/20261028T215501Z-229-frame-animation/source11.json",
+  "live_acceptance": false,
+  "visual_acceptance": false,
+  "layout": "Offscreen NSHostingView sizing and factory-menu regression pass; not a live comparison.",
+  "independent_output": "Owned red-square coordinate/alpha expectations verify actual composite movement. No Photoshop output-equivalence claim.",
+  "limits": [
+    "Single-frame selection; new layers inherit current composition in all frames; advanced unify/propagate/duplicate-layer behavior remains unqualified.",
+    "Tween supports position and opacity with matching affine linear parts; effect tween and onion skins remain open.",
+    "Whole-canvas geometry, merge, profile/mode conversion and artboards require all-frame implementations; unsupported cases reject without edits.",
+    "Custom loop counts are supported by the API; the initial UI picker offers Forever, Once and three passes. Playback uses a20ms minimum for zero delays; defaults/timing are not Photoshop-qualified.",
+    "Image-sequence import/export, AVFoundation video layers, trim/interpretation, frame painting, audio, keyframes/transitions and Render Video remain required.",
+    "Editable PSD animation interchange and semantic Actions remain required; native50 preserves current frame data and other saves disclose loss.",
+    "Live Photoshop, Intel/macOS14/macOS26 platform runs, universal packaging and byte-identical rendering/interchange remain unqualified for this increment.",
+    "Additional rich-layer and geometry tool contexts in animated documents require qualification. This stage does not establish all prior still-image operations across animated compositions.",
+    "GIF: up to256 imported editable raster frames,512 exported Timeline frames; desktop1GiB/API128MiB preflight plus existing sharing limits. Native palette <=256 colors, sRGB8 binary-alpha threshold, centisecond delays <=655.35seconds. No Photoshop Save for Web palette/optimization, full metadata, byte-identical output or live/platform qualification yet."
+  ],
+  "installed_step": 221,
+  "uploaded_step": 224,
+  "full_goal_complete": false,
+  "source_changes": "../artifacts/runs/20261028T215501Z-229-frame-animation/changes13.json",
+  "menu_metrics": {
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 369,
+    "default_preset": "Photoshop Defaults",
+    "entries": 802,
+    "entries_with_actions": 446,
+    "full_photoshop_parity": false,
+    "menus": [
+      "Photato",
+      "File",
+      "Edit",
+      "Image",
+      "Layer",
+      "Type",
+      "Select",
+      "Filter",
+      "View",
+      "Plugins",
+      "Window",
+      "Help"
+    ],
+    "primary_shortcuts": 102,
+    "unavailable_leaf_commands": 356
+  },
+  "next_stage": "../artifacts/runs/20261028T215501Z-229-frame-animation/next-major12.json",
+  "previous_step229_record": "../artifacts/runs/20261028T224003Z-230-animation-interchange/animation-references-before07.json",
+  "gif_interchange": {
+    "scope": "Existing File/Open and image/gif API upload now preserve all frames; Timeline > Export Animated GIF and animation.export/.cancel share the native encoder and preserve source/history.",
+    "evidence": "../artifacts/runs/20261028T224003Z-230-animation-interchange/independent06.json",
+    "loop_repair": "Native ImageIO silently drops maximum finite loops when writing. Swift rewrites its known Netscape extension to the public repeat-count representation; ImageIO still encodes image pixels.",
+    "fixtures": "Tests/PhotoCraftImagingTests/Fixtures/animation/README.md"
+  },
+  "video_timeline_step231": {
+    "reference": "VIDEO_TIMELINE_REFERENCES.json",
+    "status": "Native one-layer PNG sequence import, video Timeline playback/trim/rates, selected-frame painting/history, native51 and four shared APIs pass63 focused and2420 full optimized tests on2279 unchanged source06 inputs. Independent Pillow checks verify144 RGBA samples. Full SP01, movie import/export, audio/keyframes and exact/live/platform parity remain open; installed221 and qualified/uploaded224 are unchanged.",
+    "supersedes_prior_gap": "PNG sequence import and initial video trim/rate/frame painting are now implemented; sequence export, movie sources and the full SP01 scope remain required."
+  },
+  "sequence_export_step232": {
+    "reference": "IMAGE_SEQUENCE_EXPORT_REFERENCES.json",
+    "status": "Native PNG sequence export from frame animation/video Timelines, range/numbering/timing controls, staged folder publication and two shared ZIP APIs pass55 focused and2428 full optimized tests on2284 unchanged source04 inputs. Independent ZIP/Pillow checks verify seven frames/336 pixel-channel samples plus timing/order/CRCs. The universal macOS14+ package is verified and uploaded as a private draft; installed221 is unchanged. Full SP01 and exact/live/platform parity remain open.",
+    "supersedes_prior_gap": "PNG sequence folder/ZIP export is now implemented; full Render Video, movie codecs and remaining SP01 scope stay open."
+  }
+}

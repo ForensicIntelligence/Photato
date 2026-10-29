@@ -1,0 +1,150 @@
+{
+  "step": "dev-step-187",
+  "completed_at_utc": "2026-10-27T11:24:48.160124+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native camera-ray straightening with line/polygon constraints, per-edge orientations, Auto/Fisheye/Perspective/Panorama/Full Spherical, focal/crop/scale, native workspace/preview/history/settings, editable Smart Filters/native31 and shared API/Actions/Batch.",
+  "source_manifest": "artifacts/runs/20261027T110725Z-187-wide-angle/source01.json",
+  "source_manifest_sha256": "f2e30fec28aef243b93fccbbfdf0264b3445af292f8441e7f8827b94b0bd3f7a",
+  "source_inputs": 1411,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationWideAngle.swift",
+      "Sources/PhotoCraft/WideAnglePreview.swift",
+      "Sources/PhotoCraft/WideAngleSheet.swift",
+      "Sources/PhotoCraft/WideAngleWorkspace.swift",
+      "Sources/PhotoCraftCore/WideAngle.swift",
+      "Sources/PhotoCraftCore/WideAngleEngine.swift",
+      "Sources/PhotoCraftCore/WideAngleSolver.swift",
+      "Tests/PhotoCraftAppTests/WideAngleWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/WideAngleTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/LensCorrectionWorkspace.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration02": 107,
+    "failures": 0
+  },
+  "verification": "artifacts/runs/20261027T110725Z-187-wide-angle/verification01.json",
+  "qualification": "107 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the last packaged candidate remains step185 and excludes Lens Correction and Adaptive Wide Angle.",
+  "last_full_regression": {
+    "step": 184,
+    "tests": 1782,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T094011Z-184-frames/release-full01.log",
+    "current_source": false
+  },
+  "last_packaged_candidate": {
+    "utc": "2026-10-27T10:43:29.627748+00:00",
+    "tests": {
+      "integration04": 90,
+      "release-focused01": 90
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T101322Z-185-blur-gallery/Photato185-final.zip",
+    "zip_sha256": "21050faada77aed581102486101c8d08eee36d37744e09809e0b32b74c46884b",
+    "app": "/private/tmp/photato185-verified-uywpsdvd/Photato.app",
+    "executable_sha256": "ea416ca36a82fbafac612a1551bc651354df8ae9cb84dc26924798c9db7945cc",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1396,
+    "source_manifest_sha256": "3e7e5b8827d1bd044a68cd65e3fd7b9c795fd101d5c29d4dabe1552ab3ab8d84",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 253,
+      "unavailable_leaf_commands": 472,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Focused optimized suite and package validation on the current host; not live UI, physical Intel/macOS14/26 or complete Photoshop equivalence evidence. Last full regression is step184, before this increment."
+  },
+  "previous_failures_preserved": [],
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "actions.manage",
+      "actions.play",
+      "actions.batch"
+    ],
+    "filter_kind": "adaptiveWideAngle",
+    "parameter": "wideAngle",
+    "catalogue_count": 70,
+    "native_archive_version": 31,
+    "state": "Strict settings/schema/defaults plus active workspace settings, tool, preview/rendering, overlays, zoom, selected constraint/segment, pending polygon count, resolved model and local history availability. Existing command routes share the native engine and transactions."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No new Adobe route. Unqualified adaptiveWideAngle actionJSON and editable PSD/PSB descriptors reject. Existing rendered raster output remains available."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 255,
+    "unavailable": 470,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Adaptive Wide Angle\u2026"
+    ],
+    "shortcut": "Option+Shift+Command+A"
+  },
+  "limitations": [
+    "Exact Adobe output, resampling/colour/edge semantics, live controls and physical macOS14/26/Intel qualification remain open. Latest desktop evidence remains locked, without bypass/re-probe.",
+    "No camera/lens manufacturer database, automatic EXIF As Shot, Adobe settings interchange or calibrated Photomerge panorama matching. Auto is a documented heuristic, not profile matching.",
+    "Current8,388,608-input-pixel limit,64 constraints/128 total segments/32 points per constraint. Unsupported antipodal or horizon-crossing arcs reject instead of silently changing projection. Larger image performance remains open.",
+    "RGB8/16 use encoded samples; RGB32 uses linear pixels as a native extension. Full Photoshop document colour-mode/filter matrix is not implemented.",
+    "Fixed canvas extent can crop corrected geometry. Complex later geometry filters, folded meshes and all interactive edge cases remain unqualified. Mesh constraints use bilinear interpolation while rasterization triangulates cells.",
+    "Editable PSD/PSB and Adobe descriptors remain unsupported. Native31 preserves settings/source editability; raster exports remain available.",
+    "Magnifier/detail panel, complete constraint keyboard/context interactions, Photoshop preset interoperability and exact workspace styling remain outstanding refinements.",
+    "Optimized/full regression/universal packaging is batched at the F05 milestone. Step185 is the last universal candidate; Lens Correction and Adaptive Wide Angle are currently source/Debug changes. Full F05 remains open."
+  ],
+  "next": "Vanishing Point: native perspective plane creation and editing, perspective paste/clone/painting with preview/history/persistence/API; then batched F05 full/optimized/universal qualification.",
+  "next_major_plan": "artifacts/runs/20261027T110725Z-187-wide-angle/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 187,
+    "evidence_files": 38282,
+    "logs": 19349,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T110725Z-187-wide-angle/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T110725Z-187-wide-angle/refresh02.log",
+      "artifacts/development-history-audit/20261027T110725Z-187-wide-angle/check02.log"
+    ],
+    "scope": "Record/reference integrity, not Photoshop parity."
+  }
+}

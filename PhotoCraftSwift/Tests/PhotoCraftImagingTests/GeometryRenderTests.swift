@@ -41,7 +41,7 @@ final class GeometryRenderTests: XCTestCase {
               before.pixel(x: x, y: y), after.pixel(x: nx, y: ny), "\(depth) \(turn) \(x),\(y)")
           }
         }
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
       }
     }

@@ -1,0 +1,61 @@
+{
+  "step": "dev-step-169",
+  "completed_at_utc": "2026-10-27T00:58:40.241406+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native Content-Aware Scale with protection, canvas controls, preview/history and API; B06 full parity remains open.",
+  "source_manifest": "artifacts/runs/20261027T004429Z-169-content-aware-scale/source01.json",
+  "source_manifest_sha256": "760608e1765e483c9ac93007420aa972bb3d7709406ca511fa6716720fd82d59",
+  "source_inputs": 1266,
+  "source_delta": "artifacts/runs/20261027T004429Z-169-content-aware-scale/changes01.json",
+  "tests": {
+    "final_focused": {
+      "count": 25,
+      "log": "artifacts/runs/20261027T004429Z-169-content-aware-scale/integration01.log",
+      "source_manifest": "artifacts/runs/20261027T004429Z-169-content-aware-scale/source01.json"
+    },
+    "failures": 0,
+    "full_regression": "Deferred to batch major-feature milestone, not claimed for169."
+  },
+  "package": {
+    "utc": "2026-10-27T00:58:40.241406+00:00",
+    "app": "/private/tmp/photato169-verified-10uwspiy/Photato.app",
+    "zip": "artifacts/runs/20261027T004429Z-169-content-aware-scale/Photato169-final.zip",
+    "zip_sha256": "7d06cf4b21566fcf7a1ffbad78d7fc04a68f0ad2911c67274b1f7bf761402585",
+    "executable_sha256": "24d11d47c8bd4ed39d7805c5447543bca912220c51fd52b010a1538242ed8038",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1266,
+    "source_manifest": "artifacts/runs/20261027T004429Z-169-content-aware-scale/source01.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "25 focused Debug tests for169; full/optimized/Intel/macOS14/26/live qualification remains open."
+  },
+  "api": {
+    "photato_typed_commands": 46,
+    "adobe": "Five partial/three unimplemented endpoint groups unchanged; no dedicated content-aware-scale endpoint; actionJSON descriptor unsupported."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary": 102,
+    "alternate": 8
+  },
+  "limitations": [
+    "Ordinary unlocked raster targets,16MP buffers and500M seam-pixel processing budget.",
+    "Linked whole-layer masks retain geometric mapping; full nonlinear seam deformation remains open.",
+    "Exact Photoshop results, relative reference-point mode and live UI qualification remain open.",
+    "Content-aware crop fill remains a missing major workflow."
+  ],
+  "next": {
+    "workflow": "B06 content-aware crop fill",
+    "first_step": "Review image_cmds.rs crop_doc/crop and native Engine.crop, CanvasView crop gestures, WorkspaceTools crop options. Implement expanding/straightening crop draft, retained/delete pixels, filling newly exposed areas, preview/history/API.",
+    "prepared_plan": "artifacts/runs/20261027T004429Z-169-content-aware-scale/next-major-plan01.json"
+  },
+  "no_running_workers_expected": true
+}

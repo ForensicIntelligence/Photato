@@ -7,17 +7,18 @@ struct LayerMaskView: Equatable, Sendable {
   let layerID: UUID
   let generation: UUID
   let mode: MaskViewMode
+  var smartFilter = false
 }
 
 extension EditorStore {
   var currentMaskView: LayerMaskView? {
     guard let view = layerMaskView, view.generation == layerPanelGeneration,
-      view.layerID == document.activeLayerID, editingMask
+      view.layerID == document.activeLayerID, editingMask, view.smartFilter == smartFilterMaskEditing
     else { return nil }
     return view
   }
   var displayedMaskImage: CGImage? {
-    guard let view = currentMaskView, renderedMaskView == view else { return nil }
+    guard let view = adjustmentBrushMaskView ?? currentMaskView, renderedMaskView == view else { return nil }
     return maskViewImage
   }
   func clearMaskView() {

@@ -19,15 +19,15 @@ final class GradientFillTests: XCTestCase {
       .init(x: 10, y: 20, width: 40, height: 30))
     XCTAssertEqual(added.selection, doc.selection)
     XCTAssertEqual(try MaskSampler(layer: added.layers.last!).coverage(x: 11, y: 21), 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, doc)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, added)
     var changed = fill
     changed.placement.style = .diamond
     try session.execute(.setGradientFill(layer.id, changed))
     XCTAssertEqual(session.undoStack.count, 2)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, added)
     changed.placement.scale = .nan
     XCTAssertThrowsError(try session.execute(.setGradientFill(layer.id, changed)))

@@ -86,5 +86,333 @@
     "artifacts/runs/20261019T183010Z-109-major-document-workflow/native-ui-save.pcswift"
   ],
   "original_fixture_provenance": "Existing original Photoshop PSD fixtures and their repository provenance are unchanged. New96\u00d764 opaque RGBA PNG is procedurally generated: R=x*255/95, G=y*255/63, B=85, A=255 with integer division, unfiltered scanlines and zlib PNG compression.",
-  "later_step110": "Save a Copy/undoable Revert/native and API integration advances in docs/DOCUMENT_PERSISTENCE_REFERENCES.json. The step109 evidence above remains historical."
+  "later_step110": "Save a Copy/undoable Revert/native and API integration advances in docs/DOCUMENT_PERSISTENCE_REFERENCES.json. The step109 evidence above remains historical.",
+  "later_step124": {
+    "reference": "docs/NATIVE_ARCHIVE_STREAMING_REFERENCES.json",
+    "format": "Desktop native saves11, legacy1\u201310 reads retained; API native downloads default10 with opt-in11",
+    "complete_lifecycle": false
+  },
+  "document_opening_step134": {
+    "reference": "docs/DOCUMENT_OPENING_REFERENCES.json",
+    "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-opening",
+        "POST /v1/document-opening/cancel"
+      ],
+      "extended_route": "POST /v1/documents/import: optional X-Photato-Open-Format plus conditional application/octet-stream",
+      "permission": "Existing document-transfer permission explicitly includes native-opening cancellation; default off each session; may affect unshared pending reads",
+      "coverage": "Shared container detection/selection, unchanged decoders, authenticated path-free state, exact-ID cancellation, schemas and invalid/busy/stale/revoked/completed-lifecycle guards. Legacy uploads without selection keep Content-Type routing. No Adobe desktop-dialog route invented."
+    }
+  },
+  "recent_documents_step135": {
+    "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+    "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recent-documents",
+        "POST /v1/recent-documents/limit",
+        "POST /v1/recent-documents/clear",
+        "POST /v1/recent-documents/open"
+      ],
+      "extended_routes": [
+        "GET /v1/document-opening adds queuedFiles and lastError",
+        "POST /v1/document-opening/cancel accepts an operation owned by the enabled recent-file session"
+      ],
+      "permission": "Separate Allow recent-file access, off each session, gates filenames/list/limit/clear/known-ID reopening. No arbitrary paths or implicit document sharing.",
+      "coverage": "Shared native atomic settings/history and background opening, exact request/state schemas, revision/busy/session/revocation/error tests. Recovery-preference POST preserves the recent count. No Adobe desktop-history route invented."
+    }
+  },
+  "recovery_maintenance_step136": {
+    "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+    "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/backups",
+        "POST /v1/recovery/backups/inspect",
+        "POST /v1/recovery/backups/open-copy",
+        "POST /v1/recovery/backups/download",
+        "POST /v1/recovery/backups/trash",
+        "POST /v1/recovery/backups/forget",
+        "POST /v1/recovery/backups/remove-missing"
+      ],
+      "permission": "Separate Allow recovery-backup access, off each API session; gates names, content and maintenance. Existing counts/retry permission unchanged. No arbitrary local paths or implicit sharing.",
+      "coverage": "Shared native coordinator, bounded index/native11 download, complete request/result/state schemas, stale/busy/revocation/confirmation/errors and lifecycle exclusions. Trash retires before moving and finishes cleanup after a begun move even if permission ends; the revoked response is403. No Adobe desktop-maintenance route invented."
+    }
+  },
+  "recovery_salvage_step137": {
+    "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+    "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/salvage",
+        "POST /v1/recovery/salvage/scan",
+        "POST /v1/recovery/salvage/open-copy",
+        "POST /v1/recovery/salvage/download",
+        "POST /v1/recovery/salvage/reset-index"
+      ],
+      "permission": "Existing separate session-off backup access permission now explicitly describes salvage and confirmed reset. No arbitrary paths, source adoption or automatic sharing.",
+      "coverage": "Shared native coordinator, scan-local revision/IDs, exact state/request/result schemas, bounded scan/download/reset, canonical identity matching, stale/busy/confirmation/revocation/error checks. Adobe desktop salvage route not invented."
+    }
+  },
+  "background_recovery_step138": {
+    "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "POST /v1/recovery/cancel"
+      ],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+      "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "recovery_admission_step139": {
+    "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+    "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_state": [
+        "lastDeferred",
+        "operation.memory",
+        "operation.deferredByReason",
+        "accounting phase"
+      ],
+      "permission": "Existing separate recovery-management permission; no automatic sharing.",
+      "coverage": "Shared native coordinator and exact schemas; completed partial retry200 with deferred counts, cancellation/workspace instability409, permission revocation403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "save_options_step140": {
+    "reference": "docs/SAVE_ENCODING_OPTIONS_REFERENCES.json",
+    "status": "Shared lossless PNG compression/Adam7 and TIFF None/LZW/ZIP options now reach native Save/Save As/Copy, Photato save/download and both action-job interfaces where defined; major D01/I04 format workflows remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.{format}",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_state": [
+        "saveEncodingOptions",
+        "encoding options schemas/capabilities"
+      ],
+      "permission": "Existing separate transfer/save/resource-job permissions; no new automatic permission or sharing.",
+      "coverage": "Optional native command options; bounded JSON download header; named Adobe PNG compression and TIFF output on both job routes; only Photato jobs accept encodingOptions. Exact output options enter cache key. Invalid/mismatched fields rejected."
+    }
+  },
+  "psd_compression_step141": {
+    "reference": "docs/PSD_COMPRESSION_OPTIONS_REFERENCES.json",
+    "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb",
+        "POST /v1/action-jobs"
+      ],
+      "new_state": [
+        "psdLayerCompression and psdCompositeCompression in options/capability/state schemas"
+      ],
+      "permission": "Existing save/transfer/resource-job permissions; unchanged default-off session controls.",
+      "coverage": "Native-only encodingOptions expands with raw/rle/zip/zipPrediction for layers and merged image. Both job interfaces share the serializer; Adobe has no corresponding PSD compression field, retains default bytes and rejects the native extension. Cached output keys include choices."
+    }
+  },
+  "photoshop_file_preferences_step142": {
+    "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+    "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/preferences/photoshop-file-handling",
+        "POST /v1/preferences/photoshop-file-handling"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb"
+      ],
+      "new_state": [
+        "photoshopPreferenceChangesEnabled",
+        "photoshopFilePreferences capability/schema",
+        "effectiveSaveEncodingOptions"
+      ],
+      "permission": "Separate native Allow Photoshop file preference changes, off on each API session; existing recovery/recent permissions do not grant it.",
+      "coverage": "Shared native transaction/default resolution. Exact body schema and state, permission/auth/stale/busy/persistence errors. Stateless Photato and Adobe jobs retain their own output defaults; no Adobe application preference endpoint exists in pinned contract."
+    }
+  },
+  "float_tiff_step143": {
+    "reference": "docs/TIFF_FLOAT_REFERENCES.json",
+    "status": "Float32 TIFF Save/Copy/import and both applicable APIs retain tested HDR/negative/transparent samples and linear working profiles through None/LZW/ZIP; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_state": [],
+      "coverage": "Shared native Float32 TIFF encoder and direct same-profile Float32 import. Existing TIFF compression fields/options, default permissions and revision/busy/failed-save handling retained. Adobe TiffOutput schema unchanged; Photato-only encodingOptions remains rejected by Adobe. PNG32 action output remains unsupported; resource-job TIFF input remains unsupported."
+    }
+  },
+  "tiff_storage_step144": {
+    "reference": "docs/TIFF_STORAGE_REFERENCES.json",
+    "status": "Native/API TIFF byte order, pixel layout and Float32 LZW/ZIP prediction preserve tested samples/metadata; native planar decoding repairs ImageIO alpha loss. D01/I04 and every major gate remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs"
+      ],
+      "adobe_shared_engine": "POST /v2/execute-actions keeps pinned TiffOutput defaults; Photato-only encodingOptions remains rejected with422. No invented Adobe fields.",
+      "new_fields": [
+        "tiffByteOrder:bigEndian/littleEndian",
+        "tiffPixelOrder:interleaved/perChannel",
+        "tiffPredictor:boolean, true requires32-bit and explicitLZW/ZIP"
+      ],
+      "state": "Shared encodingOptions schemas/capabilities and remembered/effective save options expose the new fields. Existing permissions, revision/busy/atomic-failure and document/job lifecycles retained.",
+      "coverage": "Native Save/Copy, actual loopback downloads/Save/job output and separate Adobe contract rejection tested; resource-job TIFF input remains unsupported."
+    }
+  },
+  "tiff_layers_step145": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Editable Photoshop-style TIFF import now reaches native Open, Photato upload and both action-job interfaces through the shared PSD engine. Native/PSD persistence preserves supported content; layered TIFF output and full parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "POST /v1/documents/import",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_fields": [],
+      "capability": "documentTransfers.layeredTIFF input=true/output=false, depths/orders/compressions/scope/limits",
+      "contract": "Pinned Adobe Image external resource request unchanged. TIFF bytes enter the shared decoder; existing action availability, resource limits, output contracts and Photato-only encodingOptions rejection retained.",
+      "coverage": "Distinct TIFF MTrn marker retained; unsupported saved alpha/spot channels reject. Actual authenticated loopback upload with denied/corrupt atomic cases; both job routes at8/16/32-bit preserve layers in PSD output; native Open/edit/Undo/Save As and original-TIFF protection share the implementation."
+    }
+  },
+  "tiff_layer_output_step146": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Supported editable layered TIFF output now reaches native Save/Copy and Photato save/download/jobs through the shared PSD serializer. Ordinary Save defaults to preserving layers; existing flat exports and Adobe TIFF output remain unchanged. Full Photoshop parity and all major gates stay open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "POST /v1/action-jobs"
+      ],
+      "new_fields": [
+        "tiffLayers",
+        "tiffLayerCompression"
+      ],
+      "capability": "documentTransfers.layeredTIFF input=true/output=true, distinct output RLE/ZIP choices, defaults/scope/limits; effectiveSaveEncodingOptions reflects TIFF preservation",
+      "contract": "Photato-only options remain rejected422 on Adobe v2. Adobe TiffOutput has no preservation field; its flattened TIFF output remains byte-identical. Shared native engine handles both interfaces without invented fields.",
+      "coverage": "Native Save/Save As/Copy and actual authenticated HTTP downloads/default save/options/error/state, Photato distinct job output caching and Adobe contract rejection/default preservation. Existing import/history/atomic guards remain covered."
+    }
+  },
+  "tiff_rich_step147": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Numeric adjustments and vector masks now survive both TIFF byte orders through the shared PSD engine; retained global mask-display metadata survives TIFF/PSD/PSB output. Native/API automated qualification passes. Descriptor/opaque records, live Photoshop comparison and all major workflow gates remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "new_fields": [],
+      "expanded_routes": [
+        "POST /v1/documents/import",
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "capability": "documentTransfers.layeredTIFF documents numeric adjustments/vector masks/global LMsk and remaining descriptor guards",
+      "contract": "Existing Photato encodingOptions and native engine; Adobe input-to-PSD support expands without adding Adobe output fields. Photato-only TIFF options remain rejected422 on Adobe v2.",
+      "coverage": "Native Open/history/Save/Copy, actual HTTP upload/download/save, both job inputs-to-PSD, and Photato little-endian TIFF output. Existing invalid/busy/stale/atomic guards remain covered."
+    }
+  },
+  "jpeg_step148": {
+    "reference": "docs/JPEG_ENCODING_REFERENCES.json",
+    "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "new_fields": [
+        "Photato jpegQuality",
+        "Photato jpegFormat",
+        "Photato jpegMatte",
+        "Photato jpegEmbedProfile",
+        "Adobe JpegOutput.quality"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.jpeg",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "capability": "documentTransfers.encodingOptions and actionJobs encodingOptions/outputs expose shared native choices and remaining parity limits",
+      "contract": "Pinned JpegOutput seven named qualities map locally to0/2/4/6/8/10/12. Execute-actions excludes scan (400). Adobe rejects Photato encodingOptions (422). No Adobe quantization/default equivalence claimed.",
+      "coverage": "Native Save accessory, remembered state, Copy/ownership/history, failed save, actual HTTP download/save/invalid/busy, seven quality outputs on both jobs and Photato-only format/matte/profile options. JPEG action input remains unsupported."
+    }
+  }
 }

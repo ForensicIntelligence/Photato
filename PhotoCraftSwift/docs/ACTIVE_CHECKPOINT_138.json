@@ -1,0 +1,212 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-138",
+  "recorded_at_utc": "2026-10-20T11:50:49.734740+00:00",
+  "major_workflow": "D02/I02 background indexed recovery",
+  "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/tested-source-hashes05.json",
+    "sha256": "b81c73f53532192f7a95c44aa063b656cc963a9ead3c3f0a28dc6971749ba657"
+  },
+  "source_test_files": 477,
+  "validation_inputs": 869,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/packaging-documents05.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato138-attempt05-3j5mcv3a/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 184,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 20.517,
+    "log": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/focused05.log",
+      "sha256": "0768d50a757cba6be3093f61046821bb9598f9f093db52ba86e7e998780bd5af"
+    }
+  },
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T111045Z-138-background-recovery/full02.log",
+      "sha256": "70f28d75e5124c7231d0f795da1af4244a9506a29fc1074cef7b1ed0e2b083be",
+      "passed": 1300,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 261.88
+    },
+    "release02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T111045Z-138-background-recovery/release02.log",
+      "sha256": "46d1a8720a833f30a22512b0b1a11efb49cbea1d6d4c9bfb37c316301b465e3b",
+      "passed": 1300,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 66.804
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato138-verified-ruwwgbm6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "9781620d766e572b4a76c30d5bc81e30b8db1ffb64e042512ea81def6468e62f",
+    "zip_sha256": "3e2d378a38132027460b4dab8dd73669c99845e4779cf2476e958522e9ec9870",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/Photato138-candidate.zip",
+    "sha256": "3e2d378a38132027460b4dab8dd73669c99845e4779cf2476e958522e9ec9870"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_137.json",
+    "sha256": "a179fd0dddf6530ecdec0a5d9a7d586d701670b2eb221ca744890390b276dde5"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/package-verification02.json",
+    "sha256": "55242ce1211bb3d6e95fd83a4e776884fa8312aa96985f32744d3b77b3d1456b"
+  },
+  "process_debug": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/process-background-verification02.json",
+    "sha256": "c6630bb40881fefc7a32168d56ae46752c140783c12af2dba230b1589130edb0"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/public-release-arm6401/verification.json",
+      "sha256": "816edbab8060870155dcdd9e472dda14d0e313004fe4a8e9bb80cccac2839cd4"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/public-release-x86_6401/verification.json",
+      "sha256": "60773211ada62a67f4a02893e00248a9d02d813435c0289f701fae4675ab0874"
+    }
+  },
+  "factory_baseline": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/factory-baseline-result01.json",
+    "sha256": "0ff3291ac1b05ec1dd1c33ac7c785fe07eb76b3555aafe7e2aa3714c8981401c"
+  },
+  "intel_runtime_limit": "Production Release opening objects under Rosetta; new recovery tested in Debug processes and full Debug/Release suites on Apple silicon, not physical Intel/macOS14 full UI qualification",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Photato recovery progress/cancel and File Handling active recovery control; no invented Photoshop factory menu"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "POST /v1/recovery/cancel"
+    ],
+    "expanded_routes": [
+      "GET /v1/recovery",
+      "POST /v1/recovery/retry"
+    ],
+    "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+    "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/live-ui-availability01.json",
+    "sha256": "3ff254bc8e78c1b9a7190ac2e107788587bd534e4956487d0538dd320228fddd"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Full native archive decoding, color/context checks, fingerprinting and source-format preparation off MainActor; scoped prepared-read handoff preserves AppKit recovery factory dirty/autosave/source state",
+    "Native recovery progress and cooperative cancellation; earlier published documents remain open, remaining backups remain registered, queued SDK opening waits across immediately chained retries and duplicate/source collision checks repeat after decoding",
+    "API progress/schema/cancel route, exact operation IDs and session-owned cancellation; upload publication rejects a recovery generation change",
+    "Archive identity, index bytes/revision, source/session/generation rechecks before publication; late reappearing missing files retain registration",
+    "184 focused and 1,300 Debug / 1,300 Release tests; nine owned process outcomes including background responsiveness, queued callback after cancellation, before/after-decode SIGKILL, exact fresh restoration, edit/autosave/Save As/Discard and clean relaunch",
+    "Universal macOS14+ package and public AppKit callbacks on arm64/Rosetta; Core/Imaging/AI unchanged and nine whole PSB outputs byte-identical to137"
+  ],
+  "remaining_major_dependencies": [
+    "D02/I02: aggregate recovered-document memory is not bounded by this increment. Next investigate admission/accounting and observable deferred entries with preserved backups and retry. Current input limit512MiB and raster limit1GiB are per-file, not whole-process limits.",
+    "Bounded index metadata I/O, AppKit bookkeeping, document construction and window presentation still run on MainActor. Cooperative cancellation may wait for a decoder stage. External AppKit recovery routes remain outside this new background path.",
+    "D02: full window/tab restoration, legacy locations outside private Archives, sandbox/network/removable-volume and power-loss qualification remain open.",
+    "D01: full format/profile/metadata/tag/ACL fidelity, import options, save-format preferences and external coordination remain open.",
+    "Physical Intel/macOS14 and live native/Photoshop UX unqualified. Mac remains locked; existing manual-unlock request pending. Rosetta public opening does not establish full new recovery UI qualification.",
+    "File identity/fingerprint checks are not filesystem compare-and-swap. Passing native tests and unchanged samples do not establish universal Photoshop byte equivalence.",
+    "All major gates remain open; minor functions and final details remain deferred."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/source-delta02.json",
+    "sha256": "cd88f77e6b5c47a396e3d36623a034e13dcc64145c3141b363233090e83c8b0a"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/final-export-compatibility01.json",
+    "sha256": "4f96856bda16aafbe1a7e99225863cacc5a3c9299bfecbb54e3d3fa81c88b2ba"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/final-inputs01.json",
+    "sha256": "38d69e346c851c2b56c8d59162aed1919a8da372de5766ef7392169ecedc6c39"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/next-major-plan02.json",
+    "sha256": "93a952f6e5823b55263d7bdec2d7151238e7566f9b672a3441cd36404ea1041c"
+  },
+  "retry_race_before": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/retry-race-result01.json",
+    "sha256": "20a9a78c347461a89e8a76c3ca78298e66899c6060edfaf64d2e7dde1bf1f083"
+  },
+  "retry_race_after": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/retry-race-result02.json",
+    "sha256": "14ab4c0ff99d2776039333eba4fb8b5068884ec327bb961c9c5d15fb5f5ca0fa"
+  },
+  "prior_failed_attempts": [
+    "Freeze04 full suites passed1299 each, but an independent chained-retry probe found premature failed SDK callbacks. Obsolete candidate build intentionally interrupted with SIGINT130; waitUntilIdle now loops across replacement recovery operations and a new regression passes.",
+    "Focused01 compile failed: defaulted started callback changed trailing-closure matching; restored old overload and added required-started overload.",
+    "Focused02 terminated signal6: phase assignment simultaneously read another field of observed optional state; compute cancellation before mutation.",
+    "Focused03:183 tests/4 assertions in2 new fixtures; manual retry fixture needed launch-complete state, and source identity required canonical /var-/private/var comparison. Production code unchanged for these fixture corrections; focused04 passed."
+  ],
+  "resume_first": "Verify checkpoint138/freeze05/audit. Continue major D02/I02 aggregate recovery admission/accounting with native/API deferred-state and safe retry, based on next-major-plan02. Preserve installed117, actual workspace/preferences/recovery, user documents and disposable118. No Git mutation.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step138-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step138-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step138-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step138-final/final-inputs01.json"
+  }
+}

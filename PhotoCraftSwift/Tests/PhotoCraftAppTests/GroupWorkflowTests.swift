@@ -21,7 +21,7 @@ final class GroupWorkflowTests: XCTestCase {
     store.renderTask?.cancel()
     return store
   }
-  @MainActor func testMultiselectionGroupingAndUndo() throws {
+  @MainActor func testMultiselectionGroupingAndUndo() async throws {
     let s = try store()
     let original = s.document
     s.select(original.layers[0].id)
@@ -32,7 +32,7 @@ final class GroupWorkflowTests: XCTestCase {
     XCTAssertTrue(group.isGroup)
     XCTAssertEqual(s.document.children(of: group.id).count, 2)
     XCTAssertEqual(s.selectedLayerIDs, [group.id])
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.document.layers, original.layers)
     s.renderTask?.cancel()
   }
@@ -80,7 +80,7 @@ final class GroupWorkflowTests: XCTestCase {
     XCTAssertEqual(s.activeLayer?.id, ids[0])
     s.renderTask?.cancel()
   }
-  @MainActor func testMaskOnMovedGroupUsesDocumentSelectionCoordinates() throws {
+  @MainActor func testMaskOnMovedGroupUsesDocumentSelectionCoordinates() async throws {
     let s = try store()
     s.groupSelection()
     let group = s.activeLayer!.id
@@ -91,7 +91,7 @@ final class GroupWorkflowTests: XCTestCase {
     let mask = try MaskSampler(layer: layer)
     XCTAssertEqual(mask.coverage(x: 3.5, y: 2.5), 1)
     XCTAssertEqual(mask.coverage(x: 5.5, y: 2.5), 0)
-    s.undo()
+    await s.undo()
     XCTAssertNil(s.activeLayer?.mask)
     s.renderTask?.cancel()
   }

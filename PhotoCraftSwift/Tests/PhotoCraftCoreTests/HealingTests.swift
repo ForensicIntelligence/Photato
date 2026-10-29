@@ -136,9 +136,9 @@ final class HealingTests: XCTestCase {
       let healed = session.document
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(healed)), healed)
       XCTAssertEqual(session.undoStack.count, 1)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, healed)
     }
   }

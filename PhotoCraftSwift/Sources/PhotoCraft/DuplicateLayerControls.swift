@@ -1,6 +1,7 @@
 import AppKit
 import Observation
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 enum DuplicateDestination: Hashable {
@@ -145,10 +146,14 @@ extension EditorStore {
     duplicateTask = Task { [weak self, weak controller] in
       let worker = Task.detached(priority: .userInitiated) {
         if let originalTarget {
-          let command: Command =
-            sameDocument
-            ? .duplicateLayers(selected, name: layerName)
-            : .duplicateLayersFrom(source, selected, name: layerName)
+          let command: Command
+          if sameDocument {
+            command = .duplicateLayers(selected, name: layerName)
+          } else {
+            let copied = try ClipboardRenderer.copy(source, layerIDs: selected)
+            let converted = try ColorManagement.converted(copied, to: originalTarget)
+            command = .duplicateLayersFrom(converted.document, selected, name: layerName)
+          }
           return DuplicateResult.existing(
             try PreparedEdit(command: command, document: originalTarget))
         }

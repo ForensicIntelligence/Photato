@@ -1,0 +1,107 @@
+{
+  "step": "dev-step-198",
+  "date": "2026-10-27",
+  "status": "Native person-feature workflow implemented and tested; full S03/Photoshop parity remains open.",
+  "scope": "Native per-person hair, body/face skin, clothing and accessory selection, picker hover/multifeature selection/refinement/history/Actions and API.",
+  "photato_api": {
+    "commands": [
+      "selection.findPeople",
+      "selection.hoverPerson",
+      "selection.selectPeople"
+    ],
+    "catalogue_count": 96,
+    "state": "peopleSelection: available/busy/ready/pickerOpen/cacheID/hoveredID/error/features/people IDs and bounds. Adds modelAvailable, featureError, hoveredFeature, selectedFeatures and selectedIDs. features lists currently available classes.",
+    "parameters": "findPeople optional features affects exported masks; hoverPerson optional feature; selectPeople optional features. Defaults wholePerson. Arrays unique1\u20136 values. Existing parameters retained.",
+    "results": "Standard document state; detection optionally includes peopleMasks full-canvas row-major UInt8 coverageBase64 and peopleThumbnails PNG base64 <=96px per side. Empty detections return ready empty lists.",
+    "history": "Detection/hover/thumbnail picker are ephemeral and do not dirty documents. Unioned selection follows native Undo/Redo and Actions4 frozen coverage; native archive32 unchanged.",
+    "lifecycle": "Normalized source includes layer/sample mode and ignores selection-only edits. Edits/tool changes/sample/layer/refresh/cancel/read/close invalidate IDs; API additionally checks permission/revision/lifecycle and cache at commit.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 people/16,777,216 aggregate mask pixels plus padded tile budget. Shared API4,194,304 pixels/64layers/128MiB.",
+    "features": [
+      "wholePerson",
+      "hair",
+      "bodySkin",
+      "faceSkin",
+      "clothes",
+      "accessories"
+    ],
+    "unavailable": [
+      "eyebrows",
+      "eyes",
+      "lips",
+      "teeth",
+      "nose",
+      "beard"
+    ],
+    "availability": "Core ML resource optional; missing/failing model retains whole-person selection. Unavailable feature request422; malformed/duplicate/unknown features400; stale cache409."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated desktop Select People endpoint in pinned published v2 contract. No invented route or proprietary model/identity claim."
+  },
+  "menus": {
+    "new_bindings": 0,
+    "integration": "Select People button/popover in existing Object Selection options; W unchanged. Escape cancels/clears picker. Menu CSV reviewed unchanged because no corresponding menu row."
+  },
+  "model": {
+    "source_url": "https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite",
+    "sha256": "c6748b1253a99067ef71f7e26ca71096cd449baefa8f101900ea23016507e0e0",
+    "bytes": 16371837,
+    "model_card": "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20Multiclass%20Segmentation.pdf",
+    "license": "Apache-2.0",
+    "author": "Google / MediaPipe; Adel Ahmadyan",
+    "input": "NHWC1x256x256x3 RGB, mean/std127.5; source-aligned half-pixel bilinear resize; transparent pixels over black.",
+    "output": "NHWC1x256x256x6 logits; stable softmax; labels background/hair/bodySkin/faceSkin/clothes/accessories.",
+    "conversion": "Independent bounded TFLite-to-CoreML MIL graph reconstruction; float32 MLProgram macOS14. Runtime is Swift/CoreML/Vision only; Python dependencies offline development-only.",
+    "validation": "artifacts/runs/20261027T174733Z-198-people-features/model-validation01.json",
+    "activation_evidence": "artifacts/runs/20261027T174733Z-198-people-features/activation01.json",
+    "build": "python3 scripts/prepare-people-model.py; generated ignored model copied and SHA-verified by CLI and Xcode build scripts. No downloaded weights in source PRs.",
+    "known_quality": "Google model card explicitly excludes pixel-perfect masks; small256grid, fine facial labels unsupported. Model output is not Adobe proprietary segmentation equivalence."
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/make-precise-selections-using-select-people.html",
+      "updated": "2026-02-23",
+      "saved_reference": "artifacts/runs/20261027T170102Z-196-object-finder/adobe-people01.html",
+      "note": "Adobe picker/whole-person/feature workflow reference; repeated live fetch timeout retained. Saved official196 HTML used."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/vision/vngeneratepersoninstancemaskrequest",
+      "sdk": "VNGeneratePersonInstanceMaskRequest.h",
+      "availability": "Public macOS14 instance-mask API. Person-specific requests, not generic foreground objects. No semantic part labels."
+    },
+    {
+      "path": "artifacts/runs/20261027T173208Z-197-select-people/photo-provenance01.json",
+      "note": "NASA source photos for local non-promotional model qualification only; not app/test-fixture assets or publication."
+    }
+  ],
+  "tests": {
+    "focused_debug": 61,
+    "debug_log": "artifacts/runs/20261027T174733Z-198-people-features/integration02.log",
+    "failed_attempts": [
+      "artifacts/runs/20261027T174733Z-198-people-features/conversion01.log",
+      "artifacts/runs/20261027T174733Z-198-people-features/integration01.log"
+    ],
+    "prepare_log": "artifacts/runs/20261027T174733Z-198-people-features/prepare-model01.log",
+    "native_model": "artifacts/runs/20261027T174733Z-198-people-features/real-model01.json",
+    "native_model_log": "artifacts/runs/20261027T174733Z-198-people-features/model-run01.log",
+    "offscreen_picker": "artifacts/runs/20261027T174733Z-198-people-features/people-picker-offscreen-integration02.png",
+    "native_overlays": [
+      "artifacts/runs/20261027T174733Z-198-people-features/nasa-portrait01-native-features.png",
+      "artifacts/runs/20261027T174733Z-198-people-features/nasa-two-people01-native-features.png"
+    ],
+    "optional_resource_checks": "artifacts/runs/20261027T174733Z-198-people-features/resource-check01.json",
+    "release_full": 1933,
+    "release_log": "artifacts/runs/20261027T174733Z-198-people-features/release-full01.log",
+    "verification": "artifacts/runs/20261027T174733Z-198-people-features/verification01.json",
+    "xcode": "artifacts/runs/20261027T174733Z-198-people-features/xcode01.json"
+  },
+  "limitations": [
+    "Eyebrows/eyes/lips/teeth/nose/beard labels unavailable; do not approximate with geometric shapes.",
+    "Soft masks/instance boundaries/defaults not proven equal to Photoshop; manual Select and Mask refinement available.",
+    "Model remains optional; architecture/minimum-OS declarations do not prove physical Intel/macOS14/macOS26 inference.",
+    "Desktop locked; offscreen/synthetic capture is not live UI evidence.",
+    "Detection caches and picker state are ephemeral, not saved preferences."
+  ],
+  "next": "Major live shape/vector drawing workflows; facial fine-grained labels and numerical/cosmetic parity stay explicitly open.",
+  "qualification": "All61 focused Debug and1933 full optimized tests pass. The universal macOS14+ package includes197 Select People and the native feature model; fresh extraction verifies both architectures, signature and model provenance. Xcode Debug build also passes."
+}

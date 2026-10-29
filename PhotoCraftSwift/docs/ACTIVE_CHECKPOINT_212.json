@@ -1,0 +1,145 @@
+{
+  "step": "dev-step-212",
+  "completed_at_utc": "2026-10-28T00:34:59.293429+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261027T234451Z-212-distortion-workflows/source02.json",
+  "source_inputs": 1606,
+  "source_manifest_sha256": "d133833d6f7780cf06f3c052c7c191258a9c99bf6881acc4448ffd53d2f138f6",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/DistortionWorkspace.swift",
+      "Sources/PhotoCraftCore/DistortionEngine.swift",
+      "Sources/PhotoCraftCore/DistortionSettings.swift",
+      "Tests/PhotoCraftAppTests/DistortionWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/DistortionTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/AutomationSmartFilters.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration04": {
+      "passed": 45,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T234451Z-212-distortion-workflows/integration04.log",
+      "scope": "Final product inputs; precedes the later unrelated DocumentIO test-expectation/README update."
+    },
+    "full_optimized02": {
+      "passed": 2003,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T234451Z-212-distortion-workflows/release-full02.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration04": 45,
+    "release-full02": 2003
+  },
+  "package": {
+    "utc": "2026-10-28T00:34:20.536634+00:00",
+    "tests": {
+      "integration04": 45,
+      "release-full02": 2003
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/Photato212-final02.zip",
+    "zip_sha256": "26e1c395569555022b644c2daa80435171ccede086e7e4335e4ec0d307461854",
+    "app": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app",
+    "executable_sha256": "ec385bfb39a346dfef970e8ed56177ba88fb5162a30d4ac25da7e552f58f1c6f",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1606,
+    "source_manifest_sha256": "d133833d6f7780cf06f3c052c7c191258a9c99bf6881acc4448ffd53d2f138f6",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 294,
+      "unavailable_leaf_commands": 431,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "45 focused Debug and2003 full optimized tests plus universal package on this host. Physical Intel/macOS14/macOS26, exact Adobe distortion output/descriptors and live distortion workflows remain open. Step208 live containment remains historical; user handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 294,
+    "unavailable_leaf_commands": 431,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Nine native Distort implementations with factory menus, previews/settings, Cancel/local history and document Undo",
+    "Embedded displacement-map import, editable Shear knots and all999 Wave generators",
+    "Editable Smart Filters, native39/Actions11 persistence and Photato API schemas/state/equivalence checks",
+    "Diagnosed overlap screenshot as obsolete159 probe, saved its document and installed verified209 with correct title",
+    "Developer-diary engineering-process overview and disclosure"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect zoom/pan/window resize, then safely close the obsolete probe after handoff",
+    "Live native distortion workspace checks; Polar Coordinates/ZigZag reference dialogs"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "github": "Private draft remains209;212 package local only; no source push or repository visibility change.",
+  "remaining": [
+    "Exact Adobe distortion pixels/defaults/descriptors/editable PSD and full F02 scope",
+    "Physical Intel/macOS14/macOS26 runtime qualification",
+    "Full Photoshop parity"
+  ],
+  "next_major_workflow": {
+    "id": "F02",
+    "name": "Remaining Pixelate workflows",
+    "scope": "Color Halftone, Crystallize, Facet, Fragment, Mezzotint and Pointillize with native preview/history/persistence and shared APIs. Mosaic is already implemented. Preserve unresolved numerical and other F02 gates."
+  },
+  "evidence_root": "artifacts/runs/20261027T234451Z-212-distortion-workflows"
+}

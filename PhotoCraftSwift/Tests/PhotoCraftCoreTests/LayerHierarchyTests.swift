@@ -29,12 +29,12 @@ final class LayerHierarchyTests: XCTestCase {
     XCTAssertTrue(session.document.subtreeIDs(copy).isDisjoint(with: grouped.subtreeIDs(outer)))
     try session.execute(.deleteLayer(copy))
     XCTAssertEqual(session.document.layers, grouped.layers)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document.layers.count, 10)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, grouped)
-    session.undo()
-    session.undo()
+    try session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
   }
   func testRelocateRejectsCyclesAndSupportsSiblingOrderingAndReparenting() throws {

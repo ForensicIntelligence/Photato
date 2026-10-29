@@ -1,0 +1,88 @@
+{
+  "step": "dev-step-203",
+  "date": "2026-10-27",
+  "status": "Native Filter Gallery implemented and tested; full F06/Photoshop parity remains open.",
+  "scope": [
+    "47 native effects across Artistic, Brush Strokes, Distort, Sketch, Stylize and Texture",
+    "Asynchronous actual thumbnails, image preview, zoom, effect controls/colors and ordered visible stack",
+    "Cancel/local Undo/Redo, one document commit, editable Smart Filters, Actions and Batch",
+    "Native36 and Actions8 saving, shared filter.apply/smartFilter.set API and state/capability schemas"
+  ],
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/algo/src/{artistic,artistic_fx,fxutil,noise}.rs; engine/src/gallery_cmds.rs; ui-egui/src/gallery_ui.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Catalogue/defaults and native Swift translations of original clean-room approximations. Unmodified original kernels generate independent synthetic reference images, not Adobe outputs."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/get-started-with-filters/filter-gallery.html",
+      "use": "Adobe category/preview/effect-stack workflow; retrieved2026-10-27."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "use": "Published execute-actions gallery filter families; exact descriptors require verified recordings, unavailable while desktop locked."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "typed_command_count": 107,
+    "filter_kind": "filterGallery",
+    "parameter": "artistic",
+    "settings": "effects array in application order, first runs first. Each has filter, visible, values, foreground/background/glowColor. Integer controls and zero-based choices; boolean controls0/1; colors RGBA0...1. Omitted controls use catalogue defaults.",
+    "state": "capabilities.filters.filterGallery includes full47-effect catalogue, typed schemas, defaults/choice lists, limits and qualification; document filterGallery exposes availability/workspace/preview/selection/local-history and settings. Existing Smart Filter state exposes saved settings.",
+    "history": "Shared cancellable prepared native command; selection and locks preserved, Smart Object source retained; stale/busy409, malformed400.",
+    "native_version": 36,
+    "actions_version": 8
+  },
+  "adobe_api": {
+    "routes": [],
+    "existing_route": "Published /v2/execute-actions covers artistic filters but exact Gallery descriptors are not independently qualified. Existing supported descriptors remain unchanged; Gallery returns explicit unsupported rather than invented Adobe fields.",
+    "limits": "Adobe-compatible Gallery actions and editable PSD mappings remain tracked gaps. Native APIs are complete for this increment; no Adobe parity claim."
+  },
+  "menus": {
+    "newly_bound": [
+      "Filter > Filter Gallery\u2026"
+    ],
+    "shortcuts": "Factory order/title retained; no primary factory shortcut for this dialog."
+  },
+  "persistence": {
+    "native": "Gallery Smart Filters require native36; action operations carrying Gallery require Actions8. Older negotiated formats reject instead of losing metadata. Raster applications remain ordinary baked pixels.",
+    "psd": "Editable Gallery Smart Filters reject; rasterize or flattened image exports available."
+  },
+  "limits": {
+    "effects": 32,
+    "pixels": 8388608,
+    "active_effect_pixels": 67108864,
+    "working": "Encoded RGB, output0...1; original alpha retained;32-bit samples stored linearly. Whole-layer local coordinate procedural effects."
+  },
+  "limitations": [
+    "Full F06/Photoshop output equality, color-profile/numeric/platform/live qualification remain open. Original source labels effects approximations.",
+    "Independent original Rust default tests match47 synthetic32x24 RGBA8 images exactly; this does not establish arbitrary-input or Adobe parity.",
+    "Gallery presets may be retained through Actions/native Smart Filters; separate preset UI and loaded texture files are deferred.",
+    "No component/channel/mask targeting; no external texture resources; document-coordinate tiling/large-workspace and cross-profile behavior remain unqualified.",
+    "Adobe-compatible Gallery actions and editable PSD/PSB descriptors remain unsupported pending independent evidence.",
+    "Synthetic hidden-window tests only; last authoritative desktop state locked. No desktop re-probe, live Photoshop check or physical Intel/macOS14/macOS26 claim."
+  ],
+  "tests": {
+    "focused": 42,
+    "focused_log": "artifacts/runs/20261027T210315Z-203-filter-gallery/integration05.log",
+    "original_rust": "Tests/PhotoCraftCoreTests/Fixtures/Gallery/provenance.json",
+    "oracle_generator": "artifacts/runs/20261027T210315Z-203-filter-gallery/oracle-generator01.py",
+    "oracle_comparison": "artifacts/gallery-oracle-comparisons/C0AD620F-91CE-4700-87FD-684B1E26FFB5.json",
+    "offscreen_sheet": "artifacts/gallery-offscreen/3701987B-F8B5-4471-B689-8C3E6E1AE4F9.png",
+    "failed_attempts": [
+      "artifacts/runs/20261027T210315Z-203-filter-gallery/module01.log",
+      "artifacts/runs/20261027T210315Z-203-filter-gallery/integration04.log"
+    ],
+    "status": "Focused/full optimized/universal qualification passed.",
+    "release_full": 1973,
+    "release_log": "artifacts/runs/20261027T210315Z-203-filter-gallery/release-full01.log",
+    "verification": "artifacts/runs/20261027T210315Z-203-filter-gallery/verification01.json"
+  },
+  "next": "Major photo finishing: Smart Sharpen and Reduce Noise, with native controls/preview, editable Smart Filters, history and both API interfaces where qualified; remaining minor filter variants/polish deferred.",
+  "qualification": "All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+  "source_manifest": "artifacts/runs/20261027T210315Z-203-filter-gallery/source01.json"
+}

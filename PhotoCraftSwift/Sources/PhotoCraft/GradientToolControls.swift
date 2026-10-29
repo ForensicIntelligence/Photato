@@ -99,14 +99,14 @@ struct GradientStopColorSheet: View {
         guard let draft = store.gradientStopColorDraft else { return .black }
         let p = draft.fill.gradient.colors[draft.index].color.resolved(
           foreground: .black, background: .white)
-        return Color(.sRGB, red: Double(p.r), green: Double(p.g), blue: Double(p.b))
+        return store.displayColor(p)
       },
       set: {
-        guard let color = NSColor($0).usingColorSpace(.sRGB),
+        guard let color = store.workingPixel($0),
           let draft = store.gradientStopColorDraft
         else { return }
         store.gradientStopColorDraft?.fill.gradient.colors[draft.index].color = .rgb(
-          Pixel(Float(color.redComponent), Float(color.greenComponent), Float(color.blueComponent)))
+          color)
         store.render()
       })
   }

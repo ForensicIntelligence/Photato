@@ -49,21 +49,25 @@ final class GroupDisclosureTests: XCTestCase {
     let base = session.document.layers[0].id
     try session.execute(.opacity(base, 0.5))
     try session.execute(.opacity(base, 0.25))
-    session.undo()
+    try session.undo()
     let undo = session.undoStack
     let redo = session.redoStack
     let ids = Set(session.document.layers.filter(\.isGroup).map(\.id))
     try session.setGroupExpansion(ids, expanded: false)
-    XCTAssertEqual(session.undoStack.map(\.document), undo.map(\.document))
+    XCTAssertEqual(
+      try session.undoStack.map { try $0.restoredDocument() },
+      try undo.map { try $0.restoredDocument() })
     XCTAssertEqual(session.undoStack.map(\.label), undo.map(\.label))
-    XCTAssertEqual(session.redoStack.map(\.document), redo.map(\.document))
+    XCTAssertEqual(
+      try session.redoStack.map { try $0.restoredDocument() },
+      try redo.map { try $0.restoredDocument() })
     XCTAssertEqual(session.redoStack.map(\.label), redo.map(\.label))
     // Source history snapshots keep their original disclosure state; a view change
     // does not rewrite them, so Undo may restore that earlier view metadata.
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document.layers[0].opacity, 1)
     XCTAssertTrue(session.document.layers[2].group!.expanded)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document.layers[0].opacity, 0.5)
     XCTAssertFalse(session.document.layers[2].group!.expanded)
   }
@@ -89,7 +93,7 @@ final class GroupDisclosureTests: XCTestCase {
     try session.execute(.opacity(base, 0.25))
     session.endCoalescing()
     XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, before)
   }
 

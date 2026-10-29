@@ -1,0 +1,21 @@
+{
+  "step": 243,
+  "recorded_at_utc": "2026-10-29T06:59:27.318979+00:00",
+  "status": "The native Timeline/FOSS batch is packaged as a universal macOS14+ private draft. The same2,331 inputs passed2,516 full and92 focused optimized tests at242. Both extracted distribution architectures pass the headless RGB16 archive/image-packing smoke operation; x86_64 uses Rosetta. Package signatures, weak AI linkage, licenses/model resources and removal of purchase code verify. All four uploaded assets match downloaded SHA-256 hashes. Installed221 and owned artwork remain unchanged. No full Photoshop, live UI or physical Intel/macOS14/macOS26 acceptance is claimed. An additional192 focused tests pass under Rosetta with independent pixel/movie/audio verification.",
+  "run": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview",
+  "source_manifest": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/source01.json",
+  "qualification": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/package-verification02.json",
+  "release": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7bc5c587b82133536302",
+  "remote_verification": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/github-download01.json",
+  "native_archive": 57,
+  "actions_version": 20,
+  "typed_commands": 171,
+  "source_changed": false,
+  "intel_rosetta_tests": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/intel-tests02.json",
+  "intel_independent_workspace": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/independent-intel02.json",
+  "intel_independent_render": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/independent-intel02-render.json",
+  "api_impact": "No application/API contract changes; packages the171 typed commands, native57 and existing Adobe-compatible subset verified at242.",
+  "full_photoshop_parity": false,
+  "limitations": "Development preview, ad-hoc signed, not notarized or App Store signed. Full Photoshop feature and byte identity, exact preferences/shortcuts, physical Intel/macOS14/macOS26 and live Timeline/audio acceptance remain open. Timeline mode conversion/trim/interchange, DPX/HDR/aspect/presets and long media streaming remain open. Raw QuickTime carries explicit rowb stride; external readers such as FFmpeg6.1 may ignore it. Installed221 and retained artwork remain unchanged.",
+  "next_plan": "artifacts/runs/20261029T063558Z-243-universal-timeline-preview/next-timeline-plan01.json"
+}

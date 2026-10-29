@@ -158,7 +158,7 @@ final class MaskInteractionTests: XCTestCase {
     XCTAssertEqual(changes, 0)
   }
 
-  @MainActor func testDisablePixelAndVectorMasksHaveOneUndoAndDoNotRetarget() throws {
+  @MainActor func testDisablePixelAndVectorMasksHaveOneUndoAndDoNotRetarget() async throws {
     let store = try fixture()
     let id = store.document.layers[0].id
     defer { store.renderTask?.cancel() }
@@ -172,7 +172,7 @@ final class MaskInteractionTests: XCTestCase {
       } else {
         XCTAssertFalse(store.activeLayer!.vectorMask!.enabled)
       }
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, original)
     }
   }
@@ -199,7 +199,7 @@ final class MaskInteractionTests: XCTestCase {
       XCTAssertNil(store.currentMaskView)
       XCTAssertNil(store.maskEditingLayerID)
       XCTAssertEqual(store.session.undoStack.count, 1)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, before)
     }
   }
@@ -217,7 +217,7 @@ final class MaskInteractionTests: XCTestCase {
     XCTAssertNotEqual(store.activeLayer?.mask, old)
     XCTAssertEqual(store.currentMaskView?.mode, .gray)
     XCTAssertNotNil(store.displayedMaskImage)
-    store.undo()
+    await store.undo()
     await store.renderTask?.value
     XCTAssertEqual(store.activeLayer?.mask, old)
     XCTAssertEqual(store.currentMaskView?.mode, .gray)
@@ -235,7 +235,7 @@ final class MaskInteractionTests: XCTestCase {
     store.deleteMask(id)
     await store.renderTask?.value
     XCTAssertNil(store.currentMaskView)
-    store.undo()
+    await store.undo()
     XCTAssertNil(store.currentMaskView)
     store.toggleMaskView(id, mode: .gray)
     store.addPixelLayer()

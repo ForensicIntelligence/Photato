@@ -1,0 +1,33 @@
+{
+  "step": 228,
+  "date": "2026-10-28",
+  "scope": "Single-file website developer diary; no native application or API changes.",
+  "artifact": "../../../nusite/diary.html",
+  "generator": "../../../nusite/scripts/build-diary.py",
+  "bundler": "../../../nusite/scripts/standalone_diary.py",
+  "offline": true,
+  "entries": 228,
+  "browser": "Chromium 151.0.7922.34",
+  "checks_passed": 25,
+  "network_requests": 0,
+  "browser_evidence": "../artifacts/runs/20261028T214328Z-228-standalone-diary/browser04.json",
+  "screenshots": [
+    "../artifacts/runs/20261028T214328Z-228-standalone-diary/desktop04.png",
+    "../artifacts/runs/20261028T214328Z-228-standalone-diary/mobile04.png"
+  ],
+  "preservation": "../artifacts/runs/20261028T214328Z-228-standalone-diary/preservation05.json",
+  "retained_failure": "../artifacts/runs/20261028T214328Z-228-standalone-diary/build02.log",
+  "native_baseline": "ACTIVE_CHECKPOINT_227.json",
+  "limitations": [
+    "Saved files are dated snapshots and must be regenerated after source changes.",
+    "External company/repository links require network access when followed.",
+    "Offline automation used Chromium, not Safari.",
+    "The separate live dashboard and native application were not changed."
+  ],
+  "repository_visibility": "private until software release",
+  "full_photoshop_parity": false,
+  "final_browser_evidence": "../artifacts/runs/20261028T214328Z-228-standalone-diary/browser10.json",
+  "final_verification": "../artifacts/runs/20261028T214328Z-228-standalone-diary/verification11.json",
+  "final_html_sha256": "da0897d8453361b102ce6d57b99ff48432b942648b69b06248d3fa569989e485",
+  "bytes": 5068224
+}

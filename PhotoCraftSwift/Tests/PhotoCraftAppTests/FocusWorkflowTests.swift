@@ -68,9 +68,9 @@ final class FocusWorkflowTests: XCTestCase {
       XCTAssertEqual(s.session.undoStack.count, 1)
       XCTAssertEqual(s.surface, preview)
       let after = s.document
-      s.undo()
+      await s.undo()
       XCTAssertEqual(s.document, before)
-      s.redo()
+      await s.redo()
       XCTAssertEqual(s.document, after)
     }
   }
@@ -93,7 +93,7 @@ final class FocusWorkflowTests: XCTestCase {
       XCTAssertGreaterThan(p.pixel(x: 29, y: 24).a, 0.9)
       XCTAssertNil(s.cloneState.slot.source)
       XCTAssertNil(s.cloneState.slot.anchor)
-      s.undo()
+      await s.undo()
       XCTAssertEqual(s.document, before)
     }
   }

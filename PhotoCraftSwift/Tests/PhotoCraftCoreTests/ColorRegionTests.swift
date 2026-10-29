@@ -106,9 +106,9 @@ final class ColorRegionTests: XCTestCase {
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(d)), d)
     try session.execute(.magicWand(sample, .init(0, 0), o, .intersect, false))
     XCTAssertNil(session.document.selection)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, d)
-    session.redo()
+    try session.redo()
     XCTAssertNil(session.document.selection)
   }
 

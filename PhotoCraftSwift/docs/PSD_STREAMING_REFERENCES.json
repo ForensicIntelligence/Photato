@@ -1,0 +1,178 @@
+{
+  "step": "dev-step-120",
+  "status": "Bounded PSD/PSB row decoding and automated/universal/Rosetta/memory qualification complete; combined native/Photoshop live qualification pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T004914Z-120-psd-row-decoding",
+  "implementation": [
+    "Shared immutable range-backed Data views for nested PSD/PSB sections, layer-info blocks, channels and RLE tables",
+    "Native Swift row-based raw/RLE/ZIP/prediction decode with 64KiB zlib input windows",
+    "Layer pixels, masks and planar flattened pixels decoded directly into final editable tiles",
+    "Unused preview/cache channels still validate compression, row bounds, exact output, checksum, termination and trailing input",
+    "Padding scanned in place; no full padding copy",
+    "Same native engine for desktop and both API adapters; additive Photato capabilities, no Adobe schema changes"
+  ],
+  "references": [
+    {
+      "url": "https://zlib.net/manual.html",
+      "read_utc": "2026-10-20T00:57:55.881286+00:00",
+      "scope": "Incremental inflate input/output/progress/checksum/end semantics; native macOS system zlib is used."
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/psd-stream/provenance.json",
+      "sha256": "d009cd79bc1e97fd8dd9b80d2e35d26907e11c16eccae0a4174683ca588a29f3",
+      "scope": "Six independently encoded Python vectors, RGB8/16/32 ZIP/prediction crossing64KiB input boundaries and80KiB rows; original project license."
+    }
+  ],
+  "source_freeze": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/tested-source-hashes03.json",
+  "focused": {
+    "tests": 65,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 39.884,
+    "log": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/focused03.log"
+  },
+  "limits": {
+    "maximum_input_bytes": 536870912,
+    "maximum_dimension": 32768,
+    "maximum_pixels": 36000000,
+    "decoded_tile_budget_bytes": 536870912,
+    "input_is_Data": true,
+    "disk_backed_tiles": false,
+    "streaming_output": false,
+    "streaming_native_archive": false,
+    "full_large_file_support": false
+  },
+  "remaining": [
+    "Multi-gigabyte input/output and PSB documents beyond the existing limits",
+    "Scratch-backed tiles and cache/history/native-archive memory behavior",
+    "Live combined native/Photoshop PSD/PSB save/copy/reopen qualification awaits unlocked Mac",
+    "Physical Intel/macOS14 application validation and full independent Photoshop equivalence"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/full01.log",
+      "sha256": "0a817d2a903e68bed7c55f94ed242632c7b862b5a00efb8ac75a852e229da47d",
+      "passed": 1077,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 185.991
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/release01.log",
+      "sha256": "1f4f8935f6160c3fbff69373b224485d28b1c44fe9cc64b7955e8e98df76ef26",
+      "passed": 1077,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 46.41
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato120-verified-8kd7pdez/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c2f9cd6f74216de39a3d0121bb75d9e49ac9d79b41a7cc2e31b08f2ca30ce65a",
+    "zip_sha256": "d0f9120adb1088bb961d73ae6ff8d5a8b4dbdd11ae087daa42bb5a19d2e3fa27",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "memory": {
+    "architecture": "arm64",
+    "scope": "One process per version/compression, original four-layer1024x1024 RGB32 procedural PSBs; not multi-GB or a general memory/latency guarantee. Per-layer SHA256 compares every decoded RGBA Float32 sample.",
+    "cases": [
+      {
+        "layer_compression": 0,
+        "before": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.16513800621032715,
+          "file": "memory-rgb32-0.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4
+        },
+        "after": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.11525094509124756,
+          "file": "memory-rgb32-0.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4
+        },
+        "before_peak_memory_footprint_bytes": 264454960,
+        "after_peak_memory_footprint_bytes": 87917192,
+        "reduction_percent": 66.76,
+        "before_maximum_rss_bytes": 336576512,
+        "after_maximum_rss_bytes": 160284672,
+        "all_original_layer_bytes_equal": true
+      },
+      {
+        "layer_compression": 2,
+        "before": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.15081405639648438,
+          "file": "memory-rgb32-2.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4
+        },
+        "after": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.11706399917602539,
+          "file": "memory-rgb32-2.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4
+        },
+        "before_peak_memory_footprint_bytes": 122438328,
+        "after_peak_memory_footprint_bytes": 88162952,
+        "reduction_percent": 27.99,
+        "before_maximum_rss_bytes": 130269184,
+        "after_maximum_rss_bytes": 96092160,
+        "all_original_layer_bytes_equal": true
+      }
+    ]
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/intel-psb01.json",
+    "sha256": "5d9df392abc63927a83b7675ea87e9152954b16310eda9265f3a0e1c23b94769"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/intel-groups01.json",
+    "sha256": "c9c12231001a7f784c495a1f3741d5ff837ca50cf28a94b539082f400a3c0827"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_120.json",
+  "file_input_step121": {
+    "reference": "docs/PSD_FILE_INPUT_REFERENCES.json",
+    "status": "Bounded PSD/PSB file input qualified by automated/universal/Intel/memory checks; combined native/Photoshop live workflow pending",
+    "full_large_file_support": false
+  },
+  "file_output_step122": {
+    "reference": "docs/PSD_FILE_OUTPUT_REFERENCES.json",
+    "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+    "full_large_file_support": false
+  }
+}

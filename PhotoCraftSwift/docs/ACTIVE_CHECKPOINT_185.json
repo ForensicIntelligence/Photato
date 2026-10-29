@@ -1,0 +1,150 @@
+{
+  "step": "dev-step-185",
+  "completed_at_utc": "2026-10-27T10:43:29.627748+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Field/Iris/Tilt-Shift/Path/Spin blur, multiple pins/paths and effect enablement, native preview/controls/mask/local history/Cancel/OK, bokeh/noise and spin strobe controls, selections/locks, editable Smart Filters/native29 and shared typed API.",
+  "source_manifest": "artifacts/runs/20261027T101322Z-185-blur-gallery/source01.json",
+  "source_manifest_sha256": "3e7e5b8827d1bd044a68cd65e3fd7b9c795fd101d5c29d4dabe1552ab3ab8d84",
+  "source_inputs": 1396,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationBlurGallery.swift",
+      "Sources/PhotoCraft/BlurGalleryPreview.swift",
+      "Sources/PhotoCraft/BlurGalleryWorkspace.swift",
+      "Sources/PhotoCraftCore/BlurGallery.swift",
+      "Sources/PhotoCraftCore/BlurGalleryEngine.swift",
+      "Tests/PhotoCraftAppTests/BlurGalleryWorkflowTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/AutomationSmartFilters.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration04": 90,
+    "release-focused01": 90
+  },
+  "last_full_regression": {
+    "step": 184,
+    "tests": 1782,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T094011Z-184-frames/release-full01.log",
+    "current_source": false
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T101322Z-185-blur-gallery/module01.log",
+    "artifacts/runs/20261027T101322Z-185-blur-gallery/module02.log",
+    "artifacts/runs/20261027T101322Z-185-blur-gallery/module03.log",
+    "artifacts/runs/20261027T101322Z-185-blur-gallery/module04.log",
+    "artifacts/runs/20261027T101322Z-185-blur-gallery/integration01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T10:43:29.627748+00:00",
+    "tests": {
+      "integration04": 90,
+      "release-focused01": 90
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T101322Z-185-blur-gallery/Photato185-final.zip",
+    "zip_sha256": "21050faada77aed581102486101c8d08eee36d37744e09809e0b32b74c46884b",
+    "app": "/private/tmp/photato185-verified-uywpsdvd/Photato.app",
+    "executable_sha256": "ea416ca36a82fbafac612a1551bc651354df8ae9cb84dc26924798c9db7945cc",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato185-verified-uywpsdvd/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1396,
+    "source_manifest_sha256": "3e7e5b8827d1bd044a68cd65e3fd7b9c795fd101d5c29d4dabe1552ab3ab8d84",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 253,
+      "unavailable_leaf_commands": 472,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Focused optimized suite and package validation on the current host; not live UI, physical Intel/macOS14/26 or complete Photoshop equivalence evidence. Last full regression is step184, before this increment."
+  },
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "filter_kind": "blurGallery",
+    "parameter": "gallery",
+    "catalogue_count": 70,
+    "native_archive_version": 29,
+    "state": "Persisted settings through Smart Filter state; workspace availability/open/busy and expanded capabilities/schema. Same native prepared transaction, source retention, busy/stale guards and Undo."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No dedicated published operation. Unqualified blurGallery actionJSON and editable PSD/PSB descriptors reject explicitly; native gallery API remains distinct. Existing other Adobe jobs preserved."
+  },
+  "menus": {
+    "new_bindings": 5,
+    "entries": 802,
+    "bound": 253,
+    "unavailable": 472,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Blur Gallery > Field Blur\u2026",
+      "Filter > Blur Gallery > Iris Blur\u2026",
+      "Filter > Blur Gallery > Tilt-Shift\u2026",
+      "Filter > Blur Gallery > Path Blur\u2026",
+      "Filter > Blur Gallery > Spin Blur\u2026"
+    ]
+  },
+  "limitations": [
+    "Exact Photoshop pixels, effect composition, strobe exposure kernels, bokeh/noise distributions and live/physical-platform qualification remain open. Last desktop evidence locked; no re-probe or bypass.",
+    "Native Gaussian-level interpolation follows the Rust algorithm design. Enabled modes apply in field/iris/tiltShift/path/spin order; combined Photoshop behavior is unqualified. RGB8/16 encoded and RGB32 linear samples use existing filter paths.",
+    "Native filters are bounded to8,388,608 source pixels; gallery64 pins per tool,16 paths with2\u201332 nodes. Continuous motion64 samples; spin strobes up to30 flashes with1 or5 exposure samples. More demanding files need resource/performance expansion.",
+    "Path blur uses straight or Catmull\u2013Rom control-point paths with speed/taper/centered controls. Exact Bezier/corner editing, per-endpoint speed, additional motion/strobe options for paths, high-quality settings and richer canvas interactions remain open.",
+    "Bokeh and uniform/Gaussian/grain controls are implemented; per-noise-type remembered presets and exact Photoshop models remain open.",
+    "Mask preview is a local intensity visualization; path mask uses maximum path speed and does not yet reproduce its full taper field. Exact mask display/hold-key behavior, ellipsoid display under all transforms and mixed geometry-filter input coordinates remain unqualified.",
+    "Editable PSD/PSB Blur Gallery descriptors are unsupported. Native29 preserves source/settings; rasterized/rendered exports work. Adobe actionJSON rejects rather than silently applying defaults.",
+    "Native Actions already record typed applyFilter values and retain Gallery settings; Adobe .atn/plugin interchange and exhaustive action compatibility remain separate gaps.",
+    "Offscreen layout/controller tests do not demonstrate real pointer/key interaction. F03 remains open until all scope, output and platform acceptance criteria are met."
+  ],
+  "next": "F05 Lens Correction, followed by Adaptive Wide Angle and Vanishing Point: source audit, native controls/preview/history/persistence and API coverage. Continue major breadth before minor fidelity work.",
+  "next_major_plan": "artifacts/runs/20261027T101322Z-185-blur-gallery/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 185,
+    "evidence_files": 37748,
+    "logs": 19339,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/refresh02.log",
+      "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/check02.log"
+    ],
+    "scope": "Record/reference integrity only; not Photoshop parity."
+  }
+}

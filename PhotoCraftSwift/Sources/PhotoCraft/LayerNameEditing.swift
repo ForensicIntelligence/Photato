@@ -17,7 +17,7 @@ import SwiftUI
 
 extension EditorStore {
   func canRenameLayer(_ id: UUID) -> Bool {
-    canBeginLayerCreation && document.layers.contains { $0.id == id } && !document.isLocked(id)
+    canBeginLayerCreation && document.layers.contains { $0.id == id }
   }
   func beginLayerName(_ id: UUID) {
     finishLayerName()

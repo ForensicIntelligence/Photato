@@ -51,12 +51,12 @@ final class CloneExpansionWorkflowTests: XCTestCase {
     XCTAssertEqual(store.session.undoStack.count, 2)
     XCTAssertEqual(store.surface?.pixel(x: 42, y: 32), expected)
     XCTAssertLessThan(try XCTUnwrap(store.activeLayer?.x), 40)
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
     await store.renderTask?.value
     XCTAssertEqual(store.document, document)
-    store.redo()
-    store.redo()
+    await store.redo()
+    await store.redo()
     await store.renderTask?.value
     XCTAssertEqual(store.surface?.pixel(x: 72, y: 62), expected)
   }
@@ -130,7 +130,7 @@ final class CloneExpansionWorkflowTests: XCTestCase {
     XCTAssertEqual(try MaskSampler(layer: targetLayer).coverage(x: 20.5, y: 20.5), 1)
     XCTAssertEqual(targetLayer.content, targetDoc.layers[0].content)
     XCTAssertEqual(source.document, sourceDoc)
-    target.undo()
+    await target.undo()
     XCTAssertEqual(target.document, targetDoc)
   }
 }

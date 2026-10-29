@@ -1,0 +1,144 @@
+{
+  "step": "dev-step-197",
+  "completed_at_utc": "2026-10-27T17:44:52.858271+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Person-specific on-device instance detection, thumbnails, actual hover masks, whole-person multi-selection, four modes/Hard Edge, Select and Mask handoff, history/Actions and API.",
+  "source_manifest": "artifacts/runs/20261027T173208Z-197-select-people/source01.json",
+  "source_manifest_sha256": "36c1abf2bc6061ad8f2faff1413c76e1a3bf37c399643541399bd724bacef1b1",
+  "source_inputs": 1485,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationPeople.swift",
+      "Sources/PhotoCraft/PeopleSelection.swift",
+      "Sources/PhotoCraftImaging/PeopleSelection.swift",
+      "Tests/PhotoCraftAppTests/PeopleWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/PeopleSelectionTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/HistoryNavigation.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/SelectionTools.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration03": 46,
+    "release-focused01": 46,
+    "release-menu01": 9
+  },
+  "real_model": {
+    "cases": [
+      {
+        "fixture": "nasa-portrait01",
+        "height": 1920,
+        "people": 1,
+        "saved": true,
+        "seconds": 15.819295048713684,
+        "sourcePreserved": true,
+        "undoRedo": true,
+        "width": 1526
+      },
+      {
+        "fixture": "nasa-two-people01",
+        "height": 1794,
+        "people": 2,
+        "saved": true,
+        "seconds": 20.783132076263428,
+        "sourcePreserved": true,
+        "undoRedo": true,
+        "width": 2272
+      }
+    ],
+    "limits": "Local NASA photographic smoke evidence; no Photoshop or body-part equivalence claim.",
+    "provider": "Real Apple Vision person-instance model"
+  },
+  "last_full_regression": {
+    "step": 196,
+    "tests": 1920,
+    "failures": 0,
+    "current_source": false,
+    "excludes_step197": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T173208Z-197-select-people/integration01.log",
+    "artifacts/runs/20261027T173208Z-197-select-people/integration02.log"
+  ],
+  "last_universal_package": {
+    "step": 196,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T170102Z-196-object-finder/Photato196-final.zip",
+    "sha256": "bdce96ac5bf477dc6d2977afd413c97d0340f16cc1bd53b169d3d0b099b60c75",
+    "current_source": false,
+    "excludes_step197": true
+  },
+  "verification": "artifacts/runs/20261027T173208Z-197-select-people/verification01.json",
+  "api": {
+    "commands": [
+      "selection.findPeople",
+      "selection.hoverPerson",
+      "selection.selectPeople"
+    ],
+    "catalogue_count": 96,
+    "state": "peopleSelection: available/busy/ready/pickerOpen/cacheID/hoveredID/error/features/people IDs and bounds.",
+    "parameters": "findPeople optional refresh/includeMasks/includeThumbnails; hoverPerson cacheID and optional instanceID; selectPeople cacheID, unique instanceIDs and optional mode/hardEdge.",
+    "results": "Standard document state; detection optionally includes peopleMasks full-canvas row-major UInt8 coverageBase64 and peopleThumbnails PNG base64 <=96px per side. Empty detections return ready empty lists.",
+    "history": "Detection/hover/thumbnail picker are ephemeral and do not dirty documents. Unioned selection follows native Undo/Redo and Actions4 frozen coverage; native archive32 unchanged.",
+    "lifecycle": "Normalized source includes layer/sample mode and ignores selection-only edits. Edits/tool changes/sample/layer/refresh/cancel/read/close invalidate IDs; API additionally checks permission/revision/lifecycle and cache at commit.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 people/16,777,216 aggregate mask pixels plus padded tile budget. Shared API4,194,304 pixels/64layers/128MiB.",
+    "features": [
+      "wholePerson"
+    ],
+    "unavailable": [
+      "hair",
+      "faceSkin",
+      "bodySkin",
+      "eyebrows",
+      "eyes",
+      "lips",
+      "teeth",
+      "nose",
+      "beard",
+      "clothes",
+      "accessories"
+    ]
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated desktop Select People endpoint in pinned published v2 contract. No invented route or proprietary model/identity claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 263,
+    "unavailable_leaf_commands": 462,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Semantic body-part masks remain unavailable; next integration must verify learned model, preprocessing, licensing and native Apple inference before exposing classes.",
+    "Native person instances/soft edges/defaults are not proven equal to Photoshop. Multi-person overlaps and difficult photos need broader independent evidence.",
+    "Desktop remains locked; offscreen tests are not live UI proof. Physical Intel/macOS14/macOS26 runtime qualification remains open.",
+    "Person caches/thumbnails/picker selection are ephemeral, not saved preferences; factory-default/persistence parity remains open.",
+    "Current196 full suite/universal package excludes197 until a later batch; focused validation planned here."
+  ],
+  "next": "Verify native Core ML semantic segmentation for hair/skin/clothes on actual photos, maintaining per-person identity and explicit unsupported features. Then continue outstanding major workflows; fine details deferred.",
+  "next_major_plan": "artifacts/runs/20261027T173208Z-197-select-people/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "result": {
+      "check": "passed",
+      "milestones": 197,
+      "evidence_files": 38744,
+      "logs": 19446,
+      "missing_explicit_references": 0
+    },
+    "path": "artifacts/runs/20261027T173208Z-197-select-people/development-history-audit",
+    "closure": "final02 refresh/check passed; final03 includes this checkpoint closure."
+  }
+}

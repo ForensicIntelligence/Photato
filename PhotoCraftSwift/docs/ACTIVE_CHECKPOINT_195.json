@@ -1,0 +1,129 @@
+{
+  "step": "dev-step-195",
+  "completed_at_utc": "2026-10-27T16:59:09.249485+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Single local Vision inference creates separate empty editable Pass Through groups with per-instance masks above the source clipping family. Source pixels/masks/hierarchy and selection preserved; targeted adjustment, native history/archive, Layer/context menu and shared API.",
+  "source_manifest": "artifacts/runs/20261027T164305Z-195-mask-objects/source01.json",
+  "source_manifest_sha256": "9bb0d6a7bd5888ebeb2b269cab434d8753960435002989180901b52addd243a9",
+  "source_inputs": 1475,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationMaskAllObjects.swift",
+      "Sources/PhotoCraft/MaskAllObjectsEditing.swift",
+      "Sources/PhotoCraftCore/MaskAllObjects.swift",
+      "Sources/PhotoCraftImaging/MaskAllObjectsInput.swift",
+      "Tests/PhotoCraftAppTests/MaskAllObjectsWorkflowTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/LayerPanelMenu.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Sources/PhotoCraftImaging/ForegroundSelection.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration03": 82,
+    "release-focused01": 82
+  },
+  "real_model": {
+    "fixture": "User-provided Photato icon; no Photoshop accuracy claim",
+    "height": 1024,
+    "objects": 1,
+    "provider": "Apple Vision actual system model",
+    "seconds": 4.383800983428955,
+    "sourcePreserved": true,
+    "undoRedo": true,
+    "width": 1024
+  },
+  "last_full_regression": {
+    "step": 194,
+    "tests": 1903,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T161119Z-194-focus/release-full01.log",
+    "current_source": false,
+    "excludes_step195": true
+  },
+  "last_universal_package": {
+    "step": 194,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T161119Z-194-focus/Photato194-final.zip",
+    "sha256": "1d53f2f8bd4049a8ce3b6eaad0541355ae4914a2f96db6da5b624c046ffdf9c7",
+    "current_source": false,
+    "excludes_step195": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T164305Z-195-mask-objects/integration01.log",
+    "artifacts/runs/20261027T164305Z-195-mask-objects/integration02.log"
+  ],
+  "verification": "artifacts/runs/20261027T164305Z-195-mask-objects/verification01.json",
+  "api": {
+    "commands": [
+      "layer.maskAllObjects"
+    ],
+    "catalogue_count": 90,
+    "parameters": {
+      "layerID": "Required raster layer UUID"
+    },
+    "state": "maskAllObjects.available and busy; groups use existing layer/mask/hierarchy state. API explicitly targets layerID independently of desktop multi-selection.",
+    "results": "Standard document-state result plus createdGroupIDs in bottom-to-top order. Schemas and capabilities exposed. Same prepared native command, one Undo transaction, stale/busy/cancel/revoke and post-edit resource checks.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 detected instances,16,777,216 aggregate mask pixels,256MiB worst-case padded tile allocation and512 document layers. API4,194,304 pixels/64 layers/128MiB document data;4MiB requests. Limits reject the entire operation without dropping objects.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "adobe_api": {
+    "new_route": null,
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "status": "Pinned published contract has no dedicated Mask All Objects route. auto-crop object detection yields bounding boxes, not editable masked groups. Mask All Objects actionJSON descriptors remain unqualified and explicitly unsupported; no invented Adobe endpoint. Existing v2 routes unchanged.",
+    "previous_live_contract_review": "artifacts/runs/20261027T152723Z-193-sky/adobe-v2-review01.json"
+  },
+  "menus": {
+    "commands": [
+      "Layer > Mask All Objects",
+      "Layer context > Mask All Objects"
+    ],
+    "new_menu_bindings": 1,
+    "shortcut": "Captured factory order retained; no shortcut invented. Context menu integration tested; exact context order/live appearance not qualified.",
+    "entries": 802,
+    "bound_leaf_commands": 263,
+    "unavailable_leaf_commands": 462,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Apple foreground instances are not Adobe proprietary all-scene semantic segmentation. Background/nonforeground objects may not be detected; edge quality, semantic naming/order and full context support remain unqualified.",
+    "The real model smoke test detects one icon instance. Multi-object transaction behavior uses deterministic injected masks; broader real-photo/model quality remains open.",
+    "Ordinary raster content (including current raster cache) is required; nonraster/group/component targets are unavailable. Input uses SDR/sRGB proxy with transform and mask; layer effects excluded. Parent must be unlocked; source itself may remain locked.",
+    "Actions recording/adaptive replay and corresponding Adobe execute-actions descriptors remain unsupported.",
+    "Full S03 including Object Finder, People/body parts and exact outputs remains open. Numerical/cosmetic refinements deferred behind major workflows.",
+    "Desktop remains locked; no live re-probe. Physical Intel/macOS14/macOS26 and complete Photoshop qualification remain open.194 is the latest full/universal package and excludes195; focused optimized checks qualify current195 sources."
+  ],
+  "actions": "Native Actions records an explicit unsupported entry; it does not silently skip object-mask generation. Replaying it fails without partial edits. Persisted document masks are editable in native archive32.",
+  "next": "Object Finder hover highlighting and click selection with local cached instance detection, refresh/cancellation, selection modes, native controls and API. Then People/body-part selection and other missing major workflows; broader regression/universal package at the next selection milestone.",
+  "next_major_plan": "artifacts/runs/20261027T164305Z-195-mask-objects/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "final02 refresh/check passed; final03 refresh/check follows record closure",
+    "milestones": 195,
+    "evidence_files": 38658,
+    "logs": 19432,
+    "missing_explicit_references": 0,
+    "logs_directory": "artifacts/runs/20261027T164305Z-195-mask-objects/development-history-audit"
+  }
+}

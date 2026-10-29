@@ -73,6 +73,10 @@ final class PSDTests: XCTestCase {
     XCTAssertThrowsError(try PSDCodec.read(bad))
     var rich = try CraftDocument(width: 8, height: 6)
     rich.layers.append(Layer(name: "Type", content: .text(TextContent(text: "Rich"))))
+    let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(rich))
+    guard case .text(let type) = reopened.layers.last?.content else { return XCTFail("Type was flattened") }
+    XCTAssertEqual(type.text, "Rich")
+    rich.layers.append(Layer(name: "Unsupported shape", content: .shape(ShapeContent(kind: .ellipse, width: 4, height: 4, color: .black))))
     XCTAssertThrowsError(try PSDCodec.writeRasterLayers(rich))
   }
 }

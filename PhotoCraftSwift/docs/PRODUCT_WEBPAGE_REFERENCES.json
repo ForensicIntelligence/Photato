@@ -14,5 +14,32 @@
   "websiteHashes": "artifacts/runs/20261009T230957Z-097-product-webpage/website-file-hashes.json",
   "publicProvenance": "../../nusite/assets/provenance.json",
   "developmentState": "Native work remains paused at step093; website separately authorized",
-  "publication": "not published"
+  "publication": "not published",
+  "diary_step210": {
+    "step": "dev-step-210",
+    "status": "Local website updated with developer diary and repository link",
+    "site": "../../nusite/index.html",
+    "diary": "../../nusite/diary.html",
+    "source_diary": "docs/DEVELOPMENT_DIARY.md",
+    "source_log": "docs/DEVLOG.md",
+    "entries": 210,
+    "repository": {
+      "url": "https://github.com/ForensicIntelligence/Photato",
+      "visibility": "private",
+      "public_on": "Same day the software is released",
+      "user_confirmed": true
+    },
+    "verification": "artifacts/runs/20261027T232337Z-210-website-diary/site-verification02.json",
+    "screenshots": [
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/home-desktop01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/diary-desktop01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/home-mobile01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/diary-mobile01.jpg"
+    ],
+    "style": "Original shared site.css preserved; page-specific journal styles match existing system typography and white/slate/blue palette.",
+    "api_impact": "Static local presentation only. No native or Adobe API schema, editing or permission change.",
+    "publication": "Local files only; no deployment",
+    "limits": "Diary records progress and surviving evidence; milestone count does not measure complete Photoshop parity.",
+    "preview": "http://127.0.0.1:8767/diary.html"
+  }
 }

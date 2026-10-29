@@ -1,0 +1,118 @@
+{
+  "step": "dev-step-193",
+  "date": "2026-10-27",
+  "status": "Native Sky Selection and Sky Replacement implemented and tested; full S03/AI09/Photoshop parity remains open.",
+  "scope": "Automatic sky selection, imported or existing-raster sky replacement, manual mask/move/edge controls, editable lighting/color output, preview/history and optional API.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/replace-the-sky-in-images.html",
+      "updated": "2026-07-02",
+      "checked": "2026-10-27",
+      "use": "Primary menu, tool, adjustment and output behavior; not an algorithm or pixel oracle."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/quick-actions/select-skies-in-images.html",
+      "updated": "2026-10-04",
+      "checked": "2026-10-27",
+      "use": "Primary Select Sky behavior, inspected for the192 plan."
+    },
+    {
+      "source": "../photocraft-main/crates/algo/src/segment/sky.rs",
+      "sha256": "a9cf873d142c234f9562e1923947c5834d1dcdb0b23266709a59b6b6d7140c54",
+      "license": "MIT OR Apache-2.0",
+      "use": "Translated color/smoothness priors, top-edge flood growth, mixture-model gap recovery and guided refinement to native Swift. Source-cleanup ratios preserved; native cancellation, work bounds and full filter halo added. ATTRIBUTION.md updated; original source read-only."
+    },
+    {
+      "path": "artifacts/runs/20261027T152723Z-193-sky/adobe-v2-review01.json",
+      "use": "Published interface review; fresh embedded schema URL404, pinned baseline retained."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "selection.sky",
+      "sky.replace",
+      "sky.library"
+    ],
+    "catalogue_count": 88,
+    "state": "sky: canSelect, canReplace, workspaceOpen, previewBusy, settings, skyID, sourceLayerID, useSelection, strokeCount, libraryRevision, library and libraryError. Library changes participate in revision.",
+    "schemas": "Strict nested selection/replacement/stroke settings; state/result/libraryResult discovery. Native prepared selection/replacement transaction and document history, revision/busy/cancellation/sharing guards.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "limits": "Select Sky16MP native; replacement/imported sky8,388,608 pixels; API sharing4,194,304 pixels/64 layers/128MiB and4MiB requests. Library64 entries/48MiB data/64MiB file; each native image16MiB; API base64<=3000000 characters.128 strokes/4096 points each/cumulative134217728 mask-pixel visits."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Sky route in the pinned Photoshop v2 contract. Corresponding actionJSON descriptors remain unqualified. Existing Adobe routes retain their coverage; this adds three Photato operations, not new Adobe equivalence."
+  },
+  "menus": {
+    "new_menu_bindings": 2,
+    "commands": [
+      "Select > Sky",
+      "Edit > Sky Replacement\u2026"
+    ],
+    "shortcut": "Captured factory menu positions retained; no invented primary shortcut.",
+    "entries": 802,
+    "bound_leaf_commands": 261,
+    "unavailable_leaf_commands": 464,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "actions": "Select Sky records explicit selection coverage in version4. Replacement recording creates a visible unsupported entry and blocks playback; no replacement Actions/Batch claim. Native editable output remains archive32-compatible.",
+  "qualification": "All113 focused Debug and113 optimized tests pass. The universal macOS14+ package verifies. Last full regression is1876 passing tests at192; the next major batch will broaden again.",
+  "tests": {
+    "focused_debug": 113,
+    "debug_log": "artifacts/runs/20261027T152723Z-193-sky/integration08.log",
+    "offscreen": "artifacts/runs/20261027T152723Z-193-sky/offscreen-integration08.png",
+    "failed_attempts": [
+      "artifacts/runs/20261027T152723Z-193-sky/module01.log",
+      "artifacts/runs/20261027T152723Z-193-sky/module02.log",
+      "artifacts/runs/20261027T152723Z-193-sky/module03.log",
+      "artifacts/runs/20261027T152723Z-193-sky/module04.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration01.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration02.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration03.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration04.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration05.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration06.log",
+      "artifacts/runs/20261027T152723Z-193-sky/integration07.log"
+    ],
+    "scope": "Five core and nine new workflow tests plus99 existing regression tests. Landscape/overcast/no-sky/soft edges, all depths, reduced-resolution/tile boundaries, source retention/archives, previews/synthetic gestures, local/document history, read/close cancellation, selection combinations, manual mask/source-layer/native-HTTP equality, library persistence/corruption and invalid/stale/busy/revoked requests.",
+    "focused_optimized": 113,
+    "release_log": "artifacts/runs/20261027T152723Z-193-sky/release-focused01.log",
+    "verification": "artifacts/runs/20261027T152723Z-193-sky/verification01.json"
+  },
+  "numerical_gate": {
+    "fixture": "Opaque synthetic landscape and replacement sky, duplicate-vs-layered output",
+    "u8_u16": "Exact linear RGBA pixels in tested fixture.",
+    "f32_differing_pixels": 1328,
+    "f32_max_absolute_error": 2.9802322e-08,
+    "regression_tolerance": 1e-07,
+    "status": "Open exact-byte gate; bounded functional acceptance per maintainer major-first scheduling. No renderer change or Photoshop equivalence claimed."
+  },
+  "limitations": [
+    "Classical source-derived segmentation is not Adobe proprietary sky AI; real-photo accuracy, complete supported contexts and exact source/Photoshop pixels remain unqualified.",
+    "Photoshop defaults, sky preset groups/.sky interchange, bundled sky assets, richer edge-lighting group structure and replacement Actions/Adobe descriptors remain open.",
+    "Replacement settings cannot reopen the Sky dialog from saved metadata; editable source pixels, masks, transforms and adjustment layers are retained. No arbitrary sourceTags metadata is written.",
+    "Native analysis uses SDR/sRGB proxies. Transparency/HDR/large-image performance and Photoshop output-context equivalence need broader qualification.",
+    "Current tests use original synthetic fixtures and an unshown-window offscreen UI. Latest authoritative desktop state is locked; no re-probe. Live interaction and physical Intel/macOS14/macOS26 qualification remain open.",
+    "People/person-part selection, all-object masks/finder and broader S03/AI09 remain open."
+  ],
+  "next": "Major Focus Area selection with native preview/manual refinement, all six primary output choices, Select and Mask handoff, history and API. Then Mask All Objects. Fine numerical/cosmetic work stays deferred.",
+  "source_manifest": "artifacts/runs/20261027T152723Z-193-sky/source01.json",
+  "source_manifest_sha256": "5256af73862a178cef358dc7faf10d7841efc5a4c00299826ccd7218eb53a931",
+  "source_delta": "artifacts/runs/20261027T152723Z-193-sky/changes01.json",
+  "subsequent_batch_qualification": {
+    "step": 194,
+    "qualification": "All83 final focused Debug and1903 full optimized tests pass. The universal macOS14+ package verifies and includes193 Sky workflows.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_194.json",
+    "release_log": "artifacts/runs/20261027T161119Z-194-focus/release-full01.log",
+    "verification": "artifacts/runs/20261027T161119Z-194-focus/verification01.json"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "step": "dev-step-184",
+  "status": "Native major Frames workflow implemented and tested; complete L07/Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T094011Z-184-frames",
+  "scope": "Frame tool K, rectangle/ellipse/triangle/polygon/custom placeholders, frame-from-layers and shape/type conversion, retained embedded image placement and replacement, fill/fit/original sizing, independent frame/content/both transforms, strokes, native28 persistence and Photato edit/place APIs.",
+  "upstream": [
+    "../photocraft-main/crates/engine/src/frame_cmds.rs"
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/layout-design-tools/draw-frames.html",
+      "read": "2026-10-27",
+      "updated": "2026-02-23"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/layout-design-tools/place-image-frame.html",
+      "read": "2026-10-27",
+      "updated": "2026-02-23"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+      "read": "2026-10-27"
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "finding": "Eight pinned routes; no dedicated image Frame operation. TextFrame/AreaFrame/PointFrame describe text layout, not replaceable image frames. Current JSON web fetch returned Internal Error; preserved pinned contract used without claiming refreshed conformance."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "frame.edit",
+      "frame.place"
+    ],
+    "catalogue_count": 70,
+    "native_archive_version": 28,
+    "state": "Frame metadata per layer, definition schema/capabilities, target/shape/sides/availability; source sharing and revision checks before placement and immediately before commit."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "Photato-only frame operations; no dedicated operation in pinned published Adobe contract. Existing Adobe Smart Object operations remain bounded as documented. Editable PSD frame transport remains unsupported and explicitly rejected."
+  },
+  "menus": {
+    "new_bindings": 2,
+    "entries": 802,
+    "bound": 248,
+    "unavailable": 477,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "tool": "Frame/K",
+    "paths": [
+      "Layer > New > Frame from Layers\u2026",
+      "Layer > New > Convert to Frame"
+    ]
+  },
+  "tests": {
+    "debug_focused": 140,
+    "debug_log": "artifacts/runs/20261027T094011Z-184-frames/integration01.log",
+    "module_log": "artifacts/runs/20261027T094011Z-184-frames/module04.log",
+    "failed_attempts": [
+      "artifacts/runs/20261027T094011Z-184-frames/module01.log",
+      "artifacts/runs/20261027T094011Z-184-frames/module02.log",
+      "artifacts/runs/20261027T094011Z-184-frames/module03.log"
+    ],
+    "release_full": 1782,
+    "release_log": "artifacts/runs/20261027T094011Z-184-frames/release-full01.log",
+    "verification": "artifacts/runs/20261027T094011Z-184-frames/verification01.json"
+  },
+  "limitations": [
+    "Full Photoshop/live/physical-platform/pixel equivalence remains unqualified; desktop last observed locked, no re-probe or bypass. Native controller/model tests are not live interactions.",
+    "Editable PSD/PSB frame descriptors, linked external image placement, drag-and-drop replacement and generative Fill within Frames are not implemented. Save editable frame documents in native28; rendered exports retain appearance.",
+    "Canvas gestures preview outlines then commit the image result. Rich selection handles, contextual tasks, all Photoshop preferences and exact frame/content thumbnail layouts remain open. Frame Properties changes outline dimensions without automatically refitting content; Fit is explicit.",
+    "Text frames use native TextKit/CoreText outlines; glyphs without outlines reject. Font fallback, complex scripts, vertical/warped/path typography and exact Adobe glyph positions are unqualified.",
+    "Frame from Layers preserves original editable children, following the Rust grouping workflow. Drawing around a selected image embeds it first; Place replaces all descendants with one retained Smart Object. Fit requires one image child.",
+    "Frames use physical canvas coordinates, delta affine transforms and existing canvas/resource limits. Strokes use document-pixel width after transform. Photoshop stroke scaling and additional rotated/nonuniform contexts need independent qualification.",
+    "New frame commands record explicit unsupported Actions markers; exhaustive Actions capture remains open.",
+    "Custom vector paths are limited to4096 knots/256 components and normalized controls within\u00b110. Ordinary native canvas36MP/32768edge; shared API4MP/64layers/128MiB; Smart Object64MiB/8MP.",
+    "L07 remains open for broader artboard/frame qualification and interchange. Minor cosmetic/numerical refinements remain deferred under the major-first schedule."
+  ],
+  "next": "F03 native Blur Gallery: field/iris/tilt-shift/path/spin workflows with usable controls, preview/cancel, history, editable Smart Filters and both API coverage where the published contract defines operations.",
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T094011Z-184-frames",
+    "passed_iteration": "01",
+    "milestones": 184,
+    "evidence_files": 37470,
+    "logs": 19329,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "final_source_verification": "All1390 source01 inputs match after documentation and package verification."
+}

@@ -45,7 +45,7 @@ final class TonalStepsWorkflowTests: XCTestCase {
       XCTAssertNotEqual(store.document, d)
       XCTAssertEqual(store.session.undoStack.count, 1)
       XCTAssertEqual(store.session.undoStack.last?.label, kind.rawValue)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, d)
       store.beginTonalSteps(kind)
       store.commitTonalSteps()
@@ -60,7 +60,7 @@ final class TonalStepsWorkflowTests: XCTestCase {
     }
   }
 
-  @MainActor func testSelectionMaskLayerEditsCoalescingAndLocks() throws {
+  @MainActor func testSelectionMaskLayerEditsCoalescingAndLocks() async throws {
     for kind in TonalStepsAdjustment.Kind.allCases {
       let store = EditorStore(document: try CraftDocument(width: 4, height: 2))
       defer { store.renderTask?.cancel() }
@@ -75,7 +75,7 @@ final class TonalStepsWorkflowTests: XCTestCase {
       store.coalesce(true)
       for level in [10, 20, 30] { store.setTonalSteps(layer.id, .init(kind: kind, level: level)) }
       store.coalesce(false)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.activeLayer?.content, layer.content)
       let other: TonalStepsAdjustment.Kind = kind == .threshold ? .posterize : .threshold
       store.setTonalSteps(layer.id, .init(kind: other))
@@ -84,8 +84,8 @@ final class TonalStepsWorkflowTests: XCTestCase {
       let locked = store.document
       store.setTonalSteps(layer.id, .init(kind: kind, level: 64))
       XCTAssertEqual(store.document, locked)
-      store.undo()
-      store.undo()
+      await store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, before)
     }
   }

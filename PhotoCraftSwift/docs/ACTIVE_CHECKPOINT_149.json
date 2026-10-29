@@ -1,0 +1,208 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-149",
+  "recorded_at_utc": "2026-10-20T18:15:15.860277+00:00",
+  "major_workflow": "D01/I03 original PhotoCraft migration prerequisites",
+  "status": "Original PhotoCraft container prerequisites pass independent source/CLI/hash tests in native Swift. Editable .pcraft import is not yet connected; D01/I03 and every major workflow gate remain open.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/tested-source-hashes03.json",
+    "sha256": "b038af3f4a0232663a50d7f885aee57f09f13793908dd0ffe87975fcc8b0c66b"
+  },
+  "source_test_files": 523,
+  "validation_inputs": 1100,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/packaging-documents03.json",
+    "sha256": "5cdedb1e12b45ee33e4508827f8aa3ad7fc55c9516d2cf617c345a3fec46c03e"
+  },
+  "validation_isolation": "/private/tmp/photato149-attempt03-52kgt0rr/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 24.821,
+    "log": {
+      "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/focused03.log",
+      "sha256": "94400eb807cf3c9bef6cd4d7f6b5f2f4b93016b790242dd2ce45963b1587158f"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T174418Z-149-pcraft-import/full01.log",
+      "sha256": "b9fb6e39c5c4c5b2c3a3542591156dde8c2b16d79daae0e77ba02dc36ffbfa45",
+      "passed": 1408,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 321.848
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T174418Z-149-pcraft-import/release01.log",
+      "sha256": "99615a0b0dcdfbdf22da2f2b9dd79822efe68ad176e09665976a00ea2985f319",
+      "passed": 1408,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 79.614
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato149-verified-6pbqym8k/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "9656d0337e7258d9d6e3757d65ad45960f9734922aa71a47670f18e1017d6ee5",
+    "zip_sha256": "dfdb6c2528154e024908f803f2b24f95654d54e3a4662d6b980102eb2249ca09",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/Photato149-candidate.zip",
+    "sha256": "dfdb6c2528154e024908f803f2b24f95654d54e3a4662d6b980102eb2249ca09"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_148.json",
+    "sha256": "160adaebdd474593bf2c04802a08822aaa61a39205dc880d238c257f9992552c"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/package-verification01.json",
+    "sha256": "5b662ea989e2cde40a45bf890c05144f5d48ccf7b5f0a532535605bd3748dade"
+  },
+  "decoder_release": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/decoder-release-comparison01.json",
+    "sha256": "63439eecc99c6eba4e0339f16a3ca3d485b352a7119a2e6921eabc7204286078"
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "No UI/menu/shortcut changes; internal decoder prerequisites only."
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [],
+    "capability_change": "None. These internal decoder prerequisites do not expose .pcraft document import. Existing capabilities must not advertise it.",
+    "next_requirement": "The user-facing import increment must add shared desktop/Photato upload/open/schema/capability/error/history/persistence coverage. Adobe has no published .pcraft route; do not invent one."
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Add seven internal Swift modules for bounded ZIP STORE/raw DEFLATE, Zstandard frame/block/FSE/Huffman/repeat-offset/checksum decoding and BLAKE3 content addresses. Apple system zlib handles only raw ZIP DEFLATE; no Rust or external Zstandard runtime is linked.",
+    "Three original source projects retain all42 tested tile addresses;42 source blob streams decode byte-for-byte;48 independent Zstd streams,official BLAKE3 vectors,four ZIP variants,hand framing,malformed/truncated/checksum/path/limit/mutation and cancellation checks pass.",
+    "Original dependency-lock caller03 reproduces all88 caller02 files byte-for-byte; untouched upstream source and both attempts are retained. Compile01 and hand-fixture02 failures and their repairs remain preserved.",
+    "All10 focused,1408 Debug and1408 Release tests pass on1100 frozen inputs/523 Swift files. Universal macOS14+ packaging verifies. Source-identical optimized decoder probes agree on arm64 and x86_64 under Rosetta; existing export bytes match148.",
+    "Existing application/Core/AI modules and API/menu definitions are unchanged. Installed117,user workspace/recovery and Xcode project are preserved. Update notices,development diary,phase/command/API documentation and source provenance."
+  ],
+  "remaining_major_dependencies": [
+    "I03 remains open: bounded manifest/content store,directory bundles,editable native mapping of every represented source feature,source preservation,desktop Open/Save/recovery/history and matching Photato API integration/validation.",
+    "Decoder qualification is bounded:256MiB compressed/output/window limits;ZIP512MiB archive/aggregate and256MiB entry limits. Dictionaries,concatenated/skippable Zstd,ZIP64/encryption and unsupported container features reject explicitly. Larger/streamed workflows remain open.",
+    "All previous Photoshop requirements remain: exact output bytes,menus/shortcuts/preferences,major functions and supported-platform/live qualification. Source fixtures do not establish Photoshop parity.",
+    "Keep major functions first; defer optional minor functions and final details."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/source-delta03.json",
+    "sha256": "aa0a2884d32669841dde44ad13998781bb7f274b877db6ad72faa235b60be4d0"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/final-export-compatibility01.json",
+    "sha256": "af1941f35d459b15aafe1b712cd6cca5a8a80ffd9c4d3008ad8e116b77fc753b"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/final-inputs01.json",
+    "sha256": "e8d1f10021ef51e03339e802f1e00df9b5476161ccf76256a88ec1ef463024d3"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/next-major-plan02.json",
+    "sha256": "79c17ab12d28f7e83714518c06b21a4786ddaa4ee841c26b25ba49d508ddf029"
+  },
+  "primary_reference_provenance": [
+    {
+      "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/references01/provenance.json",
+      "sha256": "c00802d00fa7b8212baf38f5c81661f0308615f1706d39b1d72cc0fd3a76caa9"
+    }
+  ],
+  "source_oracle": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/rust-oracle-build03.json",
+    "sha256": "ec71285e15bbce94b3b0f42367916ded908b7e921a871d6ba34bb3328728dfe5"
+  },
+  "source_container_review": {
+    "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/source-container-review01.json",
+    "sha256": "abee1f01b5c1ed3d50152a89744132331aeca6edbcc3eedfd0faecf5671e3af6"
+  },
+  "prior_failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/tested-source-hashes01.json",
+        "sha256": "38159d3ba4bce02d1a2141763038175f860fb5f8bb6baa54bfde7a74591512fe"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/focused01.log",
+        "sha256": "e61caf4b945a739b7fe8ab8ad01e48027bf43a8b15e668a09691dd6bbc3d5dc1"
+      },
+      "cause": "Missing explicit try on comma-separated ZIP reads; repaired error propagation"
+    },
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/tested-source-hashes02.json",
+        "sha256": "4b0a9f8f783f2dfa1020053aa2e6f6d2401dd1e869e8246e95ab64caff215b07"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T174418Z-149-pcraft-import/focused02.log",
+        "sha256": "21d13a4f5842fc633a8f937826740b6fc7f433560e4feaaa8417c7c4926bad91"
+      },
+      "cause": "Hand-built Huffman fixture declared too-small window; independent zstd rejected it too,corrected fixture and retained rejection test"
+    }
+  ],
+  "resume_first": "Verify checkpoint149/freeze03/final audit,candidate149 and installed117. Continue D01/I03 with the bounded source manifest/content store and editable migration; preserve all open parity scope.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step149-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step149-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step149-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step149-final/final-inputs01.json"
+  }
+}

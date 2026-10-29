@@ -1,0 +1,97 @@
+{
+  "step": 223,
+  "recorded_at_utc": "2026-10-28T18:48:22.550106+00:00",
+  "status": "Native soft proofing and Lab boundary correction pass75 focused,41 repaired optimized-focused and2330 full optimized tests. COL03 stays open.",
+  "goal_complete": false,
+  "increment_complete": false,
+  "qualified_stage": "Soft proofing source qualification; no universal223 package yet",
+  "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+  "source_inputs": 2234,
+  "native_archive": 48,
+  "actions_version": 20,
+  "typed_commands": 143,
+  "focused_tests": {
+    "tests": 75,
+    "failures": 0,
+    "exit_code": 0,
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/integration12.log",
+    "source": "artifacts/runs/20261028T181113Z-223-proofing/source12.json"
+  },
+  "full_optimized": {
+    "utc": "2026-10-28T18:48:22.550106+00:00",
+    "status": "passed",
+    "tests": 2330,
+    "passed": 2330,
+    "failures": 0,
+    "exit_code": 0,
+    "terminal_session": 28459,
+    "seconds_test_execution": 164.198,
+    "seconds_suite_wall": 164.404,
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/release16.log",
+    "log_sha256": "8c732ea75c2b8ddd919a5393da6fc48b4807673a53ae81ea358503579fd1a1d1",
+    "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+    "source_inputs_unchanged": 2234,
+    "new_package": false,
+    "live_acceptance": false
+  },
+  "reference": "docs/PROOFING_REFERENCES.json",
+  "latest_qualified_package_step": 221,
+  "latest_uploaded_package_step": 220,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "next_action": "Implement native printing/page setup and shared print/PDF API workflows from next-print14.json. Keep exact proofing/HDR/preferences and COL03 acceptance open.",
+  "focused_repaired": {
+    "utc": "2026-10-28T18:43:55.889783+00:00",
+    "tests": 41,
+    "failures": 0,
+    "exit_code": 0,
+    "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/core15.log"
+  },
+  "next_print_plan": "artifacts/runs/20261028T181113Z-223-proofing/next-print14.json",
+  "source_delta": "artifacts/runs/20261028T181113Z-223-proofing/changes16.json",
+  "completed_this_increment": [
+    "Native proof colors, gamut warnings, CMYK plate previews and custom ICC sheet/presets with original pixels/history preserved.",
+    "Shared proof configuration/read/state and committed proof PNG API; factory Proof Colors/Gamut Warning shortcuts.",
+    "ICC Lab physical-coordinate repair, independently checked neutral colors and profiled/direct conversion regressions.",
+    "2330 full optimized tests pass on unchanged source15; native live visual/platform parity remains unqualified."
+  ],
+  "tests": {
+    "focused_integration": {
+      "passed": 75,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source12.json",
+      "log": "artifacts/runs/20261028T181113Z-223-proofing/integration12.log"
+    },
+    "optimized_repaired": {
+      "passed": 41,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+      "log": "artifacts/runs/20261028T181113Z-223-proofing/core15.log"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T18:48:22.550106+00:00",
+      "status": "passed",
+      "tests": 2330,
+      "passed": 2330,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 28459,
+      "seconds_test_execution": 164.198,
+      "seconds_suite_wall": 164.404,
+      "log": "artifacts/runs/20261028T181113Z-223-proofing/release16.log",
+      "log_sha256": "8c732ea75c2b8ddd919a5393da6fc48b4807673a53ae81ea358503579fd1a1d1",
+      "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+      "source_inputs_unchanged": 2234,
+      "new_package": false,
+      "live_acceptance": false
+    }
+  },
+  "workers": [],
+  "verification": "artifacts/runs/20261028T181113Z-223-proofing/verification18.json",
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/proof223-refresh18.log",
+    "check": "artifacts/development-history-audit/proof223-check18.log"
+  }
+}

@@ -1,0 +1,338 @@
+{
+  "step": "dev-step-222",
+  "date": "2026-10-28",
+  "status": "Duotone controls, ink Channels and Multichannel PSD/PSB native/both-API files tested;2316 full optimized tests pass. Complete ink parity remains open.",
+  "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-source30.json",
+  "changes": "artifacts/runs/20261028T152212Z-222-ink-modes/changes09.json",
+  "implemented": [
+    "Authoritative Gray8 Duotone source with1\u20134 named ink curves and display-only overprint overrides",
+    "Independent8/16-bit Multichannel ink plates with solidity and no fabricated layers",
+    "Native48 legacy/chunked persistence and cache recovery; source-checked history including scratch spill",
+    "Direct native-component conversion to ink; exact opaque CMYK/black retention and reversible matching components",
+    "Shared rendering plus exact grid geometry; crop/canvas-size/image-size/rotation, alpha masks and selections",
+    "Native48 file download/import negotiation and existing mode-conversion/geometry APIs",
+    "Native Duotone ink count/names/colors, curve graph/numeric points, preview-only overprints and JSON settings; preview/local Undo/Cancel/commit",
+    "Native Multichannel conversion with merge consent; both Image > Mode entries and document-close cleanup",
+    "Three typed Photato commands plus state/capability/result schemas and semantic Actions20 portable playback",
+    "Real ink rows, selected/visible plate targets, numeric thumbnails and shared native/API channel preview",
+    "Plate create/delete/duplicate/reorder/options, bounded raw pages, selection-aware Fill/Brush/Eraser/Invert/eight filters and channel-to-selection loading",
+    "Six typed ink-channel operations with result/parameter/state schemas, shared native48/history, busy/stale/revocation and desktop/API equivalence tests"
+  ],
+  "references": {
+    "consulted_utc": "2026-10-28T15:59:05.683110+00:00",
+    "primary": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/create-and-edit-duotone-images.html",
+        "findings": "Gray8 input;1\u20134 inks and density curves; overprints affect preview only; Multichannel exposes individual inks; separations and EPS/PDF/DCS workflows remain required."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/choose-colors/color-modes-in-photoshop.html",
+        "findings": "Multichannel flattens layers into spot channels; RGB yieldsCMY, CMYK yieldsCMYK; Indexed/32-bit are not accepted."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/bit-depth-in-photoshop.html",
+        "findings": "Working with16-bit images explicitly includes Multichannel. Desktop16-bit support implemented; pinned Firefly creation-schema descriptions conflict and still need qualification."
+      },
+      {
+        "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+        "consulted_at_utc": "2026-10-28T16:26:25.217274+00:00",
+        "findings": "Public November2019 specification documents mode7/8 and numeric channel layout but calls the Duotone color-mode data undocumented. Opaque preservation with a grayscale interpretation is permitted by the described interchange approach; it does not provide editable ink/curve semantics. Original Rust psd_import.rs likewise retains raw data and warns that it displays grayscale. Full Duotone file interchange remains unresolved."
+      }
+    ],
+    "licensed_source": "../photocraft-main/crates/engine/src/multichannel_cmds.rs",
+    "exact_adobe_numerical_equivalence": false,
+    "ado_presets": {
+      "utc": "2026-10-28T16:50:45.983970+00:00",
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "section": "Additional File Formats / Duotone Options",
+      "finding": "Adobe separately documents .ADO preset layout. This is a public implementation reference; equivalence with the undocumented PSD Duotone color-mode block is not established.",
+      "next": "Implement and test ADO/curve interchange from public guidance and independently generated fixtures; qualify owned Photoshop output when desktop access returns. No proprietary executable inspection."
+    },
+    "multichannel_storage": {
+      "consulted_at_utc": "2026-10-28T18:00:31.318277+00:00",
+      "primary": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "independent_implementation": "https://github.com/psd-tools/psd-tools/blob/v1.26.0/src/psd_tools/psd/image_resources.py",
+      "installed_module_sha256": "1cb24462811e19d26a7c44b3297e44105d711a6a61ac4dbd2a81dcf6655f84b9",
+      "licensed_rust": [
+        "../photocraft-main/crates/io/src/channel_map.rs",
+        "../photocraft-main/crates/io/src/multichannel_map.rs"
+      ],
+      "finding": "Modern1077 records13 bytes; obsolete1007 records14 bytes. Original Rust writes14-byte1077 records; native encoder uses13 and independent decoder confirms framing. No proprietary binary inspection."
+    }
+  },
+  "independent_fixtures": {
+    "manifest": "Tests/PhotoCraftCoreTests/Fixtures/InkModes/provenance.json",
+    "method": "Compile unchanged licensed Rust curve_eval, DuotoneInk.density and Duotone.render in a standalone fixture harness.",
+    "gray_samples_per_configuration": 256,
+    "configurations": 4,
+    "rgb8_samples": 3072,
+    "plate_samples": 1792,
+    "photoshop_equivalence": false
+  },
+  "validation": {
+    "core": {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/core03.log",
+      "reported_passes": 8,
+      "original_exit_status": "Lost during context compaction; terminal result and source compilation subsequently checked."
+    },
+    "documents": {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/document05.log",
+      "tests": 27,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "focused": {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/controls12.log",
+      "tests": 88,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "full_optimized": {
+      "recorded_at_utc": "2026-10-28T18:07:08.889658+00:00",
+      "status": "passed",
+      "tests": 2316,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 85599,
+      "seconds_test_execution": 162.7,
+      "seconds_suite_wall": 162.908,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-release31.log",
+      "log_sha256": "4fdd727f840ac1e5f26af94737e93870013de385bf355bd2c64fafd898b6cb3b",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-source30.json",
+      "source_inputs_unchanged": 2229,
+      "native_workers": [],
+      "new_package": false,
+      "live_acceptance": false
+    },
+    "controls11": {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/controls11.log",
+      "tests": 86,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "foundation_full_optimized": {
+      "recorded_at_utc": "2026-10-28T16:26:25.217274+00:00",
+      "status": "passed",
+      "tests": 2284,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 40410,
+      "seconds_test_execution": 159.022,
+      "seconds_suite_wall": 159.222,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/release09.log",
+      "log_sha256": "900333798a8f0d5592c5119e1bee7ead933de86eaba8090ea2a7658670b50b2d",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source09.json",
+      "source_inputs_unchanged": 2195,
+      "native_workers": [],
+      "packaged": false,
+      "live_window_acceptance": false
+    },
+    "hosted_snapshots": {
+      "scope": "Cached offscreen native-hosted dialogs. Preview/curve/layout visible, native picker/button text incomplete in cache. Not a live visual acceptance pass.",
+      "glob": "artifacts/runs/20261028T152212Z-222-ink-modes/controls-*.png",
+      "live_acceptance": false
+    },
+    "controls_full_optimized": {
+      "recorded_at_utc": "2026-10-28T16:53:06.252524+00:00",
+      "status": "passed",
+      "tests": 2293,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 66030,
+      "seconds_test_execution": 159.202,
+      "seconds_suite_wall": 159.402,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/release13.log",
+      "log_sha256": "65488e1d03def933a0eac1d5d6f7acb2a2245b4f7ea9f8792ec5d9c6b8980bd1",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source12.json",
+      "source_inputs_unchanged": 2200,
+      "native_workers": [],
+      "new_package": false,
+      "live_acceptance": false
+    },
+    "channels_focused": {
+      "utc": "2026-10-28T17:26:29.444576+00:00",
+      "tests": 93,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 4551,
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source23.json",
+      "source_inputs_unchanged": 2207,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-ui23.log",
+      "log_sha256": "c1077088a8ce6084890d205e95321d2c714a06f0380ed999732e9de0532c94a2",
+      "live_acceptance": false
+    },
+    "channel_hosted_snapshots": {
+      "path": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-release26-screenshots",
+      "scope": "Native-hosted offscreen panel capture and bounds checks; not live UI acceptance.",
+      "live_acceptance": false
+    },
+    "multichannel_focused": {
+      "utc": "2026-10-28T17:59:20.743224+00:00",
+      "tests": 52,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 33396,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-integration30.log",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-source30.json",
+      "source_inputs_unchanged": 2229,
+      "new_test_methods": 9,
+      "live_ui_acceptance": false
+    },
+    "channels_full_optimized": {
+      "recorded_at_utc": "2026-10-28T17:39:56.371286+00:00",
+      "status": "passed",
+      "tests": 2307,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 51693,
+      "seconds_test_execution": 162.031,
+      "seconds_suite_wall": 162.234,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-release26.log",
+      "log_sha256": "00ed82bc64e5165c5f8f0b0188d5d4bc9ca507f875c32d2942ac8bab2c1d9b9f",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source25.json",
+      "source_inputs_unchanged": 2207,
+      "native_workers": [],
+      "new_package": false,
+      "live_acceptance": false
+    }
+  },
+  "failures": [
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/core01.log",
+      "cause": "Missing try in test assertion; repaired."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/core02.log",
+      "cause": "Expected64 instead of source Float32 result63; independent Rust oracle resolves it without production numerical change."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/integration06.log",
+      "cause": "Async XCTest autoclosure in test; repaired."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/integration07.log",
+      "cause": "One preexisting test treated newly supported48 as an invalid future version; moved boundary to49."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-core16.log",
+      "cause": "Missing exhaustive modular command guard; repaired."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-core17.log",
+      "cause": "Two invalid test initializer labels; repaired."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-core18.log",
+      "cause": "Malformed selection fixture missing bounds; repaired through setCoverageSelection."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-ui21.log",
+      "cause": "Desktop random UInt64 seed exceeded exact JSON range; generated seeds now53-bit. Invalid selection default string fixed to published New."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-ui22.log",
+      "cause": "New alpha fixture used default8-bit depth inside16-bit document; fixture corrected, invariant retained."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-release24.log",
+      "cause": "All16 failures were a stale shared catalog count135; expected total updated to141 without changing implementation."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-core28.log",
+      "cause": "Test called nonexistent EditorSession.apply; corrected to execute."
+    },
+    {
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-integration29.log",
+      "cause": "Old5-channel compression limit and action-job mode admission omitted Multichannel; extended within retained bounds.32 assertions compared sparse storage instead of exact sample bytes; fixed to compare RGBA at source depth."
+    }
+  ],
+  "api": {
+    "typed_commands": 141,
+    "new_commands": 9,
+    "native_archive": 48,
+    "state": "inkMode additionally exposes editingTargets, visibleTargets, channelEditingAvailable and channelOptionsOpen; inkChannels capabilities expose command/result schemas, sample conventions, filters and limits.",
+    "existing_operations": [
+      "native import/download",
+      "document.convertMode (exit to RGB/Gray/CMYK/Lab)",
+      "document.resize",
+      "document.canvasSize",
+      "document.rotate",
+      "document.resolution",
+      "history.undo",
+      "history.redo"
+    ],
+    "adobe": "Ink/restricted creation and ink actionJSON remain explicitly unsupported. No new Adobe route or conformance claim.",
+    "ink_operations": [
+      "document.convertDuotone",
+      "document.convertMultichannel",
+      "ink.settings.read",
+      "ink.channel.read",
+      "ink.channel.write",
+      "ink.channel.edit",
+      "ink.channel.manage",
+      "ink.channel.select",
+      "ink.channel.visibility"
+    ],
+    "actions_version": 20
+  },
+  "remaining": [
+    "Remaining ink-channel tools/clipboard/shortcuts and semantic Actions; Adobe ADO presets and richer Duotone ink ordering UI",
+    "Adobe v2 creation/actionJSON compatibility wherever defined; resolve conflicting pinned depth descriptions",
+    "Duotone PSD/PSB, ink TIFF, private color-book/alternate-color/Quick Mask metadata; Photoshop-qualified Multichannel interoperability; print separations and EPS/PDF/DCS2 workflows",
+    "Remaining channel Actions and clipboard/tool contexts; destructive-only ink crop restriction and Multichannel paper-only extension",
+    "Exact Photoshop curves, color defaults, overprint interpolation, samples and menu/settings parity",
+    "Physical Intel/macOS14/macOS26 and live UI validation; larger documents/production performance"
+  ],
+  "package": "Latest qualified/installed package remains221; this source increment has no new packaged app. Latest private GitHub upload remains220.",
+  "master_goal_complete": false,
+  "controls_changes": "artifacts/runs/20261028T152212Z-222-ink-modes/changes12-vs09.json",
+  "menus": {
+    "report": "artifacts/runs/20261028T152212Z-222-ink-modes/menus-release13.json",
+    "bound_leaf_commands": 352,
+    "unavailable_leaf_commands": 373,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "channel_changes": "artifacts/runs/20261028T152212Z-222-ink-modes/channels-changes25.json",
+  "multichannel_files": {
+    "utc": "2026-10-28T18:00:31.318277+00:00",
+    "codec_files": [
+      "Sources/PhotoCraftImaging/PSDMultichannelStorage.swift",
+      "Sources/PhotoCraftImaging/PSDInkChannels.swift"
+    ],
+    "change_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-changes30.json",
+    "native_and_api": "Shared memory/file PSD/PSB parser/serializer; Save/Open/revert, Photato download/import/local saves and both existing action-job routes. No new typed commands or invented Adobe descriptors.",
+    "capabilities": "documentTransfers.multichannelPhotoshop; photoshopContainers.colorModes.multichannel8/16",
+    "samples": "Integer inversion plus endian conversion; no RGB reseparation. Alpha sample polarity is unchanged.",
+    "metadata": "Unicode names; RGB/HSB/CMYK/Lab/Gray display colors; opacity/solidity; unchanged original13-byte records retained by native UUID. Rewritten colors16-bitRGB; rewritten opacity/solidity whole percentages. Stale channel IDs/alternate-color resources omitted. Order retained within ink and alpha groups.",
+    "input_fixtures": "Tests/PhotoCraftImagingTests/Fixtures/MultichannelFormats/provenance.json",
+    "independent_output": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-independent30.json",
+    "independent_samples": 768,
+    "independent_files": 16,
+    "photoshop_live_interoperability": false,
+    "limits": [
+      "56 total channels/52 auxiliary alpha masks",
+      "8,388,608 pixels and512MiB decompressed channel budget; lower API limits apply",
+      "No active Quick Mask, private color-book spaces, unknown layer data or non-square resolution",
+      "Duotone PSD/PSB, ink TIFF and complete print separations remain open"
+    ],
+    "full_optimized": {
+      "recorded_at_utc": "2026-10-28T18:07:08.889658+00:00",
+      "status": "passed",
+      "tests": 2316,
+      "failures": 0,
+      "exit_code": 0,
+      "terminal_session": 85599,
+      "seconds_test_execution": 162.7,
+      "seconds_suite_wall": 162.908,
+      "log": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-release31.log",
+      "log_sha256": "4fdd727f840ac1e5f26af94737e93870013de385bf355bd2c64fafd898b6cb3b",
+      "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/psd-source30.json",
+      "source_inputs_unchanged": 2229,
+      "native_workers": [],
+      "new_package": false,
+      "live_acceptance": false
+    }
+  },
+  "next_ado_plan": "artifacts/runs/20261028T152212Z-222-ink-modes/next-ado32.json"
+}

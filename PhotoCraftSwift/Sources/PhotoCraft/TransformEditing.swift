@@ -12,6 +12,12 @@ struct TransformDraft: Equatable {
   var angle: Double = 0
   var proportional = true
   var interpolation = Resampling.bicubic
+  var contentAware = false
+  var allowsFlips = true
+  var amount: Double = 100
+  var protectChannelID: UUID?
+  var protectSkinTones = false
+  var referenceAnchor = CanvasAnchor.center
   init(layerID: UUID, bounds: IntRect) {
     self.layerID = layerID
     self.bounds = bounds
@@ -41,6 +47,7 @@ struct TransformDraft: Equatable {
       return result
     }
     if handle == 8 {
+      if contentAware { return self }
       let a = atan2(start.y - centerY, start.x - centerX)
       let b = atan2(end.y - centerY, end.x - centerX)
       result.angle += (b - a) * 180 / .pi
@@ -66,6 +73,7 @@ struct TransformDraft: Equatable {
       h = height * factor
     }
     // Crossing a handle flips the content; prevent a singular zero-size transform.
+    if contentAware || !allowsFlips { w = max(1,w); h = max(1,h) }
     w = abs(w) < 0.1 ? (w < 0 ? -0.1 : 0.1) : w
     h = abs(h) < 0.1 ? (h < 0 ? -0.1 : 0.1) : h
     result.scaleX = w / Double(bounds.width) * 100
@@ -111,7 +119,7 @@ extension EditorStore {
     guard !editingComponent, !editingMask, !geometryBusy, !hasToneDraft,
       transformDraft == nil, let layer = activeLayer, layer.canTransform
     else { return false }
-    return !document.isLocked(layer.id)
+    return !document.isPositionLocked(layer.id)
   }
   func beginTransform() {
     guard !editingMask else {
@@ -122,7 +130,7 @@ extension EditorStore {
     guard !editingComponent, !geometryBusy, !hasToneDraft, transformDraft == nil,
       let layer = activeLayer,
       layer.canTransform,
-      !document.isLocked(layer.id)
+      !document.isPositionLocked(layer.id)
     else {
       return
     }
@@ -141,23 +149,52 @@ extension EditorStore {
     guard transformDraft?.layerID == draft.layerID else { return }
     do { try draft.delta.validated() } catch { return }
     transformDraft = draft
+    if draft.contentAware { refreshContentAwareScale() }
     render()
   }
   func cancelTransform() {
+    clearContentAwareScale()
     transformDraft = nil
     render()
     status = "Transform cancelled"
   }
   func commitTransform() {
     guard let draft = transformDraft else { return }
+    if draft.contentAware {
+      guard contentAwareScaleReadyDraft == draft,let edit = contentAwareScalePrepared else { return }
+      transformDraft = nil; clearContentAwareScale(); performGeometry(.contentAwareScale(edit)); return
+    }
     transformDraft = nil
     performGeometry(.transform(draft.layerID, draft.delta, draft.interpolation))
   }
   var previewDocument: CraftDocument {
+    // A preview is one temporary composition. Draft properties must not be
+    // mistaken for edits to the retained animation frame cache.
+    var preview = compositionPreviewDocument
+    preview.animation = nil
+    if preview.videoTimeline?.transitions != nil {
+      for i in preview.layers.indices {
+        preview.layers[i].videoKeyframes=nil
+        if var clip=preview.layers[i].video,let time=preview.videoTimeline?.seconds,
+          let frame=clip.sourceIndex(at:time),case .raster(let surface)=preview.layers[i].content {
+          clip.frames[frame]=surface;preview.layers[i].video=clip
+        }
+      }
+    } else {preview = preview.videoCompositionSnapshot()}
+    return preview
+  }
+  private var compositionPreviewDocument: CraftDocument {
+    if let frame = timelinePreviewVideoFrame, let preview = try? document.videoDocument(at: frame) { return preview }
+    if let id = timelinePreviewFrameID, let preview = try? document.animationDocument(at: id) { return preview }
+    if let draft=shapedTypeDraft,draft.preview,let preview=draft.previewDocument{return preview}
+    if shapeDraft != nil,let preview=shapePreview{return preview}
+    if regionRetouchDraft != nil,let preview = regionRetouchPreview { return preview }
     var doc = document
+    if let draft = typeEditingDraft, !draft.isNew, let i = doc.layers.firstIndex(where: { $0.id == draft.layer.id }) { doc.layers[i].visible = false }
     if let draft = layerVisibilityDraft, draft.baseline == document {
       try? LayerOrganization.setVisibility(draft.values, in: &doc)
     }
+    if let draft = transformDraft, draft.contentAware { return contentAwareScalePreview ?? doc }
     if let draft = transformDraft {
       let ids = doc.subtreeIDs(draft.layerID)
       for i in doc.layers.indices where ids.contains(doc.layers[i].id) {
@@ -188,7 +225,7 @@ extension EditorStore {
     return doc
   }
   func transformLayer(angle: Double = 0, horizontal: Bool = false, vertical: Bool = false) {
-    guard let layer = activeLayer, layer.canTransform, !document.isLocked(layer.id) else { return }
+    guard let layer = activeLayer, layer.canTransform, !document.isPositionLocked(layer.id) else { return }
     do {
       let box = try layerBounds(layer)
       let x = Double(box.x) + Double(box.width) / 2
@@ -200,14 +237,20 @@ extension EditorStore {
     } catch { self.error = error.localizedDescription }
   }
   func performGeometry(_ command: Command, onSuccess: (() -> Void)? = nil) {
-    performGeometry(label: command.label, prepare: { _ in command }, onSuccess: onSuccess)
+    let routed: Command
+    do { routed = routedMaskCommand(try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))) }
+    catch { self.error = error.localizedDescription; return }
+    let auxiliary: Bool
+    switch routed { case .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: auxiliary = true; default: auxiliary = false }
+    let modeComponents: Bool; if case .modeComponents = routed { modeComponents = true } else { modeComponents = false }
+    performGeometry(label: routed.label, allowAuxiliary: auxiliary, allowModeComponents: modeComponents, prepare: { _ in routed }, onSuccess: onSuccess)
   }
   func performGeometry(
-    label: String, prepare: @escaping @Sendable (CraftDocument) throws -> Command,
+    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, prepare: @escaping @Sendable (CraftDocument) async throws -> Command,
     onSuccess: (() -> Void)? = nil
   ) {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
-    guard !editingComponent else {
+    guard !editingComponent || (allowAuxiliary && isCompositeColorTarget) || (allowModeComponents && canEditModeComponents) else {
       error = "This operation requires the RGB editing target."
       return
     }
@@ -218,15 +261,16 @@ extension EditorStore {
     status = label
     geometryTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
-        try PreparedEdit(command: prepare(original), document: original)
+        try await PreparedEdit(command: prepare(original), document: original)
       }
       do {
         let prepared = try await withTaskCancellationHandler(
           operation: { try await worker.value }, onCancel: { worker.cancel() })
         try Task.checkCancellation()
         guard let self, self.layerPanelGeneration == generation else { return }
-        try self.executeCompositePreparedEdit(prepared)
+        try self.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents)
         if self.document != original { self.onChange?(.changeDone) }
+        self.geometryBusy = false
         onSuccess?()
       } catch is CancellationError {
         if self?.layerPanelGeneration == generation { self?.status = "Operation cancelled" }

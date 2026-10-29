@@ -1,0 +1,237 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-146",
+  "recorded_at_utc": "2026-10-20T16:37:22.911409+00:00",
+  "major_workflow": "D01/I04 editable layered TIFF output",
+  "status": "Supported editable layered TIFF output now reaches native Save/Copy and Photato save/download/jobs through the shared PSD serializer. Ordinary Save defaults to preserving layers; existing flat exports and Adobe TIFF output remain unchanged. Full Photoshop parity and all major gates stay open.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/tested-source-hashes02.json",
+    "sha256": "15a2fe6866da6b04231c1908a39a89b73364063c402aa6d9dfebf8756ae9d0a5"
+  },
+  "source_test_files": 507,
+  "validation_inputs": 953,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/packaging-documents02.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato146-attempt02-btak429t/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 89,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 24.078,
+    "log": {
+      "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/focused02.log",
+      "sha256": "60d97b84d9a138bbfb9675cc8c1bbacc6d4d327f09634b12b7b9ed5adb2f8b8f"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T161158Z-146-layered-tiff-output/full01.log",
+      "sha256": "0d2aec5b3ad24fa3b73b91436db2bf1705c9bbb1b4bbe2b14c1cde6d082f207e",
+      "passed": 1383,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 297.131
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T161158Z-146-layered-tiff-output/release01.log",
+      "sha256": "eadf67464f216849c50ab1c85ed0896a8ccc9073ccb3ef3209c999c6ab6e4674",
+      "passed": 1383,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 77.739
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato146-verified-7qc65_40/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "b43c999644e843773abea5feec345ff39cadad8fa8c6ff6ec21d14d4ea6453d6",
+    "zip_sha256": "db11f744327502ab49bdf0a44af89ec20b643598cf81e536bc864de44b72c0e9",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/Photato146-candidate.zip",
+    "sha256": "db11f744327502ab49bdf0a44af89ec20b643598cf81e536bc864de44b72c0e9"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_145.json",
+    "sha256": "a6aab140e950d2c5b89780e92e78843bf474e599c31a3cd2ccb2ef5c22e0f8e8"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/package-verification01.json",
+    "sha256": "1a94717a0bd9473abf8072614c52c9d7b23521716d12640b1fc846f53463d10f"
+  },
+  "independent_layer_output": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/independent-layer-output01.json",
+    "sha256": "208b2dcf86fe78e5f6b075a9bfb97030639826bf8eaa068259477db211122fc7"
+  },
+  "independent_layers": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/independent-layers01.json",
+    "sha256": "4837c3cb37335757ddd2f4f93315fefbc54382306b6192e8982bb122d08aba25"
+  },
+  "independent_storage": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/independent-storage01.json",
+    "sha256": "ce47c509aa2844b2e370371ee1c3368d0080d809a0a6937cab80ad3a6b62720e"
+  },
+  "independent_tiff": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/independent-tiff01.json",
+    "sha256": "f9248f07eb2d3cc59abba07cf1051d239706e1221452dc44a8edec48ca80c152"
+  },
+  "independent_psd": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/independent-psd01.json",
+    "sha256": "a1a1d3bc9e3c273cd01ab07bfa3f211cda7c20956e6b5a22b4afdee887e2273c"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/public-release-arm6401/verification.json",
+      "sha256": "d16b8161e2eb35263b5871c58355c8d5246041cf5a3e25b4625b92c47d442671"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/public-release-x86_6401/verification.json",
+      "sha256": "852de7a510a5c32818afa0a871395cd9d5efaffd9138c4014f3273be37fae0a3"
+    }
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "Existing Save/Save As/Save a Copy now expose TIFF Layers and independent RLE/ZIP compression. No new menu bindings."
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.tiff",
+      "POST /v1/action-jobs"
+    ],
+    "new_fields": [
+      "tiffLayers",
+      "tiffLayerCompression"
+    ],
+    "capability": "documentTransfers.layeredTIFF input=true/output=true, distinct output RLE/ZIP choices, defaults/scope/limits; effectiveSaveEncodingOptions reflects TIFF preservation",
+    "contract": "Photato-only options remain rejected422 on Adobe v2. Adobe TiffOutput has no preservation field; its flattened TIFF output remains byte-identical. Shared native engine handles both interfaces without invented fields.",
+    "coverage": "Native Save/Save As/Copy and actual authenticated HTTP downloads/default save/options/error/state, Photato distinct job output caching and Adobe contract rejection/default preservation. Existing import/history/atomic guards remain covered."
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Shared PSD serialization can supply layers/resources without rendering a redundant merged PSD cache. TIFF embeds depth-specific ImageSourceData, always-big-endian resources and the distinct first MTrn marker alongside its composite.",
+    "Both endian orders preserve tested RGB8/16/32 raster layers, groups, masks, names/attributes using RLE or ZIP layer channels independently of composite None/LZW/ZIP, planar layout and float prediction. Rich big-endian records share PSD serialization; unsupported little-endian rich payloads reject explicitly.",
+    "Native Layers/Layer Compression controls and Photato options/schema/capabilities/state use the same encoder. Ordinary Save defaults to editable output; explicit flattening of layered content fails without replacement. Copy/download/job defaults remain flat, with explicit preservation. Adobe schema/default output remains unchanged.",
+    "Four new imaging and three native/API tests qualify36 output combinations, extended mask conversion, rich guards,4096 global-block limit, cancellation, ownership/history/original bytes and real HTTP job contracts. Independent pinned psdtags verifies72 TIFF outputs with exact layer/mask bits and48 PSD reexports. Prior88 storage TIFFs,18 Float32 TIFFs,22 LZW boundary streams and96 PSD/PSB combinations reverify;161 retained whole outputs equal145.",
+    "All1383 Debug and1383 Release tests pass. Universal macOS14+ packaging/signature/resources verify. Public production Release24 layered opens, six PSD saves and six layered TIFF saves pass on arm64/Rosetta, alongside earlier open/format/storage checks. Installed117/user state/Core/AI/Xcode remain preserved."
+  ],
+  "remaining_major_dependencies": [
+    "D01/I04 and all major gates remain open. Continue rich-layer TIFF interoperability and format save/default/compatibility policies before the minor phase.",
+    "Little-endian rich adjustment/fill/vector/pattern/opaque blocks, PSB-style TIFF ImageSourceData, BigTIFF, broader color modes/orientations, saved alpha/spot channels, profile conversion breadth and full4GB/streaming memory qualification remain open.",
+    "The shared writer does not yet re-emit global user-mask display metadata LMsk; independent psdtags reports the missing optional overlay block and supplies its default. Per-layer mask sample bits are independently exact. Preserve broader global/source metadata before full TIFF parity.",
+    "Save Transparency, image pyramids, Ask Before Saving Layered TIFF Files and exact Photoshop save dialog/default behavior remain open. Current native controls are functional but do not certify Photoshop UI parity.",
+    "Independent synthetic fixtures/native round trips do not establish Photoshop2026 bytes/rendering/UI parity. Live native/Photoshop reference qualification remains pending unlocked Mac; Rosetta is not physical Intel/macOS14 runtime qualification.",
+    "PSD/PSB Maximize Compatibility, JPEG quality/scans/matte/depth conversion, original .pcraft migration and all other major workflow dependencies remain open. Minor functions and final details remain deferred."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/source-delta02.json",
+    "sha256": "998226edd0b09eae6941cab5200d986e3a0d1948817abc1657a9e2681761a8b4"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/final-export-compatibility01.json",
+    "sha256": "f74971d46f0eedd63f52eec5b19c978ed86afd13b14013ad1a223e5b174d7a68"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/final-inputs01.json",
+    "sha256": "f70cbbda98eb2ebe74699f848a91d1851c296dd83c769c09a21b6af5b6f1bea8"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/next-major-plan01.json",
+    "sha256": "9f97a868095eafa841a69eb6a0c18b8828de5dfe0f8935e402f0e1080cfbf54f"
+  },
+  "reference_review": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/reference-review01.json",
+    "sha256": "0fe65db8137df19d2989a015cc94d5685c2bdf2712b0190d680ed10dcfca57eb"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/live-availability01.json",
+    "sha256": "7cee36c1d848bb009d64a31ecc856ea669d9c96012019248cac2a290cd49afbb"
+  },
+  "prior_failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/tested-source-hashes01.json",
+        "sha256": "1661ee3ebcd56e32343bb92ecbc48fdab0cf0baf0ae2674f3748c144150cf3db"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/focused01.log",
+        "sha256": "310778d7c5c7a69c43fbca3f1b7e1834ad34ab0f42da65b17dc97acba5bd7113"
+      },
+      "tests_ran": true,
+      "passed": 88,
+      "failed": 1,
+      "cause": "Old Save As eligible-format expectation omitted newly supported TIFF. Updated that expectation only before frozen02."
+    }
+  ],
+  "resume_first": "Verify checkpoint146/freeze02/final history audit, candidate146 and installed117. Continue major D01/I04 per next-major-plan01. Preserve user state/UI118 and every unclosed parity requirement.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step146-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step146-final/refresh02.log",
+    "check_log": "artifacts/development-history-audit/20261020-step146-final/check02.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step146-final/final-inputs02.json"
+  },
+  "documentation_correction": {
+    "script": "artifacts/runs/20261020T161158Z-146-layered-tiff-output/correct-docs02.py",
+    "sha256": "258bb80ec65ce865393c1f254156ab11084104264fadb09878dc8ab30721a8ac",
+    "reason": "Remove an erroneously named document.saveCopy command from documentation. Native Save a Copy is reflected through API downloads; registered save commands are document.save and document.saveAs. No source/test/binary change."
+  }
+}

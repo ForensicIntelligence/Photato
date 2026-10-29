@@ -3,23 +3,60 @@ import Foundation
 import ImageIO
 import PhotoCraftCore
 
-// Bounded native PSD v1 RGB/8/16/32 raster/group interchange, based on Adobe's public
+// Bounded native PSD v1 / PSB v2 RGB/Gray/CMYK/Lab interchange, based on Adobe's public
 // file-format specification and PhotoCraft's Rust psd/header, layer and compression modules.
 // Unrepresented rich layers fail explicitly. They are never flattened on import.
 struct PSDReader {
-  let data: Data
-  var offset = 0
-  var remaining: Int { data.count - offset }
-  mutating func bytes(_ count: Int) throws -> Data {
-    guard count >= 0, count <= remaining else {
+  private let storage: PSDByteStorage
+  private let start: Int
+  private let count: Int
+  private(set) var offset = 0
+  var remaining: Int { offset >= 0 && offset <= count ? count - offset : 0 }
+  // Materialize retained metadata only. Nested sections/channels use view(),
+  // avoiding whole-file loads and repeated complete section copies.
+  var data: Data { get throws { try storage.bytes(at: start, count: count) } }
+  init(data: Data, offset: Int = 0) {
+    self.offset = offset
+    storage = .memory(data)
+    start = 0
+    count = data.count
+  }
+  init(file: PSDFileSource) {
+    storage = .file(file)
+    start = 0
+    count = file.count
+  }
+  func validateUnchanged() throws { try storage.validateUnchanged() }
+  private init(storage: PSDByteStorage, start: Int, count: Int) {
+    self.storage = storage
+    self.start = start
+    self.count = count
+  }
+  mutating func view(_ count: Int) throws -> PSDReader {
+    guard offset >= 0, offset <= self.count, count >= 0, count <= remaining else {
       throw CraftError.invalid("Truncated PSD section at byte \(offset).")
     }
     defer { offset += count }
-    return data.subdata(in: offset..<offset + count)
+    return PSDReader(storage: storage, start: start + offset, count: count)
+  }
+  mutating func bytes(_ count: Int) throws -> Data {
+    guard offset >= 0, offset <= self.count, count >= 0, count <= remaining else {
+      throw CraftError.invalid("Truncated PSD section at byte \(offset).")
+    }
+    defer { offset += count }
+    return try storage.bytes(at: start + offset, count: count)
+  }
+  mutating func consumePadding(_ byte: UInt8) throws -> Bool {
+    guard offset >= 0, offset <= count else { return false }
+    defer { offset = count }
+    return try storage.padding(at: start + offset, count: count - offset, byte: byte)
   }
   mutating func number(_ count: Int) throws -> UInt64 {
-    var value: UInt64 = 0
-    for byte in try bytes(count) { value = (value << 8) | UInt64(byte) }
+    guard (1...8).contains(count), count <= remaining else {
+      throw CraftError.invalid("Invalid or truncated PSD number at byte \(offset).")
+    }
+    let value = try storage.number(at: start + offset, count: count)
+    offset += count
     return value
   }
   mutating func u8() throws -> UInt8 { UInt8(try number(1)) }
@@ -30,7 +67,16 @@ struct PSDReader {
   mutating func string(_ count: Int) throws -> String {
     String(decoding: try bytes(count), as: UTF8.self)
   }
-  mutating func section() throws -> PSDReader { PSDReader(data: try bytes(u32())) }
+  mutating func length(_ count: Int) throws -> Int {
+    let value = try number(count)
+    guard let result = Int(exactly: value) else {
+      throw CraftError.invalid("Photoshop section length exceeds the addressable size.")
+    }
+    return result
+  }
+  mutating func section(lengthBytes: Int = 4) throws -> PSDReader {
+    try view(length(lengthBytes))
+  }
 }
 struct PSDWriter {
   var data = Data()
@@ -39,12 +85,23 @@ struct PSDWriter {
     for i in (0..<count).reversed() { data.append(UInt8(truncatingIfNeeded: bits >> (i * 8))) }
   }
   mutating func text(_ s: String) { data.append(contentsOf: s.utf8) }
-  mutating func section(_ d: Data) {
-    n(d.count, 4)
+  mutating func section(_ d: Data, lengthBytes: Int = 4) {
+    n(d.count, lengthBytes)
     data.append(d)
   }
 }
 public enum PSDCodec {
+  public static let maximumInputBytes = 512 * 1024 * 1024
+  public static let fileReadWindowBytes = PSDFileSource.pageBytes
+  public static let maximumFileCacheBytes =
+    PSDFileSource.pageBytes * PSDFileSource.maximumCachedPages
+
+  public static func read(_ url: URL, name: String? = nil) throws -> CraftDocument {
+    let source = try PSDFileSource(url)
+    return try read(
+      PSDReader(file: source), name: name ?? url.deletingPathExtension().lastPathComponent)
+  }
+
   private static func storageBytes(width: Int, height: Int) -> Int {
     let side = Surface.tileSide
     return ((width + side - 1) / side) * ((height + side - 1) / side) * side * side * 16
@@ -64,7 +121,7 @@ public enum PSDCodec {
     var blend: BlendMode
     var opacity: Float
     var visible: Bool
-    var locked: Bool
+    var protection: LayerProtection
     var mask: PSDMaskRecord?
     var tags: [String: Data]
     var section: Int
@@ -72,10 +129,13 @@ public enum PSDCodec {
     var clipped: Bool
   }
   public static func decodePackBits(_ data: Data, expected: Int) throws -> [UInt8] {
+    try decodePackBits(PSDReader(data: data), expected: expected)
+  }
+  static func decodePackBits(_ source: PSDReader, expected: Int) throws -> [UInt8] {
     guard expected >= 0, expected <= Surface.maxDimension * 4 else {
       throw CraftError.invalid("PSD row exceeds the size limit.")
     }
-    var r = PSDReader(data: data)
+    var r = source
     var out: [UInt8] = []
     out.reserveCapacity(expected)
     while out.count < expected {
@@ -95,19 +155,26 @@ public enum PSDCodec {
       }
     }
     if r.remaining > 0 {
-      guard try r.bytes(r.remaining).allSatisfy({ $0 == 128 }) else {
+      guard try r.consumePadding(128) else {
         throw CraftError.invalid("Unexpected trailing PackBits bytes.")
       }
     }
     return out
   }
   public static func read(_ data: Data, name: String = "Imported PSD") throws -> CraftDocument {
-    guard data.count <= 512 * 1024 * 1024 else {
+    guard data.count <= maximumInputBytes else {
       throw CraftError.invalid("PSD exceeds the 512 MiB input limit.")
     }
-    var r = PSDReader(data: data)
+    return try read(PSDReader(data: data), name: name)
+  }
+  static func read(_ source: PSDReader, name: String, tiffComposite: Surface? = nil,
+    tiffNativeComposite: NativeModeRaster? = nil) throws -> CraftDocument {
+    try Task.checkCancellation()
+    var r = source
     guard try r.string(4) == "8BPS" else { throw CraftError.invalid("This is not a PSD file.") }
-    guard try r.u16() == 1 else { throw CraftError.unsupported("PSB import is not ported yet.") }
+    guard let format = PSDFileFormat(rawValue: try r.u16()) else {
+      throw CraftError.unsupported("Unsupported Photoshop file version; expected PSD or PSB.")
+    }
     guard try r.bytes(6).allSatisfy({ $0 == 0 }) else {
       throw CraftError.invalid("Invalid PSD reserved header.")
     }
@@ -116,21 +183,45 @@ public enum PSDCodec {
     let width = try r.u32()
     let depth = try r.u16()
     let mode = try r.u16()
-    guard [8, 16, 32].contains(depth), mode == 3, (3...4).contains(channels) else {
-      throw CraftError.unsupported(
-        "PSD import supports RGB at 8, 16 or 32 bits. Other color modes and extra alpha/spot channels are not ported yet."
-      )
+    guard width <= format.maximumDimension, height <= format.maximumDimension else {
+      throw CraftError.invalid("Photoshop dimensions exceed this container's format limit.")
     }
+    if mode == 7 {
+      guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Multichannel Photoshop layer payloads are not used inside TIFF.") }
+      return try PSDMultichannelStorage.read(r, width: width, height: height, depth: depth,
+        channels: channels, format: format, name: name)
+    }
+    if mode == 0 || mode == 2 {
+      guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Restricted Photoshop layer payloads are not used inside TIFF.") }
+      return try PSDRestrictedStorage.read(r, width: width, height: height, depth: depth, mode: mode,
+        channels: channels, format: format, name: name)
+    }
+    let colorMode = try PSDModeStorage.mode(mode), colorChannels = colorMode.componentCount
     let pixelDepth: PixelDepth = depth == 8 ? .u8 : depth == 16 ? .u16 : .f32
+    guard [8, 16, 32].contains(depth), colorMode.depths.contains(pixelDepth),
+      (colorChannels...(colorChannels + 1)).contains(channels) else {
+      throw CraftError.unsupported("Unsupported Photoshop mode/depth or additional alpha/spot channels.")
+    }
+    if colorMode != .rgb {
+      guard height > 0, width > 0, width <= NativeModeRaster.maximumPixels / height else {
+        throw CraftError.unsupported("Native mode PSD/PSB import exceeds 8,388,608 pixels.")
+      }
+    }
     var doc = try CraftDocument(width: width, height: height, depth: pixelDepth, name: name)
-    let colorData = try r.section()
+    let colorData = try r.section().data
     guard
-      colorData.remaining == 0 || (depth == 32 && colorData.data.starts(with: Data("hdrt".utf8)))
+      colorData.isEmpty || (depth == 32 && colorData.starts(with: Data("hdrt".utf8)))
     else {
-      throw CraftError.unsupported("Unexpected color-mode data in RGB PSD.")
+      throw CraftError.unsupported("Unexpected color-mode data in this PSD.")
     }
     var resources = try r.section()
-    _ = try PSDImageResources.blocks(resources.data)
+    let resourceData = try resources.data
+    let resourceBlocks = try PSDImageResources.blocks(resourceData)
+    var styleGlobalAngle: Double = 120
+    if let angle = resourceBlocks.first(where: { $0.id == 1037 }) {
+      guard angle.data.count == 4 else { throw CraftError.invalid("Invalid global light resource.") }
+      var lightReader = PSDReader(data: angle.data); styleGlobalAngle = Double(try lightReader.i32())
+    }
     var profile: Data?
     while resources.remaining > 0 {
       guard try resources.string(4) == "8BIM" else {
@@ -144,6 +235,7 @@ public enum PSDCodec {
       let content = try resources.bytes(count)
       if count % 2 != 0 { _ = try resources.bytes(1) }
       if id == 1039 { profile = content }
+      if id == 1041, content.first == 1 { doc.profileIsUntagged = true }
       if id == 1025 || (2000...2997).contains(id) {
         var paths = doc.paths ?? []
         paths.append(
@@ -171,25 +263,33 @@ public enum PSDCodec {
       }
     }
     // Preserve all image resource blocks in the development archive, including unknown metadata.
-    doc.sourceMetadata = ["psdResources": resources.data, "psdColorModeData": colorData.data]
+    doc.sourceMetadata = ["psdResources": resourceData, "psdColorModeData": colorData]
     doc.sourceICC = profile
-    var layerSection = try r.section()
-    var info = layerSection.remaining > 0 ? try layerSection.section() : PSDReader(data: Data())
+    if colorMode == .rgb {
+      doc.workingICC = try ColorManagement.importedProfile(profile, depth: doc.depth)
+    } else {
+      doc.modeDescriptor = try DocumentModeDescriptor(mode: colorMode, depth: pixelDepth,
+        profile: PSDModeStorage.profile(profile, mode: colorMode, depth: pixelDepth))
+    }
+    var layerSection = try r.section(lengthBytes: format.sectionLengthBytes)
+    var info =
+      layerSection.remaining > 0
+      ? try layerSection.section(lengthBytes: format.sectionLengthBytes) : PSDReader(data: Data())
     var mergedTransparency = false
     if layerSection.remaining > 0 {
       let global = try layerSection.section()
       guard global.remaining == 0 || global.remaining >= 13 else {
         throw CraftError.invalid("Invalid global mask info.")
       }
-      doc.sourceMetadata?["psdGlobalMask"] = global.data
+      doc.sourceMetadata?["psdGlobalMask"] = try global.data
       var tags = Set<String>()
       while layerSection.remaining >= 12 {
-        guard try layerSection.string(4) == "8BIM" else {
+        guard ["8BIM", "8B64"].contains(try layerSection.string(4)) else {
           throw CraftError.invalid("Invalid global PSD tag.")
         }
         let tag = try layerSection.string(4)
-        let length = try layerSection.u32()
-        let content = try layerSection.bytes(length)
+        let length = try layerSection.length(format.tagLengthBytes(tag))
+        let contentView = try layerSection.view(length)
         _ = try layerSection.bytes((4 - length % 4) % 4)
         guard tags.insert(tag).inserted else {
           throw CraftError.invalid("Duplicate global PSD block.")
@@ -199,8 +299,11 @@ public enum PSDCodec {
           guard tag == expectedTag, info.remaining == 0 else {
             throw CraftError.unsupported("Conflicting PSD layer-depth sections.")
           }
-          info = PSDReader(data: content)
-        } else if ["Mt16", "Mt32", "Mtrn"].contains(tag) {
+          info = contentView
+          continue
+        }
+        let content = try contentView.data
+        if ["Mt16", "Mt32", "Mtrn"].contains(tag) {
           mergedTransparency = true
           doc.sourceMetadata?["psdGlobal_" + tag] = content
         } else if tag == "pths" {
@@ -220,14 +323,14 @@ public enum PSDCodec {
           if tag == "OCIO", try !PSDColorMetadata.usesICC(content) {
             throw CraftError.unsupported("OpenColorIO-managed PSD documents are not ported yet.")
           }
-          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI"].contains(tag)
+          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI", "FEid", "FXid", "lnk2", "lnk3", "lnkD", "lnkE"].contains(tag)
           else {
             throw CraftError.unsupported("Global PSD block '\(tag)' is not ported yet.")
           }
           doc.sourceMetadata?["psdGlobal_" + tag] = content
         }
       }
-      guard try layerSection.bytes(layerSection.remaining).allSatisfy({ $0 == 0 }) else {
+      guard try layerSection.consumePadding(0) else {
         throw CraftError.invalid("Invalid global PSD padding.")
       }
     }
@@ -253,11 +356,11 @@ public enum PSDCodec {
     guard count <= 1024 else {
       throw CraftError.invalid("PSD exceeds the layer/group record limit.")
     }
-    guard channels == 3 || mergedTransparency else {
+    guard channels == colorChannels || mergedTransparency else {
       throw CraftError.unsupported("PSD saved alpha channels are not ported yet.")
     }
     var records: [Record] = []
-    var decodedBudget = patternBytes
+    var decodedBudget = patternBytes + (tiffComposite?.allocatedBytes ?? 0)
     for _ in 0..<count {
       let top = try info.i32()
       let left = try info.i32()
@@ -270,19 +373,23 @@ public enum PSDCodec {
       }
       _ = try Surface(width: max(1, w), height: max(1, h))
       decodedBudget += storageBytes(width: max(1, w), height: max(1, h))
+      if colorMode != .rgb {
+        guard h == 0 || w <= NativeModeRaster.maximumPixels / h else { throw CraftError.invalid("Mode layer exceeds the native pixel limit.") }
+        decodedBudget += max(1, w) * max(1, h) * (colorChannels + 1) * (depth / 8)
+      }
       guard decodedBudget <= 512 * 1024 * 1024, abs(Double(left)) <= 1_000_000,
         abs(Double(top)) <= 1_000_000
       else { throw CraftError.invalid("PSD layers exceed the memory or coordinate budget.") }
       let channelCount = try info.u16()
-      guard (0...6).contains(channelCount) else {
+      guard (0...(colorChannels + 3)).contains(channelCount) else {
         throw CraftError.unsupported("Unsupported PSD layer channel count.")
       }
       var channelInfo: [(Int, Int)] = []
       var ids = Set<Int>()
       for _ in 0..<channelCount {
         let id = try info.i16()
-        let length = try info.u32()
-        guard [-3, -2, -1, 0, 1, 2].contains(id), ids.insert(id).inserted else {
+        let length = try info.length(format.sectionLengthBytes)
+        guard ((-3 ... -1).contains(id) || (0..<colorChannels).contains(id)), ids.insert(id).inserted else {
           throw CraftError.unsupported("Unsupported or duplicate PSD layer channel.")
         }
         channelInfo.append((id, length))
@@ -304,33 +411,41 @@ public enum PSDCodec {
       guard mask != nil || (!ids.contains(-2) && !ids.contains(-3)) else {
         throw CraftError.invalid("PSD mask record and channels disagree.")
       }
-      let ranges = try extra.section()
+      let ranges = try extra.section().data
       guard
-        ranges.remaining == 0
-          || (ranges.data.count % 8 == 0
-            && ranges.data.enumerated().allSatisfy({ $0.element == ($0.offset % 4 < 2 ? 0 : 255) }))
+        ranges.isEmpty
+          || (ranges.count % 8 == 0
+            && ranges.enumerated().allSatisfy({ $0.element == ($0.offset % 4 < 2 ? 0 : 255) }))
       else { throw CraftError.unsupported("PSD Blend If ranges are not ported yet.") }
       let length = Int(try extra.u8())
       var layerName = String(data: try extra.bytes(length), encoding: .macOSRoman) ?? "Layer"
       let padding = (4 - (length + 1) % 4) % 4
       _ = try extra.bytes(padding)
-      var locked = flags & 1 != 0
+      var protection = try PSDLayerProtection.decode(layerFlags: UInt8(flags), record: nil)
       var tags: [String: Data] = [:]
       var section = 0
       var sectionBlend = key
       while extra.remaining >= 12 {
-        guard try extra.string(4) == "8BIM" else {
+        guard ["8BIM", "8B64"].contains(try extra.string(4)) else {
           throw CraftError.unsupported("Unknown PSD tagged-block signature.")
         }
         let tag = try extra.string(4)
-        let size = try extra.u32()
+        let size = try extra.length(format.tagLengthBytes(tag))
         let content = try extra.bytes(size)
         if size % 2 != 0 { _ = try extra.bytes(1) }
         guard tags[tag] == nil else { throw CraftError.invalid("Duplicate PSD layer block.") }
         tags[tag] = content
+        if colorMode != .rgb,
+          ["TySh", "SoLd", "SoLE", "PlLd", "SoCo", "PtFl", "GdFl", "levl", "curv", "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "thrs", "post", "grdm"].contains(tag) {
+          throw CraftError.unsupported("Editable Photoshop content '\(tag)' in \(colorMode.title) is not ported yet; pixels are not silently flattened.")
+        }
         switch tag {
-        case "levl", "curv", "hue2", "blnc", "thrs", "post", "grdm", "PtFl", "GdFl":
-          if tag == "grdm" {
+        case "levl", "curv", "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "thrs", "post", "grdm", "PtFl", "GdFl":
+          if tag == "clrL" {
+            _ = try PSDColorLookup.read(content)
+          } else if PSDClassicAdjustment.keys.contains(tag) {
+            _ = try PSDClassicAdjustment.read(content, key: tag)
+          } else if tag == "grdm" {
             _ = try PSDGradientMap.read(content)
           } else if tag == "GdFl" {
             _ = try PSDGradientFill.read(content)
@@ -390,9 +505,10 @@ public enum PSDCodec {
           for _ in 0..<n { units.append(UInt16(try unicode.u16())) }
           layerName = String(decoding: units, as: UTF16.self)
         case "lspf":
-          var lock = PSDReader(data: content)
-          let value = try lock.u32()
-          locked = locked || value != 0
+          protection = try PSDLayerProtection.decode(layerFlags: UInt8(flags), record: content)
+        case "TySh": _ = try PSDText.descriptor(content)
+        case "SoLd", "SoLE": _ = try PSDSmartObjects.descriptor(content)
+        case "PlLd": break
         case "lyid", "lnsr", "lclr", "shmd", "fxrp", "lyvr": break
         case "clbl", "infx", "lmgm", "vmgm":
           guard content.count == 4, content.dropFirst().allSatisfy({ $0 == 0 }), content[0] <= 1
@@ -404,10 +520,10 @@ public enum PSDCodec {
           guard content.count == 4, content.allSatisfy({ $0 == 0 }) else {
             throw CraftError.unsupported("PSD knockout blending is not ported yet.")
           }
+        case "lfx2", "lmfx":
+          _ = try PSDLayerStyles.read(content)
         case "iOpa":
-          guard content.first == 255 else {
-            throw CraftError.unsupported("PSD fill opacity is not ported yet.")
-          }
+          guard content.count == 4, content.dropFirst().allSatisfy({ $0 == 0 }) else { throw CraftError.invalid("Invalid PSD fill opacity.") }
         default:
           throw CraftError.unsupported(
             "PSD layer '\(layerName)' contains unported data '\(tag)' (for example type, effects, groups or smart objects). Import cancelled to preserve its contents."
@@ -415,7 +531,7 @@ public enum PSDCodec {
         }
       }
       if extra.remaining > 0 {
-        guard try extra.bytes(extra.remaining).allSatisfy({ $0 == 0 }) else {
+        guard try extra.consumePadding(0) else {
           throw CraftError.invalid("Invalid layer padding.")
         }
       }
@@ -423,16 +539,17 @@ public enum PSDCodec {
         section != 0
           || (key != "pass"
             && (tags["SoCo"] != nil || tags["PtFl"] != nil || tags["GdFl"] != nil
+              || tags["clrL"] != nil || PSDClassicAdjustment.keys.contains(where: { tags[$0] != nil })
               || tags["levl"] != nil
               || tags["curv"] != nil
               || tags["hue2"] != nil || tags["blnc"] != nil || tags["thrs"] != nil
               || tags["post"] != nil || tags["grdm"] != nil
-              || (flags & 16 == 0 && ids.isSuperset(of: [0, 1, 2]))))
+              || (flags & 16 == 0 && ids.isSuperset(of: Set(0..<colorChannels)))))
       else {
         throw CraftError.unsupported("Unsupported non-raster PSD layer.")
       }
       let contentBlocks = [
-        "SoCo", "PtFl", "GdFl", "levl", "curv", "hue2", "blnc", "thrs", "post", "grdm",
+        "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "SoCo", "PtFl", "GdFl", "levl", "curv", "hue2", "blnc", "thrs", "post", "grdm",
       ]
       .filter {
         tags[$0] != nil
@@ -454,13 +571,16 @@ public enum PSDCodec {
           name: layerName, x: left, y: top, w: w, h: h, channels: channelInfo,
           blend: BlendMode.allCases[keys.firstIndex(of: sectionBlend) ?? 0], opacity: opacity,
           visible: flags & 2 == 0,
-          locked: locked, mask: mask, tags: tags, section: section,
+          protection: protection, mask: mask, tags: tags, section: section,
           passThrough: sectionBlend == "pass", clipped: clipping == 1))
     }
+    let embeddedFiles = try PSDSmartObjects.files(doc)
+    let filterMasks = try PSDSmartFilters.masks(in: doc)
     var layers: [Layer] = []
     var groupStack: [UUID] = []
     for record in records {
-      var planes: [Int: [UInt8]] = [:]
+      var planes: [Int: PSDChannelReader] = [:]
+      let channelIDs = Set(record.channels.map { $0.0 })
       for (id, length) in record.channels {
         if id == -2 || id == -3 {
           guard let metadata = record.mask else {
@@ -471,65 +591,86 @@ public enum PSDCodec {
           guard decodedBudget <= 512 * 1024 * 1024 else {
             throw CraftError.invalid("PSD masks exceed the memory budget.")
           }
-          let bytes = try info.bytes(length)
+          let source = try info.view(length)
           if b.empty {
+            let bytes = try source.data
             guard bytes == Data([0, 0]) || bytes == Data([0, 1]) else {
               throw CraftError.invalid("Invalid empty mask channel.")
             }
-            planes[id] = []
           } else {
-            planes[id] = try PSDChannelCodec.decode(
-              bytes, width: b.width, height: b.height, depth: depth)
+            planes[id] = try PSDChannelReader(
+              source, width: b.width, height: b.height, depth: depth, format: format)
           }
         } else if record.w == 0 {
           let bytes = try info.bytes(length)
           guard bytes == Data([0, 0]) || bytes == Data([0, 1]) else {
             throw CraftError.invalid("Invalid empty PSD layer channel.")
           }
-          planes[id] = []
         } else {
-          planes[id] = try PSDChannelCodec.decode(
-            info.bytes(length), width: record.w, height: record.h, depth: depth)
+          planes[id] = try PSDChannelReader(
+            info.view(length), width: record.w, height: record.h, depth: depth, format: format)
         }
       }
       if record.section == 3 {
         guard groupStack.count < 32, record.mask == nil else {
           throw CraftError.invalid("Invalid or excessive PSD group nesting.")
         }
+        try planes.values.forEach { try $0.discardRemaining() }
         groupStack.append(UUID())
         continue
       }
-      let red = planes[0] ?? []
-      let green = planes[1] ?? []
-      let blue = planes[2] ?? []
       guard
         record.section != 0 || record.tags["SoCo"] != nil || record.tags["PtFl"] != nil
           || record.tags["GdFl"] != nil
+          || record.tags["clrL"] != nil || PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
           || record.tags["levl"] != nil
           || record.tags["curv"] != nil || record.tags["hue2"] != nil || record.tags["blnc"] != nil
           || record.tags["thrs"] != nil || record.tags["post"] != nil || record.tags["grdm"] != nil
-          || [0, 1, 2].allSatisfy({ planes[$0] != nil })
+          || (0..<colorChannels).allSatisfy({ channelIDs.contains($0) })
       else {
-        throw CraftError.invalid("Missing RGB plane.")
+        throw CraftError.invalid("Missing document color plane.")
+      }
+      var native: NativeModeRaster?
+      if let descriptor = doc.modeDescriptor, record.section == 0 {
+        native = try NativeModeRaster(width: max(1, record.w), height: max(1, record.h), mode: colorMode,
+          depth: pixelDepth, profile: descriptor.profile, intent: descriptor.intent)
       }
       var surface = try Surface(
-        width: max(1, record.w), height: max(1, record.h), depth: pixelDepth,
+        width: native == nil ? max(1, record.w) : 1, height: native == nil ? max(1, record.h) : 1, depth: pixelDepth,
         colorEncoding: depth == 32 ? .linearRGB : .sRGB)
       for y
         in 0..<(record.section == 0 && record.tags["SoCo"] == nil && record.tags["PtFl"] == nil
         && record.tags["GdFl"] == nil
+        && record.tags["clrL"] == nil && !PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
         && record.tags["levl"] == nil
         && record.tags["curv"] == nil && record.tags["hue2"] == nil && record.tags["blnc"] == nil
         && record.tags["thrs"] == nil && record.tags["post"] == nil && record.tags["grdm"] == nil
         ? record.h : 0)
       {
+        if native != nil {
+          let rows = try (0..<colorChannels).map { try planes[$0]!.nextRow() }
+          let alpha = try planes[-1]?.nextRow()
+          for x in 0..<record.w {
+            for c in 0..<colorChannels {
+              let value = try PSDChannelCodec.sample(rows[c], x, depth: depth)
+              try native!.set(PSDModeStorage.sample(value, mode: colorMode, component: c), component: c, index: y * record.w + x)
+            }
+            try native!.set(alpha.map { try PSDChannelCodec.sample($0, x, depth: depth) } ?? 1,
+              component: colorChannels, index: y * record.w + x)
+          }
+          continue
+        }
+        let red = try planes[0]!.nextRow()
+        let green = try planes[1]!.nextRow()
+        let blue = try planes[2]!.nextRow()
+        let alpha = try planes[-1]?.nextRow()
         for x in 0..<record.w {
-          let i = y * record.w + x
+          let i = x
           let sample = try Pixel(
             PSDChannelCodec.sample(red, i, depth: depth),
             PSDChannelCodec.sample(green, i, depth: depth),
             PSDChannelCodec.sample(blue, i, depth: depth),
-            planes[-1].map { try PSDChannelCodec.sample($0, i, depth: depth) } ?? 1)
+            alpha.map { try PSDChannelCodec.sample($0, i, depth: depth) } ?? 1)
           if depth == 32 {
             surface.setLinearPixel(x: x, y: y, sample)
           } else {
@@ -537,8 +678,10 @@ public enum PSDCodec {
           }
         }
       }
-      surface = try convertProfile(surface, profile: profile, linear: depth == 32)
+      // Samples already use the retained document profile; masks are uncoloured.
+      if let native { surface = try native.surface() }
       var layer = Layer(name: record.name, content: .raster(surface))
+      layer.nativeMode = native
       if let data = record.tags["GdFl"] {
         layer.content = .gradientFill(try PSDGradientFill.read(data))
       }
@@ -562,6 +705,10 @@ public enum PSDCodec {
       if let settings = record.tags["grdm"] {
         layer.content = .adjustment(.gradientMap(try PSDGradientMap.read(settings)))
       }
+      if let data = record.tags["clrL"] { layer.content = .adjustment(.colorLookup(try PSDColorLookup.read(data))) }
+      for key in PSDClassicAdjustment.keys {
+        if let data = record.tags[key] { layer.content = .adjustment(.classic(try PSDClassicAdjustment.read(data, key: key))) }
+      }
       if let settings = record.tags["blnc"] {
         layer.content = .adjustment(.colorBalance(try PSDColorBalance.read(settings)))
       }
@@ -569,7 +716,7 @@ public enum PSDCodec {
         // RGB fill components use the document profile; RGB/32 uses linear light.
         let sample = try Surface(width: 1, height: 1, depth: .f32, fill: PSDSolidColor.read(fill))
         layer.content = .fill(
-          try convertProfile(sample, profile: profile, linear: depth == 32).pixel(x: 0, y: 0))
+          try sample.interpretingSamples(as: depth == 32 ? .linearRGB : .sRGB).pixel(x: 0, y: 0))
       }
       if record.section == 1 || record.section == 2 {
         guard let id = groupStack.popLast() else {
@@ -587,8 +734,13 @@ public enum PSDCodec {
       layer.blendMode = record.blend
       layer.opacity = record.opacity
       layer.visible = record.visible
-      layer.locked = record.locked
+      layer.protection = record.protection
       layer.sourceTags = record.tags
+      if let data = record.tags["lmfx"] ?? record.tags["lfx2"] { layer.style = try PSDLayerStyles.read(data, globalAngle: styleGlobalAngle) }
+      if let fill = record.tags["iOpa"]?.first, fill != 255 {
+        if layer.style == nil { layer.style = LayerStyle() }
+        layer.style?.fillOpacity = Float(fill)/255
+      }
       if let block = record.tags["vmsk"] ?? record.tags["vsms"] {
         layer.vectorMask = try PSDPaths.readMask(block, width: doc.width, height: doc.height)
         layer.vectorMask?.density = Float(record.mask?.vectorDensity ?? 255) / 255
@@ -608,17 +760,18 @@ public enum PSDCodec {
         }
       }
       if let metadata = record.mask,
-        planes[-3] != nil || (planes[-2] != nil && metadata.flags & 8 == 0)
+        channelIDs.contains(-3) || (channelIDs.contains(-2) && metadata.flags & 8 == 0)
       {
-        let id = planes[-3] != nil ? -3 : -2
+        let id = channelIDs.contains(-3) ? -3 : -2
         let (b, properties) = try metadata.selected(id)
         var mask = try Surface(
           width: max(1, b.width), height: max(1, b.height), depth: pixelDepth,
           fill: Pixel(properties.outside, properties.outside, properties.outside))
-        if !b.empty, let values = planes[id] {
+        if !b.empty, let channel = planes[id] {
           for y in 0..<b.height {
+            let values = try channel.nextRow()
             for x in 0..<b.width {
-              let value = unit(try PSDChannelCodec.sample(values, y * b.width + x, depth: depth))
+              let value = unit(try PSDChannelCodec.sample(values, x, depth: depth))
               mask.setPixel(x: x, y: y, Pixel(value, value, value))
             }
           }
@@ -627,7 +780,10 @@ public enum PSDCodec {
         layer.maskProperties = properties
         layer.maskProperties?.transform = .translation(Double(b.x - layer.x), Double(b.y - layer.y))
       }
+      try planes.values.forEach { try $0.discardRemaining() }
       try PSDPatternFill.importPlacement(&layer, width: doc.width, height: doc.height)
+      try PSDSmartObjects.restore(&layer, in: doc, files: embeddedFiles, filterMasks: filterMasks)
+      try PSDText.restore(&layer, in: doc)
       layers.append(layer)
     }
     guard groupStack.isEmpty else { throw CraftError.invalid("Unclosed PSD layer group.") }
@@ -635,84 +791,153 @@ public enum PSDCodec {
     doc.layers = layers
     doc.activeLayerID = doc.layers.last?.id
     if info.remaining > 0 {
-      guard try info.bytes(info.remaining).allSatisfy({ $0 == 0 }) else {
+      guard try info.consumePadding(0) else {
         throw CraftError.invalid("Unexpected layer channel tail.")
       }
     }
-    // Validate all merged compression streams even when editable layers supply the image.
-    let merged = try PSDChannelCodec.decode(
-      r.bytes(r.remaining), width: width, height: height, depth: depth, channels: channels)
-    if count == 0 {
-      guard storageBytes(width: width, height: height) <= 512 * 1024 * 1024 else {
-        throw CraftError.invalid("PSD pixels exceed the memory budget.")
+    // TIFF supplies its separately decoded composite. The adapter contains only
+    // PSD metadata/layers; never invent a merged cache or skip unconsumed bytes.
+    if let tiffComposite {
+      guard r.remaining == 0, tiffComposite.width == width, tiffComposite.height == height,
+        tiffComposite.depth == pixelDepth else {
+        throw CraftError.invalid("TIFF composite and Photoshop layers disagree.")
       }
-      let n = width * height
-      var surface = try Surface(
-        width: width, height: height, depth: pixelDepth,
-        colorEncoding: depth == 32 ? .linearRGB : .sRGB)
-      for y in 0..<height {
-        for x in 0..<width {
-          let i = y * width + x
-          let stored = try Pixel(
-            PSDChannelCodec.sample(merged, i, depth: depth),
-            PSDChannelCodec.sample(merged, n + i, depth: depth),
-            PSDChannelCodec.sample(merged, 2 * n + i, depth: depth),
-            channels == 4 ? PSDChannelCodec.sample(merged, 3 * n + i, depth: depth) : 1)
-          let sample = mergedTransparency && channels == 4 ? PSDMergedSample.decode(stored) : stored
-          if depth == 32 {
-            surface.setLinearPixel(x: x, y: y, sample)
-          } else {
-            surface.setPixel(x: x, y: y, sample)
+      if count == 0 {
+        var layer = Layer(name: "Background", content: .raster(tiffComposite))
+        layer.nativeMode = tiffNativeComposite
+        doc.layers = [layer]; doc.activeLayerID = layer.id
+      }
+      try doc.validate()
+      try source.validateUnchanged()
+      return doc
+    }
+    // Validate unused merged caches row-by-row, including checksum/end/trailing
+    // bytes. Flattened inputs stream their planar samples into the final tiles.
+    let merged = try PSDChannelReader(
+      r.view(r.remaining), width: width, height: height, depth: depth, channels: channels,
+      format: format)
+    if count == 0, let descriptor = doc.modeDescriptor {
+      let cost = storageBytes(width: width, height: height) + width * height * (colorChannels + 1) * (depth / 8)
+      guard cost <= 512 * 1024 * 1024 else { throw CraftError.invalid("PSD mode pixels exceed the memory budget.") }
+      var native = try NativeModeRaster(width: width, height: height, mode: colorMode, depth: pixelDepth,
+        profile: descriptor.profile, intent: descriptor.intent)
+      for channel in 0..<channels {
+        for y in 0..<height {
+          let row = try merged.nextRow()
+          for x in 0..<width {
+            let value = try PSDChannelCodec.sample(row, x, depth: depth)
+            try native.set(PSDModeStorage.sample(value, mode: colorMode, component: channel), component: channel, index: y * width + x)
           }
         }
       }
-      surface = try convertProfile(surface, profile: profile, linear: depth == 32)
+      if channels == colorChannels {
+        for i in 0..<width * height { if i % 4096 == 0 { try Task.checkCancellation() }; try native.set(1, component: colorChannels, index: i) }
+      } else if mergedTransparency, colorMode == .grayscale {
+        for i in 0..<width * height {
+          if i % 4096 == 0 { try Task.checkCancellation() }
+          let value = native.value(component: 0, index: i), alpha = native.value(component: colorChannels, index: i)
+          let p = PSDMergedSample.decode(Pixel(value, value, value, alpha))
+          try native.set(p.r, component: 0, index: i)
+        }
+      }
+      var layer = Layer(name: "Background", content: .raster(try native.surface())); layer.nativeMode = native
+      doc.layers = [layer]; doc.activeLayerID = layer.id
+    } else if count == 0 {
+      guard storageBytes(width: width, height: height) <= 512 * 1024 * 1024 else {
+        throw CraftError.invalid("PSD pixels exceed the memory budget.")
+      }
+      var surface = try Surface(
+        width: width, height: height, depth: pixelDepth, fill: Pixel(0, 0, 0, 1),
+        colorEncoding: depth == 32 ? .linearRGB : .sRGB)
+      for channel in 0..<channels {
+        for y in 0..<height {
+          let row = try merged.nextRow()
+          for x in 0..<width {
+            let value = try PSDChannelCodec.sample(row, x, depth: depth)
+            var sample =
+              depth == 32
+              ? surface.linearPixel(x: x, y: y) : surface.pixel(x: x, y: y)
+            switch channel {
+            case 0: sample.r = value
+            case 1: sample.g = value
+            case 2: sample.b = value
+            default:
+              sample.a = value
+              if mergedTransparency { sample = PSDMergedSample.decode(sample) }
+            }
+            if depth == 32 {
+              surface.setLinearPixel(x: x, y: y, sample)
+            } else {
+              surface.setPixel(x: x, y: y, sample)
+            }
+          }
+        }
+      }
+      // Samples already use the retained document profile; masks are uncoloured.
       let layer = Layer(name: "Background", content: .raster(surface))
       doc.layers = [layer]
       doc.activeLayerID = layer.id
     }
+    try merged.discardRemaining()
     try doc.validate()
+    try source.validateUnchanged()
     return doc
   }
-  private static func convertProfile(_ surface: Surface, profile: Data?, linear: Bool) throws
-    -> Surface
-  {
-    let target = try RasterIO.colorSpace()
-    let linearSpace = CGColorSpace(name: CGColorSpace.linearSRGB)!
-    let source =
-      profile.flatMap { CGColorSpace(iccData: $0 as CFData) } ?? (linear ? linearSpace : target)
-    guard source.model == .rgb, profile == nil || CGColorSpace(iccData: profile! as CFData) != nil
-    else {
-      throw CraftError.invalid("Invalid embedded RGB PSD ICC profile.")
-    }
-    if !linear && source == target { return surface }
-    if linear && (source == linearSpace || source == target) {
-      // Photoshop coerces RGB/32 sRGB profiles to gamma 1. Unprofiled RGB/32 is
-      // interpreted as linear sRGB. Alpha and mask channels never use the transfer.
-      return try surface.interpretingSamples(as: .linearRGB)
-    }
-    // Convert opaque colors, then restore alpha, preserving hidden RGB samples.
-    var opaque = surface
-    opaque.mapPixels { _, _, p in Pixel(p.r, p.g, p.b) }
-    var result = try RasterIO.surface(
-      RasterIO.cgImage(opaque, space: source, colorEncoding: surface.colorEncoding),
-      depth: surface.depth)
-    result.mapPixels { x, y, p in Pixel(p.r, p.g, p.b, surface.pixel(x: x, y: y).a) }
-    return result
+  public static func writeRasterLayers(
+    _ doc: CraftDocument, compression: PSDCompression = .zipPrediction,
+    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw
+  ) throws -> Data {
+    let output = PSDOutput()
+    try writeRasterLayers(doc, compression: compression, format: format,
+      compositeCompression: compositeCompression, output: output)
+    return output.data
   }
 
+  /// Atomic native file output using the same serialization as API Data responses.
   public static func writeRasterLayers(
-    _ doc: CraftDocument, compression: PSDCompression = .zipPrediction
-  ) throws -> Data {
+    _ doc: CraftDocument, to url: URL, compression: PSDCompression = .zipPrediction,
+    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw
+  ) throws {
+    let file = try AtomicFileWriter(to: url, maximumBytes: maximumInputBytes)
+    try writeRasterLayers(
+      doc, compression: compression, format: format,
+      compositeCompression: compositeCompression, output: PSDOutput(file: file))
+    try file.commit()
+  }
+
+  static func writeRasterLayers(
+    _ doc: CraftDocument, compression: PSDCompression, format: PSDFileFormat,
+    compositeCompression: PSDCompression = .raw, output: PSDOutput, includeComposite: Bool = true
+  ) throws {
+    try Task.checkCancellation()
     try doc.validate()
-    guard !doc.layers.isEmpty, doc.width <= 30000, doc.height <= 30000 else {
+    guard doc.variables == nil else { throw CraftError.unsupported("Save the editable variables and data sets in Photato format. Export a data-set variation to create a PSD without template definitions.") }
+    guard doc.videoTimeline == nil else { throw CraftError.unsupported("Editable video requires Photato format; PSD video interchange remains unavailable.") }
+    guard doc.animation == nil else { throw CraftError.unsupported("Editable animation requires Photato format; PSD animation interchange remains unavailable.") }
+    if case .multichannel = doc.inkMode {
+      guard includeComposite else { throw CraftError.unsupported("Multichannel Photoshop files require their ink planes.") }
+      try PSDMultichannelStorage.write(doc, format: format, compression: compositeCompression, to: output); return
+    }
+    guard doc.inkMode == nil else { throw CraftError.unsupported("Editable Duotone PSD/PSB interchange is still being implemented. Save as Photato to retain ink curves.") }
+    if doc.restrictedMode != nil {
+      guard includeComposite else { throw CraftError.unsupported("Restricted Photoshop files require their merged index/bit plane.") }
+      try PSDRestrictedStorage.write(doc, format: format, compression: compositeCompression, to: output); return
+    }
+    guard doc.vanishingPoint == nil else { throw CraftError.unsupported("Vanishing Point plane metadata requires Photato format. Export a rendered copy for other formats.") }
+    try PSDModeStorage.validateExport(doc)
+    guard !doc.hasFrames else { throw CraftError.unsupported("Editable frame PSD/PSB interchange is not implemented. Save as Photato or export a rendered image.") }
+    guard !doc.hasArtboards else { throw CraftError.unsupported("Editable artboard PSD/PSB mapping is not available yet. Save as Photato or export a rendered artboard.") }
+    guard !doc.hasAuxiliaryChannels else { throw CraftError.unsupported("PSD/PSB channel export is not available yet. Save as Photato to preserve alpha channels and Quick Mask.") }
+    guard !doc.layers.isEmpty, doc.width <= format.maximumDimension,
+      doc.height <= format.maximumDimension
+    else {
       throw CraftError.unsupported(
-        "PSD export requires at least one pixel layer and dimensions no larger than 30,000 pixels."
+        "Photoshop export requires an editable layer and dimensions within the selected format's limit."
       )
     }
     let depth = doc.depth == .u8 ? 8 : doc.depth == .u16 ? 16 : 32
-    var records = PSDWriter()
-    var pixels = Data()
+    let colorChannels = doc.colorMode.componentCount
+    let exportSpace = try doc.modeDescriptor.flatMap { CGColorSpace(iccData: $0.profile as CFData) } ?? ColorManagement.space(for: doc)
     var entries: [(Layer, Int)] = []
     func collect(_ parent: UUID?) {
       for layer in doc.children(of: parent) {
@@ -728,7 +953,87 @@ public enum PSDCodec {
       }
     }
     collect(nil)
-    records.n(-entries.count, 2)  // Negative count declares merged transparency.
+    entries = try entries.map { layer, section in
+      if case .text = layer.content { return (try PSDText.preview(layer, in: doc), section) }
+      return (layer.smartObject == nil ? layer : try PSDSmartObjects.bakedPreview(layer, in: doc), section)
+    }
+    try output.text("8BPS")
+    try output.n(format.rawValue, 2)
+    try output.append(Data(repeating: 0, count: 6))
+    try output.n(colorChannels + 1, 2)
+    try output.n(doc.height, 4)
+    try output.n(doc.width, 4)
+    try output.n(depth, 2)
+    try output.n(PSDModeStorage.code(doc.colorMode), 2)
+    try output.section(
+      depth == 32 && doc.colorMode == .rgb
+        ? (doc.sourceMetadata?["psdColorModeData"].flatMap { $0.isEmpty ? nil : $0 }
+          ?? PSDColorMetadata.defaultHDRToning()) : Data())
+    // Embed the actual working profile, independently of original-source provenance.
+    var resources = PSDWriter()
+    resources.data = try PSDImageResources.preserved(doc.sourceMetadata?["psdResources"] ?? Data())
+    if let metadata = try RasterMetadata.metadata(
+      doc.sourceMetadata, width: doc.width, height: doc.height, resolution: doc.pixelsPerInch,
+      linear: doc.depth == .f32, profileName: doc.hasNativeModeStorage ? doc.colorMode.title : ColorManagement.name(doc),
+      isSRGB: exportSpace == (try RasterIO.colorSpace())),
+      let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data?
+    {
+      resources.data.append(PSDImageResources.block(1060, data: xmp))
+    }
+    guard doc.pixelsPerInch < 65536 else {
+      throw CraftError.unsupported("PSD resolution exceeds its 16.16 fixed-point range.")
+    }
+    var resolution = PSDWriter()
+    for _ in 0..<2 {
+      resolution.n(Int((doc.pixelsPerInch * 65536).rounded()), 4)
+      resolution.n(1, 2)
+      resolution.n(1, 2)
+    }
+    resources.text("8BIM")
+    resources.n(1005, 2)
+    resources.n(0, 2)
+    resources.section(resolution.data)
+    if doc.profileIsUntagged == true { resources.data.append(PSDImageResources.block(1041, data: Data([1]))) }
+    if doc.profileIsUntagged != true, let profile = doc.modeDescriptor?.profile ?? doc.workingICC ?? (exportSpace.copyICCData() as Data?) {
+      resources.text("8BIM")
+      resources.n(1039, 2)
+      resources.n(0, 2)
+      let data = profile as Data
+      resources.section(data)
+      if data.count % 2 != 0 { resources.n(0, 1) }
+    }
+    var pathID = 2000
+    for saved in doc.paths ?? [] {
+      let name = Data(
+        (saved.name.data(using: .macOSRoman, allowLossyConversion: true) ?? Data("Path".utf8))
+          .prefix(255))
+      resources.text("8BIM")
+      resources.n(saved.isWorkPath ? 1025 : pathID, 2)
+      let bytes = saved.isWorkPath ? Data() : name
+      resources.n(bytes.count, 1)
+      resources.data.append(bytes)
+      if (bytes.count + 1) % 2 != 0 { resources.n(0, 1) }
+      let data = try PSDPaths.write(saved.path, width: doc.width, height: doc.height)
+      resources.section(data)
+      if data.count % 2 != 0 { resources.n(0, 1) }
+      if !saved.isWorkPath { pathID += 1 }
+    }
+    try output.section(resources.data)
+    guard entries.count <= Int(Int16.max) else {
+      throw CraftError.invalid("PSD has too many layer records.")
+    }
+    let maskLength = try output.reserveLength(format.sectionLengthBytes)
+    if depth != 8 {
+      try output.n(0, format.sectionLengthBytes)
+      try output.n(0, 4)
+      try output.text("8BIM")
+      try output.text(depth == 16 ? "Lr16" : "Lr32")
+    }
+    let records = output
+    let recordsLength = try output.reserveLength(format.sectionLengthBytes)
+    let recordsStart = output.count
+    var channelLengthOffsets: [[Int]] = []
+    try records.n(-entries.count, 2)  // Negative count declares merged transparency.
     for (layer, section) in entries {
       let surface: Surface?
       let isFill: Bool
@@ -737,16 +1042,16 @@ public enum PSDCodec {
         surface = pixels
       } else if case .fill(let color) = layer.content {
         _ = try PSDSolidColor.write(color)
-        surface = try Renderer.layerSurface(layer, in: doc)
+        surface = nil
       } else if case .gradientFill(let fill) = layer.content {
         _ = try PSDGradientFill.write(fill)
-        surface = try Renderer.layerSurface(layer, in: doc)
+        surface = nil
       } else if case .patternFill(let fill) = layer.content {
         guard let pattern = doc.pattern(fill.patternID) else {
           throw CraftError.invalid("Missing embedded pattern.")
         }
         _ = try PSDPatternFill.write(fill, pattern: pattern)
-        surface = try Renderer.layerSurface(layer, in: doc)
+        surface = nil
       } else if layer.isGroup {
         surface = nil
       } else if case .adjustment(.levels(let levels)) = layer.content {
@@ -769,6 +1074,11 @@ public enum PSDCodec {
       } else if case .adjustment(.tonalSteps(let settings)) = layer.content {
         _ = try PSDTonalSteps.write(settings)
         surface = nil
+      } else if case .adjustment(.colorLookup(let settings)) = layer.content {
+        _ = try PSDColorLookup.write(settings); surface = nil
+      } else if case .adjustment(.classic(let settings)) = layer.content {
+        _ = try PSDClassicAdjustment.write(settings)
+        surface = nil
       } else if case .adjustment(.colorBalance(let settings)) = layer.content {
         _ = try PSDColorBalance.write(settings)
         surface = nil
@@ -779,66 +1089,31 @@ public enum PSDCodec {
       }
       let originX = isFill ? 0 : layer.x
       let originY = isFill ? 0 : layer.y
-      records.n(surface == nil ? 0 : originY, 4)
-      records.n(surface == nil ? 0 : originX, 4)
-      records.n(surface == nil ? 0 : originY + surface!.height, 4)
-      records.n(surface == nil ? 0 : originX + surface!.width, 4)
-      records.n(layer.mask == nil ? 4 : 5, 2)
-      var channelData: [(Int, Data)] = []
-      for channel in 0..<4 {
-        guard let surface else {
-          channelData.append((channel == 3 ? -1 : channel, Data([0, 0])))
-          continue
-        }
-        var bytes: [UInt8] = []
-        bytes.reserveCapacity(surface.width * surface.height * (depth / 8))
-        for y in 0..<surface.height {
-          for x in 0..<surface.width {
-            let p = depth == 32 ? surface.linearPixel(x: x, y: y) : surface.pixel(x: x, y: y)
-            let value = [p.r, p.g, p.b, p.a][channel]
-            try PSDChannelCodec.append(
-              value, depth: depth,
-              to: &bytes)
-          }
-        }
-        channelData.append(
-          (
-            channel == 3 ? -1 : channel,
-            try PSDChannelCodec.encode(
-              bytes,
-              width: surface.width, height: surface.height, depth: depth, compression: compression)
-          ))
+      let width = isFill ? doc.width : (surface?.width ?? 0)
+      let height = isFill ? doc.height : (surface?.height ?? 0)
+      try records.n(height == 0 ? 0 : originY, 4)
+      try records.n(width == 0 ? 0 : originX, 4)
+      try records.n(height == 0 ? 0 : originY + height, 4)
+      try records.n(width == 0 ? 0 : originX + width, 4)
+      let channelIDs = Array(0..<colorChannels) + [-1] + (layer.mask == nil ? [] : [-2])
+      try records.n(channelIDs.count, 2)
+      var lengths: [Int] = []
+      for id in channelIDs {
+        try records.n(id, 2)
+        lengths.append(try records.reserveLength(format.sectionLengthBytes))
       }
-      if let mask = layer.mask {
-        var bytes: [UInt8] = []
-        for y in 0..<mask.height {
-          for x in 0..<mask.width {
-            try PSDChannelCodec.append(unit(mask.pixel(x: x, y: y).r), depth: depth, to: &bytes)
-          }
-        }
-        channelData.append(
-          (
-            -2,
-            try PSDChannelCodec.encode(
-              bytes, width: mask.width, height: mask.height,
-              depth: depth, compression: compression)
-          ))
-      }
-      for (id, data) in channelData {
-        records.n(id, 2)
-        records.n(data.count, 4)
-      }
-      records.text("8BIM")
+      channelLengthOffsets.append(lengths)
+      try records.text("8BIM")
       let blendKey =
         section != 3 && layer.group?.passThrough == true
         ? "pass" : keys[BlendMode.allCases.firstIndex(of: layer.blendMode) ?? 0]
-      records.text(blendKey)
-      records.n(Int((unit(layer.opacity) * 255).rounded()), 1)
-      records.n(layer.isClipped ? 1 : 0, 1)
+      try records.text(blendKey)
+      try records.n(Int((unit(layer.opacity) * 255).rounded()), 1)
+      try records.n(layer.isClipped ? 1 : 0, 1)
       let adjustmentFlags: Int
       if case .adjustment = layer.content { adjustmentFlags = 24 } else { adjustmentFlags = 0 }
-      records.n((layer.visible ? 0 : 2) | (layer.locked ? 1 : 0) | adjustmentFlags, 1)
-      records.n(0, 1)
+      try records.n((layer.visible ? 0 : 2) | (layer.protection.locksTransparency ? 1 : 0) | adjustmentFlags, 1)
+      try records.n(0, 1)
       var extra = PSDWriter()
       if layer.mask != nil || layer.vectorMask != nil {
         let mask = layer.mask
@@ -905,6 +1180,12 @@ public enum PSDCodec {
         extra.text("vmsk")
         extra.section(try PSDPaths.writeMask(mask, width: doc.width, height: doc.height))
       }
+      if let style = layer.style {
+        let data = try PSDLayerStyles.write(style)
+        extra.text("8BIM"); extra.text("lfx2"); extra.section(data)
+        if data.count % 2 != 0 { extra.n(0, 1) }
+        extra.text("8BIM"); extra.text("iOpa"); extra.section(Data([UInt8((style.fillOpacity * 255).rounded()), 0, 0, 0]))
+      }
       if case .gradientFill(let fill) = layer.content {
         let data = try PSDGradientFill.write(fill, original: layer.sourceTags?["GdFl"])
         extra.text("8BIM")
@@ -960,6 +1241,17 @@ public enum PSDCodec {
         extra.text(key)
         extra.section(try PSDTonalSteps.write(settings, original: layer.sourceTags?[key]))
       }
+      if case .adjustment(.colorLookup(let settings)) = layer.content {
+        let data = try PSDColorLookup.write(settings, original: layer.sourceTags?["clrL"])
+        extra.text("8BIMclrL"); extra.section(data)
+        if data.count % 2 != 0 { extra.n(0, 1) }
+      }
+      if case .adjustment(.classic(let settings)) = layer.content {
+        let key = PSDClassicAdjustment.key(settings.kind)
+        let data = try PSDClassicAdjustment.write(settings, original: layer.sourceTags?[key])
+        extra.text("8BIM"); extra.text(key); extra.section(data)
+        if data.count % 2 != 0 { extra.n(0, 1) }
+      }
       if case .adjustment(.colorBalance(let settings)) = layer.content {
         let data = try PSDColorBalance.write(settings, original: layer.sourceTags?["blnc"])
         extra.text("8BIM")
@@ -970,135 +1262,129 @@ public enum PSDCodec {
       for (tag, content) in (layer.sourceTags ?? [:]).sorted(by: { $0.key < $1.key })
       where ![
         "luni", "lspf", "lyid", "lsct", "lsdk", "clbl", "vmsk", "vsms", "SoCo", "levl", "curv",
-        "hue2", "blnc", "thrs", "post", "grdm", "PtFl", "GdFl",
+        "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "thrs", "post", "grdm", "PtFl", "GdFl", "lfx2", "lmfx", "iOpa",
       ]
       .contains(tag) {
         extra.text("8BIM")
         extra.text(tag)
-        extra.section(content)
+        extra.section(content, lengthBytes: format.tagLengthBytes(tag))
         if content.count % 2 != 0 { extra.n(0, 1) }
       }
       var lock = PSDWriter()
-      lock.n(layer.locked ? 7 : 0, 4)
+      lock.data.append(try PSDLayerProtection.encode(layer.protection))
       extra.text("8BIM")
       extra.text("lspf")
       extra.section(lock.data)
-      records.section(extra.data)
-      for (_, data) in channelData { pixels.append(data) }
-      guard pixels.count + records.data.count <= 512 * 1024 * 1024 else {
-        throw CraftError.invalid("PSD export exceeds the file size budget.")
+      try records.section(extra.data)
+    }
+    // Write each channel directly, then patch its declared size in the earlier record.
+    for (entryIndex, entry) in entries.enumerated() {
+      try Task.checkCancellation()
+      let layer = entry.0
+      let surface: Surface?
+      if case .raster(let pixels) = layer.content {
+        surface = pixels
+      } else if layer.isCanvasFill {
+        surface = try Renderer.layerSurface(layer, in: doc)
+      } else {
+        surface = nil
+      }
+      for channel in 0..<channelLengthOffsets[entryIndex].count {
+        let start = output.count
+        let isMask = channel == colorChannels + 1
+        let source = isMask ? layer.mask : surface
+        if let source {
+          try PSDChannelWriter.write(
+            width: source.width, height: source.height, depth: depth,
+            compression: compression, format: format, to: output
+          ) { y in
+            var row: [UInt8] = []
+            row.reserveCapacity(source.width * (depth / 8))
+            for x in 0..<source.width {
+              let value: Float
+              if !isMask, let native = layer.nativeMode {
+                value = PSDModeStorage.sample(native.value(component: channel, index: y * source.width + x), mode: native.mode, component: channel)
+              } else {
+                let p = !isMask && depth == 32 ? source.linearPixel(x: x, y: y) : source.pixel(x: x, y: y)
+                value = isMask ? unit(p.r) : [p.r, p.g, p.b, p.a][channel]
+              }
+              try PSDChannelCodec.append(value, depth: depth, to: &row)
+            }
+            return row
+          }
+        } else {
+          try output.n(0, 2)
+        }
+        try output.patchLength(
+          output.count - start, at: channelLengthOffsets[entryIndex][channel],
+          width: format.sectionLengthBytes)
       }
     }
-    // Mask samples retain their own rectangle and editable property parameters.
-    records.data.append(pixels)
-    while records.data.count % 4 != 0 { records.n(0, 1) }
-    var layerMask = PSDWriter()
-    if depth == 8 { layerMask.section(records.data) } else { layerMask.n(0, 4) }
-    layerMask.n(0, 4)
-    if depth != 8 {
-      layerMask.text("8BIM")
-      layerMask.text(depth == 16 ? "Lr16" : "Lr32")
-      layerMask.section(records.data)
-    }
+    while (output.count - recordsStart) % 4 != 0 { try output.n(0, 1) }
+    try output.finishLength(recordsLength, width: format.sectionLengthBytes)
+    if depth == 8 { try output.n(0, 4) }
+    let layerMask = output
     let savedNames = (doc.paths ?? []).filter { !$0.isWorkPath }.map(\.name)
     for (key, data) in try PSDPatterns.exportBlocks(doc) {
-      layerMask.text("8BIM")
-      layerMask.text(key)
-      layerMask.section(data)
-      for _ in 0..<((4 - data.count % 4) % 4) { layerMask.n(0, 1) }
+      try layerMask.text("8BIM")
+      try layerMask.text(key)
+      try layerMask.section(data, lengthBytes: format.tagLengthBytes(key))
+      for _ in 0..<((4 - data.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if !savedNames.isEmpty {
       let names = PSDPaths.writeNames(savedNames)
-      layerMask.text("8BIM")
-      layerMask.text("pths")
-      layerMask.section(names)
-      for _ in 0..<((4 - names.count % 4) % 4) { layerMask.n(0, 1) }
+      try layerMask.text("8BIM")
+      try layerMask.text("pths")
+      try layerMask.section(names, lengthBytes: format.tagLengthBytes("pths"))
+      for _ in 0..<((4 - names.count % 4) % 4) { try layerMask.n(0, 1) }
     }
-    var output = PSDWriter()
-    output.text("8BPS")
-    output.n(1, 2)
-    output.data.append(contentsOf: repeatElement(0, count: 6))
-    output.n(4, 2)
-    output.n(doc.height, 4)
-    output.n(doc.width, 4)
-    output.n(depth, 2)
-    output.n(3, 2)
-    output.section(
-      depth == 32
-        ? (doc.sourceMetadata?["psdColorModeData"].flatMap { $0.isEmpty ? nil : $0 }
-          ?? PSDColorMetadata.defaultHDRToning()) : Data())
-    // Export samples are sRGB; never attach the original import profile after conversion.
-    var resources = PSDWriter()
-    resources.data = try PSDImageResources.preserved(doc.sourceMetadata?["psdResources"] ?? Data())
-    if let metadata = try RasterMetadata.metadata(
-      doc.sourceMetadata, width: doc.width, height: doc.height, resolution: doc.pixelsPerInch,
-      linear: doc.depth == .f32),
-      let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data?
-    {
-      resources.data.append(PSDImageResources.block(1060, data: xmp))
+    if let overlay = doc.sourceMetadata?["psdGlobal_LMsk"] {
+      guard (13...16).contains(overlay.count), overlay[12] == 128 else {
+        throw CraftError.unsupported("Unrecognized PSD user-mask display metadata.")
+      }
+      try layerMask.text("8BIM")
+      try layerMask.text("LMsk")
+      try layerMask.section(overlay, lengthBytes: format.tagLengthBytes("LMsk"))
+      for _ in 0..<((4 - overlay.count % 4) % 4) { try layerMask.n(0, 1) }
     }
-    guard doc.pixelsPerInch < 65536 else {
-      throw CraftError.unsupported("PSD resolution exceeds its 16.16 fixed-point range.")
+    if doc.requiresSmartObjectArchive {
+      let linked = try PSDSmartObjects.linkedData(doc)
+      try layerMask.text("8BIMlnk2")
+      try layerMask.section(linked, lengthBytes: format.tagLengthBytes("lnk2"))
+      for _ in 0..<((4 - linked.count % 4) % 4) { try layerMask.n(0, 1) }
     }
-    var resolution = PSDWriter()
-    for _ in 0..<2 {
-      resolution.n(Int((doc.pixelsPerInch * 65536).rounded()), 4)
-      resolution.n(1, 2)
-      resolution.n(1, 2)
+    if doc.layers.contains(where: { $0.smartFilters != nil }) {
+      let caches = try PSDSmartFilters.cacheData(doc)
+      try layerMask.text("8BIMFEid")
+      try layerMask.section(caches, lengthBytes: format.tagLengthBytes("FEid"))
+      for _ in 0..<((4 - caches.count % 4) % 4) { try layerMask.n(0, 1) }
     }
-    resources.text("8BIM")
-    resources.n(1005, 2)
-    resources.n(0, 2)
-    resources.section(resolution.data)
-    let exportSpace =
-      depth == 32 ? CGColorSpace(name: CGColorSpace.linearSRGB)! : try RasterIO.colorSpace()
-    if let profile = exportSpace.copyICCData() {
-      resources.text("8BIM")
-      resources.n(1039, 2)
-      resources.n(0, 2)
-      let data = profile as Data
-      resources.section(data)
-      if data.count % 2 != 0 { resources.n(0, 1) }
-    }
-    var pathID = 2000
-    for saved in doc.paths ?? [] {
-      let name = Data(
-        (saved.name.data(using: .macOSRoman, allowLossyConversion: true) ?? Data("Path".utf8))
-          .prefix(255))
-      resources.text("8BIM")
-      resources.n(saved.isWorkPath ? 1025 : pathID, 2)
-      let bytes = saved.isWorkPath ? Data() : name
-      resources.n(bytes.count, 1)
-      resources.data.append(bytes)
-      if (bytes.count + 1) % 2 != 0 { resources.n(0, 1) }
-      let data = try PSDPaths.write(saved.path, width: doc.width, height: doc.height)
-      resources.section(data)
-      if data.count % 2 != 0 { resources.n(0, 1) }
-      if !saved.isWorkPath { pathID += 1 }
-    }
-    output.section(resources.data)
-    output.section(layerMask.data)
-    output.n(0, 2)
+    try output.finishLength(maskLength, width: format.sectionLengthBytes)
+    if !includeComposite { return }
     let composite = try Renderer.composite(doc)
-    for channel in 0..<4 {
-      for y in 0..<doc.height {
+    let nativeComposite = try doc.modeDescriptor.map { descriptor in
+      try NativeModeRaster.converting(composite, to: descriptor.mode, depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
+    }
+    try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
+      compression: compositeCompression, channels: colorChannels + 1, format: format, to: output) { index in
+        let channel = index / doc.height, y = index % doc.height
+        try Task.checkCancellation()
+        var bytes: [UInt8] = []
+        bytes.reserveCapacity(doc.width * (depth / 8))
         for x in 0..<doc.width {
-          let p =
-            depth == 32
-            ? PSDMergedSample.encodeLinear(composite.linearPixel(x: x, y: y))
-            : PSDMergedSample.encode(composite.pixel(x: x, y: y), depth: depth)
-          var bytes: [UInt8] = []
-          let value = [p.r, p.g, p.b, p.a][channel]
+          let value: Float
+          if let nativeComposite { value = PSDModeStorage.mergedSample(nativeComposite, component: channel, index: y * doc.width + x) }
+          else {
+            let p = depth == 32
+              ? PSDMergedSample.encodeLinear(composite.linearPixel(x: x, y: y))
+              : PSDMergedSample.encode(composite.pixel(x: x, y: y), depth: depth)
+            value = [p.r, p.g, p.b, p.a][channel]
+          }
           try PSDChannelCodec.append(
             value, depth: depth,
             to: &bytes)
-          output.data.append(contentsOf: bytes)
         }
-      }
+        return bytes
     }
-    guard output.data.count <= 512 * 1024 * 1024 else {
-      throw CraftError.invalid("PSD export exceeds the file size budget.")
-    }
-    return output.data
   }
 }

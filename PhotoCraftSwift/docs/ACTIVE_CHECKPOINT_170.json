@@ -1,0 +1,90 @@
+{
+  "step": "dev-step-170",
+  "completed_at_utc": "2026-10-27T01:32:11.365323+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native expandable/rotated Crop, straighten, ratios, retained/deleted raster pixels, exposed-edge fill, preview/cancel/history, Image > Crop and document.crop API.",
+  "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json",
+  "source_manifest_sha256": "918a16b953910e39c3084f3731e40f56d7667a86aefaa8530b08c5924e05a1ca",
+  "source_inputs": 1274,
+  "source_delta": "artifacts/runs/20261027T005937Z-170-crop-workflow/changes02.json",
+  "tests": {
+    "focused": {
+      "count": 47,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T005937Z-170-crop-workflow/integration02.log",
+      "source": "Before the final Image > Crop/API-count repair"
+    },
+    "final_full_release": {
+      "count": 1637,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests02.log",
+      "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json"
+    },
+    "prior_failures_preserved": [
+      "artifacts/runs/20261027T005937Z-170-crop-workflow/core01.log",
+      "artifacts/runs/20261027T005937Z-170-crop-workflow/integration01.log",
+      "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests01.log"
+    ]
+  },
+  "package": {
+    "utc": "2026-10-27T01:32:11.365323+00:00",
+    "app": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app",
+    "zip": "artifacts/runs/20261027T005937Z-170-crop-workflow/Photato170-final.zip",
+    "zip_sha256": "32baee5fc75e7058383db0b9c5ff7c296564e2865749634b9e6b08c0558ac675",
+    "executable_sha256": "021214d3aab713f52cd86e2ebc92aa1229fb2e9b98c538cbd292fade5af8ff64",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1274,
+    "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json",
+    "source_manifest_sha256": "918a16b953910e39c3084f3731e40f56d7667a86aefaa8530b08c5924e05a1ca",
+    "tests": {
+      "full_release": 1637,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests02.log"
+    },
+    "protected_original_build_project_user_state": "All four saved hashes verified unchanged",
+    "upstream_rust": {
+      "files": 754,
+      "status": "All saved hashes verified unchanged"
+    },
+    "runtime_qualification": "Full Release suite on host architecture; universal binary metadata/signature checked. Physical Intel, macOS14/26 and live Photoshop/Photato qualification remain open."
+  },
+  "api": {
+    "photato_typed_commands": 47,
+    "crop": "document.crop",
+    "adobe": "Five partial/three unimplemented endpoint groups unchanged. Automatic /v1/auto-crop and manual crop actionJSON remain unsupported; no Adobe route invented."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary": 102,
+    "alternate": 8
+  },
+  "limitations": [
+    "Maximum16MP source/output canvas,64MP total materialized raster pixels and4MP content-aware-fill output. Larger requests fail explicitly.",
+    "Exact Photoshop resampling, synthesized pixels, crop-background context and default preferences remain unqualified.",
+    "Crop frame rotates over the original image; complete Photoshop auto-centered image-under-frame interactions, Classic Mode, crop shield preferences and overlay variants remain open.",
+    "W\u00d7H\u00d7Resolution/resampling mode, custom presets, physical units, perspective crop, Ruler workflow, Trim and automatic multi-photo crop/straighten remain open.",
+    "Delete Cropped Pixels applies to ordinary raster image storage. Smart Object sources, editable vectors/text and mask storage are retained; precise Photoshop storage behavior remains unqualified.",
+    "New fill patches contain only exposed gaps outside the original canvas; interior transparency remains. Existing off-canvas pixels exposed by a retained crop are reused.",
+    "Adobe auto-crop is automatic subject/object detection and has not been implemented by this manual crop increment. Manual crop actionJSON is also unsupported.",
+    "Full live, physical Intel and macOS14/26 qualification remain open."
+  ],
+  "next": {
+    "workflow": "B05 Patch, Content-Aware Move and Red Eye",
+    "prepared_plan": "artifacts/runs/20261027T005937Z-170-crop-workflow/next-major-plan01.json",
+    "first_step": "Review the saved upstream Patch design and native healing/selection/painting integration. Implement major retouch tools with native UI, APIs, undo and focused tests before optional crop refinements."
+  },
+  "no_running_build_test_workers_expected": true
+}

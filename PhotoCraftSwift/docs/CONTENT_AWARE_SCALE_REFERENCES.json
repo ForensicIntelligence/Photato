@@ -1,0 +1,76 @@
+{
+  "step": "dev-step-169",
+  "status": "Working native subset verified by25 focused tests; universal package verified",
+  "run": "artifacts/runs/20261027T004429Z-169-content-aware-scale",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/seam.rs",
+    "../photocraft-main/crates/engine/src/edit_menu_cmds.rs"
+  ],
+  "license": "MIT OR Apache-2.0; native Swift port; original Rust files unchanged",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/preserve-visual-content-when-scaling-images.html",
+      "accessed": "2026-10-26",
+      "scope": "Canvas handles, reference-point/dimensions, Amount, protection and commit/cancel"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/specify-content-to-protect-when-scaling.html",
+      "accessed": "2026-10-26",
+      "scope": "Saved alpha channel as protection source"
+    }
+  ],
+  "algorithm": "Backward-energy dynamic-programming seams; incremental energy repair; enlargement tracks distinct original seams; premultiplied RGBA and selection coverage follow identical seams. Protection follows actual width seams into height pass rather than the upstream plain-resampled steering map.",
+  "native_archive": 20,
+  "archive_change": "None; output uses existing raster layers/selection representation.",
+  "api_commands": 46,
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "Edit > Content-Aware Scale: Option-Shift-Command-C"
+  },
+  "tests": {
+    "compile_failure": "artifacts/runs/20261027T004429Z-169-content-aware-scale/core01.log",
+    "final": {
+      "path": "artifacts/runs/20261027T004429Z-169-content-aware-scale/integration01.log",
+      "count": 25,
+      "failures": 0,
+      "scope": "Four native engine, five new scale workflow/API, nine factory-menu and seven prior transform cases."
+    }
+  },
+  "source_manifest": "artifacts/runs/20261027T004429Z-169-content-aware-scale/source01.json",
+  "source_delta": "artifacts/runs/20261027T004429Z-169-content-aware-scale/changes01.json",
+  "procedural_output": "artifacts/runs/20261027T004429Z-169-content-aware-scale/scale-before-after01.png",
+  "live": "Not run; prior locked-screen state was not bypassed. Procedural output is not live UI or Photoshop reference evidence.",
+  "limits": [
+    "Ordinary raster targets; unlock image, position and transparency. Maximum16,777,216 source/output/intermediate pixels and a500,000,000 estimated seam-pixel processing budget. Requests above bounds fail explicitly.",
+    "Exact Photoshop energy, protection, amount interpolation and pixel/subpixel behavior remain unqualified. Native skin protection uses the original Rust RGB heuristic.",
+    "Whole-layer raster/vector masks retain geometric linked/unlinked mapping; full nonlinear seam deformation of masks remains open. Selected-pixel edits retain mask positions.",
+    "Native selection coverage is GRAY8. Auxiliary coverage follows image seams; saved alpha channels remain unchanged.",
+    "Relative reference-position mode and other finer transform controls remain open.",
+    "No dedicated published Photoshop v2 endpoint; content-aware-scale actionJSON remains unsupported.",
+    "Full regression, optimized runtime, physical Intel and macOS14/26/live qualification remain open and batched.",
+    "Content-aware crop fill is still a missing major workflow."
+  ],
+  "full_photoshop_parity": false,
+  "package": {
+    "utc": "2026-10-27T00:58:40.241406+00:00",
+    "app": "/private/tmp/photato169-verified-10uwspiy/Photato.app",
+    "zip": "artifacts/runs/20261027T004429Z-169-content-aware-scale/Photato169-final.zip",
+    "zip_sha256": "7d06cf4b21566fcf7a1ffbad78d7fc04a68f0ad2911c67274b1f7bf761402585",
+    "executable_sha256": "24d11d47c8bd4ed39d7805c5447543bca912220c51fd52b010a1538242ed8038",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1266,
+    "source_manifest": "artifacts/runs/20261027T004429Z-169-content-aware-scale/source01.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "25 focused Debug tests for169; full/optimized/Intel/macOS14/26/live qualification remains open."
+  }
+}

@@ -24,11 +24,14 @@ final class LayerMergeRenderTests: XCTestCase {
       }
       XCTAssertEqual(p.width, q.width, label)
       XCTAssertEqual(p.height, q.height, label)
+      // PSD samples retain their embedded working profile. The separate WorkingProfileTests
+      // compares against independently extracted original-profile raw bytes without decoding
+      // the expected pixels through PSDCodec.
       let encoding: SurfaceColorEncoding = actual.depth == .f32 ? .linearRGB : .sRGB
       XCTAssertEqual(
         try p.rgbaData(depth: actual.depth, colorEncoding: encoding),
         try q.rgbaData(depth: expected.depth, colorEncoding: encoding),
-        label + " exact stored RGBA samples")
+        label + " exact working-space RGBA samples")
     }
   }
   func testPhotoshopLayerMergesAndPSDExportAtAllDepths() throws {

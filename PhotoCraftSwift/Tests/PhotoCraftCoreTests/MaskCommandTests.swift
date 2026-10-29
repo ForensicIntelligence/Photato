@@ -39,11 +39,11 @@ final class MaskCommandTests: XCTestCase {
       XCTAssertEqual(split.mask?.pixel(x: 3, y: 0).r, 1)
       XCTAssertEqual(
         try NativeArchive.decode(NativeArchive.encode(session.document)), session.document)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, applied)
-      session.undo()
+      try session.undo()
       XCTAssertNotNil(session.document.layers[0].mask)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, doc)
     }
   }
@@ -114,7 +114,7 @@ final class MaskCommandTests: XCTestCase {
       XCTAssertEqual(result.blendMode, layer.blendMode)
       XCTAssertEqual(result.sourceTags, layer.sourceTags)
       XCTAssertEqual(session.document.selection, doc.selection)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, doc)
     }
   }
@@ -152,7 +152,7 @@ final class MaskCommandTests: XCTestCase {
     try deleted.execute(.deleteMask(id))
     XCTAssertEqual(deleted.document.layers[0].content, doc.layers[0].content)
     XCTAssertNil(deleted.document.layers[0].maskProperties)
-    deleted.undo()
+    try deleted.undo()
     XCTAssertEqual(deleted.document, doc)
   }
 

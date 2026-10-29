@@ -39,7 +39,7 @@ final class GradientMapWorkflowTests: XCTestCase {
     XCTAssertNotEqual(store.document, before)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.session.undoStack.last?.label, "Gradient Map")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testLayerMaskPresetApplicationAndGroupedUndo() async throws {
@@ -67,9 +67,9 @@ final class GradientMapWorkflowTests: XCTestCase {
     XCTAssertTrue(selected.reverse)
     XCTAssertEqual(selected.gradient.colors[0].color, .rgb(Pixel(0.2, 0.8, 0.4)))
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(store.document)), store.document)
-    store.undo()
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testDelayedPresetDoesNotOverwriteReopenedDraftOnSameLayer() async throws {

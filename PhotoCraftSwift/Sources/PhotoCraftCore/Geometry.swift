@@ -75,7 +75,7 @@ public enum Resampling: String, CaseIterable, Codable, Sendable {
   case bilinear = "Bilinear"
   case bicubic = "Bicubic"
 }
-public enum CanvasAnchor: String, CaseIterable, Sendable {
+public enum CanvasAnchor: String, CaseIterable, Sendable, Codable {
   case topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight
   public var fractions: (Double, Double) {
     switch self {
@@ -91,7 +91,7 @@ public enum CanvasAnchor: String, CaseIterable, Sendable {
     }
   }
 }
-public enum CanvasTurn: String, CaseIterable, Sendable {
+public enum CanvasTurn: String, CaseIterable, Sendable, Codable {
   case clockwise = "90° Clockwise"
   case counterclockwise = "90° Counter Clockwise"
   case half = "180°"
@@ -208,14 +208,38 @@ public enum DocumentGeometry {
       try fill.transform(by: delta)
       result.content = .gradientFill(fill)
     }
+    result.smartFilters?.transformPuppetPins(delta)
+    result.smartFilters?.transformPerspectivePlanes(delta)
+    if let stack = layer.smartFilters, stack.mask != nil, stack.maskProperties.linked || includingUnlinkedMasks {
+      result.smartFilters?.maskProperties.transform = delta * stack.maskProperties.transform
+    }
     freezeTextLayout(&result, document: document)
     let full = delta * layer.coordinateTransform
     try full.validated()
-    if case .raster(let surface) = layer.content {
+    if var group = layer.group, var board = group.artboard {
+      guard abs(delta.a * delta.c) < 1e-9, abs(delta.b * delta.d) < 1e-9 else { throw CraftError.unsupported("Artboards support axis-aligned resizing and canvas quarter turns.") }
+      let bounds = try full.bounds(width: board.width, height: board.height)
+      board.width = bounds.width; board.height = bounds.height; board.preset = ""
+      board.guides = board.guides.map { guide in
+        var guide = guide
+        let horizontal = guide.axis == .horizontal
+        let p = full.point(horizontal ? 0 : guide.position, horizontal ? guide.position : 0)
+        let swapped = abs(delta.a) < 1e-9 && abs(delta.d) < 1e-9
+        if swapped { guide.axis = horizontal ? .vertical : .horizontal }
+        guide.position = guide.axis == .horizontal ? p.y - Double(bounds.y) : p.x - Double(bounds.x)
+        return guide
+      }
+      group.artboard = board; result.content = .group(group)
+      result.x = bounds.x; result.y = bounds.y; result.affine = nil
+    } else if case .raster(let surface) = layer.content, layer.smartObject == nil, layer.video == nil, !layer.hasGeometryKeyframes {
       let bounds = try full.bounds(width: surface.width, height: surface.height)
       result.content = .raster(
         try RasterGeometry.render(
           surface, transform: full, bounds: bounds, method: method, clampEdges: true))
+      if let native = layer.nativeMode {
+        let transformed = try native.transformed(by: full, bounds: bounds, method: method, clampEdges: true)
+        result.nativeMode = transformed; result.content = .raster(try transformed.surface())
+      }
       if let mask = layer.mask, layer.maskProperties == nil {
         result.mask = try RasterGeometry.render(
           mask, transform: full, bounds: bounds, method: method, clampEdges: true)

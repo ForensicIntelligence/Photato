@@ -1,0 +1,73 @@
+{
+  "step": "dev-step-162",
+  "completed_at_utc": "2026-10-26T21:12:33.244842+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Usable native point/paragraph type editing and API subset; advanced typography and complete Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T203157Z-162-native-text/source02.json",
+  "source_manifest_sha256": "cbda5b0893e614a931dd398a77eceb395b100776366fd441069b65aec9065907",
+  "source_inputs": 1200,
+  "source_delta": "artifacts/runs/20261026T203157Z-162-native-text/source-delta02.json",
+  "tests": {
+    "focused_debug_integration": 54,
+    "full_release_final": 1548,
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T203157Z-162-native-text/platform01.json",
+    "checks_per_architecture": 48,
+    "retained_failure": "Release01 executed1548 tests with one obsolete blanket text-export rejection. Only that test changed before the passing full rerun; compile/runtime failures are retained in the type reference manifest."
+  },
+  "package": {
+    "archive_sha256": "5d5d952ab3db1d4e87a97f5ca91b9afb7e8c95f6b059d6bb81ba2fb8894ef0cf",
+    "executable_sha256": "a5f032eb99d9ae1198a3b611eba1d1f04ba6c82a0ba5bba085592de718890790",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato162-verified-uwtqdj25/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato162-verified-uwtqdj25/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato162-verified-uwtqdj25/Photato.app",
+    "attribution_sha256": "b5283a26cb425b0865363f204cc4cbfcd4878ec98c9f66260742c5474d528886",
+    "archive": "artifacts/runs/20261026T203157Z-162-native-text/Photato162-candidate.zip",
+    "verification": "artifacts/runs/20261026T203157Z-162-native-text/package-verification01.json"
+  },
+  "interfaces": {
+    "photato_typed_commands": 37,
+    "adobe_routes_partial": 4,
+    "adobe_routes_unimplemented": 4,
+    "native_minimum_rich_type_version": 16
+  },
+  "menu": {
+    "entries": 802,
+    "bound": 195,
+    "unavailable": 530,
+    "primary_shortcuts": 102,
+    "alternates": 8,
+    "report": "artifacts/runs/20261026T203157Z-162-native-text/menu-report02.json"
+  },
+  "preserved": {
+    "state": "artifacts/runs/20261026T203157Z-162-native-text/preserved-state01.json",
+    "original_rust_files": 754,
+    "root_release": "build117 unchanged",
+    "xcode_project": "Photato.xcodeproj unchanged; synchronized source groups discover additions"
+  },
+  "live": {
+    "status": "Pending Mac unlock. No162 live UI or independent Photoshop type qualification.",
+    "owned159_app": "/private/tmp/photato159-live-689faskh/Photato159Probe.app",
+    "pending_previous": "159 mask/Undo;160 Smart Objects;161 Smart Filters; source remains in previous checkpoints.",
+    "pending162": "Canvas create/edit/cancel; selection/formatting/IME; commit and Undo/Redo; native save; Photoshop PSD/PSB import/export and transformed caret behavior."
+  },
+  "next": {
+    "work_package": "A03",
+    "task": "Remaining classic adjustment workflows, beginning with missing editable Vibrance/Black & White/Photo Filter/Channel Mixer/Selective Color and native dialogs/APIs. Preserve the broader A03 scope and all prior open gates.",
+    "priority": "Major-feature breadth, then minor functions, then details; no parity family is closed by this subset."
+  },
+  "development_audit": {
+    "observed_pass": "artifacts/development-history-audit/20261026-step162-final/check02.log",
+    "milestones": 162,
+    "evidence_files": 36041,
+    "logs": 19091,
+    "missing": 0,
+    "final_refresh": "artifacts/development-history-audit/20261026-step162-final/refresh03.log",
+    "final_check": "artifacts/development-history-audit/20261026-step162-final/check03.log"
+  }
+}

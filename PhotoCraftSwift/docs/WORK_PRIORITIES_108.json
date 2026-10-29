@@ -35,5 +35,13 @@
   ],
   "resume_first": "Read AGENTS.md, STATUS.md, PORTING_PLAN.md, this priority record and the immutable PAUSE_CHECKPOINT_107.json. Verify the saved source/package identity. Classify/reconcile the remaining backlog into major functions, minor functions and final details with acceptance criteria. Start with outstanding major workflows and their dependencies; evaluate the observed File > Open image restriction within major document/file workflows rather than following the former UI-first queue.",
   "checkpoint": "docs/PAUSE_CHECKPOINT_107.json",
-  "evidence_root": "artifacts/runs/20261019T182713Z-108-function-priorities"
+  "evidence_root": "artifacts/runs/20261019T182713Z-108-function-priorities",
+  "latest_maintainer_clarification": {
+    "step": "dev-step-157",
+    "date": "2026-10-26",
+    "request": "Step back from detailed refinement and implement major features first, right now.",
+    "execution": "Active work resumed. Finish usable feature breadth with focused functional tests/API/undo, then return to minor functions and exact numerical/cosmetic details. Preserve the original full parity objective and open gates.",
+    "deferred": "step156 general feather kernel research",
+    "first_new_batch": "Eight native raster filters"
+  }
 }

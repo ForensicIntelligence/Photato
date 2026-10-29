@@ -1,0 +1,9 @@
+{
+  "origin": "Original analytic PCM16 fixtures generated with Python standard-library wave and struct. No third-party media.",
+  "files": {
+    "owned-stereo.wav": "8ba51dd06562a19cbf4473f9f517cb7732d253085a329ddfbf311d5d2b6f208c",
+    "owned-mono.wav": "a75ab3ee9b5250825a713986155ce26508b0db2c2688eba9fa90c7cac4269b71"
+  },
+  "stereo": "48000Hz one second; L=8192/32768, R=-16384/32768.",
+  "mono": "24000Hz half second; mono=8192/32768."
+}

@@ -1,0 +1,152 @@
+{
+  "step": "dev-step-192",
+  "completed_at_utc": "2026-10-27T15:25:52.126077+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Object rectangle/lasso/point targeting, stroke-seeded Quick Selection and soft Selection Brush coverage, with native controls, previews, cancellation, Undo, Actions and shared API.",
+  "source_manifest": "artifacts/runs/20261027T144806Z-192-selection-tools/source01.json",
+  "source_manifest_sha256": "9199994062640f4bd8607cb37a78868b41d1ec76da5f392c0bcf4fefe390727c",
+  "source_inputs": 1455,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationSelectionTools.swift",
+      "Sources/PhotoCraft/SelectionTools.swift",
+      "Sources/PhotoCraftCore/ObjectSelection.swift",
+      "Sources/PhotoCraftCore/QuickSelection.swift",
+      "Sources/PhotoCraftCore/SelectionColorModel.swift",
+      "Sources/PhotoCraftCore/SelectionGraph.swift",
+      "Sources/PhotoCraftCore/SelectionSegmentation.swift",
+      "Sources/PhotoCraftCore/SelectionToolRequest.swift",
+      "Sources/PhotoCraftImaging/SelectionToolPreparation.swift",
+      "Tests/PhotoCraftAppTests/SelectionToolWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/SelectionSegmentationTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationActions.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/DocumentWorkspace.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/PaintingTools.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/ColorRegionWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration03": 155,
+    "integration04": 7,
+    "release-full01": 1876
+  },
+  "last_full_regression": {
+    "step": 192,
+    "tests": 1876,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T144806Z-192-selection-tools/release-full01.log",
+    "current_source": true
+  },
+  "previous_failures_preserved": [],
+  "package": {
+    "utc": "2026-10-27T15:25:52.126077+00:00",
+    "tests": {
+      "integration03": 155,
+      "integration04": 7,
+      "release-full01": 1876
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T144806Z-192-selection-tools/Photato192-final.zip",
+    "zip_sha256": "b8f4cc50eaea51303cdb6c8f3450839f990c98b4c85bde13f51dd7f66cbce5da",
+    "app": "/private/tmp/photato192-verified-7kcl39vd/Photato.app",
+    "executable_sha256": "f94a226901b34f65cdccc07c2fe95b06f997c24e4df51388a3f9c4fd2f46b0c0",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato192-verified-7kcl39vd/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato192-verified-7kcl39vd/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1455,
+    "source_manifest_sha256": "9199994062640f4bd8607cb37a78868b41d1ec76da5f392c0bcf4fefe390727c",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 259,
+      "unavailable_leaf_commands": 466,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "contains_step191": true,
+    "limits": "Full optimized suite and universal package on this host; not live desktop/physical tablet, physical Intel/macOS14/macOS26 or complete Photoshop equivalence."
+  },
+  "api": {
+    "commands": [
+      "selection.configure",
+      "selection.quick",
+      "selection.object",
+      "selection.brush"
+    ],
+    "catalogue_count": 85,
+    "state": "selectionTools: availability, object mode, object/paint selection modes, sampleAllLayers, enhanceEdge, overlayColor, previewActive; existing selection and soft-coverage state retained.",
+    "schemas": "Strict parameter, state and result schemas in discovery. Shared native preparation/selection transaction; matching revision, busy, cancellation and revoked-sharing handling.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "limits": "API shared-document ceiling4,194,304 canvas pixels and4MiB request; native selection ceiling16MP. Stroke/polygon4096 samples, graph160000 working pixels. Enhance Edge8,388,608 pixels; point inference same pixel ceiling and6000 per side. Native brush size1\u20132048."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated selection-tool route in the pinned published v2 contract. Tool/actionJSON descriptors remain unqualified; no invented Adobe route or model equivalence claim. Existing interfaces retain their coverage."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar": "Existing Object Selection/Quick Selection W entries now execute; Selection Brush is in the Lasso group. Native options include selection modes, source sampling, refinement and Select and Mask where applicable.",
+    "shortcut": "Factory W group retained. Selection Brush has no primary shortcut. Full L-group cycling equivalence is unqualified.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "People/person-part selection, Select/Mask All Objects, Object Finder hover/catalogue and broader S03 workflows remain open.",
+    "Exact Photoshop model/pixels/defaults, source Rust byte parity, real-photo quality/performance and full supported contexts remain unqualified.",
+    "Latest authoritative desktop state is locked; no re-probe. Offscreen layout and synthetic events are not live UI evidence. Physical Intel/macOS14/macOS26 and actual point Vision inference remain open.",
+    "Native analysis uses SDR/sRGB proxies and RGB-document targets. Channels/component-specific analysis is not implemented; nonraster source selection uses visible composite.",
+    "Actions save coverage on original canvas dimensions; adaptive redetection and full Adobe selection-tool action descriptors remain open."
+  ],
+  "actions": "Version4 stores explicit resulting selection coverage and original canvas dimensions; replay does not repeat image detection. Versions1\u20133 remain readable; downgrading a coverage action rejects. Existing16MiB native library and60000-character base64 API import limits remain; large masks can exceed import limits.",
+  "next": "Major Sky Selection and Sky Replacement workflow, with imported skies, native preview/refinement, editable output and API. Fine numerical/cosmetic refinements remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T144806Z-192-selection-tools/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "first_check": "passed",
+    "counts": {
+      "check": "passed",
+      "milestones": 192,
+      "evidence_files": 38541,
+      "logs": 19405,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/runs/20261027T144806Z-192-selection-tools/development-history-audit/audit01-check.log",
+    "final_refresh_log": "artifacts/runs/20261027T144806Z-192-selection-tools/development-history-audit/audit02-refresh.log",
+    "final_check_log": "artifacts/runs/20261027T144806Z-192-selection-tools/development-history-audit/audit02-check.log",
+    "scope": "Development documentation/evidence inventory; not independent Photoshop comparison."
+  }
+}

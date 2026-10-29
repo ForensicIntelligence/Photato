@@ -51,7 +51,8 @@ final class ColorRegionWorkflowTests: XCTestCase {
     XCTAssertTrue(s.chooseShortcut("w", cycle: false))
     XCTAssertEqual(s.tool, .magicWand)
     XCTAssertTrue(s.chooseShortcut("w", cycle: true))
-    XCTAssertEqual(s.unavailableToolID, "objectSelection")
+    XCTAssertEqual(s.tool, .objectSelection)
+    XCTAssertNil(s.unavailableToolID)
   }
   @MainActor func testBucketCapturesForegroundAndAllLayersWithoutChangingSource() async throws {
     let s = try store(empty: true)
@@ -74,9 +75,9 @@ final class ColorRegionWorkflowTests: XCTestCase {
     XCTAssertEqual(s.document.layers[0], before.layers[0])
     XCTAssertEqual(s.session.undoStack.count, 1)
     let after = s.document
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.document, before)
-    s.redo()
+    await s.redo()
     XCTAssertEqual(s.document, after)
     XCTAssertTrue(s.chooseShortcut("v", cycle: false))
     XCTAssertTrue(s.chooseShortcut("g", cycle: false))

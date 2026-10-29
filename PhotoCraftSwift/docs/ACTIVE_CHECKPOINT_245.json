@@ -1,0 +1,44 @@
+{
+  "step": 245,
+  "recorded_at_utc": "2026-10-29T08:34:57.808215+00:00",
+  "status": "Frame animations now convert to an editable video Timeline with Hold Transform/Opacity/Style/Visibility keys, retained shared artwork/masks, finite loop counts, native59 and the shared API. 219 focused and 2543 full optimized tests pass on 2340 unchanged inputs. Independent PNG/sequence inspection matches 768 analytic RGBA values and eight frame timings. Reverse conversion, full animation interchange, exact Photoshop behavior and live/platform fidelity remain open. Installed221 and private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/source02.json",
+  "source_inputs": 2340,
+  "native_archive": 59,
+  "actions_version": 20,
+  "typed_commands": 172,
+  "tests": {
+    "focused": {
+      "tests": 219,
+      "failures": 0,
+      "seconds": 17.59,
+      "log": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/focused02.log",
+      "sha256": "a16d8fad042e950561ff175fa718f2b03ab2276a12d8cf0d146d0c763cd57153"
+    },
+    "full": {
+      "tests": 2543,
+      "failures": 0,
+      "seconds": 172.285,
+      "log": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/full01.log",
+      "sha256": "def2623db5ff33a252ff2e374a3f4d2e3f44c73aee09b2e27b6cdd89653c86e0"
+    },
+    "unchanged_inputs": 2340,
+    "source_manifest": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/source02.json",
+    "independent": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/independent-full01.json",
+    "exact_RGBA_channels": 768,
+    "binary_sha256": "ca9be0c06394b62ad91dc99df6e7c6e7627b6898111dac33ef60fbde9a673f3b",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Implement video-to-frame conversion across keyframes, per-layer video sources, timing/transitions and audio; preserve editable artwork and original media, make any representational loss explicit, and share native/API/history/persistence. Keep major feature breadth ahead of minor refinements. Full SP01/exact/live/platform gates remain open."
+}

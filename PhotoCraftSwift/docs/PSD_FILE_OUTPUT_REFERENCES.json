@@ -1,0 +1,157 @@
+{
+  "step": "dev-step-122",
+  "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T014805Z-122-psd-file-output",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/tested-source-hashes04.json",
+    "sha256": "6d7f5207193e68414d4ff6d911d3d11d3257b897e01420c2bc891c2d9c0727f2"
+  },
+  "implementation": [
+    "AtomicFileWriter",
+    "PSDOutput",
+    "PSDChannelWriter",
+    "PSDCodec.writeRasterLayers to URL and Data",
+    "PreparedDocumentOutput through NSDocument safe writes",
+    "Photato documentTransfers.photoshopContainers.fileOutput; same Adobe/Photato job serializer"
+  ],
+  "provenance": "artifacts/runs/20261020T014805Z-122-psd-file-output/output-api-provenance01.json",
+  "focused": {
+    "passed": 79,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 77.648,
+    "log": "artifacts/runs/20261020T014805Z-122-psd-file-output/focused04.log"
+  },
+  "review": "artifacts/runs/20261020T014805Z-122-psd-file-output/change-review01.json",
+  "limits": {
+    "maximumFileBytes": 536870912,
+    "maximumDimension": 32768,
+    "maximumPixels": 36000000,
+    "API_upload_bytes": 67108864,
+    "API_download_local_save_bytes": 134217728,
+    "streamingLargeFiles": false,
+    "physical_write_bytes": 65536
+  },
+  "remaining": [
+    "Memory-resident tiles/history/native archives/metadata/rendered composites",
+    "Multi-gigabyte corpora and greater-than2GB workflows before raising budgets",
+    "Full Photoshop format/content/profile/output parity",
+    "Complete external-file coordination and power-loss crash durability",
+    "Combined live native/Photoshop save/reopen and physical Intel/macOS14 application qualification"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T014805Z-122-psd-file-output/full01.log",
+      "sha256": "bc449f358a93221bc96f63925b2052d6b180cecc93ebe538c4916eeec56ad6f1",
+      "passed": 1092,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 237.79
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T014805Z-122-psd-file-output/release01.log",
+      "sha256": "80cb323c9ea85ffbc7eb1bf39dd1c9d8bf89dd46b4de70e9772d335638dd2b14",
+      "passed": 1092,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.09
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato122-verified-21h0qozi/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "162f20e271e3396e51875aad2f1e92db11e821111571bc5cdf6e267e93680c50",
+    "zip_sha256": "39d9d8724a74f716f4ffd35d28469f8b3aca0f0ef609be657f50a4460db098ec",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "memory": {
+    "scope": "Single-process arm64 export of original four-layer1024x1024 RGB32 document; includes retained input tiles and composite, not multi-GB or a general performance guarantee. Same current Data/file serializer and previous121 whole-buffer encoder; entire output SHA256 compared.",
+    "cases": [
+      {
+        "compression": 0,
+        "previous121Data": {
+          "encodeSeconds": 1.5217939615249634,
+          "outputBytes": 83887518,
+          "peakFootprintBytes": 416859000,
+          "peakRSSBytes": 423329792,
+          "sha256": "2cd928e2d2227562da8012fc27713c7fd471553ec8a786d8f1f332e1cc5e6382"
+        },
+        "data": {
+          "outputBytes": 83887518,
+          "encodeSeconds": 0.8734270334243774,
+          "peakFootprintBytes": 195314384,
+          "peakRSSBytes": 201867264,
+          "sha256": "2cd928e2d2227562da8012fc27713c7fd471553ec8a786d8f1f332e1cc5e6382"
+        },
+        "file": {
+          "encodeSeconds": 1.0103060007095337,
+          "outputBytes": 83887518,
+          "peakFootprintBytes": 110150256,
+          "peakRSSBytes": 116768768,
+          "sha256": "2cd928e2d2227562da8012fc27713c7fd471553ec8a786d8f1f332e1cc5e6382"
+        },
+        "complete_output_bytes_equal": true
+      },
+      {
+        "compression": 3,
+        "previous121Data": {
+          "encodeSeconds": 1.7885479927062988,
+          "outputBytes": 17069090,
+          "peakFootprintBytes": 138347168,
+          "peakRSSBytes": 145014784,
+          "sha256": "01df2b0695a2869d3f028bec1544d14fb77f80580f38f23d6580eb4fe6881777"
+        },
+        "data": {
+          "encodeSeconds": 1.221247911453247,
+          "outputBytes": 17069090,
+          "peakFootprintBytes": 129548960,
+          "peakRSSBytes": 136151040,
+          "sha256": "01df2b0695a2869d3f028bec1544d14fb77f80580f38f23d6580eb4fe6881777"
+        },
+        "file": {
+          "encodeSeconds": 1.1662980318069458,
+          "outputBytes": 17069090,
+          "peakFootprintBytes": 110297712,
+          "peakRSSBytes": 116932608,
+          "sha256": "01df2b0695a2869d3f028bec1544d14fb77f80580f38f23d6580eb4fe6881777"
+        },
+        "complete_output_bytes_equal": true
+      }
+    ]
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "independent_parser": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "prior_output_equality": {
+    "path": "artifacts/runs/20261020T014805Z-122-psd-file-output/final-export-compatibility01.json",
+    "sha256": "819c96e3c8c03e2c874763f84b7b46ca04b4113e258f06f149eba20e6b4bc684"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_122.json",
+  "failure_history": [
+    "focused01: incorrect test helper name; preserved then corrected",
+    "focused02:10 profile assertions incorrectly expected nil when previous encoder embeds default profile; corrected to actual working-profile policy",
+    "focused03:try placement in throwing nil-coalescing test expression; corrected",
+    "focused04 and final full suites pass; no skipped tests"
+  ]
+}

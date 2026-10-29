@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 struct GradientMapDraft: Identifiable, Sendable {
@@ -60,7 +61,8 @@ struct GradientMapEditor: View {
         Button("Edit Gradient…") { showStops.toggle() }
           .popover(isPresented: $showStops) {
             GradientMapStops(
-              gradient: settings.gradient, coalesce: { if !pixelLayer { store.coalesce($0) } }
+              gradient: settings.gradient, document: store.document,
+              coalesce: { if !pixelLayer { store.coalesce($0) } }
             ).padding(16).frame(width: 390)
               .onDisappear { if !pixelLayer { store.coalesce(false) } }
           }
@@ -77,6 +79,7 @@ struct GradientMapEditor: View {
 /// Numeric, retained color controls shared by pixel and adjustment-layer maps.
 struct GradientMapStops: View {
   @Binding var gradient: GradientDefinition
+  var document: CraftDocument? = nil
   var coalesce: (Bool) -> Void = { _ in }
   private func number(_ index: Int, midpoint: Bool) -> Binding<Double> {
     Binding(
@@ -99,14 +102,22 @@ struct GradientMapStops: View {
       get: {
         guard gradient.colors.indices.contains(index) else { return .black }
         let p = gradient.colors[index].color.resolved(foreground: .black, background: .white)
+        if let document, let color = try? ColorManagement.color(p, in: document) {
+          return Color(cgColor: color)
+        }
         return Color(.sRGB, red: Double(p.r), green: Double(p.g), blue: Double(p.b))
       },
-      set: {
+      set: { selectedColor in
         guard gradient.colors.indices.contains(index),
-          let color = NSColor($0).usingColorSpace(.sRGB)
+          let color = NSColor(selectedColor).usingColorSpace(.sRGB)
         else { return }
+        let pixel = document.flatMap {
+          try? ColorManagement.pixel(NSColor(selectedColor).cgColor, in: $0)
+        }
         gradient.colors[index].color = .rgb(
-          Pixel(Float(color.redComponent), Float(color.greenComponent), Float(color.blueComponent)))
+          pixel
+            ?? Pixel(
+              Float(color.redComponent), Float(color.greenComponent), Float(color.blueComponent)))
       })
   }
   var body: some View {

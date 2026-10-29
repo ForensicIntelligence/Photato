@@ -11,12 +11,13 @@ extension EditorStore {
     else { return }
     let isWand = tool == .magicWand
     guard isWand || tool == .paintBucket else { return }
+    guard !smartFilterMaskEditing else { error = "Use Brush or Fill to edit the Smart Filter mask."; return }
     if !isWand && modifiers.contains(.option) {
       if let surface { brush.color = surface.pixel(x: Int(floor(point.x)), y: Int(floor(point.y))) }
       return
     }
     let mask = editingMask
-    if !isWand && document.isLocked(layer.id) {
+    if !isWand && (editingMask ? document.isLocked(layer.id) : document.isImageLocked(layer.id)) {
       error = "Unlock this layer and its parent groups before editing it."
       return
     }
@@ -57,8 +58,7 @@ extension WorkspaceView {
         .help("Point sampling is available. Averaged sampling is not available yet.")
       matchOptions($store.wandOptions)
       Toggle("Sample All Layers", isOn: $store.wandSampleAllLayers).disabled(store.editingMask)
-      Button("Select and Mask…") {}.disabled(true).controlSize(.small)
-        .help("Selection refinement is not available yet")
+      Button("Select and Mask…") { store.beginSelectMask() }.disabled(!store.canBeginSelectMask).controlSize(.small)
     } else {
       Picker("Fill", selection: $store.bucketUsesPattern) {
         Text("Foreground").tag(false)

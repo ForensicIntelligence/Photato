@@ -62,7 +62,8 @@ final class DocumentPersistenceTests: XCTestCase {
         let target = folder.appendingPathComponent("copy." + format.rawValue)
         try await doc.copyDocument(to: target, format: format)
         let reply = try await AutomationTests().request(
-          service, path: "/v1/documents/\(id)/file.\(format.rawValue)")
+          service, path: "/v1/documents/\(id)/file.\(format.rawValue)",
+          headers: format == .native ? ["X-Photato-Archive-Version": "11"] : [:])
         XCTAssertEqual(reply.0.statusCode, 200)
         XCTAssertEqual(try Data(contentsOf: target), reply.1)
         XCTAssertEqual(doc.store.document, snapshot)
@@ -74,8 +75,8 @@ final class DocumentPersistenceTests: XCTestCase {
         XCTAssertFalse(doc.fileOperationBusy)
       }
       XCTAssertEqual(try Data(contentsOf: source), original)
-      doc.store.undo()
-      doc.store.redo()
+      await doc.store.undo()
+      await doc.store.redo()
       XCTAssertEqual(doc.store.document, snapshot)
     }
   }
@@ -170,7 +171,7 @@ final class DocumentPersistenceTests: XCTestCase {
     XCTAssertEqual(try Data(contentsOf: source), bytes)
     XCTAssertTrue(doc.isDocumentEdited)
     try await doc.revertDocument()
-    doc.store.undo()
+    await doc.store.undo()
     XCTAssertEqual(doc.store.document, edited)
     // The native Save panel provides the replace confirmation before passing this flag.
     try await doc.copyDocument(to: source, format: .native, allowReplacingSource: true)
@@ -212,9 +213,9 @@ final class DocumentPersistenceTests: XCTestCase {
     content.layoutSubtreeIfNeeded()
     try await Task.sleep(for: .milliseconds(100))
     XCTAssertFalse(tab.title.hasSuffix(" *"))
-    doc.store.undo()
+    await doc.store.undo()
     XCTAssertTrue(group.window?.isDocumentEdited == true)
-    doc.store.redo()
+    await doc.store.redo()
     XCTAssertTrue(group.window?.isDocumentEdited == false)
   }
   @MainActor func testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState()
@@ -238,10 +239,10 @@ final class DocumentPersistenceTests: XCTestCase {
     XCTAssertEqual(doc.store.document, saved)
     XCTAssertEqual(doc.store.session.undoStack.map(\.label), ["Layer Opacity", "Revert"])
     XCTAssertFalse(doc.isDocumentEdited)
-    doc.store.undo()
+    await doc.store.undo()
     XCTAssertEqual(doc.store.document, edited)
     XCTAssertTrue(doc.isDocumentEdited)
-    doc.store.redo()
+    await doc.store.redo()
     XCTAssertEqual(doc.store.document, saved)
     XCTAssertFalse(doc.isDocumentEdited)
     XCTAssertEqual(doc.fileURL, source)
@@ -263,7 +264,7 @@ final class DocumentPersistenceTests: XCTestCase {
     XCTAssertEqual(doc.store.document.id, imported.id)
     XCTAssertNil(doc.fileURL)
     XCTAssertEqual(doc.importedSourceURL, source)
-    doc.store.undo()
+    await doc.store.undo()
     XCTAssertEqual(doc.store.document, edited)
     let history = doc.store.session.undoStack.count
     try Data("invalid".utf8).write(to: source)
@@ -425,8 +426,10 @@ final class DocumentPersistenceTests: XCTestCase {
       let panel = NSSavePanel()
       panel.nameFieldStringValue = "Example copy.pcswift"
       let accessory = DocumentCopyAccessory(panel: panel, initial: .native)
-      XCTAssertEqual(accessory.formats.itemTitles, ["Photato", "Photoshop", "PNG", "JPEG", "TIFF"])
-      accessory.formats.selectItem(at: 3)
+      XCTAssertEqual(
+        accessory.formats.itemTitles,
+        ["Photato", "Photoshop", "Large Document Format", "PNG", "JPEG", "TIFF"])
+      accessory.formats.selectItem(withTitle: "JPEG")
       accessory.updateFormat()
       XCTAssertEqual(panel.nameFieldStringValue, "Example copy.jpeg")
       XCTAssertTrue(accessory.explanation.stringValue.contains("8-bit"))

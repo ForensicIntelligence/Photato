@@ -27,14 +27,7 @@ final class PSDLinearStorageTests: XCTestCase {
     for _ in 0..<3 { for word in words { file.n(Int(word), 4) } }
     return file.data
   }
-  func mergedWords(_ data: Data) throws -> [UInt32] {
-    var reader = PSDReader(data: data)
-    _ = try reader.bytes(26)
-    for _ in 0..<3 { _ = try reader.bytes(reader.u32()) }
-    XCTAssertEqual(try reader.u16(), 0)
-    return try (0..<(words.count * 4)).map { _ in UInt32(try reader.u32()) }
-  }
-  func testLiteralLinearSamplesSurviveLayerAndMergedPSDOutputExactly() throws {
+  func testLiteralLinearSamplesSurviveStraightLayerPSDOutputExactly() throws {
     let doc = try PSDCodec.read(source())
     guard case .raster(let surface) = doc.layers[0].content else { return XCTFail() }
     XCTAssertEqual(surface.colorEncoding, .linearRGB)
@@ -49,9 +42,8 @@ final class PSDLinearStorageTests: XCTestCase {
       XCTAssertEqual(
         try pixels.rgbaData(depth: .f32, colorEncoding: .linearRGB),
         try surface.rgbaData(depth: .f32, colorEncoding: .linearRGB))
-      XCTAssertEqual(
-        try mergedWords(output),
-        words + words + words + [UInt32](repeating: 0x3f80_0000, count: words.count))
+      // PSD merged samples are separately white-matted, even when opaque.
+      // RGB32CompositeTests compares those bytes to independent Photoshop output.
     }
   }
   func testOriginalPhotoshopRGB32RepeatedSaveAndMetadataEditsKeepSampleBits() throws {
@@ -75,7 +67,26 @@ final class PSDLinearStorageTests: XCTestCase {
       }
     }
   }
-  func testOpaqueGroupedClippedAndRegionalCompositionKeepLinearBits() throws {
+  func testScratchHistoryPreservesIndependentPhotoshopLayersAndPSDBytes() throws {
+    let url = try XCTUnwrap(
+      Bundle.module.url(
+        forResource: "photoshop-depth-32", withExtension: "psd", subdirectory: "Fixtures"))
+    let original = try PSDCodec.read(url)
+    var session = EditorSession(document: original, historyByteLimit: 0)
+    try session.execute(.renameLayer(try XCTUnwrap(original.activeLayerID), "Scratch"))
+    XCTAssertEqual(session.historySpilledStates, 1)
+    try session.undo()
+    for compression in PSDCompression.allCases {
+      XCTAssertEqual(
+        try PSDCodec.writeRasterLayers(session.document, compression: compression),
+        try PSDCodec.writeRasterLayers(original, compression: compression))
+    }
+    XCTAssertEqual(try NativeArchive.encode(session.document), try NativeArchive.encode(original))
+    try session.redo()
+    XCTAssertEqual(
+      session.document.layers.first { $0.id == original.activeLayerID }?.name, "Scratch")
+  }
+  func testGroupAndRegionalRenderingAndClippedSourceStorageKeepLinearBits() throws {
     let original = try PSDCodec.read(source())
     let expected = try Renderer.composite(original).rgbaData(depth: .f32, colorEncoding: .linearRGB)
     for passThrough in [false, true] {
@@ -96,8 +107,19 @@ final class PSDLinearStorageTests: XCTestCase {
     var top = Layer(name: "Clip", content: original.layers[0].content)
     top.clipped = true
     clipped.layers.append(top)
-    XCTAssertEqual(
-      try Renderer.composite(clipped).rgbaData(depth: .f32, colorEncoding: .linearRGB), expected)
+    let composed = try Renderer.composite(clipped)
+    for x in words.indices {
+      let value = Float(bitPattern: words[x])
+      XCTAssertEqual(composed.linearPixel(x: x, y: 0), Pixel(value, value, value, 1))
+    }
+    // Blending may turn negative zero into positive zero. Straight layer
+    // storage must retain its sign bit; rendering is independently qualified
+    // against Photoshop's merged planes in RGB32GroupCompositeTests.
+    let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(clipped))
+    for layer in reopened.layers {
+      guard case .raster(let samples) = layer.content else { return XCTFail() }
+      XCTAssertEqual(try samples.rgbaData(depth: .f32, colorEncoding: .linearRGB), expected)
+    }
     let baseline = try Renderer.render(original)
     var edited = original
     guard case .raster(var pixels) = edited.layers[0].content else { return XCTFail() }

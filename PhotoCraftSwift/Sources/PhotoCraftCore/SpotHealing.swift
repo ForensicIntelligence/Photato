@@ -25,8 +25,9 @@ public struct SpotHealingStroke: Sendable {
 public enum SpotHealingPainter {
   @discardableResult public static func paint(
     _ spot: SpotHealingStroke, on layer: inout Layer, canvasWidth: Int, canvasHeight: Int,
-    selection: IntRect? = nil, selectionMask: SelectionMask? = nil
+    selection: IntRect? = nil, selectionMask: SelectionMask? = nil, preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !spot.mask && (preserveTransparency || layer.protection.locksTransparency)
     var stroke = CloneStroke(
       source: spot.sample, mapping: .init(source: .init(0, 0), anchor: .init(0, 0)),
       brush: spot.brush, points: spot.points, mask: spot.mask)
@@ -163,11 +164,11 @@ public enum SpotHealingPainter {
       transform: .translation(Double(region.x + solve.x), Double(region.y + solve.y)))
     let sourceMapping = try stroke.source.transform.inverted()
     return try ClonePainter.paintTarget(
-      stroke, on: &layer, canvasWidth: canvasWidth, canvasHeight: canvasHeight, selection: selection
+      stroke, on: &layer, canvasWidth: canvasWidth, canvasHeight: canvasHeight, selection: selection, preserveTransparency: preserve
     ) { pixels, transform, clipping in
       try ClonePainter.paintPrepared(
         stroke, on: &pixels, transform: transform, sourceMapping: sourceMapping,
-        selection: clipping, selectionMask: selectionMask)
+        selection: clipping, selectionMask: selectionMask, preserveTransparency: preserve)
     }
   }
 }

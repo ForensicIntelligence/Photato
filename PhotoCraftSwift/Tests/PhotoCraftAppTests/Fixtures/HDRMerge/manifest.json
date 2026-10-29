@@ -1,0 +1,22 @@
+{
+  "width": 96,
+  "height": 32,
+  "exposures": [
+    0.25,
+    1,
+    4,
+    16
+  ],
+  "ghostBase": 0,
+  "stops": 13.591146320569694,
+  "provenance": "Original unchanged PhotoCraft hdr.rs merge/response; copied original dense Normal solver; serial row/map adapters and equivalent sRGB helpers. Tone/ghost stubs panic and are not executed. Synthetic scene follows original hdr.rs test; MIT OR Apache-2.0. Not a Photoshop oracle.",
+  "source_sha256": {
+    "hdr.rs": "50d4c3b0b361cde13ca057aabbff2b46b09c9af76190c4a925706c424264d2be",
+    "photo_util.rs": "f62d8ec684935c05c27ed703dca226a24168d0b31c9fd2f1e65892983fe843dd"
+  },
+  "files_sha256": {
+    "response.f64le": "b858a0b0f80a19290997b6c6be56cc3bdaace54b5846e7c384ad12e428f06270",
+    "radiance.f32le": "18ca5c365b075ab948807c067ea07619f53004ddd501aaf08388a911bcb47134",
+    "brackets.rgba8": "e9bb7ab8500dcbe482eb8f787ba6156a4ccdd30722cdb296699dc3f01937bf77"
+  }
+}

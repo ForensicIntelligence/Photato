@@ -52,7 +52,7 @@ final class ClipboardWorkflowTests: XCTestCase {
     XCTAssertEqual(b.activeLayer?.opacity, 0.7)
     XCTAssertNotEqual(b.activeLayer?.id, source.layers[0].id)
     XCTAssertEqual(b.selectedLayerIDs, [b.activeLayer!.id])
-    b.undo()
+    await b.undo()
     b.renderTask?.cancel()
     XCTAssertEqual(b.document, before)
   }
@@ -101,7 +101,7 @@ final class ClipboardWorkflowTests: XCTestCase {
     let transferred = try clipboard.read().decoded()
     XCTAssertEqual(transferred.bounds, IntRect(x: 1, y: 0, width: 2, height: 1))
     XCTAssertEqual(try Renderer.composite(store.document).pixel(x: 1, y: 0).a, 0)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, doc)
     XCTAssertEqual(try clipboard.read().decoded(), transferred)

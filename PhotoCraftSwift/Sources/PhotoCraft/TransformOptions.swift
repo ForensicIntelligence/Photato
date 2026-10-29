@@ -18,6 +18,7 @@ extension WorkspaceView {
   }
   var transformOptions: some View {
     Group {
+      if store.transformDraft?.contentAware == true { contentAwareScaleOptions } else {
       Text("Free Transform").fontWeight(.medium)
       numberField(
         "X", value: transformBinding(\.centerX), range: -1_000_000...1_000_000, suffix: "px")
@@ -49,6 +50,7 @@ extension WorkspaceView {
         .cancelAction)
       Button("Apply") { store.commitTransform() }.controlSize(.small).keyboardShortcut(
         .defaultAction)
+      }
     }
   }
 }

@@ -42,11 +42,18 @@ final class DocumentWorkspaceTests: XCTestCase {
     group.workspace.select(a)
     XCTAssertTrue(controller.currentDocument === a)
     XCTAssertTrue(controller.document(for: window) === a)
-    XCTAssertEqual(window.title, "A")
+    XCTAssertEqual(window.title, "Photato - A")
+    a.displayName = "Renamed document"
+    XCTAssertEqual(window.title, "Photato - Renamed document")
+    group.workspace.select(b)
+    XCTAssertEqual(window.title, "Photato - B")
+    controller.documentWindows.float(b)
+    XCTAssertEqual(controller.documentWindows.current?.window?.title, "Photato - B")
+    controller.documentWindows.consolidate()
     XCTAssertEqual(group.workspace.documents.count, 2)
   }
 
-  @MainActor func testSwitchingPreservesIndependentUndoPixelsAndNativeSaveData() throws {
+  @MainActor func testSwitchingPreservesIndependentUndoPixelsAndNativeSaveData() async throws {
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     defer { cleanup(controller) }
     let a = try fixture(controller, name: "A")
@@ -66,7 +73,7 @@ final class DocumentWorkspaceTests: XCTestCase {
     XCTAssertEqual(try NativeArchive.decode(a.data(ofType: CraftNSDocument.nativeType)), changedA)
     XCTAssertEqual(try NativeArchive.decode(b.data(ofType: CraftNSDocument.nativeType)), originalB)
     group.workspace.select(a)
-    a.store.undo()
+    await a.store.undo()
     a.store.renderTask?.cancel()
     XCTAssertTrue(a.store.document.layers[0].visible)
     XCTAssertEqual(b.store.document, originalB)
@@ -561,7 +568,8 @@ final class DocumentWorkspaceTests: XCTestCase {
         charactersIgnoringModifiers: " ", isARepeat: false, keyCode: 49))
     frame.sendEvent(handDown)
     XCTAssertFalse(canvasA.spaceHeld)
-    XCTAssertTrue(canvasB.spaceHeld, "The frame forwards canvas keys to the active floating document")
+    XCTAssertTrue(
+      canvasB.spaceHeld, "The frame forwards canvas keys to the active floating document")
     let handUp = try XCTUnwrap(
       NSEvent.keyEvent(
         with: .keyUp, location: .zero, modifierFlags: [], timestamp: 0,

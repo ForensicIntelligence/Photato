@@ -1,0 +1,47 @@
+{
+  "step": 233,
+  "recorded_at_utc": "2026-10-29T00:46:08.605144+00:00",
+  "status": "Native MOV/MP4 import and video-layer placement, rational variable-frame timing, orientation, retained source/audio, native52 and matching API upload/place/cancel pass 62 focused and 2,435 full optimized tests on 2,297 unchanged inputs. Independent normal/rotated movie comparisons match 6,144 RGBA8 channel values. Audio playback/editing, keyframes/transitions, Render Video, long/HDR footage and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T001940Z-233-movie-import/source04.json",
+  "source_inputs": 2297,
+  "native_archive": 52,
+  "actions_version": 20,
+  "typed_commands": 163,
+  "tests": {
+    "utc": "2026-10-29T00:46:08.605144+00:00",
+    "tests": 2435,
+    "failures": 0,
+    "suite_seconds": 173.747,
+    "focused_tests": 62,
+    "source_manifest": "artifacts/runs/20261029T001940Z-233-movie-import/source04.json",
+    "unchanged_inputs": 2297,
+    "log": "artifacts/runs/20261029T001940Z-233-movie-import/release06.log",
+    "log_sha256": "372336d2a7b931bba28d1a132c104a4410e6290416030e3a5709a1e644bb6b02",
+    "binaries": {
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "f83a91fca8dff4bcc842f735a70c462c8f8cede836e27cda6fc853fd3eb65707",
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "570818e75946429111bb14dbe13a7efd75ed190269a9ea6eb4e9824e4c45f41f"
+    },
+    "independent": "artifacts/runs/20261029T001940Z-233-movie-import/independent05.json",
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/MOVIE_IMPORT_REFERENCES.json",
+  "next_action": "Continue native video keyframes/transitions, then audio and Render Video per next-major05; preserve all master parity requirements.",
+  "verification": "artifacts/runs/20261029T001940Z-233-movie-import/verification07.json",
+  "source_changes": "artifacts/runs/20261029T001940Z-233-movie-import/changes05.json",
+  "next_plan": "artifacts/runs/20261029T001940Z-233-movie-import/next-major05.json",
+  "standalone_diary": {
+    "entries": 233,
+    "initial_verification": "artifacts/runs/20261029T001940Z-233-movie-import/diary-browser08.json",
+    "final_verification": "artifacts/runs/20261029T001940Z-233-movie-import/diary-browser10.json",
+    "history_refresh": "artifacts/development-history-audit/movie233-refresh11.log",
+    "history_check": "artifacts/development-history-audit/movie233-check11.log"
+  }
+}

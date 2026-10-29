@@ -20,7 +20,7 @@ struct PathGesture {
 }
 
 extension EditorStore {
-  var usesPathTool: Bool { [.pen, .pathSelection, .directSelection].contains(tool) }
+  var usesPathTool: Bool { [.pen, .freeformPen, .curvaturePen, .pathSelection, .directSelection].contains(tool) }
   var selectedVectorPath: VectorPath? {
     switch pathTarget {
     case .saved(let id): document.paths?.first { $0.id == id }?.path
@@ -28,7 +28,7 @@ extension EditorStore {
     case nil: nil
     }
   }
-  var displayedVectorPath: VectorPath? { pathGesture?.preview ?? selectedVectorPath }
+  var displayedVectorPath: VectorPath? { freeformGesture?.preview ?? pathGesture?.preview ?? selectedVectorPath }
   var pathIsEditable: Bool {
     if case .vectorMask(let id) = pathTarget { return !document.isLocked(id) }
     return true
@@ -48,7 +48,8 @@ extension EditorStore {
     if rendering { render() } else { revision += 1 }
   }
   func resetPathGesture() {
-    let previewing = pathGesture != nil
+    let previewing = pathGesture != nil || freeformGesture != nil
+    freeformGesture = nil
     pathGesture = nil
     pathAnchor = nil
     penComponent = nil
@@ -161,7 +162,9 @@ extension EditorStore {
     path.components[anchor.component].operation = operation
     commitPath(path)
   }
-  func beginPath(at p: PathPoint, tolerance: Double, option: Bool = false) {
+  func beginPath(at p: PathPoint, tolerance: Double, option: Bool = false, clickCount: Int = 1) {
+    if tool == .freeformPen {beginFreeform(at:p,tolerance:tolerance);return}
+    if tool == .curvaturePen {beginCurvature(at:p,tolerance:tolerance,clickCount:clickCount);return}
     guard !geometryBusy, transformDraft == nil else { return }
     if tool == .pen { ensureWorkPath() }
     guard var path = selectedVectorPath, pathIsEditable else { return }
@@ -316,6 +319,7 @@ extension EditorStore {
         anchor,
         incoming: PathPoint(2 * anchor.x - p.x, 2 * anchor.y - p.y), outgoing: p, smooth: true)
     }
+    if tool == .curvaturePen { do {path.components[a.component] = try PathConstruction.curvature(path.components[a.component])} catch {self.error=error.localizedDescription;return} }
     gesture.preview = path
     pathGesture = gesture
     if case .vectorMask = pathTarget { render() } else { revision += 1 }
@@ -326,6 +330,7 @@ extension EditorStore {
     commitPath(gesture.preview)
   }
   func finishPath(cancelGesture: Bool = false) {
+    if freeformGesture != nil {finishFreeform(cancel:cancelGesture)}
     if cancelGesture {
       pathGesture = nil
       render()

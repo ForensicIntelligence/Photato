@@ -1,0 +1,113 @@
+{
+  "step": "dev-step-166",
+  "date": "2026-10-26",
+  "status": "47 initial/12 repaired focused checks and1597 final full Release tests pass; universal macOS14+ package verified. S04/full Photoshop parity remain open.",
+  "provenance": {
+    "upstream": {
+      "crates/algo/src/matting.rs": "a6720e436616d90578827fdb2e3e378059e7398d6b8893efbc8fc46e4eece143",
+      "crates/algo/src/selection.rs": "cc91ea19312ec378d86df670d5e229d48ef860ee29295e9f2b16d89c959c2d45",
+      "crates/engine/src/smartselect_cmds.rs": "20a8b8df82842729ac2dd44cddda2f7288996c5bb9e8f2aba7435b80a7f0a9c1"
+    },
+    "license": "MIT OR Apache-2.0; native Swift/Accelerate port with independent workspace/brush integration. No Adobe assets copied.",
+    "adobe": [
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/refine-your-selection-and-mask.html",
+      "https://www.adobe.com/learn/photoshop/web/make-precise-selections-in-select-mask",
+      "https://www.adobe.com/products/photoshop/refine-edge.html"
+    ],
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "contract_review": "Published schema has no dedicated Select and Mask endpoint or refineEdge parameter schema; generic execute-actions refinement descriptors remain unsupported. Direct web schema retrieval unavailable; pinned contract retained."
+  },
+  "desktop": {
+    "features": [
+      "Factory Select > Select and Mask, Option-Command-R; selection options and mask Properties entry points",
+      "Radius/Smart Radius, Smooth, Feather, Contrast, Shift Edge, color decontamination and amount",
+      "Add/subtract brushes, Refine Edge/erase refinement, add/subtract lasso and local Vision Select Subject",
+      "Onion Skin/Overlay/On Black/On White/Black & White/On Layers, original toggle, opacity, zoom/pan",
+      "Local Undo/Redo, Cancel/OK, source-preserving document Undo",
+      "Selection, Layer Mask, New Layer, New Layer with Mask, New Document, New Document with Mask"
+    ],
+    "limits": [
+      "Ordinary raster layers only; canvas and raster each at most8,388,608 pixels",
+      "1024 strokes,16384 points,4096 points per stroke;250million brush-pixel visits",
+      "Smart Objects require rasterizing a copy; no proprietary Object Aware/Refine Hair equivalence"
+    ],
+    "persistence": "Existing native selection/mask/layer types, no new archive version; RGB8/16/32 retained"
+  },
+  "photato_api": {
+    "typed_commands": 42,
+    "command": "selection.refine",
+    "settings_schema": "SelectionRefinement.apiSchema",
+    "strokes_schema": "SelectionRefinement.strokeSchema",
+    "results": "200 existing shared document state;201 newly created shared document state. New documents require transfer permission and sharing capacity. Source unchanged.",
+    "state_schema": {
+      "type": "object",
+      "required": [
+        "available",
+        "workspaceOpen"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean",
+          "description": "Desktop workspace availability for the current layer/target."
+        },
+        "workspaceOpen": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "state_path": "document.selectionRefinement",
+    "errors": "400 malformed parameters;403 new-document transfer permission;409 stale/busy/cancelled/revoked;413 document resource limits;422 unsupported layer/context;429 transfer/shared capacity. Existing response envelope retained.",
+    "history": "Same prepared core command as desktop; new-document outputs use document lifecycle and do not mutate source history."
+  },
+  "adobe_api": {
+    "routes_partial": 5,
+    "routes_unimplemented": 3,
+    "refinement": "Explicitly unsupported in execute-actions; no invented Adobe route or model claim."
+  },
+  "validation": {
+    "debug_initial": {
+      "count": 47,
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/integration03.log"
+    },
+    "debug_preview_repair": {
+      "count": 12,
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/integration04.log"
+    },
+    "release": {
+      "count": 1597,
+      "source": "artifacts/runs/20261026T231526Z-166-select-mask/source02.json",
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/release-tests01.log"
+    },
+    "native_roundtrip": "Covered at all three pixel depths; not proof of Photoshop parity.",
+    "live": "Pending Mac unlock. Original Photoshop document untouched.",
+    "offscreen": "select-mask03.png and04.png show unreliable native control compositing; neither is accepted visual qualification.",
+    "package": {
+      "archive": "artifacts/runs/20261026T231526Z-166-select-mask/Photato166-candidate.zip",
+      "archive_sha256": "7ef6677156d81e03bd4bf531d438841c26a14cabc2fdda1d7de805c980fc3e14",
+      "executable_sha256": "d0c3ff78a07de9c75cbd641d0e7b3ca4a6a7cbb810cfea8fbede13f397b324c8",
+      "verified_app": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app",
+      "architectures": "x86_64 arm64",
+      "build_versions": {
+        "x86_64": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+        "arm64": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+      },
+      "signature": "Strict ad-hoc verification passed",
+      "version": "0.2.0 build2",
+      "attribution_sha256": "3f792e6848f54ce2f2c6226ac3eba145bb7851defdc3677b3b0b899a9277a0b1"
+    },
+    "platform": {
+      "checks_per_architecture": 54,
+      "report": "artifacts/runs/20261026T231526Z-166-select-mask/platform01.json",
+      "mask_bytes_match_between_architectures": true,
+      "qualification": "arm64 native, x86_64 under Rosetta; physical Intel/macOS14/26 remain open."
+    }
+  },
+  "open": [
+    "Independent Photoshop pixels, matting/model quality and shortcuts/interaction qualification",
+    "Physical Intel/macOS14/macOS26 runtime coverage",
+    "Marching Ants/Show Edge/presets, Quick Selection, hair/Object Aware models, Smart Object support and broad performance qualification"
+  ],
+  "next": "Major channels/saved-selection/Quick Mask workflow (C02/S05); defer fine edge numerical and cosmetic fidelity."
+}

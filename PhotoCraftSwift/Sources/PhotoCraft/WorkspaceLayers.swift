@@ -16,7 +16,12 @@ extension WorkspaceView {
         ScrollViewReader { proxy in
           ScrollView {
             LazyVStack(spacing: 1) {
-              ForEach(filteredLayers) { layer in layerRow(layer).id(layer.id) }
+              ForEach(filteredLayers) { layer in
+                VStack(spacing: 0) {
+                  layerRow(layer)
+                  if let stack = layer.smartFilters { SmartFilterRows(store: store, layer: layer, stack: stack) }
+                }.id(layer.id)
+              }
             }.padding(.vertical, 3)
               .background {
                 LayerRevealScrollBridge(
@@ -96,31 +101,40 @@ extension WorkspaceView {
           if store.activeLayer?.isGroup == true { Text("Pass Through").tag("Pass Through") }
           ForEach(BlendMode.allCases, id: \.self) { Text($0.rawValue).tag($0.rawValue) }
         }.labelsHidden().controlSize(.small).frame(maxWidth: .infinity).disabled(
-          store.activeLayer == nil || store.activeLayer?.locked == true)
+          store.activeLayer == nil || store.activeLayer.map { store.document.isLocked($0.id) } == true)
         percentField(
           "Opacity:",
           value: Binding(
             get: { store.activeLayer?.opacity ?? 1 },
             set: { if let l = store.activeLayer { store.perform(.opacity(l.id, $0)) } })
-        ).disabled(store.activeLayer == nil || store.activeLayer?.locked == true)
+        ).disabled(store.activeLayer == nil || store.activeLayer.map { store.document.isLocked($0.id) } == true)
       }
       HStack(spacing: 6) {
         Text("Lock:").foregroundStyle(.secondary)
-        iconButton(
-          "checkerboard.rectangle", "Lock transparent pixels — not available yet", enabled: false
-        ) {}
-        iconButton("paintbrush", "Lock pixels — not available yet", enabled: false) {}
-        iconButton(
-          "arrow.up.and.down.and.arrow.left.and.right", "Lock position — not available yet",
-          enabled: false
-        ) {}
-        iconButton(
-          store.activeLayer?.locked == true ? "lock.fill" : "lock", "Lock or unlock layer",
-          enabled: store.activeLayer != nil
-        ) { if let l = store.activeLayer { store.perform(.lock(l.id, !l.locked)) } }
+        iconButton("checkerboard.rectangle", "Lock transparent pixels",
+          enabled: store.canChangeLayerProtection && store.activeLayer?.protection.locksImage != true,
+          selected: store.activeLayer?.protection.locksTransparency == true
+        ) { store.toggleLayerProtection(.transparency) }
+        iconButton("paintbrush", "Lock image pixels",
+          enabled: store.canChangeLayerProtection && store.activeLayer?.locked != true,
+          selected: store.activeLayer?.protection.contains(.image) == true
+        ) { store.toggleLayerProtection(.image) }
+        iconButton("arrow.up.and.down.and.arrow.left.and.right", "Lock position",
+          enabled: store.canChangeLayerProtection && store.activeLayer?.locked != true,
+          selected: store.activeLayer?.protection.contains(.position) == true
+        ) { store.toggleLayerProtection(.position) }
+        iconButton("rectangle.dashed", "Prevent auto-nest",
+          enabled: store.canChangeLayerProtection && store.activeLayer?.locked != true,
+          selected: store.activeLayer?.protection.contains(.autoNest) == true
+        ) { store.toggleLayerProtection(.autoNest) }
+        iconButton(store.activeLayer?.locked == true ? "lock.fill" : "lock", "Lock or unlock layer",
+          enabled: store.canChangeLayerProtection,
+          selected: store.activeLayer?.protection.fullyLocks == true
+        ) { store.toggleFullLayerProtection() }
         Spacer(minLength: 0)
-        labeledValue("Fill:", value: "100%", width: 37).disabled(true).help(
-          "Separate Fill opacity is not available yet")
+        Button { store.beginLayerStyle() } label: {
+          labeledValue("Fill:", value: "\(Int(((store.activeLayer?.style?.fillOpacity ?? 1) * 100).rounded()))%", width: 37)
+        }.buttonStyle(.plain).disabled(!store.canBeginLayerStyle).help("Edit Fill opacity in Layer Style")
       }
     }.padding(.horizontal, 8).padding(.vertical, 7)
   }
@@ -171,13 +185,19 @@ extension WorkspaceView {
                 store.select(layer.id)
               }
             })
+        if layer.frame != nil {
+          Button { store.tool = .frame; store.selectFrameTarget(layer, target: .frame) } label: { Image(systemName: "rectangle.badge.xmark").frame(width: 22, height: 24) }.buttonStyle(.plain).help("Select Frame")
+          if let child = store.document.children(of: layer.id).last {
+            Button { store.tool = .frame; store.selectFrameTarget(layer, target: .contents) } label: { layerPreview(child, component: .content, metrics: metrics).padding(2).border(store.document.activeLayerID == child.id ? .white : .clear) }.buttonStyle(.plain).help("Select Frame Contents")
+          }
+        }
         if layer.mask != nil {
           Button {
             store.updateMask(layer.id) { $0.linked.toggle() }
           } label: {
             Image(systemName: layer.effectiveMaskProperties.linked ? "link" : "link.badge.plus")
               .font(.system(size: 9)).foregroundStyle(.secondary)
-          }.buttonStyle(.plain).disabled(layer.locked)
+          }.buttonStyle(.plain)
             .help(layer.effectiveMaskProperties.linked ? "Unlink layer mask" : "Link layer mask")
           layerPreview(layer, component: .pixelMask, metrics: metrics)
             .overlay { if !layer.effectiveMaskProperties.enabled { DisabledMaskMark() } }
@@ -204,8 +224,8 @@ extension WorkspaceView {
             TapGesture(count: 2).onEnded { store.beginLayerName(layer.id) })
         }
         Spacer(minLength: 2)
-        if layer.locked {
-          Image(systemName: "lock.fill").font(.system(size: 10)).padding(.trailing, 8)
+        if !layer.protection.isEmpty {
+          Image(systemName: layer.locked ? "lock.fill" : "lock").font(.system(size: 10)).padding(.trailing, 8)
         }
       }
       .contentShape(Rectangle())
@@ -258,7 +278,7 @@ extension WorkspaceView {
     HStack(spacing: 9) {
       Spacer(minLength: 0)
       iconButton("link", "Link layers — not available yet", enabled: false) {}
-      iconButton("fx", "Layer styles — not available yet", enabled: false) {}
+      iconButton("fx", "Layer Style", enabled: store.canBeginLayerStyle) { store.beginLayerStyle() }
       iconButton(
         "rectangle.inset.filled", "Add layer mask (Option-click to hide)",
         enabled: store.canCreateMask(.revealAll)
@@ -302,7 +322,8 @@ extension WorkspaceView {
     ) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
   }
   func layerIcon(_ layer: Layer) -> String {
-    switch layer.content {
+    if layer.smartObject != nil { return "doc.on.doc" }
+    return switch layer.content {
     case .raster: "photo"
     case .text: "textformat"
     case .shape: "square.on.circle"
@@ -388,7 +409,8 @@ struct LayerThumbnail: View {
           let small = try? Renderer.layerThumbnail(
             layer, in: doc, framing: framing, maximumSize: pixels, component: component)
         else { return nil }
-        return try? RasterIO.displayImage(small)
+        return try? component == .content
+          ? ColorManagement.displayImage(small, in: doc) : RasterIO.displayImage(small)
       }
       let result = await withTaskCancellationHandler(
         operation: { await task.value }, onCancel: { task.cancel() })

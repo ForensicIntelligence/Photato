@@ -11,7 +11,7 @@ final class GradientStripesWorkflowTests: XCTestCase {
     defer { store.renderTask?.cancel() }
     let original = store.document
     store.gradientOptions.gradient = .init(
-      name: "Pantry bands",
+      name: "Photato bands",
       colors: [.init(0, .rgb(.black)), .init(0.5, .rgb(.white))], method: .stripes)
     store.beginGradientMap()
     store.render()
@@ -40,9 +40,9 @@ final class GradientStripesWorkflowTests: XCTestCase {
     }
     XCTAssertEqual(map.gradient.method, .stripes)
     XCTAssertEqual(store.session.undoStack.count, 2)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
   }
 

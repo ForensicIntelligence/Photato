@@ -1,0 +1,127 @@
+{
+  "step": "dev-step-181",
+  "completed_at_utc": "2026-10-27T08:00:40.096018+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Linked quad Layout/Warp editing, source snapping, shared-corner moves, single-plane inverse homography and multi-plane shared-edge corrections, straightening/persistent edge locks, native preview/local history/single commit, source-preserving Smart Filters, native26 and Photato API.",
+  "source_manifest": "artifacts/runs/20261027T072932Z-181-perspective/source01.json",
+  "source_manifest_sha256": "c59468fefa807b8b17bb3a79cb3c16dabccb9312aa74ea07c13793ceb9c2c732",
+  "source_inputs": 1364,
+  "source_delta": "artifacts/runs/20261027T072932Z-181-perspective/changes01.json",
+  "tests": {
+    "debug_focused": 92,
+    "optimized_focused": 92,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T072932Z-181-perspective/integration03.log",
+    "optimized_log": "artifacts/runs/20261027T072932Z-181-perspective/release-focused01.log",
+    "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+  },
+  "last_full_regression": {
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_180.json",
+    "tests": 1736,
+    "qualification": "Previous source only. This increment uses focused Debug/optimized qualification; full/platform suites remain batched."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T072932Z-181-perspective/integration01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T08:00:40.096018+00:00",
+    "app": "/private/tmp/photato181-verified-f59abiw8/Photato.app",
+    "zip": "artifacts/runs/20261027T072932Z-181-perspective/Photato181-final.zip",
+    "zip_sha256": "8e5a825e429b87b38f2771b6579535f190acffbc7851097b3ee240da85d5cb83",
+    "executable_sha256": "4c397faa06a996227f6c67bfe0e309b4fd8766c1ac429c46341d005bee22ac75",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato181-verified-f59abiw8/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato181-verified-f59abiw8/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1364,
+    "source_manifest": "artifacts/runs/20261027T072932Z-181-perspective/source01.json",
+    "source_manifest_sha256": "c59468fefa807b8b17bb3a79cb3c16dabccb9312aa74ea07c13793ceb9c2c732",
+    "tests": {
+      "debug_focused": 92,
+      "optimized_focused": 92,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T072932Z-181-perspective/integration03.log",
+      "optimized_log": "artifacts/runs/20261027T072932Z-181-perspective/release-focused01.log",
+      "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+    },
+    "preserved": "Four protected root-build/project/user-state hashes and754 original Rust hashes verified unchanged.",
+    "runtime_qualification": "Universal build metadata and native regression; physical Intel/macOS14/26, live UI and exact Photoshop gates remain open."
+  },
+  "api": {
+    "photato_commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "command_count": 62,
+    "state": "perspectiveWarp.available/workspaceOpen/previewBusy; layers[].smartFilters and capabilities.filters.perspectiveWarp",
+    "persistence": "Editable plane programs require native26; older reader negotiation rejects. Ordinary baked pixels keep their existing minimum version.",
+    "adobe": "No dedicated Perspective Warp endpoint in pinned Firefly contract; unverified actionJSON and editable PSD descriptors explicitly reject. No invented Adobe route."
+  },
+  "menus": {
+    "bound": [
+      "Edit > Perspective Warp"
+    ],
+    "shortcuts": "No fabricated factory invocation shortcut. Native workspace L/W/H, Enter/Return, Escape, Shift-click edge and Cmd-Z/Shift-Cmd-Z.",
+    "rust_alias": "Layer > Smart Objects > Perspective Warp is a Rust alias accessed through the captured Photoshop Edit command, not an additional factory Layer item.",
+    "release_report": "artifacts/runs/20261027T072932Z-181-perspective/menu-report-release01.json"
+  },
+  "limitations": [
+    "Unlocked RGB raster or Smart Object without selection/vector masks. Alpha/Quick Mask filtering rejects; convert other types to Smart Objects first.",
+    "Up to16 finite convex planes,64 edge locks,8,388,608 source/output pixels. API retains4MP/64-layer/128MiB budget.",
+    "Shared-corner snapping tolerance0.5px; source/destination canonicalization and first matching edge neighbor follow original Rust. Three-way overlap and exact Adobe topology remain unqualified.",
+    "Single-plane image sampling uses exact inverse projective geometry; multiple planes use at most256 grid cells per axis. Numerical Photoshop output, resampling and mask feather fidelity remain open.",
+    "Moving/scaling/rotating layers transforms retained plane coordinates. Non-axis-aligned transforms release axis locks after preserving canonical geometry. Exact Photoshop lock semantics remain unqualified.",
+    "Editable PSD/PSB descriptors are unsupported; use native26 or explicitly rasterize. Unsupported Adobe actionJSON rejects.",
+    "Layer masks remain outside Smart Filters; filter masks stay in document coordinates. Richer selection/vector/multilayer contexts, exact inline options-bar layout, accessibility, physical-platform and live qualification remain open."
+  ],
+  "next": {
+    "priority": "Major workflow breadth first. Full final Photoshop parity requirements remain intact; optional fidelity/polish stays deferred.",
+    "next_workflow": "AUT01 native Actions and Batch processing",
+    "observed_gap": "Window > Actions and File > Automate > Batch remain pending in the command matrix; native actionJSON execution exists only as a bounded interpreter/job adapter, not a desktop recorder/library/batch workflow.",
+    "upstream": [
+      {
+        "path": "crates/ui-egui/src/actions.rs",
+        "sha256": "475a977ccdcf0f94b67db65403fa263b71db936f576cd156dfe109f171ff4140"
+      },
+      {
+        "path": "crates/engine/src/file_cmds.rs",
+        "sha256": "5b2b28300cf2324c45f91c3cac12ac1b515e6303d582ecec5a0d89d59bd5136b"
+      }
+    ],
+    "work": [
+      "Inspect native EditorSession/PreparedEdit/EditorStore dispatch paths; add durable typed action steps and portable active-layer/relative targets instead of replaying document-specific UUIDs blindly.",
+      "Native Actions panel with sets/actions/steps, Record/Stop/Play, rename/reorder/delete, enable/disable and edit steps, persistent library and honest recordability indicators. Match captured factory Window > Actions and available shortcut.",
+      "Record actual committed intent, including geometry/filter controls. Canceled previews and Undo/Redo must not become action steps. Never silently skip unsupported recording or playback.",
+      "Replay through the shared engine with busy/cancel/failure attribution and coherent history. Current Adobe guidance says one history entry per action by default, with step history as an advanced option. Verify installed behavior when live access is available.",
+      "Batch files/folders/open documents using isolated sessions, chosen output format/naming/destination, explicit overwrite policy, per-file progress/errors/cancellation and atomic publication. No implicit overwrite of source images.",
+      "Photato typed action/library/recording/playback/batch operations and capability/state/schema coverage. Reuse Adobe execute-actions for actual supported published descriptors; do not invent Adobe endpoints or promise .atn interchange without fixtures.",
+      "Tests must replay on independent documents, cover record/stop/edit/replay/Undo, malformed/unsupported steps, portable targets, cancellation/failure, output collision handling, UI state and actual API parity. Batch broader regression at meaningful milestones."
+    ],
+    "primary_references": [
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/create-record-actions/record-an-action.html",
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/process-a-batch-of-files/batch-process-files.html",
+      "https://helpx.adobe.com/ca/photoshop/desktop/automate-tasks/automation-settings-and-presets/use-the-actions-panel.html"
+    ],
+    "reference_checked_utc": "2026-10-27",
+    "qualification": "Read-only next-work preparation while181 frozen builds. No Actions application source changed. Last actual desktop remains locked. Full G02, live/platform/Photoshop exactness and remaining major workflows remain open."
+  },
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T072932Z-181-perspective",
+    "passed_iteration": "01",
+    "milestones": 181,
+    "evidence_files": 36865,
+    "logs": 19304,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "final_source_verification": "All1364 source01 inputs match after documentation and package verification."
+}

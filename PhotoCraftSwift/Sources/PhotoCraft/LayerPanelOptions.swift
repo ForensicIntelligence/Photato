@@ -43,7 +43,7 @@ struct LayerRowMetrics {
     // Reserve native eye/disclosure/link controls, row gaps and a readable name.
     let fixed: CGFloat =
       112 + (layer.mask == nil ? 0 : 25)
-      + (layer.vectorMask == nil ? 0 : 10) + (layer.locked ? 24 : 0)
+      + (layer.vectorMask == nil ? 0 : 10) + (layer.protection.isEmpty ? 0 : 24)
       + (layer.isGroup ? 20 : 0) + (layer.isClipped ? 18 : 0)
     indentation = min(
       CGFloat(min(8, max(0, depth))) * 10,

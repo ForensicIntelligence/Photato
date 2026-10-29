@@ -15,8 +15,9 @@ public enum HealingPainter {
   @discardableResult public static func paint(
     _ healing: HealingStroke, on layer: inout Layer,
     canvasWidth: Int, canvasHeight: Int, selection: IntRect? = nil,
-    selectionMask: SelectionMask? = nil
+    selectionMask: SelectionMask? = nil, preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !healing.stroke.mask && (preserveTransparency || layer.protection.locksTransparency)
     let stroke = healing.stroke
     let sourceMapping = try ClonePainter.prepare(stroke)
     if let destination = healing.destination {
@@ -30,7 +31,7 @@ public enum HealingPainter {
     let targetOutside = stroke.mask ? Pixel(outside, outside, outside) : .clear
     return try ClonePainter.paintTarget(
       stroke, on: &layer, canvasWidth: canvasWidth,
-      canvasHeight: canvasHeight, selection: selection
+      canvasHeight: canvasHeight, selection: selection, preserveTransparency: preserve
     ) { pixels, transform, clipping in
       let coverage = try ClonePainter.strokeCoverage(stroke, surface: pixels, transform: transform)
       guard let bounds = coverage.bounds else { return false }
@@ -104,7 +105,7 @@ public enum HealingPainter {
       return try ClonePainter.applyCoverage(
         resolved, on: &pixels, transform: transform,
         sourceMapping: healedTransform.inverted(), selection: clipping,
-        selectionMask: selectionMask, coverage: coverage)
+        selectionMask: selectionMask, coverage: coverage, preserveTransparency: preserve)
     }
   }
 }

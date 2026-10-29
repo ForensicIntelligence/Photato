@@ -1,0 +1,364 @@
+{
+  "step": "dev-step-218",
+  "date": "2026-10-27",
+  "status": "Native implementation, focused/full regression and universal package verified. Exact Photoshop, Adobe descriptors and live/platform qualification remain open.",
+  "scope": [
+    "filter.blur.blur",
+    "filter.blur.blurMore",
+    "filter.blur.radialBlur",
+    "filter.blur.shapeBlur",
+    "filter.blur.smartBlur",
+    "filter.blur.surfaceBlur",
+    "filter.noise.despeckle",
+    "filter.noise.dustAndScratches",
+    "filter.noise.median",
+    "filter.sharpen.sharpen",
+    "filter.sharpen.sharpenEdges",
+    "filter.sharpen.sharpenMore"
+  ],
+  "source_provenance": {
+    "crates/algo/src/image.rs": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+    "crates/algo/src/blur.rs": "d11c5c232b902721308adadc406806d6cde13411a098628dc343bb7d74dd94a6",
+    "crates/algo/src/blur2.rs": "df060a6cddd56b6a31f4d27a0b7eeea5a65e79e877e8a34c8b75be0c2bd9b9a7",
+    "crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "crates/algo/src/sharpen.rs": "a26e43a6bdbda5d177ea58ae5d168eddf448c29d1211cddc048ba300e84c6119"
+  },
+  "license": "MIT OR Apache-2.0",
+  "references": {
+    "utc": "2026-10-28T04:05:59.879933+00:00",
+    "urls": [
+      "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/filter-effects-reference.html"
+    ],
+    "known_constraints": {
+      "smartBlur": "RGB8; radius and threshold0.1...100",
+      "dustAndScratches": "RGB8/16; radius1...100 threshold0...255",
+      "median": "RGB8/16; radius1...500",
+      "despeckle": "RGB8/16",
+      "sharpenEdges": "RGB8/16"
+    },
+    "reference_failure": "Old be_en/using/filter-effects-reference.html returned404; current desktop URL loaded.",
+    "qualification": "Public controls/availability only, no pixel equivalence or new live checks."
+  },
+  "implementation": [
+    "Six immediate factory commands with distinct labels",
+    "Radial Blur amount/method/quality and draggable normalized center",
+    "Nine built-in Shape Blur kernels with row-prefix/span convolution",
+    "Smart Blur quality and Normal/Edge Only/Overlay Edge",
+    "Surface Blur conditional RGB8 histogram/direct high-depth implementation",
+    "Disc Median and thresholded Dust & Scratches with sliding rank histograms",
+    "Native preview/Cancel/local Undo, document Undo, cropped storage/mask placement, selection and transparency protection",
+    "Smart Filters/native44 and Actions17; raster native/PSD saving"
+  ],
+  "api": {
+    "typed_command_count": 110,
+    "expanded": [
+      "filter.apply",
+      "smartFilter.set",
+      "actions.manage",
+      "native document downloads"
+    ],
+    "state": "classicDetail with availableKinds/workspace/preview metadata",
+    "capabilities": "filters.classicDetail",
+    "settings_key": "classicDetail",
+    "native_archive": 44,
+    "actions_archive": 17,
+    "adobe": "ActionJSON/ATN/editable PSD descriptors for these twelve kinds are not qualified and remain unsupported; no invented route."
+  },
+  "oracle": {
+    "cases": 44,
+    "fixture_manifest": "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/provenance.json",
+    "generator": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/oracle-generator02.py",
+    "scope": "Original unchanged selected blur.rs/blur2.rs/noise.rs/sharpen.rs function bodies and image.sample/premultiply helpers; imports/types adapted. Canvas-edge read_clamped halo adapter; Shape Blur uses padded source bounds as the original engine does. Radial Best equals original64-sample cap. Full RGB8 synthetic image, alpha last. No Photoshop output references.",
+    "comparison": "44/44 exact in integration01"
+  },
+  "tests": {
+    "focused": {
+      "tests": 149,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/integration01.log",
+      "subsequent_change": "Only aggregate API persistence description expanded; full qualification covers it."
+    },
+    "full_optimized": {
+      "tests": 2082,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/release-full01.log"
+    }
+  },
+  "remaining": [
+    "Exact Photoshop output/default/control/color-mode/depth qualification",
+    "Imported Photoshop/custom Shape Blur presets beyond nine source kernels",
+    "Adobe ActionJSON/ATN and editable PSD descriptors",
+    "Radial Draft/Good sample budgets are native extensions of the source Best path, not proven Adobe quality kernels",
+    "Live modal/gesture workflows and physical Intel/macOS14/macOS26 checks",
+    "Large-document neighborhood-processing budgets",
+    "Full F01/F02 and all previous parity gates",
+    "Window handoff of corrected209 pending manual unlock"
+  ],
+  "evidence_root": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen",
+  "package": {
+    "utc": "2026-10-28T04:36:39.700602+00:00",
+    "tests": {
+      "integration01": 149,
+      "release-full01": 2082
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/Photato218-final01.zip",
+    "zip_sha256": "221356e6d3515ee5699a1a51b6d7cfb84391037f8d30fa53d0ab0be36a0beffe",
+    "app": "/private/tmp/photato218-verified-t98rqjju/Photato.app",
+    "executable_sha256": "dccbdf5d6df0df0d2e439ece2d2118217b82cbfcbdbd916f5a3952133520d451",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato218-verified-t98rqjju/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato218-verified-t98rqjju/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1868,
+    "source_manifest_sha256": "348e023c82b20ff3113cb6909afd136e1ecef9a6336fbbd47085e630f301cb0d",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 335,
+      "unavailable_leaf_commands": 390,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_classic_detail_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "blur"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "blurMore"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpen"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpenMore"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpenEdges"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "despeckle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-10-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-10-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-75-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-75-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-10-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-10-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-75-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-75-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-circle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-ring"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-square"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-diamond"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-triangle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-hexagon"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-star"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-heart"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-cross"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-2-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-2-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-8-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-8-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-20-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-20-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-4"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-1-0"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-4-30"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-12-255"
+      }
+    ],
+    "limits": "149 focused Debug and2082 full optimized tests plus universal package on this host.44 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Blur/Noise/Sharpen remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": [],
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "same_document_live_handoff": "Pending manual Mac unlock; installed209 verified separately."
+  }
+}

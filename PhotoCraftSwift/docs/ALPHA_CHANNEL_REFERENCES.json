@@ -1,0 +1,71 @@
+{
+  "step": "dev-step-167",
+  "status": "Working native subset verified by focused tests; universal package verified",
+  "run": "artifacts/runs/20261026T234846Z-167-channels-quick-mask",
+  "upstream": [
+    "../photocraft-main/crates/doc/src/lib.rs",
+    "../photocraft-main/crates/engine/src/channel_cmds.rs",
+    "../photocraft-main/crates/io/src/channel_map.rs"
+  ],
+  "license": "MIT OR Apache-2.0; Swift port, Rust snapshot unchanged",
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/save-and-load-selections.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-a-temporary-quick-mask.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/alpha-channels-and-masks-in-photoshop.html"
+  ],
+  "native_archive": 20,
+  "api_commands": 44,
+  "menus": {
+    "entries": 802,
+    "bound": 211,
+    "unavailable": 514,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8
+  },
+  "tests": {
+    "initial": {
+      "path": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/integration02.log",
+      "count": 47
+    },
+    "broad_before_refresh_repair": {
+      "path": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/integration03.log",
+      "count": 73,
+      "failures": 0
+    },
+    "final": {
+      "path": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/integration04.log",
+      "count": 28,
+      "failures": 0
+    }
+  },
+  "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source02.json",
+  "source_delta": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/changes02.json",
+  "live": "Not run; prior Mac lock remains unresolved. No offscreen images offered as live evidence.",
+  "limits": [
+    "Native20 is the preserving format; PSD/PSB additional planes/resources and spot inks are pending. Flat image exports omit channels by design; normal Save requires native format.",
+    "Channel storage is at document depth; loading as a selection currently uses GRAY8.",
+    "Brush/eraser, fill, invert and ordinary native filters work on channels; unrelated layer writers are guarded. Liquify workspace and other channel tools remain pending.",
+    "Cross-document save/load/duplicate, split/merge, Calculations and Apply Image remain pending.",
+    "Quick Mask has an overlay/options UI; exact gestures/preferences, visual behavior and independent Photoshop pixel equality remain unqualified.",
+    "Full regression, optimized runtime, physical Intel and macOS14/26 tests are deferred to a later major milestone."
+  ],
+  "full_photoshop_parity": false,
+  "package": {
+    "utc": "2026-10-27T00:16:27.922009+00:00",
+    "app": "/private/tmp/photato167-verified-s36ykxom/Photato.app",
+    "zip": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/Photato167-final.zip",
+    "zip_sha256": "c1aa9c3afa0dedfcc0873902cd2f993320bf85bf02d6924990956b9b229ffeac",
+    "executable_sha256": "d50f692702e35282cac6fedfd8cd46ebba9f026e59c9745778a146fb58cb3ce2",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1248,
+    "source_manifest": "artifacts/runs/20261026T234846Z-167-channels-quick-mask/source02.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "Focused Debug tests only for167; full/optimized/Intel/macOS14/26/live qualification remains open."
+  }
+}

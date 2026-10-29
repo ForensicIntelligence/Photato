@@ -47,6 +47,7 @@ public enum LayerDuplication {
       let copies = document.layers.filter { ids.contains($0.id) }.map { original in
         var copy = original
         copy.id = mapping[original.id]!
+        copy.videoKeyframes = copy.videoKeyframes?.map { var key = $0; key.id = UUID(); return key }
         if let parent = original.parentID, let replacement = mapping[parent] {
           copy.parentID = replacement
         }
@@ -55,10 +56,25 @@ public enum LayerDuplication {
       }
       let index = candidate.layers.firstIndex { $0.id == root.id }!
       candidate.layers.insert(contentsOf: copies, at: index + 1)
+      for transition in document.videoTimeline?.transitions ?? []
+        where transition.participants.isSubset(of: ids)
+      {
+        var copy = transition
+        copy.id = UUID()
+        copy.layerID = mapping[transition.layerID]!
+        copy.previousLayerID = transition.previousLayerID.flatMap { mapping[$0] }
+        if candidate.videoTimeline?.transitions == nil { candidate.videoTimeline?.transitions = [] }
+        candidate.videoTimeline?.transitions?.append(copy)
+      }
       if let oldActive = document.activeLayerID, let newActive = mapping[oldActive] {
         active = newActive
       }
       candidate.activeLayerID = active ?? mapping[root.id]
+    }
+    if candidate.videoTimeline != nil {
+      try candidate.reflowVideoGroups()
+      try candidate.refreshVideoDuration()
+      candidate.reconcileVideoTransitions()
     }
     try candidate.validate()
     document = candidate
@@ -75,7 +91,7 @@ public enum LayerDuplication {
     guard name == nil || roots.count == 1 else {
       throw CraftError.invalid("Rename one duplicate at a time.")
     }
-    guard source.colorSpace == target.colorSpace, source.sourceICC == target.sourceICC else {
+    guard source.colorSpace == target.colorSpace, source.workingICC == target.workingICC else {
       throw CraftError.unsupported(
         "Duplicate between documents with matching color profiles. Profile conversion is not yet supported."
       )
@@ -102,10 +118,15 @@ public enum LayerDuplication {
     let rootIDs = Set(roots.map(\.id))
     var patterns: [String: String] = [:]
     var copies: [Layer] = []
+    var smartMapping: [UUID: UUID] = [:]
     for original in source.layers where ids.contains(original.id) {
       try Task.checkCancellation()
       var copy = original
       copy.id = mapping[original.id]!
+      if let id = copy.smartObject?.sourceID {
+        if smartMapping[id] == nil { smartMapping[id] = UUID() }
+        copy.smartObject?.sourceID = smartMapping[id]!
+      }
       copy.parentID = original.parentID.flatMap { mapping[$0] } ?? parent
       if rootIDs.contains(original.id) {
         copy.name = name ?? original.name
@@ -151,6 +172,7 @@ public enum LayerDuplication {
     target.activeLayerID = nil
     target.colorSpace = source.colorSpace
     target.sourceICC = source.sourceICC
+    target.workingICC = source.workingICC
     target.resolution = source.resolution
     try transfer(from: source, selected: selected, name: layerName, into: &target)
     return target

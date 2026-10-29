@@ -66,8 +66,9 @@ public struct GradientStroke: Sendable {
 public enum GradientPainter {
   @discardableResult public static func paint(
     _ stroke: GradientStroke, on layer: inout Layer, canvasWidth: Int, canvasHeight: Int,
-    selection: IntRect? = nil, selectionMask: SelectionMask? = nil
+    selection: IntRect? = nil, selectionMask: SelectionMask? = nil, preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !stroke.mask && (preserveTransparency || layer.protection.locksTransparency)
     _ = try Surface(width: canvasWidth, height: canvasHeight)
     try GradientFill(gradient: stroke.gradient).validate()
     let ramp = try GradientRamp(stroke.gradient)
@@ -87,7 +88,8 @@ public enum GradientPainter {
       .clipped(toWidth: canvasWidth, height: canvasHeight)
     guard stroke.opacity > 0, clipping.width > 0, clipping.height > 0 else { return false }
     return try ClonePainter.paintTarget(
-      mask: stroke.mask, bounds: clipping, on: &layer, clipping: clipping
+      mask: stroke.mask, bounds: clipping, on: &layer, clipping: clipping,
+      preserveTransparency: preserve
     ) { pixels, transform, _ in
       let inverse = try transform.inverted()
       let local = try (inverse * .translation(Double(clipping.x), Double(clipping.y)))
@@ -116,9 +118,16 @@ public enum GradientPainter {
           }
           guard source.a > 0 else { continue }
           let old = pixels.pixel(x: x, y: y)
+          if preserve && old.a <= 0 { continue }
           let raw = stroke.mask ? Pixel(unit(old.r), unit(old.r), unit(old.r)) : old
           let result: Pixel
-          if stroke.mode == .normal && coverage == 1 && source.a == 1 {
+          if preserve {
+            let blended = ProtectedPixels.composite(stroke.mode,
+              backdrop: linear ? SRGBTransfer.linear(raw) : raw,
+              source: linear ? SRGBTransfer.linear(source) : source,
+              opacity: coverage, x: dx, y: dy)
+            result = linear ? SRGBTransfer.encoded(blended) : blended
+          } else if stroke.mode == .normal && coverage == 1 && source.a == 1 {
             result = source
           } else {
             let blended = stroke.mode.composite(

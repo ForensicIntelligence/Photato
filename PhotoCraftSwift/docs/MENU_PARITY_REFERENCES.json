@@ -7,7 +7,7 @@
   "catalog": "Sources/PhotoCraft/PhotoshopMenuCatalog.swift",
   "bindings": "Sources/PhotoCraft/PhotoshopMenus.swift",
   "golden_inventory": "Tests/PhotoCraftAppTests/Fixtures/photoshop-menu-inventory.json",
-  "static_entries": 802,
+  "static_entries": 801,
   "primary_shortcuts": 102,
   "shortcut_set": "Photoshop Defaults (factory modified=0)",
   "adaptations": "artifacts/runs/20261008T230714Z-055-photoshop-menus/menu-adaptations.json",
@@ -22,8 +22,8 @@
   "full_photoshop_parity": false,
   "official_shortcut_reference": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/view-keyboard-shortcuts.html",
   "new_tests": 2,
-  "leaf_commands_bound": 152,
-  "unavailable_leaf_commands": 573,
+  "leaf_commands_bound": 369,
+  "unavailable_leaf_commands": 355,
   "product_additions": [
     "File > Export > Export Layers to PSD\u2026",
     "File > New from Clipboard",
@@ -34,7 +34,6 @@
     "Help > Workspace Feature Map\u2026",
     "Help > Port Status & Shortcuts",
     "Help > Open Source & Credits\u2026",
-    "Help > Support Development\u2026",
     "Help > Photato Automation API\u2026"
   ],
   "tests": {
@@ -105,10 +104,7 @@
     "path": "Tests/PhotoCraftAppTests/Fixtures/photoshop-menu-inventory.json",
     "sha256": "60afc7485e93a721faf67618385312c0ba03a000ac9b2be6414833f7cc67caee"
   },
-  "native_report": {
-    "path": "artifacts/menu-parity-report.json",
-    "sha256": "2b5a9f6b9a1de087ac13ef25aaaa8cf2827314572e1ebc493ad8b16871ae0a81"
-  },
+  "native_report": "artifacts/runs/20261027T032443Z-174-photo-alignment/menu-report04.json",
   "source_hashes": {
     "path": "artifacts/runs/20261008T234124Z-056-photoshop-defaults/tested-source-hashes.json",
     "sha256": "1793451f4a3224ce28381faa223c41c9049eca88ea80ca65fb3d0289477ab31e"
@@ -420,5 +416,1323 @@
     "shortcut": "none",
     "qualification": "Separate optional local automation control; original Photoshop hierarchy and factory bindings preserved",
     "evidence": "docs/AUTOMATION_API_REFERENCES.json"
+  },
+  "recovery_preferences_step129": {
+    "reference": "docs/RECOVERY_PREFERENCES_REFERENCES.json",
+    "new_binding": "Photato > Settings\u2026 > File Handling\u2026",
+    "general_shortcut_repurposed": false,
+    "paths_and_factory_shortcuts_unchanged": true,
+    "live_qualification": false
+  },
+  "document_closing_step133": {
+    "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+    "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-closing",
+        "POST /v1/document-closing",
+        "POST /v1/document-closing/cancel"
+      ],
+      "new_document_state": "closeOperationID",
+      "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+      "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+    }
+  },
+  "recent_documents_step135": {
+    "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+    "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recent-documents",
+        "POST /v1/recent-documents/limit",
+        "POST /v1/recent-documents/clear",
+        "POST /v1/recent-documents/open"
+      ],
+      "extended_routes": [
+        "GET /v1/document-opening adds queuedFiles and lastError",
+        "POST /v1/document-opening/cancel accepts an operation owned by the enabled recent-file session"
+      ],
+      "permission": "Separate Allow recent-file access, off each session, gates filenames/list/limit/clear/known-ID reopening. No arbitrary paths or implicit document sharing.",
+      "coverage": "Shared native atomic settings/history and background opening, exact request/state schemas, revision/busy/session/revocation/error tests. Recovery-preference POST preserves the recent count. No Adobe desktop-history route invented."
+    }
+  },
+  "recovery_maintenance_step136": {
+    "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+    "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/backups",
+        "POST /v1/recovery/backups/inspect",
+        "POST /v1/recovery/backups/open-copy",
+        "POST /v1/recovery/backups/download",
+        "POST /v1/recovery/backups/trash",
+        "POST /v1/recovery/backups/forget",
+        "POST /v1/recovery/backups/remove-missing"
+      ],
+      "permission": "Separate Allow recovery-backup access, off each API session; gates names, content and maintenance. Existing counts/retry permission unchanged. No arbitrary local paths or implicit sharing.",
+      "coverage": "Shared native coordinator, bounded index/native11 download, complete request/result/state schemas, stale/busy/revocation/confirmation/errors and lifecycle exclusions. Trash retires before moving and finishes cleanup after a begun move even if permission ends; the revoked response is403. No Adobe desktop-maintenance route invented."
+    }
+  },
+  "recovery_salvage_step137": {
+    "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+    "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/salvage",
+        "POST /v1/recovery/salvage/scan",
+        "POST /v1/recovery/salvage/open-copy",
+        "POST /v1/recovery/salvage/download",
+        "POST /v1/recovery/salvage/reset-index"
+      ],
+      "permission": "Existing separate session-off backup access permission now explicitly describes salvage and confirmed reset. No arbitrary paths, source adoption or automatic sharing.",
+      "coverage": "Shared native coordinator, scan-local revision/IDs, exact state/request/result schemas, bounded scan/download/reset, canonical identity matching, stale/busy/confirmation/revocation/error checks. Adobe desktop salvage route not invented."
+    }
+  },
+  "background_recovery_step138": {
+    "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "POST /v1/recovery/cancel"
+      ],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+      "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "recovery_admission_step139": {
+    "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+    "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_state": [
+        "lastDeferred",
+        "operation.memory",
+        "operation.deferredByReason",
+        "accounting phase"
+      ],
+      "permission": "Existing separate recovery-management permission; no automatic sharing.",
+      "coverage": "Shared native coordinator and exact schemas; completed partial retry200 with deferred counts, cancellation/workspace instability409, permission revocation403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "save_options_step140": {
+    "reference": "docs/SAVE_ENCODING_OPTIONS_REFERENCES.json",
+    "status": "Shared lossless PNG compression/Adam7 and TIFF None/LZW/ZIP options now reach native Save/Save As/Copy, Photato save/download and both action-job interfaces where defined; major D01/I04 format workflows remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.{format}",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_state": [
+        "saveEncodingOptions",
+        "encoding options schemas/capabilities"
+      ],
+      "permission": "Existing separate transfer/save/resource-job permissions; no new automatic permission or sharing.",
+      "coverage": "Optional native command options; bounded JSON download header; named Adobe PNG compression and TIFF output on both job routes; only Photato jobs accept encodingOptions. Exact output options enter cache key. Invalid/mismatched fields rejected."
+    }
+  },
+  "psd_compression_step141": {
+    "reference": "docs/PSD_COMPRESSION_OPTIONS_REFERENCES.json",
+    "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb",
+        "POST /v1/action-jobs"
+      ],
+      "new_state": [
+        "psdLayerCompression and psdCompositeCompression in options/capability/state schemas"
+      ],
+      "permission": "Existing save/transfer/resource-job permissions; unchanged default-off session controls.",
+      "coverage": "Native-only encodingOptions expands with raw/rle/zip/zipPrediction for layers and merged image. Both job interfaces share the serializer; Adobe has no corresponding PSD compression field, retains default bytes and rejects the native extension. Cached output keys include choices."
+    }
+  },
+  "photoshop_file_preferences_step142": {
+    "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+    "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/preferences/photoshop-file-handling",
+        "POST /v1/preferences/photoshop-file-handling"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb"
+      ],
+      "new_state": [
+        "photoshopPreferenceChangesEnabled",
+        "photoshopFilePreferences capability/schema",
+        "effectiveSaveEncodingOptions"
+      ],
+      "permission": "Separate native Allow Photoshop file preference changes, off on each API session; existing recovery/recent permissions do not grant it.",
+      "coverage": "Shared native transaction/default resolution. Exact body schema and state, permission/auth/stale/busy/persistence errors. Stateless Photato and Adobe jobs retain their own output defaults; no Adobe application preference endpoint exists in pinned contract."
+    }
+  },
+  "float_tiff_step143": {
+    "reference": "docs/TIFF_FLOAT_REFERENCES.json",
+    "status": "Float32 TIFF Save/Copy/import and both applicable APIs retain tested HDR/negative/transparent samples and linear working profiles through None/LZW/ZIP; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_state": [],
+      "coverage": "Shared native Float32 TIFF encoder and direct same-profile Float32 import. Existing TIFF compression fields/options, default permissions and revision/busy/failed-save handling retained. Adobe TiffOutput schema unchanged; Photato-only encodingOptions remains rejected by Adobe. PNG32 action output remains unsupported; resource-job TIFF input remains unsupported."
+    }
+  },
+  "tiff_storage_step144": {
+    "reference": "docs/TIFF_STORAGE_REFERENCES.json",
+    "status": "Native/API TIFF byte order, pixel layout and Float32 LZW/ZIP prediction preserve tested samples/metadata; native planar decoding repairs ImageIO alpha loss. D01/I04 and every major gate remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs"
+      ],
+      "adobe_shared_engine": "POST /v2/execute-actions keeps pinned TiffOutput defaults; Photato-only encodingOptions remains rejected with422. No invented Adobe fields.",
+      "new_fields": [
+        "tiffByteOrder:bigEndian/littleEndian",
+        "tiffPixelOrder:interleaved/perChannel",
+        "tiffPredictor:boolean, true requires32-bit and explicitLZW/ZIP"
+      ],
+      "state": "Shared encodingOptions schemas/capabilities and remembered/effective save options expose the new fields. Existing permissions, revision/busy/atomic-failure and document/job lifecycles retained.",
+      "coverage": "Native Save/Copy, actual loopback downloads/Save/job output and separate Adobe contract rejection tested; resource-job TIFF input remains unsupported."
+    }
+  },
+  "tiff_layers_step145": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Editable Photoshop-style TIFF import now reaches native Open, Photato upload and both action-job interfaces through the shared PSD engine. Native/PSD persistence preserves supported content; layered TIFF output and full parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "POST /v1/documents/import",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_fields": [],
+      "capability": "documentTransfers.layeredTIFF input=true/output=false, depths/orders/compressions/scope/limits",
+      "contract": "Pinned Adobe Image external resource request unchanged. TIFF bytes enter the shared decoder; existing action availability, resource limits, output contracts and Photato-only encodingOptions rejection retained.",
+      "coverage": "Distinct TIFF MTrn marker retained; unsupported saved alpha/spot channels reject. Actual authenticated loopback upload with denied/corrupt atomic cases; both job routes at8/16/32-bit preserve layers in PSD output; native Open/edit/Undo/Save As and original-TIFF protection share the implementation."
+    }
+  },
+  "tiff_layer_output_step146": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Supported editable layered TIFF output now reaches native Save/Copy and Photato save/download/jobs through the shared PSD serializer. Ordinary Save defaults to preserving layers; existing flat exports and Adobe TIFF output remain unchanged. Full Photoshop parity and all major gates stay open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "POST /v1/action-jobs"
+      ],
+      "new_fields": [
+        "tiffLayers",
+        "tiffLayerCompression"
+      ],
+      "capability": "documentTransfers.layeredTIFF input=true/output=true, distinct output RLE/ZIP choices, defaults/scope/limits; effectiveSaveEncodingOptions reflects TIFF preservation",
+      "contract": "Photato-only options remain rejected422 on Adobe v2. Adobe TiffOutput has no preservation field; its flattened TIFF output remains byte-identical. Shared native engine handles both interfaces without invented fields.",
+      "coverage": "Native Save/Save As/Copy and actual authenticated HTTP downloads/default save/options/error/state, Photato distinct job output caching and Adobe contract rejection/default preservation. Existing import/history/atomic guards remain covered."
+    }
+  },
+  "tiff_rich_step147": {
+    "reference": "docs/TIFF_LAYER_REFERENCES.json",
+    "status": "Numeric adjustments and vector masks now survive both TIFF byte orders through the shared PSD engine; retained global mask-display metadata survives TIFF/PSD/PSB output. Native/API automated qualification passes. Descriptor/opaque records, live Photoshop comparison and all major workflow gates remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "new_fields": [],
+      "expanded_routes": [
+        "POST /v1/documents/import",
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "capability": "documentTransfers.layeredTIFF documents numeric adjustments/vector masks/global LMsk and remaining descriptor guards",
+      "contract": "Existing Photato encodingOptions and native engine; Adobe input-to-PSD support expands without adding Adobe output fields. Photato-only TIFF options remain rejected422 on Adobe v2.",
+      "coverage": "Native Open/history/Save/Copy, actual HTTP upload/download/save, both job inputs-to-PSD, and Photato little-endian TIFF output. Existing invalid/busy/stale/atomic guards remain covered."
+    }
+  },
+  "jpeg_step148": {
+    "reference": "docs/JPEG_ENCODING_REFERENCES.json",
+    "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "new_fields": [
+        "Photato jpegQuality",
+        "Photato jpegFormat",
+        "Photato jpegMatte",
+        "Photato jpegEmbedProfile",
+        "Adobe JpegOutput.quality"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.jpeg",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "capability": "documentTransfers.encodingOptions and actionJobs encodingOptions/outputs expose shared native choices and remaining parity limits",
+      "contract": "Pinned JpegOutput seven named qualities map locally to0/2/4/6/8/10/12. Execute-actions excludes scan (400). Adobe rejects Photato encodingOptions (422). No Adobe quantization/default equivalence claimed.",
+      "coverage": "Native Save accessory, remembered state, Copy/ownership/history, failed save, actual HTTP download/save/invalid/busy, seven quality outputs on both jobs and Photato-only format/matte/profile options. JPEG action input remains unsupported."
+    }
+  },
+  "layer_styles_step158": {
+    "reference": "docs/LAYER_STYLE_REFERENCES.json",
+    "report": "artifacts/runs/20261026T180233Z-158-layer-styles/menu-parity-report01.json",
+    "binding_additions": 14,
+    "shortcuts_changed": false,
+    "scope": "Ten effect editors, Blending Options and copy/paste/clear; other style menu commands remain disabled."
+  },
+  "subject_selection_159": {
+    "path": "Select > Subject",
+    "shortcut": "none observed; no shortcut invented",
+    "evidence": "docs/SUBJECT_SELECTION_REFERENCES.json"
+  },
+  "smart_objects_160": {
+    "reference": "docs/SMART_OBJECT_REFERENCES.json",
+    "bindings_added": 8,
+    "factory_shortcuts_unchanged": true,
+    "live": "Pending unlock"
+  },
+  "smart_filters_step161": {
+    "reference": "docs/SMART_FILTER_REFERENCES.json",
+    "typed_commands": 35,
+    "bindings_added": 5,
+    "status": "Partial native/Adobe support; focused tests pass; independent/live checks pending.",
+    "native_report": "artifacts/runs/20261026T195721Z-161-smart-filters/menu-report01.json"
+  },
+  "native_text_step162": {
+    "reference": "docs/TYPE_EDITING_REFERENCES.json",
+    "bindings_added": 2,
+    "native_report": "artifacts/runs/20261026T203157Z-162-native-text/menu-report02.json",
+    "qualification": "Captured factory titles and hierarchy retained; dynamic type context and full live Photoshop parity remain open."
+  },
+  "classic_adjustments_step163": {
+    "reference": "docs/CLASSIC_ADJUSTMENT_REFERENCES.json",
+    "bindings_added": 9,
+    "native_report": "artifacts/runs/20261026T211803Z-163-classic-adjustments/menu-report01.json",
+    "qualification": "The captured Photoshop Layer menu has Color and vibrance with additional Temperature/Tint/White Balance. It stays unavailable; legacy Vibrance is in Image, the native adjustment grid and API."
+  },
+  "color_lookup_step164": {
+    "reference": "docs/COLOR_LOOKUP_REFERENCES.json",
+    "status": "Partial native functionality verified by focused/full/platform testing; independent/live Photoshop parity remains open.",
+    "native_report": "artifacts/runs/20261026T214621Z-164-color-lookup/menu-report01.json",
+    "bindings_added": 2
+  },
+  "liquify_step165": {
+    "status": "Native workflow verified by focused/full/platform tests; independent/live Photoshop parity and Adobe mesh descriptors remain open.",
+    "reference": "docs/LIQUIFY_REFERENCES.json",
+    "factory_binding": "Filter > Liquify\u2026 (Shift-Command-X)",
+    "photato_commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "liquify.faces"
+    ],
+    "adobe": "Liquify mesh descriptors explicitly unsupported; existing eight raster-filter action types unchanged.",
+    "native_report": "artifacts/runs/20261026T222626Z-165-liquify/menu-report01.json",
+    "bindings_added": 1
+  },
+  "select_mask_step166": {
+    "step": "dev-step-166",
+    "reference": "docs/SELECT_MASK_REFERENCES.json",
+    "status": "Native Select and Mask plus selection.refine; full/live/Adobe model/action parity open.",
+    "typed_commands": 42,
+    "menu": "Select > Select and Mask\u2026",
+    "factory_shortcut": "Option-Command-R",
+    "adobe": "No dedicated published route/schema; refinement action descriptors unsupported."
+  },
+  "alpha_channels_step167": {
+    "reference": "docs/ALPHA_CHANNEL_REFERENCES.json",
+    "commands": [
+      "channel.edit",
+      "channel.view"
+    ],
+    "api_command_count": 44,
+    "bound_menus": 211,
+    "unavailable_menus": 514,
+    "note": "Native shared transactions and native20 saving. Published Adobe channel action descriptors remain unsupported; no new Adobe endpoint is invented. Full parity remains open."
+  },
+  "content_aware_fill_step168": {
+    "reference": "docs/CONTENT_AWARE_FILL_REFERENCES.json",
+    "commands": [
+      "contentAware.fill"
+    ],
+    "api_command_count": 45,
+    "bound_menus": 212,
+    "unavailable_menus": 513,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "note": "Native shared prepared edit; no dedicated published Adobe CAF endpoint. Content-aware actionJSON remains unsupported; no route or Adobe result equivalence is invented."
+  },
+  "content_aware_scale_step169": {
+    "reference": "docs/CONTENT_AWARE_SCALE_REFERENCES.json",
+    "commands": [
+      "contentAware.scale"
+    ],
+    "api_command_count": 46,
+    "bound_menus": 213,
+    "unavailable_menus": 512,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "note": "Shared native prepared edit and desktop preview. No dedicated Adobe content-aware-scale endpoint; actionJSON descriptor remains unsupported."
+  },
+  "crop_workflow_step170": {
+    "reference": "docs/CROP_WORKFLOW_REFERENCES.json",
+    "commands": [
+      "document.crop"
+    ],
+    "api_command_count": 47,
+    "bound_menus": 213,
+    "unavailable_menus": 512,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "note": "Shared native crop/straighten/fill prepared edit. Adobe auto-crop detection and manual crop actionJSON remain unsupported; no route equivalence claim.",
+    "final_validation": "1,637 full Release tests pass, including Image > Crop shared-engine/deletion/undo behavior. Factory menu/shortcut inventory unchanged.",
+    "report": "artifacts/runs/20261027T005937Z-170-crop-workflow/menu-report02.json"
+  },
+  "region_retouch_step171": {
+    "reference": "docs/REGION_RETOUCH_REFERENCES.json",
+    "commands": [
+      "retouch.patch",
+      "retouch.move",
+      "retouch.redEye"
+    ],
+    "api_command_count": 50,
+    "bound_menus": 213,
+    "unavailable_menus": 512,
+    "adobe_contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "note": "Three existing J-group tools now use shared native prepared edits. No new top-level/factory menu entry; dedicated Adobe endpoints absent and related actionJSON descriptors remain unsupported."
+  },
+  "photo_blend_step174": {
+    "entries": 802,
+    "bound": 215,
+    "unavailable": 510,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "Edit > Auto-Blend Layers\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T032443Z-174-photo-alignment/menu-report04.json"
+  },
+  "photo_align_step175": {
+    "entries": 802,
+    "bound": 216,
+    "unavailable": 509,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "Edit > Auto-Align Layers\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T035349Z-175-auto-align/menu-report04.json"
+  },
+  "photomerge_step176": {
+    "entries": 802,
+    "bound": 217,
+    "unavailable": 508,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "File > Automate > Photomerge\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T041958Z-176-photomerge/menu-report04.json",
+    "final_report": "artifacts/runs/20261027T041958Z-176-photomerge/menu-report-release02.json"
+  },
+  "hdr_merge_step177": {
+    "entries": 802,
+    "bound": 218,
+    "unavailable": 507,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "File > Automate > Merge to HDR Pro\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T045452Z-177-hdr-merge/menu-report-final01.json",
+    "final_report": "artifacts/runs/20261027T045452Z-177-hdr-merge/menu-report-release02.json"
+  },
+  "image_stacks_step178": {
+    "reference": "docs/IMAGE_STACK_REFERENCES.json",
+    "counts": {
+      "entries": 802,
+      "bound": 232,
+      "unavailable": 493,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "bindings": [
+        "File > Scripts > Load Files into Stack\u2026",
+        "File > Scripts > Statistics\u2026",
+        "Layer > Smart Objects > Stack Mode > None and11 statistics"
+      ],
+      "shortcut": "No factory bindings; none invented."
+    },
+    "note": "Factory catalogue structure/shortcuts retained;14 previously unavailable leaves now bind.",
+    "final_report": "artifacts/runs/20261027T052544Z-178-smart-stacks/menu-report-release02.json"
+  },
+  "warp_step179": {
+    "reference": "docs/WARP_REFERENCES.json",
+    "api": {
+      "photato_command": "layer.warp",
+      "command_count": 62,
+      "state": "layers[].warp; warp.available/previewOpen/previewBusy; capabilities.warp settings schema/limits",
+      "persistence": "native24; existing version negotiation, source24 validation and older-reader guard",
+      "adobe": "Dedicated published Warp endpoint absent from pinned contract; unsupported actionJSON remains explicit. No invented route."
+    },
+    "menus": {
+      "bound": [
+        "Edit > Transform > Warp"
+      ],
+      "shortcuts": "No fabricated default shortcut; existing factory catalog retained.",
+      "rust_alias": "The Rust catalogue includes Layer > Smart Objects > Warp; the captured Photoshop factory menu does not. Both ordinary/Smart Object targets use Edit > Transform > Warp. A registered selector alias is not counted as a visible factory command."
+    },
+    "qualification": "All55 focused Debug and1727 full optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_179.json"
+  },
+  "puppet_step180": {
+    "reference": "docs/PUPPET_REFERENCES.json",
+    "api": {
+      "photato_commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "command_count": 62,
+      "state": "puppetWarp.available/workspaceOpen/previewBusy; layers[].smartFilters and capabilities.filters.puppetWarp",
+      "persistence": "Editable programs require native25; older downloads reject. Ordinary baked pixels use their existing minimum version.",
+      "adobe": "No dedicated Puppet operation in the pinned Firefly contract; unverified actionJSON and editable PSD descriptors reject explicitly. No invented route."
+    },
+    "menus": {
+      "bound": [
+        "Edit > Puppet Warp"
+      ],
+      "shortcuts": "No invented factory shortcut; existing Enter/Escape and local Undo/Redo.",
+      "rust_alias": "Rust Layer > Smart Objects > Puppet Warp is accessed through the captured Photoshop Edit command, not an extra factory Layer entry."
+    },
+    "qualification": "All84 focused Debug and1736 full optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_180.json"
+  },
+  "perspective_step181": {
+    "reference": "docs/PERSPECTIVE_REFERENCES.json",
+    "api": {
+      "photato_commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "command_count": 62,
+      "state": "perspectiveWarp.available/workspaceOpen/previewBusy; layers[].smartFilters and capabilities.filters.perspectiveWarp",
+      "persistence": "Editable plane programs require native26; older reader negotiation rejects. Ordinary baked pixels keep their existing minimum version.",
+      "adobe": "No dedicated Perspective Warp endpoint in pinned Firefly contract; unverified actionJSON and editable PSD descriptors explicitly reject. No invented Adobe route."
+    },
+    "menus": {
+      "bound": [
+        "Edit > Perspective Warp"
+      ],
+      "shortcuts": "No fabricated factory invocation shortcut. Native workspace L/W/H, Enter/Return, Escape, Shift-click edge and Cmd-Z/Shift-Cmd-Z.",
+      "rust_alias": "Layer > Smart Objects > Perspective Warp is a Rust alias accessed through the captured Photoshop Edit command, not an additional factory Layer item."
+    },
+    "qualification": "All92 focused Debug and92 optimized focused tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_181.json"
+  },
+  "actions_batch_step182": {
+    "reference": "docs/ACTIONS_BATCH_REFERENCES.json",
+    "run": "artifacts/runs/20261027T080231Z-182-actions",
+    "scope": "Portable active/named targets; shared successful-commit recording and history-linked undo/redo; reusable native action library and editor; atomic one-history-step playback; file/folder/open-snapshot batch output; four Photato operations.",
+    "api": {
+      "commands": [
+        "actions.manage",
+        "actions.play",
+        "actions.batch",
+        "actions.batch.cancel"
+      ],
+      "count": 66,
+      "state": [
+        "actions",
+        "batch"
+      ],
+      "engine": "Command.action/RecordedAction/ActionBatch; desktop and API share transaction/persistence paths",
+      "adobe": "Existing published /v2/execute-actions and async resources remain separate and regression-tested. No new Adobe endpoint or .atn equivalence is claimed."
+    },
+    "qualification": "All64 focused Debug and1759 full optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_182.json"
+  },
+  "artboards_step183": {
+    "evidence": "docs/ARTBOARD_REFERENCES.json",
+    "scope": "Create/from group/from layers, resize/move/duplicate/backgrounds, clipping/logical coordinates, local guides, native27 persistence, per-board image/native and multipage PDF export, Photato commands and bounded published Adobe jobs.",
+    "api": {
+      "commands": [
+        "artboard.edit",
+        "artboard.export"
+      ],
+      "catalogue_count": 68,
+      "native_archive_version": 27,
+      "state": "Each layer exposes artboard metadata; document exposes logical origin, availability and names/guides visibility. UI visibility toggles have no document mutation; their API impact is exposed state."
+    },
+    "adobe": {
+      "submit": "POST /v2/create-artboard",
+      "status": "GET /v2/status/{jobId}",
+      "output_types": [
+        "image/png",
+        "image/jpeg",
+        "image/tiff",
+        "application/json"
+      ],
+      "engine": "Same native ArtboardCommand and compositing; existing authenticated job/asset lifecycle, limits and output transport."
+    },
+    "menus": {
+      "new_bindings": 9,
+      "entries": 802,
+      "bound": 246,
+      "unavailable": 479,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "tool": "Artboard in Move/V group; Shift-V cycles existing factory group."
+    },
+    "qualification": "All149 focused Debug and149 optimized regression tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_183.json"
+  },
+  "frames_step184": {
+    "reference": "docs/FRAME_REFERENCES.json",
+    "api": {
+      "commands": [
+        "frame.edit",
+        "frame.place"
+      ],
+      "catalogue_count": 70,
+      "native_archive_version": 28,
+      "state": "Frame metadata per layer, definition schema/capabilities, target/shape/sides/availability; source sharing and revision checks before placement and immediately before commit."
+    },
+    "adobe": {
+      "new_route": null,
+      "scope": "Photato-only frame operations; no dedicated operation in pinned published Adobe contract. Existing Adobe Smart Object operations remain bounded as documented. Editable PSD frame transport remains unsupported and explicitly rejected."
+    },
+    "menus": {
+      "new_bindings": 2,
+      "entries": 802,
+      "bound": 248,
+      "unavailable": 477,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "tool": "Frame/K",
+      "paths": [
+        "Layer > New > Frame from Layers\u2026",
+        "Layer > New > Convert to Frame"
+      ]
+    },
+    "qualification": "All140 focused Debug and1782 full optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_184.json"
+  },
+  "blur_gallery_step185": {
+    "reference": "docs/BLUR_GALLERY_REFERENCES.json",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "filter_kind": "blurGallery",
+      "parameter": "gallery",
+      "catalogue_count": 70,
+      "native_archive_version": 29,
+      "state": "Persisted settings through Smart Filter state; workspace availability/open/busy and expanded capabilities/schema. Same native prepared transaction, source retention, busy/stale guards and Undo."
+    },
+    "adobe": {
+      "new_route": null,
+      "scope": "No dedicated published operation. Unqualified blurGallery actionJSON and editable PSD/PSB descriptors reject explicitly; native gallery API remains distinct. Existing other Adobe jobs preserved."
+    },
+    "menus": {
+      "new_bindings": 5,
+      "entries": 802,
+      "bound": 253,
+      "unavailable": 472,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "paths": [
+        "Filter > Blur Gallery > Field Blur\u2026",
+        "Filter > Blur Gallery > Iris Blur\u2026",
+        "Filter > Blur Gallery > Tilt-Shift\u2026",
+        "Filter > Blur Gallery > Path Blur\u2026",
+        "Filter > Blur Gallery > Spin Blur\u2026"
+      ]
+    },
+    "qualification": "All90 focused Debug and90 optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_185.json"
+  },
+  "lens_correction_step186": {
+    "reference": "docs/LENS_CORRECTION_REFERENCES.json",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set",
+        "actions.manage",
+        "actions.play",
+        "actions.batch"
+      ],
+      "filter_kind": "lensCorrection",
+      "parameter": "lens",
+      "catalogue_count": 70,
+      "native_archive_version": 30,
+      "state": "Strict settings/default/schema, generic estimator and custom profile coefficients, native draft settings/tool/preview/grid/zoom/effective scale/history and busy availability. Same engine/transactions/selection/locks and undo. Actions/batch are existing shared routes, not new commands."
+    },
+    "adobe": {
+      "new_route": null,
+      "scope": "Unqualified lensCorrection actionJSON and editable PSD/PSB descriptors reject explicitly. No Adobe operation was invented. Existing rendered raster exports and other qualified jobs remain."
+    },
+    "menus": {
+      "new_bindings": 1,
+      "entries": 802,
+      "bound": 254,
+      "unavailable": 471,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "paths": [
+        "Filter > Lens Correction\u2026"
+      ],
+      "shortcut": "Shift+Command+R",
+      "unbound": "File > Automate > Lens Correction\u2026 remains unbound. Lens actions can already run through the native Batch workspace and API."
+    },
+    "qualification": "97 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the current packaged candidate remains step185 and does not include Lens Correction.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_186.json",
+    "later_family_qualification": {
+      "step": "dev-step-188",
+      "tests": 1816,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261027T112757Z-188-vanishing-point/source01.json",
+      "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+      "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json",
+      "note": "Later family batch includes Lens Correction, Adaptive Wide Angle and Vanishing Point. Earlier milestone records remain historical. Exact/live/platform parity remains open."
+    }
+  },
+  "wide_angle_step187": {
+    "reference": "docs/WIDE_ANGLE_REFERENCES.json",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set",
+        "actions.manage",
+        "actions.play",
+        "actions.batch"
+      ],
+      "filter_kind": "adaptiveWideAngle",
+      "parameter": "wideAngle",
+      "catalogue_count": 70,
+      "native_archive_version": 31,
+      "state": "Strict settings/schema/defaults plus active workspace settings, tool, preview/rendering, overlays, zoom, selected constraint/segment, pending polygon count, resolved model and local history availability. Existing command routes share the native engine and transactions."
+    },
+    "adobe": {
+      "new_route": null,
+      "scope": "No new Adobe route. Unqualified adaptiveWideAngle actionJSON and editable PSD/PSB descriptors reject. Existing rendered raster output remains available."
+    },
+    "menus": {
+      "new_bindings": 1,
+      "entries": 802,
+      "bound": 255,
+      "unavailable": 470,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "paths": [
+        "Filter > Adaptive Wide Angle\u2026"
+      ],
+      "shortcut": "Option+Shift+Command+A"
+    },
+    "qualification": "107 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the last packaged candidate remains step185 and excludes Lens Correction and Adaptive Wide Angle.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_187.json",
+    "later_family_qualification": {
+      "step": "dev-step-188",
+      "tests": 1816,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261027T112757Z-188-vanishing-point/source01.json",
+      "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+      "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json",
+      "note": "Later family batch includes Lens Correction, Adaptive Wide Angle and Vanishing Point. Earlier milestone records remain historical. Exact/live/platform parity remains open."
+    }
+  },
+  "vanishing_point_step188": {
+    "reference": "docs/VANISHING_POINT_REFERENCES.json",
+    "api": {
+      "commands": [
+        "filter.vanishingPoint"
+      ],
+      "catalogue_count": 71,
+      "native_archive_version": 32,
+      "state": "Strict settings/operation schemas; document and workspace saved settings plus resolved plane corners/metric dimensions; active tool, selection, preview/rendering, navigation and local history availability. Existing revision/busy/sharing protections apply.",
+      "parameters": [
+        "layerID",
+        "settings",
+        "operations",
+        "newLayer"
+      ]
+    },
+    "adobe": {
+      "new_route": null,
+      "scope": "No invented Adobe route. Unqualified Vanishing Point actionJSON and editable PSD/PSB plane metadata reject. Rendered raster export remains available."
+    },
+    "menus": {
+      "new_bindings": 1,
+      "entries": 802,
+      "bound": 256,
+      "unavailable": 469,
+      "primary_shortcuts": 102,
+      "alternate_shortcuts": 8,
+      "paths": [
+        "Filter > Vanishing Point\u2026"
+      ],
+      "shortcut": "Option+Command+V"
+    },
+    "qualification": "All117 focused Debug and1816 full optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_188.json"
+  },
+  "brushes_step189": {
+    "reference": "docs/BRUSH_REFERENCES.json",
+    "qualification": "All 103 focused Debug and 1834 full optimized tests pass. The universal macOS 14+ package verifies. Full parity remains open.",
+    "native_commands": [
+      "brush.configure",
+      "brush.presets",
+      "paint.stroke"
+    ],
+    "adobe_status": "Published execute-actions brush resources and brush/path action descriptors remain unsupported. Existing routes continue to reject unqualified fields/descriptors. No dedicated freehand endpoint is present in the pinned contract. ABR transport support does not imply Firefly job compatibility.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_189.json"
+  },
+  "painting_tools_step190": {
+    "reference": "docs/PAINT_TOOL_REFERENCES.json",
+    "qualification": "All 184 focused Debug and 1851 full optimized tests pass. The universal macOS 14+ package verifies. Full parity remains open.",
+    "native_commands": [
+      "paint.configure",
+      "paint.tool",
+      "paint.mixer"
+    ],
+    "adobe_status": "No dedicated new freehand painting endpoint in pinned Photoshop v2 contract. Published execute-actions brush resources and tool/actionJSON descriptors remain unsupported; no compatibility claim or invented route. Existing conformance regressions run in the full suite.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_190.json"
+  },
+  "adjustment_brush_step191": {
+    "reference": "docs/ADJUSTMENT_BRUSH_REFERENCES.json",
+    "qualification": "All156 focused Debug and156 focused optimized checks pass. Full regression and universal packaging are batched with the next major selection increment; the last verified package190 does not contain191.",
+    "native_commands": [
+      "adjustmentBrush.configure",
+      "adjustmentBrush.stroke",
+      "adjustmentBrush.object",
+      "adjustmentBrush.edit"
+    ],
+    "adobe_status": "No dedicated Adjustment Brush endpoint in the pinned published contract. Masked freehand tool/actionJSON descriptors remain unqualified/unsupported; existing classic adjustment routes retain their bounded coverage.",
+    "shortcut_decision": "Factory Frame/K preserved; Adjustment Brush unassigned.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_191.json",
+    "subsequent_batch_checkpoint": "docs/ACTIVE_CHECKPOINT_192.json"
+  },
+  "selection_tools_step192": {
+    "reference": "docs/SELECTION_TOOL_REFERENCES.json",
+    "qualification": "All155 broad focused Debug checks,7 final dedicated workflow checks and1876 full optimized tests pass. The universal macOS14+ package verifies and includes191 Adjustment Brush. Full parity remains open.",
+    "native_commands": [
+      "selection.configure",
+      "selection.quick",
+      "selection.object",
+      "selection.brush"
+    ],
+    "adobe_status": "No dedicated selection-tool route in the pinned published v2 contract. Tool/actionJSON descriptors remain unqualified; no invented Adobe route or model equivalence claim. Existing interfaces retain their coverage.",
+    "shortcut_decision": "Factory W group retained. Selection Brush has no primary shortcut. Full L-group cycling equivalence is unqualified.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_192.json"
+  },
+  "sky_step193": {
+    "reference": "docs/SKY_REFERENCES.json",
+    "qualification": "All113 focused Debug and113 optimized tests pass. The universal macOS14+ package verifies. Last full regression is1876 passing tests at192; the next major batch will broaden again. Full parity remains open.",
+    "native_commands": [
+      "selection.sky",
+      "sky.replace",
+      "sky.library"
+    ],
+    "adobe_status": "No dedicated Sky route in the pinned Photoshop v2 contract. Corresponding actionJSON descriptors remain unqualified. Existing Adobe routes retain their coverage; this adds three Photato operations, not new Adobe equivalence.",
+    "menus": {
+      "new_menu_bindings": 2,
+      "commands": [
+        "Select > Sky",
+        "Edit > Sky Replacement\u2026"
+      ],
+      "shortcut": "Captured factory menu positions retained; no invented primary shortcut.",
+      "entries": 802,
+      "bound_leaf_commands": 261,
+      "unavailable_leaf_commands": 464,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_193.json",
+    "subsequent_batch_checkpoint": "docs/ACTIVE_CHECKPOINT_194.json"
+  },
+  "focus_area_step194": {
+    "reference": "docs/FOCUS_AREA_REFERENCES.json",
+    "qualification": "All83 final focused Debug and1903 full optimized tests pass. The universal macOS14+ package verifies and includes193 Sky workflows. Full parity remains open.",
+    "native_commands": [
+      "selection.focus"
+    ],
+    "adobe_status": "No dedicated Focus Area route in pinned Photoshop v2 contract. Focus actionJSON descriptors remain unqualified. Existing Adobe routes are unchanged; native API support does not establish Adobe conformance.",
+    "menus": {
+      "new_menu_bindings": 1,
+      "commands": [
+        "Select > Focus Area\u2026"
+      ],
+      "shortcut": "Captured factory menu order retained; no primary shortcut invented. Local Undo/Redo routing shared with Select and Mask.",
+      "entries": 802,
+      "bound_leaf_commands": 262,
+      "unavailable_leaf_commands": 463,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_194.json"
+  },
+  "mask_all_objects_step195": {
+    "step": "dev-step-195",
+    "reference": "docs/MASK_ALL_OBJECTS_REFERENCES.json",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_195.json",
+    "native_api": {
+      "commands": [
+        "layer.maskAllObjects"
+      ],
+      "catalogue_count": 90,
+      "parameters": {
+        "layerID": "Required raster layer UUID"
+      },
+      "state": "maskAllObjects.available and busy; groups use existing layer/mask/hierarchy state. API explicitly targets layerID independently of desktop multi-selection.",
+      "results": "Standard document-state result plus createdGroupIDs in bottom-to-top order. Schemas and capabilities exposed. Same prepared native command, one Undo transaction, stale/busy/cancel/revoke and post-edit resource checks.",
+      "limits": "Native8,388,608 canvas pixels/6000 per side,64 detected instances,16,777,216 aggregate mask pixels,256MiB worst-case padded tile allocation and512 document layers. API4,194,304 pixels/64 layers/128MiB document data;4MiB requests. Limits reject the entire operation without dropping objects.",
+      "formats": {
+        "native_archive": 32,
+        "recorded_actions": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    "adobe_api": {
+      "new_route": null,
+      "contract": "docs/contracts/adobe-photoshop-v2.json",
+      "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+      "status": "Pinned published contract has no dedicated Mask All Objects route. auto-crop object detection yields bounding boxes, not editable masked groups. Mask All Objects actionJSON descriptors remain unqualified and explicitly unsupported; no invented Adobe endpoint. Existing v2 routes unchanged.",
+      "previous_live_contract_review": "artifacts/runs/20261027T152723Z-193-sky/adobe-v2-review01.json"
+    },
+    "menus": {
+      "commands": [
+        "Layer > Mask All Objects",
+        "Layer context > Mask All Objects"
+      ],
+      "new_menu_bindings": 1,
+      "shortcut": "Captured factory order retained; no shortcut invented. Context menu integration tested; exact context order/live appearance not qualified.",
+      "entries": 802,
+      "bound_leaf_commands": 263,
+      "unavailable_leaf_commands": 462,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "qualification": "All82 focused Debug and82 optimized tests pass. Real Apple Vision inference succeeds on the1024\u00d71024 icon with source retention and Undo/Redo. Latest full/universal baseline194 has1903 passing tests and excludes195.",
+    "subsequent_batch_checkpoint": "docs/ACTIVE_CHECKPOINT_196.json"
+  },
+  "object_finder_step196": {
+    "step": "dev-step-196",
+    "reference": "docs/OBJECT_FINDER_REFERENCES.json",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_196.json",
+    "photato_api": {
+      "commands": [
+        "selection.findObjects",
+        "selection.hoverObject",
+        "selection.selectFoundObject"
+      ],
+      "expanded_commands": [
+        "selection.configure",
+        "selection.object"
+      ],
+      "catalogue_count": 93,
+      "state": "objectFinder: available/enabled/busy/ready/cacheID/hoveredID/error/hardEdge/overlayColor and instance IDs/bounds. Strict parameter/state/result schema discovery.",
+      "results": "Standard updated document state. findObjects includeMasks=true additionally returns full-canvas row-major UInt8 coverageBase64 per instance. Cache IDs guard hover/selection and cannot be reused after source/tool/lifecycle invalidation or refresh.",
+      "history": "Detection, hover and refresh do not dirty source or create Undo. Cached selection uses shared selectionCoverage preparation and one Undo; Actions4 records exact resulting coverage for its canvas.",
+      "limits": "Native8,388,608 canvas pixels/6000 per side;64 instances/16,777,216 aggregate raw mask bytes and conservative256MiB padded-tile budget shared with195. Optional base64 response at mostabout22.4MB plus JSON metadata. Shared API4,194,304 canvas pixels/64 layers/128MiB document data;4MiB requests.",
+      "formats": {
+        "native_archive": 32,
+        "recorded_actions": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    "adobe_api": {
+      "new_route": null,
+      "status": "No dedicated Object Finder hover/selection endpoint in pinned v2. Auto-crop object bounding boxes are a different operation; no invented route or unverified actionJSON claim. Existing Adobe routes unchanged."
+    },
+    "menus": {
+      "new_menu_bindings": 0,
+      "entries": 802,
+      "bound_leaf_commands": 263,
+      "unavailable_leaf_commands": 462,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8,
+      "integration": "Existing Object Selection/W retained; native option controls expand. Escape cancels background detection. No factory menu/shortcut replacement. CSV reviewed unchanged because it inventories menu commands and has no Object Finder tool row."
+    },
+    "qualification": "All70 final focused Debug and1920 full optimized tests pass. The universal macOS14+ package verifies and includes195 Mask All Objects. Real local Vision detect/hit/select/save/Undo succeeds."
+  },
+  "select_people_step197": {
+    "reference": "docs/PEOPLE_SELECTION_REFERENCES.json",
+    "scope": "Person-specific on-device instance detection, thumbnails, actual hover masks, whole-person multi-selection, four modes/Hard Edge, Select and Mask handoff, history/Actions and API.",
+    "qualification": "All46 focused Debug and46 optimized tests pass;9 optimized menu checks also pass. Real local Vision finds1 person in a portrait and2 in an overlapping two-person photo; selection, source retention, native save and Undo/Redo succeed. Latest full1920-test/universal baseline196 excludes197.",
+    "native_commands": [
+      "selection.findPeople",
+      "selection.hoverPerson",
+      "selection.selectPeople"
+    ],
+    "catalogue_count": 96,
+    "adobe_route": null,
+    "menu_changes": 0,
+    "open": "Semantic parts/exact/live/platform/full S03 parity."
+  },
+  "people_features_step198": {
+    "reference": "docs/PEOPLE_FEATURE_REFERENCES.json",
+    "api": {
+      "new_bindings": 0,
+      "integration": "Select People button/popover in existing Object Selection options; W unchanged. Escape cancels/clears picker. Menu CSV reviewed unchanged because no corresponding menu row."
+    },
+    "qualification": "All61 focused Debug and1933 full optimized tests pass. The universal macOS14+ package includes197 Select People and the native feature model; fresh extraction verifies both architectures, signature and model provenance. Xcode Debug build also passes."
+  },
+  "live_shapes_step199": {
+    "status": "Functional workflow tested; full parity open",
+    "reference": "docs/SHAPE_REFERENCES.json",
+    "scope": "Native live shape tools, properties, shared paints and strokes, compound components, shape/path/pixels outputs, custom presets, history, native33 and Actions5/API.",
+    "photato_api": {
+      "commands": [
+        "shape.edit",
+        "shape.configure",
+        "shape.library"
+      ],
+      "command_count": 99,
+      "state": "shapes tool/template/mode/combine/preset/library state; each layer shape/shapeTransform",
+      "schemas": "ShapeAPI definition/component/paint/stroke/state/results/defaults; strict unknown-field and bounded validation",
+      "history": "Shared prepared native transactions for document edits; session/library mutations do not add document Undo.",
+      "persistence": "native33, Actions5 with captured pattern resources; native photatoshapes1 library",
+      "limits": "64 components/8MP rasterization;128 presets/16MiB;API import base64<=3000000 chars; existing request4MiB/shared4MP/64-layer/128MiB limits."
+    },
+    "adobe_api": "No dedicated shape route in pinned Photoshop v2 contract. Proprietary shape actionJSON descriptors and editable PSD interchange remain unqualified; no fabricated routes. Existing Adobe route regression coverage remains independent.",
+    "menus": [
+      "Window > Shapes",
+      "Edit > Define Custom Shape\u2026",
+      "Layer > Rasterize > Shape"
+    ],
+    "qualification": "All80 focused Debug and1944 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance."
+  },
+  "pen_paths_step200": {
+    "status": "Primary native workflow implemented; full parity open",
+    "reference": "docs/PATH_WORKFLOW_REFERENCES.json",
+    "qualification": "All100 focused Debug and1951 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api_commands": [
+      "path.configure",
+      "path.draw",
+      "path.edit",
+      "path.trace",
+      "path.paint"
+    ],
+    "menus": "Existing Paths/Vector Mask menus unchanged; P group adds Freeform/Curvature and Paths panel commands.",
+    "adobe": "No dedicated path route in pinned v2 contract. Native geometry/raster transactions shared; no claim of added execute-actions path descriptor support."
+  },
+  "advanced_typography_step201": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/ADVANCED_TYPOGRAPHY_REFERENCES.json",
+    "qualification": "All 70 focused Debug and 1959 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "font.inspect",
+        "text.glyph"
+      ],
+      "expanded": [
+        "text.create",
+        "text.set"
+      ],
+      "typed_command_count": 106,
+      "parameters": "font.inspect: installed PostScript font, start/count (1\u2013512). text.glyph: layerID/font/glyphID, optional UTF-16 location/length. Type descriptions: orientation, style.fontOptions features/variations/language and glyphOverride. Omitted font option arrays default empty.",
+      "state": "layers[].text and capabilities.text.fonts expose orientation/options, schemas, installed font inspection and limits. Shared desktop/API glyph insertion retains character/paragraph state.",
+      "guards": "Existing authentication, share, revision, lock and interaction guards; read inspection also requires a settled editor. Invalid scalar splits/axes/options reject before mutation.",
+      "native_version": 34,
+      "actions_version": 6
+    },
+    "menus": {
+      "newly_bound": [
+        "Window > Glyphs",
+        "Type > Panels > Glyphs Panel",
+        "Type > Orientation > Horizontal",
+        "Type > Orientation > Vertical",
+        "Type > OpenType > Standard Ligatures",
+        "Type > OpenType > Contextual Alternates",
+        "Type > OpenType > Discretionary Ligatures",
+        "Type > OpenType > Swash",
+        "Type > OpenType > Oldstyle",
+        "Type > OpenType > Stylistic Alternates",
+        "Type > OpenType > Titling Alternates",
+        "Type > OpenType > Ornaments",
+        "Type > OpenType > Ordinals",
+        "Type > OpenType > Fractions"
+      ],
+      "toolbar": "Vertical Type joins the existing T group; factory ordering/shortcuts retained."
+    },
+    "adobe": {
+      "routes": [
+        "POST /v2/create-composite"
+      ],
+      "scope": "Existing text_layer add/edit now accepts textOrientation horizontal/vertical and capsOption normal_caps/small_caps. Shared native engine and editable PSD job output.",
+      "limits": "Arbitrary OpenType tags, variable axes, glyph IDs and language tags are native-only: the pinned published contract has no matching fields. Other pre-existing text adapter restrictions remain; no full Adobe/cloud/font-service compatibility claim."
+    },
+    "supersedes": "Earlier statements that all vertical/OpenType text is unsupported; historical qualification remains scoped to its original checkpoint."
+  },
+  "shaped_text_step202": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/SHAPED_TEXT_REFERENCES.json",
+    "qualification": "All 89 focused Debug and 1966 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "text.layout"
+      ],
+      "expanded": [
+        "text.create",
+        "text.set",
+        "text.glyph"
+      ],
+      "typed_command_count": 107,
+      "parameters": "layerID, settings, optional enabled/pathID. settings replace the full layout with native defaults for omitted fields: mode, width/height, path, warp style/bend/horizontalDistortion/verticalDistortion/vertical, fit, start/end, reverse, offset, wordSpacing/lineSpacing. enabled=false removes geometry and takes no settings/pathID.",
+      "coordinates": "Logical type pixels before layer affine transform. start/end are fractions of baseline length. pathID copies document path coordinates into the logical type frame. Later saved-path edits are independent.",
+      "state": "layers[].text.geometry and capabilities.text.layout expose settings, schemas, limits, persistence and qualification.",
+      "guards": "Authentication/share/revision/interaction/locks and prepared-operation cancellation/revocation; invalid settings400; stale/busy409. Desktop and API share an atomic type command that compensates normalized bounds without moving the logical anchor or mask.",
+      "native_version": 35,
+      "actions_version": 7
+    },
+    "menus": {
+      "newly_bound": [
+        "Type > Warp Text\u2026"
+      ],
+      "other_entry_points": [
+        "Properties > Type > Text Layout",
+        "Type tool Warp / Path Text controls"
+      ],
+      "shortcuts": "Factory catalog retained; Warp Text has no primary shortcut."
+    },
+    "adobe": {
+      "routes": [],
+      "scope": "Existing native text/job engine preserved. No dedicated shaped-text fields or endpoint in the pinned contract, so no invented Adobe route.",
+      "limits": "Editable shaped PSD output rejects explicitly; flattened image export remains available. No Adobe output/font/composer equivalence claimed."
+    },
+    "supersedes": "Earlier statements that all shaped text is unsupported; historical qualification remains scoped to its original checkpoint."
+  },
+  "filter_gallery_step203": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/FILTER_GALLERY_REFERENCES.json",
+    "qualification": "All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "typed_command_count": 107,
+      "filter_kind": "filterGallery",
+      "parameter": "artistic",
+      "settings": "effects array in application order, first runs first. Each has filter, visible, values, foreground/background/glowColor. Integer controls and zero-based choices; boolean controls0/1; colors RGBA0...1. Omitted controls use catalogue defaults.",
+      "state": "capabilities.filters.filterGallery includes full47-effect catalogue, typed schemas, defaults/choice lists, limits and qualification; document filterGallery exposes availability/workspace/preview/selection/local-history and settings. Existing Smart Filter state exposes saved settings.",
+      "history": "Shared cancellable prepared native command; selection and locks preserved, Smart Object source retained; stale/busy409, malformed400.",
+      "native_version": 36,
+      "actions_version": 8
+    },
+    "menus": {
+      "newly_bound": [
+        "Filter > Filter Gallery\u2026"
+      ],
+      "shortcuts": "Factory order/title retained; no primary factory shortcut for this dialog."
+    },
+    "adobe": {
+      "routes": [],
+      "existing_route": "Published /v2/execute-actions covers artistic filters but exact Gallery descriptors are not independently qualified. Existing supported descriptors remain unchanged; Gallery returns explicit unsupported rather than invented Adobe fields.",
+      "limits": "Adobe-compatible Gallery actions and editable PSD mappings remain tracked gaps. Native APIs are complete for this increment; no Adobe parity claim."
+    },
+    "supersedes": "Earlier statements that all Filter Gallery effects are unavailable; historical evidence remains scoped to its original checkpoint."
+  },
+  "photo_detail_step206": {
+    "status": "Native workflows implemented; full parity open",
+    "reference": "docs/PHOTO_DETAIL_REFERENCES.json",
+    "qualification": "All45 final focused Debug and1980 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "kinds": [
+        "smartSharpen",
+        "reduceNoise"
+      ],
+      "parameters": [
+        "sharpen",
+        "denoise"
+      ],
+      "state": "photoDetail availability/workspace/preview state; complete parameter schemas and capabilities",
+      "native_version": 37,
+      "actions_version": 9,
+      "adobe": "Published execute-actions supports Smart Sharpen, but exact descriptors and editable PSD are not independently qualified. Both new descriptor families explicitly reject; no invented Adobe routes.",
+      "limits": "8MP RGB raster/Smart Object layers; component/auxiliary channel targets unsupported. Selection and locks apply. RGB8/16 encoded, RGB32 linear unclipped. Original alpha and zero-alpha hidden samples retained. Source defaults, not verified Adobe defaults."
+    },
+    "menus": [
+      "Filter > Sharpen > Smart Sharpen\u2026",
+      "Filter > Noise > Reduce Noise\u2026"
+    ],
+    "supersedes": "Earlier pending-only entries for Smart Sharpen and Reduce Noise; prior evidence remains scoped to its checkpoint."
+  },
+  "lens_blur_step207": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/LENS_BLUR_REFERENCES.json",
+    "qualification": "53 focused/1990 full optimized tests at207; combined208 universal package verifies with1991 full optimized tests.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "kind": "lensBlur",
+      "parameter": "lensBlur",
+      "native_commands": 107,
+      "archive": 38,
+      "actions": 10,
+      "observable_state": "lensBlur availability/workspace/previewBusy/filter/depthSources/history/zoom",
+      "adobe": "No invented route or descriptor. Lens Blur editable Photoshop actionJSON/PSD rejects until independently qualified."
+    },
+    "menus": [
+      "Filter > Blur > Lens Blur\u2026"
+    ],
+    "native_extension": "Editable Lens Blur Smart Filter is Photato-specific; Adobe excludes Lens Blur from Smart Filter support. Adobe actionJSON/PSD descriptors remain unqualified.",
+    "supersedes": "Earlier pending-only Lens Blur inventory; historical results retain original scope."
+  },
+  "window_presentation_step208": {
+    "reference": "docs/WINDOW_PRESENTATION_REFERENCES.json",
+    "qualification": "All 59 focused Debug and 1,991 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "native_commands": 107,
+      "state_field": "documents[].windowTitle",
+      "new_editing_commands": 0,
+      "adobe": "Presentation-only change; no Adobe v2 contract or route change."
+    },
+    "menu_change": "No command/shortcut change in208;207 binds Lens Blur. Current menu inventory802 entries/285 bound leaves/440 unavailable/102 primary/8 alternative shortcuts."
+  },
+  "document_modes_step220": {
+    "status": "In progress; focused native/menu tests pass, no full or live qualification",
+    "reference": "docs/DOCUMENT_MODE_REFERENCES.json",
+    "bound_paths": [
+      "Image > Mode > Grayscale",
+      "Image > Mode > RGB Color",
+      "Image > Mode > CMYK Color",
+      "Image > Mode > Lab Color",
+      "Image > Mode > 8 Bits/Channel",
+      "Image > Mode > 16 Bits/Channel",
+      "Image > Mode > 32 Bits/Channel"
+    ],
+    "current_source_counts": {
+      "entries": 802,
+      "bound_leaf_commands": 347,
+      "unavailable_leaf_commands": 378,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "report": "artifacts/runs/20261028T052601Z-220-document-modes/mode-ui03-menu-report.json",
+    "shortcut_change": "None; observed inventory/order/factory shortcuts unchanged."
+  },
+  "restricted_modes_step221": {
+    "paths": [
+      "Image > Mode > Indexed Color\u2026",
+      "Image > Mode > Bitmap",
+      "Image > Mode > Color Table\u2026"
+    ],
+    "shortcuts": "No factory shortcuts assigned; existing catalogue hierarchy/titles retained.",
+    "native_report": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/menu-controls04.json",
+    "tests": 215,
+    "full_parity": false,
+    "remaining": "Live/context/Adobe/numerical qualification remains open."
+  },
+  "proofing_step223": {
+    "reference": "docs/PROOFING_REFERENCES.json",
+    "report": "artifacts/runs/20261028T181113Z-223-proofing/menus12.json",
+    "bound_leaf_commands": 363,
+    "unavailable_leaf_commands": 362,
+    "note": "Eleven newly bound proof entries. Historical upper-level counts remain tied to their original stage; current report supersedes them."
+  },
+  "printing_step224": {
+    "status": "Native printing, hard proofs and ink separation output pass65 focused and2351 full optimized tests. Universal macOS14+ build224 is verified and uploaded as a private draft; installed221 is unchanged. Physical/live/exact/platform and full COL03 remain open.",
+    "reference": "docs/PRINTING_REFERENCES.json",
+    "native_report": "artifacts/runs/20261028T185522Z-224-native-print/menus-release13.json",
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "color_profiles_step225": {
+    "status": "Native Assign Profile/Convert to Profile, untagged persistence and shared Photato/Adobe output ICC conversion pass60 integration,33 repair-focused and2,364 full optimized tests. Source14 retains2,248 unchanged inputs. Color Settings/policies, full COL01, exact/live/platform and semantic Actions remain open. Qualified/uploaded224 and installed221 are unchanged.",
+    "reference": "docs/COLOR_PROFILE_REFERENCES.json",
+    "native_report": "artifacts/runs/20261028T200506Z-225-color-profiles/menus-release16.json",
+    "entries": 802,
+    "bound_leaf_commands": 367,
+    "unavailable_leaf_commands": 358,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "optimized_tests": "artifacts/runs/20261028T200506Z-225-color-profiles/release15.log"
+  },
+  "foss_release_update": {
+    "step": 237,
+    "removed_product_addition": "Help > Support Development\u2026",
+    "reason": "Maintainer chose pure FOSS; no Photoshop reference command was removed.",
+    "report": "artifacts/runs/20261029T015500Z-237-foss-release/menu-after01.json"
   }
 }

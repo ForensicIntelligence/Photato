@@ -35,9 +35,9 @@ final class DuplicateLayerWorkflowTests: XCTestCase {
     XCTAssertEqual(store.activeLayer?.name, "Renamed copy")
     XCTAssertEqual(store.session.undoStack.count, 1)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
   @MainActor func testMultipleSelectedLayersAndContextSelection() async throws {
@@ -59,7 +59,7 @@ final class DuplicateLayerWorkflowTests: XCTestCase {
     XCTAssertEqual(store.duplicateLayerDraft?.roots.map(\.id), [ids[1]])
     store.cancelDuplicate()
   }
-  @MainActor func testDraftBlocksEditsAndStaleSourceSelectionFails() throws {
+  @MainActor func testDraftBlocksEditsAndStaleSourceSelectionFails() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     store.beginDuplicate()
@@ -68,7 +68,7 @@ final class DuplicateLayerWorkflowTests: XCTestCase {
     store.select(original.layers[2].id)
     store.addPixelLayer()
     store.newGroup()
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
     XCTAssertFalse(store.canBeginLevels)
     XCTAssertFalse(store.canBeginDuplicate)
@@ -108,7 +108,7 @@ final class DuplicateLayerWorkflowTests: XCTestCase {
     XCTAssertEqual(target.store.document.layers.count, 2)
     XCTAssertEqual(target.store.session.undoStack.count, 1)
     XCTAssertEqual(target.store.activeLayer?.content, originalSource.layers[0].content)
-    target.store.undo()
+    await target.store.undo()
     XCTAssertEqual(target.store.document, originalTarget)
   }
   @MainActor func testStaleClosedAndBusyDestinationsAreRejected() async throws {

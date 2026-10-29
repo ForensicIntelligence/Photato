@@ -85,11 +85,11 @@ final class CoreTests: XCTestCase {
     let l = Layer(name: "Ink", content: .raster(try Surface(width: 16, height: 16)))
     try s.execute(.addLayer(l))
     try s.execute(.opacity(l.id, 0.5))
-    s.undo()
+    try s.undo()
     XCTAssertEqual(s.document.layers.last?.opacity, 1)
-    s.undo()
+    try s.undo()
     XCTAssertEqual(s.document, before)
-    s.redo()
+    try s.redo()
     XCTAssertEqual(s.document.layers.count, 2)
     try s.execute(.renameLayer(l.id, "Renamed"))
     XCTAssertTrue(s.redoStack.isEmpty)
@@ -138,7 +138,7 @@ final class CoreTests: XCTestCase {
     try s.execute(.crop(IntRect(x: 2, y: 3, width: 10, height: 8)))
     XCTAssertEqual(s.document.width, 10)
     XCTAssertEqual(s.document.layers[0].x, -2)
-    s.undo()
+    try s.undo()
     XCTAssertEqual(s.document, before)
   }
   func testSelectionOutsideCanvasRejectedAtomically() throws {

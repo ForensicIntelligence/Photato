@@ -1,0 +1,523 @@
+{
+  "width": 17,
+  "height": 13,
+  "cases": [
+    {
+      "name": "blur",
+      "filter": {
+        "kind": "blur",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "blurMore",
+      "filter": {
+        "kind": "blurMore",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "sharpen",
+      "filter": {
+        "kind": "sharpen",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "sharpenMore",
+      "filter": {
+        "kind": "sharpenMore",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "sharpenEdges",
+      "filter": {
+        "kind": "sharpenEdges",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "despeckle",
+      "filter": {
+        "kind": "despeckle",
+        "classicDetail": {}
+      }
+    },
+    {
+      "name": "radial-spin-10-0.5",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "spin",
+          "amount": 10,
+          "centerX": 0.5,
+          "centerY": 0.5,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-spin-10-0.2",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "spin",
+          "amount": 10,
+          "centerX": 0.2,
+          "centerY": 0.8,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-spin-75-0.5",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "spin",
+          "amount": 75,
+          "centerX": 0.5,
+          "centerY": 0.5,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-spin-75-0.2",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "spin",
+          "amount": 75,
+          "centerX": 0.2,
+          "centerY": 0.8,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-zoom-10-0.5",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "zoom",
+          "amount": 10,
+          "centerX": 0.5,
+          "centerY": 0.5,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-zoom-10-0.2",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "zoom",
+          "amount": 10,
+          "centerX": 0.2,
+          "centerY": 0.8,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-zoom-75-0.5",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "zoom",
+          "amount": 75,
+          "centerX": 0.5,
+          "centerY": 0.5,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "radial-zoom-75-0.2",
+      "filter": {
+        "kind": "radialBlur",
+        "classicDetail": {
+          "method": "zoom",
+          "amount": 75,
+          "centerX": 0.2,
+          "centerY": 0.8,
+          "radialQuality": "best"
+        }
+      }
+    },
+    {
+      "name": "shape-circle",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "circle"
+        }
+      }
+    },
+    {
+      "name": "shape-ring",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "ring"
+        }
+      }
+    },
+    {
+      "name": "shape-square",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "square"
+        }
+      }
+    },
+    {
+      "name": "shape-diamond",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "diamond"
+        }
+      }
+    },
+    {
+      "name": "shape-triangle",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "triangle"
+        }
+      }
+    },
+    {
+      "name": "shape-hexagon",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "hexagon"
+        }
+      }
+    },
+    {
+      "name": "shape-star",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "star"
+        }
+      }
+    },
+    {
+      "name": "shape-heart",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "heart"
+        }
+      }
+    },
+    {
+      "name": "shape-cross",
+      "filter": {
+        "kind": "shapeBlur",
+        "classicDetail": {
+          "radius": 7,
+          "shape": "cross"
+        }
+      }
+    },
+    {
+      "name": "smart-low-normal",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "low",
+          "mode": "normal"
+        }
+      }
+    },
+    {
+      "name": "smart-low-edgeOnly",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "low",
+          "mode": "edgeOnly"
+        }
+      }
+    },
+    {
+      "name": "smart-low-overlayEdge",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "low",
+          "mode": "overlayEdge"
+        }
+      }
+    },
+    {
+      "name": "smart-medium-normal",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "medium",
+          "mode": "normal"
+        }
+      }
+    },
+    {
+      "name": "smart-medium-edgeOnly",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "medium",
+          "mode": "edgeOnly"
+        }
+      }
+    },
+    {
+      "name": "smart-medium-overlayEdge",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "medium",
+          "mode": "overlayEdge"
+        }
+      }
+    },
+    {
+      "name": "smart-high-normal",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "high",
+          "mode": "normal"
+        }
+      }
+    },
+    {
+      "name": "smart-high-edgeOnly",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "high",
+          "mode": "edgeOnly"
+        }
+      }
+    },
+    {
+      "name": "smart-high-overlayEdge",
+      "filter": {
+        "kind": "smartBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 35,
+          "quality": "high",
+          "mode": "overlayEdge"
+        }
+      }
+    },
+    {
+      "name": "surface-2-15",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 2,
+          "threshold": 15
+        }
+      }
+    },
+    {
+      "name": "surface-2-80",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 2,
+          "threshold": 80
+        }
+      }
+    },
+    {
+      "name": "surface-8-15",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 15
+        }
+      }
+    },
+    {
+      "name": "surface-8-80",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 8,
+          "threshold": 80
+        }
+      }
+    },
+    {
+      "name": "surface-20-15",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 20,
+          "threshold": 15
+        }
+      }
+    },
+    {
+      "name": "surface-20-80",
+      "filter": {
+        "kind": "surfaceBlur",
+        "classicDetail": {
+          "radius": 20,
+          "threshold": 80
+        }
+      }
+    },
+    {
+      "name": "median-1",
+      "filter": {
+        "kind": "median",
+        "classicDetail": {
+          "radius": 1
+        }
+      }
+    },
+    {
+      "name": "median-4",
+      "filter": {
+        "kind": "median",
+        "classicDetail": {
+          "radius": 4
+        }
+      }
+    },
+    {
+      "name": "median-12",
+      "filter": {
+        "kind": "median",
+        "classicDetail": {
+          "radius": 12
+        }
+      }
+    },
+    {
+      "name": "dust-1-0",
+      "filter": {
+        "kind": "dustAndScratches",
+        "classicDetail": {
+          "radius": 1,
+          "threshold": 0
+        }
+      }
+    },
+    {
+      "name": "dust-4-30",
+      "filter": {
+        "kind": "dustAndScratches",
+        "classicDetail": {
+          "radius": 4,
+          "threshold": 30
+        }
+      }
+    },
+    {
+      "name": "dust-12-255",
+      "filter": {
+        "kind": "dustAndScratches",
+        "classicDetail": {
+          "radius": 12,
+          "threshold": 255
+        }
+      }
+    }
+  ],
+  "source_hashes": {
+    "crates/algo/src/image.rs": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+    "crates/algo/src/blur.rs": "d11c5c232b902721308adadc406806d6cde13411a098628dc343bb7d74dd94a6",
+    "crates/algo/src/blur2.rs": "df060a6cddd56b6a31f4d27a0b7eeea5a65e79e877e8a34c8b75be0c2bd9b9a7",
+    "crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "crates/algo/src/sharpen.rs": "a26e43a6bdbda5d177ea58ae5d168eddf448c29d1211cddc048ba300e84c6119"
+  },
+  "license": "MIT OR Apache-2.0",
+  "provenance": "Original unchanged selected blur.rs/blur2.rs/noise.rs/sharpen.rs function bodies and image.sample/premultiply helpers; imports/types adapted. Canvas-edge read_clamped halo adapter; Shape Blur uses padded source bounds as the original engine does. Radial Best equals original64-sample cap. Full RGB8 synthetic image, alpha last. No Photoshop output references.",
+  "files": {
+    "surface-2-15.rgba": "1c8cd0ed48ba8f35461034d41a74a0691b56d24ecaa0890025930890327d37ae",
+    "dust-12-255.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "median-12.rgba": "f0894a6b795a29f3a5b803cc88dab5325f5f99a8fbef0d9f0bd950da324bee1e",
+    "shape-cross.rgba": "2ac4a57bf4e7ad585df7c8c3bbae5bb0f9c3beac242f185fcbe6ab97477df2ea",
+    "surface-2-80.rgba": "b7658fdab4458be7a561ee6bf823140862c499270e9da1219455acadda131adb",
+    "radial-spin-10-0.2.rgba": "731863b99f59a4ed9072c6518b0a4c41f4f47f2eae6a3250c3674d929472e68b",
+    "smart-medium-edgeOnly.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "radial-zoom-10-0.2.rgba": "f1c8cd1f7bf4fb3532a3179308149d6ea187b75e11910034d4ccacae05535080",
+    "surface-8-15.rgba": "43a803efffc345ce8d565bb0df8928be7f241d039fce2354aeb7f019c01499cf",
+    "median-4.rgba": "2a049a6302d6258ecbd76ea266c69ce3aa4a1b3582a15fc2581ef5229990e110",
+    "radial-zoom-10-0.5.rgba": "34df1fc159f7838806a62f74ef47838bbfd26ffa30f6f32c56699812a40db74a",
+    "radial-spin-10-0.5.rgba": "c3cf3b4463a3f5e42f3812345f216be88212a1516412221e19e3021fe13fc000",
+    "smart-medium-normal.rgba": "4a77e0cf1b6cfe988db24696bd0839d936dbd504fe6dc03683b6fae6770be2e0",
+    "despeckle.rgba": "6a5327c693143158f9f9d59be7775e775b5b5abc65f410a0c65dd73f4a893129",
+    "shape-heart.rgba": "07d1265f1aaea0bfcb85d9133ba1ca1a66543e4f173148f1dc47a384f1c26a58",
+    "smart-low-edgeOnly.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "surface-8-80.rgba": "e790c3164da5ecafedf076d2d169276950856e45692278579ad1d6a25ac1aa2a",
+    "blur.rgba": "7693702ac9ba78aac6ad4148ee07e97bba272f8e192a579021e82cfcfcc13e9d",
+    "smart-high-normal.rgba": "6caab37bd4bed9ffdd79a01b1219e1b765651f622ea3b9b45f90046308eea58d",
+    "sharpenEdges.rgba": "ec21df24634f5b7064aee7f9224e2e3b34a6c4c7f1c32b8082e23196ffbf7fe9",
+    "smart-high-edgeOnly.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "dust-4-30.rgba": "a5a7bf8ed17b68351d56d8a519a492bca6c958e627b62e98eee91fa36b06c0eb",
+    "shape-ring.rgba": "b212db192c6eb14d0d79a04f8724cb80c94c9bde72c8bc3160400acff1b3c786",
+    "input.rgba": "57569af0a680f677192a4b39a3e7f4720cc460f46b4e3876aaa809fb7e64ed68",
+    "surface-20-80.rgba": "f2f97bef432ff040f887634681837d29441123cc29a1f7fe7fa40d0f21fa1635",
+    "shape-square.rgba": "4405bcce435d3d37e5ad87a565f2503bb6f0a697469354f5fa7730a1b4e6db9c",
+    "shape-hexagon.rgba": "53f03cd7d61098b47c0ed61401a85ff1a94c7beec0cb656c4d81f7cdad83fc69",
+    "dust-1-0.rgba": "3c6d017471877beab3b1065a526e648c154012e8e5551dcd8f3c5fd7aea64724",
+    "radial-zoom-75-0.5.rgba": "5dbe924ba4639dbcc8350b97f10607050382b048f49e481647d80765c1cbc26a",
+    "radial-spin-75-0.5.rgba": "4a927bd95488aba5432998cea5caa96b4336fbd5ecdc3de83cfb2f0e66e400dd",
+    "shape-diamond.rgba": "bbad75098455751af733dd48cd46ab6c4e2b9563d2087efaf64f4c1e46d92f51",
+    "surface-20-15.rgba": "2a2eabe43d96c3717bbad8851059f4723304d86513e1b007e70016a35b3d5d8b",
+    "shape-triangle.rgba": "c5509cbf3a1d7f6509ae048297790c7ce2719f758546aa2e5542257e7a35e971",
+    "radial-spin-75-0.2.rgba": "20652e074791e82f84316ee32c0df3cea61482a3aac3ae7e8dbb5727d145d2ee",
+    "radial-zoom-75-0.2.rgba": "1de212e8523e3b0137ee9dd599073cfecd4aa42ae51e86c9e7ae6842579a7e46",
+    "smart-high-overlayEdge.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "sharpen.rgba": "df188f97ea9b66360167cafe3e22e226d25712c77899abda68954c72e8cd3faf",
+    "smart-low-overlayEdge.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "smart-medium-overlayEdge.rgba": "5c3b1e18b2c41669215f59271044e69bbe6b6fcba7327413b6e91dc968450b5c",
+    "shape-circle.rgba": "6cd645d10727561d7873783c23650954d405d159e7b1d4091bf4f09ea18d87ec",
+    "blurMore.rgba": "80b1f0cd69c6f9f61dd0528aa3300d19eec4bb8a094ac5f970d5faa4a7ea6da7",
+    "median-1.rgba": "3c6d017471877beab3b1065a526e648c154012e8e5551dcd8f3c5fd7aea64724",
+    "smart-low-normal.rgba": "4a77e0cf1b6cfe988db24696bd0839d936dbd504fe6dc03683b6fae6770be2e0",
+    "shape-star.rgba": "ed08def03eacf4e575590347dd1f7ac0084e334bbcc4b6832ae8eb5feea8904c",
+    "sharpenMore.rgba": "9c447f6916f0f825359f94140a4e1bfd0d468da4b90f474b54b1d04c5880950b"
+  }
+}

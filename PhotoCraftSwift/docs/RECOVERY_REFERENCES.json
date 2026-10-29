@@ -1,0 +1,148 @@
+{
+  "step": "dev-step-127",
+  "status": "Automatic recovery, native/HTTP snapshot and source-format/launch repairs qualified by focused/full/process tests and universal packaging; full D02 remains open",
+  "major_workflows": [
+    "D02",
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T041711Z-127-recovery-investigation",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/tested-source-hashes04.json",
+    "sha256": "c740ba933903a15c4614c5e089a8b640e7b6a003d04e669fb0af60b4fdf4ad0c"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_127.json",
+  "implementation": [
+    "Enable AppKit recovery at a600-second minimum interval and repair the previously crashing document initializer",
+    "Capture committed native version11 content without finishing field drafts or changing explicit source/dirty/history state",
+    "Expose the same snapshot operation and recovery state through the authenticated shared-document API",
+    "Repair native recovery source-format association, protect originals with Save As review and handle missing originals",
+    "Let AppKit decide initial blank creation after recovery; route document restoration to the native shared workspace",
+    "Verify actual automatic snapshots, SIGKILL/relaunch, exact content, source formats, close cleanup and clean startup in a disposable production-delegate process",
+    "Verify failed writes preserve prior backup/content/history/revision and can retry"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T041711Z-127-recovery-investigation/full01.log",
+      "sha256": "a9c5c9f017e44cb3f10d42af0802f596cb658437d7295f6c12017cfd3d94085f",
+      "passed": 1136,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.138
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T041711Z-127-recovery-investigation/release01.log",
+      "sha256": "bf4c066a5c7a2d55f659137bf990cc385923eb64ad7f27e9b7b289b93cc6e20f",
+      "passed": 1136,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 49.905
+    }
+  },
+  "focus": {
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 6.395,
+    "log": {
+      "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/focused04.log",
+      "sha256": "7ab4964a0d7d5a6b7be5f3ea781cfae679153715785108fa10cd2be392c6275e"
+    }
+  },
+  "process": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/process-verification04.json",
+    "sha256": "37b990677a782ff14324ff80085a2c40e0103bb3b8514738d88061722defb979"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/source-scope01.json",
+    "sha256": "0ac8762627fd4401a9b4341208f0013117a7010405d78ae22c315799cda51d97"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "document.autosave shares AppKit recovery with the desktop; recovery state/schema/capabilities and errors. Adobe has no equivalent live desktop recovery endpoint in the pinned contract."
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/package-verification01.json",
+    "sha256": "a0088fb50ad29799d87faeb463b6db56ac45b4b25365b0f013f109e44a51f902"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/external-references01.json",
+      "sha256": "0c02629e87b587c51167b356f354f570c8e44115768b7759e9116d4fd242fe6a"
+    },
+    {
+      "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/external-references02.json",
+      "sha256": "cec6a25dd25fe5464112776f4a780e5eb68ca6fb459db3e627db9a99e7d420ad"
+    },
+    {
+      "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/sdk-references01.json",
+      "sha256": "220c922170e81d7791c2af3fc9e49c64d6627402db4015d12be9c16eecc9153d"
+    }
+  ],
+  "prior_failures": [
+    "focused01 compile failure",
+    "process02 positional-argument startup error",
+    "process03 recovery format/extra blank defects",
+    "isolation03 directory preparation failure"
+  ],
+  "remaining": [
+    "D02: preferences for recovery interval/enablement, Photoshop presentation, all document/import/relaunch scenarios and window/tab layout recovery",
+    "D02: full disk-full/interrupted-write/power-loss durability, source identity/bookmark retention, backup retention and stale crash scratch cleanup",
+    "D02/I02: native autosave leaf remains synchronous; qualify large-document main-thread latency, concurrent editing and total memory",
+    "I02: active-document paging, bounded renderer/cache, history cleanup/accounting latency and total-process memory before raising public file/canvas/transfer limits; retain125 measured arm64 RSS limitation",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and complete live lifecycle",
+    "Combined118\u2013127 native/Photoshop live qualification; physical Intel/macOS14 full-app runtime and optional AI availability/real generation",
+    "All major workflows remain open; optional minor/history functions and final details follow only after major exit gates"
+  ],
+  "limits": "No new large-document memory/latency or power-loss claim; synchronous autosave leaf remains. Process tests use small owned fixtures and a1-second timer, production default600seconds.",
+  "recovery_undo_history": "Not restored across process death; only committed document content is saved. In-process autosaves preserve current history.",
+  "locations": "AppKit-managed; saved-document backups may be adjacent to originals. Paths are omitted from API.",
+  "recovery_source_step131": {
+    "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+    "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": 0,
+      "coverage": "Add recoverySource document state, schema, capabilities and409 source conflicts through shared native lifecycle. Preserve six-field recovery state and both wire interfaces. Paths/hashes/bookmarks stay local; ordinary Open/uploads ignore provenance."
+    }
+  },
+  "recovery_discovery_step132": {
+    "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_document_state": "recoveryRegistration",
+      "permission": "Separate native Allow recovery management, default off and revoked on stop/restart",
+      "coverage": "Same native discovery/decoder and lifecycle. Schema, state, permission/revocation, busy/stale/external-index failure and actual HTTP recovery tested. Recovered documents remain unshared. No source paths, names, bookmarks or image contents exposed by discovery state."
+    }
+  },
+  "document_closing_step133": {
+    "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+    "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-closing",
+        "POST /v1/document-closing",
+        "POST /v1/document-closing/cancel"
+      ],
+      "new_document_state": "closeOperationID",
+      "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+      "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+    }
+  }
+}

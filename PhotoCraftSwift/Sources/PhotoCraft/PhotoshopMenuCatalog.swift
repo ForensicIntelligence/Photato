@@ -1175,7 +1175,6 @@ enum PhotoshopMenuCatalog {
         .item("Port Status & Shortcuts"),
         .separator,
         .item("Open Source & Credits…"),
-        .item("Support Development…"),
         .item("Photato Automation API…"),
       ]),
   ]

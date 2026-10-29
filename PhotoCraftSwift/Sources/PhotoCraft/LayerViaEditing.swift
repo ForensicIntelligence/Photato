@@ -8,7 +8,8 @@ extension EditorStore {
     if document.selection == nil {
       return operation == .copy && canCopyWholeLayerViaMenu
     }
-    return LayerVia.canApply(to: layer, in: document)
+    return (operation != .cut || !document.isImageLocked(layer.id))
+      && LayerVia.canApply(to: layer, in: document)
   }
 
   func layerVia(_ operation: LayerViaOperation) {

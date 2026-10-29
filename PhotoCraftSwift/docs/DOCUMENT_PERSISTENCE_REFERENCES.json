@@ -204,5 +204,60 @@
   "release_verification": {
     "path": "artifacts/runs/20261019T185746Z-110-document-persistence/release-verification.json",
     "sha256": "2c5c137d5c9d7a351b6a3eeb4342bb4272c32c817a4f2083316c258e21f46139"
+  },
+  "atomic_persistence_step130": {
+    "reference": "docs/ATOMIC_PERSISTENCE_REFERENCES.json",
+    "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": 0,
+      "coverage": "Add atomicPersistence capability policy and recovery/preferences references. Shared local native/API saves and recovery use the same writer. Request/result/state schemas and Adobe wire contracts stay unchanged; Data downloads retain exact bytes."
+    }
+  },
+  "recovery_source_step131": {
+    "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+    "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": 0,
+      "coverage": "Add recoverySource document state, schema, capabilities and409 source conflicts through shared native lifecycle. Preserve six-field recovery state and both wire interfaces. Paths/hashes/bookmarks stay local; ordinary Open/uploads ignore provenance."
+    }
+  },
+  "recovery_discovery_step132": {
+    "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_document_state": "recoveryRegistration",
+      "permission": "Separate native Allow recovery management, default off and revoked on stop/restart",
+      "coverage": "Same native discovery/decoder and lifecycle. Schema, state, permission/revocation, busy/stale/external-index failure and actual HTTP recovery tested. Recovered documents remain unshared. No source paths, names, bookmarks or image contents exposed by discovery state."
+    }
+  },
+  "document_closing_step133": {
+    "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+    "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/document-closing",
+        "POST /v1/document-closing",
+        "POST /v1/document-closing/cancel"
+      ],
+      "new_document_state": "closeOperationID",
+      "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+      "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+    }
   }
 }

@@ -1,0 +1,188 @@
+{
+  "step": "dev-step-190",
+  "date": "2026-10-27",
+  "workflow": "B02",
+  "status": "Six native paint/eraser tools implemented and tested; full B02/Photoshop parity remains open.",
+  "scope": "Pencil with Auto Erase, Color Replacement, Mixer Brush, Pattern Stamp, Background Eraser and Magic Eraser; native toolbar/options/preview/history and shared APIs. Brush/Pencil create a transparent paint layer over nonraster content.",
+  "source_manifest": "artifacts/runs/20261027T131318Z-190-paint-tools/source02.json",
+  "source_manifest_sha256": "f56948ece59fafb07f5fd8a4ac53dd27fccd13bf2b550e70f6f8cd7c82ee4781",
+  "source_delta": "artifacts/runs/20261027T131318Z-190-paint-tools/changes02.json",
+  "provenance": {
+    "upstream": "https://github.com/storytold/photocraft",
+    "license": "MIT OR Apache-2.0",
+    "original_preserved": true,
+    "read": [
+      "../photocraft-main/crates/paint/src/mixer.rs first65lines",
+      "../photocraft-main/crates/paint/src/replace.rs first55lines",
+      "../photocraft-main/crates/engine/src/eraser_cmds.rs first60lines",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift tool availability",
+      "../photocraft-main/crates/paint/src/bg_erase.rs lines1\u2013160",
+      "../photocraft-main/crates/paint/src/replace.rs lines81\u2013185",
+      "../photocraft-main/crates/paint/src/mixer.rs lines63\u2013172",
+      "../photocraft-main/crates/engine/src/stamp_cmds.rs lines1\u2013170 (layer stamp variants, not Pattern Stamp)",
+      "../photocraft-main/crates/paint/src/bg_erase.rs complete, including source tests",
+      "../photocraft-main/crates/paint/src/replace.rs complete, including source tests",
+      "../photocraft-main/crates/paint/src/mixer.rs complete, including source tests",
+      "../photocraft-main/crates/engine/src/eraser_cmds.rs complete",
+      "../photocraft-main/crates/engine/src/brush_cmds.rs lines210\u2013280 and390\u2013490",
+      "Sources/PhotoCraftCore/Paint.swift, BrushPainter.swift, RetouchDabs.swift, ColorRegion.swift",
+      "Sources/PhotoCraftCore/Engine.swift command integration; LayerProtection.swift; RecordedActions.swift first120lines",
+      "Sources/PhotoCraft/BrushEditing.swift, AutomationBrushes.swift, WorkspaceTools.swift brush options, CanvasView.swift gesture completion, TransformEditing.swift prepared transactions"
+    ],
+    "approach": "Native Swift translation/adaptation of upstream replacement/background erasing/Mixer/Auto Erase behavior using existing native dab, selection and pattern infrastructure. Pattern Stamp uses independent native pattern sampling; upstream stamp_cmds is layer merging. No Adobe code or assets copied."
+  },
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/paint-with-mixer-brush.html",
+      "updated": "2026-10-04",
+      "read": "2026-10-27",
+      "finding": "Reservoir/pickup wells; Load/Clean and automatic choices, Wet/Load/Mix, all-layer sampling and solid or varied sampled load."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/change-pixels-to-transparent-with-the-background-eraser-tool.html",
+      "updated": "2026-02-23",
+      "read": "2026-10-27",
+      "finding": "Continuous/Once/Background Swatch, contiguous/discontiguous/find edges, tolerance and foreground protection."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/change-similar-pixels-with-the-magic-eraser-tool.html",
+      "updated": "2026-02-23",
+      "read": "2026-10-27",
+      "finding": "Tolerance0\u2013255, antialias, contiguous, all layers and opacity; Background converts to regular layer."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/paint-with-brush-or-pencil-tool.html",
+      "read": "2026-10-27",
+      "finding": "Pencil Auto Erase chooses foreground/background from initial pixel. Photoshop25+ creates a transparent layer for painting over nonraster content; current Photato rejects that context. Include this major workflow dependency in the next batch."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/use-pattern-stamp-tool-for-hand-painted-look.html",
+      "updated": "2026-10-04",
+      "read": "2026-10-27",
+      "finding": "Pattern Stamp shares brush dynamics and Mode/Opacity; Aligned retains pattern phase across strokes, unaligned restarts, Impressionist changes deposition; S/Shift-S group."
+    },
+    {
+      "url": "https://helpx.adobe.com/ca/photoshop/desktop/repair-retouch/clean-restore-images/auto-erase-with-the-pencil-tool.html",
+      "updated": "2025-12-02",
+      "read": "2026-10-27",
+      "finding": "Auto Erase chooses background paint when the initial pixel matches foreground, foreground otherwise."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "read": "2026-10-27",
+      "finding": "Historical primary Color Replacement description: three sampling modes, three limits, tolerance and anti-alias; current Photoshop2026 comparison remains unqualified."
+    }
+  ],
+  "menus": {
+    "new_menu_bindings": 0,
+    "toolbar_bindings": [
+      "Pencil",
+      "Color Replacement",
+      "Mixer Brush",
+      "Pattern Stamp",
+      "Background Eraser",
+      "Magic Eraser"
+    ],
+    "shortcut_groups": [
+      "B / Shift-B",
+      "S / Shift-S",
+      "E / Shift-E"
+    ],
+    "note": "Existing factory tool entries now have actual implementations. Menu titles/order/shortcuts unchanged; these are tools, not invented menu commands.",
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "photato_api": {
+    "commands": [
+      "paint.configure",
+      "paint.tool",
+      "paint.mixer"
+    ],
+    "catalogue_count": 77,
+    "existing_expansion": "paint.stroke now automatically creates an ordinary pixel layer above a nonraster target for Brush; erasing still requires pixels.",
+    "state": "Per-tool settings, Mixer reservoir/pickup/amount/sampled-tip dimensions, pattern IDs/phase and active gesture. Normal shared-document revision and busy/lifecycle guards apply.",
+    "targets": [
+      "pixels",
+      "layerMask",
+      "smartFilterMask",
+      "alpha",
+      "quickMask"
+    ],
+    "target_limits": "Color Replacement, Background Eraser and Magic Eraser require RGB pixels; all-layer sampling rejects grayscale targets. Other tools support masks and grayscale channels.",
+    "limits": "API body4MiB;1\u20134096 samples, Magic Eraser exactly1;200000 generated dabs and134217728 raster visits; one footprint and Magic canvas at most16MP. Mixer sampled tip at most256x256.",
+    "formats": {
+      "native_archive": 32,
+      "brush_presets": 1,
+      "recorded_actions": [
+        1,
+        2
+      ]
+    }
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated new freehand painting endpoint in pinned Photoshop v2 contract. Published execute-actions brush resources and tool/actionJSON descriptors remain unsupported; no compatibility claim or invented route. Existing conformance regressions run in the full suite."
+  },
+  "persistence": "Pixel and mask edits use existing native32 archives. Mixer reservoir and pattern alignment are session tool state transferred between document windows; native brush presets do not capture new tool-specific options.",
+  "actions": "Prepared painting commands are explicit unsupported recorded steps in the existing Actions recorder. New-tool Actions playback/Batch coverage remains open; existing ordinary paint.stroke recording is preserved.",
+  "tests": {
+    "run": "artifacts/runs/20261027T131318Z-190-paint-tools",
+    "focused_debug": 184,
+    "debug_log": "artifacts/runs/20261027T131318Z-190-paint-tools/integration06.log",
+    "new_core_tests": 8,
+    "new_app_tests": 9,
+    "failed_attempts": [
+      "artifacts/runs/20261027T131318Z-190-paint-tools/module01.log",
+      "artifacts/runs/20261027T131318Z-190-paint-tools/module02.log",
+      "artifacts/runs/20261027T131318Z-190-paint-tools/integration02.log",
+      "artifacts/runs/20261027T131318Z-190-paint-tools/integration04.log",
+      "artifacts/runs/20261027T131318Z-190-paint-tools/release-full01.log"
+    ],
+    "scope": "Analytical native behavior, transformed selection/alpha and Smart Filter mask coordinates, three depths, no-op, automatic layers, native/API equality, preview/Cancel/history/native archives, session state, revoked/busy/stale/invalid requests, factory shortcut groups and related regressions.",
+    "ui": "Synthetic AppKit canvas events and offscreen SwiftUI option controls only. Desktop latest evidence remains locked; no live re-probe.",
+    "release_full": 1851,
+    "release_log": "artifacts/runs/20261027T131318Z-190-paint-tools/release-full02.log",
+    "verification": "artifacts/runs/20261027T131318Z-190-paint-tools/verification02.json"
+  },
+  "limitations": [
+    "Exact Photoshop pixels, linear/HDR paint/color semantics and proprietary Mixer wet-media/Impressionist algorithms remain unqualified.",
+    "Mixer physical bristle behavior and transferred wetness/mix jitter remain open. Current finite reservoir/pickup model is deterministic and bounded.",
+    "Background conversion uses the upstream name/position/transparency-lock representation, narrowed to an identity-transformed bottom root layer matching canvas bounds; dedicated native Background identity remains open.",
+    "New-tool Actions/Batch recording, tool-specific preset capture and Adobe brush-resource/actionJSON job compatibility remain open.",
+    "Complete live Photoshop UI/tablet comparison and physical Intel/macOS14/macOS26 qualification remain open.",
+    "High-resolution incremental preview/performance and secondary brush controls remain open; smaller fidelity details stay deferred while major workflows are missing."
+  ],
+  "next": "B08 Adjustment Brush: editable local adjustment layers/masks, additive/subtractive painting, object targeting, controls/history and shared API. Exact numeric and cosmetic polishing stays deferred.",
+  "qualification": "All 184 focused Debug and 1851 full optimized tests pass. The universal macOS 14+ package verifies.",
+  "mode_storage_221": {
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/painting-source19.json",
+    "test_file": "Tests/PhotoCraftAppTests/ModePaintingWorkflowTests.swift",
+    "focused": {
+      "tests": 39,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools44.log"
+    },
+    "full_release": {
+      "tests": 2259,
+      "failures": 0,
+      "seconds": 161.264,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/mode-tools45-release.log"
+    },
+    "new_workflow_methods": 6,
+    "mode_depth_contexts": 12,
+    "tool_context_combinations": 84,
+    "api": "Existing paint.tool shared engine; additive painting.modeStorage capability text and corrected target wording. No new command or route.",
+    "repair": "Reconcile authoritative native samples before validating/returning PaintingEdit; preview, commit and reopening agree.",
+    "limits": "Exact Photoshop numeric results, all mode-specific tool/menu availability, brush Actions/Adobe descriptors and live/platform checks remain open."
+  },
+  "qualification_221": {
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_221.json",
+    "verification": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/verification46.json",
+    "full_optimized_tests": 2259,
+    "universal_minimum_macos": "14.0",
+    "current_live_acceptance": false
+  }
+}

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct NewLayerGroupOptions: Equatable, Sendable {
+public struct NewLayerGroupOptions: Equatable, Sendable, Codable {
   public var name: String
   public var color: LayerColorLabel = .none
   /// Nil represents Pass Through, the default group mode.
@@ -43,8 +43,8 @@ extension CraftDocument {
         throw CraftError.invalid("Below placement applies to an empty group.")
       }
       let parent = roots[0].parentID
-      guard roots.allSatisfy({ $0.parentID == parent && !isLocked($0.id) }) else {
-        throw CraftError.invalid("Select unlocked layers with the same parent to group them.")
+      guard roots.allSatisfy({ $0.parentID == parent }), parent.map({ !isLocked($0) }) ?? true else {
+        throw CraftError.invalid("Select layers with the same unlocked parent to group them.")
       }
       group.parentID = parent
       let rootIDs = Set(roots.map(\.id))

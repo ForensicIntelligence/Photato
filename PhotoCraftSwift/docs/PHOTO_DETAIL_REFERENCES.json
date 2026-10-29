@@ -1,0 +1,134 @@
+{
+  "step": "dev-step-206",
+  "date": "2026-10-27",
+  "status": "Native Smart Sharpen and Reduce Noise workflows implemented and tested; full Photoshop/F01 parity remains open.",
+  "scope": [
+    "Smart Sharpen Gaussian/Lens/Motion removal, amount/radius/noise and shadow/highlight fade controls",
+    "Reduce Noise luma/chroma/detail/JPEG controls and additional RGB channel smoothing",
+    "Native preview at Fit/100%, local Undo/Redo, Cancel/one document commit and editable Smart Filters",
+    "Shared Photato filter APIs, observable workspace state, native37/Actions9 metadata and strict older-format rejection"
+  ],
+  "provenance": {
+    "original": {
+      "SmartSharpen": "Original algo/src/sharpen.rs smart() implements Gaussian residual sharpening with exponential small-difference noise suppression only. Additional native modes and tonal controls need genuine algorithms, not aliases.",
+      "ReduceNoise": "Original algo/src/denoise.rs provides bounded linear-time guided luma/chroma smoothing, document-anchored JPEG-grid softening and detail sharpening. Source implements multiple color modes; native RGB/context behavior must be stated honestly.",
+      "starting_points": [
+        "../photocraft-main/crates/algo/src/sharpen.rs",
+        "../photocraft-main/crates/algo/src/denoise.rs",
+        "../photocraft-main/crates/algo/src/blur.rs",
+        "../photocraft-main/crates/engine/src/filters.rs",
+        "../photocraft-main/crates/engine/src/filters_ext.rs",
+        "Sources/PhotoCraftCore/RasterFilter.swift",
+        "Sources/PhotoCraft/FilterControls.swift",
+        "Sources/PhotoCraft/ArtisticGalleryWorkspace.swift"
+      ]
+    },
+    "source_hashes": {
+      "../photocraft-main/crates/algo/src/sharpen.rs": "a26e43a6bdbda5d177ea58ae5d168eddf448c29d1211cddc048ba300e84c6119",
+      "../photocraft-main/crates/algo/src/denoise.rs": "a947f091fedecec46895338669446c00922d751a57a1bf725f38b10491c01bf7",
+      "../photocraft-main/crates/algo/src/blur.rs": "d11c5c232b902721308adadc406806d6cde13411a098628dc343bb7d74dd94a6"
+    },
+    "license": "MIT OR Apache-2.0",
+    "primary_references": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/sharpen-controls-with-smart-sharpen.html",
+        "accessed": "2026-10-27",
+        "use": "Amount/radius/noise, three removal modes,100% evaluation and Smart Object workflow."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/filter-effects-reference.html",
+        "accessed": "2026-10-27",
+        "use": "Tonal sharpening controls and edge-preserving whole-image/per-channel noise reduction."
+      },
+      {
+        "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+        "accessed": "2026-10-27",
+        "use": "Smart Sharpen is listed among tested execute-actions filters; exact configurations require recorded ActionJSON. Reduce Noise is not listed in the tested subset, which is not evidence of an invented dedicated endpoint."
+      }
+    ],
+    "native_extension": "Regularized tiled disk/line deconvolution via Accelerate; tonal fades and independent RGB channel controls are native extensions, not asserted Photoshop kernels."
+  },
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "kinds": [
+      "smartSharpen",
+      "reduceNoise"
+    ],
+    "parameters": [
+      "sharpen",
+      "denoise"
+    ],
+    "state": "photoDetail availability/workspace/preview state; complete parameter schemas and capabilities",
+    "native_version": 37,
+    "actions_version": 9,
+    "adobe": "Published execute-actions supports Smart Sharpen, but exact descriptors and editable PSD are not independently qualified. Both new descriptor families explicitly reject; no invented Adobe routes.",
+    "limits": "8MP RGB raster/Smart Object layers; component/auxiliary channel targets unsupported. Selection and locks apply. RGB8/16 encoded, RGB32 linear unclipped. Original alpha and zero-alpha hidden samples retained. Source defaults, not verified Adobe defaults."
+  },
+  "menus": [
+    "Filter > Sharpen > Smart Sharpen\u2026",
+    "Filter > Noise > Reduce Noise\u2026"
+  ],
+  "evidence": {
+    "focused": "artifacts/runs/20261027T220037Z-206-photo-detail/integration03.log",
+    "core": "artifacts/runs/20261027T220037Z-206-photo-detail/module02.log",
+    "failures": [
+      "artifacts/runs/20261027T220037Z-206-photo-detail/module01.log",
+      "artifacts/runs/20261027T220037Z-206-photo-detail/integration01.log"
+    ],
+    "screenshots": [
+      "artifacts/photo-detail-offscreen/smartSharpen-CD96CC00-89CD-45F0-A3D6-3B5B5E78A0D5.png",
+      "artifacts/photo-detail-offscreen/reduceNoise-B5213E81-89C5-4E54-BB51-310D17F9DA6F.png"
+    ],
+    "ui": "Synthetic hidden-window/offscreen tests; no live desktop or hardware platform qualification.",
+    "full": "artifacts/runs/20261027T220037Z-206-photo-detail/release-full02.log",
+    "source_manifest": "artifacts/runs/20261027T220037Z-206-photo-detail/source02.json",
+    "source_delta": "artifacts/runs/20261027T220037Z-206-photo-detail/changes02.json",
+    "package_verification": "artifacts/runs/20261027T220037Z-206-photo-detail/verification02.json",
+    "interrupted_build": "artifacts/runs/20261027T220037Z-206-photo-detail/interruption01.json",
+    "qualification": "All45 final focused Debug and1980 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance."
+  },
+  "remaining": [
+    "Exact Photoshop defaults/kernels/output",
+    "Recorded Adobe actionJSON and editable PSD/PSB",
+    "Live UI and physical supported-platform checks",
+    "Larger images and remaining ordinary filter catalogue"
+  ],
+  "package": {
+    "utc": "2026-10-27T22:30:06.675334+00:00",
+    "tests": {
+      "integration03": 45,
+      "release-full02": 1980
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T220037Z-206-photo-detail/Photato206-final02.zip",
+    "zip_sha256": "0c1b406147c38d70301356b104959cd057c525147adc7d98221c281b3ad3e7c5",
+    "app": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app",
+    "executable_sha256": "5d345c5dfdb61375f6f826ec052c61784f63baee29d5bd0946cc04381b0ef6cc",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1595,
+    "source_manifest_sha256": "2401252f38e8886920e44ec57e264ca7a8b56e82e6229a74c6f44a49a2721e8c",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 284,
+      "unavailable_leaf_commands": 441,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "next": "Lens Blur depth-of-field workspace: actual iris kernels, depth sources/focal picker, highlight/grain controls, native preview/history and shared APIs. Minor variants and numerical polish remain deferred."
+}

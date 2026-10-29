@@ -52,8 +52,10 @@ extension Renderer {
   {
     guard old.id == d.id, old.width == d.width, old.height == d.height,
       old.depth == d.depth, old.colorSpace == d.colorSpace, old.sourceICC == d.sourceICC,
+      old.workingICC == d.workingICC,
       old.layers.count == d.layers.count
     else { return .full }
+    if old != d, (old.layers + d.layers).contains(where: { $0.style != nil || $0.smartFilters != nil }) { return .full }
     let oldPatterns = old.patterns ?? []
     let newPatterns = d.patterns ?? []
     guard oldPatterns.count == newPatterns.count else { return .full }
@@ -80,7 +82,7 @@ extension Renderer {
       if case .adjustment(let a) = after.content {
         // Exhaustive switch deliberately makes any new adjustment reconsider locality.
         switch a {
-        case .levels, .curves, .hueSaturation, .colorBalance, .tonalSteps, .gradientMap, .exposure,
+        case .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup, .tonalSteps, .gradientMap, .exposure,
           .brightnessContrast, .saturation, .invert, .grayscale:
           break
         }

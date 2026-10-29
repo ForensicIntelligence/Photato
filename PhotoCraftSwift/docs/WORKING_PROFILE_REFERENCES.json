@@ -1,0 +1,207 @@
+{
+  "step": "dev-step-116",
+  "status": "Retained working-profile increment qualified in recorded scope; D01/full Photoshop colour and output parity remain open",
+  "major_workflow": "D01; open",
+  "source_freeze": "artifacts/runs/20261019T215600Z-116-working-profiles/tested-source-hashes04.json",
+  "implementation": [
+    "workingICC identifies actual stored colour coordinates independently of sourceICC provenance",
+    "Native archive10; versions1\u20139 remain implicit sRGB even if sourceICC differs",
+    "PSD raster layer samples and embedded working ICC retained; RGB32 matrix profiles use linear curves",
+    "Display converts working samples to SDR sRGB; integer raster exports embed actual profile; HDR raster outputs convert to SDR sRGB",
+    "Colour wells, Place Image/AI-image insertion, raster clipboard and cross-document clone/duplicate paths honour working profiles; masks/alpha are uncoloured",
+    "Both existing job interfaces and desktop/API saving share the same codecs; Photato state adds profile name/embedded flag/encoding/SHA256, with schemas",
+    "ICC validation caps profiles at4MiB and4096 tags without copying shared payloads; native input also verifies ColorSync usability"
+  ],
+  "independent_reference": {
+    "original": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/photoshop-down-rgb32.psd",
+    "original_sha256": "dddced416a091ffd5b6ecce46833b0aab192e27c0b913c008eb80e6eb6580b9f",
+    "output": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/original-profile-down-rgb32.rgba",
+    "sha256": "0c4686c164c596db8b345385db3b8d3a05dbe26e198caa6600bfb93db0a799d9",
+    "bytes": 28672,
+    "layout": "256x7 little-endian Float32 RGBA; direct channel extraction; no colour conversion",
+    "provenance": "Existing procedural Photoshop step058 merge fixture; extracted using independent Python PSD parser from step114."
+  },
+  "focused": {
+    "log": "artifacts/runs/20261019T215600Z-116-working-profiles/focused05.log",
+    "passed": 92,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 6.934
+  },
+  "reference_sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-profiles/color-management-policy-options.html",
+      "observed": "Preserve Embedded Profiles retains embedded profiles when opening; used as target policy, not evidence that all Photoshop colour settings are implemented."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/choose-colors/manage-color-profiles-when-opening-images.html",
+      "observed": "Opening behaviour depends on configured profile policies."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/coregraphics/cgcolorspacecreatelinearized(_:)",
+      "observed": "Native matrix-profile linearization API; local macOS SDK header also inspected. No external implementation copied."
+    },
+    {
+      "url": "https://www.color.org/ICC1V42.pdf",
+      "observed": "ICC v4 curveType count0 denotes identity; count1 encodes gamma as u8Fixed8Number. Used to recognize actual linear curves, not profile names/hashes."
+    },
+    {
+      "url": "https://color.org/specification/ICC.2-2019.pdf",
+      "observed": "parametricCurveType type0 stores the exponent as s15Fixed16; gamma1 is linear. Structural parser only claims the RGB v2/v4 subset it validates."
+    }
+  ],
+  "limits": [
+    "Full Photoshop colour settings, Assign/Convert Profile dialogs, engine/intent/BPC/dither policy and conversion-byte equivalence remain open",
+    "Cross-profile transfers of editable profile-dependent gradient/pattern fills or adjustments reject; rasterize first until a qualified structural conversion policy exists",
+    "Non-sRGB PSD editable tone/gradient/pattern import retains existing unsupported guards",
+    "ImageIO raster decoding/encoding and all HDR editing kernels are not qualified for universal sample-bit preservation",
+    "PSD merged white-matte/compositor difference remains a separate unresolved dependency",
+    "Native Intel/macOS14 runtime and universal Adobe API coverage remain open"
+  ],
+  "api": {
+    "typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "state": "workingProfile {name, embedded, sampleEncoding, iccSHA256}; actual ICC available in native/PSD downloads",
+    "schema": "AutomationService.capabilities.stateSchemas.workingProfile"
+  },
+  "qualification_claim": "The original Adobe-linear-sRGB merge matches all 28672 raw RGBA bytes and original ICC bytes after the final package native-save/reopen/PSD-save workflow. Wider profile/raster conversion and merged rendering parity remain open.",
+  "live_photoshop_settings": {
+    "evidence": "artifacts/runs/20261019T215600Z-116-working-profiles/photoshop-color-settings.txt",
+    "screenshot": "artifacts/runs/20261019T215600Z-116-working-profiles/photoshop-color-settings.png",
+    "observed_preset": "North America General Purpose 2",
+    "RGB": "sRGB IEC61966-2.1",
+    "policies": "RGB/CMYK/Gray Preserve Embedded Profiles",
+    "engine": "Adobe (ACE)",
+    "intent": "Relative Colorimetric",
+    "black_point_compensation": true,
+    "dither_8bit": true,
+    "scene_referred_compensation": false,
+    "blend_RGB_gamma_enabled": false,
+    "blend_text_gamma": 1.45,
+    "warnings": "Opening/pasting mismatches and missing-profile opening unchecked",
+    "cleanup": "Cancel; no setting changed; original dirty Untitled-1 remains untouched",
+    "qualification": "Observed user installation, not a claim of factory settings on all installations. ColorSync conversions have not been proved byte-equivalent to ACE/BPC/dither."
+  },
+  "release_configuration_repair": {
+    "failure_log": "artifacts/runs/20261019T215600Z-116-working-profiles/focused06-project-links-release.log",
+    "passing_log": "artifacts/runs/20261019T215600Z-116-working-profiles/focused07-release-repair.log",
+    "tests": 20,
+    "failures": 0,
+    "scope": "Same product-ID validation semantics via ASCII bytes; full optimized run exposed the previously unqualified release-only predicate failure. No purchase/API-flow change."
+  },
+  "tests": {
+    "full05.log": {
+      "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/full05.log",
+      "sha256": "bb02f67f3bb8981ba57b4832d699bd7ac1ddcdab8c8b738ddcd2b670a218d682",
+      "passed": 1053,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 209.059
+    },
+    "release05.log": {
+      "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/release05.log",
+      "sha256": "ae5672d5520b7725b77972106a525b02a882eb8de482cd3391debdf851f3147d",
+      "passed": 1053,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 42.312
+    }
+  },
+  "local_storekit": {
+    "tests": 3,
+    "failed": 0,
+    "logs": [
+      {
+        "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/storekit07.log",
+        "sha256": "aaf14e719794504b939e3d4527ff80aa42b6f473434e82028be36244fd669911"
+      },
+      {
+        "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/storekit08.log",
+        "sha256": "26e7b79d36e201cd72e791de777ca003e14ac6acdbab027c263a312a9c8cc97d"
+      }
+    ],
+    "scope": "Local Xcode StoreKit environment only; verified distinct consumables, finish propagation, failure/retry and pending/unfinished recovery. No live App Store purchase qualification.",
+    "repair": "Test establishes local transaction ledger registration and waits up to20 seconds for finish propagation; production purchase code unchanged."
+  },
+  "release": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/release-verification.json",
+    "sha256": "1497dc313608b6d26dc0b2cad2b74903947501c65cd15890d89b32a552f9544d"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/live-ui-verification.json",
+    "sha256": "7fd7c24eed842b0d8ab0cd93eb68a7f86159f07d1103ce6dfaa4f07eb0d112ad"
+  },
+  "independent_live": {
+    "raw_comparison": "independent-live01.json",
+    "layer_RGBA_bytes": 28672,
+    "layer_RGBA_different_bytes": 0,
+    "merged_different_bytes": 1495,
+    "profile_bytes_identical": true,
+    "profile_sha256": "f50ef60e269f9011cec05505c991566e7e41569674b1ecf756deb973acbdad9d",
+    "native_archive_version": 10,
+    "native_profile_identical": true,
+    "workspace_unchanged": true,
+    "probe_unchanged": true,
+    "app_exited": true
+  },
+  "isolation": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/isolation.json",
+    "sha256": "ddb03e879436c4af61d94e4a2672b7cb5f4e27357ccb824eac1fb6e98bf4c7d1"
+  },
+  "installation": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/installation05.json",
+    "sha256": "4d54f8ce0ff27a58fcb07637ec30cc4557e231d50563d334045e086160e0ddee"
+  },
+  "profile_ingress_validation": {
+    "maximum_profile_bytes": 4194304,
+    "maximum_tags": 4096,
+    "structural_validation": "Ranges retain shared tag payloads without copies",
+    "native_open": "Also requires usable RGB CGColorSpace; malformed profile rejection covered in full suites"
+  },
+  "float_tiff_step143": {
+    "reference": "docs/TIFF_FLOAT_REFERENCES.json",
+    "status": "Float32 TIFF Save/Copy/import and both applicable APIs retain tested HDR/negative/transparent samples and linear working profiles through None/LZW/ZIP; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs",
+        "POST /v2/execute-actions"
+      ],
+      "new_state": [],
+      "coverage": "Shared native Float32 TIFF encoder and direct same-profile Float32 import. Existing TIFF compression fields/options, default permissions and revision/busy/failed-save handling retained. Adobe TiffOutput schema unchanged; Photato-only encodingOptions remains rejected by Adobe. PNG32 action output remains unsupported; resource-job TIFF input remains unsupported."
+    }
+  },
+  "tiff_storage_step144": {
+    "reference": "docs/TIFF_STORAGE_REFERENCES.json",
+    "status": "Native/API TIFF byte order, pixel layout and Float32 LZW/ZIP prediction preserve tested samples/metadata; native planar decoding repairs ImageIO alpha loss. D01/I04 and every major gate remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.tiff",
+        "document uploads",
+        "POST /v1/action-jobs"
+      ],
+      "adobe_shared_engine": "POST /v2/execute-actions keeps pinned TiffOutput defaults; Photato-only encodingOptions remains rejected with422. No invented Adobe fields.",
+      "new_fields": [
+        "tiffByteOrder:bigEndian/littleEndian",
+        "tiffPixelOrder:interleaved/perChannel",
+        "tiffPredictor:boolean, true requires32-bit and explicitLZW/ZIP"
+      ],
+      "state": "Shared encodingOptions schemas/capabilities and remembered/effective save options expose the new fields. Existing permissions, revision/busy/atomic-failure and document/job lifecycles retained.",
+      "coverage": "Native Save/Copy, actual loopback downloads/Save/job output and separate Adobe contract rejection tested; resource-job TIFF input remains unsupported."
+    }
+  }
+}

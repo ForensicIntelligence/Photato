@@ -1,0 +1,207 @@
+{
+  "step": "dev-step-124",
+  "recorded_at_utc": "2026-10-20T03:09:31.289715+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow": "D01 document lifecycle / I02 large document infrastructure",
+  "major_workflow_closed": false,
+  "status": "Native archive streaming and API compatibility qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/tested-source-hashes03.json",
+    "sha256": "02f5770a903b63c5584216bb0704e725491f3866ea0512db68294e16dc960097"
+  },
+  "source_test_files": 424,
+  "validation_inputs": 816,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/packaging-documents01.json",
+    "sha256": "02b1878aca5d1020377f2821f71a6450b799a765178d4460585515ecac32e7dd"
+  },
+  "validation_isolation": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/isolation01.json",
+    "sha256": "641d55b527c44e94ca1a3e9a7e370fb3b8a7eb3b3d1e0a3daff78359b7d7cbd4"
+  },
+  "focus_tests": {
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 14.851,
+    "evidence": {
+      "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/focused03.log",
+      "sha256": "3dfa07e558678439f6732d392ea1b7aa6741a02a978b90ccb60645443134f082"
+    },
+    "source_freeze": "tested-source-hashes03.json"
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T024114Z-124-native-archive-streaming/full01.log",
+      "sha256": "3f251c74baa94ed55151c8d67b2c52b1bdd9bc05b139a71cdf47b9de4b9ecabb",
+      "passed": 1115,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.021
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T024114Z-124-native-archive-streaming/release01.log",
+      "sha256": "9734d380364aee79e9e95d35cb258ca76bc478b8bd08bcfab7c4a43256c6dfa5",
+      "passed": 1115,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.82
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato124-verified-hhu0trsf/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "498ec729291a08d107f581c65eb49d9ee3698ffbe33d2dbb703a2712942c93f2",
+    "zip_sha256": "08722a5a7fdd54d14f6c00e61e16c09e314fb4037169cb0a383d4aaf76927175",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/Photato124-candidate.zip",
+    "sha256": "08722a5a7fdd54d14f6c00e61e16c09e314fb4037169cb0a383d4aaf76927175"
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "previous_candidate_checkpoint": "docs/ACTIVE_CHECKPOINT_123.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/package-verification01.json",
+    "sha256": "2b8f9759c92333fefa60332d41a3abdbe0fa0169a51b52671e83607a6e8c8fde"
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "api": {
+    "photato_typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Native file save shares desktop11; native downloads preserve default10 with explicit X-Photato-Archive-Version:11 negotiation, both native aliases and both upload versions. Additive nativeArchives capabilities/schema; invalid or nonnative header returns400. Shared Adobe PSD job semantics unchanged."
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "live_ui": {
+    "status": "pending unlocked Mac",
+    "native124_launched": false,
+    "old118_window_and_cleanup_not_verified": true,
+    "combined118_through124_workflow_pending": true,
+    "evidence": {
+      "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/live-ui01.json",
+      "sha256": "3b641b09fa9c6299bae85e67f0a9976ba530b52f52b2e6847e25601b658e2b82"
+    }
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Version11 portable chunked native archives with content-addressed tiles/selection, checked table/footer and per-blob integrity; legacy1\u201310 remain readable",
+    "One memory/file serializer;64KiB physical file IO and descriptor identity checks; native Save/Copy/autosave leaf and extensionless URL read integration",
+    "Immediate failed-writer cleanup despite retained encoding context; reusable tile inflation workspace with independent exact sample arrays",
+    "Backwards-compatible Photato API defaults and explicit version11 negotiation, schemas/state/capabilities and real HTTP regression coverage",
+    "Ten new tests;1115 Debug/1115 Release tests, universal clean ZIP and current x86_64 engine qualification",
+    "Independent Python archive framing/sample checks at three depths on both architectures; every source layer hash preserved in both repeated-row and less-compressible memory fixtures",
+    "All history state hashes and nine complete PSB exports unchanged from123; memory/latency limitations recorded without major-gate closure"
+  ],
+  "remaining_major_dependencies": [
+    "I02: active-document paging and bounded renderer/cache; metadata, selection and active tiles remain materialized, and current public file/canvas/transfer limits remain unchanged",
+    "I02: Rosetta history restoration still has higher total peak RSS than resident-only history; synchronous restoration latency, total-memory control and realistic default-budget qualification remain open",
+    "D02: full AppKit crash/relaunch recovery, disk-full/interruption durability and stale scratch cleanup; tested autosave/read leaf integration does not close recovery",
+    "D01: complete format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and live lifecycle",
+    "D03: history/drive preference parity,50 factory/default and1000 maximum states, snapshots/nonlinear history/Fade/purge; secondary scope remains queued unless needed for a major dependency",
+    "Combined118\u2013124 native/Photoshop live qualification and physical Intel/macOS14 full-application runtime; multi-GB corpus and complete Photoshop parity remain open"
+  ],
+  "resume_first": "Verify checkpoint124/freeze03 and its final history audit. All product validation is terminal. Preserve installed117, user workspace and original dirty Photoshop document. Continue major storage/document work: total-memory and active-document paging/error propagation, bounded rendering and recovery. Qualify the combined latest candidate when the Mac is unlocked before installing; clean up only the old118 disposable app. No Git mutation or directory rename; optional phase2 history features stay queued.",
+  "native_format_specification": {
+    "path": "docs/NATIVE_ARCHIVE_FORMAT_11.json",
+    "sha256": "39b65a68d168b5da0755afdf32c0f7891f8d665e96784f458ffade0a12966295"
+  },
+  "native_memory_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/native-memory-comparison01.json",
+    "sha256": "c6036b06295a80df3a72b4b16072f348608d95fdc7abdb5eab9937f810623659"
+  },
+  "native_entropy_memory_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/native-entropy-comparison01.json",
+    "sha256": "f246c7967606237864a33570b16879176efd8e7afdd394450844d8aa6a93d69a"
+  },
+  "native_independent_parser": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/independent-native-verification01.json",
+    "sha256": "ce7909c4875df4fa5979bf4a1869a51c20502c2e82089e85b9fad5f23d673a52"
+  },
+  "independent_psb_parser": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "history_memory_evidence": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/history-memory-comparison01.json",
+    "sha256": "1b4a3918c6131d7a49a00ac613e2b339d30f3eeaeec7031f8557edf82e363076"
+  },
+  "history_prior_comparison": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/history-prior-comparison01.json",
+    "sha256": "b6e53c0532876cb83455671283af9d0d1b11e9a970bbf619199a7ea6ac306ba0"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/final-export-compatibility01.json",
+    "sha256": "8a42c73b587e46b7bdc31e67ad4fb4f77b61cffe794dc7181925385f427c037a"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/final-inputs01.json",
+    "sha256": "553d5fd485db5d86fe6b10aac4ca11372ccb828a55027c03acf0d311c5fce853"
+  },
+  "memory_performance_limitation": "In the less-compressible1024x1024 four-layer RGB32 case, old10/new11-file peak RSS is253083648/120864768 bytes on arm64 and231075840/106106880 under Rosetta; file/data11 output hashes are identical. Native11 reads are slower for that fixture and mapped10/read11 footprint is approximately equal. Current Rosetta scratch history peaks402984960 versus333299712 resident-only. These are single-process bounded observations, not Photoshop performance, total-RAM or multi-GB guarantees.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step124-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step124-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step124-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step124-final/final-inputs01.json"
+  }
+}

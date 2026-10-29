@@ -1,0 +1,50 @@
+{
+  "step": 238,
+  "recorded_at_utc": "2026-10-29T02:53:04.364870+00:00",
+  "status": "Native clip splitting, exact fractional/VFR source intervals, timed editable stills, sequential video groups, key-following moves, native54 and shared desktop/API editing pass 2,453 full optimized tests and13 final focused tests on2,298 unchanged inputs. Independent PNG checks match576 analytic RGBA8 channel values. Transitions, audio, Render Video, graphical dragging, automatic movie grouping and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T022458Z-238-video-arrangement/source03.json",
+  "source_inputs": 2298,
+  "native_archive": 54,
+  "actions_version": 20,
+  "typed_commands": 164,
+  "tests": {
+    "utc": "2026-10-29T02:53:04.364870+00:00",
+    "full": {
+      "tests": 2453,
+      "failures": 0,
+      "seconds": 169.711,
+      "log": "artifacts/runs/20261029T022458Z-238-video-arrangement/full-tests01.log",
+      "log_sha256": "0b9e7a243ce40d6461a003ed7c5b217280eb10af3b2e7e261607dd173d7ecf0e",
+      "build_seconds": [
+        "367.35"
+      ]
+    },
+    "final_focused": {
+      "tests": 13,
+      "failures": 0,
+      "seconds": 0.283,
+      "log": "artifacts/runs/20261029T022458Z-238-video-arrangement/focused03.log",
+      "log_sha256": "477b2ebf84991e5cbca992cab497daca1363c41f3af7aac787d5cb793ebe73ff",
+      "build_seconds": [
+        "0.48"
+      ]
+    },
+    "unchanged_inputs": 2298,
+    "source_manifest": "artifacts/runs/20261029T022458Z-238-video-arrangement/source03.json",
+    "binary_sha256": "14407c2bcaa6c7a5023b36a0fe6448f914672babc965170c4bd14ea0cd29d967",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T022458Z-238-video-arrangement/independent-pixels02.json",
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/VIDEO_ARRANGEMENT_REFERENCES.json",
+  "next_action": "Graphical Timeline tracks and transitions, then audio and Render Video. Preserve full SP01 and master parity requirements."
+}

@@ -7,19 +7,28 @@ import SwiftUI
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
   override convenience init() { self.init(workspaces: WorkspaceLibrary()) }
-  init(workspaces: WorkspaceLibrary) {
-    controller = CraftDocumentController(workspaces: workspaces)
+  init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
+    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil) {
+    controller = CraftDocumentController(
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings)
     super.init()
   }
   let projectLinks = ProjectLinks.bundled()
   private var projectInfoWindow: NSWindowController?
-  private var tipsWindow: NSWindowController?
   private var automationWindow: NSWindowController?
+  var imageProcessorWindow: ImageProcessorWindow?
+  var batchWindow: BatchWindow?
+  var actionsWindow: NSWindowController?
+  var brushSettingsWindow: NSWindowController?
+  var brushesWindow: NSWindowController?
+  var shapesWindow: NSWindowController?
+  var glyphsWindow: NSWindowController?
+  var recoverySettingsWindow: RecoveryPreferencesWindowController?
+  var colorSettingsWindow: ColorSettingsWindowController?
   private(set) lazy var automation = AutomationService(controller: controller)
   var documentWindowMenu: NSMenu?
   var workspaceMenu: NSMenu?
-  private lazy var tips = DevelopmentTips(
-    productIDs: projectLinks.tipProductIDs, client: StoreKitTipClient())
+  var recentDocumentsMenu: NSMenu?
   var store: EditorStore? { (controller.currentDocument as? CraftNSDocument)?.store }
   func applicationDidFinishLaunching(_ notification: Notification) {
     buildMenus()
@@ -74,24 +83,30 @@ import SwiftUI
       snapshot()
       return
     }
-    tips.startListening()
-    if controller.documents.isEmpty {
-      do { try controller.showBlank() } catch { NSApp.presentError(error) }
-    }
+    controller.startIndexedRecovery()
     NSApp.activate(ignoringOtherApps: true)
   }
-  func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool { false }
+  func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool { true }
+  // Let AppKit finish recovery before deciding whether launch needs a new document.
+  func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool { true }
   func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
   func applicationWillTerminate(_ notification: Notification) {
-    tips.stopListening()
+    controller.cancelPhotomerge();controller.cancelHDRMerge()
+    controller.recoveryDiscoveryGeneration = UUID()
+    controller.initialRecoveryTask?.cancel()
     automation.stop()
     try? controller.workspaces.flush()
   }
 
-  func applicationDidBecomeActive(_ notification: Notification) {
-    Task { await tips.recoverUnfinished() }
-  }
   func applicationOpenUntitledFile(_ sender: NSApplication) -> Bool {
+    if controller.documentOpening.isActive || controller.documentOpening.hasPendingRequests || controller.documentOpenPanel != nil { return true }
+    if controller.recoveryIndex.isDiscovering || controller.initialRecoveryTask != nil
+      || (!controller.initialRecoveryFinished
+        && controller.recoveryIndex.entries.contains { $0.state != .retired })
+    {
+      controller.pendingUntitledRequest = true
+      return true
+    }
     if let document = controller.currentDocument ?? controller.documents.first {
       document.showWindows()
     } else {
@@ -106,6 +121,14 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if let result = validateVariableMenu(item) { return result }
+    if item.action == #selector(renderVideo) { return store?.canRenderVideo == true }
+    if [#selector(printDocument), #selector(printOneCopy)].contains(item.action) { return (controller.currentDocument as? CraftNSDocument)?.canBeginPrint == true }
+    if let result = validateFrameMenu(item) { return result }
+    if let result = validateArtboardMenu(item) { return result }
+    if let result = validateRecentMenu(item) { return result }
+    if let result = validateDocumentClosingMenu(item) { return result }
+    if item.action == #selector(fileHandlingPreferences) || item.action == #selector(colorSettingsDialog) { return true }
     if [#selector(save), #selector(saveAs), #selector(saveCopy)].contains(item.action) {
       return (controller.currentDocument as? CraftNSDocument)?.canRunFileCommand == true
     }
@@ -117,11 +140,58 @@ import SwiftUI
       item.title = store?.layerVisibilityMenuTitle() ?? "Hide Layers"
       return store?.canOrganizeLayers() == true
     }
+    if item.action == #selector(lockLayers) { return store?.canChangeLayerProtection == true }
+    if item.action == #selector(toggleQuickMask) { item.state = store?.document.quickMask != nil ? .on:.off; return store?.canEditChannels == true }
+    if item.action == #selector(saveSelectionChannel) { return store?.canEditChannels == true }
+    if item.action == #selector(loadSelectionChannel) { return store?.canEditChannels == true && !(store?.document.alphaChannels ?? []).isEmpty }
+    if item.action == #selector(crop) {
+      guard let store else { return false }
+      if let draft = store.cropDraft { return store.cropReadyDraft == draft && store.cropPrepared != nil }
+      return store.canBeginCrop && store.document.selection != nil
+    }
+    if item.action == #selector(contentAwareScale) { return store?.canBeginContentAwareScale == true }
+    if [#selector(loadImageStack), #selector(imageStatistics)].contains(item.action) { return controller.canPublishImageStack }
+    if item.action == #selector(imageStackMode(_:)) {
+      item.state = (store?.activeLayer?.smartObject?.stackMode?.title ?? "None") == item.title ? .on:.off
+      return store?.canEditSmartObject == true && store?.activeLayer?.smartObject?.rawDevelopment == nil
+    }
+    if item.action == #selector(hdrMerge) { return controller.canPublishHDRMerge }
+    if item.action == #selector(videoFramesToLayers) {return controller.movieFramesWorkspace != nil || controller.canFinishMovieFrames}
+    if item.action == #selector(imageProcessor) {return true}
+    if item.action == #selector(showBatch) { return true }
+    if item.action == #selector(newVideoLayer) { return store?.canImportMovieLayer == true }
+    if item.action == #selector(showTimeline) { item.state = store?.timelineVisible == true ? .on : .off; return store != nil }
+    if item.action == #selector(showActions) || item.action == #selector(showBrushSettings) || item.action == #selector(showBrushes) { return true }
+    if item.action == #selector(warpType){return store?.canEditType==true && store?.editableType != nil}
+    if item.action == #selector(showGlyphs){return true}
+    if item.action == #selector(horizontalType) || item.action == #selector(verticalType){item.state = store?.editableType?.typography?.writingOrientation == (item.action == #selector(verticalType) ? .vertical:.horizontal) ? .on:.off;return store?.canEditType==true && store?.editableType != nil}
+    if item.action == #selector(toggleTypeFeature(_:)){guard let store,store.canEditType,store.editableType != nil,let tag=NativeFonts.features.first(where:{$0.name==item.title})?.tag else{return false};item.state=(store.currentTypeStyle.fontOptions?.features.first{$0.tag==tag}?.value ?? (tag=="liga" ? 1:0))==0 ? .off:.on;return (try? NativeFonts.availableFeatures(store.currentTypeStyle.font).contains(tag))==true}
+    if item.action == #selector(showShapes) { return true }
+    if item.action == #selector(defineCustomShape) { return store?.canDrawShapes == true && (store?.selectedVectorPath != nil || store?.activeLayer?.shape != nil) }
+    if item.action == #selector(defineBrushPreset) { return store?.canUseBrush == true }
+    if item.action == #selector(cropAndStraightenPhotos) { return (controller.currentDocument as? CraftNSDocument).map {controller.canCropScan($0)} ?? false }
+    if item.action == #selector(contactSheet) { return controller.canPublishContactSheet }
+    if item.action == #selector(photomerge) { return controller.canPublishPhotomerge }
+    if item.action == #selector(vanishingPoint) { return store?.canBeginVanishingPoint == true }
+    if item.action == #selector(warpLayer) { return store?.canBeginWarp == true }
+    if item.action == #selector(autoAlignLayers) { return store?.canBeginPhotoAlign == true }
+    if item.action == #selector(autoBlendLayers) { return store?.canBeginPhotoBlend == true }
+    if item.action == #selector(contentAwareFill) { return store?.canBeginContentAwareFill == true }
+    if item.action == #selector(focusArea){return store?.canBeginSelectMask == true}
+    if item.action == #selector(selectAndMask) { return store?.canBeginSelectMask == true }
+    if item.action == #selector(selectSky) { return store?.canSelectSky == true }
+    if item.action == #selector(skyReplacement) { return store?.canReplaceSky == true }
+    if item.action == #selector(maskAllObjects) { return store?.canMaskAllObjects() == true }
+    if item.action == #selector(selectSubject) { return store?.canDetectSubject() == true }
     if item.action == #selector(renameLayer) {
       item.title = store?.layerPanelTitle(.rename) ?? "Rename Layer…"
       return store?.canPerformLayerPanel(.rename) == true
     }
     if item.action == #selector(delete) { return store?.canPerformLayerPanel(.delete) == true }
+    if [#selector(convertTypeShape), #selector(rasterizeType)].contains(item.action) {
+      return store?.editableType != nil && store?.canEditType == true && store?.typeEditingDraft == nil
+    }
+    if item.action == #selector(rasterizeShape) {return store?.activeLayer?.shape != nil && store?.canPerformLayerPanel(.rasterize) == true}
     if item.action == #selector(rasterize) {
       return store?.canPerformLayerPanel(.rasterize) == true
     }
@@ -148,9 +218,32 @@ import SwiftUI
     if item.action == #selector(layerViaCopy) { return store?.canLayerVia(.copy) == true }
     if item.action == #selector(layerViaCut) { return store?.canLayerVia(.cut) == true }
 
+    if item.action == #selector(placeEmbedded) { return store?.clipboardTargetAvailable == true }
+    if item.action == #selector(convertSmartObject) { return store?.canConvertSmartObject == true }
+    if [#selector(editSmartObjectContents), #selector(replaceSmartObjectContents),
+      #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
+      #selector(resetSmartObjectTransform)].contains(item.action) { return store?.canEditSmartObject == true }
     if item.action == #selector(fillDialog) { return store?.canUseMenuFill == true }
-    if item.action == #selector(gaussianBlurDialog) {
-      return store?.canUseMenuPixelEdit == true && store?.editingMask == false
+    if item.action == #selector(layerStyleMenu(_:)) {
+      return store?.validateLayerStyleMenu(item.identifier?.rawValue ?? "") == true
+    }
+    if item.action == #selector(smartFilterCommand(_:)) {
+      guard let store, store.canEditSmartFilters, let stack = store.activeLayer?.smartFilters else { return false }
+      return !(item.identifier?.rawValue.contains("Filter Mask") == true) || stack.mask != nil
+    }
+    if item.action == #selector(proofCommand(_:)) { return validateProofMenu(item) }
+    if item.action == #selector(inkModeDialog(_:)) { return validateInkModeMenu(item) }
+    if item.action == #selector(restrictedModeDialog(_:)) { return validateRestrictedModeMenu(item) }
+    if item.action == #selector(colorProfileDialog(_:)) { return store?.canBeginColorProfile == true }
+    if item.action == #selector(documentModeDialog(_:)) { return validateDocumentModeMenu(item) }
+    if item.action == #selector(classicToneDialog(_:)) {guard let kind=Self.classicToneMenus[item.identifier?.rawValue ?? ""] else{return false};return store?.canBeginClassicTone(kind) == true}
+    if item.action == #selector(proceduralRenderDialog(_:)) {
+      guard let kind=Self.proceduralMenus[item.identifier?.rawValue ?? ""] else{return false}
+      return store?.canBeginProcedural(kind) == true
+    }
+    if item.action == #selector(rasterFilterDialog(_:)) {
+      guard let kind = Self.filterMenus[item.identifier?.rawValue ?? ""] else { return false }
+      return store?.canBeginFilterKind(kind) == true
     }
     if item.action == #selector(clear) {
       if let text = NSApp.keyWindow?.firstResponder as? NSTextView {
@@ -195,6 +288,7 @@ import SwiftUI
       return store.canEditPatternFill(layer.id) || store.canEditGradientFill(layer.id)
     }
     if [
+      #selector(vibrance), #selector(blackWhite), #selector(photoFilter), #selector(channelMixer), #selector(selectiveColor), #selector(colorLookup),
       #selector(levels), #selector(curves), #selector(hueSaturation), #selector(colorBalance),
       #selector(desaturate), #selector(threshold), #selector(posterize),
       #selector(autoTone), #selector(autoContrast),
@@ -204,6 +298,7 @@ import SwiftUI
       return store?.canBeginLevels == true
     }
     if [
+      #selector(newBlackWhite), #selector(newPhotoFilter), #selector(newChannelMixer), #selector(newSelectiveColor), #selector(newColorLookup),
       #selector(newLevels), #selector(newCurves), #selector(newHueSaturation),
       #selector(newColorBalance), #selector(newThreshold), #selector(newPosterize),
     ].contains(
@@ -285,7 +380,7 @@ import SwiftUI
     if item.action == #selector(rulers) { item.state = store?.showRulers == true ? .on : .off }
     if [
       #selector(about), #selector(help), #selector(newFile), #selector(openFile), #selector(hide),
-      #selector(quit), #selector(supportDevelopment), #selector(showAutomation),
+      #selector(quit), #selector(showAutomation),
       #selector(hideOthers),
       #selector(showAllApplications),
     ].contains(item.action) {
@@ -307,39 +402,15 @@ import SwiftUI
   @objc func newFile() {
     let alert = NSAlert()
     alert.messageText = "New Document"
-    alert.informativeText = "Choose canvas dimensions and working precision."
+    alert.informativeText = "Choose canvas dimensions, color mode and working precision."
     alert.addButton(withTitle: "Create")
     alert.addButton(withTitle: "Cancel")
-    let width = NSTextField(string: "1200")
-    let height = NSTextField(string: "800")
-    let depth = NSPopUpButton()
-    depth.addItems(withTitles: PixelDepth.allCases.map(\.rawValue))
-    let background = NSPopUpButton()
-    background.addItems(withTitles: ["White", "Transparent", "Background Color"])
-    let stack = NSStackView(views: [
-      NSTextField(labelWithString: "Width (pixels)"), width,
-      NSTextField(labelWithString: "Height (pixels)"), height,
-      NSTextField(labelWithString: "Precision"), depth,
-      NSTextField(labelWithString: "Background Contents"), background,
-    ])
-    stack.orientation = .vertical
-    stack.alignment = .leading
-    stack.spacing = 7
-    stack.frame = NSRect(x: 0, y: 0, width: 280, height: 225)
-    width.widthAnchor.constraint(equalToConstant: 280).isActive = true
-    height.widthAnchor.constraint(equalToConstant: 280).isActive = true
-    alert.accessoryView = stack
+    let options = NewDocumentOptions(settings: controller.colorSettings.value)
+    alert.accessoryView = options
     guard alert.runModal() == .alertFirstButtonReturn else { return }
     do {
-      guard let w = Int(width.stringValue), let h = Int(height.stringValue),
-        PixelDepth.allCases.indices.contains(depth.indexOfSelectedItem)
-      else { throw CraftError.invalid("Enter whole-number dimensions.") }
-      let color: Pixel =
-        background.indexOfSelectedItem == 1
-        ? .clear : background.indexOfSelectedItem == 2 ? (store?.backgroundColor ?? .white) : .white
-      let model = try CraftNSDocument.blankModel(
-        width: w, height: h, depth: PixelDepth.allCases[depth.indexOfSelectedItem],
-        background: color, name: controller.nextUntitledName)
+      let model = try options.document(name: controller.nextUntitledName,
+        background: store?.backgroundColor ?? .white)
       let doc = CraftNSDocument(model: model)
       doc.fileType = CraftNSDocument.nativeType
       controller.addDocument(doc)
@@ -352,7 +423,9 @@ import SwiftUI
     guard let doc = controller.currentDocument as? CraftNSDocument, doc.canRunFileCommand else {
       return
     }
-    doc.save(nil)
+    if doc.smartObjectEditLink != nil {
+      Task { do { try await doc.commitSmartObjectContents() } catch { NSApp.presentError(error) } }
+    } else { doc.save(nil) }
   }
   @objc func saveAs() {
     guard let doc = controller.currentDocument as? CraftNSDocument, doc.canRunFileCommand else {
@@ -418,6 +491,11 @@ import SwiftUI
   @objc func autoColor() { store?.autoCorrect(.color) }
   @objc func newLevels() { store?.addLevelsLayer() }
   @objc func renameLayer() { store?.performLayerPanel(.rename) }
+  @objc func lockLayers() {
+    if let event = NSApp.currentEvent, event.type == .keyDown,
+      event.charactersIgnoringModifiers == "/" { store?.toggleFullLayerProtection() }
+    else { store?.beginLayerProtection() }
+  }
   @objc func duplicate() { store?.beginDuplicate() }
   @objc func delete() { store?.requestLayerDeletion() }
   @objc func vectorRevealAll() { store?.addVectorMask(reveal: true) }
@@ -514,9 +592,7 @@ import SwiftUI
   @objc func about() {
     if projectInfoWindow == nil {
       let host = NSHostingController(
-        rootView: ProjectInfoView(
-          links: projectLinks,
-          supportDevelopment: { [weak self] in self?.supportDevelopment() }))
+        rootView: ProjectInfoView(links: projectLinks))
       let window = NSWindow(contentViewController: host)
       window.title = "About Photato"
       window.styleMask = [.titled, .closable]
@@ -540,24 +616,11 @@ import SwiftUI
     automationWindow?.showWindow(nil)
     automationWindow?.window?.makeKeyAndOrderFront(nil)
   }
-  @objc func supportDevelopment() {
-    if tipsWindow == nil {
-      let window = NSWindow(
-        contentViewController: NSHostingController(rootView: DevelopmentTipsView(tips: tips)))
-      window.title = "Support Development"
-      window.styleMask = [.titled, .closable]
-      window.isReleasedWhenClosed = false
-      window.center()
-      tipsWindow = NSWindowController(window: window)
-    }
-    tipsWindow?.showWindow(nil)
-    tipsWindow?.window?.makeKeyAndOrderFront(nil)
-  }
   @objc func help() {
     let a = NSAlert()
     a.messageText = "Swift port in progress"
     a.informativeText =
-      "Working: nested layer groups, clipping masks, 27 blend modes, mask painting, rectangular/elliptical/lasso selections, feathering, Free Transform, image/canvas size, brush, eraser, move, shapes, text, adjustments, blur, undo/redo, PNG/JPEG/TIFF, .photato documents.\n\nPSD supports RGB/8/16/32 pixel layers, nested groups, clipping and raster masks, raw/RLE/ZIP/prediction import, and ZIP export. Flattened RGB files also open. Mask density, feather, enable and link controls are available. Unsupported rich layers are rejected.\n\nNot yet ported: full PSD/PSB fidelity, original .pcraft files, RAW, professional color modes, advanced tools, smart objects, plugins.\n\nV Move · M Marquee · L Lasso (⇧L cycles) · B Brush · E Eraser · U Shapes (⇧U cycles) · T Type · I Eyedropper · C Crop · H Hand · Z Zoom\n[ / ] brush size · Esc deselect · ⌘0 fit · ⌘G group · ⇧⌘G ungroup · ⌥⌘G clipping mask\n\nOptional prompt refinement runs on-device. Image Playground uses local models on macOS 26 and Apple's Private Cloud Compute on macOS 27 and later, subject to system availability. Generative fill is not implemented."
+      "Working: nested layer groups, clipping masks, 27 blend modes, mask painting, rectangular/elliptical/lasso selections, feathering, Free Transform, image/canvas size, brush, eraser, move, shapes, text, adjustments, blur, undo/redo, PNG/JPEG/TIFF, .photato documents.\n\nPSD supports RGB/8/16/32 pixel layers, nested groups, clipping and raster masks, raw/RLE/ZIP/prediction import, and ZIP export. Flattened RGB files also open. Mask density, feather, enable and link controls are available. Unsupported rich layers are rejected.\n\nAdditional native workflows include supported PhotoCraft project import, embedded Smart Objects and Smart Filters, text editing, layer styles, Liquify, Select and Mask, saved alpha channels, Quick Mask, Content-Aware Fill and Scale, and expanded/straightened cropping.\n\nStill incomplete: full PSD/PSB fidelity, RAW, professional color modes, remaining advanced workflows and plug-ins. Exact Photoshop results remain under qualification.\n\nV Move · M Marquee · L Lasso (⇧L cycles) · B Brush · E Eraser · U Shapes (⇧U cycles) · T Type · I Eyedropper · C Crop · H Hand · Z Zoom\n[ / ] brush size · Esc deselect · ⌘0 fit · ⌘G group · ⇧⌘G ungroup · ⌥⌘G clipping mask\n\nOptional prompt refinement runs on-device. Image Playground uses local models on macOS 26 and Apple's Private Cloud Compute on macOS 27 and later, subject to system availability. Generative fill is not implemented."
     a.runModal()
   }
   func snapshot() {
@@ -601,7 +664,7 @@ import SwiftUI
       if CommandLine.arguments.contains("--snapshot-gradients") {
         var state = GradientPresetState.builtins()
         let basics = state.nodes[0].id
-        let group = try state.group("Pantry", into: nil)
+        let group = try state.group("Photato", into: nil)
         let coastal = try state.add(
           .init(
             name: "Coastal Light",
@@ -687,7 +750,7 @@ import SwiftUI
       }
       if CommandLine.arguments.contains("--snapshot-gradient-map") {
         s.gradientOptions.gradient = .init(
-          name: "Pantry Duotone",
+          name: "Photato Duotone",
           colors: [
             .init(0, .rgb(Pixel(0.08, 0.12, 0.28))), .init(0.48, .rgb(Pixel(0.68, 0.23, 0.31))),
             .init(1, .rgb(Pixel(1, 0.91, 0.65))),
@@ -909,7 +972,8 @@ import SwiftUI
       s.renderTask?.cancel()
       s.surface = try Renderer.composite(s.previewDocument)
       s.selectionPath = try s.document.selectionMask.map { try SelectionOutline.path($0).path }
-      s.image = try RasterIO.displayImage(s.surface ?? Surface(width: 1, height: 1))
+      s.image = try ColorManagement.displayImage(
+        s.surface ?? Surface(width: 1, height: 1), in: s.document)
       if CommandLine.arguments.contains("--snapshot-channels") {
         s.layersTab = .channels
         if let index = CommandLine.arguments.firstIndex(of: "--snapshot-channel-size"),
@@ -922,7 +986,9 @@ import SwiftUI
           s.displayChannel = 0
           s.renderTask?.cancel()
           preview.mapPixels { _, _, p in Pixel(p.r, p.r, p.r, p.a) }
-          s.image = try RasterIO.displayImage(preview)
+          s.image =
+            try s.channelView.visible.count == 1
+            ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: s.document)
         }
       }
       if let id = s.document.activeLayerID,
@@ -1225,7 +1291,13 @@ import SwiftUI
     app.setActivationPolicy(.regular)
     let delegate = AppDelegate(
       workspaces: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
-        ? WorkspaceLibrary() : .shared)
+        ? WorkspaceLibrary() : .shared,
+      recoveryPreferences: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+        ? RecoveryPreferencesStore() : .shared,
+      recoveryIndex: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+        ? RecoveryIndexStore() : .shared,
+      colorSettings: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+        ? ColorSettingsStore() : .shared)
     app.delegate = delegate
     withExtendedLifetime(delegate) { app.run() }
   }

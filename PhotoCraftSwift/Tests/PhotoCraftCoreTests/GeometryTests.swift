@@ -49,7 +49,7 @@ final class GeometryTests: XCTestCase {
             original.layers[0].mask?.pixel(x: 2 - x, y: y))
         }
       }
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, original)
     }
   }
@@ -62,7 +62,7 @@ final class GeometryTests: XCTestCase {
       XCTAssertEqual(s.document.layers[0].x, 1 + Int(anchor.fractions.0 * 4))
       XCTAssertEqual(s.document.layers[0].y, 1 + Int(anchor.fractions.1 * 4))
       XCTAssertEqual(s.document.layers[0].mask, original.layers[0].mask)
-      s.undo()
+      try s.undo()
       XCTAssertEqual(s.document, original)
     }
   }
@@ -88,9 +88,9 @@ final class GeometryTests: XCTestCase {
     XCTAssertEqual(output.depth, .u16)
     XCTAssertEqual(s.document.layers[0].mask?.pixel(x: 0, y: 2), .black)
     XCTAssertEqual(s.document.pixelsPerInch, 300)
-    s.undo()
+    try s.undo()
     XCTAssertEqual(s.document, d)
-    s.redo()
+    try s.redo()
     XCTAssertEqual(s.document.width, 8)
   }
   func testResolutionOnlyDoesNotResamplePixels() throws {
@@ -101,7 +101,7 @@ final class GeometryTests: XCTestCase {
     XCTAssertEqual(s.document.width, d.width)
     XCTAssertEqual(s.document.pixelsPerInch, 300)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(s.document)), s.document)
-    s.undo()
+    try s.undo()
     XCTAssertEqual(s.document, d)
   }
   func testOldNativeArchiveDecodesWithoutNewGeometryFields() throws {

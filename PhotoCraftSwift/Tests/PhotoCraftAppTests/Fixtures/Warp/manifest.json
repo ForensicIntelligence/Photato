@@ -1,0 +1,7 @@
+{
+  "source": "../photocraft-main/crates/geom/src/warp.rs",
+  "sha256": "8dda562c302f78ee0cfb68f7cae0b7ee0334d4ec82735716eba6c1eee921740c",
+  "license": "MIT OR Apache-2.0",
+  "generator": "artifacts/runs/20261027T055843Z-179-warp/oracle01.py",
+  "adaptation": "Only inner docs and serde serialization annotations/imports removed. Original geometry arithmetic unchanged. Synthetic 120\u00d780 source and five test points, fifteen styles, both orientations. Rust formulas approximate Photoshop; this fixture proves upstream parity, not Adobe output."
+}

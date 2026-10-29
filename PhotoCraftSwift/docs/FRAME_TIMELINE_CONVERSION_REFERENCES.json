@@ -1,0 +1,57 @@
+{
+  "step": 245,
+  "recorded_at_utc": "2026-10-29T08:34:57.808215+00:00",
+  "status": "Frame animations now convert to an editable video Timeline with Hold Transform/Opacity/Style/Visibility keys, retained shared artwork/masks, finite loop counts, native59 and the shared API. 219 focused and 2543 full optimized tests pass on 2340 unchanged inputs. Independent PNG/sequence inspection matches 768 analytic RGBA values and eight frame timings. Reverse conversion, full animation interchange, exact Photoshop behavior and live/platform fidelity remain open. Installed221 and private universal243 are unchanged.",
+  "run": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion",
+  "source_manifest": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/source02.json",
+  "native_archive": 59,
+  "actions_version": 20,
+  "typed_commands": 172,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/timeline-panel-controls-and-features.html",
+      "finding": "Both mode conversion controls and panel commands; reverse conversion can remove interpolated keys while keeping appearance."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/configure-and-navigate-the-timeline-panel.html",
+      "finding": "Both conversion icons and warning about interpolated keys."
+    }
+  ],
+  "verification": {
+    "focused": {
+      "tests": 219,
+      "failures": 0,
+      "seconds": 17.59,
+      "log": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/focused02.log",
+      "sha256": "a16d8fad042e950561ff175fa718f2b03ab2276a12d8cf0d146d0c763cd57153"
+    },
+    "full": {
+      "tests": 2543,
+      "failures": 0,
+      "seconds": 172.285,
+      "log": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/full01.log",
+      "sha256": "def2623db5ff33a252ff2e374a3f4d2e3f44c73aee09b2e27b6cdd89653c86e0"
+    },
+    "unchanged_inputs": 2340,
+    "source_manifest": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/source02.json",
+    "independent": "artifacts/runs/20261029T080203Z-245-frame-timeline-conversion/independent-full01.json",
+    "exact_RGBA_channels": 768,
+    "binary_sha256": "ca9be0c06394b62ad91dc99df6e7c6e7627b6898111dac33ef60fbde9a673f3b",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "provenance": "Public behavior references and unmodified licensed Rust timeline_cmds.rs/video.rs. Independent Swift implementation; no proprietary implementation or formal separated clean-room claim.",
+  "exact_photoshop_parity": false,
+  "open": [
+    "Reverse video-to-frame conversion including movie/audio/transitions and editable retained content",
+    "Exact Photoshop conversion defaults, frame sampling, menu/shortcut and loop semantics",
+    "Rich PSD/Actions animation interchange and complete all-frame geometry/mode/color operations",
+    "General keyframe group/Smart Filter/Warp contexts beyond converted frame placement",
+    "DPX/HDR/aspect/presets and long streaming",
+    "External raw QuickTime readers ignoring rowb",
+    "Live desktop, physical audio, physical Intel and macOS14/macOS26 acceptance"
+  ]
+}

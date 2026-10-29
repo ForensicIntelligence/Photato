@@ -1,0 +1,167 @@
+{
+  "repository": "https://github.com/psd-tools/psd-tools",
+  "commit": "b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b",
+  "license": "MIT; included LICENSE-psd-tools",
+  "origin": "Upstream PSD/PSB test corpus, unmodified. Captured Photoshop version/date is not asserted. Paired documents are independently compared in native tests.",
+  "files": [
+    {
+      "path": "LICENSE",
+      "filename": "LICENSE-psd-tools",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/LICENSE",
+      "sha256": "79f7e019a30b97542cce6f6482a75ba26771b4204c374fec305dc8cf558d137f",
+      "bytes": 1058
+    },
+    {
+      "path": "tests/psd_files/0layers.psd",
+      "filename": "0layers.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/0layers.psd",
+      "sha256": "0711306e56002f193e33aefe4a1e9ce89ceafaea04da243593bc0c1e697c7d64",
+      "bytes": 114064
+    },
+    {
+      "path": "tests/psd_files/0layers.psb",
+      "filename": "0layers.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/0layers.psb",
+      "sha256": "3ae85219dadb3028dab6f4f8f72e6e1a6ca4b5d40aeede8abf87ec24020150fa",
+      "bytes": 139682
+    },
+    {
+      "path": "tests/psd_files/1layer.psd",
+      "filename": "1layer.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/1layer.psd",
+      "sha256": "c2b457581d549f4bea2e5c34a04b68b2917f640bce0e958b6bca9c65be75174b",
+      "bytes": 6476
+    },
+    {
+      "path": "tests/psd_files/1layer.psb",
+      "filename": "1layer.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/1layer.psb",
+      "sha256": "85317ccdb7ec11a51f1983ad2055544a490839c01f8b313db8070c1b0f0b83f4",
+      "bytes": 26636
+    },
+    {
+      "path": "tests/psd_files/2layers.psd",
+      "filename": "2layers.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/2layers.psd",
+      "sha256": "406ddf7cbf5a1065b992b9c0d2a59be6290a371b90f23b9a04c0e6bbc94beb0c",
+      "bytes": 14176
+    },
+    {
+      "path": "tests/psd_files/2layers.psb",
+      "filename": "2layers.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/2layers.psb",
+      "sha256": "863c51eb4d4e72214a3cbdf06a0594c485e4262d899318b1ba914d4c848382ab",
+      "bytes": 34781
+    },
+    {
+      "path": "tests/psd_files/group.psd",
+      "filename": "group.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/group.psd",
+      "sha256": "1aaf572b69f0b0fa7c04b7b3a14c97e310a0c7bbdc06e733c9dd0d0cdcf7df1c",
+      "bytes": 31480
+    },
+    {
+      "path": "tests/psd_files/group.psb",
+      "filename": "group.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/group.psb",
+      "sha256": "e5322646c91d54e068293e96580faebc3eae5d82d75ab3b38bd0e5c7cfb14ad2",
+      "bytes": 36590
+    },
+    {
+      "path": "tests/psd_files/16bit5x5.psd",
+      "filename": "16bit5x5.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/16bit5x5.psd",
+      "sha256": "c78689ea7b576f23bbd8b6b4f4993a365266c3ffc9aaa02cc20bef4a36a9d7a0",
+      "bytes": 22592
+    },
+    {
+      "path": "tests/psd_files/16bit5x5.psb",
+      "filename": "16bit5x5.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/16bit5x5.psb",
+      "sha256": "e0c9b37ffb5981aaedbeec2b2dfa3ad561b57e86e5e04758ed859ca819cd427c",
+      "bytes": 23482
+    },
+    {
+      "path": "tests/psd_files/32bit5x5.psd",
+      "filename": "32bit5x5.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/32bit5x5.psd",
+      "sha256": "66a4260e6bb8a60deff94031a66fa502c74870d75a723b4180aef02c35a97d0e",
+      "bytes": 20012
+    },
+    {
+      "path": "tests/psd_files/32bit5x5.psb",
+      "filename": "32bit5x5.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/32bit5x5.psb",
+      "sha256": "cd506872a4b1dc48bf7f64e10d321b99ea950c557cd3a83e303288e8ef6bf481",
+      "bytes": 20954
+    },
+    {
+      "path": "tests/psd_files/hidden-layer.psd",
+      "filename": "hidden-layer.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/hidden-layer.psd",
+      "sha256": "3aaadd20b5ff9d5e778239ee734c9c2bf57fc56bccc82c1b003c3719df46dba0",
+      "bytes": 29810
+    },
+    {
+      "path": "tests/psd_files/hidden-layer.psb",
+      "filename": "hidden-layer.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/hidden-layer.psb",
+      "sha256": "61504449562ab7e9f72c9182279385df4f7374c002c5443fdaf1db3bf8e738b9",
+      "bytes": 34171
+    },
+    {
+      "path": "tests/psd_files/semi-transparent-layers.psd",
+      "filename": "semi-transparent-layers.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/semi-transparent-layers.psd",
+      "sha256": "2d190efddf648408ad0115852f8a029eec44de10bd29f6ff222aaa574cc31bc1",
+      "bytes": 37746
+    },
+    {
+      "path": "tests/psd_files/semi-transparent-layers.psb",
+      "filename": "semi-transparent-layers.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/semi-transparent-layers.psb",
+      "sha256": "596a8131e4d63f65a0cc2b6a513fadc06f844a25ce8714be397f506d23abc398",
+      "bytes": 39848
+    },
+    {
+      "path": "tests/psd_files/300dpi.psd",
+      "filename": "300dpi.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/300dpi.psd",
+      "sha256": "613a5c22e0afdaed8fc3e2c11ab0f30267c515cecb27165833b0ed3833d0f51f",
+      "bytes": 201944
+    },
+    {
+      "path": "tests/psd_files/300dpi.psb",
+      "filename": "300dpi.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/300dpi.psb",
+      "sha256": "a31ee6a32a1e51ef2cae6e4c829ac328c560436306a5e7038c42c562ec241594",
+      "bytes": 202206
+    },
+    {
+      "path": "tests/psd_files/transparentbg.psd",
+      "filename": "transparentbg.psd",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/transparentbg.psd",
+      "sha256": "d6b3ebbc2928e80d6cb9e53e2bfc935083a2f76def4325547c382c0141fda8bb",
+      "bytes": 260130
+    },
+    {
+      "path": "tests/psd_files/transparentbg.psb",
+      "filename": "transparentbg.psb",
+      "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b/tests/psd_files/transparentbg.psb",
+      "sha256": "f4c14e457a74dcfc979c0ac4e2b25378036cb983dda1ee273a3f5267405f24d1",
+      "bytes": 260818
+    }
+  ],
+  "cases": [
+    "0layers",
+    "1layer",
+    "2layers",
+    "group",
+    "16bit5x5",
+    "32bit5x5",
+    "hidden-layer",
+    "semi-transparent-layers",
+    "300dpi",
+    "transparentbg"
+  ]
+}

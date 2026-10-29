@@ -29,10 +29,10 @@ final class MaskWorkflowTests: XCTestCase {
     XCTAssertEqual(store.session.undoStack.last?.label, "Apply Layer Mask")
     XCTAssertEqual(try Renderer.composite(store.document).pixel(x: 0, y: 0).a, 0)
     XCTAssertEqual(try Renderer.composite(store.document).pixel(x: 3, y: 0).a, 1)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, masked)
-    store.redo()
+    await store.redo()
     store.renderTask?.cancel()
     let applied = store.document
     store.createMask(.fromTransparency)
@@ -40,7 +40,7 @@ final class MaskWorkflowTests: XCTestCase {
     store.renderTask?.cancel()
     XCTAssertTrue(store.editingMask)
     XCTAssertEqual(try Renderer.composite(store.document), try Renderer.composite(applied))
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, applied)
   }
@@ -99,7 +99,7 @@ final class MaskWorkflowTests: XCTestCase {
     XCTAssertTrue(mask?.items.allSatisfy { $0.keyEquivalent.isEmpty } == true)
   }
 
-  @MainActor func testPropertiesAndUnlinkedMaskMoveLeaveContentInPlace() throws {
+  @MainActor func testPropertiesAndUnlinkedMaskMoveLeaveContentInPlace() async throws {
     var doc = try CraftDocument(width: 20, height: 20)
     var layer = Layer(
       name: "Mask", content: .raster(try Surface(width: 20, height: 20, fill: .white)))
@@ -134,7 +134,7 @@ final class MaskWorkflowTests: XCTestCase {
     // AppKit event coordinates convert through the flipped canvas; vertical direction is checked as magnitude.
     XCTAssertEqual(abs(store.document.layers[0].maskCoordinateTransform.ty), 2, accuracy: 0.01)
     XCTAssertEqual(store.session.undoStack.count, 2)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.layers[0].maskCoordinateTransform, .identity)
   }

@@ -1,0 +1,87 @@
+{
+  "step": 242,
+  "recorded_at_utc": "2026-10-29T06:27:00.869173+00:00",
+  "status": "Timeline work areas and onion-skin previews now include graphical range handles, settings, ranged playback/audio/export, Undo, native57 and shared APIs. 2,516 full optimized tests pass on 2,331 unchanged inputs. Independent checks match2,192 preview/sequence/raw-movie RGBA channels and recheck12 existing movie fixtures. Raw-movie row metadata is independently verified; FFmpeg6.1 interoperability remains open. Exact defaults/blending, Timeline conversion/trim/interchange and live/platform fidelity remain open; SP01 is not closed. Installed221 and private universal232 stay unchanged.",
+  "run": "artifacts/runs/20261029T053409Z-242-timeline-workspace",
+  "source_manifest": "artifacts/runs/20261029T053409Z-242-timeline-workspace/source05.json",
+  "native_archive": 57,
+  "actions_version": 20,
+  "typed_commands": 171,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/use-keyframes/preview-video-and-animations.html",
+      "updated": "2026-10-04",
+      "use": "Public work-area playback/export and handles/start/end commands."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/timeline-panel-controls-and-features.html",
+      "use": "Current Timeline onion-skin toggle/work-area controls."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "page": 511,
+      "use": "Historical primary reference for onion counts/spacing/opacity/blend; not proof of Photoshop2026 defaults."
+    },
+    {
+      "url": "https://github.com/FFmpeg/FFmpeg/blob/n6.1/libavformat/mov.c",
+      "use": "Read-only independent decoder investigation; preserved source ignores rowb. Not linked into the app."
+    },
+    {
+      "url": "https://developer.apple.com/library/archive/qa/qa1829/_index.html",
+      "use": "Primary explanation of platform-dependent pixel-buffer row strides."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/corevideo/cvpixelbuffercreatewithbytes(_:_:_:_:_:_:_:_:_:_:)",
+      "use": "Public row-stride and ownership API; installed SDK header and separate writer/decoder probes document the rejected packed-row experiment. Web Markdown fetch was unavailable."
+    }
+  ],
+  "verification": {
+    "utc": "2026-10-29T06:27:00.869173+00:00",
+    "full": {
+      "tests": 2516,
+      "failures": 0,
+      "seconds": 171.237,
+      "log": "artifacts/runs/20261029T053409Z-242-timeline-workspace/full-tests02.log",
+      "sha256": "b598afa2941ad2d68bad082986bcc69dc7f80d26fda8575e988da36b1c0f69b1",
+      "build_seconds": [
+        "0.47"
+      ]
+    },
+    "focused": {
+      "tests": 92,
+      "failures": 0,
+      "seconds": 10.596,
+      "log": "artifacts/runs/20261029T053409Z-242-timeline-workspace/focused05.log",
+      "sha256": "f7fc45bbc1642d3071c5afca4954b6d2401516bd262262566b87b6e4f2e8d99f",
+      "build_seconds": [
+        "81.72"
+      ]
+    },
+    "unchanged_inputs": 2331,
+    "source_manifest": "artifacts/runs/20261029T053409Z-242-timeline-workspace/source05.json",
+    "binary_sha256": "ff68223470c981da20767a6cbfe82d3d2139ae7e2cf63231a541441d1346a42e",
+    "architecture": "arm64",
+    "workspace_independent": "artifacts/runs/20261029T053409Z-242-timeline-workspace/independent-full02.json",
+    "render_regression_independent": "artifacts/runs/20261029T053409Z-242-timeline-workspace/independent-full02-render.json",
+    "exact_workspace_RGBA_channels": 2192,
+    "offscreen_captures": [
+      "artifacts/runs/20261029T053409Z-242-timeline-workspace/full02/workspace-timeline.png",
+      "artifacts/runs/20261029T053409Z-242-timeline-workspace/full02/render/render-video-settings.png"
+    ],
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "exact_photoshop_parity": false,
+  "open": [
+    "Trim Document Duration To Work Area",
+    "Frame/video mode conversion",
+    "Exact Photoshop onion defaults/overlap blending and visual/shortcut fidelity",
+    "DPX/HDR/aspect/presets, long media streaming",
+    "Uncompressed movie interoperability with readers that ignore rowb",
+    "Rich PSD/Actions animation interchange",
+    "Live desktop, physical audio, macOS14/Intel acceptance"
+  ],
+  "provenance": "Independent Swift implementation from public behavior/API documentation and owned fixtures; no proprietary Adobe implementation source or formal separated clean-room claim."
+}

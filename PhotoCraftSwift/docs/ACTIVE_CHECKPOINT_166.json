@@ -1,0 +1,89 @@
+{
+  "step": "dev-step-166",
+  "completed_at_utc": "2026-10-26T23:45:01.506829+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Usable native Select and Mask subset; S04/model/live/independent parity remains open.",
+  "source_manifest": "artifacts/runs/20261026T231526Z-166-select-mask/source02.json",
+  "source_manifest_sha256": "72ae548a81e060f588a58c9bca946e380c7cbf2a613e4aa546782c3935841684",
+  "source_inputs": 1241,
+  "source_delta": "artifacts/runs/20261026T231526Z-166-select-mask/changes02.json",
+  "tests": {
+    "debug_initial": {
+      "count": 47,
+      "source": "artifacts/runs/20261026T231526Z-166-select-mask/source01.json",
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/integration03.log"
+    },
+    "debug_preview_repair": {
+      "count": 12,
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/integration04.log",
+      "qualification": "Before final source-size/corrected-mask guards and added in-flight new-document revocation test."
+    },
+    "full_release": {
+      "count": 1597,
+      "source": "artifacts/runs/20261026T231526Z-166-select-mask/source02.json",
+      "log": "artifacts/runs/20261026T231526Z-166-select-mask/release-tests01.log"
+    },
+    "failures": 0,
+    "platform": {
+      "checks_per_architecture": 54,
+      "report": "artifacts/runs/20261026T231526Z-166-select-mask/platform01.json",
+      "qualification": "Release arm64 native and x86_64 under Rosetta; three refined mask hashes match. Physical Intel/macOS14/26 and independent Photoshop qualification remain open."
+    }
+  },
+  "package": {
+    "archive": "artifacts/runs/20261026T231526Z-166-select-mask/Photato166-candidate.zip",
+    "archive_sha256": "7ef6677156d81e03bd4bf531d438841c26a14cabc2fdda1d7de805c980fc3e14",
+    "executable_sha256": "d0c3ff78a07de9c75cbd641d0e7b3ca4a6a7cbb810cfea8fbede13f397b324c8",
+    "verified_app": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato166-verified-9rgqnj_r/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "version": "0.2.0 build2",
+    "attribution_sha256": "3f792e6848f54ce2f2c6226ac3eba145bb7851defdc3677b3b0b899a9277a0b1"
+  },
+  "interfaces": {
+    "photato_typed_commands": 42,
+    "adobe_routes_partial": 5,
+    "adobe_routes_unimplemented": 3,
+    "adobe_refinement": "Unsupported proprietary refinement action descriptors; no dedicated published route."
+  },
+  "menu": {
+    "entries": 802,
+    "bound": 208,
+    "unavailable": 517,
+    "primary_shortcuts": 102,
+    "alternates": 8,
+    "report": "artifacts/runs/20261026T231526Z-166-select-mask/menu-report01.json"
+  },
+  "preserved": {
+    "state": "artifacts/runs/20261026T231526Z-166-select-mask/preserved-state01.json",
+    "original_rust_files": 754,
+    "root_release": "build117 unchanged",
+    "xcode_project": "Photato.xcodeproj unchanged; synchronized source groups include new Swift files"
+  },
+  "live": {
+    "status": "Pending Mac unlock; original Photoshop document untouched.",
+    "offscreen": "Two captures retained but not accepted because native-control compositing is unreliable.",
+    "pending": "Pointer/keyboard/brush/lasso/subject/decontamination/outputs/cancel/history/save and independent Photoshop comparisons; prior159\u2013165 live checks remain pending."
+  },
+  "next": {
+    "work_package": "C02/S05",
+    "task": "Build native alpha channels, saved selection load/save/combine and Quick Mask editing, including UI/factory shortcuts, shared history, native persistence and both APIs where the published Adobe contract defines an operation.",
+    "priority": "Major breadth first; defer numerical/cosmetic fidelity while major workflows remain missing."
+  },
+  "no_unfinished_source_edit": true,
+  "no_outstanding_test_or_build_session": true,
+  "source_diff": "artifacts/runs/20261026T231526Z-166-select-mask/source.diff",
+  "development_history_audit": {
+    "check": "passed",
+    "milestones": 166,
+    "evidence_files": 36216,
+    "logs": 19177,
+    "missing_explicit_references": 0,
+    "report": "artifacts/development-history-audit/20261026T231526Z-166-select-mask/check01.log"
+  }
+}

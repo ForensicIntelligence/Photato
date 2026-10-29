@@ -1,0 +1,110 @@
+{
+  "step": "dev-step-152",
+  "workflow": "D01/I03",
+  "status": "Runtime integration qualified for recorded subset",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_152.json",
+  "scope": [
+    "Native model/archives/PSD/PSB/TIFF and operation-specific guards now retain independent protection. Protected painting preserves alpha; explicit selection Clear/Cut remains removal.",
+    "Native Lock Layers dialog,layer buttons,factory shortcut,rename/group availability and both API paths share engine/history.",
+    "59 focused,1442 Debug,1442 Release,20 Rosetta tests and universal package verification pass. Live owned Debug UI probe is recorded separately from Release packaging."
+  ],
+  "remaining": [
+    "Every major workflow remains open. Partial protection integration does not prove complete Photoshop layer semantics or byte parity.",
+    "Independent Photoshop group/mask/type/shape, brush/eraser/high-depth and multiselection shortcut references remain incomplete; current tests cover native invariants and limited independent raster references.",
+    "Auto-nest flags persist, but artboard auto-nesting itself is unsupported. Little-endian TIFF opaque shmd and other unimplemented descriptors still reject explicitly.",
+    "Create-composite is protection-edit only; five other Adobe routes and full conformance remain unimplemented. Existing resource/format limits apply.",
+    "Editable .pcraft import is still unavailable. Continue with sparse-default/profile interpretation and a native editable adapter plus desktop/API/history/save integration, rejecting unsupported content explicitly.",
+    "Original Smart Objects,artboards,rich text,auxiliary channels,effects,Blend If,comps and timeline still need native editable workflows. Exact menus/preferences/output and physical Intel/macOS14 qualification remain open.",
+    "Smart Objects,artboards,rich text,auxiliary channels,effects,Blend If,comps,timeline and other source features need native editable workflows. Keeping their source JSON/payloads is not rendering or full semantic validation.",
+    "Reader is bounded to16MiB manifest,250000 JSON values,4096 layers,16384 surfaces,256MiB blob and512MiB logical payload totals. Existing ZIP/Zstd limits remain. Optional previews and unreferenced entries are not loaded; unknown version rejects. Larger/streamed migration remains open.",
+    "All Photoshop byte parity,menus/shortcuts/preferences,major workflows and live/supported-platform qualifications remain open. Continue major functions before optional minor functions and final details.",
+    "Decoder qualification is bounded:256MiB compressed/output/window limits;ZIP512MiB archive/aggregate and256MiB entry limits. Dictionaries,concatenated/skippable Zstd,ZIP64/encryption and unsupported container features reject explicitly. Larger/streamed workflows remain open.",
+    "All previous Photoshop requirements remain: exact output bytes,menus/shortcuts/preferences,major functions and supported-platform/live qualification. Source fixtures do not establish Photoshop parity.",
+    "Keep major functions first; defer optional minor functions and final details.",
+    "All major workflow gates remain open. Photoshop JPEG quantization, factory native dialogs/defaults,3\u20135 progressive scan schedule/selection, exact output bytes and live UI remain unqualified.",
+    "JPEG action input, other Adobe JPEG-output endpoints and their scan/optimized fields remain unimplemented. Do not confuse local named-quality mapping with proprietary Adobe encoder equivalence.",
+    "Continue D01/I04: PSD/PSB Maximize Compatibility and native save/export policy, original .pcraft migration, broader modes/formats, profiles and large-file qualification. TIFF descriptor/opaque records, Save Transparency/pyramids and preferences remain open.",
+    "Live Photoshop JPEG references now exist (five quality8 variants); broader live checks remain open. Synthetic/third-party codec checks do not establish Photoshop rendering or file bytes. Rosetta does not substitute for physical Intel/macOS14 runtime qualification.",
+    "Keep remaining major workflows first; minor functions and final details are deferred."
+  ],
+  "api": {
+    "photato_typed_commands": 21,
+    "adobe_partial_endpoints": 3,
+    "adobe_unimplemented_endpoints": 5,
+    "new_routes": [
+      "POST /v2/create-composite (protection-edit subset)"
+    ],
+    "new_commands": [
+      "layer.protection"
+    ],
+    "new_fields": [
+      "protection",
+      "effectiveProtection",
+      "imageLocked",
+      "positionLocked",
+      "transparencyLocked"
+    ],
+    "native_partial_protection_version": 12,
+    "scope": "Shared native engine/history; Photato shared documents and Adobe isolated jobs retain separate lifecycle contracts."
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T193030Z-152-layer-protection/tested-source-hashes13.json",
+    "sha256": "5eb76ec6a62294c832487befb8da15fe2900540d7af775c7de723cccb24a9fd4"
+  },
+  "live_photoshop": {
+    "owned_document": "64x64 synthetic RGBA stripe fixture",
+    "original_user_document_untouched": "Modified Untitled-1,921x921",
+    "cleanup": "Closed the owned saved reference document; original remains open.",
+    "semantics_verified": [
+      "All permits Rename Layer",
+      "Image implies disabled checked Transparency",
+      "Command-/ clears all flags",
+      "Uncheck All in dialog retains four flags",
+      "Black Fill with Transparency retains exact alpha"
+    ],
+    "scope": "Single RGB8 pixel layer; no live Photato or complete protection workflow claim."
+  },
+  "fixtures": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/reference-inventory03.json",
+    "sha256": "819d05961f7b28be43d4c200ba813c90160ee04d5f8f9a9afbad7516c865b6bf"
+  },
+  "sources": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/primary-references01.json",
+    "sha256": "158405219dd02800461ff13da4f82740b0a0a3fcea3314f09db93abd5415c838"
+  },
+  "contract": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/adobe-contract-fetch01.json",
+    "sha256": "ad0f9f2fc82c26a8e019717fe86d7fcac84c47421f7096ff8d58e36e3214e464"
+  },
+  "next_plan": {
+    "path": "artifacts/runs/20261020T193030Z-152-layer-protection/next-major-plan01.json",
+    "sha256": "733de6f23771fe95303322d8cd124ea868df3617f69421b07747ffcc00af7021"
+  },
+  "contract_interpretation": {
+    "path": "artifacts/runs/20261020T185700Z-151-layer-locks/adobe-protection-contract-analysis01.json",
+    "sha256": "6db617c158c6b54aaf4eda87474ffdf7194f2b9106fc9358c254b09b86ed596d"
+  },
+  "no_photoshop_parity_claim": true,
+  "previous_prerequisite_manifest": {
+    "path": "artifacts/runs/20261020T193030Z-152-layer-protection/protection-references151.json",
+    "sha256": "d736ce8252ca25ec6b93ac7fd975a10b211e3bc93576bdf8984085916f519490"
+  },
+  "runtime_step152": {
+    "clear_reference": {
+      "path": "artifacts/runs/20261020T193030Z-152-layer-protection/clear-reference02.json",
+      "sha256": "96ce16e09f94208dd0f6b07f04720d2d26f7ba5857e19c3903ea5fa5cc5fee8f"
+    },
+    "independent_tiff_flags": {
+      "path": "artifacts/runs/20261020T193030Z-152-layer-protection/tiff-protection-inventory01.json",
+      "sha256": "c18031dcb4db0bdab2301fd6b719c05166af81e52703262b222db566faafd610"
+    },
+    "live_ui": {
+      "path": "artifacts/runs/20261020T193030Z-152-layer-protection/live-verification01.json",
+      "sha256": "9e57ccceb0f439db3113523ae9e11545a0aab3c3260e4ddd67f1eb0bf8141106"
+    },
+    "exports": {
+      "path": "artifacts/runs/20261020T193030Z-152-layer-protection/export-differences02.json",
+      "sha256": "3ed1a46e87de305ea23ecae64c3582073335db6c0c87523d8226f1ca6fdb3a70"
+    }
+  }
+}

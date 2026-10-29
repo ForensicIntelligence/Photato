@@ -1,0 +1,199 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "step": "dev-step-127",
+  "recorded_at_utc": "2026-10-20T04:45:30.668206+00:00",
+  "major_workflow": "D02 recovery / D01 document lifecycle / I02 storage",
+  "status": "Automatic recovery, native/HTTP snapshot and source-format/launch repairs qualified by focused/full/process tests and universal packaging; full D02 remains open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/tested-source-hashes04.json",
+    "sha256": "c740ba933903a15c4614c5e089a8b640e7b6a003d04e669fb0af60b4fdf4ad0c"
+  },
+  "source_test_files": 428,
+  "validation_inputs": 820,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/packaging-documents04.json",
+    "sha256": "02b1878aca5d1020377f2821f71a6450b799a765178d4460585515ecac32e7dd"
+  },
+  "validation_isolation": "/private/tmp/photato127-attempt04-kbxu4ze1/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 6.395,
+    "log": {
+      "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/focused04.log",
+      "sha256": "7ab4964a0d7d5a6b7be5f3ea781cfae679153715785108fa10cd2be392c6275e"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T041711Z-127-recovery-investigation/full01.log",
+      "sha256": "a9c5c9f017e44cb3f10d42af0802f596cb658437d7295f6c12017cfd3d94085f",
+      "passed": 1136,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.138
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T041711Z-127-recovery-investigation/release01.log",
+      "sha256": "bf4c066a5c7a2d55f659137bf990cc385923eb64ad7f27e9b7b289b93cc6e20f",
+      "passed": 1136,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 49.905
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato127-verified-caa7k8do/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "a45d25e4e8ee4c05b2e7e4b9c0548800e4b151c525c46472f6a9778fdb7fdd23",
+    "zip_sha256": "3073ac51a6c75ed260049ff237f8f8911f2f7cd83344ff483e16f13b8853580a",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/Photato127-candidate.zip",
+    "sha256": "3073ac51a6c75ed260049ff237f8f8911f2f7cd83344ff483e16f13b8853580a"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_126.json",
+    "sha256": "7759ae36dd2b9be90e0f7eae8a7d0dd2eaccfc9a3043003f8170364e620a4c7e"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/package-verification01.json",
+    "sha256": "a0088fb50ad29799d87faeb463b6db56ac45b4b25365b0f013f109e44a51f902"
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "document.autosave shares AppKit recovery with the desktop; recovery state/schema/capabilities and errors. Adobe has no equivalent live desktop recovery endpoint in the pinned contract."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/live-ui02.json",
+    "sha256": "7bb73e6f5a805b2c08ffb932c23f2c69c8ac59ebe17179d7474055e00fa09b11"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Enable AppKit recovery at a600-second minimum interval and repair the previously crashing document initializer",
+    "Capture committed native version11 content without finishing field drafts or changing explicit source/dirty/history state",
+    "Expose the same snapshot operation and recovery state through the authenticated shared-document API",
+    "Repair native recovery source-format association, protect originals with Save As review and handle missing originals",
+    "Let AppKit decide initial blank creation after recovery; route document restoration to the native shared workspace",
+    "Verify actual automatic snapshots, SIGKILL/relaunch, exact content, source formats, close cleanup and clean startup in a disposable production-delegate process",
+    "Verify failed writes preserve prior backup/content/history/revision and can retry"
+  ],
+  "remaining_major_dependencies": [
+    "D02: preferences for recovery interval/enablement, Photoshop presentation, all document/import/relaunch scenarios and window/tab layout recovery",
+    "D02: full disk-full/interrupted-write/power-loss durability, source identity/bookmark retention, backup retention and stale crash scratch cleanup",
+    "D02/I02: native autosave leaf remains synchronous; qualify large-document main-thread latency, concurrent editing and total memory",
+    "I02: active-document paging, bounded renderer/cache, history cleanup/accounting latency and total-process memory before raising public file/canvas/transfer limits; retain125 measured arm64 RSS limitation",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and complete live lifecycle",
+    "Combined118\u2013127 native/Photoshop live qualification; physical Intel/macOS14 full-app runtime and optional AI availability/real generation",
+    "All major workflows remain open; optional minor/history functions and final details follow only after major exit gates"
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/source-scope01.json",
+    "sha256": "0ac8762627fd4401a9b4341208f0013117a7010405d78ae22c315799cda51d97"
+  },
+  "process_recovery": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/process-verification04.json",
+    "sha256": "37b990677a782ff14324ff80085a2c40e0103bb3b8514738d88061722defb979"
+  },
+  "process_cleanup": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/process-cleanup03-result.json",
+    "sha256": "dca16a690a523e59027e0843bbc2e0641e21093c8e3e1addfb871623642de9f0"
+  },
+  "independent_psb_parser": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/final-export-compatibility01.json",
+    "sha256": "b0614122d67cf6ecf375786e57f1d5a179630a562418979e62bc09f0fcabb57d"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/final-inputs01.json",
+    "sha256": "7d860af8b43e2c5c648e84d839f84aa836120e42564720199be6a3ad3affa084"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T041711Z-127-recovery-investigation/next-major-plan01.json",
+    "sha256": "cacf01c91691b9af8b2177ca9fc2aed26ad53d22ea0e39bffd04fd5534ee74f3"
+  },
+  "prior_failed_attempts": [
+    "focused01 compile failure",
+    "process02 positional-argument startup error",
+    "process03 recovery format/extra blank defects",
+    "isolation03 directory preparation failure"
+  ],
+  "performance_limitation": "No new large-document memory/latency or power-loss claim; synchronous autosave leaf remains. Process tests use small owned fixtures and a1-second timer, production default600seconds.",
+  "resume_first": "Verify checkpoint127/frozen inputs and terminal final audit. Preserve installed117 and original user documents/workspace. Continue phase1 D02 fault/metadata/preferences and I02 storage; qualify combined candidate when unlocked. Inspect disposable118 before any cleanup. No Git mutation.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step127-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step127-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step127-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step127-final/final-inputs01.json"
+  }
+}

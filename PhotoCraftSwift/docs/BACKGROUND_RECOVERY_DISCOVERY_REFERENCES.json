@@ -1,0 +1,123 @@
+{
+  "step": "dev-step-138",
+  "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_138.json",
+    "sha256": "efaac0f699e96ff70f35ab30ed977450e8be2a2686a2577fee6c2bd608272c2d"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "POST /v1/recovery/cancel"
+    ],
+    "expanded_routes": [
+      "GET /v1/recovery",
+      "POST /v1/recovery/retry"
+    ],
+    "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+    "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+  },
+  "scope": [
+    "Full native archive decoding, color/context checks, fingerprinting and source-format preparation off MainActor; scoped prepared-read handoff preserves AppKit recovery factory dirty/autosave/source state",
+    "Native recovery progress and cooperative cancellation; earlier published documents remain open, remaining backups remain registered, queued SDK opening waits across immediately chained retries and duplicate/source collision checks repeat after decoding",
+    "API progress/schema/cancel route, exact operation IDs and session-owned cancellation; upload publication rejects a recovery generation change",
+    "Archive identity, index bytes/revision, source/session/generation rechecks before publication; late reappearing missing files retain registration",
+    "184 focused and 1,300 Debug / 1,300 Release tests; nine owned process outcomes including background responsiveness, queued callback after cancellation, before/after-decode SIGKILL, exact fresh restoration, edit/autosave/Save As/Discard and clean relaunch",
+    "Universal macOS14+ package and public AppKit callbacks on arm64/Rosetta; Core/Imaging/AI unchanged and nine whole PSB outputs byte-identical to137"
+  ],
+  "remaining": [
+    "D02/I02: aggregate recovered-document memory is not bounded by this increment. Next investigate admission/accounting and observable deferred entries with preserved backups and retry. Current input limit512MiB and raster limit1GiB are per-file, not whole-process limits.",
+    "Bounded index metadata I/O, AppKit bookkeeping, document construction and window presentation still run on MainActor. Cooperative cancellation may wait for a decoder stage. External AppKit recovery routes remain outside this new background path.",
+    "D02: full window/tab restoration, legacy locations outside private Archives, sandbox/network/removable-volume and power-loss qualification remain open.",
+    "D01: full format/profile/metadata/tag/ACL fidelity, import options, save-format preferences and external coordination remain open.",
+    "Physical Intel/macOS14 and live native/Photoshop UX unqualified. Mac remains locked; existing manual-unlock request pending. Rosetta public opening does not establish full new recovery UI qualification.",
+    "File identity/fingerprint checks are not filesystem compare-and-swap. Passing native tests and unchanged samples do not establish universal Photoshop byte equivalence.",
+    "All major gates remain open; minor functions and final details remain deferred."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Photato recovery progress/cancel and File Handling active recovery control; no invented Photoshop factory menu"
+  },
+  "provenance": "Original native Swift integrating existing archive/recovery/atomic modules and actual AppKit recovery factory. No external code copied and no claim of Photoshop factory-window equivalence.",
+  "freeze": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/tested-source-hashes05.json",
+    "sha256": "b81c73f53532192f7a95c44aa063b656cc963a9ead3c3f0a28dc6971749ba657"
+  },
+  "focused": {
+    "passed": 184,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 20.517,
+    "log": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/focused05.log",
+      "sha256": "0768d50a757cba6be3093f61046821bb9598f9f093db52ba86e7e998780bd5af"
+    }
+  },
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T111045Z-138-background-recovery/full02.log",
+      "sha256": "70f28d75e5124c7231d0f795da1af4244a9506a29fc1074cef7b1ed0e2b083be",
+      "passed": 1300,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 261.88
+    },
+    "release02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T111045Z-138-background-recovery/release02.log",
+      "sha256": "46d1a8720a833f30a22512b0b1a11efb49cbea1d6d4c9bfb37c316301b465e3b",
+      "passed": 1300,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 66.804
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato138-verified-ruwwgbm6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "9781620d766e572b4a76c30d5bc81e30b8db1ffb64e042512ea81def6468e62f",
+    "zip_sha256": "3e2d378a38132027460b4dab8dd73669c99845e4779cf2476e958522e9ec9870",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "debug_process": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/process-background-verification02.json",
+    "sha256": "c6630bb40881fefc7a32168d56ae46752c140783c12af2dba230b1589130edb0"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/public-release-arm6401/verification.json",
+      "sha256": "816edbab8060870155dcdd9e472dda14d0e313004fe4a8e9bb80cccac2839cd4"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T111045Z-138-background-recovery/public-release-x86_6401/verification.json",
+      "sha256": "60773211ada62a67f4a02893e00248a9d02d813435c0289f701fae4675ab0874"
+    }
+  },
+  "factory_baseline": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/factory-baseline-result01.json",
+    "sha256": "0ff3291ac1b05ec1dd1c33ac7c785fe07eb76b3555aafe7e2aa3714c8981401c"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/live-ui-availability01.json",
+    "sha256": "3ff254bc8e78c1b9a7190ac2e107788587bd534e4956487d0538dd320228fddd"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T111045Z-138-background-recovery/source-delta02.json",
+    "sha256": "cd88f77e6b5c47a396e3d36623a034e13dcc64145c3141b363233090e83c8b0a"
+  },
+  "full_parity": false
+}

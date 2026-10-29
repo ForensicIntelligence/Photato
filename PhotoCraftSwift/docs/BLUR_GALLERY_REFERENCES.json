@@ -1,0 +1,112 @@
+{
+  "step": "dev-step-185",
+  "status": "Native major Blur Gallery workflow implemented and tested; complete F03/Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T101322Z-185-blur-gallery",
+  "scope": "Field/Iris/Tilt-Shift/Path/Spin blur, multiple pins/paths and effect enablement, native preview/controls/mask/local history/Cancel/OK, bokeh/noise and spin strobe controls, selections/locks, editable Smart Filters/native29 and shared typed API.",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/gallery.rs",
+    "../photocraft-main/crates/engine/src/filters_ext.rs",
+    "../photocraft-main/crates/engine/src/filters_ext/tests.rs"
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/use-blur-gallery-depth-of-field-effects.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-04"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/apply-spin-blur-effects-in-blur-gallery.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-09"
+    },
+    {
+      "url": "https://helpx.adobe.com/in/photoshop/using/blur-gallery.html",
+      "read": "2026-10-27"
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "finding": "No dedicated Blur Gallery route or typed descriptor. Generic execute-actions does not justify inventing unqualified Photoshop action fields; blurGallery actionJSON rejects explicitly."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "filter_kind": "blurGallery",
+    "parameter": "gallery",
+    "catalogue_count": 70,
+    "native_archive_version": 29,
+    "state": "Persisted settings through Smart Filter state; workspace availability/open/busy and expanded capabilities/schema. Same native prepared transaction, source retention, busy/stale guards and Undo."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No dedicated published operation. Unqualified blurGallery actionJSON and editable PSD/PSB descriptors reject explicitly; native gallery API remains distinct. Existing other Adobe jobs preserved."
+  },
+  "menus": {
+    "new_bindings": 5,
+    "entries": 802,
+    "bound": 253,
+    "unavailable": 472,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Blur Gallery > Field Blur\u2026",
+      "Filter > Blur Gallery > Iris Blur\u2026",
+      "Filter > Blur Gallery > Tilt-Shift\u2026",
+      "Filter > Blur Gallery > Path Blur\u2026",
+      "Filter > Blur Gallery > Spin Blur\u2026"
+    ]
+  },
+  "tests": {
+    "debug_focused": 90,
+    "debug_log": "artifacts/runs/20261027T101322Z-185-blur-gallery/integration04.log",
+    "earlier_passing": {
+      "integration02": 89,
+      "integration03": 90
+    },
+    "failed_attempts": [
+      "artifacts/runs/20261027T101322Z-185-blur-gallery/module01.log",
+      "artifacts/runs/20261027T101322Z-185-blur-gallery/module02.log",
+      "artifacts/runs/20261027T101322Z-185-blur-gallery/module03.log",
+      "artifacts/runs/20261027T101322Z-185-blur-gallery/module04.log",
+      "artifacts/runs/20261027T101322Z-185-blur-gallery/integration01.log"
+    ],
+    "source_formula_evidence": "Independent Rust field-weight/focus expectations plus identity, constant sigma, all-depth/selection/history, source retention, native round trips and single instantaneous flash invariant. Not an independent Photoshop image oracle.",
+    "offscreen_directory": "artifacts/blur-gallery-offscreen",
+    "offscreen_limit": "Image and handle/control layout present; standard native buttons/pickers incompletely rendered without live window. Not live/visual parity evidence.",
+    "release_focused": 90,
+    "release_log": "artifacts/runs/20261027T101322Z-185-blur-gallery/release-focused01.log",
+    "verification": "artifacts/runs/20261027T101322Z-185-blur-gallery/verification01.json",
+    "last_full_regression": {
+      "step": 184,
+      "tests": 1782,
+      "failures": 0
+    }
+  },
+  "limitations": [
+    "Exact Photoshop pixels, effect composition, strobe exposure kernels, bokeh/noise distributions and live/physical-platform qualification remain open. Last desktop evidence locked; no re-probe or bypass.",
+    "Native Gaussian-level interpolation follows the Rust algorithm design. Enabled modes apply in field/iris/tiltShift/path/spin order; combined Photoshop behavior is unqualified. RGB8/16 encoded and RGB32 linear samples use existing filter paths.",
+    "Native filters are bounded to8,388,608 source pixels; gallery64 pins per tool,16 paths with2\u201332 nodes. Continuous motion64 samples; spin strobes up to30 flashes with1 or5 exposure samples. More demanding files need resource/performance expansion.",
+    "Path blur uses straight or Catmull\u2013Rom control-point paths with speed/taper/centered controls. Exact Bezier/corner editing, per-endpoint speed, additional motion/strobe options for paths, high-quality settings and richer canvas interactions remain open.",
+    "Bokeh and uniform/Gaussian/grain controls are implemented; per-noise-type remembered presets and exact Photoshop models remain open.",
+    "Mask preview is a local intensity visualization; path mask uses maximum path speed and does not yet reproduce its full taper field. Exact mask display/hold-key behavior, ellipsoid display under all transforms and mixed geometry-filter input coordinates remain unqualified.",
+    "Editable PSD/PSB Blur Gallery descriptors are unsupported. Native29 preserves source/settings; rasterized/rendered exports work. Adobe actionJSON rejects rather than silently applying defaults.",
+    "Native Actions already record typed applyFilter values and retain Gallery settings; Adobe .atn/plugin interchange and exhaustive action compatibility remain separate gaps.",
+    "Offscreen layout/controller tests do not demonstrate real pointer/key interaction. F03 remains open until all scope, output and platform acceptance criteria are met."
+  ],
+  "next": "F05 Lens Correction, followed by Adaptive Wide Angle and Vanishing Point: source audit, native controls/preview/history/persistence and API coverage. Continue major breadth before minor fidelity work.",
+  "development_audit": {
+    "status": "passed",
+    "milestones": 185,
+    "evidence_files": 37748,
+    "logs": 19339,
+    "missing_explicit_references": 0,
+    "checked_log": "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/check01.log",
+    "final_refresh_check_logs": [
+      "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/refresh02.log",
+      "artifacts/development-history-audit/20261027T101322Z-185-blur-gallery/check02.log"
+    ],
+    "scope": "Record/reference integrity only; not Photoshop parity."
+  }
+}

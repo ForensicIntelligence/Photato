@@ -1,0 +1,173 @@
+{
+  "step": "dev-step-121",
+  "status": "Bounded PSD/PSB file input qualified by automated/universal/Intel/memory checks; combined native/Photoshop live workflow pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T011104Z-121-psd-file-input",
+  "implementation": [
+    "Owned regular-file descriptor with pread64bit offsets and64KiB/eight-page bounded cache",
+    "Shared PSDReader/row codec for Data API inputs and native file Open/Revert; retained metadata remains explicit",
+    "File descriptor and path identity/size/mtime/ctime checks after reading and validation; truncation/observed mutation/replacement rejection",
+    "Cancellation checks, partial-read/EINTR handling, nonblocking open with nonregular rejection, supported symlink paths",
+    "Photato fileInput capability metadata; both published/Photato job contracts and limits unchanged"
+  ],
+  "source_freeze": "artifacts/runs/20261020T011104Z-121-psd-file-input/tested-source-hashes05.json",
+  "sdk_reference": "artifacts/runs/20261020T011104Z-121-psd-file-input/file-api-provenance01.json",
+  "focused": {
+    "tests": 72,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 56.584,
+    "source_freeze": "tested-source-hashes03.json",
+    "final_check_order_and_symlink_assertion": "Added after focused; covered by final full suites"
+  },
+  "limits": {
+    "maximum_input_bytes": 536870912,
+    "maximum_dimension": 32768,
+    "maximum_pixels": 36000000,
+    "decoded_tile_budget_bytes": 536870912,
+    "file_read_window_bytes": 65536,
+    "maximum_file_cache_bytes": 524288,
+    "API_inputs_Data": true,
+    "retained_metadata_materialized": true,
+    "native_archives_Data": true,
+    "streaming_output": false,
+    "disk_backed_tiles": false,
+    "full_large_file_support": false
+  },
+  "qualification_scope": [
+    "Thirty procedural/external PSD/PSB files; file/memory samples/profile/metadata/hierarchy agree",
+    "Sparse4GiB offset test covers only byte-source arithmetic; public PSD read still rejects beyond512MiB",
+    "Cached-source mutation and atomic replacement, truncation, nonregular files/pipes, cache limits and cancellation",
+    "Observed metadata checks narrow races; complete external-file coordination, change tracking and recovery workflows remain open"
+  ],
+  "remaining": [
+    "Full multi-GB input/output/canvas, scratch/tile/history/native archive support",
+    "Unported Photoshop content and full independent rendering/metadata equivalence",
+    "Combined native/Photoshop live qualification pending unlocked Mac",
+    "Physical Intel/macOS14 full-app qualification"
+  ],
+  "non_photoshop_fallback": "ImageIO retains its previous mapped-Data input path; the earlier whole-file heap-copy fallback was superseded before installation.",
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T011104Z-121-psd-file-input/full02.log",
+      "sha256": "71f955b7be7af81a0690b993548270e949f37b60f29eef81553ef06b07a8a679",
+      "passed": 1084,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 203.243
+    },
+    "release02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T011104Z-121-psd-file-input/release02.log",
+      "sha256": "86d7942988253cfdbd4079ba7a9b4a5f1a2e3c3b147ca2a7dbe122b98e659929",
+      "passed": 1084,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 46.808
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato121-verified-gwel7u65/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "83c7ee9b0a5317923eb684849936286b0678115518220b4f5472a4fd7856a7e0",
+    "zip_sha256": "c93f53d52105997cbf50724303843edab29086235269f22080ccb57d999519aa",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "memory": {
+    "scope": "Single-process arm64 Data versus file input in current121 Release engine, original four-layer1024x1024 RGB32 probes; not a multi-GB or general performance guarantee. All decoded RGBA Float32 hashes also match preserved120.",
+    "cases": [
+      {
+        "compression": 0,
+        "input": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+        "inputSHA256": "442efe96edb78b0093c046ff7faa70b7b79fa65527b9773e5634916721e56252",
+        "data": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.12055110931396484,
+          "file": "memory-rgb32-0.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4,
+          "peakFootprintBytes": 87966344,
+          "peakRSSBytes": 160284672
+        },
+        "file": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.11421704292297363,
+          "file": "memory-rgb32-0.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4,
+          "peakFootprintBytes": 89277112,
+          "peakRSSBytes": 97239040
+        },
+        "all_original_sample_hashes_equal": true
+      },
+      {
+        "compression": 2,
+        "input": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-2.psb",
+        "inputSHA256": "cccf003cfe3a38151aa8865a85ab437c2afd1f77f5b20a526c48c3d359d5d334",
+        "data": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.12086594104766846,
+          "file": "memory-rgb32-2.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4,
+          "peakFootprintBytes": 88162928,
+          "peakRSSBytes": 96141312
+        },
+        "file": {
+          "allocatedTileBytes": 67108864,
+          "decodeSeconds": 0.11973297595977783,
+          "file": "memory-rgb32-2.psb",
+          "layerHashes": [
+            "8a5231eaec2dd88d56916361b68410d09cdf957a572e666e8f802fc867327449",
+            "207ca64e6b43e78f8220aa19fae5d67e7e1c3c10578df398bd1c0e103096c1ff",
+            "462e8ac7f343aa3df4a3c5c10bb1b67194d6f0c61b8b069c763216c807bb283c",
+            "585e6ba1d63e43dc2c04bda5652763decc5a8cc0d0e35da33bf96d61fb562b2d"
+          ],
+          "layers": 4,
+          "peakFootprintBytes": 88588960,
+          "peakRSSBytes": 96550912
+        },
+        "all_original_sample_hashes_equal": true
+      }
+    ]
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T011104Z-121-psd-file-input/intel-psb01.json",
+    "sha256": "bedde8390b7d111d6afa7f22626b1099fed0a6312a96922ef49f3415dbb941f8"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T011104Z-121-psd-file-input/intel-groups01.json",
+    "sha256": "2dbb2d7e02af3d4761471a802f185a76931f38791eb29cf6d199125c8e15147c"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_121.json",
+  "file_output_step122": {
+    "reference": "docs/PSD_FILE_OUTPUT_REFERENCES.json",
+    "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+    "full_large_file_support": false
+  }
+}

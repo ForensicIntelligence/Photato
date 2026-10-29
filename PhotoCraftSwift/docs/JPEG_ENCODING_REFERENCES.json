@@ -1,0 +1,173 @@
+{
+  "step": "dev-step-148",
+  "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_148.json",
+    "sha256": "160adaebdd474593bf2c04802a08822aaa61a39205dc880d238c257f9992552c"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "new_fields": [
+      "Photato jpegQuality",
+      "Photato jpegFormat",
+      "Photato jpegMatte",
+      "Photato jpegEmbedProfile",
+      "Adobe JpegOutput.quality"
+    ],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.jpeg",
+      "POST /v1/action-jobs",
+      "POST /v2/execute-actions"
+    ],
+    "capability": "documentTransfers.encodingOptions and actionJobs encodingOptions/outputs expose shared native choices and remaining parity limits",
+    "contract": "Pinned JpegOutput seven named qualities map locally to0/2/4/6/8/10/12. Execute-actions excludes scan (400). Adobe rejects Photato encodingOptions (422). No Adobe quantization/default equivalence claimed.",
+    "coverage": "Native Save accessory, remembered state, Copy/ownership/history, failed save, actual HTTP download/save/invalid/busy, seven quality outputs on both jobs and Photato-only format/matte/profile options. JPEG action input remains unsupported."
+  },
+  "scope": [
+    "Native JPEG quality0\u202612, Baseline Standard/Baseline Optimized/Progressive, custom sRGB matte and explicit ICC embedding/removal share the same options/encoder across native Save/Copy and Photato API output. Omitted controls preserve established defaults.",
+    "Original bounded Swift two-pass canonical Huffman optimization preserves quantized DCT coefficients, metadata, sampling, quantization and restart interval semantics. Explicit ICC insertion/splitting/removal preserves other markers and entropy; default EXIF sRGB signaling is retained when options are omitted.",
+    "Adobe-compatible execute-actions now supports image/jpeg output and the published quality enum, with operation-specific scan rejection. Native Photato options remain distinct. Local quality mapping is documented as unqualified against Adobe quantization.",
+    "All47 focused,1398 Debug and1398 Release tests pass on991 inputs/515 Swift files. Independent JPEG checks cover116 outputs,26 coefficient/metadata canonical pairs,26 integer IDCT sample pairs and36 red-matte outputs;58 Debug/Release JPEG bytes match.",
+    "Previous TIFF/PSD independent suites reverify. All161 retained unrelated exports and three default JPEG depth outputs equal147. Universal macOS14+ package/signature/resources and production Release public JPEG saves/reopen pass on arm64/Rosetta. Installed117, user state, Core/AI and Xcode stay unchanged."
+  ],
+  "remaining": [
+    "All major workflow gates remain open. Photoshop JPEG quantization, factory native dialogs/defaults,3\u20135 progressive scan schedule/selection, exact output bytes and live UI remain unqualified.",
+    "JPEG action input, other Adobe JPEG-output endpoints and their scan/optimized fields remain unimplemented. Do not confuse local named-quality mapping with proprietary Adobe encoder equivalence.",
+    "Continue D01/I04: PSD/PSB Maximize Compatibility and native save/export policy, original .pcraft migration, broader modes/formats, profiles and large-file qualification. TIFF descriptor/opaque records, Save Transparency/pyramids and preferences remain open.",
+    "Live Photoshop JPEG references now exist (five quality8 variants); broader live checks remain open. Synthetic/third-party codec checks do not establish Photoshop rendering or file bytes. Rosetta does not substitute for physical Intel/macOS14 runtime qualification.",
+    "Keep remaining major workflows first; minor functions and final details are deferred."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "ui": "Native Save/Copy JPEG accessory; existing menu hierarchy/shortcuts unchanged, no new binding."
+  },
+  "reference_review": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/reference-review01.json",
+    "sha256": "96984b1efd0785d57c9f34f60cf353f497bcc176b61119d94932407fc226e1fd"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/references01/provenance.json",
+      "sha256": "853dfcb452d5c0b937858aaf2fdbb6cbc2bd652b1d1a7052a5fe4b29a56a88eb"
+    }
+  ],
+  "freeze": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes04.json",
+    "sha256": "e3456bc1973d1865c0b2f460b87cf2e1dae04fbbf058209a87033fe9c3268412"
+  },
+  "focused": {
+    "passed": 47,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 5.998,
+    "log": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused04.log",
+      "sha256": "c25b8673a406f7e10f1ec7dac6e81a60725ff72b9439db62a092558691154bbb"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T171024Z-148-jpeg-options/full01.log",
+      "sha256": "6f1308969add98fd6bacedbe2c4e313ac0078c4079a86d1b3460cc2840461fc2",
+      "passed": 1398,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 295.559
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T171024Z-148-jpeg-options/release01.log",
+      "sha256": "f8e564b47330457a203eb22aaa8f80f63fccd88192b089ad7c6777919dfd7ede",
+      "passed": 1398,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 84.187
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato148-verified-28mtvg9b/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "a8e2ab6cb4e690fab7ab69e8cd2094ad3f3b14c291c2c52429b5a27191051091",
+    "zip_sha256": "066492f701ae990d278125ba3c774c595a8caa94d39dcb927fef6c0895c5547f",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "independent_jpeg": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/independent-jpeg01.json",
+    "sha256": "d17ad706c89b4ae2a423ae1e1f30de957f3fe9470a974cc696aec95eb718365d"
+  },
+  "photoshop_jpeg_reference": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/photoshop-jpeg-reference01.json",
+    "sha256": "0ddf08da9c9cf84f323802e78a19743d930ce3ee8855a9da851b89cd38d9e3d3"
+  },
+  "photoshop_scan_comparison": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/photoshop-scan-comparison01.json",
+    "sha256": "cb5bd7a592e42fd267046dfaa89cb8ac066841f7453d66ec6cf8ec34a7da22cb"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/public-release-arm6401/verification.json",
+      "sha256": "31384751ae5b842975246db918c93eb854d864042a337b51ad0491c837abe385"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/public-release-x86_6401/verification.json",
+      "sha256": "a43eb1296b26a6b952a6fd08e8d74bfa1c0dd0260713ac4e354e714681227914"
+    }
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/source-delta04.json",
+    "sha256": "9f3d0f95c518c56e742b00dec78f0a5574ffa1a7fa94075c4d15d18f0e9af833"
+  },
+  "failed_attempts": [
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes01.json",
+        "sha256": "789edf353c19b4e9b991ceb2c45fec961ff8a62772e5c413bee83a61af969885"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused01.log",
+        "sha256": "c37520c1cbf9b9c643697b98da180489a6c7f50044a7d58c096f46144c3c230b"
+      },
+      "cause": "Compile ambiguity in CGFloat conversion; explicit closure repaired"
+    },
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes02.json",
+        "sha256": "60aae24a6dff48854bcb31a2c8402fc209cda7668d2db7a415b203d244dd29cf"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused02.log",
+        "sha256": "8faf5ef13dac91ec0fcd2c1465d3ebdb5fd814e2190966639de27bb1cfacf6d4"
+      },
+      "cause": "Nonzero restart interval and missing optional sRGB ICC assumption; implement restarts and explicit ICC"
+    },
+    {
+      "source": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/tested-source-hashes03.json",
+        "sha256": "7ef06148d6ff09c193ccbf1bf1d5b99738bc8b7e15bc221d4c14253103a6b5dd"
+      },
+      "log": {
+        "path": "artifacts/runs/20261020T171024Z-148-jpeg-options/focused03.log",
+        "sha256": "3d1af3e5afc7ce21f04fa0856abb8bf86bb5ac383a459cac0bdc32206d1c89a1"
+      },
+      "cause": "Owned HTTP helper starts transparent; preserve422 rejection then fill before successful ordinary Save"
+    }
+  ],
+  "full_parity": false
+}

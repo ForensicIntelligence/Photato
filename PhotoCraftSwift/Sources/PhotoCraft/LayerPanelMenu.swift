@@ -4,7 +4,7 @@ import SwiftUI
 
 enum LayerPanelAction: String, CaseIterable {
   case newLayer, newGroup, groupFromLayers, duplicate, delete, rename, ungroup
-  case rasterize, clipping, addMask, toggleMask, applyMask, deleteMask, merge, mergeVisible
+  case maskAllObjects, rasterize, clipping, addMask, toggleMask, applyMask, deleteMask, merge, mergeVisible
 }
 
 extension EditorStore {
@@ -33,6 +33,7 @@ extension EditorStore {
         ? "Delete Layers" : (layer?.isGroup == true ? "Delete Group" : "Delete Layer")
     case .rename: return layer?.isGroup == true ? "Rename Group…" : "Rename Layer…"
     case .ungroup: return "Ungroup Layers"
+    case .maskAllObjects: return "Mask All Objects"
     case .rasterize: return "Rasterize Layer"
     case .clipping:
       return layer?.isClipped == true ? "Release Clipping Mask" : "Create Clipping Mask"
@@ -65,10 +66,12 @@ extension EditorStore {
         != nil
     case .duplicate: return !ids.isEmpty
     case .delete: return canRequestLayerDeletion(context: context)
-    case .rename: return editable
+    case .rename: return layer != nil
     case .ungroup: return editable && layer?.isGroup == true
+    case .maskAllObjects: return canMaskAllObjects(context: context)
     case .rasterize:
       guard editable, let layer else { return false }
+      if layer.smartObject != nil || layer.video != nil { return true }
       switch layer.content {
       case .raster, .adjustment, .group: return false
       default: return true
@@ -99,6 +102,7 @@ extension EditorStore {
     case .delete: requestLayerDeletion()
     case .rename: if let id = activeLayer?.id { beginLayerName(id) }
     case .ungroup: ungroup()
+    case .maskAllObjects: maskAllObjects()
     case .rasterize: rasterize()
     case .clipping: if let layer = activeLayer { perform(.clipping(layer.id, !layer.isClipped)) }
     case .addMask: addMask()
@@ -153,14 +157,15 @@ struct LayerEditingMenu: View {
     } else {
       layerPanelButton(.addMask, context: contextLayer)
     }
+    layerPanelButton(.maskAllObjects, context: contextLayer)
     layerPanelButton(.clipping, context: contextLayer)
     Divider()
     Button("Link Layers") {}.disabled(true)
     Button("Select Linked Layers") {}.disabled(true)
     Divider()
-    Button("Copy Layer Style") {}.disabled(true)
-    Button("Paste Layer Style") {}.disabled(true)
-    Button("Clear Layer Style") {}.disabled(true)
+    Button("Copy Layer Style") { store.copyLayerStyle() }.disabled(!store.canCopyLayerStyle)
+    Button("Paste Layer Style") { store.pasteLayerStyle() }.disabled(!store.canPasteLayerStyle)
+    Button("Clear Layer Style") { store.clearLayerStyle() }.disabled(!store.canClearLayerStyle)
     Divider()
     layerPanelButton(.merge, context: contextLayer)
     layerPanelButton(.mergeVisible, context: contextLayer)

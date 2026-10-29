@@ -57,9 +57,9 @@ final class SpotHealingWorkflowTests: XCTestCase {
       XCTAssertNil(s.cloneState.slot.anchor)
       XCTAssertNil(s.cloneState.slot.source)
       let after = s.document
-      s.undo()
+      await s.undo()
       XCTAssertEqual(s.document, before)
-      s.redo()
+      await s.redo()
       XCTAssertEqual(s.document, after)
     }
   }

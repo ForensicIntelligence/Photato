@@ -126,7 +126,7 @@ final class CloneStampTests: XCTestCase {
     XCTAssertEqual(session.undoStack.last?.label, "Clone Stamp")
     XCTAssertEqual(
       try NativeArchive.decode(NativeArchive.encode(session.document)), session.document)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, d)
     d.layers[0].mask = try Surface(width: 20, height: 8, depth: .u16, fill: .black)
     var maskStroke = stroke

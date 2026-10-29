@@ -8,8 +8,8 @@ import XCTest
 final class NumericFieldEditingTests: XCTestCase {
   @MainActor func withWorkspaceFields(
     floating: Bool = false,
-    _ body: (EditorStore, NSWindow, NSTextField, NSTextField) throws -> Void
-  ) throws {
+    _ body: (EditorStore, NSWindow, NSTextField, NSTextField) async throws -> Void
+  ) async throws {
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     defer { DocumentWorkspaceTests().cleanup(controller) }
     let document = try DocumentWorkspaceTests().fixture(controller, name: "Numeric key loop")
@@ -28,17 +28,17 @@ final class NumericFieldEditingTests: XCTestCase {
     let content = try XCTUnwrap(window.contentView)
     window.layoutIfNeeded()
     content.layoutSubtreeIfNeeded()
-    RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+    try await Task.sleep(for: .milliseconds(100))
     func fields(_ view: NSView) -> [NSTextField] {
       (view as? NSTextField).map { [$0] } ?? view.subviews.flatMap(fields)
     }
     let x = try XCTUnwrap(fields(content).first { $0.accessibilityLabel() == "X" })
     let y = try XCTUnwrap(fields(content).first { $0.accessibilityLabel() == "Y" })
-    try body(document.store, window, x, y)
+    try await body(document.store, window, x, y)
   }
 
-  @MainActor func testFullWorkspaceForwardAndUntouchedReverseFieldTraversal() throws {
-    try withWorkspaceFields { store, window, x, y in
+  @MainActor func testFullWorkspaceForwardAndUntouchedReverseFieldTraversal() async throws {
+    try await withWorkspaceFields { store, window, x, y in
       let editor = try replace(x, with: "23")
       editor.doCommand(by: #selector(NSResponder.insertTab(_:)))
       XCTAssertEqual(store.activeLayerBounds?.x, 23)
@@ -50,14 +50,14 @@ final class NumericFieldEditingTests: XCTestCase {
       XCTAssertEqual(previous.string, "23")
       XCTAssertEqual(previous.selectedRange(), NSRange(location: 0, length: 2))
       previous.doCommand(by: #selector(NSResponder.cancelOperation(_:)))
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.activeLayerBounds?.x, 0)
     }
   }
 
-  @MainActor func testTabKeyEventsNavigateDocumentAndFloatingPanelFields() throws {
+  @MainActor func testTabKeyEventsNavigateDocumentAndFloatingPanelFields() async throws {
     for floating in [false, true] {
-      try withWorkspaceFields(floating: floating) { store, window, x, y in
+      try await withWorkspaceFields(floating: floating) { store, window, x, y in
         let layout = store.workspace
         @MainActor func tab(backwards: Bool) throws {
           let event = try XCTUnwrap(
@@ -80,7 +80,7 @@ final class NumericFieldEditingTests: XCTestCase {
         XCTAssertEqual(store.workspace, layout)
         XCTAssertEqual(store.session.undoStack.count, 1)
         previous.doCommand(by: #selector(NSResponder.cancelOperation(_:)))
-        store.undo()
+        await store.undo()
         XCTAssertEqual(store.activeLayerBounds?.x, 0)
       }
     }
@@ -88,8 +88,8 @@ final class NumericFieldEditingTests: XCTestCase {
 
   @MainActor func withPositionFields(
     document: CraftNSDocument? = nil,
-    _ body: (EditorStore, NSWindow, NSTextField, NSTextField) throws -> Void
-  ) throws {
+    _ body: (EditorStore, NSWindow, NSTextField, NSTextField) async throws -> Void
+  ) async throws {
     _ = NSApplication.shared
     let store = try document?.store ?? TransformWorkflowTests().store()
     let layer = try XCTUnwrap(store.activeLayer)
@@ -115,7 +115,7 @@ final class NumericFieldEditingTests: XCTestCase {
     }
     window.layoutIfNeeded()
     host.layoutSubtreeIfNeeded()
-    RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+    try await Task.sleep(for: .milliseconds(50))
     func fields(_ view: NSView) -> [NSTextField] {
       (view as? NSTextField).map { [$0] } ?? view.subviews.flatMap(fields)
     }
@@ -123,27 +123,27 @@ final class NumericFieldEditingTests: XCTestCase {
       $0.convert(.zero, to: host).x < $1.convert(.zero, to: host).x
     }
     XCTAssertEqual(editable.count, 2)
-    try body(store, window, XCTUnwrap(editable.first), XCTUnwrap(editable.last))
+    try await body(store, window, XCTUnwrap(editable.first), XCTUnwrap(editable.last))
   }
 
-  @MainActor func testPositionTypingIsDraftUntilReturnAndOneHistoryEntry() throws {
-    try withPositionFields { store, window, x, _ in
+  @MainActor func testPositionTypingIsDraftUntilReturnAndOneHistoryEntry() async throws {
+    try await withPositionFields { store, window, x, _ in
       let original = store.document
       x.selectText(nil)
       let editor = try XCTUnwrap(x.currentEditor() as? NSTextView)
       editor.insertText(
         "1", replacementRange: NSRange(location: 0, length: editor.string.utf16.count))
       editor.insertText("7", replacementRange: NSRange(location: 1, length: 0))
-      RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+      try await Task.sleep(for: .milliseconds(50))
       XCTAssertEqual(store.document, original, "Typing must not move pixels before commit")
       XCTAssertTrue(store.session.undoStack.isEmpty)
       editor.doCommand(by: #selector(NSResponder.insertNewline(_:)))
       XCTAssertEqual(store.activeLayerBounds?.x, 17)
       XCTAssertEqual(store.session.undoStack.count, 1)
       XCTAssertFalse(window.firstResponder is NSTextView)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, original)
-      store.redo()
+      await store.redo()
       XCTAssertEqual(store.activeLayerBounds?.x, 17)
     }
   }
@@ -156,8 +156,8 @@ final class NumericFieldEditingTests: XCTestCase {
     return editor
   }
 
-  @MainActor func testEscapeCancelsWithoutHistoryOrDirtyNotification() throws {
-    try withPositionFields { store, window, _, y in
+  @MainActor func testEscapeCancelsWithoutHistoryOrDirtyNotification() async throws {
+    try await withPositionFields { store, window, _, y in
       var changes = 0
       store.onChange = { _ in changes += 1 }
       let original = store.document
@@ -172,8 +172,8 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testTabAndBacktabCommitAndSelectNeighborWithoutHidingPanels() throws {
-    try withPositionFields { store, window, x, y in
+  @MainActor func testTabAndBacktabCommitAndSelectNeighborWithoutHidingPanels() async throws {
+    try await withPositionFields { store, window, x, y in
       let layout = store.workspace
       let editor = try replace(x, with: "17")
       editor.doCommand(by: #selector(NSResponder.insertTab(_:)))
@@ -191,14 +191,14 @@ final class NumericFieldEditingTests: XCTestCase {
       XCTAssertEqual(store.session.undoStack.count, 2)
       XCTAssertEqual(store.workspace, layout)
       previous.doCommand(by: #selector(NSResponder.cancelOperation(_:)))
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.activeLayerBounds?.y, 3)
       XCTAssertEqual(store.activeLayerBounds?.x, 17)
     }
   }
 
-  @MainActor func testChangingNativeFieldFocusCommitsPreviousValueOnlyOnce() throws {
-    try withPositionFields { store, _, x, y in
+  @MainActor func testChangingNativeFieldFocusCommitsPreviousValueOnlyOnce() async throws {
+    try await withPositionFields { store, _, x, y in
       _ = try replace(x, with: "23")
       y.selectText(nil)
       XCTAssertEqual(store.activeLayerBounds?.x, 23)
@@ -213,8 +213,8 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testNativeTextUndoRedoOnlyChangesDraftUntilCommit() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testNativeTextUndoRedoOnlyChangesDraftUntilCommit() async throws {
+    try await withPositionFields { store, _, x, _ in
       let original = store.document
       x.selectText(nil)
       let editor = try XCTUnwrap(x.currentEditor() as? NSTextView)
@@ -259,8 +259,8 @@ final class NumericFieldEditingTests: XCTestCase {
     XCTAssertEqual(value, 0)
   }
 
-  @MainActor func testInvalidAndUnchangedInputDoNotCreateHistory() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testInvalidAndUnchangedInputDoNotCreateHistory() async throws {
+    try await withPositionFields { store, _, x, _ in
       for text in ["4", "", "-", "nonsense"] {
         let editor = try replace(x, with: text)
         editor.doCommand(by: #selector(NSResponder.insertNewline(_:)))
@@ -271,8 +271,8 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testConcurrentPositionChangeRejectsStaleDraft() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testConcurrentPositionChangeRejectsStaleDraft() async throws {
+    try await withPositionFields { store, _, x, _ in
       let editor = try replace(x, with: "17")
       let id = try XCTUnwrap(store.activeLayer?.id)
       try store.session.execute(.move(id, 27, 3))
@@ -283,8 +283,8 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testCommandBoundaryCommitsPositionBeforeIndependentEdit() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testCommandBoundaryCommitsPositionBeforeIndependentEdit() async throws {
+    try await withPositionFields { store, _, x, _ in
       _ = try replace(x, with: "17")
       let id = try XCTUnwrap(store.activeLayer?.id)
       store.perform(.opacity(id, 0.5))
@@ -292,18 +292,18 @@ final class NumericFieldEditingTests: XCTestCase {
       XCTAssertEqual(store.activeLayer?.opacity, 0.5)
       XCTAssertEqual(store.session.undoStack.count, 2)
       XCTAssertNil(store.numericEditor)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.activeLayer?.opacity, 1)
       XCTAssertEqual(store.activeLayerBounds?.x, 17)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.activeLayerBounds?.x, 4)
     }
   }
 
-  @MainActor func testSaveCommitsAndReadCancelsWithoutRetargeting() throws {
+  @MainActor func testSaveCommitsAndReadCancelsWithoutRetargeting() async throws {
     let document = CraftNSDocument(model: try TransformWorkflowTests().store().document)
     defer { document.close() }
-    try withPositionFields(document: document) { store, _, x, _ in
+    try await withPositionFields(document: document) { store, _, x, _ in
       let original = try document.data(ofType: CraftNSDocument.nativeType)
       _ = try replace(x, with: "17")
       let saved = try document.data(ofType: CraftNSDocument.nativeType)
@@ -317,9 +317,9 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testCloseCancelsAndRetiredCoordinatorCannotCommit() throws {
+  @MainActor func testCloseCancelsAndRetiredCoordinatorCannotCommit() async throws {
     let document = CraftNSDocument(model: try TransformWorkflowTests().store().document)
-    try withPositionFields(document: document) { store, _, x, _ in
+    try await withPositionFields(document: document) { store, _, x, _ in
       let original = store.document
       _ = try replace(x, with: "17")
       let editor = try XCTUnwrap(store.numericEditor)
@@ -331,8 +331,8 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testContextReplacementCancelsRatherThanEditingDifferentTarget() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testContextReplacementCancelsRatherThanEditingDifferentTarget() async throws {
+    try await withPositionFields { store, _, x, _ in
       _ = try replace(x, with: "17")
       let coordinator = try XCTUnwrap(store.numericEditor as? NativeNumericField.Coordinator)
       store.layerPanelGeneration = UUID()
@@ -388,8 +388,8 @@ final class NumericFieldEditingTests: XCTestCase {
     XCTAssertFalse(lockedField.isEnabled)
   }
 
-  @MainActor func testLayerSelectionCommitsBeforeChangingTarget() throws {
-    try withPositionFields { store, _, x, _ in
+  @MainActor func testLayerSelectionCommitsBeforeChangingTarget() async throws {
+    try await withPositionFields { store, _, x, _ in
       let originalID = try XCTUnwrap(store.activeLayer?.id)
       let other = Layer(
         name: "Other", content: .shape(.init(kind: .rectangle, width: 3, height: 2, color: .white)))
@@ -404,14 +404,14 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testRejectedNumericCommitPreventsDocumentSwitch() throws {
+  @MainActor func testRejectedNumericCommitPreventsDocumentSwitch() async throws {
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     defer { DocumentWorkspaceTests().cleanup(controller) }
     let a = try DocumentWorkspaceTests().fixture(controller, name: "Numeric A")
     let b = try DocumentWorkspaceTests().fixture(controller, name: "Numeric B")
     XCTAssertTrue(controller.documentWindows.activate(a))
     try a.store.session.execute(.lock(XCTUnwrap(a.store.activeLayer?.id), true))
-    try withPositionFields(document: a) { store, _, x, _ in
+    try await withPositionFields(document: a) { store, _, x, _ in
       _ = try replace(x, with: "17")
       XCTAssertFalse(controller.documentWindows.activate(b))
       XCTAssertTrue(controller.currentDocument === a)
@@ -421,17 +421,17 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testRejectedNumericCommitPreventsCleanDocumentClose() throws {
+  @MainActor func testRejectedNumericCommitPreventsCleanDocumentClose() async throws {
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     defer { DocumentWorkspaceTests().cleanup(controller) }
     let a = try DocumentWorkspaceTests().fixture(controller, name: "Numeric close")
     try a.store.session.execute(.lock(XCTUnwrap(a.store.activeLayer?.id), true))
     XCTAssertFalse(a.isDocumentEdited)
-    try withPositionFields(document: a) { store, _, x, _ in
+    try await withPositionFields(document: a) { store, _, x, _ in
       _ = try replace(x, with: "17")
       var allowed: Bool?
       controller.documentWindows.requestClose(a) { allowed = $0 }
-      RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+      try await Task.sleep(for: .milliseconds(50))
       XCTAssertEqual(allowed, false)
       XCTAssertTrue(controller.documents.contains(where: { $0 === a }))
       XCTAssertNotNil(store.error)
@@ -439,8 +439,9 @@ final class NumericFieldEditingTests: XCTestCase {
     }
   }
 
-  @MainActor func testUntouchedFieldExitAndOtherFieldRetirementPreserveFocusOwnership() throws {
-    try withPositionFields { store, window, x, y in
+  @MainActor func testUntouchedFieldExitAndOtherFieldRetirementPreserveFocusOwnership() async throws
+  {
+    try await withPositionFields { store, window, x, y in
       x.selectText(nil)
       let initial = try XCTUnwrap(x.currentEditor() as? NSTextView)
       initial.doCommand(by: #selector(NSResponder.insertNewline(_:)))

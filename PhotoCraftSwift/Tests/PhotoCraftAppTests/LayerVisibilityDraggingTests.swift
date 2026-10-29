@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerVisibilityDraggingTests: XCTestCase {
-  @MainActor func testPreviewIsTransientAtomicAndUndoable() throws {
+  @MainActor func testPreviewIsTransientAtomicAndUndoable() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let before = store.document
@@ -28,13 +28,13 @@ final class LayerVisibilityDraggingTests: XCTestCase {
     XCTAssertEqual(store.selectedLayerIDs, [ids[1], ids[2]])
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(changes, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document.layers.map(\.visible), [false, false, false])
   }
 
-  @MainActor func testHiddenStartShowsRowsAndRevisitingNeverRetoggles() throws {
+  @MainActor func testHiddenStartShowsRowsAndRevisitingNeverRetoggles() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let ids = store.document.layers.map(\.id)
@@ -46,7 +46,7 @@ final class LayerVisibilityDraggingTests: XCTestCase {
     XCTAssertEqual(store.previewDocument.layers.map(\.visible), [true, true, true])
     XCTAssertTrue(store.layerEyeVisible(store.document.layers[0]))
     store.finishLayerVisibilityDrag(token)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document.layers.map(\.visible), [false, true, false])
   }
 
@@ -74,7 +74,9 @@ final class LayerVisibilityDraggingTests: XCTestCase {
     XCTAssertEqual(store.document.layers.map(\.visible), [true, true, true])
   }
 
-  @MainActor func testDraftBlocksCompetingCommandsAndStaleTokensCannotFinishNewGesture() throws {
+  @MainActor func testDraftBlocksCompetingCommandsAndStaleTokensCannotFinishNewGesture()
+    async throws
+  {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let before = store.document
@@ -83,7 +85,7 @@ final class LayerVisibilityDraggingTests: XCTestCase {
     store.perform(.visibility(ids[1], false))
     store.setLayerColor(.red)
     store.select(ids[2])
-    store.undo()
+    await store.undo()
     XCTAssertNil(store.beginLayerVisibilityDrag(ids[1]))
     XCTAssertFalse(store.canBeginLayerCreation)
     XCTAssertEqual(store.document, before)

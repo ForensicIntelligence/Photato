@@ -1,0 +1,203 @@
+{
+  "step": "dev-step-118",
+  "status": "Full Debug/Release, universal package and Rosetta numerical qualification pass; native UI pending Mac unlock",
+  "major_workflow": "D01 remains open",
+  "evidence_root": "artifacts/runs/20261019T233703Z-118-rgb32-groups",
+  "fixture_provenance": {
+    "step": "dev-step-118",
+    "origin": "Original procedural data, authored for this project; Photoshop2026 Hide/Show/Save recalculates merged reference. Raw layer/mask samples and hierarchy verified independently.",
+    "license": "MIT OR Apache-2.0 (project-authored procedural fixtures)",
+    "evidence_root": "artifacts/runs/20261019T233703Z-118-rgb32-groups",
+    "generator": "generate-groups01.py",
+    "container_spec": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "normalization": "Planar big-endian RGB32 plus straight alpha; three-channel opaque output receives explicit alpha-one plane. No full-file equivalence claim.",
+    "unqualified": [
+      "06-clipping-independent: Blend Clipped Layers as Group disabled remains on general renderer; nonzero differences retained as open evidence.",
+      "Other blend modes, group clipping, transforms, rich layers, arbitrary profiles and complete HDR workflows."
+    ],
+    "files": [
+      {
+        "name": "01-pass-through.merged",
+        "sha256": "1917d5f50cf82f53da658168e92773d4d0c1c4047261feca2efed812fe1a0776"
+      },
+      {
+        "name": "01-pass-through.psd",
+        "sha256": "18b56c54f76bbd993c6d7d2a4c3e22d7f1950a3cc6691679137a9d6aae66efaf"
+      },
+      {
+        "name": "02-pass-opacity.merged",
+        "sha256": "9dcc592994be9f1f0acdef6c26c46e3f6523711cf67e2fe0688cd19cedb8ed85"
+      },
+      {
+        "name": "02-pass-opacity.psd",
+        "sha256": "654f86556cf95138424f23bc53d9f3f4fb57a94c39e245aa2866d42b5a2da614"
+      },
+      {
+        "name": "03-isolated.merged",
+        "sha256": "88a209f4a54ce686a34ecd2957119b293868dc183f345fe63164d27dd5a2e7cb"
+      },
+      {
+        "name": "03-isolated.psd",
+        "sha256": "c46daf6b3476d175fce07079e8a7c54ca72a807f7a9591924b0567a093eb9187"
+      },
+      {
+        "name": "04-isolated-opacity-mask.merged",
+        "sha256": "7cf8dc5bf01302fc04478b2158a45e4233dc3c86113e8d8da2de2b6653741a26"
+      },
+      {
+        "name": "04-isolated-opacity-mask.psd",
+        "sha256": "9fbf36ac25f22e9b9989b5f96cc6f7744158652222a7859675716c3eb91a1dd4"
+      },
+      {
+        "name": "05-clipping.merged",
+        "sha256": "0aaaec11c9ae401cf056ca0b43667aeeb30d59838695604957235b952c54918a"
+      },
+      {
+        "name": "05-clipping.psd",
+        "sha256": "055e7ce17083fd9aaa3e6a12e6768923367ebb74b46143250aa62d22cdde639c"
+      },
+      {
+        "name": "06-clipping-independent.merged",
+        "sha256": "365d8b72535f451fc8f9ecd56bfd1e0f152928021d908c6f0ddec2011b32769a"
+      },
+      {
+        "name": "06-clipping-independent.psd",
+        "sha256": "de44cd5a21a7e7cebf7e0213d7d451bc881178fb1286304fc9f87288e3dba8fa"
+      },
+      {
+        "name": "07-nested-pass.merged",
+        "sha256": "1917d5f50cf82f53da658168e92773d4d0c1c4047261feca2efed812fe1a0776"
+      },
+      {
+        "name": "07-nested-pass.psd",
+        "sha256": "27a1b680d282b20e1ade8b16d0521e5f7ac115a478d06b1043ce073ab409970b"
+      },
+      {
+        "name": "08-opaque-pass-opacity.merged",
+        "sha256": "2874f936b68dc52682e7d9e6955804bcffa37af52fa2855c351969f5426c7df4"
+      },
+      {
+        "name": "08-opaque-pass-opacity.psd",
+        "sha256": "61ab77f89e8d142c74ca96a2be1b30306d5dfc2defe576f797c850e1bbc1c08e"
+      },
+      {
+        "name": "09-pass-opacity-213.psd",
+        "sha256": "a0cc2f3152b10ef55a5a091bd314f3208e5acf03c861c5bf4f829f55d9e10162"
+      },
+      {
+        "name": "09-pass-opacity-213.merged",
+        "sha256": "8526f069af9b76ddb7432c74ac636d1fd3b52632e0511ca3cb8fba4579cbb977"
+      },
+      {
+        "name": "10-nested-masked.psd",
+        "sha256": "911badda183bf708a7f0326b0cb6b7c0e72e2db3868851eefb7b4ca8d5c47b01"
+      },
+      {
+        "name": "10-nested-masked.merged",
+        "sha256": "9ea9bd2a0e1911da67f2be2e158d30c075fd1362d1325434093538819049f629"
+      },
+      {
+        "name": "11-isolated-first-transparent.psd",
+        "sha256": "12781adb002c6cbc746fe6ae1c3da686f5e1153fb3dfce4b9ddd135e99a3c8cc"
+      },
+      {
+        "name": "11-isolated-first-transparent.merged",
+        "sha256": "a3240671cbe4d1e1d7b9b84bc790108f6d666a95dc74857240f8674e431f886d"
+      }
+    ]
+  },
+  "qualified_cases": [
+    "01-pass-through",
+    "02-pass-opacity",
+    "03-isolated",
+    "04-isolated-opacity-mask",
+    "05-clipping",
+    "07-nested-pass",
+    "08-opaque-pass-opacity",
+    "09-pass-opacity-213",
+    "10-nested-masked",
+    "11-isolated-first-transparent"
+  ],
+  "reference_pixels": 40960,
+  "normalized_merged_RGBA_bytes": 655360,
+  "focus_validation": {
+    "first": {
+      "tests": 48,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.312
+    },
+    "expanded_failure": {
+      "tests": 13,
+      "assertion_failures": 9
+    },
+    "repaired": {
+      "tests": 13,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 11.942
+    },
+    "final": {
+      "tests": 25,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 15.613,
+      "log": "artifacts/runs/20261019T233703Z-118-rgb32-groups/focused04.log"
+    }
+  },
+  "source_freeze": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/tested-source-hashes02.json",
+    "sha256": "6e0101b97bfacc85224437d227f22b0ff7d97cbe49443b88e2dd414f3624c2fc"
+  },
+  "remaining": [
+    "Independent clipping blending flag disabled has measured differences; fixture06 retained but excluded from exact-output claims.",
+    "Clipping groups, non-Normal blends, affine/rich layers, arbitrary profiles and complete HDR editing still require qualification.",
+    "No whole-PSD-file identity or physical Intel/macOS14 full-app equivalence claim."
+  ],
+  "api": "Shared desktop/download/both-job tests cover eight group references; capability float32Storage.normalHierarchyComposition; no new routes or counts.",
+  "validation_inputs": 749,
+  "source_test_files": 404,
+  "full01_failure": {
+    "tests": 1062,
+    "failed_assertions": 1,
+    "log": "artifacts/runs/20261019T233703Z-118-rgb32-groups/full01.log",
+    "reason": "Older clipping-composite test equated computed signed-zero bits with raw layer storage. Diagnostic confirms only three -0 to +0 channels; straight-layer bits remain exact and independent Photoshop merged outputs pass. Test now asserts numeric composite equality and exact stored-layer bytes."
+  },
+  "full_validation": {
+    "full02": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/full02.log",
+      "sha256": "ca92c7eecfc5fe241e76a339381abdba9509d86cf10fa6e08ddc6022d7512082",
+      "passed": 1062,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 163.182
+    },
+    "release02": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/release02.log",
+      "sha256": "07d0c28dd0de62b599ba79cca65601cf1fef547d458cbaeb2e0854b3bb1419ee",
+      "passed": 1062,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 45.014
+    }
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/package-verification01.json",
+    "sha256": "cede948b193181787f393ee9de368e19c5f1c8774eda0a0ca14baa2d2dc3f8e4"
+  },
+  "intel_numerical_evidence": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/intel-golden01.json",
+    "sha256": "c9c12231001a7f784c495a1f3741d5ff837ca50cf28a94b539082f400a3c0827"
+  },
+  "live_ui": {
+    "status": "pending Mac unlock",
+    "blocker": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/ui-lock01.json",
+      "sha256": "49fbda8ff74e78eea0ab1e2580b35e093da86bb0799ad81259a4339641575b03"
+    },
+    "prepared_identity": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/ui-release.json",
+      "sha256": "62bd65af9c88b2a5f9fcfce3887af62a1e3d96d89ec20035cea7909b6922be85"
+    }
+  }
+}

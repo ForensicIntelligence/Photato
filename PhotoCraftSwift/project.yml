@@ -109,6 +109,16 @@ targets:
         outputFiles:
           - $(DERIVED_FILE_DIR)/Photato.iconset
           - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Photato.icns
+      - name: Copy optional person feature model
+        script: '"$SRCROOT/scripts/copy-people-model.sh" "$SRCROOT" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"'
+        basedOnDependencyAnalysis: false
+        inputFiles:
+          - $(SRCROOT)/Assets/GeneratedModels
+          - $(SRCROOT)/scripts/copy-people-model.sh
+          - $(SRCROOT)/scripts/verify-people-model.py
+        outputFiles:
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.mlmodelc
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.provenance.json
 schemes:
   Photato:
     build:

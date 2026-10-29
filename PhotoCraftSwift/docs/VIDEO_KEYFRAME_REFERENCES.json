@@ -1,0 +1,94 @@
+{
+  "step": 234,
+  "status": "Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged.",
+  "recorded_at_utc": "2026-10-29T01:32:16.621217+00:00",
+  "sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/use-keyframes/create-timeline-animation-workflow.html",
+      "role": "Public stopwatch/auto-key/Position/Opacity/Style/playback workflow; independently implemented in Swift."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/use-keyframes/overview-of-animating-layer-properties.html",
+      "role": "Independent layer-property tracks, enabling/disabling keys; retrieval worked initially, follow-up find timed out."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "role": "Historical public Linear/Hold description; not current live acceptance."
+    }
+  ],
+  "run": "artifacts/runs/20261029T005145Z-234-video-keyframes",
+  "source_manifest": "artifacts/runs/20261029T005145Z-234-video-keyframes/source03.json",
+  "native_archive": 53,
+  "typed_commands": 164,
+  "known_gaps": [
+    "Transitions, audio and Render Video",
+    "Group/Smart Filter/Warp geometry, separate vector-mask/global-light/text-warp property tracks",
+    "Keyframe clipboard/multi-select, motion presets and advanced interpolation",
+    "Style topology/categorical/gradient/pattern data interpolate discretely",
+    "Editable PSD/Actions/Adobe descriptors",
+    "Full Photoshop byte equality and live/default/platform qualification",
+    "Frame-animation/video conversions, onion-skin and full Timeline ruler/clip interaction",
+    "Repeated transform precision for secondary pattern/vector-mask geometry beyond the tested mask contexts"
+  ],
+  "live_ui": false,
+  "goal_complete": false,
+  "attempt02": {
+    "log": "artifacts/runs/20261029T005145Z-234-video-keyframes/focused02.log",
+    "source": "artifacts/runs/20261029T005145Z-234-video-keyframes/source02.json",
+    "tests": 65,
+    "failures": 2,
+    "unexpected": 1,
+    "build_seconds": 406.73,
+    "core_keyframe_tests_passed": 11,
+    "independent": "artifacts/runs/20261029T005145Z-234-video-keyframes/independent02.json",
+    "repair": "Separate playback view revisions from failed-edit revisions; actively cancel API-owned sequence export on transfer/share revocation. Correct unsupported adjustment-layer track availability."
+  },
+  "focused": {
+    "source": "artifacts/runs/20261029T005145Z-234-video-keyframes/source03.json",
+    "log": "artifacts/runs/20261029T005145Z-234-video-keyframes/focused03.log",
+    "tests": 65,
+    "failures": 0,
+    "build_seconds": 329.11,
+    "suite_seconds": 4.254
+  },
+  "independent_output": "artifacts/runs/20261029T005145Z-234-video-keyframes/independent03.json",
+  "tests": {
+    "utc": "2026-10-29T01:32:16.621217+00:00",
+    "tests": 2450,
+    "failures": 0,
+    "suite_seconds": 169.708,
+    "log": "artifacts/runs/20261029T005145Z-234-video-keyframes/release04.log",
+    "log_sha256": "1258f84cb062202eb64c8ed0f3a0b87426676868ecea2aac6f1bf7c824239523",
+    "focused": {
+      "tests": 65,
+      "failures": 0,
+      "suite_seconds": 4.254,
+      "log": "artifacts/runs/20261029T005145Z-234-video-keyframes/focused03.log",
+      "log_sha256": "5babce105f63a3ec3f3c588a883d8732f9265c60cc53bca7d7160a700a1fadf7"
+    },
+    "source_manifest": "artifacts/runs/20261029T005145Z-234-video-keyframes/source03.json",
+    "unchanged_inputs": 2302,
+    "binaries": {
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "40846d270fc4700b5a9c5f1f204dc36a1f6f6655015d102fb3e16f3069d4462d",
+      "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "dd41ac62a6d715d2ae23964c491bb580e1c7588bb6b763007641285a48ccdc45"
+    },
+    "independent": "artifacts/runs/20261029T005145Z-234-video-keyframes/independent03.json",
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "source_changes": "artifacts/runs/20261029T005145Z-234-video-keyframes/changes04.json",
+  "actions_archive": 20,
+  "new_package": false,
+  "installed_package_step": 221,
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "next": "artifacts/runs/20261029T005145Z-234-video-keyframes/next-major03.json",
+  "preservation": "artifacts/runs/20261029T005145Z-234-video-keyframes/preservation04.json",
+  "standalone_diary": {
+    "entries": 234,
+    "initial_verification": "artifacts/runs/20261029T005145Z-234-video-keyframes/diary-browser06.json",
+    "final_verification": "artifacts/runs/20261029T005145Z-234-video-keyframes/diary-browser08.json",
+    "history_refresh": "artifacts/development-history-audit/keyframes234-refresh09.log",
+    "history_check": "artifacts/development-history-audit/keyframes234-check09.log"
+  }
+}

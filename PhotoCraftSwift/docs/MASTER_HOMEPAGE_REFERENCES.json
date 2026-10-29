@@ -1,0 +1,44 @@
+{
+  "step": 236,
+  "requested_site": "https://forensicintelligence.ca/",
+  "download": {
+    "retrievedUTC": "2026-10-29T01:43:26Z",
+    "requestedURL": "https://forensicintelligence.ca/",
+    "finalURL": "https://www.forensicintelligence.ca/",
+    "httpStatus": 200,
+    "lastModified": "Wed, 30 Sep 2026 00:51:05 GMT",
+    "originalHTMLBytes": 22077,
+    "originalHTMLSHA256": "97f405ce91436b8c9fd14afa91838c215fabfbaa48646d349f76570f31a224e7",
+    "existingPhotatoIndexSHA256": "cb9fcd08a1d016a6cabc127ddce3b936de32b91e67b39c720654a631445be172",
+    "notes": [
+      "Web tool could not access the URL; curl followed the redirect and returned HTTP 200.",
+      "Live sitemap.xml returned HTTP 404. Homepage supplies the project inventory.",
+      "BeautifulSoup unavailable in both local Python runtimes; implementation uses the standard library only."
+    ]
+  },
+  "index": "../../forensicintelligence-site/index.html",
+  "index_sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+  "index_bytes": 86851,
+  "self_contained": false,
+  "projects": [
+    "Photato",
+    "Remarque",
+    "Embroidery Studio",
+    "Freefall Armada",
+    "Structa",
+    "CartDeck"
+  ],
+  "other_projects": "No further named projects were supplied; unstarted source ZIP folders are not presented as products.",
+  "browser_checks": "artifacts/runs/20261029T014326Z-236-master-homepage/browser07/browser-checks.json",
+  "browser_checks_passed": 79,
+  "screenshots": [
+    "artifacts/runs/20261029T014326Z-236-master-homepage/browser07/hero-1440.png",
+    "artifacts/runs/20261029T014326Z-236-master-homepage/browser07/hero-390.png",
+    "artifacts/runs/20261029T014326Z-236-master-homepage/browser07/homepage-1440.png"
+  ],
+  "screenshot_limit": "Isolated element-only screenshots were blank in the multipage harness; the full viewport and fresh foreground isolated capture were reviewed successfully.",
+  "deployment": "Local only; no live website or repository visibility changes",
+  "photato_product_source": "../../nusite/index.html",
+  "native_api_impact": "None from website; removal of purchase menu/API metadata documented separately at237.",
+  "presentation": "CSS and JavaScript inline; original images in assets/ and photato/assets/. Homepage size corrected on maintainer request; diary remains standalone."
+}

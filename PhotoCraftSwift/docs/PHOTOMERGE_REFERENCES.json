@@ -1,0 +1,101 @@
+{
+  "step": "dev-step-176",
+  "status": "Native Photomerge verified by65 focused Debug tests and1697 final full optimized tests; universal package verified. RAW02 remains open.",
+  "provenance": "artifacts/runs/20261027T041958Z-176-photomerge/references01.json",
+  "features": [
+    "Native Files/Folder/Add Open Files source collection, remove, preview, six projections, name and blend/fill controls.",
+    "Immutable source flattening, working-profile/depth conversion, shared registration, expanded union canvas and optional multiband blending.",
+    "Content-aware transparent-area fill with or without blending; independent fill layer for unblended sources.",
+    "Stale-preview/source guards, cancel, atomic new unsaved document publication and supported native/PSD persistence/history for subsequent edits.",
+    "Shared-source Photato creation/cancel commands, schemas, capabilities/operation state, session/source/lifecycle guards and revocation handling."
+  ],
+  "api": {
+    "count": 56,
+    "commands": [
+      "document.photomerge",
+      "document.photomerge.cancel"
+    ],
+    "same_engine": true,
+    "schema": "PhotomergeSettings.apiSchema/sourcesSchema; command sources(id,revision), optional settings/name; cancel operationID.",
+    "creation": "HTTP201 new shared unsaved document, sources/history untouched; input grant/revisions/lifecycle revalidated after work. Cancellation/revocation publishes nothing.",
+    "adobe": "No dedicated Photomerge route in pinned published v2 contract. Existing create-composite and execute-actions alignment/blend interfaces preserved; new-document orchestration explicitly Photato-specific.",
+    "endpoint_groups": "Five partial/three unimplemented; no invented Adobe endpoint."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 217,
+    "unavailable": 508,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "File > Automate > Photomerge\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T041958Z-176-photomerge/menu-report04.json",
+    "release_report": "artifacts/runs/20261027T041958Z-176-photomerge/menu-report-release02.json"
+  },
+  "limits": [
+    "Native source collection supports2\u201316 files, one folder of readable images, or open-document snapshots. API supports2\u20137 explicitly shared sources, retaining one slot for the new panorama; transfer permission is required.",
+    "Each photograph is flattened, then converted to the first source working profile and depth. Internal source layer structures are not embedded in the output; original documents/files remain unchanged.",
+    "Alignment limits16MP/source and32MP combined. Expanded canvas limit16MP; blended output4MP and16MP combined grid. Hole-only fill without blending is4MP. API additionally enforces4MP canvas/64layers/128MiB. No silent clipping to fit a limit.",
+    "Bilinear full-resolution warp and feature-based fractional placements can add an enclosing border pixel. Synthetic known-crop tests allow<0.25px matching RMS and<0.02 mean scene-sample error; not Photoshop pixel equality.",
+    "Blending reuses the native multiband output and retains masked source layers hidden beneath a merged Panorama layer. Unblended fill adds only hole pixels in a separate layer. Photoshop output-layer construction/defaults remain unqualified.",
+    "Lens distortion/vignette correction, EXIF focal inference, manual control points, difficult subjects/large production panoramas and exact Adobe pixels remain open.",
+    "Native NSHosting checks are offscreen; live UI, physical Intel/macOS14/26 and complete Photoshop equivalence remain open. HDR merging/deghosting and stack statistics remain major work."
+  ],
+  "tests": {
+    "debug_focused": {
+      "count": 65,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T041958Z-176-photomerge/integration07.log"
+    },
+    "previous_failures": [
+      "artifacts/runs/20261027T041958Z-176-photomerge/integration01.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/integration02.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/integration03.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/integration04.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/diagnostic05.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/diagnostic06.log",
+      "artifacts/runs/20261027T041958Z-176-photomerge/release-full01.log"
+    ],
+    "diagnostic_correction": "Actual weighted-luma fits were fractional by~0.017px; exact integer fixture expectation was invalid. Speculative bounding-tolerance change was reverted byte-for-byte to175. Independent scene/coverage checks replace invalid integer-only expectations.",
+    "last_full_suite": "Step176 final source02 passes1697 full optimized cases after RAW import-registration repair.",
+    "optimized_full": {
+      "count": 1697,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T041958Z-176-photomerge/release-full02.log"
+    }
+  },
+  "next_major": "Merge to HDR Pro: bracketed exposures, alignment, radiance merge/deghosting and tone mapping.",
+  "next_major_plan": "artifacts/runs/20261027T041958Z-176-photomerge/next-major-plan01.json",
+  "package": {
+    "utc": "2026-10-27T04:54:06.103979+00:00",
+    "app": "/private/tmp/photato176-verified-refrea4w/Photato.app",
+    "zip": "artifacts/runs/20261027T041958Z-176-photomerge/Photato176-final.zip",
+    "zip_sha256": "cac80e58f42a514c9414b96c6a054153f3d8cae77e064b3f4f76c2bd0b644d48",
+    "executable_sha256": "889c094ece0581e9aa7acef3f9a7aa13e8bbaab64e944b71e67b4c300998ac81",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato176-verified-refrea4w/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato176-verified-refrea4w/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1322,
+    "source_manifest": "artifacts/runs/20261027T041958Z-176-photomerge/source02.json",
+    "source_manifest_sha256": "5faa270c18c6f5cb962b4d74603b93917dfb1c2ce78f8b138df5b3158dea95b5",
+    "tests": {
+      "debug_focused": 65,
+      "optimized_full": 1697,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T041958Z-176-photomerge/integration07.log",
+      "optimized_log": "artifacts/runs/20261027T041958Z-176-photomerge/release-full02.log",
+      "qualification": "Focused Debug on source01; final source02 changes only RAW import registration. Full optimized suite passes on source02. First full run1697/1 failure retained; fixed actual plist grouping, test unchanged."
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release tests and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop checks remain open."
+  }
+}

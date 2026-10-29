@@ -1,0 +1,422 @@
+{
+  "step": "dev-step-198",
+  "completed_at_utc": "2026-10-27T18:22:24.793211+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native per-person hair, body/face skin, clothing and accessory selection, picker hover/multifeature selection/refinement/history/Actions and API.",
+  "source_manifest": "artifacts/runs/20261027T174733Z-198-people-features/source01.json",
+  "source_manifest_sha256": "488ce53405fd2ea81d702a3b8a93a84a003f91c50ceb9144940331dd81ddce09",
+  "source_inputs": 1502,
+  "source_delta": {
+    "new": [
+      ".gitignore",
+      "Assets/GeneratedModels/PeopleParts.mlmodelc/analytics/coremldata.bin",
+      "Assets/GeneratedModels/PeopleParts.mlmodelc/coremldata.bin",
+      "Assets/GeneratedModels/PeopleParts.mlmodelc/metadata.json",
+      "Assets/GeneratedModels/PeopleParts.mlmodelc/model.mil",
+      "Assets/GeneratedModels/PeopleParts.mlmodelc/weights/weight.bin",
+      "Assets/GeneratedModels/PeopleParts.provenance.json",
+      "Assets/GeneratedModels/README.md",
+      "NOTICE",
+      "Sources/PhotoCraftImaging/PeopleFeatures.swift",
+      "Tests/PhotoCraftImagingTests/PeopleFeatureTests.swift",
+      "scripts/copy-people-model.sh",
+      "scripts/people-model/convert.py",
+      "scripts/people-model/requirements.txt",
+      "scripts/people-model/validate.py",
+      "scripts/prepare-people-model.py",
+      "scripts/verify-people-model.py"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Photato.xcodeproj/project.pbxproj",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationPeople.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/PeopleSelection.swift",
+      "Sources/PhotoCraftImaging/PeopleSelection.swift",
+      "Tests/PhotoCraftAppTests/PeopleWorkflowTests.swift",
+      "project.yml",
+      "scripts/build-app.sh"
+    ],
+    "removed": []
+  },
+  "source_delta_note": "New means newly included in manifest; existing NOTICE/.gitignore are modified files, not newly created. Generated model resources remain ignored from source PRs.",
+  "tests": {
+    "integration02": 61,
+    "release-full01": 1933
+  },
+  "real_model": {
+    "cases": [
+      {
+        "archiveRoundTrip": true,
+        "features": [
+          {
+            "coverageSum": 21807644,
+            "feature": "hair",
+            "person": 1,
+            "pixelsAboveHalf": 76161
+          },
+          {
+            "coverageSum": 20341502,
+            "feature": "faceSkin",
+            "person": 1,
+            "pixelsAboveHalf": 65485
+          },
+          {
+            "coverageSum": 18992409,
+            "feature": "bodySkin",
+            "person": 1,
+            "pixelsAboveHalf": 48746
+          },
+          {
+            "coverageSum": 203946251,
+            "feature": "clothes",
+            "person": 1,
+            "pixelsAboveHalf": 894163
+          },
+          {
+            "coverageSum": 7588480,
+            "feature": "accessories",
+            "person": 1,
+            "pixelsAboveHalf": 2565
+          }
+        ],
+        "fixture": "nasa-portrait01",
+        "height": 1920,
+        "people": 1,
+        "seconds": 34.47990798950195,
+        "sourcePreserved": true,
+        "undoRedo": true,
+        "width": 1526
+      },
+      {
+        "archiveRoundTrip": true,
+        "features": [
+          {
+            "coverageSum": 7463202,
+            "feature": "hair",
+            "person": 1,
+            "pixelsAboveHalf": 628
+          },
+          {
+            "coverageSum": 24740685,
+            "feature": "faceSkin",
+            "person": 1,
+            "pixelsAboveHalf": 76333
+          },
+          {
+            "coverageSum": 37523920,
+            "feature": "bodySkin",
+            "person": 1,
+            "pixelsAboveHalf": 116292
+          },
+          {
+            "coverageSum": 250964434,
+            "feature": "clothes",
+            "person": 1,
+            "pixelsAboveHalf": 1030054
+          },
+          {
+            "coverageSum": 21984152,
+            "feature": "accessories",
+            "person": 1,
+            "pixelsAboveHalf": 43317
+          },
+          {
+            "coverageSum": 28517667,
+            "feature": "hair",
+            "person": 2,
+            "pixelsAboveHalf": 108380
+          },
+          {
+            "coverageSum": 22891167,
+            "feature": "faceSkin",
+            "person": 2,
+            "pixelsAboveHalf": 83766
+          },
+          {
+            "coverageSum": 14381902,
+            "feature": "bodySkin",
+            "person": 2,
+            "pixelsAboveHalf": 29994
+          },
+          {
+            "coverageSum": 132095565,
+            "feature": "clothes",
+            "person": 2,
+            "pixelsAboveHalf": 592860
+          },
+          {
+            "coverageSum": 5101011,
+            "feature": "accessories",
+            "person": 2,
+            "pixelsAboveHalf": 0
+          }
+        ],
+        "fixture": "nasa-two-people01",
+        "height": 1794,
+        "people": 2,
+        "seconds": 63.67457401752472,
+        "sourcePreserved": true,
+        "undoRedo": true,
+        "width": 2272
+      }
+    ],
+    "limits": "Local photo smoke evidence, not Adobe model or exact-mask equivalence.",
+    "originalRuntimeComparison": [
+      {
+        "fixture": "nasa-portrait01",
+        "maxProbabilityError": 6.109476089477539e-06
+      },
+      {
+        "fixture": "nasa-two-people01",
+        "maxProbabilityError": 6.973743438720703e-06
+      }
+    ],
+    "provider": "Swift Core ML + Vision person instances"
+  },
+  "last_full_regression": {
+    "step": 198,
+    "tests": 1933,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T174733Z-198-people-features/release-full01.log",
+    "current_source": true,
+    "includes_step197": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T174733Z-198-people-features/conversion01.log",
+    "artifacts/runs/20261027T174733Z-198-people-features/integration01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T18:22:24.793211+00:00",
+    "tests": {
+      "integration02": 61,
+      "release-full01": 1933
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T174733Z-198-people-features/Photato198-final.zip",
+    "zip_sha256": "a879cd82863de9ac7bfa34e5ea3d6ddbaa515569d0cc3dbc2464e202b4597d4c",
+    "app": "/private/tmp/photato198-verified-1cefdgda/Photato.app",
+    "executable_sha256": "8987670abcf7efb5953f866155aa478055cccbb664ea846b63874b6342d970d4",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato198-verified-1cefdgda/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato198-verified-1cefdgda/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1502,
+    "source_manifest_sha256": "488ce53405fd2ea81d702a3b8a93a84a003f91c50ceb9144940331dd81ddce09",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 3,
+    "xcode_project": "Intentionally regenerated for optional native resource phase; original bytes retained in project-before01.pbxproj. Debug Xcode build passes with script sandbox enabled.",
+    "xcode_app": "/private/tmp/photato198-xcode-tqwkpg61/Build/Products/Debug/Photato.app",
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 263,
+      "unavailable_leaf_commands": 462,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "real_model": {
+      "cases": [
+        {
+          "archiveRoundTrip": true,
+          "features": [
+            {
+              "coverageSum": 21807644,
+              "feature": "hair",
+              "person": 1,
+              "pixelsAboveHalf": 76161
+            },
+            {
+              "coverageSum": 20341502,
+              "feature": "faceSkin",
+              "person": 1,
+              "pixelsAboveHalf": 65485
+            },
+            {
+              "coverageSum": 18992409,
+              "feature": "bodySkin",
+              "person": 1,
+              "pixelsAboveHalf": 48746
+            },
+            {
+              "coverageSum": 203946251,
+              "feature": "clothes",
+              "person": 1,
+              "pixelsAboveHalf": 894163
+            },
+            {
+              "coverageSum": 7588480,
+              "feature": "accessories",
+              "person": 1,
+              "pixelsAboveHalf": 2565
+            }
+          ],
+          "fixture": "nasa-portrait01",
+          "height": 1920,
+          "people": 1,
+          "seconds": 34.47990798950195,
+          "sourcePreserved": true,
+          "undoRedo": true,
+          "width": 1526
+        },
+        {
+          "archiveRoundTrip": true,
+          "features": [
+            {
+              "coverageSum": 7463202,
+              "feature": "hair",
+              "person": 1,
+              "pixelsAboveHalf": 628
+            },
+            {
+              "coverageSum": 24740685,
+              "feature": "faceSkin",
+              "person": 1,
+              "pixelsAboveHalf": 76333
+            },
+            {
+              "coverageSum": 37523920,
+              "feature": "bodySkin",
+              "person": 1,
+              "pixelsAboveHalf": 116292
+            },
+            {
+              "coverageSum": 250964434,
+              "feature": "clothes",
+              "person": 1,
+              "pixelsAboveHalf": 1030054
+            },
+            {
+              "coverageSum": 21984152,
+              "feature": "accessories",
+              "person": 1,
+              "pixelsAboveHalf": 43317
+            },
+            {
+              "coverageSum": 28517667,
+              "feature": "hair",
+              "person": 2,
+              "pixelsAboveHalf": 108380
+            },
+            {
+              "coverageSum": 22891167,
+              "feature": "faceSkin",
+              "person": 2,
+              "pixelsAboveHalf": 83766
+            },
+            {
+              "coverageSum": 14381902,
+              "feature": "bodySkin",
+              "person": 2,
+              "pixelsAboveHalf": 29994
+            },
+            {
+              "coverageSum": 132095565,
+              "feature": "clothes",
+              "person": 2,
+              "pixelsAboveHalf": 592860
+            },
+            {
+              "coverageSum": 5101011,
+              "feature": "accessories",
+              "person": 2,
+              "pixelsAboveHalf": 0
+            }
+          ],
+          "fixture": "nasa-two-people01",
+          "height": 1794,
+          "people": 2,
+          "seconds": 63.67457401752472,
+          "sourcePreserved": true,
+          "undoRedo": true,
+          "width": 2272
+        }
+      ],
+      "limits": "Local photo smoke evidence, not Adobe model or exact-mask equivalence.",
+      "originalRuntimeComparison": [
+        {
+          "fixture": "nasa-portrait01",
+          "maxProbabilityError": 6.109476089477539e-06
+        },
+        {
+          "fixture": "nasa-two-people01",
+          "maxProbabilityError": 6.973743438720703e-06
+        }
+      ],
+      "provider": "Swift Core ML + Vision person instances"
+    },
+    "model_provenance_sha256": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86",
+    "limits": "Full optimized suite and universal package on this host, including197 Select People. Native real-photo and offscreen evidence, not live desktop/physical Intel/macOS14/macOS26/Photoshop model equivalence."
+  },
+  "api": {
+    "commands": [
+      "selection.findPeople",
+      "selection.hoverPerson",
+      "selection.selectPeople"
+    ],
+    "catalogue_count": 96,
+    "state": "peopleSelection: available/busy/ready/pickerOpen/cacheID/hoveredID/error/features/people IDs and bounds. Adds modelAvailable, featureError, hoveredFeature, selectedFeatures and selectedIDs. features lists currently available classes.",
+    "parameters": "findPeople optional features affects exported masks; hoverPerson optional feature; selectPeople optional features. Defaults wholePerson. Arrays unique1\u20136 values. Existing parameters retained.",
+    "results": "Standard document state; detection optionally includes peopleMasks full-canvas row-major UInt8 coverageBase64 and peopleThumbnails PNG base64 <=96px per side. Empty detections return ready empty lists.",
+    "history": "Detection/hover/thumbnail picker are ephemeral and do not dirty documents. Unioned selection follows native Undo/Redo and Actions4 frozen coverage; native archive32 unchanged.",
+    "lifecycle": "Normalized source includes layer/sample mode and ignores selection-only edits. Edits/tool changes/sample/layer/refresh/cancel/read/close invalidate IDs; API additionally checks permission/revision/lifecycle and cache at commit.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 people/16,777,216 aggregate mask pixels plus padded tile budget. Shared API4,194,304 pixels/64layers/128MiB.",
+    "features": [
+      "wholePerson",
+      "hair",
+      "bodySkin",
+      "faceSkin",
+      "clothes",
+      "accessories"
+    ],
+    "unavailable": [
+      "eyebrows",
+      "eyes",
+      "lips",
+      "teeth",
+      "nose",
+      "beard"
+    ],
+    "availability": "Core ML resource optional; missing/failing model retains whole-person selection. Unavailable feature request422; malformed/duplicate/unknown features400; stale cache409."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated desktop Select People endpoint in pinned published v2 contract. No invented route or proprietary model/identity claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 263,
+    "unavailable_leaf_commands": 462,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Eyebrows/eyes/lips/teeth/nose/beard labels unavailable; do not approximate with geometric shapes.",
+    "Soft masks/instance boundaries/defaults not proven equal to Photoshop; manual Select and Mask refinement available.",
+    "Model remains optional; architecture/minimum-OS declarations do not prove physical Intel/macOS14/macOS26 inference.",
+    "Desktop locked; offscreen/synthetic capture is not live UI evidence.",
+    "Detection caches and picker state are ephemeral, not saved preferences."
+  ],
+  "next": "Major live shape/vector drawing workflows; facial fine-grained labels and numerical/cosmetic parity stay explicitly open.",
+  "next_major_plan": "artifacts/runs/20261027T174733Z-198-people-features/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "result": {
+      "check": "passed",
+      "milestones": 198,
+      "evidence_files": 38815,
+      "logs": 19459,
+      "missing_explicit_references": 0
+    },
+    "path": "artifacts/runs/20261027T174733Z-198-people-features/development-history-audit",
+    "closure": "final01 refresh/check passed; final02 includes this closure."
+  }
+}

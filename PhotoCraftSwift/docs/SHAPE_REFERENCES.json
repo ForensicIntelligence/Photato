@@ -1,0 +1,96 @@
+{
+  "step": "dev-step-199",
+  "status": "Native live-shape workflow implemented and tested; full G03/Photoshop parity remains open.",
+  "scope": "Native live shape tools, properties, shared paints and strokes, compound components, shape/path/pixels outputs, custom presets, history, native33 and Actions5/API.",
+  "sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/drawing-tools-overview.html",
+      "updated": "2026-02-23",
+      "reviewed": "2026-10-27",
+      "use": "Seven shape tools including Star; native U-group entries."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/draw-custom-shapes.html",
+      "updated": "2026-02-23",
+      "reviewed": "2026-10-27",
+      "use": "Custom picker, import and defining reusable paths through Edit > Define Custom Shape."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/draw-star-shapes.html",
+      "use": "Star points and corner/inner-radius controls; previously reviewed for199 plan."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "reviewed": "2026-10-27",
+      "use": "Published API v2 context; no dedicated shape route is claimed."
+    },
+    {
+      "path": "../photocraft-main/crates/vector/src/shapes.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Rectangle radii/KAPPA, ellipse, polygon/star and filled line-shaft geometry."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "shape.edit",
+      "shape.configure",
+      "shape.library"
+    ],
+    "command_count": 99,
+    "state": "shapes tool/template/mode/combine/preset/library state; each layer shape/shapeTransform",
+    "schemas": "ShapeAPI definition/component/paint/stroke/state/results/defaults; strict unknown-field and bounded validation",
+    "history": "Shared prepared native transactions for document edits; session/library mutations do not add document Undo.",
+    "persistence": "native33, Actions5 with captured pattern resources; native photatoshapes1 library",
+    "limits": "64 components/8MP rasterization;128 presets/16MiB;API import base64<=3000000 chars; existing request4MiB/shared4MP/64-layer/128MiB limits."
+  },
+  "adobe_api": "No dedicated shape route in pinned Photoshop v2 contract. Proprietary shape actionJSON descriptors and editable PSD interchange remain unqualified; no fabricated routes. Existing Adobe route regression coverage remains independent.",
+  "menus": [
+    "Window > Shapes",
+    "Edit > Define Custom Shape\u2026",
+    "Layer > Rasterize > Shape"
+  ],
+  "tests": {
+    "attempts": [
+      "artifacts/runs/20261027T182427Z-199-live-shapes/module01.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/module02.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/module03.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/ui01.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration01.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration02.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration03.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration04.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration05.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration06.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/release-full01.log",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration07.log"
+    ],
+    "failures_preserved": [
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration03-crash.json",
+      "artifacts/runs/20261027T182427Z-199-live-shapes/integration04-crash.json"
+    ],
+    "current": "Passed focused and full optimized qualification.",
+    "focused": 80,
+    "release_full": 1944,
+    "release_log": "artifacts/runs/20261027T182427Z-199-live-shapes/release-full02.log",
+    "verification": "artifacts/runs/20261027T182427Z-199-live-shapes/verification01.json"
+  },
+  "limitations": [
+    "No live desktop qualification while last authoritative desktop state remains locked. Offscreen rendering and synthetic events are not live tests.",
+    "Full Photoshop pixel/stroke/corner/default/library/shortcut/platform equivalence remains open.",
+    "Editable PSD shape output remains explicitly unsupported; keep native original or rasterize/flatten an export copy.",
+    "Adobe CSH preset import/export and proprietary preset assets not implemented. Native presets work.",
+    "Gradient/pattern shape cross-profile document transfer explicitly requires rasterization; solid paints convert.",
+    "Compound drawing retains parametric components; multi-layer Combine Shapes menu operations and full vector manipulation remain open.",
+    "Path/pixel mode Actions capture remains separately incomplete; native Undo is supported.",
+    "Physical Intel/macOS14/macOS26 and App Store distribution remain unqualified."
+  ],
+  "next": "G04 major missing Pen/Paths workflows: Freeform/Curvature Pen, editable paths, fill/stroke, selection-to-path, native APIs and history. Fine numerical/cosmetic shape refinements deferred.",
+  "qualification": "All80 focused Debug and1944 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+  "menus_report": {
+    "entries": 802,
+    "bound_leaf_commands": 266,
+    "unavailable_leaf_commands": 459,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  }
+}

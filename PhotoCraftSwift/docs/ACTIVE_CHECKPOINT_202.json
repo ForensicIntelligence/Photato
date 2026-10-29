@@ -1,0 +1,160 @@
+{
+  "step": "dev-step-202",
+  "completed_at_utc": "2026-10-27T21:01:22.803741+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Editable text on or inside saved vector paths",
+    "Fifteen preset warps with axis, bend and distortion controls",
+    "Block, Circle, Arch and Bow layouts with Dynamic Fit",
+    "Native rich-text workspace, asynchronous preview, Cancel, local layout Undo and one document transaction",
+    "Anchor-preserving text/glyph edits, native35 and Actions7 metadata",
+    "Shared text.layout API and geometry in text.create/set/state"
+  ],
+  "source_manifest": "artifacts/runs/20261027T202455Z-202-shaped-text/source01.json",
+  "source_manifest_sha256": "93aa4fe1fb48f0e1d31640cbcc20cd7bf6b0f7c0f4d62bab8e98f5697a2e6cee",
+  "source_inputs": 1530,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationTextLayout.swift",
+      "Sources/PhotoCraft/ShapedTypeWorkspace.swift",
+      "Sources/PhotoCraftCore/TextGeometry.swift",
+      "Sources/PhotoCraftImaging/ShapedTextLayout.swift",
+      "Tests/PhotoCraftAppTests/ShapedTypeWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/ShapedTextTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AdvancedTypeControls.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFonts.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/AutomationText.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/NativeTextEditing.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/TransformEditing.swift",
+      "Sources/PhotoCraft/TypeControls.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/TextTypography.swift",
+      "Sources/PhotoCraftImaging/NativeTextLayout.swift",
+      "Sources/PhotoCraftImaging/PSDText.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration08": 89,
+    "release-full01": 1966
+  },
+  "last_full_regression": {
+    "step": 202,
+    "tests": 1966,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T202455Z-202-shaped-text/release-full01.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T202455Z-202-shaped-text/module01.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/module02.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/module03.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/module04.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/module05.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/integration06.log",
+    "artifacts/runs/20261027T202455Z-202-shaped-text/integration07.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T21:01:22.803741+00:00",
+    "tests": {
+      "integration08": 89,
+      "release-full01": 1966
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T202455Z-202-shaped-text/Photato202-final.zip",
+    "zip_sha256": "a5a14cada9b7a5618b15e59736a3f7f9a4cf0ed57b498f2b49fb0d0449b1632d",
+    "app": "/private/tmp/photato202-verified-3d84y8tn/Photato.app",
+    "executable_sha256": "8168d2b5c449719581d8144bd601fe0e10f20503f70e23fc2ce7fecbb5caff37",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato202-verified-3d84y8tn/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato202-verified-3d84y8tn/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1530,
+    "source_manifest_sha256": "93aa4fe1fb48f0e1d31640cbcc20cd7bf6b0f7c0f4d62bab8e98f5697a2e6cee",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 281,
+      "unavailable_leaf_commands": 444,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "text.layout"
+    ],
+    "expanded": [
+      "text.create",
+      "text.set",
+      "text.glyph"
+    ],
+    "typed_command_count": 107,
+    "parameters": "layerID, settings, optional enabled/pathID. settings replace the full layout with native defaults for omitted fields: mode, width/height, path, warp style/bend/horizontalDistortion/verticalDistortion/vertical, fit, start/end, reverse, offset, wordSpacing/lineSpacing. enabled=false removes geometry and takes no settings/pathID.",
+    "coordinates": "Logical type pixels before layer affine transform. start/end are fractions of baseline length. pathID copies document path coordinates into the logical type frame. Later saved-path edits are independent.",
+    "state": "layers[].text.geometry and capabilities.text.layout expose settings, schemas, limits, persistence and qualification.",
+    "guards": "Authentication/share/revision/interaction/locks and prepared-operation cancellation/revocation; invalid settings400; stale/busy409. Desktop and API share an atomic type command that compensates normalized bounds without moving the logical anchor or mask.",
+    "native_version": 35,
+    "actions_version": 7
+  },
+  "adobe_api": {
+    "routes": [],
+    "scope": "Existing native text/job engine preserved. No dedicated shaped-text fields or endpoint in the pinned contract, so no invented Adobe route.",
+    "limits": "Editable shaped PSD output rejects explicitly; flattened image export remains available. No Adobe output/font/composer equivalence claimed."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 281,
+    "unavailable_leaf_commands": 444,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Full T04 remains open: exact Photoshop fit/composers/preset formulas and raster equality are unqualified.",
+    "Vertical shaped type and color/bitmap glyphs without vector outlines reject. Fonts and glyph/font variants require broader qualification.",
+    "The native rich-text pane edits content beside a curved preview; live curved caret/IME and direct draggable path delimiters are deferred.",
+    "Saved paths are copied; not live-linked. Semantic Actions recording of arbitrary type edits, full PSD forms and cross-application interchange remain open.",
+    "Synthetic/offscreen AppKit and host tests only; no unlocked desktop, independent Photoshop output or physical Intel/macOS14/macOS26 qualification."
+  ],
+  "next": "F06: native Filter Gallery with effect categories, editable stacks, preview/history/Smart Filters and APIs. Minor typography utilities and exact/cosmetic refinements remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T202455Z-202-shaped-text/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "final01 refresh/check passed",
+    "milestones": 202,
+    "evidence_files": 39019,
+    "logs": 19502,
+    "missing_explicit_references": 0,
+    "refresh_log": "artifacts/runs/20261027T202455Z-202-shaped-text/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T202455Z-202-shaped-text/development-history-audit/final01-check.log",
+    "closing_record": "A second refresh/check follows this closing record."
+  }
+}

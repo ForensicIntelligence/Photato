@@ -1,0 +1,55 @@
+{
+  "step": 247,
+  "recorded_at_utc": "2026-10-29T11:46:35.916751+00:00",
+  "status": "Native Variables/Data Sets now support linked visibility/text/pixel bindings, four placement methods, CSV/TSV and image import, draft preview, Apply/Undo, native61 persistence and staged batch output. Twelve shared API operations include nonmutating PNG preview and cancellable ZIP export. RGB profile assignment/conversion preserves embedded replacement assets. 80 focused and 2588 full optimized tests pass on 2363 unchanged inputs; independent outputs match192 analytic RGBA channels. PSD variable interchange, Actions, broader mode/lifecycle and exact/live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "run": "artifacts/runs/20261029T102603Z-247-data-driven-graphics",
+  "source_manifest": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/source06.json",
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 184,
+  "variable_api_commands": 12,
+  "adobe_routes_changed": false,
+  "references": [
+    "artifacts/runs/20261029T102603Z-247-data-driven-graphics/references01.json",
+    "artifacts/runs/20261029T102603Z-247-data-driven-graphics/reference-review02.json",
+    "artifacts/runs/20261029T102603Z-247-data-driven-graphics/psd-variable-review06.json",
+    "artifacts/runs/20261029T102603Z-247-data-driven-graphics/owned-psd-variable-scan06.json"
+  ],
+  "verification": {
+    "focused": {
+      "tests": 80,
+      "failures": 0,
+      "seconds": 8.299,
+      "log": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/focused06.log",
+      "sha256": "04c78fe7cae5e448f9513970787d443ddab770de5a63e1c8c77141560e49fd39"
+    },
+    "full": {
+      "tests": 2588,
+      "failures": 0,
+      "seconds": 173.211,
+      "log": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/full02.log",
+      "sha256": "a51216fdc13bf5cfb5ecaa024a1f540539e8f2af6e83365d6210966f22bd3119"
+    },
+    "unchanged_inputs": 2363,
+    "source_manifest": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/source06.json",
+    "independent": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/independent-focused06.json",
+    "exact_RGBA_channels": 192,
+    "binary_sha256": "44cc8dc2151c4aa8a3e333009eeed7d808b7c9c76870b10a6ab08aae26f7ecb4",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "offscreen_native": "artifacts/runs/20261029T102603Z-247-data-driven-graphics/focused06/variables-sheet.png",
+  "provenance": "Independent native Swift implementation on the licensed PhotoCraft fork, public Adobe behavior/file-format documentation and owned analytic fixtures. No proprietary Adobe source or binary implementation used. No formal clean-room separation asserted.",
+  "exact_photoshop_parity": false,
+  "full_feature_complete": false,
+  "open": [
+    "PSD/PSB editable variable XML/data-set interchange; public resource IDs alone do not define the current payload",
+    "Recorded Actions and corresponding Adobe execute-actions descriptors; no dedicated route is invented",
+    "Non-RGB pixel replacement, mode/depth changes, flattening and broader layer/animation/duplication lifecycle",
+    "Exact Photoshop original-frame/resampling, rich text/default/Background context and main-canvas preview behavior",
+    "Live Photoshop/native UI and physical Intel/macOS14/macOS26 acceptance",
+    "Full AUT02 scripts/events/contact-sheet/other automation scope and all unchanged original goal gates"
+  ]
+}

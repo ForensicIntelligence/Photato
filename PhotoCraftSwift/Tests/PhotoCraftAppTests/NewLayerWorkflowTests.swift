@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class NewLayerWorkflowTests: XCTestCase {
-  @MainActor func testCancelIsUntouchedAndCommitNotifiesDocumentOnce() throws {
+  @MainActor func testCancelIsUntouchedAndCommitNotifiesDocumentOnce() async throws {
     let store = EditorStore(document: try CraftDocument(width: 3, height: 2))
     defer { store.renderTask?.cancel() }
     var changes = 0
@@ -42,13 +42,13 @@ final class NewLayerWorkflowTests: XCTestCase {
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.selectedLayerIDs, [try XCTUnwrap(store.activeLayer?.id)])
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
 
-  @MainActor func testDraftGuardsEditsSelectionHistoryAndOtherDrafts() throws {
+  @MainActor func testDraftGuardsEditsSelectionHistoryAndOtherDrafts() async throws {
     let store = EditorStore(document: try CraftDocument(width: 2, height: 2))
     defer { store.renderTask?.cancel() }
     store.addPixelLayer()
@@ -63,7 +63,7 @@ final class NewLayerWorkflowTests: XCTestCase {
     XCTAssertTrue(store.newLayerDraft === draft)
     store.select(original.layers[0].id)
     store.perform(.renameLayer(original.layers[0].id, "Wrong"))
-    store.undo()
+    await store.undo()
     store.addPixelLayer()
     XCTAssertEqual(store.document, original)
     store.cancelNewLayer()

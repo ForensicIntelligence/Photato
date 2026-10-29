@@ -34,8 +34,9 @@ public struct BucketFill: Sendable {
 public enum BucketPainter {
   @discardableResult public static func paint(
     _ fill: BucketFill, on layer: inout Layer, canvasWidth: Int, canvasHeight: Int,
-    selection: IntRect? = nil, selectionMask: SelectionMask? = nil
+    selection: IntRect? = nil, selectionMask: SelectionMask? = nil, preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !fill.mask && (preserveTransparency || layer.protection.locksTransparency)
     _ = try Surface(width: canvasWidth, height: canvasHeight)
     try fill.options.match.validate()
     let pattern = try fill.pattern.map { try PatternSampler($0, placement: fill.placement) }
@@ -67,7 +68,7 @@ public enum BucketPainter {
     let bounds = IntRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0)
     return try ClonePainter.paintTarget(
       mask: fill.mask, bounds: bounds, on: &layer,
-      clipping: clipping
+      clipping: clipping, preserveTransparency: preserve
     ) { pixels, transform, _ in
       let inverse = try transform.inverted()
       let local = try (inverse * .translation(Double(bounds.x), Double(bounds.y)))
@@ -106,10 +107,15 @@ public enum BucketPainter {
           }
           guard rawSource.a > 0 else { continue }
           let old = pixels.pixel(x: x, y: y)
+          if preserve && old.a <= 0 { continue }
           let raw = fill.mask ? Pixel(unit(old.r), unit(old.r), unit(old.r)) : old
           let backdrop = linear ? SRGBTransfer.linear(raw) : raw
           let result: Pixel
-          if fill.options.mode == .normal && coverage == 1 && rawSource.a == 1 {
+          if preserve {
+            let blended = ProtectedPixels.composite(fill.options.mode, backdrop: backdrop,
+              source: source, opacity: coverage, x: dx, y: dy)
+            result = linear ? SRGBTransfer.encoded(blended) : blended
+          } else if fill.options.mode == .normal && coverage == 1 && rawSource.a == 1 {
             result = rawSource
           } else {
             let blended = fill.options.mode.composite(

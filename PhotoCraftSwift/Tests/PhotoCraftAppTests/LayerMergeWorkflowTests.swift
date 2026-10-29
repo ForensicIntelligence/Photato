@@ -30,7 +30,7 @@ final class LayerMergeWorkflowTests: XCTestCase {
       XCTAssertEqual(s.document.layers.count, 1)
       XCTAssertEqual(s.selectedLayerIDs, Set([try XCTUnwrap(s.document.activeLayerID)]))
       XCTAssertEqual(s.session.undoStack.last?.label, operation.rawValue)
-      s.undo()
+      await s.undo()
       s.renderTask?.cancel()
       XCTAssertEqual(s.document, before)
       s.selectedLayerIDs = Set(s.document.layers.map(\.id))

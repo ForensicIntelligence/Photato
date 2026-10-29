@@ -192,7 +192,7 @@ public enum LayerLayout {
   {
     let byID = Dictionary(
       document.layers.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-    let locked = Set(document.layers.filter(\.locked).map(\.id))
+    let locked = Set(document.layers.filter { $0.protection.locksPosition }.map(\.id))
     return members.contains { owner($0.id, in: locked, byID: byID) != nil }
   }
 
@@ -234,10 +234,15 @@ public enum LayerLayout {
     for (i, move) in affected where move.dx != 0 || move.dy != 0 {
       try Task.checkCancellation()
       let old = candidate.layers[i]
+      candidate.layers[i].smartFilters?.transformPuppetPins(.translation(Double(move.dx),Double(move.dy)))
+      candidate.layers[i].smartFilters?.transformPerspectivePlanes(.translation(Double(move.dx),Double(move.dy)))
       candidate.layers[i].x += move.dx
       candidate.layers[i].y += move.dy
       try candidate.layers[i].movePattern(x: move.dx, y: move.dy)
       try candidate.layers[i].preserveUnlinkedMask(from: old)
+      if old.smartFilters?.maskProperties.linked == true {
+        candidate.layers[i].smartFilters?.maskProperties.transform = .translation(Double(move.dx), Double(move.dy)) * old.smartFilters!.maskProperties.transform
+      }
       if old.vectorMask?.linked == true {
         candidate.layers[i].vectorMask?.path = old.vectorMask!.path.transformed(
           .translation(Double(move.dx), Double(move.dy)))
@@ -252,11 +257,12 @@ public enum LayerLayout {
   /// Photoshop recomputes moved raster storage bounds. This matters for subsequent
   /// selection/canvas alignment, which uses the current storage extent.
   static func trimMovedRaster(_ layer: inout Layer) throws {
-    guard case .raster(let pixels) = layer.content, let bounds = try pixels.contentBounds(),
+    guard layer.smartObject == nil, case .raster(let pixels) = layer.content, let bounds = try pixels.contentBounds(),
       bounds != IntRect(x: 0, y: 0, width: pixels.width, height: pixels.height)
     else { return }
     let old = layer
     layer.content = .raster(try pixels.cropped(to: bounds))
+    if let native = old.nativeMode { layer.nativeMode = try native.cropped(to: bounds) }
     if let affine = layer.affine {
       layer.affine = affine * .translation(Double(bounds.x), Double(bounds.y))
     } else {

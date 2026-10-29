@@ -10,14 +10,20 @@ import SwiftUI
     !geometryBusy && !hasToneDraft && transformDraft == nil
   }
 
-  func selectHistoryState(_ index: Int) {
-    guard canNavigateHistory, historyStateLabels.indices.contains(index) else { return }
-    let current = session.undoStack.count
-    // Count transitions before moving: the memory budget can discard older states en route.
-    if index < current {
-      for _ in index..<current { undo() }
-    } else if index > current {
-      for _ in current..<index { redo() }
+  @discardableResult func selectHistoryState(_ index: Int) -> Task<Void, Never> {
+    let lifecycle = layerPanelGeneration
+    let generation = sessionGeneration
+    return Task { [weak self] in
+      guard let self, layerPanelGeneration == lifecycle, sessionGeneration == generation,
+        canNavigateHistory, historyStateLabels.indices.contains(index)
+      else { return }
+      let current = session.undoStack.count
+      // Each transition is atomic. Cancellation retains any already completed transitions.
+      if index < current {
+        for _ in index..<current { if !(await undo()) { break } }
+      } else if index > current {
+        for _ in current..<index { if !(await redo()) { break } }
+      }
     }
   }
 }
@@ -52,9 +58,9 @@ struct HistoryPanel: View {
         }.onChange(of: store.session.undoStack.count) { _, index in proxy.scrollTo(index) }
       }
       HStack {
-        Button("Undo") { store.undo() }
+        Button("Undo") { store.requestHistory(redo: false) }
           .disabled(!store.canNavigateHistory || store.session.undoStack.isEmpty)
-        Button("Redo") { store.redo() }
+        Button("Redo") { store.requestHistory(redo: true) }
           .disabled(!store.canNavigateHistory || store.session.redoStack.isEmpty)
         Spacer()
       }.buttonStyle(.borderless).padding(8)

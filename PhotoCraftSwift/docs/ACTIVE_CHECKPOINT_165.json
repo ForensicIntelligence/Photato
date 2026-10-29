@@ -1,0 +1,85 @@
+{
+  "step": "dev-step-165",
+  "completed_at_utc": "2026-10-26T23:12:41.107338+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native Liquify workflow; F04 independent/live/interchange and full Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T222626Z-165-liquify/source03.json",
+  "source_manifest_sha256": "87455601a7c8ee57fc32812c8f324fb3b3377ac41caef339ad03b798d8df11ca",
+  "source_inputs": 1228,
+  "source_delta": "artifacts/runs/20261026T222626Z-165-liquify/source-delta03.json",
+  "tests": {
+    "debug_focused": 53,
+    "full_release_before_identity_repair": {
+      "count": 1583,
+      "source": "artifacts/runs/20261026T222626Z-165-liquify/source02.json",
+      "log": "artifacts/runs/20261026T222626Z-165-liquify/release-tests02.log"
+    },
+    "final_release_focused": {
+      "count": 71,
+      "source": "artifacts/runs/20261026T222626Z-165-liquify/source03.json",
+      "log": "artifacts/runs/20261026T222626Z-165-liquify/release-focused01.log"
+    },
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T222626Z-165-liquify/platform03.json",
+    "checks_per_architecture": 29,
+    "qualification": "Native arm64 and x86_64 under Rosetta; physical Intel/macOS14 and independent Photoshop qualification remain open."
+  },
+  "package": {
+    "archive": "artifacts/runs/20261026T222626Z-165-liquify/Photato165-candidate-final.zip",
+    "archive_sha256": "7f86ba17c55cba3dbd0d8ad93a83a4d64b0f579c604cb87e23aaea4627e365b1",
+    "executable_sha256": "5ae81532c993550a355ef08a2c1a20701fec4b70a904d134fb38e8f88d57f9c2",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato165-verified-dtbkbx2q/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato165-verified-dtbkbx2q/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "Strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato165-verified-dtbkbx2q/Photato.app",
+    "attribution_sha256": "4fc09cd270d27ac7cdc1f574c9eebaba48460ced24fa68284e6b476228a29220"
+  },
+  "interfaces": {
+    "photato_typed_commands": 41,
+    "adobe_routes_partial": 5,
+    "adobe_routes_unimplemented": 3,
+    "native_liquify_version": 19,
+    "adobe_liquify": "Explicitly unsupported mesh descriptors."
+  },
+  "menu": {
+    "entries": 802,
+    "bound": 207,
+    "unavailable": 518,
+    "primary_shortcuts": 102,
+    "alternates": 8,
+    "report": "artifacts/runs/20261026T222626Z-165-liquify/menu-report01.json"
+  },
+  "preserved": {
+    "state": "artifacts/runs/20261026T222626Z-165-liquify/preserved-state01.json",
+    "original_rust_files": 754,
+    "root_release": "build117 unchanged",
+    "xcode_project": "Photato.xcodeproj unchanged; synchronized source groups include new files"
+  },
+  "live": {
+    "status": "Pending Mac unlock. No165 live UI/Photoshop qualification. Original Photoshop document untouched.",
+    "pending_previous": "See checkpoints159\u2013164.",
+    "pending165": "Native pointer/tablet/keyboard brush/face/mesh/cancel/history/save workflow; independent Photoshop deformation/interchange comparison.",
+    "offscreen": "artifacts/runs/20261026T222626Z-165-liquify/liquify-workspace02.png",
+    "cross_architecture_precision": "artifacts/runs/20261026T222626Z-165-liquify/float-comparison02.json",
+    "vision": "Real local face-landmark request on uniform nonface image on both architectures; portrait quality remains unqualified."
+  },
+  "next": {
+    "work_package": "S04",
+    "task": "Build native Select and Mask with refinement brushes, edge/matting controls, views, output modes, history and both API contracts where defined. Read upstream algo/matting.rs (guided filter, smart radius, smooth/feather/contrast/shift, decontamination), existing selection/mask commands and the factory Select and Mask menu.",
+    "priority": "Major breadth before minor functions/details. Preserve remaining A03 and all parity gaps."
+  },
+  "no_unfinished_source_edit": true,
+  "no_outstanding_test_or_build_session": true,
+  "development_history_audit": {
+    "milestones": 165,
+    "evidence_files": 36183,
+    "logs": 19163,
+    "missing_explicit_references": 0,
+    "check": "passed",
+    "report": "artifacts/development-history-audit/20261026T222626Z-165-liquify/check01.log"
+  }
+}

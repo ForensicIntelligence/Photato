@@ -1,0 +1,196 @@
+{
+  "step": "dev-step-182",
+  "status": "Native Actions/Batch now include component/restricted mode conversions and clipboard workflows in Actions19; full AUT01/Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T080231Z-182-actions",
+  "scope": "Portable active/named targets; shared successful-commit recording and history-linked undo/redo; reusable native action library and editor; atomic one-history-step playback; file/folder/open-snapshot batch output; four Photato operations.",
+  "upstream": [
+    {
+      "path": "crates/ui-egui/src/actions.rs",
+      "sha256": "475a977ccdcf0f94b67db65403fa263b71db936f576cd156dfe109f171ff4140",
+      "license": "MIT OR Apache-2.0",
+      "use": "Read-only workflow reference; Swift shared transaction implementation is new."
+    },
+    {
+      "path": "crates/engine/src/file_cmds.rs",
+      "sha256": "5b2b28300cf2324c45f91c3cac12ac1b515e6303d582ecec5a0d89d59bd5136b",
+      "license": "MIT OR Apache-2.0",
+      "use": "Read-only workflow reference; Swift shared transaction implementation is new."
+    }
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/automate-tasks/create-record-actions/record-an-action.html",
+      "checked_utc": "2026-10-27",
+      "evidence": "step181 next-major-plan01 and step182 source examination; workflow reference, no pixel equality claim"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/automate-tasks/process-a-batch-of-files/batch-process-files.html",
+      "checked_utc": "2026-10-27",
+      "evidence": "step181 next-major-plan01 and step182 source examination; workflow reference, no pixel equality claim"
+    },
+    {
+      "url": "https://helpx.adobe.com/ca/photoshop/desktop/automate-tasks/automation-settings-and-presets/use-the-actions-panel.html",
+      "checked_utc": "2026-10-27",
+      "evidence": "step181 next-major-plan01 and step182 source examination; workflow reference, no pixel equality claim"
+    }
+  ],
+  "menus": [
+    "Window > Actions (factory Option-F9)",
+    "File > Automate > Batch\u2026"
+  ],
+  "photato_api": {
+    "commands": [
+      "actions.manage",
+      "actions.play",
+      "actions.batch",
+      "actions.batch.cancel"
+    ],
+    "count": 66,
+    "state": [
+      "actions",
+      "batch"
+    ],
+    "engine": "Command.action/RecordedAction/ActionBatch; desktop and API share transaction/persistence paths",
+    "adobe": "Existing published /v2/execute-actions and async resources remain separate and regression-tested. No new Adobe endpoint or .atn equivalence is claimed."
+  },
+  "tests": {
+    "debug_focused": 64,
+    "log": "artifacts/runs/20261027T080231Z-182-actions/integration06.log",
+    "offscreen": [
+      "artifacts/actions-offscreen.png",
+      "artifacts/batch-offscreen.png"
+    ],
+    "release_full": 1759,
+    "release_log": "artifacts/runs/20261027T080231Z-182-actions/release-full01.log",
+    "verification": "artifacts/runs/20261027T080231Z-182-actions/verification01.json"
+  },
+  "limitations": [
+    "Only the typed operations in ActionOperation are recordable; other successful edits become visible blocking entries until removed/disabled. Prepared composite crop/warp/AI, external assets, many channel/context operations and some layer edits remain unsupported.",
+    "No Adobe .atn import/export, JavaScript execution, conditional/modal action steps, function-key assignment or tool-gesture recording preferences. Native format reads .photatoactions versions1\u201319; new mode/clipboard steps require19.",
+    "Actions panel currently floats independently; dockable panel integration is deferred. Per-step parameter rerecording requires replacing recorded actions; step enable/remove/reorder is available.",
+    "Batch supports up to256 local sources; API uses up to8 already shared source documents. Folder scan is one level. No Bridge/import source, droplet, file-open/save override or automatic overwrite workflow.",
+    "Batch writes numbered copies via atomic staged output and exclusive hard-link publication; a filesystem lacking hard links reports an error. Each output is capped at128MiB. Successfully published copies remain after cancellation/error.",
+    "Native library up to128 actions/512 entries per action/16MiB; recording beyond511 steps retains a blocking limit entry. API imports are bounded to60000 base64 characters inside the existing64KiB request limit.",
+    "Offscreen layout tests and PNGs are not live interaction or visual parity evidence. Snapshot AppKit controls are incompletely rendered. The last desktop evidence was locked; no unlock re-probe.",
+    "Exact Photoshop numerical output, physical Intel/macOS14/26, full API/menu/preferences/feature equivalence and AUT01 remain open."
+  ],
+  "next": "Continue missing major workflows; unsupported Actions, ATN, modal/conditional/document-lifecycle behavior and exact/live/platform gates remain open.",
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T080231Z-182-actions",
+    "passed_iteration": "01",
+    "milestones": 182,
+    "evidence_files": 36910,
+    "logs": 19312,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "final_source_verification": "All1374 source01 inputs match after documentation and package verification.",
+  "mode_clipboard_221": {
+    "utc": "2026-10-28T14:23:16.732515+00:00",
+    "status": "Focused development checkpoint; full milestone/release/live qualification remains open",
+    "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+    "source_inputs": 2174,
+    "source_delta": {
+      "new": 251,
+      "modified": 64,
+      "removed": 0
+    },
+    "source_delta_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source-delta18.json",
+    "actions_format": 19,
+    "readable_actions_versions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "native_archive": 47,
+    "typed_commands": 132,
+    "new_commands": 0,
+    "new_workflow_tests": 12,
+    "combined": {
+      "tests": 523,
+      "failures": 0,
+      "seconds": 106.369,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions38.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source17.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command38.json"
+    },
+    "final": {
+      "tests": 34,
+      "failures": 0,
+      "seconds": 1.587,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions39.log",
+      "source_manifest": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-source18.json",
+      "command": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions-test-command39.json"
+    },
+    "final_source_difference": "Only Actions result-schema capability metadata and its existing test assertion changed after source17; playback behavior is unchanged.",
+    "earlier_focused": {
+      "tests": 52,
+      "failures": 0,
+      "seconds": 4.623,
+      "log": "artifacts/runs/20261028T101734Z-221-indexed-bitmap/actions36.log"
+    },
+    "failed_attempts": [
+      "actions32.log",
+      "actions33.log",
+      "actions34.log",
+      "actions35.log"
+    ],
+    "recording": [
+      "Component mode/depth/ICC/intent, merge-visible and HDR clipping consent",
+      "Indexed palette/dither/transparency/forced settings, explicit Previous palette",
+      "Bitmap resolution/method/halftone/custom pattern and Color Table",
+      "Copy/Copy Merged, Cut with selected background, Paste placement/center without recording clipboard images"
+    ],
+    "runtime": "Shared RecordedActionRenderer applies operations to each source document with per-step validation and one source-checked document transaction. Native playback stages the clipboard and commits only on success; API and Batch use private buffers.",
+    "master_palettes": "Desktop snapshots eligible open documents; API requires explicit additional shares/revisions; Batch freezes eligible source files once and excludes the current input by its batch source identity. Pixel/storage limits remain.",
+    "palette_state": "Commit last accepted indexed/color-table palette after successful playback even if a later step returns to RGB. Actions Previous stores an explicit palette.",
+    "api": {
+      "actions.play": [
+        "Optional clipboardPayloadBase64 initial native payload (2MiB)",
+        "Optional sources with shared IDs/revisions for master palettes",
+        "Optional clipboardPayloadBase64 output after Copy/Cut (2MiB)",
+        "No Mac clipboard access; per-step clipboard/document extent and storage validation",
+        "Response schema exposed in actions.playback.resultSchema"
+      ],
+      "actions.batch": [
+        "Optional explicit initial clipboard reused independently per source; internal Copy/Cut never publish the system clipboard"
+      ],
+      "clipboard.copy": "Successful Copy now records a semantic operation while leaving document/history unchanged.",
+      "indexed.settings": "Optional forcedColors/customPalette arrays accept empty defaults; choosing Custom still requires colors."
+    },
+    "primary_references": [
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/create-record-actions/record-an-action.html",
+      "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/play-actions-in-the-actions-panel.html",
+      "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/conversion-options-for-indexed-color-images.html"
+    ],
+    "reference_scope": "General recording/playback and master/Previous palette behavior; not exact numerical equivalence or a Firefly descriptor schema.",
+    "adobe": "Existing component color-mode actionJSON job contracts remain separately tested. No new Adobe clipboard/restricted conversion descriptors, routes or ATN interoperability are claimed.",
+    "remaining": [
+      "New from Clipboard/document switching and other unsupported commands in recorded Actions",
+      "Complete restricted mode/tool/selection contexts and channel Actions",
+      "Primary-grounded Adobe restricted/clipboard descriptors and conformance",
+      "Exact Photoshop parameters, palette/clipboard/resampling results, UI/platform/live validation",
+      "Full optimized/universal221 qualification;220 remains the latest qualified package",
+      "Remaining major workflows including Duotone and Multichannel"
+    ],
+    "latest_qualified_package": 220,
+    "live_window_acceptance": false,
+    "source_unchanged_after_tests": true
+  }
+}

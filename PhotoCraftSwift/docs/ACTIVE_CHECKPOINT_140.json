@@ -1,0 +1,206 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-140",
+  "recorded_at_utc": "2026-10-20T13:13:45.107161+00:00",
+  "major_workflow": "D01/I04 format-specific native save/export options",
+  "status": "Shared lossless PNG compression/Adam7 and TIFF None/LZW/ZIP options now reach native Save/Save As/Copy, Photato save/download and both action-job interfaces where defined; major D01/I04 format workflows remain open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/tested-source-hashes02.json",
+    "sha256": "c0b87c8f0af680a3dcede7b8e4638a8bc8f4c1b63c11582c0a690aabc2bc9144"
+  },
+  "source_test_files": 488,
+  "validation_inputs": 880,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/packaging-documents02.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato140-attempt02-3b2rhydo/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 140,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 23.852,
+    "log": {
+      "path": "artifacts/runs/20261020T123851Z-140-save-options/focused02.log",
+      "sha256": "9796d02d64eaa3e6b93eef3b64b1b8cf7d9f92f2091261067f68192f719d7913"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T123851Z-140-save-options/full01.log",
+      "sha256": "e8a43369f323d799538150039307ad5b6610e166f6f80ddacdd13eb55b288869",
+      "passed": 1329,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 265.365
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T123851Z-140-save-options/release01.log",
+      "sha256": "e747a9d4301978454ec302fad6a483434fe2368c3807097f41d4f5630e5756ed",
+      "passed": 1329,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 68.635
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato140-verified-dtvsdnjp/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "40fcfdb7c8433f4cb128d2cba3eb289a70984ad1f59f73d58aa1fef0d50904d1",
+    "zip_sha256": "7f599a9c6baac4a91432c51dab42b0f6867d5c274322b072611060b0d86814f2",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/Photato140-candidate.zip",
+    "sha256": "7f599a9c6baac4a91432c51dab42b0f6867d5c274322b072611060b0d86814f2"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_139.json",
+    "sha256": "76caaac21ebaa937ce13ee14385bf13a72f323c56c9ab6a7c31a5dc13596bb8a"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/package-verification01.json",
+    "sha256": "bcf3ec7cab07509d6c6d0ff25203fdba9f8be34bc2c6923a6bd6c094c8d10847"
+  },
+  "process_options": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/process-options-run03.json",
+    "sha256": "32a4580dcaddc8fb97d63a9fa7fe13de43f4a0311ab1ed9aa32008c98e6055af"
+  },
+  "independent_png": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/independent-png03.json",
+    "sha256": "515b6be177e53915c802681dac84971c3ec33924ed1f8d830c03bb44ea91f730"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T123851Z-140-save-options/public-release-arm6401/verification.json",
+      "sha256": "4ddd441bcbe29a7a83ece31f2b39cd7c5607b972b1bc9724c488e8303c9bdc03"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T123851Z-140-save-options/public-release-x86_6401/verification.json",
+      "sha256": "67aeb825972d7680ee41a75995b894f7a8537eba55ab84672b789614f91bc6e4"
+    }
+  },
+  "intel_runtime_limit": "Production Release public Open and PNG/TIFF Save As/control options under Rosetta; no physical Intel/macOS14 full UI claim",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "PNG compression/interlace and TIFF compression save/copy accessory controls; exact Photoshop modal sequencing/defaults unqualified"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "document.save",
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.{format}",
+      "POST /v1/action-jobs",
+      "POST /v2/execute-actions"
+    ],
+    "new_state": [
+      "saveEncodingOptions",
+      "encoding options schemas/capabilities"
+    ],
+    "permission": "Existing separate transfer/save/resource-job permissions; no new automatic permission or sharing.",
+    "coverage": "Optional native command options; bounded JSON download header; named Adobe PNG compression and TIFF output on both job routes; only Photato jobs accept encodingOptions. Exact output options enter cache key. Invalid/mismatched fields rejected."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/live-ui-availability01.json",
+    "sha256": "3fdb9b24678967fbafe464894adee6efdec7d0239db68f19bb9bfff8827fb2df"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "Original native Swift shared options and streaming PNG IDAT transcoder using the macOS zlib library; preserved non-IDAT chunks and filtered samples; ImageIO Adam7 and TIFF tags1/5/8 verified",
+    "Native Save/Save As remembers only successful options per open-document format; Save a Copy/download independent; options not persisted as document/history/global preferences",
+    "Photato optional save options, bounded2048-byte JSON export header, observable remembered state and exact schemas; both action jobs support PNG named compression/TIFF output and cache by choices",
+    "Pinned Adobe contract re-fetched unchanged; no Photato-only fields added to Adobe route; JPEG and unsupported options remain rejected",
+    "140 focused and1,329 Debug/1,329 Release tests; owned AppKit/HTTP callbacks and cancellation/stale preservation;40 independent Python PNG CRC/stream/ancillary comparisons",
+    "Universal macOS14+ package signatures/resources verified; public Release Open callbacks plus PNG/TIFF Save As controls and exact selected output on arm64/Rosetta; nine whole PSB outputs equal139"
+  ],
+  "remaining_major_dependencies": [
+    "D01/I04 is not closed: JPEG Photoshop quality0..12 mapping and3..5 progressive scans, complete PSD/PSB options, layered/RGB32 TIFF, byte order/predictor choices and full metadata/profile fidelity remain open. ImageIO progressive probe produced10 scans; do not label it as Photoshop3..5-scan parity.",
+    "Native format options are an initial accessory implementation. Exact Photoshop dialog sequencing, defaults, Save As/Copy format availability and persisted global preferences remain unqualified.",
+    "Compression preserves this engine\u2019s existing rendering path, not complete Photoshop pixel/file-byte equivalence. Independent zlib checks compare own ImageIO baselines, not Adobe-generated fixtures.",
+    "Both API interfaces remain partial. Two Adobe endpoints partial/six unimplemented; local credentials/job/storage/action limitations remain. Native encodingOptions is deliberately separate from Adobe output fields.",
+    "Live native/Photoshop interaction awaits unlocked Mac; physical Intel/macOS14 and full supported-platform qualification remain open. Rosetta validates Release callbacks/control encoding, not physical-platform UX.",
+    "Prior D01/D02/I02 open requirements, original .pcraft migration, global memory/paging, full restoration and every other major gate remain open; minor/final-detail work stays deferred."
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/source-delta01.json",
+    "sha256": "557d348a46b74c1f1615845092d0cc007bb43e755b0ec8b107601f2782b481e0"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/final-export-compatibility01.json",
+    "sha256": "330ae3c1e4f34cccc65970d61c1d52ac05f0215c8a9d4287ff89db1a173efc11"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/final-inputs01.json",
+    "sha256": "74b18641703bface989957803a715fe06c0f3a6bfac33918d7bfd13c0a3b7efb"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T123851Z-140-save-options/next-major-plan01.json",
+    "sha256": "26d36b723b847000eec4c4adfde8c78c9dc46969ab8ec7b3fd0d81fc737e14ab"
+  },
+  "prior_failed_attempts": [
+    "Focused01 fixture assigned read-only pixelsPerInch; corrected stored resolution; focused02 passes140.",
+    "Owned process01/02 timed out before function checks. Sample02 identifies AppKit modal file-open error because harness passed its directory as positional argument. Use --probe-folder in03; all native/HTTP/independent checks pass."
+  ],
+  "resume_first": "Verify checkpoint140/freeze02/audit and installed117 identity. Continue major D01/I04 save/export options per next-major-plan01 with shared native/API paths and independent references. Preserve user files/workspace/settings/recovery and disposable118; no Git mutation. All major gates remain open.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step140-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step140-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step140-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step140-final/final-inputs01.json"
+  }
+}

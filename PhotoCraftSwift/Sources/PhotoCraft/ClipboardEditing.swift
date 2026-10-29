@@ -10,9 +10,9 @@ struct ClipboardRepresentations: Sendable {
     native = try content.encoded()
     let preview = try ClipboardRenderer.preview(content)
     try Task.checkCancellation()
-    tiff = try ClipboardRenderer.imageData(preview, type: .tiff)
+    tiff = try ClipboardRenderer.imageData(preview, type: .tiff, document: content.document)
     try Task.checkCancellation()
-    png = try ClipboardRenderer.imageData(preview, type: .png)
+    png = try ClipboardRenderer.imageData(preview, type: .png, document: content.document)
   }
 }
 enum ClipboardInput: Sendable {
@@ -79,9 +79,10 @@ extension EditorStore {
       guard ids.count == 1, let active = activeLayer else { return false }
       if case .adjustment = active.content { return false }
       if cut {
-        guard case .raster = active.content else { return false }
+        guard case .raster = active.content, !document.isImageLocked(active.id) else { return false }
       }
     }
+    if cut, document.restrictedMode != nil, let id = document.activeLayerID { return !document.isImageLocked(id) }
     if cut {
       let removed = ids.reduce(into: Set<UUID>()) { $0.formUnion(document.subtreeIDs($1)) }
       return removed.allSatisfy { !document.isLocked($0) }
@@ -90,6 +91,7 @@ extension EditorStore {
   }
   func canPaste(_ placement: PastePlacement) -> Bool {
     guard clipboardTargetAvailable, clipboard.hasImage else { return false }
+    if document.restrictedMode != nil, let id = document.activeLayerID, document.isImageLocked(id) { return false }
     if let active = activeLayer, let parent = active.isGroup ? active.id : active.parentID,
       document.isLocked(parent)
     {
@@ -102,13 +104,14 @@ extension EditorStore {
     guard canCopy(merged: merged, cut: cut) else { return }
     let original = document
     let ids = clipboardLayerIDs
+    let background = Pixel(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1)
     let clipboardRevision = clipboard.changeCount
     geometryBusy = true
     status = cut ? "Cut" : merged ? "Copy Merged" : "Copy"
     geometryTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
         let content = try ClipboardRenderer.copy(original, layerIDs: ids, merged: merged)
-        let prepared = try cut ? PreparedEdit(command: .cut(Array(ids)), document: original) : nil
+        let prepared = try cut ? PreparedEdit(command: .cut(Array(ids), background: background), document: original) : nil
         return try (ClipboardRepresentations(content), prepared)
       }
       do {
@@ -124,8 +127,9 @@ extension EditorStore {
         if let prepared {
           try self.executeCompositePreparedEdit(prepared)
           self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
-          self.onChange?(.changeDone)
-        }
+          if self.document != original { self.onChange?(.changeDone) }
+          else if self.session.actionRecording != nil { self.session.recordActionOperation(ActionOperation(recording: .cut(Array(ids), background: background), in: original), name: "Cut"); self.actionRevision += 1 }
+        } else { self.recordClipboardCopy(ids: ids, merged: merged) }
       } catch is CancellationError { self?.status = "Operation cancelled" } catch {
         self?.error = error.localizedDescription
       }
@@ -144,28 +148,35 @@ extension EditorStore {
         min(Double(document.height), max(0, Double(document.height) / 2 - pan.height / scale)))
       geometryBusy = true
       renderTask?.cancel()
+      let settings = workingColorSettings, reviewer = colorPolicyReviewer, clipboardRevision = clipboard.changeCount
       geometryTask = Task { [weak self] in
-        let worker = Task.detached(priority: .userInitiated) {
-          var content = try input.decoded()
-          if placement == .into || placement == .outside {
-            content = try ClipboardRenderer.flattened(content)
-          }
-          let command = Command.paste(content, placement, content.kind == .pixels ? center : nil)
-          return try PreparedEdit(command: command, document: original)
-        }
         do {
+          let decode = Task.detached(priority: .userInitiated) { try input.decoded() }
+          let content = try await withTaskCancellationHandler { try await decode.value } onCancel: { decode.cancel() }
+          let assessment = try ColorPolicyInput.pasteAssessment(content, into: original, settings: settings)
+          let choice = assessment.requiresReview ? try await reviewer(assessment, original.colorMode, original.depth) : nil
+          try Task.checkCancellation()
+          let worker = Task.detached(priority: .userInitiated) {
+            let command = try ColorPolicyInput.pasteCommand(content, into: original, settings: settings,
+              choice: choice, placement: placement, center: center)
+            return try PreparedEdit(command: command, document: original)
+          }
           let prepared = try await withTaskCancellationHandler(
             operation: { try await worker.value }, onCancel: { worker.cancel() })
           try Task.checkCancellation()
           guard let self else { return }
+          guard self.document == original, self.clipboard.changeCount == clipboardRevision else {
+            throw CraftError.invalid("The document or clipboard changed during Paste. Please try again.")
+          }
           try self.executeCompositePreparedEdit(prepared)
           self.selectedLayerIDs = Set(
             self.document.layers.filter { layer in
               !original.layers.contains { $0.id == layer.id }
             }.map(\.id))
+          if self.document.restrictedMode != nil { self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? []) }
           self.maskEditingLayerID = nil
-          self.onChange?(.changeDone)
-          self.status = self.session.undoStack.last?.label ?? "Paste"
+          if self.document != original { self.onChange?(.changeDone) }
+          self.status = prepared.label
         } catch is CancellationError { self?.status = "Operation cancelled" } catch {
           self?.error = error.localizedDescription
         }

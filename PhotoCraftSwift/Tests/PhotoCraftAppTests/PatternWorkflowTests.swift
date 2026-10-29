@@ -116,9 +116,9 @@ final class PatternWorkflowTests: XCTestCase {
     }
     let filled = store.document
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(filled)), filled)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, doc)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, filled)
   }
   @MainActor func testEmptyLibraryDoesNotFallThroughToForegroundAndCancelledSaveIsAtomic()

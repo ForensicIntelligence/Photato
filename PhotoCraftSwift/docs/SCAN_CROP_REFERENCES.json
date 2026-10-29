@@ -1,0 +1,57 @@
+{
+  "step": 249,
+  "recorded_at_utc": "2026-10-29T13:27:34.837879+00:00",
+  "status": "Crop and Straighten Photos now detects and extracts selected-layer scans into separate native documents, with selection limits, Option single-photo mode, cancellation and three shared API operations. 19 focused and 2612 full optimized tests pass on 2377 unchanged inputs; independent PNG checks match36192 analytic RGBA channels. Native component/profile/depth retention and atomic publication are tested. Exact Photoshop detection/resampling, complex-mode composition, Actions and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T124755Z-249-crop-straighten/source05.json",
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 189,
+  "run": "artifacts/runs/20261029T124755Z-249-crop-straighten",
+  "commands": [
+    "document.cropStraighten",
+    "document.cropStraighten.detect",
+    "document.cropStraighten.cancel"
+  ],
+  "adobe_routes_changed": false,
+  "references": [
+    "artifacts/runs/20261029T124755Z-249-crop-straighten/references01.json",
+    "artifacts/runs/20261029T124755Z-249-crop-straighten/oracle-provenance01.json",
+    "artifacts/runs/20261029T124755Z-249-crop-straighten/api-reference-review01.json"
+  ],
+  "verification": {
+    "full": {
+      "tests": 2612,
+      "failures": 0,
+      "seconds": 176.059,
+      "log": "artifacts/runs/20261029T124755Z-249-crop-straighten/full01.log",
+      "sha256": "5393bdb4bdb4307ba728fe5f851bc0abee4c49d0e374c3ed02a434d0e50e07c2"
+    },
+    "focused": {
+      "tests": 19,
+      "failures": 0,
+      "seconds": 3.053,
+      "log": "artifacts/runs/20261029T124755Z-249-crop-straighten/focused04.log",
+      "sha256": "b6e7b3a56a414b35c165093a3c835e1fbf9b6ee9b137c0ccbedec5792468abcd"
+    },
+    "unchanged_inputs": 2377,
+    "source_manifest": "artifacts/runs/20261029T124755Z-249-crop-straighten/source05.json",
+    "independent": "artifacts/runs/20261029T124755Z-249-crop-straighten/outputs-full01-independent.json",
+    "exact_RGBA_channels": 36192,
+    "binary_sha256": "5aeb18faecb5117b63a14a1a09c8b4c6650cb9c3b475b808514412c539739584",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "provenance": "Licensed original Rust scancrop algorithm and independent native Swift extraction/UI/API integration; public Adobe guide and original mathematical fixtures. No Adobe implementation code examined. Native/Rust/analytic checks do not prove Photoshop parity.",
+  "exact_photoshop_parity": false,
+  "full_feature_complete": false,
+  "open": [
+    "Photoshop2026 exact segmentation, crop bounds, bicubic results and default/Option/selection interaction need owned Photoshop comparisons.",
+    "Complex non-RGB layer composition currently uses RGB display caches and profile conversion; numerical separations are retained for ordinary raster scans.",
+    "Restricted/ink modes, animation/artboards/frames, larger scans/output budgets and complete format coverage remain open.",
+    "Actions/Adobe execute-actions descriptors and live native menu/Option/Cancel interactions are unqualified; no dedicated multi-photo public API route exists.",
+    "Physical Intel/macOS14 and Apple Silicon/macOS26 acceptance remains open.",
+    "All remaining major/minor/detail workflows and byte-identical Photoshop acceptance stay active."
+  ]
+}

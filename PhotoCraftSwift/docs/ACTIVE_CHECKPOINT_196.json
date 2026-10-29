@@ -1,0 +1,166 @@
+{
+  "step": "dev-step-196",
+  "completed_at_utc": "2026-10-27T17:29:48.426721+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Local cached instance detection, real hover mask, click/pending-click selection, four modes, Hard Edge, source sampling, refresh/Escape cancellation, overlay color, native lifecycle/history/Actions and shared API.",
+  "source_manifest": "artifacts/runs/20261027T170102Z-196-object-finder/source01.json",
+  "source_manifest_sha256": "6c3bb600d3230d9b71304e0753b2fffa0ae0753566b3bfee8033a26642c814db",
+  "source_inputs": 1480,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationObjectFinder.swift",
+      "Sources/PhotoCraft/ObjectFinder.swift",
+      "Sources/PhotoCraftImaging/ObjectFinderScene.swift",
+      "Tests/PhotoCraftAppTests/ObjectFinderWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/ObjectFinderSceneTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationSelectionTools.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/HistoryNavigation.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/SelectionTools.swift",
+      "Sources/PhotoCraftCore/SelectionToolRequest.swift",
+      "Sources/PhotoCraftImaging/SelectionToolPreparation.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/SelectionToolWorkflowTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration03": 70,
+    "release-full01": 1920
+  },
+  "real_model": {
+    "fixture": "Existing user-provided Photato icon; not a real-photo quality or Photoshop comparison",
+    "height": 1024,
+    "hitAndSelection": true,
+    "objects": 1,
+    "provider": "Real Apple Vision local model",
+    "seconds": 2.565060019493103,
+    "sourcePreserved": true,
+    "undoRedo": true,
+    "width": 1024
+  },
+  "last_full_regression": {
+    "step": 196,
+    "tests": 1920,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T170102Z-196-object-finder/release-full01.log",
+    "current_source": true,
+    "includes_step195": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T170102Z-196-object-finder/integration01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T17:29:48.426721+00:00",
+    "tests": {
+      "integration03": 70,
+      "release-full01": 1920
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T170102Z-196-object-finder/Photato196-final.zip",
+    "zip_sha256": "bdce96ac5bf477dc6d2977afd413c97d0340f16cc1bd53b169d3d0b099b60c75",
+    "app": "/private/tmp/photato196-verified-gp5m0exj/Photato.app",
+    "executable_sha256": "e21d37d9a1f04fc8160628eb45254d3dc80b760c09a5653b1f5a6f6ea5664e82",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato196-verified-gp5m0exj/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato196-verified-gp5m0exj/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1480,
+    "source_manifest_sha256": "6c3bb600d3230d9b71304e0753b2fffa0ae0753566b3bfee8033a26642c814db",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 263,
+      "unavailable_leaf_commands": 462,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "real_model": {
+      "fixture": "Existing user-provided Photato icon; not a real-photo quality or Photoshop comparison",
+      "height": 1024,
+      "hitAndSelection": true,
+      "objects": 1,
+      "provider": "Real Apple Vision local model",
+      "seconds": 2.565060019493103,
+      "sourcePreserved": true,
+      "undoRedo": true,
+      "width": 1024
+    },
+    "limits": "Full optimized suite and universal package on this host, including195 Mask All Objects. Native canvas hover evidence and real local model smoke test; no live desktop/complete option rendering/physical Intel/macOS14/macOS26/Photoshop exact qualification."
+  },
+  "api": {
+    "commands": [
+      "selection.findObjects",
+      "selection.hoverObject",
+      "selection.selectFoundObject"
+    ],
+    "expanded_commands": [
+      "selection.configure",
+      "selection.object"
+    ],
+    "catalogue_count": 93,
+    "state": "objectFinder: available/enabled/busy/ready/cacheID/hoveredID/error/hardEdge/overlayColor and instance IDs/bounds. Strict parameter/state/result schema discovery.",
+    "results": "Standard updated document state. findObjects includeMasks=true additionally returns full-canvas row-major UInt8 coverageBase64 per instance. Cache IDs guard hover/selection and cannot be reused after source/tool/lifecycle invalidation or refresh.",
+    "history": "Detection, hover and refresh do not dirty source or create Undo. Cached selection uses shared selectionCoverage preparation and one Undo; Actions4 records exact resulting coverage for its canvas.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side;64 instances/16,777,216 aggregate raw mask bytes and conservative256MiB padded-tile budget shared with195. Optional base64 response at mostabout22.4MB plus JSON metadata. Shared API4,194,304 canvas pixels/64 layers/128MiB document data;4MiB requests.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Object Finder hover/selection endpoint in pinned v2. Auto-crop object bounding boxes are a different operation; no invented route or unverified actionJSON claim. Existing Adobe routes unchanged."
+  },
+  "menus": {
+    "new_menu_bindings": 0,
+    "entries": 802,
+    "bound_leaf_commands": 263,
+    "unavailable_leaf_commands": 462,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "integration": "Existing Object Selection/W retained; native option controls expand. Escape cancels background detection. No factory menu/shortcut replacement. CSV reviewed unchanged because it inventories menu commands and has no Object Finder tool row."
+  },
+  "limitations": [
+    "Apple foreground instances are not Adobe full-scene semantic segmentation; background objects, semantic names, difficult real-photo masks and model/edge/default equality remain unqualified.",
+    "Hard Edge uses a native128/255 threshold; default enabled/color/opacity/edge settings and exact Photoshop rendering remain unqualified.",
+    "The source key conservatively invalidates on document metadata/layer changes, but ignores selection-only edits. One pending click is retained while inference runs; subsequent source/tool/lifecycle changes discard it.",
+    "Native canvas overlay has readable offscreen evidence. Several unshown native option-control interiors remain blank in the capture, so complete live/control rendering is not claimed. Desktop remains locked; no live re-probe.",
+    "Optional mask responses may be large within the bounded16MiB raw budget. Detection/hover leave document/history unchanged; cache is ephemeral and not a saved document setting.",
+    "Finder option values currently belong to the editor instance; persistence/factory-default preference parity is not qualified.",
+    "Physical Intel/macOS14/macOS26 and full S03 People/body-part/model/pixel parity remain open. Current full optimized/universal qualification is native host evidence, not complete Photoshop equivalence."
+  ],
+  "actions": "Cached selections record explicit coverage in Actions4; detector cache/hover is ephemeral and not recorded.",
+  "next": "Select People with per-person and body-part selection, native controls/manual refinement and API; verify available Apple/system model support and keep unqualified parts explicit. Other missing major workflows remain ahead of numerical/cosmetic refinements.",
+  "next_major_plan": "artifacts/runs/20261027T170102Z-196-object-finder/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 196,
+    "evidence_files": 38710,
+    "logs": 19439,
+    "missing_explicit_references": 0,
+    "path": "artifacts/runs/20261027T170102Z-196-object-finder/development-history-audit",
+    "initial_closure": "final01 refresh/check passed; final02 refresh/check includes this closure record."
+  }
+}

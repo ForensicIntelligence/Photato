@@ -1,0 +1,95 @@
+{
+  "step": "dev-step-158",
+  "date": "2026-10-26",
+  "status": "Functional increment verified; advanced and exact Photoshop parity remains open.",
+  "run": "artifacts/runs/20261026T180233Z-158-layer-styles",
+  "source_manifest": "artifacts/runs/20261026T180233Z-158-layer-styles/source03.json",
+  "scope": [
+    "Ten editable effect kinds with bounded native CPU rendering",
+    "Fill opacity, style scale and per-style shared lighting",
+    "Preview/Cancel/OK; copy/paste/clear;14 factory menu actions and fx/Fill entry points",
+    "Native version13 and shared history",
+    "Photato layer.style and layers[].style; Adobe create-composite dropShadow edits",
+    "Six represented PSD/PSB effect kinds and explicit unsupported guards"
+  ],
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/doc/src/effects.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Model/reference terminology"
+    },
+    {
+      "source": "../photocraft-main/crates/compose/src/effects.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Effect ordering; new native bounded distance/blur implementation"
+    },
+    {
+      "source": "../photocraft-main/crates/io/src/effects_map.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "PSD effect keys and blend enums"
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "use": "Pinned LayerEffects/DropShadow/EffectColor/Rgb contract"
+    }
+  ],
+  "limits": [
+    "8,388,608 canvas pixels;32 native effects; maximum10 PSD instances of supported repeatable kinds",
+    "No adjustment-layer effects; styled merge rejects",
+    "Inner Bevel Smooth only; no custom contours/noise, glow variants, blend-if, knockout/advanced blending, document-wide global-light UI, off-canvas source influence or pixel-equivalence claim",
+    "Gradient,pattern,satin,bevel remain native-editable; PSD export guards these four; little-endian layered TIFF effect descriptors remain guarded",
+    "Pattern Overlay selects document-embedded patterns; cross-document style paste needs matching embedded pattern IDs",
+    "Adobe adapter supports existing uniquely named/id layers, operation edit,1\u201310 drop shadows; no group effects,custom contours,noise,antiAliased true or layerKnocksOut false",
+    "PSD export resolves native shared light into each shadow local angle; fill opacity quantizes to8-bit; full native model round trip is only claimed for native files",
+    "No physical Intel/macOS14 or independent Photoshop effect-output equality yet",
+    "PSD effect metadata is canonicalized; exact descriptor/resource byte round trips and Adobe default-setting equality are not claimed.",
+    "Legacy lrFX and rich style descriptors remain explicitly unsupported; independent Photoshop style-file import/export is not yet qualified."
+  ],
+  "verification": {
+    "focused03": {
+      "tests": 11,
+      "failures": 0
+    },
+    "focused04": "54 tests,3 assertions failed in one new test whose document-transfer permission was not enabled; repaired test setup",
+    "focused05": {
+      "tests": 54,
+      "failures": 0
+    },
+    "live_crash01": "Swift observed-draft exclusivity conflict in numeric-binding setter; local draft mutations and actual binding regression added",
+    "focused06": {
+      "tests": 55,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261026T180233Z-158-layer-styles/source02.json"
+    },
+    "live": {
+      "harness": "Debug app objects from source02; owned shape and pattern; in-memory preferences/workspace/recovery",
+      "checks": "All ten menus open; nine added previews cancel; Drop Shadow size18/distance28 and Preview toggle; OK/Undo/Redo/copy/clear/paste/discard/Quit pass after exclusivity repair",
+      "evidence": "artifacts/runs/20261026T180233Z-158-layer-styles/live-menu-checks02.json",
+      "screenshots": [
+        "native-shadow-edited02.png",
+        "native-preview-off02.png",
+        "native-applied02.png",
+        "native-bevel02.png",
+        "native-gradient02.png",
+        "native-undo02.png",
+        "native-redo02.png",
+        "native-cleared02.png",
+        "native-pasted02.png"
+      ]
+    },
+    "release": {
+      "tests": 1498,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T180233Z-158-layer-styles/release-tests02.log"
+    },
+    "platform": "artifacts/runs/20261026T180233Z-158-layer-styles/platform01.json",
+    "package": "artifacts/runs/20261026T180233Z-158-layer-styles/package-verification01.json"
+  },
+  "vendor_references": [
+    "https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html",
+    "https://helpx.adobe.com/in/photoshop/desktop/create-manage-layers/apply-layer-effects/add-layer-styles.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-advanced",
+    "https://www.adobe.com/products/photoshop/features/all.html"
+  ],
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_158.json"
+}

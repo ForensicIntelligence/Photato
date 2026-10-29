@@ -1,0 +1,185 @@
+{
+  "step": "dev-step-215",
+  "date": "2026-10-27",
+  "status": "Native implementation, focused/full regression and universal package verified. Exact Photoshop and Adobe interface qualification remain open.",
+  "scope": [
+    "filter.render.clouds",
+    "filter.render.differenceClouds",
+    "filter.render.fibers",
+    "filter.render.lensFlare"
+  ],
+  "source_provenance": {
+    "crates/engine/src/extra_cmds.rs": "ad946097a4207a9f0ec6232ebf225d51e7ca88d41ae062de423a80f0c47989cf",
+    "crates/algo/src/render.rs": "d4d5722219d01011796c6b29018a7218d62053bc34794c0ffd4ca317fa62e7cc",
+    "crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700"
+  },
+  "license": "MIT OR Apache-2.0",
+  "references": [
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "accessed": "2026-10-27",
+      "use": "Clouds/Difference Clouds supported contexts and Lens Flare brightness10..300, pixel-coordinate center and lens type. No Fibers method or exact actionJSON provided."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "accessed": "2026-10-27",
+      "use": "Tested Render list names Clouds, Difference Clouds and Lens Flare; descriptors must be recorded. Absence of Fibers from this tested list does not establish incompatibility."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/filter-effects-reference.html",
+      "accessed": "2026-10-27",
+      "use": "Render-family descriptions; exact factory modifiers/defaults and current platform contexts still require live verification."
+    }
+  ],
+  "api": {
+    "native_commands": 107,
+    "extended": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "state": "Render availability/workspace/settings/preview/local history",
+    "native_archive": 42,
+    "actions_archive": 14,
+    "adobe": "All four actionJSON and editable PSD/PSB mappings explicitly unqualified; no route invented."
+  },
+  "implementation": "Swift translation of source Clouds noise/color loop, Fibers and all four Lens Flare profiles. Document-space generation, canvas/selection storage expansion, retained masks/transform and transparency locks; source-preserving editable Smart Filters. Desktop seeds random; native API defaults deterministic.",
+  "oracle": {
+    "cases": 12,
+    "fixture_manifest": "Tests/PhotoCraftCoreTests/Fixtures/Render/provenance.json",
+    "generator": "artifacts/runs/20261028T014514Z-215-render-workflows/oracle-generator01.py",
+    "scope": "Extracted unchanged original Rust functions and Ghost structure with RGB adapters and a source-equivalent Clouds color/alpha loop; synthetic images, not Photoshop output proof.",
+    "status": "All12 original-Rust RGB8 references pass byte-for-byte in integration03; Photoshop equivalence remains unqualified."
+  },
+  "tests": {
+    "core_cases": 7,
+    "app_cases": 7,
+    "initial_compile_failure": "artifacts/runs/20261028T014514Z-215-render-workflows/integration01.log",
+    "status": "94 focused Debug and2041 full optimized tests pass with zero failures.",
+    "focused": {
+      "tests": 94,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T014514Z-215-render-workflows/integration03.log"
+    },
+    "failed_attempts": [
+      "integration01: compile failure in expected Float selection values; test typing repaired",
+      "integration02: five Lens Flare source mismatches from reversed smoothstep fallback and two generated UUID comparisons; production helper/test identity repair preserved"
+    ],
+    "full_optimized": {
+      "tests": 2041,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T014514Z-215-render-workflows/release-full01.log"
+    }
+  },
+  "live": "Pending Mac unlock; no current Render or window-handoff interaction pass claimed.",
+  "remaining": [
+    "Exact Photoshop output, defaults, modifier keys, depth/context behavior and full parameter combinations",
+    "Recorded Adobe actionJSON job behavior and editable PSD/PSB mappings",
+    "Live native/reference interactions and physical Intel/macOS14/macOS26 qualification",
+    "Remaining Render Lighting Effects/Flame/Tree/Picture Frame and F02 Other/legacy workflows",
+    "Full Photoshop parity"
+  ],
+  "evidence_root": "artifacts/runs/20261028T014514Z-215-render-workflows",
+  "offscreen_review": [
+    "Lens Flare",
+    "Fibers"
+  ],
+  "package": {
+    "utc": "2026-10-28T02:20:10.874309+00:00",
+    "tests": {
+      "integration03": 94,
+      "release-full01": 2041
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T014514Z-215-render-workflows/Photato215-final01.zip",
+    "zip_sha256": "983973c2279e81750bf1d2ca648f4c1dc89f89750884e8a080f003a1752b633f",
+    "app": "/private/tmp/photato215-verified-sps2wz2j/Photato.app",
+    "executable_sha256": "3659202eedff7ea9c668210f611b90169c06b6121e09e433c41cb2bcc8e9a408",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato215-verified-sps2wz2j/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato215-verified-sps2wz2j/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1682,
+    "source_manifest_sha256": "0345ad460d908a267d1975f35dbad211d08bd12fb7e2e3c8c34f47925bb6962a",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 313,
+      "unavailable_leaf_commands": 412,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_render_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "clouds-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "clouds-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "differenceClouds-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "differenceClouds-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-limits"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-zoom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-prime35"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-prime105"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-moviePrime"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-outside"
+      }
+    ],
+    "limits": "94 focused Debug and2041 full optimized tests plus universal package on this host.12 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Render remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  }
+}

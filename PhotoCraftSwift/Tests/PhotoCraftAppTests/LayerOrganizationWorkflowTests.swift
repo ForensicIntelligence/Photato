@@ -6,7 +6,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerOrganizationWorkflowTests: XCTestCase {
-  @MainActor func testContextColorTargetsSelectionOrClickedRowAndNoOpIsClean() throws {
+  @MainActor func testContextColorTargetsSelectionOrClickedRowAndNoOpIsClean() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let ids = store.document.layers.map(\.id)
@@ -27,11 +27,11 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     XCTAssertEqual(store.document.layers.map(\.colorLabel), [.orange, .orange, .blue])
     store.selectedLayerIDs = [ids[0], ids[2]]
     XCTAssertNil(store.selectedLayerColor())
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document.layers[2].colorLabel, LayerColorLabel.none)
   }
 
-  @MainActor func testSelectedShowHidePreservesSelectionAndUpdatesMenuTitle() throws {
+  @MainActor func testSelectedShowHidePreservesSelectionAndUpdatesMenuTitle() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let original = store.document
@@ -45,9 +45,9 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     XCTAssertEqual(store.session.undoStack.count, 1)
     store.toggleSelectedLayerVisibility()
     XCTAssertEqual(store.document, original)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document.layers.map(\.visible), [false, true, false])
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, original)
   }
 
@@ -89,7 +89,7 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     XCTAssertEqual(store.document.layers.map(\.visible), [true, false, true])
   }
 
-  @MainActor func testUndoTopologyAndDocumentReadRetireIsolation() throws {
+  @MainActor func testUndoTopologyAndDocumentReadRetireIsolation() async throws {
     let document = CraftNSDocument(model: try GroupWorkflowTests().store().document)
     let store = document.store
     defer { document.close() }
@@ -102,9 +102,9 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     store.perform(.addLayer(Layer(name: "New", content: .fill(.white))))
     XCTAssertNil(store.layerVisibilityIsolation)
     store.toggleLayerVisibility(id, modifiers: .option)
-    store.undo()
+    await store.undo()
     XCTAssertNil(store.layerVisibilityIsolation)
-    store.redo()
+    await store.redo()
     XCTAssertNil(store.layerVisibilityIsolation)
   }
 
@@ -132,7 +132,7 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     XCTAssertNotNil(store.layerVisibilityIsolation)
   }
 
-  @MainActor func testNonVisibilityUndoKeepsOriginalSoloSnapshot() throws {
+  @MainActor func testNonVisibilityUndoKeepsOriginalSoloSnapshot() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let ids = store.document.layers.map(\.id)
@@ -140,7 +140,7 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     let original = LayerOrganization.visibility(in: store.document)
     store.toggleLayerVisibility(ids[0], modifiers: .option)
     store.setLayerColor(.red)
-    store.undo()
+    await store.undo()
     XCTAssertNotNil(store.layerVisibilityIsolation)
     store.toggleLayerVisibility(ids[0], modifiers: .option)
     XCTAssertEqual(LayerOrganization.visibility(in: store.document), original)
@@ -175,7 +175,7 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     XCTAssertNotNil(second.layerVisibilityIsolation)
   }
 
-  @MainActor func testAlreadySoloWithoutSnapshotRevealsAllAsSourceDoes() throws {
+  @MainActor func testAlreadySoloWithoutSnapshotRevealsAllAsSourceDoes() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let ids = store.document.layers.map(\.id)
@@ -185,7 +185,7 @@ final class LayerOrganizationWorkflowTests: XCTestCase {
     store.toggleLayerVisibility(ids[1], modifiers: .option)
     XCTAssertEqual(store.document.layers.map(\.visible), [true, true, true])
     XCTAssertNil(store.layerVisibilityIsolation)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
 

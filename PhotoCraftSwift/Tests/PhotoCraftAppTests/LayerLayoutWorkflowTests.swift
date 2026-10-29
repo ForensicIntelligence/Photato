@@ -79,10 +79,10 @@ final class LayerLayoutWorkflowTests: XCTestCase {
       XCTAssertEqual(bounds.x + bounds.width, 70)
     }
     let changed = s.document
-    s.undo()
+    await s.undo()
     s.renderTask?.cancel()
     XCTAssertEqual(s.document, before)
-    s.redo()
+    await s.redo()
     s.renderTask?.cancel()
     XCTAssertEqual(s.document, changed)
   }

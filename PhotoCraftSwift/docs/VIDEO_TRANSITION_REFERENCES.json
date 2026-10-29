@@ -1,0 +1,173 @@
+{
+  "step": 239,
+  "recorded_at_utc": "2026-10-29T03:42:48.293440+00:00",
+  "status": "Native graphical Timeline tracks, clip/trim/playhead/transition gestures, editable fades/crossfades, track duplication and native55/API/history integration pass 2,474 full optimized tests on 2,306 unchanged inputs. Eight exported PNGs independently match384 analytic channel values. Audio, Render Video, automatic movie grouping, richer Timeline/interchange contexts and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "run": "artifacts/runs/20261029T030413Z-239-video-transitions",
+  "source_manifest": "artifacts/runs/20261029T030413Z-239-video-transitions/source03.json",
+  "source_inputs": 2306,
+  "native_archive": 55,
+  "actions_version": 20,
+  "typed_commands": 164,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/organize-and-manage-video-groups/edit-video-clips-and-audio-in-the-timeline.html",
+      "updated": "2026-10-04",
+      "use": "Public clip, group, transition, trim and audio workflows; no implementation source."
+    }
+  ],
+  "reference_failures": "artifacts/runs/20261029T030413Z-239-video-transitions/resume-research01.json",
+  "implemented": [
+    "Native graphical clip tracks, playhead seeking, drag moves/reorder between groups, source trim handles, Timeline zoom and transition duration handles.",
+    "Persistent Fade, Cross Fade, Fade With Black/White/Color; retained video source handles, premultiplied branch composition, masks/styles/backdrop preservation.",
+    "One-transaction split/reorder/trim/delete reconciliation; independent transitions and key IDs in duplicated tracks.",
+    "Shared desktop/API commands, guarded edit/view schemas, state and native55 save/restore."
+  ],
+  "remaining": [
+    "Direct creation by dragging from a transition palette and graphical keyframe rows; multi-clip drag and wider clip/nesting contexts.",
+    "Audio source/track editing, playback/mixing and Render Video.",
+    "Automatic movie Video Group creation and rich PSD/Actions animation interchange.",
+    "Independent Photoshop output/default/shortcut/preferences/UI comparisons, full accessibility, macOS14/Intel runtime and universal package qualification."
+  ],
+  "focused_source02": {
+    "tests": 82,
+    "failures": 0,
+    "seconds": 5.917,
+    "build_seconds": 369.08,
+    "log": "artifacts/runs/20261029T030413Z-239-video-transitions/focused02.log"
+  },
+  "independent_source02": "artifacts/runs/20261029T030413Z-239-video-transitions/independent-pixels02.json",
+  "offscreen_capture_source02": "artifacts/runs/20261029T030413Z-239-video-transitions/pixels02/timeline-offscreen.png",
+  "installed_build": 221,
+  "last_qualified_universal": 232,
+  "new_distribution_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "verification": {
+    "utc": "2026-10-29T03:48:47.577128+00:00",
+    "full": {
+      "tests": 2474,
+      "failures": 0,
+      "seconds": 169.144,
+      "log": "artifacts/runs/20261029T030413Z-239-video-transitions/full-tests01.log",
+      "log_sha256": "d07792cdfdebe35a3bd4fbd3e060f1a083b5cf9f583d3c327426ca0f0f43511b",
+      "build_seconds": [
+        "240.76"
+      ]
+    },
+    "focused_source02": {
+      "tests": 82,
+      "failures": 0,
+      "seconds": 5.917,
+      "log": "artifacts/runs/20261029T030413Z-239-video-transitions/focused02.log",
+      "log_sha256": "eefa50ee4f6caa8f7fffc0f5f463d623e8a8ddc00ea786b2aaee5c22abe25c12"
+    },
+    "unchanged_inputs": 2306,
+    "source_manifest": "artifacts/runs/20261029T030413Z-239-video-transitions/source03.json",
+    "binary_sha256": "b778ae00b492b5e4748447a47fe573de157fa07fd5a8ae69e54e6591e921b0dd",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T030413Z-239-video-transitions/independent-pixels03.json",
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "independent_pixels": {
+    "passed": true,
+    "files": 8,
+    "pixels": 96,
+    "channel_values": 384,
+    "reference": "Analytic opaque red-to-blue, linear-time crossfade, sRGB8 PNG quantization; not Photoshop-generated evidence.",
+    "frames": [
+      {
+        "frame": 0,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 1,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 2,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 3,
+        "rgba": [
+          191,
+          0,
+          64,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "ac94592a26c6ec1c93f4ad25d9e75ebc9b06afceb24846f526d995f14682e23a"
+      },
+      {
+        "frame": 4,
+        "rgba": [
+          128,
+          0,
+          128,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "bdb4c7912c57536076d4d578a1e5ada6355f2507a1fbfc732373890a6e6a75cc"
+      },
+      {
+        "frame": 5,
+        "rgba": [
+          64,
+          0,
+          191,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "fd1899a1e38fba9692925a036a9808a29a8c40d830caa367f2cf690fde3f24f6"
+      },
+      {
+        "frame": 6,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      },
+      {
+        "frame": 7,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "pixels": 12,
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      }
+    ]
+  },
+  "offscreen_capture": "artifacts/runs/20261029T030413Z-239-video-transitions/pixels03/timeline-offscreen.png"
+}

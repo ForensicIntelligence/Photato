@@ -1,0 +1,106 @@
+{
+  "step": "dev-step-174",
+  "completed_at_utc": "2026-10-27T03:53:09.845236+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native Auto-Blend panorama/focus masks, multiband/transparent fill, preview/history/persistence and both API paths.",
+  "source_manifest": "artifacts/runs/20261027T032443Z-174-photo-alignment/source02.json",
+  "source_manifest_sha256": "1db1cc726dbff408a28f27ed944ca2fdc8fa37a3908af9c637e862b2ce4c7589",
+  "source_inputs": 1307,
+  "source_delta": "artifacts/runs/20261027T032443Z-174-photo-alignment/changes01.json",
+  "tests": {
+    "debug_focused": 69,
+    "optimized_focused": 69,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T032443Z-174-photo-alignment/integration03.log",
+    "optimized_log": "artifacts/runs/20261027T032443Z-174-photo-alignment/release-focused01.log",
+    "full_suite": "Batched; previous172 passed1659 full optimized cases on its own source.",
+    "catalogue_followup": {
+      "count": 15,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T032443Z-174-photo-alignment/integration04.log",
+      "source_manifest": "artifacts/runs/20261027T032443Z-174-photo-alignment/source02.json",
+      "scope": "Test-only catalogue expectation consolidation; application/package inputs unchanged from verified source01."
+    }
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T032443Z-174-photo-alignment/integration01.log",
+    "artifacts/runs/20261027T032443Z-174-photo-alignment/integration02.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T03:49:16.478440+00:00",
+    "app": "/private/tmp/photato174-verified-ac_fpqj5/Photato.app",
+    "zip": "artifacts/runs/20261027T032443Z-174-photo-alignment/Photato174-final.zip",
+    "zip_sha256": "78e3fbd048ed5fd8c02063ca7110c23cdd7adcb08c7ab088aa75e53464c4b6e8",
+    "executable_sha256": "f0ddd6fca937f6196ab562984a7e5bff528b67a9562d9f0e6cc5602873ad805b",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato174-verified-ac_fpqj5/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato174-verified-ac_fpqj5/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1307,
+    "source_manifest": "artifacts/runs/20261027T032443Z-174-photo-alignment/source01.json",
+    "source_manifest_sha256": "80df859e674e66093cd2bd616915ea61e29d746a6b7e6b631b0e0e9e342bd70f",
+    "tests": {
+      "debug_focused": 69,
+      "optimized_focused": 69,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T032443Z-174-photo-alignment/integration03.log",
+      "optimized_log": "artifacts/runs/20261027T032443Z-174-photo-alignment/release-focused01.log",
+      "full_suite": "Batched; previous172 passed1659 full optimized cases on its own source."
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust file hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release evidence and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open.",
+    "source_binding_note": "All application/build/resource inputs match final source02; only14 test expectation files changed after source01 package verification. Package/source01 and its69 Debug/69 optimized checks remain immutable."
+  },
+  "api": {
+    "count": 53,
+    "commands": [
+      "photo.autoBlend"
+    ],
+    "same_engine": true,
+    "schema": "PhotoBlendSettings.apiSchema; bounded unique layerIDs",
+    "raw_schema_repair": "raw.develop settings now advertises RawDevelopment.apiSchema instead of the unrelated selection-refinement schema. Runtime behavior was already correct.",
+    "adobe": "Both /v1/action-jobs and published /v2/execute-actions interpret the installed panorama mergeAlignedLayers char-ID descriptor through the same native engine; async hosted PNG output equals desktop encoding.",
+    "adobe_unqualified": [
+      "Stack Images descriptors",
+      "Long-string aliases for char-ID parameters",
+      "Exact proprietary algorithms",
+      "Complete endpoint conformance"
+    ],
+    "endpoint_groups": "Five partial/three unimplemented; no new standalone Adobe route."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 215,
+    "unavailable": 510,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "Edit > Auto-Blend Layers\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T032443Z-174-photo-alignment/menu-report04.json",
+    "release_report": "artifacts/runs/20261027T032443Z-174-photo-alignment/menu-report-release01.json"
+  },
+  "limitations": [
+    "Inputs must already be aligned. Auto-Align, Photomerge, HDR merging/deghosting and Smart Object statistics remain separate major work.",
+    "Two to16 visible unlocked ordinary pixel layers sharing a parent, Normal blend/full opacity; Smart Objects/effects/vector masks require rasterization. Unsupported contexts reject explicitly.",
+    "4MP clipped output and16MP combined input working grid; inputs confined to canvas. Large production photographs/performance remain unqualified.",
+    "New editable masks use8-bit coverage. Existing effective mask density/feather/inversion is baked into new mask coverage; old values remain available through Undo.",
+    "Seamless color uses multiband blending, not proprietary Adobe correction; layer visibility/output construction, dialog defaults, HDR/mask precision and exact pixels are not Photoshop-qualified.",
+    "Source alpha is retained where not filling holes; no cross-document/automatic registration in this command.",
+    "Live UI, physical Intel/macOS14/26 and complete Photoshop equality remain open. NSHosting tests are offscreen; universal metadata is not physical platform testing."
+  ],
+  "next": {
+    "workflow": "RAW02 Auto-Align Layers, then Photomerge/HDR",
+    "prepared_plan": "artifacts/runs/20261027T032443Z-174-photo-alignment/next-major-plan01.json",
+    "first_step": "Port original registration/motion/projection into Swift with independent geometry fixtures; integrate selected-layer UI/history/API. Defer fine blend/default/mask-precision refinements."
+  },
+  "no_running_build_test_workers_expected": true,
+  "test_only_followup_delta": "artifacts/runs/20261027T032443Z-174-photo-alignment/count-repair04.json"
+}

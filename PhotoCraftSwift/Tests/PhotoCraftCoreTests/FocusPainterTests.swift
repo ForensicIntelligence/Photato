@@ -52,9 +52,9 @@ final class FocusPainterTests: XCTestCase {
         let after = session.document
         XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(after)), after)
         XCTAssertEqual(session.undoStack.count, 1)
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
-        session.redo()
+        try session.redo()
         XCTAssertEqual(session.document, after)
       }
     }

@@ -1,0 +1,135 @@
+{
+  "step": "dev-step-200",
+  "completed_at_utc": "2026-10-27T19:45:47.782343+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Freeform Pen fitting/preview/cancel/endpoint continuation",
+    "Curvature Pen smooth/corner/closure and anchor dragging",
+    "Selection-to-work-path tracing with holes and retained cubic geometry",
+    "Foreground Fill Path and current-Brush Stroke Path with optional pressure simulation",
+    "Shared native transactions/history/saving and five strict typed APIs"
+  ],
+  "source_manifest": "artifacts/runs/20261027T191843Z-200-pen-paths/source01.json",
+  "source_manifest_sha256": "323008f5b7f8c371c4ca0dc59456a32ac5a9c52069fde5346e91c3a69d875b09",
+  "source_inputs": 1518,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AdvancedPaths.swift",
+      "Sources/PhotoCraft/AutomationPaths.swift",
+      "Sources/PhotoCraftCore/PathConstruction.swift",
+      "Sources/PhotoCraftImaging/PathPainting.swift",
+      "Sources/PhotoCraftImaging/PathTracing.swift",
+      "Tests/PhotoCraftAppTests/AdvancedPathWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/AdvancedPathTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/PathEditing.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspacePaths.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration04": 100,
+    "release-full01": 1951
+  },
+  "last_full_regression": {
+    "step": 200,
+    "tests": 1951,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T191843Z-200-pen-paths/release-full01.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T191843Z-200-pen-paths/module01.log",
+    "artifacts/runs/20261027T191843Z-200-pen-paths/module02.log",
+    "artifacts/runs/20261027T191843Z-200-pen-paths/module03.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T19:45:47.782343+00:00",
+    "tests": {
+      "integration04": 100,
+      "release-full01": 1951
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T191843Z-200-pen-paths/Photato200-final.zip",
+    "zip_sha256": "39ed2ccf94d9f93e34931ec32e95421ddaa906044a3c0c51be6c918ca2958e28",
+    "app": "/private/tmp/photato200-verified-hlwudl41/Photato.app",
+    "executable_sha256": "dd74bb53ae4f807789c762358e704bbafe4ec3e38dd3b26c5dfc0458d9785166",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato200-verified-hlwudl41/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato200-verified-hlwudl41/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1518,
+    "source_manifest_sha256": "323008f5b7f8c371c4ca0dc59456a32ac5a9c52069fde5346e91c3a69d875b09",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 266,
+      "unavailable_leaf_commands": 459,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "path.configure",
+      "path.draw",
+      "path.edit",
+      "path.trace",
+      "path.paint"
+    ],
+    "command_count": 104,
+    "state": "paths",
+    "schema": "PathAPI",
+    "native_archive_version": 33,
+    "action_library_version": 5
+  },
+  "adobe_api": "No dedicated path route in pinned v2 contract. Native geometry/raster transactions shared; no claim of added execute-actions path descriptor support.",
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 266,
+    "unavailable_leaf_commands": 459,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Exact Photoshop fitting/curvature/pressure/antialiasing not qualified",
+    "Freeform Magnetic option not implemented",
+    "Multiple-anchor selection, full path transforms and pen modifier variants remain open",
+    "Fill Path is foreground/normal/opacity only; other dialog fills/blends/feather and Stroke Path tool choices remain open",
+    "New path/raster operations do not yet provide semantic Actions recording",
+    "Clipping-path export and wider PSD path forms remain open",
+    "Desktop locked: synthetic native events are not live qualification",
+    "Physical Intel/macOS14/macOS26 qualification remains open"
+  ],
+  "next": "Next broad major workflow: native vertical/multilingual/OpenType typography; retain remaining path refinements and full G04 gates.",
+  "next_major_plan": "artifacts/runs/20261027T191843Z-200-pen-paths/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "checkpoint_audit": "artifacts/runs/20261027T191843Z-200-pen-paths/development-history-audit/final01-check.log",
+    "milestones": 200,
+    "evidence_files": 38921,
+    "logs": 19480,
+    "missing_explicit_references": 0
+  }
+}

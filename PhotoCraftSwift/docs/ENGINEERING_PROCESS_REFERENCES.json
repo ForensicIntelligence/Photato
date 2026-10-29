@@ -1,0 +1,21 @@
+{
+  "requested": "Describe engineering process in developer diary overview",
+  "source": "docs/DEVELOPMENT_DIARY.md",
+  "website": "../../nusite/diary.html#process",
+  "method": "Independent implementation from licensed PhotoCraft source, public documentation and disclosed interoperability observations; no formal clean-room separation claimed",
+  "restrictions": "No Photoshop binary decompilation/disassembly or copying proprietary Adobe implementation",
+  "existing_evidence": [
+    "docs/DEVLOG.md#dev-step-174",
+    "docs/DEVLOG.md#dev-step-175",
+    "docs/DEVLOG.md#dev-step-050",
+    "ATTRIBUTION.md"
+  ],
+  "local_only": true,
+  "verification": "artifacts/runs/20261027T234451Z-212-distortion-workflows/process-note-verification01.json",
+  "screenshots": [
+    "artifacts/runs/20261027T234451Z-212-distortion-workflows/screenshots/process-note-desktop02.jpg",
+    "artifacts/runs/20261027T234451Z-212-distortion-workflows/screenshots/process-note-mobile01.jpg"
+  ],
+  "api_impact": "Documentation-only; no application or API behavior change",
+  "implementation_status": "Step212 native distortion source now passes45 focused and2003 full optimized tests; package verification is recorded separately. The earlier process-note-only verification retains its original scope."
+}

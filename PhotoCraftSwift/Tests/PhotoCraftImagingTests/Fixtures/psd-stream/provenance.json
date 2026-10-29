@@ -1,0 +1,60 @@
+{
+  "origin": "Independent PSD channel vectors crossing 64 KiB input/row boundaries.\n\nOriginal fixtures, MIT OR Apache-2.0. Python stdlib only; not a Photato encoder\nroundtrip or a live Photoshop rendering reference. Prediction uses Adobe's\npublic PSD format and the original PhotoCraft compression module's layout.\n",
+  "license": "MIT OR Apache-2.0",
+  "cases": [
+    {
+      "file": "rgb8-compression2.channel",
+      "raw": "rgb8.raw",
+      "width": 257,
+      "height": 257,
+      "depth": 8,
+      "sha256": "d058fd50edc6c9768c8ef9a47dc8ad05cfc3d4209065516462b43cd24739db21",
+      "rawSHA256": "bc25232bc7ad250d61fad677525a9050f3e821da62a8f3eb1a803cffed01c0c9"
+    },
+    {
+      "file": "rgb8-compression3.channel",
+      "raw": "rgb8.raw",
+      "width": 257,
+      "height": 257,
+      "depth": 8,
+      "sha256": "ee973443fb0865f5188e9b5de95eeea8936543ff96540c5ebba254765c18c9af",
+      "rawSHA256": "bc25232bc7ad250d61fad677525a9050f3e821da62a8f3eb1a803cffed01c0c9"
+    },
+    {
+      "file": "rgb16-compression2.channel",
+      "raw": "rgb16.raw",
+      "width": 257,
+      "height": 131,
+      "depth": 16,
+      "sha256": "635037e87c27cbe8d10975b26fc41fd18029fa77991dad83e307705065f1505b",
+      "rawSHA256": "17fb1115c9abfba9bb958a52536986efbafd953a7d0af18166f62ad472fb4258"
+    },
+    {
+      "file": "rgb16-compression3.channel",
+      "raw": "rgb16.raw",
+      "width": 257,
+      "height": 131,
+      "depth": 16,
+      "sha256": "9f58ce5757c0584c50f5e4abfcd26d1e16a7e02e2e97651dbf4efe2e64fddc8f",
+      "rawSHA256": "17fb1115c9abfba9bb958a52536986efbafd953a7d0af18166f62ad472fb4258"
+    },
+    {
+      "file": "rgb32-compression2.channel",
+      "raw": "rgb32.raw",
+      "width": 20000,
+      "height": 3,
+      "depth": 32,
+      "sha256": "99751e7faaa465c3862d3fd4d5c55dc9db8bb6c6b41f779f813c15e73ded3e33",
+      "rawSHA256": "89bc30a6f7d0d408b485301dab8572c51dd9f4433a58762a711e23a24141386c"
+    },
+    {
+      "file": "rgb32-compression3.channel",
+      "raw": "rgb32.raw",
+      "width": 20000,
+      "height": 3,
+      "depth": 32,
+      "sha256": "8a61d35a9d8bb87676346e5c8a123e93c017b1169d701e499fa0e21404d717dd",
+      "rawSHA256": "89bc30a6f7d0d408b485301dab8572c51dd9f4433a58762a711e23a24141386c"
+    }
+  ]
+}

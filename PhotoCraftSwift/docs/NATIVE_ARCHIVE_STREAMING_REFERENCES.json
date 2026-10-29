@@ -1,0 +1,179 @@
+{
+  "step": "dev-step-124",
+  "status": "Native archive streaming and API compatibility qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+  "major_workflows": [
+    "D01",
+    "I02",
+    "D02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T024114Z-124-native-archive-streaming",
+  "format_specification": "docs/NATIVE_ARCHIVE_FORMAT_11.json",
+  "source_freeze": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/tested-source-hashes03.json",
+  "implementation": [
+    "Shared memory/file serializer for portable native version11",
+    "Retained regular-file source with64KiB physical reads and observed identity checks",
+    "Staged native Save/Copy and direct native autosave leaf writes/extensionless reads",
+    "Explicit failed-writer discard and backwards-compatible API version negotiation",
+    "Reusable tile inflation workspace and exact independently owned decoded arrays"
+  ],
+  "failure_history": [
+    "focused01: one temporary-file cleanup failure; explicit discard repairs ownership beyond encoder/error lifetime",
+    "focused02: two old tests compare legacy-default API bytes with desktop11; explicit11 headers repair equivalence tests while default10 protection stays covered",
+    "focused03:75 pass,0 failures/skips,14.851 seconds"
+  ],
+  "remaining": [
+    "I02: active-document paging and bounded renderer/cache; metadata, selection and active tiles remain materialized, and current public file/canvas/transfer limits remain unchanged",
+    "I02: Rosetta history restoration still has higher total peak RSS than resident-only history; synchronous restoration latency, total-memory control and realistic default-budget qualification remain open",
+    "D02: full AppKit crash/relaunch recovery, disk-full/interruption durability and stale scratch cleanup; tested autosave/read leaf integration does not close recovery",
+    "D01: complete format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and live lifecycle",
+    "D03: history/drive preference parity,50 factory/default and1000 maximum states, snapshots/nonlinear history/Fade/purge; secondary scope remains queued unless needed for a major dependency",
+    "Combined118\u2013124 native/Photoshop live qualification and physical Intel/macOS14 full-application runtime; multi-GB corpus and complete Photoshop parity remain open"
+  ],
+  "prior_history_profile": {
+    "baseline": "step123 x86_64 Release objects",
+    "result": "Peak grows during Undo/Redo restoration; input/export are not the main growth stages",
+    "resident_only_peakRSS": 331431936,
+    "spilling_peakRSS": 365563904,
+    "cause_proven": false
+  },
+  "API": {
+    "default_native_download_version": 10,
+    "opt_in_header": "X-Photato-Archive-Version: 11",
+    "native_aliases": [
+      "file.photato",
+      "file.pcswift"
+    ],
+    "both_aliases_equivalent": true,
+    "supported_header_values": [
+      "10",
+      "11"
+    ],
+    "invalid_header_or_nonnative_header_status": 400,
+    "uploads": "Both archive representations accepted with existing resource limits and errors",
+    "Adobe_interface": "No native archive route or proprietary Adobe action invented; published PSD output contracts unchanged"
+  },
+  "live_ui": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/live-ui01.json",
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T024114Z-124-native-archive-streaming/full01.log",
+      "sha256": "3f251c74baa94ed55151c8d67b2c52b1bdd9bc05b139a71cdf47b9de4b9ecabb",
+      "passed": 1115,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.021
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T024114Z-124-native-archive-streaming/release01.log",
+      "sha256": "9734d380364aee79e9e95d35cb258ca76bc478b8bd08bcfab7c4a43256c6dfa5",
+      "passed": 1115,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.82
+    }
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/package-verification01.json",
+    "sha256": "2b8f9759c92333fefa60332d41a3abdbe0fa0169a51b52671e83607a6e8c8fde"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_124.json",
+  "focused": {
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 14.851,
+    "evidence": {
+      "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/focused03.log",
+      "sha256": "3dfa07e558678439f6732d392ea1b7aa6741a02a978b90ccb60645443134f082"
+    },
+    "source_freeze": "tested-source-hashes03.json"
+  },
+  "independent_native": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/independent-native-verification01.json",
+    "sha256": "ce7909c4875df4fa5979bf4a1869a51c20502c2e82089e85b9fad5f23d673a52"
+  },
+  "independent_psb": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "native_memory": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/native-memory-comparison01.json",
+    "sha256": "c6036b06295a80df3a72b4b16072f348608d95fdc7abdb5eab9937f810623659"
+  },
+  "native_entropy_memory": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/native-entropy-comparison01.json",
+    "sha256": "f246c7967606237864a33570b16879176efd8e7afdd394450844d8aa6a93d69a"
+  },
+  "history_memory": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/history-memory-comparison01.json",
+    "sha256": "1b4a3918c6131d7a49a00ac613e2b339d30f3eeaeec7031f8557edf82e363076"
+  },
+  "history_comparison": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/history-prior-comparison01.json",
+    "sha256": "b6e53c0532876cb83455671283af9d0d1b11e9a970bbf619199a7ea6ac306ba0"
+  },
+  "current_intel_psb": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "current_intel_groups": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "prior_output_equality": {
+    "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/final-export-compatibility01.json",
+    "sha256": "8a42c73b587e46b7bdc31e67ad4fb4f77b61cffe794dc7181925385f427c037a"
+  },
+  "memory_limits": "In the less-compressible1024x1024 four-layer RGB32 case, old10/new11-file peak RSS is253083648/120864768 bytes on arm64 and231075840/106106880 under Rosetta; file/data11 output hashes are identical. Native11 reads are slower for that fixture and mapped10/read11 footprint is approximately equal. Current Rosetta scratch history peaks402984960 versus333299712 resident-only. These are single-process bounded observations, not Photoshop performance, total-RAM or multi-GB guarantees.",
+  "qualification": {
+    "native_independent_sample_bytes": 728,
+    "native_independent_architecture_depth_cases": 6,
+    "psb_independent_sample_bytes": 1092,
+    "photoshop_group_merged_bytes": 655360,
+    "all_state_and_output_hashes_equal_to123": true,
+    "source_inputs": 816,
+    "swift_source_test_files": 424,
+    "live_native_qualified": false,
+    "physical_intel_qualified": false,
+    "macos14_runtime_qualified": false,
+    "warnings": "Existing RasterDecodeBudget Foundation userInfo Sendable warnings remain; compilation is not described as warning-free."
+  },
+  "atomic_persistence_step130": {
+    "reference": "docs/ATOMIC_PERSISTENCE_REFERENCES.json",
+    "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": 0,
+      "coverage": "Add atomicPersistence capability policy and recovery/preferences references. Shared local native/API saves and recovery use the same writer. Request/result/state schemas and Adobe wire contracts stay unchanged; Data downloads retain exact bytes."
+    }
+  },
+  "recovery_source_step131": {
+    "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+    "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": 0,
+      "coverage": "Add recoverySource document state, schema, capabilities and409 source conflicts through shared native lifecycle. Preserve six-field recovery state and both wire interfaces. Paths/hashes/bookmarks stay local; ordinary Open/uploads ignore provenance."
+    }
+  },
+  "recovery_discovery_step132": {
+    "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_document_state": "recoveryRegistration",
+      "permission": "Separate native Allow recovery management, default off and revoked on stop/restart",
+      "coverage": "Same native discovery/decoder and lifecycle. Schema, state, permission/revocation, busy/stale/external-index failure and actual HTTP recovery tested. Recovered documents remain unshared. No source paths, names, bookmarks or image contents exposed by discovery state."
+    }
+  }
+}

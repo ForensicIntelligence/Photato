@@ -55,9 +55,9 @@ final class ToningWorkflowTests: XCTestCase {
       XCTAssertNil(s.cloneState.slot.source)
       XCTAssertNil(s.cloneState.slot.anchor)
       let after = s.document
-      s.undo()
+      await s.undo()
       XCTAssertEqual(s.document, before)
-      s.redo()
+      await s.redo()
       XCTAssertEqual(s.document, after)
     }
   }
@@ -134,7 +134,7 @@ final class ToningWorkflowTests: XCTestCase {
     XCTAssertEqual(s.tool, .dodge)
     XCTAssertEqual(s.session.undoStack.count, 1)
     XCTAssertLessThan(try XCTUnwrap(s.surface).pixel(x: 40, y: 30).r, 0.7)
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.document, before)
     canvas.mouseDown(with: try mouse(.leftMouseDown))
     canvas.keyDown(with: try key("\u{1b}", 53))

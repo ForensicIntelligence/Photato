@@ -1,0 +1,92 @@
+{
+  "step": 240,
+  "recorded_at_utc": "2026-10-29T04:50:14.954399+00:00",
+  "status": "Native soundtrack tracks, retained movie audio, volume/mute/fades, graphical move/trim/split, synchronized playback and native56/API/history integration pass 2,493 full optimized tests on 2,318 unchanged inputs. Independent WAVE inspection matches192,000 analytic Float32 channel values. Physical audio output, full Render Video, long streaming, richer Timeline/interchange and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "run": "artifacts/runs/20261029T035234Z-240-video-audio",
+  "source_manifest": "artifacts/runs/20261029T035234Z-240-video-audio/source04.json",
+  "source_inputs": 2318,
+  "native_archive": 56,
+  "actions_version": 20,
+  "typed_commands": 167,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/organize-and-manage-video-groups/edit-video-clips-and-audio-in-the-timeline.html",
+      "updated": "2026-10-04",
+      "use": "Public Timeline audio controls/tracks, no implementation source."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/avfaudio/avaudioplayer",
+      "local": "artifacts/runs/20261029T035234Z-240-video-audio/apple-player.md",
+      "use": "Native audio player and timing contract."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/avfoundation/avassetreader",
+      "local": "artifacts/runs/20261029T035234Z-240-video-audio/apple-reader.md",
+      "use": "Native bounded PCM decoding contract."
+    }
+  ],
+  "implemented": [
+    "Retained original soundtrack sources/tracks and movie-audio settings with volume, mute, linear fades and source trims.",
+    "Native graphical track move/trim/split, Audio import/settings controls, synchronized visual playback using the audio player clock.",
+    "Three typed API operations plus binary audio import/read-only mixed WAVE routes, sanitized metadata, source/revision/share cancellation and native56/history."
+  ],
+  "remaining": [
+    "Render Video, long disk streaming, pitch-preserving rate changes, multichannel output and waveforms.",
+    "Exact split-envelope and Photoshop audio/visual output, factory shortcut/default/preferences, accessibility and physical audio output qualification.",
+    "Automatic movie groups, graphical keyframes, rich PSD/Actions animation, broader codecs and macOS14/Intel runtime qualification."
+  ],
+  "verification": {
+    "utc": "2026-10-29T04:50:14.954399+00:00",
+    "full": {
+      "tests": 2493,
+      "failures": 0,
+      "seconds": 169.614,
+      "log": "artifacts/runs/20261029T035234Z-240-video-audio/full-tests01.log",
+      "sha256": "962d6e8c017f2e769f3c6fc573f46854c1046d4c168b9161af0d2899da7e0f55",
+      "build_seconds": [
+        "0.46"
+      ]
+    },
+    "focused_source04": {
+      "tests": 90,
+      "failures": 0,
+      "seconds": 6.152,
+      "log": "artifacts/runs/20261029T035234Z-240-video-audio/focused04.log",
+      "sha256": "000b993e16d5cd133b8bf62830562183cd8f91040041e8e22bd40bd5f0673d3c",
+      "build_seconds": [
+        "279.95"
+      ]
+    },
+    "unchanged_inputs": 2318,
+    "source_manifest": "artifacts/runs/20261029T035234Z-240-video-audio/source04.json",
+    "binary_sha256": "9b10e9831640f6abf008e0d369a62b853355838c80ae7084859802f76eebfaee",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T035234Z-240-video-audio/independent-audio-full01.json",
+    "offscreen_capture": "artifacts/runs/20261029T035234Z-240-video-audio/full01/audio-timeline.png",
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "independent": {
+    "file": "artifacts/runs/20261029T035234Z-240-video-audio/full01/audio-mix.wav",
+    "sha256": "b579e650d10f9016e0c48f91171fa46ddfdd288689b7ef352c399218330a45af",
+    "frames": 96000,
+    "channelSamples": 192000,
+    "equalFloat32Values": 192000,
+    "maximumAbsoluteError": 0.0,
+    "reference": "Independent analytic constant-channel sources and triangular gain; not Photoshop audio equivalence."
+  },
+  "failed_attempts": [
+    "focused01.log",
+    "focused02.log",
+    "focused03.log"
+  ],
+  "fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/audio/provenance.json",
+  "installed_build": 221,
+  "last_qualified_universal": 232,
+  "new_distribution_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true
+}

@@ -9,9 +9,9 @@ final class HistoryGroupingTests: XCTestCase {
     for opacity: Float in [0.9, 0.7, 0.5, 0.25] { try session.execute(.opacity(id, opacity)) }
     session.endCoalescing()
     XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document.layers[0].opacity, 1)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document.layers[0].opacity, 0.25)
   }
 }
@@ -25,8 +25,12 @@ extension HistoryGroupingTests {
     let id = try XCTUnwrap(document.activeLayerID)
     try session.execute(.renameLayer(id, "first"))
     try session.execute(.renameLayer(id, "second"))
-    XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    XCTAssertEqual(session.undoStack.count, 2)
+    XCTAssertEqual(session.historySpilledStates, 0)
+    XCTAssertLessThanOrEqual(session.residentHistoryBytes, 65_536)
+    try session.undo()
     XCTAssertEqual(session.document.layers[0].name, "first")
+    try session.undo()
+    XCTAssertEqual(session.document, document)
   }
 }

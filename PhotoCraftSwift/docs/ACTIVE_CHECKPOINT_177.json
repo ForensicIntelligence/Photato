@@ -1,0 +1,101 @@
+{
+  "step": "dev-step-177",
+  "completed_at_utc": "2026-10-27T05:24:40.866795+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native HDR source/preview workspace, exposure/response/radiance merging, ghost removal, tone operators,32/16/8-bit documents and Photato creation/cancel API.",
+  "source_manifest": "artifacts/runs/20261027T045452Z-177-hdr-merge/source02.json",
+  "source_manifest_sha256": "5abd0a1a0639e142b3329cbd0754126248d1c71754ff862c8b1a32c9f01a956c",
+  "source_inputs": 1334,
+  "source_delta": [
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/changes01.json",
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/changes02.json"
+  ],
+  "tests": {
+    "debug_focused": 67,
+    "optimized_focused": 67,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T045452Z-177-hdr-merge/integration05.log",
+    "optimized_log": "artifacts/runs/20261027T045452Z-177-hdr-merge/release-focused02.log",
+    "full_suite": "Batched; previous176 passed1697 full optimized cases on its own source.",
+    "qualification": "Debug67 passed on source01. Final source02 changes only the cancellation test fixture size/timing; optimized67 pass on source02. Production source is unchanged."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/oracle01.log",
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/integration02.log",
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/integration04.log",
+    "artifacts/runs/20261027T045452Z-177-hdr-merge/release-focused01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T05:24:40.866795+00:00",
+    "app": "/private/tmp/photato177-verified-7rczqiud/Photato.app",
+    "zip": "artifacts/runs/20261027T045452Z-177-hdr-merge/Photato177-final.zip",
+    "zip_sha256": "26816715602b29fabd35747347044eb44d4b5f1abdbea2083ed71a383e688bec",
+    "executable_sha256": "fef7624ce5f39b7de08e2f706e498dc8bb79f2133964cc59d4d66e33aab07949",
+    "icon_sha256": "ec36eb1b2e88294c413d1bdd5c46e3708a1b2dcb2f32d828faca1e6e10733e9e",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato177-verified-7rczqiud/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato177-verified-7rczqiud/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1334,
+    "source_manifest": "artifacts/runs/20261027T045452Z-177-hdr-merge/source02.json",
+    "source_manifest_sha256": "5abd0a1a0639e142b3329cbd0754126248d1c71754ff862c8b1a32c9f01a956c",
+    "tests": {
+      "debug_focused": 67,
+      "optimized_focused": 67,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T045452Z-177-hdr-merge/integration05.log",
+      "optimized_log": "artifacts/runs/20261027T045452Z-177-hdr-merge/release-focused02.log",
+      "full_suite": "Batched; previous176 passed1697 full optimized cases on its own source.",
+      "qualification": "Debug67 passed on source01. Final source02 changes only the cancellation test fixture size/timing; optimized67 pass on source02. Production source is unchanged."
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release tests and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop checks remain open."
+  },
+  "api": {
+    "count": 58,
+    "commands": [
+      "document.hdrMerge",
+      "document.hdrMerge.cancel"
+    ],
+    "same_engine": true,
+    "schema": "HDRMergeSettings.apiSchema; ordered unique sources(id,revision), optional settings/name; cancel operationID.",
+    "creation": "HTTP201 new shared unsaved document with exposure/offset/ghost/range/response result. Revalidate grants, revisions, lifecycle and immutable source snapshots before publication.",
+    "presentation": "Global hdrMergeState exposes open/loading/rendering/creatingFromAPI, previewExposure, sourceCount and ready; source document states expose current operation ID/membership.",
+    "adobe": "No dedicated HDR route in pinned published v2 contract and no authenticated HDR action descriptor currently mapped; orchestration is Photato-only. Both existing interfaces retained.",
+    "endpoint_groups": "Five partial/three unimplemented; no invented endpoint."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 218,
+    "unavailable": 507,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "new_binding": "File > Automate > Merge to HDR Pro\u2026",
+    "shortcut": "No factory shortcut; none invented.",
+    "report": "artifacts/runs/20261027T045452Z-177-hdr-merge/menu-report-final01.json",
+    "release_report": "artifacts/runs/20261027T045452Z-177-hdr-merge/menu-report-release02.json"
+  },
+  "limitations": [
+    "Native2\u201316 opaque equal-sized exposure brackets,16MP/image and32MP combined. API2\u20137 explicitly shared sources,4MP canvas/64layers/128MiB and one free output share slot; document-transfer permission required.",
+    "Sources flatten and convert to sRGB camera/display range; converted out-of-gamut colors clamp. Extended-range HDR sources and transparency reject explicitly. Output32-bit is linear sRGB;16/8-bit is tone-mapped sRGB. Original documents/files/history stay unchanged.",
+    "Exposure metadata requires finite positive time/aperture/ISO; missing metadata requires manual EV or explicit image estimation. Native EV range\u221220\u202620 and relative exposure limit40stops.",
+    "Ward bitmap translation alignment with normalized correlation tie-break, reference-frame canvas, alpha-aware missing edges. Coarse alignment is bounded to1536px with five pyramid levels; rotation/projective/lens correction and difficult/large production cases remain open.",
+    "Camera response uses160 spatial/intensity samples and256code values/channel with native Accelerate. Original Rust radiance/response fixture has<0.01% relative sample and<0.00001 curve tolerance; this is not Photoshop equality.",
+    "Four tone operators and native ghost-base selection are usable; preset/response-curve exchange, complete Photoshop defaults/two-stage dialog, HDR Toning and32-bit preview-options commands remain separate work. Display-only preview exposure is observable through the API but never alters output samples.",
+    "Native NSHosting tests are offscreen. Live Photato/Photoshop, physical Intel/macOS14/26, exact proprietary output and complete parity remain open. Smart Object image-stack statistics is next major work."
+  ],
+  "next": {
+    "workflow": "RAW02 Smart Object image-stack statistics and source-loading/Statistics workflow",
+    "prepared_plan": "artifacts/runs/20261027T045452Z-177-hdr-merge/next-major-plan01.json",
+    "first_step": "Inspect native Smart Object source/render/history/archive paths; add all11 persisted statistical stack modes, native menus/workspace and API coverage with analytical/original fixtures. Keep exact output and physical/live gates open."
+  },
+  "no_running_build_test_workers_expected": true
+}

@@ -1,0 +1,121 @@
+{
+  "step": "dev-step-131",
+  "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_131.json",
+    "sha256": "af1ff8810b6774403f779b9ff5ad353cef56ec051415725c95063e16ffa04e7d"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Add recoverySource document state, schema, capabilities and409 source conflicts through shared native lifecycle. Preserve six-field recovery state and both wire interfaces. Paths/hashes/bookmarks stay local; ordinary Open/uploads ignore provenance."
+  },
+  "scope": [
+    "Bounded128KiB optional recovery context shares archive integrity and atomic publication; absent from ordinary saves/copies/downloads",
+    "Retain original format/review policy, persistent volume/inode/birth identity, size/mtime/SHA-256 and optional Foundation bookmark",
+    "Verify recovered source off the main actor; resume verified unchanged/moved originals and protect changed/replaced/missing/unavailable/unverified sources",
+    "Recheck recovered source after encoding; refresh records on Save/Save As/Revert, retain Undo semantics and cancel verification on close",
+    "Verify148 focused and1193 Debug/Release tests, four automatic plus one explicit crash recovery, retained130 reader compatibility, universal/Intel and unchanged ordinary output"
+  ],
+  "remaining": [
+    "D02: implement persistent recovery discovery/registration independent of original-file existence; process01 proves AppKit skips a deleted-original backup even though its archive remains intact",
+    "D02: complete registry journaling, interruption/retention/stale cleanup, parent-directory durability, supported-platform power-loss/network/removable-drive matrix",
+    "D02/D01: occupied-path bookmark rediscovery needs review; sandbox bookmark entitlements, window/tab restoration and live native/Photoshop qualification remain open",
+    "D01: complete format/profile/metadata/tag/ACL fidelity, external-file coordination, recent items and original .pcraft migration",
+    "I02: source-capture/hash latency, active-document paging, renderer/cache and total-memory bounds, physical Intel/macOS14 runtime",
+    "All other major workflows precede minor functions and final details; full Photoshop parity and byte identity are not achieved"
+  ],
+  "sources": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/external-references01.json",
+    "sha256": "445c8ad8bf4a21c3bfe3b9fa582608fe4dceb6f331cd965f38c2e79e9b85f56a"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/tested-source-hashes05.json",
+    "sha256": "81b51ff1da35e978d87f336db9ecacfc5221230da5c4a86214053b1865d69cae"
+  },
+  "focused": {
+    "passed": 148,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 8.842,
+    "log": {
+      "path": "artifacts/runs/20261020T065046Z-131-recovery-source/focused05.log",
+      "sha256": "09a231d26164440b5bafb5355836311fde273fcb5d6515d81778187a771e9b55"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T065046Z-131-recovery-source/full01.log",
+      "sha256": "197ebcb8705b5d9edc96abafa223caeb83bd8e18e8992f705c138ee929157d47",
+      "passed": 1193,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 249.072
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T065046Z-131-recovery-source/release01.log",
+      "sha256": "b371472d2f46c653cd1d62752881c2e50b94fbc88c112e81093672470819145c",
+      "passed": 1193,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 52.097
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato131-verified-pvy30728/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c5a93dc204b6ab2a0a47b1d57435a18b1e1e682c120988700fee2bd44c27fda1",
+    "zip_sha256": "d33e9346a9790f2eca1e723d814f4597d8fb197c9cd1f6dcf62eb233d7fe7dc4",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "process": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/process-verification03.json",
+    "sha256": "b49dce1523832024cbfefdb272059877abad1371c0491b2ecf6ff105a8547d93"
+  },
+  "original_discovery_failure": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/process-source01-driver01.log",
+    "sha256": "b52b4d668f591cc43b191f92ddf77a6ff478cdb3fe5a788d5ef65bceb965258a"
+  },
+  "old_reader": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/old-reader-verification01.json",
+    "sha256": "ba1e219f91fa2a48894a18ebb76d378f4c333b91b6857f2eab088766831f4aff"
+  },
+  "storage_architectures": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/storage-verification01.json",
+    "sha256": "e849ad805506b09b0556254be0e64193a5f65a1ce59e088dfc7ed86fd34d72f0"
+  },
+  "cleanup": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/cleanup-verification03.json",
+    "sha256": "0d626dc0b3968bb88c42c0f66fd1324a96fda64fd5017b53ac7ede3c90a3fbef"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T065046Z-131-recovery-source/live-ui01.json",
+    "sha256": "fa49dc268077ea5b3b9bf5531f6aeb9c89143b75dec28655cdc78e217f732c8c"
+  },
+  "full_parity": false,
+  "recovery_discovery_step132": {
+    "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_document_state": "recoveryRegistration",
+      "permission": "Separate native Allow recovery management, default off and revoked on stop/restart",
+      "coverage": "Same native discovery/decoder and lifecycle. Schema, state, permission/revocation, busy/stale/external-index failure and actual HTTP recovery tested. Recovered documents remain unshared. No source paths, names, bookmarks or image contents exposed by discovery state."
+    }
+  }
+}

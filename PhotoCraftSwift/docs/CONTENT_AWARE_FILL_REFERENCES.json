@@ -1,0 +1,86 @@
+{
+  "step": "dev-step-168",
+  "status": "Working native subset verified by 30 focused tests; universal package verified",
+  "run": "artifacts/runs/20261027T002059Z-168-content-aware-fill",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/content_aware.rs",
+    "../photocraft-main/crates/algo/src/inpaint.rs",
+    "../photocraft-main/crates/engine/src/edit_menu_cmds.rs"
+  ],
+  "license": "MIT OR Apache-2.0; native Swift port; original Rust files unchanged",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/adjust-content-aware-fill-settings.html",
+      "accessed": "2026-10-26",
+      "scope": "Sampling and adaptation settings; three output modes"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/tools-to-fine-tune-sampling-and-fill-areas.html",
+      "accessed": "2026-10-26",
+      "scope": "Sampling and selection tools, source overlay and navigation"
+    }
+  ],
+  "native_archive": 20,
+  "archive_change": "None; output uses existing raster layers/selection representation. Native20 remains needed for documents with saved channels.",
+  "api_commands": 45,
+  "menus": {
+    "entries": 802,
+    "bound": 212,
+    "unavailable": 513,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8
+  },
+  "tests": {
+    "core": {
+      "path": "artifacts/runs/20261027T002059Z-168-content-aware-fill/core01.log",
+      "count": 4,
+      "failures": 0
+    },
+    "integration_compile_failure": "artifacts/runs/20261027T002059Z-168-content-aware-fill/integration01.log",
+    "compiled_engine": {
+      "path": "artifacts/runs/20261027T002059Z-168-content-aware-fill/integration02.log",
+      "count": 4,
+      "failures": 0
+    },
+    "fixture_crash": "artifacts/runs/20261027T002059Z-168-content-aware-fill/integration03.log",
+    "crash_summary": "artifacts/runs/20261027T002059Z-168-content-aware-fill/crash01-summary.json",
+    "final": {
+      "path": "artifacts/runs/20261027T002059Z-168-content-aware-fill/integration04.log",
+      "count": 30,
+      "failures": 0,
+      "scope": "Core synthesis/output; workspace, HDR, custom sampling, history, API equivalence/stale/busy/invalid/revocation; factory menu regression; Select and Mask; Spot Healing."
+    }
+  },
+  "source_manifest": "artifacts/runs/20261027T002059Z-168-content-aware-fill/source01.json",
+  "source_delta": "artifacts/runs/20261027T002059Z-168-content-aware-fill/changes01.json",
+  "procedural_output": "artifacts/runs/20261027T002059Z-168-content-aware-fill/texture-before-after01.png",
+  "live": "Not run; prior locked-screen state was not bypassed or repeatedly probed. Procedural output is not UI or Photoshop reference evidence.",
+  "limits": [
+    "Ordinary raster layer and RGB composite context. Source/document masks are bounded to 16,777,216 pixels and synthesis including transformed source variants to 4,194,304 pixels. Requests above the bounds fail explicitly.",
+    "The deterministic native PatchMatch/membrane/adaptation implementation is not Adobe proprietary synthesis; exact pixels remain unqualified.",
+    "Cross-document sampling, polygonal selection, Apply/multiple-fill session semantics and finer preview/navigation/preferences parity remain open.",
+    "Saved alpha channels can provide custom sampling. PSD/PSB documents with alpha channels still encounter the explicit step167 export guard; existing raster-only output encoding is tested.",
+    "Content-Aware Scale, crop fill and richer Fill integration remain separate major work.",
+    "No dedicated published Photoshop v2 CAF endpoint; content-aware actionJSON descriptors remain explicitly unsupported.",
+    "Full regression, optimized runtime, physical Intel and macOS14/26/live qualification remain open and batched for later major milestones."
+  ],
+  "full_photoshop_parity": false,
+  "package": {
+    "utc": "2026-10-27T00:43:33.771788+00:00",
+    "app": "/private/tmp/photato168-verified-pl8__j4v/Photato.app",
+    "zip": "artifacts/runs/20261027T002059Z-168-content-aware-fill/Photato168-final.zip",
+    "zip_sha256": "9c12829a19a3d4a6973bbbf6b9eb722855b43bdf07a5d2b4b58bf90f7b5cc81f",
+    "executable_sha256": "1aee1cf9ea109e5e613c9abd1912e7b5578bd889efebfdf8e0eb141127e2c976",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1259,
+    "source_manifest": "artifacts/runs/20261027T002059Z-168-content-aware-fill/source01.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "30 focused Debug tests for168; full/optimized/Intel/macOS14/26/live qualification remains open."
+  }
+}

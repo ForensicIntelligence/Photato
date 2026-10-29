@@ -32,6 +32,7 @@ struct MaskControls: View {
           .accessibilityLabel("Mask feather pixels")
         Text("px")
       }
+      Button("Select and Mask…") { store.beginSelectMask(fromMask: true) }.disabled(!store.canBeginSelectMask)
       HStack {
         Spacer()
         Button {

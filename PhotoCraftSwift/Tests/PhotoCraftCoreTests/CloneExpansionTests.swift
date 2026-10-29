@@ -74,9 +74,9 @@ final class CloneExpansionTests: XCTestCase {
       }
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(edited)), edited)
       XCTAssertEqual(session.undoStack.count, 1)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, document)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, edited)
     }
   }

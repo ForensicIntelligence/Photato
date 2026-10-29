@@ -1,0 +1,140 @@
+{
+  "step": "dev-step-212",
+  "date": "2026-10-27",
+  "status": "Implemented and regression/package verified. Exact Photoshop parity and remaining gates stay open.",
+  "scope": [
+    "filter.distort.displace",
+    "filter.distort.pinch",
+    "filter.distort.polarCoordinates",
+    "filter.distort.ripple",
+    "filter.distort.shear",
+    "filter.distort.spherize",
+    "filter.distort.twirl",
+    "filter.distort.wave",
+    "filter.distort.zigZag"
+  ],
+  "source_provenance": [
+    {
+      "path": "../photocraft-main/crates/algo/src/distort.rs",
+      "sha256": "dadb97df67baf00053da5b3d0f8c20e11484374e51a5d026566fb46e2dad99b7",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/distort2.rs",
+      "sha256": "8042bfe774ee61b0cc7fd8748dcdabb1d613193a2033293c71251718399b1964",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/noise.rs",
+      "sha256": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+      "license": "MIT OR Apache-2.0"
+    }
+  ],
+  "implementation": "Native Swift inverse maps from licensed PhotoCraft, premultiplied depth-aware sampling; Wave expanded from upstream64 clamp to all999 generators. Displace embeds up to1Mp 8-bit maps; Shear uses editable nonuniform spline knots.",
+  "primary_reference": {
+    "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+    "observed": "2026-10-27",
+    "use": "Parameter ranges and named modes for nine filters. UXP is not Firefly HTTP or actionJSON descriptor compatibility."
+  },
+  "live_photoshop": {
+    "observed_dialogs": [
+      "Wave",
+      "Shear",
+      "Displace",
+      "Pinch",
+      "Spherize",
+      "Twirl",
+      "Ripple"
+    ],
+    "screenshots": "artifacts/runs/20261027T234451Z-212-distortion-workflows/screenshots",
+    "method": "Opened and cancelled without applying edits to original document. Observed values may be retained preferences; no factory-reset claim.",
+    "pending": [
+      "Polar Coordinates",
+      "ZigZag"
+    ]
+  },
+  "api": {
+    "native_commands": 107,
+    "extended": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "state": "distortion availability/workspace/settings/preview/local history",
+    "native_archive": 39,
+    "actions_archive": 11,
+    "adobe": "Nine unqualified actionJSON/PSD descriptor families explicitly unsupported; no invented routes."
+  },
+  "tests": {
+    "core_cases": 7,
+    "app_cases": 5,
+    "focused_total": 45,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T234451Z-212-distortion-workflows/integration04.log",
+    "scope": [
+      "all nine filters and RGB8/16/32",
+      "analytic coordinate/map fixtures and HDR interpolation",
+      "selections/transparency lock/history/cancellation",
+      "native39 legacy/chunked and Actions11 persistence/playback",
+      "workspace preview/Undo/Cancel/re-edit/map import",
+      "desktop/HTTP equivalence and invalid/busy/stale rejection",
+      "canvas containment regression"
+    ],
+    "not_claimed": "No new independent Photoshop pixel fixture or compiled Rust differential run.",
+    "full_optimized": {
+      "tests": 2003,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T234451Z-212-distortion-workflows/release-full02.log"
+    },
+    "preserved_attempts": [
+      "integration01",
+      "integration02",
+      "integration03",
+      "release-full01"
+    ]
+  },
+  "evidence_root": "artifacts/runs/20261027T234451Z-212-distortion-workflows",
+  "remaining": [
+    "Exact Photoshop output/defaults and every parameter combination",
+    "Adobe actionJSON and editable PSD/PSB interchange",
+    "Live native filter interactions and physical Intel/macOS14/macOS26 checks",
+    "Other major F02 filter families; full package remains open"
+  ],
+  "package": {
+    "utc": "2026-10-28T00:34:20.536634+00:00",
+    "tests": {
+      "integration04": 45,
+      "release-full02": 2003
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/Photato212-final02.zip",
+    "zip_sha256": "26e1c395569555022b644c2daa80435171ccede086e7e4335e4ec0d307461854",
+    "app": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app",
+    "executable_sha256": "ec385bfb39a346dfef970e8ed56177ba88fb5162a30d4ac25da7e552f58f1c6f",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato212-verified-7fjzqzrq/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1606,
+    "source_manifest_sha256": "d133833d6f7780cf06f3c052c7c191258a9c99bf6881acc4448ffd53d2f138f6",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 294,
+      "unavailable_leaf_commands": 431,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "45 focused Debug and2003 full optimized tests plus universal package on this host. Physical Intel/macOS14/macOS26, exact Adobe distortion output/descriptors and live distortion workflows remain open. Step208 live containment remains historical; user handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "source_manifest": "artifacts/runs/20261027T234451Z-212-distortion-workflows/source02.json",
+  "source_delta": "artifacts/runs/20261027T234451Z-212-distortion-workflows/changes02.json"
+}

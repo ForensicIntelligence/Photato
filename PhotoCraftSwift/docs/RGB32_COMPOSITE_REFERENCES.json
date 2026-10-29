@@ -1,0 +1,229 @@
+{
+  "step": "dev-step-117",
+  "recorded_at_utc": "2026-10-19T23:09:15.841397+00:00",
+  "status": "Verified bounded implementation, package, dual API output and live native/Photoshop reopening; D01 remains open",
+  "major_workflow": "D01 document lifecycle remains open",
+  "scope": "PSD RGB32 white-distance merged encoding; measured opaque-base and alpha-bearing root untransformed Normal raster stacks. Ten independent Photoshop saves; both API job and document download paths share the native engine.",
+  "reference_container_spec": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "container_spec_is_not_arithmetic_oracle": true,
+  "evidence_root": "artifacts/runs/20261019T225228Z-117-rgb32-composite",
+  "fixtures": [
+    {
+      "name": "01-opaque-samples",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "2b009eb5e78152ceb363ef98dbb65d893ef8b560c435d67ea21112f0457db8fc",
+      "merged_sha256": "4f45bfef5b46dd3be61d01f696b22144f190e272ab053c971cc396e6d39613fd"
+    },
+    {
+      "name": "02-alpha-samples",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "39f7ad9e7417e8252c5dcf29ed260bc9b1337198eb5eb714f5b97b447998115a",
+      "merged_sha256": "ba58043a4fd7112e5478822765d904f00c5b2d528c841807b99da43a6ad72cc4"
+    },
+    {
+      "name": "03-opaque-base",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "56fce263445a465c9787fb0aeabff4a6ac8aa4207fc0d346761bbbf3944be7a4",
+      "merged_sha256": "4c3b0af0f163a76807a360a706d63173186fa10c6872dd6087bda848d3384759"
+    },
+    {
+      "name": "04-translucent-base",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "74493110341cd66f09e30747f01a5e290fa65caa342b7f6b3737234d69f72bb1",
+      "merged_sha256": "d25996b85c9dcac81ba61875a8cb6164fa9eafb35142274ba3599c90ff871098"
+    },
+    {
+      "name": "05-mask-opacity",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "a2e5edb681ea816d882a54bb90a7e36fbf4338403e00fccdf297d4d1cb7cd793",
+      "merged_sha256": "1c7cdaa1e826c5435ea2e9c1bd7fdd82db6c279becdef221cdd24d75dcff0b86"
+    },
+    {
+      "name": "06-cartesian-alpha",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "6172f6e8828614be6f4c6bdc505959a7a7198758a88dcb6b72d2c9eeeb2eb2f3",
+      "merged_sha256": "75a421d491f7fdee4068959d8820aae3d76561759e3a77d5d64a65914f078cad"
+    },
+    {
+      "name": "07-random-mask",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "c621b78a2626122e21063981c5b0f45a944e3cd7568a383179cf8a17a41ce34d",
+      "merged_sha256": "ad0af865d55943c6a0e5476bdfc58ad3596dbeed1b37de545a151ab5e33a9608"
+    },
+    {
+      "name": "08-three-layers",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "2c9eea68da69083271762c7f9d1710a18557eb8645679877676fa71321f545e5",
+      "merged_sha256": "1917d5f50cf82f53da658168e92773d4d0c1c4047261feca2efed812fe1a0776"
+    },
+    {
+      "name": "09-offset-hdr",
+      "dimensions": [
+        96,
+        64
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "d537106eb9511bfa1b3c731b75eb7c590303273a848adf01f1e65cd98044adab",
+      "merged_sha256": "dc4489766ac34d07a2013b55394e0572bbc6d85e6269cef8a701aee732689799",
+      "source": "Prior step114/116 Photoshop-recalculated 96x64 procedural offset layer/mask reference; copied unchanged to step117 evidence."
+    },
+    {
+      "name": "10-opaque-base-random-mask",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "a9e067748a8350512b2961fa13bd408b8713d1df3fa4b07f1d2c45d6c28478c3",
+      "merged_sha256": "25321443dd656962a16bad1de378725a71bc56cc09ec3e8b4d5566464aba680f",
+      "generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T225228Z-117-rgb32-composite/generate-rgb32-probes03.py"
+    }
+  ],
+  "normalized_reference_pixels": 23808,
+  "normalized_reference_rgba_bytes": 380928,
+  "procedure": "Procedural Python-generated raw PSD inputs; Photoshop2026 opens, Layer Hide Layers/Show Layers forces recalculation, Save, close. No third-party artwork. Raw source and capture snapshots, screen observations and hashes preserved.",
+  "findings": [
+    "Separate Float32 white-distance subtraction, multiplication, subtraction, including opaque samples; no fused matte.",
+    "Root Normal renderer uses initial straight RGB even beneath zero alpha, fused alpha accumulation and delta interpolation with clamped ratio. No opaque source copy shortcut for subsequent layers.",
+    "Mask multiplication rounds before opacity. Alpha-bearing stacks expand canonical opacity bytes by reciprocal multiplication; fully opaque-base stacks use division and omit alpha accumulation/normalization. Entire-canvas base coverage determines the path.",
+    "Original three-channel opaque outputs normalized with explicitly implied alpha-one plane; output PSD byte identity is not claimed.",
+    "Case06 transparent first source column trimmed by Photoshop; all retained samples match by document coordinate.",
+    "Python double FMA approximation misses a tie; native fmaf candidate matches broad references.",
+    "Full-density mask coverage must preserve the raw value exactly; 1-(1-v) changes Float32 bits.",
+    "Hidden root leaf layers do not change visible-stack arithmetic. Entire-canvas opaque-base detection preserves full/regional consistency."
+  ],
+  "remaining": [
+    "Groups/clipping/transforms/non-Normal blends/adjustments and other rich layer rendering still use the general path and are not byte-qualified.",
+    "Broader profiles, arbitrary masks and complete HDR edits still require comparison.",
+    "Extreme finite subtraction overflow returns an error; Photoshop overflow behavior not qualified.",
+    "PSD container structure, metadata, HDR toning and optional alpha-plane representation differ; no full-file equivalence claim.",
+    "Physical Intel and macOS14 full-application runtime checks remain open; current x86_64 numerical proof runs under Rosetta.",
+    "Native Open/Save keyboard automation failures were preserved; direct accessible file-open and filename controls succeeded, without claiming complete dialog/keyboard parity."
+  ],
+  "focus_validation": {
+    "log": "artifacts/runs/20261019T225228Z-117-rgb32-composite/focused05.log",
+    "passed": 156,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 19.352
+  },
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/tested-source-hashes02.json",
+    "sha256": "601a2902756721b778c230a14e820b8629b74226730f1e0f4217cae151b67bff"
+  },
+  "source_changes": [
+    "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift",
+    "Sources/PhotoCraftImaging/Renderer.swift",
+    "Sources/PhotoCraftImaging/PSDMergedSample.swift",
+    "Sources/PhotoCraftCore/LayerMask.swift",
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift"
+  ],
+  "validation_inputs": 723,
+  "source_test_files": 402,
+  "scope_notes": [
+    "The layer-merge command kernel is unchanged; Photoshop merging and live-stack rendering have separately measured arithmetic.",
+    "Model opacity remains continuous. For values exactly representable as a canonical PSD byte divided by255, the alpha-bearing renderer expands by reciprocal multiplication; arbitrary non-byte opacity equivalence remains open.",
+    "The root Normal renderer excludes active non-raster/affine/non-Normal and all grouped/clipped stacks. Those continue using the general renderer.",
+    "Raw layer bytes remain distinct from white-matted merged channels."
+  ],
+  "qualified_at_utc": "2026-10-19T23:35:21.743413+00:00",
+  "full_validation": {
+    "full02": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/full02.log",
+      "sha256": "8a3768b9253e491afe1cab7135c8080229ec12adc4839be9d33742e9f3f363e4",
+      "passed": 1058,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 156.154
+    },
+    "release02": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/release02.log",
+      "sha256": "8bc62c0f115b34359b02b65bd1eb1cf1848b735b09564c399d424e52a1899512",
+      "passed": 1058,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 43.613
+    }
+  },
+  "package_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/package-verification01.json",
+    "sha256": "a25dcaab32ef14561adaaaf7450ab5225c924cb76392729746a7f0ae80db8e62"
+  },
+  "installed_package": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+    "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+  },
+  "intel_numerical_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/intel-golden01.json",
+    "sha256": "7067713657e2c31cf57841d1dd684f5bfcd9de8f6f485a5ac9dff81ea5fef91d"
+  },
+  "intel_numerical_commands": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/intel-verification01.json",
+    "sha256": "fd6576609b763c16e1129923678fcb792ad5d72dc32ccb9c4374e779e98df76a"
+  },
+  "live_native_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/live-native-verification01.json",
+    "sha256": "f353effbd29be913bbf6e8b2d04591a94f84cd7fbe947415b42f0e9d778be733"
+  },
+  "live_final_evidence": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/live-final-verification02.json",
+    "sha256": "1e2010e7ae0370c48e023a5184ba773cd8f46a041811b7dfef0ffec3fec50eec"
+  },
+  "live_output_summary": {
+    "independent_source": "08-three-layers original Photoshop reference",
+    "each_PSD_output_layer_and_mask_bytes": 209136,
+    "each_PSD_output_merged_RGBA_bytes": 65536,
+    "different_bytes": 0,
+    "working_ICC_bytes_exact": true,
+    "native_archive_version": 10,
+    "paths": [
+      "native PSD Save As",
+      "native archive Save As/reopen then PSD Save a Copy"
+    ],
+    "Photoshop_output_reopen": true
+  },
+  "api_review": {
+    "typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "counts_unchanged": true,
+    "coverage": "Desktop output, document download and both job HTTP routes independently match the three-layer Photoshop merged golden; state/history unchanged. Existing authentication/job/error tests pass.",
+    "capability": "documentTransfers.float32Storage.normalRasterComposition documents bounded scope and excludes whole-PSD-file equality."
+  },
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/next-major-qualification02.json",
+    "sha256": "1653f3dd64c9d320a46bb5d5c577830ea9029babe1ab3e8e6eb32adb7f828180"
+  }
+}

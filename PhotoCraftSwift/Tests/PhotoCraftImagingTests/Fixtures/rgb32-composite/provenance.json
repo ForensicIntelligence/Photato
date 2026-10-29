@@ -1,0 +1,111 @@
+{
+  "created": "2026-10-19",
+  "source": "Original procedural inputs created for Photato; Photoshop2026 Hide/Show/Save output captured locally. No third-party artwork. Licensed MIT OR Apache-2.0 as test data in this fork.",
+  "generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T225228Z-117-rgb32-composite/generate-rgb32-probes01.py",
+  "second_generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T225228Z-117-rgb32-composite/generate-rgb32-probes02.py",
+  "format": "Big-endian Float32 planar RGBA. Three-channel opaque references have a separately documented implied alpha-one plane. Normalized sample equality does not imply PSD file-byte equality.",
+  "cases": [
+    {
+      "name": "01-opaque-samples",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "2b009eb5e78152ceb363ef98dbb65d893ef8b560c435d67ea21112f0457db8fc",
+      "merged_sha256": "4f45bfef5b46dd3be61d01f696b22144f190e272ab053c971cc396e6d39613fd"
+    },
+    {
+      "name": "02-alpha-samples",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "39f7ad9e7417e8252c5dcf29ed260bc9b1337198eb5eb714f5b97b447998115a",
+      "merged_sha256": "ba58043a4fd7112e5478822765d904f00c5b2d528c841807b99da43a6ad72cc4"
+    },
+    {
+      "name": "03-opaque-base",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "56fce263445a465c9787fb0aeabff4a6ac8aa4207fc0d346761bbbf3944be7a4",
+      "merged_sha256": "4c3b0af0f163a76807a360a706d63173186fa10c6872dd6087bda848d3384759"
+    },
+    {
+      "name": "04-translucent-base",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "74493110341cd66f09e30747f01a5e290fa65caa342b7f6b3737234d69f72bb1",
+      "merged_sha256": "d25996b85c9dcac81ba61875a8cb6164fa9eafb35142274ba3599c90ff871098"
+    },
+    {
+      "name": "05-mask-opacity",
+      "dimensions": [
+        16,
+        16
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "a2e5edb681ea816d882a54bb90a7e36fbf4338403e00fccdf297d4d1cb7cd793",
+      "merged_sha256": "1c7cdaa1e826c5435ea2e9c1bd7fdd82db6c279becdef221cdd24d75dcff0b86"
+    },
+    {
+      "name": "06-cartesian-alpha",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "6172f6e8828614be6f4c6bdc505959a7a7198758a88dcb6b72d2c9eeeb2eb2f3",
+      "merged_sha256": "75a421d491f7fdee4068959d8820aae3d76561759e3a77d5d64a65914f078cad"
+    },
+    {
+      "name": "07-random-mask",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "c621b78a2626122e21063981c5b0f45a944e3cd7568a383179cf8a17a41ce34d",
+      "merged_sha256": "ad0af865d55943c6a0e5476bdfc58ad3596dbeed1b37de545a151ab5e33a9608"
+    },
+    {
+      "name": "08-three-layers",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 4,
+      "reference_sha256": "2c9eea68da69083271762c7f9d1710a18557eb8645679877676fa71321f545e5",
+      "merged_sha256": "1917d5f50cf82f53da658168e92773d4d0c1c4047261feca2efed812fe1a0776"
+    },
+    {
+      "name": "09-offset-hdr",
+      "dimensions": [
+        96,
+        64
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "d537106eb9511bfa1b3c731b75eb7c590303273a848adf01f1e65cd98044adab",
+      "merged_sha256": "dc4489766ac34d07a2013b55394e0572bbc6d85e6269cef8a701aee732689799",
+      "source": "Prior step114/116 Photoshop-recalculated 96x64 procedural offset layer/mask reference; copied unchanged to step117 evidence."
+    },
+    {
+      "name": "10-opaque-base-random-mask",
+      "dimensions": [
+        64,
+        64
+      ],
+      "original_merged_channels": 3,
+      "reference_sha256": "a9e067748a8350512b2961fa13bd408b8713d1df3fa4b07f1d2c45d6c28478c3",
+      "merged_sha256": "25321443dd656962a16bad1de378725a71bc56cc09ec3e8b4d5566464aba680f",
+      "generator": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T225228Z-117-rgb32-composite/generate-rgb32-probes03.py"
+    }
+  ]
+}

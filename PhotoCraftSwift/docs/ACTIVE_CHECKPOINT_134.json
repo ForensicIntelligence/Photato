@@ -1,0 +1,194 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-134",
+  "recorded_at_utc": "2026-10-20T09:26:48.653631+00:00",
+  "major_workflow": "D01 supported-format/background document opening",
+  "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/tested-source-hashes04.json",
+    "sha256": "6658c15f7b47216b12be9e47cf2be990ce71b02b6d117a35f4a344f023c5a960"
+  },
+  "source_test_files": 457,
+  "validation_inputs": 849,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/packaging-documents04.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato134-attempt04-_regtjmp/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 4.957,
+    "log": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/focused04.log",
+      "sha256": "c8ddf68e11e25bb14e911705a80386e9a68f0d353a66bae525934903586a4ed8"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T085329Z-134-document-opening/full01.log",
+      "sha256": "a52883d63af8e81c5ef5eb02d776c8323d9b620011a30c87e65025bdb735f476",
+      "passed": 1245,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 257.428
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T085329Z-134-document-opening/release01.log",
+      "sha256": "2868da33c6252a62e5fc83e224e2ee6eeb71e227f9f768bb2e35ada8b7663d33",
+      "passed": 1245,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 61.872
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato134-verified-ykn1u3ow/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c1447ec09beac01df78fbe97e581e52c0ef1af275125e89daebbcd3f80ffb2e2",
+    "zip_sha256": "9bcce623e75bcfa406188ec566d7e2cf7c3ab4a173f0c76041e193ab2ee7c4af",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/Photato134-candidate.zip",
+    "sha256": "9bcce623e75bcfa406188ec566d7e2cf7c3ab4a173f0c76041e193ab2ee7c4af"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_133.json",
+    "sha256": "2dfcd4e4237b5cf1a51cd5c725d5fc5e4b9e6cd3ce418da1ffef19e871497e5f"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/package-verification01.json",
+    "sha256": "54e73294b9f3a8f84052fc847c123a65da610a2b468040569a6485a7a7ba098c"
+  },
+  "process_debug": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/process-open-verification01.json",
+    "sha256": "f991d0a832dc87e8356727d26a04845867e082d4ef6beeba664b86c717ddf1d4"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/public-release-arm6401/verification.json",
+      "sha256": "4180a5b68fdf8bd0e09720958978ce6b5a2f7c8e05d0dd31d9f7876715fbc885"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/public-release-x86_6401/verification.json",
+      "sha256": "d75d4413ed43ba3e725e4c3d3ad8c7e7ccfadb7c0d2513e3b65b8df8c608390b"
+    }
+  },
+  "intel_runtime_limit": "Production Release app objects under Rosetta; not physical Intel/macOS14 full UI qualification",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/document-opening",
+      "POST /v1/document-opening/cancel"
+    ],
+    "extended_route": "POST /v1/documents/import: optional X-Photato-Open-Format plus conditional application/octet-stream",
+    "permission": "Existing document-transfer permission explicitly includes native-opening cancellation; default off each session; may affect unshared pending reads",
+    "coverage": "Shared container detection/selection, unchanged decoders, authenticated path-free state, exact-ID cancellation, schemas and invalid/busy/stale/revoked/completed-lifecycle guards. Legacy uploads without selection keep Content-Type routing. No Adobe desktop-dialog route invented."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/source-delta-and-ui01.json",
+    "sha256": "26f0fb5427fc1cb864e62d66664272ca7306135f39559f1efac5072b4d051b39"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "File Open Show/Format accessory with supported content selection; actual native10/11, PSD/PSB and supported raster routing independent of filename",
+    "Off-main-actor local reading and fingerprint preparation, main-actor callbacks, stable already-open identity, serial partial progress and cancellation without publishing cancelled reads",
+    "Matching API upload selection plus native-opening status/cancellation and lifecycle-publication guards; documented schemas and explicit transfer permission",
+    "24 final focused tests and1245 Debug/1245 Release tests; production-delegate Debug batch/failure/external-cancel process; public Release Open/repeat/invalid callbacks and model/source checks on arm64/Rosetta",
+    "Universal macOS14+ candidate verified; Core/Imaging/AI sources unchanged and nine whole PSB outputs byte-identical to133"
+  ],
+  "remaining_major_dependencies": [
+    "D01: recent-file persistence/bookmarks/count preference and corresponding native menu/API lifecycle; Finder multiple-file event queueing needs separate qualification",
+    "D01: live Photoshop Open/close/options/accessibility and multiwindow comparison; full format/profile/metadata/tag/ACL fidelity, import options and external-file coordination",
+    "D02: recovery maintenance/legacy migration, corrupt/unavailable/capacity UX, full window/tab restoration; sandbox/network/removable-volume and physical power-loss qualification",
+    "I02: synchronous startup recovery decode, source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14",
+    "ImageIO binary property-list dictionary ordering is noncanonical; semantic metadata equality and bounded sample comparisons do not establish universal byte-identical output",
+    "All major workflows remain ahead of minor functions and final details; no major gate is closed"
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/source-delta-and-ui01.json",
+    "sha256": "26f0fb5427fc1cb864e62d66664272ca7306135f39559f1efac5072b4d051b39"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/final-export-compatibility01.json",
+    "sha256": "afcd207af719dad1ed5c2f0b6bff37532b42e6fca8bf7b8500e3c4bf94ebabef"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/final-inputs01.json",
+    "sha256": "502df4d874be2149592afbdf7a4b7e647af79894b1c0928ea67f2f928c0fd5d0"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/next-major-plan01.json",
+    "sha256": "2605b08083f17418e9a27297bf0c58ea7b6ae450778e763c88b0dd47612fde88"
+  },
+  "prior_failed_attempts": [
+    "Focused01 compile failure: nonoptional allowedContentTypes requires [] for All Documents",
+    "Focused02: three equivalence failures from independently allocated image document/layer UUIDs",
+    "Focused03: PNG metadata binary plist ordering differs; independent diagnostic verifies equal values and exact other fields, repaired semantic comparison in04"
+  ],
+  "resume_first": "Verify checkpoint134/freeze04/audit and proceed with D01 recent-file/Finder lifecycle plan, before minor functions/details. Preserve installed117, real workspace/preferences/recovery, original documents and disposable118. No Git mutation.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step134-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step134-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step134-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step134-final/final-inputs01.json"
+  }
+}

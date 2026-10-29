@@ -1,0 +1,571 @@
+{
+  "step": "dev-step-216",
+  "completed_at_utc": "2026-10-28T03:16:18.156975+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T022329Z-216-procedural-render/source01.json",
+  "source_inputs": 1766,
+  "source_manifest_sha256": "7d54cdda6418528b5fcb82c06643d4a5a401551ed9bc9876fa59bfcbe9d8bf52",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationProceduralRender.swift",
+      "Sources/PhotoCraft/ProceduralEditing.swift",
+      "Sources/PhotoCraft/ProceduralSheet.swift",
+      "Sources/PhotoCraft/ProceduralWorkspace.swift",
+      "Sources/PhotoCraftCore/ProceduralFlame.swift",
+      "Sources/PhotoCraftCore/ProceduralGeometry.swift",
+      "Sources/PhotoCraftCore/ProceduralPictureFrame.swift",
+      "Sources/PhotoCraftCore/ProceduralRenderEngine.swift",
+      "Sources/PhotoCraftCore/ProceduralRenderSettings.swift",
+      "Sources/PhotoCraftCore/ProceduralTree.swift",
+      "Sources/PhotoCraftCore/ProceduralTreeKinds.swift",
+      "Tests/PhotoCraftAppTests/ProceduralWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-candleLight.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-custom.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-multipleFlamesAlongPath.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-multipleFlamesOneDirection.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-multipleFlamesPathDirections.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-multipleFlamesVariousLength.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-oneFlameAlongPath.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-shape-oval.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-shape-parallel.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-shape-pointed.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-shape-spread.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-shape-toCenter.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-style-flat.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-style-normal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/flame-style-violent.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-01.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-02.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-03.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-04.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-05.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-06.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-07.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-08.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-09.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-10.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-11.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-12.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-13.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-14.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-15.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-16.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-custom.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/frame-lines.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/provenance.json",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-01.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-02.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-03.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-04.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-05.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-06.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-07.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-08.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-09.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-10.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-11.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-12.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-13.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-14.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-15.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-16.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-17.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-18.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-19.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-20.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-21.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-22.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-23.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-24.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-25.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-26.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-27.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-28.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-29.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-30.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-31.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-32.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-33.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-34.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-custom.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/tree-flat.rgba",
+      "Tests/PhotoCraftCoreTests/ProceduralRenderTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerProtectionCommands.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration02": {
+      "passed": 109,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T022329Z-216-procedural-render/integration02.log",
+      "current_source": true
+    },
+    "full_optimized01": {
+      "passed": 2055,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T022329Z-216-procedural-render/release-full01.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration02": 109,
+    "release-full01": 2055
+  },
+  "package": {
+    "utc": "2026-10-28T03:15:57.207329+00:00",
+    "tests": {
+      "integration02": 109,
+      "release-full01": 2055
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T022329Z-216-procedural-render/Photato216-final01.zip",
+    "zip_sha256": "b10134efefafc575faa97f9fbb114a52397f6885750b4e8d2cb18668d0b7a7cd",
+    "app": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app",
+    "executable_sha256": "6e3ab31d545e043a947bd5f2919a8fd2a27250061ba3dad05f54e6a3b5a6b9a2",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1766,
+    "source_manifest_sha256": "7d54cdda6418528b5fcb82c06643d4a5a401551ed9bc9876fa59bfcbe9d8bf52",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 316,
+      "unavailable_leaf_commands": 409,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_procedural_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-oneFlameAlongPath"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesAlongPath"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesPathDirections"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesVariousLength"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-candleLight"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesOneDirection"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-parallel"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-toCenter"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-spread"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-oval"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-pointed"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-violent"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-flat"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-01"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-02"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-03"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-04"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-05"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-06"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-07"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-08"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-09"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-10"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-11"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-13"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-14"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-17"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-18"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-19"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-20"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-21"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-22"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-23"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-24"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-25"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-26"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-27"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-28"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-29"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-30"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-31"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-32"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-33"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-34"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-flat"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-01"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-02"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-03"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-04"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-05"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-06"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-07"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-08"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-09"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-10"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-11"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-13"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-14"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-lines"
+      }
+    ],
+    "limits": "109 focused Debug and2055 full optimized tests plus universal package on this host.70 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live procedural Render remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 316,
+    "unavailable_leaf_commands": 409,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Three native procedural generators with settings/previews, path/tree positioning, Cancel/local history and document Undo",
+    "70 original-Rust RGB8 references matched exactly; explicit original PI constant fixes initial89 differing samples",
+    "Raster/optional new-layer output, native/PSD persistence, Actions15 and three Photato APIs with strict schemas/state/guards/equivalence",
+    "Reverified installed209, retained document identity and23 dedicated window tests; no new live handoff"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect title/zoom/pan/scroll/window resize, then safely close obsolete159 probe after checking current unsaved state",
+    "Live Render controls and Photoshop descriptor/reference capture"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "window_handoff_evidence": "artifacts/runs/20261028T022329Z-216-procedural-render/window-handoff-status01.json",
+  "github": "Private draft remains209;215 package local only; no source push or visibility change.",
+  "remaining": [
+    "Independent Photoshop byte-identical outputs across settings/depths/profiles/seeds and exact defaults/controls/context availability",
+    "Adobe raster ActionJSON/ATN and live PSD interoperability",
+    "Missing source default-arc behavior is intentionally not substituted for required document path",
+    "Physical Intel/macOS14/macOS26 runtime qualification and large-document limits",
+    "Full F02 and every other tracked parity gate",
+    "Legacy actions.manage data-version description correction; actual decoder/state supports1\u201315"
+  ],
+  "next_major_workflow": {
+    "id": "F02",
+    "name": "Remaining Other and Video filters",
+    "scope": "Implement Custom5\u00d75/preset transport, HSB/HSL, Maximum/Minimum, Offset, De-Interlace and NTSC Colors with menus, preview/history/persistence and shared APIs. Preserve unresolved Lighting Effects context and all earlier parity gates. Correct legacy Actions version help text with next native edit."
+  },
+  "evidence_root": "artifacts/runs/20261028T022329Z-216-procedural-render"
+}

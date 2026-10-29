@@ -1,0 +1,42 @@
+{
+  "step": "dev-step-155",
+  "utc": "2026-10-26T16:09:51.617326+00:00",
+  "reason": "Explicit user pause",
+  "status": "paused; baseline defect reproduced; implementation not started",
+  "last_verified_product_checkpoint": "docs/ACTIVE_CHECKPOINT_154.json",
+  "checkpoint154_sha256": "885e0c6ea4ca21d7db83317ff11a853d3a62d5fb1058e917bcd7e029d7cd33e1",
+  "run": "artifacts/runs/20261026T154202Z-155-feather-resume",
+  "frozen_inputs": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/tested-source-hashes01.json",
+    "sha256": "d8bbc9130f2f9572eb04a134080fee5b0f52b5f15859fb59a22b52028920a4ad",
+    "count": 1155,
+    "swift_files": 549,
+    "current_mismatches": []
+  },
+  "last_test": {
+    "result": "artifacts/runs/20261026T154202Z-155-feather-resume/focused01-result.json",
+    "log": "artifacts/runs/20261026T154202Z-155-feather-resume/focused01.log",
+    "exit_code": 1,
+    "tests": 2,
+    "failures": 3,
+    "unexpected": 0,
+    "interpretation": "Expected baseline reproduction of hidden-file publication defect; no passing repair yet"
+  },
+  "changed_code": "Added Tests/PhotoCraftCoreTests/AtomicFileVisibilityTests.swift only. Production remains at verified154 behavior.",
+  "findings": [
+    "Same owned PSD bytes reject in Photoshop when UF_HIDDEN is set and open when only that flag is cleared. AtomicFileWriter publishes inherited staging visibility.",
+    "Saved independent single-radius and full16-radius Photoshop impulse references. Radius1 kernel differs from native; full atlas measurement remains unfinished."
+  ],
+  "live_processes": "Owned baseline test session48169 is terminal. No matching test/build worker found at pause. No new implementation or UI action performed after pause request.",
+  "last_observed_ui": "Photoshop original Untitled-1 remains open; owned probe documents were closed before pause. UI was not re-inspected or changed after pause.",
+  "resume_first": [
+    "Read this checkpoint and DEVLOG step155; verify frozen source identities and prior candidate before proceeding.",
+    "Repair AtomicFileWriter pre-publication UF_HIDDEN handling: inherit intentional existing-destination visibility; new documents visible; preserve unrelated flags; use retained descriptor; cover syscall faults and concurrent changes.",
+    "Add native/local-API persistence regressions and observable capability documentation. Maintain both API contracts without inventing Adobe routes.",
+    "Freeze new inputs and run focused, full Debug/Release, universal/Intel and owned live Photoshop/native save checks. Do not edit frozen sources during tests.",
+    "Complete full atlas kernel decoding and provenance before changing feather rendering.",
+    "Finalize step155 qualification, diary, evidence index/audit and checkpoint only after verification; continue major functions before minor functions and details."
+  ],
+  "preserved": "Original Oct20 pause checkpoint, all experiment failures/evidence, installed117 application and user workspace are retained. No new release candidate installed.",
+  "history_audit": "Last completed product audit is154. Refresh/check unfinished155 evidence on resume; no new product qualification claimed."
+}

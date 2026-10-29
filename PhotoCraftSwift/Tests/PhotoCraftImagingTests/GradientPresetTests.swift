@@ -86,7 +86,7 @@ final class GradientPresetTests: XCTestCase {
   func testFoldersAndOriginalMetadataSurviveAnEdit() throws {
     var library = GRDLibrary([.blackToWhite, .foregroundToBackground, .foregroundToTransparent])
     library.hierarchy = [
-      .group("Pantry", [.preset(0), .group("Nested ✓", [.preset(1)])]), .preset(2),
+      .group("Photato", [.preset(0), .group("Nested ✓", [.preset(1)])]), .preset(2),
     ]
     let data = try GRDCodec.write(library)
     var decoded = try GRDCodec.read(data)

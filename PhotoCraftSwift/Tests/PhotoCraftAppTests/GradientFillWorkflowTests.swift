@@ -46,9 +46,9 @@ final class GradientFillWorkflowTests: XCTestCase {
     XCTAssertEqual(fill.placement.angle, 30)
     XCTAssertNotNil(store.activeLayer?.mask)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, doc)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
   @MainActor func testCanvasDragKeyboardCancelAndCommitDoNotPaintUnderDraft() async throws {

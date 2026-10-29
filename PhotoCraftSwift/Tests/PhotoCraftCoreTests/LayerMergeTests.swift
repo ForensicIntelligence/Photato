@@ -41,6 +41,47 @@ final class LayerMergeTests: XCTestCase {
     }
   }
 
+  func test65536IndependentLinearRGB32MergePixelsThroughArchiveAndHistory() throws {
+    let bytes = try Data(
+      contentsOf: XCTUnwrap(
+        Bundle.module.url(
+          forResource: "normal-rgb32", withExtension: "rgba", subdirectory: "Fixtures/layer-merge"))
+    )
+    func pixel(_ sample: Int) -> Pixel {
+      func component(_ c: Int) -> Float {
+        let i = (sample + c) * 4
+        return Float(bitPattern: bytes[i..<i + 4].reduce(UInt32(0)) { ($0 << 8) | UInt32($1) })
+      }
+      return Pixel(component(0), component(1), component(2), component(3))
+    }
+    var bottom = try Surface(width: 256, height: 256, depth: .f32, colorEncoding: .linearRGB)
+    var top = bottom
+    var expected = bottom
+    for i in 0..<65536 {
+      bottom.setLinearPixel(x: i % 256, y: i / 256, pixel(i * 12))
+      top.setLinearPixel(x: i % 256, y: i / 256, pixel(i * 12 + 4))
+      expected.setLinearPixel(x: i % 256, y: i / 256, pixel(i * 12 + 8))
+    }
+    var document = try CraftDocument(width: 256, height: 256, depth: .f32)
+    document.layers = [
+      Layer(name: "Bottom", content: .raster(bottom)), Layer(name: "Top", content: .raster(top)),
+    ]
+    document.activeLayerID = document.layers[1].id
+    var session = EditorSession(document: document)
+    try session.execute(.mergeLayers([document.layers[1].id], .down))
+    let merged = session.document
+    guard case .raster(let result) = merged.layers[0].content else { return XCTFail() }
+    XCTAssertEqual(result.colorEncoding, .linearRGB)
+    XCTAssertEqual(
+      try result.rgbaData(depth: .f32, colorEncoding: .linearRGB),
+      try expected.rgbaData(depth: .f32, colorEncoding: .linearRGB))
+    XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(merged)), merged)
+    try session.undo()
+    XCTAssertEqual(session.document, document)
+    try session.redo()
+    XCTAssertEqual(session.document, merged)
+  }
+
   func document(_ depth: PixelDepth = .u8) throws -> CraftDocument {
     var d = try CraftDocument(width: 6, height: 5, depth: depth)
     d.layers[0] = Layer(
@@ -67,7 +108,7 @@ final class LayerMergeTests: XCTestCase {
         var session = EditorSession(document: d)
         try session.execute(
           .mergeLayers(Set(d.layers.map(\.id)), operation == .down ? .selected : operation))
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
         let ids = operation == .down ? Set([d.layers[1].id]) : Set(d.layers.map(\.id))
         try session.execute(.mergeLayers(ids, operation))
@@ -82,9 +123,9 @@ final class LayerMergeTests: XCTestCase {
         XCTAssertEqual(session.undoStack.count, 1)
         XCTAssertEqual(session.undoStack.last?.label, operation.rawValue)
         XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(result)), result)
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
-        session.redo()
+        try session.redo()
         XCTAssertEqual(session.document, result)
       }
     }

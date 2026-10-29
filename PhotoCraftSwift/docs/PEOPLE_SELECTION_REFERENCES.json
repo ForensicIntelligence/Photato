@@ -1,0 +1,93 @@
+{
+  "step": "dev-step-197",
+  "date": "2026-10-27",
+  "status": "Native whole-person picker/selection implemented and tested; semantic parts and full S03/Photoshop parity remain open.",
+  "scope": "Person-specific on-device instance detection, thumbnails, actual hover masks, whole-person multi-selection, four modes/Hard Edge, Select and Mask handoff, history/Actions and API.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/make-precise-selections-using-select-people.html",
+      "updated": "2026-02-23",
+      "saved_reference": "artifacts/runs/20261027T170102Z-196-object-finder/adobe-people01.html",
+      "note": "Adobe picker/whole-person/feature workflow reference; repeated live fetch timeout retained. Saved official196 HTML used."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/vision/vngeneratepersoninstancemaskrequest",
+      "sdk": "VNGeneratePersonInstanceMaskRequest.h",
+      "availability": "Public macOS14 instance-mask API. Person-specific requests, not generic foreground objects. No semantic part labels."
+    },
+    {
+      "path": "artifacts/runs/20261027T173208Z-197-select-people/photo-provenance01.json",
+      "note": "NASA source photos for local non-promotional model qualification only; not app/test-fixture assets or publication."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "selection.findPeople",
+      "selection.hoverPerson",
+      "selection.selectPeople"
+    ],
+    "catalogue_count": 96,
+    "state": "peopleSelection: available/busy/ready/pickerOpen/cacheID/hoveredID/error/features/people IDs and bounds.",
+    "parameters": "findPeople optional refresh/includeMasks/includeThumbnails; hoverPerson cacheID and optional instanceID; selectPeople cacheID, unique instanceIDs and optional mode/hardEdge.",
+    "results": "Standard document state; detection optionally includes peopleMasks full-canvas row-major UInt8 coverageBase64 and peopleThumbnails PNG base64 <=96px per side. Empty detections return ready empty lists.",
+    "history": "Detection/hover/thumbnail picker are ephemeral and do not dirty documents. Unioned selection follows native Undo/Redo and Actions4 frozen coverage; native archive32 unchanged.",
+    "lifecycle": "Normalized source includes layer/sample mode and ignores selection-only edits. Edits/tool changes/sample/layer/refresh/cancel/read/close invalidate IDs; API additionally checks permission/revision/lifecycle and cache at commit.",
+    "limits": "Native8,388,608 canvas pixels/6000 per side,64 people/16,777,216 aggregate mask pixels plus padded tile budget. Shared API4,194,304 pixels/64layers/128MiB.",
+    "features": [
+      "wholePerson"
+    ],
+    "unavailable": [
+      "hair",
+      "faceSkin",
+      "bodySkin",
+      "eyebrows",
+      "eyes",
+      "lips",
+      "teeth",
+      "nose",
+      "beard",
+      "clothes",
+      "accessories"
+    ]
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated desktop Select People endpoint in pinned published v2 contract. No invented route or proprietary model/identity claim."
+  },
+  "menus": {
+    "new_bindings": 0,
+    "integration": "Select People button/popover in existing Object Selection options; W unchanged. Escape cancels/clears picker. Menu CSV reviewed unchanged because no corresponding menu row."
+  },
+  "tests": {
+    "failures_preserved": [
+      "artifacts/runs/20261027T173208Z-197-select-people/integration01.log",
+      "artifacts/runs/20261027T173208Z-197-select-people/integration02.log"
+    ],
+    "focused_debug": 46,
+    "focused_release": 46,
+    "optimized_menu_checks": 9,
+    "menu_log": "artifacts/runs/20261027T173208Z-197-select-people/release-menu01.log",
+    "debug_log": "artifacts/runs/20261027T173208Z-197-select-people/integration03.log",
+    "release_log": "artifacts/runs/20261027T173208Z-197-select-people/release-focused01.log",
+    "verification": "artifacts/runs/20261027T173208Z-197-select-people/verification01.json",
+    "real_model": "artifacts/runs/20261027T173208Z-197-select-people/real-model01.json",
+    "offscreen_picker": "artifacts/runs/20261027T173208Z-197-select-people/people-picker-integration03.png",
+    "offscreen_canvas": "artifacts/runs/20261027T173208Z-197-select-people/people-canvas-integration03.png"
+  },
+  "limitations": [
+    "Semantic body-part masks remain unavailable; next integration must verify learned model, preprocessing, licensing and native Apple inference before exposing classes.",
+    "Native person instances/soft edges/defaults are not proven equal to Photoshop. Multi-person overlaps and difficult photos need broader independent evidence.",
+    "Desktop remains locked; offscreen tests are not live UI proof. Physical Intel/macOS14/macOS26 runtime qualification remains open.",
+    "Person caches/thumbnails/picker selection are ephemeral, not saved preferences; factory-default/persistence parity remains open.",
+    "Current196 full suite/universal package excludes197 until a later batch; focused validation planned here."
+  ],
+  "next": "Verify native Core ML semantic segmentation for hair/skin/clothes on actual photos, maintaining per-person identity and explicit unsupported features. Then continue outstanding major workflows; fine details deferred.",
+  "qualification": "All46 focused Debug and46 optimized tests pass;9 optimized menu checks also pass. Real local Vision finds1 person in a portrait and2 in an overlapping two-person photo; selection, source retention, native save and Undo/Redo succeed. Latest full1920-test/universal baseline196 excludes197.",
+  "subsequent_batch_qualification": {
+    "step": 198,
+    "qualification": "All61 focused Debug and1933 full optimized tests pass. The universal macOS14+ package includes197 Select People and the native feature model; fresh extraction verifies both architectures, signature and model provenance. Xcode Debug build also passes.",
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_198.json",
+    "reference": "docs/PEOPLE_FEATURE_REFERENCES.json",
+    "verification": "artifacts/runs/20261027T174733Z-198-people-features/verification01.json"
+  }
+}

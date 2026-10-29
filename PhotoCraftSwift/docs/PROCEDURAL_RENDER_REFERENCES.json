@@ -1,0 +1,481 @@
+{
+  "step": "dev-step-216",
+  "date": "2026-10-27",
+  "status": "Native implementation, focused/full regression and universal package verified. Exact Photoshop, Adobe interface and live/platform qualification remain open.",
+  "scope": [
+    "filter.render.flame",
+    "filter.render.tree",
+    "filter.render.pictureFrame"
+  ],
+  "source_provenance": {
+    "crates/algo/src/render2.rs": "19ba86b0899da814a4e3d4dcaa2907a6069786cd9cdf50fb2b2a22f476e8b205",
+    "crates/engine/src/render_cmds.rs": "426be5ee6eea5b647822ee59a1af96ca33fa76e7cbd7907cfca4e3a77a98d4e3"
+  },
+  "license": "MIT OR Apache-2.0",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html",
+      "accessed": "2026-10-27",
+      "use": "Explicit exclusion of Flame, Picture Frame and Tree from Smart Filter mode."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "accessed": "2026-10-27",
+      "use": "Published execute-actions workflow and descriptor-recording guidance; no tested Smart Filter claim for these raster generators."
+    }
+  ],
+  "implementation": [
+    "Six Flame modes, five shapes, three styles, source settings and real path selection",
+    "Thirty-four tree types, leaf/branch/light settings and draggable tree base",
+    "Sixteen picture-frame designs, colors/line/spacing/fade settings",
+    "Seeded Swift geometry/antialiasing/source-over; explicit original PI bits40490fdb",
+    "Selection/transparency protection, storage expansion and retained masks/transforms; optional new raster layer",
+    "Native previews, local history, Cancel/one document Undo; Actions15 portable layer/path recording and native raster/PSD persistence"
+  ],
+  "api": {
+    "native_commands": 110,
+    "added": [
+      "render.flame",
+      "render.tree",
+      "render.pictureFrame"
+    ],
+    "state": "proceduralRender",
+    "capabilities": "proceduralRender",
+    "native_archive": 42,
+    "new_native_archive_version": false,
+    "actions_archive": 15,
+    "adobe": "No verified raster ActionJSON or .atn mappings; explicit unsupported behavior; no invented route.",
+    "known_metadata_followup": "actions.manage parameter description still says versions1\u20135; actual supportedVersions and decoder support1\u201315. Correct legacy description during next native edit; frozen qualification inputs unchanged.",
+    "metadata_followup_resolution": "Step217 corrects actions.manage hint to1\u201316 alongside new Other/Video Actions16 support; see OTHER_VIDEO_REFERENCES.json for qualification."
+  },
+  "oracle": {
+    "cases": 70,
+    "exact_cases": 70,
+    "fixture_manifest": "Tests/PhotoCraftCoreTests/Fixtures/ProceduralRender/provenance.json",
+    "generator": "artifacts/runs/20261028T022329Z-216-procedural-render/oracle-generator01.py",
+    "source_sha256": "19ba86b0899da814a4e3d4dcaa2907a6069786cd9cdf50fb2b2a22f476e8b205",
+    "scope": "Original generators, primitive evaluation and raster_tile extracted unchanged; serde derives removed and minimal Rect supplied. Final source-over/byte conversion is a documented source-equivalent RGB8 adapter, not the unmodified full Surface/Session command. Synthetic inputs; not Photoshop references.",
+    "initial_discrepancy": {
+      "cases": 36,
+      "samples": 89,
+      "maximum_byte_difference": 1,
+      "cause": "Swift Float.pi rounds down; original Rust constant rounds to nearest. Explicit original-source bits resolve the discrepancy.",
+      "expected_images_changed": false
+    }
+  },
+  "tests": {
+    "core_cases": 7,
+    "app_cases": 7,
+    "focused": {
+      "tests": 109,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T022329Z-216-procedural-render/integration02.log"
+    },
+    "failures_preserved": [
+      "core01 compile-time persistence-helper error",
+      "core02/core03 source PI discrepancies",
+      "integration01 grouped Observation declarations and catch shadowing"
+    ],
+    "full_optimized": {
+      "tests": 2055,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T022329Z-216-procedural-render/release-full01.log"
+    }
+  },
+  "live_scope": "Hosted layout images inspected for all three dialogs; no live interaction claim while Mac remains locked. Corrected209 handoff pending.",
+  "remaining": [
+    "Independent Photoshop byte-identical outputs across settings/depths/profiles/seeds and exact defaults/controls/context availability",
+    "Adobe raster ActionJSON/ATN and live PSD interoperability",
+    "Missing source default-arc behavior is intentionally not substituted for required document path",
+    "Physical Intel/macOS14/macOS26 runtime qualification and large-document limits",
+    "Full F02 and every other tracked parity gate"
+  ],
+  "package": {
+    "utc": "2026-10-28T03:15:57.207329+00:00",
+    "tests": {
+      "integration02": 109,
+      "release-full01": 2055
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T022329Z-216-procedural-render/Photato216-final01.zip",
+    "zip_sha256": "b10134efefafc575faa97f9fbb114a52397f6885750b4e8d2cb18668d0b7a7cd",
+    "app": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app",
+    "executable_sha256": "6e3ab31d545e043a947bd5f2919a8fd2a27250061ba3dad05f54e6a3b5a6b9a2",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato216-verified-2rqrxmzf/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1766,
+    "source_manifest_sha256": "7d54cdda6418528b5fcb82c06643d4a5a401551ed9bc9876fa59bfcbe9d8bf52",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 316,
+      "unavailable_leaf_commands": 409,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_procedural_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-oneFlameAlongPath"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesAlongPath"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesPathDirections"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesVariousLength"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-candleLight"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-multipleFlamesOneDirection"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-parallel"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-toCenter"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-spread"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-oval"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-shape-pointed"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-violent"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-style-flat"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "flame-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-01"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-02"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-03"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-04"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-05"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-06"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-07"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-08"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-09"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-10"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-11"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-13"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-14"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-17"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-18"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-19"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-20"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-21"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-22"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-23"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-24"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-25"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-26"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-27"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-28"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-29"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-30"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-31"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-32"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-33"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-34"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "tree-flat"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-01"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-02"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-03"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-04"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-05"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-06"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-07"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-08"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-09"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-10"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-11"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-13"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-14"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-16"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-custom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "frame-lines"
+      }
+    ],
+    "limits": "109 focused Debug and2055 full optimized tests plus universal package on this host.70 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live procedural Render remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  }
+}

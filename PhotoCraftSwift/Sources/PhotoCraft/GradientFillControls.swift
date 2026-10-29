@@ -78,7 +78,7 @@ extension EditorStore {
       var doc = document
       try draft.command.apply(to: &doc)
       guard let layer = doc.layers.first(where: { $0.id == draft.layer.id }) else { return }
-      let frame = try initial.frame(for: layer, width: doc.width, height: doc.height)
+      let frame = try initial.frame(for: layer, in: doc)
       var fill = initial
       fill.placement.offsetX += Float(x / Double(frame.width))
       fill.placement.offsetY += Float(y / Double(frame.height))
@@ -143,14 +143,14 @@ struct GradientFillEditor: View {
           stops.indices.contains(index)
         else { return .black }
         let p = stops[index].color.resolved(foreground: .black, background: .white)
-        return Color(.sRGB, red: Double(p.r), green: Double(p.g), blue: Double(p.b))
+        return store.displayColor(p)
       },
       set: {
-        guard let c = NSColor($0).usingColorSpace(.sRGB), let draft = store.gradientFillDraft,
+        guard let c = store.workingPixel($0), let draft = store.gradientFillDraft,
           draft.fill.gradient.colors.indices.contains(index)
         else { return }
         store.gradientFillDraft?.fill.gradient.colors[index].color = .rgb(
-          Pixel(Float(c.redComponent), Float(c.greenComponent), Float(c.blueComponent)))
+          c)
         store.render()
       })
   }

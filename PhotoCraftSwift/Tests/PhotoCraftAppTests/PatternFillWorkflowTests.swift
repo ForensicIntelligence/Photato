@@ -50,9 +50,9 @@ final class PatternFillWorkflowTests: XCTestCase {
     XCTAssertEqual(fill.placement.angle, 30)
     XCTAssertNotNil(store.activeLayer?.mask)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertTrue(store.document == doc)
-    store.redo()
+    await store.redo()
     XCTAssertTrue(store.document == result)
   }
   @MainActor func testCanvasDragKeyboardCancelAndCommitDoNotPaintUnderDraft() async throws {

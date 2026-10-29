@@ -1,0 +1,53 @@
+{
+  "step": 242,
+  "recorded_at_utc": "2026-10-29T06:27:00.869173+00:00",
+  "status": "Timeline work areas and onion-skin previews now include graphical range handles, settings, ranged playback/audio/export, Undo, native57 and shared APIs. 2,516 full optimized tests pass on 2,331 unchanged inputs. Independent checks match2,192 preview/sequence/raw-movie RGBA channels and recheck12 existing movie fixtures. Raw-movie row metadata is independently verified; FFmpeg6.1 interoperability remains open. Exact defaults/blending, Timeline conversion/trim/interchange and live/platform fidelity remain open; SP01 is not closed. Installed221 and private universal232 stay unchanged.",
+  "source_manifest": "artifacts/runs/20261029T053409Z-242-timeline-workspace/source05.json",
+  "source_inputs": 2331,
+  "native_archive": 57,
+  "actions_version": 20,
+  "typed_commands": 171,
+  "tests": {
+    "utc": "2026-10-29T06:27:00.869173+00:00",
+    "full": {
+      "tests": 2516,
+      "failures": 0,
+      "seconds": 171.237,
+      "log": "artifacts/runs/20261029T053409Z-242-timeline-workspace/full-tests02.log",
+      "sha256": "b598afa2941ad2d68bad082986bcc69dc7f80d26fda8575e988da36b1c0f69b1",
+      "build_seconds": [
+        "0.47"
+      ]
+    },
+    "focused": {
+      "tests": 92,
+      "failures": 0,
+      "seconds": 10.596,
+      "log": "artifacts/runs/20261029T053409Z-242-timeline-workspace/focused05.log",
+      "sha256": "f7fc45bbc1642d3071c5afca4954b6d2401516bd262262566b87b6e4f2e8d99f",
+      "build_seconds": [
+        "81.72"
+      ]
+    },
+    "unchanged_inputs": 2331,
+    "source_manifest": "artifacts/runs/20261029T053409Z-242-timeline-workspace/source05.json",
+    "binary_sha256": "ff68223470c981da20767a6cbfe82d3d2139ae7e2cf63231a541441d1346a42e",
+    "architecture": "arm64",
+    "workspace_independent": "artifacts/runs/20261029T053409Z-242-timeline-workspace/independent-full02.json",
+    "render_regression_independent": "artifacts/runs/20261029T053409Z-242-timeline-workspace/independent-full02-render.json",
+    "exact_workspace_RGBA_channels": 2192,
+    "offscreen_captures": [
+      "artifacts/runs/20261029T053409Z-242-timeline-workspace/full02/workspace-timeline.png",
+      "artifacts/runs/20261029T053409Z-242-timeline-workspace/full02/render/render-video-settings.png"
+    ],
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": false,
+  "goal_complete": false,
+  "next": "Qualify a fresh universal macOS14+ private preview containing the completed Timeline work and pure FOSS policy; preserve installed221/user artwork. Then continue major Timeline breadth with frame/video conversion and trimming, followed by remaining movie/interchange requirements; exact/live/platform gates remain open."
+}

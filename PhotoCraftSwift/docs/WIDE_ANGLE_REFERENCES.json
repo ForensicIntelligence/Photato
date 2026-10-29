@@ -1,0 +1,94 @@
+{
+  "step": "dev-step-187",
+  "status": "Native Adaptive Wide Angle implemented and107 focused Debug tests pass. Full F05 and Photoshop parity remain open; broad qualification is batched with Vanishing Point.",
+  "run": "artifacts/runs/20261027T110725Z-187-wide-angle",
+  "scope": "Native camera-ray straightening with line/polygon constraints, per-edge orientations, Auto/Fisheye/Perspective/Panorama/Full Spherical, focal/crop/scale, native workspace/preview/history/settings, editable Smart Filters/native31 and shared API/Actions/Batch.",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/wideangle.rs",
+    "../photocraft-main/crates/algo/src/photo_util.rs"
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/use-adaptive-wide-angle-filter.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-04",
+      "scope": "Correction projections, scale/focal/crop controls, line/polygon constraints and edge orientations. As Shot and manufacturer/Photomerge metadata matching are not implemented."
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "finding": "No dedicated Adaptive Wide Angle operation. Unqualified adaptiveWideAngle actionJSON rejects explicitly."
+    }
+  ],
+  "implementation_choices": [
+    "Native Swift camera rays and great-circle interpolation feed a sparse similarity mesh and existing WarpRaster triangle renderer. Input remains fixed extent with transparent uncovered pixels.",
+    "Panorama uses an explicit cylindrical mapping; it is not a Perspective alias and is not claimed equivalent to Adobe Photomerge calibration.",
+    "Free edge normals start from the source chord, unlike the upstream first horizontal iteration. Grid cells have an8-pixel minimum on small images; upper grid density follows the source48-long-side-cell design.",
+    "Two-entry settings/size geometry cache prevents repeated mesh solves for preview admission, composition and overlay. No cached pixels or user defaults. Cancelled solves never enter it.",
+    "Shared FilterDraft input geometry resolves Smart Object placement and the preceding filter prefix. Pointer coordinates freeze the inverse mesh for a drag. Lens Correction now reuses the same helper."
+  ],
+  "photato_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set",
+      "actions.manage",
+      "actions.play",
+      "actions.batch"
+    ],
+    "filter_kind": "adaptiveWideAngle",
+    "parameter": "wideAngle",
+    "catalogue_count": 70,
+    "native_archive_version": 31,
+    "state": "Strict settings/schema/defaults plus active workspace settings, tool, preview/rendering, overlays, zoom, selected constraint/segment, pending polygon count, resolved model and local history availability. Existing command routes share the native engine and transactions."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No new Adobe route. Unqualified adaptiveWideAngle actionJSON and editable PSD/PSB descriptors reject. Existing rendered raster output remains available."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 255,
+    "unavailable": 470,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Adaptive Wide Angle\u2026"
+    ],
+    "shortcut": "Option+Shift+Command+A"
+  },
+  "qualification": "107 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the last packaged candidate remains step185 and excludes Lens Correction and Adaptive Wide Angle.",
+  "tests": {
+    "debug_focused": 107,
+    "debug_log": "artifacts/runs/20261027T110725Z-187-wide-angle/integration02.log",
+    "earlier_passing": {
+      "module01": 4,
+      "integration01": 17
+    },
+    "failed_attempts": [],
+    "verification": "artifacts/runs/20261027T110725Z-187-wide-angle/verification01.json",
+    "independent_evidence": "Source480\u00d7320 fisheye straightness/locality constraints; analytical camera/cylindrical rays; identity/scale/transparent border tests. All-depth selections/locks/history, validation, native31/source preservation/filter masking, transformed Smart Objects/prefix coordinates, native controller/Cancel/local undo, HTTP/busy/stale/invalid and Actions/Batch agreement. These are not Photoshop output or live UI evidence.",
+    "offscreen": "artifacts/wide-angle-offscreen/6D50CA40-6091-4B06-B9AC-4E3299611E1E.png",
+    "offscreen_limit": "Preview and constraint overlay/control layout inspected. Native AppKit buttons/pickers are incompletely captured offscreen. Live pointer/keyboard and exact visual matching remain unqualified.",
+    "performance": "Source480\u00d7320 constrained solve about23s in Debug; no optimized performance claim. Subsequent matching preview/composition geometry reuses the bounded cache."
+  },
+  "limitations": [
+    "Exact Adobe output, resampling/colour/edge semantics, live controls and physical macOS14/26/Intel qualification remain open. Latest desktop evidence remains locked, without bypass/re-probe.",
+    "No camera/lens manufacturer database, automatic EXIF As Shot, Adobe settings interchange or calibrated Photomerge panorama matching. Auto is a documented heuristic, not profile matching.",
+    "Current8,388,608-input-pixel limit,64 constraints/128 total segments/32 points per constraint. Unsupported antipodal or horizon-crossing arcs reject instead of silently changing projection. Larger image performance remains open.",
+    "RGB8/16 use encoded samples; RGB32 uses linear pixels as a native extension. Full Photoshop document colour-mode/filter matrix is not implemented.",
+    "Fixed canvas extent can crop corrected geometry. Complex later geometry filters, folded meshes and all interactive edge cases remain unqualified. Mesh constraints use bilinear interpolation while rasterization triangulates cells.",
+    "Editable PSD/PSB and Adobe descriptors remain unsupported. Native31 preserves settings/source editability; raster exports remain available.",
+    "Magnifier/detail panel, complete constraint keyboard/context interactions, Photoshop preset interoperability and exact workspace styling remain outstanding refinements.",
+    "Optimized/full regression/universal packaging is batched at the F05 milestone. Step185 is the last universal candidate; Lens Correction and Adaptive Wide Angle are currently source/Debug changes. Full F05 remains open."
+  ],
+  "next": "Vanishing Point: native perspective plane creation and editing, perspective paste/clone/painting with preview/history/persistence/API; then batched F05 full/optimized/universal qualification.",
+  "later_family_qualification": {
+    "step": "dev-step-188",
+    "tests": 1816,
+    "failures": 0,
+    "source_manifest": "artifacts/runs/20261027T112757Z-188-vanishing-point/source01.json",
+    "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+    "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json",
+    "note": "Later family batch includes Lens Correction, Adaptive Wide Angle and Vanishing Point. Earlier milestone records remain historical. Exact/live/platform parity remains open."
+  }
+}

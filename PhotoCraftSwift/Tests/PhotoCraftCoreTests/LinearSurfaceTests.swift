@@ -59,9 +59,9 @@ final class LinearSurfaceTests: XCTestCase {
     XCTAssertEqual(restored, doc)
     var session = EditorSession(document: doc)
     try session.execute(.opacity(doc.layers[0].id, 0.5))
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, doc)
-    session.redo()
+    try session.redo()
     guard case .raster(let pixels) = session.document.layers[0].content else { return XCTFail() }
     XCTAssertEqual(
       try pixels.rgbaData(depth: .f32, colorEncoding: .linearRGB),

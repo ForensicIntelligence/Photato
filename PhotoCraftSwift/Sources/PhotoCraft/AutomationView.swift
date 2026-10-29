@@ -47,15 +47,19 @@ struct AutomationView: View {
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
         Toggle(
-          "Allow document transfers and Revert",
+          "Allow document transfers, Revert and opening cancellation",
           isOn: Binding(
             get: { service.documentTransfersEnabled },
             set: { service.setDocumentTransfersEnabled($0) })
         ).disabled(!service.isRunning)
         Text(
-          "Uploads open new shared documents. Downloads copy shared documents as Photato, PSD, PNG, JPEG or TIFF. Revert restores a shared document’s saved file and can be undone. Transfers cannot choose local file paths or overwrite your files. Local saving has its own permission below."
+          "Uploads open new shared documents. Clients can cancel a native document-opening operation by its ID. Downloads copy shared documents as Photato, PSD, PNG, JPEG or TIFF. Revert restores a shared document’s saved file and can be undone. Transfers cannot choose local file paths or overwrite your files. Local saving has its own permission below."
         )
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow printing", isOn: Binding(get: { service.printingEnabled }, set: { service.setPrintingEnabled($0) })).disabled(!service.isRunning)
+        Text("Allows clients to open print controls or submit jobs for shared documents. Turning this off cancels preparation; submitted jobs remain in the macOS print queue. PDF output does not require this permission.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
         Toggle(
           "Allow local document saving",
@@ -72,6 +76,57 @@ struct AutomationView: View {
           Text(service.saveDirectoryURL?.lastPathComponent ?? "No folder selected").lineLimit(1)
           if service.saveDirectoryURL != nil { Button("Clear") { service.setSaveDirectory(nil) } }
         }
+        Divider()
+        Toggle("Allow recent-file access", isOn: Binding(
+          get: { service.recentFilesEnabled }, set: { service.setRecentFilesEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to see recent filenames, open files from that list, clear the list and change its size. Opening does not share a document. This permission turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle(
+          "Allow recovery preference changes",
+          isOn: Binding(
+            get: { service.preferenceChangesEnabled },
+            set: { service.setPreferenceChangesEnabled($0) })
+        ).disabled(!service.isRunning)
+        Text(
+          "Allows clients to enable or disable automatic recovery and change its interval for all documents. This permission turns off when the API stops."
+        )
+        .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow Color Settings changes", isOn: Binding(
+          get: { service.colorSettingsChangesEnabled }, set: { service.setColorSettingsChangesEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to change working profiles and conversion defaults. This permission turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow Photoshop file preference changes", isOn: Binding(
+          get: { service.photoshopPreferenceChangesEnabled },
+          set: { service.setPhotoshopPreferenceChangesEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to change the default compression of 16-bit and 32-bit PSD/PSB saves. Explicit output choices still apply. This permission turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow recovery management", isOn: Binding(
+          get: { service.recoveryManagementEnabled },
+          set: { service.setRecoveryManagementEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows retrying recovery and cancelling active recovery, including startup. Recovered documents remain unshared. Turning this off cancels this API session’s retry. This permission turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow recovery-backup access", isOn: Binding(
+          get: { service.recoveryBackupsEnabled },
+          set: { service.setRecoveryBackupsEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows backup names and contents, scanning for recovery copies, explicit backup cleanup and confirmed damaged-index reset. Copies remain unshared. This permission turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
+        Toggle("Allow document closing and Quit", isOn: Binding(
+          get: { service.documentClosingEnabled },
+          set: { service.setDocumentClosingEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to close documents, including unshared documents, discard unsaved changes, and quit Photato. Automatic saving also requires local-saving permission and shared source documents. Turning this off cancels remaining close work.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
         HStack {
           Text("Shared documents").font(.headline)

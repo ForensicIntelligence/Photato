@@ -5,16 +5,18 @@ extension ClonePainter {
   /// while new paint is limited to the document canvas and active selection.
   @discardableResult public static func paint(
     _ stroke: CloneStroke, on layer: inout Layer, canvasWidth: Int, canvasHeight: Int,
-    selection: IntRect? = nil, selectionMask: SelectionMask? = nil
+    selection: IntRect? = nil, selectionMask: SelectionMask? = nil,
+    preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !stroke.mask && (preserveTransparency || layer.protection.locksTransparency)
     let sourceMapping = try prepare(stroke)
     return try paintTarget(
       stroke, on: &layer, canvasWidth: canvasWidth,
-      canvasHeight: canvasHeight, selection: selection
+      canvasHeight: canvasHeight, selection: selection, preserveTransparency: preserve
     ) { pixels, transform, clipping in
       try paintPrepared(
         stroke, on: &pixels, transform: transform, sourceMapping: sourceMapping,
-        selection: clipping, selectionMask: selectionMask)
+        selection: clipping, selectionMask: selectionMask, preserveTransparency: preserve)
     }
   }
 
@@ -22,6 +24,7 @@ extension ClonePainter {
   static func paintTarget(
     _ stroke: CloneStroke, on layer: inout Layer,
     canvasWidth: Int, canvasHeight: Int, selection: IntRect?,
+    preserveTransparency: Bool = false,
     render: (inout Surface, Transform2D, IntRect) throws -> Bool
   ) throws -> Bool {
     _ = try Surface(width: canvasWidth, height: canvasHeight)
@@ -32,12 +35,13 @@ extension ClonePainter {
       ? footprint(stroke, clipping: clipping) : nil
     return try paintTarget(
       mask: stroke.mask, bounds: bounds, on: &layer,
-      clipping: clipping, render: render)
+      clipping: clipping, preserveTransparency: preserveTransparency, render: render)
   }
 
   /// Shared storage expansion for a bounded paint operation, including region fills.
   static func paintTarget(
     mask: Bool, bounds: IntRect?, on layer: inout Layer, clipping: IntRect,
+    preserveTransparency: Bool = false,
     render: (inout Surface, Transform2D, IntRect) throws -> Bool
   ) throws -> Bool {
     let original: Surface
@@ -57,10 +61,11 @@ extension ClonePainter {
     guard let bounds else { return false }
     let local = try (inverse * .translation(Double(bounds.x), Double(bounds.y)))
       .bounds(width: bounds.width, height: bounds.height)
-    let x = min(0, local.x)
-    let y = min(0, local.y)
-    let right = max(original.width, local.x + local.width)
-    let bottom = max(original.height, local.y + local.height)
+    let preserve = !mask && (preserveTransparency || layer.protection.locksTransparency)
+    let x = preserve ? 0 : min(0, local.x)
+    let y = preserve ? 0 : min(0, local.y)
+    let right = preserve ? original.width : max(original.width, local.x + local.width)
+    let bottom = preserve ? original.height : max(original.height, local.y + local.height)
     let storage = IntRect(x: x, y: y, width: right - x, height: bottom - y)
     let outside = mask ? layer.effectiveMaskProperties.outside : 0
     let fill = mask ? Pixel(outside, outside, outside) : Pixel.clear

@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 // Neutral, compact chrome measured from the user's open Photoshop 2026 workspace.
@@ -54,8 +55,17 @@ struct WorkspaceView: View {
     VStack(spacing: 0) {
       if store.workspace.options { optionsBar }
       workspaceColumns
+      if store.timelineVisible { Divider(); if store.document.videoTimeline != nil { VideoTimelinePanel(store: store) } else { TimelinePanel(store: store) } }
     }
     .font(.system(size: 11)).foregroundStyle(Color(white: 0.88))
+    .disabled(store.printBusy)
+    .overlay(alignment: .bottom) {
+      if store.printBusy {
+        HStack { ProgressView().controlSize(.small); Text(store.printJobStatus == "preparing" ? "Preparing print…" : "Printing…")
+          if store.printJobStatus == "preparing" { Button("Cancel") { store.printCancellation?() } }
+        }.padding(10).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)).padding(12)
+      }
+    }
     .background(StudioTheme.chrome).tint(StudioTheme.accent).preferredColorScheme(.dark)
     .alert(
       "Photato",
@@ -73,9 +83,13 @@ struct WorkspaceView: View {
       Text(store.error ?? store.workspaceLibrary.error ?? "")
     }
     .sheet(isPresented: $store.showAI) { aiSheet }
+    .sheet(item: $store.layerProtectionDraft) { draft in
+      LayerProtectionSheet(store: store, draft: draft)
+    }
     .sheet(item: $store.layerPanelOptionsDraft) { draft in
       LayerPanelOptionsSheet(store: store, draft: draft)
     }
+    .sheet(item: $store.channelDialog) { draft in ChannelDialogSheet(store:store,draft:draft) }
     .sheet(item: $store.channelPanelOptionsDraft) { draft in
       ChannelPanelOptionsSheet(store: store, draft: draft)
     }
@@ -83,6 +97,12 @@ struct WorkspaceView: View {
     .sheet(item: $store.duplicateLayerDraft) { draft in
       DuplicateLayerSheet(store: store, draft: draft)
     }
+    .sheet(item: $store.skyWorkspace) { SkySheet(store:store,model:$0) }
+    .sheet(item: $store.vanishingWorkspace) { VanishingSheet(store:store,model:$0) }
+    .sheet(item:$store.shapedTypeDraft,onDismiss:{store.cancelShapedType()}){ShapedTypeSheet(store:store,model:$0)}
+    .sheet(item: $store.shapeDraft,onDismiss:{store.shapePreview=nil;store.render()}) { ShapeSheet(store:store,draft:$0) }
+    .sheet(item: $store.frameDraft) { FrameSheet(store: store, draft: $0) }
+    .sheet(item: $store.artboardDraft) { ArtboardSheet(store: store, draft: $0) }
     .sheet(item: $store.newGroupDraft) { draft in NewGroupSheet(store: store, draft: draft) }
     .sheet(item: $store.gradientStopColorDraft, onDismiss: { store.render() }) { _ in
       GradientStopColorSheet(store: store)
@@ -111,8 +131,28 @@ struct WorkspaceView: View {
     .sheet(item: $store.gradientMapDraft, onDismiss: { store.render() }) { _ in
       GradientMapSheet(store: store)
     }
+    .sheet(item: $store.layerStyleDraft, onDismiss: { store.render() }) { _ in LayerStyleSheet(store: store) }
+    .sheet(item: $store.warpDraft, onDismiss: { store.cancelWarp() }) { draft in WarpSheet(store:store,model:draft) }
+    .sheet(item: $store.photoAlignDraft, onDismiss: { store.cancelPhotoAlign() }) { draft in PhotoAlignSheet(store:store,model:draft) }
+    .sheet(item: $store.photoBlendDraft, onDismiss: { store.cancelPhotoBlend() }) { draft in PhotoBlendSheet(store:store,model:draft) }
+    .sheet(item: $store.inkChannelOptions, onDismiss: { store.render() }) { draft in InkChannelOptionsSheet(store: store, draft: draft) }
+    .sheet(item: $store.printWorkspace, onDismiss: { store.finishPrintSheet() }) { draft in PrintSheet(model: draft) }
+    .sheet(item: $store.colorProfileWorkspace) { draft in ColorProfileSheet(store: store, model: draft) }
+    .sheet(item: $store.proofWorkspace) { draft in ProofSheet(store: store, model: draft) }
+    .sheet(item: $store.inkModeWorkspace, onDismiss: { store.render() }) { draft in InkModeSheet(store: store, model: draft) }
+    .sheet(item: $store.restrictedModeWorkspace, onDismiss: { store.render() }) { draft in RestrictedModeSheet(store: store, model: draft) }
+    .sheet(item: $store.documentModeWorkspace, onDismiss: { store.render() }) { draft in DocumentModeSheet(store: store, model: draft) }
+    .sheet(item:$store.classicToneWorkspace,onDismiss:{store.render()}) {draft in ClassicToneSheet(store:store,model:draft)}
+    .sheet(item: $store.proceduralWorkspace, onDismiss: {store.render()}) {draft in ProceduralSheet(store:store,model:draft)}
+    .sheet(item: $store.contentAwareDraft, onDismiss: { store.render() }) { draft in ContentAwareSheet(store:store,model:draft) }
+    .sheet(item: $store.selectMaskDraft, onDismiss: { store.render() }) { draft in SelectMaskSheet(store: store, model: draft) }
+    .sheet(item: $store.filterDraft, onDismiss: { store.render() }) { _ in FilterSheet(store: store) }
     .sheet(item: $store.tonalStepsDraft, onDismiss: { store.render() }) { _ in
       TonalStepsSheet(store: store)
+    }
+    .sheet(item: $store.colorLookupDraft, onDismiss: { store.render() }) { _ in ColorLookupSheet(store: store) }
+    .sheet(item: $store.classicAdjustmentDraft, onDismiss: { store.render() }) { _ in
+      ClassicAdjustmentSheet(store: store)
     }
     .sheet(item: $store.colorBalanceDraft, onDismiss: { store.render() }) { _ in
       ColorBalanceSheet(store: store)
@@ -156,7 +196,7 @@ struct WorkspaceView: View {
           .accessibilityLabel("Close document \(name)")
       }
       let title =
-        "\(name) @ \(CanvasViewport.percentage(tab.effectiveZoom)) (\(tab.activeLayer?.name ?? "No layer"), RGB/\(depthNumber(tab.document.depth)))\(document?.isDocumentEdited == true ? " *" : "")"
+        "\(name) @ \(CanvasViewport.percentage(tab.effectiveZoom)) (\(tab.activeLayer?.name ?? "No layer"), \(tab.document.colorMode.rawValue.uppercased())/\(depthNumber(tab.document.depth)))\(document?.isDocumentEdited == true ? " *" : "")"
       if let document, let workspace {
         DocumentTabControl(
           title: title, document: document, workspace: workspace,
@@ -182,8 +222,12 @@ struct WorkspaceView: View {
     HStack(spacing: 0) {
       ZoomPercentageField(store: store, activateDocument: activateCanvas).frame(width: 62)
       Divider()
+      if store.proofSettings.active || store.proofWorkspace != nil {
+        Text(store.proofDisplayError == nil ? "Proof: " + store.effectiveProof.displayName : "Proof unavailable")
+          .help(store.proofDisplayError ?? store.effectiveProof.displayName)
+      }
       Text(
-        "\(store.document.width) px × \(store.document.height) px  ·  \(store.document.colorSpace)"
+        "\(store.document.width) px × \(store.document.height) px  ·  \(ColorManagement.name(store.document))"
       ).padding(.horizontal, 14)
       CanvasScroller(store: store, vertical: false, activateDocument: activateCanvas).frame(
         maxWidth: .infinity
@@ -212,10 +256,11 @@ struct WorkspaceView: View {
     .overlay(RoundedRectangle(cornerRadius: 6).stroke(StudioTheme.line)).shadow(radius: 8)
   }
   func iconButton(
-    _ symbol: String, _ help: String, enabled: Bool = true, action: @escaping () -> Void
+    _ symbol: String, _ help: String, enabled: Bool = true, selected: Bool? = nil, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) { Image(systemName: symbol).frame(width: 20, height: 22) }
-      .buttonStyle(.plain).disabled(!enabled).help(help).accessibilityLabel(help)
+      .buttonStyle(.plain).background(selected == true ? Color.primary.opacity(0.16) : Color.clear, in: RoundedRectangle(cornerRadius: 3))
+      .disabled(!enabled).help(help).accessibilityLabel(help).accessibilityValue(selected.map { $0 ? "On" : "Off" } ?? "")
   }
   func unavailable(_ title: String, detail: String) -> some View {
     VStack(alignment: .leading, spacing: 8) {

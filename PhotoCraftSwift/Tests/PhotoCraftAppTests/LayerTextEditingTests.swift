@@ -5,7 +5,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerTextEditingTests: XCTestCase {
-  @MainActor func testMenuHistoryUsesNativeTextAndNeverFallsThroughToDocument() throws {
+  @MainActor func testMenuHistoryUsesNativeTextAndNeverFallsThroughToDocument() async throws {
     let app = AppDelegate()
     let document = CraftNSDocument(model: try CraftDocument(width: 3, height: 2))
     app.controller.addDocument(document)
@@ -29,7 +29,7 @@ final class LayerTextEditingTests: XCTestCase {
     let undo = NSMenuItem(title: "Undo", action: #selector(AppDelegate.undo), keyEquivalent: "z")
     let redo = NSMenuItem(title: "Redo", action: #selector(AppDelegate.redo), keyEquivalent: "z")
     XCTAssertEqual(app.validateHistoryMenu(undo, in: window), false)
-    app.performHistory(redo: false, in: window)
+    await app.performHistory(redo: false, in: window)?.value
     XCTAssertEqual(store.document, original)
     let manager = try XCTUnwrap(text.undoManager)
     manager.groupsByEvent = false
@@ -38,20 +38,20 @@ final class LayerTextEditingTests: XCTestCase {
     manager.endUndoGrouping()
     XCTAssertEqual(app.validateHistoryMenu(undo, in: window), true)
     XCTAssertEqual(undo.title, manager.undoMenuItemTitle)
-    app.performHistory(redo: false, in: window)
+    await app.performHistory(redo: false, in: window)?.value
     XCTAssertEqual(text.string, "")
     XCTAssertEqual(app.validateHistoryMenu(redo, in: window), true)
-    app.performHistory(redo: true, in: window)
+    await app.performHistory(redo: true, in: window)?.value
     XCTAssertEqual(text.string, "Typed name")
     XCTAssertEqual(store.document, original)
     XCTAssertEqual(store.session.undoStack.count, 1)
     text.isEditable = false
     XCTAssertEqual(app.validateHistoryMenu(undo, in: window), false)
-    app.performHistory(redo: false, in: window)
+    await app.performHistory(redo: false, in: window)?.value
     XCTAssertEqual(store.document, original)
     window.makeFirstResponder(window)
     XCTAssertEqual(app.validateHistoryMenu(undo, in: window), true)
-    app.performHistory(redo: false, in: window)
+    await app.performHistory(redo: false, in: window)?.value
     XCTAssertEqual(store.activeLayer?.opacity, 1)
     XCTAssertEqual(app.validateHistoryMenu(redo, in: window), true)
     XCTAssertEqual(redo.title, "Redo Layer Opacity")

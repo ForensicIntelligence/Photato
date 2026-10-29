@@ -1,0 +1,333 @@
+{
+  "step": "dev-step-220",
+  "recorded_at_utc": "2026-10-28T10:09:16.066666+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "increment_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T052601Z-220-document-modes/working-source07.json",
+  "source_manifest_sha256": "eceac45f75e1a51d6f1e74113d375f861d48d72f0459578032dbeae4123adb35",
+  "source_inputs": 1923,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AdobeDocumentCreation.swift",
+      "Sources/PhotoCraft/AutomationDocumentMode.swift",
+      "Sources/PhotoCraft/AutomationModeComponents.swift",
+      "Sources/PhotoCraft/DocumentModeSheet.swift",
+      "Sources/PhotoCraft/DocumentModeWorkspace.swift",
+      "Sources/PhotoCraft/ModeChannelEditing.swift",
+      "Sources/PhotoCraft/ModeChannelRows.swift",
+      "Sources/PhotoCraft/NewDocumentOptions.swift",
+      "Sources/PhotoCraftCore/DocumentCreation.swift",
+      "Sources/PhotoCraftCore/DocumentMode.swift",
+      "Sources/PhotoCraftCore/ModeComponentEditing.swift",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift",
+      "Sources/PhotoCraftImaging/DocumentModeInput.swift",
+      "Sources/PhotoCraftImaging/ModeChannelPresentation.swift",
+      "Sources/PhotoCraftImaging/PSDModeStorage.swift",
+      "Sources/PhotoCraftImaging/TIFFModeStorage.swift",
+      "Tests/PhotoCraftAppTests/AdobeDocumentCreationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeConversionTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ModeActionWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ModeChannelWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/TIFFModeWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/DocumentModeTests.swift",
+      "Tests/PhotoCraftCoreTests/ModeActionProgramTests.swift",
+      "Tests/PhotoCraftCoreTests/ModeComponentEditingTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeModeRasterTests.swift",
+      "Tests/PhotoCraftImagingTests/PSDModeTests.swift",
+      "Tests/PhotoCraftImagingTests/TIFFModeTests.swift",
+      "scripts/__pycache__/prepare-people-model.cpython-314.pyc",
+      "scripts/__pycache__/verify-people-model.cpython-314.pyc",
+      "scripts/people-model/__pycache__/convert.cpython-314.pyc",
+      "scripts/people-model/__pycache__/validate.cpython-314.pyc"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/AdobeActionAssets.swift",
+      "Sources/PhotoCraft/AdobeActionJobs.swift",
+      "Sources/PhotoCraft/AdobeActionsRequest.swift",
+      "Sources/PhotoCraft/AdobeColorEdit.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/ArtboardControls.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/BrushLibrary.swift",
+      "Sources/PhotoCraft/ChannelEditing.swift",
+      "Sources/PhotoCraft/ChannelPanelOptions.swift",
+      "Sources/PhotoCraft/ChannelsPanel.swift",
+      "Sources/PhotoCraft/ComponentEditing.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/DocumentPersistence.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/FrameControls.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/ShapeEditing.swift",
+      "Sources/PhotoCraft/SmartFilterEditing.swift",
+      "Sources/PhotoCraft/TransformEditing.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Clipboard.swift",
+      "Sources/PhotoCraftCore/CropGeometry.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/Geometry.swift",
+      "Sources/PhotoCraftCore/LayerLayout.swift",
+      "Sources/PhotoCraftCore/LayerMerge.swift",
+      "Sources/PhotoCraftCore/LayerProtectionCommands.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/LayerVia.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftImaging/ClassicToneInput.swift",
+      "Sources/PhotoCraftImaging/PSDChannelCodec.swift",
+      "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "Sources/PhotoCraftImaging/RasterIO.swift",
+      "Sources/PhotoCraftImaging/RasterMetadata.swift",
+      "Sources/PhotoCraftImaging/TIFFLayers.swift",
+      "Sources/PhotoCraftImaging/TIFFStorage.swift",
+      "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/ComponentEditingWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/PhotoshopActionProgramTests.swift"
+    ],
+    "removed": []
+  },
+  "source_delta_snapshot": "artifacts/runs/20261028T052601Z-220-document-modes/working-source-delta07",
+  "validation": {
+    "latest_focused_debug": 158,
+    "failures": 0,
+    "new_mode_tests": 79,
+    "command": [
+      "./scripts/test.sh",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "ModeAction.*Tests|PhotoshopActionProgramTests|Adobe.*Tests|AutomationEncodingOptionsTests|DocumentMode.*Tests|NativeModeRasterTests|ModeComponentEditingTests|ModeChannelWorkflowTests|TIFFMode.*Tests|PSDMode.*Tests|ColorManagementTests|FilterWorkflowTests|RasterFilterTests|CanvasContainmentTests|ViewportTests|AutomationTests"
+    ],
+    "result": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03.json",
+    "log": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03.log",
+    "frozen_test_inputs": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-inputs.json",
+    "earlier_focused": "artifacts/runs/20261028T052601Z-220-document-modes/mode-final01.json",
+    "broader_failure": "artifacts/runs/20261028T052601Z-220-document-modes/integration01.json",
+    "baseline_debug_failure": "artifacts/runs/20261028T052601Z-220-document-modes/reveal-baseline219-debug01.json",
+    "baseline_optimized_pass": "artifacts/runs/20261028T052601Z-220-document-modes/reveal-baseline219-release01.json",
+    "withdrawn_patch": "artifacts/runs/20261028T052601Z-220-document-modes/withdrawn-LayerNameEditing-focus-attempt01.swift",
+    "scope": "2173 full optimized tests, including79 new mode tests, and46 final focused tests pass. Current independent readers verify7 PSDs/24 layer planes and14 TIFFs/48 composite/24 layer planes. Universal package verifies. This is not complete Photoshop parity or live/platform qualification.",
+    "previous_focused_debug": 182,
+    "psd_test_failure": "artifacts/runs/20261028T052601Z-220-document-modes/mode-psd01.json",
+    "independent_psd_reader": "artifacts/runs/20261028T052601Z-220-document-modes/psd-independent02.json",
+    "independent_imageio_reader": "artifacts/runs/20261028T052601Z-220-document-modes/psd-imageio01.json",
+    "new_tiff_tests": 10,
+    "independent_tiff_reader": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-tiff-independent01.json",
+    "independent_tiff_imageio": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-imageio03.json",
+    "tiff_verifier_failure": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-independent01.log",
+    "broader_components_debug": 305,
+    "new_component_tests": 13,
+    "component_broader": "artifacts/runs/20261028T052601Z-220-document-modes/mode-components05.json",
+    "component_compile_failures": [
+      "artifacts/runs/20261028T052601Z-220-document-modes/mode-components02.json",
+      "artifacts/runs/20261028T052601Z-220-document-modes/mode-components03.json"
+    ],
+    "hosted_component_captures": "artifacts/runs/20261028T052601Z-220-document-modes/mode-components06-captures",
+    "previous_creation_stage_focused": 126,
+    "new_creation_tests": 9,
+    "creation_failures": [
+      "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create01.json",
+      "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create02.json"
+    ],
+    "creation_contract_checks": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create03-schema-verification02.json",
+    "creation_full_schema_failure": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create03-schema-verification.log",
+    "previous_action_stage_focused": 124,
+    "new_mode_action_tests": 11,
+    "mode_action_failure": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions01.json",
+    "mode_action_prior_pass": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions02.json",
+    "mode_action_schema": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-parameter-schema01.json",
+    "optimized_first_attempt": {
+      "tests": 2173,
+      "failures": 1,
+      "log": "artifacts/runs/20261028T052601Z-220-document-modes/release-full01.log",
+      "cause": "Obsolete expectation that RGB32 component Fill is unsupported."
+    },
+    "qualification_repair": {
+      "tests": 46,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions04.log",
+      "changes": [
+        "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift"
+      ],
+      "scope": "Replaces obsolete rejection with numerical/untouched-byte/history and desktop/direct/both-HTTP equivalence checks. No production source changed."
+    },
+    "full_optimized": {
+      "tests": 2173,
+      "failures": 0,
+      "current_source": true,
+      "result": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02.json",
+      "log": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02.log",
+      "source_manifest": "artifacts/runs/20261028T052601Z-220-document-modes/qualification-inputs02.json"
+    },
+    "independent_release_psd": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02-psd-independent01.json",
+    "independent_release_tiff": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02-tiff-independent01.json",
+    "final_focused_repair": {
+      "tests": 46,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions04.log"
+    }
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 347,
+    "unavailable_leaf_commands": 378,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "typed_photato_commands": 118,
+  "last_fully_qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_220.json",
+  "latest_local_universal_package": "artifacts/runs/20261028T052601Z-220-document-modes/Photato220-final01.zip",
+  "installed_corrected_app": "/Users/johnczlonka/Applications/Photato Verified.app",
+  "installed_build": "209",
+  "installed_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+  "window_status": "34 current window/canvas regressions pass. Corrected209 installed; old159 test window still running. Fresh CUA inventory reports locked Mac; manual unlock requested. Same-document live verification and safe old-window closure remain pending.",
+  "github": {
+    "release_url": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-3913ac56396348d02611",
+    "draft": true,
+    "private": true,
+    "verification": "artifacts/runs/20261028T052601Z-220-document-modes/github-upload-verification01.json",
+    "source_commit_or_push": false
+  },
+  "next": [
+    "Implement the remaining major restricted modes, starting with Indexed Color and Bitmap, then Duotone and Multichannel. Preserve authoritative mode data, usable native UI/history/files and both applicable APIs. Follow restricted-mode-plan01.json; full COL02 and Photoshop parity remain open.",
+    "Full mode-specific descriptor variants, arbitrary component colors/blends, alpha/spot targets and native semantic Actions; full native component tool/menu/shortcut coverage remains open. Native ink-space compositing and rich-effect previews remain unqualified.",
+    "Native-mode tiled/JPEG-compressed TIFF, spot-ink/extra-channel variants and non-RGB editable rich PSD/TIFF records remain unsupported. Native Lab16 TIFF chroma is rounded to the public signed1/256 scale; layered planes retain exact bytes. Merged multi-layer mode caches still use RGB composition/reseparation; exact native blend/ink output remains open.",
+    "Adobe creation restrictions: other named profiles, nonpixel dimensions, pixel scales, restricted modes and guide-only solidColor fill. Full endpoint conformance and exact Photoshop working-profile/default/color behavior remain open; published output oneOf schema is ambiguous.",
+    "Indexed Color, Bitmap, Duotone and Multichannel workflows.",
+    "Mode-native compositing/filter fidelity, Photoshop defaults/ICC/colorimetric equivalence and semantic Actions.",
+    "Existing Debug Layers rename-focus failure; current additional zero-size assertions remain unqualified.",
+    "Manual unlock, same-document corrected209 zoom/pan/scroll/resize check and safe retirement of old159 test window."
+  ],
+  "window_followup": "artifacts/runs/20261028T052601Z-220-document-modes/window-followup05.json",
+  "qualified_stage": "Native RGB/Grayscale/CMYK/Lab creation, conversion, component editing, persistence, file interchange and corresponding API integration",
+  "stage_qualification_complete": true,
+  "package": {
+    "utc": "2026-10-28T10:07:40.470056+00:00",
+    "tests": {
+      "mode-actions04": 46,
+      "release-full02": 2173
+    },
+    "mode_suites": {
+      "AdobeDocumentCreationTests": 9,
+      "DocumentModeConversionTests": 9,
+      "DocumentModeTests": 9,
+      "DocumentModeWorkflowTests": 1,
+      "ModeActionProgramTests": 8,
+      "ModeActionWorkflowTests": 3,
+      "ModeChannelWorkflowTests": 8,
+      "ModeComponentEditingTests": 5,
+      "NativeModeRasterTests": 9,
+      "PSDModeTests": 8,
+      "TIFFModeTests": 8,
+      "TIFFModeWorkflowTests": 2
+    },
+    "new_mode_tests": 79,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T052601Z-220-document-modes/Photato220-final01.zip",
+    "zip_sha256": "150697b2267989b8208a7c3a7a2ef8b712b825401136d791c08f25f75767c399",
+    "app": "/private/tmp/photato220-verified-8m14jhx5/Photato.app",
+    "executable_sha256": "7348fae52ed3d0ed6642983c32cd11c4458ec8361b3c3726b2694ef63e815b51",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato220-verified-8m14jhx5/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato220-verified-8m14jhx5/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1923,
+    "supplemental_licenses": 3,
+    "source_manifest": "qualification-inputs02.json",
+    "source_manifest_sha256": "2567cfa1e2e3404af28d8ea4e22c5c5241cd8c049ce08b4b25451434ed986ced",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 5,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 347,
+      "unavailable_leaf_commands": 378,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "retired_brand_matches_in_package": [],
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "limits": "Full optimized tests and universal package on this host. No current live handoff, physical Intel/macOS14/macOS26 runtime qualification or complete Photoshop numerical/default/descriptor parity. Restricted modes, native semantic mode Actions, complete mode-specific tools and native ink-space blending remain open. Existing Debug-only Layers focus regression remains separately recorded; a Release pass does not resolve it.",
+    "optional_ai_frameworks_weak_linked": {
+      "x86_64": [
+        "ImagePlayground"
+      ],
+      "arm64": [
+        "FoundationModels",
+        "ImagePlayground"
+      ]
+    },
+    "optional_ai_frameworks_not_linked": {
+      "x86_64": [
+        "FoundationModels"
+      ],
+      "arm64": []
+    }
+  },
+  "completed_at_utc": "2026-10-28T10:07:40.470056+00:00",
+  "test_counts": {
+    "mode-actions04": 46,
+    "release-full02": 2173
+  },
+  "tests": {
+    "focused_mode_actions04": {
+      "passed": 46,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions04.log",
+      "current_source": true
+    },
+    "full_optimized02": {
+      "passed": 2173,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02.log",
+      "current_source": true
+    }
+  },
+  "completed_this_increment": [
+    "Native four-mode storage, creation, conversion, Channels and mode file interchange",
+    "Corresponding desktop/Photato/Adobe job integration and validation",
+    "79 new mode tests,2173 full optimized tests and independent current PSD/TIFF plane checks",
+    "Verified universal package and private draft upload; no source push"
+  ],
+  "evidence_root": "artifacts/runs/20261028T052601Z-220-document-modes",
+  "live_pending": "34 current window/canvas regressions pass. Corrected209 installed; old159 test window still running. Fresh CUA inventory reports locked Mac; manual unlock requested. Same-document live verification and safe old-window closure remain pending.",
+  "next_major_plan": "artifacts/runs/20261028T052601Z-220-document-modes/restricted-mode-plan01.json",
+  "next_major_workflow": "Implement the remaining major restricted modes, starting with Indexed Color and Bitmap, then Duotone and Multichannel. Preserve authoritative mode data, usable native UI/history/files and both applicable APIs. Follow restricted-mode-plan01.json; full COL02 and Photoshop parity remain open.",
+  "remaining": [
+    "Full mode-specific descriptor variants, arbitrary component colors/blends, alpha/spot targets and native semantic Actions; full native component tool/menu/shortcut coverage remains open. Native ink-space compositing and rich-effect previews remain unqualified.",
+    "Native-mode tiled/JPEG-compressed TIFF, spot-ink/extra-channel variants and non-RGB editable rich PSD/TIFF records remain unsupported. Native Lab16 TIFF chroma is rounded to the public signed1/256 scale; layered planes retain exact bytes. Merged multi-layer mode caches still use RGB composition/reseparation; exact native blend/ink output remains open.",
+    "Adobe creation restrictions: other named profiles, nonpixel dimensions, pixel scales, restricted modes and guide-only solidColor fill. Full endpoint conformance and exact Photoshop working-profile/default/color behavior remain open; published output oneOf schema is ambiguous.",
+    "Indexed Color, Bitmap, Duotone and Multichannel workflows.",
+    "Mode-native compositing/filter fidelity, Photoshop defaults/ICC/colorimetric equivalence and semantic Actions.",
+    "Existing Debug Layers rename-focus failure; current additional zero-size assertions remain unqualified.",
+    "Manual unlock, same-document corrected209 zoom/pan/scroll/resize check and safe retirement of old159 test window."
+  ],
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/20261028T101046Z-220-qualified-refresh.log",
+    "check": "artifacts/development-history-audit/20261028T101046Z-220-qualified-check.log"
+  }
+}

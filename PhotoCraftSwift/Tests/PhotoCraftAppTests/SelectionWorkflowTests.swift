@@ -29,7 +29,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertNotNil(store.document.selectionMask)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.document.layers, before.layers)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, before)
     store.chooseTool(WorkspaceCatalog.tool("polygonLasso"))
@@ -60,7 +60,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertNotNil(store.selectionPath)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.document.layers, before.layers)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, before)
   }
@@ -75,7 +75,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertEqual(path.boundingBoxOfPath, CGRect(x: 0, y: 0, width: 3, height: 3))
     XCTAssertTrue(try SelectionOutline.path(.init(width: 1, height: 1, bytes: [127])).path.isEmpty)
   }
-  @MainActor func testFractionalSelectionCreatesActualLayerMaskAndUndo() throws {
+  @MainActor func testFractionalSelectionCreatesActualLayerMaskAndUndo() async throws {
     var doc = try CraftDocument(width: 4, height: 2)
     doc.setCoverageSelection(
       try .init(width: 4, height: 2, bytes: [0, 64, 128, 255, 0, 64, 128, 255]))
@@ -88,7 +88,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertEqual(mask.pixel(x: 2, y: 0).r, 128.0 / 255, accuracy: 0.004)
     XCTAssertEqual(
       try Renderer.composite(store.document).pixel(x: 2, y: 0).a, 128.0 / 255, accuracy: 0.004)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, doc)
     XCTAssertFalse(store.editingMask)
@@ -117,7 +117,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertTrue(canvas.polygonPoints.isEmpty)
     XCTAssertEqual(store.document, before)
   }
-  @MainActor func testMaskPaintingTargetsMaskAndLeavesShapeEditable() throws {
+  @MainActor func testMaskPaintingTargetsMaskAndLeavesShapeEditable() async throws {
     var doc = try CraftDocument(width: 12, height: 12)
     var layer = Layer(
       name: "Shape", content: .shape(.init(kind: .rectangle, width: 4, height: 4, color: .black)))
@@ -139,7 +139,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertEqual(store.activeLayer?.content, layer.content)
     XCTAssertEqual(store.activeLayer?.mask?.pixel(x: 1, y: 1).r, 0)
     XCTAssertEqual(store.activeLayer?.mask?.pixel(x: 0, y: 0).r, 1)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, doc)
     store.select(layer.id)
@@ -162,7 +162,7 @@ final class SelectionWorkflowTests: XCTestCase {
     XCTAssertEqual(result.pixel(x: 1, y: 0).r, 0.25, accuracy: 0.004)
     XCTAssertEqual(result.pixel(x: 2, y: 0).r, 0.5, accuracy: 0.004)
     XCTAssertEqual(session.document.layers[0].content, doc.layers[0].content)
-    session.undo()
+    try session.undo()
     try session.execute(.maskFill(id, 1))
     XCTAssertEqual(
       session.document.layers[0].mask?.pixel(x: 1, y: 0).r ?? -1, 128.0 / 255, accuracy: 0.004)

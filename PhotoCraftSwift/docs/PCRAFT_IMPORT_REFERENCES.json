@@ -1,0 +1,145 @@
+{
+  "step": "dev-step-153",
+  "workflow": "D01/I03",
+  "status": "Supported original PhotoCraft raster/group projects now import as editable native documents through Open and Photato APIs; all major gates remain open.",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_153.json",
+  "source_format_foundation": [
+    "docs/PCRAFT_CONTAINER_REFERENCES.json",
+    "docs/PCRAFT_PROJECT_REFERENCES.json"
+  ],
+  "scope": [
+    "RGB8/16/32 editable raster layers and nested groups; full allocated tile extents including off-canvas/hidden RGB; exact integer samples and finite linear Float32 bits.",
+    "Layer opacity/blending/clipping/protection/color labels, independent masks and outside coverage, vector masks,saved/work paths,canvas GRAY8 selection and working RGB profiles.",
+    "Native Open for ZIP/directory sources; source-preserving Save As; shared Photato upload and isolated action-job input; native history/download/archive behavior. Unknown/unrepresented active source data rejects atomically.",
+    "All 26 adapter-focused,10 registration-focused,1455 Debug,1455 Release and 13 x86_64 Release tests pass; universal package and owned live Debug UI workflow verify."
+  ],
+  "freeze": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/tested-source-hashes04.json",
+    "sha256": "7c010dab12610179306139c5842546d94c340a9db4270e622b3078a6afa386a7"
+  },
+  "source_oracle": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/rust-oracle01-result.json",
+    "sha256": "0c104e6d1ae7001163dd78644c0cd701961d032ee76b6493bdc347c255d3b6b0"
+  },
+  "source_provenance": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/source-provenance01.json",
+    "sha256": "a7873d9dc4ad0751a5aaa42c4eb082f99945bf9956ee5b338598458b92d44b4e"
+  },
+  "tests": {
+    "debug": {
+      "passed": 1455,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 609.449,
+      "log": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/full02.log",
+        "sha256": "4acc904d84be9efcaa0f4320702816a879cfd327584eba85a79090be2706b085"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/full02-result.json",
+        "sha256": "7b943a18d3fe25dca62af38fb7f7ccb68077e7edce7516c3df6366270f1af721"
+      }
+    },
+    "release": {
+      "passed": 1455,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 86.875,
+      "log": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/release01.log",
+        "sha256": "98d93f434752de9ff5e746fe16835e4a40848765a4a18238d23d8a393197de85"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/release01-result.json",
+        "sha256": "97adf6287f78a27040e7ecc887557cfde40510f83e316c57f2eecf2e6fa38981"
+      }
+    }
+  },
+  "focus": {
+    "adapter": {
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 198.106,
+      "log": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/focused03.log",
+        "sha256": "e94e3c71d8e5aeeec39c9040ff238b0aa7bf8211e6435cd20ee0578a563a7ce4"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/focused03-result.json",
+        "sha256": "25a50824f0bfd6b79419282ee739f6e7690fecc623d7de2653f97fc53859e3ae"
+      }
+    },
+    "registration": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1.016,
+      "log": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/focused04.log",
+        "sha256": "633e7069dc69d71357aa4d7baa3982329b966b2c00a5e172035f3f72a8943ec8"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/focused04-result.json",
+        "sha256": "a62b2bfdf76a02c6da1ab3bd89704870942384dfb48f883c7f528aadc573b07b"
+      }
+    },
+    "same_swift_inputs": {
+      "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/registration-only-delta01.json",
+      "sha256": "bc124a1b91f917c8f6f5698220ee82b75fb2e4710a1965c95d7fa8d3f0cf8546"
+    }
+  },
+  "intel": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 9.023,
+    "log": {
+      "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/intel-tests01.log",
+      "sha256": "3b4e99ae54f7b70411b31bb8bddbd8879dee732779c2c78a1c08698d75ee4f1c"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/intel-tests01-result.json",
+      "sha256": "3f88d9cb5ef5a8c7372ae7c6d586047b9810fd600b629283a55e109f4283910e"
+    }
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/package-verification01.json",
+    "sha256": "5e21f70b85e1d22bdbe3c8f3193a725f66af9c563b009f45405251fa8a3dbdf4"
+  },
+  "live": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/live-verification01.json",
+    "sha256": "818e6c42b06d0ea95339f903a7763f50795ca68886f957e661e18e9f8d2a1802"
+  },
+  "api": {
+    "photato_typed_commands": 21,
+    "adobe_partial_endpoints": 3,
+    "adobe_unimplemented_endpoints": 5,
+    "new_routes": [],
+    "photato_extended_routes": [
+      "POST /v1/documents/import",
+      "POST /v1/action-jobs"
+    ],
+    "input_format": "pcraft",
+    "media_type": "application/vnd.photocraft.project",
+    "capabilities": [
+      "documentOpening.pcraft",
+      "actionJobs.photatoAdditionalInput"
+    ],
+    "adobe_policy": "Original PhotoCraft input is Photato-only; Adobe v2 still rejects it. Existing request/output contracts and operation limits remain unchanged."
+  },
+  "export_compatibility": {
+    "path": "artifacts/runs/20261020T210815Z-153-pcraft-adapter/export-compatibility02.json",
+    "sha256": "a4ba82eacea3635c066a929eccb4d04b7993a9e6849ba689e53e025ebee29542"
+  },
+  "remaining": [
+    "Exact source sample/property preservation does not establish complete original-Rust or Photoshop composite rendering equivalence; independent rendering comparisons remain required.",
+    "All major workflow gates remain open; this is a qualified editable source-import subset, not complete PhotoCraft or Photoshop parity.",
+    "Fill/adjustment/type/shape/Smart Object content,fill opacity,effects,artboards,auxiliary channels,guides,patterns,comps,timeline,rich metadata and other unrepresented features still reject. Continue major native workflows and adapter extensions, not cached flattening.",
+    "Nonzero unbounded raster defaults,explicit empty/off-canvas/high-precision selections,non-RGB projects and inputs beyond native/container budgets are unsupported. Original .pcraft writing and larger/streamed migration remain open.",
+    "Photato adds source ZIP input to uploads/resource jobs. Adobe inputs and published routes remain unchanged; three endpoints remain partial and five unimplemented.",
+    "Full Photoshop byte output,menus/factory shortcuts/preferences,colour/profile/format/lifecycle semantics and physical Intel/macOS14 runtime qualification remain open. Rosetta is not a physical-machine test.",
+    "Minor functions and final cosmetic details remain deferred behind all major gates."
+  ],
+  "no_photoshop_parity_claim": true
+}

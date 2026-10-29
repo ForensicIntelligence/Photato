@@ -1,0 +1,102 @@
+{
+  "step": "dev-step-126",
+  "status": "Off-main-actor cancellable native/HTTP Undo/Redo qualified by automated, universal and retained-output checks; live UI remains pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T040338Z-126-history-lifecycle",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/tested-source-hashes01.json",
+    "sha256": "5af1ebba4e9a655935a0cdcbe5bca62dc7caedfced7b230f756d7e89d35abe1c"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_126.json",
+  "implementation": [
+    "Move native and Photato HTTP history preparation into one detached native Swift value-copy transaction",
+    "Preserve dirty state, exact content, stacks and revision on failure/cancellation/staleness",
+    "Cancel via native button/Escape or operation-scoped typed API command; cancel API-owned work on sharing revocation",
+    "Invalidate queued and pending native operations on replacement/close; reject ABA session changes",
+    "Read committed history accounting while busy without waiting for scratch writes",
+    "Migrate existing workflow assertions to await actual navigation; eight additional deterministic async regressions",
+    "Preserve independent menu/shortcut and Photoshop sample checks, both APIs and universal macOS14 packaging"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T040338Z-126-history-lifecycle/full01.log",
+      "sha256": "a3ef41813c8c937a613f0be0711bc7c42c45b61de443952dadc4349a933889a9",
+      "passed": 1128,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.569
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T040338Z-126-history-lifecycle/release01.log",
+      "sha256": "c03e519629bd62b227cbc2b60bb4ee5f148dc5642241cea2bbe5d0e904b95b3c",
+      "passed": 1128,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 49.834
+    }
+  },
+  "focus": {
+    "passed": 104,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 9.016,
+    "log": {
+      "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/focused01.log",
+      "sha256": "aa8afeb245b432e7a956233fea49696817aa4f78bd5aa6f9dea35d80b1b0736e"
+    }
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/package-verification01.json",
+    "sha256": "b7be1b9b7a594225c4e7ae202d7a0f5c75b704a5e02dc8dd2e07a2e994bc6dde"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/source-scope01.json",
+    "sha256": "2ebc50f645fc0d4139e58fcd7cdfab66f562986c20a7772fdf0fcc65aca3c8a3"
+  },
+  "api": {
+    "photato_typed_commands": 19,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "history.cancel plus observable operation state/schema/capabilities. Native and HTTP Undo/Redo share background preparation, cancellation, stale-session/lifecycle/revision guards and atomic publication. Adobe routes and algorithms unchanged."
+  },
+  "independent_psb": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "prior_output_equality": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/final-export-compatibility01.json",
+    "sha256": "9fe65825e2daae33b9fe18b92a36af28aef04d793bc41e0fcd565a06623d43de"
+  },
+  "intel_psb": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_groups": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T040338Z-126-history-lifecycle/live-ui01.json",
+    "sha256": "df097cbe35e2bc387bf6d99def5b747252e5a0ea0e6416717963cf65a46292aa"
+  },
+  "prior_failures": [
+    "artifacts/runs/20261020T035545Z-126-async-history",
+    "artifacts/runs/20261020T040123Z-126-async-history-repair"
+  ],
+  "remaining": [
+    "I02: active-document paging, bounded renderer/cache and total-process memory qualification before raising file/canvas/transfer limits",
+    "I02: qualify history start-time accounting, final snapshot cleanup, real large-document responsiveness and peak memory; this increment does not claim lower RSS or all I/O off the main actor",
+    "I02: preserve125 measured less-compressible arm64 RSS regression; no new performance benchmark or universal improvement claim",
+    "D02: full crash/relaunch recovery, disk-full/interruption durability and stale scratch cleanup",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and complete live lifecycle",
+    "D03: factory history/drive preferences, snapshots, Fade, purge and optional secondary history features remain queued",
+    "Combined118\u2013126 native/Photoshop live qualification, physical Intel/macOS14 app runtime, and optional AI availability/real generation",
+    "Full Photoshop functionality and both API contracts remain incomplete; all major functions must close before optional minor/detail work"
+  ],
+  "performance_limits": "Background preparation and main-actor availability validated using deterministic gates around the real engine. No real large-document timing, new RSS, all-I/O-off-main or physical-Intel claim. Historical125 memory evidence remains in its checkpoint."
+}

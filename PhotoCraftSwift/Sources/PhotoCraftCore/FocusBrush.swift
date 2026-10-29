@@ -40,8 +40,9 @@ public enum FocusPainter {
   @discardableResult public static func paint(
     _ focus: FocusStroke, on layer: inout Layer,
     canvasWidth: Int, canvasHeight: Int, selection: IntRect? = nil,
-    selectionMask: SelectionMask? = nil
+    selectionMask: SelectionMask? = nil, preserveTransparency: Bool = false
   ) throws -> Bool {
+    let preserve = !focus.mask && (preserveTransparency || layer.protection.locksTransparency)
     try Task.checkCancellation()
     let original: Surface
     let targetTransform: Transform2D
@@ -228,7 +229,7 @@ public enum FocusPainter {
       return original.depth == .f32 && !focus.mask ? SRGBTransfer.encoded(p) : p
     }
     return try ClonePainter.paintTarget(
-      stroke, on: &layer, canvasWidth: canvasWidth, canvasHeight: canvasHeight, selection: selection
+      stroke, on: &layer, canvasWidth: canvasWidth, canvasHeight: canvasHeight, selection: selection, preserveTransparency: preserve
     ) { pixels, transform, clipping in
       let coverage = try ClonePainter.strokeCoverage(stroke, surface: pixels, transform: transform)
       var result = pixels
@@ -246,10 +247,12 @@ public enum FocusPainter {
           let k = focus.brush.opacity * (selectionMask?.coverage(x: dx, y: dy) ?? 1)
           if k <= 0 { continue }
           let raw = pixels.pixel(x: x, y: y)
+          if preserve && raw.a <= 0 { continue }
           let before = focus.mask ? Pixel(unit(raw.r), unit(raw.r), unit(raw.r)) : raw
           let after = sample(q.x, q.y)
           if !focus.mask && before.a == 0 && after.a == 0 { continue }
-          let p = FocusKernels.mix(before, after, k).quantized(pixels.depth)
+          let p = (preserve ? ProtectedPixels.fill(before, color: after, coverage: k)
+            : FocusKernels.mix(before, after, k)).quantized(pixels.depth)
           guard p.isFinite else {
             throw CraftError.invalid("Retouching produced a non-finite sample.")
           }

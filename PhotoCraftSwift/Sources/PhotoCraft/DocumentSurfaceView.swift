@@ -11,20 +11,20 @@ struct DocumentSurfaceView: View {
       HStack(spacing: 0) {
         ZStack(alignment: .bottom) {
           CanvasHost(
-            store: store, image: store.image, revision: store.revision, zoom: store.zoom,
+            store: store, image: store.image, revision: store.revision + store.cropRevision + store.regionRetouchRevision, zoom: store.zoom,
             pan: store.pan, selection: store.document.selection,
             showRulers: store.showRulers, showLayerBounds: store.showLayerBounds,
             activateDocument: activateDocument
           )
           .id(store.identity)
-          if isActive && store.document.selection != nil && store.transformDraft == nil {
+          if isActive && store.document.selection != nil && store.transformDraft == nil && store.cropDraft == nil && store.regionRetouchDraft == nil {
             WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
           }
           if store.geometryBusy {
             HStack {
               ProgressView().controlSize(.small)
               Text(store.status)
-              Button("Cancel") { store.geometryTask?.cancel() }
+              Button("Cancel") { store.cancelActiveOperation() }
             }.padding(12).background(StudioTheme.chrome, in: RoundedRectangle(cornerRadius: 8))
               .padding(.bottom, 18)
           }

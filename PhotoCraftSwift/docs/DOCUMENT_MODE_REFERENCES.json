@@ -1,0 +1,176 @@
+{
+  "step": "dev-step-220",
+  "recorded_at_utc": "2026-10-28T09:18:37.281443+00:00",
+  "status": "Native four-mode integration qualified with2173 full optimized tests and46 final focused regressions. Universal macOS14+ package verifies after fresh extraction; private GitHub draft assets verify after download. Seven PSDs independently verify24 layer planes; fourteen TIFFs verify48 composite and24 layer planes. Restricted modes, full tools/Actions and exact Photoshop color/default/descriptor parity remain open.",
+  "complete": false,
+  "implemented": [
+    "Authoritative planar RGB/Gray/CMYK/Lab components; RGB/Gray8/16/32 and CMYK/Lab8/16.",
+    "Retained validated ICC/intent, direct ColorSync conversion, extended linear HDR, independent CMYK K preservation.",
+    "Native46 archives/history/HTTP download and import; numeric geometry/crop/copy preservation and RGB-cache reconciliation.",
+    "Native mode/profile/depth/intent preview sheet, local/document Undo, Cancel, stale-source guards, explicit merge-visible/HDR clipping.",
+    "Seven Image > Mode entries and checkmarks, busy/history integration, mode-aware document tabs.",
+    "document.convertMode and paged mode.channel.read/write through native history; strict parameters, JSON capability/state/result schemas.",
+    "Mode-aware PSD/PSB raster/group/mask import/export: Gray8/16/32, CMYK/Lab8/16, native RGB samples, validated ICC/linearized Gray32 and actual CMYK file inversion. Shared native file and API serializers retain exact straight component planes.",
+    "TIFF Gray8/16/32, CMYK/Lab8/16 and native RGB output; numerical strip decoding, alpha/orientation/ICC, both byte orders/layouts, none/LZW/ZIP and Float32 prediction. Layered TIFF retains exact PSD-backed planes/groups/masks. Existing native Save and both job interfaces share the serializer.",
+    "Mode-aware Channels rows/thumbnails/visibility/targets for native RGB/Gray/CMYK/Lab and legacy high-depth RGB; selection-aware numerical fill, brush/erase, invert and eight filters preserve other planes/alpha and one Undo. Filter preview/Cancel and guarded brush target lifecycle. Three typed APIs and matching channel-preview.png/state/schema. Legacy RGB8 reference path preserved.",
+    "Shared native blank-document factory; File New mode/depth/resolution/background/ICC controls; published create-composite ImageParameters and distinct Photato action-job extension; optional image fetch, bounded retained custom profiles, three named standard profiles, mode-aware PSD admission and RGB action-target rejection on non-RGB documents.",
+    "Mode-specific Gray/CMYK/Lab and higher-depth RGB channel actionJSON: selection, neutral Fill, Invert and eight filters use the Channels engine, preserve other planes/alpha and retain targets across resources. Mode/depth conversion shares native compositor/history, preserves nonmerged layer selection and working-profile primaries. Encoded Float32 compositor buffers now retain correct working-profile interpretation. Canonical parameter schemas and both HTTP/native equivalence tests."
+  ],
+  "api": {
+    "typed_photato_commands": 118,
+    "new_commands": [
+      "document.convertMode",
+      "mode.channel.read",
+      "mode.channel.write",
+      "mode.channel.select",
+      "mode.channel.visibility",
+      "mode.channel.edit"
+    ],
+    "state": "documentMode",
+    "native_archive": 46,
+    "actions_archive": 18,
+    "adobe": "POST /v2/create-composite blank mode/depth/resolution/fill/ICC subset plus both execute-actions interfaces for mode-specific channel selection/neutral Fill/Invert/eight filters and convertMode/depth/merge. Native recorded semantic Actions remain separate/unimplemented. Full descriptor/default/pixel and hosted-service conformance unqualified.",
+    "file_modes": {
+      "rgb": [
+        8,
+        16,
+        32
+      ],
+      "grayscale": [
+        8,
+        16,
+        32
+      ],
+      "cmyk": [
+        8,
+        16
+      ],
+      "lab": [
+        8,
+        16
+      ]
+    }
+  },
+  "tests": {
+    "latest_focused_debug": 158,
+    "failures": 0,
+    "new_mode_tests": 79,
+    "command": [
+      "./scripts/test.sh",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "ModeAction.*Tests|PhotoshopActionProgramTests|Adobe.*Tests|AutomationEncodingOptionsTests|DocumentMode.*Tests|NativeModeRasterTests|ModeComponentEditingTests|ModeChannelWorkflowTests|TIFFMode.*Tests|PSDMode.*Tests|ColorManagementTests|FilterWorkflowTests|RasterFilterTests|CanvasContainmentTests|ViewportTests|AutomationTests"
+    ],
+    "result": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03.json",
+    "log": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03.log",
+    "frozen_test_inputs": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-inputs.json",
+    "earlier_focused": "artifacts/runs/20261028T052601Z-220-document-modes/mode-final01.json",
+    "broader_failure": "artifacts/runs/20261028T052601Z-220-document-modes/integration01.json",
+    "baseline_debug_failure": "artifacts/runs/20261028T052601Z-220-document-modes/reveal-baseline219-debug01.json",
+    "baseline_optimized_pass": "artifacts/runs/20261028T052601Z-220-document-modes/reveal-baseline219-release01.json",
+    "withdrawn_patch": "artifacts/runs/20261028T052601Z-220-document-modes/withdrawn-LayerNameEditing-focus-attempt01.swift",
+    "scope": "2173 full optimized tests, including79 new mode tests, and46 final focused tests pass. Current independent readers verify7 PSDs/24 layer planes and14 TIFFs/48 composite/24 layer planes. Universal package verifies. This is not complete Photoshop parity or live/platform qualification.",
+    "previous_focused_debug": 182,
+    "psd_test_failure": "artifacts/runs/20261028T052601Z-220-document-modes/mode-psd01.json",
+    "independent_psd_reader": "artifacts/runs/20261028T052601Z-220-document-modes/psd-independent02.json",
+    "independent_imageio_reader": "artifacts/runs/20261028T052601Z-220-document-modes/psd-imageio01.json",
+    "new_tiff_tests": 10,
+    "independent_tiff_reader": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-tiff-independent01.json",
+    "independent_tiff_imageio": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-imageio03.json",
+    "tiff_verifier_failure": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-independent01.log",
+    "broader_components_debug": 305,
+    "new_component_tests": 13,
+    "component_broader": "artifacts/runs/20261028T052601Z-220-document-modes/mode-components05.json",
+    "component_compile_failures": [
+      "artifacts/runs/20261028T052601Z-220-document-modes/mode-components02.json",
+      "artifacts/runs/20261028T052601Z-220-document-modes/mode-components03.json"
+    ],
+    "hosted_component_captures": "artifacts/runs/20261028T052601Z-220-document-modes/mode-components06-captures",
+    "previous_creation_stage_focused": 126,
+    "new_creation_tests": 9,
+    "creation_failures": [
+      "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create01.json",
+      "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create02.json"
+    ],
+    "creation_contract_checks": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create03-schema-verification02.json",
+    "creation_full_schema_failure": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create03-schema-verification.log",
+    "previous_action_stage_focused": 124,
+    "new_mode_action_tests": 11,
+    "mode_action_failure": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions01.json",
+    "mode_action_prior_pass": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions02.json",
+    "mode_action_schema": "artifacts/runs/20261028T052601Z-220-document-modes/mode-actions03-parameter-schema01.json",
+    "full_optimized": {
+      "tests": 2173,
+      "failures": 0,
+      "current_source": true,
+      "result": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02.json",
+      "log": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02.log",
+      "source_manifest": "artifacts/runs/20261028T052601Z-220-document-modes/qualification-inputs02.json"
+    },
+    "independent_release_psd": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02-psd-independent01.json",
+    "independent_release_tiff": "artifacts/runs/20261028T052601Z-220-document-modes/release-full02-tiff-independent01.json"
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 347,
+    "unavailable_leaf_commands": 378,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "menu_report": "artifacts/runs/20261028T052601Z-220-document-modes/mode-ui03-menu-report.json",
+  "source_manifest": "artifacts/runs/20261028T052601Z-220-document-modes/working-source07.json",
+  "changes": "artifacts/runs/20261028T052601Z-220-document-modes/working-changes07.json",
+  "source_delta_snapshot": "artifacts/runs/20261028T052601Z-220-document-modes/working-source-delta07",
+  "upstream_unchanged_files": 754,
+  "official_references": "artifacts/runs/20261028T052601Z-220-document-modes/public-references01.json",
+  "adobe_contract": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-mode-contract01.json",
+  "remaining": [
+    "Full mode-specific descriptor variants, arbitrary component colors/blends, alpha/spot targets and native semantic Actions; full native component tool/menu/shortcut coverage remains open. Native ink-space compositing and rich-effect previews remain unqualified.",
+    "Native-mode tiled/JPEG-compressed TIFF, spot-ink/extra-channel variants and non-RGB editable rich PSD/TIFF records remain unsupported. Native Lab16 TIFF chroma is rounded to the public signed1/256 scale; layered planes retain exact bytes. Merged multi-layer mode caches still use RGB composition/reseparation; exact native blend/ink output remains open.",
+    "Adobe creation restrictions: other named profiles, nonpixel dimensions, pixel scales, restricted modes and guide-only solidColor fill. Full endpoint conformance and exact Photoshop working-profile/default/color behavior remain open; published output oneOf schema is ambiguous.",
+    "Indexed Color, Bitmap, Duotone and Multichannel workflows.",
+    "Mode-native compositing/filter fidelity, Photoshop defaults/ICC/colorimetric equivalence and semantic Actions.",
+    "Existing Debug Layers rename-focus failure; current additional zero-size assertions remain unqualified.",
+    "Manual unlock, same-document corrected209 zoom/pan/scroll/resize check and safe retirement of old159 test window."
+  ],
+  "full_photoshop_parity": false,
+  "psd_public_references": "artifacts/runs/20261028T052601Z-220-document-modes/psd-mode-public-references01.json",
+  "psd_primary_source_pin": "artifacts/runs/20261028T052601Z-220-document-modes/psd-tools-mode-reference01.json",
+  "tiff_public_references": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-mode-public-references01.json",
+  "tiff_test_dependencies": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-reader-packages01.json",
+  "component_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/manage-channels-in-the-channels-panel.html",
+      "use": "Public Channels order, thumbnails, component visibility and Shift selection; no new live observation."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/channels-in-photoshop.html",
+      "use": "Public channel viewing/editing workflow; exact multi-target, shortcuts, kernels and platform behavior remain unqualified."
+    }
+  ],
+  "creation_contract": {
+    "current_pin": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create-contract02.json",
+    "schema_checks": "artifacts/runs/20261028T052601Z-220-document-modes/adobe-create03-schema-verification02.json",
+    "test_dependency_report": "artifacts/runs/20261028T052601Z-220-document-modes/schema-install01.json",
+    "limitations": "Published CreateCompositeRequest output oneOf branches overlap without mediaType enums. Validate unchanged ImageParameters and selected PsdOutput separately; no full strict-schema/hosted-service claim. Other modes/units/scales/named profiles/guide-only solidColor remain unsupported."
+  },
+  "mode_action_references": "artifacts/runs/20261028T052601Z-220-document-modes/mode-action-references01.json",
+  "qualification": {
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_220.json",
+    "package": "artifacts/runs/20261028T052601Z-220-document-modes/verification01.json",
+    "private_github": "artifacts/runs/20261028T052601Z-220-document-modes/github-upload-verification01.json",
+    "next_major_plan": "artifacts/runs/20261028T052601Z-220-document-modes/restricted-mode-plan01.json"
+  },
+  "restricted_work_in_progress_221": {
+    "checkpoint": "docs/WORKING_CHECKPOINT_221.json",
+    "reference": "docs/RESTRICTED_MODE_REFERENCES.json",
+    "core_tests": 94,
+    "feature_complete": false,
+    "release_package_updated": false
+  },
+  "lab_boundary_correction_223": {
+    "reference": "docs/PROOFING_REFERENCES.json",
+    "probe": "artifacts/runs/20261028T181113Z-223-proofing/lab-probe10.log",
+    "status": "Native ICC Lab range correction passes75 focused/41 repaired optimized-focused/2330 full optimized tests. Stored samples remain preserved; exact/live/platform gates remain open."
+  }
+}

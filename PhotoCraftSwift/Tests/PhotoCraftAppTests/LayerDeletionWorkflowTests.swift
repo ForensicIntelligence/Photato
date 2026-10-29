@@ -33,7 +33,7 @@ final class LayerDeletionWorkflowTests: XCTestCase {
       XCTAssertEqual(store.activeLayer, group)
     }
   }
-  @MainActor func testCancelPreservesDocumentAndConfirmedDeleteUndoesOnce() throws {
+  @MainActor func testCancelPreservesDocumentAndConfirmedDeleteUndoesOnce() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let original = store.document
@@ -58,7 +58,7 @@ final class LayerDeletionWorkflowTests: XCTestCase {
     store.requestLayerDeletion()
     XCTAssertEqual(store.document.layers.map(\.id), [ids[1]])
     XCTAssertEqual(store.session.undoStack.count, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
   }
   @MainActor func testFooterOptionBypassesPromptAndPlainClickPrompts() throws {
@@ -95,7 +95,7 @@ final class LayerDeletionWorkflowTests: XCTestCase {
       XCTAssertEqual(store.session.undoStack.count, changeSelection ? 0 : 1)
     }
   }
-  @MainActor func testGroupOnlyKeepsEditableChildrenWithOneUndo() throws {
+  @MainActor func testGroupOnlyKeepsEditableChildrenWithOneUndo() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     store.selectedLayerIDs = Set(store.document.layers.map(\.id))
@@ -114,7 +114,7 @@ final class LayerDeletionWorkflowTests: XCTestCase {
       XCTAssertEqual(child.content, original.layers.first { $0.id == child.id }?.content)
     }
     XCTAssertEqual(store.session.undoStack.count, 2)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
   }
   @MainActor func testNativeAlertsShowChoicesAndFinalLayerNeverPrompts() throws {

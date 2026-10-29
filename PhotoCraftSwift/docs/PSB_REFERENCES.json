@@ -1,0 +1,164 @@
+{
+  "step": "dev-step-119",
+  "status": "PSB implementation and automated/universal/Rosetta qualification complete; native/Photoshop live qualification pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T001625Z-119-psb-document-format",
+  "specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "rust_source": "../photocraft-main/crates/psd/src/{header,tagged,compression}.rs; MIT OR Apache-2.0",
+  "implementation": [
+    "Version2 section/channel/tag lengths and RLE row tables through shared native codec",
+    "Native Open/Save/Copy and content-based source-format identity",
+    "Photato psb format/import/download/save and both job input adapters; Adobe output contract unchanged"
+  ],
+  "procedural_fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/psb/provenance.json",
+  "external_fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/psb-corpus/provenance.json",
+  "independent_export_parser": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "focused02": {
+    "tests": 73,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 18.108,
+    "log": "artifacts/runs/20261020T001625Z-119-psb-document-format/focused02.log"
+  },
+  "remaining": [
+    "Live119 PSB and pending118 hierarchy workflow await unlocked Mac",
+    "Large/streaming files above current512MiB and32768dimension/36MP budgets",
+    "All supported platform physical runtime and full Photoshop/file/rendering equivalence",
+    "Unsupported rich-content guards remain; external corpus qualified in119 within its recorded scope"
+  ],
+  "focused03": {
+    "tests": 75,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 36.343,
+    "log": "artifacts/runs/20261020T001625Z-119-psb-document-format/focused03.log"
+  },
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/tested-source-hashes04.json",
+    "sha256": "28d99940e99e81057b36a1132f994719ce85d4e3433f9366be785788e9b5bcc5",
+    "inputs": 787,
+    "swift_files": 406
+  },
+  "external_corpus": {
+    "accepted_pairs": 9,
+    "explicitly_unsupported_pairs": 1,
+    "unsupported_case": "semi-transparent-layers; existing sn2P rich-content guard, tested for both PSD and PSB",
+    "commit": "b1b454baa5fdc4d72e26b9b4bd29b2e8ad1fb93b",
+    "positive_comparison": "Decoded samples, masks, profile, geometry and hierarchy agree; native export/reopen composite preserved. Not full-file identity or Photoshop2026 live proof."
+  },
+  "independent_export_parser_final": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/independent-psb-verification02.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "full_debug": {
+    "tests": 1071,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 180.782,
+    "log": "artifacts/runs/20261020T001625Z-119-psb-document-format/full01.log"
+  },
+  "full_release": {
+    "tests": 1071,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 45.653,
+    "log": "artifacts/runs/20261020T001625Z-119-psb-document-format/release01.log"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/package-verification01.json",
+    "sha256": "57205e74688651c10e5167a73356f9b6b04d96a93ac71a14337c416c62e22e84"
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/intel-psb01.json",
+    "sha256": "5d9df392abc63927a83b7675ea87e9152954b16310eda9265f3a0e1c23b94769"
+  },
+  "intel_scope": {
+    "PSB_inputs": 21,
+    "PSB_roundtrips": 63,
+    "decoded_plane_bytes": 31765088,
+    "RGB32_group_cases": 10,
+    "group_merged_bytes": 655360,
+    "different_bytes": 0,
+    "physical_Intel_or_macOS14_full_app": false
+  },
+  "current_group_regression_evidence": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/intel-groups01.json",
+    "sha256": "c9c12231001a7f784c495a1f3741d5ff837ca50cf28a94b539082f400a3c0827"
+  },
+  "candidate_zip": {
+    "path": "artifacts/runs/20261020T001625Z-119-psb-document-format/Photato119-candidate.zip",
+    "sha256": "4c043f6c7deb0f9baa67f0a5b1e8a50633573daa12da23945d6d9eb9df1e46f0"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_119.json",
+  "row_decoding_step120": {
+    "reference": "docs/PSD_STREAMING_REFERENCES.json",
+    "status": "Bounded PSD/PSB row decoding and automated/universal/Rosetta/memory qualification complete; combined native/Photoshop live qualification pending",
+    "full_large_file_support": false
+  },
+  "file_input_step121": {
+    "reference": "docs/PSD_FILE_INPUT_REFERENCES.json",
+    "status": "Bounded PSD/PSB file input qualified by automated/universal/Intel/memory checks; combined native/Photoshop live workflow pending",
+    "full_large_file_support": false
+  },
+  "file_output_step122": {
+    "reference": "docs/PSD_FILE_OUTPUT_REFERENCES.json",
+    "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+    "full_large_file_support": false
+  },
+  "psd_compression_step141": {
+    "reference": "docs/PSD_COMPRESSION_OPTIONS_REFERENCES.json",
+    "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb",
+        "POST /v1/action-jobs"
+      ],
+      "new_state": [
+        "psdLayerCompression and psdCompositeCompression in options/capability/state schemas"
+      ],
+      "permission": "Existing save/transfer/resource-job permissions; unchanged default-off session controls.",
+      "coverage": "Native-only encodingOptions expands with raw/rle/zip/zipPrediction for layers and merged image. Both job interfaces share the serializer; Adobe has no corresponding PSD compression field, retains default bytes and rejects the native extension. Cached output keys include choices."
+    }
+  },
+  "photoshop_file_preferences_step142": {
+    "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+    "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/preferences/photoshop-file-handling",
+        "POST /v1/preferences/photoshop-file-handling"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb"
+      ],
+      "new_state": [
+        "photoshopPreferenceChangesEnabled",
+        "photoshopFilePreferences capability/schema",
+        "effectiveSaveEncodingOptions"
+      ],
+      "permission": "Separate native Allow Photoshop file preference changes, off on each API session; existing recovery/recent permissions do not grant it.",
+      "coverage": "Shared native transaction/default resolution. Exact body schema and state, permission/auth/stale/busy/persistence errors. Stateless Photato and Adobe jobs retain their own output defaults; no Adobe application preference endpoint exists in pinned contract."
+    }
+  }
+}

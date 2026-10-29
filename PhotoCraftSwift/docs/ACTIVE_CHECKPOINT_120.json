@@ -1,0 +1,199 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "api": {
+    "photato_typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Desktop, Photato import/download and both job adapters share row decoder. Additive channelDecoding capabilities;18 commands/two partial/six unsupported endpoints and all transfer limits unchanged."
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "step": "dev-step-120",
+  "recorded_at_utc": "2026-10-20T01:06:33.237742+00:00",
+  "status": "Bounded PSD/PSB row decoding and automated/universal/Rosetta/memory qualification complete; combined native/Photoshop live qualification pending",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/tested-source-hashes03.json",
+    "sha256": "b98adca50d8c0f3acc10f7008d47da6b87b6e077ec88f708877e4227a2bea463"
+  },
+  "source_test_files": 408,
+  "validation_inputs": 800,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/packaging-documents01.json",
+    "sha256": "02b1878aca5d1020377f2821f71a6450b799a765178d4460585515ecac32e7dd"
+  },
+  "validation_isolation": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/isolation01.json",
+    "sha256": "e5aecd9eabc5ce5728641b984889ef6d8642bc7f9b8929dbdc1e60cd062a822f"
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/full01.log",
+      "sha256": "0a817d2a903e68bed7c55f94ed242632c7b862b5a00efb8ac75a852e229da47d",
+      "passed": 1077,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 185.991
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/release01.log",
+      "sha256": "1f4f8935f6160c3fbff69373b224485d28b1c44fe9cc64b7955e8e98df76ef26",
+      "passed": 1077,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 46.41
+    }
+  },
+  "focus_tests": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 39.884,
+    "evidence": {
+      "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/focused03.log",
+      "sha256": "e45def526aa81f48f70f2ba5ee810eeb02ad09f96e15e202adcc0bb7d5b0c2ac"
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato120-verified-8kd7pdez/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c2f9cd6f74216de39a3d0121bb75d9e49ac9d79b41a7cc2e31b08f2ca30ce65a",
+    "zip_sha256": "d0f9120adb1088bb961d73ae6ff8d5a8b4dbdd11ae087daa42bb5a19d2e3fa27",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/Photato120-candidate.zip",
+    "sha256": "d0f9120adb1088bb961d73ae6ff8d5a8b4dbdd11ae087daa42bb5a19d2e3fa27"
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "previous_candidate_checkpoint": "docs/ACTIVE_CHECKPOINT_119.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/package-verification01.json",
+    "sha256": "bec914bd8fe4e58963e5f01ff686998eee0a81fce38b31236798fee25e6f0a41"
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/intel-psb01.json",
+    "sha256": "5d9df392abc63927a83b7675ea87e9152954b16310eda9265f3a0e1c23b94769"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/intel-groups01.json",
+    "sha256": "c9c12231001a7f784c495a1f3741d5ff837ca50cf28a94b539082f400a3c0827"
+  },
+  "intel_scope": {
+    "PSB_inputs": 21,
+    "PSB_roundtrips": 63,
+    "decoded_plane_bytes": 31765088,
+    "RGB32_group_cases": 10,
+    "group_merged_bytes": 655360,
+    "different_bytes": 0,
+    "physical_Intel_or_macOS14_full_app": false
+  },
+  "live_ui": {
+    "status": "pending unlocked Mac; final Photoshop binding reports lock",
+    "native120_launched": false,
+    "old118_window_and_cleanup_not_verified": true,
+    "combine_pending118_119_flows_in_latest120_candidate": true,
+    "evidence": {
+      "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/live-status01.json"
+    }
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "Substantive major-workflow implementation with independent source/sample/binary qualification; not blocked and not full goal completion",
+  "completed_this_increment": [
+    "Shared immutable Data views replace nested layer/channel/RLE-table copies",
+    "Raw/RLE/ZIP/prediction row decoding for editable layer/mask and flattened pixels; unused merged caches still validate",
+    "Additive Photato decoder capabilities and shared bad-input state protection; both job contracts unchanged",
+    "Six Python chunk-boundary vectors and six new regression tests;1077 Debug/1077 Release tests, universal package and Intel conformance",
+    "Same decoded plane hashes with measured lower peak memory in two bounded procedural cases"
+  ],
+  "remaining_major_dependencies": [
+    "I02: bounded file-backed input, streamed atomic output, scratch-backed tiles and cache/history/native archive memory design before expanding current512MiB/32768dimension/36MP limits",
+    "I02: independent multi-GB/greater-than2GB selection and editable roundtrip corpora; padded small images cannot close large-document scope",
+    "D01: .pcraft migration, full format options/profile/metadata fidelity, external files/recent items/bookmarks/recovery",
+    "Combined current native/Photoshop PSD/PSB/grouped/native archive live qualification and installation; old118 disposable app cleanup",
+    "Other unported Photoshop content, independent clipping, full menus/shortcuts/preferences, physical Intel/macOS14 app runtime and full master goal"
+  ],
+  "resume_first": "Use checkpoint120/freeze03 and the preserved120 isolated workspace; prior119/118 snapshots remain historical. Continue safe major work while UI is locked. Preserve installed117 and original user documents/workspace. No directory rename or Git mutation.",
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/next-major-qualification01.json",
+    "sha256": "af3f210bf540998a899a70324bacf582c0ad9d285a99d6f6395eae5ff1ff0ae6"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/final-inputs01.json",
+    "sha256": "4e5a65ee40b4953a23887190907476c4a3516203b1e76b25eb15794d7e3f812b"
+  },
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step120-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "initial_check": {
+      "check": "passed",
+      "milestones": 120,
+      "evidence_files": 30303,
+      "logs": 17982,
+      "missing_explicit_references": 0
+    },
+    "final_refresh_log": "artifacts/development-history-audit/20261020-step120-final/refresh03.log",
+    "final_check_log": "artifacts/development-history-audit/20261020-step120-final/check03.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step120-final/final-inputs01.json"
+  },
+  "source_provenance": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/psd-stream/provenance.json",
+    "sha256": "d009cd79bc1e97fd8dd9b80d2e35d26907e11c16eccae0a4174683ca588a29f3"
+  },
+  "memory_evidence": {
+    "path": "artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-comparison01.json",
+    "sha256": "eb289d4dc427050a8704998df4cadee302490877c5989a2bafd3f8857e54da3c"
+  }
+}

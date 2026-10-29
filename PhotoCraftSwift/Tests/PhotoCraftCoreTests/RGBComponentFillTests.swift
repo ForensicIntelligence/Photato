@@ -62,9 +62,9 @@ final class RGBComponentFillTests: XCTestCase {
       XCTAssertEqual(actual.height, pixels.height)
       let edited = session.document
       XCTAssertEqual(session.undoStack.map(\.label), ["Fill"])
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, document)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, edited)
       compared += count
     }

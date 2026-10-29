@@ -63,46 +63,57 @@ enum TileArchive {
     return data
   }
   static func decode(_ data: Data) throws -> [Pixel] {
-    guard !data.isEmpty, data.count <= byteCount + 1 else {
-      throw CraftError.invalid("Invalid native tile size.")
+    try Decoder().decode(data)
+  }
+  /// One decode owns this workspace; reuse the inflation buffer across tiles.
+  /// Returned arrays have independent value storage and never alias the workspace.
+  final class Decoder {
+    private var inflated = Data(count: byteCount)
+    func decode(_ data: Data) throws -> [Pixel] {
+      try Task.checkCancellation()
+      guard !data.isEmpty, data.count <= byteCount + 1 else {
+        throw CraftError.invalid("Invalid native tile size.")
+      }
+      switch data[data.startIndex] {
+      case 0:
+        guard data.count == byteCount + 1 else {
+          throw CraftError.invalid("Truncated native tile.")
+        }
+        return try data.withUnsafeBytes {
+          try pixels(UnsafeRawBufferPointer(rebasing: $0.dropFirst()))
+        }
+      case 1:
+        var length = uLongf(byteCount)
+        var consumed = uLong(data.count - 1)
+        let result = inflated.withUnsafeMutableBytes { target in
+          data.withUnsafeBytes { source in
+            uncompress2(
+              target.bindMemory(to: UInt8.self).baseAddress!, &length,
+              source.bindMemory(to: UInt8.self).baseAddress!.advanced(by: 1), &consumed)
+          }
+        }
+        guard result == Z_OK, length == byteCount, consumed == data.count - 1 else {
+          throw CraftError.invalid("Corrupt, truncated or oversized native tile stream.")
+        }
+        return try inflated.withUnsafeBytes { try pixels($0) }
+      default: throw CraftError.unsupported("Unsupported native tile compression.")
+      }
     }
-    let raw: Data
-    switch data[data.startIndex] {
-    case 0:
-      guard data.count == byteCount + 1 else { throw CraftError.invalid("Truncated native tile.") }
-      raw = Data(data.dropFirst())
-    case 1:
-      var output = Data(count: byteCount)
-      var length = uLongf(byteCount)
-      var consumed = uLong(data.count - 1)
-      let result = output.withUnsafeMutableBytes { target in
-        data.withUnsafeBytes { source in
-          uncompress2(
-            target.bindMemory(to: UInt8.self).baseAddress!, &length,
-            source.bindMemory(to: UInt8.self).baseAddress!.advanced(by: 1), &consumed)
+    private func pixels(_ bytes: UnsafeRawBufferPointer) throws -> [Pixel] {
+      try Array(unsafeUninitializedCapacity: pixelCount) { buffer, initialized in
+        for offset in stride(from: 0, to: byteCount, by: 16) {
+          func channel(_ index: Int) -> Float {
+            Float(
+              bitPattern: UInt32(
+                littleEndian: bytes.loadUnaligned(
+                  fromByteOffset: offset + index * 4, as: UInt32.self)))
+          }
+          let pixel = Pixel(channel(0), channel(1), channel(2), channel(3))
+          guard pixel.isFinite else { throw CraftError.invalid("Nonfinite native tile samples.") }
+          buffer.baseAddress!.advanced(by: initialized).initialize(to: pixel)
+          initialized += 1
         }
       }
-      guard result == Z_OK, length == byteCount, consumed == data.count - 1 else {
-        throw CraftError.invalid("Corrupt, truncated or oversized native tile stream.")
-      }
-      raw = output
-    default: throw CraftError.unsupported("Unsupported native tile compression.")
-    }
-    return try raw.withUnsafeBytes { bytes in
-      var pixels = [Pixel]()
-      pixels.reserveCapacity(pixelCount)
-      for offset in stride(from: 0, to: byteCount, by: 16) {
-        func channel(_ index: Int) -> Float {
-          Float(
-            bitPattern: UInt32(
-              littleEndian:
-                bytes.loadUnaligned(fromByteOffset: offset + index * 4, as: UInt32.self)))
-        }
-        let pixel = Pixel(channel(0), channel(1), channel(2), channel(3))
-        guard pixel.isFinite else { throw CraftError.invalid("Nonfinite native tile samples.") }
-        pixels.append(pixel)
-      }
-      return pixels
     }
   }
 }
@@ -112,12 +123,19 @@ extension CodingUserInfoKey {
 }
 /// Shared by all surfaces in one decode; reserve before expanding any tiles.
 final class RasterDecodeBudget {
+  private let limit: Int
   private var remaining: Int
-  init(bytes: Int) { remaining = bytes }
+  init(bytes: Int) { limit = bytes; remaining = bytes }
   func reserve(tiles: Int) throws {
-    guard tiles >= 0, tiles <= remaining / TileArchive.byteCount else {
-      throw CraftError.invalid("Native raster data exceeds the document memory budget.")
+    guard tiles >= 0, tiles <= Int.max / TileArchive.byteCount else {
+      throw CraftError.invalid("Invalid native raster allocation.")
     }
-    remaining -= tiles * TileArchive.byteCount
+    let bytes = tiles * TileArchive.byteCount
+    guard bytes <= remaining else {
+      let required = (limit - remaining).addingReportingOverflow(bytes)
+      throw NativeArchiveMemoryLimit.raster(
+        requiredBytes: required.overflow ? Int.max : required.partialValue, limitBytes: limit)
+    }
+    remaining -= bytes
   }
 }

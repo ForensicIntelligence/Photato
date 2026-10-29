@@ -49,6 +49,17 @@ public struct Surface: Codable, Equatable, Sendable {
   private var tiles: [Int: [Pixel]] = [:]
   public var tileCount: Int { tiles.count }
   public var allocatedBytes: Int { tiles.count * Self.tileSide * Self.tileSide * 16 }
+  func accountHistoryTiles(_ seen: inout Set<UInt>) -> Int {
+    var bytes = 0
+    for pixels in tiles.values {
+      pixels.withUnsafeBufferPointer { buffer in
+        if let address = buffer.baseAddress, seen.insert(UInt(bitPattern: address)).inserted {
+          bytes += buffer.count * MemoryLayout<Pixel>.stride
+        }
+      }
+    }
+    return bytes
+  }
   /// Nonzero-alpha extent, independent of hidden RGB and unused tile padding.
   public func contentBounds() throws -> IntRect? {
     var x0 = width
@@ -475,12 +486,19 @@ public struct Surface: Codable, Equatable, Sendable {
     try c.encode(height, forKey: .height)
     try c.encode(depth, forKey: .depth)
     try c.encode(TileArchive.encodeSample(storedDefaultPixel), forKey: .defaultSample)
-    try c.encode(colorEncoding == .linearRGB ? 2 : 1, forKey: .packingVersion)
+    let history = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding
+    try c.encode(
+      history == nil ? (colorEncoding == .linearRGB ? 2 : 1) : 3, forKey: .packingVersion)
     if colorEncoding == .linearRGB { try c.encode(colorEncoding, forKey: .colorEncoding) }
     var packed = c.nestedContainer(keyedBy: TileKey.self, forKey: .tileData)
     for key in tiles.keys.sorted() {
       try Task.checkCancellation()
-      try packed.encode(TileArchive.encode(tiles[key]!), forKey: TileKey(intValue: key)!)
+      let bytes = try TileArchive.encode(tiles[key]!)
+      if let history {
+        try packed.encode(history.storeBytes(bytes), forKey: TileKey(intValue: key)!)
+      } else {
+        try packed.encode(bytes, forKey: TileKey(intValue: key)!)
+      }
     }
   }
   public init(from decoder: any Decoder) throws {
@@ -489,12 +507,16 @@ public struct Surface: Codable, Equatable, Sendable {
     height = try c.decode(Int.self, forKey: .height)
     depth = try c.decode(PixelDepth.self, forKey: .depth)
     let version = try c.decodeIfPresent(Int.self, forKey: .packingVersion)
-    guard version == nil || version == 1 || version == 2 else {
+    let history = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding
+    guard version == nil || version == 1 || version == 2 || (version == 3 && history != nil) else {
       throw CraftError.unsupported("Unsupported native raster packing version.")
     }
-    if version == 2 {
-      colorEncoding = try c.decode(SurfaceColorEncoding.self, forKey: .colorEncoding)
-      guard colorEncoding == .linearRGB, depth == .f32 else {
+    if version == 2 || version == 3 {
+      colorEncoding =
+        try c.decodeIfPresent(SurfaceColorEncoding.self, forKey: .colorEncoding) ?? .sRGB
+      guard version != 2 || colorEncoding == .linearRGB,
+        colorEncoding != .linearRGB || depth == .f32
+      else {
         throw CraftError.invalid("Invalid linear RGB raster storage.")
       }
     } else {
@@ -533,7 +555,9 @@ public struct Surface: Codable, Equatable, Sendable {
       guard let index = key.intValue, index >= 0, index < maxKey, String(index) == key.stringValue,
         tiles[index] == nil
       else { throw CraftError.invalid("Invalid native tile index.") }
-      if version != nil {
+      if version == 3, let history {
+        tiles[index] = try history.tile(container.decode(String.self, forKey: key))
+      } else if version != nil {
         tiles[index] = try TileArchive.decode(container.decode(Data.self, forKey: key))
       } else {
         var samples = try container.nestedUnkeyedContainer(forKey: key)

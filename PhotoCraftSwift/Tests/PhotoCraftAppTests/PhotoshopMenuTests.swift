@@ -63,7 +63,7 @@ final class PhotoshopMenuTests: XCTestCase {
       let items = allItems(menu).filter {
         !$0.isSeparatorItem && !$0.isHidden && $0.identifier != nil
       }
-      XCTAssertEqual(items.count, 802)
+      XCTAssertEqual(items.count, 801)
       XCTAssertEqual(
         items.map { $0.identifier!.rawValue }, expected.map { $0.path.joined(separator: " > ") })
       let report: [String: Any] = [
@@ -191,7 +191,7 @@ final class PhotoshopMenuTests: XCTestCase {
         String(UnicodeScalar(NSEvent.SpecialKey.f6.rawValue)!))
       XCTAssertEqual(try item("Edit > Fill…").action, #selector(AppDelegate.fillDialog))
       XCTAssertEqual(
-        try item("Filter > Blur > Gaussian Blur…").action, #selector(AppDelegate.gaussianBlurDialog)
+        try item("Filter > Blur > Gaussian Blur…").action, #selector(AppDelegate.rasterFilterDialog(_:))
       )
       XCTAssertEqual(
         try item("Layer > New > Layer Via Copy").action, #selector(AppDelegate.layerViaCopy))
@@ -226,7 +226,7 @@ final class PhotoshopMenuTests: XCTestCase {
         XCTAssertNil(item.target, "Text fields must retain native clipboard routing")
       }
       for selector in [
-        #selector(AppDelegate.fillDialog), #selector(AppDelegate.gaussianBlurDialog),
+        #selector(AppDelegate.fillDialog), #selector(AppDelegate.rasterFilterDialog(_:)),
       ] {
         XCTAssertFalse(
           app.validateMenuItem(NSMenuItem(title: "", action: selector, keyEquivalent: "")))
@@ -241,7 +241,7 @@ final class PhotoshopMenuTests: XCTestCase {
       XCTAssertEqual(Set(signatures).count, signatures.count, "No competing menu key equivalents")
     }
   }
-  @MainActor func testLayerViaCopyRejectsUnportedSelectionAndMultipleLayerCases() throws {
+  @MainActor func testLayerViaCopyRejectsUnportedSelectionAndMultipleLayerCases() async throws {
     let store = EditorStore(document: try CraftDocument(width: 4, height: 4))
     store.renderTask?.cancel()
     XCTAssertTrue(store.canCopyWholeLayerViaMenu)
@@ -249,7 +249,7 @@ final class PhotoshopMenuTests: XCTestCase {
     store.copyWholeLayerViaMenu()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document.layers.count, original.layers.count + 1)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, original)
     store.perform(.selection(IntRect(x: 0, y: 0, width: 2, height: 2)))
@@ -264,7 +264,7 @@ final class PhotoshopMenuTests: XCTestCase {
     store.selectedLayerIDs = Set(store.document.layers.map(\.id))
     XCTAssertFalse(store.canCopyWholeLayerViaMenu)
   }
-  @MainActor func testMenuFillChoicePreservesForegroundSelectionAndUndo() throws {
+  @MainActor func testMenuFillChoicePreservesForegroundSelectionAndUndo() async throws {
     let store = EditorStore(document: try CraftDocument(width: 4, height: 3))
     store.renderTask?.cancel()
     store.brush.color = .white
@@ -280,14 +280,14 @@ final class PhotoshopMenuTests: XCTestCase {
     XCTAssertEqual(pixels.pixel(x: 1, y: 1), color.quantized(store.document.depth))
     XCTAssertEqual(store.brush.color, .white)
     XCTAssertEqual(store.document.selection, before.selection)
-    store.undo()
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, before)
     store.perform(.lock(layer.id, true))
     store.renderTask?.cancel()
     XCTAssertFalse(store.canUseMenuPixelEdit)
   }
-  @MainActor func testMenuBlurRadiusAndInvalidInputDoNotSilentlyUseFive() throws {
+  @MainActor func testMenuBlurRadiusAndInvalidInputDoNotSilentlyUseFive() async throws {
     var model = try CraftDocument(width: 5, height: 5)
     let id = try XCTUnwrap(model.activeLayerID)
     var source = try Surface(width: 5, height: 5)
@@ -296,16 +296,26 @@ final class PhotoshopMenuTests: XCTestCase {
     let store = EditorStore(document: model)
     store.renderTask?.cancel()
     store.blur(radius: 1)
+    await store.geometryTask?.value
     store.renderTask?.cancel()
     guard case .raster(let result) = store.activeLayer?.content else {
       return XCTFail("Missing raster")
     }
-    XCTAssertEqual(result, try Renderer.gaussianBlur(source, radius: 1))
-    XCTAssertNotEqual(result, try Renderer.gaussianBlur(source, radius: 5))
-    store.undo()
+    var filter = RasterFilter(.gaussianBlur); filter.radius = 1
+    var expected = model
+    try Command.applyFilter(id, filter).apply(to: &expected)
+    XCTAssertEqual(store.document, expected)
+    filter.radius = 5
+    try Command.applyFilter(id, filter).apply(to: &model)
+    guard case .raster(let wider) = model.layers[0].content else { return XCTFail() }
+    XCTAssertNotEqual(result, wider)
+    model = expected
+    model.layers[0].content = .raster(source)
+    await store.undo()
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, model)
     store.blur(radius: .nan)
+    await store.geometryTask?.value
     store.renderTask?.cancel()
     XCTAssertEqual(store.document, model)
     XCTAssertNotNil(store.error)

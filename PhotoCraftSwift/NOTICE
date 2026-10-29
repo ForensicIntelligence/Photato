@@ -38,3 +38,7 @@ Builds made with craft-fonts (CRAFT_FONTS_DIR; all official releases) also embed
 https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md (today BIZ UDPGothic, Shippori Mincho and
 BIZ UDMincho; not the web build), under the SIL Open Font License 1.1. Their licence texts
 ship with the package as OFL-<family>.txt.
+
+Original PhotoCraft content-address decoding uses a native Swift BLAKE3-256 implementation following the official CC0 reference algorithm (BLAKE3-team/BLAKE3, commit f55849f89cd85083c1c9daa2c5de20766f309c00). Official unkeyed test vectors are distributed under CC0; their license is retained with the Pcraft test fixtures. https://github.com/BLAKE3-team/BLAKE3 . Zstandard framing and entropy decoding follow RFC 8878 and the official format specification; no Rust or external Zstandard library is linked into Photato.
+
+Optional PeopleParts model: Google MediaPipe multiclass segmentation (May10,2023), model card author Adel Ahmadyan, Google. Licensed under Apache License, Version2.0 according to the official model card: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20Multiclass%20Segmentation.pdf . Native Core ML conversion and integration modified by Photato. Generated model resource, when present, retains original learned weights and its provenance manifest.

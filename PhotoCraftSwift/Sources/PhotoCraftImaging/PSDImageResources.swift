@@ -10,7 +10,8 @@ enum PSDImageResources {
     let raw: Data
   }
   static let maximumBytes = 16 * 1024 * 1024
-  static let replacedIDs: Set<Int> = [1005, 1025, 1039, 1041, 1060]
+  static let replacedIDs: Set<Int> = [1005, 1025, 1039, 1041, 1046, 1047, 1060,
+    1006, 1007, 1045, 1053, 1066, 1067, 1077]
   static let staleIDs: Set<Int> = [
     1000, 1022, 1024, 1026, 1033, 1036, 1044, 1057, 1069, 1072, 1086, 1087, 1088,
   ]

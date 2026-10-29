@@ -1,0 +1,89 @@
+{
+  "step": "dev-step-194",
+  "date": "2026-10-27",
+  "status": "Native Focus Area implemented and tested; full S02/Photoshop parity remains open.",
+  "scope": "Sharp-region detection with Auto/manual range and noise, soft edges, manual Add/Subtract brushes, preview/local history, six output modes and draft-only Select and Mask handoff. Factory menu, native history/Actions selection and shared API.",
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/select-area-focus.html",
+      "updated": "2023-09-25",
+      "checked": "2026-10-27",
+      "use": "Primary menu/range direction, Auto/noise, manual correction, preview, edge-softening/handoff and six outputs. Not a numerical or default-value oracle."
+    },
+    {
+      "path": "../photocraft-main/crates/algo/src/segment/focus.rs",
+      "sha256": "7952106933301261cf0ab1f6d9c6cf1a613367a9522222badcc07fb6fb32d39a",
+      "license": "MIT OR Apache-2.0",
+      "use": "Native translation of Laplacian energy,99th-percentile normalization, guided color refinement, component/hole cleanup and upsampling. Original sources preserved and ATTRIBUTION updated. Source range direction reversed to follow Adobe UI; Auto choices are Photato additions."
+    },
+    {
+      "path": "artifacts/runs/20261027T152723Z-193-sky/adobe-v2-review01.json",
+      "use": "Published v2 review and preserved embedded-URL404; pinned official contract contains no dedicated Focus Area endpoint."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "selection.focus"
+    ],
+    "catalogue_count": 89,
+    "state": "focusArea includes availability/workspace/preview state, requested/effective settings, stroke count, output and error. selectionRefinement.workspaceOpen now distinguishes Focus Area mode.",
+    "schemas": "Strict settings, stroke, output, state and result discovery. Ordinary editing and new-document outputs share native preparation/refinement output and lifecycle guards.",
+    "formats": {
+      "native_archive": 32,
+      "recorded_actions": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "limits": "Native8,388,608 canvas/source pixels;1MP working analysis. API shared-document4,194,304 canvas pixels/64 layers/128MiB and4MiB request.1024 strokes,4096 points per stroke,16384 total points,250000000 brush pixel visits. Ordinary raster targets; sampling/analysis uses SDR/sRGB proxy."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "No dedicated Focus Area route in pinned Photoshop v2 contract. Focus actionJSON descriptors remain unqualified. Existing Adobe routes are unchanged; native API support does not establish Adobe conformance."
+  },
+  "menus": {
+    "new_menu_bindings": 1,
+    "commands": [
+      "Select > Focus Area\u2026"
+    ],
+    "shortcut": "Captured factory menu order retained; no primary shortcut invented. Local Undo/Redo routing shared with Select and Mask.",
+    "entries": 802,
+    "bound_leaf_commands": 262,
+    "unavailable_leaf_commands": 463,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "actions": "Focus selection output records explicit resulting coverage in Actions4. Mask/new-layer outputs create visible unsupported recording entries. No adaptive re-detection or complete Focus Actions/Batch claim.",
+  "qualification": "All83 final focused Debug and1903 full optimized tests pass. The universal macOS14+ package verifies and includes193 Sky workflows.",
+  "tests": {
+    "focused_debug": 83,
+    "debug_log": "artifacts/runs/20261027T161119Z-194-focus/integration04.log",
+    "prior_integration": {
+      "integration01": 50,
+      "integration03": 82
+    },
+    "core_tests": 6,
+    "new_workflow_tests": 7,
+    "offscreen": "artifacts/runs/20261027T161119Z-194-focus/offscreen-integration04.png",
+    "failed_attempts": [
+      "artifacts/runs/20261027T161119Z-194-focus/integration02.log"
+    ],
+    "scope": "Sharp/blur/flat/small/depth/range/noise/cleanup/cancellation; six native/API outputs, source/history/archive/transform/locks, current-vs-composite sampling independent of prior selection, Auto controls/manual correction, handoff/Cancel, native new-document/read/close lifecycle, schema/invalid/stale/busy/revocation and offscreen/synthetic controls.",
+    "release_full": 1903,
+    "release_log": "artifacts/runs/20261027T161119Z-194-focus/release-full01.log",
+    "verification": "artifacts/runs/20261027T161119Z-194-focus/verification01.json"
+  },
+  "limitations": [
+    "Exact Adobe focus detection, Auto estimates, numeric/default ranges and pixels remain unqualified; native range0\u201310 and noise0\u20131 are explicit current controls, not a verified factory-default claim.",
+    "Real-photo noise/depth-of-field quality and large-image performance require broader independent qualification. Source-derived heuristics are not Adobe proprietary inference.",
+    "Native outputs currently require an ordinary raster layer. Smart Object/live type/group/component targets require appropriate conversion; broader contexts remain open.",
+    "Nonselection Actions/Adobe descriptors and complete S02 Color Range/Magnetic Lasso requirements remain open.",
+    "Offscreen synthetic preview is not live UI qualification. Latest authoritative desktop state remains locked; no re-probe. Physical Intel/macOS14/macOS26 and full Photoshop equivalence remain open."
+  ],
+  "next": "Major Mask All Objects with local per-instance detection, editable masked groups, original image retention, factory menu/context entry, native history and API. Then broader Object Finder/People workflows; fine numerical/cosmetic work remains deferred.",
+  "source_manifest": "artifacts/runs/20261027T161119Z-194-focus/source01.json",
+  "source_manifest_sha256": "1349370f891d1f470e21903bb409bf12679de5c1da4a8840f495990d05663cdf",
+  "source_delta": "artifacts/runs/20261027T161119Z-194-focus/changes01.json"
+}

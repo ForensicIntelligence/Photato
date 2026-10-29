@@ -1,0 +1,162 @@
+{
+  "step": "dev-step-210",
+  "completed_at_utc": "2026-10-27T23:34:48.861056+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Elegant website diary with210 searchable dated milestones, expandable entries, sorting, keyboard access, permalinks and source download",
+    "GitHub link retains private visibility with explicit public-on-release-day note",
+    "Retained original company style and accurately dated historical native captures"
+  ],
+  "source_manifest": "artifacts/runs/20261027T231627Z-209-brand-cleanup/source01.json",
+  "source_manifest_sha256": "e74df44ba63f9c72783d9fb73952a630adcd3560d09638bcef1b3d3db9cd1fe5",
+  "source_inputs": 1601,
+  "source_delta": {
+    "new": [],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/ProjectInfo.swift",
+      "Tests/PhotoCraftAppTests/GradientStripesWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-big-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-big-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-big-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-big-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-big-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-little-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-little-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-little-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-little-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/16-little-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-big-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-big-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-big-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-big-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-big-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-little-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-little-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-little-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-little-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/32-little-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-big-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-big-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-big-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-big-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-big-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-little-0.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-little-1.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-little-2.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-little-3.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/8-little-marker.tiff",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/generate.py",
+      "Tests/PhotoCraftImagingTests/Fixtures/tiff-layers/provenance.json",
+      "Tests/PhotoCraftImagingTests/GradientPresetTests.swift",
+      "Tests/PhotoCraftImagingTests/TIFFLayerTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused01": {
+      "passed": 50,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T231627Z-209-brand-cleanup/focused01.log"
+    }
+  },
+  "test_counts": {
+    "focused01": 50
+  },
+  "last_full_regression": {
+    "step": 208,
+    "tests": 1991,
+    "failures": 0,
+    "current_source": false,
+    "log": "artifacts/runs/20261027T225327Z-208-window-title-canvas/release-full01.log",
+    "note": "Later209 changes are About/demo strings, fixture group metadata and attribution. Current50 focused checks pass."
+  },
+  "package": {
+    "utc": "2026-10-27T23:31:06.386801+00:00",
+    "tests": {
+      "focused01": 50
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T231627Z-209-brand-cleanup/Photato209-final01.zip",
+    "zip_sha256": "d6065982d9d379236df9d8581e1fdd9f844e9ced0f6d1bff833ffa00bb93c20d",
+    "app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato209-verified-f5yvfup5/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato209-verified-f5yvfup5/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1601,
+    "source_manifest_sha256": "e74df44ba63f9c72783d9fb73952a630adcd3560d09638bcef1b3d3db9cd1fe5",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 285,
+      "unavailable_leaf_commands": 440,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "50 focused Debug checks and refreshed universal package on this host. The prior208 full optimized1991-test result and live title/canvas checks remain historical; engine behavior is unchanged by209 branding/fixture-name edits. Physical Intel/macOS14/macOS26 runtime qualification remains open. Xcode project unchanged; new files use existing synchronized groups.",
+    "retired_brand_matches_in_package": []
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 285,
+    "unavailable_leaf_commands": 440,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "api": "Website presentation only; native and Adobe interfaces unchanged.",
+  "limitations": [
+    "Existing Git history, historical binary build archives and historical screenshots remain immutable evidence; current public-facing text and the refreshed app contain no retired branding.",
+    "Original running app/document was preserved. Use the newly packaged app for the updated About and title/canvas behavior.",
+    "Prior208 full1991 optimized tests are historical;209 runs50 focused checks appropriate to string/fixture metadata changes."
+  ],
+  "next": "Resume major F02 distortion workflows. Minor variants and numerical polish remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T225327Z-208-window-title-canvas/next-major-plan01.json",
+  "completed_this_increment": [
+    "Website developer diary and stable entry links",
+    "GitHub repository link with release-day visibility policy",
+    "Desktop/mobile navigation, search and keyboard validation"
+  ],
+  "development_audit": {
+    "refresh_log": "artifacts/runs/20261027T232337Z-210-website-diary/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T232337Z-210-website-diary/development-history-audit/final01-check.log"
+  },
+  "website": {
+    "step": "dev-step-210",
+    "status": "Local website updated with developer diary and repository link",
+    "site": "../../nusite/index.html",
+    "diary": "../../nusite/diary.html",
+    "source_diary": "docs/DEVELOPMENT_DIARY.md",
+    "source_log": "docs/DEVLOG.md",
+    "entries": 210,
+    "repository": {
+      "url": "https://github.com/ForensicIntelligence/Photato",
+      "visibility": "private",
+      "public_on": "Same day the software is released",
+      "user_confirmed": true
+    },
+    "verification": "artifacts/runs/20261027T232337Z-210-website-diary/site-verification02.json",
+    "screenshots": [
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/home-desktop01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/diary-desktop01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/home-mobile01.jpg",
+      "artifacts/runs/20261027T232337Z-210-website-diary/screenshots/diary-mobile01.jpg"
+    ],
+    "style": "Original shared site.css preserved; page-specific journal styles match existing system typography and white/slate/blue palette.",
+    "api_impact": "Static local presentation only. No native or Adobe API schema, editing or permission change.",
+    "publication": "Local files only; no deployment",
+    "limits": "Diary records progress and surviving evidence; milestone count does not measure complete Photoshop parity.",
+    "preview": "http://127.0.0.1:8767/diary.html"
+  },
+  "native_package_step": 209
+}

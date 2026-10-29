@@ -100,7 +100,7 @@ final class LevelsTests: XCTestCase {
       XCTAssertEqual(s.pixel(x: 0, y: 0), original.pixel(x: 0, y: 0))
       XCTAssertLessThan(s.pixel(x: 1, y: 0).r, original.pixel(x: 1, y: 0).r)
       XCTAssertEqual(s.pixel(x: 1, y: 0).g, original.pixel(x: 1, y: 0).g)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
       try session.execute(.addLayer(Layer(name: "Levels", content: .adjustment(.levels(levels)))))
       XCTAssertEqual(

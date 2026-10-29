@@ -16,7 +16,11 @@ extension AutomationService {
         message: "Enable resource action jobs in Photato's native API window first.")
     }
     let submitPath = adobe ? "/v2/execute-actions" : "/v1/action-jobs"
-    if request.path == submitPath {
+    let artboards = adobe && request.path == "/v2/create-artboard"
+    let composite = adobe && request.path == "/v2/create-composite"
+    let colorEdit = adobe && request.path == "/v2/edit"
+    let background = adobe && request.path == "/v2/remove-background"
+    if request.path == submitPath || composite || background || colorEdit || artboards {
       guard request.method == "POST" else {
         throw AdobeAPIError(
           status: 405, code: "unsupported_method", message: "Use POST to submit actions.")
@@ -29,10 +33,20 @@ extension AutomationService {
           status: 415, code: "invalid_content_type",
           message: "Content-Type must be application/json.")
       }
-      let actions = try AdobeActionsRequest(data: request.body)
-      let job = try actionJobs.submit(
+      let job: AdobeActionJobs.Snapshot
+      if artboards {
+        job = try actionJobs.submit(AdobeArtboardRequest(data: request.body), baseURL: base)
+      } else if colorEdit {
+        job = try actionJobs.submit(AdobeColorEditRequest(data: request.body), baseURL: base)
+      } else if background {
+        job = try actionJobs.submit(AdobeRemoveBackgroundRequest(data: request.body), baseURL: base)
+      } else {
+      let actions = try AdobeActionsRequest(data: request.body, allowPhotatoOptions: !adobe,
+        createComposite: composite)
+      job = try actionJobs.submit(
         actions, baseURL: base,
         assetPath: adobe ? "v2/assets" : "v1/action-assets")
+      }
       let statusPath = adobe ? "v2/status" : "v1/action-jobs"
       return .json(
         [

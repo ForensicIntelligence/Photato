@@ -1,0 +1,150 @@
+{
+  "step": "dev-step-201",
+  "date": "2026-10-27",
+  "status": "Native advanced typography implemented and tested; full T02 parity remains open.",
+  "scope": [
+    "Native horizontal/vertical point and paragraph type with editable Unicode runs",
+    "Installed OpenType features, variable axes and language attributes",
+    "Glyphs panel with installed font selection, paging and retained glyph insertion",
+    "History, native34/Actions6 persistence and editable PSD orientation/represented feature flags",
+    "Native and published Adobe text operations share the existing Swift/TextKit engine"
+  ],
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/text/src/psd.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Vertical Ornt/Vrtc, WritingDirection2/Procession1, OpenType flags and FontCaps1 mappings; adapted Swift implementation retains explicit false features."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/appkit/nstextview/setlayoutorientation(_:)",
+      "use": "Native vertical editor coordinate behavior; installed Xcode SDK AppKit headers and offscreen probes verify the APIs."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/coretext/kctfontopentypefeaturetag",
+      "use": "OpenType feature descriptors; installed CoreText headers verify features and variation axes."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/select-manage-fonts/use-opentype-variable-fonts.html",
+      "use": "Native type selection and variable-font axis workflow."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-text",
+      "use": "Published text_layer operations."
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "use": "Pinned textOrientation and CharacterStyle capsOption; no invented Adobe feature/glyph/axis fields."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "font.inspect",
+      "text.glyph"
+    ],
+    "expanded": [
+      "text.create",
+      "text.set"
+    ],
+    "typed_command_count": 106,
+    "parameters": "font.inspect: installed PostScript font, start/count (1\u2013512). text.glyph: layerID/font/glyphID, optional UTF-16 location/length. Type descriptions: orientation, style.fontOptions features/variations/language and glyphOverride. Omitted font option arrays default empty.",
+    "state": "layers[].text and capabilities.text.fonts expose orientation/options, schemas, installed font inspection and limits. Shared desktop/API glyph insertion retains character/paragraph state.",
+    "guards": "Existing authentication, share, revision, lock and interaction guards; read inspection also requires a settled editor. Invalid scalar splits/axes/options reject before mutation.",
+    "native_version": 34,
+    "actions_version": 6
+  },
+  "adobe_api": {
+    "routes": [
+      "POST /v2/create-composite"
+    ],
+    "scope": "Existing text_layer add/edit now accepts textOrientation horizontal/vertical and capsOption normal_caps/small_caps. Shared native engine and editable PSD job output.",
+    "limits": "Arbitrary OpenType tags, variable axes, glyph IDs and language tags are native-only: the pinned published contract has no matching fields. Other pre-existing text adapter restrictions remain; no full Adobe/cloud/font-service compatibility claim."
+  },
+  "menus": {
+    "newly_bound": [
+      "Window > Glyphs",
+      "Type > Panels > Glyphs Panel",
+      "Type > Orientation > Horizontal",
+      "Type > Orientation > Vertical",
+      "Type > OpenType > Standard Ligatures",
+      "Type > OpenType > Contextual Alternates",
+      "Type > OpenType > Discretionary Ligatures",
+      "Type > OpenType > Swash",
+      "Type > OpenType > Oldstyle",
+      "Type > OpenType > Stylistic Alternates",
+      "Type > OpenType > Titling Alternates",
+      "Type > OpenType > Ornaments",
+      "Type > OpenType > Ordinals",
+      "Type > OpenType > Fractions"
+    ],
+    "toolbar": "Vertical Type joins the existing T group; factory ordering/shortcuts retained."
+  },
+  "persistence": {
+    "native": "Optional fields preserve older plain/rich type reading. Advanced fields require native34; Action creation metadata requires Actions6. Older negotiated versions reject.",
+    "psd": "Source-derived vertical unwarped point/paragraph TySh/EngineData and represented Boolean OpenType flags/small capitals. Variation axes, arbitrary tags, language tags, glyph overrides and RTL output reject editable PSD. Native self-round trips are not independent Adobe qualification."
+  },
+  "limits": {
+    "features": 64,
+    "variation_axes": 32,
+    "glyph_page": 512,
+    "utf16": 100000,
+    "style_runs": 4096,
+    "type_pixels": 16777216
+  },
+  "limitations": [
+    "Full Photoshop composers, missing-font substitution, language rules, anti-alias/kerning/pixel equality remain open. Fonts provide their own feature coverage; TimesNewRomanPSMT on this host did not substitute fi/ffi.",
+    "Vertical outline conversion rejects explicitly; path/warp/Dynamic Text are next major T04 scope.",
+    "Glyph enumeration maps BMP characters; unmapped glyphs retain explicit IDs using U+FFFC. Supplementary text remains normally typable.",
+    "Semantic Actions recording of arbitrary type edits, complete PSD text forms and FontCaps synthetic behavior remain unqualified.",
+    "Synthetic/offscreen AppKit and host tests only; no unlocked live UI, independent Photoshop save/reopen, IME/accessibility or physical Intel/macOS14/macOS26 qualification."
+  ],
+  "evidence_root": "artifacts/runs/20261027T194734Z-201-native-typography",
+  "tests": {
+    "status": "Passed focused and full optimized qualification.",
+    "focused_log": "artifacts/runs/20261027T194734Z-201-native-typography/integration06.log",
+    "focused": 70,
+    "release_full": 1959,
+    "release_log": "artifacts/runs/20261027T194734Z-201-native-typography/release-full01.log",
+    "verification": "artifacts/runs/20261027T194734Z-201-native-typography/verification01.json"
+  },
+  "next": "T04: editable text on paths and warped/Dynamic Text; defer phase2 type utilities and exact/cosmetic refinements.",
+  "qualification": "All 70 focused Debug and 1959 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+  "source_manifest": "artifacts/runs/20261027T194734Z-201-native-typography/source01.json",
+  "shaped_text_step202": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/SHAPED_TEXT_REFERENCES.json",
+    "qualification": "All 89 focused Debug and 1966 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "text.layout"
+      ],
+      "expanded": [
+        "text.create",
+        "text.set",
+        "text.glyph"
+      ],
+      "typed_command_count": 107,
+      "parameters": "layerID, settings, optional enabled/pathID. settings replace the full layout with native defaults for omitted fields: mode, width/height, path, warp style/bend/horizontalDistortion/verticalDistortion/vertical, fit, start/end, reverse, offset, wordSpacing/lineSpacing. enabled=false removes geometry and takes no settings/pathID.",
+      "coordinates": "Logical type pixels before layer affine transform. start/end are fractions of baseline length. pathID copies document path coordinates into the logical type frame. Later saved-path edits are independent.",
+      "state": "layers[].text.geometry and capabilities.text.layout expose settings, schemas, limits, persistence and qualification.",
+      "guards": "Authentication/share/revision/interaction/locks and prepared-operation cancellation/revocation; invalid settings400; stale/busy409. Desktop and API share an atomic type command that compensates normalized bounds without moving the logical anchor or mask.",
+      "native_version": 35,
+      "actions_version": 7
+    },
+    "menus": {
+      "newly_bound": [
+        "Type > Warp Text\u2026"
+      ],
+      "other_entry_points": [
+        "Properties > Type > Text Layout",
+        "Type tool Warp / Path Text controls"
+      ],
+      "shortcuts": "Factory catalog retained; Warp Text has no primary shortcut."
+    },
+    "adobe": {
+      "routes": [],
+      "scope": "Existing native text/job engine preserved. No dedicated shaped-text fields or endpoint in the pinned contract, so no invented Adobe route.",
+      "limits": "Editable shaped PSD output rejects explicitly; flattened image export remains available. No Adobe output/font/composer equivalence claimed."
+    },
+    "supersedes": "Earlier statements that all shaped text is unsupported; historical qualification remains scoped to its original checkpoint."
+  }
+}

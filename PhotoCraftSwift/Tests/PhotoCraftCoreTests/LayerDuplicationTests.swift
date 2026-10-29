@@ -29,9 +29,9 @@ final class LayerDuplicationTests: XCTestCase {
     XCTAssertEqual(Set(session.document.layers.map(\.id)).count, 5)
     let result = session.document
     XCTAssertEqual(session.undoStack.count, 1)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, result)
   }
   func testNestedSelectionRemapsAllParentsPreservingEditableProperties() throws {
@@ -88,7 +88,7 @@ final class LayerDuplicationTests: XCTestCase {
     XCTAssertNotEqual(copied.patternID, pattern.id)
     XCTAssertEqual(target.pattern(copied.patternID)?.surface, pattern.surface)
     XCTAssertEqual(target.pattern("collision"), existing)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, before)
   }
   func testNewDocumentUsesSourceCanvasProfileResolutionAndOnlyCopiedSubtrees() throws {
@@ -157,7 +157,7 @@ final class LayerDuplicationTests: XCTestCase {
     try Command.duplicateLayer(group).apply(to: &locked)
     XCTAssertTrue(locked.layers.first { $0.id == locked.activeLayerID }?.locked == true)
     var target = original
-    target.sourceICC = Data([1])
+    target.workingICC = Data([1])
     let profile = target
     XCTAssertThrowsError(
       try Command.duplicateLayersFrom(original, [original.layers[0].id]).apply(to: &target))

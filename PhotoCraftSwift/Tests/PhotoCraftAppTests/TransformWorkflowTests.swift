@@ -53,10 +53,10 @@ final class TransformWorkflowTests: XCTestCase {
     XCTAssertEqual(s.session.undoStack.count, 1)
     guard case .shape = s.document.layers[0].content else { return XCTFail("Shape rasterized") }
     XCTAssertNotEqual(s.document, original)
-    s.undo()
+    await s.undo()
     s.renderTask?.cancel()
     XCTAssertEqual(s.document, original)
-    s.redo()
+    await s.redo()
     s.renderTask?.cancel()
     XCTAssertNotEqual(s.document, original)
   }

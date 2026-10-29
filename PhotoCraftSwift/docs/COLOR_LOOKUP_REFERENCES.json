@@ -1,0 +1,113 @@
+{
+  "step": "dev-step-164",
+  "date": "2026-10-26",
+  "status": "34 focused Debug,1569 full Release before metadata correction,35 final focused Release and27 checks per architecture pass; universal macOS14+ package verified. A03 and Photoshop parity remain open.",
+  "source_manifest": "artifacts/runs/20261026T214621Z-164-color-lookup/source02.json",
+  "source_delta": "artifacts/runs/20261026T214621Z-164-color-lookup/source-delta02.json",
+  "provenance": {
+    "upstream": {
+      "crates/cms/src/lutfile.rs": "cefd317c62075c97541fb931315d0ce494ec39c596667436bbced51a2d8bab23",
+      "crates/compose/src/adjust.rs": "52ab960670631d29e0668f9a435ddce1725ab9b859cd6a9fe8ceb3494291f06f",
+      "crates/io/src/adjust_map.rs": "73b6bf6364156e8bab382e356122ee4d6d32bcd04366f7885254d60d40ebc14b"
+    },
+    "license": "MIT OR Apache-2.0 translated implementation; generated built-in LUT formulas CC0. No Adobe assets redistributed.",
+    "adobe": [
+      "https://www.adobe.com/learn/photoshop/web/edit-photo-color-lookup-adjustment",
+      "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-color-lookup-tables.html",
+      "https://developer.adobe.com/photoshop/uxp/ps_reference/media/batchplay/",
+      "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions"
+    ],
+    "contract": "docs/contracts/adobe-photoshop-v2.json",
+    "contract_sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482"
+  },
+  "desktop": {
+    "features": [
+      "Image Color Lookup preview/Cancel/OK",
+      "editable Color Lookup layer and Properties",
+      "selection-derived mask",
+      "Undo/Redo and locks",
+      "asynchronous Cube/3DL/LOOK import",
+      "original LUT export, generated Cube export",
+      "eight generated CC0 Photato looks",
+      "Trilinear/Tetrahedral and source ordered dither"
+    ],
+    "factory_bindings_added": 2,
+    "native_version": 18
+  },
+  "photato_api": {
+    "typed_command_count": 40,
+    "commands": [
+      "adjustment.create",
+      "adjustment.set",
+      "adjustment.apply"
+    ],
+    "kind": "colorLookup",
+    "parameters": [
+      "lutID or preset or neither(identity)",
+      "interpolation",
+      "dither"
+    ],
+    "routes": [
+      "POST /v1/luts",
+      "GET /v1/luts",
+      "POST /v1/luts/clear",
+      "GET /v1/documents/{id}/layers/{layerID}/lut"
+    ],
+    "permission": "documentTransfersEnabled",
+    "limits": {
+      "file_bytes": 67108864,
+      "cache_bytes": 67108864,
+      "cache_tables": 16,
+      "maximum_cube_edge": 129
+    },
+    "state": "layers[].colorLookup metadata/settings; values transferred by the download route",
+    "errors": "400 malformed parameters/name;403 transfers disabled;404 missing LUT/shared layer;409 stale/busy/revoked;413 memory/body/table count;415 wrong upload Content-Type;422 unsupported LUT semantics;429 concurrent transfer"
+  },
+  "adobe_api": {
+    "routes_partial": 5,
+    "routes_unimplemented": 3,
+    "operation": "colorLookup actionJSON through published /v2/execute-actions and Photato /v1/action-jobs; existing options.actions[].source envelope",
+    "subset": "inline LUT3DFileData {_rawData:base64,_data:...}; RGB/BGR orders; CUBE/3DL/LOOK; dither boolean; single ordinary RGB raster target",
+    "limits": "51200 characters for inline program; no arbitrary local resource paths, ICC lookup, create-composite adjustment mapping or new Adobe routes",
+    "qualification": "Job envelope tested; exact descriptor behavior and pixel equality await independent Photoshop verification."
+  },
+  "interchange": {
+    "native": "18 retains LUT values, domains, shaper, grid, original source bytes/settings and masks; older explicit versions reject",
+    "psd_psb": "clrL version1 descriptor with retained file data; Trilinear loaded LUT subset at RGB8/16/32",
+    "limitations": [
+      "Blank/no-LUT and Tetrahedral PSD export reject explicitly",
+      "16MiB PSD descriptor bound",
+      "Little-endian layered TIFF clrL remains unsupported; use big-endian TIFF or PSD",
+      "ICC abstract/device-link and CSP not implemented",
+      "No independent Photoshop file/rendering claim"
+    ]
+  },
+  "verification": {
+    "focused": {
+      "tests": 34,
+      "failures": 0,
+      "log": "artifacts/runs/20261026T214621Z-164-color-lookup/integration03.log"
+    },
+    "retained_failures": [
+      "artifacts/runs/20261026T214621Z-164-color-lookup/core01.log",
+      "artifacts/runs/20261026T214621Z-164-color-lookup/core02.log",
+      "artifacts/runs/20261026T214621Z-164-color-lookup/integration02.log"
+    ],
+    "live": "Pending Mac unlock; prior159\u2013163 checks still pending",
+    "full_release": {
+      "tests": 1569,
+      "source": "artifacts/runs/20261026T214621Z-164-color-lookup/source01.json",
+      "log": "artifacts/runs/20261026T214621Z-164-color-lookup/release-tests01.log"
+    },
+    "final_metadata_repair": "clrL NM name key, LUTFormat-authoritative legacy filename handling and missing-Dthr default verified by35 final focused Release checks and both architecture probes; final source02/package recorded.",
+    "final_focused_release": {
+      "tests": 35,
+      "source": "artifacts/runs/20261026T214621Z-164-color-lookup/source02.json",
+      "log": "artifacts/runs/20261026T214621Z-164-color-lookup/release-focused01.log"
+    },
+    "platform": "artifacts/runs/20261026T214621Z-164-color-lookup/platform01.json",
+    "package": "artifacts/runs/20261026T214621Z-164-color-lookup/package-verification01.json"
+  },
+  "next_major": "F04 Liquify workspace before remaining individual adjustments, following the maintainer\u2019s major-feature breadth priority.",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_164.json"
+}

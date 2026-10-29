@@ -1,0 +1,96 @@
+{
+  "step": "dev-step-202",
+  "date": "2026-10-27",
+  "status": "Native shaped text implemented and tested; full T04 parity remains open.",
+  "scope": [
+    "Editable text on or inside saved vector paths",
+    "Fifteen preset warps with axis, bend and distortion controls",
+    "Block, Circle, Arch and Bow layouts with Dynamic Fit",
+    "Native rich-text workspace, asynchronous preview, Cancel, local layout Undo and one document transaction",
+    "Anchor-preserving text/glyph edits, native35 and Actions7 metadata",
+    "Shared text.layout API and geometry in text.create/set/state"
+  ],
+  "provenance": [
+    {
+      "source": "../photocraft-main/crates/text/src/{warp,render}.rs and crates/geom/src/warp.rs",
+      "license": "MIT OR Apache-2.0",
+      "use": "Editable glyph outline approach and reuse of already translated preset formulas; upstream formulas are approximations, not Adobe algorithms."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/work-with-dynamic-text/adjust-formatting-and-resize-text-with-dynamic-text.html",
+      "use": "September1,2026 guide: Block/Circle/Arch/Bow, path fit, spacing, direction and interval controls; retrieved in201."
+    },
+    {
+      "source": "Installed Xcode CoreText SDK interfaces",
+      "use": "CTLine/CTFrame shaping, actual fallback-font glyph runs and vector outlines; no new runtime dependency."
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "use": "Published text operation boundary; no path/warp/Dynamic Text field or dedicated route."
+    }
+  ],
+  "photato_api": {
+    "commands": [
+      "text.layout"
+    ],
+    "expanded": [
+      "text.create",
+      "text.set",
+      "text.glyph"
+    ],
+    "typed_command_count": 107,
+    "parameters": "layerID, settings, optional enabled/pathID. settings replace the full layout with native defaults for omitted fields: mode, width/height, path, warp style/bend/horizontalDistortion/verticalDistortion/vertical, fit, start/end, reverse, offset, wordSpacing/lineSpacing. enabled=false removes geometry and takes no settings/pathID.",
+    "coordinates": "Logical type pixels before layer affine transform. start/end are fractions of baseline length. pathID copies document path coordinates into the logical type frame. Later saved-path edits are independent.",
+    "state": "layers[].text.geometry and capabilities.text.layout expose settings, schemas, limits, persistence and qualification.",
+    "guards": "Authentication/share/revision/interaction/locks and prepared-operation cancellation/revocation; invalid settings400; stale/busy409. Desktop and API share an atomic type command that compensates normalized bounds without moving the logical anchor or mask.",
+    "native_version": 35,
+    "actions_version": 7
+  },
+  "adobe_api": {
+    "routes": [],
+    "scope": "Existing native text/job engine preserved. No dedicated shaped-text fields or endpoint in the pinned contract, so no invented Adobe route.",
+    "limits": "Editable shaped PSD output rejects explicitly; flattened image export remains available. No Adobe output/font/composer equivalence claimed."
+  },
+  "menus": {
+    "newly_bound": [
+      "Type > Warp Text\u2026"
+    ],
+    "other_entry_points": [
+      "Properties > Type > Text Layout",
+      "Type tool Warp / Path Text controls"
+    ],
+    "shortcuts": "Factory catalog retained; Warp Text has no primary shortcut."
+  },
+  "persistence": {
+    "native": "Optional geometry preserves older documents; shaped metadata requires native35, created Actions require7. Older negotiated versions reject rather than omit it.",
+    "psd": "Editable shaped text is rejected until its Photoshop mappings are implemented and independently qualified."
+  },
+  "limits": {
+    "utf16": 16384,
+    "outline_points": 2000000,
+    "type_pixels": 16777216,
+    "fit_scale_max": 64,
+    "native_frame_axis": 16384
+  },
+  "limitations": [
+    "Full T04 remains open: exact Photoshop fit/composers/preset formulas and raster equality are unqualified.",
+    "Vertical shaped type and color/bitmap glyphs without vector outlines reject. Fonts and glyph/font variants require broader qualification.",
+    "The native rich-text pane edits content beside a curved preview; live curved caret/IME and direct draggable path delimiters are deferred.",
+    "Saved paths are copied; not live-linked. Semantic Actions recording of arbitrary type edits, full PSD forms and cross-application interchange remain open.",
+    "Synthetic/offscreen AppKit and host tests only; no unlocked desktop, independent Photoshop output or physical Intel/macOS14/macOS26 qualification."
+  ],
+  "evidence_root": "artifacts/runs/20261027T202455Z-202-shaped-text",
+  "tests": {
+    "status": "Passed focused and full optimized qualification.",
+    "focused_log": "artifacts/runs/20261027T202455Z-202-shaped-text/integration08.log",
+    "focused": 89,
+    "release_full": 1966,
+    "release_log": "artifacts/runs/20261027T202455Z-202-shaped-text/release-full01.log",
+    "verification": "artifacts/runs/20261027T202455Z-202-shaped-text/verification01.json",
+    "offscreen_sheet": "artifacts/runs/20261027T202455Z-202-shaped-text/integration08-images/shaped-workspace-offscreen.png",
+    "render_diagnostics": "artifacts/runs/20261027T202455Z-202-shaped-text/integration08-images/"
+  },
+  "next": "F06: native Filter Gallery with effect categories, editable stacks, preview/history/Smart Filters and APIs. Minor typography utilities and exact/cosmetic refinements remain deferred.",
+  "qualification": "All 89 focused Debug and 1966 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+  "source_manifest": "artifacts/runs/20261027T202455Z-202-shaped-text/source01.json"
+}

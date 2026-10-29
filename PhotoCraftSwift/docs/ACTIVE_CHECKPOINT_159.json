@@ -1,0 +1,78 @@
+{
+  "step": "dev-step-159",
+  "completed_at_utc": "2026-10-26T19:16:12.962055+00:00",
+  "goal_status": "active",
+  "scope": "Functional automatic subject selection/background removal checkpoint; Photoshop parity and remaining live mask check are open.",
+  "source_manifest": "artifacts/runs/20261026T185147Z-159-subject-background/source03.json",
+  "source_manifest_sha256": "32f0df8c1749c2e7c40814df5f9f9baa02bd88781490aa34177b7d32cbc40e7f",
+  "source_inputs": 1175,
+  "tests": {
+    "focused_debug_before_final_API_repair": 56,
+    "focused_debug_final": 26,
+    "full_release_final": 1510,
+    "failures": 0,
+    "platform": "artifacts/runs/20261026T185147Z-159-subject-background/platform01.json"
+  },
+  "live": {
+    "harness": "/private/tmp/photato159-live-689faskh/Photato159Probe.app",
+    "production_source": "source02.json",
+    "later_production_delta": "source03 changes API parsing and discovery only; desktop/model engine unchanged",
+    "actions": [
+      {
+        "action": "Launch own icon document",
+        "result": "Passed after initial CUA timeout and bundle-id attachment."
+      },
+      {
+        "action": "Select > Subject",
+        "result": "Passed; selected subject outline visible; document marked dirty."
+      },
+      {
+        "action": "Cmd-Z",
+        "result": "Passed; subject selection disappeared and initial clean state returned."
+      },
+      {
+        "action": "Properties > Remove Background",
+        "result": "Not executed/verified: CUA reported the Mac locked. Unlock requested asynchronously."
+      }
+    ],
+    "screenshot": "ui-subject01.png",
+    "pending": [
+      "Live removal, mask refinement and native redo",
+      "Discard/quit owned test app after unlock"
+    ],
+    "other_apps": "No UI changes made to Photoshop or other documents."
+  },
+  "package": {
+    "archive_sha256": "593dffa06d38baf499dcb0bfb2c3ed2d5b0abc2ffa8fedacaca40e3e16770988",
+    "executable_sha256": "c5f7e7e4f2cc970bef275b34d2cd92a860a30d45f6eea5715dfcf7735c23fcb0",
+    "architectures": "x86_64 arm64",
+    "build_versions": {
+      "x86_64": "/private/tmp/photato159-verified-x4z8x1n1/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato159-verified-x4z8x1n1/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "strict ad-hoc verification passed",
+    "verified_app": "/private/tmp/photato159-verified-x4z8x1n1/Photato.app"
+  },
+  "candidate_archive": "artifacts/runs/20261026T185147Z-159-subject-background/Photato159-candidate.zip",
+  "preserved": "Installed117/root ZIP, user workspace, Xcode project and754 original Rust files unchanged.",
+  "next": {
+    "major_workflow": "L05 embedded Smart Objects",
+    "implementation_order": [
+      "Read current native/source smart-object representations and pinned Adobe contract",
+      "Preserve editable source content and nondestructive placement/transforms in a native model",
+      "Native edit/replace-content workflow, persistence and both API interfaces",
+      "Focused functional validation before optional smart-object subfunctions/exact fidelity"
+    ],
+    "pending_live": "When Mac unlocked, finish owned159 Remove Background/mask refinement/Undo/Redo and close the owned test app. User unlock question is pending; do not bypass lock.",
+    "completion_rule": "All full Photoshop parity gates remain open; do not claim major family closure from this subset."
+  },
+  "history_audit": {
+    "status": "first refresh/check passed",
+    "milestones": 159,
+    "evidence_files": 35937,
+    "logs": 19036,
+    "missing_explicit_references": 0,
+    "final_refresh_log": "artifacts/development-history-audit/20261026-step159-final/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261026-step159-final/check02.log"
+  }
+}

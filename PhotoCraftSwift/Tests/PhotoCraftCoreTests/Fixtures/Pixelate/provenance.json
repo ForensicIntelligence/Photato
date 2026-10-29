@@ -1,0 +1,175 @@
+{
+  "source": "Original unmodified pixelate.rs with original hash/cell/unpremultiply helpers; whole-layer RGB and clamped-edge adapters reproduce read_clamped input. Synthetic fixture; not Photoshop evidence.",
+  "license": "MIT OR Apache-2.0",
+  "dimensions": [
+    32,
+    24
+  ],
+  "sources": {
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/pixelate.rs": "5aed3b8c9b2aae40e9e14f3697cc5f31b8b8478b6fdbde457dcbd4fbd3d64fd0",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/image.rs": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T003911Z-213-pixelate-workflows/oracle01.rs": "86031c2c9fa7c0ea6702dd1d50fb5ba23c1bbf72f9e4218e7bc6bd5e85db54e9"
+  },
+  "cases": [
+    {
+      "name": "colorHalftone",
+      "kind": "colorHalftone",
+      "settings": {},
+      "sha256": "c62589c8034182dac77fdab6ae2a8af914ef50e54c500b148c33a705f3306f5a"
+    },
+    {
+      "name": "colorHalftone-angles",
+      "kind": "colorHalftone",
+      "settings": {
+        "maxRadius": 4,
+        "angles": [
+          -180,
+          0,
+          45,
+          360
+        ]
+      },
+      "sha256": "73353015b94755fc7046c9c2dbba99887bd18a84d780d7de3dfc1095480559ae"
+    },
+    {
+      "name": "crystallize",
+      "kind": "crystallize",
+      "settings": {},
+      "sha256": "7ed166a0c7a6802e57807336335f8394eafb8c37f868a09daa272a94b89a3f77"
+    },
+    {
+      "name": "crystallize-small",
+      "kind": "crystallize",
+      "settings": {
+        "cellSize": 3,
+        "seed": 91
+      },
+      "sha256": "30cbba4c75ad5f9989a5708e687255d35c069b3c5e2949fc8a2418855aa11fde"
+    },
+    {
+      "name": "facet",
+      "kind": "facet",
+      "settings": {},
+      "sha256": "e49cd282b422934193a16f56b9200d5c33b9b08e3b5c5656b93c98dab1f18618"
+    },
+    {
+      "name": "fragment",
+      "kind": "fragment",
+      "settings": {},
+      "sha256": "50fee136427bac9b142e8822ae034d86a868a34067d937e0bf7e793de266711e"
+    },
+    {
+      "name": "pointillize",
+      "kind": "pointillize",
+      "settings": {},
+      "sha256": "cfe3360c89d1b2399a6342d6a6c28608ec9e932f5c3db77d0c8207c3d036ad02"
+    },
+    {
+      "name": "pointillize-background",
+      "kind": "pointillize",
+      "settings": {
+        "cellSize": 8,
+        "seed": 77,
+        "background": {
+          "r": 0.125,
+          "g": 0.5,
+          "b": 0.875,
+          "a": 1
+        }
+      },
+      "sha256": "ce89b470daec859e17d797448877fc3e38302c0104fbc3a1988707749def2c1f"
+    },
+    {
+      "name": "mezzotint-fineDots",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "fineDots",
+        "seed": 42
+      },
+      "sha256": "85649f1a438addaa9bac947b1c1f1fbbee8fb9fde4b8354870f6f96860bab1bc"
+    },
+    {
+      "name": "mezzotint-mediumDots",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "mediumDots",
+        "seed": 42
+      },
+      "sha256": "0521f080b638e01799c4e74846d96efa68eec09d0054d9baa0c9ff19fb21b582"
+    },
+    {
+      "name": "mezzotint-grainyDots",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "grainyDots",
+        "seed": 42
+      },
+      "sha256": "3f6da3bd7c66b6c778c79fd30d42e69e4fb6e1421f3374f396a7afac6dde9751"
+    },
+    {
+      "name": "mezzotint-coarseDots",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "coarseDots",
+        "seed": 42
+      },
+      "sha256": "e93f8eadef98cc9275535aa5ca295da69507fb9dbe5b07617b0895ca9cca6f0e"
+    },
+    {
+      "name": "mezzotint-shortLines",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "shortLines",
+        "seed": 42
+      },
+      "sha256": "3145c932d8b657772b58ed24b1b9afd1eccb749bfee074e3c721d20df654bdfd"
+    },
+    {
+      "name": "mezzotint-mediumLines",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "mediumLines",
+        "seed": 42
+      },
+      "sha256": "bc2e2492d824930f464a0e1e3b29588bcd8bb58c86e677223fb6df8b96562f21"
+    },
+    {
+      "name": "mezzotint-longLines",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "longLines",
+        "seed": 42
+      },
+      "sha256": "feef39a95eedddfcf2511960fffd82f7e79f60c7849873a141a80b2ef804a98e"
+    },
+    {
+      "name": "mezzotint-shortStrokes",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "shortStrokes",
+        "seed": 42
+      },
+      "sha256": "8ed6f421cc7614606dddc8bc21e7d7cf2e377927110db7ba71364d9d3973be43"
+    },
+    {
+      "name": "mezzotint-mediumStrokes",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "mediumStrokes",
+        "seed": 42
+      },
+      "sha256": "0549718eea5de798401f6a107a4ee0af6024be26e848ec58210b420186383924"
+    },
+    {
+      "name": "mezzotint-longStrokes",
+      "kind": "mezzotint",
+      "settings": {
+        "pattern": "longStrokes",
+        "seed": 42
+      },
+      "sha256": "9b2ecee0ee3bddd252139fc768d191021f911f3d20ce99df810a0fcd3efd1d79"
+    }
+  ]
+}

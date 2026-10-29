@@ -1,0 +1,145 @@
+{
+  "step": "dev-step-134",
+  "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_134.json",
+    "sha256": "50df81cd04f8e2c26b6e781242e33e47364f84a5c4722d648e982b68e717cc06"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/document-opening",
+      "POST /v1/document-opening/cancel"
+    ],
+    "extended_route": "POST /v1/documents/import: optional X-Photato-Open-Format plus conditional application/octet-stream",
+    "permission": "Existing document-transfer permission explicitly includes native-opening cancellation; default off each session; may affect unshared pending reads",
+    "coverage": "Shared container detection/selection, unchanged decoders, authenticated path-free state, exact-ID cancellation, schemas and invalid/busy/stale/revoked/completed-lifecycle guards. Legacy uploads without selection keep Content-Type routing. No Adobe desktop-dialog route invented."
+  },
+  "scope": [
+    "File Open Show/Format accessory with supported content selection; actual native10/11, PSD/PSB and supported raster routing independent of filename",
+    "Off-main-actor local reading and fingerprint preparation, main-actor callbacks, stable already-open identity, serial partial progress and cancellation without publishing cancelled reads",
+    "Matching API upload selection plus native-opening status/cancellation and lifecycle-publication guards; documented schemas and explicit transfer permission",
+    "24 final focused tests and1245 Debug/1245 Release tests; production-delegate Debug batch/failure/external-cancel process; public Release Open/repeat/invalid callbacks and model/source checks on arm64/Rosetta",
+    "Universal macOS14+ candidate verified; Core/Imaging/AI sources unchanged and nine whole PSB outputs byte-identical to133"
+  ],
+  "remaining": [
+    "D01: recent-file persistence/bookmarks/count preference and corresponding native menu/API lifecycle; Finder multiple-file event queueing needs separate qualification",
+    "D01: live Photoshop Open/close/options/accessibility and multiwindow comparison; full format/profile/metadata/tag/ACL fidelity, import options and external-file coordination",
+    "D02: recovery maintenance/legacy migration, corrupt/unavailable/capacity UX, full window/tab restoration; sandbox/network/removable-volume and physical power-loss qualification",
+    "I02: synchronous startup recovery decode, source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14",
+    "ImageIO binary property-list dictionary ordering is noncanonical; semantic metadata equality and bounded sample comparisons do not establish universal byte-identical output",
+    "All major workflows remain ahead of minor functions and final details; no major gate is closed"
+  ],
+  "sources": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/external-references01.json",
+    "sha256": "24e845a69d4d478682d5b0e2ca2d51c9690556ab40bc463c822e82c850b60e26"
+  },
+  "freeze": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/tested-source-hashes04.json",
+    "sha256": "6658c15f7b47216b12be9e47cf2be990ce71b02b6d117a35f4a344f023c5a960"
+  },
+  "focused": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 4.957,
+    "log": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/focused04.log",
+      "sha256": "c8ddf68e11e25bb14e911705a80386e9a68f0d353a66bae525934903586a4ed8"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T085329Z-134-document-opening/full01.log",
+      "sha256": "a52883d63af8e81c5ef5eb02d776c8323d9b620011a30c87e65025bdb735f476",
+      "passed": 1245,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 257.428
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T085329Z-134-document-opening/release01.log",
+      "sha256": "2868da33c6252a62e5fc83e224e2ee6eeb71e227f9f768bb2e35ada8b7663d33",
+      "passed": 1245,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 61.872
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato134-verified-ykn1u3ow/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "c1447ec09beac01df78fbe97e581e52c0ef1af275125e89daebbcd3f80ffb2e2",
+    "zip_sha256": "9bcce623e75bcfa406188ec566d7e2cf7c3ab4a173f0c76041e193ab2ee7c4af",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "debug_process": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/process-open-verification01.json",
+    "sha256": "f991d0a832dc87e8356727d26a04845867e082d4ef6beeba664b86c717ddf1d4"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/public-release-arm6401/verification.json",
+      "sha256": "4180a5b68fdf8bd0e09720958978ce6b5a2f7c8e05d0dd31d9f7876715fbc885"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T085329Z-134-document-opening/public-release-x86_6401/verification.json",
+      "sha256": "d75d4413ed43ba3e725e4c3d3ad8c7e7ccfadb7c0d2513e3b65b8df8c608390b"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T085329Z-134-document-opening/source-delta-and-ui01.json",
+    "sha256": "26f0fb5427fc1cb864e62d66664272ca7306135f39559f1efac5072b4d051b39"
+  },
+  "full_parity": false,
+  "recent_documents_step135": {
+    "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+    "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recent-documents",
+        "POST /v1/recent-documents/limit",
+        "POST /v1/recent-documents/clear",
+        "POST /v1/recent-documents/open"
+      ],
+      "extended_routes": [
+        "GET /v1/document-opening adds queuedFiles and lastError",
+        "POST /v1/document-opening/cancel accepts an operation owned by the enabled recent-file session"
+      ],
+      "permission": "Separate Allow recent-file access, off each session, gates filenames/list/limit/clear/known-ID reopening. No arbitrary paths or implicit document sharing.",
+      "coverage": "Shared native atomic settings/history and background opening, exact request/state schemas, revision/busy/session/revocation/error tests. Recovery-preference POST preserves the recent count. No Adobe desktop-history route invented."
+    }
+  },
+  "recovery_maintenance_step136": {
+    "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+    "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/backups",
+        "POST /v1/recovery/backups/inspect",
+        "POST /v1/recovery/backups/open-copy",
+        "POST /v1/recovery/backups/download",
+        "POST /v1/recovery/backups/trash",
+        "POST /v1/recovery/backups/forget",
+        "POST /v1/recovery/backups/remove-missing"
+      ],
+      "permission": "Separate Allow recovery-backup access, off each API session; gates names, content and maintenance. Existing counts/retry permission unchanged. No arbitrary local paths or implicit sharing.",
+      "coverage": "Shared native coordinator, bounded index/native11 download, complete request/result/state schemas, stale/busy/revocation/confirmation/errors and lifecycle exclusions. Trash retires before moving and finishes cleanup after a begun move even if permission ends; the revoked response is403. No Adobe desktop-maintenance route invented."
+    }
+  }
+}

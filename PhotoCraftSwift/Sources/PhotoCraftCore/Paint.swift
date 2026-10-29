@@ -4,7 +4,14 @@ public struct StrokePoint: Codable, Equatable, Sendable {
   public var x: Double
   public var y: Double
   public var pressure: Float
-  public init(x: Double, y: Double, pressure: Float = 1) {
+  public var tiltX: Double?
+  public var tiltY: Double?
+  public var rotation: Double?
+  public var wheel: Double?
+  /// Monotonic time in milliseconds from the beginning of the stroke.
+  public var time: Double?
+  public init(x: Double, y: Double, pressure: Float = 1, tiltX: Double? = nil, tiltY: Double? = nil, rotation: Double? = nil, wheel: Double? = nil, time: Double? = nil) {
+    self.tiltX=tiltX;self.tiltY=tiltY;self.rotation=rotation;self.wheel=wheel;self.time=time
     self.x = x
     self.y = y
     self.pressure = pressure
@@ -16,17 +23,44 @@ public struct Brush: Codable, Equatable, Sendable {
   public var opacity: Float = 1
   public var color: Pixel = Pixel(0.3, 0.45, 0.95)
   public var erase = false
+  public var backgroundColor: Pixel?
+  // Keep Command's associated brush value small. The large settings value lives
+  // in immutable indirect storage, preserving value semantics across snapshots.
+  private indirect enum SettingsStorage:Equatable,Sendable { case value(BrushSettings) }
+  private var storedSettings:SettingsStorage?
+  public var settings:BrushSettings? {
+    get { if case .value(let value)=storedSettings { return value };return nil }
+    set { storedSettings=newValue.map{.value($0)} }
+  }
   public init() {}
+  private enum CodingKeys:String,CodingKey { case size,hardness,opacity,color,erase,backgroundColor,settings }
+  public init(from decoder:any Decoder)throws {
+    let c=try decoder.container(keyedBy:CodingKeys.self)
+    size=try c.decode(Double.self,forKey:.size);hardness=try c.decode(Float.self,forKey:.hardness)
+    opacity=try c.decode(Float.self,forKey:.opacity);color=try c.decode(Pixel.self,forKey:.color);erase=try c.decode(Bool.self,forKey:.erase)
+    backgroundColor=try c.decodeIfPresent(Pixel.self,forKey:.backgroundColor)
+    settings=try c.decodeIfPresent(BrushSettings.self,forKey:.settings)
+  }
+  public func encode(to encoder:any Encoder)throws {
+    var c=encoder.container(keyedBy:CodingKeys.self)
+    try c.encode(size,forKey:.size);try c.encode(hardness,forKey:.hardness);try c.encode(opacity,forKey:.opacity);try c.encode(color,forKey:.color);try c.encode(erase,forKey:.erase)
+    try c.encodeIfPresent(backgroundColor,forKey:.backgroundColor);try c.encodeIfPresent(settings,forKey:.settings)
+  }
 }
 public enum Painter {
   public static func stroke(
     surface: inout Surface, points: [StrokePoint], brush: Brush, selection: IntRect? = nil,
     selectionMask: SelectionMask? = nil, offsetX: Int = 0, offsetY: Int = 0,
-    transform: Transform2D? = nil, grayscaleMask: Bool = false
+    transform: Transform2D? = nil, grayscaleMask: Bool = false,
+    preserveTransparency: Bool = false
   ) throws {
+    if brush.settings != nil {
+      try BrushPainter.stroke(surface: &surface, points: points, brush: brush, selection: selection, selectionMask: selectionMask, transform: transform ?? .translation(Double(offsetX),Double(offsetY)), grayscaleMask: grayscaleMask, preserveTransparency: preserveTransparency)
+      return
+    }
     guard brush.size.isFinite, (0.5...2048).contains(brush.size), brush.hardness.isFinite,
       (0...1).contains(brush.hardness), brush.opacity.isFinite, (0...1).contains(brush.opacity),
-      brush.color.isFinite, points.count <= 100_000
+      brush.color.isFinite, brush.backgroundColor?.isFinite != false, points.count <= 100_000
     else { throw CraftError.invalid("Invalid brush settings or stroke size.") }
     for p in points {
       guard p.x.isFinite, p.y.isFinite, abs(p.x) <= 1_000_000, abs(p.y) <= 1_000_000,
@@ -67,11 +101,17 @@ public enum Painter {
             coverage[key] ?? 0, edge * brush.opacity * brush.color.a * selectionCoverage)
           coverage[key] = alpha
           var before = original.pixel(x: x, y: y)
+          if preserveTransparency && !grayscaleMask && before.a <= 0 { continue }
           if grayscaleMask {
             let v = unit(before.r)
             before = Pixel(v, v, v)
           }
-          if brush.erase {
+          if preserveTransparency && !grayscaleMask {
+            var ink = brush.erase ? (brush.backgroundColor ?? .white) : brush.color
+            ink.a = alpha
+            surface.setPixel(x: x, y: y,
+              ProtectedPixels.composite(.normal, backdrop: before, source: ink))
+          } else if brush.erase {
             surface.setPixel(
               x: x, y: y, Pixel(before.r, before.g, before.b, before.a * (1 - alpha)))
           } else {

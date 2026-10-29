@@ -103,10 +103,15 @@ struct CloneSourceRequest: Sendable {
   let sampling: CloneSampling
   let ignoreAdjustments: Bool
   let mask: Bool
+  var target: CraftDocument? = nil
   func sample() throws -> CloneSample {
-    try Renderer.cloneSample(
+    let sampled = try Renderer.cloneSample(
       in: document, layerID: layerID, sampling: sampling, ignoreAdjustments: ignoreAdjustments,
       mask: mask)
+    guard !mask, let target else { return sampled }
+    return CloneSample(
+      surface: try ColorManagement.converted(sampled.surface, from: document, to: target),
+      transform: sampled.transform, outside: sampled.outside)
   }
 }
 struct CloneDraft: Sendable {
@@ -203,15 +208,15 @@ extension EditorStore {
   }
 
   var canClone: Bool {
-    guard !geometryBusy, !hasToneDraft, transformDraft == nil, let layer = activeLayer,
-      !document.isLocked(layer.id)
+    guard !smartFilterMaskEditing, !geometryBusy, !hasToneDraft, transformDraft == nil, let layer = activeLayer,
+      !(editingMask ? document.isLocked(layer.id) : document.isImageLocked(layer.id))
     else { return false }
     if editingMask { return true }
     if case .raster = layer.content { return true }
     return false
   }
   func setCloneSource(at point: PathPoint) {
-    guard !geometryBusy, !hasToneDraft, transformDraft == nil, let layer = activeLayer,
+    guard !smartFilterMaskEditing, !geometryBusy, !hasToneDraft, transformDraft == nil, let layer = activeLayer,
       point.x.isFinite, point.y.isFinite, point.x >= 0, point.y >= 0,
       point.x < Double(document.width), point.y < Double(document.height)
     else { return }
@@ -239,7 +244,7 @@ extension EditorStore {
     }
     return CloneSourceRequest(
       document: source.document, layerID: layerID, sampling: retouchSettings.sampling,
-      ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: slot.mask)
+      ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: slot.mask, target: document)
   }
   func beginClone(_ point: StrokePoint, alternate: Bool = false) {
     guard canClone, let layerID = activeLayer?.id else {
@@ -393,7 +398,10 @@ extension EditorStore {
           outside = Pixel(1 - outside.r, 1 - outside.g, 1 - outside.b, outside.a)
         }
         return CloneOverlayImage(
-          image: try RasterIO.displayImage(surface), transform: sample.transform, outside: outside)
+          image: try key.mask
+            ? RasterIO.displayImage(surface)
+            : ColorManagement.displayImage(surface, in: request.target ?? request.document),
+          transform: sample.transform, outside: outside)
       }
       do {
         let overlay = try await withTaskCancellationHandler(

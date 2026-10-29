@@ -4,9 +4,15 @@ import PhotoCraftCore
 final class GroupRenderCache {
   let inputTarget: UUID?
   let region: IntRect?
-  init(inputTarget: UUID? = nil, region: IntRect? = nil) {
+  let video: VideoTransitionRenderContext?
+  let disabledTransitions: Set<UUID>
+  func suppressing(_ id:UUID)->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,region:region,video:video,disabledTransitions:disabledTransitions.union([id]))}
+  func fullCanvas()->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,video:video,disabledTransitions:disabledTransitions)}
+  func crossfade(from id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind == .crossFade && $0.transition.previousLayerID==id && !disabledTransitions.contains($0.transition.id)}}
+  func fade(on id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind != .crossFade && $0.transition.layerID==id && !disabledTransitions.contains($0.transition.id)}}
+  init(inputTarget: UUID? = nil, region: IntRect? = nil, video:VideoTransitionRenderContext?=nil, disabledTransitions:Set<UUID>=[]) {
     self.inputTarget = inputTarget
-    self.region = region
+    self.region = region;self.video=video;self.disabledTransitions=disabledTransitions
   }
   func bounds(_ d: CraftDocument) -> IntRect {
     (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
@@ -45,10 +51,22 @@ extension Renderer {
       if base.isClipped { continue }
       let start = index
       while index < layers.count && layers[index].isClipped { index += 1 }
+      if let pair=cache.crossfade(from:base.id),index<layers.count,layers[index].id==pair.transition.layerID {
+        let outgoing=Array(layers[(start-1)..<index]);let incomingStart=index;index+=1
+        while index<layers.count && layers[index].isClipped{index+=1}
+        let incoming=Array(layers[incomingStart..<index]),branch=cache.suppressing(pair.transition.id)
+        let first=try compositeStack(outgoing,in:d,over:output,cache:branch)
+        let last=try compositeStack(incoming,in:d,over:output,cache:cache.suppressing(pair.transition.id))
+        output=try mixTransition(first,last,progress:pair.progress,in:d,region:region)
+        continue
+      }
       guard base.visible && base.opacity > 0 else { continue }
+      let transitionBackdrop=output
       if base.id == cache.inputTarget { throw AdjustmentInputReached(surface: output) }
       let clips = Array(layers[start..<index].filter { $0.visible && $0.opacity > 0 })
-      if let group = base.group, group.passThrough {
+      if base.style != nil {
+        output = try LayerStyleRenderer.composite(base, clips: clips, in: d, over: output, region: region, cache:cache.fullCanvas())
+      } else if let group = base.group, group.passThrough, group.artboard == nil, group.frame == nil {
         let before = output
         output = try compositeStack(d.children(of: base.id), in: d, over: output, cache: cache)
         if !clips.isEmpty {
@@ -110,6 +128,7 @@ extension Renderer {
           output = try blendCanvas(clipped, over: output, layer: normal, in: d, region: region)
         }
       }
+      if let fade=cache.fade(on:base.id) {output=try fadeTransition(fade,layer:base,clips:clips,before:transitionBackdrop,after:output,in:d,cache:cache)}
     }
     return output
   }
@@ -118,8 +137,23 @@ extension Renderer {
     -> Surface
   {
     if let pixels = cache.rawGroups[layer.id] { return pixels }
-    let pixels = try compositeStack(
-      d.children(of: layer.id), in: d, over: emptyCanvas(d), cache: cache)
+    let pixels: Surface
+    if layer.frame != nil {
+      let children = try compositeStack(d.children(of: layer.id), in: d, over: emptyCanvas(d), cache: cache)
+      pixels = try FrameRenderer.render(children, frame: layer, document: d, region: cache.bounds(d))
+    } else if let board = layer.artboard, let bounds = layer.artboardBounds {
+      let requested = cache.bounds(d)
+      let x = max(requested.x, bounds.x), y = max(requested.y, bounds.y)
+      let region = IntRect(x: x, y: y, width: max(0, min(requested.x + requested.width, bounds.x + bounds.width) - x), height: max(0, min(requested.y + requested.height, bounds.y + bounds.height) - y))
+      var backdrop = try emptyCanvas(d)
+      if board.background.a > 0, region.width > 0, region.height > 0 {
+        try backdrop.mapPixels(in: region) { _, _, _ in board.background }
+      }
+      pixels = try compositeStack(d.children(of: layer.id), in: d, over: backdrop,
+        cache: GroupRenderCache(inputTarget: cache.inputTarget, region: region))
+    } else {
+      pixels = try compositeStack(d.children(of: layer.id), in: d, over: emptyCanvas(d), cache: cache)
+    }
     try cache.insert(pixels, for: layer.id)
     return pixels
   }

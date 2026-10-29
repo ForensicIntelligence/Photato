@@ -44,7 +44,7 @@ final class ColorBalanceWorkflowTests: XCTestCase {
     XCTAssertNotEqual(store.document, d)
     XCTAssertEqual(store.session.undoStack.count, 1)
     XCTAssertEqual(store.session.undoStack.last?.label, "Color Balance")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.beginColorBalance()
     store.colorBalanceDraft?.adjustment.midtones.cyanRed = 90
@@ -58,7 +58,7 @@ final class ColorBalanceWorkflowTests: XCTestCase {
     XCTAssertNil(store.colorBalanceDraft)
     store.cancelCurves()
   }
-  @MainActor func testSelectionMaskToneEditsCoalescingAndLocks() throws {
+  @MainActor func testSelectionMaskToneEditsCoalescingAndLocks() async throws {
     let store = EditorStore(document: try CraftDocument(width: 4, height: 2))
     defer { store.renderTask?.cancel() }
     store.perform(.selection(IntRect(x: 1, y: 0, width: 2, height: 2)))
@@ -77,15 +77,15 @@ final class ColorBalanceWorkflowTests: XCTestCase {
       store.setColorBalance(layer.id, a)
     }
     store.coalesce(false)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.activeLayer?.content, layer.content)
     store.perform(.lock(layer.id, true))
     let locked = store.document
     store.setColorBalance(
       layer.id, ColorBalanceAdjustment(midtones: .init(cyanRed: 35, yellowBlue: -20)))
     XCTAssertEqual(store.document, locked)
-    store.undo()
-    store.undo()
+    await store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testCommandBAndLayerMenus() {

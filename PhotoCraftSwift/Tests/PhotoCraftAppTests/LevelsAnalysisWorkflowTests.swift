@@ -43,7 +43,7 @@ final class LevelsAnalysisWorkflowTests: XCTestCase {
     await store.geometryTask?.value
     XCTAssertNotEqual(store.document, d)
     XCTAssertEqual(store.session.undoStack.last?.label, "Auto Tone")
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, d)
     store.autoCorrect(.color)
     store.geometryTask?.cancel()

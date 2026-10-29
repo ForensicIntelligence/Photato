@@ -1,0 +1,128 @@
+{
+  "step": "dev-step-181",
+  "status": "Native Perspective Warp verified in bounded contexts; G02/full parity remains open.",
+  "run": "artifacts/runs/20261027T072932Z-181-perspective",
+  "scope": "Linked quad Layout/Warp editing, source snapping, shared-corner moves, single-plane inverse homography and multi-plane shared-edge corrections, straightening/persistent edge locks, native preview/local history/single commit, source-preserving Smart Filters, native26 and Photato API.",
+  "upstream": [
+    {
+      "path": "crates/algo/src/perspective.rs",
+      "sha256": "ef29f35565237b6870a8aaec2b0b59c0d593fefd5b315cd05e4c6f25a0c4df9f",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "crates/algo/src/transform.rs",
+      "sha256": "15d7ac0d85b352bfba6fdba5adb7dc6c39b2165bbab09eac8175e93986ad8eec",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "path": "crates/engine/src/distort_cmds.rs",
+      "sha256": "ff1764d0c74006cf9ada627eb2b4908a290388f0970480b8f08881d570918a07",
+      "license": "MIT OR Apache-2.0"
+    }
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/define-planes-to-adjust-perspective.html",
+      "checked_utc": "2026-10-27",
+      "use": "Layout/plane manipulation/straightening workflow reference; no numerical equivalence claim."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/manipulate-the-planes-to-adjust-perspective.html",
+      "checked_utc": "2026-10-27",
+      "use": "Layout/plane manipulation/straightening workflow reference; no numerical equivalence claim."
+    },
+    {
+      "url": "https://helpx.adobe.com/ie/photoshop/desktop/repair-retouch/clean-restore-images/keyboard-shortcuts-to-adjust-perspective.html",
+      "checked_utc": "2026-10-27",
+      "use": "Local L/W/H, Enter, Escape and Shift-edge control reference. Exact canvas/options-bar fidelity remains open."
+    }
+  ],
+  "api": {
+    "photato_commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "command_count": 62,
+    "state": "perspectiveWarp.available/workspaceOpen/previewBusy; layers[].smartFilters and capabilities.filters.perspectiveWarp",
+    "persistence": "Editable plane programs require native26; older reader negotiation rejects. Ordinary baked pixels keep their existing minimum version.",
+    "adobe": "No dedicated Perspective Warp endpoint in pinned Firefly contract; unverified actionJSON and editable PSD descriptors explicitly reject. No invented Adobe route."
+  },
+  "menus": {
+    "bound": [
+      "Edit > Perspective Warp"
+    ],
+    "shortcuts": "No fabricated factory invocation shortcut. Native workspace L/W/H, Enter/Return, Escape, Shift-click edge and Cmd-Z/Shift-Cmd-Z.",
+    "rust_alias": "Layer > Smart Objects > Perspective Warp is a Rust alias accessed through the captured Photoshop Edit command, not an additional factory Layer item.",
+    "release_report": "artifacts/runs/20261027T072932Z-181-perspective/menu-report-release01.json"
+  },
+  "tests": {
+    "fixture": "Tests/PhotoCraftAppTests/Fixtures/Perspective/manifest.json",
+    "failed_attempts": [
+      "artifacts/runs/20261027T072932Z-181-perspective/integration01.log"
+    ],
+    "debug_focused": 92,
+    "debug_log": "artifacts/runs/20261027T072932Z-181-perspective/integration03.log",
+    "live": "No new live UI inspection. Last actual desktop remains locked. Offscreen layout is separate evidence.",
+    "last_full_regression": {
+      "checkpoint": "docs/ACTIVE_CHECKPOINT_180.json",
+      "tests": 1736,
+      "qualification": "Previous source only. This increment uses focused Debug/optimized qualification; full/platform suites remain batched."
+    },
+    "optimized_focused": 92,
+    "failures": 0,
+    "optimized_log": "artifacts/runs/20261027T072932Z-181-perspective/release-focused01.log",
+    "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified.",
+    "offscreen": "artifacts/runs/20261027T072932Z-181-perspective/perspective-offscreen03.png"
+  },
+  "limits": [
+    "Unlocked RGB raster or Smart Object without selection/vector masks. Alpha/Quick Mask filtering rejects; convert other types to Smart Objects first.",
+    "Up to16 finite convex planes,64 edge locks,8,388,608 source/output pixels. API retains4MP/64-layer/128MiB budget.",
+    "Shared-corner snapping tolerance0.5px; source/destination canonicalization and first matching edge neighbor follow original Rust. Three-way overlap and exact Adobe topology remain unqualified.",
+    "Single-plane image sampling uses exact inverse projective geometry; multiple planes use at most256 grid cells per axis. Numerical Photoshop output, resampling and mask feather fidelity remain open.",
+    "Moving/scaling/rotating layers transforms retained plane coordinates. Non-axis-aligned transforms release axis locks after preserving canonical geometry. Exact Photoshop lock semantics remain unqualified.",
+    "Editable PSD/PSB descriptors are unsupported; use native26 or explicitly rasterize. Unsupported Adobe actionJSON rejects.",
+    "Layer masks remain outside Smart Filters; filter masks stay in document coordinates. Richer selection/vector/multilayer contexts, exact inline options-bar layout, accessibility, physical-platform and live qualification remain open."
+  ],
+  "next": "AUT01 native Actions recording/editing/replay and Batch processing. Major breadth continues; G02 final fidelity and richer contexts stay open.",
+  "package": {
+    "utc": "2026-10-27T08:00:40.096018+00:00",
+    "app": "/private/tmp/photato181-verified-f59abiw8/Photato.app",
+    "zip": "artifacts/runs/20261027T072932Z-181-perspective/Photato181-final.zip",
+    "zip_sha256": "8e5a825e429b87b38f2771b6579535f190acffbc7851097b3ee240da85d5cb83",
+    "executable_sha256": "4c397faa06a996227f6c67bfe0e309b4fd8766c1ac429c46341d005bee22ac75",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato181-verified-f59abiw8/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato181-verified-f59abiw8/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1364,
+    "source_manifest": "artifacts/runs/20261027T072932Z-181-perspective/source01.json",
+    "source_manifest_sha256": "c59468fefa807b8b17bb3a79cb3c16dabccb9312aa74ea07c13793ceb9c2c732",
+    "tests": {
+      "debug_focused": 92,
+      "optimized_focused": 92,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T072932Z-181-perspective/integration03.log",
+      "optimized_log": "artifacts/runs/20261027T072932Z-181-perspective/release-focused01.log",
+      "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+    },
+    "preserved": "Four protected root-build/project/user-state hashes and754 original Rust hashes verified unchanged.",
+    "runtime_qualification": "Universal build metadata and native regression; physical Intel/macOS14/26, live UI and exact Photoshop gates remain open."
+  },
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T072932Z-181-perspective",
+    "passed_iteration": "01",
+    "milestones": 181,
+    "evidence_files": 36865,
+    "logs": 19304,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "final_source_verification": "All1364 source01 inputs match after documentation and package verification."
+}

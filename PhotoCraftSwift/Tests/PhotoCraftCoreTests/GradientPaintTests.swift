@@ -52,9 +52,9 @@ final class GradientPaintTests: XCTestCase {
       let result = session.document
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(result)), result)
       XCTAssertEqual(session.undoStack.count, 1)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, doc)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, result)
     }
   }

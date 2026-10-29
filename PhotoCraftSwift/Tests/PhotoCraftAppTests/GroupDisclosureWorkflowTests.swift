@@ -78,22 +78,22 @@ final class GroupDisclosureWorkflowTests: XCTestCase {
     XCTAssertFalse(doc.isDocumentEdited)
   }
 
-  @MainActor func testCollapseAllPreservesRedoAndSavesPanelMetadataWithoutDirtying() throws {
+  @MainActor func testCollapseAllPreservesRedoAndSavesPanelMetadataWithoutDirtying() async throws {
     let doc = try fixture()
     let store = doc.store
     defer { doc.close() }
     let base = store.document.layers[0].id
     store.perform(.opacity(base, 0.5))
     store.perform(.opacity(base, 0.3))
-    store.undo()
+    await store.undo()
     doc.updateChangeCount(.changeCleared)
-    let undo = store.session.undoStack.map(\.document)
-    let redo = store.session.redoStack.map(\.document)
+    let undo = try store.session.undoStack.map { try $0.restoredDocument() }
+    let redo = try store.session.redoStack.map { try $0.restoredDocument() }
     XCTAssertTrue(store.canChangeGroupDisclosure())
     store.collapseAllLayerGroups()
     store.collapseAllLayerGroups()
-    XCTAssertEqual(store.session.undoStack.map(\.document), undo)
-    XCTAssertEqual(store.session.redoStack.map(\.document), redo)
+    XCTAssertEqual(try store.session.undoStack.map { try $0.restoredDocument() }, undo)
+    XCTAssertEqual(try store.session.redoStack.map { try $0.restoredDocument() }, redo)
     XCTAssertFalse(doc.isDocumentEdited)
     let saved = try NativeArchive.decode(doc.data(ofType: CraftNSDocument.nativeType))
     XCTAssertTrue(saved.layers.filter(\.isGroup).allSatisfy { !$0.group!.expanded })

@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class NewGroupWorkflowTests: XCTestCase {
-  @MainActor func testCancelAndConfiguredGroupCreationHaveOneDocumentChange() throws {
+  @MainActor func testCancelAndConfiguredGroupCreationHaveOneDocumentChange() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let original = store.document
@@ -39,9 +39,9 @@ final class NewGroupWorkflowTests: XCTestCase {
     XCTAssertEqual(store.selectedLayerIDs, [group.id])
     XCTAssertNil(store.newGroupDraft)
     let result = store.document
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.document, result)
   }
 

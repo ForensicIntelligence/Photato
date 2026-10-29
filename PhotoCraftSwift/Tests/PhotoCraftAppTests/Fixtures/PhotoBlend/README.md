@@ -1,0 +1,1 @@
+Generated from the retained PhotoCraft Rust pyramid implementation (MIT OR Apache-2.0) using synthetic inputs. No photographs or proprietary Adobe source are included. See provenance.json and the preserved oracle runner. This verifies the native pyramid translation, not Photoshop pixel identity.

@@ -1,0 +1,232 @@
+{
+  "step": "dev-step-129",
+  "status": "Persistent recovery preferences, native File Handling entry and application-scope API qualified by automated tests and processes; live UI and full D02 remain open",
+  "major_workflows": [
+    "D02",
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T052732Z-129-recovery-preferences",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/tested-source-hashes03.json",
+    "sha256": "73310eed42497820a00d3664d42050d9f38711cbbb13dab6655888e193a13c64"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_129.json",
+  "implementation": [
+    "Persist enabled/interval settings separately from documents with bounded versioned JSON, atomic writes, external-change/stale checks and failure preservation",
+    "Bind Settings > File Handling to a native OK/Cancel draft window without repurposing General/Command-K or other unimplemented settings",
+    "Update AppKit delay and schedule already-dirty documents without fabricating content/history changes; guard automatic save entry after disable and retain explicit snapshots",
+    "Add authenticated GET/POST /v1/preferences/recovery, independent revision and schemas, and a native default-off preference-write permission revoked on API stop",
+    "Verify persistent fresh-process reload, no automatic backup during disabled observation, re-enable/follow-up backups, exact crash recovery and cleanup on owned fixtures",
+    "Preserve all failed probes and incomplete render attempts; qualify sources/package/output without claiming live Photoshop or full preference parity"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T052732Z-129-recovery-preferences/full01.log",
+      "sha256": "604b5574a5ba034894d6f06625d459b45f7f0de28afb2da2c76adf5affd84ba3",
+      "passed": 1163,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 244.867
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T052732Z-129-recovery-preferences/release01.log",
+      "sha256": "d901c1ff32b4dae009c2c37c78792734f8297378d518a59d99f7005bdae8d834",
+      "passed": 1163,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 50.269
+    }
+  },
+  "focus": {
+    "passed": 107,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 6.763,
+    "log": {
+      "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/focused03.log",
+      "sha256": "d5d77ea94c38d77461a588fbf32a26c2111d41971c7305b507aae655771d47c7"
+    }
+  },
+  "process": {
+    "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/preferences-process-verification06.json",
+    "sha256": "1434f0ee19dece687259edaea9c6e25fb342170c3476ca1ca5db13d9235be44d"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/source-scope01.json",
+    "sha256": "9ea44eecab76e74aedb5d4179ddbe06955065d7b0c0f13a9f2027fd96a4cef54"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_route_paths": 1,
+    "new_http_methods": 2,
+    "coverage": "GET/POST /v1/preferences/recovery shares native preference persistence and scheduling. Strict state/update schemas, independent revision, permission, media-type, busy/stale and failure behavior. Existing document recovery state remains compatible; no matching Adobe app-preferences endpoint is defined."
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/package-verification01.json",
+    "sha256": "29479759a974938990f4c13028be75e12aa84eafee42eba87822759a862d281e"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/external-references01.json",
+      "sha256": "ee34ad181ec23f49e2922686b372efb2aae8f5272fe7a2731a28e2d4b2603b62"
+    },
+    {
+      "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/scheduling-reference01.json",
+      "sha256": "6794736d3dab0616c2a120c437b7556b3ea16cab446e69327b266de8c662a8e3"
+    }
+  ],
+  "prior_failures": [
+    "process01 disabled check failed; pre-existing backup timing was ambiguous",
+    "snapshot01 exits signal11 and produces incomplete image",
+    "process02 and03 disable passes; accelerated20-second checks cannot qualify an already-armed300-second deadline",
+    "driver04 copied the previous harness path; exclusive log creation prevents execution/overwrite, repaired in driver05",
+    "driver05 verifies real timer/crash/reload but fails unconditional blank-launch assertion; reused closed-window identity receives no AppKit open-untitled callback, as observer07 confirms",
+    "snapshot02 exits0 but native child controls remain absent",
+    "initial scheduling patch failed its context check and changed no files"
+  ],
+  "remaining": [
+    "D02: exact Photoshop2026 preference dropdown/layout/transition behavior, full File Handling categories and supported-platform timer qualification; offscreen native control renders were incomplete",
+    "D02: complete crash/relaunch scenarios and live Finder startup/window restoration; direct executable probes qualify conditional untitled callbacks, not unconditional blank launch; original-source identity/bookmarks, backup retention and stale crash scratch cleanup",
+    "D02/I02: real disk-full/interrupted-write/power-loss durability and large-document/Release/physical Intel background-recovery latency and total memory",
+    "I02: active-document paging, bounded renderer/cache, history cleanup/accounting latency and total-process memory before raising public file/canvas/transfer limits",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and complete live lifecycle",
+    "Combined118\u2013129 native/Photoshop live qualification, physical Intel/macOS14 full-app runtime and optional AI availability/real generation",
+    "All major workflows remain open; optional minor functions and final details follow only after major exit gates"
+  ],
+  "limits": "No new large-document or memory benchmark. First automatic backups use the actual saved300-second setting; only follow-up edits use a1-second probe delay. Elapsed times are preserved in process-case04/timer-observation.json. No full-platform timing or visual parity claim.",
+  "live_ui": {
+    "path": "artifacts/runs/20261020T052732Z-129-recovery-preferences/live-ui01.json",
+    "sha256": "c1abb1e44f6a61f18330d8e9ff3d6a0c11257b41711d475e6ea6caea62ac6056"
+  },
+  "offscreen": "Incomplete PNGs; no visual pass. Snapshot01 crashes after first output;02 exits0 but omits native child controls.",
+  "recent_documents_step135": {
+    "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+    "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recent-documents",
+        "POST /v1/recent-documents/limit",
+        "POST /v1/recent-documents/clear",
+        "POST /v1/recent-documents/open"
+      ],
+      "extended_routes": [
+        "GET /v1/document-opening adds queuedFiles and lastError",
+        "POST /v1/document-opening/cancel accepts an operation owned by the enabled recent-file session"
+      ],
+      "permission": "Separate Allow recent-file access, off each session, gates filenames/list/limit/clear/known-ID reopening. No arbitrary paths or implicit document sharing.",
+      "coverage": "Shared native atomic settings/history and background opening, exact request/state schemas, revision/busy/session/revocation/error tests. Recovery-preference POST preserves the recent count. No Adobe desktop-history route invented."
+    }
+  },
+  "recovery_maintenance_step136": {
+    "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+    "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/backups",
+        "POST /v1/recovery/backups/inspect",
+        "POST /v1/recovery/backups/open-copy",
+        "POST /v1/recovery/backups/download",
+        "POST /v1/recovery/backups/trash",
+        "POST /v1/recovery/backups/forget",
+        "POST /v1/recovery/backups/remove-missing"
+      ],
+      "permission": "Separate Allow recovery-backup access, off each API session; gates names, content and maintenance. Existing counts/retry permission unchanged. No arbitrary local paths or implicit sharing.",
+      "coverage": "Shared native coordinator, bounded index/native11 download, complete request/result/state schemas, stale/busy/revocation/confirmation/errors and lifecycle exclusions. Trash retires before moving and finishes cleanup after a begun move even if permission ends; the revoked response is403. No Adobe desktop-maintenance route invented."
+    }
+  },
+  "recovery_salvage_step137": {
+    "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+    "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/recovery/salvage",
+        "POST /v1/recovery/salvage/scan",
+        "POST /v1/recovery/salvage/open-copy",
+        "POST /v1/recovery/salvage/download",
+        "POST /v1/recovery/salvage/reset-index"
+      ],
+      "permission": "Existing separate session-off backup access permission now explicitly describes salvage and confirmed reset. No arbitrary paths, source adoption or automatic sharing.",
+      "coverage": "Shared native coordinator, scan-local revision/IDs, exact state/request/result schemas, bounded scan/download/reset, canonical identity matching, stale/busy/confirmation/revocation/error checks. Adobe desktop salvage route not invented."
+    }
+  },
+  "background_recovery_step138": {
+    "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+    "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "POST /v1/recovery/cancel"
+      ],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "permission": "Existing separate Allow recovery management toggle permits cancellation of active indexed recovery. Revocation cancels only a retry owned by that API session, not unrelated native recovery. No automatic sharing.",
+      "coverage": "Shared native coordinator, nullable operation state with exact schemas, busy/stale/cancel/revocation/error handling. Retry retains synchronous HTTP200 completion. Cancel returns200 current state; cancelled retry409, revoked retry403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "recovery_admission_step139": {
+    "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+    "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [],
+      "expanded_routes": [
+        "GET /v1/recovery",
+        "POST /v1/recovery/retry"
+      ],
+      "new_state": [
+        "lastDeferred",
+        "operation.memory",
+        "operation.deferredByReason",
+        "accounting phase"
+      ],
+      "permission": "Existing separate recovery-management permission; no automatic sharing.",
+      "coverage": "Shared native coordinator and exact schemas; completed partial retry200 with deferred counts, cancellation/workspace instability409, permission revocation403. No corresponding Adobe desktop recovery endpoint."
+    }
+  },
+  "photoshop_file_preferences_step142": {
+    "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+    "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+    "api": {
+      "photato_typed_commands": 20,
+      "adobe_partial_endpoints": 2,
+      "adobe_unimplemented_endpoints": 6,
+      "new_routes": [
+        "GET /v1/preferences/photoshop-file-handling",
+        "POST /v1/preferences/photoshop-file-handling"
+      ],
+      "expanded_routes": [
+        "document.save",
+        "document.saveAs",
+        "GET /v1/documents/{id}",
+        "GET /v1/documents/{id}/file.psd",
+        "GET /v1/documents/{id}/file.psb"
+      ],
+      "new_state": [
+        "photoshopPreferenceChangesEnabled",
+        "photoshopFilePreferences capability/schema",
+        "effectiveSaveEncodingOptions"
+      ],
+      "permission": "Separate native Allow Photoshop file preference changes, off on each API session; existing recovery/recent permissions do not grant it.",
+      "coverage": "Shared native transaction/default resolution. Exact body schema and state, permission/auth/stale/busy/persistence errors. Stateless Photato and Adobe jobs retain their own output defaults; no Adobe application preference endpoint exists in pinned contract."
+    }
+  }
+}

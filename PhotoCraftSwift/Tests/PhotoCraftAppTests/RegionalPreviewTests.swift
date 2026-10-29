@@ -57,10 +57,10 @@ final class RegionalPreviewTests: XCTestCase {
     await s.geometryTask?.value
     try await verify(s)
     XCTAssertEqual(s.session.undoStack.count, 1)
-    s.undo()
+    await s.undo()
     try await verify(s)
     XCTAssertEqual(s.document, original)
-    s.redo()
+    await s.redo()
     try await verify(s)
     guard case .region = s.renderSnapshot?.update else { return XCTFail("Expected regional redo") }
   }

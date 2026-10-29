@@ -3,10 +3,15 @@ import PhotoCraftCore
 
 public enum EditorTool: String, CaseIterable, Identifiable, Sendable {
   case move = "Move"
+  case frame = "Frame"
+  case artboard = "Artboard"
   case marquee = "Rectangular Marquee"
   case ellipticalMarquee = "Elliptical Marquee"
   case lasso = "Lasso"
   case polygonLasso = "Polygonal Lasso"
+  case objectSelection = "Object Selection"
+  case quickSelection = "Quick Selection"
+  case selectionBrush = "Selection Brush"
   case magicWand = "Magic Wand"
   case paintBucket = "Paint Bucket"
   case gradient = "Gradient"
@@ -18,17 +23,35 @@ public enum EditorTool: String, CaseIterable, Identifiable, Sendable {
   case dodge = "Dodge"
   case burn = "Burn"
   case sponge = "Sponge"
+  case patch = "Patch"
+  case contentAwareMove = "Content-Aware Move"
+  case redEye = "Red Eye"
   case spotHealing = "Spot Healing Brush"
+  case pencil = "Pencil"
+  case colorReplacement = "Color Replacement"
+  case mixerBrush = "Mixer Brush"
+  case patternStamp = "Pattern Stamp"
+  case backgroundEraser = "Background Eraser"
+  case magicEraser = "Magic Eraser"
+  case adjustmentBrush = "Adjustment Brush"
   case brush = "Brush"
   case eraser = "Eraser"
   case rectangle = "Rectangle"
   case ellipse = "Ellipse"
+  case triangle = "Triangle"
+  case polygon = "Polygon"
+  case star = "Star"
+  case line = "Line"
+  case customShape = "Custom Shape"
   case text = "Horizontal Type"
+  case verticalText = "Vertical Type"
   case eyedropper = "Eyedropper"
   case hand = "Hand"
   case crop = "Crop"
   case zoom = "Zoom"
   case pen = "Pen"
+  case freeformPen = "Freeform Pen"
+  case curvaturePen = "Curvature Pen"
   case pathSelection = "Path Selection"
   case directSelection = "Direct Selection"
   var usesRetouchStroke: Bool {
@@ -77,7 +100,7 @@ enum WorkspaceCatalog {
   static let groups: [[WorkspaceTool]] = [
     [
       .init("move", "Move", "arrow.up.and.down.and.arrow.left.and.right", "V", .move),
-      .init("artboard", "Artboard", "square.dashed.inset.filled", "V"),
+      .init("artboard", "Artboard", "square.dashed.inset.filled", "V", .artboard),
     ],
     [
       .init("marquee", "Rectangular Marquee", "rectangle.dashed", "M", .marquee),
@@ -91,10 +114,11 @@ enum WorkspaceCatalog {
         "polygonLasso", "Polygonal Lasso", "point.topleft.down.curvedto.point.bottomright.up", "L",
         .polygonLasso),
       .init("magneticLasso", "Magnetic Lasso", "lasso", "L"),
+      .init("selectionBrush", "Selection Brush", "paintbrush.pointed", "", .selectionBrush),
     ],
     [
-      .init("objectSelection", "Object Selection", "rectangle.dashed.badge.record", "W"),
-      .init("quickSelection", "Quick Selection", "paintbrush", "W"),
+      .init("objectSelection", "Object Selection", "rectangle.dashed.badge.record", "W", .objectSelection),
+      .init("quickSelection", "Quick Selection", "paintbrush", "W", .quickSelection),
       .init("magicWand", "Magic Wand", "wand.and.stars", "W", .magicWand),
     ],
     [
@@ -102,7 +126,7 @@ enum WorkspaceCatalog {
       .init("perspectiveCrop", "Perspective Crop", "crop.rotate", "C"),
       .init("slice", "Slice", "scissors", "C"),
     ],
-    [.init("frame", "Frame", "rectangle.badge.xmark", "K")],
+    [.init("frame", "Frame", "rectangle.badge.xmark", "K", .frame)],
     [
       .init("eyedropper", "Eyedropper", "eyedropper", "I", .eyedropper),
       .init("colorSampler", "Color Sampler", "eyedropper.halffull", "I"),
@@ -112,20 +136,21 @@ enum WorkspaceCatalog {
       .init("spotHealing", "Spot Healing Brush", "bandage", "J", .spotHealing),
       .init("remove", "Remove", "eraser.badge.sparkles", "J"),
       .init("healing", "Healing Brush", "bandage", "J", .healingBrush),
-      .init("patch", "Patch", "rectangle.dashed", "J"),
+      .init("patch", "Patch", "rectangle.dashed", "J", .patch),
       .init(
-        "contentAwareMove", "Content-Aware Move", "arrow.up.and.down.and.arrow.left.and.right", "J"),
-      .init("redEye", "Red Eye", "eye", "J"),
+        "contentAwareMove", "Content-Aware Move", "arrow.up.and.down.and.arrow.left.and.right", "J", .contentAwareMove),
+      .init("redEye", "Red Eye", "eye", "J", .redEye),
     ],
     [
       .init("brush", "Brush", "paintbrush.pointed", "B", .brush),
-      .init("pencil", "Pencil", "pencil", "B"),
-      .init("colorReplacement", "Color Replacement", "paintbrush", "B"),
-      .init("mixerBrush", "Mixer Brush", "paintbrush.pointed.fill", "B"),
+      .init("pencil", "Pencil", "pencil", "B", .pencil),
+      .init("colorReplacement", "Color Replacement", "paintbrush", "B", .colorReplacement),
+      .init("mixerBrush", "Mixer Brush", "paintbrush.pointed.fill", "B", .mixerBrush),
     ],
+    [.init("adjustmentBrush", "Adjustment Brush", "paintbrush.pointed.fill", "", .adjustmentBrush)],
     [
       .init("clone", "Clone Stamp", "seal", "S", .cloneStamp),
-      .init("patternStamp", "Pattern Stamp", "seal.fill", "S"),
+      .init("patternStamp", "Pattern Stamp", "seal.fill", "S", .patternStamp),
     ],
     [
       .init("historyBrush", "History Brush", "clock.arrow.circlepath", "Y"),
@@ -133,8 +158,8 @@ enum WorkspaceCatalog {
     ],
     [
       .init("eraser", "Eraser", "eraser", "E", .eraser),
-      .init("backgroundEraser", "Background Eraser", "eraser.fill", "E"),
-      .init("magicEraser", "Magic Eraser", "wand.and.rays", "E"),
+      .init("backgroundEraser", "Background Eraser", "eraser.fill", "E", .backgroundEraser),
+      .init("magicEraser", "Magic Eraser", "wand.and.rays", "E", .magicEraser),
     ],
     [
       .init("gradient", "Gradient", "rectangle.lefthalf.filled", "G", .gradient),
@@ -152,13 +177,13 @@ enum WorkspaceCatalog {
     ],
     [
       .init("pen", "Pen", "pencil.tip.crop.circle", "P", .pen),
-      .init("freeformPen", "Freeform Pen", "pencil.tip", "P"),
+      .init("freeformPen", "Freeform Pen", "pencil.tip", "P", .freeformPen),
       .init(
-        "curvaturePen", "Curvature Pen", "point.topleft.down.curvedto.point.bottomright.up", "P"),
+        "curvaturePen", "Curvature Pen", "point.topleft.down.curvedto.point.bottomright.up", "P", .curvaturePen),
     ],
     [
       .init("text", "Horizontal Type", "textformat", "T", .text),
-      .init("verticalType", "Vertical Type", "textformat.alt", "T"),
+      .init("verticalType", "Vertical Type", "textformat.alt", "T", .verticalText),
       .init("typeMask", "Type Mask", "t.square", "T"),
     ],
     [
@@ -168,9 +193,10 @@ enum WorkspaceCatalog {
     [
       .init("rectangle", "Rectangle", "rectangle", "U", .rectangle),
       .init("ellipse", "Ellipse", "circle", "U", .ellipse),
-      .init("triangle", "Triangle", "triangle", "U"), .init("polygon", "Polygon", "pentagon", "U"),
-      .init("line", "Line", "line.diagonal", "U"),
-      .init("customShape", "Custom Shape", "star", "U"),
+      .init("triangle", "Triangle", "triangle", "U", .triangle), .init("polygon", "Polygon", "pentagon", "U", .polygon),
+      .init("star", "Star", "star", "U", .star),
+      .init("line", "Line", "line.diagonal", "U", .line),
+      .init("customShape", "Custom Shape", "star", "U", .customShape),
     ],
     [
       .init("hand", "Hand", "hand.draw", "H", .hand),
@@ -237,7 +263,7 @@ struct WorkspaceGap: Identifiable, Sendable {
     .init(
       id: "assets", title: "Libraries & presets",
       detail:
-        "Gradient Map supports editable layers and pixel adjustments in 8- and 16-bit documents with Classic, Linear, Perceptual and Stripes methods. Smooth and exact Photoshop pixels remain open. Gradient presets support saved folders, search, rename, duplicate, reorder, GRD import/export and Save Preset. Gradient and Classic Gradient tools provide editable fills, pixel/mask painting and on-canvas color stops. Pattern Fill, Define Pattern, a flat pattern library, PAT import/export and pattern Paint Bucket are available. Pattern Stamp, overlays, pattern folders, shared assets, batch exports, actions, layer transparency locking and complete preferences remain open."
+        "Gradient Map supports editable layers and pixel adjustments in 8- and 16-bit documents with Classic, Linear, Perceptual and Stripes methods. Smooth and exact Photoshop pixels remain open. Gradient presets support saved folders, search, rename, duplicate, reorder, GRD import/export and Save Preset. Gradient and Classic Gradient tools provide editable fills, pixel/mask painting and on-canvas color stops. Pattern Fill, Define Pattern, a flat pattern library, PAT import/export and pattern Paint Bucket are available. Pattern Stamp, editable layer styles, Actions/Batch and layer protection are available. Adjustment Brush paints editable local masks. Pattern folders, shared assets and complete preferences remain open."
     ),
     .init(
       id: "ai", title: "Generative image editing",

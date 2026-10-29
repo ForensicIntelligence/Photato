@@ -48,11 +48,11 @@ final class AdobeActionsRequestTests: XCTestCase {
     XCTAssertEqual(actual.session.document, expected.document)
     XCTAssertEqual(actual.components, .red)
     XCTAssertEqual(actual.session.undoStack.map(\.label), ["Fill", "Fill"])
-    actual.session.undo()
+    try actual.session.undo()
     XCTAssertEqual(actual.session.document, afterWhite)
-    actual.session.undo()
+    try actual.session.undo()
     XCTAssertEqual(actual.session.document, document)
-    actual.session.redo()
+    try actual.session.redo()
     XCTAssertEqual(actual.session.document, afterWhite)
   }
 
@@ -143,7 +143,7 @@ final class AdobeActionsRequestTests: XCTestCase {
     ]
     values.append(value)
     value = body()
-    value["outputs"] = [["mediaType": "image/jpeg", "destination": ["validityPeriod": 3600]]]
+    value["outputs"] = [["mediaType": "image/webp", "destination": ["validityPeriod": 3600]]]
     values.append(value)
     value = body()
     value["unknown"] = true

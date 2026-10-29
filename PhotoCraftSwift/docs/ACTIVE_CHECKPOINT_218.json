@@ -1,0 +1,448 @@
+{
+  "step": "dev-step-218",
+  "completed_at_utc": "2026-10-28T04:36:40.063119+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/source01.json",
+  "source_inputs": 1868,
+  "source_manifest_sha256": "348e023c82b20ff3113cb6909afd136e1ecef9a6336fbbd47085e630f301cb0d",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/ClassicDetailWorkspace.swift",
+      "Sources/PhotoCraftCore/ClassicDetailEngine.swift",
+      "Sources/PhotoCraftCore/ClassicDetailSettings.swift",
+      "Tests/PhotoCraftAppTests/ClassicDetailWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ClassicDetailTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/blur.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/blurMore.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/despeckle.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/dust-1-0.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/dust-12-255.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/dust-4-30.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/input.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/median-1.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/median-12.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/median-4.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/provenance.json",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-spin-10-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-spin-10-0.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-spin-75-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-spin-75-0.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-zoom-10-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-zoom-10-0.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-zoom-75-0.2.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/radial-zoom-75-0.5.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-circle.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-cross.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-diamond.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-heart.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-hexagon.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-ring.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-square.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-star.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/shape-triangle.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/sharpen.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/sharpenEdges.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/sharpenMore.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-high-edgeOnly.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-high-normal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-high-overlayEdge.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-low-edgeOnly.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-low-normal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-low-overlayEdge.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-medium-edgeOnly.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-medium-normal.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/smart-medium-overlayEdge.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-2-15.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-2-80.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-20-15.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-20-80.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-8-15.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/ClassicDetail/surface-8-80.rgba"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration01": {
+      "passed": 149,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/integration01.log",
+      "current_source": false,
+      "note": "Only subsequent native change is an aggregate API persistence-description sentence, covered by full01; focused algorithm/test inputs unchanged."
+    },
+    "full_optimized01": {
+      "passed": 2082,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/release-full01.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration01": 149,
+    "release-full01": 2082
+  },
+  "package": {
+    "utc": "2026-10-28T04:36:39.700602+00:00",
+    "tests": {
+      "integration01": 149,
+      "release-full01": 2082
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/Photato218-final01.zip",
+    "zip_sha256": "221356e6d3515ee5699a1a51b6d7cfb84391037f8d30fa53d0ab0be36a0beffe",
+    "app": "/private/tmp/photato218-verified-t98rqjju/Photato.app",
+    "executable_sha256": "dccbdf5d6df0df0d2e439ece2d2118217b82cbfcbdbd916f5a3952133520d451",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato218-verified-t98rqjju/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato218-verified-t98rqjju/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1868,
+    "source_manifest_sha256": "348e023c82b20ff3113cb6909afd136e1ecef9a6336fbbd47085e630f301cb0d",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 335,
+      "unavailable_leaf_commands": 390,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_classic_detail_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "blur"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "blurMore"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpen"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpenMore"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "sharpenEdges"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "despeckle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-10-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-10-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-75-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-spin-75-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-10-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-10-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-75-0.5"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "radial-zoom-75-0.2"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-circle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-ring"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-square"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-diamond"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-triangle"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-hexagon"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-star"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-heart"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "shape-cross"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-low-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-medium-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-normal"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-edgeOnly"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "smart-high-overlayEdge"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-2-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-2-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-8-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-8-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-20-15"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "surface-20-80"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-1"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-4"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "median-12"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-1-0"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-4-30"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "dust-12-255"
+      }
+    ],
+    "limits": "149 focused Debug and2082 full optimized tests plus universal package on this host.44 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Blur/Noise/Sharpen remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": [],
+    "window_regressions_passed": [
+      "testZoomPanAndResizeKeepImageShadowAndOverlaysInsideViewport",
+      "testOpeningDocumentsSharesOneRealWindowAndRoutesActiveDocument",
+      "testHostedTabHitTestingTargetsNativeButtonsAboveCanvas",
+      "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
+    ],
+    "same_document_live_handoff": "Pending manual Mac unlock; installed209 verified separately."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 335,
+    "unavailable_leaf_commands": 390,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Twelve native Blur/Noise/Sharpen operations with controls/previews/Cancel/local history and document Undo",
+    "44 original-Rust RGB8 references matched exactly; additional independent median/alpha/HDR tests pass",
+    "Selection/transparency/cropped storage, raster native/PSD saving, editable Smart Filters/native44/Actions17 and shared API guards/equivalence",
+    "Corrected scope classification from F02 to F01; prior parity gates preserved",
+    "Corrected installed app remains inaccessible while Mac locked; no new live handoff"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect title/zoom/pan/scroll/window resize, then safely close obsolete159 probe after checking current unsaved state",
+    "Live filter dialogs/gestures and Photoshop descriptor/reference capture"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "window_handoff_evidence": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen/window-handoff-status01.json",
+  "github": "Private draft remains209;218 package local only; no source push or visibility change.",
+  "remaining": [
+    "Exact Photoshop output/default/control/color-mode/depth qualification",
+    "Imported Photoshop/custom Shape Blur presets beyond nine source kernels",
+    "Adobe ActionJSON/ATN and editable PSD descriptors",
+    "Radial Draft/Good sample budgets are native extensions of the source Best path, not proven Adobe quality kernels",
+    "Live modal/gesture workflows and physical Intel/macOS14/macOS26 checks",
+    "Large-document neighborhood-processing budgets",
+    "Full F01/F02 and all previous parity gates",
+    "Window handoff of corrected209 pending manual unlock"
+  ],
+  "next_major_workflow": {
+    "id": "A03",
+    "name": "Remaining classic adjustment workflows",
+    "scope": "Shadows/Highlights, HDR Toning, Match Color, Replace Color and Equalize with usable native controls, preview/history/persistence and shared APIs. Audit existing Brightness/Contrast, Exposure and Invert bindings before extending them. Preserve Last Filter, Lighting Effects context, all F01/F02 fidelity and live/platform gates.",
+    "investigation": {
+      "source_files": [
+        "../photocraft-main/crates/algo/src/tone.rs",
+        "../photocraft-main/crates/engine/src/adjust_cmds.rs",
+        "../photocraft-main/crates/engine/src/adjust_cmds/tests.rs",
+        "Sources/PhotoCraft/AutomationClassicAdjustments.swift",
+        "Sources/PhotoCraftCore/HDRToneMapping.swift"
+      ],
+      "observed_original_behavior": [
+        "Shadows/Highlights uses neighborhood tone/radius plus color/midtone and clip settings; original engine can apply it as a Smart Filter.",
+        "Replace Color uses sampled RGB, fuzziness, hue/saturation/lightness.",
+        "Match Color computes Lab statistics from a source document/layer/composite and optional selections, with None/default acting on target statistics.",
+        "HDR Toning composites over white and replaces layers with one background in a single undoable transaction. This is source behavior, not independently qualified Photoshop behavior."
+      ],
+      "integration_notes": [
+        "Existing classic adjustment API covers five kinds and Color Lookup; expansion requires explicit schema/capability handling, not only adding a menu.",
+        "Inspect existing HDR tone mapper before translating overlapping source again.",
+        "Use stable document/layer IDs and portable source statistics for Match Color; validate stale/cancel/busy cases and recorded replay.",
+        "Confirm Equalize source and selection semantics; no implementation added during218 source freeze."
+      ],
+      "qualification": "Read-only planning; no new capability, output equivalence or closure claimed."
+    }
+  },
+  "evidence_root": "artifacts/runs/20261028T040109Z-218-blur-noise-sharpen"
+}

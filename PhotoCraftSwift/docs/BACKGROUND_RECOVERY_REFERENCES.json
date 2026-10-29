@@ -1,0 +1,111 @@
+{
+  "step": "dev-step-128",
+  "status": "Background recovery and concurrent-edit accounting qualified by focused/full/process tests and universal packaging; full D02 remains open",
+  "major_workflows": [
+    "D02",
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T044823Z-128-background-recovery",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/tested-source-hashes05.json",
+    "sha256": "6b7f7547aa0ea6e681fa7a6d326775e8c9a4b2ae2718502cc293e5d8d6ae92f4"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_128.json",
+  "implementation": [
+    "Capture immutable COW content before the synchronous AppKit save entry; write the native archive off the main actor and unblock interaction before serialization",
+    "Retain later committed edits and Undo for the next backup with explicit captured/content generations, including clean-Undo backup removal",
+    "Defer close cleanup, reject replacement and competing file/API mutations, and keep authenticated HTTP state available during writing",
+    "Preserve last backup/current edits on injected out-of-space failure and allow retry; protect recovered originals with an accurate Save As warning",
+    "Extend existing Photato recovery capabilities without changing the20-command registry or inventing Adobe routes",
+    "Verify actual automatic follow-up snapshots after edits during writing, three exact recovered documents after SIGKILL/relaunch, original-format association and normal close cleanup",
+    "Restart complete native reads once after a metadata-only timestamp conflict; preserve all per-attempt identity and integrity guards and bounded failure",
+    "Measure bounded Debug main-actor responsiveness and byte-identical complete recovery archives against127; preserve failed timing02/05 and their metadata-conflict diagnosis"
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T044823Z-128-background-recovery/full01.log",
+      "sha256": "9b5a47b222745ff46e0e9b9d4b00f5060ada8dbe4e0bc21e1d0f29907e779e2e",
+      "passed": 1149,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 246.222
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T044823Z-128-background-recovery/release01.log",
+      "sha256": "08c0984fa19700542e5cfe496a2a6d7f1c4d53dab8ad4a7bd38bda519542e4df",
+      "passed": 1149,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 50.376
+    }
+  },
+  "focus": {
+    "passed": 96,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 6.926,
+    "log": {
+      "path": "artifacts/runs/20261020T044823Z-128-background-recovery/focused05.log",
+      "sha256": "d1f0c120211dac30d6b29e20a5fd9b19c9f0fd783a928379ca4c5d2e1d93f443"
+    }
+  },
+  "process": {
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/process-verification03.json",
+    "sha256": "26738b105b98496c29139277525232c8d9fbad7b31e6636571b027d48b5481a8"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/source-scope01.json",
+    "sha256": "4993af77098fd27d40dd8277721f8b4c3e99beae4cf7c6ddca8d66e70420cd9f"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "Existing document.autosave shares background writer and lifecycle behavior with desktop; capabilities add backgroundWriting, concurrentEditing and fileLifecycle. Six state fields unchanged. HTTP state responsiveness/conflicts/revocation are tested; native file-read retry is shared with imports/recovery, without a new schema/error envelope. No Adobe desktop-recovery operation is defined in the pinned contract."
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/package-verification01.json",
+    "sha256": "63b277a12efae80a767892a8bda25eb53fdee1b53a65c284784b0dada7af527e"
+  },
+  "primary_references": [
+    {
+      "path": "artifacts/runs/20261020T044823Z-128-background-recovery/external-references01.json",
+      "sha256": "b5daec8fdf03a967346672677d5f203f090b959ef2ad7fbea25493a2d3799ab6"
+    }
+  ],
+  "timing": {
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/timing-comparison06.json",
+    "sha256": "f4e76d1689b796699943d592b213854521cb157574c125521df6401acd8f4c79"
+  },
+  "prior_instrumented_timing": {
+    "source_freeze": "tested-source-hashes04.json",
+    "path": "artifacts/runs/20261020T044823Z-128-background-recovery/timing-comparison04.json",
+    "sha256": "be29d40481eb9ae7ff062177f182738ab46b35dc05461e9d434f08754a7ae57f"
+  },
+  "prior_failures": [
+    "focused01 concurrent edit/Undo accounting assertions",
+    "appkit-change-trace01 Swift.print shadowing compile error",
+    "focused02 clean-Undo obsolete backup accounting assertion",
+    "timing-candidate02 file-change guard rejection; reproduced metadata conflict in05",
+    "timing-candidate03 diagnostic stat compile error",
+    "timing-candidate05 ctime-only conflict, repaired with a bounded complete-read retry",
+    "initial freeze05 preparation stopped on a nonexistent inspection path before creating any validation input",
+    "finalize128 historical source-freeze reference error; audit01 final checkpoint binding consequently failed"
+  ],
+  "remaining": [
+    "D02: recovery interval/enablement preferences, Photoshop presentation, all document/import/relaunch scenarios and window/tab layout recovery",
+    "D02: full disk-full/interrupted-write/power-loss durability, source identity/bookmark retention, backup retention and stale crash scratch cleanup",
+    "D02/I02: multi-GB/Release/physical Intel background-recovery latency, concurrent edit copy costs and total memory; current measured fixture is bounded Debug only",
+    "I02: active-document paging, bounded renderer/cache, history cleanup/accounting latency and total-process memory before raising file/canvas/transfer limits; retain125 measured arm64 RSS limitation",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and complete live lifecycle",
+    "Combined118\u2013128 native/Photoshop live qualification; physical Intel/macOS14 full-app runtime and optional AI availability/real generation",
+    "All major workflows remain open; optional minor functions and final details follow only after major exit gates"
+  ],
+  "limits": "Three warm Debug backups, one four-layer1024x768 RGB32 fixture/48MiB raw pixels. No Release, physical Intel, multi-GB or peak-RSS claim. Real automatic recovery uses three small fixtures and a1-second test timer; production600seconds.",
+  "recovery_undo_history": "Not restored across process death; only committed content is saved. In-process autosaves preserve current history.",
+  "locations": "AppKit-managed; saved-document backups may be adjacent to originals. Paths omitted from API.",
+  "generation_reason": "Minimal AppKit trace02 shows changeAutosaved without change-token callbacks on the legacy autosavesElsewhere path."
+}

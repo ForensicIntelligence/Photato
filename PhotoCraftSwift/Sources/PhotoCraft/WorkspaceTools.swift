@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 extension WorkspaceView {
@@ -66,7 +67,9 @@ extension WorkspaceView {
           .overlay(Rectangle().stroke(.white.opacity(0.8))).offset(x: 5, y: 4)
         CompactColorWell(color: colorBinding).frame(width: 23, height: 23).offset(x: -4, y: -4)
       }.frame(height: 30)
-      iconButton("rectangle.inset.filled", "Quick Mask — not available yet", enabled: false) {}
+      iconButton("rectangle.inset.filled", "Edit in Quick Mask Mode (Q)", enabled: store.canEditChannels) { store.toggleQuickMask() }
+        .background(store.document.quickMask != nil ? Color.red.opacity(0.4):.clear)
+        .contextMenu { Button("Quick Mask Options…") { store.beginChannelDialog(.quickOptions) } }
       iconButton("rectangle.on.rectangle", "Fit canvas to workspace") { store.fit() }
     }.padding(.vertical, 6)
   }
@@ -144,12 +147,15 @@ extension WorkspaceView {
         .small)
     } else {
       switch store.tool {
+      case .objectSelection,.quickSelection,.selectionBrush:
+        SelectionToolOptionsView(store:store)
       case .gradient:
         gradientOptions
       case .magicWand, .paintBucket:
         colorRegionOptions
-      case .pen, .pathSelection, .directSelection:
+      case .pen, .freeformPen, .curvaturePen, .pathSelection, .directSelection:
         Text("Path").padding(4).background(StudioTheme.field)
+        if store.tool == .freeformPen {Text("Curve Fit");TextField("Curve Fit",value:$store.pathCurveFit,format:.number).frame(width:45);Text("px")}
         Picker(
           "Path operation",
           selection: Binding(
@@ -163,11 +169,15 @@ extension WorkspaceView {
           .disabled(store.selectedVectorPath == nil || store.activeLayer == nil)
         Button("Finish Path") { store.finishPath() }.disabled(store.penComponent == nil)
         Text(
-          store.tool == .pen
+          store.tool == .freeformPen ? "Drag a path · Return finishes · Escape cancels" : store.tool == .curvaturePen ? "Click curves · Double-click corners · Click first point to close" : store.tool == .pen
             ? "Click anchors · Drag curves · Return finishes · ⌥ Corner"
             : "Drag anchors or handles · ⌥ Independent handle · Delete anchor"
         )
         .foregroundStyle(.secondary)
+      case .frame:
+        FrameToolOptions(store: store)
+      case .artboard:
+        ArtboardToolOptions(store: store)
       case .move:
         Toggle("Auto-Select", isOn: $store.autoSelect).toggleStyle(.checkbox).controlSize(.mini)
         Text("Layer").padding(.horizontal, 7).padding(.vertical, 3).background(StudioTheme.field)
@@ -179,10 +189,16 @@ extension WorkspaceView {
         focusOptions
       case .dodge, .burn, .sponge:
         toningOptions
+      case .patch, .contentAwareMove, .redEye:
+        regionRetouchOptions
       case .spotHealing:
         spotHealingOptions
       case .cloneStamp, .healingBrush:
         cloneOptions
+      case .pencil, .colorReplacement, .mixerBrush, .patternStamp, .backgroundEraser, .magicEraser:
+        PaintingToolOptionsView(store:store)
+      case .adjustmentBrush:
+        AdjustmentBrushOptionsView(store:store)
       case .brush, .eraser:
         if store.editingMask {
           Text("Layer Mask").foregroundStyle(.white).padding(4).background(StudioTheme.field)
@@ -198,21 +214,22 @@ extension WorkspaceView {
         }.buttonStyle(.plain).help("Brush size and hardness").popover(isPresented: $brushPopover) {
           brushSettings
         }
-        labeledValue("Mode:", value: "Normal", width: 90).help(
-          "Only Normal brush mode is currently available")
-        percentField("Opacity:", value: $store.brush.opacity)
-        labeledValue("Flow:", value: "100%", width: 45).disabled(true).help(
-          "Flow dynamics are not available yet")
-        labeledValue("Smoothing:", value: "0%", width: 42).disabled(true).help(
-          "Stroke smoothing is not available yet")
+        Picker("Mode:",selection:$store.brushOptions.mode){ForEach(BlendMode.allCases,id: \.self){Text($0.rawValue).tag($0)}}.frame(width:145).controlSize(.small)
+        percentField("Opacity:",value:$store.brush.opacity)
+        numberField("Flow:",value:Binding(get:{store.brushOptions.flow*100},set:{store.brushOptions.flow=$0/100}),range:0...100,suffix:"%")
+        numberField("Smoothing:",value:Binding(get:{store.brushOptions.smoothing.amount*100},set:{store.brushOptions.smoothing.amount=$0/100}),range:0...100,suffix:"%")
+        Toggle("Airbrush",isOn:$store.brushOptions.buildUp).help("Build up paint while holding still")
+        Toggle("Pressure Size",isOn:$store.brushOptions.pressureSize)
+        Toggle("Pressure Opacity",isOn:$store.brushOptions.pressureOpacity)
+        Button("Brush Settings"){NSApp.sendAction(#selector(AppDelegate.showBrushSettings),to:nil,from:nil)}
+        Menu("Presets"){ForEach(store.brushes.file.presets){p in Button(p.name){do{try store.selectBrush(p.id)}catch{store.error=error.localizedDescription}}};Divider();Button("Brushes…"){NSApp.sendAction(#selector(AppDelegate.showBrushes),to:nil,from:nil)}}
       case .marquee, .ellipticalMarquee, .lasso, .polygonLasso:
         Picker("Selection mode", selection: $store.selectionMode) {
           ForEach(SelectionMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
         }.labelsHidden().frame(width: 105).controlSize(.small)
         numberField("Feather:", value: $store.selectionFeather, range: 0...100, suffix: "px")
         Toggle("Anti-alias", isOn: $store.selectionAntiAlias).disabled(store.tool == .marquee)
-        Button("Select and Mask…") {}.disabled(true).controlSize(.small).help(
-          "Selection refinement is not available yet")
+        Button("Select and Mask…") { store.beginSelectMask() }.disabled(!store.canBeginSelectMask).controlSize(.small)
         if store.tool == .polygonLasso {
           Text("Click vertices · Double-click or Return to close · Esc cancels").foregroundStyle(
             .secondary)
@@ -220,28 +237,34 @@ extension WorkspaceView {
           Text("⇧ Add · ⌥ Subtract · ⇧⌥ Intersect at drag start").foregroundStyle(.secondary)
         }
       case .crop:
-        Text("Drag to select the crop area").foregroundStyle(.secondary)
-        Button("Apply Crop") { store.cropToSelection() }.disabled(store.document.selection == nil)
-          .controlSize(.small)
-        Button("Cancel") { store.perform(.selection(nil)) }.controlSize(.small)
-        Text("Off-canvas pixels are retained").foregroundStyle(.secondary)
-      case .text:
-        Picker("Font", selection: $store.fontName) {
+        cropOptions
+      case .text, .verticalText:
+        Picker("Font", selection: Binding(get: { store.typeEditor.map { NativeTextLayout.styles($0.typingAttributes, dpi: store.document.pixelsPerInch).0.font } ?? store.fontName }, set: { value in store.fontName = value; if store.typeEditingDraft != nil { store.formatType { s, _ in s.font = value } } })) {
           ForEach(
-            ["Helvetica Neue", "Arial", "Georgia", "Times New Roman", "Menlo", "Avenir Next"],
+            Array(Set(NSFontManager.shared.availableFonts + [store.fontName])).sorted(),
             id: \.self
           ) { Text($0).tag($0) }
         }.labelsHidden().frame(width: 150).controlSize(.small).help("Font family")
-        numberField("Size:", value: $store.fontSize, range: 1...4096, suffix: "pt")
-        ColorPicker("Type color", selection: colorBinding).labelsHidden()
-        TextField("Type text, then click canvas", text: $store.textDraft).textFieldStyle(.plain)
-          .padding(4).background(StudioTheme.field).frame(width: 190)
-      case .rectangle, .ellipse:
-        Text("Shape").padding(4).background(StudioTheme.field)
-        ColorPicker("Fill:", selection: colorBinding).controlSize(.mini)
-        labeledValue("Stroke:", value: "None", width: 50).disabled(true).help(
-          "Shape strokes are not available yet")
-        Text("⇧ Constrain proportions · ⌥ From center").foregroundStyle(.secondary)
+        numberField("Size:", value: Binding(get: { store.typeEditor.map { NativeTextLayout.styles($0.typingAttributes, dpi: store.document.pixelsPerInch).0.size } ?? store.fontSize }, set: { value in store.fontSize = value; if store.typeEditingDraft != nil { store.formatType { s, _ in s.size = value } } }), range: 1...4096, suffix: "pt")
+        ColorPicker("Type color", selection: Binding(get: {
+          if let editor = store.typeEditor { let c = NativeTextLayout.styles(editor.typingAttributes, dpi: store.document.pixelsPerInch).0.color; return pixelColor(c) }
+          return colorBinding.wrappedValue
+        }, set: { value in
+          colorBinding.wrappedValue = value
+          if store.typeEditingDraft != nil { let color = store.brush.color; store.formatType { s, _ in s.color = color } }
+        })).labelsHidden()
+        if store.editableType != nil{Button("Warp / Path Text…"){store.beginShapedType()}}
+        if store.typeEditingDraft != nil {
+          Button("Cancel") { store.finishType(cancel: true) }
+          Button("Commit") { store.finishType() }
+        } else {
+          Text("Click for point text · Drag for paragraph text").foregroundStyle(.secondary)
+          if case .text = store.activeLayer?.content {
+            Button("Edit Text") { if let layer = store.activeLayer { store.beginType(layer) } }
+          }
+        }
+      case .rectangle, .ellipse, .triangle, .polygon, .star, .line, .customShape:
+        ShapeToolOptions(store:store)
       case .eyedropper:
         labeledValue("Sample Size:", value: "Point Sample", width: 100)
         labeledValue("Sample:", value: "All Layers", width: 90)

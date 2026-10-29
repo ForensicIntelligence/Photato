@@ -41,7 +41,8 @@ enum RasterMetadata {
     return nil
   }
   static func properties(
-    _ source: [String: Data]?, width: Int, height: Int, resolution: Double, bits: Int
+    _ source: [String: Data]?, width: Int, height: Int, resolution: Double, bits: Int,
+    isSRGB: Bool = true
   ) throws -> [CFString: Any] {
     var result: [CFString: Any] = [:]
     if let data = source?[propertiesKey] {
@@ -85,12 +86,13 @@ enum RasterMetadata {
     var exif = result[kCGImagePropertyExifDictionary] as? [CFString: Any] ?? [:]
     exif[kCGImagePropertyExifPixelXDimension] = width
     exif[kCGImagePropertyExifPixelYDimension] = height
-    exif[kCGImagePropertyExifColorSpace] = 1  // Encoded pixels use sRGB.
+    exif[kCGImagePropertyExifColorSpace] = isSRGB ? 1 : 65535
     result[kCGImagePropertyExifDictionary] = exif
     return result
   }
   static func metadata(
-    _ source: [String: Data]?, width: Int, height: Int, resolution: Double, linear: Bool = false
+    _ source: [String: Data]?, width: Int, height: Int, resolution: Double, linear: Bool = false,
+    profileName: String? = nil, isSRGB: Bool = true, photoshopMode: Int = 3
   )
     throws -> CGImageMetadata?
   {
@@ -105,15 +107,18 @@ enum RasterMetadata {
       (kCGImagePropertyTIFFDictionary, kCGImagePropertyTIFFResolutionUnit, 2.0),
       (kCGImagePropertyExifDictionary, kCGImagePropertyExifPixelXDimension, Double(width)),
       (kCGImagePropertyExifDictionary, kCGImagePropertyExifPixelYDimension, Double(height)),
-      (kCGImagePropertyExifDictionary, kCGImagePropertyExifColorSpace, linear ? 65535.0 : 1.0),
+      (
+        kCGImagePropertyExifDictionary, kCGImagePropertyExifColorSpace,
+        linear || !isSRGB ? 65535.0 : 1.0
+      ),
     ] {
       _ = CGImageMetadataSetValueMatchingImageProperty(
         metadata, dictionary, property, NSNumber(value: value))
     }
     for (path, value) in [
       ("tiff:ImageWidth", String(width)), ("tiff:ImageLength", String(height)),
-      ("photoshop:ColorMode", "3"),
-      ("photoshop:ICCProfile", linear ? "Linear sRGB" : "sRGB IEC61966-2.1"),
+      ("photoshop:ColorMode", String(photoshopMode)),
+      ("photoshop:ICCProfile", profileName ?? (linear ? "Linear sRGB" : "sRGB IEC61966-2.1")),
     ] where CGImageMetadataCopyTagWithPath(metadata, nil, path as CFString) != nil {
       _ = CGImageMetadataSetValueWithPath(metadata, nil, path as CFString, value as CFString)
     }

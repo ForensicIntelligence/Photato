@@ -1,0 +1,44 @@
+{
+  "step": 251,
+  "recorded_at_utc": "2026-10-29T14:59:04.332085+00:00",
+  "status": "Video Frames to Layers now imports complete or selected movie ranges into a new editable document, with every-N sampling, optional frame animation, native preview/cancellation and API upload options/state/cancel. 16 focused and 2632 full optimized tests pass on 2391 unchanged inputs. Independent FFmpeg/Pillow checks match 3,072 lossless RGBA channels. Exact Photoshop range/default/depth/codec behavior, HDR/larger media and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T142532Z-251-video-frames-import/source04.json",
+  "source_inputs": 2391,
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "tests": {
+    "full": {
+      "tests": 2632,
+      "failures": 0,
+      "seconds": 177.08,
+      "log": "artifacts/runs/20261029T142532Z-251-video-frames-import/full01.log",
+      "sha256": "5511e32c486fec964fc897b830f3f5edef36aab98da50a252dfbbcc11a53ed0d"
+    },
+    "focused": {
+      "tests": 16,
+      "failures": 0,
+      "seconds": 3.268,
+      "log": "artifacts/runs/20261029T142532Z-251-video-frames-import/focused03.log",
+      "sha256": "e74d593835259250a4c334ba9c4527a3af6eb57f997a66dc52fcac79194eabb0"
+    },
+    "unchanged_inputs": 2391,
+    "source_manifest": "artifacts/runs/20261029T142532Z-251-video-frames-import/source04.json",
+    "independent": "artifacts/runs/20261029T142532Z-251-video-frames-import/outputs-full01-independent.json",
+    "exact_RGBA_channels": 3072,
+    "binary_sha256": "4b6b350c9900255430c66b99c08775127cd62ba532b43015fba8868311006afb",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 243,
+  "latest_uploaded_package_step": 243,
+  "installed_package_step": 221,
+  "new_package": false,
+  "new_installation": false,
+  "repository_private": true,
+  "source_pushed": false,
+  "goal_complete": false,
+  "next": "Implement generic PDF opening/import as the next major D01 workflow. Start with next-pdf-import-research01.json, audit native Open/Place/API and licensed Rust PDF paths, then add native page/image selection, crop/resolution/mode/depth rendering, cancellation and matching API. Preserve installed221/private243, owned artwork and87KB homepage; retain exact/live/platform and Photoshop PDF editing-data gaps."
+}

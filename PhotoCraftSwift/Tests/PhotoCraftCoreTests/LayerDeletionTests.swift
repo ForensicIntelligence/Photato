@@ -12,9 +12,9 @@ final class LayerDeletionTests: XCTestCase {
     XCTAssertEqual(session.document.activeLayerID, ids[0])
     XCTAssertEqual(session.undoStack.count, 1)
     let result = session.document
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, result)
     var alternate = original
     try Command.deleteLayers([ids[0], ids[2]]).apply(to: &alternate)

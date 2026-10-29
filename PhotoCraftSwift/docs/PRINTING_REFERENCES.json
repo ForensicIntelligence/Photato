@@ -1,0 +1,109 @@
+{
+  "step": 224,
+  "recorded_at_utc": "2026-10-28T19:29:02.229818+00:00",
+  "status": "Native printing, hard proofs and ink separation output pass65 focused and2351 full optimized tests. Universal macOS14+ build224 is verified and uploaded as a private draft; installed221 is unchanged. Physical/live/exact/platform and full COL03 remain open.",
+  "full_photoshop_parity": false,
+  "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+  "source_inputs": 2239,
+  "native_archive": 48,
+  "actions_version": 20,
+  "typed_commands": 148,
+  "implemented": [
+    "Native Print/CmdP and Print One Copy/OptionShiftCmdP; draft controls, printer settings, copies, paper/orientation, fit/manual scale, physical position, selected bounds, marks, border and bleed.",
+    "Shared8/16-bit CoreGraphics printer/PDF renderer; native component profiles/samples retained, alpha flattened to paper. Hard proofs use source-to-proof-to-output ColorSync, with print-specific paper/black simulation. No screen gamut overlay is printed.",
+    "CMYK flat, Duotone and Multichannel separations become individual grayscale pages; authoritative ink samples retained.",
+    "Per-document output settings and independent driver draft; cancellation/Done do not change pixels, Undo or document dirty state.",
+    "Background print preparation with cancellation and document/revision/permission guards; explicit AppKit submission and honest operation status. No physical print during tests.",
+    "Five Photato commands and committed print.pdf route; per-session default-off printing permission, capability/schema/state and installed printer discovery when enabled. No invented Adobe print endpoint."
+  ],
+  "public_sources": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/print/position-and-scale-images-for-printing.html",
+      "role": "Physical dimensions, printable-area centering, fit and single-stage scaling; accessed2026-10-28."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/print/print-a-hard-proof.html",
+      "role": "Proof condition, printer/paper profile, paper/black simulation and driver color handling; accessed2026-10-28."
+    },
+    {
+      "source": "Xcode27 public AppKit NSPrintOperation/NSPrintInfo/NSPrintPanel and PrintCore PMPrintSettingsKeys headers",
+      "role": "Native public printing APIs and color matching keys."
+    },
+    {
+      "source": "docs/contracts/adobe-photoshop-v2.json",
+      "role": "Pinned published Adobe contract has no printer/display-proof endpoint."
+    }
+  ],
+  "licensed_reference": {
+    "source": "../photocraft-main/crates/engine/src/print_cmds.rs",
+    "license": "MIT OR Apache-2.0",
+    "role": "Physical page presets/layout/marks and component-print workflow reference. Swift uses native AppKit/CoreGraphics/ColorSync; no lp subprocess. Adobe printable-area center supersedes Rust paper-center behavior."
+  },
+  "focused_tests": {
+    "utc": "2026-10-28T19:25:21.093538+00:00",
+    "tests": 65,
+    "failures": 0,
+    "exit_code": 0,
+    "session_id": 49029,
+    "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+    "unchanged_inputs": 2239,
+    "log": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log",
+    "passed": 65,
+    "path": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log"
+  },
+  "full_optimized": {
+    "utc": "2026-10-28T19:33:40.833716+00:00",
+    "status": "passed",
+    "tests": 2351,
+    "failures": 0,
+    "exit_code": 0,
+    "session_id": 52867,
+    "seconds_test_execution": 163.056,
+    "seconds_suite_wall": 163.266,
+    "log": "artifacts/runs/20261028T185522Z-224-native-print/release10.log",
+    "log_sha256": "7dd08600bbea1ee80a9d1a644557ec23cb07e09cc63e44ee33434686dfbf7f38",
+    "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+    "unchanged_inputs": 2239,
+    "new_package": false,
+    "live_acceptance": false,
+    "passed": 2351,
+    "path": "artifacts/runs/20261028T185522Z-224-native-print/release10.log"
+  },
+  "independent_pdf": "artifacts/runs/20261028T185522Z-224-native-print/pdf-independent11.json",
+  "native_pdf_test": "artifacts/runs/20261028T185522Z-224-native-print/native07.log",
+  "offscreen_capture": "artifacts/runs/20261028T185522Z-224-native-print/print-controls-0EB121B1-E7F1-456E-8435-616FA440052E.png",
+  "offscreen_result": "Layout fits830x640, but layer-backed native controls are incomplete in the captured bitmap. Not live visual acceptance.",
+  "failed_attempts": [
+    "artifacts/runs/20261028T185522Z-224-native-print/focused02.log",
+    "artifacts/runs/20261028T185522Z-224-native-print/focused03.log",
+    "artifacts/runs/20261028T185522Z-224-native-print/focused04.log",
+    "artifacts/runs/20261028T185522Z-224-native-print/crash04.ips",
+    "artifacts/runs/20261028T185522Z-224-native-print/focused05.log",
+    "artifacts/runs/20261028T185522Z-224-native-print/focused06.log",
+    "artifacts/runs/20261028T185522Z-224-native-print/integration08.log"
+  ],
+  "remaining": [
+    "Live native print controls and same-document window handoff after manual desktop unlock; physical printer output/profile/driver and macOS14/Intel acceptance.",
+    "Full printer driver settings/page ranges, PostScript screen/transfer functions, DeviceN/overprint, complex layered component separations and print Actions/persistence.",
+    "Color emoji in separation labels may embed an RGB glyph image; independent reader warns about a zero-offset unused object in that CoreGraphics PDF. Retain exact glyph/mark and PDF compatibility qualification.",
+    "Full image-size limits, HDR/EDR and32-bit print appearance, global color preferences and all byte-identical Photoshop comparisons."
+  ],
+  "new_package": true,
+  "installed_package_step": 221,
+  "latest_uploaded_package_step": 224,
+  "next_major_plan": "artifacts/runs/20261028T185522Z-224-native-print/next-major13.json",
+  "latest_qualified_package_step": 224,
+  "package_verification": "artifacts/runs/20261028T185522Z-224-native-print/verification13.json",
+  "github_release": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-eb1707be7963cebfe0c5",
+  "download_verification": "artifacts/runs/20261028T185522Z-224-native-print/github-download15.json",
+  "native_callback_probe": {
+    "source": "artifacts/runs/20261028T185522Z-224-native-print/print-lifecycle16.swift",
+    "compile": "artifacts/runs/20261028T185522Z-224-native-print/print-lifecycle16-compile.log",
+    "log": "artifacts/runs/20261028T185522Z-224-native-print/print-lifecycle16.log",
+    "exit_code": 0,
+    "operations": 2,
+    "successful_callbacks": 2,
+    "physical_printer": false,
+    "limits": "Owned file-destination probe; CLI CFURL warnings retained. Physical-device/concurrent-printer acceptance remains unqualified."
+  }
+}

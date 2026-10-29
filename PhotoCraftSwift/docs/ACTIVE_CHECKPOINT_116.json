@@ -1,0 +1,158 @@
+{
+  "step": "dev-step-116",
+  "recorded_at_utc": "2026-10-19T22:49:07.873746+00:00",
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies remain with each major workflow",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/tested-source-hashes04.json",
+    "sha256": "c40a777838339239d0d1b0a9a89d35459787c093dcbd6e693e53f01c0507d133"
+  },
+  "source_test_files": 400,
+  "validation_isolation": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/isolation.json",
+    "sha256": "ddb03e879436c4af61d94e4a2672b7cb5f4e27357ccb824eac1fb6e98bf4c7d1"
+  },
+  "tests": {
+    "full05.log": {
+      "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/full05.log",
+      "sha256": "bb02f67f3bb8981ba57b4832d699bd7ac1ddcdab8c8b738ddcd2b670a218d682",
+      "passed": 1053,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 209.059
+    },
+    "release05.log": {
+      "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/release05.log",
+      "sha256": "ae5672d5520b7725b77972106a525b02a882eb8de482cd3391debdf851f3147d",
+      "passed": 1053,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 42.312
+    }
+  },
+  "local_storekit": {
+    "tests": 3,
+    "failed": 0,
+    "logs": [
+      {
+        "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/storekit07.log",
+        "sha256": "aaf14e719794504b939e3d4527ff80aa42b6f473434e82028be36244fd669911"
+      },
+      {
+        "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/storekit08.log",
+        "sha256": "26e7b79d36e201cd72e791de777ca003e14ac6acdbab027c263a312a9c8cc97d"
+      }
+    ],
+    "scope": "Local Xcode StoreKit environment only; verified distinct consumables, finish propagation, failure/retry and pending/unfinished recovery. No live App Store purchase qualification.",
+    "repair": "Test establishes local transaction ledger registration and waits up to20 seconds for finish propagation; production purchase code unchanged."
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato116-verified-odkgwqlw/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "0def0971d7964ce95d345b85c2e550ac3c99db196de6363c169c204d2aa6059d",
+    "zip_sha256": "d8f1084fce74985c054c4d5c255677681ac79ee30ad1057b611998e808604808",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "desktop_copy_strict_signature": {
+      "exit_code": 1,
+      "output": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app: resource fork, Finder information, or similar detritus not allowed\n"
+    },
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "desktop_copy_after_metadata_clear": {
+      "exit_code": 0,
+      "output": "",
+      "scope": "Clear File Provider extended metadata once; verified clean ZIP is separate",
+      "evidence": {
+        "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/desktop-signature-recheck01.json",
+        "sha256": "1fa707abc2b2523b30f0bef45cab52d856e7d66e12fe1a30fc5628ed20e6dab9"
+      }
+    }
+  },
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/release-verification.json",
+    "sha256": "1497dc313608b6d26dc0b2cad2b74903947501c65cd15890d89b32a552f9544d"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/live-ui-verification.json",
+    "sha256": "7fd7c24eed842b0d8ab0cd93eb68a7f86159f07d1103ce6dfaa4f07eb0d112ad"
+  },
+  "independent_live": {
+    "raw_comparison": "independent-live01.json",
+    "layer_RGBA_bytes": 28672,
+    "layer_RGBA_different_bytes": 0,
+    "merged_different_bytes": 1495,
+    "profile_bytes_identical": true,
+    "profile_sha256": "f50ef60e269f9011cec05505c991566e7e41569674b1ecf756deb973acbdad9d",
+    "native_archive_version": 10,
+    "native_profile_identical": true,
+    "workspace_unchanged": true,
+    "probe_unchanged": true,
+    "app_exited": true
+  },
+  "no_pending_validation_session": true,
+  "preceding_turn_classification": "progress",
+  "completed_this_increment": [
+    "Actual working ICC separated from source provenance; native archive10 with safe1\u20139 migration",
+    "PSD sample/profile retention removes measured8736-byte source-profile merge error; independently qualified28672 raw layer bytes",
+    "Profile-aware SDR display, integer raster export, native colour entry, Place/AI insertion, clipboard, duplicate and clone boundaries",
+    "Working-profile state/schema and shared PSD/native behavior through Photato API and both existing partial action-job interfaces"
+  ],
+  "remaining_major_dependencies": [
+    "PSD merged white-matte/compositor arithmetic remains independently unqualified; use step115 candidate and measured output deltas",
+    "Complete colour settings/Assign/Convert Profile, intent/BPC/dither and ACE conversion-byte equivalence",
+    "Profile-dependent editable adjustment/gradient/pattern cross-document conversion and existing non-sRGB rich PSD guards",
+    "Original raster decoding/encoding exactness, all HDR kernels, complete formats/options/metadata/recovery",
+    "Full major workflows, dual API endpoint coverage, menu/shortcut/preferences and Intel/macOS14 runtime qualification"
+  ],
+  "resume_first": "Locate the actual project directory (currently notphotoshop/-; moved externally during116; do not rename without the user choice). Verify400 source/test hashes and package/project. Read AGENTS, priorities108, FUNCTION_PHASES109, DEVLOG116 and WORKING_PROFILE_REFERENCES. Classify preceding turn as verified bounded progress. Continue major D01 PSD merged white-matte/compositor fidelity using isolated05/next-renderer-qualification-plan.json and its independent mask-aware zero-delta candidate, then remaining profile-aware editing boundaries. Do not treat ColorSync checks as Adobe ACE byte equivalence or this increment as closure of D01.",
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "runtime_cleanup": {
+    "isolated_app_exited": true,
+    "original_probe_unchanged": true,
+    "workspace_bytes_unchanged": true,
+    "original_photoshop_document_untouched": true,
+    "disposable_photoshop_and_finder_windows_closed": true
+  },
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "history_audit": {
+    "pending": false,
+    "refresh": {
+      "path": "artifacts/development-history-audit/20261019-step116-working-profiles/refresh01.log",
+      "sha256": "736c6778f4b1f98100ada18a0a9f1ed7d8bc68f19aeaef07cff9e0a0f3010433"
+    },
+    "check": {
+      "path": "artifacts/development-history-audit/20261019-step116-working-profiles/check01.log",
+      "sha256": "7576ffc36b35c98792c388f1bddcc6a9b3f953949bebc4fc579eae4007e846ae"
+    },
+    "milestones": 116,
+    "evidence_files": 29550,
+    "logs": 17914,
+    "missing_explicit_references": 0,
+    "final_refresh_check": "refresh02.log/check02.log in the same excluded audit directory after this checkpoint update"
+  },
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261019T215600Z-116-working-profiles/isolated05/next-renderer-qualification-plan.json",
+    "sha256": "2fb8fd5a4229dad5b1088cfb41e4063e7f8bd76e62f11f008cb37d9a0409f127"
+  },
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "pending_user_choice": "Optional restoration/relocation; development can continue in the verified current directory",
+    "source_inputs_verified": true
+  }
+}

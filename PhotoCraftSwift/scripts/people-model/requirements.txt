@@ -1,0 +1,5 @@
+coremltools==8.3.0
+tensorflow==2.16.2
+tflite==2.18.0
+Pillow==11.3.0
+numpy==1.26.4

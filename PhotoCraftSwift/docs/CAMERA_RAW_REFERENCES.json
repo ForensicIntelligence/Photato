@@ -1,0 +1,130 @@
+{
+  "step": "dev-step-172",
+  "status": "Native RGB Camera Raw Filter verified by 67 final Debug focused/regression and 1,659 full optimized tests; universal package verified. Sensor RAW work and full Photoshop parity remain open.",
+  "provenance": [
+    {
+      "path": "../photocraft-main/crates/algo/src/camera_raw.rs",
+      "license": "MIT OR Apache-2.0",
+      "scope": "Settings, white balance/exposure, guided tone/presence, curves, HSL, grading, detail, dehaze, grain and vignette translated to Swift. Full-resolution guided filter currently used; no bit-identical Rust/Adobe assertion."
+    },
+    {
+      "path": "../photocraft-main/crates/ui-egui/src/camera_raw_ui.rs",
+      "license": "MIT OR Apache-2.0",
+      "scope": "Adjustment ranges/grouping and source workflow; native SwiftUI/AppKit workspace independently implemented."
+    },
+    {
+      "url": "https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html",
+      "accessed": "2026-10-26",
+      "scope": "Camera Raw workflow and distinction from sensor-file decode."
+    },
+    {
+      "url": "https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/camera-raw-settings.html",
+      "accessed": "2026-10-26",
+      "scope": "Settings/workflow reference; complete ACR workspace parity not claimed."
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "sha256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+      "scope": "EditRequest/LightroomEdits light/color/effects/noiseReduction/sharpness/sharpen contract fields."
+    }
+  ],
+  "features": [
+    "Seven native adjustment groups: Light, Color, Effects, Curve, Color Mixer, Color Grading, Detail.",
+    "RGB histogram, before/after preview, zoom/scroll, local undo/redo/reset, bounded JSON settings import/export, Cancel/OK and document history.",
+    "Nonneutral filters share RGB8/16/32 processing and preserve alpha; neutral filters preserve all original sample bits. Selection coverage and transparency locks retained.",
+    "Editable Camera Raw Smart Filters persist in native21 archives; old archive documents retain their existing minimum version.",
+    "Factory Filter > Camera Raw Filter\u2026 and Shift-Command-A binding; unsupported channel processing rejects explicitly."
+  ],
+  "native_archive": 21,
+  "api": {
+    "count": 50,
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "same_engine": true,
+    "adobe": "Expanded POST /v2/edit for light, color saturation/vibrance, effects, noiseReduction, sharpness and sharpen. Existing async jobs/output contract retained. Color-only edit rendering now uses the same Camera Raw development pipeline instead of the earlier ClassicAdjustment approximation.",
+    "adobe_unsupported": [
+      "autoTone",
+      "autoStraighten",
+      "whiteBalance presets",
+      "XMP",
+      "presets",
+      "Camera Raw execute-actions descriptors"
+    ],
+    "endpoint_groups": "Five partial/three unimplemented; no complete Adobe endpoint or proprietary output equivalence claim."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 214,
+    "unavailable": 511,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "report": "artifacts/runs/20261027T020127Z-172-camera-raw/menu-report03.json",
+    "release_report": "artifacts/runs/20261027T020127Z-172-camera-raw/menu-report-release02.json"
+  },
+  "limits": [
+    "RGB raster/Smart Object Camera Raw Filter only; actual sensor RAW/DNG decode, source preservation, lens corrections, local RAW masks, highlight recovery and XMP/preset interoperability remain open.",
+    "8,388,608 layer pixels; existing API request/document/resource limits also apply. Large-image interactive performance remains to be qualified.",
+    "Editable PSD/PSB Camera Raw descriptors fail explicitly; save .photato to retain editability.",
+    "Native settings JSON is Photato-specific, not Adobe XMP. Point-curve display connects control points; finer curve visualization/accessibility/keyboard fidelity remains open.",
+    "Exact Adobe/Rust numerical identity, physical Intel/macOS14/26 runtime and live UI qualification remain open. The Mac was last observed locked; offscreen hosting tests are not live interaction evidence."
+  ],
+  "tests": {
+    "focused": {
+      "count": 67,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T020127Z-172-camera-raw/integration04.log"
+    },
+    "compile_failure": "artifacts/runs/20261027T020127Z-172-camera-raw/integration01.log",
+    "initial_regression_failures": "artifacts/runs/20261027T020127Z-172-camera-raw/integration02.log",
+    "initial_focused": {
+      "count": 55,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T020127Z-172-camera-raw/integration03.log"
+    },
+    "optimized": {
+      "count": 1659,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T020127Z-172-camera-raw/release-full02.log"
+    },
+    "first_full_failure": {
+      "count": 1658,
+      "assertion_failures": 2,
+      "failed_cases": 1,
+      "log": "artifacts/runs/20261027T020127Z-172-camera-raw/release-full01.log"
+    }
+  },
+  "next_major": "Sensor RAW/DNG import/development using CIRAWFilter, with explicit source/decoder metadata, native controls/API and real RAW fixtures.",
+  "package": {
+    "utc": "2026-10-27T02:38:46.882457+00:00",
+    "app": "/private/tmp/photato172-verified-i5y2zuv_/Photato.app",
+    "zip": "artifacts/runs/20261027T020127Z-172-camera-raw/Photato172-final.zip",
+    "zip_sha256": "62c6aecd12f5e325817f1054386d7b0b8e1292b8816a089c6ed9313a9a104ad2",
+    "executable_sha256": "fcf2eaa14fde7ab4684f988dcb8aa15be804781e9047fdfdf64b14081678f4b7",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato172-verified-i5y2zuv_/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato172-verified-i5y2zuv_/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1289,
+    "source_manifest": "artifacts/runs/20261027T020127Z-172-camera-raw/source02.json",
+    "source_manifest_sha256": "11f0e8bc18663ad4f6cc90259d0638c53af92681735bd374cf462be7267ca9c3",
+    "tests": {
+      "debug_focused": 67,
+      "optimized_full": 1659,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T020127Z-172-camera-raw/integration04.log",
+      "optimized_log": "artifacts/runs/20261027T020127Z-172-camera-raw/release-full02.log"
+    },
+    "original_build_project_user_state_and_rust": "All four protected state hashes and 754 upstream Rust file hashes verified unchanged.",
+    "runtime_qualification": "Native Debug/Release evidence and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open."
+  },
+  "later_sensor_development": "docs/RAW_DEVELOPMENT_REFERENCES.json"
+}

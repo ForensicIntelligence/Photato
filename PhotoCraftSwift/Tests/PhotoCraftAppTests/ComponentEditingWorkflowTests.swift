@@ -6,17 +6,19 @@ import XCTest
 @testable import PhotoCraft
 
 final class ComponentEditingWorkflowTests: XCTestCase {
-  @MainActor func testUnsupportedDepthCannotEnterComponentContext() throws {
+  @MainActor func testHighDepthRGBUsesNativeComponentContextWithoutPixelChanges() throws {
     for depth in [PixelDepth.u16, .f32] {
       let store = EditorStore(document: try CraftDocument(width: 3, height: 2, depth: depth))
       defer { store.renderTask?.cancel() }
       let original = store.document
       let revision = store.revision
-      XCTAssertThrowsError(try store.selectEditingChannel(.red))
+      XCTAssertNoThrow(try store.selectEditingChannel(.red))
       XCTAssertEqual(store.componentTarget, .composite)
+      XCTAssertEqual(store.modeComponentTargets, [0])
+      XCTAssertEqual(store.modeVisibleComponents, [0])
       XCTAssertEqual(store.channelView, RGBChannelView())
       XCTAssertEqual(store.document, original)
-      XCTAssertEqual(store.revision, revision)
+      XCTAssertGreaterThan(store.revision, revision)
       XCTAssertTrue(store.session.undoStack.isEmpty)
     }
   }
@@ -129,7 +131,7 @@ final class ComponentEditingWorkflowTests: XCTestCase {
       XCTAssertEqual(fill, 200)
       XCTAssertEqual(store.document, desktop.document)
       XCTAssertEqual(store.session.undoStack.last?.label, "Fill")
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document, original)
       let redo = try await helper.edit(service, doc, "history.redo")
       XCTAssertEqual(redo, 200)

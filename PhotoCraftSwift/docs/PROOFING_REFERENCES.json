@@ -1,0 +1,129 @@
+{
+  "step": 223,
+  "recorded_at_utc": "2026-10-28T18:36:33.330592+00:00",
+  "status": "Native soft proofing and Lab boundary correction pass75 focused,41 repaired optimized-focused and2330 full optimized tests. COL03 stays open.",
+  "full_photoshop_parity": false,
+  "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+  "native_archive": 48,
+  "actions_version": 20,
+  "typed_commands": 143,
+  "implemented": [
+    "Per-document proof display settings with native Custom sheet, ICC picker, native JSON presets, Preview/Cancel/OK; document pixels/history/dirty state unaffected.",
+    "ColorSync source-to-device-to-sRGB previews; four rendering intents, black-point compensation, preserve-numbers, paper/black simulation, individual CMYK and CMY plate previews.",
+    "Proof Colors CmdY and Gamut Warning ShiftCmdY; working CMYK/plate, sRGB unmanaged-number and monitor RGB presets. Existing factory menu hierarchy retained.",
+    "Relative-colorimetric Lab D50 round-trip gamut mask using licensed PhotoCraft DeltaE76 threshold4, configurable warning RGB/opacity through API.",
+    "Authoritative flat native component samples retained; Lab ICC boundary corrected independently against built-in physical Lab coordinates. Literal neutral128/255 renders without a color cast.",
+    "Shared strict proof.configure/proof.settings.read API, state/capabilities/schemas and proof-preview.png; original preview.png/file exports unchanged. Draft/stale/invalid/revoked guards.",
+    "Proof failure after a later edit falls back to the current ordinary canvas with visible diagnostic, never a stale canvas; API proof export reports failure explicitly."
+  ],
+  "public_sources": [
+    {
+      "url": "https://helpx.adobe.com/id_id/photoshop/using/proofing-colors.html",
+      "role": "Adobe public proof controls, unmanaged RGB presets, menu behavior. Accessed2026-10-28; English text on localized page."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/colorsync/colorsynctransformcreate(_:_:)",
+      "role": "Public ColorSync API; local SDK headers provide implementation signatures."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+      "role": "Published contract; pinned docs/contracts/adobe-photoshop-v2.json has no display proof route. Do not invent an Adobe endpoint."
+    }
+  ],
+  "licensed_reference": {
+    "source": "../photocraft-main/crates/cms/src/transform.rs and gamut.rs",
+    "license": "MIT OR Apache-2.0",
+    "role": "Proof stages and DeltaE76 gamut calculation; native platform conversion is not byte-identical Rust/Photoshop CMS."
+  },
+  "probes": [
+    "artifacts/runs/20261028T181113Z-223-proofing/colorsync-probe01.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/colorsync-probe02.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/colorsync-probe03.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/colorsync-probe04.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/lab-probe10.log"
+  ],
+  "failed_attempts": [
+    "artifacts/runs/20261028T181113Z-223-proofing/core05.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/core06.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/integration07.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/integration08.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/native09.log",
+    "artifacts/runs/20261028T181113Z-223-proofing/release13.log"
+  ],
+  "focused": {
+    "tests": 75,
+    "failures": 0,
+    "exit_code": 0,
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/integration12.log",
+    "source": "artifacts/runs/20261028T181113Z-223-proofing/source12.json"
+  },
+  "full_optimized": {
+    "utc": "2026-10-28T18:48:22.550106+00:00",
+    "status": "passed",
+    "tests": 2330,
+    "passed": 2330,
+    "failures": 0,
+    "exit_code": 0,
+    "terminal_session": 28459,
+    "seconds_test_execution": 164.198,
+    "seconds_suite_wall": 164.404,
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/release16.log",
+    "log_sha256": "8c732ea75c2b8ddd919a5393da6fc48b4807673a53ae81ea358503579fd1a1d1",
+    "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+    "source_inputs_unchanged": 2234,
+    "new_package": false,
+    "live_acceptance": false
+  },
+  "offscreen_visual": {
+    "path": "artifacts/runs/20261028T181113Z-223-proofing/proof-controls-508EC9FF-BEFF-4E94-9067-B9990EF777E1.png",
+    "status": "Layout fits470x550 but bitmap contains incomplete controls; no visual acceptance claimed."
+  },
+  "menus": {
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 363,
+    "default_preset": "Photoshop Defaults",
+    "entries": 802,
+    "entries_with_actions": 440,
+    "full_photoshop_parity": false,
+    "menus": [
+      "Photato",
+      "File",
+      "Edit",
+      "Image",
+      "Layer",
+      "Type",
+      "Select",
+      "Filter",
+      "View",
+      "Plugins",
+      "Window",
+      "Help"
+    ],
+    "primary_shortcuts": 102,
+    "unavailable_leaf_commands": 362
+  },
+  "remaining": [
+    "Live Photoshop comparison, byte-identical CMS/gamut/paper results, all ICC profile classes and platform coverage.",
+    "Native printing/page setup, print proofing, separations/overprint, printer/output profiles, HDR/EDR display.",
+    "Shared Color Settings working-space preferences, no-document defaults, persistent global proof preferences, Adobe PSF import/export and dynamic saved-preset menu.",
+    "Legacy Macintosh and color-blind proof presets; exact plate defaults/UI/display behavior.",
+    "Preserve Numbers on complex non-RGB stacks requires native component compositing; currently explicitly rejected. Composite proof uses RGB render cache.",
+    "Maximum8,388,608-pixel proof canvas;32-bit proof is SDR display and does not prove HDR behavior.",
+    "Current runtime/native visual check awaits manual desktop unlock; no new package built. Installed/qualified221 and uploaded220 remain."
+  ],
+  "lab_compatibility": "Numeric native/PSD/TIFF Lab samples remain untouched on read/save. Corrected interpretation affects rendering of old Lab documents whose previous displayed colors used the wrong ICC normalization. The archive version remains48.",
+  "focused_repaired": {
+    "utc": "2026-10-28T18:43:55.889783+00:00",
+    "tests": 41,
+    "failures": 0,
+    "exit_code": 0,
+    "source_manifest": "artifacts/runs/20261028T181113Z-223-proofing/source15.json",
+    "log": "artifacts/runs/20261028T181113Z-223-proofing/core15.log"
+  },
+  "changes": "artifacts/runs/20261028T181113Z-223-proofing/changes16.json",
+  "menu_report": "artifacts/runs/20261028T181113Z-223-proofing/menus16.json",
+  "follow_up_227": {
+    "reference": "docs/COLOR_POLICY_REFERENCES.json",
+    "status": "Subsequent working source adds open/paste policies and actual working-CMYK proof capture; earlier checkpoint results remain historical."
+  }
+}

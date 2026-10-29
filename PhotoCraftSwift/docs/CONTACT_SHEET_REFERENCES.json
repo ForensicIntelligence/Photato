@@ -1,0 +1,89 @@
+{
+  "step": 248,
+  "recorded_at_utc": "2026-10-29T12:39:59.951070+00:00",
+  "status": "Contact Sheet II now creates editable or flattened multi-page documents from files, folders or open images, with native layout/profile/caption controls, preview and shared API cancellation. 38 focused and 2599 full optimized tests pass on 2369 unchanged inputs; independent PNG checks match1024 analytic RGBA channels. Exact Photoshop defaults/resampling/typography, Bridge/Actions, broader limits and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T115556Z-248-contact-sheet/source09.json",
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 186,
+  "run": "artifacts/runs/20261029T115556Z-248-contact-sheet",
+  "contact_sheet_commands": [
+    "document.contactSheet",
+    "document.contactSheet.cancel"
+  ],
+  "adobe_routes_changed": false,
+  "references": [
+    "artifacts/runs/20261029T115556Z-248-contact-sheet/references01.json",
+    "artifacts/runs/20261029T115556Z-248-contact-sheet/api-reference-review01.json"
+  ],
+  "verification": {
+    "full": {
+      "tests": 2599,
+      "failures": 0,
+      "seconds": 173.814,
+      "log": "artifacts/runs/20261029T115556Z-248-contact-sheet/full03.log",
+      "sha256": "e22da6ce9b465e172feb11b85ebfcfb6dbd97698a2a0ce519d07be79011a77b9"
+    },
+    "focused": {
+      "tests": 38,
+      "failures": 0,
+      "seconds": 4.596,
+      "log": "artifacts/runs/20261029T115556Z-248-contact-sheet/focused06.log",
+      "sha256": "4d0e8c31a20493152aab753cba689606cd2532f7379898e47266efae304c6105"
+    },
+    "unchanged_inputs": 2369,
+    "source_manifest": "artifacts/runs/20261029T115556Z-248-contact-sheet/source09.json",
+    "independent": "artifacts/runs/20261029T115556Z-248-contact-sheet/independent-outputs-full03.json",
+    "exact_RGBA_channels": 1024,
+    "binary_sha256": "239fb7b4694b5f359915f798283155ceb1809e0b4215230a0c2e5a090c95930a",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "offscreen_native": "artifacts/runs/20261029T115556Z-248-contact-sheet/outputs-full03/contact-sheet-controls.png",
+  "provenance": "Licensed original Rust layout algorithm and independent native Swift/UI/API integration; public Adobe guide only. No Adobe implementation code examined. Analytic owned PNG outputs do not prove Photoshop parity.",
+  "exact_photoshop_parity": false,
+  "full_feature_complete": false,
+  "open": [
+    "Photoshop2026 byte-identical page layout, spacing, resampling and text rendering; independent reference outputs not yet available.",
+    "Factory font/flatten/default/preferences persistence, exact caption truncation and folder-group pagination.",
+    "Bridge integration and Adobe Execute Actions descriptor equivalence; public v2 has no dedicated contact-sheet endpoint.",
+    "Current bounded page/source/shared-document limits, full native non-RGB compositor/typography fidelity and supported source-format coverage.",
+    "Live Photoshop/native interaction, physical Intel/macOS14 and Apple Silicon/macOS26 acceptance.",
+    "Remaining AUT02 scripts/events/fit/crop-and-straighten/extensions and all other major/minor/detail parity gates."
+  ],
+  "followup_repairs": [
+    {
+      "step": 250,
+      "change": "Recursive folder import now skips links without accidentally skipping the next real subfolder. File/directory symlinks and nested native files are covered in the existing folder workflow regression.",
+      "verification": {
+        "full": {
+          "tests": 2623,
+          "failures": 0,
+          "seconds": 175.727,
+          "log": "artifacts/runs/20261029T133301Z-250-image-processor/full01.log",
+          "sha256": "4efeed6266ce2d05cea0888d115a475d70f4e9bba304b4c16c352fa67ac91232"
+        },
+        "focused": {
+          "tests": 26,
+          "failures": 0,
+          "seconds": 2.008,
+          "log": "artifacts/runs/20261029T133301Z-250-image-processor/focused06.log",
+          "sha256": "b23cb5551b5c44a79ef500018b960def8f107cf703da9049e2a1432d7dccbc06"
+        },
+        "unchanged_inputs": 2385,
+        "source_manifest": "artifacts/runs/20261029T133301Z-250-image-processor/source06.json",
+        "independent": "artifacts/runs/20261029T133301Z-250-image-processor/outputs-full01-independent.json",
+        "exact_lossless_RGBA_channels": 32000,
+        "jpeg_max_channel_error": 1,
+        "binary_sha256": "b00ca7435d82477ab5de2760d13425458622cc6da7633617c274c3cabaf98289",
+        "architecture": "arm64",
+        "new_distribution_package": false,
+        "new_installed_app": false,
+        "full_photoshop_parity": false
+      },
+      "api_impact": "Native folder discovery only; shared rendering and API contracts unchanged."
+    }
+  ]
+}

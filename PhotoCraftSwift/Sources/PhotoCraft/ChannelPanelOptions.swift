@@ -66,7 +66,8 @@ extension EditorStore {
     guard !geometryBusy, !hasToneDraft, transformDraft == nil else { return }
     clearMaskView()
     maskEditingLayerID = nil
-    channelView.selectPreview(channel)
+    if document.inkMode != nil { if channel == .composite { try? selectInkChannels([]) }; return }
+    if usesModeChannels { modeComponentVisibility = channel == .composite ? nil : [channel.rawValue - 1]; render() } else { channelView.selectPreview(channel) }
   }
 
   var canChangeChannelVisibility: Bool {
@@ -78,8 +79,13 @@ extension EditorStore {
   {
     finishNumericField()
     finishLayerName()
-    guard canChangeChannelVisibility else { return false }
-    channelView.setVisible(channel, visible)
+    guard canChangeChannelVisibility, document.inkMode == nil else { return false }
+    if usesModeChannels {
+      guard document.colorMode == .rgb else { return false }
+      let targets = channel == .composite ? Set(0..<3) : [channel.rawValue - 1]
+      let proposed = visible ? modeVisibleComponents.union(targets) : modeVisibleComponents.subtracting(targets)
+      if !proposed.isEmpty { try? setModeComponentVisibility(proposed) }
+    } else { channelView.setVisible(channel, visible) }
     return true
   }
 }
@@ -124,14 +130,14 @@ struct ChannelPanelOptionsSheet: View {
 struct ChannelsMenu: View {
   @Bindable var store: EditorStore
   var body: some View {
-    Button("New Channel…") {}.disabled(true)
-    Button("Duplicate Channel…") {}.disabled(true)
-    Button("Delete Channels") {}.disabled(true)
+    Button("New Channel…") { store.newAlphaChannel() }.disabled(!store.canEditChannels)
+    Button("Duplicate Channel…") { if let id = store.alphaEditingID { store.perform(.channel(.duplicate(id,nil))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
+    Button("Delete Channels") { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
     Divider()
     Button("New Spot Channel…") {}.disabled(true)
     Button("Merge Spot Channel") {}.disabled(true)
     Divider()
-    Button("Channel Options…") {}.disabled(true)
+    Button("Channel Options…") { store.beginChannelDialog(.options) }.disabled(!store.canEditChannels || store.editingChannel == nil)
     Button("Split Channels") {}.disabled(true)
     Button("Merge Channels…") {}.disabled(true)
     Divider()

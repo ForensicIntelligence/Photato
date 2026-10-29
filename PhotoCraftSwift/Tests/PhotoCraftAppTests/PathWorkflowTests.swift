@@ -56,7 +56,7 @@ final class PathWorkflowTests: XCTestCase {
     XCTAssertNil(s.document.selection)
     s.renderTask?.cancel()
   }
-  @MainActor func testPenCurvesCloseSaveAndUndo() throws {
+  @MainActor func testPenCurvesCloseSaveAndUndo() async throws {
     let s = try store()
     s.beginPath(at: PathPoint(10, 10), tolerance: 2)
     s.dragPath(to: PathPoint(20, 15))
@@ -70,15 +70,15 @@ final class PathWorkflowTests: XCTestCase {
     s.endPathGesture()
     s.beginPath(at: PathPoint(10, 10), tolerance: 2)
     XCTAssertEqual(s.selectedVectorPath?.components[0].closed, true)
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.selectedVectorPath?.components[0].closed, false)
-    s.redo()
+    await s.redo()
     s.saveSelectedPath(name: "Contour")
     XCTAssertEqual(s.document.paths?.first?.name, "Contour")
     XCTAssertEqual(s.document.paths?.first?.isWorkPath, false)
     s.renderTask?.cancel()
   }
-  @MainActor func testDirectSelectionAnchorAndHandleEditsAreUndoable() throws {
+  @MainActor func testDirectSelectionAnchorAndHandleEditsAreUndoable() async throws {
     let s = try store()
     draw(s)
     s.tool = .directSelection
@@ -87,7 +87,7 @@ final class PathWorkflowTests: XCTestCase {
     s.dragPath(to: PathPoint(80, 15))
     s.endPathGesture()
     XCTAssertEqual(s.selectedVectorPath?.components[0].knots[1].anchor, PathPoint(80, 15))
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.selectedVectorPath, original)
     s.tool = .pathSelection
     s.beginPath(at: PathPoint(40, 10), tolerance: 2)
@@ -96,7 +96,7 @@ final class PathWorkflowTests: XCTestCase {
     XCTAssertEqual(s.selectedVectorPath, original.transformed(.translation(3, 4)))
     s.renderTask?.cancel()
   }
-  @MainActor func testPenAddsAndDeletesAnchorsOnExistingContour() throws {
+  @MainActor func testPenAddsAndDeletesAnchorsOnExistingContour() async throws {
     let s = try store()
     draw(s)
     let original = try XCTUnwrap(s.selectedVectorPath)
@@ -104,8 +104,8 @@ final class PathWorkflowTests: XCTestCase {
     XCTAssertEqual(s.selectedVectorPath?.knotCount, 5)
     s.deletePathAnchor()
     XCTAssertEqual(s.selectedVectorPath?.knotCount, 4)
-    s.undo()
-    s.undo()
+    await s.undo()
+    await s.undo()
     XCTAssertEqual(s.selectedVectorPath, original)
     s.renderTask?.cancel()
   }

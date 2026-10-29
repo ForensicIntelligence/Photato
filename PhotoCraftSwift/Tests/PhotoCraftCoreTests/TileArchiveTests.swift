@@ -69,7 +69,7 @@ final class TileArchiveTests: XCTestCase {
     let migrated = try NativeArchive.encode(original)
     let header = try XCTUnwrap(
       PropertyListSerialization.propertyList(from: migrated, format: nil) as? [String: Any])
-    XCTAssertEqual(header["version"] as? Int, 9)
+    XCTAssertEqual(header["version"] as? Int, 10)
     XCTAssertEqual(try NativeArchive.decode(migrated), original)
   }
   func testNativeArchiveRetainsExactFloatBitsIncludingHiddenColorsAndSparseDefaults() throws {

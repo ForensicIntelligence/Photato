@@ -9,7 +9,7 @@ struct GradientFillSampler {
     try fill.validate()
     ramp = try GradientRamp(fill.gradient)
     field = try GradientField(
-      fill.placement, frame: fill.frame(for: layer, width: document.width, height: document.height))
+      fill.placement, frame: fill.frame(for: layer, in: document))
     dither = fill.dither
   }
   func sample(x: Int, y: Int) -> Pixel {

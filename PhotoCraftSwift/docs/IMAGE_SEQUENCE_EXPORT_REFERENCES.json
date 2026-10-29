@@ -1,0 +1,73 @@
+{
+  "step": 232,
+  "status": "Native PNG sequence export from frame animation/video Timelines, range/numbering/timing controls, staged folder publication and two shared ZIP APIs pass55 focused and2428 full optimized tests on2284 unchanged source04 inputs. Independent ZIP/Pillow checks verify seven frames/336 pixel-channel samples plus timing/order/CRCs. The universal macOS14+ package is verified and uploaded as a private draft; installed221 is unchanged. Full SP01 and exact/live/platform parity remain open.",
+  "references": {
+    "reference": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-video-files-or-image-sequences.html",
+    "reviewed": "2026-10-28",
+    "scope": "Public export behavior: numbered image files, configurable start/digits and frame range, with timing/color/alpha options. Implement PNG export and preserve original timing; full Render Video/resampling/formats/alpha controls remain required.",
+    "adobe": "Pinned v2 schema has no dedicated sequence endpoint. Generic execute-actions video descriptors remain unimplemented.",
+    "provenance": "Original Swift implementation, owned frames and public specifications. No copied Adobe code or live UI claim.",
+    "zip_reference": {
+      "url": "https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT",
+      "version": "6.3.10",
+      "use": "ZIP32 stored local/central/end headers, UTF-8 bit and CRC32; original Swift writer also cross-checked against the existing original-project ZIP reader. No specification text copied into the repository."
+    }
+  },
+  "source_manifest": "artifacts/runs/20261028T233908Z-232-sequence-export/source04.json",
+  "api_commands": [
+    "sequence.export",
+    "sequence.export.cancel"
+  ],
+  "typed_commands": 161,
+  "native_archive": 51,
+  "actions_version": 20,
+  "full_photoshop_parity": false,
+  "live_acceptance": false,
+  "tests": {
+    "focused": {
+      "tests": 55,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T233908Z-232-sequence-export/focused04.log"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T23:55:35.170463+00:00",
+      "tests": 2428,
+      "failures": 0,
+      "suite_seconds": 170.229,
+      "source_manifest": "artifacts/runs/20261028T233908Z-232-sequence-export/source04.json",
+      "unchanged_inputs": 2284,
+      "log": "artifacts/runs/20261028T233908Z-232-sequence-export/release06.log",
+      "log_sha256": "4a83b9d8444d9d95d1890e604ca963f590f455e225e88603e77d6f1c3c8ee30f",
+      "binaries": {
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "baefbfee395cbe46135e46a778e7109dc19ed86d4d7b0f69f7797df93d8f76b2",
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "ea276eb96261274e252da29fa7352193dabe0dd22448071d4c6491e5e7e35689"
+      },
+      "focused_tests": 55,
+      "independent": "artifacts/runs/20261028T233908Z-232-sequence-export/independent05.json",
+      "full_photoshop_parity": false,
+      "commands": {
+        "focused": "PHOTATO_SEQUENCE_OUTPUT_DIR=<run>/exports04 ./scripts/test.sh -c release --disable-build-manifest-caching --filter 'ImageSequenceExportTests|StoredZIPTests|VideoTimelineTests|VideoSequenceWorkflowTests|AnimationGIFTests|AnimationInterchangeTests|TimelineWorkflowTests|FrameAnimationTests|AutomationTests'",
+        "full": "./scripts/test.sh -c release --disable-build-manifest-caching"
+      }
+    },
+    "independent": "artifacts/runs/20261028T233908Z-232-sequence-export/independent05.json",
+    "failed_attempts": [
+      "artifacts/runs/20261028T233908Z-232-sequence-export/focused02.log"
+    ]
+  },
+  "source_changes": "artifacts/runs/20261028T233908Z-232-sequence-export/changes05.json",
+  "package_verification": "artifacts/runs/20261028T233908Z-232-sequence-export/package-verification09.json",
+  "private_release": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7cde29c1ad993258aa5e",
+  "remote_verification": "artifacts/runs/20261028T233908Z-232-sequence-export/github-download11.json",
+  "installed_package_step": 221,
+  "qualified_uploaded_package_step": 232,
+  "next_stage": "artifacts/runs/20261028T233908Z-232-sequence-export/next-major05.json",
+  "limits": [
+    "PNG only at source dimensions/timing; resizing/rate conversion, alternate image formats, work area and alpha controls remain required.",
+    "Up to4096 frames and128MiB output. RGB8/16 uses working-profile PNG; HDR32 is explicitly converted to SDR sRGB16. Source/history remains unchanged.",
+    "Movie import/export, audio/keyframes/transitions, complete Render Video, editable PSD animation and semantic Actions/Adobe descriptors remain open.",
+    "Full live/native picker, Photoshop factory preference/shortcut/default/output identity, and physical Intel/macOS14/macOS26 runtime qualification remain unverified."
+  ],
+  "new_native_archive": false,
+  "new_actions_version": false
+}

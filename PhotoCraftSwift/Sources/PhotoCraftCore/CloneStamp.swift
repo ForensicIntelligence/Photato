@@ -87,7 +87,7 @@ public struct CloneStroke: Sendable {
 public enum ClonePainter {
   /// Float documents interpolate premultiplied linear-light samples, matching
   /// their compositing domain; integer documents interpolate encoded samples.
-  static func sample(
+  public static func sample(
     _ source: Surface, x: Double, y: Double, nearest: Bool, linear: Bool,
     outside: Pixel, grayscale: Bool
   ) -> Pixel {
@@ -155,13 +155,14 @@ public enum ClonePainter {
   }
   @discardableResult static func paintPrepared(
     _ stroke: CloneStroke, on surface: inout Surface, transform: Transform2D,
-    sourceMapping: Transform2D, selection: IntRect?, selectionMask: SelectionMask?
+    sourceMapping: Transform2D, selection: IntRect?, selectionMask: SelectionMask?,
+    preserveTransparency: Bool = false
   ) throws -> Bool {
     let coverage = try strokeCoverage(stroke, surface: surface, transform: transform)
     return try applyCoverage(
       stroke, on: &surface, transform: transform,
       sourceMapping: sourceMapping, selection: selection, selectionMask: selectionMask,
-      coverage: coverage)
+      coverage: coverage, preserveTransparency: preserveTransparency)
   }
   static func strokeCoverage(_ stroke: CloneStroke, surface: Surface, transform: Transform2D)
     throws -> RetouchCoverage
@@ -217,7 +218,8 @@ public enum ClonePainter {
   static func applyCoverage(
     _ stroke: CloneStroke, on surface: inout Surface,
     transform: Transform2D, sourceMapping: Transform2D, selection: IntRect?,
-    selectionMask: SelectionMask?, coverage: RetouchCoverage
+    selectionMask: SelectionMask?, coverage: RetouchCoverage,
+    preserveTransparency: Bool = false
   ) throws -> Bool {
     let map = sourceMapping * transform
     let nearest =
@@ -250,12 +252,22 @@ public enum ClonePainter {
           outside: stroke.source.outside, grayscale: stroke.mask)
         guard ink.a > 0 else { continue }
         var before = original.pixel(x: x, y: y)
+        if preserveTransparency && !stroke.mask && before.a <= 0 { continue }
         if stroke.mask {
           ink = Pixel(unit(ink.r), unit(ink.r), unit(ink.r), ink.a)
           before = Pixel(unit(before.r), unit(before.r), unit(before.r))
         }
         let out: Pixel
-        if brush.mode == .normal && opacity == 1 && ink.a == 1 {
+        if preserveTransparency && !stroke.mask {
+          if surface.depth == .f32 {
+            out = SRGBTransfer.encoded(ProtectedPixels.composite(brush.mode,
+              backdrop: SRGBTransfer.linear(before), source: SRGBTransfer.linear(ink),
+              opacity: opacity, x: dx, y: dy))
+          } else {
+            out = ProtectedPixels.composite(brush.mode, backdrop: before, source: ink,
+              opacity: opacity, x: dx, y: dy)
+          }
+        } else if brush.mode == .normal && opacity == 1 && ink.a == 1 {
           out = ink
         } else if surface.depth == .f32 && !stroke.mask {
           out = SRGBTransfer.encoded(

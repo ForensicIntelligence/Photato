@@ -1,5 +1,6 @@
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 
 /// Published Adobe error shape, separate from the existing Photato API envelope.
 struct AdobeAPIError: Error, Equatable, Sendable {
@@ -22,7 +23,13 @@ struct AdobeAPIError: Error, Equatable, Sendable {
 struct AdobeActionsRequest: Sendable {
   enum MediaType: String, Sendable {
     case png = "image/png"
+    case jpeg = "image/jpeg"
     case psd = "image/vnd.adobe.photoshop"
+    case tiff = "image/tiff"
+    case json = "application/json"
+    var format: DocumentIO.Format? {
+      switch self { case .png: .png; case .jpeg: .jpeg; case .psd: .psd; case .tiff: .tiff; case .json: nil }
+    }
   }
   enum Destination: Equatable, Sendable {
     case hosted(validityPeriod: Int)
@@ -32,13 +39,20 @@ struct AdobeActionsRequest: Sendable {
     let mediaType: MediaType
     let destination: Destination
     let shouldOverwrite: Bool?
+    var encodingOptions = RasterEncodingOptions()
+    var colorProfile: AdobeOutputProfile?
   }
-  let input: URL
+  let input: URL?
+  let creation: AdobeDocumentCreation?
   let actions: [PhotoshopActionProgram]
   let outputs: [Output]
+  let allowsPhotatoInput: Bool
+  var layerEdits: [AdobeCompositeEdit]?
+  var textFontOptions = try! AdobeTypeFontOptions()
   static let maximumBodyBytes = 4 * 1_024 * 1_024
 
-  init(data: Data) throws {
+  init(data: Data, allowPhotatoOptions: Bool = false, createComposite: Bool = false, artboardOutputs: Bool = false) throws {
+    allowsPhotatoInput = allowPhotatoOptions
     guard data.count <= Self.maximumBodyBytes else {
       throw AdobeAPIError(
         status: 413, code: "validation_error", message: "Request exceeds the local 4 MiB limit.")
@@ -48,11 +62,30 @@ struct AdobeActionsRequest: Sendable {
       throw AdobeAPIError(
         status: 400, code: "invalid_json", message: "Expected a JSON request object.")
     }
-    let root = try Object(parsed, at: "request", allowed: ["image", "options", "outputs"])
-    let image = try root.object("image", allowed: ["source"])
-    let source = try image.object("source", allowed: ["url"])
-    input = try Self.url(source.string("url"), path: "image.source.url", httpsOnly: false)
+    let root = try Object(parsed, at: "request", allowed: createComposite
+      ? ["image", "edits", "outputs", "fontOptions"] : ["image", "options", "outputs"])
+    guard let rawImage = root.fields["image"] else { throw AdobeAPIError.invalid("Missing image.") }
+    if let fields = rawImage as? [String: Any], fields["source"] == nil,
+      createComposite || allowPhotatoOptions {
+      creation = try AdobeDocumentCreation(rawImage)
+      input = nil
+    } else {
+      let image = try root.object("image", allowed: ["source"])
+      let source = try image.object("source", allowed: ["url"])
+      input = try Self.url(source.string("url"), path: "image.source.url", httpsOnly: false)
+      creation = nil
+    }
 
+    if createComposite {
+      textFontOptions = try AdobeTypeFontOptions(root.fields["fontOptions"])
+      actions = []
+      if let raw = root.fields["edits"] {
+        let edits = try Object(raw, at: "edits", allowed: ["layers"])
+        layerEdits = try (edits.fields["layers"] == nil ? [] : edits.array("layers", count: 0...64)).enumerated().map {
+          try AdobeCompositeEdit($0.element, path: "edits.layers[\($0.offset)]")
+        }
+      } else { layerEdits = [] }
+    } else {
     let options = try root.object("options", allowed: ["actions"])
     let resources = try options.array("actions", count: 1...10)
     actions = try resources.enumerated().map { index, raw in
@@ -70,15 +103,52 @@ struct AdobeActionsRequest: Sendable {
       }
     }
 
+    }
+
     outputs = try root.array("outputs", count: 1...25).enumerated().map { index, raw in
       let path = "outputs[\(index)]"
+      if let fields = raw as? [String: Any], fields["scan"] != nil {
+        throw AdobeAPIError(status: 400, code: "validation_error",
+          message: "The execute-actions contract does not accept scan options.")
+      }
       let output = try Object(
         raw, at: path,
-        allowed: [
+        allowed: Set([
           "mediaType", "destination", "shouldOverwrite", "cropMode", "scriptOutputPattern",
-        ])
-      guard let mediaType = MediaType(rawValue: try output.string("mediaType")) else {
-        throw AdobeAPIError.unsupported("Only PNG and PSD output are implemented by this adapter.")
+          "compression", "quality", "iccProfile",
+        ] + (allowPhotatoOptions ? ["encodingOptions"] : [])))
+      guard let mediaType = MediaType(rawValue: try output.string("mediaType")), mediaType != .json || artboardOutputs else {
+        throw AdobeAPIError.unsupported("Only PNG, JPEG, TIFF and PSD output are implemented by this adapter.")
+      }
+      if mediaType == .json, Set(output.fields.keys).subtracting(["mediaType", "destination", "shouldOverwrite"]).isEmpty == false { throw AdobeAPIError.invalid("JSON manifests do not accept raster encoding parameters.") }
+      var encoding = RasterEncodingOptions()
+      if let raw = output.fields["encodingOptions"] {
+        do {
+          let value = try JSONDecoder().decode(AutomationValue.self,
+            from: JSONSerialization.data(withJSONObject: raw, options: [.fragmentsAllowed]))
+          encoding = try DocumentEncodingOptions.parse(value, format: mediaType.format!) ?? .init()
+        } catch { throw AdobeAPIError.invalid("Invalid Photato output encodingOptions.") }
+      }
+      if output.fields["compression"] != nil {
+        guard mediaType == .png else {
+          throw AdobeAPIError.unsupported("The compression field is only implemented for PNG output.")
+        }
+        guard encoding.pngCompression == nil,
+          let level = DocumentEncodingOptions.pngLevels.firstIndex(of: try output.string("compression")) else {
+          throw AdobeAPIError.invalid("Invalid or duplicate PNG compression choice.")
+        }
+        encoding.pngCompression = level
+      }
+      if output.fields["quality"] != nil {
+        guard mediaType == .jpeg else {
+          throw AdobeAPIError.invalid("The quality field requires JPEG output.")
+        }
+        guard encoding.jpegQuality == nil,
+          let level = DocumentEncodingOptions.jpegQualities.firstIndex(of: try output.string("quality")) else {
+          throw AdobeAPIError.invalid("Invalid or duplicate JPEG quality choice.")
+        }
+        // Local scale mapping; Adobe's proprietary quantization is not reproduced.
+        encoding.jpegQuality = level * 2
       }
       if output.fields["cropMode"] != nil, try output.string("cropMode") != "document_bounds" {
         throw AdobeAPIError.unsupported("Only document_bounds export is implemented.")
@@ -114,21 +184,35 @@ struct AdobeActionsRequest: Sendable {
       }
       return Output(
         mediaType: mediaType, destination: target,
-        shouldOverwrite: try output.optionalBool("shouldOverwrite"))
+        shouldOverwrite: try output.optionalBool("shouldOverwrite"), encodingOptions: encoding,
+        colorProfile: try output.fields["iccProfile"].map { try AdobeOutputProfile($0) })
     }
   }
 
   /// The transport supplies one authorized input snapshot. All action resources
   /// execute in order on a value copy, using the same native command/history path.
-  func applying(to document: CraftDocument) throws -> PhotoshopActionProgram.Result {
-    var result = try actions[0].applying(to: document)
+  func applying(to document: CraftDocument, resources: [URL: Data] = [:]) throws -> PhotoshopActionProgram.Result {
+    if let layerEdits {
+      var session = EditorSession(document: document)
+      for edit in layerEdits { try edit.apply(to: &session, resources: resources, fontOptions: textFontOptions) }
+      return PhotoshopActionProgram.Result(session: session, components: nil,
+        selectedLayerIDs: Set(session.document.activeLayerID.map { [$0] } ?? []))
+    }
+    let renderer: PhotoshopActionProgram.StackRenderer = { try ImageStack.command(in:$0,layerID:$1,mode:$2) }
+    let converter: PhotoshopActionProgram.ModeConverter = {
+      try DocumentModeInput.command(.init($1, mergeVisible: $2), in: $0)
+    }
+    var result = try actions[0].applying(to: document, stackRenderer: renderer, modeConverter: converter)
     for action in actions.dropFirst() {
-      result = try action.applying(to: result.session, components: result.components)
+      result = try action.applying(
+        to: result.session, components: result.components, selectedLayerIDs: result.selectedLayerIDs, modeComponents: result.modeComponents,
+        stackRenderer: renderer, modeConverter: converter
+      )
     }
     return result
   }
 
-  private static func url(_ raw: String, path: String, httpsOnly: Bool) throws -> URL {
+  static func url(_ raw: String, path: String, httpsOnly: Bool) throws -> URL {
     guard raw.utf8.count <= 8_192, let url = URL(string: raw),
       let parts = URLComponents(url: url, resolvingAgainstBaseURL: false),
       let scheme = parts.scheme?.lowercased(),
@@ -142,7 +226,7 @@ struct AdobeActionsRequest: Sendable {
     return url
   }
 
-  private struct Object {
+  struct Object {
     let fields: [String: Any]
     let path: String
     init(_ raw: Any, at path: String, allowed: Set<String>) throws {

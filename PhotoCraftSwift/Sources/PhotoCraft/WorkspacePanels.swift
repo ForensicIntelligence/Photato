@@ -4,18 +4,13 @@ import SwiftUI
 
 extension WorkspaceView {
   func pixelColor(_ pixel: Pixel) -> Color {
-    Color(
-      red: Double(pixel.r), green: Double(pixel.g), blue: Double(pixel.b), opacity: Double(pixel.a))
+    store.displayColor(pixel)
   }
   var colorBinding: Binding<Color> {
     Binding(
       get: { pixelColor(store.brush.color) },
       set: { color in
-        if let color = NSColor(color).usingColorSpace(.sRGB) {
-          store.brush.color = Pixel(
-            Float(color.redComponent), Float(color.greenComponent), Float(color.blueComponent),
-            Float(color.alphaComponent))
-        }
+        if let pixel = store.workingPixel(color) { store.brush.color = pixel }
       })
   }
   var colorComponents: (h: Double, s: Double, b: Double) {
@@ -123,8 +118,8 @@ extension WorkspaceView {
   var layerProperties: some View {
     VStack(alignment: .leading, spacing: 13) {
       if let layer = store.activeLayer {
-        if !store.editingMask && store.pathTarget != .vectorMask(layer.id) {
-          Label(layer.content.label.capitalized, systemImage: layerIcon(layer)).padding(.bottom, 2)
+        if (!store.editingMask || store.tool == .adjustmentBrush) && store.pathTarget != .vectorMask(layer.id) {
+          Label(layer.kindLabel.capitalized, systemImage: layerIcon(layer)).padding(.bottom, 2)
           Divider()
           if !isAdjustment(layer) {
             DisclosureGroup("Transform") {
@@ -162,38 +157,19 @@ extension WorkspaceView {
                     enabled: store.canTransformActiveLayer
                   ) { store.transformLayer(vertical: true) }
                 }
-              }.padding(.top, 9).disabled(store.editingComponent)
+              }.padding(.top, 9).disabled(store.editingComponent || store.document.isPositionLocked(layer.id))
             }.disclosureGroupStyle(ExpandedSectionStyle())
           }
-          if case .text(let text) = layer.content {
+          if let source = layer.smartObject {
+            Text("Embedded: " + source.fileName).font(.caption).lineLimit(2)
+            Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObject)
+            Button("Replace Contents…") { store.placeEmbedded(replacing: true) }.disabled(!store.canEditSmartObject)
+            Button("Export Contents…") { store.exportSmartObjectContents() }
+          }
+          if store.typeEditingDraft != nil { TypeControls(store: store) }
+          if case .text = layer.content, store.typeEditingDraft == nil {
             Divider()
-            Text("Type").fontWeight(.semibold)
-            TextField(
-              "Text content",
-              text: Binding(
-                get: {
-                  if case .text(let t) = store.activeLayer?.content { return t.text }
-                  return ""
-                },
-                set: {
-                  var t = text
-                  t.text = $0
-                  store.perform(.replaceContent(layer.id, .text(t)))
-                })
-            )
-            .textFieldStyle(.roundedBorder)
-            numberField(
-              "Size",
-              value: Binding(
-                get: {
-                  if case .text(let t) = store.activeLayer?.content { return t.size }
-                  return 72
-                },
-                set: {
-                  var t = text
-                  t.size = $0
-                  store.perform(.replaceContent(layer.id, .text(t)))
-                }), range: 1...4096, suffix: "pt")
+            TypeControls(store: store)
           }
           if case .adjustment(let adjustment) = layer.content {
             adjustmentProperties(adjustment, layer: layer)
@@ -207,12 +183,8 @@ extension WorkspaceView {
                 color: Binding(
                   get: { pixelColor(color) },
                   set: { value in
-                    guard let rgb = NSColor(value).usingColorSpace(.sRGB) else { return }
-                    store.setSolidColor(
-                      layer.id,
-                      color: Pixel(
-                        Float(rgb.redComponent),
-                        Float(rgb.greenComponent), Float(rgb.blueComponent)))
+                    guard let pixel = store.workingPixel(value) else { return }
+                    store.setSolidColor(layer.id, color: pixel)
                   }), label: "Fill color", supportsOpacity: false
               )
               .frame(width: 28, height: 24)
@@ -270,8 +242,15 @@ extension WorkspaceView {
         }
         Text("⌄  Quick Actions").fontWeight(.medium)
         HStack(spacing: 6) {
+          Button("Select Subject") { store.detectSubject() }.disabled(!store.canDetectSubject())
+          Button("Remove Background") { store.detectSubject(removeBackground: true) }
+            .disabled(!store.canDetectSubject(removeBackground: true))
+        }.controlSize(.small)
+        Toggle("Sample All Layers", isOn: $store.subjectSampleAllLayers)
+          .controlSize(.small).disabled(!store.clipboardTargetAvailable)
+        HStack(spacing: 6) {
           Button("Rasterize") { store.rasterize() }.disabled(
-            isRaster(layer) || isAdjustment(layer) || layer.isGroup)
+            (isRaster(layer) && layer.video == nil) || isAdjustment(layer) || layer.isGroup)
           Button(layer.mask == nil ? "Add Mask" : "Remove Mask") { store.addMask() }
         }.controlSize(.small).disabled(layer.locked || store.editingComponent)
       } else {
@@ -285,7 +264,7 @@ extension WorkspaceView {
   func isAdjustment(_ layer: Layer) -> Bool {
     if case .adjustment = layer.content { true } else { false }
   }
-  func isRaster(_ layer: Layer) -> Bool { if case .raster = layer.content { true } else { false } }
+  func isRaster(_ layer: Layer) -> Bool { if case .raster = layer.content { layer.smartObject == nil } else { false } }
   @ViewBuilder func adjustmentProperties(_ a: Adjustment, layer: Layer) -> some View {
     Divider()
     switch a {
@@ -294,6 +273,11 @@ extension WorkspaceView {
         .id(layer.id).disabled(store.document.isLocked(layer.id))
     case .curves:
       CurvesEditor(store: store, layerID: layer.id)
+        .id(layer.id).disabled(store.document.isLocked(layer.id))
+    case .colorLookup:
+      ColorLookupEditor(store: store, layerID: layer.id)
+    case .classic:
+      ClassicAdjustmentEditor(store: store, layerID: layer.id)
         .id(layer.id).disabled(store.document.isLocked(layer.id))
     case .colorBalance:
       ColorBalanceEditor(store: store, layerID: layer.id)
@@ -346,14 +330,14 @@ extension WorkspaceView {
         adjustmentButton(
           "Curves", "point.topleft.down.curvedto.point.bottomright.up", .curves(.init()))
         adjustmentButton("Exposure", "plus.forwardslash.minus", .exposure(0))
-        adjustmentButton("Vibrance", "triangle", nil)
+        adjustmentButton("Vibrance", "triangle", .classic(.init(.vibrance)))
         adjustmentButton("Hue/Saturation", "slider.horizontal.3", .hueSaturation(.init()))
         adjustmentButton("Color Balance", "slider.horizontal.3", .colorBalance(.init()))
-        adjustmentButton("Black & White", "rectangle.lefthalf.filled", .grayscale)
-        adjustmentButton("Photo Filter", "camera.filters", nil)
-        adjustmentButton("Channel Mixer", "circle.grid.2x2", nil)
-        adjustmentButton("Color Lookup", "square.grid.3x3", nil)
-        adjustmentButton("Selective Color", "square.lefthalf.filled", nil)
+        adjustmentButton("Black & White", "rectangle.lefthalf.filled", .classic(.init(.blackWhite)))
+        adjustmentButton("Photo Filter", "camera.filters", .classic(.init(.photoFilter)))
+        adjustmentButton("Channel Mixer", "circle.grid.2x2", .classic(.init(.channelMixer)))
+        adjustmentButton("Color Lookup", "square.grid.3x3", .colorLookup(.init()))
+        adjustmentButton("Selective Color", "square.lefthalf.filled", .classic(.init(.selectiveColor)))
         adjustmentButton("Invert", "square.lefthalf.filled", .invert)
         adjustmentButton("Gradient Map", "rectangle.lefthalf.filled", .gradientMap(.init()))
           .disabled(!store.canAddGradientMap)
@@ -372,7 +356,11 @@ extension WorkspaceView {
   func adjustmentButton(_ title: String, _ symbol: String, _ adjustment: Adjustment?) -> some View {
     Button {
       if let adjustment {
-        if case .levels = adjustment {
+        if case .colorLookup = adjustment {
+          store.addColorLookup()
+        } else if case .classic(let value) = adjustment {
+          store.addClassicAdjustment(value.kind)
+        } else if case .levels = adjustment {
           store.addLevelsLayer()
         } else if case .curves = adjustment {
           store.addCurvesLayer()

@@ -18,6 +18,37 @@ final class PhotoshopActionProgramTests: XCTestCase {
     ]
   }
 
+  func testMergeActionValidationContextHistoryAndLaterFailureAreAtomic() throws {
+    var d = try LayerMergeTests().document(.f32)
+    for action in ["[{\"_obj\":\"$Mrg2\"}]", "[{\"_obj\":\"$MrgV\"}]"] {
+      let program = try PhotoshopActionProgram(actionJSON: action)
+      var result = try program.applying(to: d)
+      XCTAssertEqual(result.session.document.layers.count, 1)
+      XCTAssertEqual(result.session.undoStack.count, 1)
+      let merged = result.session.document
+      try result.session.undo()
+      XCTAssertEqual(result.session.document, d)
+      try result.session.redo()
+      XCTAssertEqual(result.session.document, merged)
+      XCTAssertThrowsError(try program.applying(to: d, components: .red))
+    }
+    for action in [
+      "[{\"_obj\":\"$Mrg2\",\"duplicate\":true}]", "[{\"_obj\":\"selectAllLayers\"}]",
+      "[{\"_obj\":\"$MrgV\",\"_target\":[]}]",
+    ] {
+      XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON: action))
+    }
+    let program = try PhotoshopActionProgram(
+      actionJSON: "[{\"_obj\":\"$Mrg2\"},{\"_obj\":\"$Mrg2\"}]")
+    let original = EditorSession(document: d)
+    XCTAssertThrowsError(try program.applying(to: original))
+    XCTAssertEqual(original.document, d)
+    XCTAssertTrue(original.undoStack.isEmpty)
+    d.layers[1].x = 100_000
+    XCTAssertThrowsError(
+      try PhotoshopActionProgram(actionJSON: "[{\"_obj\":\"$Mrg2\"}]").applying(to: d))
+  }
+
   func testActionAdapterMatchesAllIndependentPhotoshopOutputBytes() throws {
     struct Fixture: Decodable {
       struct Item: Decodable {
@@ -66,7 +97,7 @@ final class PhotoshopActionProgramTests: XCTestCase {
           in: reference.offset + count..<reference.offset + 2 * count))
       XCTAssertEqual(result.components, .red)
       XCTAssertEqual(result.session.undoStack.map(\.label), ["Fill"])
-      result.session.undo()
+      try result.session.undo()
       XCTAssertEqual(result.session.document, document)
       total += count
     }
@@ -187,12 +218,13 @@ final class PhotoshopActionProgramTests: XCTestCase {
       let highDepth = try CraftDocument(width: 2, height: 2, depth: depth)
       let composite = try PhotoshopActionProgram(actionJSON: json([select("RGB")]))
       XCTAssertEqual(try composite.applying(to: highDepth).session.document, highDepth)
-      XCTAssertThrowsError(try composite.applying(to: highDepth, components: .red))
-      XCTAssertThrowsError(
-        try PhotoshopActionProgram(actionJSON: json([select("red")])).applying(to: highDepth))
-      XCTAssertThrowsError(
-        try PhotoshopActionProgram(actionJSON: json([select("blue"), fill()]))
-          .applying(to: CraftDocument(width: 2, height: 2, depth: depth)))
+      XCTAssertNil(try composite.applying(to: highDepth, components: .red).components)
+      XCTAssertEqual(try PhotoshopActionProgram(actionJSON: json([select("red")])).applying(to: highDepth).components, .red)
+      let edited = try PhotoshopActionProgram(actionJSON: json([select("blue"), fill("black")])).applying(to: highDepth)
+      guard case .raster(let pixels) = edited.session.document.layers[0].content else { return XCTFail("Missing pixels") }
+      XCTAssertEqual(pixels.pixel(x: 0, y: 0).b, 0)
+      XCTAssertEqual(pixels.pixel(x: 0, y: 0).r, 1)
+      XCTAssertEqual(edited.session.undoStack.count, 1)
     }
     XCTAssertThrowsError(try program.applying(to: document, components: []))
     let direct = try PhotoshopActionProgram(actionJSON: json([fill()]))

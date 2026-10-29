@@ -1,0 +1,87 @@
+{
+  "step": 225,
+  "recorded_at_utc": "2026-10-28T20:36:27.314506+00:00",
+  "status": "Native Assign Profile/Convert to Profile, untagged persistence and shared Photato/Adobe output ICC conversion pass60 integration,33 repair-focused and2,364 full optimized tests. Source14 retains2,248 unchanged inputs. Color Settings/policies, full COL01, exact/live/platform and semantic Actions remain open. Qualified/uploaded224 and installed221 are unchanged.",
+  "goal_complete": false,
+  "increment_complete": false,
+  "qualified_stage": "Source-tested native profile workflows; full optimized suite passed",
+  "source_manifest": "artifacts/runs/20261028T200506Z-225-color-profiles/source14.json",
+  "source_inputs": 2248,
+  "source_delta": "artifacts/runs/20261028T200506Z-225-color-profiles/changes16.json",
+  "native_archive": 49,
+  "actions_version": 20,
+  "typed_commands": 151,
+  "tests": {
+    "focused": {
+      "passed": 60,
+      "failures": 0,
+      "path": "artifacts/runs/20261028T200506Z-225-color-profiles/integration05.log",
+      "source_manifest": "artifacts/runs/20261028T200506Z-225-color-profiles/source05.json"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T20:36:27.314506+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "passed": 2364,
+      "tests": 2364,
+      "failures": 0,
+      "seconds_test_execution": 167.12,
+      "seconds_suite_wall": 167.331,
+      "path": "artifacts/runs/20261028T200506Z-225-color-profiles/release15.log",
+      "log": "artifacts/runs/20261028T200506Z-225-color-profiles/release15.log",
+      "log_sha256": "d59863d935ff44e5c140a1d3be3b815e76f369bbae4c5d61e0cdc8962aeaa698",
+      "source_manifest": "artifacts/runs/20261028T200506Z-225-color-profiles/source14.json",
+      "unchanged_inputs": 2248,
+      "host": "arm64 macOS",
+      "new_universal_package": false
+    },
+    "repair_focused": {
+      "utc": "2026-10-28T20:31:50.785381+00:00",
+      "exit_code": 0,
+      "tests": 33,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261028T200506Z-225-color-profiles/source14.json",
+      "unchanged_inputs": 2248,
+      "log": "artifacts/runs/20261028T200506Z-225-color-profiles/focused14.log",
+      "passed": 33,
+      "path": "artifacts/runs/20261028T200506Z-225-color-profiles/focused14.log"
+    }
+  },
+  "reference": "docs/COLOR_PROFILE_REFERENCES.json",
+  "new_package": false,
+  "live_acceptance": false,
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "workers": [],
+  "next_action": "Implement persistent working RGB/CMYK/Gray Color Settings with shared API, creation/conversion defaults and actual import/paste policies; do not add inert controls.",
+  "failed_attempts": [
+    "artifacts/runs/20261028T200506Z-225-color-profiles/focused02-result.json",
+    "artifacts/runs/20261028T200506Z-225-color-profiles/focused03-result.json",
+    "artifacts/runs/20261028T200506Z-225-color-profiles/release07-result.json",
+    "artifacts/runs/20261028T200506Z-225-color-profiles/export-inspection04-failure.json",
+    "artifacts/runs/20261028T200506Z-225-color-profiles/records09-failure.json",
+    "artifacts/runs/20261028T200506Z-225-color-profiles/preservation11-failure.json"
+  ],
+  "next_major_plan": "artifacts/runs/20261028T200506Z-225-color-profiles/next-working-settings08.json",
+  "completed_this_increment": [
+    "Native profile assignment/conversion, preview/Cancel/Undo and151 typed Photato commands.",
+    "Explicit untagged state/native49 plus native/PSD/TIFF and PNG/JPEG tag handling.",
+    "Published Adobe output ICC field with per-output conversion/cache and bounded job resources.",
+    "60 integration,33 repair-focused and2364 full optimized tests pass. Independent matrix/tag/corpus checks retained."
+  ],
+  "remaining": [
+    "Working Color Settings, import/paste mismatch policies/warnings and application-wide defaults still pending.",
+    "ColorSync engine only; no Adobe ACE byte identity. No dither/DeviceLink/abstract profiles.",
+    "Assignment native-component rich nonpixel layers rejects; conversion requires explicit flatten for unsupported stacks.",
+    "Native component composition uses existing RGB caches; full mode-specific compositing remains open.",
+    "Full arbitrary profile/platform and live dialog acceptance pending.",
+    "Semantic Actions recording remains unsupported rather than silently storing incorrect settings.",
+    "Adobe output supports three named profiles and URL custom RGB/gray/CMYK; non-RGB requires PSD/TIFF. Other storage variants, names, full endpoints and exact defaults remain open."
+  ],
+  "previous_fully_qualified_package_step": 224,
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/profiles225-refresh17.log",
+    "check": "artifacts/development-history-audit/profiles225-check17.log"
+  }
+}

@@ -105,7 +105,7 @@ final class LayerPanelWorkflowTests: XCTestCase {
     XCTAssertEqual(store.duplicateLayerDraft?.selected, [ids[0], ids[2]])
     XCTAssertEqual(store.session.undoStack.count, 2)
   }
-  @MainActor func testRenameCommitCancelAndNoOpHaveExpectedUndo() throws {
+  @MainActor func testRenameCommitCancelAndNoOpHaveExpectedUndo() async throws {
     let store = try GroupWorkflowTests().store()
     defer { store.renderTask?.cancel() }
     let original = store.document
@@ -130,9 +130,9 @@ final class LayerPanelWorkflowTests: XCTestCase {
     XCTAssertEqual(store.activeLayer?.name, "Mountain")
     XCTAssertEqual(changes, 1)
     XCTAssertEqual(store.session.undoStack.count, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
-    store.redo()
+    await store.redo()
     XCTAssertEqual(store.activeLayer?.name, "Mountain")
   }
   @MainActor func testStaleCallbacksCannotCommitAnotherRename() throws {
@@ -191,7 +191,8 @@ final class LayerPanelWorkflowTests: XCTestCase {
     XCTAssertNil(store.layerNameDraft)
     XCTAssertEqual(store.session.undoStack.count, 2)
   }
-  @MainActor func testContextDeletePreservesSelectedSetAndUnselectedRowTargetsItself() throws {
+  @MainActor func testContextDeletePreservesSelectedSetAndUnselectedRowTargetsItself() async throws
+  {
     let store = try GroupWorkflowTests().store()
     store.layerDeletionConfirmation = { _ in .contents }
     defer { store.renderTask?.cancel() }
@@ -201,7 +202,7 @@ final class LayerPanelWorkflowTests: XCTestCase {
     store.performLayerPanel(.delete, context: ids[2])
     XCTAssertEqual(store.document.layers.map(\.id), [ids[1]])
     XCTAssertEqual(store.session.undoStack.count, 1)
-    store.undo()
+    await store.undo()
     XCTAssertEqual(store.document, original)
     store.selectedLayerIDs = [ids[0], ids[2]]
     store.performLayerPanel(.delete, context: ids[1])
@@ -282,7 +283,7 @@ final class LayerPanelWorkflowTests: XCTestCase {
       XCTAssertNotNil(document.store.layerNameDraft)
       document.store.finishLayerName(cancel: true)
       document.store.perform(.lock(document.store.activeLayer!.id, true))
-      XCTAssertFalse(app.validateMenuItem(rename))
+      XCTAssertTrue(app.validateMenuItem(rename), "Photoshop allows renaming a fully locked layer")
       let delete = try XCTUnwrap(items.first { $0.action == #selector(AppDelegate.delete) })
       XCTAssertFalse(app.validateMenuItem(delete))
     }

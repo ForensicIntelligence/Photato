@@ -1,0 +1,136 @@
+{
+  "step": "dev-step-214",
+  "date": "2026-10-27",
+  "status": "Native implementation, focused/full regression and universal package verified. Exact Photoshop and Adobe interface qualification remain open.",
+  "scope": [
+    "filter.stylize.diffuse",
+    "filter.stylize.emboss",
+    "filter.stylize.extrude",
+    "filter.stylize.findEdges",
+    "filter.stylize.oilPaint",
+    "filter.stylize.solarize",
+    "filter.stylize.tiles",
+    "filter.stylize.traceContour",
+    "filter.stylize.wind"
+  ],
+  "source_provenance": {
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/stylize.rs": "5fd3a54071a0f1daf53aaf7bb07923ece9aa1db2f30478bf8d612a240b7e27a2",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/stylize2.rs": "dc955e0c889e40b45cfd3847e3181986c6ea3d9c4c1b6418eb7aceb941e89e46",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/oil.rs": "34f9251cbb7699e9f547355eea8961bb9da479a1866bb018df2f96052c6e2f02",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/fxutil.rs": "819542093597c10683e45710cd7ba72a043a111aa3d2322fcb4981399341d700",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/noise.rs": "5f70dfe19540b07e288bd90730a3794c15ffd035a0c8e4318992868d7cac13cc",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/image.rs": "e5d26b51771b3ff0b8c805c45fbd93b79a5b19583aa67462951bb544d308e599",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle01.rs": "47c4523bec560b0dd6e337d43ddea77b47ac914f4ead81a3104a438d8feda4ca",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle-tile-diagnostic01.rs": "37623e523a4f7acabaef06aa7844d8d63a8abce1a2648b42305bd092595c9fd6",
+    "/Users/johnczlonka/Desktop/notadobe/notphotoshop/photocraft-main/crates/algo/src/lib.rs": "7f9644e6e70553e8ec568ee2a1885bf1fa6bef153b1ea0a97047348f9b7f264a"
+  },
+  "license": "MIT OR Apache-2.0",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/filter-effects-reference.html",
+      "accessed": "2026-10-27",
+      "use": "Stylize family descriptions and documented depth availability; not an output/default reference."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/oil-paint-filter-settings.html",
+      "accessed": "2026-10-27",
+      "use": "Oil Paint brush and lighting controls;0\u201310 settings and0\u2013360 light-angle documentation. Source defaults/negative-angle display and Photoshop contexts still need live validation."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "accessed": "2026-10-27",
+      "use": "Inspected public methods; these Stylize actionJSON descriptors are not supplied there."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/workflows/smart_filters/",
+      "accessed": "2026-10-27",
+      "use": "Lists all nine Stylize filters through execute-actions; exact recorded descriptors required. Compatible interface remains incomplete."
+    }
+  ],
+  "implementation": "Swift translations of stylize.rs/stylize2.rs/oil.rs and original helpers; bounded source-dependent processing, layer-local origins, clamped-edge samples and deterministic seeds. Oil Paint uses256-pixel tiles with padded neighborhoods. Extrude precomputes original cell samples once.",
+  "api": {
+    "native_commands": 107,
+    "extended": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "state": "Stylize availability/workspace/settings/preview/local history",
+    "native_archive": 41,
+    "actions_archive": 13,
+    "adobe": "All nine actionJSON mappings explicitly unqualified. Emboss PSD descriptors follow original smart_map.rs; other Stylize PSD mappings unsupported. No Adobe route or interchange qualification invented."
+  },
+  "oracle": {
+    "cases": 27,
+    "fixture_manifest": "Tests/PhotoCraftCoreTests/Fixtures/Stylize/provenance.json",
+    "generator": "artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle-generator01.py",
+    "default_tiling_diagnostic": "artifacts/runs/20261028T011000Z-214-stylize-workflows/oracle-tile-diagnostic01.rs",
+    "tile_difference": "artifacts/runs/20261028T011000Z-214-stylize-workflows/rust-oil-tile-differences01.json",
+    "note": "All27 final original-Rust references match byte-for-byte. Initial wide whole-image Oil Paint reference differed15 samples/max4; original Rust default256 tiles reproduce the same difference. Final reference uses that default, retaining whole-image evidence. No tile-invariance or Photoshop-output claim."
+  },
+  "evidence_root": "artifacts/runs/20261028T011000Z-214-stylize-workflows",
+  "tests": {
+    "core_cases": 7,
+    "app_cases": 5,
+    "initial_attempt": "artifacts/runs/20261028T011000Z-214-stylize-workflows/integration01.log",
+    "status": "80 focused Debug and2027 full optimized tests pass with zero failures.",
+    "focused": {
+      "tests": 80,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T011000Z-214-stylize-workflows/integration02.log"
+    },
+    "full_optimized": {
+      "tests": 2027,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T011000Z-214-stylize-workflows/release-full01.log"
+    }
+  },
+  "live": "Mac unlock still pending; no current Stylize or document-handoff live validation claimed.",
+  "remaining": [
+    "Exact Photoshop output/defaults/depth contexts and every parameter combination",
+    "Adobe actionJSON job compatibility and wider editable PSD/PSB mappings",
+    "Live native/reference interactions and physical Intel/macOS14/macOS26 checks",
+    "Oil Paint tile-invariant numerics and large-image performance qualification",
+    "Remaining F02 Render/Other/legacy workflows and full Photoshop parity"
+  ],
+  "package": {
+    "utc": "2026-10-28T01:42:19.939596+00:00",
+    "tests": {
+      "integration02": 80,
+      "release-full01": 2027
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T011000Z-214-stylize-workflows/Photato214-final01.zip",
+    "zip_sha256": "372172db8a1925b0fa968dc99130925e0fd82e5d56da76485470636ec09ce3b3",
+    "app": "/private/tmp/photato214-verified-gnc1xpmk/Photato.app",
+    "executable_sha256": "961cafc02a0ec8e6d046ec96670e20a26d8f3bdc26429e812d4cba2f2d5f0be7",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato214-verified-gnc1xpmk/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato214-verified-gnc1xpmk/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1664,
+    "source_manifest_sha256": "d08bee1a2eb182b9d3f7de5a5a6fb306fb0c1d2d244d71c3231cfd69fed43abb",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 309,
+      "unavailable_leaf_commands": 416,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "80 focused Debug and2027 full optimized tests plus universal package on this host.27 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Stylize remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "offscreen_review": [
+    "Oil Paint",
+    "Extrude",
+    "Tiles"
+  ]
+}

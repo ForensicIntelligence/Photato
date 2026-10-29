@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-20T21:30:38.593254+00:00",
+  "original_rust_files_verified": 754,
+  "changed": [],
+  "rust_caller": "rust-oracle01/src/main.rs",
+  "caller_sha256": "404afbc313d094bcd706e1bc8f5c9fee7fd63b129aa69f3af268a26fad08caed",
+  "fixture_hashes": {
+    "editable-f32.pcraft": "02cdba1d4fcbd753d7e6f69e8a78ae1a60977a807b78bfc5877e543bcaaaf7d9",
+    "editable-u16.pcraft": "037068c4b668a34f55de8ba1b73d1551044329b6b31547b9d42e5ee193053d1c",
+    "editable-u8.pcraft": "112d79143f9424519f4b302965ba2ce794bc8d3f0f206c4e5539bd4a447bf84e"
+  },
+  "license": "MIT OR Apache-2.0, procedural owned fixtures; Rust is test-only"
+}

@@ -1,0 +1,133 @@
+{
+  "step": "dev-step-182",
+  "completed_at_utc": "2026-10-27T08:46:37.092338+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Portable active/named targets; shared successful-commit recording and history-linked undo/redo; reusable native action library and editor; atomic one-history-step playback; file/folder/open-snapshot batch output; four Photato operations.",
+  "source_manifest": "artifacts/runs/20261027T080231Z-182-actions/source01.json",
+  "source_manifest_sha256": "ba0d9b02fc166bd56f9e8a73bbd7a82d4e30d964822ebf60ad6998c51be5c4a8",
+  "source_inputs": 1374,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/ActionBatch.swift",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/ActionsPanel.swift",
+      "Sources/PhotoCraft/AutomationActions.swift",
+      "Sources/PhotoCraft/AutomationBatch.swift",
+      "Sources/PhotoCraft/BatchPanel.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Tests/PhotoCraftAppTests/ActionBatchTests.swift",
+      "Tests/PhotoCraftAppTests/ActionsWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RecordedActionsTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/Geometry.swift",
+      "Sources/PhotoCraftCore/GroupCreation.swift",
+      "Sources/PhotoCraftCore/Histogram.swift",
+      "Sources/PhotoCraftCore/LayerCreation.swift",
+      "Sources/PhotoCraftCore/LayerMerge.swift",
+      "Sources/PhotoCraftCore/MaskCommands.swift",
+      "Sources/PhotoCraftCore/Selection.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration06": 64,
+    "release-full01": 1759
+  },
+  "last_full_regression": {
+    "step": 182,
+    "tests": 1759,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T080231Z-182-actions/release-full01.log"
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T080231Z-182-actions/integration01.log",
+    "artifacts/runs/20261027T080231Z-182-actions/integration02.log",
+    "artifacts/runs/20261027T080231Z-182-actions/integration04.log",
+    "artifacts/runs/20261027T080231Z-182-actions/integration05.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T08:46:37.092338+00:00",
+    "tests": {
+      "integration06": 64,
+      "release-full01": 1759
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T080231Z-182-actions/Photato182-final.zip",
+    "zip_sha256": "9ccdcfa05045812180eccbed1246031bcd35443ba27db253128ab9cada44b4fd",
+    "app": "/private/tmp/photato182-verified-u6anw91y/Photato.app",
+    "executable_sha256": "5550375b728283f3405882b49fd510b4f2dd31284eb04f46ac15666a50f7f498",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato182-verified-u6anw91y/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato182-verified-u6anw91y/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1374,
+    "source_manifest_sha256": "ba0d9b02fc166bd56f9e8a73bbd7a82d4e30d964822ebf60ad6998c51be5c4a8",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 237,
+      "unavailable_leaf_commands": 488,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Not live/physical-platform or full Photoshop parity evidence."
+  },
+  "api": {
+    "commands": [
+      "actions.manage",
+      "actions.play",
+      "actions.batch",
+      "actions.batch.cancel"
+    ],
+    "count": 66,
+    "state": [
+      "actions",
+      "batch"
+    ],
+    "engine": "Command.action/RecordedAction/ActionBatch; desktop and API share transaction/persistence paths",
+    "adobe": "Existing published /v2/execute-actions and async resources remain separate and regression-tested. No new Adobe endpoint or .atn equivalence is claimed."
+  },
+  "menus": [
+    "Window > Actions (factory Option-F9)",
+    "File > Automate > Batch\u2026"
+  ],
+  "limitations": [
+    "Only the typed operations in ActionOperation are recordable; other successful edits become visible blocking entries until removed/disabled. Prepared composite crop/warp/AI, external assets, many channel/context operations and some layer edits remain unsupported.",
+    "No Adobe .atn import/export, JavaScript execution, conditional/modal action steps, function-key assignment or tool-gesture recording preferences. Native format is .photatoactions v1.",
+    "Actions panel currently floats independently; dockable panel integration is deferred. Per-step parameter rerecording requires replacing recorded actions; step enable/remove/reorder is available.",
+    "Batch supports up to256 local sources; API uses up to8 already shared source documents. Folder scan is one level. No Bridge/import source, droplet, file-open/save override or automatic overwrite workflow.",
+    "Batch writes numbered copies via atomic staged output and exclusive hard-link publication; a filesystem lacking hard links reports an error. Each output is capped at128MiB. Successfully published copies remain after cancellation/error.",
+    "Native library up to128 actions/512 entries per action/16MiB; recording beyond511 steps retains a blocking limit entry. API imports are bounded to60000 base64 characters inside the existing64KiB request limit.",
+    "Offscreen layout tests and PNGs are not live interaction or visual parity evidence. Snapshot AppKit controls are incompletely rendered. The last desktop evidence was locked; no unlock re-probe.",
+    "Exact Photoshop numerical output, physical Intel/macOS14/26, full API/menu/preferences/feature equivalence and AUT01 remain open."
+  ],
+  "next": "L07 Artboards and Frames; examine original Rust and existing document model, then implement native workflow/API with focused tests. No source for183 changed during frozen182 build.",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T080231Z-182-actions",
+    "passed_iteration": "01",
+    "milestones": 182,
+    "evidence_files": 36910,
+    "logs": 19312,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "documentation_repair": "artifacts/runs/20261027T080231Z-182-actions/documentation-repair01.json",
+  "final_source_verification": "All1374 source01 inputs match after documentation and package verification."
+}

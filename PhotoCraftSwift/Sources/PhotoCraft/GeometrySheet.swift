@@ -126,7 +126,7 @@ struct GeometrySheet: View {
               }
             }
           }
-          Text("Existing pixels stay at their original size. Off-canvas content is retained.").font(
+          Text(store.document.colorMode.isRestricted ? "Existing pixels retain their indices or bits. Pixels outside the new canvas are discarded; Undo restores them." : "Existing pixels stay at their original size. Off-canvas content is retained.").font(
             .caption
           ).foregroundStyle(.secondary).frame(width: 220)
         }
@@ -172,6 +172,7 @@ struct GeometrySheet: View {
     }.padding(24).frame(width: 520).preferredColorScheme(.dark)
       .onAppear {
         resolution = String(store.document.pixelsPerInch)
+        if store.document.colorMode.isRestricted { interpolation = .nearest }
         resetDimensions(relative: false)
       }
   }

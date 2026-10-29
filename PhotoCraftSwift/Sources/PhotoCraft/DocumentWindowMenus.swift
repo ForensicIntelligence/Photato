@@ -2,6 +2,7 @@ import AppKit
 
 @MainActor extension AppDelegate: NSMenuDelegate {
   func menuNeedsUpdate(_ menu: NSMenu) {
+    if menu === recentDocumentsMenu { updateRecentDocumentsMenu(menu); return }
     if menu === workspaceMenu {
       updateWorkspaceMenu(menu)
       return

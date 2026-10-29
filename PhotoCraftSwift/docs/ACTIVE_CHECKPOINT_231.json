@@ -1,0 +1,64 @@
+{
+  "step": 231,
+  "recorded_at_utc": "2026-10-28T23:35:37.127349+00:00",
+  "status": "Native one-layer PNG sequence import, video Timeline playback/trim/rates, selected-frame painting/history, native51 and four shared APIs pass63 focused and2420 full optimized tests on2279 unchanged source06 inputs. Independent Pillow checks verify144 RGBA samples. Full SP01, movie import/export, audio/keyframes and exact/live/platform parity remain open; installed221 and qualified/uploaded224 are unchanged.",
+  "source_manifest": "artifacts/runs/20261028T230939Z-231-video-sequence/source06.json",
+  "source_inputs": 2279,
+  "native_archive": 51,
+  "actions_version": 20,
+  "typed_commands": 159,
+  "tests": {
+    "focused": {
+      "tests": 63,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T230939Z-231-video-sequence/focused06.log"
+    },
+    "independent_png": "artifacts/runs/20261028T230939Z-231-video-sequence/independent07.json",
+    "full_optimized": {
+      "utc": "2026-10-28T23:35:37.127349+00:00",
+      "tests": 2420,
+      "failures": 0,
+      "suite_seconds": 171.103,
+      "source_manifest": "artifacts/runs/20261028T230939Z-231-video-sequence/source06.json",
+      "unchanged_inputs": 2279,
+      "log": "artifacts/runs/20261028T230939Z-231-video-sequence/release07.log",
+      "log_sha256": "e62c94dc13ab7df8ca12078ce837ef848d62fd49e00cf29dc1b4676fcc79479f",
+      "binaries": {
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "12de155dfbbd1b8245dcb1cdfeb355e6bfedbc392f21666f89394421a795be64",
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "1643bbecb33b1b2c248233e3f9d5b133c8231c62d7dfd9800fb2607dcba8cf23"
+      },
+      "qualified_universal_package": false,
+      "live_acceptance": false,
+      "full_photoshop_parity": false,
+      "commands": {
+        "focused": "PHOTATO_VIDEO_OUTPUT_DIR=<run>/exports06 ./scripts/test.sh -c release --disable-build-manifest-caching --filter 'VideoTimelineTests|VideoSequenceWorkflowTests|AnimationGIFTests|AnimationInterchangeTests|TimelineWorkflowTests|FrameAnimationTests|AutomationTests|DocumentIOWorkflowTests|DocumentModeWorkflowTests|RestrictedFormatWorkflowTests|InkModeArchiveWorkflowTests'",
+        "full": "./scripts/test.sh -c release --disable-build-manifest-caching",
+        "independent": "<bundled Python with Pillow> artifacts/runs/20261028T230939Z-231-video-sequence/verify-export07.py"
+      }
+    },
+    "failed_attempts": [
+      "artifacts/runs/20261028T230939Z-231-video-sequence/focused02.log",
+      "artifacts/runs/20261028T230939Z-231-video-sequence/focused03.log",
+      "artifacts/runs/20261028T230939Z-231-video-sequence/focused04.log"
+    ]
+  },
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/VIDEO_TIMELINE_REFERENCES.json",
+  "next_action": "Implement image-sequence export/transfer, then AVFoundation movie sources/keyframes/audio. See artifacts/runs/20261028T230939Z-231-video-sequence/next-major08.json. Master goal stays active.",
+  "verification": "artifacts/runs/20261028T230939Z-231-video-sequence/verification08.json",
+  "source_changes": "artifacts/runs/20261028T230939Z-231-video-sequence/changes08.json",
+  "record_completion": "Native increment qualified; final standalone diary verification and history audit recorded at the listed paths.",
+  "standalone_diary": {
+    "entries": 231,
+    "initial_offline_verification": "artifacts/runs/20261028T230939Z-231-video-sequence/diary-browser09.json",
+    "final_verification": "artifacts/runs/20261028T230939Z-231-video-sequence/diary-browser11.json",
+    "history_refresh": "artifacts/development-history-audit/video231-refresh12.log",
+    "history_check": "artifacts/development-history-audit/video231-check12.log"
+  }
+}

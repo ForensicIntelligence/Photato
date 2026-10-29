@@ -16,8 +16,27 @@ import UniformTypeIdentifiers
   var gradientNameDraft: GradientNameDraft?
   var newLayerDraft: NewLayerDraft?
   var newGroupDraft: NewGroupDraft?
+  let shapes: ShapeLibrary
+  var shapeRevision=0
+  var selectedShapeID: UUID? {didSet{if oldValue != selectedShapeID{shapeRevision+=1}}}
+  var shapeDraft: ShapeDraft?
+  var shapePreview: CraftDocument?
+  var shapeGesture: ShapeGesture?
+  var shapeTemplate=ShapeDefinition(geometry:.init()) {didSet{if oldValue != shapeTemplate{shapeRevision+=1}}}
+  var shapeMode=ShapeOutputMode.shape {didSet{if oldValue != shapeMode{shapeRevision+=1}}}
+  var shapeOperation: PathOperation? {didSet{if oldValue != shapeOperation{shapeRevision+=1}}}
+  var frameDraft: FrameDraft?
+  var frameGesture: FrameGesture?
+  var frameShape: FrameDefinition.Shape = .rectangle
+  var frameSides = 5
+  var frameTarget: FrameTarget = .both
+  var artboardDraft: ArtboardDraft?
+  var artboardGesture: ArtboardGesture?
+  var showArtboardNames = true
+  var showArtboardGuides = true
   var duplicateLayerDraft: DuplicateLayerDraft?
   var layerNameDraft: LayerNameDraft?
+  var layerProtectionDraft: LayerProtectionDraft?
   var layerPanelOptionsDraft: LayerPanelOptionsDraft?
   var channelPanelOptionsDraft: ChannelPanelOptionsDraft?
   var layerVisibilityDraft: LayerVisibilityDraft?
@@ -27,6 +46,7 @@ import UniformTypeIdentifiers
     ((LayerDeletionRequest) -> LayerDeletionChoice)?
   var duplicateTask: Task<Void, Never>?
   @ObservationIgnored weak var documentController: CraftDocumentController?
+  @ObservationIgnored var colorPolicyReviewer: ColorPolicyReviewer = ColorPolicyDialog.present
   var gradientLibraryTask: Task<Void, Never>?
   var gradientSelectionAnchor: UUID?
   var cloneDraft: CloneDraft?
@@ -35,13 +55,49 @@ import UniformTypeIdentifiers
   var cloneOverlayKey: CloneOverlayKey?
   var cloneOverlay: CloneOverlayImage?
   let clipboard: any ClipboardAccess
-  var session: EditorSession
+  let prepareHistory: HistoryPreparation
+  let brushes: BrushLibrary
+  var selectedBrushID: UUID?
+  var paintToolOptions: [PaintTool:PaintToolOptions] = [:] { didSet { if oldValue != paintToolOptions { brushRevision += 1 } } }
+  var mixerPaint = MixerPaint() { didSet { if oldValue != mixerPaint { brushRevision += 1 } } }
+  var patternStampOrigin: PathPoint?
+  var patternStampID: String?
+  var adjustmentBrushKind = AdjustmentBrushKind.brightnessContrast {didSet {if oldValue != adjustmentBrushKind {brushRevision += 1}}}
+  var adjustmentBrushSubtract = false {didSet {if oldValue != adjustmentBrushSubtract {brushRevision += 1}}}
+  var adjustmentBrushNewLayer = false {didSet {if oldValue != adjustmentBrushNewLayer {brushRevision += 1}}}
+  var adjustmentBrushObject = false {didSet {if oldValue != adjustmentBrushObject {brushRevision += 1}}}
+  var adjustmentBrushOverlay = false
+  @ObservationIgnored var peopleFeaturesDetector:(any PeopleFeaturesDetecting)? = CoreMLPeopleFeaturesDetector.bundled
+  @ObservationIgnored var peopleDetector:any PeopleDetecting = VisionPeopleDetector()
+  let peopleWorkspace = PeopleWorkspace()
+  @ObservationIgnored var allObjectsDetector:any AllObjectsDetecting = VisionForegroundDetector()
+  @ObservationIgnored var objectDetector:any ObjectDetecting = VisionForegroundDetector()
+  var brushGesture: BrushGesture?
+  @ObservationIgnored var brushPreviewTask: Task<Void,Never>?
+  @ObservationIgnored var brushPreviewGeneration = UUID()
+  let actions: ActionLibrary
+  var actionRevision = 0
+  var session: EditorSession { didSet { if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
+  @ObservationIgnored private(set) var sessionGeneration = UUID()
+  var historyOperation: HistoryOperation?
   var image: CGImage?
   var surface: Surface? { didSet { channelCompositeRevision = UUID() } }
   private(set) var channelCompositeRevision = UUID()
   @ObservationIgnored var renderSnapshot: RenderSnapshot?
   var selectionPath: CGPath?
-  var tool: EditorTool = .move { didSet { unavailableToolID = nil } }
+  var tool: EditorTool = .move {
+    didSet {
+      unavailableToolID = nil
+      if oldValue != tool {
+        objectFinder.cancel(); peopleWorkspace.close()
+        artboardGesture = nil; frameGesture = nil; shapeGesture = nil; _ = finishType()
+        if oldValue == .crop { cancelCrop() }
+        if oldValue.regionRetouchKind != nil { cancelRegionRetouch() }
+        if oldValue.usesSelectionStroke {cancelBrush()}
+        if oldValue == .selectionBrush || tool == .selectionBrush {render()}
+      }
+    }
+  }
   var unavailableToolID: String?
   var rememberedTools: [String: String] = [:]
   var selectedTool: WorkspaceTool {
@@ -62,15 +118,29 @@ import UniformTypeIdentifiers
   var pathTarget: PathTarget?
   var pathAnchor: PathAnchorSelection?
   var pathGesture: PathGesture?
+  var freeformGesture: FreeformPathGesture?
+  var pathSettingsRevision = 0
+  var pathCurveFit: Double = 2 { didSet {if !pathCurveFit.isFinite || !(0.5...10).contains(pathCurveFit){pathCurveFit=oldValue};if pathCurveFit != oldValue{pathSettingsRevision += 1}} }
   var penComponent: Int?
-  var pathOperation = PathOperation.combine
+  var pathOperation = PathOperation.combine { didSet {if oldValue != pathOperation{pathSettingsRevision += 1}} }
   var layerMaskView: LayerMaskView?
   var renderedMaskView: LayerMaskView?
   var maskViewImage: CGImage?
+  var smartFilterMaskEditing = false
   var maskEditingLayerID: UUID?
   var editingMask: Bool { activeLayer?.id == maskEditingLayerID && activeLayer?.mask != nil }
   var selectionMode = SelectionMode.replace
   var selectionFeather: Double = 0
+  var selectionPaintMode:SelectionMode = .add
+  let objectFinder = ObjectFinderWorkspace()
+  var objectFinderEnabled = true { didSet { if oldValue != objectFinderEnabled { objectFinder.cancel(); refreshObjectFinderIfNeeded() } } }
+  var objectFinderHardEdge = false
+  var objectFinderColor = Pixel(0.15,0.45,1,0.45) { didSet { if oldValue != objectFinderColor { setObjectHover(objectFinder.hoveredID,force:true) } } }
+  var objectSelectionMode:ObjectSelectionMode = .rectangle
+  var selectionSampleAllLayers=false { didSet { if oldValue != selectionSampleAllLayers { objectFinder.cancel(); peopleWorkspace.cancel(); refreshObjectFinderIfNeeded() } } }
+  var selectionEnhanceEdge=false
+  var selectionOverlayColor=Pixel(1,0,0,0.5)
+  var selectionOverlayImage:CGImage?
   var selectionAntiAlias = true
   var wandOptions = ColorMatchOptions()
   var wandSampleAllLayers = false
@@ -87,14 +157,98 @@ import UniformTypeIdentifiers
     (layer: Layer, width: Int, height: Int, frame: IntRect)?
   var patternFillDraft: PatternFillDraft?
   var showFeatherSelection = false
+  var cropDraft: CropDraft?
+  var cropReadyDraft: CropDraft?
+  var cropPrepared: CropEdit?
+  var cropPreviewImage: CGImage?
+  var cropBusy = false
+  var cropError: String?
+  var cropStraighten = false
+  var cropRevision = 0
+  var puppetWorkspace: PuppetWorkspace?
+  var skyWorkspace: SkyWorkspace?
+  let skies:SkyLibrary
+  var vanishingWorkspace: VanishingWorkspace?
+  var wideAngleWorkspace: WideAngleWorkspace?
+  var lensCorrectionWorkspace: LensCorrectionWorkspace?
+  var proofDisplayError: String?
+  var printSettings = PrintSettings()
+  var printWorkspace: PrintWorkspace?
+  var printBusy = false
+  var printOperationID: UUID?
+  var printJobStatus = "idle"
+  var printJobError: String?
+  var printRevision = UUID()
+  @ObservationIgnored var printCancellation: (() -> Void)?
+  @ObservationIgnored var printAfterDismiss: (() -> Void)?
+  var proofSettings = ProofSettings()
+  var proofWorkspace: ProofWorkspace?
+  var colorProfileWorkspace: ColorProfileWorkspace?
+  var inkModeWorkspace: InkModeWorkspace?
+  var restrictedModeWorkspace: RestrictedModeWorkspace?
+  var previousIndexedPalette: [PaletteColor]?
+  var documentModeWorkspace: DocumentModeWorkspace?
+  var classicToneWorkspace:ClassicToneWorkspace?
+  var shadowWorkspace:ClassicToneWorkspace?
+  var proceduralWorkspace:ProceduralWorkspace?
+  var classicDetailWorkspace: ClassicDetailWorkspace?
+  var otherVideoWorkspace: OtherVideoWorkspace?
+  var renderWorkspace: RenderWorkspace?
+  var stylizeWorkspace: StylizeWorkspace?
+  var pixelateWorkspace: PixelateWorkspace?
+  var distortionWorkspace: DistortionWorkspace?
+  var lensBlurWorkspace: LensBlurWorkspace?
+  var photoDetailWorkspace: PhotoDetailWorkspace?
+  var artisticGalleryWorkspace: ArtisticGalleryWorkspace?
+  var blurGalleryWorkspace: BlurGalleryWorkspace?
+  var perspectiveWorkspace: PerspectiveWorkspace?
+  var warpDraft: WarpWorkspace?
+  var photoAlignDraft: PhotoAlignWorkspace?
+  var photoBlendDraft: PhotoBlendWorkspace?
+  var regionRetouchSettings = RegionRetouchRequest(kind:.patch)
+  var regionRetouchTransformOnDrop = true
+  var regionRetouchDraft: RegionRetouchDraft?
+  var regionRetouchReady: RegionRetouchDraft?
+  var regionRetouchPreview: CraftDocument?
+  var regionRetouchBusy = false
+  var regionRetouchError: String?
+  var regionRetouchCommitWhenReady = false
+  var regionRetouchRevision = 0
+  @ObservationIgnored var regionRetouchPrepared: RegionRetouchEdit?
+  @ObservationIgnored var regionRetouchTask: Task<Void,Never>?
+  var cropShowPreview = true { didSet { cropRevision += 1 } }
+  @ObservationIgnored var cropTask: Task<Void,Never>?
   var transformDraft: TransformDraft?
+  var contentAwareScalePreview: CraftDocument?
+  var contentAwareScaleReadyDraft: TransformDraft?
+  var contentAwareScaleBusy = false
+  var contentAwareScaleError: String?
+  @ObservationIgnored var contentAwareScalePrepared: ContentAwareScaleEdit?
+  @ObservationIgnored var contentAwareScaleTask: Task<Void,Never>?
   var geometrySheet: GeometrySheetKind?
+  @ObservationIgnored var foregroundDetector: any ForegroundDetecting = VisionForegroundDetector()
+  var subjectSampleAllLayers = false
   var levelsDraft: LevelsDraft?
   var curvesDraft: CurvesDraft?
   var hueSaturationDraft: HueSaturationDraft?
+  var colorLookupDraft: ColorLookupDraft?
+  var classicAdjustmentDraft: ClassicAdjustmentDraft?
   var colorBalanceDraft: ColorBalanceDraft?
   var gradientMapDraft: GradientMapDraft?
+  var filterDraft: FilterDraft?
+  var contentAwareDraft: ContentAwareWorkspace?
+  var selectMaskDraft: SelectMaskWorkspace?
+  var layerStyleDraft: LayerStyleDraft?
+  static var copiedLayerStyle: LayerStyle?
   var tonalStepsDraft: TonalStepsDraft?
+  var videoRenderID: UUID?
+  var videoRenderWorker: Task<RenderedVideo, Error>?
+  var variableExportID: UUID?
+  var variableExportWorker: Task<ImageSequenceOutput, Error>?
+  var sequenceExportID: UUID?
+  var sequenceExportWorker: Task<ImageSequenceOutput, Error>?
+  var animationExportID: UUID?
+  var animationExportWorker: Task<Data, Error>?
   var geometryBusy = false
   var geometryTask: Task<Void, Never>?
   var backgroundColor: Pixel = .white
@@ -110,6 +264,15 @@ import UniformTypeIdentifiers
     get { workspaceLibrary.layout.layersTab }
     set { workspaceLibrary.selectPanel(WorkspacePanel(rawValue: newValue.rawValue)!) }
   }
+  var inkTargets: Set<InkChannelTarget> = []
+  var inkVisibility: Set<InkChannelTarget>?
+  var inkChannelOptions: InkChannelOptionsDraft?
+  var alphaEditingID: UUID?
+  var alphaOverlay = false
+  var quickMaskOptions = ChannelDisplayOptions()
+  var channelDialog: ChannelDialog?
+  var modeComponentTargets: Set<Int> = []
+  var modeComponentVisibility: Set<Int>?
   var componentTarget = RGBChannelPreview.composite
   var channelView = RGBChannelView() { didSet { if channelView != oldValue { render() } } }
   /// Legacy isolated-preview entry points. Combined visibility lives in channelView.
@@ -126,13 +289,18 @@ import UniformTypeIdentifiers
   var measuredZoom: Double = 1
   var viewportSize = CGSize(width: 900, height: 700)
   var viewportBackingScale: Double = 1
-  var brush = Brush()
+  var brushRevision = 0
+  var brush = Brush() { didSet { if oldValue != brush { brushRevision += 1 } } }
   var zoom: Double = 0  // Zero requests the initial fit, resolved by the first canvas layout.
   var pan = CGSize.zero
   var revision = 0
   var error: String?
   var status = "Ready"
   var rendering = false
+  var typeEditingDraft: TypeEditingDraft?
+  var shapedTypeDraft:ShapedTypeWorkspace?
+  var typeSelectionRevision = 0
+  @ObservationIgnored weak var typeEditor: CanvasTypeEditor?
   var textDraft = "Your words here"
   var fontSize: Double = 72
   var prompt = ""
@@ -143,21 +311,53 @@ import UniformTypeIdentifiers
   var coalescingChanges = false
   var coalescedDirty = false
   var onChange: ((NSDocument.ChangeType) -> Void)?
+  var timelinePreviewVideoFrame: Int?
+  var timelineVisible = false
+  var timelineTask: Task<Void, Never>?
+  var timelineAudioPlayer: (any TimelineAudioPlaying)?
+  var timelineAudioFactory: (Data) throws -> any TimelineAudioPlaying = { try NativeTimelineAudioPlayer(data:$0) }
+  var timelineAudioPreparation: Task<Data?, Error>?
+  var timelineAudioPreparing = false
+  var timelineAudioImportID: UUID?
+  var timelineAudioViewRevision = 0
+  var selectedAudioTrackID: UUID? { didSet { if oldValue != selectedAudioTrackID { timelineAudioViewRevision &+= 1 } } }
+  var selectedAudioClipID: UUID? { didSet { if oldValue != selectedAudioClipID { timelineAudioViewRevision &+= 1 } } }
+  var showAudioControls = false { didSet { if oldValue != showAudioControls { timelineAudioViewRevision &+= 1 } } }
+
+  var timelinePreviewFrameID: UUID?
+  var timelinePlaybackSource: CraftDocument?
+  var timelineThumbnailSource: CraftDocument?
+  var timelineContentGeneration = 0
+  var timelinePlaybackRenderCount = 0
+  var timelinePlaybackRevision = UUID()
   var renderTask: Task<Void, Never>?
   var aiTask: Task<Void, Never>?
   var document: CraftDocument { session.document }
-  var activeLayer: Layer? { document.activeIndex.map { document.layers[$0] } }
+  var activeLayer: Layer? {
+    guard let i = document.activeIndex else { return nil }
+    let layer = document.layers[i]
+    return smartFilterMaskEditing && maskEditingLayerID == layer.id ? (try? layer.filterMaskProjection()) ?? layer : layer
+  }
   init(
     document: CraftDocument, clipboard: (any ClipboardAccess)? = nil,
     cloneState: CloneSources? = nil, patterns: PatternLibrary? = nil,
-    gradients: GradientLibrary? = nil
+    gradients: GradientLibrary? = nil, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
+    prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
+    self.shapes = shapes ?? .shared
+    self.actions = actions ?? .shared
+    self.brushes = brushes ?? .shared
+    self.skies = skies ?? .shared
+    self.prepareHistory = prepareHistory
     self.cloneState = cloneState ?? .shared
     self.patterns = patterns ?? .shared
     self.gradients = gradients ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
+    timelineVisible = document.animation != nil || document.videoTimeline != nil
     brush.color = .black
+    brush.settings = .init()
+    brush.settings!.symmetry.center = .init(Double(document.width)/2,Double(document.height)/2)
     let library = self.gradients
     gradientOptions.gradient = library.selectedPreset?.gradient ?? .foregroundToBackground
     if let loading = library.loadTask {
@@ -170,6 +370,11 @@ import UniformTypeIdentifiers
     }
     render()
   }
+  var videoTimelinePixelsPerSecond:Double = 60
+  var videoSelectedTransitionID:UUID?
+  var videoTransitionEditorVisible = false
+  var videoTimelineGestureID:UUID?
+  var moviePlacementID: UUID?
   func perform(_ command: Command) {
     finishNumericField()
     finishLayerName()
@@ -182,9 +387,12 @@ import UniformTypeIdentifiers
   }
   /// Shared native/API transaction: history, dirty state, selection and rendering stay together.
   func executeEditorCommand(_ command: Command) throws {
+    stopTimelinePlayback(render: false)
+    guard historyOperation == nil else { throw HistoryNavigationConflict.busy }
+    let command = try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))
     try validateComponentContext(command)
     let before = session.document
-    try session.execute(command)
+    try session.execute(routedMaskCommand(command))
     if before != session.document {
       if before.activeLayerID != document.activeLayerID {
         selectedLayerIDs = Set(document.activeLayerID.map { [$0] } ?? [])
@@ -205,7 +413,7 @@ import UniformTypeIdentifiers
   func select(_ id: UUID, modifiers: NSEvent.ModifierFlags = []) {
     finishNumericField()
     finishLayerName()
-    guard transformDraft == nil, !hasToneDraft else { return }
+    guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
     if modifiers.contains(.shift), let active = document.activeIndex,
       let destination = document.layers.firstIndex(where: { $0.id == id })
     {
@@ -223,77 +431,135 @@ import UniformTypeIdentifiers
     } else {
       selectedLayerIDs = [id]
     }
+    let wasAlpha = alphaEditingID != nil
+    alphaEditingID = nil
     session.selectLayer(id)
     if case .vectorMask = pathTarget { selectPath(nil) }
     maskEditingLayerID = nil
+    smartFilterMaskEditing = false
     clearMaskView()
+    if wasAlpha { render() }
+    invalidatePeopleIfNeeded()
+    refreshObjectFinderIfNeeded()
   }
-  func undo() {
+  @discardableResult func undo() async -> Bool {
     finishNumericField()
     finishLayerName()
-    guard !geometryBusy, !hasToneDraft else { return }
+    guard !geometryBusy, !hasToneDraft else { return false }
     if transformDraft != nil {
       cancelTransform()
-      return
+      return true
     }
-    guard !session.undoStack.isEmpty else { return }
-    resetPathGesture()
-    session.undo()
-    selectedLayerIDs = Set(document.activeLayerID.map { [$0] } ?? [])
-    onChange?(.changeUndone)
-    render()
-    status = "Undo"
+    let lifecycle = layerPanelGeneration
+    do { return try await navigateHistory(redo: false) } catch is CancellationError {
+      if layerPanelGeneration == lifecycle { status = "Undo cancelled" }
+      return false
+    } catch {
+      if layerPanelGeneration == lifecycle { self.error = error.localizedDescription }
+      return false
+    }
   }
-  func redo() {
+  @discardableResult func redo() async -> Bool {
     finishNumericField()
     finishLayerName()
-    guard !geometryBusy, !hasToneDraft else { return }
-    guard transformDraft == nil else { return }
-    guard !session.redoStack.isEmpty else { return }
-    resetPathGesture()
-    session.redo()
-    selectedLayerIDs = Set(document.activeLayerID.map { [$0] } ?? [])
-    onChange?(.changeRedone)
-    render()
-    status = "Redo"
+    guard !geometryBusy, !hasToneDraft, transformDraft == nil else { return false }
+    let lifecycle = layerPanelGeneration
+    do { return try await navigateHistory(redo: true) } catch is CancellationError {
+      if layerPanelGeneration == lifecycle { status = "Redo cancelled" }
+      return false
+    } catch {
+      if layerPanelGeneration == lifecycle { self.error = error.localizedDescription }
+      return false
+    }
   }
-  func render() {
+  func render(isAnimationPlayback: Bool = false) {
+
+    if let id = selectedAudioTrackID, document.videoTimeline?.audioTracks?.contains(where: { $0.id == id }) != true { selectedAudioTrackID = nil }
+    if let id = selectedAudioClipID, document.videoTimeline?.audioTracks?.flatMap(\.clips).contains(where: { $0.id == id }) != true { selectedAudioClipID = nil }
+    if let id = selectedAudioClipID, let owner = document.videoTimeline?.audioTracks?.first(where: { $0.clips.contains(where: { $0.id == id }) }), selectedAudioTrackID != owner.id { selectedAudioTrackID = owner.id }
+    if document.videoTimeline == nil || (selectedAudioClipID == nil && (activeLayer?.video?.movie?.audioTracks ?? 0) == 0) { showAudioControls = false }
+    if let id = videoSelectedTransitionID,
+      document.videoTimeline?.transitions?.contains(where: { $0.id == id }) != true
+    { videoSelectedTransitionID = nil }
+    if document.videoTimeline == nil { videoTransitionEditorVisible = false }
+    if isAnimationPlayback { timelinePlaybackRenderCount += 1 }
+    if let source = timelinePlaybackSource, source != document { stopTimelinePlayback(render: false) }
+    if timelineThumbnailSource != document { timelineThumbnailSource = document; timelineContentGeneration += 1 }
+    invalidatePeopleIfNeeded()
+    refreshObjectFinderIfNeeded()
+    if let id = alphaEditingID, document.alphaChannels?.contains(where: { $0.id == id }) != true { alphaEditingID = nil }
     if let draft = layerVisibilityDraft, draft.baseline != document { layerVisibilityDraft = nil }
     validateVisibilityIsolation()
     if let id = maskEditingLayerID,
-      !document.layers.contains(where: { $0.id == id && $0.mask != nil })
+      !document.layers.contains(where: { $0.id == id && (smartFilterMaskEditing ? $0.smartFilters?.mask != nil : $0.mask != nil) })
     {
       maskEditingLayerID = nil
+    smartFilterMaskEditing = false
     }
     if currentMaskView == nil { clearMaskView() }
-    let maskView = currentMaskView
+    let maskView = adjustmentBrushMaskView ?? currentMaskView
     renderTask?.cancel()
     revision += 1
     let request = revision
     let doc = previewDocument
+    // The editing composition can strip video metadata. Ghosts need the retained
+    // Timeline at the displayed playhead, while the current frame keeps its drafts.
+    let onionSource: CraftDocument?
+    if document.videoTimeline?.onionSkin?.enabled == true {
+      if let frame = timelinePreviewVideoFrame { onionSource = try? document.videoDocument(at: frame) }
+      else { onionSource = document }
+    } else { onionSource = nil }
     let levels = levelsDraft
     let curves = curvesDraft
     let hueSaturation = hueSaturationDraft
+    let lookup = colorLookupDraft
+    let classic = classicAdjustmentDraft
     let colorBalance = colorBalanceDraft
+    let filter = filterDraft
+    let layerStyle = layerStyleDraft
     let tonalSteps = tonalStepsDraft
     let gradientMap = gradientMapDraft
     let clone = cloneDraft?.previewCommand
+    let selectionTool = brushGesture.flatMap { $0.original==document && $0.generation==layerPanelGeneration ? $0.selectionRequest:nil }
+    let selectionOverlay = tool == .selectionBrush ? selectionOverlayColor:nil
+    let painting = brushPreviewCommand
+    let paintTools = brushGesture.flatMap { $0.original==document && $0.generation==layerPanelGeneration ? $0.paintingRequest:nil }
     let gradientFill = gradientFillDraft.flatMap { $0.preview ? $0.command : nil }
     let gradientGesture = gradientGesture?.command
     let gradientStopColor = gradientStopColorDraft?.command
     let patternFill = patternFillDraft.flatMap { $0.preview ? $0.command : nil }
+    let auxiliaryTarget = editingChannel
+    let auxiliaryOverlay = auxiliaryTarget == .quickMask || alphaOverlay
     let channelView = channelView
+    let modeVisibility = usesModeChannels ? modeComponentVisibility : nil
+    let inkVisibility = document.inkMode != nil ? effectiveInkVisibility : nil
+    let proof = effectiveProof
+    let proofComposite = auxiliaryTarget == nil && maskView == nil && channelView.visible.count == 3
+      && (modeVisibility == nil || modeVisibility?.count == doc.colorMode.componentCount)
+      && (inkVisibility == nil || inkVisibility?.count == doc.inkChannelTargets.count)
     let previous = renderSnapshot
     rendering = true
     selectionPath = nil
     renderTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
         var doc = doc
+        if let layerStyle, layerStyle.preview, (try? layerStyle.style.validate(in: doc)) != nil {
+          try Command.layerStyle([layerStyle.id], layerStyle.style).apply(to: &doc)
+        }
+        if let filter, filter.preview, (try? filter.filter.validate()) != nil {
+          try filter.command(in: doc).apply(to: &doc)
+        }
         if let levels, levels.preview {
           try Command.applyAdjustment(levels.id, .levels(levels.levels)).apply(to: &doc)
         }
         if let curves, curves.preview {
           try Command.applyAdjustment(curves.id, .curves(curves.curves)).apply(to: &doc)
+        }
+        if let lookup, lookup.preview {
+          try Command.applyAdjustment(lookup.id, .colorLookup(lookup.adjustment)).apply(to: &doc)
+        }
+        if let classic, classic.preview {
+          try Command.applyAdjustment(classic.id, .classic(classic.adjustment)).apply(to: &doc)
         }
         if let colorBalance, colorBalance.preview {
           try Command.applyAdjustment(colorBalance.id, .colorBalance(colorBalance.adjustment))
@@ -312,23 +578,38 @@ import UniformTypeIdentifiers
             to: &doc)
         }
         if let clone { try clone.apply(to: &doc) }
+        if let selectionTool {try await SelectionToolPreparation.command(selectionTool,in:doc).apply(to:&doc)}
+        if let painting { try painting.apply(to: &doc) }
+        if let paintTools { doc = try PaintingPreparation.prepare(paintTools,in:doc).result }
         if let gradientFill { try gradientFill.apply(to: &doc) }
         if let gradientGesture { try gradientGesture.apply(to: &doc) }
         if let gradientStopColor { try gradientStopColor.apply(to: &doc) }
         if let patternFill { try patternFill.apply(to: &doc) }
         let snapshot = try Renderer.render(doc, reusing: previous)
-        let preview = try channelView.applying(to: snapshot.surface)
-        let image = try RasterIO.displayImage(preview)
+        let displayComposite: Surface
+        if proofComposite, let onionSource { displayComposite = try OnionSkinRenderer.render(onionSource, base: snapshot.surface) }
+        else { displayComposite = snapshot.surface }
+        let preview = try doc.inkMode != nil ? InkChannelPresentation.surface(doc, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(doc, visible: $0) } ?? channelView.applying(to: displayComposite)
+        var image =
+          try auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+          ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: doc)
+        var proofFailure: String?
+        if proof.active && proofComposite {
+          do { image = try SoftProof.image(doc, composite: displayComposite, settings: proof) }
+          catch is CancellationError { throw CancellationError() }
+          catch { proofFailure = error.localizedDescription }
+        }
         let path = try doc.selectionMask.map { try SelectionOutline.path($0) }
         let maskImage: CGImage?
         if let maskView, let layer = doc.layers.first(where: { $0.id == maskView.layerID }) {
           maskImage = try RasterIO.displayImage(
             Renderer.maskPresentation(
-              layer, mode: maskView.mode, width: doc.width, height: doc.height))
+              maskView.smartFilter ? try layer.filterMaskProjection() : layer, mode: maskView.mode, width: doc.width, height: doc.height))
         } else {
           maskImage = nil
         }
-        return (snapshot, image, path, maskImage)
+        let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0)} ?? nil
+        return (snapshot, image, path, maskImage,overlay,proofFailure)
       }
       do {
         let pair = try await withTaskCancellationHandler(
@@ -337,8 +618,10 @@ import UniformTypeIdentifiers
         self.renderSnapshot = pair.0
         self.surface = pair.0.surface
         self.image = pair.1
+        self.proofDisplayError = pair.5
         self.selectionPath = pair.2?.path
-        if self.currentMaskView == maskView {
+        self.selectionOverlayImage = pair.4
+        if (self.adjustmentBrushMaskView ?? self.currentMaskView) == maskView {
           self.maskViewImage = pair.3
           self.renderedMaskView = maskView
         }
@@ -373,6 +656,7 @@ import UniformTypeIdentifiers
     guard canCreatePixelLayer(below: below) else { return }
     perform(.newPixelLayer(.init(name: document.suggestedPixelLayerName), below: below))
     maskEditingLayerID = nil
+    smartFilterMaskEditing = false
     selectPath(nil)
   }
   func addSolidColorLayer() {
@@ -422,6 +706,7 @@ import UniformTypeIdentifiers
     select(id)
     if activeLayer?.id == id, activeLayer?.mask != nil {
       componentTarget = .composite
+      modeComponentTargets = []; modeComponentVisibility = nil
       maskEditingLayerID = id
       render()
     }
@@ -431,15 +716,22 @@ import UniformTypeIdentifiers
     }
   }
   func stroke(_ points: [StrokePoint], brush: Brush) {
+    if document.inkMode != nil, editingChannel == nil, !editingMask { perform(.inkChannel(.edit(effectiveInkTargets, .stroke(points, brush)))); return }
     guard let layer = activeLayer else { return }
     perform(editingMask ? .maskStroke(layer.id, points, brush) : .stroke(layer.id, points, brush))
   }
   func clear() {
+    if document.inkMode != nil, editingChannel == nil, !editingMask { fill(color: .white); return }
     if let layer = activeLayer { perform(editingMask ? .maskFill(layer.id, 0) : .clear(layer.id)) }
   }
   func fill(color: Pixel? = nil, opacity: Float = 1) {
-    guard let layer = activeLayer else { return }
     let color = color ?? brush.color
+    if document.inkMode != nil, editingChannel == nil, !editingMask {
+      guard canEditInkChannels else { return }
+      perform(.inkChannel(.edit(effectiveInkTargets, .fill(unit(color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722), opacity * color.a))))
+      return
+    }
+    if let target = editingChannel { perform(.channel(.fill(target,unit(0.2126*color.r+0.7152*color.g+0.0722*color.b),opacity))); return }
     if editingComponent {
       do {
         guard color.r == color.g, color.g == color.b, color.a == 1 else {
@@ -451,6 +743,7 @@ import UniformTypeIdentifiers
       } catch { self.error = error.localizedDescription }
       return
     }
+    guard let layer = activeLayer else { return }
     guard opacity == 1 else {
       error = "Composite and mask Fill currently require 100% opacity."
       return
@@ -463,9 +756,9 @@ import UniformTypeIdentifiers
     }
   }
   func updateMask(_ id: UUID, _ edit: (inout MaskProperties) -> Void) {
-    guard let layer = document.layers.first(where: { $0.id == id }), layer.mask != nil else {
-      return
-    }
+    guard let source = document.layers.first(where: { $0.id == id }) else { return }
+    let layer = smartFilterMaskEditing && maskEditingLayerID == id ? (try? source.filterMaskProjection()) ?? source : source
+    guard layer.mask != nil else { return }
     var properties = layer.effectiveMaskProperties
     edit(&properties)
     perform(.maskProperties(id, properties))
@@ -479,7 +772,7 @@ import UniformTypeIdentifiers
       return false
     }
     if kind == .fromTransparency {
-      if case .raster = layer.content { return true }
+      if case .raster = layer.content { return !document.isImageLocked(layer.id) }
       return false
     }
     return (kind != .revealSelection && kind != .hideSelection) || document.selection != nil
@@ -502,7 +795,7 @@ import UniformTypeIdentifiers
     createMask(kind)
   }
   func canApplyMask(_ layer: Layer) -> Bool {
-    layer.canApplyPixelMask && !document.isLocked(layer.id) && !geometryBusy
+    layer.smartObject == nil && layer.canApplyPixelMask && !document.isImageLocked(layer.id) && !geometryBusy
       && transformDraft == nil
   }
   func applyMask(_ requested: UUID? = nil) {
@@ -524,8 +817,10 @@ import UniformTypeIdentifiers
     perform(.deleteMask(id))
   }
   func cropToSelection() {
+    if cropDraft != nil { commitCrop(); return }
     if let r = document.selection {
-      perform(.crop(r))
+      let request = CropRequest(x:r.x,y:r.y,width:r.width,height:r.height)
+      performGeometry(label:"Crop",prepare:{ document in .cropDocument(try CropPreparation.prepare(request,document:document)) })
     } else {
       error = "Draw a rectangular selection first, then choose Image → Crop to Selection."
     }
@@ -538,7 +833,9 @@ import UniformTypeIdentifiers
       guard response == .OK, let url = panel.url, let self else { return }
       do {
         let imported = try RasterIO.read(url)
-        guard var l = imported.layers.first else { return }
+        guard var l = imported.layers.first, case .raster(let pixels) = l.content else { return }
+        l.content = .raster(
+          try ColorManagement.converted(pixels, from: imported, to: self.document))
         l.x = (self.document.width - imported.width) / 2
         l.y = (self.document.height - imported.height) / 2
         self.perform(.addLayer(l))
@@ -578,22 +875,10 @@ import UniformTypeIdentifiers
     } catch { self.error = error.localizedDescription }
   }
   func blur(radius: Double = 5) {
-    guard let l = activeLayer, case .raster(let original) = l.content else {
-      error = "Select a pixel layer or rasterize the current layer first."
-      return
-    }
-    do {
-      var result = try Renderer.gaussianBlur(original, radius: radius)
-      if document.selection != nil {
-        let doc = document
-        result.mapPixels { x, y, p in
-          let q = l.coordinateTransform.point(Double(x) + 0.5, Double(y) + 0.5)
-          return original.pixel(x: x, y: y).mixing(
-            p, coverage: doc.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y))))
-        }
-      }
-      perform(.replaceContent(l.id, .raster(result)))
-    } catch { self.error = error.localizedDescription }
+    guard canBeginFilter, let id = activeLayer?.id else { return }
+    var filter = RasterFilter(.gaussianBlur)
+    filter.radius = radius
+    performGeometry(.applyFilter(id, filter))
   }
   func refinePrompt() {
     guard !aiBusy else { return }
@@ -628,6 +913,7 @@ import UniformTypeIdentifiers
       guard case .raster(var raster) = imported.layers.first?.content else {
         throw CraftError.invalid("The image model returned an unreadable image.")
       }
+      raster = try ColorManagement.converted(raster, from: imported, to: document)
       if raster.width > document.width || raster.height > document.height {
         let factor = min(
           Double(document.width) / Double(raster.width),
@@ -645,10 +931,12 @@ import UniformTypeIdentifiers
   }
   func fit() { setZoom(viewport.fitZoom, center: true) }
   func chooseTool(_ item: WorkspaceTool) {
+    if regionRetouchDraft != nil,item.native != tool,!commitRegionRetouch() { status = "Wait for the retouch preview, or cancel the edit."; return }
+    if cropDraft != nil,item.native != .crop,!commitCrop() { status = "Wait for the crop preview, or cancel the crop."; return }
     if item.id != selectedTool.id { cancelClone() }
     if item.id != selectedTool.id { cancelGradientGesture() }
     if transformDraft != nil { commitTransform() }
-    if let native = item.native { tool = native } else { unavailableToolID = item.id }
+    if let native = item.native { tool = native; if native == .crop { beginCrop() } } else { unavailableToolID = item.id }
     if let group = WorkspaceCatalog.groups.first(where: { $0.contains(item) }) {
       rememberedTools[group[0].id] = item.id
     }

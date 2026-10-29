@@ -59,9 +59,9 @@ final class ClipboardTests: XCTestCase {
       }
       XCTAssertNil(session.document.selection)
       XCTAssertEqual(session.undoStack.count, 1)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, doc)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document.layers.count, 2)
     }
   }
@@ -85,7 +85,7 @@ final class ClipboardTests: XCTestCase {
           depth.quantize(original.a * (1 - doc.selectionCoverage(x: x, y: 0))))
       }
       XCTAssertEqual(session.document.selection, doc.selection)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, doc)
     }
   }

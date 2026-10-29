@@ -1,0 +1,960 @@
+{
+  "source": {
+    "blobs": [
+      {
+        "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+        "compressed_bytes": 13,
+        "length": 0,
+        "name": "blob-0-0"
+      },
+      {
+        "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+        "compressed_bytes": 13,
+        "length": 0,
+        "name": "blob-0-1"
+      },
+      {
+        "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+        "compressed_bytes": 13,
+        "length": 0,
+        "name": "blob-0-2"
+      },
+      {
+        "blake3": "2d3adedff11b61f14c886e35afa036736dcd87a74d27b5c1510225d0f592e213",
+        "compressed_bytes": 14,
+        "length": 1,
+        "name": "blob-1-0"
+      },
+      {
+        "blake3": "2d3adedff11b61f14c886e35afa036736dcd87a74d27b5c1510225d0f592e213",
+        "compressed_bytes": 14,
+        "length": 1,
+        "name": "blob-1-1"
+      },
+      {
+        "blake3": "2d3adedff11b61f14c886e35afa036736dcd87a74d27b5c1510225d0f592e213",
+        "compressed_bytes": 14,
+        "length": 1,
+        "name": "blob-1-2"
+      },
+      {
+        "blake3": "0bab81a085a2fed1fdceb2842c56b927a476ee7c759869f1deaa712357ed9800",
+        "compressed_bytes": 14,
+        "length": 7,
+        "name": "blob-7-0"
+      },
+      {
+        "blake3": "3f8770f387faad08faa9d8414e9f449ac68e6ff0417f673f602a646a891419fe",
+        "compressed_bytes": 20,
+        "length": 7,
+        "name": "blob-7-1"
+      },
+      {
+        "blake3": "597ceeae54a8a2922c1b1e79d7d8081876601f10171e795e2a93b2d1237f6827",
+        "compressed_bytes": 20,
+        "length": 7,
+        "name": "blob-7-2"
+      },
+      {
+        "blake3": "990a6d20859d8f43865abd59d92a07aaef1c25c2257d017db07710152d06c0d5",
+        "compressed_bytes": 14,
+        "length": 63,
+        "name": "blob-63-0"
+      },
+      {
+        "blake3": "e9bc37a594daad83be9470df7f7b3798297c3d834ce80ba85d6e207627b7db7b",
+        "compressed_bytes": 76,
+        "length": 63,
+        "name": "blob-63-1"
+      },
+      {
+        "blake3": "8369a35baaa373007f9f993c7aa7c3eba0e46f7da007728cc25cbe1c687a9e8f",
+        "compressed_bytes": 76,
+        "length": 63,
+        "name": "blob-63-2"
+      },
+      {
+        "blake3": "4d006976636a8696d909a630a4081aad4d7c50f81afdee04020bf05086ab6a55",
+        "compressed_bytes": 14,
+        "length": 64,
+        "name": "blob-64-0"
+      },
+      {
+        "blake3": "4eed7141ea4a5cd4b788606bd23f46e212af9cacebacdc7d1f4c6dc7f2511b98",
+        "compressed_bytes": 77,
+        "length": 64,
+        "name": "blob-64-1"
+      },
+      {
+        "blake3": "5b092a3a38c63989baa1222a3e14525fdc68697252d1f940593dc3b47b75f9f1",
+        "compressed_bytes": 77,
+        "length": 64,
+        "name": "blob-64-2"
+      },
+      {
+        "blake3": "a6f791da7707e3a05a7742248eefe43f9ad4626fc21b63675367c3d1d69ec91c",
+        "compressed_bytes": 14,
+        "length": 65,
+        "name": "blob-65-0"
+      },
+      {
+        "blake3": "de1e5fa0be70df6d2be8fffd0e99ceaa8eb6e8c93a63f2d8d1c30ecb6b263dee",
+        "compressed_bytes": 78,
+        "length": 65,
+        "name": "blob-65-1"
+      },
+      {
+        "blake3": "792a50139cfee5dff4ca50e9053120b2a20ae4ceb4335a1a09cd631c3c7c4492",
+        "compressed_bytes": 78,
+        "length": 65,
+        "name": "blob-65-2"
+      },
+      {
+        "blake3": "5b10416d32f16b046bf4f2a8867960a16e99280dfd694e9a809a6bf849531697",
+        "compressed_bytes": 14,
+        "length": 1023,
+        "name": "blob-1023-0"
+      },
+      {
+        "blake3": "10108970eeda3eb932baac1428c7a2163b0e924c9a9e25b35bba72b28f70bd11",
+        "compressed_bytes": 296,
+        "length": 1023,
+        "name": "blob-1023-1"
+      },
+      {
+        "blake3": "588657ccfc803cf3b452663865452c1f68f901aa37cabfa4ef704b48dec6fc99",
+        "compressed_bytes": 1036,
+        "length": 1023,
+        "name": "blob-1023-2"
+      },
+      {
+        "blake3": "d6fd9de5bccf223f523b316c9cd1cf9a9d87ea42473d68e011dad13f09bf8917",
+        "compressed_bytes": 14,
+        "length": 1024,
+        "name": "blob-1024-0"
+      },
+      {
+        "blake3": "42214739f095a406f3fc83deb889744ac00df831c10daa55189b5d121c855af7",
+        "compressed_bytes": 296,
+        "length": 1024,
+        "name": "blob-1024-1"
+      },
+      {
+        "blake3": "1c033a422dd24ebd813097cc183f158c7fdac998bd79c20e910e444fea9e4c0e",
+        "compressed_bytes": 1037,
+        "length": 1024,
+        "name": "blob-1024-2"
+      },
+      {
+        "blake3": "d2beb49d87e59db174cb3ff1440f1899422968df670d060fd7ce759e8cc160e7",
+        "compressed_bytes": 14,
+        "length": 1025,
+        "name": "blob-1025-0"
+      },
+      {
+        "blake3": "d00278ae47eb27b34faecf67b4fe263f82d5412916c1ffd97c8cb7fb814b8444",
+        "compressed_bytes": 295,
+        "length": 1025,
+        "name": "blob-1025-1"
+      },
+      {
+        "blake3": "d78b7537c63e5682d383063ba6ff97f4f8865b040c833c5999f1ee7abe71a057",
+        "compressed_bytes": 1038,
+        "length": 1025,
+        "name": "blob-1025-2"
+      },
+      {
+        "blake3": "111f6c2f2ac0fc43154414a6e3e4c104cb04907e9453d3ac85cc5f55cc015b48",
+        "compressed_bytes": 14,
+        "length": 16384,
+        "name": "blob-16384-0"
+      },
+      {
+        "blake3": "f875d6646de28985646f34ee13be9a576fd515f76b5b0a26bb324735041ddde4",
+        "compressed_bytes": 315,
+        "length": 16384,
+        "name": "blob-16384-1"
+      },
+      {
+        "blake3": "7831515dfe836ccf721f47f407789e246e40133c385446295beb7aa8884bacc8",
+        "compressed_bytes": 13116,
+        "length": 16384,
+        "name": "blob-16384-2"
+      },
+      {
+        "blake3": "3bdeaf8f8e98780b318106aafdc3ca257f73df123d97b69112b26044c91a7d56",
+        "compressed_bytes": 14,
+        "length": 65536,
+        "name": "blob-65536-0"
+      },
+      {
+        "blake3": "68d647e619a930e7b1082f74f334b0c65a315725569bdc123f0ee11881717bfe",
+        "compressed_bytes": 327,
+        "length": 65536,
+        "name": "blob-65536-1"
+      },
+      {
+        "blake3": "afd7102073a6ca03944add79a640f839d12819b0ff98061d5e7b05560f2becbc",
+        "compressed_bytes": 44494,
+        "length": 65536,
+        "name": "blob-65536-2"
+      },
+      {
+        "blake3": "33badd2c738dbf1cbeebf3279bf6da04ee43995276f786ef8dd30fb708f16e95",
+        "compressed_bytes": 17,
+        "length": 131072,
+        "name": "blob-131072-0"
+      },
+      {
+        "blake3": "306baba93b1a393cbd35172837c98b0f59a41f64e1b2682ae102d8b2534b9e1c",
+        "compressed_bytes": 337,
+        "length": 131072,
+        "name": "blob-131072-1"
+      },
+      {
+        "blake3": "dc14f54a9e4c926c735714dec9eab9d674bcd31f05e51bdcd948da01599b4ffb",
+        "compressed_bytes": 82467,
+        "length": 131072,
+        "name": "blob-131072-2"
+      },
+      {
+        "blake3": "86bb2b521a10612d5a1d38204fac4fa632466d1866144d8a6a7e3afc050ce7ae",
+        "compressed_bytes": 21,
+        "length": 262144,
+        "name": "blob-262144-0"
+      },
+      {
+        "blake3": "d57dc906e20d3fd326ffaa85535500486f46a0979f5a323f028dcabfd381fd4a",
+        "compressed_bytes": 661,
+        "length": 262144,
+        "name": "blob-262144-1"
+      },
+      {
+        "blake3": "f64a54da8f2302d29b6a1362da494b343e1828fceafd1c5a528a4e2417fe228a",
+        "compressed_bytes": 164894,
+        "length": 262144,
+        "name": "blob-262144-2"
+      },
+      {
+        "blake3": "488de202f73bd976de4e7048f4e1f39a776d86d582b7348ff53bf432b987fca8",
+        "compressed_bytes": 45,
+        "length": 1048576,
+        "name": "blob-1048576-0"
+      },
+      {
+        "blake3": "74cb441fd087764ca9c3694da742ebe30cbeb3060a17009ca81825c7a8d10343",
+        "compressed_bytes": 2605,
+        "length": 1048576,
+        "name": "blob-1048576-1"
+      },
+      {
+        "blake3": "b64e416c52a72a34fa208885c5e08c797c1cc3c5a87f631fa9d0c8d3cbb4795e",
+        "compressed_bytes": 659837,
+        "length": 1048576,
+        "name": "blob-1048576-2"
+      }
+    ],
+    "cases": [
+      {
+        "bytes": 305614,
+        "file": "source-u8.pcraft",
+        "source_roundtrip_equal": true
+      },
+      {
+        "bytes": 407259,
+        "file": "source-u16.pcraft",
+        "source_roundtrip_equal": true
+      },
+      {
+        "bytes": 552260,
+        "file": "source-f32.pcraft",
+        "source_roundtrip_equal": true
+      }
+    ],
+    "origin": "Unmodified original photocraft-format source, independent Rust fixture caller; Rust is test-only."
+  },
+  "cli": [
+    {
+      "file": "cli-text-1-known.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "b8da1b28ba666d3fbaf11ab125904380cdea2e86e0ebb102b5b2eaaf59da4aad"
+    },
+    {
+      "file": "cli-text-1-unknown.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "304a99b985e025e7167f71af5da5e5a6bffb88cf6e9121ed0ed26c0535240754"
+    },
+    {
+      "file": "cli-text-3-known.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "b8da1b28ba666d3fbaf11ab125904380cdea2e86e0ebb102b5b2eaaf59da4aad"
+    },
+    {
+      "file": "cli-text-3-unknown.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "d87b627b23f3eb72920eea2e2c1c3600be0a563603c264f332bc676e7206a84c"
+    },
+    {
+      "file": "cli-text-9-known.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "bf6c7158c21265603381f2f00e3dcad10e85b424c74020f0c23be00613f0fde8"
+    },
+    {
+      "file": "cli-text-9-unknown.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "591354afc1ac1256d7b236c790922555393a4652354e1e9456fc4dad823a63d7"
+    },
+    {
+      "file": "cli-text-19-known.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "a5f286671577c647e816e5ce073b2fed26660d7fc12274684b9a1bf3c33bc79d"
+    },
+    {
+      "file": "cli-text-19-unknown.zst",
+      "bytes": 205000,
+      "sha256": "a9ad1878b2eb727dbe869c70e7be43c2f8e39cb411705f6b4e6d15d69c82bf37",
+      "compressed_sha256": "c73eb3113af16f4e5c5f16ad745c13f2194ffc00e68c33bed77967cce239ff12"
+    },
+    {
+      "file": "cli-skew-1-known.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "04db024ff1c03badf075192a18184fcd5a0860b5b77eb4fe1eb187674a7c1f95"
+    },
+    {
+      "file": "cli-skew-1-unknown.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "c9e53c0116aced7d8c5877e20fa0ffbb9611f648fbfd44760fa87922bda9600b"
+    },
+    {
+      "file": "cli-skew-3-known.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "89caa160394c6b45fe82b1cecd19709f455722309e56e761b3972a8b19884cd2"
+    },
+    {
+      "file": "cli-skew-3-unknown.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "999bc2fdccd279ffe62bf621deeab4cab4a67d47a5b14d7d6dd2b2684d3cb268"
+    },
+    {
+      "file": "cli-skew-9-known.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "77023d68d743b2356706f25a9372d2bae806a413445c1518e6ee431b69afdbd9"
+    },
+    {
+      "file": "cli-skew-9-unknown.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "d25a9a67426b5cb7872451426ee3343a21cf3deebedc6397821714e37190d5c9"
+    },
+    {
+      "file": "cli-skew-19-known.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "e7ff24be0cf29f6cb461f02facfc5ff0d482766f5f6836e7b7d2fd4ccdbc6b1d"
+    },
+    {
+      "file": "cli-skew-19-unknown.zst",
+      "bytes": 131071,
+      "sha256": "d25d54cecbb665f4ef79d4279d53fe583b04c64f5892eb211f965037fe63b086",
+      "compressed_sha256": "bde27e25b3c4bd7c6d0dc99bf2cb1b6c36eeda38fad289e63f7268cf040c6475"
+    },
+    {
+      "file": "cli-mixed-1-known.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "bf3f9b39014f1f5d65c67a1fa2a2c84dc42dc81d89d699d6dc2efd1ae354d1ab"
+    },
+    {
+      "file": "cli-mixed-1-unknown.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "8510b541369c3c62561f4fde0e857b68b3a8a853e9be16d48e4014a184e9791b"
+    },
+    {
+      "file": "cli-mixed-3-known.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "c26cb7b6735f5cd715d4e10121b229a24da80e8f70475fe4779327809ba8ac3a"
+    },
+    {
+      "file": "cli-mixed-3-unknown.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "3f6bae1ff64b1181d4c04f78cc7063631310c02e45bd7ce01d77aa96af5a90fb"
+    },
+    {
+      "file": "cli-mixed-9-known.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "bf3f9b39014f1f5d65c67a1fa2a2c84dc42dc81d89d699d6dc2efd1ae354d1ab"
+    },
+    {
+      "file": "cli-mixed-9-unknown.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "17e58538597af3bb593245d7c71097439e70957752f944c1023b9cda58464c01"
+    },
+    {
+      "file": "cli-mixed-19-known.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "f4866ee73afa7a8fb4018731b2f012e23ee75dd53edce770094cf3981851624d"
+    },
+    {
+      "file": "cli-mixed-19-unknown.zst",
+      "bytes": 262144,
+      "sha256": "bf2d8e9a207752821626ad988c64c74cf554306548914c2206cd9caaf3a30c7e",
+      "compressed_sha256": "07645c027359bf1a14fa4eda640e804868e630b7e27c6dacd48b9023b0c92b7c"
+    },
+    {
+      "file": "cli-rle-1-known.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "f57d4d986c10c3b3f7d846531181f60d8b7158f3a09ad4b07251b0f61692ed89"
+    },
+    {
+      "file": "cli-rle-1-unknown.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "dc28734b817c581b3b5bb916d129dd8c3fc11a75379da58ae621d697d02579b6"
+    },
+    {
+      "file": "cli-rle-3-known.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "f57d4d986c10c3b3f7d846531181f60d8b7158f3a09ad4b07251b0f61692ed89"
+    },
+    {
+      "file": "cli-rle-3-unknown.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "b6c63f37204099ba75b46a7b22907666812a3bdaaeeed12536c6ed1e1ad88939"
+    },
+    {
+      "file": "cli-rle-9-known.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "5863f3a1e2be7d6342bfb21f38fa4c9b9c1a7fceff38f6f63064ac660ad1f0a5"
+    },
+    {
+      "file": "cli-rle-9-unknown.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "303700fc17e9f1170e8f44154a26ed82fbb23244de5a413de2e098af91e75a3a"
+    },
+    {
+      "file": "cli-rle-19-known.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "1e5e16d43cd42c7a7bc49e286845307a4da89d66e694e85dfcab33eb29be6fcb"
+    },
+    {
+      "file": "cli-rle-19-unknown.zst",
+      "bytes": 262145,
+      "sha256": "d124fda03443c00504dae90ee528d921037d349244408ac904832b66a10159e0",
+      "compressed_sha256": "81a39ea70eb8080a801abc061138e18eb326642ad6b82e3bee600a61ff7cefef"
+    },
+    {
+      "file": "cli-tiny-1-known.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "c52bb0f9ce91259852be06e6005a1ecb3fc2e7073437ece1ca532035da2becd7"
+    },
+    {
+      "file": "cli-tiny-1-unknown.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "fd4d20f6728b3169304fb0ca6ea4516ec0a9e018fe1b69bb5ebe8029fdfa7ad9"
+    },
+    {
+      "file": "cli-tiny-3-known.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "c52bb0f9ce91259852be06e6005a1ecb3fc2e7073437ece1ca532035da2becd7"
+    },
+    {
+      "file": "cli-tiny-3-unknown.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "ab346b74dddf777eaa76792363ef8fce6c1b2b865b2b859d3dcd8f283ce0c26d"
+    },
+    {
+      "file": "cli-tiny-9-known.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "c52bb0f9ce91259852be06e6005a1ecb3fc2e7073437ece1ca532035da2becd7"
+    },
+    {
+      "file": "cli-tiny-9-unknown.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "8f9dffa5da79bdd7ba42d794b426fbd86709b0a4536aed79bc27008cb043be6c"
+    },
+    {
+      "file": "cli-tiny-19-known.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "c52bb0f9ce91259852be06e6005a1ecb3fc2e7073437ece1ca532035da2becd7"
+    },
+    {
+      "file": "cli-tiny-19-unknown.zst",
+      "bytes": 7,
+      "sha256": "b69c62ed24ff8f380007554c49d48a6ea4bee37e7d7eaabfa4f28fdee86c3363",
+      "compressed_sha256": "3ef24798cea01e96434fa0aee325c7a259f6d72c975dc82326b6342f5ff8028b"
+    },
+    {
+      "file": "cli-empty-1-known.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "f96deff1816083fdff8bc3e46c3fe6ca46a6bb49f4d5a00627616c13237a512c"
+    },
+    {
+      "file": "cli-empty-1-unknown.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "d950bda1b5d80fc3fdac65030aff317b00fd22609e9c830b3ac41bb0cb23294f"
+    },
+    {
+      "file": "cli-empty-3-known.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "f96deff1816083fdff8bc3e46c3fe6ca46a6bb49f4d5a00627616c13237a512c"
+    },
+    {
+      "file": "cli-empty-3-unknown.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "d950bda1b5d80fc3fdac65030aff317b00fd22609e9c830b3ac41bb0cb23294f"
+    },
+    {
+      "file": "cli-empty-9-known.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "f96deff1816083fdff8bc3e46c3fe6ca46a6bb49f4d5a00627616c13237a512c"
+    },
+    {
+      "file": "cli-empty-9-unknown.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "d950bda1b5d80fc3fdac65030aff317b00fd22609e9c830b3ac41bb0cb23294f"
+    },
+    {
+      "file": "cli-empty-19-known.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "f96deff1816083fdff8bc3e46c3fe6ca46a6bb49f4d5a00627616c13237a512c"
+    },
+    {
+      "file": "cli-empty-19-unknown.zst",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressed_sha256": "d950bda1b5d80fc3fdac65030aff317b00fd22609e9c830b3ac41bb0cb23294f"
+    }
+  ],
+  "zip": [
+    "zip-0-0.zip",
+    "zip-0-1.zip",
+    "zip-8-0.zip",
+    "zip-8-1.zip"
+  ],
+  "rust_caller": "rust-oracle02/src/main.rs",
+  "zstd_version": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+  "commands": [
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=205000"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=205000"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=205000"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=205000"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=131071"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=131071"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=131071"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=131071"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=262144"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=262144"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=262144"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=262144"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=262145"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=262145"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=262145"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=262145"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=7"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=7"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=7"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=7"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--stream-size=0"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-1",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--stream-size=0"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-3",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--stream-size=0"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-9",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--stream-size=0"
+    ],
+    [
+      "/opt/homebrew/bin/zstd",
+      "-q",
+      "-19",
+      "--check",
+      "-c",
+      "--no-content-size"
+    ]
+  ]
+}

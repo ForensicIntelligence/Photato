@@ -7,7 +7,7 @@ import zlib
 enum PSDChannelCodec {
   static let byteLimit = 512 * 1024 * 1024
   static func byteCount(width: Int, height: Int, depth: Int, channels: Int) throws -> Int {
-    guard [8, 16, 32].contains(depth), (1...4).contains(channels),
+    guard [8, 16, 32].contains(depth), (1...56).contains(channels),
       width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
       width <= Surface.maxPixels / height
     else {
@@ -19,39 +19,36 @@ enum PSDChannelCodec {
     }
     return count
   }
-  static func decode(_ data: Data, width: Int, height: Int, depth: Int, channels: Int = 1) throws
+  static func decode(
+    _ data: Data, width: Int, height: Int, depth: Int, channels: Int = 1,
+    format: PSDFileFormat = .psd
+  ) throws
     -> [UInt8]
   {
     let expected = try byteCount(width: width, height: height, depth: depth, channels: channels)
-    let rowBytes = width * (depth / 8)
-    var r = PSDReader(data: data)
-    let compression = try r.u16()
-    var output: [UInt8]
-    switch compression {
-    case 0:
-      output = Array(try r.bytes(expected))
-    case 1:
-      var lengths: [Int] = []
-      for _ in 0..<height * channels { lengths.append(try r.u16()) }
-      output = []
-      output.reserveCapacity(expected)
-      for length in lengths {
-        output.append(contentsOf: try PSDCodec.decodePackBits(r.bytes(length), expected: rowBytes))
-      }
-    case 2, 3:
-      output = try inflate(r.bytes(r.remaining), expected: expected)
-      if compression == 3 { predict(&output, width: width, depth: depth, decode: true) }
-    default: throw CraftError.unsupported("Unknown PSD channel compression \(compression).")
-    }
-    guard r.remaining == 0 else { throw CraftError.invalid("Unexpected PSD channel bytes.") }
+    let reader = try PSDChannelReader(
+      PSDReader(data: data), width: width, height: height, depth: depth,
+      channels: channels, format: format)
+    var output: [UInt8] = []
+    output.reserveCapacity(expected)
+    while reader.remainingRows > 0 { output.append(contentsOf: try reader.nextRow()) }
     return output
   }
   static func encode(
-    _ bytes: [UInt8], width: Int, height: Int, depth: Int, compression: PSDCompression
+    _ bytes: [UInt8], width: Int, height: Int, depth: Int, compression: PSDCompression,
+    format: PSDFileFormat = .psd
   ) throws -> Data {
     guard bytes.count == (try byteCount(width: width, height: height, depth: depth, channels: 1))
     else {
       throw CraftError.invalid("PSD channel size does not match its geometry.")
+    }
+    if compression == .rle {
+      let output = PSDOutput(), rowBytes = width * (depth / 8)
+      try PSDChannelWriter.write(width: width, height: height, depth: depth,
+        compression: compression, format: format, to: output) { y in
+          Array(bytes[(y * rowBytes)..<((y + 1) * rowBytes)])
+        }
+      return output.data
     }
     var output = PSDWriter()
     output.n(compression.rawValue, 2)
@@ -78,24 +75,16 @@ enum PSDChannelCodec {
   }
   /// Require exactly the declared output and all compressed input, including checksum.
   static func inflate(_ data: Data, expected: Int) throws -> [UInt8] {
-    guard expected > 0, expected <= byteLimit, !data.isEmpty, data.count <= byteLimit else {
-      throw CraftError.invalid("Invalid PSD ZIP size.")
+    let reader = try PSDZIPReader(PSDReader(data: data), expected: expected)
+    var output: [UInt8] = []
+    output.reserveCapacity(expected)
+    while output.count < expected {
+      output.append(contentsOf: try reader.read(min(64 * 1024, expected - output.count)))
     }
-    var output = [UInt8](repeating: 0, count: expected)
-    var size = uLongf(expected)
-    var consumed = uLong(data.count)
-    let result = output.withUnsafeMutableBufferPointer { target in
-      data.withUnsafeBytes { source in
-        uncompress2(
-          target.baseAddress!, &size, source.bindMemory(to: UInt8.self).baseAddress!, &consumed)
-      }
-    }
-    guard result == Z_OK, size == expected, consumed == data.count else {
-      throw CraftError.invalid("Corrupt, truncated or oversized PSD ZIP stream.")
-    }
+    try reader.finish()
     return output
   }
-  private static func predict(_ bytes: inout [UInt8], width: Int, depth: Int, decode: Bool) {
+  static func predict(_ bytes: inout [UInt8], width: Int, depth: Int, decode: Bool) {
     let rowBytes = width * (depth / 8)
     var scratch = [UInt8](repeating: 0, count: depth == 32 ? rowBytes : 0)
     for start in stride(from: 0, to: bytes.count, by: rowBytes) {
@@ -168,6 +157,7 @@ enum PSDChannelCodec {
 
 public enum PSDCompression: Int, CaseIterable, Sendable {
   case raw = 0
+  case rle = 1
   case zip = 2
   case zipPrediction = 3
 }

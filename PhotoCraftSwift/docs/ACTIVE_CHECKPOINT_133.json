@@ -1,0 +1,200 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "step": "dev-step-133",
+  "recorded_at_utc": "2026-10-20T08:52:17.464595+00:00",
+  "major_workflow": "D01 coordinated close lifecycle / D02 recovery retirement",
+  "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/tested-source-hashes03.json",
+    "sha256": "3c800a6f5699d4a070cdb9ec1061c0235198633e417f687e6d90e812122b5f54"
+  },
+  "source_test_files": 452,
+  "validation_inputs": 844,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/packaging-documents03.json",
+    "sha256": "89ffe3be315dd1d46bb532f6620762737e93dccaf6bb471408e733bb1f4a4992"
+  },
+  "validation_isolation": "/private/tmp/photato133-attempt03-wgx26yo4/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 209,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 19.189,
+    "log": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/focused03.log",
+      "sha256": "bde1b41c6e1dffedc576020b92e3c5a9a2a70b07b835f7256fb0bad40a5d9608"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T080503Z-133-document-closing/full01.log",
+      "sha256": "6c2cc97a51f4f27579f8eb00beb6b358f988245bb6bc300e1e3f35c932788343",
+      "passed": 1232,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 255.353
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T080503Z-133-document-closing/release01.log",
+      "sha256": "5b4d6a4d56161693d770434af66fa05454e48478b32517783fc01e779d51faf1",
+      "passed": 1232,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 59.738
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato133-verified-4w573iw6/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "dfc8db2a4bb138d48cf62c81781e0067bb2977717db7b2cf581f78f784071652",
+    "zip_sha256": "336b6ad0c84e582ddb25c3cee61ff7c1946a01db31c2afc2d5466f5f23c7bf8e",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/Photato133-candidate.zip",
+    "sha256": "336b6ad0c84e582ddb25c3cee61ff7c1946a01db31c2afc2d5466f5f23c7bf8e"
+  },
+  "previous_candidate_checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_132.json",
+    "sha256": "6c3c4aa5ce189f899bc02b080fc025dda75d2907e60d0cd82ff0acbb6b380d1e"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/package-verification01.json",
+    "sha256": "79f7d21c8fc7540a0e9b9138d01bb401168e3cfe145033bdef988ca0a9b863e9"
+  },
+  "process_debug": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/process-close-verification06.json",
+    "sha256": "1d67e50665fb8dcdbc3228ee2b61e74a91a2655400fbd3935fa3a89463edaabd"
+  },
+  "process_release": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/public-release-arm6401/verification.json",
+      "sha256": "1c0103912f2f539b4b68d3edd13620e9f45857a019c80d2d75078d28fea3acbc"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T080503Z-133-document-closing/public-release-x86_6401/verification.json",
+      "sha256": "e202d21c3807c380a8f284a65aeecf3872cb974c76e5876e7472d6d38becd963"
+    }
+  },
+  "intel_runtime_limit": "Actual x86_64 Release app objects under Rosetta; not a physical Intel/macOS14 full UI qualification",
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [
+      "File > Close All",
+      "File > Close Others"
+    ],
+    "paths_shortcuts_unchanged": true
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [
+      "GET /v1/document-closing",
+      "POST /v1/document-closing",
+      "POST /v1/document-closing/cancel"
+    ],
+    "new_document_state": "closeOperationID",
+    "permission": "Separate native Allow document closing and Quit, default off and revoked on stop/restart; all/others/quit can affect unshared documents",
+    "coverage": "Shared native coordinator; serial Save/Discard/Cancel/Apply to All; schemas/state/status/cancel, stale/busy/new-document/revocation/failure guards, HTTP202 transmission gate and actual external-client Quit. Automatic saving also requires local-saving permission and shared eligible sources. No Adobe desktop-close route invented."
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/source-delta-and-ui01.json",
+    "sha256": "d86a2e1614a9164d0a5eadeedaee6f8e7a0d3e269d709c1e8880bf837900f16c"
+  },
+  "no_pending_validation_session": true,
+  "completed_this_increment": [
+    "One serial coordinator for single-document/frame/batch/system close, stable object targets, retained Close Others identity and partial-progress cancellation",
+    "Native Save/Save As delegates preserve existing format/source policy; failed/cancelled saving keeps documents; recovery writes and target API edits are blocked during ownership",
+    "Factory Close All and Close Others menu bindings with existing Option-Command-W and Option-Command-P shortcuts; API permission/window/schema/status/cancel integrated",
+    "209 focused and1232 Debug/1232 Release tests; six Debug process Quit modes with fresh relaunch; four public controller/sheet/save cases against final arm64 and x86_64 Release objects",
+    "Universal macOS14+ candidate verified; ordinary engine/AI sources unchanged and nine full PSB outputs byte-identical to132"
+  ],
+  "remaining_major_dependencies": [
+    "D01: live Photoshop close prompt/apply-to-all/shortcut comparison and accessibility; multiwindow visual behavior, Save As/format-error UI and supported-platform matrix remain unqualified",
+    "D01: Open As/recent items, full format/profile/metadata/tag/ACL fidelity and broader external-file coordination",
+    "D02: recovery maintenance/legacy migration, corrupt/unavailable/capacity UX, full window/tab restoration and live comparison; physical power-loss, sandbox/network/removable-volume qualification",
+    "I02: synchronous full startup decode, source hashing/total-memory bounds, active-document paging and multi-gigabyte workflows; physical Intel/macOS14 runtime",
+    "All major workflows remain ahead of minor functions and final details; full Photoshop parity and universal byte-identical results remain unmet"
+  ],
+  "source_scope": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/source-delta-and-ui01.json",
+    "sha256": "d86a2e1614a9164d0a5eadeedaee6f8e7a0d3e269d709c1e8880bf837900f16c"
+  },
+  "full_output_compatibility": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/final-export-compatibility01.json",
+    "sha256": "e24cf534dff4409101a6be2b61d959dc691623034a50c6d052c4c06bc28e8fac"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/final-inputs01.json",
+    "sha256": "7c14e18c68a74f1b3dbdf525e2503904f48f8b639cf6f9d3387aa8d65e9bbc3f"
+  },
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T080503Z-133-document-closing/next-major-plan01.json",
+    "sha256": "08b7814a19e20f645ddeb4f9a7dc125e4cd55a0b93e583f07db3002b32d4ddd4"
+  },
+  "prior_failed_attempts": [
+    "Focus01 trailing-closure binding compile error, repaired explicitly",
+    "Process01 probe port property compile failure, corrected to endpoint",
+    "Process02 exclusive log reuse refused before compilation, prior evidence preserved",
+    "Process03/04 synchronous NSApplication.terminate from Swift Task deadlocked its nested loop; sampled, killed/reaped, probe moved to actual event loop",
+    "Process05 quit/cancel succeeded but harness wrongly demanded retired index entry deletion before next discovery;06 verifies no active entries and clean fresh relaunch",
+    "Release private-hook harness cannot link optimized-away internal symbols; replaced by public AppKit controller/sheet/save probes linked to exact production objects"
+  ],
+  "resume_first": "Verify checkpoint133, frozen inputs and audit. Continue major D01 Open As/recent-file and D02 maintenance dependencies. Preserve installed117, real workspace/preferences/recovery, original user documents and disposable118. No Git mutation.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step133-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step133-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step133-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step133-final/final-inputs01.json"
+  }
+}

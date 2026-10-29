@@ -1,0 +1,147 @@
+{
+  "step": "dev-step-155",
+  "scope": "Qualified file visibility repair; exploratory independent feather measurements",
+  "provenance": "Owned procedural fixtures, original native154 serializer, and Photoshop27.2.0 UI Save As. No user image pixels or proprietary implementation copied.",
+  "run": "artifacts/runs/20261026T154202Z-155-feather-resume",
+  "source_delta": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/source-delta01.json",
+    "sha256": "9bfc373737522f9aaffc216696f1cbf69c11fda37de93f5aa087856bdf17d9ea"
+  },
+  "source_freeze": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/tested-source-hashes05.json",
+    "sha256": "7e8035abb0662bbe88afcc2c782f0bce174ce927bc36af0f6210ef3eebcc19ce"
+  },
+  "tests": {
+    "debug": {
+      "passed": 1471,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 607.615,
+      "log": {
+        "path": "artifacts/runs/20261026T154202Z-155-feather-resume/full01.log",
+        "sha256": "77d1e24df9a68e808be783ec8e6fc5f93b11d66b5d5c1a909dc729499b9dcc79"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261026T154202Z-155-feather-resume/full01-result.json",
+        "sha256": "4dbffecb098c70ce1b51508ad356b12afdc0f13745415f45edd0fbd24863a7c3"
+      }
+    },
+    "release": {
+      "passed": 1471,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 88.165,
+      "log": {
+        "path": "artifacts/runs/20261026T154202Z-155-feather-resume/release01.log",
+        "sha256": "16323c8639387356bf1f98f32a1a9d2316ea118ebb0560d9ea80e3de9f84fd96"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261026T154202Z-155-feather-resume/release01-result.json",
+        "sha256": "3b18a63f6a2da0445a9db2406f370545fe3153fd9f0652d9705e3f0d5cad3fd8"
+      }
+    }
+  },
+  "focus": {
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 2.001,
+    "log": {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/focused05.log",
+      "sha256": "de99de3ee1e2e006375c633e8731ae432671e74da45e0b8520d1eddf9c461adc"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/focused05-result.json",
+      "sha256": "8aab3d29884325c5d9f002f502bceb82cb862d490d3e3f6257460eaa3c7a3ea8"
+    }
+  },
+  "intel": {
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1.77,
+    "log": {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/intel-tests01.log",
+      "sha256": "be74cb175c71773a925a01218c251e1b1d592e462cb574cd7492a1189043754d"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/intel-tests01-result.json",
+      "sha256": "2967adf771c556c66bc4674904f7b825f24e360dab2a530b0b4f3f6591540e80"
+    }
+  },
+  "package": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/package-verification01.json",
+    "sha256": "8cc70fbb822cb72f533b90e6b8284762a4ddcea51b3baee0b647051ba5526252"
+  },
+  "live": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/live-verification01.json",
+    "sha256": "a2598eb9ac7c2ea06ced8bf15e6591135316fa196124bce585c0c4b88bc9dec2"
+  },
+  "visibility_controls": [
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/hidden-control01.json",
+      "sha256": "17c429f96baba70ed2e00655c719ecfd0ed0dbae23ef9be8fbf5aa7ce2168276"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/hidden-control02.json",
+      "sha256": "63f14b3e06a8f728d358de8150cba1756a8c5688f953292d1a1715142c918859"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/file-metadata01.json",
+      "sha256": "c30d1c8aaa019edbebca71d6fc807d5b1693493aba2d5d6ea938e825a80775b3"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/repaired-input-verification01.json",
+      "sha256": "f3ec61b50473fc2b7270a19a0be5d2b814a19e84c7e235104f82dc531333a86c"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/native-save-verification01.json",
+      "sha256": "187c8dbc242e2fbc52a382981ad7afd2595d60bcce7ea07537db91d10fef94d1"
+    }
+  ],
+  "feather_evidence": [
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/atlas-kernel01.json",
+      "sha256": "5ede8376c2c99cc75512ebf1181b7959fca7205ec31159a578968269e46bf56c"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/photoshop-atlas-structure01.json",
+      "sha256": "217511091104e85c4c0aa5f025c0f4263c39c6bcd8b568dceb5c4c63442558c9"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/atlas-box-fit01.json",
+      "sha256": "c9591d80f1af319499a371416beb0e8c1eb8a4e8c3dd57ee8f6a43c138206316"
+    },
+    {
+      "path": "artifacts/runs/20261026T154202Z-155-feather-resume/atlas-box-fit02.json",
+      "sha256": "37c64c83aaf47dd8c9b29346db4f9d6ad9c66a8ea7ab40473b133225f012b657"
+    }
+  ],
+  "api": {
+    "new_routes": [],
+    "new_schema_fields": [
+      "atomicPersistence.visibility.newFileHiddenFlag",
+      "atomicPersistence.visibility.preservesExistingHiddenFlag",
+      "atomicPersistence.visibility.preservesOtherStagingFlags",
+      "atomicPersistence.visibility.policy"
+    ],
+    "photato_typed_commands": 21,
+    "adobe_partial_endpoints": 3,
+    "adobe_unimplemented_endpoints": 5,
+    "impact": "Native Save/Save As/Copy and permitted Photato local saves share destination visibility through AppKit staging. Existing download/job bytes and Adobe wire contracts remain unchanged. No Adobe host-file visibility route is invented."
+  },
+  "unchanged_outputs": {
+    "path": "artifacts/runs/20261026T154202Z-155-feather-resume/export-compatibility01.json",
+    "sha256": "0dfd7d50a38c73d4ce4bbc70a684db6e3f8dd15a03c6cf5670b2690c53e18cd0"
+  },
+  "remaining": [
+    "All major workflow gates remain open; this increment repairs an observed save/publication defect, not complete file-workflow or Photoshop parity.",
+    "Feather kernels differ at all15 tested nonzero radii. Exact exploratory convolution fits at4/5/10 do not establish a general parameter-selection, precision or boundary rule. Small radii, other depths, vector/scaled/group masks remain unqualified.",
+    "Full source editability, fill opacity/effects/artboards/auxiliary channels and original .pcraft output remain unfinished.",
+    "Complete Photoshop menus, factory shortcuts/preferences, formats/colour/large-file workflows, on-device/PCC AI, distribution/IAP and remaining professional workflows still require implementation or qualification.",
+    "Both APIs remain supported interfaces with21 typed Photato commands, three partial Adobe endpoints and five unimplemented endpoints; broader compatibility is unfinished.",
+    "Rosetta tests are not physical Intel/macOS14 runtime qualification. Live UI used the frozen Debug object harness, not the packaged Release app.",
+    "External metadata changes after validation, full external coordination, parent-directory persistence and power-loss behavior are not guaranteed.",
+    "Minor functions and cosmetic details remain behind all major functions."
+  ]
+}

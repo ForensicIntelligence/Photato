@@ -10,10 +10,13 @@ public struct ClipboardContent: Equatable, Sendable {
   public var kind: Kind
   public var document: CraftDocument
   public var bounds: IntRect
-  public init(kind: Kind, document: CraftDocument, bounds: IntRect) throws {
+  /// Stored palette/bit identity; the pixel layer separately retains selection alpha.
+  public var restrictedSamples: RestrictedModeRaster?
+  public init(kind: Kind, document: CraftDocument, bounds: IntRect, restrictedSamples: RestrictedModeRaster? = nil) throws {
     self.kind = kind
     self.document = document
     self.bounds = bounds
+    self.restrictedSamples = restrictedSamples
     try validate()
   }
   public func validate() throws {
@@ -28,15 +31,37 @@ public struct ClipboardContent: Equatable, Sendable {
         pixels.width == bounds.width, pixels.height == bounds.height,
         document.layers[0].x == bounds.x, document.layers[0].y == bounds.y,
         document.layers[0].affine == nil, document.layers[0].mask == nil,
-        document.layers[0].vectorMask == nil, document.layers[0].visible,
+        document.layers[0].vectorMask == nil, document.layers[0].maskProperties == nil,
+        document.layers[0].style == nil, document.layers[0].smartObject == nil,
+        document.layers[0].smartFilters == nil, document.layers[0].warp == nil,
+        document.layers[0].visible,
         document.layers[0].opacity == 1, document.layers[0].blendMode == .normal,
         !document.layers[0].isClipped
       else {
         throw CraftError.invalid("Invalid pixel clipboard contents.")
       }
     }
+    if let samples = restrictedSamples {
+      try samples.validate()
+      guard kind == .pixels, samples.width == bounds.width, samples.height == bounds.height,
+        document.restrictedMode == nil, document.modeDescriptor == nil,
+        document.workingICC == samples.profile, document.depth == .u8,
+        case .raster(let pixels) = document.layers[0].content else {
+        throw CraftError.invalid("Clipboard samples do not match their pixel layout or profile.")
+      }
+      let expanded = try samples.surface()
+      for y in 0..<bounds.height { try Task.checkCancellation(); for x in 0..<bounds.width {
+        let actual = pixels.pixel(x: x, y: y), stored = expanded.pixel(x: x, y: y)
+        guard actual.a <= stored.a, actual.a == 0 || actual.rgb == stored.rgb else {
+          throw CraftError.invalid("Clipboard pixels differ from their retained samples.")
+        }
+      } }
+    }
   }
-  public static func pixels(_ surface: Surface, x: Int = 0, y: Int = 0, resolution: Double = 72)
+  public static func pixels(
+    _ surface: Surface, x: Int = 0, y: Int = 0, resolution: Double = 72, workingICC: Data? = nil,
+    restrictedSamples: RestrictedModeRaster? = nil, untagged: Bool = false
+  )
     throws -> Self
   {
     var doc = try CraftDocument(width: surface.width, height: surface.height, depth: surface.depth)
@@ -46,9 +71,11 @@ public struct ClipboardContent: Equatable, Sendable {
     doc.layers = [layer]
     doc.activeLayerID = layer.id
     doc.resolution = resolution
+    doc.workingICC = workingICC
+    doc.profileIsUntagged = untagged ? true : nil
     return try Self(
       kind: .pixels, document: doc,
-      bounds: IntRect(x: x, y: y, width: surface.width, height: surface.height))
+      bounds: IntRect(x: x, y: y, width: surface.width, height: surface.height), restrictedSamples: restrictedSamples)
   }
   private struct Envelope: Codable {
     var magic = "PhotatoClipboard"
@@ -56,6 +83,7 @@ public struct ClipboardContent: Equatable, Sendable {
     var kind: Kind
     var bounds: IntRect
     var archive: Data
+    var restrictedSamples: RestrictedModeRaster?
   }
   public func encoded() throws -> Data {
     try validate()
@@ -63,8 +91,8 @@ public struct ClipboardContent: Equatable, Sendable {
     encoder.outputFormat = .binary
     let data = try encoder.encode(
       Envelope(
-        kind: kind, bounds: bounds,
-        archive: NativeArchive.encode(document)))
+        version: restrictedSamples == nil ? 1 : 2, kind: kind, bounds: bounds,
+        archive: NativeArchive.encode(document), restrictedSamples: restrictedSamples))
     guard data.count <= 512 * 1024 * 1024 else {
       throw CraftError.invalid("Clipboard exceeds the 512 MiB transfer limit.")
     }
@@ -75,20 +103,31 @@ public struct ClipboardContent: Equatable, Sendable {
       throw CraftError.invalid("Clipboard exceeds the 512 MiB transfer limit.")
     }
     let envelope = try PropertyListDecoder().decode(Envelope.self, from: data)
-    guard envelope.magic == "PhotatoClipboard", envelope.version == 1 else {
+    guard envelope.magic == "PhotatoClipboard", (1...2).contains(envelope.version),
+      envelope.version >= 2 || envelope.restrictedSamples == nil else {
       throw CraftError.unsupported("Unsupported Photato clipboard version.")
     }
     return try Self(
       kind: envelope.kind, document: NativeArchive.decode(envelope.archive),
-      bounds: envelope.bounds)
+      bounds: envelope.bounds, restrictedSamples: envelope.restrictedSamples)
   }
   public func newDocument(name: String) throws -> CraftDocument {
+    try validate()
+    if let samples = restrictedSamples ?? document.restrictedMode,
+      case .raster(let pixels) = document.layers[0].content, pixels == (try samples.surface()) {
+      var target = try CraftDocument(width: bounds.width, height: bounds.height, name: name)
+      target.resolution = document.pixelsPerInch
+      return try target.replacingRestrictedMode(samples)
+    }
     var target = try CraftDocument(
       width: bounds.width, height: bounds.height, depth: document.depth,
       name: name)
     target.layers = []
     target.activeLayerID = nil
     target.resolution = document.pixelsPerInch
+    target.workingICC = document.workingICC
+    target.profileIsUntagged = document.profileIsUntagged
+    target.modeDescriptor = document.modeDescriptor
     try paste(into: &target, placement: .centered, center: nil)
     try target.validate()
     return target
@@ -96,6 +135,10 @@ public struct ClipboardContent: Equatable, Sendable {
   func paste(into target: inout CraftDocument, placement: PastePlacement, center: PathPoint?) throws
   {
     try validate()
+    guard document.workingICC == target.workingICC else {
+      throw CraftError.unsupported(
+        "Convert clipboard colours to the destination working profile before pasting.")
+    }
     let masked = placement == .into || placement == .outside
     guard !masked || (target.selection != nil && kind == .pixels) else {
       throw CraftError.invalid("Paste Into and Paste Outside need a pixel image and a selection.")
@@ -119,6 +162,10 @@ public struct ClipboardContent: Equatable, Sendable {
     let dy =
       placement == .inPlace
       ? 0 : Int((destination.y - Double(bounds.height) / 2).rounded()) - bounds.y
+    if target.restrictedMode != nil {
+      try RestrictedClipboard.paste(self, into: &target, placement: placement, dx: dx, dy: dy)
+      return
+    }
     let parent: UUID?
     let insertion: Int
     if let index = target.activeIndex {
@@ -152,6 +199,9 @@ public struct ClipboardContent: Equatable, Sendable {
       layer.parentID = original.parentID.flatMap { mapping[$0] } ?? parent
       layer.x += dx
       layer.y += dy
+      if let stack = layer.smartFilters {
+        layer.smartFilters?.maskProperties.transform = .translation(Double(dx), Double(dy)) * stack.maskProperties.transform
+      }
       if case .patternFill(var fill) = layer.content {
         fill.patternID = patternIDs[fill.patternID] ?? fill.patternID
         try fill.transform(by: .translation(Double(dx), Double(dy)))
@@ -162,6 +212,17 @@ public struct ClipboardContent: Equatable, Sendable {
       }
       if case .raster(let pixels) = layer.content {
         layer.content = .raster(try pixels.converted(to: target.depth))
+        if let descriptor = target.modeDescriptor {
+          let native: NativeModeRaster
+          if let retained = original.nativeMode {
+            native = try retained.converted(to: descriptor.mode, depth: target.depth,
+              profile: descriptor.profile, intent: descriptor.intent)
+          } else {
+            native = try NativeModeRaster.converting(pixels, to: descriptor.mode, depth: target.depth,
+              profile: descriptor.profile, intent: descriptor.intent, sourceProfile: document.workingICC)
+          }
+          layer.nativeMode = native; layer.content = .raster(try native.surface())
+        } else { layer.nativeMode = nil }
       }
       if let mask = layer.mask { layer.mask = try mask.converted(to: target.depth) }
       if masked {

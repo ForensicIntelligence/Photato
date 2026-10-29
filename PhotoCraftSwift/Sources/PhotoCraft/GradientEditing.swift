@@ -125,12 +125,12 @@ extension EditorStore {
     else { return nil }
     do {
       let frame: IntRect
-      if let cache = gradientFrameCache, cache.layer == layer,
+      if !document.hasArtboards, let cache = gradientFrameCache, cache.layer == layer,
         cache.width == document.width, cache.height == document.height
       {
         frame = cache.frame
       } else {
-        frame = try fill.frame(for: layer, width: document.width, height: document.height)
+        frame = try fill.frame(for: layer, in: document)
         gradientFrameCache = (layer, document.width, document.height, frame)
       }
       return try GradientWidget(layer: layer, fill: fill, frame: frame)
@@ -163,6 +163,7 @@ extension EditorStore {
     return .init(origin.x + x * length, origin.y + y * length)
   }
   func beginGradient(at point: PathPoint, zoom: Double, clickCount: Int = 1) {
+    guard !smartFilterMaskEditing else { error = "Use Brush or Fill to edit the Smart Filter mask."; return }
     guard tool == .gradient, !geometryBusy, !hasToneDraft, transformDraft == nil,
       zoom.isFinite, zoom > 0,
       [point.x, point.y].allSatisfy({ $0.isFinite && abs($0) <= 1_000_000 })

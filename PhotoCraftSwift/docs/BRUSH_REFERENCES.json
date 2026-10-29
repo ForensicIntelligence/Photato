@@ -1,0 +1,119 @@
+{
+  "step": "dev-step-189",
+  "date": "2026-10-27",
+  "status": "Native major brush settings/preset workflow implemented and tested. Full B01/Photoshop parity remains open.",
+  "scope": "Modeless Brush Settings/Brushes, sampled tips, shape/scatter/color/transfer/texture/dual-tip dynamics, smoothing/pose/symmetry/airbrush, actual canvas preview and one-step painting history, native/ABR preset transport, shared Photato automation and recorded strokes.",
+  "source_provenance": {
+    "upstream": "PhotoCraft Rust snapshot; MIT OR Apache-2.0, unmodified",
+    "paths": [
+      "../photocraft-main/crates/paint/src/brush.rs",
+      "../photocraft-main/crates/paint/src/render.rs",
+      "../photocraft-main/crates/paint/src/dynamics.rs",
+      "../photocraft-main/crates/paint/src/rng.rs",
+      "../photocraft-main/crates/paint/src/procedural.rs",
+      "../photocraft-main/crates/psd/src/abr.rs",
+      "../photocraft-main/crates/io/src/abr_map.rs"
+    ],
+    "native": "Counter-based RNG/dab/coverage design translated to Swift. Some procedural textures/tips are native approximations; no Adobe preset pixels bundled. Legacy nil-settings Brush values retain the original painter."
+  },
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/create-brush-set-painting-options.html",
+      "read": "2026-10-27"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/get-started-with-brush-presets.html",
+      "read": "2026-10-27"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/brush-dynamics-settings.html",
+      "read": "2026-10-27"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions",
+      "read": "2026-10-27"
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/pathitem",
+      "read": "2026-10-27"
+    }
+  ],
+  "menus": {
+    "paths": [
+      "Edit > Define Brush Preset\u2026",
+      "Window > Brush Settings",
+      "Window > Brushes"
+    ],
+    "shortcut": "F5 for Brush Settings",
+    "new_bindings": 3,
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "photato_api": {
+    "commands": [
+      "brush.configure",
+      "brush.presets",
+      "paint.stroke"
+    ],
+    "catalogue_count": 74,
+    "state": "Full active brush settings, selected preset ID, library metadata/revision and active gesture; recursive strict parameter schema and busy/stale/sharing guards.",
+    "targets": [
+      "pixels",
+      "layerMask",
+      "smartFilterMask",
+      "alpha",
+      "quickMask"
+    ],
+    "formats": {
+      "native_archive": 32,
+      "brush_presets": 1,
+      "recorded_actions": [
+        1,
+        2
+      ]
+    },
+    "limits": "API command4MiB, preset import base64<=3000000characters,4096points; desktop100000points. Core200000dabs,134217728rastervisits; each sparse coverage map<=128MiB. Preset file64MiB,512presets,48MiBbitmap aggregate; a brush16MiBbitmap aggregate. Tip/texture edges<=2500 and diameter<=2048."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "Published execute-actions brush resources and brush/path action descriptors remain unsupported. Existing routes continue to reject unqualified fields/descriptors. No dedicated freehand endpoint is present in the pinned contract. ABR transport support does not imply Firefly job compatibility.",
+    "next": "Qualify real brush/path descriptors and job-local ABR resource binding, preserving asynchronous job semantics. Do not invent descriptor shapes from the UXP method signature."
+  },
+  "persistence": "Native brush library version1; advanced recorded brush actions require version2 and preserve immutable settings/tablet/seed data. Pixel edits use existing native32 archives. Legacy v1 actions remain readable; downgraded advanced actions reject.",
+  "tests": {
+    "run": "artifacts/runs/20261027T120808Z-189-brushes",
+    "debug_log": "artifacts/runs/20261027T120808Z-189-brushes/integration11.log",
+    "failed_attempts": [
+      "artifacts/runs/20261027T120808Z-189-brushes/module01.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/module03.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration02.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration04.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration05.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration06.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration07.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/integration10.log",
+      "artifacts/runs/20261027T120808Z-189-brushes/release-full01.log"
+    ],
+    "independent": "Analytical opacity/flow and geometry assertions plus literal ABR v1 computed fixture. Modern ABR and native preset round trips are self-generated, not independent Photoshop interoperability proof.",
+    "ui": "Offscreen SwiftUI layout and synthetic AppKit canvas gestures only. No new live desktop test; latest desktop evidence remains locked.",
+    "focused_debug": 103,
+    "release_full": 1834,
+    "release_log": "artifacts/runs/20261027T120808Z-189-brushes/release-full02.log",
+    "verification": "artifacts/runs/20261027T120808Z-189-brushes/verification02.json"
+  },
+  "limitations": [
+    "No byte-identical Photoshop rasterization claim; procedural texture, antialias/mipmapping and high-depth/HDR brush precision need independent qualification.",
+    "Generated bristle stamp is not a physical bristle/wet-media simulation; Mixer Brush is next.",
+    "Complete ABR versions/fields, brush organizational UI details and large-file API transfers remain open. Unsupported fields are reported; missing samples/patterns reject affected presets.",
+    "Adobe execute-actions brush resources and descriptors are not implemented in this increment. Full B01 acceptance remains open.",
+    "Native event capture exists but physical tablet, live Photoshop and macOS14/Intel/macOS26 platform checks remain unqualified.",
+    "API inline preset file limits are narrower than desktop; imported files do not silently truncate.",
+    "Preview uses completed full-document snapshots, coalescing pointer events to avoid starvation; incremental dirty-region performance remains open.",
+    "Painting on nonraster content currently rejects; current Adobe documentation describes automatic creation of a transparent paint layer. Carry this major workflow dependency into B02."
+  ],
+  "next": "B02 missing major painting tools: Pencil, Mixer Brush, Color Replacement, Pattern Stamp, Background Eraser and Magic Eraser, each with shared APIs/history and focused tests. Exact numerical/cosmetic refinements stay deferred.",
+  "qualification": "All 103 focused Debug and 1834 full optimized tests pass. The universal macOS 14+ package verifies."
+}

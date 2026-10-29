@@ -1,0 +1,6634 @@
+{
+  "goal_status": "active",
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "1814ffb2f5000c5cfdcb5c761e3d11213d7ad4df35e6e214bab46752016ff704"
+  },
+  "step": "dev-step-154",
+  "recorded_at_utc": "2026-10-20T22:44:33.918689+00:00",
+  "full_goal_achieved": false,
+  "major_workflow_closed": false,
+  "major_workflow": "D01/I03",
+  "status": "Off-canvas unscaled raster masks now feather across the canvas edge; ordinary cropped/full-canvas controls retain their behavior. Kernel/full rendering parity remains open.",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/tested-source-hashes02.json",
+    "sha256": "52d3684f271811fe00d6f7d59d4ce2467ddb079090568e88b5ffbd1be8b74828"
+  },
+  "source_test_files": 548,
+  "validation_inputs": 1154,
+  "packaging_documents": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/packaging-documents03.json",
+    "sha256": "2fe327ba27e62985c5689b524f2a2280405a1d70f14da89e0f96211809e421f2"
+  },
+  "validation_isolation": "/private/tmp/photato154-attempt02-a3oge3uw/PhotoCraftSwift",
+  "focus_tests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 69.084,
+    "log": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/focused02.log",
+      "sha256": "7451958d471bbe7b03928bbf5514a488f32ab67ac6c7befcefe5d2e6b2613767"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/focused02-result.json",
+      "sha256": "d26ceb24d142e4a955c23e3376b572b9cb2f7133373c9090ad4620bf169031b0"
+    }
+  },
+  "tests": {
+    "debug": {
+      "passed": 1460,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 609.054,
+      "log": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/full01.log",
+        "sha256": "1b5642c9e3ef6b50502ac988fd8e29a37b0739a76952d8b9b274f3d905f3d245"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/full01-result.json",
+        "sha256": "f686fb8060620e89a652e9f28c5207508af550b98c7b2a231ef36b386a0fdfd9"
+      }
+    },
+    "release": {
+      "passed": 1460,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 87.731,
+      "log": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/release01.log",
+        "sha256": "8c117ce727ab8c8bba999d0cb1a10d1adc1c9d11b86716a847a2d2c207964e9a"
+      },
+      "command_result": {
+        "path": "artifacts/runs/20261020T220749Z-154-source-rendering/release01-result.json",
+        "sha256": "c05e90afe69d91641b0c45e11e01e95b42a3510cd69b8f18ce392d80cbcba323"
+      }
+    }
+  },
+  "intel_focused_tests": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1.542,
+    "log": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/intel-tests02.log",
+      "sha256": "db9132e4deafbaf67ee94d7851970ef3496ff99e8df6902a28a0a4a738ef406c"
+    },
+    "command_result": {
+      "path": "artifacts/runs/20261020T220749Z-154-source-rendering/intel-tests02-result.json",
+      "sha256": "fab3b62982532996e895b145273d65e26afa54cd337b660c476f2b0e0f28919e"
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato154-verified-mmbwc13y/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d39ae8a163a3b321478edcb9036a3d1b3c223ab624639e80d9a9fa0fa1725019",
+    "zip_sha256": "4f49751b10b5f7fd823e24b97f0671e342467a28f356a447fa2a576106f2e1d8",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "durable_candidate_zip": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/Photato154-candidate.zip",
+    "sha256": "4f49751b10b5f7fd823e24b97f0671e342467a28f356a447fa2a576106f2e1d8"
+  },
+  "previous_candidate_checkpoint": "docs/ACTIVE_CHECKPOINT_153.json",
+  "menu": {
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 158,
+    "default_preset": "Photoshop Defaults",
+    "entries": 802,
+    "entries_with_actions": 235,
+    "full_photoshop_parity": false,
+    "menus": [
+      "Photato",
+      "File",
+      "Edit",
+      "Image",
+      "Layer",
+      "Type",
+      "Select",
+      "Filter",
+      "View",
+      "Plugins",
+      "Window",
+      "Help"
+    ],
+    "primary_shortcuts": 102,
+    "rows": [
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato",
+        "submenu": true,
+        "title": "Photato"
+      },
+      {
+        "action": "about",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > About Photato…",
+        "submenu": false,
+        "title": "About Photato…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > About Plugins",
+        "submenu": true,
+        "title": "About Plugins"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings…",
+        "submenu": true,
+        "title": "Settings…"
+      },
+      {
+        "action": "",
+        "key": "k",
+        "modifiers": 1048576,
+        "path": "Photato > Settings… > General…",
+        "submenu": false,
+        "title": "General…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Interface…",
+        "submenu": false,
+        "title": "Interface…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Workspace…",
+        "submenu": false,
+        "title": "Workspace…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Notifications…",
+        "submenu": false,
+        "title": "Notifications…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Tools…",
+        "submenu": false,
+        "title": "Tools…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > History…",
+        "submenu": false,
+        "title": "History…"
+      },
+      {
+        "action": "fileHandlingPreferences",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > File Handling…",
+        "submenu": false,
+        "title": "File Handling…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Export…",
+        "submenu": false,
+        "title": "Export…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Performance…",
+        "submenu": false,
+        "title": "Performance…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Image Processing…",
+        "submenu": false,
+        "title": "Image Processing…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Scratch Disks…",
+        "submenu": false,
+        "title": "Scratch Disks…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Cursors…",
+        "submenu": false,
+        "title": "Cursors…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Transparency & Gamut…",
+        "submenu": false,
+        "title": "Transparency & Gamut…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Units & Rulers…",
+        "submenu": false,
+        "title": "Units & Rulers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Guides, Grid & Slices…",
+        "submenu": false,
+        "title": "Guides, Grid & Slices…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Plugins…",
+        "submenu": false,
+        "title": "Plugins…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Type…",
+        "submenu": false,
+        "title": "Type…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Enhanced Controls…",
+        "submenu": false,
+        "title": "Enhanced Controls…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Technology Previews…",
+        "submenu": false,
+        "title": "Technology Previews…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Product Improvement…",
+        "submenu": false,
+        "title": "Product Improvement…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Settings… > Camera Raw…",
+        "submenu": false,
+        "title": "Camera Raw…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Services",
+        "submenu": true,
+        "title": "Services"
+      },
+      {
+        "action": "hide",
+        "key": "h",
+        "modifiers": 1310720,
+        "path": "Photato > Hide Photato",
+        "submenu": false,
+        "title": "Hide Photato"
+      },
+      {
+        "action": "hideOthers",
+        "key": "h",
+        "modifiers": 1572864,
+        "path": "Photato > Hide Others",
+        "submenu": false,
+        "title": "Hide Others"
+      },
+      {
+        "action": "showAllApplications",
+        "key": "",
+        "modifiers": 0,
+        "path": "Photato > Show All",
+        "submenu": false,
+        "title": "Show All"
+      },
+      {
+        "action": "quit",
+        "key": "q",
+        "modifiers": 1048576,
+        "path": "Photato > Quit Photato",
+        "submenu": false,
+        "title": "Quit Photato"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File",
+        "submenu": true,
+        "title": "File"
+      },
+      {
+        "action": "newFile",
+        "key": "n",
+        "modifiers": 1048576,
+        "path": "File > New…",
+        "submenu": false,
+        "title": "New…"
+      },
+      {
+        "action": "newFromClipboard",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > New from Clipboard",
+        "submenu": false,
+        "title": "New from Clipboard"
+      },
+      {
+        "action": "openFile",
+        "key": "o",
+        "modifiers": 1048576,
+        "path": "File > Open…",
+        "submenu": false,
+        "title": "Open…"
+      },
+      {
+        "action": "",
+        "key": "o",
+        "modifiers": 1572864,
+        "path": "File > Browse in Bridge…",
+        "submenu": false,
+        "title": "Browse in Bridge…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Open as Smart Object…",
+        "submenu": false,
+        "title": "Open as Smart Object…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Open Recent",
+        "submenu": true,
+        "title": "Open Recent"
+      },
+      {
+        "action": "closeWindow",
+        "key": "w",
+        "modifiers": 1048576,
+        "path": "File > Close",
+        "submenu": false,
+        "title": "Close"
+      },
+      {
+        "action": "closeAllDocuments",
+        "key": "w",
+        "modifiers": 1572864,
+        "path": "File > Close All",
+        "submenu": false,
+        "title": "Close All"
+      },
+      {
+        "action": "closeOtherDocuments",
+        "key": "p",
+        "modifiers": 1572864,
+        "path": "File > Close Others",
+        "submenu": false,
+        "title": "Close Others"
+      },
+      {
+        "action": "",
+        "key": "w",
+        "modifiers": 1179648,
+        "path": "File > Close and Go to Bridge…",
+        "submenu": false,
+        "title": "Close and Go to Bridge…"
+      },
+      {
+        "action": "save",
+        "key": "s",
+        "modifiers": 1048576,
+        "path": "File > Save",
+        "submenu": false,
+        "title": "Save"
+      },
+      {
+        "action": "saveAs",
+        "key": "s",
+        "modifiers": 1179648,
+        "path": "File > Save As…",
+        "submenu": false,
+        "title": "Save As…"
+      },
+      {
+        "action": "saveCopy",
+        "key": "s",
+        "modifiers": 1572864,
+        "path": "File > Save a Copy…",
+        "submenu": false,
+        "title": "Save a Copy…"
+      },
+      {
+        "action": "revertFile",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Revert",
+        "submenu": false,
+        "title": "Revert"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Invite to Edit…",
+        "submenu": false,
+        "title": "Invite to Edit…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Share for Review",
+        "submenu": false,
+        "title": "Share for Review"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export",
+        "submenu": true,
+        "title": "Export"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Quick Export as PNG",
+        "submenu": false,
+        "title": "Quick Export as PNG"
+      },
+      {
+        "action": "export",
+        "key": "w",
+        "modifiers": 1703936,
+        "path": "File > Export > Export As…",
+        "submenu": false,
+        "title": "Export As…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Export Preferences…",
+        "submenu": false,
+        "title": "Export Preferences…"
+      },
+      {
+        "action": "",
+        "key": "s",
+        "modifiers": 1703936,
+        "path": "File > Export > Save for Web…",
+        "submenu": false,
+        "title": "Save for Web…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Artboards to Files…",
+        "submenu": false,
+        "title": "Artboards to Files…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Artboards to PDF…",
+        "submenu": false,
+        "title": "Artboards to PDF…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Layer Comps to Files…",
+        "submenu": false,
+        "title": "Layer Comps to Files…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Layer Comps to PDF…",
+        "submenu": false,
+        "title": "Layer Comps to PDF…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Layers to Files…",
+        "submenu": false,
+        "title": "Layers to Files…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Color Lookup Tables…",
+        "submenu": false,
+        "title": "Color Lookup Tables…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Data Sets as Files…",
+        "submenu": false,
+        "title": "Data Sets as Files…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Paths to Illustrator…",
+        "submenu": false,
+        "title": "Paths to Illustrator…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Render Video…",
+        "submenu": false,
+        "title": "Render Video…"
+      },
+      {
+        "action": "exportPSD",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Export > Export Layers to PSD…",
+        "submenu": false,
+        "title": "Export Layers to PSD…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Search Adobe Stock…",
+        "submenu": false,
+        "title": "Search Adobe Stock…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Search Adobe Express Templates…",
+        "submenu": false,
+        "title": "Search Adobe Express Templates…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Place Embedded…",
+        "submenu": false,
+        "title": "Place Embedded…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Place Linked…",
+        "submenu": false,
+        "title": "Place Linked…"
+      },
+      {
+        "action": "place",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Place Image…",
+        "submenu": false,
+        "title": "Place Image…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Place Free Adobe Stock Images…",
+        "submenu": false,
+        "title": "Place Free Adobe Stock Images…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Package…",
+        "submenu": false,
+        "title": "Package…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate",
+        "submenu": true,
+        "title": "Automate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Batch…",
+        "submenu": false,
+        "title": "Batch…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > PDF Presentation…",
+        "submenu": false,
+        "title": "PDF Presentation…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Create Droplet…",
+        "submenu": false,
+        "title": "Create Droplet…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Generator Plugins",
+        "submenu": true,
+        "title": "Generator Plugins"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Crop and Straighten Photos",
+        "submenu": false,
+        "title": "Crop and Straighten Photos"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Contact Sheet II…",
+        "submenu": false,
+        "title": "Contact Sheet II…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Conditional Mode Change…",
+        "submenu": false,
+        "title": "Conditional Mode Change…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Fit Image…",
+        "submenu": false,
+        "title": "Fit Image…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Lens Correction…",
+        "submenu": false,
+        "title": "Lens Correction…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Merge to HDR Pro…",
+        "submenu": false,
+        "title": "Merge to HDR Pro…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Automate > Photomerge…",
+        "submenu": false,
+        "title": "Photomerge…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts",
+        "submenu": true,
+        "title": "Scripts"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Image Processor…",
+        "submenu": false,
+        "title": "Image Processor…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Delete All Empty Layers",
+        "submenu": false,
+        "title": "Delete All Empty Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Flatten All Layer Effects",
+        "submenu": false,
+        "title": "Flatten All Layer Effects"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Flatten All Masks",
+        "submenu": false,
+        "title": "Flatten All Masks"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Script Events Manager…",
+        "submenu": false,
+        "title": "Script Events Manager…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Load Files into Stack…",
+        "submenu": false,
+        "title": "Load Files into Stack…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Load Multiple DICOM Files…",
+        "submenu": false,
+        "title": "Load Multiple DICOM Files…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Statistics…",
+        "submenu": false,
+        "title": "Statistics…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Scripts > Browse…",
+        "submenu": false,
+        "title": "Browse…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import",
+        "submenu": true,
+        "title": "Import"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import > Variable Data Sets…",
+        "submenu": false,
+        "title": "Variable Data Sets…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import > Video Frames to Layers…",
+        "submenu": false,
+        "title": "Video Frames to Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import > Images from Device…",
+        "submenu": false,
+        "title": "Images from Device…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import > Notes…",
+        "submenu": false,
+        "title": "Notes…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import from iPhone or iPad",
+        "submenu": true,
+        "title": "Import from iPhone or iPad"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import from iPhone or iPad > Take Photo",
+        "submenu": false,
+        "title": "Take Photo"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import from iPhone or iPad > Scan Documents",
+        "submenu": false,
+        "title": "Scan Documents"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Import from iPhone or iPad > Add Sketch",
+        "submenu": false,
+        "title": "Add Sketch"
+      },
+      {
+        "action": "",
+        "key": "i",
+        "modifiers": 1703936,
+        "path": "File > File Info…",
+        "submenu": false,
+        "title": "File Info…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "File > Version History",
+        "submenu": false,
+        "title": "Version History"
+      },
+      {
+        "action": "",
+        "key": "p",
+        "modifiers": 1048576,
+        "path": "File > Print…",
+        "submenu": false,
+        "title": "Print…"
+      },
+      {
+        "action": "",
+        "key": "p",
+        "modifiers": 1703936,
+        "path": "File > Print One Copy",
+        "submenu": false,
+        "title": "Print One Copy"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit",
+        "submenu": true,
+        "title": "Edit"
+      },
+      {
+        "action": "undo",
+        "key": "z",
+        "modifiers": 1048576,
+        "path": "Edit > Undo",
+        "submenu": false,
+        "title": "Undo"
+      },
+      {
+        "action": "redo",
+        "key": "z",
+        "modifiers": 1179648,
+        "path": "Edit > Redo",
+        "submenu": false,
+        "title": "Redo"
+      },
+      {
+        "action": "",
+        "key": "z",
+        "modifiers": 1572864,
+        "path": "Edit > Toggle Last State",
+        "submenu": false,
+        "title": "Toggle Last State"
+      },
+      {
+        "action": "",
+        "key": "f",
+        "modifiers": 1179648,
+        "path": "Edit > Fade…",
+        "submenu": false,
+        "title": "Fade…"
+      },
+      {
+        "action": "cut:",
+        "key": "x",
+        "modifiers": 1048576,
+        "path": "Edit > Cut",
+        "submenu": false,
+        "title": "Cut"
+      },
+      {
+        "action": "copy:",
+        "key": "c",
+        "modifiers": 1048576,
+        "path": "Edit > Copy",
+        "submenu": false,
+        "title": "Copy"
+      },
+      {
+        "action": "copyMerged",
+        "key": "c",
+        "modifiers": 1179648,
+        "path": "Edit > Copy Merged",
+        "submenu": false,
+        "title": "Copy Merged"
+      },
+      {
+        "action": "paste:",
+        "key": "v",
+        "modifiers": 1048576,
+        "path": "Edit > Paste",
+        "submenu": false,
+        "title": "Paste"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Paste Special",
+        "submenu": true,
+        "title": "Paste Special"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Paste Special > Paste without Formatting",
+        "submenu": false,
+        "title": "Paste without Formatting"
+      },
+      {
+        "action": "pasteInPlace",
+        "key": "v",
+        "modifiers": 1179648,
+        "path": "Edit > Paste Special > Paste in Place",
+        "submenu": false,
+        "title": "Paste in Place"
+      },
+      {
+        "action": "pasteInto",
+        "key": "v",
+        "modifiers": 1703936,
+        "path": "Edit > Paste Special > Paste Into",
+        "submenu": false,
+        "title": "Paste Into"
+      },
+      {
+        "action": "pasteOutside",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Paste Special > Paste Outside",
+        "submenu": false,
+        "title": "Paste Outside"
+      },
+      {
+        "action": "clear",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Clear",
+        "submenu": false,
+        "title": "Clear"
+      },
+      {
+        "action": "",
+        "key": "f",
+        "modifiers": 1048576,
+        "path": "Edit > Search",
+        "submenu": false,
+        "title": "Search"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Check Spelling…",
+        "submenu": false,
+        "title": "Check Spelling…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Find and Replace Text…",
+        "submenu": false,
+        "title": "Find and Replace Text…"
+      },
+      {
+        "action": "fillDialog",
+        "key": "",
+        "modifiers": 131072,
+        "path": "Edit > Fill…",
+        "submenu": false,
+        "title": "Fill…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Stroke…",
+        "submenu": false,
+        "title": "Stroke…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Content-Aware Fill…",
+        "submenu": false,
+        "title": "Content-Aware Fill…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Generative Fill…",
+        "submenu": false,
+        "title": "Generative Fill…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Generate Image…",
+        "submenu": false,
+        "title": "Generate Image…"
+      },
+      {
+        "action": "ai",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Create with Apple Intelligence…",
+        "submenu": false,
+        "title": "Create with Apple Intelligence…"
+      },
+      {
+        "action": "",
+        "key": "c",
+        "modifiers": 1703936,
+        "path": "Edit > Content-Aware Scale",
+        "submenu": false,
+        "title": "Content-Aware Scale"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Puppet Warp",
+        "submenu": false,
+        "title": "Puppet Warp"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Perspective Warp",
+        "submenu": false,
+        "title": "Perspective Warp"
+      },
+      {
+        "action": "freeTransform",
+        "key": "t",
+        "modifiers": 1048576,
+        "path": "Edit > Free Transform",
+        "submenu": false,
+        "title": "Free Transform"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform",
+        "submenu": true,
+        "title": "Transform"
+      },
+      {
+        "action": "",
+        "key": "t",
+        "modifiers": 1179648,
+        "path": "Edit > Transform > Again",
+        "submenu": false,
+        "title": "Again"
+      },
+      {
+        "action": "freeTransform",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Scale",
+        "submenu": false,
+        "title": "Scale"
+      },
+      {
+        "action": "freeTransform",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Rotate",
+        "submenu": false,
+        "title": "Rotate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Skew",
+        "submenu": false,
+        "title": "Skew"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Distort",
+        "submenu": false,
+        "title": "Distort"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Perspective",
+        "submenu": false,
+        "title": "Perspective"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Warp",
+        "submenu": false,
+        "title": "Warp"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Split Warp Horizontally",
+        "submenu": false,
+        "title": "Split Warp Horizontally"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Split Warp Vertically",
+        "submenu": false,
+        "title": "Split Warp Vertically"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Split Warp Crosswise",
+        "submenu": false,
+        "title": "Split Warp Crosswise"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Remove Warp Split",
+        "submenu": false,
+        "title": "Remove Warp Split"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Convert warp anchor point",
+        "submenu": false,
+        "title": "Convert warp anchor point"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Toggle Guides",
+        "submenu": false,
+        "title": "Toggle Guides"
+      },
+      {
+        "action": "rotateLayer180",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Rotate 180°",
+        "submenu": false,
+        "title": "Rotate 180°"
+      },
+      {
+        "action": "rotateLayerCW",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Rotate 90° Clockwise",
+        "submenu": false,
+        "title": "Rotate 90° Clockwise"
+      },
+      {
+        "action": "rotateLayerCCW",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Rotate 90° Counter Clockwise",
+        "submenu": false,
+        "title": "Rotate 90° Counter Clockwise"
+      },
+      {
+        "action": "flipH",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Flip Horizontal",
+        "submenu": false,
+        "title": "Flip Horizontal"
+      },
+      {
+        "action": "flipV",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Transform > Flip Vertical",
+        "submenu": false,
+        "title": "Flip Vertical"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Auto-Align Layers…",
+        "submenu": false,
+        "title": "Auto-Align Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Auto-Blend Layers…",
+        "submenu": false,
+        "title": "Auto-Blend Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Sky Replacement…",
+        "submenu": false,
+        "title": "Sky Replacement…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Define Brush Preset…",
+        "submenu": false,
+        "title": "Define Brush Preset…"
+      },
+      {
+        "action": "definePattern",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Define Pattern…",
+        "submenu": false,
+        "title": "Define Pattern…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Define Custom Shape…",
+        "submenu": false,
+        "title": "Define Custom Shape…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Purge",
+        "submenu": true,
+        "title": "Purge"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Purge > Clipboard",
+        "submenu": false,
+        "title": "Clipboard"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Purge > Histories",
+        "submenu": false,
+        "title": "Histories"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Purge > All",
+        "submenu": false,
+        "title": "All"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Purge > Video Cache",
+        "submenu": false,
+        "title": "Video Cache"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Adobe PDF Presets…",
+        "submenu": false,
+        "title": "Adobe PDF Presets…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Presets",
+        "submenu": true,
+        "title": "Presets"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Presets > Preset Manager…",
+        "submenu": false,
+        "title": "Preset Manager…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Presets > Migrate Presets",
+        "submenu": false,
+        "title": "Migrate Presets"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Remote Connections…",
+        "submenu": false,
+        "title": "Remote Connections…"
+      },
+      {
+        "action": "",
+        "key": "k",
+        "modifiers": 1179648,
+        "path": "Edit > Color Settings…",
+        "submenu": false,
+        "title": "Color Settings…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > OpenColorIO Settings…",
+        "submenu": false,
+        "title": "OpenColorIO Settings…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Assign Profile…",
+        "submenu": false,
+        "title": "Assign Profile…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Convert to Profile…",
+        "submenu": false,
+        "title": "Convert to Profile…"
+      },
+      {
+        "action": "",
+        "key": "k",
+        "modifiers": 1703936,
+        "path": "Edit > Keyboard Shortcuts…",
+        "submenu": false,
+        "title": "Keyboard Shortcuts…"
+      },
+      {
+        "action": "",
+        "key": "m",
+        "modifiers": 1703936,
+        "path": "Edit > Menus…",
+        "submenu": false,
+        "title": "Menus…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Edit > Toolbar…",
+        "submenu": false,
+        "title": "Toolbar…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image",
+        "submenu": true,
+        "title": "Image"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode",
+        "submenu": true,
+        "title": "Mode"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Bitmap",
+        "submenu": false,
+        "title": "Bitmap"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Grayscale",
+        "submenu": false,
+        "title": "Grayscale"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Duotone",
+        "submenu": false,
+        "title": "Duotone"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Indexed Color…",
+        "submenu": false,
+        "title": "Indexed Color…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > RGB Color",
+        "submenu": false,
+        "title": "RGB Color"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > CMYK Color",
+        "submenu": false,
+        "title": "CMYK Color"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Lab Color",
+        "submenu": false,
+        "title": "Lab Color"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Multichannel",
+        "submenu": false,
+        "title": "Multichannel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > 8 Bits/Channel",
+        "submenu": false,
+        "title": "8 Bits/Channel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > 16 Bits/Channel",
+        "submenu": false,
+        "title": "16 Bits/Channel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > 32 Bits/Channel",
+        "submenu": false,
+        "title": "32 Bits/Channel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Mode > Color Table…",
+        "submenu": false,
+        "title": "Color Table…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments",
+        "submenu": true,
+        "title": "Adjustments"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Brightness/Contrast…",
+        "submenu": false,
+        "title": "Brightness/Contrast…"
+      },
+      {
+        "action": "levels",
+        "key": "l",
+        "modifiers": 1048576,
+        "path": "Image > Adjustments > Levels…",
+        "submenu": false,
+        "title": "Levels…"
+      },
+      {
+        "action": "curves",
+        "key": "m",
+        "modifiers": 1048576,
+        "path": "Image > Adjustments > Curves…",
+        "submenu": false,
+        "title": "Curves…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Exposure…",
+        "submenu": false,
+        "title": "Exposure…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Vibrance…",
+        "submenu": false,
+        "title": "Vibrance…"
+      },
+      {
+        "action": "hueSaturation",
+        "key": "u",
+        "modifiers": 1048576,
+        "path": "Image > Adjustments > Hue/Saturation…",
+        "submenu": false,
+        "title": "Hue/Saturation…"
+      },
+      {
+        "action": "colorBalance",
+        "key": "b",
+        "modifiers": 1048576,
+        "path": "Image > Adjustments > Color Balance…",
+        "submenu": false,
+        "title": "Color Balance…"
+      },
+      {
+        "action": "",
+        "key": "b",
+        "modifiers": 1703936,
+        "path": "Image > Adjustments > Black & White…",
+        "submenu": false,
+        "title": "Black & White…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Photo Filter…",
+        "submenu": false,
+        "title": "Photo Filter…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Channel Mixer…",
+        "submenu": false,
+        "title": "Channel Mixer…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Color Lookup…",
+        "submenu": false,
+        "title": "Color Lookup…"
+      },
+      {
+        "action": "",
+        "key": "i",
+        "modifiers": 1048576,
+        "path": "Image > Adjustments > Invert",
+        "submenu": false,
+        "title": "Invert"
+      },
+      {
+        "action": "posterize",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Posterize…",
+        "submenu": false,
+        "title": "Posterize…"
+      },
+      {
+        "action": "threshold",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Threshold…",
+        "submenu": false,
+        "title": "Threshold…"
+      },
+      {
+        "action": "gradientMap",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Gradient Map…",
+        "submenu": false,
+        "title": "Gradient Map…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Selective Color…",
+        "submenu": false,
+        "title": "Selective Color…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Shadows/Highlights…",
+        "submenu": false,
+        "title": "Shadows/Highlights…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > HDR Toning…",
+        "submenu": false,
+        "title": "HDR Toning…"
+      },
+      {
+        "action": "desaturate",
+        "key": "u",
+        "modifiers": 1179648,
+        "path": "Image > Adjustments > Desaturate",
+        "submenu": false,
+        "title": "Desaturate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Match Color…",
+        "submenu": false,
+        "title": "Match Color…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Replace Color…",
+        "submenu": false,
+        "title": "Replace Color…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Adjustments > Equalize",
+        "submenu": false,
+        "title": "Equalize"
+      },
+      {
+        "action": "autoTone",
+        "key": "l",
+        "modifiers": 1179648,
+        "path": "Image > Auto Tone",
+        "submenu": false,
+        "title": "Auto Tone"
+      },
+      {
+        "action": "autoContrast",
+        "key": "l",
+        "modifiers": 1703936,
+        "path": "Image > Auto Contrast",
+        "submenu": false,
+        "title": "Auto Contrast"
+      },
+      {
+        "action": "autoColor",
+        "key": "b",
+        "modifiers": 1179648,
+        "path": "Image > Auto Color",
+        "submenu": false,
+        "title": "Auto Color"
+      },
+      {
+        "action": "imageSize",
+        "key": "i",
+        "modifiers": 1572864,
+        "path": "Image > Image Size…",
+        "submenu": false,
+        "title": "Image Size…"
+      },
+      {
+        "action": "",
+        "key": "u",
+        "modifiers": 1703936,
+        "path": "Image > Generative Upscale…",
+        "submenu": false,
+        "title": "Generative Upscale…"
+      },
+      {
+        "action": "canvasSize",
+        "key": "c",
+        "modifiers": 1572864,
+        "path": "Image > Canvas Size…",
+        "submenu": false,
+        "title": "Canvas Size…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation",
+        "submenu": true,
+        "title": "Image Rotation"
+      },
+      {
+        "action": "rotateCanvas:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > 180°",
+        "submenu": false,
+        "title": "180°"
+      },
+      {
+        "action": "rotateCanvas:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > 90° Clockwise",
+        "submenu": false,
+        "title": "90° Clockwise"
+      },
+      {
+        "action": "rotateCanvas:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > 90° Counter Clockwise",
+        "submenu": false,
+        "title": "90° Counter Clockwise"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > Arbitrary…",
+        "submenu": false,
+        "title": "Arbitrary…"
+      },
+      {
+        "action": "rotateCanvas:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > Flip Canvas Horizontal",
+        "submenu": false,
+        "title": "Flip Canvas Horizontal"
+      },
+      {
+        "action": "rotateCanvas:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Image Rotation > Flip Canvas Vertical",
+        "submenu": false,
+        "title": "Flip Canvas Vertical"
+      },
+      {
+        "action": "crop",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Crop",
+        "submenu": false,
+        "title": "Crop"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Trim…",
+        "submenu": false,
+        "title": "Trim…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Reveal All",
+        "submenu": false,
+        "title": "Reveal All"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Duplicate…",
+        "submenu": false,
+        "title": "Duplicate…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Apply Image…",
+        "submenu": false,
+        "title": "Apply Image…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Calculations…",
+        "submenu": false,
+        "title": "Calculations…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Variables",
+        "submenu": true,
+        "title": "Variables"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Variables > Define…",
+        "submenu": false,
+        "title": "Define…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Variables > Data Sets…",
+        "submenu": false,
+        "title": "Data Sets…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Apply Data Set…",
+        "submenu": false,
+        "title": "Apply Data Set…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Trap…",
+        "submenu": false,
+        "title": "Trap…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis",
+        "submenu": true,
+        "title": "Analysis"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Set Measurement Scale",
+        "submenu": true,
+        "title": "Set Measurement Scale"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Set Measurement Scale > Default",
+        "submenu": false,
+        "title": "Default"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Set Measurement Scale > Custom…",
+        "submenu": false,
+        "title": "Custom…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Select Data Points",
+        "submenu": true,
+        "title": "Select Data Points"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Select Data Points > Custom…",
+        "submenu": false,
+        "title": "Custom…"
+      },
+      {
+        "action": "",
+        "key": "m",
+        "modifiers": 1179648,
+        "path": "Image > Analysis > Record Measurements",
+        "submenu": false,
+        "title": "Record Measurements"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Ruler Tool",
+        "submenu": false,
+        "title": "Ruler Tool"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Count Tool",
+        "submenu": false,
+        "title": "Count Tool"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Image > Analysis > Place Scale Marker…",
+        "submenu": false,
+        "title": "Place Scale Marker…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer",
+        "submenu": true,
+        "title": "Layer"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New",
+        "submenu": true,
+        "title": "New"
+      },
+      {
+        "action": "newLayer",
+        "key": "n",
+        "modifiers": 1179648,
+        "path": "Layer > New > Layer…",
+        "submenu": false,
+        "title": "Layer…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Background from Layer",
+        "submenu": false,
+        "title": "Background from Layer"
+      },
+      {
+        "action": "newGroup",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Group…",
+        "submenu": false,
+        "title": "Group…"
+      },
+      {
+        "action": "groupFromLayers",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Group from Layers…",
+        "submenu": false,
+        "title": "Group from Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Artboard…",
+        "submenu": false,
+        "title": "Artboard…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Artboard from Group",
+        "submenu": false,
+        "title": "Artboard from Group"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Artboard from Layers…",
+        "submenu": false,
+        "title": "Artboard from Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Frame from Layers…",
+        "submenu": false,
+        "title": "Frame from Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New > Convert to Frame",
+        "submenu": false,
+        "title": "Convert to Frame"
+      },
+      {
+        "action": "layerViaCopy",
+        "key": "j",
+        "modifiers": 1048576,
+        "path": "Layer > New > Layer Via Copy",
+        "submenu": false,
+        "title": "Layer Via Copy"
+      },
+      {
+        "action": "layerViaCut",
+        "key": "j",
+        "modifiers": 1179648,
+        "path": "Layer > New > Layer Via Cut",
+        "submenu": false,
+        "title": "Layer Via Cut"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Copy CSS",
+        "submenu": false,
+        "title": "Copy CSS"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Copy SVG",
+        "submenu": false,
+        "title": "Copy SVG"
+      },
+      {
+        "action": "duplicate",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Duplicate Layer…",
+        "submenu": false,
+        "title": "Duplicate Layer…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Delete",
+        "submenu": true,
+        "title": "Delete"
+      },
+      {
+        "action": "delete",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Delete > Layer",
+        "submenu": false,
+        "title": "Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Delete > Hidden Layers",
+        "submenu": false,
+        "title": "Hidden Layers"
+      },
+      {
+        "action": "",
+        "key": "'",
+        "modifiers": 1179648,
+        "path": "Layer > Quick Export as PNG",
+        "submenu": false,
+        "title": "Quick Export as PNG"
+      },
+      {
+        "action": "",
+        "key": "'",
+        "modifiers": 1703936,
+        "path": "Layer > Export As…",
+        "submenu": false,
+        "title": "Export As…"
+      },
+      {
+        "action": "renameLayer",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rename Layer…",
+        "submenu": false,
+        "title": "Rename Layer…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style",
+        "submenu": true,
+        "title": "Layer Style"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Blending Options…",
+        "submenu": false,
+        "title": "Blending Options…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Bevel & Emboss…",
+        "submenu": false,
+        "title": "Bevel & Emboss…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Stroke…",
+        "submenu": false,
+        "title": "Stroke…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Inner Shadow…",
+        "submenu": false,
+        "title": "Inner Shadow…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Inner Glow…",
+        "submenu": false,
+        "title": "Inner Glow…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Satin…",
+        "submenu": false,
+        "title": "Satin…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Color Overlay…",
+        "submenu": false,
+        "title": "Color Overlay…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Gradient Overlay…",
+        "submenu": false,
+        "title": "Gradient Overlay…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Pattern Overlay…",
+        "submenu": false,
+        "title": "Pattern Overlay…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Outer Glow…",
+        "submenu": false,
+        "title": "Outer Glow…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Drop Shadow…",
+        "submenu": false,
+        "title": "Drop Shadow…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Copy Layer Style",
+        "submenu": false,
+        "title": "Copy Layer Style"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Paste Layer Style",
+        "submenu": false,
+        "title": "Paste Layer Style"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Clear Layer Style",
+        "submenu": false,
+        "title": "Clear Layer Style"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Global Light…",
+        "submenu": false,
+        "title": "Global Light…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Create Layer",
+        "submenu": false,
+        "title": "Create Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Hide All Effects",
+        "submenu": false,
+        "title": "Hide All Effects"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Style > Scale Effects…",
+        "submenu": false,
+        "title": "Scale Effects…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Filter",
+        "submenu": true,
+        "title": "Smart Filter"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Filter > Disable Smart Filters",
+        "submenu": false,
+        "title": "Disable Smart Filters"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Filter > Delete Filter Mask",
+        "submenu": false,
+        "title": "Delete Filter Mask"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Filter > Disable Filter Mask",
+        "submenu": false,
+        "title": "Disable Filter Mask"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Filter > Clear Smart Filters",
+        "submenu": false,
+        "title": "Clear Smart Filters"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Fill Layer",
+        "submenu": true,
+        "title": "New Fill Layer"
+      },
+      {
+        "action": "newSolidColor",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Fill Layer > Solid Color…",
+        "submenu": false,
+        "title": "Solid Color…"
+      },
+      {
+        "action": "newGradientFill",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Fill Layer > Gradient…",
+        "submenu": false,
+        "title": "Gradient…"
+      },
+      {
+        "action": "newPatternFill",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Fill Layer > Pattern…",
+        "submenu": false,
+        "title": "Pattern…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer",
+        "submenu": true,
+        "title": "New Adjustment Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Color and vibrance…",
+        "submenu": false,
+        "title": "Color and vibrance…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Brightness/Contrast…",
+        "submenu": false,
+        "title": "Brightness/Contrast…"
+      },
+      {
+        "action": "newLevels",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Levels…",
+        "submenu": false,
+        "title": "Levels…"
+      },
+      {
+        "action": "newCurves",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Curves…",
+        "submenu": false,
+        "title": "Curves…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Exposure…",
+        "submenu": false,
+        "title": "Exposure…"
+      },
+      {
+        "action": "newHueSaturation",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Hue/Saturation…",
+        "submenu": false,
+        "title": "Hue/Saturation…"
+      },
+      {
+        "action": "newColorBalance",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Color Balance…",
+        "submenu": false,
+        "title": "Color Balance…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Black & White…",
+        "submenu": false,
+        "title": "Black & White…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Photo Filter…",
+        "submenu": false,
+        "title": "Photo Filter…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Channel Mixer…",
+        "submenu": false,
+        "title": "Channel Mixer…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Color Lookup…",
+        "submenu": false,
+        "title": "Color Lookup…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Selective Color…",
+        "submenu": false,
+        "title": "Selective Color…"
+      },
+      {
+        "action": "invert",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Invert…",
+        "submenu": false,
+        "title": "Invert…"
+      },
+      {
+        "action": "newPosterize",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Posterize…",
+        "submenu": false,
+        "title": "Posterize…"
+      },
+      {
+        "action": "newThreshold",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Threshold…",
+        "submenu": false,
+        "title": "Threshold…"
+      },
+      {
+        "action": "newGradientMap",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Adjustment Layer > Gradient Map…",
+        "submenu": false,
+        "title": "Gradient Map…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Harmonize",
+        "submenu": false,
+        "title": "Harmonize"
+      },
+      {
+        "action": "layerContentOptions",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Content Options…",
+        "submenu": false,
+        "title": "Layer Content Options…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask",
+        "submenu": true,
+        "title": "Layer Mask"
+      },
+      {
+        "action": "maskRevealAll",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Reveal All",
+        "submenu": false,
+        "title": "Reveal All"
+      },
+      {
+        "action": "maskHideAll",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Hide All",
+        "submenu": false,
+        "title": "Hide All"
+      },
+      {
+        "action": "maskRevealSelection",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Reveal Selection",
+        "submenu": false,
+        "title": "Reveal Selection"
+      },
+      {
+        "action": "maskHideSelection",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Hide Selection",
+        "submenu": false,
+        "title": "Hide Selection"
+      },
+      {
+        "action": "maskFromTransparency",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > From Transparency",
+        "submenu": false,
+        "title": "From Transparency"
+      },
+      {
+        "action": "maskDelete",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Delete",
+        "submenu": false,
+        "title": "Delete"
+      },
+      {
+        "action": "maskApply",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Apply",
+        "submenu": false,
+        "title": "Apply"
+      },
+      {
+        "action": "maskEnabled",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Enable",
+        "submenu": false,
+        "title": "Enable"
+      },
+      {
+        "action": "maskLinked",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Layer Mask > Unlink",
+        "submenu": false,
+        "title": "Unlink"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask",
+        "submenu": true,
+        "title": "Vector Mask"
+      },
+      {
+        "action": "vectorRevealAll",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Reveal All",
+        "submenu": false,
+        "title": "Reveal All"
+      },
+      {
+        "action": "vectorHideAll",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Hide All",
+        "submenu": false,
+        "title": "Hide All"
+      },
+      {
+        "action": "vectorCurrentPath",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Current Path",
+        "submenu": false,
+        "title": "Current Path"
+      },
+      {
+        "action": "vectorDelete",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Delete",
+        "submenu": false,
+        "title": "Delete"
+      },
+      {
+        "action": "vectorEnabled",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Enable",
+        "submenu": false,
+        "title": "Enable"
+      },
+      {
+        "action": "vectorLinked",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Vector Mask > Unlink",
+        "submenu": false,
+        "title": "Unlink"
+      },
+      {
+        "action": "clippingMask",
+        "key": "g",
+        "modifiers": 1572864,
+        "path": "Layer > Create Clipping Mask",
+        "submenu": false,
+        "title": "Create Clipping Mask"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Mask All Objects",
+        "submenu": false,
+        "title": "Mask All Objects"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects",
+        "submenu": true,
+        "title": "Smart Objects"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Convert to Smart Object",
+        "submenu": false,
+        "title": "Convert to Smart Object"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > New Smart Object via Copy",
+        "submenu": false,
+        "title": "New Smart Object via Copy"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Reveal in Finder",
+        "submenu": false,
+        "title": "Reveal in Finder"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Update Modified Content",
+        "submenu": false,
+        "title": "Update Modified Content"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Update All Modified Content",
+        "submenu": false,
+        "title": "Update All Modified Content"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Edit Contents",
+        "submenu": false,
+        "title": "Edit Contents"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Reset Transform",
+        "submenu": false,
+        "title": "Reset Transform"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Relink to File…",
+        "submenu": false,
+        "title": "Relink to File…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Relink to Library Graphic…",
+        "submenu": false,
+        "title": "Relink to Library Graphic…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Replace Contents…",
+        "submenu": false,
+        "title": "Replace Contents…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Export Contents…",
+        "submenu": false,
+        "title": "Export Contents…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Embed Linked",
+        "submenu": false,
+        "title": "Embed Linked"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Embed All Linked",
+        "submenu": false,
+        "title": "Embed All Linked"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Convert to Linked…",
+        "submenu": false,
+        "title": "Convert to Linked…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Convert to Layers",
+        "submenu": false,
+        "title": "Convert to Layers"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode",
+        "submenu": true,
+        "title": "Stack Mode"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > None",
+        "submenu": false,
+        "title": "None"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Entropy",
+        "submenu": false,
+        "title": "Entropy"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Kurtosis",
+        "submenu": false,
+        "title": "Kurtosis"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Maximum",
+        "submenu": false,
+        "title": "Maximum"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Mean",
+        "submenu": false,
+        "title": "Mean"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Median",
+        "submenu": false,
+        "title": "Median"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Minimum",
+        "submenu": false,
+        "title": "Minimum"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Range",
+        "submenu": false,
+        "title": "Range"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Skewness",
+        "submenu": false,
+        "title": "Skewness"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Standard Deviation",
+        "submenu": false,
+        "title": "Standard Deviation"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Summation",
+        "submenu": false,
+        "title": "Summation"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Stack Mode > Variance",
+        "submenu": false,
+        "title": "Variance"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Smart Objects > Rasterize",
+        "submenu": false,
+        "title": "Rasterize"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers",
+        "submenu": true,
+        "title": "Video Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > New Video Layer from File…",
+        "submenu": false,
+        "title": "New Video Layer from File…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > New Blank Video Layer",
+        "submenu": false,
+        "title": "New Blank Video Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Insert Blank Frame",
+        "submenu": false,
+        "title": "Insert Blank Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Duplicate Frame",
+        "submenu": false,
+        "title": "Duplicate Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Delete Frame",
+        "submenu": false,
+        "title": "Delete Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Replace Footage…",
+        "submenu": false,
+        "title": "Replace Footage…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Interpret Footage…",
+        "submenu": false,
+        "title": "Interpret Footage…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Show Altered Video",
+        "submenu": false,
+        "title": "Show Altered Video"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Restore Frame",
+        "submenu": false,
+        "title": "Restore Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Restore All Frames",
+        "submenu": false,
+        "title": "Restore All Frames"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Reload Frame",
+        "submenu": false,
+        "title": "Reload Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Video Layers > Rasterize",
+        "submenu": false,
+        "title": "Rasterize"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize",
+        "submenu": true,
+        "title": "Rasterize"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Type",
+        "submenu": false,
+        "title": "Type"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Shape",
+        "submenu": false,
+        "title": "Shape"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Fill Content",
+        "submenu": false,
+        "title": "Fill Content"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Vector Mask",
+        "submenu": false,
+        "title": "Vector Mask"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Smart Object",
+        "submenu": false,
+        "title": "Smart Object"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Generative",
+        "submenu": false,
+        "title": "Generative"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Video",
+        "submenu": false,
+        "title": "Video"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > 3D",
+        "submenu": false,
+        "title": "3D"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Layer Style",
+        "submenu": false,
+        "title": "Layer Style"
+      },
+      {
+        "action": "rasterize",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > Layer",
+        "submenu": false,
+        "title": "Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Rasterize > All Layers",
+        "submenu": false,
+        "title": "All Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > New Layer Based Slice",
+        "submenu": false,
+        "title": "New Layer Based Slice"
+      },
+      {
+        "action": "groupLayers",
+        "key": "g",
+        "modifiers": 1048576,
+        "path": "Layer > Group Layers",
+        "submenu": false,
+        "title": "Group Layers"
+      },
+      {
+        "action": "ungroupLayers",
+        "key": "g",
+        "modifiers": 1179648,
+        "path": "Layer > Ungroup Layers",
+        "submenu": false,
+        "title": "Ungroup Layers"
+      },
+      {
+        "action": "toggleLayerVisibility",
+        "key": ",",
+        "modifiers": 1048576,
+        "path": "Layer > Hide Layers",
+        "submenu": false,
+        "title": "Hide Layers"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Arrange",
+        "submenu": true,
+        "title": "Arrange"
+      },
+      {
+        "action": "",
+        "key": "]",
+        "modifiers": 1179648,
+        "path": "Layer > Arrange > Bring to Front",
+        "submenu": false,
+        "title": "Bring to Front"
+      },
+      {
+        "action": "",
+        "key": "]",
+        "modifiers": 1048576,
+        "path": "Layer > Arrange > Bring Forward",
+        "submenu": false,
+        "title": "Bring Forward"
+      },
+      {
+        "action": "",
+        "key": "[",
+        "modifiers": 1048576,
+        "path": "Layer > Arrange > Send Backward",
+        "submenu": false,
+        "title": "Send Backward"
+      },
+      {
+        "action": "",
+        "key": "[",
+        "modifiers": 1179648,
+        "path": "Layer > Arrange > Send to Back",
+        "submenu": false,
+        "title": "Send to Back"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Arrange > Reverse",
+        "submenu": false,
+        "title": "Reverse"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Combine Shapes",
+        "submenu": true,
+        "title": "Combine Shapes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Combine Shapes > Unite Shapes",
+        "submenu": false,
+        "title": "Unite Shapes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Combine Shapes > Subtract Front Shape",
+        "submenu": false,
+        "title": "Subtract Front Shape"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Combine Shapes > Unite Shapes at Overlap",
+        "submenu": false,
+        "title": "Unite Shapes at Overlap"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Combine Shapes > Subtract Shapes at Overlap",
+        "submenu": false,
+        "title": "Subtract Shapes at Overlap"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align",
+        "submenu": true,
+        "title": "Align"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Top Edges",
+        "submenu": false,
+        "title": "Top Edges"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Vertical Centers",
+        "submenu": false,
+        "title": "Vertical Centers"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Bottom Edges",
+        "submenu": false,
+        "title": "Bottom Edges"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Left Edges",
+        "submenu": false,
+        "title": "Left Edges"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Horizontal Centers",
+        "submenu": false,
+        "title": "Horizontal Centers"
+      },
+      {
+        "action": "alignLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Align > Right Edges",
+        "submenu": false,
+        "title": "Right Edges"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute",
+        "submenu": true,
+        "title": "Distribute"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Top Edges",
+        "submenu": false,
+        "title": "Top Edges"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Vertical Centers",
+        "submenu": false,
+        "title": "Vertical Centers"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Bottom Edges",
+        "submenu": false,
+        "title": "Bottom Edges"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Left Edges",
+        "submenu": false,
+        "title": "Left Edges"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Horizontal Centers",
+        "submenu": false,
+        "title": "Horizontal Centers"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Right Edges",
+        "submenu": false,
+        "title": "Right Edges"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Horizontally",
+        "submenu": false,
+        "title": "Horizontally"
+      },
+      {
+        "action": "distributeLayers:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Distribute > Vertically",
+        "submenu": false,
+        "title": "Vertically"
+      },
+      {
+        "action": "lockLayers",
+        "key": "/",
+        "modifiers": 1048576,
+        "path": "Layer > Lock Layers…",
+        "submenu": false,
+        "title": "Lock Layers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Link Layers",
+        "submenu": false,
+        "title": "Link Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Select Linked Layers",
+        "submenu": false,
+        "title": "Select Linked Layers"
+      },
+      {
+        "action": "mergeLayers",
+        "key": "e",
+        "modifiers": 1048576,
+        "path": "Layer > Merge Layers",
+        "submenu": false,
+        "title": "Merge Layers"
+      },
+      {
+        "action": "mergeVisible",
+        "key": "e",
+        "modifiers": 1179648,
+        "path": "Layer > Merge Visible",
+        "submenu": false,
+        "title": "Merge Visible"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Flatten Image",
+        "submenu": false,
+        "title": "Flatten Image"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Matting",
+        "submenu": true,
+        "title": "Matting"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Matting > Color Decontaminate…",
+        "submenu": false,
+        "title": "Color Decontaminate…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Matting > Defringe…",
+        "submenu": false,
+        "title": "Defringe…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Matting > Remove Black Matte",
+        "submenu": false,
+        "title": "Remove Black Matte"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Matting > Remove White Matte",
+        "submenu": false,
+        "title": "Remove White Matte"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Photato Adjustments",
+        "submenu": true,
+        "title": "Photato Adjustments"
+      },
+      {
+        "action": "grayscale",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Photato Adjustments > Black & White",
+        "submenu": false,
+        "title": "Black & White"
+      },
+      {
+        "action": "exposure",
+        "key": "",
+        "modifiers": 0,
+        "path": "Layer > Photato Adjustments > Exposure +1",
+        "submenu": false,
+        "title": "Exposure +1"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type",
+        "submenu": true,
+        "title": "Type"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > More from Adobe Fonts…",
+        "submenu": false,
+        "title": "More from Adobe Fonts…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels",
+        "submenu": true,
+        "title": "Panels"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels > Character Panel",
+        "submenu": false,
+        "title": "Character Panel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels > Paragraph Panel",
+        "submenu": false,
+        "title": "Paragraph Panel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels > Glyphs Panel",
+        "submenu": false,
+        "title": "Glyphs Panel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels > Character Styles Panel",
+        "submenu": false,
+        "title": "Character Styles Panel"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Panels > Paragraph Styles Panel",
+        "submenu": false,
+        "title": "Paragraph Styles Panel"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias",
+        "submenu": true,
+        "title": "Anti-Alias"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > None",
+        "submenu": false,
+        "title": "None"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Sharp",
+        "submenu": false,
+        "title": "Sharp"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Crisp",
+        "submenu": false,
+        "title": "Crisp"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Strong",
+        "submenu": false,
+        "title": "Strong"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Smooth",
+        "submenu": false,
+        "title": "Smooth"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Mac LCD",
+        "submenu": false,
+        "title": "Mac LCD"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Anti-Alias > Mac",
+        "submenu": false,
+        "title": "Mac"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Orientation",
+        "submenu": true,
+        "title": "Orientation"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Orientation > Horizontal",
+        "submenu": false,
+        "title": "Horizontal"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Orientation > Vertical",
+        "submenu": false,
+        "title": "Vertical"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType",
+        "submenu": true,
+        "title": "OpenType"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Standard Ligatures",
+        "submenu": false,
+        "title": "Standard Ligatures"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Contextual Alternates",
+        "submenu": false,
+        "title": "Contextual Alternates"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Discretionary Ligatures",
+        "submenu": false,
+        "title": "Discretionary Ligatures"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Swash",
+        "submenu": false,
+        "title": "Swash"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Oldstyle",
+        "submenu": false,
+        "title": "Oldstyle"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Stylistic Alternates",
+        "submenu": false,
+        "title": "Stylistic Alternates"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Titling Alternates",
+        "submenu": false,
+        "title": "Titling Alternates"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Ornaments",
+        "submenu": false,
+        "title": "Ornaments"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Ordinals",
+        "submenu": false,
+        "title": "Ordinals"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Fractions",
+        "submenu": false,
+        "title": "Fractions"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Justification Alternates",
+        "submenu": false,
+        "title": "Justification Alternates"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Japanese 78",
+        "submenu": false,
+        "title": "Japanese 78"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Japanese Expert",
+        "submenu": false,
+        "title": "Japanese Expert"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Japanese Traditional",
+        "submenu": false,
+        "title": "Japanese Traditional"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Proportional Metrics",
+        "submenu": false,
+        "title": "Proportional Metrics"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Kana",
+        "submenu": false,
+        "title": "Kana"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > OpenType > Roman Italics",
+        "submenu": false,
+        "title": "Roman Italics"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Create Work Path",
+        "submenu": false,
+        "title": "Create Work Path"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Shape",
+        "submenu": false,
+        "title": "Convert to Shape"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Rasterize Type Layer",
+        "submenu": false,
+        "title": "Rasterize Type Layer"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert Text Shape Type",
+        "submenu": false,
+        "title": "Convert Text Shape Type"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Dynamic Text",
+        "submenu": true,
+        "title": "Convert to Dynamic Text"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Dynamic Text > Block",
+        "submenu": false,
+        "title": "Block"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Dynamic Text > Circle",
+        "submenu": false,
+        "title": "Circle"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Dynamic Text > Arch",
+        "submenu": false,
+        "title": "Arch"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Convert to Dynamic Text > Bow",
+        "submenu": false,
+        "title": "Bow"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Warp Text…",
+        "submenu": false,
+        "title": "Warp Text…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Match Font…",
+        "submenu": false,
+        "title": "Match Font…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size",
+        "submenu": true,
+        "title": "Font Preview Size"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > None",
+        "submenu": false,
+        "title": "None"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > Small",
+        "submenu": false,
+        "title": "Small"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > Medium",
+        "submenu": false,
+        "title": "Medium"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > Large",
+        "submenu": false,
+        "title": "Large"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > Extra Large",
+        "submenu": false,
+        "title": "Extra Large"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Font Preview Size > Huge",
+        "submenu": false,
+        "title": "Huge"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options",
+        "submenu": true,
+        "title": "Language Options"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Default Features",
+        "submenu": false,
+        "title": "Default Features"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > East Asian Features",
+        "submenu": false,
+        "title": "East Asian Features"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Middle Eastern Features",
+        "submenu": false,
+        "title": "Middle Eastern Features"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Standard Vertical Roman Alignment",
+        "submenu": false,
+        "title": "Standard Vertical Roman Alignment"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Tate-chu-yoko",
+        "submenu": false,
+        "title": "Tate-chu-yoko"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Top-to-Top Leading",
+        "submenu": false,
+        "title": "Top-to-Top Leading"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Bottom-to-Bottom Leading",
+        "submenu": false,
+        "title": "Bottom-to-Bottom Leading"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > LTR Arabic Digits - 123%",
+        "submenu": false,
+        "title": "LTR Arabic Digits - 123%"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > RTL Arabic Digits - %123",
+        "submenu": false,
+        "title": "RTL Arabic Digits - %123"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Hindi Digits",
+        "submenu": false,
+        "title": "Hindi Digits"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Farsi Digits",
+        "submenu": false,
+        "title": "Farsi Digits"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Kashidas",
+        "submenu": false,
+        "title": "Kashidas"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Default Direction",
+        "submenu": false,
+        "title": "Default Direction"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Left-to-Right Character Direction",
+        "submenu": false,
+        "title": "Left-to-Right Character Direction"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Language Options > Right-to-Left Character Direction",
+        "submenu": false,
+        "title": "Right-to-Left Character Direction"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Update All Text Layers",
+        "submenu": false,
+        "title": "Update All Text Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Manage Missing Fonts",
+        "submenu": false,
+        "title": "Manage Missing Fonts"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Paste Lorem Ipsum",
+        "submenu": false,
+        "title": "Paste Lorem Ipsum"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Load Default Type Styles",
+        "submenu": false,
+        "title": "Load Default Type Styles"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Save Default Type Styles",
+        "submenu": false,
+        "title": "Save Default Type Styles"
+      },
+      {
+        "action": "propertiesPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Type > Type Properties",
+        "submenu": false,
+        "title": "Type Properties"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select",
+        "submenu": true,
+        "title": "Select"
+      },
+      {
+        "action": "selectAll",
+        "key": "a",
+        "modifiers": 1048576,
+        "path": "Select > All",
+        "submenu": false,
+        "title": "All"
+      },
+      {
+        "action": "deselect",
+        "key": "d",
+        "modifiers": 1048576,
+        "path": "Select > Deselect",
+        "submenu": false,
+        "title": "Deselect"
+      },
+      {
+        "action": "",
+        "key": "d",
+        "modifiers": 1179648,
+        "path": "Select > Reselect",
+        "submenu": false,
+        "title": "Reselect"
+      },
+      {
+        "action": "invertSelection",
+        "key": "i",
+        "modifiers": 1179648,
+        "path": "Select > Inverse",
+        "submenu": false,
+        "title": "Inverse"
+      },
+      {
+        "action": "selectAllLayers",
+        "key": "a",
+        "modifiers": 1572864,
+        "path": "Select > All Layers",
+        "submenu": false,
+        "title": "All Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Deselect Layers",
+        "submenu": false,
+        "title": "Deselect Layers"
+      },
+      {
+        "action": "",
+        "key": "f",
+        "modifiers": 1703936,
+        "path": "Select > Find Layers",
+        "submenu": false,
+        "title": "Find Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Isolate Layers",
+        "submenu": false,
+        "title": "Isolate Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Color Range…",
+        "submenu": false,
+        "title": "Color Range…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Focus Area…",
+        "submenu": false,
+        "title": "Focus Area…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Subject",
+        "submenu": false,
+        "title": "Subject"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Sky",
+        "submenu": false,
+        "title": "Sky"
+      },
+      {
+        "action": "",
+        "key": "r",
+        "modifiers": 1572864,
+        "path": "Select > Select and Mask…",
+        "submenu": false,
+        "title": "Select and Mask…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Modify",
+        "submenu": true,
+        "title": "Modify"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Modify > Border…",
+        "submenu": false,
+        "title": "Border…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Modify > Smooth…",
+        "submenu": false,
+        "title": "Smooth…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Modify > Expand…",
+        "submenu": false,
+        "title": "Expand…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Modify > Contract…",
+        "submenu": false,
+        "title": "Contract…"
+      },
+      {
+        "action": "featherSelection",
+        "key": "",
+        "modifiers": 131072,
+        "path": "Select > Modify > Feather…",
+        "submenu": false,
+        "title": "Feather…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Grow",
+        "submenu": false,
+        "title": "Grow"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Similar",
+        "submenu": false,
+        "title": "Similar"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Transform Selection",
+        "submenu": false,
+        "title": "Transform Selection"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Edit in Quick Mask Mode",
+        "submenu": false,
+        "title": "Edit in Quick Mask Mode"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Load Selection…",
+        "submenu": false,
+        "title": "Load Selection…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Select > Save Selection…",
+        "submenu": false,
+        "title": "Save Selection…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter",
+        "submenu": true,
+        "title": "Filter"
+      },
+      {
+        "action": "",
+        "key": "f",
+        "modifiers": 1310720,
+        "path": "Filter > Last Filter",
+        "submenu": false,
+        "title": "Last Filter"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Convert for Smart Filters",
+        "submenu": false,
+        "title": "Convert for Smart Filters"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Neural Filters…",
+        "submenu": false,
+        "title": "Neural Filters…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Filter Gallery…",
+        "submenu": false,
+        "title": "Filter Gallery…"
+      },
+      {
+        "action": "",
+        "key": "a",
+        "modifiers": 1703936,
+        "path": "Filter > Adaptive Wide Angle…",
+        "submenu": false,
+        "title": "Adaptive Wide Angle…"
+      },
+      {
+        "action": "",
+        "key": "a",
+        "modifiers": 1179648,
+        "path": "Filter > Camera Raw Filter…",
+        "submenu": false,
+        "title": "Camera Raw Filter…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > AI Denoise…",
+        "submenu": false,
+        "title": "AI Denoise…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > AI Sharpen…",
+        "submenu": false,
+        "title": "AI Sharpen…"
+      },
+      {
+        "action": "",
+        "key": "r",
+        "modifiers": 1179648,
+        "path": "Filter > Lens Correction…",
+        "submenu": false,
+        "title": "Lens Correction…"
+      },
+      {
+        "action": "",
+        "key": "x",
+        "modifiers": 1179648,
+        "path": "Filter > Liquify…",
+        "submenu": false,
+        "title": "Liquify…"
+      },
+      {
+        "action": "",
+        "key": "v",
+        "modifiers": 1572864,
+        "path": "Filter > Vanishing Point…",
+        "submenu": false,
+        "title": "Vanishing Point…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur",
+        "submenu": true,
+        "title": "Blur"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Average",
+        "submenu": false,
+        "title": "Average"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Blur",
+        "submenu": false,
+        "title": "Blur"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Blur More",
+        "submenu": false,
+        "title": "Blur More"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Box Blur…",
+        "submenu": false,
+        "title": "Box Blur…"
+      },
+      {
+        "action": "gaussianBlurDialog",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Gaussian Blur…",
+        "submenu": false,
+        "title": "Gaussian Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Lens Blur…",
+        "submenu": false,
+        "title": "Lens Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Motion Blur…",
+        "submenu": false,
+        "title": "Motion Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Radial Blur…",
+        "submenu": false,
+        "title": "Radial Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Shape Blur…",
+        "submenu": false,
+        "title": "Shape Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Smart Blur…",
+        "submenu": false,
+        "title": "Smart Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur > Surface Blur…",
+        "submenu": false,
+        "title": "Surface Blur…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery",
+        "submenu": true,
+        "title": "Blur Gallery"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery > Field Blur…",
+        "submenu": false,
+        "title": "Field Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery > Iris Blur…",
+        "submenu": false,
+        "title": "Iris Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery > Tilt-Shift…",
+        "submenu": false,
+        "title": "Tilt-Shift…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery > Path Blur…",
+        "submenu": false,
+        "title": "Path Blur…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Blur Gallery > Spin Blur…",
+        "submenu": false,
+        "title": "Spin Blur…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort",
+        "submenu": true,
+        "title": "Distort"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Displace…",
+        "submenu": false,
+        "title": "Displace…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Pinch…",
+        "submenu": false,
+        "title": "Pinch…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Polar Coordinates…",
+        "submenu": false,
+        "title": "Polar Coordinates…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Ripple…",
+        "submenu": false,
+        "title": "Ripple…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Shear…",
+        "submenu": false,
+        "title": "Shear…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Spherize…",
+        "submenu": false,
+        "title": "Spherize…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Twirl…",
+        "submenu": false,
+        "title": "Twirl…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > Wave…",
+        "submenu": false,
+        "title": "Wave…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Distort > ZigZag…",
+        "submenu": false,
+        "title": "ZigZag…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise",
+        "submenu": true,
+        "title": "Noise"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise > Add Noise…",
+        "submenu": false,
+        "title": "Add Noise…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise > Despeckle",
+        "submenu": false,
+        "title": "Despeckle"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise > Dust & Scratches…",
+        "submenu": false,
+        "title": "Dust & Scratches…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise > Median…",
+        "submenu": false,
+        "title": "Median…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Noise > Reduce Noise…",
+        "submenu": false,
+        "title": "Reduce Noise…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate",
+        "submenu": true,
+        "title": "Pixelate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Color Halftone…",
+        "submenu": false,
+        "title": "Color Halftone…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Crystallize…",
+        "submenu": false,
+        "title": "Crystallize…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Facet",
+        "submenu": false,
+        "title": "Facet"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Fragment",
+        "submenu": false,
+        "title": "Fragment"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Mezzotint…",
+        "submenu": false,
+        "title": "Mezzotint…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Mosaic…",
+        "submenu": false,
+        "title": "Mosaic…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Pixelate > Pointillize…",
+        "submenu": false,
+        "title": "Pointillize…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render",
+        "submenu": true,
+        "title": "Render"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Flame…",
+        "submenu": false,
+        "title": "Flame…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Picture Frame…",
+        "submenu": false,
+        "title": "Picture Frame…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Tree…",
+        "submenu": false,
+        "title": "Tree…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Clouds",
+        "submenu": false,
+        "title": "Clouds"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Difference Clouds",
+        "submenu": false,
+        "title": "Difference Clouds"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Fibers…",
+        "submenu": false,
+        "title": "Fibers…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Render > Lens Flare…",
+        "submenu": false,
+        "title": "Lens Flare…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen",
+        "submenu": true,
+        "title": "Sharpen"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen > Sharpen",
+        "submenu": false,
+        "title": "Sharpen"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen > Sharpen Edges",
+        "submenu": false,
+        "title": "Sharpen Edges"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen > Sharpen More",
+        "submenu": false,
+        "title": "Sharpen More"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen > Smart Sharpen…",
+        "submenu": false,
+        "title": "Smart Sharpen…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Sharpen > Unsharp Mask…",
+        "submenu": false,
+        "title": "Unsharp Mask…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize",
+        "submenu": true,
+        "title": "Stylize"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Diffuse…",
+        "submenu": false,
+        "title": "Diffuse…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Emboss…",
+        "submenu": false,
+        "title": "Emboss…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Extrude…",
+        "submenu": false,
+        "title": "Extrude…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Find Edges",
+        "submenu": false,
+        "title": "Find Edges"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Oil Paint…",
+        "submenu": false,
+        "title": "Oil Paint…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Solarize",
+        "submenu": false,
+        "title": "Solarize"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Tiles…",
+        "submenu": false,
+        "title": "Tiles…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Trace Contour…",
+        "submenu": false,
+        "title": "Trace Contour…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Stylize > Wind…",
+        "submenu": false,
+        "title": "Wind…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Video",
+        "submenu": true,
+        "title": "Video"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Video > De-Interlace…",
+        "submenu": false,
+        "title": "De-Interlace…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Video > NTSC Colors",
+        "submenu": false,
+        "title": "NTSC Colors"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other",
+        "submenu": true,
+        "title": "Other"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > Custom…",
+        "submenu": false,
+        "title": "Custom…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > High Pass…",
+        "submenu": false,
+        "title": "High Pass…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > HSB/HSL",
+        "submenu": false,
+        "title": "HSB/HSL"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > Maximum…",
+        "submenu": false,
+        "title": "Maximum…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > Minimum…",
+        "submenu": false,
+        "title": "Minimum…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Filter > Other > Offset…",
+        "submenu": false,
+        "title": "Offset…"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View",
+        "submenu": true,
+        "title": "View"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup",
+        "submenu": true,
+        "title": "Proof Setup"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Custom…",
+        "submenu": false,
+        "title": "Custom…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working CMYK",
+        "submenu": false,
+        "title": "Working CMYK"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working Cyan Plate",
+        "submenu": false,
+        "title": "Working Cyan Plate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working Magenta Plate",
+        "submenu": false,
+        "title": "Working Magenta Plate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working Yellow Plate",
+        "submenu": false,
+        "title": "Working Yellow Plate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working Black Plate",
+        "submenu": false,
+        "title": "Working Black Plate"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Working CMY Plates",
+        "submenu": false,
+        "title": "Working CMY Plates"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Legacy Macintosh RGB (Gamma 1.8)",
+        "submenu": false,
+        "title": "Legacy Macintosh RGB (Gamma 1.8)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Internet Standard RGB (sRGB)",
+        "submenu": false,
+        "title": "Internet Standard RGB (sRGB)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Monitor RGB",
+        "submenu": false,
+        "title": "Monitor RGB"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Color Blindness - Protanopia-type",
+        "submenu": false,
+        "title": "Color Blindness - Protanopia-type"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Proof Setup > Color Blindness - Deuteranopia-type",
+        "submenu": false,
+        "title": "Color Blindness - Deuteranopia-type"
+      },
+      {
+        "action": "",
+        "key": "y",
+        "modifiers": 1048576,
+        "path": "View > Proof Colors",
+        "submenu": false,
+        "title": "Proof Colors"
+      },
+      {
+        "action": "",
+        "key": "y",
+        "modifiers": 1179648,
+        "path": "View > Gamut Warning",
+        "submenu": false,
+        "title": "Gamut Warning"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio",
+        "submenu": true,
+        "title": "Pixel Aspect Ratio"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > Custom Pixel Aspect Ratio…",
+        "submenu": false,
+        "title": "Custom Pixel Aspect Ratio…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > Delete Pixel Aspect Ratio…",
+        "submenu": false,
+        "title": "Delete Pixel Aspect Ratio…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > Reset Pixel Aspect Ratios…",
+        "submenu": false,
+        "title": "Reset Pixel Aspect Ratios…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > Square",
+        "submenu": false,
+        "title": "Square"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > D1/DV NTSC (0.91)",
+        "submenu": false,
+        "title": "D1/DV NTSC (0.91)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > D1/DV PAL (1.09)",
+        "submenu": false,
+        "title": "D1/DV PAL (1.09)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > D1/DV NTSC Widescreen (1.21)",
+        "submenu": false,
+        "title": "D1/DV NTSC Widescreen (1.21)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > HDV 1080/DVCPRO HD 720 (1.33)",
+        "submenu": false,
+        "title": "HDV 1080/DVCPRO HD 720 (1.33)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > D1/DV PAL Widescreen (1.46)",
+        "submenu": false,
+        "title": "D1/DV PAL Widescreen (1.46)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > Anamorphic 2:1 (2)",
+        "submenu": false,
+        "title": "Anamorphic 2:1 (2)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio > DVCPRO HD 1080 (1.5)",
+        "submenu": false,
+        "title": "DVCPRO HD 1080 (1.5)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pixel Aspect Ratio Correction",
+        "submenu": false,
+        "title": "Pixel Aspect Ratio Correction"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > 32-bit Preview Options…",
+        "submenu": false,
+        "title": "32-bit Preview Options…"
+      },
+      {
+        "action": "zoomIn",
+        "key": "+",
+        "modifiers": 1048576,
+        "path": "View > Zoom In",
+        "submenu": false,
+        "title": "Zoom In"
+      },
+      {
+        "action": "zoomOut",
+        "key": "-",
+        "modifiers": 1048576,
+        "path": "View > Zoom Out",
+        "submenu": false,
+        "title": "Zoom Out"
+      },
+      {
+        "action": "fit",
+        "key": "0",
+        "modifiers": 1048576,
+        "path": "View > Fit on Screen",
+        "submenu": false,
+        "title": "Fit on Screen"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Fit Layer(s) on Screen",
+        "submenu": false,
+        "title": "Fit Layer(s) on Screen"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Fit Artboard on Screen",
+        "submenu": false,
+        "title": "Fit Artboard on Screen"
+      },
+      {
+        "action": "actual",
+        "key": "1",
+        "modifiers": 1048576,
+        "path": "View > 100%",
+        "submenu": false,
+        "title": "100%"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > 200%",
+        "submenu": false,
+        "title": "200%"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Print Size",
+        "submenu": false,
+        "title": "Print Size"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Actual Size",
+        "submenu": false,
+        "title": "Actual Size"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Flip Horizontal",
+        "submenu": false,
+        "title": "Flip Horizontal"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Pattern Preview",
+        "submenu": false,
+        "title": "Pattern Preview"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Screen Mode",
+        "submenu": true,
+        "title": "Screen Mode"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Screen Mode > Standard Screen Mode",
+        "submenu": false,
+        "title": "Standard Screen Mode"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Screen Mode > Full Screen Mode With Menu Bar",
+        "submenu": false,
+        "title": "Full Screen Mode With Menu Bar"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Screen Mode > Full Screen Mode",
+        "submenu": false,
+        "title": "Full Screen Mode"
+      },
+      {
+        "action": "",
+        "key": "h",
+        "modifiers": 1048576,
+        "path": "View > Extras",
+        "submenu": false,
+        "title": "Extras"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show",
+        "submenu": true,
+        "title": "Show"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Layer Edges",
+        "submenu": false,
+        "title": "Layer Edges"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Selection Edges",
+        "submenu": false,
+        "title": "Selection Edges"
+      },
+      {
+        "action": "",
+        "key": "h",
+        "modifiers": 1179648,
+        "path": "View > Show > Target Path",
+        "submenu": false,
+        "title": "Target Path"
+      },
+      {
+        "action": "",
+        "key": "'",
+        "modifiers": 1048576,
+        "path": "View > Show > Grid",
+        "submenu": false,
+        "title": "Grid"
+      },
+      {
+        "action": "",
+        "key": ";",
+        "modifiers": 1048576,
+        "path": "View > Show > Guides",
+        "submenu": false,
+        "title": "Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Canvas Guides",
+        "submenu": false,
+        "title": "Canvas Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Artboard Guides",
+        "submenu": false,
+        "title": "Artboard Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Artboard Names",
+        "submenu": false,
+        "title": "Artboard Names"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Count",
+        "submenu": false,
+        "title": "Count"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Smart Guides",
+        "submenu": false,
+        "title": "Smart Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Slices",
+        "submenu": false,
+        "title": "Slices"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Notes",
+        "submenu": false,
+        "title": "Notes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Pixel Grid",
+        "submenu": false,
+        "title": "Pixel Grid"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Pattern Preview Tile Bounds",
+        "submenu": false,
+        "title": "Pattern Preview Tile Bounds"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Mesh",
+        "submenu": false,
+        "title": "Mesh"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Edit Pins",
+        "submenu": false,
+        "title": "Edit Pins"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > All",
+        "submenu": false,
+        "title": "All"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > None",
+        "submenu": false,
+        "title": "None"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Show > Show Extras Options…",
+        "submenu": false,
+        "title": "Show Extras Options…"
+      },
+      {
+        "action": "rulers",
+        "key": "r",
+        "modifiers": 1048576,
+        "path": "View > Rulers",
+        "submenu": false,
+        "title": "Rulers"
+      },
+      {
+        "action": "",
+        "key": ";",
+        "modifiers": 1179648,
+        "path": "View > Snap",
+        "submenu": false,
+        "title": "Snap"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To",
+        "submenu": true,
+        "title": "Snap To"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > Guides",
+        "submenu": false,
+        "title": "Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > Grid",
+        "submenu": false,
+        "title": "Grid"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > Layers",
+        "submenu": false,
+        "title": "Layers"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > Slices",
+        "submenu": false,
+        "title": "Slices"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > Document Bounds",
+        "submenu": false,
+        "title": "Document Bounds"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > All",
+        "submenu": false,
+        "title": "All"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Snap To > None",
+        "submenu": false,
+        "title": "None"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides",
+        "submenu": true,
+        "title": "Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > Edit Selected Guides",
+        "submenu": false,
+        "title": "Edit Selected Guides"
+      },
+      {
+        "action": "",
+        "key": ";",
+        "modifiers": 1572864,
+        "path": "View > Guides > Lock Guides",
+        "submenu": false,
+        "title": "Lock Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > Clear Guides",
+        "submenu": false,
+        "title": "Clear Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > Clear Selected Guides",
+        "submenu": false,
+        "title": "Clear Selected Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > Clear Selected Artboard Guides",
+        "submenu": false,
+        "title": "Clear Selected Artboard Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > Clear Canvas Guides",
+        "submenu": false,
+        "title": "Clear Canvas Guides"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > New Guide…",
+        "submenu": false,
+        "title": "New Guide…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > New Guide Layout…",
+        "submenu": false,
+        "title": "New Guide Layout…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Guides > New Guides From Shape",
+        "submenu": false,
+        "title": "New Guides From Shape"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Lock Slices",
+        "submenu": false,
+        "title": "Lock Slices"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "View > Clear Slices",
+        "submenu": false,
+        "title": "Clear Slices"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Plugins",
+        "submenu": true,
+        "title": "Plugins"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Plugins > Plugins Panel",
+        "submenu": false,
+        "title": "Plugins Panel"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window",
+        "submenu": true,
+        "title": "Window"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange",
+        "submenu": true,
+        "title": "Arrange"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Tile All Vertically",
+        "submenu": false,
+        "title": "Tile All Vertically"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Tile All Horizontally",
+        "submenu": false,
+        "title": "Tile All Horizontally"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 2-up Horizontal",
+        "submenu": false,
+        "title": "2-up Horizontal"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 2-up Vertical",
+        "submenu": false,
+        "title": "2-up Vertical"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 3-up Horizontal",
+        "submenu": false,
+        "title": "3-up Horizontal"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 3-up Vertical",
+        "submenu": false,
+        "title": "3-up Vertical"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 3-up Stacked",
+        "submenu": false,
+        "title": "3-up Stacked"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 4-up",
+        "submenu": false,
+        "title": "4-up"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > 6-up",
+        "submenu": false,
+        "title": "6-up"
+      },
+      {
+        "action": "consolidateDocumentWindows",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Consolidate All to Tabs",
+        "submenu": false,
+        "title": "Consolidate All to Tabs"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Cascade",
+        "submenu": false,
+        "title": "Cascade"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Tile",
+        "submenu": false,
+        "title": "Tile"
+      },
+      {
+        "action": "floatDocumentWindow",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Float in Window",
+        "submenu": false,
+        "title": "Float in Window"
+      },
+      {
+        "action": "floatAllDocumentWindows",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Float All in Windows",
+        "submenu": false,
+        "title": "Float All in Windows"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Match Zoom",
+        "submenu": false,
+        "title": "Match Zoom"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Match Location",
+        "submenu": false,
+        "title": "Match Location"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Match Rotation",
+        "submenu": false,
+        "title": "Match Rotation"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Match All",
+        "submenu": false,
+        "title": "Match All"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > New Window",
+        "submenu": false,
+        "title": "New Window"
+      },
+      {
+        "action": "minimizeDocumentWindow",
+        "key": "m",
+        "modifiers": 1310720,
+        "path": "Window > Arrange > Minimize",
+        "submenu": false,
+        "title": "Minimize"
+      },
+      {
+        "action": "bringDocumentWindowsToFront",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Arrange > Bring All to Front",
+        "submenu": false,
+        "title": "Bring All to Front"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace",
+        "submenu": true,
+        "title": "Workspace"
+      },
+      {
+        "action": "selectEssentialsWorkspace",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Essentials (Default)",
+        "submenu": false,
+        "title": "Essentials (Default)"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Motion",
+        "submenu": false,
+        "title": "Motion"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Painting",
+        "submenu": false,
+        "title": "Painting"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Photography",
+        "submenu": false,
+        "title": "Photography"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Graphic and Web",
+        "submenu": false,
+        "title": "Graphic and Web"
+      },
+      {
+        "action": "resetWorkspace",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Reset Essentials",
+        "submenu": false,
+        "title": "Reset Essentials"
+      },
+      {
+        "action": "newWorkspace",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > New Workspace…",
+        "submenu": false,
+        "title": "New Workspace…"
+      },
+      {
+        "action": "deleteWorkspace",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Delete Workspace…",
+        "submenu": false,
+        "title": "Delete Workspace…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Keyboard Shortcuts & Menus…",
+        "submenu": false,
+        "title": "Keyboard Shortcuts & Menus…"
+      },
+      {
+        "action": "lockWorkspace",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Workspace > Lock Workspace",
+        "submenu": false,
+        "title": "Lock Workspace"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 524288,
+        "path": "Window > Actions",
+        "submenu": false,
+        "title": "Actions"
+      },
+      {
+        "action": "adjustmentsPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Adjustments",
+        "submenu": false,
+        "title": "Adjustments"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Brush Settings",
+        "submenu": false,
+        "title": "Brush Settings"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Brushes",
+        "submenu": false,
+        "title": "Brushes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Canvas HUD",
+        "submenu": false,
+        "title": "Canvas HUD"
+      },
+      {
+        "action": "channelsPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Channels",
+        "submenu": false,
+        "title": "Channels"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Character",
+        "submenu": false,
+        "title": "Character"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Character Styles",
+        "submenu": false,
+        "title": "Character Styles"
+      },
+      {
+        "action": "cloneSourcePanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Clone Source",
+        "submenu": false,
+        "title": "Clone Source"
+      },
+      {
+        "action": "colorPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Color",
+        "submenu": false,
+        "title": "Color"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Comments",
+        "submenu": false,
+        "title": "Comments"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Glyphs",
+        "submenu": false,
+        "title": "Glyphs"
+      },
+      {
+        "action": "gradientsPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Gradients",
+        "submenu": false,
+        "title": "Gradients"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Histogram",
+        "submenu": false,
+        "title": "Histogram"
+      },
+      {
+        "action": "historyPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > History",
+        "submenu": false,
+        "title": "History"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Info",
+        "submenu": false,
+        "title": "Info"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Layer Comps",
+        "submenu": false,
+        "title": "Layer Comps"
+      },
+      {
+        "action": "layersPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Layers",
+        "submenu": false,
+        "title": "Layers"
+      },
+      {
+        "action": "librariesPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Libraries",
+        "submenu": false,
+        "title": "Libraries"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Materials",
+        "submenu": false,
+        "title": "Materials"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Measurement Log",
+        "submenu": false,
+        "title": "Measurement Log"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Navigator",
+        "submenu": false,
+        "title": "Navigator"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Notes",
+        "submenu": false,
+        "title": "Notes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Paragraph",
+        "submenu": false,
+        "title": "Paragraph"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Paragraph Styles",
+        "submenu": false,
+        "title": "Paragraph Styles"
+      },
+      {
+        "action": "pathsPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Paths",
+        "submenu": false,
+        "title": "Paths"
+      },
+      {
+        "action": "patternsPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Patterns",
+        "submenu": false,
+        "title": "Patterns"
+      },
+      {
+        "action": "propertiesPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Properties",
+        "submenu": false,
+        "title": "Properties"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Shapes",
+        "submenu": false,
+        "title": "Shapes"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Styles",
+        "submenu": false,
+        "title": "Styles"
+      },
+      {
+        "action": "swatchesPanel",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Swatches",
+        "submenu": false,
+        "title": "Swatches"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Timeline",
+        "submenu": false,
+        "title": "Timeline"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Tool Presets",
+        "submenu": false,
+        "title": "Tool Presets"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Version History",
+        "submenu": false,
+        "title": "Version History"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Application Frame",
+        "submenu": false,
+        "title": "Application Frame"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Options",
+        "submenu": false,
+        "title": "Options"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Tools",
+        "submenu": false,
+        "title": "Tools"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Window > Contextual Task Bar",
+        "submenu": false,
+        "title": "Contextual Task Bar"
+      },
+      {
+        "action": "submenuAction:",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help",
+        "submenu": true,
+        "title": "Help"
+      },
+      {
+        "action": "help",
+        "key": "/",
+        "modifiers": 1179648,
+        "path": "Help > Photato Help…",
+        "submenu": false,
+        "title": "Photato Help…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Hands-on Tutorials…",
+        "submenu": false,
+        "title": "Hands-on Tutorials…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > What's New…",
+        "submenu": false,
+        "title": "What's New…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > System Info…",
+        "submenu": false,
+        "title": "System Info…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > GPU Compatibility…",
+        "submenu": false,
+        "title": "GPU Compatibility…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Learn more about generative credits",
+        "submenu": false,
+        "title": "Learn more about generative credits"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Adobe generative AI user guidelines",
+        "submenu": false,
+        "title": "Adobe generative AI user guidelines"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Manage My Account…",
+        "submenu": false,
+        "title": "Manage My Account…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Sign In…",
+        "submenu": false,
+        "title": "Sign In…"
+      },
+      {
+        "action": "",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Updates…",
+        "submenu": false,
+        "title": "Updates…"
+      },
+      {
+        "action": "featureMap",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Workspace Feature Map…",
+        "submenu": false,
+        "title": "Workspace Feature Map…"
+      },
+      {
+        "action": "help",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Port Status & Shortcuts",
+        "submenu": false,
+        "title": "Port Status & Shortcuts"
+      },
+      {
+        "action": "about",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Open Source & Credits…",
+        "submenu": false,
+        "title": "Open Source & Credits…"
+      },
+      {
+        "action": "supportDevelopment",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Support Development…",
+        "submenu": false,
+        "title": "Support Development…"
+      },
+      {
+        "action": "showAutomation",
+        "key": "",
+        "modifiers": 0,
+        "path": "Help > Photato Automation API…",
+        "submenu": false,
+        "title": "Photato Automation API…"
+      }
+    ],
+    "unavailable_leaf_commands": 567
+  },
+  "api": {
+    "new_routes": [],
+    "new_schema_fields": [],
+    "photato_typed_commands": 21,
+    "adobe_partial_endpoints": 3,
+    "adobe_unimplemented_endpoints": 5,
+    "impact": "Shared renderer correction reaches native preview/Apply Mask/persistence, Photato uploads/previews/downloads and both action-job outputs. Existing permission/validation/isolation rules remain unchanged."
+  },
+  "remaining": [
+    "Every major workflow gate remains open. This closes a reproduced unscaled raster boundary defect, not full mask or source-import parity.",
+    "The Gaussian feather kernel still differs from Photoshop. Independent source/Rust and Photoshop comparisons measure remaining errors; no broad byte-equivalence claim.",
+    "Vector-mask rasterization, scaled/rotated raster and group/other-content mask boundaries require further independent references and implementation.",
+    "Rich original-project content, fill opacity, effects, artboards, auxiliary channels, complete source metadata and .pcraft writing remain unfinished. Preserve editability and explicit rejection while extending major workflows.",
+    "Both APIs share the corrected renderer and pass preview/persistence/job tests; API coverage remains 21 typed commands, three partial Adobe endpoints and five unimplemented endpoints.",
+    "Complete Photoshop menus, factory shortcuts/preferences, all file/lifecycle/colour/large-file behavior and physical Intel/macOS14 runtime qualification remain open.",
+    "Minor functions and final cosmetic details remain deferred behind every major function."
+  ],
+  "next_major_plan": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/next-major-plan01.json",
+    "sha256": "f8ff44b6b331e9be483ad7e4aab2abf42f022b8dcae77382004cf1542736bf44"
+  },
+  "references": [
+    "docs/MASK_BOUNDARY_REFERENCES.json"
+  ],
+  "source_delta": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/source-delta02.json",
+    "sha256": "3548298826a5a9c9a9062a475febebf6aa6efff334a91077b3b2b3f7dbb7527f"
+  },
+  "export_compatibility": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/export-compatibility01.json",
+    "sha256": "b3449353e188e8a1e13d9da980e3b6e2ab97b075997ea95375377caa2995c95f"
+  },
+  "final_input_verification": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/final-inputs01.json",
+    "sha256": "c46614ea72c8e234e3bc234fffc0b4b13d7a15ecff6436db1def04a5f3a51c65"
+  },
+  "live_native_ui": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/live-verification01.json",
+    "sha256": "230de48d12506807a6c95d6a773455d2af529356293ce0f1fff0dcbe0b2934e8"
+  },
+  "independent_comparison": {
+    "path": "artifacts/runs/20261020T220749Z-154-source-rendering/postfix-comparison01.json",
+    "sha256": "17c48be3157185b399d9aecf5c05b829dfbfe7523547ae72a4927e8eb7d5374e"
+  },
+  "prior_failed_attempts": [
+    "focused01:12 tests,8 failures; six off-canvas coverage assertions, one independent Photoshop corner assertion and one test-only working-profile conversion error",
+    "make-photoshop-input01:three pixel-mask inputs written, then explicit unsupported fractional outside-mask error; uncaught command-line harness error",
+    "mask-boundary-input01:output directory collided with executable; corrected in02",
+    "Initial broad cropped-mask hypothesis disproved by Photoshop controls; only independently observed off-canvas-raster condition changed",
+    "Intel-tests01 ran nine stale cached153 tests; clean-scratch build02/tests02 run all fourteen current cases",
+    "Live initial Undo was scoped to zoom text editing; after leaving the field the native document Undo/Redo and archive check pass"
+  ],
+  "resume_first": "Verify checkpoint154/freeze02/candidate154/final audit and installed117. Follow next-major-plan01 for remaining mask/rendering fidelity and editable source features. All qualification sessions are terminal; master goal stays active.",
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step154-final",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "refresh_log": "artifacts/development-history-audit/20261020-step154-final/refresh01.log",
+    "check_log": "artifacts/development-history-audit/20261020-step154-final/check01.log",
+    "final_source_package_verification": "artifacts/development-history-audit/20261020-step154-final/final-inputs01.json"
+  }
+}

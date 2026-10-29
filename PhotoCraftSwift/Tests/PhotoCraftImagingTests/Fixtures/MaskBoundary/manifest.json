@@ -1,0 +1,36 @@
+{
+  "step": "dev-step-154",
+  "files": {
+    "stripe-photoshop.psd": {
+      "sha256": "2f3277a98a5b0f1300623030675f9829eb3581a91f360d48d18816cb562c238b",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs02/stripe-photoshop.psd"
+    },
+    "cropped-photoshop.psd": {
+      "sha256": "3345712c16b888ab35dc8e7f49c80683d8c278227ca005a0d71698fda4548887",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs02/cropped-photoshop.psd"
+    },
+    "canvas-photoshop.psd": {
+      "sha256": "e39a7263a1feea1ea61da2546b895d77f94bad229bf9626bac83350c4f10dd26",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs02/canvas-photoshop.psd"
+    },
+    "offcanvas-photoshop.psd": {
+      "sha256": "252b486d585a0c52e3380938cf9afd7c29ee5bf88bdb7ca949e69c0baddfa9ad",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs03/offcanvas-photoshop.psd"
+    },
+    "canvas-gray-photoshop.psd": {
+      "sha256": "f2a6331d4fe44bba4ac45689d6b72ee2bba2e7347ea297f2b1f4e1d086e01db7",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs03/canvas-gray-photoshop.psd"
+    },
+    "outside-white-photoshop.psd": {
+      "sha256": "a462fdb28c0037495c49bae1e8e1e31458ef17c4588c490d9698a263c51c4fad",
+      "origin": "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-inputs03/outside-white-photoshop.psd"
+    }
+  },
+  "scope": "Cropping, full canvas, single-axis stripe, off-canvas raster, white outside coverage and gray constant controls; native kernel remains approximate.",
+  "generation_sources": [
+    "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-input01.swift",
+    "artifacts/runs/20261020T220749Z-154-source-rendering/mask-boundary-input03.swift"
+  ],
+  "live_save": "CUA native Photoshop Open and Save As; no user document edited",
+  "license": "MIT OR Apache-2.0"
+}

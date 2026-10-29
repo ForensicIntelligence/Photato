@@ -24,7 +24,7 @@ extension CraftDocument {
     Set(layers.filter { $0.id == id || ancestors(of: $0.id).contains { $0.id == id } }.map(\.id))
   }
   public func isLocked(_ id: UUID) -> Bool {
-    layers.first { $0.id == id }?.locked == true || ancestors(of: id).contains { $0.locked }
+    effectiveProtection(id).fullyLocks
   }
   public func isVisible(_ id: UUID) -> Bool {
     guard let layer = layers.first(where: { $0.id == id }), layer.visible, layer.opacity > 0 else {

@@ -1,0 +1,1002 @@
+{
+  "step": "dev-step-123",
+  "status": "Scratch-backed undo history qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "dependency": "Scratch-backed history is a major large-document dependency; remaining D03 phase2 features do not move ahead of the major-function gate.",
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T021441Z-123-scratch-history",
+  "source_freeze": {
+    "path": "artifacts/runs/20261020T021441Z-123-scratch-history/tested-source-hashes02.json",
+    "sha256": "d5e53be550ec1cf6cce8862bb46c6369ecbae87602841910edef602c56667029"
+  },
+  "implementation": [
+    "Private immutable SHA256-checked tile, selection and metadata blobs;64KiB physical reads/writes, deduplication and last-owner cleanup.",
+    "Shared COW raster accounting beyond current document; transactional spills and throwing history restoration.",
+    "Photato historyStorage state, JSON schema, capabilities and explicit failures; desktop and both job interfaces share engine.",
+    "Portable native archive version and normal raster packing unchanged."
+  ],
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/troubleshoot/troubleshoot-tools-resources/set-up-and-manage-scratch-disks.html",
+      "accessed_utc": "2026-10-20T02:28:08.557687+00:00",
+      "observed": "Scratch disks provide temporary storage when RAM is insufficient; macOS Settings > Scratch Disks permits drive priority. These preference controls are not implemented by123."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/configure-photoshop-performance-preferences.html",
+      "accessed_utc": "2026-10-20T02:28:08.557981+00:00",
+      "status": "Current primary page followed successfully from the scratch page; legacy Singapore URL returned internal error. No Photoshop default-memory/history-preference equivalence is claimed.",
+      "observed": "Adobe documents50 default and1,000 maximum history states and adjustable RAM allocation; Photato40/default and200 maximum and current fixed storage limits remain explicit gaps."
+    }
+  ],
+  "limits": {
+    "history_states": 40,
+    "resident_history_payload_bytes": 268435456,
+    "scratch_bytes": 4294967296,
+    "maximum_blob_bytes": 536870912,
+    "scratch_scope": "Shared snapshot family; file lengths, not filesystem allocation",
+    "metadata_and_current_document": "Current document, allocator/index overhead and inline metadata are not a total process RSS cap",
+    "public_file_canvas_API_limits": "Unchanged",
+    "maximum_history_states": 200
+  },
+  "remaining": [
+    "Active-document paging and bounded rendering",
+    "Rosetta peak-RSS regression and synchronous restore latency; accounting bounds resident history payload, not process memory",
+    "Streaming native archives/recovery and abnormal-termination scratch cleanup",
+    "Asynchronous history and storage preferences",
+    "D03 snapshots/nonlinear history/Fade/purge",
+    "Complete Photoshop output/UI/factory-preference comparisons",
+    "Combined live118\u2013123 workflows await unlocked Mac",
+    "Physical Intel/macOS14 runtime and multi-GB qualification",
+    "Factory history limits: current primary Adobe page documents50 default/1,000 maximum versus Photato40/default,200 maximum"
+  ],
+  "focused": {
+    "passed": 86,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 8.956,
+    "log": "artifacts/runs/20261020T021441Z-123-scratch-history/focused02.log"
+  },
+  "failure_history": [
+    {
+      "attempt": "focused01",
+      "result": "Compilation: cancellation Task.value missing try; preserved and repaired in02"
+    }
+  ],
+  "source_review": [
+    "Scratch store serializes dedup/accounting; files are immutable and value copies own their snapshots. Snapshot coding contexts and decode budget remain synchronous and confined to each call.",
+    "A failed close or partial write cannot publish a blob. Failed unlink stays conservatively charged to the limit; normal last-owner release deletes blobs/directory.",
+    "Disk budget includes old/new snapshot ownership during a transaction; a full budget can reject a new edit rather than discard old history.",
+    "Scratch I/O and history restoration are synchronous. Active document, index overhead and other live session copies are not covered by the per-session resident payload limit."
+  ],
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/full01.log",
+      "sha256": "f313df12029339b073d31186d8a605bd0aa6b6400acb100b5947dcb39af70ef7",
+      "passed": 1105,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 239.118
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/release01.log",
+      "sha256": "8bf89151192d64c7232e17954997ef0c94d9b818ffd6107121cf50284bb325d3",
+      "passed": 1105,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.56
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato123-verified-af43nxj9/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "450481f3e9ce0577842e1e78aa9bb58cedbd1e5ad7623a8354d6d680c42a6ed2",
+    "zip_sha256": "703304d32036a3e1b77a48672d7256f41a88d0d75dc4079ac485d3892b010260",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "memory": {
+    "scope": "Current engine, same four-layer1024x1024 RGB32 input and twelve pixel edits/undo/redo; 1GiB resident budget compared with32MiB spilling. Every original/edited/restored sample hash and final complete PSB SHA256 matches. Includes snapshot hashing and final file encoding; single-process bounded observations, not Photoshop performance or multi-GB qualification. x86_64 executes under Rosetta, not physical Intel.",
+    "input": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+      "sha256": "442efe96edb78b0093c046ff7faa70b7b79fa65527b9773e5634916721e56252"
+    },
+    "cases": [
+      {
+        "budget": 1073741824,
+        "cleanupFailures": 0,
+        "forwardSeconds": 0.5247790813446045,
+        "navigationSeconds": 0.9757500886917114,
+        "residentHistoryBytes": 201338880,
+        "scratchBytes": 0,
+        "spilledStates": 0,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 384779128,
+        "peakRSSBytes": 393003008,
+        "arch": "arm64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-arm64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm6401",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "1073741824",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm64-1073741824.psb"
+        ]
+      },
+      {
+        "budget": 33554432,
+        "cleanupFailures": 0,
+        "forwardSeconds": 2.162696957588196,
+        "navigationSeconds": 6.235229015350342,
+        "residentHistoryBytes": 16778240,
+        "scratchBytes": 7544165,
+        "spilledStates": 11,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 296043432,
+        "peakRSSBytes": 304824320,
+        "arch": "arm64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-arm64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm6401",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "33554432",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm64-33554432.psb"
+        ]
+      },
+      {
+        "budget": 1073741824,
+        "cleanupFailures": 0,
+        "forwardSeconds": 2.7118639945983887,
+        "navigationSeconds": 5.2733869552612305,
+        "residentHistoryBytes": 201338880,
+        "scratchBytes": 0,
+        "spilledStates": 0,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 332786520,
+        "peakRSSBytes": 333697024,
+        "arch": "x86_64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-x86_64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_6401",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "1073741824",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_64-1073741824.psb"
+        ]
+      },
+      {
+        "budget": 33554432,
+        "cleanupFailures": 0,
+        "forwardSeconds": 5.2356120347976685,
+        "navigationSeconds": 14.306899905204773,
+        "residentHistoryBytes": 16778240,
+        "scratchBytes": 7544165,
+        "spilledStates": 11,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 421977880,
+        "peakRSSBytes": 422535168,
+        "arch": "x86_64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-x86_64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_6401",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "33554432",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_64-33554432.psb"
+        ]
+      }
+    ]
+  },
+  "intel_psb_evidence": {
+    "path": "artifacts/runs/20261020T021441Z-123-scratch-history/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_group_evidence": {
+    "path": "artifacts/runs/20261020T021441Z-123-scratch-history/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "independent_parser": {
+    "path": "artifacts/runs/20261020T021441Z-123-scratch-history/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "prior_output_equality": {
+    "path": "artifacts/runs/20261020T021441Z-123-scratch-history/final-export-compatibility01.json",
+    "sha256": "9c65a99a55edd33e260347941c64b888b360cc52498974fe0694e771d6f9513f"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_123.json",
+  "memory_diagnostic": {
+    "scope": "Explicit autoreleasepool around each execute/undo/redo to emulate per-action draining; same unchanged engine, same four-layer1024x1024 RGB32 input and twelve pixel edits/undo/redo; 1GiB resident budget compared with32MiB spilling. Every original/edited/restored sample hash and final complete PSB SHA256 matches. Includes snapshot hashing and final file encoding; single-process bounded observations, not Photoshop performance or multi-GB qualification. x86_64 executes under Rosetta, not physical Intel.",
+    "input": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+      "sha256": "442efe96edb78b0093c046ff7faa70b7b79fa65527b9773e5634916721e56252"
+    },
+    "cases": [
+      {
+        "budget": 1073741824,
+        "cleanupFailures": 0,
+        "forwardSeconds": 0.527414083480835,
+        "navigationSeconds": 0.9801450967788696,
+        "residentHistoryBytes": 201338880,
+        "scratchBytes": 0,
+        "spilledStates": 0,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 386122640,
+        "peakRSSBytes": 394362880,
+        "arch": "arm64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-arm64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm6402",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "1073741824",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-pooled-arm64-1073741824.psb"
+        ]
+      },
+      {
+        "budget": 33554432,
+        "cleanupFailures": 0,
+        "forwardSeconds": 2.103881001472473,
+        "navigationSeconds": 6.201696038246155,
+        "residentHistoryBytes": 16778240,
+        "scratchBytes": 7544165,
+        "spilledStates": 11,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 304268200,
+        "peakRSSBytes": 313049088,
+        "arch": "arm64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-arm64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-arm6402",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "33554432",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-pooled-arm64-33554432.psb"
+        ]
+      },
+      {
+        "budget": 1073741824,
+        "cleanupFailures": 0,
+        "forwardSeconds": 2.7917380332946777,
+        "navigationSeconds": 5.395817041397095,
+        "residentHistoryBytes": 201338880,
+        "scratchBytes": 0,
+        "spilledStates": 0,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 331496376,
+        "peakRSSBytes": 332337152,
+        "arch": "x86_64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-x86_64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_6402",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "1073741824",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-pooled-x86_64-1073741824.psb"
+        ]
+      },
+      {
+        "budget": 33554432,
+        "cleanupFailures": 0,
+        "forwardSeconds": 5.203081011772156,
+        "navigationSeconds": 13.96033501625061,
+        "residentHistoryBytes": 16778240,
+        "scratchBytes": 7544165,
+        "spilledStates": 11,
+        "stateSampleHashes": [
+          [
+            "4b7f59d827834647ee612e719345f556a787082427708a2924453323dbd0bfd2",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "ab9abc121d16be753efe5e28145ab75fe4591d4fe9d6634bb39de452dcb5e1a4",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "f4e449452401c61379939035dd2d0d5b18e31b4cb47da54f48f4f002d20f7832",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "664978aa8844eb501bbfb85e8f83d4aff7a32d5e80dd96c8176ddf1af4bba95c"
+          ],
+          [
+            "1fdc79fd43ede39e75bf9e37c3aa6d82d35f97cc38e5363bd209c781a0a5e70f",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "e90be4ca0d19fdfcb82627c371b94ec177418f1ffa7ecf102490838fa20c6b0b",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "0c7e9bf6bf1872d5256bae4360502acdd96bd403f44d8485902ecbca85cc5a7d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "23d87dd3bd6068ffda3c7b2eda87c3d7b63661309331929f7271230cd83fe6a4"
+          ],
+          [
+            "c5191c17b34d953178bd1c5bcfc45354b6c52c124ec06842009b6fec40058298",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "49e874dd6d872abc1cf18532daebda5903f514a20c8cbe4019cd6e4afca94839",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "9bc320a62fa47ee811a3a9e576da1dda5b112c9385514cfbec83ad2a04a4129d",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "aefc88c7c10ee50e9fe7494dd7a861668033bceec4900c7fe7664f353b846bc9"
+          ],
+          [
+            "434155f67b5962d6dbdc7575425827b369073e559fe20712a1caebba5ae67851",
+            "bdf01874fdeeaa53e3bf7768b815f14f77bb3fc359108e58b431b20f242f3fc8",
+            "faf46f7f1ba77ecf135605c8f874478beca18e3fd4a688505e456ad4caa7a779",
+            "e8abab72ec7403d532c4ec4ab5c591dedcba865123031631960b2856715a5305"
+          ]
+        ],
+        "undoRedoSampleHashesEqual": true,
+        "undoStates": 12,
+        "peakFootprintBytes": 387616632,
+        "peakRSSBytes": 388108288,
+        "arch": "x86_64",
+        "outputSHA256": "dc8e43d58963cbf2e2c6b43cf3d847e57fabd5af3b62d56d97d74a7ee3ba25b1",
+        "command": [
+          "/usr/bin/time",
+          "-l",
+          "/usr/bin/arch",
+          "-x86_64",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-x86_6402",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T004914Z-120-psd-row-decoding/memory-rgb32-0.psb",
+          "33554432",
+          "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T021441Z-123-scratch-history/history-pooled-x86_64-33554432.psb"
+        ]
+      }
+    ]
+  },
+  "performance_limitation": "Rosetta total-memory performance remains open: the12-step32MiB scratch probe peaks at422535168 RSS bytes versus333697024 resident-only; per-action autoreleasepool diagnostic lowers it to388108288 but remains above332337152. Arm64 peakRSS is lower with spilling. All histories/output bytes match; synchronous disk navigation costs more time. No general process-memory improvement is claimed.",
+  "later_step124": {
+    "reference": "docs/NATIVE_ARCHIVE_STREAMING_REFERENCES.json",
+    "comparison": {
+      "path": "artifacts/runs/20261020T024114Z-124-native-archive-streaming/history-prior-comparison01.json",
+      "sha256": "b6e53c0532876cb83455671283af9d0d1b11e9a970bbf619199a7ea6ac306ba0"
+    },
+    "note": "Reusable tile inflater preserves every prior history/output byte. Rosetta peak remains above resident-only history;124 measurements do not close the123 performance limitation."
+  },
+  "later_step125": {
+    "reference": "docs/HISTORY_RESTORE_SHARING_REFERENCES.json",
+    "comparison": {
+      "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/history-prior-comparison01.json",
+      "sha256": "ca91bdf6a0f931d6d1175bfe48b50fae7a89cc8c030fcf02763cfd70a48f8eb1"
+    },
+    "entropy_comparison": {
+      "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/history-entropy-comparison01.json",
+      "sha256": "38e60110f5f4e72e7d8ad33e350d66611e1d73c0c48d8d9651f70ddbf3dd0c95"
+    },
+    "note": "Current-document tile reuse retains sample/output bytes and disk integrity checks; see measured cases without inferring a general total-memory cap."
+  }
+}

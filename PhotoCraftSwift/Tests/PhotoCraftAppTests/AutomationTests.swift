@@ -7,6 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
+  static let expectedCommandCount = 191
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -41,21 +42,30 @@ final class AutomationTests: XCTestCase {
   }
 
   @MainActor func withService(
+    actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
     pressedMouseButtons: @escaping @MainActor () -> Int = { NSEvent.pressedMouseButtons },
     resourceTransport: any AdobeResourceTransport = NativeAdobeResourceTransport(),
+    foregroundDetector: any ForegroundDetecting = VisionForegroundDetector(),
     documentDecoder: @escaping @Sendable (Data, Bool, String) throws -> CraftDocument = {
       try DocumentIO.decodeUpload($0, native: $1, name: $2)
     },
+    prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare,
+    recoveryPreferences: RecoveryPreferencesStore? = nil,
+    recoveryIndex: RecoveryIndexStore? = nil,
+    applicationTerminator: @escaping @MainActor () -> Void = { NSApp.terminate(nil) },
     _ body: @MainActor (AutomationService, CraftNSDocument) async throws -> Void
   ) async throws {
     _ = NSApplication.shared
-    let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
+    let controller = CraftDocumentController(
+      workspaces: WorkspaceLibrary(), recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex)
     let document = CraftNSDocument(
-      model: try CraftNSDocument.blankModel(width: 4, height: 3, background: .clear))
+      model: try CraftNSDocument.blankModel(width: 4, height: 3, background: .clear), actions: actions, brushes: brushes, skies:skies, shapes:shapes,
+      prepareHistory: prepareHistory)
     controller.addDocument(document)
     let service = AutomationService(
       controller: controller, pressedMouseButtons: pressedMouseButtons,
-      resourceTransport: resourceTransport, documentDecoder: documentDecoder)
+      resourceTransport: resourceTransport, foregroundDetector: foregroundDetector, documentDecoder: documentDecoder,
+      applicationTerminator: applicationTerminator)
     defer {
       service.stop()
       document.store.renderTask?.cancel()
@@ -144,8 +154,9 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(sameOrigin.0.statusCode, 200)
       let catalogue = try XCTUnwrap(
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
-      XCTAssertEqual((catalogue["commands"] as? [Any])?.count, 17)
-      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 802)
+      XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
+      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 801)
+      XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }
@@ -155,6 +166,8 @@ final class AutomationTests: XCTestCase {
       try service.share(document)
       let store = document.store
       let original = store.document
+      let share = try XCTUnwrap(service.shares.first)
+      XCTAssertEqual(service.state(share,document:document)["windowTitle"] as? String, "Photato - " + (document.displayName ?? original.name))
       let id = try XCTUnwrap(original.activeLayerID).uuidString
       let commands: [(String, [String: Any])] = [
         ("layer.rename", ["layerID": id, "name": "Browser layer"]),
@@ -191,7 +204,7 @@ final class AutomationTests: XCTestCase {
       for _ in 0..<8 { _ = try await edit(service, document, "history.redo") }
       XCTAssertEqual(store.document, result)
       XCTAssertTrue(document.isDocumentEdited)
-      store.undo()
+      await store.undo()
       XCTAssertEqual(store.document.layers.count, 1, "Desktop Undo sees the API edit")
     }
   }
@@ -328,8 +341,8 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(undo, 413)
       XCTAssertEqual(document.store.document, before)
       document.store.session = history
-      document.store.session.undo()
-      document.store.session.undo()
+      try document.store.session.undo()
+      try document.store.session.undo()
       document.store.render()
       let beforeRedo = document.store.document
       let redo = try await edit(service, document, "history.redo")
@@ -394,7 +407,7 @@ final class AutomationTests: XCTestCase {
       ])
       XCTAssertThrowsError(try AutomationCommand(data: data).nativeCommand(document: document))
     }
-    XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, 17)
+    XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, AutomationTests.expectedCommandCount)
     for definition in AutomationCommand.definitions {
       XCTAssertTrue(JSONSerialization.isValidJSONObject(definition.schema))
       XCTAssertEqual(definition.schema["additionalProperties"] as? Bool, false)

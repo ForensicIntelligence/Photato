@@ -1,0 +1,202 @@
+{
+  "step": 238,
+  "status": "Native clip splitting, exact fractional/VFR source intervals, timed editable stills, sequential video groups, key-following moves, native54 and shared desktop/API editing pass 2,453 full optimized tests and13 final focused tests on2,298 unchanged inputs. Independent PNG checks match576 analytic RGBA8 channel values. Transitions, audio, Render Video, graphical dragging, automatic movie grouping and exact/live/platform parity remain open. Installed221 and private universal232 are unchanged.",
+  "run": "artifacts/runs/20261029T022458Z-238-video-arrangement",
+  "source_manifest": "artifacts/runs/20261029T022458Z-238-video-arrangement/source03.json",
+  "native_archive": 54,
+  "typed_commands": 164,
+  "adobe_routes_changed": false,
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/organize-and-manage-video-groups/edit-video-clips-and-audio-in-the-timeline.html",
+      "updated": "2026-10-04",
+      "use": "Public workflow behavior: clips, splits, video groups and transitions; no implementation source."
+    },
+    {
+      "url": "https://helpx.adobe.com/au/photoshop/using/video-features.html",
+      "updated": "2026-04-07",
+      "use": "Public video groups containing movie, text, image and shape clips."
+    }
+  ],
+  "remaining": [
+    "Transitions",
+    "Audio playback/editing",
+    "Render Video",
+    "Graphical clip bars and drag interaction",
+    "Automatic video group creation on movie import",
+    "Clipping-chain splits",
+    "Moving nested clip intervals before time zero",
+    "PSD/Actions animation interchange",
+    "Exact Photoshop output and interaction comparison",
+    "Universal rebuild and macOS14/Intel live qualification"
+  ],
+  "installed_build": 221,
+  "last_qualified_universal": 232,
+  "goal_complete": false,
+  "source_inputs": 2298,
+  "focused": {
+    "tests": 66,
+    "failures": 0,
+    "log": "artifacts/runs/20261029T022458Z-238-video-arrangement/focused02.log",
+    "source": "source02; superseded by final grouped-start guard revision"
+  },
+  "independent_pixels": {
+    "pass": true,
+    "frames": 12,
+    "rgba_channel_values": 576,
+    "reference": "Analytic solid red/green/blue source intervals at 2 fps on an 8 fps Timeline; exact cut at frame3. Pillow reads exported PNGs independently. This is not a Photoshop comparison.",
+    "checks": [
+      {
+        "frame": 0,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 1,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 2,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 3,
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ],
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f"
+      },
+      {
+        "frame": 4,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "sha256": "71d9a36511e537c1173c9ec792265eca365e9212319d1a9b3b90e75037bbd1e3"
+      },
+      {
+        "frame": 5,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "sha256": "71d9a36511e537c1173c9ec792265eca365e9212319d1a9b3b90e75037bbd1e3"
+      },
+      {
+        "frame": 6,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "sha256": "71d9a36511e537c1173c9ec792265eca365e9212319d1a9b3b90e75037bbd1e3"
+      },
+      {
+        "frame": 7,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "sha256": "71d9a36511e537c1173c9ec792265eca365e9212319d1a9b3b90e75037bbd1e3"
+      },
+      {
+        "frame": 8,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      },
+      {
+        "frame": 9,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      },
+      {
+        "frame": 10,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      },
+      {
+        "frame": 11,
+        "rgba": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "sha256": "9f253f112731cc65b8c51e4d25a2e5f7dd9e3b40e5f85ff1b719971bbffc95d1"
+      }
+    ]
+  },
+  "verification": {
+    "utc": "2026-10-29T02:53:04.364870+00:00",
+    "full": {
+      "tests": 2453,
+      "failures": 0,
+      "seconds": 169.711,
+      "log": "artifacts/runs/20261029T022458Z-238-video-arrangement/full-tests01.log",
+      "log_sha256": "0b9e7a243ce40d6461a003ed7c5b217280eb10af3b2e7e261607dd173d7ecf0e",
+      "build_seconds": [
+        "367.35"
+      ]
+    },
+    "final_focused": {
+      "tests": 13,
+      "failures": 0,
+      "seconds": 0.283,
+      "log": "artifacts/runs/20261029T022458Z-238-video-arrangement/focused03.log",
+      "log_sha256": "477b2ebf84991e5cbca992cab497daca1363c41f3af7aac787d5cb793ebe73ff",
+      "build_seconds": [
+        "0.48"
+      ]
+    },
+    "unchanged_inputs": 2298,
+    "source_manifest": "artifacts/runs/20261029T022458Z-238-video-arrangement/source03.json",
+    "binary_sha256": "14407c2bcaa6c7a5023b36a0fe6448f914672babc965170c4bd14ea0cd29d967",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T022458Z-238-video-arrangement/independent-pixels02.json",
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  }
+}

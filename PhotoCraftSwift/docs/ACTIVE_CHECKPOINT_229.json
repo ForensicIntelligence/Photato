@@ -1,0 +1,71 @@
+{
+  "step": 229,
+  "recorded_at_utc": "2026-10-28T22:32:24.881315+00:00",
+  "status": "Native frame animation, Timeline controls/playback, position/opacity tween, Undo/native50 and two shared APIs pass47 focused and2,402 full optimized tests. All2,262 source11 inputs are unchanged. Full SP01 and exact/live/platform qualification remain open; installed221 and qualified/uploaded224 are unchanged.",
+  "source_manifest": "artifacts/runs/20261028T215501Z-229-frame-animation/source11.json",
+  "source_inputs": 2262,
+  "native_archive": 50,
+  "actions_version": 20,
+  "typed_commands": 153,
+  "tests": {
+    "focused": {
+      "tests": 47,
+      "failures": 0,
+      "log": "artifacts/runs/20261028T215501Z-229-frame-animation/focused05.log",
+      "source_manifest": "artifacts/runs/20261028T215501Z-229-frame-animation/source05.json"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T22:32:24.881315+00:00",
+      "tests": 2402,
+      "failures": 0,
+      "seconds_suite_wall": 173.483,
+      "exit_code": 0,
+      "source_manifest": "artifacts/runs/20261028T215501Z-229-frame-animation/source11.json",
+      "unchanged_inputs": 2262,
+      "log": "artifacts/runs/20261028T215501Z-229-frame-animation/release11.log",
+      "log_sha256": "60ad0e856cdbc95823740fa2e7c88c7d49dad0493b06c30a7c838096da9f0264",
+      "binaries": {
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "0a8fef5be92f8b2a84a899f52686751eae74a60b26169d313d8d20a50c117075",
+        "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests": "c8041c215ec2b815993ab4607fcd0cd79ee0e4c26643399179faee50ff5dd614"
+      },
+      "qualified_universal_package": false,
+      "live_acceptance": false,
+      "full_photoshop_parity": false
+    },
+    "preview_regression": {
+      "status": "failed",
+      "tests": 1,
+      "failures": 1,
+      "log": "artifacts/runs/20261028T215501Z-229-frame-animation/preview10.log",
+      "cause": "Transient visibility composition was validated against retained selected-frame metadata."
+    },
+    "full_optimized_failed": {
+      "tests": 2400,
+      "failures": 3,
+      "seconds_suite_wall": 171.462,
+      "exit_code": 1,
+      "log": "artifacts/runs/20261028T215501Z-229-frame-animation/release06.log",
+      "log_sha256": "75349875f5e69b900def962f2ba536e297c13ace0c5469e3385d4d3e8775d931",
+      "source_manifest": "artifacts/runs/20261028T215501Z-229-frame-animation/source06.json",
+      "cause": "Three assertions in two legacy archive capability tests still expect1...49; API now correctly advertises50. New animation tests pass."
+    }
+  },
+  "failed_attempts": [
+    "artifacts/runs/20261028T215501Z-229-frame-animation/focused02.log",
+    "artifacts/runs/20261028T215501Z-229-frame-animation/focused03.log",
+    "artifacts/runs/20261028T215501Z-229-frame-animation/focused04.log",
+    "artifacts/runs/20261028T215501Z-229-frame-animation/release06.log",
+    "artifacts/runs/20261028T215501Z-229-frame-animation/preview10.log"
+  ],
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "new_package": false,
+  "live_acceptance": false,
+  "goal_complete": false,
+  "increment_complete": true,
+  "reference": "docs/ANIMATION_REFERENCES.json",
+  "next_action": "Implement animated GIF and image-sequence interchange using artifacts/runs/20261028T215501Z-229-frame-animation/next-major12.json, then video/keyframes/audio. Full SP01 and master-goal scope remain intact.",
+  "verification": "artifacts/runs/20261028T215501Z-229-frame-animation/verification13.json",
+  "source_changes": "artifacts/runs/20261028T215501Z-229-frame-animation/changes13.json"
+}

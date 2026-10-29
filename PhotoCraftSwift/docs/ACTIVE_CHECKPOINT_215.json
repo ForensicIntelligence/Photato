@@ -1,0 +1,221 @@
+{
+  "step": "dev-step-215",
+  "completed_at_utc": "2026-10-28T02:20:11.223743+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "version": "0.2.0",
+  "build": "2",
+  "source_manifest": "artifacts/runs/20261028T014514Z-215-render-workflows/source01.json",
+  "source_inputs": 1682,
+  "source_manifest_sha256": "0345ad460d908a267d1975f35dbad211d08bd12fb7e2e3c8c34f47925bb6962a",
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/RenderWorkspace.swift",
+      "Sources/PhotoCraftCore/RenderFilterEngine.swift",
+      "Sources/PhotoCraftCore/RenderSettings.swift",
+      "Tests/PhotoCraftAppTests/RenderWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/clouds-colors.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/clouds-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/differenceClouds-colors.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/differenceClouds-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/fibers-colors.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/fibers-default.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/fibers-limits.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/lensFlare-moviePrime.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/lensFlare-outside.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/lensFlare-prime105.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/lensFlare-prime35.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/lensFlare-zoom.rgba",
+      "Tests/PhotoCraftCoreTests/Fixtures/Render/provenance.json",
+      "Tests/PhotoCraftCoreTests/RenderFilterTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftCore/SmartFilters.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "focused_integration03": {
+      "passed": 94,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T014514Z-215-render-workflows/integration03.log",
+      "current_source": true
+    },
+    "full_optimized01": {
+      "passed": 2041,
+      "failed": 0,
+      "path": "artifacts/runs/20261028T014514Z-215-render-workflows/release-full01.log",
+      "current_source": true
+    }
+  },
+  "test_counts": {
+    "integration03": 94,
+    "release-full01": 2041
+  },
+  "package": {
+    "utc": "2026-10-28T02:20:10.874309+00:00",
+    "tests": {
+      "integration03": 94,
+      "release-full01": 2041
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T014514Z-215-render-workflows/Photato215-final01.zip",
+    "zip_sha256": "983973c2279e81750bf1d2ca648f4c1dc89f89750884e8a080f003a1752b633f",
+    "app": "/private/tmp/photato215-verified-sps2wz2j/Photato.app",
+    "executable_sha256": "3659202eedff7ea9c668210f611b90169c06b6121e09e433c41cb2bcc8e9a408",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato215-verified-sps2wz2j/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato215-verified-sps2wz2j/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1682,
+    "source_manifest_sha256": "0345ad460d908a267d1975f35dbad211d08bd12fb7e2e3c8c34f47925bb6962a",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "user_preference_changes": [],
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 313,
+      "unavailable_leaf_commands": 412,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "original_rust_render_comparisons": [
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "clouds-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "clouds-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "differenceClouds-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "differenceClouds-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-default"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-colors"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "fibers-limits"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-zoom"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-prime35"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-prime105"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-moviePrime"
+      },
+      {
+        "differentSamples": 0,
+        "maximumByteDifference": 0,
+        "name": "lensFlare-outside"
+      }
+    ],
+    "limits": "94 focused Debug and2041 full optimized tests plus universal package on this host.12 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Render remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
+    "retired_brand_matches_in_package": []
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 313,
+    "unavailable_leaf_commands": 412,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "completed_this_increment": [
+    "Four native Render filters with generation, factory menus, previews or immediate commands, Cancel/local history and document Undo",
+    "12 original-Rust RGB8 references matched exactly; no Photoshop-equivalence claim",
+    "Editable Smart Filters, native42/Actions14 and Photato API schemas/state/guards/equivalence",
+    "Reverified installed209 and retained document hashes; recorded locked live-handoff status"
+  ],
+  "live_pending": [
+    "Unlock Mac, open retained159 document in installed Photato Verified, inspect title/zoom/pan/scroll/window resize, then safely close obsolete159 probe after checking current unsaved state",
+    "Live Render controls and Photoshop descriptor/reference capture"
+  ],
+  "delivery": {
+    "created_utc": "2026-10-28T00:12:54.933121+00:00",
+    "source_build": "verified209",
+    "source_app": "/private/tmp/photato209-verified-f5yvfup5/Photato.app",
+    "source_executable_sha256": "6850eb56b1c52120da049fc57091994f4bb3a6f8b197d98ef9f16b7fb4671842",
+    "app": "/Users/johnczlonka/Applications/Photato Verified.app",
+    "bundle_id": "ca.forensicintelligence.photato.verified",
+    "change": "Copied verified209 app; changed only bundle identifier and ad-hoc re-signed to coexist with original PhotoCraft. No source/code/model changes.",
+    "signature": "strict verified",
+    "architectures": "x86_64 arm64",
+    "copied_executable_sha256": "58ad867464492e7684859f2cbb22f036aa70f5f8b36793a1052011c46eedf990",
+    "preserved_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+    "document_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "document_bytes": 3194276
+  },
+  "window_handoff_evidence": "artifacts/runs/20261028T014514Z-215-render-workflows/window-handoff-status01.json",
+  "github": "Private draft remains209;215 package local only; no source push or visibility change.",
+  "remaining": [
+    "Exact Photoshop output, defaults, modifier keys, depth/context behavior and full parameter combinations",
+    "Recorded Adobe actionJSON job behavior and editable PSD/PSB mappings",
+    "Live native/reference interactions and physical Intel/macOS14/macOS26 qualification",
+    "Remaining Render Lighting Effects/Flame/Tree/Picture Frame and F02 Other/legacy workflows",
+    "Full Photoshop parity"
+  ],
+  "next_major_workflow": {
+    "id": "F02",
+    "name": "Procedural Flame, Tree and Picture Frame workflows",
+    "scope": "Implement Flame, Tree and Picture Frame with native controls/history/persistence and shared APIs. Audit source Lighting Effects separately: absent from captured current Photoshop menu. Adobe docs exclude the three procedural filters from Smart Filter contexts. Then address remaining Other/legacy workflows; preserve earlier gates."
+  },
+  "evidence_root": "artifacts/runs/20261028T014514Z-215-render-workflows"
+}

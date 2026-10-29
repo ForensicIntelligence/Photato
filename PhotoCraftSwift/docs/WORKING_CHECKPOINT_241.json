@@ -1,0 +1,50 @@
+{
+  "step": 241,
+  "recorded_at_utc": "2026-10-29T05:29:06.193884+00:00",
+  "status": "Native Render Video now exports H.264/HEVC MP4 and ProRes422/4444/uncompressed QuickTime, with range/size/rate/audio/alpha controls, staged publication and shared API. 2,502 full optimized tests pass on 2,324 unchanged inputs. Independent inspection verifies12 movies, 55,296 exact uncompressed RGBA channels and48,000 exact Float32 audio values. DPX/HDR/work-area/aspect/presets and full Photoshop/live/platform fidelity remain open; SP01 is not closed. Installed221 and private universal232 stay unchanged.",
+  "source_manifest": "artifacts/runs/20261029T045549Z-241-render-video/source04.json",
+  "source_inputs": 2324,
+  "native_archive": 56,
+  "actions_version": 20,
+  "typed_commands": 169,
+  "tests": {
+    "utc": "2026-10-29T05:29:06.193884+00:00",
+    "full": {
+      "tests": 2502,
+      "failures": 0,
+      "seconds": 170.372,
+      "log": "artifacts/runs/20261029T045549Z-241-render-video/full-tests02.log",
+      "sha256": "a50291b02f9db7fb5356eb8058cd1597e739ad97cb7de60e289a2a16e47d8d80",
+      "build_seconds": [
+        "0.46"
+      ]
+    },
+    "focused": {
+      "tests": 60,
+      "failures": 0,
+      "seconds": 2.991,
+      "log": "artifacts/runs/20261029T045549Z-241-render-video/focused04.log",
+      "sha256": "bef8a8275b6f210e3c9eea3945e477a1d5230d6e36027260116a5e4740d1934d",
+      "build_seconds": [
+        "79.37"
+      ]
+    },
+    "unchanged_inputs": 2324,
+    "source_manifest": "artifacts/runs/20261029T045549Z-241-render-video/source04.json",
+    "binary_sha256": "eed7699df66c502308dbdbb8232e6b297718a83700bfcf28f23566ee06570b90",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T045549Z-241-render-video/independent-full02.json",
+    "exact_uncompressed_rgba_channels": 55296,
+    "offscreen_capture": "artifacts/runs/20261029T045549Z-241-render-video/full02/render-video-settings.png",
+    "offscreen_sha256": "1ae53a372f780a0cba80f3968eb2cba5f11fb2b3cd285ffdd810873ca77b2cd2",
+    "new_installed_app": false,
+    "new_distribution_package": false,
+    "full_photoshop_parity": false
+  },
+  "latest_qualified_package_step": 232,
+  "latest_uploaded_package_step": 232,
+  "installed_package_step": 221,
+  "new_package": false,
+  "goal_complete": false,
+  "next": "Continue major Timeline breadth: work-area/onion-skin controls and remaining video delivery/interchange, preserving open exact/live/platform gates."
+}

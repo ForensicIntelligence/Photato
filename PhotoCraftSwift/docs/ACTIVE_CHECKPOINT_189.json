@@ -1,0 +1,172 @@
+{
+  "step": "dev-step-189",
+  "completed_at_utc": "2026-10-27T13:11:25.608160+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Modeless Brush Settings/Brushes, sampled tips, shape/scatter/color/transfer/texture/dual-tip dynamics, smoothing/pose/symmetry/airbrush, actual canvas preview and one-step painting history, native/ABR preset transport, shared Photato automation and recorded strokes.",
+  "source_manifest": "artifacts/runs/20261027T120808Z-189-brushes/source02.json",
+  "source_manifest_sha256": "d9abb6a08c5b00d4aea1445a76747372103e8a68ce77d9e86af2161962cb921c",
+  "source_inputs": 1431,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationBrushes.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/BrushLibrary.swift",
+      "Sources/PhotoCraft/BrushPanels.swift",
+      "Sources/PhotoCraftCore/BrushDynamics.swift",
+      "Sources/PhotoCraftCore/BrushPainter.swift",
+      "Sources/PhotoCraftCore/BrushPresets.swift",
+      "Sources/PhotoCraftCore/BrushSettings.swift",
+      "Sources/PhotoCraftImaging/ABRCodec.swift",
+      "Sources/PhotoCraftImaging/ABRWriter.swift",
+      "Tests/PhotoCraftAppTests/BrushWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/BrushDynamicsTests.swift",
+      "Tests/PhotoCraftImagingTests/BrushPresetCodecTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationActions.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentClosing.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraftCore/LayerMask.swift",
+      "Sources/PhotoCraftCore/Paint.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration11": 103,
+    "release-full02": 1834
+  },
+  "last_full_regression": {
+    "step": 189,
+    "tests": 1834,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T120808Z-189-brushes/release-full02.log",
+    "current_source": true
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T120808Z-189-brushes/module01.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/module03.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration02.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration04.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration05.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration06.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration07.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/integration10.log",
+    "artifacts/runs/20261027T120808Z-189-brushes/release-full01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T13:11:25.608160+00:00",
+    "tests": {
+      "integration11": 103,
+      "release-full02": 1834
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T120808Z-189-brushes/Photato189-final.zip",
+    "zip_sha256": "89ff541cc10c96f97a442fa5ba52db0ac9b7f5ee73dd17a432e7babb9c654792",
+    "app": "/private/tmp/photato189-verified-tfu17c38/Photato.app",
+    "executable_sha256": "da133b85296989b7fd5e22576df9d47224485d275cc072888869e03c362a33f6",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato189-verified-tfu17c38/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato189-verified-tfu17c38/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1431,
+    "source_manifest_sha256": "d9abb6a08c5b00d4aea1445a76747372103e8a68ce77d9e86af2161962cb921c",
+    "original_rust_hashes": 754,
+    "protected_hashes": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 259,
+      "unavailable_leaf_commands": 466,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "limits": "Full optimized suite and universal package on this host; not live desktop/physical tablet, physical Intel/macOS14/macOS26 or complete Photoshop equivalence."
+  },
+  "api": {
+    "commands": [
+      "brush.configure",
+      "brush.presets",
+      "paint.stroke"
+    ],
+    "catalogue_count": 74,
+    "state": "Full active brush settings, selected preset ID, library metadata/revision and active gesture; recursive strict parameter schema and busy/stale/sharing guards.",
+    "targets": [
+      "pixels",
+      "layerMask",
+      "smartFilterMask",
+      "alpha",
+      "quickMask"
+    ],
+    "formats": {
+      "native_archive": 32,
+      "brush_presets": 1,
+      "recorded_actions": [
+        1,
+        2
+      ]
+    },
+    "limits": "API command4MiB, preset import base64<=3000000characters,4096points; desktop100000points. Core200000dabs,134217728rastervisits; each sparse coverage map<=128MiB. Preset file64MiB,512presets,48MiBbitmap aggregate; a brush16MiBbitmap aggregate. Tip/texture edges<=2500 and diameter<=2048."
+  },
+  "adobe_api": {
+    "new_route": null,
+    "status": "Published execute-actions brush resources and brush/path action descriptors remain unsupported. Existing routes continue to reject unqualified fields/descriptors. No dedicated freehand endpoint is present in the pinned contract. ABR transport support does not imply Firefly job compatibility.",
+    "next": "Qualify real brush/path descriptors and job-local ABR resource binding, preserving asynchronous job semantics. Do not invent descriptor shapes from the UXP method signature."
+  },
+  "menus": {
+    "paths": [
+      "Edit > Define Brush Preset\u2026",
+      "Window > Brush Settings",
+      "Window > Brushes"
+    ],
+    "shortcut": "F5 for Brush Settings",
+    "new_bindings": 3,
+    "entries": 802,
+    "bound_leaf_commands": 259,
+    "unavailable_leaf_commands": 466,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "No byte-identical Photoshop rasterization claim; procedural texture, antialias/mipmapping and high-depth/HDR brush precision need independent qualification.",
+    "Generated bristle stamp is not a physical bristle/wet-media simulation; Mixer Brush is next.",
+    "Complete ABR versions/fields, brush organizational UI details and large-file API transfers remain open. Unsupported fields are reported; missing samples/patterns reject affected presets.",
+    "Adobe execute-actions brush resources and descriptors are not implemented in this increment. Full B01 acceptance remains open.",
+    "Native event capture exists but physical tablet, live Photoshop and macOS14/Intel/macOS26 platform checks remain unqualified.",
+    "API inline preset file limits are narrower than desktop; imported files do not silently truncate.",
+    "Preview uses completed full-document snapshots, coalescing pointer events to avoid starvation; incremental dirty-region performance remains open.",
+    "Painting on nonraster content currently rejects; current Adobe documentation describes automatic creation of a transparent paint layer. Carry this major workflow dependency into B02."
+  ],
+  "next": "B02 missing major painting tools: Pencil, Mixer Brush, Color Replacement, Pattern Stamp, Background Eraser and Magic Eraser, each with shared APIs/history and focused tests. Exact numerical/cosmetic refinements stay deferred.",
+  "next_major_plan": "artifacts/runs/20261027T120808Z-189-brushes/next-major-plan02.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "first_check": "passed",
+    "counts": {
+      "check": "passed",
+      "milestones": 189,
+      "evidence_files": 38407,
+      "logs": 19377,
+      "missing_explicit_references": 0
+    },
+    "first_check_log": "artifacts/runs/20261027T120808Z-189-brushes/development-history-audit/audit01-check.log",
+    "final_refresh_log": "artifacts/runs/20261027T120808Z-189-brushes/development-history-audit/audit02-refresh.log",
+    "final_check_log": "artifacts/runs/20261027T120808Z-189-brushes/development-history-audit/audit02-check.log",
+    "scope": "Documentation/evidence index; not a Photoshop output comparison."
+  }
+}

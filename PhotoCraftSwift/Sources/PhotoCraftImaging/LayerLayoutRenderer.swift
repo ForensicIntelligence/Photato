@@ -6,6 +6,8 @@ extension Renderer {
     _ layer: Layer, in document: CraftDocument, stored: Bool
   ) throws -> IntRect? {
     try Task.checkCancellation()
+    if let bounds = layer.frameBounds { return bounds }
+    if let bounds = layer.artboardBounds { return bounds }
     if layer.isGroup {
       return try LayerLayout.union(
         document.children(of: layer.id).compactMap {
@@ -16,6 +18,7 @@ extension Renderer {
     guard !layer.isCanvasFill else {
       throw CraftError.unsupported("Alignment of canvas fill layers is not available yet.")
     }
+    let layer = try SmartFilterEngine.renderedLayer(layer, in: document)
     let surface = try layerSurface(layer, in: document)
     guard let content = try surface.contentBounds() else { return nil }
     let bounds =

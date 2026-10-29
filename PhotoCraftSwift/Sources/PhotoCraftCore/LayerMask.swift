@@ -52,13 +52,27 @@ public struct MaskSampler: Sendable {
       if let canvasSize,
         matrix.a == 1, matrix.b == 0, matrix.c == 0, matrix.d == 1
       {
-        // At the canvas boundary Photoshop extends the last stored mask sample.
-        // A cropped mask's other edges still use its explicit outside coverage.
-        // Retained off-canvas samples remain available to the blur.
+        // Photoshop extends a coincident canvas edge only when the raster does
+        // not continue beyond it. Otherwise the mask's outside coverage must
+        // participate in feathering, even when its stored rectangle starts at 0.
         if matrix.tx == 0 { edges.insert(.left) }
         if matrix.ty == 0 { edges.insert(.top) }
         if matrix.tx + Double(source.width) == Double(canvasSize.width) { edges.insert(.right) }
         if matrix.ty + Double(source.height) == Double(canvasSize.height) { edges.insert(.bottom) }
+        let pixelsToDocument = layer.coordinateTransform
+        if case .raster(let pixels) = layer.content,
+          pixelsToDocument.a == 1, pixelsToDocument.b == 0,
+          pixelsToDocument.c == 0, pixelsToDocument.d == 1
+        {
+          if pixelsToDocument.tx < 0 { edges.remove(.left) }
+          if pixelsToDocument.ty < 0 { edges.remove(.top) }
+          if pixelsToDocument.tx + Double(pixels.width) > Double(canvasSize.width) {
+            edges.remove(.right)
+          }
+          if pixelsToDocument.ty + Double(pixels.height) > Double(canvasSize.height) {
+            edges.remove(.bottom)
+          }
+        }
       }
       let result = try Self.blur(
         source, radius: properties.feather, outside: properties.outside, clampedEdges: edges)
@@ -74,6 +88,9 @@ public struct MaskSampler: Sendable {
     let p = inverse.point(x, y)
     var v = Self.sample(mask, x: p.x, y: p.y, outside: properties.outside)
     if properties.inverted { v = 1 - v }
+    // Full density is an identity operation. Subtracting twice from white
+    // changes Float32 mask samples and therefore the resulting RGB32 composite.
+    if properties.density == 1 { return v }
     return 1 - properties.density * (1 - v)
   }
   /// Proves unit coverage at every pixel center in this rectangle. Fractional
@@ -222,6 +239,15 @@ extension Layer {
       })
     else {
       throw CraftError.invalid("Invalid mask stroke bounds.")
+    }
+    if brush.settings != nil {
+      if var bounds=try BrushPainter.strokeBounds(points:points,brush:brush) {
+        if let clipping {
+          let x=max(bounds.x,clipping.x),y=max(bounds.y,clipping.y),r=min(bounds.x+bounds.width,clipping.x+clipping.width),b=min(bounds.y+bounds.height,clipping.y+clipping.height)
+          guard r>x,b>y else { return };bounds = .init(x:x,y:y,width:r-x,height:b-y)
+        }
+        try expandMask(toDocumentBounds:bounds)
+      };return
     }
     let points = points.filter { $0.pressure > 0 }
     guard !points.isEmpty else { return }

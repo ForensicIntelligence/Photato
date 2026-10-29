@@ -34,9 +34,9 @@ final class PatternFillTests: XCTestCase {
     XCTAssertEqual(
       try NativeArchive.decode(NativeArchive.encode(session.document)), session.document)
     let result = session.document
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, original)
-    session.redo()
+    try session.redo()
     XCTAssertEqual(session.document, result)
     try session.execute(.duplicateLayer(layer.id))
     XCTAssertEqual(session.document.patterns?.count, 2)

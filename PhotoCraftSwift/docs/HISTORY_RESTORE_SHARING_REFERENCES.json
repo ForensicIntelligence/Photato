@@ -1,0 +1,97 @@
+{
+  "step": "dev-step-125",
+  "status": "Shared current-document tiles during history restoration qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+  "major_workflows": [
+    "D01",
+    "I02"
+  ],
+  "major_workflow_closed": false,
+  "evidence_root": "artifacts/runs/20261020T033305Z-125-history-restore-pools",
+  "source_freeze": "artifacts/runs/20261020T033305Z-125-history-restore-pools/tested-source-hashes01.json",
+  "implementation": [
+    "Current restored-document raster index reuses unchanged verified tile arrays on next Undo/Redo",
+    "Retain only arrays referenced by new document; clear on changed edits and decoder exit",
+    "Immutable value index and Swift COW isolate concurrent session branches",
+    "Revalidate every reused scratch blob before sharing its current array; publish only after full validation/spill/cancellation checks",
+    "Release Foundation coding temporaries at each shared executePrepared/Undo/Redo transaction boundary"
+  ],
+  "API": {
+    "state": "historyStorage.reusableCurrentRasterBytes is current-document shared storage, not additional history payload",
+    "capabilities": "currentRasterReuse, reuseIntegrity, reuseAccounting",
+    "adobe": "Existing native session behavior shared by both action job adapters; no new Adobe endpoint or action"
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T033305Z-125-history-restore-pools/full01.log",
+      "sha256": "e43eac90c4f12f1d7f3349dca095b71c4949d49a57513d6c8c1e713d669c9cbe",
+      "passed": 1120,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 245.746
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T033305Z-125-history-restore-pools/release01.log",
+      "sha256": "e3defe46a65e3eaa6d3ebc657f76ad52735e2c0ecbae6155a3fb5561513d5f02",
+      "passed": 1120,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.536
+    }
+  },
+  "remaining": [
+    "I02: active-document paging, bounded renderer/cache and total-process memory qualification before raising existing public file/canvas/transfer limits",
+    "I02: the final less-compressible arm64 case has higher peak RSS/footprint than124 (295731200/279544648 versus283574272/260686688 bytes); diagnose broader allocation behavior before claiming universal improvement",
+    "I02/D03 dependency: asynchronous cancellable history navigation and rendering without UI stalls, with transactional stale/busy/error handling",
+    "D02: complete AppKit crash/relaunch recovery, disk-full/interruption durability and stale scratch cleanup",
+    "D01: full format/profile/metadata fidelity, external-file coordination, recent items/bookmarks, original .pcraft migration and live lifecycle",
+    "D03: factory history/drive preference parity and remaining secondary history features; optional minor functions stay queued",
+    "Combined118\u2013125 native/Photoshop live qualification, physical Intel/macOS14 full-app runtime and independent multi-GB workflows"
+  ],
+  "initial_attempt": "artifacts/runs/20261020T031220Z-125-history-restore-sharing",
+  "final_attempt": "artifacts/runs/20261020T033305Z-125-history-restore-pools",
+  "focus": {
+    "passed": 80,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 16.348,
+    "evidence": {
+      "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/focused01.log",
+      "sha256": "c1ef62da57de6485f2d9b21edeafa21ada8d0c75ede3308a14a2f9ba690e4a1f"
+    },
+    "source_freeze": "tested-source-hashes01.json"
+  },
+  "package": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/package-verification01.json",
+    "sha256": "35840f591c0092d35407f7c9203c104380b13fa2d2b923885942bcf14f0c538a"
+  },
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_125.json",
+  "history_comparison": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/history-prior-comparison01.json",
+    "sha256": "ca91bdf6a0f931d6d1175bfe48b50fae7a89cc8c030fcf02763cfd70a48f8eb1"
+  },
+  "entropy_comparison": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/history-entropy-comparison01.json",
+    "sha256": "38e60110f5f4e72e7d8ad33e350d66611e1d73c0c48d8d9651f70ddbf3dd0c95"
+  },
+  "intel_psb": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/intel-psb01.json",
+    "sha256": "fe940186e26fb6630a6751a4f19f5d6350c777bb0148d63b2bdf9a52e6049144"
+  },
+  "intel_groups": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/intel-groups01.json",
+    "sha256": "fc0024064f7726a7fa9e75390e5b7315dd74b21b4990cbe781630d2241c49354"
+  },
+  "independent_psb": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/independent-psb-verification01.json",
+    "sha256": "4423c302868e7ca57b26bc95e8326958ada21332586b11358d901b3ea4f87c01"
+  },
+  "prior_output_equality": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/final-export-compatibility01.json",
+    "sha256": "dc77c50d19e3f50a20198473c7923ed5e03785f6d0118a75319ba2b483113230"
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T033305Z-125-history-restore-pools/live-ui02.json",
+    "sha256": "c9d1188639458f0c041cf33644a0e4a79e265f675d49662fe180ebc66f50578d"
+  },
+  "performance_limitation": "Final repeated-row scratch peak RSS is284229632 on arm64 and303468544 under Rosetta (prior304529408/402984960). Less-compressible Rosetta improves459034624\u2192413188096, but arm64 remains higher283574272\u2192295731200 with footprint260686688\u2192279544648. The diagnostic arm64 result281886720 is not the final product result. All samples/output match and navigation is faster in these probes, which include hashing. No universal memory improvement, process-memory cap, default-budget/multi-GB or physical Intel claim; broader allocation and synchronous UI work remain open."
+}

@@ -31,9 +31,9 @@ final class LayerCreationTests: XCTestCase {
       XCTAssertEqual(surface.tileCount, 0)
       XCTAssertEqual(session.undoStack.count, 1)
       XCTAssertEqual(session.undoStack.last?.label, "New Layer")
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, document)
-      session.redo()
+      try session.redo()
       XCTAssertEqual(session.document, created)
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(created)), created)
     }

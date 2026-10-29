@@ -103,7 +103,7 @@ final class HistogramTests: XCTestCase {
         XCTAssertEqual(changed.pixel(x: 3, y: 0), s.pixel(x: 3, y: 0))
         XCTAssertEqual(changed.pixel(x: 1, y: 0).a, s.pixel(x: 1, y: 0).a)
         XCTAssertEqual(session.undoStack.last?.label, kind.rawValue)
-        session.undo()
+        try session.undo()
         XCTAssertEqual(session.document, d)
       }
       d.layers[0].locked = true

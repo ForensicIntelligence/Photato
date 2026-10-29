@@ -228,7 +228,155 @@
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
-      "current_evidence": "docs/DOCUMENT_IO_REFERENCES.json"
+      "current_evidence": "docs/DOCUMENT_IO_REFERENCES.json",
+      "scratch_history_step123": {
+        "reference": "docs/HISTORY_SCRATCH_REFERENCES.json",
+        "status": "Scratch-backed undo history qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Scratch history is needed for phase1 large-document workflow; optional phase2 history features remain queued."
+      },
+      "native_archive_step124": {
+        "reference": "docs/NATIVE_ARCHIVE_STREAMING_REFERENCES.json",
+        "status": "Native archive streaming and API compatibility qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false
+      },
+      "history_restore_step125": {
+        "reference": "docs/HISTORY_RESTORE_SHARING_REFERENCES.json",
+        "status": "Shared current-document tiles during history restoration qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Current history memory is a phase1 large-document dependency; optional phase2 history features remain queued."
+      },
+      "async_history_step126": {
+        "reference": "docs/ASYNC_HISTORY_REFERENCES.json",
+        "status": "Off-main-actor cancellable native/HTTP Undo/Redo qualified by automated, universal and retained-output checks; live UI remains pending",
+        "major_gate_closed": false,
+        "dependency_note": "Responsive history is a phase1 large-document dependency; optional phase2 history functionality stays queued."
+      },
+      "recovery_step127": {
+        "reference": "docs/RECOVERY_REFERENCES.json",
+        "status": "Automatic recovery, native/HTTP snapshot and source-format/launch repairs qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step128": {
+        "reference": "docs/BACKGROUND_RECOVERY_REFERENCES.json",
+        "status": "Background recovery and concurrent-edit accounting qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "recovery_preferences_step129": {
+        "reference": "docs/RECOVERY_PREFERENCES_REFERENCES.json",
+        "status": "Persistent recovery preferences, native File Handling entry and application-scope API qualified by automated tests and processes; live UI and full D02 remain open",
+        "major_gate_closed": false
+      },
+      "atomic_persistence_step130": {
+        "reference": "docs/ATOMIC_PERSISTENCE_REFERENCES.json",
+        "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_source_step131": {
+        "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+        "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+        "major_gate_closed": false
+      },
+      "recovery_discovery_step132": {
+        "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+        "major_gate_closed": false
+      },
+      "document_closing_step133": {
+        "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+        "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "document_opening_step134": {
+        "reference": "docs/DOCUMENT_OPENING_REFERENCES.json",
+        "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recent_documents_step135": {
+        "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+        "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_maintenance_step136": {
+        "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+        "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_salvage_step137": {
+        "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+        "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step138": {
+        "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_admission_step139": {
+        "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+        "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "save_options_step140": {
+        "reference": "docs/SAVE_ENCODING_OPTIONS_REFERENCES.json",
+        "status": "Shared lossless PNG compression/Adam7 and TIFF None/LZW/ZIP options now reach native Save/Save As/Copy, Photato save/download and both action-job interfaces where defined; major D01/I04 format workflows remain open",
+        "major_gate_closed": false
+      },
+      "psd_compression_step141": {
+        "reference": "docs/PSD_COMPRESSION_OPTIONS_REFERENCES.json",
+        "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+        "major_gate_closed": false
+      },
+      "photoshop_file_preferences_step142": {
+        "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+        "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+        "major_gate_closed": false
+      },
+      "float_tiff_step143": {
+        "reference": "docs/TIFF_FLOAT_REFERENCES.json",
+        "status": "Float32 TIFF Save/Copy/import and both applicable APIs retain tested HDR/negative/transparent samples and linear working profiles through None/LZW/ZIP; D01/I04 and full Photoshop parity remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_storage_step144": {
+        "reference": "docs/TIFF_STORAGE_REFERENCES.json",
+        "status": "Native/API TIFF byte order, pixel layout and Float32 LZW/ZIP prediction preserve tested samples/metadata; native planar decoding repairs ImageIO alpha loss. D01/I04 and every major gate remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_layers_step145": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Editable Photoshop-style TIFF import now reaches native Open, Photato upload and both action-job interfaces through the shared PSD engine. Native/PSD persistence preserves supported content; layered TIFF output and full parity remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_layer_output_step146": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Supported editable layered TIFF output now reaches native Save/Copy and Photato save/download/jobs through the shared PSD serializer. Ordinary Save defaults to preserving layers; existing flat exports and Adobe TIFF output remain unchanged. Full Photoshop parity and all major gates stay open.",
+        "major_gate_closed": false
+      },
+      "tiff_rich_step147": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Numeric adjustments and vector masks now survive both TIFF byte orders through the shared PSD engine; retained global mask-display metadata survives TIFF/PSD/PSB output. Native/API automated qualification passes. Descriptor/opaque records, live Photoshop comparison and all major workflow gates remain open.",
+        "major_gate_closed": false
+      },
+      "jpeg_step148": {
+        "reference": "docs/JPEG_ENCODING_REFERENCES.json",
+        "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+        "major_gate_closed": false
+      },
+      "pcraft_container_step149": {
+        "reference": "docs/PCRAFT_CONTAINER_REFERENCES.json",
+        "status": "Original PhotoCraft container prerequisites pass independent source/CLI/hash tests in native Swift. Editable .pcraft import is not yet connected; D01/I03 and every major workflow gate remain open.",
+        "major_gate_closed": false
+      },
+      "pcraft_project_step150": {
+        "reference": "docs/PCRAFT_PROJECT_REFERENCES.json",
+        "status": "Original PhotoCraft source graph and all known editing payload references are preserved by a bounded native Swift intermediate reader. Editable native/API import remains open; no major gate is closed.",
+        "major_gate_closed": false
+      },
+      "protection_prerequisite_step151": {
+        "reference": "docs/LAYER_PROTECTION_REFERENCES.json",
+        "status": "Independent Photoshop protection references and isolated native value/PSD/Adobe-field parsers are tested. Runtime layer protection integration remains open; no major gate is closed.",
+        "major_gate_closed": false
+      }
     },
     {
       "id": "D02",
@@ -244,7 +392,72 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "native_archive_step124": {
+        "reference": "docs/NATIVE_ARCHIVE_STREAMING_REFERENCES.json",
+        "status": "Native archive streaming and API compatibility qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false
+      },
+      "recovery_step127": {
+        "reference": "docs/RECOVERY_REFERENCES.json",
+        "status": "Automatic recovery, native/HTTP snapshot and source-format/launch repairs qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step128": {
+        "reference": "docs/BACKGROUND_RECOVERY_REFERENCES.json",
+        "status": "Background recovery and concurrent-edit accounting qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "recovery_preferences_step129": {
+        "reference": "docs/RECOVERY_PREFERENCES_REFERENCES.json",
+        "status": "Persistent recovery preferences, native File Handling entry and application-scope API qualified by automated tests and processes; live UI and full D02 remain open",
+        "major_gate_closed": false
+      },
+      "atomic_persistence_step130": {
+        "reference": "docs/ATOMIC_PERSISTENCE_REFERENCES.json",
+        "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_source_step131": {
+        "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+        "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+        "major_gate_closed": false
+      },
+      "recovery_discovery_step132": {
+        "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+        "major_gate_closed": false
+      },
+      "document_closing_step133": {
+        "reference": "docs/DOCUMENT_CLOSING_REFERENCES.json",
+        "status": "Native single/window/Close All/Close Others/Quit coordination and optional API lifecycle pass automated tests and actual process checks; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recent_documents_step135": {
+        "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+        "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_maintenance_step136": {
+        "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+        "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_salvage_step137": {
+        "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+        "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step138": {
+        "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_admission_step139": {
+        "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+        "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      }
     },
     {
       "id": "D03",
@@ -260,7 +473,25 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "scratch_history_step123": {
+        "reference": "docs/HISTORY_SCRATCH_REFERENCES.json",
+        "status": "Scratch-backed undo history qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Scratch history is needed for phase1 large-document workflow; optional phase2 history features remain queued."
+      },
+      "history_restore_step125": {
+        "reference": "docs/HISTORY_RESTORE_SHARING_REFERENCES.json",
+        "status": "Shared current-document tiles during history restoration qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Current history memory is a phase1 large-document dependency; optional phase2 history features remain queued."
+      },
+      "async_history_step126": {
+        "reference": "docs/ASYNC_HISTORY_REFERENCES.json",
+        "status": "Off-main-actor cancellable native/HTTP Undo/Redo qualified by automated, universal and retained-output checks; live UI remains pending",
+        "major_gate_closed": false,
+        "dependency_note": "Responsive history is a phase1 large-document dependency; optional phase2 history functionality stays queued."
+      }
     },
     {
       "id": "D04",
@@ -340,7 +571,8 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step158: ten editable native effects with UI/history/API/persistence and bounded PSD support; advanced options/interchange/Photoshop exactness remain open."
     },
     {
       "id": "L05",
@@ -387,7 +619,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step184 native Frames and shared APIs. All140 focused Debug and1782 full optimized tests pass. The universal macOS14+ package verifies. F03 Blur Gallery is next; L07 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -428,15 +660,16 @@
       "title": "Color Range, Focus Area and Magnetic Lasso",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Sampled/ranged color selection, skin-tone presets, focus-region detection, edge-following lasso and their previews/options; qualify Magic Wand averaged samples.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step194 implements Focus Area with native detection/Auto/manual refinement, six outputs, preview/history/handoff and shared API. All83 final focused Debug and1903 full optimized tests pass. The universal macOS14+ package verifies and includes193 Sky workflows. Full S02 remains open; next is Mask All Objects.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step194 implements Focus Area with native detection/Auto/manual refinement, six outputs, preview/history/handoff and shared API. All83 final focused Debug and1903 full optimized tests pass. The universal macOS14+ package verifies and includes193 Sky workflows. Full S02 remains open; next is Mask All Objects."
     },
     {
       "id": "S03",
@@ -444,15 +677,16 @@
       "title": "Object, Quick, Subject, Sky and People selection",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Object finder, selection/quick-selection brushes, subject/sky/person-part masks, Select All Objects and Remove Background; manual correction and per-OS/model capability gates.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step198 implements per-person hair/skin/clothing/accessories selection, picker/history/Actions and API. All61 focused Debug and1933 full optimized tests pass. The universal macOS14+ package includes197 Select People and the native feature model; fresh extraction verifies both architectures, signature and model provenance. Xcode Debug build also passes. Full S03 remains open; next major live shape workflows.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step198 implements per-person hair/skin/clothing/accessories selection, picker/history/Actions and API. All61 focused Debug and1933 full optimized tests pass. The universal macOS14+ package includes197 Select People and the native feature model; fresh extraction verifies both architectures, signature and model provenance. Xcode Debug build also passes. Full S03 remains open; next major live shape workflows."
     },
     {
       "id": "S04",
@@ -468,7 +702,12 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_increment": {
+        "step": "dev-step-166",
+        "reference": "docs/SELECT_MASK_REFERENCES.json",
+        "native_subset": "Usable refinement workspace/API; advanced/live/full parity remains open."
+      }
     },
     {
       "id": "S05",
@@ -595,7 +834,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step189 native Brush Settings/preset/canvas/history/API workflow. All 103 focused Debug and 1834 full optimized tests pass. The universal macOS 14+ package verifies. Full physical bristle/ABR/Adobe jobs/exact/live/platform requirements keep B01 open. Next: B02 major missing paint/eraser tools.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -611,7 +850,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step190 implements six paint/eraser tools with native controls/preview/history and shared API. All 184 focused Debug and 1851 full optimized tests pass. The universal macOS 14+ package verifies. Full B02 Actions/Adobe/exact/live/platform requirements remain open. Next: B08 Adjustment Brush.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -659,7 +898,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step171 adds native Patch, Move/Extend and Red Eye with 123 focused checks and shared API. Full-resolution, exact Photoshop, channel/mask/pattern and live/platform requirements remain open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -723,7 +962,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step181 native Perspective Warp linked planes/straightening/edge locks, source-preserving Smart Filters/native26 and API. All92 focused Debug and92 optimized focused tests pass. The universal macOS14+ package verifies. G02 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -732,15 +971,16 @@
       "title": "Live shape tools and vector operations",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Triangle, polygon, line/arrows, custom shapes, live corners/properties, stroke alignment/dashes, boolean combinations, shape presets and pixel/shape/path modes.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step199 implements native live shapes, properties, three outputs, presets/history/Actions/API. All80 focused Debug and1944 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full G03 remains open; next major Pen and Paths.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step199 implements native live shapes, properties, three outputs, presets/history/Actions/API. All80 focused Debug and1944 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full G03 remains open; next major Pen and Paths."
     },
     {
       "id": "G04",
@@ -748,15 +988,17 @@
       "title": "Pen and Paths completion",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Freeform/Curvature Pen, multi-anchor selection, pen modifiers, saved-path UX, fill/stroke path, selection-to-path fitting, path transform and clipping-path export.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step200 implements primary Freeform/Curvature Pen, tracing, fill/stroke, history and APIs. All100 focused Debug and1951 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full G04 remains open; next major multilingual/OpenType typography.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step200 implements primary Freeform/Curvature Pen, tracing, fill/stroke, history and APIs. All100 focused Debug and1951 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full G04 remains open; next major multilingual/OpenType typography.",
+      "latest_increment": "docs/PATH_WORKFLOW_REFERENCES.json"
     },
     {
       "id": "G05",
@@ -796,15 +1038,16 @@
       "title": "Full native text editing",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "On-canvas caret/range editing, rich text runs, Character/Paragraph panels, point/box conversion, leading/kerning/tracking/baseline/scaling, paragraph alignment/spacing/hyphenation and editable PSD type.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Native text subset54 focused/1548 full Release tests and universal package verified;48 checks per architecture. Advanced scope and independent/live Photoshop fidelity remain open.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_increment": "docs/TYPE_EDITING_REFERENCES.json"
     },
     {
       "id": "T02",
@@ -812,15 +1055,17 @@
       "title": "Multilingual and OpenType typography",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "RTL/bidi, Indic/East Asian/vertical text, language composers, ligatures/alternates, glyph picker, variable axes, fallback/missing fonts, font previews and anti-alias options.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step201 implements native vertical text, installed OpenType features, variable axes, Glyphs and APIs/history/persistence. All 70 focused Debug and 1959 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full T02 remains open; next major T04 path/warped text.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step201 implements native vertical text, installed OpenType features, variable axes, Glyphs and APIs/history/persistence. All 70 focused Debug and 1959 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full T02 remains open; next major T04 path/warped text.",
+      "latest_increment": "docs/ADVANCED_TYPOGRAPHY_REFERENCES.json"
     },
     {
       "id": "T03",
@@ -844,15 +1089,17 @@
       "title": "Path, warped and Dynamic Text",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Text along/inside paths, warp text and Dynamic Text Block/Circle/Arch/Bow, automatic fit/reflow, direction and saved editable parameters.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step202 implements editable on/inside path type, fifteen warps and Dynamic Block/Circle/Arch/Bow, native workspace/history/persistence and APIs. All 89 focused Debug and 1966 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full T04 remains open; next major F06 Filter Gallery.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step202 implements editable on/inside path type, fifteen warps and Dynamic Block/Circle/Arch/Bow, native workspace/history/persistence and APIs. All 89 focused Debug and 1966 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full T04 remains open; next major F06 Filter Gallery.",
+      "latest_increment": "docs/SHAPED_TEXT_REFERENCES.json"
     },
     {
       "id": "A01",
@@ -892,15 +1139,18 @@
       "title": "Remaining classic adjustments",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Complete Exposure/Brightness-Contrast and add Vibrance, Black & White, Photo Filter, Channel Mixer, Color Lookup, Selective Color, Shadows/Highlights, HDR Toning, Match/Replace Color and Equalize; presets, masks and dialogs.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step219 native Shadows/Highlights, HDR Toning, Match Color, Replace Color and Equalize; controls/preview/Cancel/history, source statistics and sampled masks, editable Shadows Smart Filters/native45/Actions18 and shared APIs.161 focused/2094 full optimized tests and12 original-Rust RGB8 cases pass; universal package verifies. Exact Photoshop/ICC, semantic HDR Actions, Adobe descriptors/presets, live/platform and full A03 remain open. docs/CLASSIC_TONE_REFERENCES.json",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_increment": "Step219 native Shadows/Highlights, HDR Toning, Match Color, Replace Color and Equalize; controls/preview/Cancel/history, source statistics and sampled masks, editable Shadows Smart Filters/native45/Actions18 and shared APIs.161 focused/2094 full optimized tests and12 original-Rust RGB8 cases pass; universal package verifies. Exact Photoshop/ICC, semantic HDR Actions, Adobe descriptors/presets, live/platform and full A03 remain open. docs/CLASSIC_TONE_REFERENCES.json",
+      "latest_functional_progress": "Step219 native Shadows/Highlights, HDR Toning, Match Color, Replace Color and Equalize; controls/preview/Cancel/history, source statistics and sampled masks, editable Shadows Smart Filters/native45/Actions18 and shared APIs.161 focused/2094 full optimized tests and12 original-Rust RGB8 cases pass; universal package verifies. Exact Photoshop/ICC, semantic HDR Actions, Adobe descriptors/presets, live/platform and full A03 remain open. docs/CLASSIC_TONE_REFERENCES.json",
+      "latest_increment": "docs/CLASSIC_TONE_REFERENCES.json"
     },
     {
       "id": "A04",
@@ -972,15 +1222,18 @@
       "title": "Filter framework and ordinary blur/sharpen/noise",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Consistent native preview/dialog/cancel/last-filter pipeline; Average/Box/Lens/Motion/Radial/Shape/Smart/Surface blur, Sharpen/Smart Sharpen/Unsharp Mask, noise/median/dust/reduction and existing Gaussian parity.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step218 adds twelve Blur/Noise/Sharpen operations with native settings/previews, Cancel/history, editable Smart Filters, native44/Actions17 and shared Photato API.149 focused/2082 optimized tests and44 original-Rust references pass; universal package verifies. Exact Photoshop/custom Shape presets/Adobe descriptors/live/platform and full F01 remain open.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_increment": "Step218 adds twelve Blur/Noise/Sharpen operations with native settings/previews, Cancel/history, editable Smart Filters, native44/Actions17 and shared Photato API.149 focused/2082 optimized tests and44 original-Rust references pass; universal package verifies. Exact Photoshop/custom Shape presets/Adobe descriptors/live/platform and full F01 remain open.",
+      "latest_functional_progress": "Step218 adds twelve Blur/Noise/Sharpen operations with native settings/previews, Cancel/history, editable Smart Filters, native44/Actions17 and shared Photato API.149 focused/2082 optimized tests and44 original-Rust references pass; universal package verifies. Exact Photoshop/custom Shape presets/Adobe descriptors/live/platform and full F01 remain open.",
+      "latest_increment": "docs/CLASSIC_DETAIL_REFERENCES.json"
     },
     {
       "id": "F02",
@@ -988,7 +1241,7 @@
       "title": "Distort, Pixelate, Stylize, Render and Other",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Remaining named filter catalogue: displacement/waves/polar distortions; pixelation/halftone; emboss/edges/oil paint; clouds/fibers/lens flare/flame/tree/frame; High Pass/Min/Max/Offset/custom/HSB-HSL and retained legacy video filters.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
@@ -996,7 +1249,8 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_increment": "Step217 adds seven Other/Video filters with native settings/previews, Custom JSON presets, Cancel/history, editable Smart Filters, native43/Actions16 and shared Photato API.124 focused/2068 optimized tests and44 original-Rust references pass; universal package verifies. Exact Photoshop/ACF/Adobe descriptors/live/platform and full F02 remain open."
     },
     {
       "id": "F03",
@@ -1011,7 +1265,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step185 native Blur Gallery and shared APIs. All90 focused Debug and90 optimized tests pass. The universal macOS14+ package verifies. F05 Lens Correction is next; F03 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1027,7 +1281,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step165 native workspace/API/native19 verified:53 Debug focused,1583 full Release before identity repair,71 final Release checks,29 checks per architecture and universal package. Independent/live/interchange parity remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1043,7 +1297,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step188 native Vanishing Point plus the Lens Correction/Adaptive Wide Angle family. All117 focused Debug and1816 full optimized tests pass. The universal macOS14+ package verifies. Secondary tools, exact/live/platform and richer contexts leave F05 open. Next major workflow: B01 Brush Settings and presets.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1052,15 +1306,17 @@
       "title": "Filter Gallery and legacy applicability",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Artistic, brush-stroke, sketch, texture and distortion gallery effects/stacks/presets; inventory which legacy/Lighting Effects entries actually exist in the pinned macOS release.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Step203 adds47 native Filter Gallery effects, editable stacks/workspace/history/native36/Actions8 and shared APIs. All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full F06 remains open; next major F01 Smart Sharpen/Reduce Noise.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step203 adds47 native Filter Gallery effects, editable stacks/workspace/history/native36/Actions8 and shared APIs. All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance. Full F06 remains open; next major F01 Smart Sharpen/Reduce Noise.",
+      "latest_increment": "docs/FILTER_GALLERY_REFERENCES.json"
     },
     {
       "id": "COL01",
@@ -1068,15 +1324,16 @@
       "title": "ICC working-space and color management",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Keep profiles instead of converting every import to sRGB; assign/convert profiles, intents, black-point compensation, policies/warnings, calibrated display and coherent high-depth math.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Native opening/paste color policies and working-CMYK proof snapshots pass focused integration, repaired window/document workflow checks and 2,387 full optimized tests. All 2,257 source09 inputs are unchanged. Full color parity and live/platform qualification remain open; installed221 and qualified/uploaded224 are unchanged. docs/COLOR_POLICY_REFERENCES.json",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_increment": "docs/COLOR_SETTINGS_REFERENCES.json"
     },
     {
       "id": "COL02",
@@ -1084,14 +1341,14 @@
       "title": "Document color modes and separations",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "CMYK, Lab, Gray, Bitmap, Indexed, Duotone and Multichannel; mode/depth conversions, palettes/dither, alpha/spot plates and ink semantics.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Steps220\u2013222 provide native component/restricted/ink modes, editable Channels and shared APIs; Multichannel PSD/PSB included in2316 passing optimized tests. Duotone/ink TIFF, ADO, print, remaining contexts and exact/live/platform gates stay open. docs/INK_MODE_REFERENCES.json",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1100,14 +1357,14 @@
       "title": "Proofing, HDR/EDR and print",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Proof Setup/Proof Colors/gamut warnings/color-blind simulation; extended-range display and32-bit preview; native print/page setup, profiles, spot/overprint and resolution/output tests.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Native printing, hard proofs and ink separation output pass65 focused and2351 full optimized tests. Universal macOS14+ build224 is verified and uploaded as a private draft; installed221 is unchanged. Physical/live/exact/platform and full COL03 remain open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1123,7 +1380,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step172 RGB development and step173 sensor RAW source/import/UI/native22/API are implemented. Camera-specific, lens/local-mask/XMP, PSD RAW, independent/live/platform parity remain open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1139,7 +1396,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Through178 native alignment, blending/focus stacking, panorama, HDR and statistical stacks have usable native workflows and API support. All79 focused Debug and1720 full optimized tests pass. The universal macOS14+ package verifies. Remaining original acceptance requirements stay open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1189,7 +1446,101 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "current_increment": {
+        "step": "dev-step-119",
+        "evidence": "docs/PSB_REFERENCES.json",
+        "closed": false,
+        "remaining": "Full safe streaming, multi-gigabyte/300000-pixel workflows, corpus/live/platform qualification and other stated acceptance requirements."
+      },
+      "file_output_step122": {
+        "reference": "docs/PSD_FILE_OUTPUT_REFERENCES.json",
+        "status": "Streamed PSD/PSB file output and native safe-save integration qualified by automated/universal/Intel/byte/memory checks; combined live workflow pending",
+        "major_gate_closed": false
+      },
+      "scratch_history_step123": {
+        "reference": "docs/HISTORY_SCRATCH_REFERENCES.json",
+        "status": "Scratch-backed undo history qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Scratch history is needed for phase1 large-document workflow; optional phase2 history features remain queued."
+      },
+      "native_archive_step124": {
+        "reference": "docs/NATIVE_ARCHIVE_STREAMING_REFERENCES.json",
+        "status": "Native archive streaming and API compatibility qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false
+      },
+      "history_restore_step125": {
+        "reference": "docs/HISTORY_RESTORE_SHARING_REFERENCES.json",
+        "status": "Shared current-document tiles during history restoration qualified by automated/universal/Intel/sample/memory checks; combined live workflow pending",
+        "major_gate_closed": false,
+        "dependency_note": "Current history memory is a phase1 large-document dependency; optional phase2 history features remain queued."
+      },
+      "async_history_step126": {
+        "reference": "docs/ASYNC_HISTORY_REFERENCES.json",
+        "status": "Off-main-actor cancellable native/HTTP Undo/Redo qualified by automated, universal and retained-output checks; live UI remains pending",
+        "major_gate_closed": false,
+        "dependency_note": "Responsive history is a phase1 large-document dependency; optional phase2 history functionality stays queued."
+      },
+      "recovery_step127": {
+        "reference": "docs/RECOVERY_REFERENCES.json",
+        "status": "Automatic recovery, native/HTTP snapshot and source-format/launch repairs qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step128": {
+        "reference": "docs/BACKGROUND_RECOVERY_REFERENCES.json",
+        "status": "Background recovery and concurrent-edit accounting qualified by focused/full/process tests and universal packaging; full D02 remains open",
+        "major_gate_closed": false
+      },
+      "recovery_preferences_step129": {
+        "reference": "docs/RECOVERY_PREFERENCES_REFERENCES.json",
+        "status": "Persistent recovery preferences, native File Handling entry and application-scope API qualified by automated tests and processes; live UI and full D02 remain open",
+        "major_gate_closed": false
+      },
+      "atomic_persistence_step130": {
+        "reference": "docs/ATOMIC_PERSISTENCE_REFERENCES.json",
+        "status": "Atomic persistence, directory ownership, pre-publication synchronization and interruption/failure recovery qualified by automated tests and owned processes; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_source_step131": {
+        "reference": "docs/RECOVERY_SOURCE_REFERENCES.json",
+        "status": "Recovery-local source identity, background verification and protected Save workflows qualified; automatic discovery of a deleted-original backup remains open",
+        "major_gate_closed": false
+      },
+      "recovery_discovery_step132": {
+        "reference": "docs/RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Private indexed recovery automatically discovers missing-original and deleted-folder backups; process interruption, native/API state and retry qualified; full major workflow remains open",
+        "major_gate_closed": false
+      },
+      "document_opening_step134": {
+        "reference": "docs/DOCUMENT_OPENING_REFERENCES.json",
+        "status": "Supported-format background Open, batch partial progress, identity/cancellation and optional API integration pass automated/process tests; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recent_documents_step135": {
+        "reference": "docs/RECENT_DOCUMENTS_REFERENCES.json",
+        "status": "Persistent recent files, File Handling count, native/API reopen/clear and queued SDK/LaunchServices opening pass automated/process tests; full D01 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_maintenance_step136": {
+        "reference": "docs/RECOVERY_MAINTENANCE_REFERENCES.json",
+        "status": "Native recovery-backup inspection, independent copy/export and explicit registration/Trash maintenance pass automated and interruption checks; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_salvage_step137": {
+        "reference": "docs/RECOVERY_SALVAGE_REFERENCES.json",
+        "status": "Explicit private-folder salvage and preserved-byte damaged-index reset pass automated/process/interruption checks; no automatic orphan adoption; full D02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "background_recovery_step138": {
+        "reference": "docs/BACKGROUND_RECOVERY_DISCOVERY_REFERENCES.json",
+        "status": "Indexed recovery now decodes full snapshots off MainActor with native/API progress and cancellation while retaining AppKit factory state; automated/process validation passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      },
+      "recovery_admission_step139": {
+        "reference": "docs/RECOVERY_MEMORY_ADMISSION_REFERENCES.json",
+        "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+        "major_gate_closed": false
+      }
     },
     {
       "id": "I03",
@@ -1205,7 +1556,22 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "pcraft_container_step149": {
+        "reference": "docs/PCRAFT_CONTAINER_REFERENCES.json",
+        "status": "Original PhotoCraft container prerequisites pass independent source/CLI/hash tests in native Swift. Editable .pcraft import is not yet connected; D01/I03 and every major workflow gate remain open.",
+        "major_gate_closed": false
+      },
+      "pcraft_project_step150": {
+        "reference": "docs/PCRAFT_PROJECT_REFERENCES.json",
+        "status": "Original PhotoCraft source graph and all known editing payload references are preserved by a bounded native Swift intermediate reader. Editable native/API import remains open; no major gate is closed.",
+        "major_gate_closed": false
+      },
+      "protection_prerequisite_step151": {
+        "reference": "docs/LAYER_PROTECTION_REFERENCES.json",
+        "status": "Independent Photoshop protection references and isolated native value/PSD/Adobe-field parsers are tested. Runtime layer protection integration remains open; no major gate is closed.",
+        "major_gate_closed": false
+      }
     },
     {
       "id": "I04",
@@ -1221,7 +1587,52 @@
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
       "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "save_options_step140": {
+        "reference": "docs/SAVE_ENCODING_OPTIONS_REFERENCES.json",
+        "status": "Shared lossless PNG compression/Adam7 and TIFF None/LZW/ZIP options now reach native Save/Save As/Copy, Photato save/download and both action-job interfaces where defined; major D01/I04 format workflows remain open",
+        "major_gate_closed": false
+      },
+      "psd_compression_step141": {
+        "reference": "docs/PSD_COMPRESSION_OPTIONS_REFERENCES.json",
+        "status": "PSD/PSB now support streamed RLE and independent raw/RLE/ZIP/ZIP-predicted layer/mask and merged-image output through native Save/Copy and the Photato API; default bytes and Adobe output schema retained; major D01/I04 remains open",
+        "major_gate_closed": false
+      },
+      "photoshop_file_preferences_step142": {
+        "reference": "docs/PHOTOSHOP_FILE_PREFERENCES_REFERENCES.json",
+        "status": "Persistent File Handling disable-compression defaults now reach RGB16/32 PSD/PSB native Save/Copy and shared-document API output, with explicit choices preserved and versioned settings migration; D01/I04 and full Photoshop parity remain open.",
+        "major_gate_closed": false
+      },
+      "float_tiff_step143": {
+        "reference": "docs/TIFF_FLOAT_REFERENCES.json",
+        "status": "Float32 TIFF Save/Copy/import and both applicable APIs retain tested HDR/negative/transparent samples and linear working profiles through None/LZW/ZIP; D01/I04 and full Photoshop parity remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_storage_step144": {
+        "reference": "docs/TIFF_STORAGE_REFERENCES.json",
+        "status": "Native/API TIFF byte order, pixel layout and Float32 LZW/ZIP prediction preserve tested samples/metadata; native planar decoding repairs ImageIO alpha loss. D01/I04 and every major gate remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_layers_step145": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Editable Photoshop-style TIFF import now reaches native Open, Photato upload and both action-job interfaces through the shared PSD engine. Native/PSD persistence preserves supported content; layered TIFF output and full parity remain open.",
+        "major_gate_closed": false
+      },
+      "tiff_layer_output_step146": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Supported editable layered TIFF output now reaches native Save/Copy and Photato save/download/jobs through the shared PSD serializer. Ordinary Save defaults to preserving layers; existing flat exports and Adobe TIFF output remain unchanged. Full Photoshop parity and all major gates stay open.",
+        "major_gate_closed": false
+      },
+      "tiff_rich_step147": {
+        "reference": "docs/TIFF_LAYER_REFERENCES.json",
+        "status": "Numeric adjustments and vector masks now survive both TIFF byte orders through the shared PSD engine; retained global mask-display metadata survives TIFF/PSD/PSB output. Native/API automated qualification passes. Descriptor/opaque records, live Photoshop comparison and all major workflow gates remain open.",
+        "major_gate_closed": false
+      },
+      "jpeg_step148": {
+        "reference": "docs/JPEG_ENCODING_REFERENCES.json",
+        "status": "JPEG native Save/Copy and Photato output expose quality, baseline/optimized/progressive, matte and profile choices. Both action interfaces accept JPEG output with the published quality enum. Automated qualification passes; Photoshop quantization, progressive scan choices, live dialogs/defaults and all major gates remain open.",
+        "major_gate_closed": false
+      }
     },
     {
       "id": "I05",
@@ -1396,7 +1807,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step182 native Actions and Batch, shared APIs, history and per-file publication. All64 focused Debug and1759 full optimized tests pass. The universal macOS14+ package verifies. AUT01 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -1437,15 +1848,16 @@
       "title": "Timeline, frame animation and video",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Timeline/video layers, keyframes/transitions/audio/footage interpretation, frame animation/onion skin/tweening and import/render/GIF export; evaluate current macOS Photoshop support per codec.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "reference": "docs/VIDEO_KEYFRAME_REFERENCES.json"
     },
     {
       "id": "SP02",
@@ -1645,15 +2057,16 @@
       "title": "Sky Replacement",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Sky selection and replacement, horizon/edge/light/color adaptation, user sky libraries and non-destructive output groups with manual refinement.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
-      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
+      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests. Step193 implements Sky Selection/Replacement with native controls/preview/history, user library and three APIs. All113 focused Debug and113 optimized tests pass. The universal macOS14+ package verifies. Last full regression is1876 passing tests at192; the next major batch will broaden again. Full S03/AI09 parity remains open; next major workflow is Focus Area.",
+      "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
+      "latest_functional_progress": "Step193 implements Sky Selection/Replacement with native controls/preview/history, user library and three APIs. All113 focused Debug and113 optimized tests pass. The universal macOS14+ package verifies. Last full regression is1876 passing tests at192; the next major batch will broaden again. Full S03/AI09 parity remains open; next major workflow is Focus Area."
     },
     {
       "id": "B08",
@@ -1661,14 +2074,14 @@
       "title": "Adjustment Brush",
       "phase": 1,
       "role": "function",
-      "status": "open",
+      "status": "in_progress",
       "scope": "Native local adjustment painting, automatic subject targeting and mask refinement, associated tool options/presets and undo; verify current Photoshop availability and exact workflow.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Historical scope retained; no package-wide closure inferred from legacy status or passing module tests.",
+      "evidence_status": "Step191 adds native local-adjustment painting, clicked-object masks, controls/history/Actions and APIs. All156 focused Debug and156 focused optimized checks pass. Full regression and universal packaging are batched with the next major selection increment; the last verified package190 does not contain191. Full B08 exact/preset/live/platform gates remain open; continue major S03 selection tools.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope."
     },
     {
@@ -2065,14 +2478,16 @@
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "pending",
+      "swift_status": "partial"
     },
     {
       "id": "file.printOneCopy",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "pending",
+      "swift_status": "partial"
     },
     {
       "id": "file.exit",
@@ -2815,14 +3230,14 @@
       "work_packages": [
         "A03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "image.adjustments.hdrToning",
       "work_packages": [
         "A03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "image.adjustments.desaturate",
@@ -2836,21 +3251,21 @@
       "work_packages": [
         "A03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "image.adjustments.replaceColor",
       "work_packages": [
         "A03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "image.adjustments.equalize",
       "work_packages": [
         "A03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "image.autoTone",
@@ -4736,7 +5151,7 @@
       "work_packages": [
         "S04"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "select.modify.border",
@@ -4883,14 +5298,14 @@
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blur.blurMore",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blur.boxBlur",
@@ -4925,28 +5340,28 @@
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blur.shapeBlur",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blur.smartBlur",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blur.surfaceBlur",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.blurGallery.fieldBlur",
@@ -5058,21 +5473,21 @@
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.noise.dustAndScratches",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.noise.median",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.noise.reduceNoise",
@@ -5086,35 +5501,35 @@
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.pixelate.crystallize",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.pixelate.facet",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.pixelate.fragment",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.pixelate.mezzotint",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.pixelate.mosaic",
@@ -5128,56 +5543,56 @@
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.flame",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.pictureFrame",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.tree",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.clouds",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.differenceClouds",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.fibers",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.lensFlare",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.render.lightingEffects",
@@ -5191,21 +5606,21 @@
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.sharpen.sharpenEdges",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.sharpen.sharpenMore",
       "work_packages": [
         "F01"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.sharpen.smartSharpen",
@@ -5226,91 +5641,91 @@
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.emboss",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.extrude",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.findEdges",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.oilPaint",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.solarize",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.tiles",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.traceContour",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.stylize.wind",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.video.deInterlace",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.video.ntscColors",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.other.custom",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.other.hsbHsl",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.other.highPass",
@@ -5324,70 +5739,70 @@
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.other.minimum",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "filter.other.offset",
       "work_packages": [
         "F02"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.custom",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingCmyk",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingCyanPlate",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingMagentaPlate",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingYellowPlate",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingBlackPlate",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.workingCmyPlate",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.legacyMacintoshRgb",
@@ -5401,14 +5816,14 @@
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.monitorRgb",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.proofSetup.colorBlindnessProtanopia",
@@ -5429,14 +5844,14 @@
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.gamutWarning",
       "work_packages": [
         "COL03"
       ],
-      "current_status": "pending"
+      "current_status": "partial"
     },
     {
       "id": "view.pixelAspectRatio.custom",
@@ -6477,41 +6892,36 @@
     "current_menu_inventory": "artifacts/menu-parity-report.json"
   },
   "current_major_workflow": {
-    "id": "D01",
-    "name": "Open, edit, save, close and revert",
-    "dependencies": [
-      "I01",
-      "I02",
-      "I03",
-      "I04",
-      "COL01",
-      "AUT02",
-      "D02",
-      "Q03"
-    ],
-    "first_increment": "Unify document decoding/open-panel types, preserve open-document identity, expose matching optional API upload/download lifecycle and test supported native/raster/PSD inputs. This increment alone does not close D01.",
-    "remaining_after_first_increment": [
-      "Source-format Save/Save As/Save a Copy and full format options",
-      "Revert/read-only/external file changes and recent items/bookmarks",
-      "Large/unsupported/unknown PSD metadata, PSB/RAW/PDF and original .pcraft formats",
-      "Crash recovery, production sandbox access and complete independent Photoshop/platform validation"
-    ],
-    "verified_increment": "docs/DOCUMENT_IO_REFERENCES.json",
-    "next_increment": "Continue major D01: resolve source-profile and RGB32 precision/preservation, complete save options and unsupported PSD metadata/structure semantics, then remaining external-file/recovery lifecycle. Keep all unresolved gates open.",
-    "latest_increment": "docs/SOURCE_SAVE_REFERENCES.json",
-    "remaining_current": [
-      "Full format-dependent Save/Save As/Copy options and representability beyond supported structures",
-      "Original source-profile and RGB32 precision preservation, full metadata semantics and format interoperability",
-      "Read-only/external file coordination, recent items/bookmarks and crash-recovery relaunch",
-      "Independent Photoshop output/preferences/lifecycle and Intel/macOS14 runtime qualification"
-    ],
-    "format_policy": "docs/DOCUMENT_FORMAT_POLICY.json"
+    "id": "SP01",
+    "name": "Timeline, frame animation and video",
+    "current_increment": "Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged.",
+    "latest_increment": "docs/VIDEO_KEYFRAME_REFERENCES.json"
   },
   "latest_verified_increment": {
-    "step": "dev-step-114",
-    "workflow": "D01",
+    "step": "dev-step-234",
+    "workflow": "Editable video Timeline keyframes; 2450 full optimized tests",
     "workflow_closed": false,
-    "checkpoint": "docs/ACTIVE_CHECKPOINT_114.json",
-    "work_order_unchanged": true
+    "checkpoint": "docs/ACTIVE_CHECKPOINT_234.json"
+  },
+  "scheduling_correction_157": "Maintain major-first functional breadth. Do not revisit numerical feather/filter refinement while missing major workflows can be implemented.",
+  "next_major_workflow": {
+    "id": "SP01",
+    "title": "Timeline, frame animation and video",
+    "priority": "Major feature breadth; defer optional Color Settings fidelity refinements while retaining every full-parity requirement.",
+    "observed_gap": "Frame animation/GIF, PNG video-sequence import and numbered PNG folder/API sequence export are implemented. Native movie codecs, keyframes/transitions/audio, full Render Video and complete interchange remain required.",
+    "stages": [
+      "Add persistent native frame/timeline state and transactional editing shared by desktop/API, preserving existing still-document behavior and explicit older-format rejection.",
+      "Provide the native Timeline panel, frame creation/duplication/reordering/delays/looping/playback and layer-state capture, with history and save/reopen tests.",
+      "Implement tweening and animated GIF/image-sequence import/export through native frameworks and independent frame/timing inspection.",
+      "Add AVFoundation video-layer import, trimming, footage interpretation, frame painting and rasterization, then keyframes, transitions, audio and Render Video.",
+      "Qualify factories/shortcuts/PSD persistence/Adobe contract applicability and supported-platform/codecs against public references and live Photoshop when access resumes."
+    ],
+    "references": [
+      "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/create-frame-based-animations.html",
+      "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/timeline-panel-controls-and-features.html",
+      "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/create-and-manage-video-layers.html",
+      "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-video-from-photoshop.html"
+    ],
+    "closure": "This staged plan does not narrow SP01 or the master goal. Video/keyframes/audio/PSD/GIF and their API/platform requirements remain part of completion."
   }
 }

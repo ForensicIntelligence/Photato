@@ -71,18 +71,18 @@ final class SelectionTests: XCTestCase {
       for x in 0..<4 {
         XCTAssertEqual(filled.pixel(x: x, y: 0).r, 1 - mask.coverage(x: x, y: 0), accuracy: 0.004)
       }
-      session.undo()
+      try session.undo()
       try session.execute(.clear(id))
       guard case .raster(let cleared) = session.document.layers[0].content else { return XCTFail() }
       XCTAssertEqual(cleared.pixel(x: 2, y: 0).a, 127.0 / 255, accuracy: 0.004)
       XCTAssertEqual(cleared.pixel(x: 2, y: 0).r, 1)
-      session.undo()
+      try session.undo()
       try session.execute(.applyAdjustment(id, .invert))
       guard case .raster(let adjusted) = session.document.layers[0].content else {
         return XCTFail()
       }
       XCTAssertEqual(adjusted, filled)
-      session.undo()
+      try session.undo()
       var brush = Brush()
       brush.size = 30
       brush.hardness = 1
@@ -118,17 +118,17 @@ final class SelectionTests: XCTestCase {
         XCTAssertEqual(result.coverage(x: 2 - y, y: x), mask.coverage(x: x, y: y))
       }
     }
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, doc)
     try session.execute(.canvasSize(6, 5, .bottomRight, nil))
     XCTAssertEqual(session.document.selectionMask?.coverage(x: 3, y: 2), 10.0 / 255)
     XCTAssertEqual(session.document.selectionMask?.coverage(x: 0, y: 0), 0)
-    session.undo()
+    try session.undo()
     try session.execute(.imageSize(8, 6, 72, .bilinear))
     XCTAssertEqual(session.document.selectionMask?.width, 8)
     XCTAssertEqual(session.document.selectionMask?.height, 6)
     try session.document.validate()
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, doc)
   }
   func testSelectionArchiveUndoAndDeselect() throws {
@@ -140,15 +140,15 @@ final class SelectionTests: XCTestCase {
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(selected)), selected)
     try session.execute(.invertSelection)
     XCTAssertNotEqual(session.document.selectionMask, selected.selectionMask)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, selected)
     try session.execute(.selection(nil))
     XCTAssertNil(session.document.selectionMask)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, selected)
     try session.execute(.crop(.init(x: 1, y: 1, width: 10, height: 10)))
     XCTAssertNil(session.document.selectionMask)
-    session.undo()
+    try session.undo()
     XCTAssertEqual(session.document, selected)
   }
   func testSelectionValidationAndFailedEditsAreAtomic() throws {

@@ -1,0 +1,126 @@
+{
+  "step": "dev-step-139",
+  "status": "Indexed recovery now admits documents under an estimated aggregate capacity policy, preserving deferred groups/backups and allowing native/API retry after closing documents; automated/process qualification passes, full D02/I02 and Photoshop parity remain open",
+  "checkpoint": {
+    "path": "docs/ACTIVE_CHECKPOINT_139.json",
+    "sha256": "76caaac21ebaa937ce13ee14385bf13a72f323c56c9ab6a7c31a5dc13596bb8a"
+  },
+  "api": {
+    "photato_typed_commands": 20,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": [],
+    "expanded_routes": [
+      "GET /v1/recovery",
+      "POST /v1/recovery/retry"
+    ],
+    "new_state": [
+      "lastDeferred",
+      "operation.memory",
+      "operation.deferredByReason",
+      "accounting phase"
+    ],
+    "permission": "Existing separate recovery-management permission; no automatic sharing.",
+    "coverage": "Shared native coordinator and exact schemas; completed partial retry200 with deferred counts, cancellation/workspace instability409, permission revocation403. No corresponding Adobe desktop recovery endpoint."
+  },
+  "scope": [
+    "Typed native manifest/raster limit errors, manifest bounds before Data allocation and checked recovery metadata without raster expansion; encoded archive format unchanged",
+    "Off-main stable workspace/session/history accounting with conservative canvas/render/metadata allowances, explicit decoder limits and fresh admission before publication",
+    "Deferred groups/backups/registrations preserved without older-snapshot fallback; native retained results notice and File Handling summary; smaller groups and close/retry continue",
+    "Eight bounded accounting attempts with cancellable20ms yields tolerate finite AppKit startup restoration; continuous workspace mutation returns conflict instead of publishing stale accounting",
+    "Native/API exact models, dirty/autosave/source state, batches2/2/1 and3/1/0 deferred, SIGKILL then fresh recovery/clean relaunch; background cancellation and queued callback regression processes pass",
+    "221 focused and1,316 Debug/1,316 Release tests; universal macOS14+ signatures/resources and public AppKit callbacks on arm64/Rosetta; nine whole PSB outputs equal138"
+  ],
+  "remaining": [
+    "Admission is an original Photato estimate, not a Photoshop preference or whole-process RSS/GPU cap. Quarter physical RAM clamped256MiB..4GiB; active paging, transient decode/draft/global allocator and ordinary Open/Review Backup allocation remain open.",
+    "AppKit-owned restoration is outside indexed admission. Actual relaunch may restore previously open documents before indexed discovery; those are accounted and reported separately, never discarded to meet budget.",
+    "D02 full window/tab restoration, legacy recovery locations, sandbox/network/removable-volume and power-loss qualification remain open.",
+    "D01 format-specific save/export options, full metadata/profile/tag/ACL fidelity and external coordination remain open. Next incremental major work is shared format-specific save/export settings; see next-major-plan02.",
+    "Physical Intel/macOS14 and live native/Photoshop UX unqualified. Mac remains locked; existing unlock question pending. Rosetta checks exercise public opening, not full platform/UI parity.",
+    "Passing native tests or unchanged sample outputs do not establish universal Photoshop byte equivalence; all major gates remain open and minor/final-detail phases remain deferred."
+  ],
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 157,
+    "unavailable_leaf_commands": 568,
+    "newly_bound": [],
+    "paths_shortcuts_unchanged": true,
+    "new_ui": "Photato recovery deferral summary/results and File Handling count; no invented Photoshop factory menu"
+  },
+  "provenance": "Original native Swift using the existing archive/recovery modules and actual AppKit factory. Automatic capacity policy is Photato-specific; no Photoshop preference/window/encoder equivalence claimed.",
+  "freeze": {
+    "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/tested-source-hashes03.json",
+    "sha256": "e3e873a734e6656480c186485f2ac01959ad16f978667b24ef245aea779b568e"
+  },
+  "focused": {
+    "passed": 221,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 22.744,
+    "log": {
+      "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/focused03.log",
+      "sha256": "59f8fbae348e442f467eab0d3b165a2345d81f2cd0e497ab5e3aabf508eaa227"
+    }
+  },
+  "tests": {
+    "full01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T115234Z-139-recovery-admission/full01.log",
+      "sha256": "bcd64fdc5697a74f566c7c58ed2dc1fdc96b9e6e25ecdf5ca74c3c18ae30fe7f",
+      "passed": 1316,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 263.674
+    },
+    "release01": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261020T115234Z-139-recovery-admission/release01.log",
+      "sha256": "d38c0fe58f69f7a4b866ddd21b6674ea257b4c916cda8fcd509945156b75ee80",
+      "passed": 1316,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 68.247
+    }
+  },
+  "package": {
+    "extracted_app": "/private/tmp/photato139-verified-liv8ep2c/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "3cbeb1d5f9a9a2c37cd98557bfc7f428bbb912dda0dbf104b20c304ba90f3922",
+    "zip_sha256": "74609d77276a3c8c850db7240c56566d8a723eaabb09e28b140d1a12bfb0d3dc",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "admission_process": {
+    "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/process-admission-verification04.json",
+    "sha256": "ebb3c06cccef86a3a8c6ac6c15248d71a19c78430a504f63740b013fae37f3cc"
+  },
+  "background_process": {
+    "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/process-background-verification01.json",
+    "sha256": "d342a10898615a7eed32ccef0c052b0d9e9a32716f19ea316a9800fd9d9e4cf4"
+  },
+  "release_process": {
+    "arm64": {
+      "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/public-release-arm6401/verification.json",
+      "sha256": "3b1d783dde5c45120befc0fe2b83ca18ee708229a50a4a142ba399f13d0e04d7"
+    },
+    "x86_64": {
+      "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/public-release-x86_6401/verification.json",
+      "sha256": "6e4f1e602610f8d5638db2bcc8a73ea3fd6a08d7b7dd8a46a6053eb210fc5a5d"
+    }
+  },
+  "live_ui": {
+    "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/live-ui-availability01.json",
+    "sha256": "3876f1ebd16a8afda2dafbca83d1a6f4c1df51c08f78ba80264ac86390f67a21"
+  },
+  "source_scope": {
+    "path": "artifacts/runs/20261020T115234Z-139-recovery-admission/source-delta01.json",
+    "sha256": "5b6d2195f9ffb6e1cf8416970974ebfec258a337b8ba4249639d4bd0df294f00"
+  },
+  "full_parity": false
+}

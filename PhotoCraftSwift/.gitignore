@@ -8,3 +8,6 @@ DerivedData/
 *.xcarchive/
 **/xcuserdata/
 *.xcuserstate
+
+/Assets/GeneratedModels/*
+!/Assets/GeneratedModels/README.md

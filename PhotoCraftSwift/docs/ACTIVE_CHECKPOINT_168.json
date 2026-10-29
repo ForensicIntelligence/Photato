@@ -1,0 +1,65 @@
+{
+  "step": "dev-step-168",
+  "completed_at_utc": "2026-10-27T00:43:33.771788+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Usable native Content-Aware Fill workspace, synthesis/output/history and API; B06 full parity remains open.",
+  "source_manifest": "artifacts/runs/20261027T002059Z-168-content-aware-fill/source01.json",
+  "source_manifest_sha256": "72dda27c5ad3f6155b8c3a455566ef201caf166a275316cf2d0ef3f4502a6876",
+  "source_inputs": 1259,
+  "source_delta": "artifacts/runs/20261027T002059Z-168-content-aware-fill/changes01.json",
+  "tests": {
+    "core": {
+      "count": 4,
+      "log": "artifacts/runs/20261027T002059Z-168-content-aware-fill/core01.log"
+    },
+    "final_focused": {
+      "count": 30,
+      "log": "artifacts/runs/20261027T002059Z-168-content-aware-fill/integration04.log",
+      "source_manifest": "artifacts/runs/20261027T002059Z-168-content-aware-fill/source01.json"
+    },
+    "failures": 0,
+    "full_regression": "Deferred to batch major-feature milestone, not claimed for168."
+  },
+  "package": {
+    "utc": "2026-10-27T00:43:33.771788+00:00",
+    "app": "/private/tmp/photato168-verified-pl8__j4v/Photato.app",
+    "zip": "artifacts/runs/20261027T002059Z-168-content-aware-fill/Photato168-final.zip",
+    "zip_sha256": "9c12829a19a3d4a6973bbbf6b9eb722855b43bdf07a5d2b4b58bf90f7b5cc81f",
+    "executable_sha256": "1aee1cf9ea109e5e613c9abd1912e7b5578bd889efebfdf8e0eb141127e2c976",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "signature": "ad-hoc clean-extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1259,
+    "source_manifest": "artifacts/runs/20261027T002059Z-168-content-aware-fill/source01.json",
+    "original_build_user_state_and_rust": "verified unchanged",
+    "runtime_qualification": "30 focused Debug tests for168; full/optimized/Intel/macOS14/26/live qualification remains open."
+  },
+  "api": {
+    "photato_typed_commands": 45,
+    "adobe": "Five partial/three unimplemented endpoint groups unchanged; no dedicated CAF endpoint; content-aware actionJSON unsupported."
+  },
+  "menus": {
+    "entries": 802,
+    "bound": 212,
+    "unavailable": 513,
+    "primary": 102,
+    "alternate": 8
+  },
+  "limitations": [
+    "Ordinary raster target, 16MP canvas and 4MP synthesis budget including adaptations.",
+    "Cross-document sampling, Apply/multiple-fill session semantics and finer workspace controls remain open.",
+    "Exact proprietary Photoshop results and live UI qualification remain open.",
+    "Content-Aware Scale and crop fill remain missing major workflows."
+  ],
+  "next": {
+    "workflow": "B06 Content-Aware Scale and crop fill",
+    "first_step": "Continue review of upstream algo/seam.rs and engine/edit_menu_cmds.rs: native seam carving, saved alpha/skin protection, amount blend, scaling preview/commit/history and typed API. Then crop fill with shared synthesis.",
+    "prepared_plan": "artifacts/runs/20261027T002059Z-168-content-aware-fill/next-major-plan01.json"
+  },
+  "no_running_workers_expected": true
+}

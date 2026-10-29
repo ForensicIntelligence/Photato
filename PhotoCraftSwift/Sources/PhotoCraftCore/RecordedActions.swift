@@ -1,0 +1,348 @@
+import Foundation
+
+/// Portable layer references, independent of document UUIDs.
+public enum ActionLayerTarget: Codable, Equatable, Sendable {
+  case active
+  case named(String, occurrence: Int)
+
+  public init(_ id: UUID, in document: CraftDocument, preferActive: Bool = true) {
+    if preferActive && id == document.activeLayerID { self = .active; return }
+    guard let index = document.layers.firstIndex(where: { $0.id == id }) else {
+      self = .named("", occurrence: -1); return
+    }
+    let name = document.layers[index].name
+    self = .named(name, occurrence: document.layers[..<index].filter { $0.name == name }.count)
+  }
+  public func resolve(in document: CraftDocument) throws -> UUID {
+    switch self {
+    case .active:
+      guard let id = document.activeLayerID else { throw CraftError.invalid("The action requires an active layer.") }; return id
+    case .named(let name, let occurrence):
+      let matches = document.layers.filter { $0.name == name }
+      guard matches.indices.contains(occurrence) else { throw CraftError.invalid("Action layer ‘\(name)’ was not found.") }
+      return matches[occurrence].id
+    }
+  }
+}
+
+/// Native action format. Unsupported recording entries remain visible and block playback.
+/// This is deliberately not an Adobe .atn file or a Photoshop JavaScript program.
+public enum ActionOperation: Codable, Sendable {
+  case documentMode(DocumentModeRequest)
+  case restrictedMode(RestrictedModeRequest)
+  case inkMode(InkModeRequest)
+  case clipboardCopy([ActionLayerTarget], merged: Bool)
+  case clipboardCut([ActionLayerTarget], background: Pixel?)
+  case clipboardPaste(PastePlacement, center: PathPoint?)
+  indirect case toneAdjustment(ActionLayerTarget?,ClassicToneSettings)
+  indirect case proceduralRender(ActionLayerTarget?,ProceduralRenderSettings,Bool,VectorPath?)
+  indirect case createShape(String,ShapeDefinition,Transform2D,[RasterPattern])
+  indirect case setShape(ActionLayerTarget,ShapeDefinition,[RasterPattern])
+  indirect case appendShape(ActionLayerTarget,ShapeComponent)
+  indirect case selectionCoverage(SelectionMask?,SelectionMode)
+  indirect case adjustmentBrush(RecordedAdjustmentBrush)
+  indirect case replaceAdjustment(ActionLayerTarget,Adjustment)
+  case unsupported(String)
+  case select(ActionLayerTarget)
+  case newLayer(NewPixelLayerOptions, below: Bool)
+  case newGroup(NewLayerGroupOptions, children: [ActionLayerTarget], below: Bool)
+  case addContent(String, LayerContent)
+  case delete([ActionLayerTarget])
+  case duplicate([ActionLayerTarget], name: String?)
+  case merge([ActionLayerTarget], LayerMergeOperation)
+  case rename(ActionLayerTarget, String)
+  case visibility(ActionLayerTarget, Bool)
+  case lock(ActionLayerTarget, Bool)
+  case opacity(ActionLayerTarget, Float)
+  case blend(ActionLayerTarget, BlendMode)
+  case move(ActionLayerTarget, Int, Int)
+  case clipping(ActionLayerTarget, Bool)
+  case group([ActionLayerTarget], String)
+  case ungroup(ActionLayerTarget)
+  case createMask(ActionLayerTarget, LayerMaskCreation)
+  case applyMask(ActionLayerTarget)
+  case deleteMask(ActionLayerTarget)
+  case maskProperties(ActionLayerTarget, MaskProperties)
+  case maskFill(ActionLayerTarget, Float)
+  case invertMask(ActionLayerTarget)
+  case selection(IntRect?)
+  case selectShape(SelectionShape, SelectionMode, Bool, Double)
+  case invertSelection
+  case featherSelection(Double)
+  case stroke(ActionLayerTarget, [StrokePoint], Brush, mask: Bool)
+  case clear(ActionLayerTarget)
+  case fill(ActionLayerTarget, Pixel)
+  case style([ActionLayerTarget], LayerStyle?)
+  case filters(ActionLayerTarget, SmartFilterStack?)
+  case filter(ActionLayerTarget, RasterFilter)
+  case adjustment(ActionLayerTarget, Adjustment)
+  case desaturate(ActionLayerTarget)
+  case autoCorrection(ActionLayerTarget, AutoCorrection)
+  case crop(IntRect)
+  case flip(ActionLayerTarget, Bool)
+  case transform(ActionLayerTarget, Transform2D, Resampling)
+  case canvasSize(Int, Int, CanvasAnchor, Pixel?)
+  case imageSize(Int, Int, Double, Resampling)
+  case resolution(Double)
+  case rotate(CanvasTurn)
+
+  public var unsupportedReason: String? { if case .unsupported(let reason) = self { return reason }; return nil }
+  public init(recording command: Command, in d: CraftDocument) {
+    func target(_ id: UUID) -> ActionLayerTarget { .init(id, in: d) }
+    func targets(_ ids: Set<UUID>) -> [ActionLayerTarget] { d.layers.filter { ids.contains($0.id) }.map { target($0.id) } }
+    func shapePatterns(_ definition:ShapeDefinition,_ supplied:[RasterPattern])->[RasterPattern]{
+      let ids=Set([definition.fill.pattern?.patternID,definition.stroke.paint.pattern?.patternID].compactMap{$0})
+      return ids.sorted().compactMap{id in supplied.first{$0.id==id} ?? d.pattern(id)}
+    }
+    switch command {
+    case .documentMode(let request): self = .documentMode(.init(request))
+    case .preparedColorProfile(let edit): self = .unsupported("\(edit.title) semantic Action recording is not yet available.")
+    case .preparedDocumentMode(let edit): self = edit.recording ?? .unsupported("\(edit.title) has no semantic recording settings.")
+    case .cut(let ids, let background): self = .clipboardCut(targets(Set(ids)), background: background)
+    case .paste(_, let placement, let center): self = .clipboardPaste(placement, center: center)
+    case .toneAdjustment(let request):self = .toneAdjustment((request.layerID ?? d.activeLayerID).map(target),request.settings)
+    case .hdrToning:self = .unsupported("HDR Toning needs the full compositor; semantic Actions playback is not implemented yet.")
+    case .proceduralRender(let request):
+      self = .proceduralRender((request.layerID ?? d.activeLayerID).map(target),request.settings,request.newLayer,request.settings.kind == .flame ? ProceduralRenderEngine.resolvedPath(request,in:d):nil)
+    case .shape(let edit):
+      switch edit {case .create(let name,let definition,let placement,let patterns):self = .createShape(name,definition,placement,shapePatterns(definition,patterns));case .configure(let id,let definition,let patterns):self = .setShape(target(id),definition,shapePatterns(definition,patterns));case .append(let id,let component):self = .appendShape(target(id),component)}
+    case .maskAllObjects: self = .unsupported("Mask All Objects is not yet recordable. The generated masks remain editable and save with the document.")
+    case .focusArea(let edit):
+      if edit.output == .selection{self = .selectionCoverage(edit.mask,.replace)}else{self = .unsupported("Focus Area mask/layer output is not yet recordable. Use selection output and a separate mask action.")}
+    case .adjustmentBrush(let request):self = .adjustmentBrush(.init(request,in:d))
+    case .replaceContent(let id, .adjustment(let value)):self = .replaceAdjustment(target(id),value)
+    case .newPixelLayer(let v, let below): self = .newLayer(v, below: below)
+    case .newGroup(let v, let children, let below): self = .newGroup(v, children: children.map(target), below: below)
+    case .addLayer(let layer):
+      var standard = Layer(name: layer.name, content: layer.content); standard.id = layer.id
+      guard standard == layer else { self = .unsupported("Adding content with placement or layer metadata is not yet recordable."); return }
+      switch layer.content {
+      case .adjustment, .text, .shape: self = .addContent(layer.name, layer.content)
+      default: self = .unsupported("Adding existing pixel content is not recordable. Use New Layer or import it before playback.")
+      }
+    case .deleteLayer(let id): self = .delete([target(id)])
+    case .deleteLayers(let ids): self = .delete(targets(ids))
+    case .duplicateLayer(let id): self = .duplicate([target(id)], name: nil)
+    case .duplicateLayers(let ids, let name): self = .duplicate(targets(ids), name: name)
+    case .mergeLayers(let ids, let op): self = .merge(targets(ids), op)
+    case .renameLayer(let id, let v): self = .rename(target(id), v)
+    case .visibility(let id, let v): self = .visibility(target(id), v)
+    case .lock(let id, let v): self = .lock(target(id), v)
+    case .opacity(let id, let v): self = .opacity(target(id), v)
+    case .blend(let id, let v): self = .blend(target(id), v)
+    case .move(let id, let x, let y):
+      let layer = d.layers.first { $0.id == id }; self = .move(target(id), x - (layer?.x ?? 0), y - (layer?.y ?? 0))
+    case .clipping(let id, let v): self = .clipping(target(id), v)
+    case .groupLayers(let ids, let name): self = .group(ids.map(target), name)
+    case .ungroup(let id): self = .ungroup(target(id))
+    case .createMask(let id, let v): self = .createMask(target(id), v)
+    case .applyMask(let id): self = .applyMask(target(id))
+    case .deleteMask(let id): self = .deleteMask(target(id))
+    case .maskProperties(let id, let v): self = .maskProperties(target(id), v)
+    case .maskFill(let id, let v): self = .maskFill(target(id), v)
+    case .invertMask(let id): self = .invertMask(target(id))
+    case .selection(let v): self = .selection(v)
+    case .selectShape(let shape, let mode, let aa, let feather): self = .selectShape(shape, mode, aa, feather)
+    case .selectionCoverage(let mask,let mode):self = .selectionCoverage(mask,mode)
+    case .invertSelection: self = .invertSelection
+    case .featherSelection(let v): self = .featherSelection(v)
+    case .stroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: false)
+    case .maskStroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: true)
+    case .clear(let id): self = .clear(target(id))
+    case .fill(let id, let v): self = .fill(target(id), v)
+    case .layerStyle(let ids, let v): self = .style(targets(ids), v)
+    case .smartFilters(let id, let v): self = .filters(target(id), v)
+    case .applyFilter(let id, let v): self = .filter(target(id), v)
+    case .applyAdjustment(let id, let v): self = .adjustment(target(id), v)
+    case .desaturate(let id): self = .desaturate(target(id))
+    case .autoCorrection(let id, let v): self = .autoCorrection(target(id), v)
+    case .crop(let v): self = .crop(v)
+    case .flip(let id, let v): self = .flip(target(id), v)
+    case .transform(let id, let matrix, let method): self = .transform(target(id), matrix, method)
+    case .canvasSize(let w, let h, let anchor, let fill): self = .canvasSize(w, h, anchor, fill)
+    case .imageSize(let w, let h, let dpi, let method): self = .imageSize(w, h, dpi, method)
+    case .resolution(let v): self = .resolution(v)
+    case .rotateCanvas(let v): self = .rotate(v)
+    default: self = .unsupported("\(command.label) is not yet recordable. Remove or disable this step before playback.")
+    }
+  }
+
+  public func command(in d: CraftDocument) throws -> Command? {
+    func id(_ target: ActionLayerTarget) throws -> UUID { try target.resolve(in: d) }
+    func ids(_ targets: [ActionLayerTarget]) throws -> Set<UUID> { try Set(targets.map(id)) }
+    switch self {
+    case .documentMode, .restrictedMode, .inkMode, .clipboardCopy, .clipboardCut, .clipboardPaste:
+      throw CraftError.unsupported("This action requires compositor/clipboard playback.")
+    case .toneAdjustment(let target,let settings):return .toneAdjustment(.init(settings,layerID:try target.map(id)))
+    case .proceduralRender(let target,let settings,let newLayer,let path):return .proceduralRender(.init(settings,layerID:try target.map(id),newLayer:newLayer,path:path))
+    case .createShape(let name,let definition,let placement,let patterns):return .shape(.create(name,definition,placement,patterns:patterns))
+    case .setShape(let target,let definition,let patterns):return .shape(.configure(try id(target),definition,patterns:patterns))
+    case .appendShape(let target,let component):return .shape(.append(try id(target),component))
+    case .adjustmentBrush(let value):return try value.command(in:d)
+    case .replaceAdjustment(let target,let value):
+      let layerID=try id(target)
+      guard let layer=d.layers.first(where:{$0.id==layerID}),case .adjustment=layer.content else{throw CraftError.invalid("Recorded adjustment replacement needs an adjustment layer.")}
+      return .replaceContent(layerID,.adjustment(value))
+    case .unsupported(let reason): throw CraftError.unsupported(reason)
+    case .select: return nil
+    case .newLayer(let v, let below): return .newPixelLayer(v, below: below)
+    case .newGroup(let v, let children, let below): return .newGroup(v, children: try children.map(id), below: below)
+    case .addContent(let name, let content):
+      switch content { case .adjustment, .text, .shape: return .addLayer(Layer(name: name, content: content)); default: throw CraftError.unsupported("Only adjustment, text and shape content can be added by an action.") }
+    case .delete(let t): return .deleteLayers(try ids(t))
+    case .duplicate(let t, let name): return .duplicateLayers(try ids(t), name: name)
+    case .merge(let t, let op): return .mergeLayers(try ids(t), op)
+    case .rename(let t, let v): return .renameLayer(try id(t), v)
+    case .visibility(let t, let v): return .visibility(try id(t), v)
+    case .lock(let t, let v): return .lock(try id(t), v)
+    case .opacity(let t, let v): return .opacity(try id(t), v)
+    case .blend(let t, let v): return .blend(try id(t), v)
+    case .move(let t, let x, let y):
+      let layerID = try id(t), layer = d.layers.first { $0.id == layerID }!
+      let (dx, ox) = layer.x.addingReportingOverflow(x), (dy, oy) = layer.y.addingReportingOverflow(y)
+      guard !ox, !oy else { throw CraftError.invalid("Action movement is out of range.") }
+      return .move(layerID, dx, dy)
+    case .clipping(let t, let v): return .clipping(try id(t), v)
+    case .group(let t, let v): return .groupLayers(try t.map(id), v)
+    case .ungroup(let t): return .ungroup(try id(t))
+    case .createMask(let t, let v): return .createMask(try id(t), v)
+    case .applyMask(let t): return .applyMask(try id(t))
+    case .deleteMask(let t): return .deleteMask(try id(t))
+    case .maskProperties(let t, let v): return .maskProperties(try id(t), v)
+    case .maskFill(let t, let v): return .maskFill(try id(t), v)
+    case .invertMask(let t): return .invertMask(try id(t))
+    case .selection(let v): return .selection(v)
+    case .selectShape(let s, let m, let aa, let f): return .selectShape(s, m, aa, f)
+    case .selectionCoverage(let mask,let mode):return .selectionCoverage(mask,mode)
+    case .invertSelection: return .invertSelection
+    case .featherSelection(let v): return .featherSelection(v)
+    case .stroke(let t, let p, let b, let mask): return mask ? .maskStroke(try id(t), p, b) : .stroke(try id(t), p, b)
+    case .clear(let t): return .clear(try id(t))
+    case .fill(let t, let v): return .fill(try id(t), v)
+    case .style(let t, let v): return .layerStyle(try ids(t), v)
+    case .filters(let t, let v): return .smartFilters(try id(t), v)
+    case .filter(let t, let v): return .applyFilter(try id(t), v)
+    case .adjustment(let t, let v): return .applyAdjustment(try id(t), v)
+    case .desaturate(let t): return .desaturate(try id(t))
+    case .autoCorrection(let t, let v): return .autoCorrection(try id(t), v)
+    case .crop(let v): return .crop(v)
+    case .flip(let t, let v): return .flip(try id(t), v)
+    case .transform(let t, let m, let r): return .transform(try id(t), m, r)
+    case .canvasSize(let w, let h, let a, let f): return .canvasSize(w, h, a, f)
+    case .imageSize(let w, let h, let dpi, let r): return .imageSize(w, h, dpi, r)
+    case .resolution(let v): return .resolution(v)
+    case .rotate(let v): return .rotateCanvas(v)
+    }
+  }
+}
+
+public struct RecordedActionStep: Codable, Identifiable, Sendable {
+  public var id: UUID
+  public var name: String
+  public var enabled: Bool
+  public var operation: ActionOperation
+  public init(name: String, operation: ActionOperation, enabled: Bool = true) {
+    id = UUID(); self.name = name; self.operation = operation; self.enabled = enabled
+  }
+}
+public struct RecordedAction: Codable, Identifiable, Sendable {
+  public var id: UUID
+  public var name: String
+  public var set: String
+  public var steps: [RecordedActionStep]
+  public init(name: String, set: String = "My Actions", steps: [RecordedActionStep] = []) {
+    id = UUID(); self.name = name; self.set = set; self.steps = steps
+  }
+  public func validate() throws {
+    guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+      !set.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+      name.utf8.count <= 256, set.utf8.count <= 256, steps.count <= 512,
+      Set(steps.map(\.id)).count == steps.count,
+      steps.allSatisfy({ !$0.name.isEmpty && $0.name.utf8.count <= 1024 }) else {
+      throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
+    }
+    for step in steps {
+      if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
+      if case .restrictedMode(let request) = step.operation { try request.validate() }
+      if case .inkMode(let request) = step.operation { try request.validate() }
+      if case .clipboardPaste(_, let center) = step.operation, let center {
+        guard center.x.isFinite, center.y.isFinite, abs(center.x) <= 1_000_000, abs(center.y) <= 1_000_000 else { throw CraftError.invalid("Invalid recorded paste center.") }
+      }
+      if case .clipboardCut(_, let background) = step.operation, let background {
+        guard [background.r, background.g, background.b].allSatisfy({$0.isFinite && (0...1).contains($0)}), background.a == 1 else { throw CraftError.invalid("Invalid recorded Cut background.") }
+      }
+      if case .toneAdjustment(_,let settings)=step.operation {try settings.validate();guard settings.kind != .hdrToning else{throw CraftError.unsupported("HDR Toning Actions require full compositor playback.")}}
+      if case .proceduralRender(_,let settings,let newLayer,let path)=step.operation {
+        try ProceduralRenderRequest(settings,newLayer:newLayer,path:path).validate()
+        if settings.kind == .flame && path == nil {throw CraftError.invalid("Recorded Flame requires retained path geometry.")}
+      }
+      if case .adjustmentBrush(let value)=step.operation {try value.request.validate()}
+      if case .replaceAdjustment(_,let value)=step.operation {try value.validate()}
+    }
+    for step in steps { if case .stroke(_,let points,let brush,_) = step.operation { try BrushPainter.validate(brush,points:points) } }
+  }
+  public var requiresInitialClipboard: Bool {
+    for step in steps where step.enabled {
+      switch step.operation { case .clipboardPaste: return true; case .clipboardCopy, .clipboardCut: return false; default: break }
+    }
+    return false
+  }
+  public var writesClipboard: Bool { steps.contains { step in
+    guard step.enabled else { return false }
+    switch step.operation { case .clipboardCopy, .clipboardCut: return true; default: return false }
+  } }
+  public var usesMasterPalette: Bool { steps.contains { if $0.enabled, case .restrictedMode(let request) = $0.operation { return request.usesMasterPalette }; return false } }
+  public func apply(to document: inout CraftDocument,
+    resolve: ((ActionOperation, inout CraftDocument) throws -> Bool)? = nil,
+    validate: @Sendable (CraftDocument) throws -> Void = { _ in }) throws {
+    try self.validate()
+    guard steps.contains(where: \.enabled) else { throw CraftError.invalid("This action has no enabled steps.") }
+    var result = document
+    for (index, step) in steps.enumerated() where step.enabled {
+      try Task.checkCancellation()
+      do {
+        if case .select(let target) = step.operation { result.activeLayerID = try target.resolve(in: result) }
+        else if try resolve?(step.operation, &result) != true, let command = try step.operation.command(in: result) { try command.apply(to: &result) }
+        try result.validate()
+        try validate(result)
+      } catch is CancellationError { throw CancellationError() }
+      catch { throw CraftError.invalid("Action ‘\(name)’, step \(index + 1) (\(step.name)): \(error.localizedDescription)") }
+    }
+    document = result
+  }
+}
+
+public struct ActionRecording: Sendable {
+  public var action: RecordedAction
+  struct Group: Sendable { let historyID: UUID; var steps: [RecordedActionStep] }
+  var groups: [Group] = []
+  var undone: [Group] = []
+  var pending: [RecordedActionStep] = []
+  public var snapshot: RecordedAction { var value = action; value.steps = groups.flatMap(\.steps) + pending; return value }
+  mutating func append(_ step: RecordedActionStep, historyID: UUID) {
+    // A visible blocking entry is retained if recording exceeds the bounded format.
+    guard snapshot.steps.count < 511 else {
+      if snapshot.steps.count == 511 { pending.append(.init(name: "Recording limit", operation: .unsupported("Recording exceeded 511 steps. Split this action."))) }; return
+    }
+    if groups.last?.historyID == historyID { groups[groups.count - 1].steps += pending + [step] }
+    else { groups.append(.init(historyID: historyID, steps: pending + [step])) }
+    pending = []; undone = []
+  }
+  mutating func navigate(historyID: UUID, redo: Bool) {
+    pending = []
+    if redo, undone.last?.historyID == historyID { groups.append(undone.removeLast()) }
+    else if !redo, groups.last?.historyID == historyID { undone.append(groups.removeLast()) }
+  }
+}
+
+public struct ActionPlaybackLimits: Sendable {
+  public let maximumPixels: Int
+  public let maximumLayers: Int
+  public let maximumBytes: Int
+  public init(maximumPixels: Int, maximumLayers: Int, maximumBytes: Int) {
+    self.maximumPixels = maximumPixels; self.maximumLayers = maximumLayers; self.maximumBytes = maximumBytes
+  }
+  public func validate(_ document: CraftDocument) throws {
+    guard document.width * document.height <= maximumPixels, document.layers.count <= maximumLayers, document.estimatedBytes <= maximumBytes else { throw CraftError.invalid("An action step exceeds the playback resource limits.") }
+  }
+}

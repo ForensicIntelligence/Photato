@@ -1,0 +1,154 @@
+{
+  "step": "dev-step-206",
+  "completed_at_utc": "2026-10-27T22:30:06.675334+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": [
+    "Smart Sharpen Gaussian/Lens/Motion removal, amount/radius/noise and shadow/highlight fade controls",
+    "Reduce Noise luma/chroma/detail/JPEG controls and additional RGB channel smoothing",
+    "Native preview at Fit/100%, local Undo/Redo, Cancel/one document commit and editable Smart Filters",
+    "Shared Photato filter APIs, observable workspace state, native37/Actions9 metadata and strict older-format rejection"
+  ],
+  "source_manifest": "artifacts/runs/20261027T220037Z-206-photo-detail/source02.json",
+  "source_manifest_sha256": "2401252f38e8886920e44ec57e264ca7a8b56e82e6229a74c6f44a49a2721e8c",
+  "source_inputs": 1595,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/PhotoDetailWorkspace.swift",
+      "Sources/PhotoCraftCore/DetailDeconvolution.swift",
+      "Sources/PhotoCraftCore/PhotoDetailEngine.swift",
+      "Sources/PhotoCraftCore/PhotoDetailSettings.swift",
+      "Tests/PhotoCraftAppTests/PhotoDetailWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/PhotoDetailTests.swift"
+    ],
+    "changed": [
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationFilters.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/FilterControls.swift",
+      "Sources/PhotoCraft/NativeHistoryMenus.swift",
+      "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "Sources/PhotoCraftCore/RasterFilter.swift",
+      "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+      "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/RasterFilterTests.swift",
+      "Tests/PhotoCraftImagingTests/SmartFilterTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration03": {
+      "passed": 45,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T220037Z-206-photo-detail/integration03.log"
+    },
+    "release-full02": {
+      "passed": 1980,
+      "failed": 0,
+      "path": "artifacts/runs/20261027T220037Z-206-photo-detail/release-full02.log"
+    }
+  },
+  "test_counts": {
+    "integration03": 45,
+    "release-full02": 1980
+  },
+  "completed_this_increment": [
+    "Native Smart Sharpen Gaussian/Lens/Motion controls and tonal fades",
+    "Native Reduce Noise with JPEG and per-channel controls",
+    "Native preview/local Undo/Cancel/Smart Filters and shared API",
+    "Native37/Actions9 persistence and focused/full/universal verification"
+  ],
+  "last_full_regression": {
+    "step": 206,
+    "tests": 1980,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T220037Z-206-photo-detail/release-full02.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T220037Z-206-photo-detail/module01.log",
+    "artifacts/runs/20261027T220037Z-206-photo-detail/integration01.log"
+  ],
+  "interrupted_build": "artifacts/runs/20261027T220037Z-206-photo-detail/interruption01.json",
+  "package": {
+    "utc": "2026-10-27T22:30:06.675334+00:00",
+    "tests": {
+      "integration03": 45,
+      "release-full02": 1980
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T220037Z-206-photo-detail/Photato206-final02.zip",
+    "zip_sha256": "0c1b406147c38d70301356b104959cd057c525147adc7d98221c281b3ad3e7c5",
+    "app": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app",
+    "executable_sha256": "5d345c5dfdb61375f6f826ec052c61784f63baee29d5bd0946cc04381b0ef6cc",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato206-verified-5r9xbjb4/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1595,
+    "source_manifest_sha256": "2401252f38e8886920e44ec57e264ca7a8b56e82e6229a74c6f44a49a2721e8c",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 284,
+      "unavailable_leaf_commands": 441,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "kinds": [
+      "smartSharpen",
+      "reduceNoise"
+    ],
+    "parameters": [
+      "sharpen",
+      "denoise"
+    ],
+    "state": "photoDetail availability/workspace/preview state; complete parameter schemas and capabilities",
+    "native_version": 37,
+    "actions_version": 9,
+    "adobe": "Published execute-actions supports Smart Sharpen, but exact descriptors and editable PSD are not independently qualified. Both new descriptor families explicitly reject; no invented Adobe routes.",
+    "limits": "8MP RGB raster/Smart Object layers; component/auxiliary channel targets unsupported. Selection and locks apply. RGB8/16 encoded, RGB32 linear unclipped. Original alpha and zero-alpha hidden samples retained. Source defaults, not verified Adobe defaults."
+  },
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 284,
+    "unavailable_leaf_commands": 441,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "Exact Photoshop defaults/kernels/output",
+    "Recorded Adobe actionJSON and editable PSD/PSB",
+    "Live UI and physical supported-platform checks",
+    "Larger images and remaining ordinary filter catalogue"
+  ],
+  "next": "Lens Blur depth-of-field workspace: actual iris kernels, depth sources/focal picker, highlight/grain controls, native preview/history and shared APIs. Minor variants and numerical polish remain deferred.",
+  "next_major_plan": "artifacts/runs/20261027T220037Z-206-photo-detail/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "refresh_log": "artifacts/runs/20261027T220037Z-206-photo-detail/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T220037Z-206-photo-detail/development-history-audit/final01-check.log"
+  }
+}

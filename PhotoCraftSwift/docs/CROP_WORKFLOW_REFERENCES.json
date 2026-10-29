@@ -1,0 +1,117 @@
+{
+  "step": "dev-step-170",
+  "status": "Working native crop workflow: 47 focused tests, followed by 1,637 final full Release tests and a verified universal package. Full Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T005937Z-170-crop-workflow",
+  "upstream": [
+    "../photocraft-main/crates/engine/src/image_cmds.rs (crop_doc/crop and geometry translation)",
+    "../photocraft-main/crates/algo/src/content_aware.rs (native synthesis already ported in168)"
+  ],
+  "license": "MIT OR Apache-2.0; native Swift adaptation; original Rust files unchanged",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/crop-straighten/apply-content-aware-fill-while-cropping-images.html",
+      "accessed": "2026-10-26",
+      "scope": "Fill dropdown, resize/rotate/expand and Return commit"
+    },
+    {
+      "url": "https://helpx.adobe.com/ie/photoshop/desktop/crop-resize-transform/crop-straighten/crop-tool-options.html",
+      "accessed": "2026-10-26",
+      "scope": "Aspect options, pixel deletion and outstanding crop preferences"
+    },
+    {
+      "url": "https://helpx.adobe.com/ph_fil/photoshop/how-to/crop-straighten-to-improve-composition.html",
+      "accessed": "2026-10-26",
+      "scope": "Boundary, image positioning, rotation and straighten-line workflow"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/crop-and-straighten-images.html",
+      "accessed": "2026-10-26",
+      "scope": "Image > Crop selection behavior and distinct scanned-photo/Ruler workflows"
+    },
+    {
+      "url": "https://www.adobe.com/learn/photoshop/web/content-aware-crop-fill",
+      "accessed": "2026-10-26",
+      "scope": "Content-aware expansion/straightening"
+    }
+  ],
+  "native_archive": 20,
+  "archive_change": "None; existing raster/affine/channel/path storage. Retained crops preserve layer source storage; deleting ordinary raster pixels materializes only their canvas intersection.",
+  "api_commands": 47,
+  "menus": {
+    "entries": 802,
+    "bound": 213,
+    "unavailable": 512,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "integration": "Crop tool/C shortcut and Image > Crop use the same prepared native edit. Image > Crop deletes ordinary raster pixels outside the selected bounds. Existing menu layout and counts are unchanged."
+  },
+  "tests": {
+    "initial_geometry_failure": "artifacts/runs/20261027T005937Z-170-crop-workflow/core01.log",
+    "initial_gesture_fixture_failure": "artifacts/runs/20261027T005937Z-170-crop-workflow/integration01.log",
+    "focused": {
+      "path": "artifacts/runs/20261027T005937Z-170-crop-workflow/integration02.log",
+      "count": 47,
+      "failures": 0
+    },
+    "full_release": {
+      "path": "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests02.log",
+      "count": 1637,
+      "failures": 0,
+      "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json"
+    },
+    "first_full_release": {
+      "path": "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests01.log",
+      "count": 1636,
+      "failures": 2,
+      "cause": "Outdated API catalogue counts; repaired in source02."
+    }
+  },
+  "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json",
+  "source_delta": "artifacts/runs/20261027T005937Z-170-crop-workflow/changes02.json",
+  "procedural_output": "artifacts/runs/20261027T005937Z-170-crop-workflow/attempt02/crop-expanded-fill01.png",
+  "live": "No live Photoshop/UI interaction; prior lock was not bypassed. Tests exercise native NSView event routing and procedural pixel output, not a live screenshot.",
+  "limits": [
+    "Maximum16MP source/output canvas,64MP total materialized raster pixels and4MP content-aware-fill output. Larger requests fail explicitly.",
+    "Exact Photoshop resampling, synthesized pixels, crop-background context and default preferences remain unqualified.",
+    "Crop frame rotates over the original image; complete Photoshop auto-centered image-under-frame interactions, Classic Mode, crop shield preferences and overlay variants remain open.",
+    "W\u00d7H\u00d7Resolution/resampling mode, custom presets, physical units, perspective crop, Ruler workflow, Trim and automatic multi-photo crop/straighten remain open.",
+    "Delete Cropped Pixels applies to ordinary raster image storage. Smart Object sources, editable vectors/text and mask storage are retained; precise Photoshop storage behavior remains unqualified.",
+    "New fill patches contain only exposed gaps outside the original canvas; interior transparency remains. Existing off-canvas pixels exposed by a retained crop are reused.",
+    "Adobe auto-crop is automatic subject/object detection and has not been implemented by this manual crop increment. Manual crop actionJSON is also unsupported.",
+    "Full live, physical Intel and macOS14/26 qualification remain open."
+  ],
+  "full_photoshop_parity": false,
+  "package": {
+    "utc": "2026-10-27T01:32:11.365323+00:00",
+    "app": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app",
+    "zip": "artifacts/runs/20261027T005937Z-170-crop-workflow/Photato170-final.zip",
+    "zip_sha256": "32baee5fc75e7058383db0b9c5ff7c296564e2865749634b9e6b08c0558ac675",
+    "executable_sha256": "021214d3aab713f52cd86e2ebc92aa1229fb2e9b98c538cbd292fade5af8ff64",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato170-verified-w4j2yhnr/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1274,
+    "source_manifest": "artifacts/runs/20261027T005937Z-170-crop-workflow/source02.json",
+    "source_manifest_sha256": "918a16b953910e39c3084f3731e40f56d7667a86aefaa8530b08c5924e05a1ca",
+    "tests": {
+      "full_release": 1637,
+      "failures": 0,
+      "log": "artifacts/runs/20261027T005937Z-170-crop-workflow/release-tests02.log"
+    },
+    "protected_original_build_project_user_state": "All four saved hashes verified unchanged",
+    "upstream_rust": {
+      "files": 754,
+      "status": "All saved hashes verified unchanged"
+    },
+    "runtime_qualification": "Full Release suite on host architecture; universal binary metadata/signature checked. Physical Intel, macOS14/26 and live Photoshop/Photato qualification remain open."
+  },
+  "next_major_plan": "artifacts/runs/20261027T005937Z-170-crop-workflow/next-major-plan01.json"
+}

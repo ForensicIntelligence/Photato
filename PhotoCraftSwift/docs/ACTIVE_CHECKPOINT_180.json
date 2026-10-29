@@ -1,0 +1,120 @@
+{
+  "step": "dev-step-180",
+  "completed_at_utc": "2026-10-27T07:27:17.528526+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Coverage mesh, editable pins/rotation/depth, ARAP/ASAP modes, density/expansion, native preview/local history and one document commit, retained Smart Filters and ordinary raster bake, native25 and matching Photato API.",
+  "source_manifest": "artifacts/runs/20261027T064058Z-180-puppet/source02.json",
+  "source_manifest_sha256": "48c3d88158016c09ed290cf7deaee34b9636a53ffc955f379e2d7d02bba38933",
+  "source_inputs": 1357,
+  "source_delta": [
+    "artifacts/runs/20261027T064058Z-180-puppet/changes01.json",
+    "artifacts/runs/20261027T064058Z-180-puppet/changes02.json"
+  ],
+  "tests": {
+    "debug_focused": 84,
+    "optimized_full": 1736,
+    "failures": 0,
+    "debug_log": "artifacts/runs/20261027T064058Z-180-puppet/integration06.log",
+    "optimized_log": "artifacts/runs/20261027T064058Z-180-puppet/release-full02.log",
+    "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+  },
+  "previous_failures_preserved": [
+    "artifacts/runs/20261027T064058Z-180-puppet/integration01.log",
+    "artifacts/runs/20261027T064058Z-180-puppet/integration02.log",
+    "artifacts/runs/20261027T064058Z-180-puppet/release-full01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T07:27:17.528526+00:00",
+    "app": "/private/tmp/photato180-verified-n5mvtmri/Photato.app",
+    "zip": "artifacts/runs/20261027T064058Z-180-puppet/Photato180-final.zip",
+    "zip_sha256": "350113d1d0592f3bc2794dbea19006a4acf6c71187e0a33362645098eaed36e0",
+    "executable_sha256": "b1daf3a603a4d12af2ebcaf34e90532877d1bf552346625264d5e63e2f8178cb",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato180-verified-n5mvtmri/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato180-verified-n5mvtmri/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "signature": "ad-hoc; clean ZIP extraction verified",
+    "version": "0.2.0 build2",
+    "source_inputs": 1357,
+    "source_manifest": "artifacts/runs/20261027T064058Z-180-puppet/source02.json",
+    "source_manifest_sha256": "48c3d88158016c09ed290cf7deaee34b9636a53ffc955f379e2d7d02bba38933",
+    "tests": {
+      "debug_focused": 84,
+      "optimized_full": 1736,
+      "failures": 0,
+      "debug_log": "artifacts/runs/20261027T064058Z-180-puppet/integration06.log",
+      "optimized_log": "artifacts/runs/20261027T064058Z-180-puppet/release-full02.log",
+      "qualification": "Original Rust/analytical, native/history/offscreen and actual HTTP checks. No new live/physical-platform evidence; exact Adobe output unqualified."
+    },
+    "preserved": "Four protected root-build/project/user-state hashes and754 original Rust hashes verified unchanged.",
+    "runtime_qualification": "Universal build metadata and native regression; physical Intel/macOS14/26, live UI and exact Photoshop gates remain open."
+  },
+  "api": {
+    "photato_commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "command_count": 62,
+    "state": "puppetWarp.available/workspaceOpen/previewBusy; layers[].smartFilters and capabilities.filters.puppetWarp",
+    "persistence": "Editable programs require native25; older downloads reject. Ordinary baked pixels use their existing minimum version.",
+    "adobe": "No dedicated Puppet operation in the pinned Firefly contract; unverified actionJSON and editable PSD descriptors reject explicitly. No invented route."
+  },
+  "menus": {
+    "bound": [
+      "Edit > Puppet Warp"
+    ],
+    "shortcuts": "No invented factory shortcut; existing Enter/Escape and local Undo/Redo.",
+    "rust_alias": "Rust Layer > Smart Objects > Puppet Warp is accessed through the captured Photoshop Edit command, not an extra factory Layer entry.",
+    "release_report": "artifacts/runs/20261027T064058Z-180-puppet/menu-report-release02.json"
+  },
+  "limitations": [
+    "Unlocked RGB raster or Smart Object targets without selection/vector masks. Other types can first be converted to Smart Objects. Alpha/Quick Mask filtering explicitly rejects at the shared API/core boundary.",
+    "64 pins,8192 vertices,40 solver iterations;8,388,608 source/output pixels, bounded coverage/factorization/raster work. API retains its4MP/64-layer/128MiB limits.",
+    "Mesh/solver translated from original Rust; exact Photoshop mesh, solver and pixels remain unqualified.",
+    "Editable PSD/PSB Puppet descriptor transport is unsupported; explicit rasterization or native25 is required.",
+    "Filter masks remain in document space and layer masks outside the Smart Filter pipeline. Nonlinear mask/feather fidelity remains open.",
+    "Single-pin selection, separate native sheet and numeric rotation/depth controls provide the major workflow. Exact inline Photoshop layout, multi-pin manipulation, temporary hide shortcuts, accessibility and live/platform qualification remain open.",
+    "General nonuniform-affine fixed-pin rotation semantics remain unqualified. Perspective Warp and other G02 contexts remain outstanding."
+  ],
+  "next": {
+    "priority": "Major workflows first; defer optional fidelity and polish. Full final Photoshop parity remains the goal.",
+    "next_workflow": "Perspective Warp",
+    "source": "photocraft-main/crates/algo/src/perspective.rs and crates/engine/src/distort_cmds.rs; source remains read-only.",
+    "geometry": [
+      "Source/destination quadrilaterals in document pixels; link coincident source corners within0.5px and unify their positions.",
+      "Port piecewise homography with shared-edge corrections; lone planes remain projective and shared edges remain continuous. Reuse PhotoHomography/PhotoLinearAlgebra and WarpRaster where appropriate.",
+      "Validate finite convex nondegenerate quads, avoid projective poles and bound output/work. Use original Rust fixtures for identity, corner mapping, shared-edge continuity and straightening."
+    ],
+    "workflow": [
+      "Native Layout/Warp modes; draw/select/delete planes, snap adjacent corners/edges, drag linked corners, horizontal/vertical/automatic straightening.",
+      "Live preview/cancel/local Undo and one document transaction; ordinary raster bake, editable Smart Filter parameters on Smart Objects.",
+      "Factory Edit > Perspective Warp, observed local controls/shortcuts where supported, explicit unsupported contexts.",
+      "Photato filter.apply/smartFilter.set settings and capability/state, native versioning, stale/busy/invalid guards and desktop/API equivalence. Never invent Adobe routes or silently flatten unsupported editable PSD data."
+    ],
+    "validation": "Focused geometry/Rust/HDR/masks/history/Smart Filter/native/API/native workspace tests. Batch full regression at a meaningful later milestone; step180 already runs full qualification.",
+    "primary_references": [
+      "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/define-planes-to-adjust-perspective.html",
+      "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/manipulate-the-planes-to-adjust-perspective.html",
+      "https://helpx.adobe.com/ie/photoshop/desktop/repair-retouch/clean-restore-images/keyboard-shortcuts-to-adjust-perspective.html"
+    ],
+    "reference_checked_utc": "2026-10-27",
+    "qualification": "Read-only next-work planning while frozen180 builds. No Perspective application code has been started. Last desktop evidence remains locked; no new live/platform qualification."
+  },
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "path": "artifacts/development-history-audit/20261027T064058Z-180-puppet",
+    "passed_iteration": "01",
+    "milestones": 180,
+    "evidence_files": 36840,
+    "logs": 19298,
+    "missing_explicit_references": 0,
+    "final_repin": "refresh02/check02 after this metadata update"
+  },
+  "final_source_verification": "All1357 source02 inputs match after documentation and package verification."
+}

@@ -262,7 +262,7 @@ final class HueSaturationTests: XCTestCase {
         actual.pixel(x: 1, y: 0),
         LevelsTransfer.mix(p, with: edited, coverage: 128.0 / 255, depth: depth).quantized(depth))
       XCTAssertEqual(actual.pixel(x: 2, y: 0), p)
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
       try session.execute(
         .addLayer(Layer(name: "Hue/Saturation", content: .adjustment(.hueSaturation(a)))))

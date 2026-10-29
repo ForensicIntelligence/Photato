@@ -62,9 +62,9 @@ final class HealingWorkflowTests: XCTestCase {
     XCTAssertEqual(try Renderer.composite(s.document), preview)
     XCTAssertEqual(s.cloneState.slot.anchor, .init(96, 32))
     let after = s.document
-    s.undo()
+    await s.undo()
     XCTAssertEqual(s.document, before)
-    s.redo()
+    await s.redo()
     XCTAssertEqual(s.document, after)
   }
   @MainActor func testEmptyRetouchLayerCrossDocumentContextAndCancellation() async throws {
@@ -149,6 +149,9 @@ final class HealingWorkflowTests: XCTestCase {
     s.chooseTool(WorkspaceCatalog.tool("healing"))
     XCTAssertEqual(s.retouchSettings.brush.size, 30)
     XCTAssertTrue(s.chooseShortcut("j", cycle: true))
-    XCTAssertEqual(s.unavailableToolID, "patch")
+    XCTAssertNil(s.unavailableToolID)
+    XCTAssertEqual(s.tool, .patch)
+    XCTAssertTrue(s.chooseShortcut("j", cycle: true));XCTAssertEqual(s.tool, .contentAwareMove)
+    XCTAssertTrue(s.chooseShortcut("j", cycle: true));XCTAssertEqual(s.tool, .redEye)
   }
 }

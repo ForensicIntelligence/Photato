@@ -82,7 +82,7 @@ final class TonalStepsTests: XCTestCase {
         edited.pixel(x: 1, y: 0),
         LevelsTransfer.mix(p, with: q, coverage: 128.0 / 255, depth: d.depth).quantized(d.depth))
       XCTAssertEqual(edited.pixel(x: 2, y: 0), q.quantized(d.depth))
-      session.undo()
+      try session.undo()
       XCTAssertEqual(session.document, d)
       XCTAssertThrowsError(
         try session.execute(

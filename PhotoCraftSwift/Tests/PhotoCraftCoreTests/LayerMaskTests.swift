@@ -43,8 +43,10 @@ final class LayerMaskTests: XCTestCase {
     for depth in PixelDepth.allCases {
       var l = try layer()
       l.mask = try Surface(width: 8, height: 6, depth: depth, fill: Pixel(0.25, 0.25, 0.25))
-      // The mask and its layer have opposing translations; canvas edges are in document space.
-      l.maskProperties?.transform = .translation(-5, -4)
+      // Opposing layer/affine translations put the raster and mask at the canvas origin.
+      l.content = .raster(try Surface(width: 8, height: 6, depth: depth, fill: .white))
+      l.affine = .translation(-5, -4)
+      l.maskProperties?.transform = .identity
       l.maskProperties?.outside = 1
       l.maskProperties?.feather = 2
       l.maskProperties?.density = 0.4
@@ -97,6 +99,27 @@ final class LayerMaskTests: XCTestCase {
     XCTAssertGreaterThan(sampler.coverage(x: 0.5, y: 0.5), 0.9)
     XCTAssertEqual(try MaskSampler(layer: l, feather: false).coverage(x: 0.5, y: 0.5), 1)
   }
+  func testOffCanvasRasterDoesNotClampMaskAtCanvasEdges() throws {
+    // Photoshop's owned offcanvas-photoshop.psd renders the corner near 120/255,
+    // versus 255 when these coincident mask/canvas edges are incorrectly clamped.
+    for depth in PixelDepth.allCases {
+      for offset in [0, 8] {
+        var layer = Layer(name: "Beyond canvas", content: .raster(
+          try Surface(width: 24, height: 24, depth: depth, fill: .white)))
+        layer.x = -6; layer.y = -6
+        layer.mask = try Surface(width: 4, height: 4, depth: depth, fill: .white)
+        var properties = MaskProperties()
+        properties.transform = .translation(Double(offset + 6), Double(offset + 6))
+        properties.feather = 1
+        layer.maskProperties = properties
+        let canvas = try MaskSampler(layer: layer, canvasSize: (12, 12))
+        let unbounded = try MaskSampler(layer: layer)
+        let actual = (0..<144).map { canvas.coverage(x: Double($0 % 12) + 0.5, y: Double($0 / 12) + 0.5) }
+        let expected = (0..<144).map { unbounded.coverage(x: Double($0 % 12) + 0.5, y: Double($0 / 12) + 0.5) }
+        XCTAssertEqual(actual, expected, "\(depth), mask origin \(offset)")
+      }
+    }
+  }
   func testLinkedAndUnlinkedMovesAndCanvasRotation() throws {
     var d = try CraftDocument(width: 30, height: 20)
     let l = try layer()
@@ -145,9 +168,9 @@ final class LayerMaskTests: XCTestCase {
     properties.feather = 2
     try engine.execute(.maskProperties(l.id, properties))
     XCTAssertEqual(engine.document.layers[0].maskProperties, properties)
-    engine.undo()
+    try engine.undo()
     XCTAssertEqual(engine.document.layers[0], l)
-    engine.redo()
+    try engine.redo()
     let data = try NativeArchive.encode(engine.document)
     XCTAssertEqual(try NativeArchive.decode(data), engine.document)
     properties.feather = .nan

@@ -1,0 +1,184 @@
+{
+  "step": 224,
+  "recorded_at_utc": "2026-10-28T19:50:09.801229+00:00",
+  "status": "Native printing, hard proofs and ink separation output pass65 focused and2351 full optimized tests. Universal macOS14+ build224 is verified and uploaded as a private draft; installed221 is unchanged. Physical/live/exact/platform and full COL03 remain open.",
+  "goal_complete": false,
+  "increment_complete": false,
+  "qualified_stage": "Source-tested universal development preview, private draft uploaded",
+  "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+  "source_inputs": 2239,
+  "source_delta": "artifacts/runs/20261028T185522Z-224-native-print/changes12.json",
+  "native_archive": 48,
+  "actions_version": 20,
+  "typed_commands": 148,
+  "focused_tests": {
+    "utc": "2026-10-28T19:25:21.093538+00:00",
+    "tests": 65,
+    "failures": 0,
+    "exit_code": 0,
+    "session_id": 49029,
+    "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+    "unchanged_inputs": 2239,
+    "log": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log",
+    "passed": 65,
+    "path": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log"
+  },
+  "full_optimized": {
+    "utc": "2026-10-28T19:33:40.833716+00:00",
+    "status": "passed",
+    "tests": 2351,
+    "failures": 0,
+    "exit_code": 0,
+    "session_id": 52867,
+    "seconds_test_execution": 163.056,
+    "seconds_suite_wall": 163.266,
+    "log": "artifacts/runs/20261028T185522Z-224-native-print/release10.log",
+    "log_sha256": "7dd08600bbea1ee80a9d1a644557ec23cb07e09cc63e44ee33434686dfbf7f38",
+    "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+    "unchanged_inputs": 2239,
+    "new_package": false,
+    "live_acceptance": false,
+    "passed": 2351,
+    "path": "artifacts/runs/20261028T185522Z-224-native-print/release10.log"
+  },
+  "reference": "docs/PRINTING_REFERENCES.json",
+  "latest_qualified_package_step": 224,
+  "latest_uploaded_package_step": 224,
+  "installed_package_step": 221,
+  "new_package": true,
+  "live_acceptance": false,
+  "next_action": "Begin missing major COL01 Color Settings/Assign Profile/Convert to Profile workflows from next-major13.json, including shared API/history/persistence and independent ICC tests. Keep all unresolved print/HDR/live/platform/exact gates open; do not restart or replace existing user windows without preserving documents.",
+  "workers": [],
+  "tests": {
+    "focused_integration": {
+      "utc": "2026-10-28T19:25:21.093538+00:00",
+      "tests": 65,
+      "failures": 0,
+      "exit_code": 0,
+      "session_id": 49029,
+      "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+      "unchanged_inputs": 2239,
+      "log": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log",
+      "passed": 65,
+      "path": "artifacts/runs/20261028T185522Z-224-native-print/integration09.log"
+    },
+    "full_optimized": {
+      "utc": "2026-10-28T19:33:40.833716+00:00",
+      "status": "passed",
+      "tests": 2351,
+      "failures": 0,
+      "exit_code": 0,
+      "session_id": 52867,
+      "seconds_test_execution": 163.056,
+      "seconds_suite_wall": 163.266,
+      "log": "artifacts/runs/20261028T185522Z-224-native-print/release10.log",
+      "log_sha256": "7dd08600bbea1ee80a9d1a644557ec23cb07e09cc63e44ee33434686dfbf7f38",
+      "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+      "unchanged_inputs": 2239,
+      "new_package": false,
+      "live_acceptance": false,
+      "passed": 2351,
+      "path": "artifacts/runs/20261028T185522Z-224-native-print/release10.log"
+    }
+  },
+  "independent_pdf": "artifacts/runs/20261028T185522Z-224-native-print/pdf-independent11.json",
+  "next_major_plan": "artifacts/runs/20261028T185522Z-224-native-print/next-major13.json",
+  "package": {
+    "utc": "2026-10-28T19:44:24.800379+00:00",
+    "status": "passed",
+    "source_manifest": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+    "source_manifest_sha256": "ecddf74e4111151a5b7ae85cbd5ab60184af9cf2b1c9be05c7e8ab6da40f4268",
+    "source_inputs": 2239,
+    "tests": {
+      "utc": "2026-10-28T19:33:40.833716+00:00",
+      "status": "passed",
+      "tests": 2351,
+      "failures": 0,
+      "exit_code": 0,
+      "session_id": 52867,
+      "seconds_test_execution": 163.056,
+      "seconds_suite_wall": 163.266,
+      "log": "artifacts/runs/20261028T185522Z-224-native-print/release10.log",
+      "log_sha256": "7dd08600bbea1ee80a9d1a644557ec23cb07e09cc63e44ee33434686dfbf7f38",
+      "source_manifest": "artifacts/runs/20261028T185522Z-224-native-print/source09.json",
+      "unchanged_inputs": 2239,
+      "new_package": false,
+      "live_acceptance": false,
+      "passed": 2351,
+      "path": "artifacts/runs/20261028T185522Z-224-native-print/release10.log"
+    },
+    "focused_tests": 65,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261028T185522Z-224-native-print/Photato224-final01.zip",
+    "zip_sha256": "63a39a9c74562a4fd353d52f4dab2d39c6aa662517f8ca9a25b87c3a84221c96",
+    "app": "/private/tmp/photato224-verified-x29hau3o/Photato.app",
+    "executable_sha256": "84e1224e07100a8b5669843d21dfa648a242b210281f40184a24453051e0dc3c",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato224-verified-x29hau3o/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato224-verified-x29hau3o/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "development_step": 224,
+    "signature": "verified ad-hoc",
+    "optional_ai_frameworks_weak_linked": {
+      "x86_64": [
+        "ImagePlayground"
+      ],
+      "arm64": [
+        "FoundationModels",
+        "ImagePlayground"
+      ]
+    },
+    "optional_ai_frameworks_not_linked": {
+      "x86_64": [
+        "FoundationModels"
+      ],
+      "arm64": []
+    },
+    "licenses": {
+      "LICENSE-MIT": "1a8f66d8a86b146f5336fa0d4b1186576c8aa98e60823080c85c7811cfd810af",
+      "LICENSE-APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "LICENSE-psd-tools": "79f7e019a30b97542cce6f6482a75ba26771b4204c374fec305dc8cf558d137f",
+      "NOTICE": "c1a3fbc5ac6e44d741448904308c3905eb89b8edda740f51285508058ebd7257",
+      "ATTRIBUTION.md": "812b0e224a7fbcc3c5bd592a394b7fea0eeb55ec620a9ba40ee97fdadacadabf"
+    },
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": {
+      "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753"
+    },
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 365,
+      "unavailable_leaf_commands": 360,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "retired_brand_matches_in_package": [],
+    "current_source": true,
+    "limits": "Development preview; no physical printer/live print-sheet or same-document window handoff acceptance, physical Intel/macOS14/macOS26 runtime qualification, full Photoshop byte equality or complete feature parity. Existing Debug-only Layers focus issue remains separate. Installed221 and saved artwork are unchanged."
+  },
+  "package_verification": "artifacts/runs/20261028T185522Z-224-native-print/verification13.json",
+  "github_release": {
+    "url": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-eb1707be7963cebfe0c5",
+    "tag": "dev-2026-10-28-step224",
+    "draft": true,
+    "private": true,
+    "assets": 4,
+    "download_verification": "artifacts/runs/20261028T185522Z-224-native-print/github-download15.json"
+  },
+  "completed_this_increment": [
+    "Native Print/Print One Copy with shared physical layout, ICC output, hard proofs, ink separation pages and PDF.",
+    "Five API commands, committed print PDF, optional printer permission and cancellation/revocation checks.",
+    "65 focused and2351 optimized tests pass on unchanged source09; independent PDF checks verify36 exact ink samples and distinct native separation pages.",
+    "Universal package freshly extracted and verified; private draft224 has four assets downloaded and SHA256 checked. Installed221 and retained user artwork are unchanged."
+  ],
+  "verification": "artifacts/runs/20261028T185522Z-224-native-print/verification16.json",
+  "development_audit": {
+    "refresh": "artifacts/development-history-audit/print224-refresh17.log",
+    "check": "artifacts/development-history-audit/print224-check17.log"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "step": "dev-step-199",
+  "completed_at_utc": "2026-10-27T19:16:36.680955+00:00",
+  "goal_status": "active",
+  "goal_complete": false,
+  "scope": "Native live shape tools, properties, shared paints and strokes, compound components, shape/path/pixels outputs, custom presets, history, native33 and Actions5/API.",
+  "source_manifest": "artifacts/runs/20261027T182427Z-199-live-shapes/source02.json",
+  "source_manifest_sha256": "4a651683ad98e0b04b55bbd88cca8869eaa518a14468c2ea0fafe877ad459083",
+  "source_inputs": 1511,
+  "source_delta": {
+    "new": [
+      "Sources/PhotoCraft/AutomationShapes.swift",
+      "Sources/PhotoCraft/ShapeCanvas.swift",
+      "Sources/PhotoCraft/ShapeControls.swift",
+      "Sources/PhotoCraft/ShapeEditing.swift",
+      "Sources/PhotoCraft/ShapeLibrary.swift",
+      "Sources/PhotoCraftCore/LiveShapes.swift",
+      "Sources/PhotoCraftImaging/ShapeRenderer.swift",
+      "Tests/PhotoCraftAppTests/ShapeWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/LiveShapeTests.swift"
+    ],
+    "changed": [
+      "ATTRIBUTION.md",
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/CurvesControls.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "Sources/PhotoCraft/TransformEditing.swift",
+      "Sources/PhotoCraft/WorkspaceCatalog.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Sources/PhotoCraft/WorkspaceView.swift",
+      "Sources/PhotoCraftCore/Document.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/RecordedActions.swift",
+      "Sources/PhotoCraftImaging/ColorManagement.swift",
+      "Sources/PhotoCraftImaging/FrameRenderer.swift",
+      "Sources/PhotoCraftImaging/Renderer.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/WorkspaceTests.swift"
+    ],
+    "removed": []
+  },
+  "tests": {
+    "integration07": 80,
+    "release-full02": 1944
+  },
+  "last_full_regression": {
+    "step": 199,
+    "tests": 1944,
+    "failures": 0,
+    "log": "artifacts/runs/20261027T182427Z-199-live-shapes/release-full02.log",
+    "current_source": true
+  },
+  "failed_attempts_preserved": [
+    "artifacts/runs/20261027T182427Z-199-live-shapes/module01.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/module02.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/ui01.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/integration01.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/integration02.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/integration03.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/integration04.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/integration05.log",
+    "artifacts/runs/20261027T182427Z-199-live-shapes/release-full01.log"
+  ],
+  "package": {
+    "utc": "2026-10-27T19:16:36.680955+00:00",
+    "tests": {
+      "integration07": 80,
+      "release-full02": 1944
+    },
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T182427Z-199-live-shapes/Photato199-final.zip",
+    "zip_sha256": "5979c5e381ab8370f9c02c72264c0c3b34d4b8eadcf95c83265c7ec80f165af9",
+    "app": "/private/tmp/photato199-verified-d4ssmhuf/Photato.app",
+    "executable_sha256": "750469d196357de5770fe2a99d5f35e9ecb24edbbdc8188477a967f7e39fb3d5",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "build_metadata": {
+      "x86_64": "/private/tmp/photato199-verified-d4ssmhuf/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+      "arm64": "/private/tmp/photato199-verified-d4ssmhuf/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    },
+    "version": "0.2.0 build2",
+    "signature": "verified ad-hoc",
+    "source_inputs": 1511,
+    "source_manifest_sha256": "4a651683ad98e0b04b55bbd88cca8869eaa518a14468c2ea0fafe877ad459083",
+    "original_rust_hashes": 754,
+    "protected_hashes_unchanged": 4,
+    "menus": {
+      "entries": 802,
+      "bound_leaf_commands": 266,
+      "unavailable_leaf_commands": 459,
+      "primary_shortcuts": 102,
+      "alternative_shortcuts": 8
+    },
+    "current_source": true,
+    "limits": "Full optimized suite and universal package on this host. Synthetic native canvas events/offscreen rendering are not live desktop or physical Intel/macOS14/macOS26 tests. Xcode project unchanged; new files use existing synchronized groups."
+  },
+  "api": {
+    "commands": [
+      "shape.edit",
+      "shape.configure",
+      "shape.library"
+    ],
+    "command_count": 99,
+    "state": "shapes tool/template/mode/combine/preset/library state; each layer shape/shapeTransform",
+    "schemas": "ShapeAPI definition/component/paint/stroke/state/results/defaults; strict unknown-field and bounded validation",
+    "history": "Shared prepared native transactions for document edits; session/library mutations do not add document Undo.",
+    "persistence": "native33, Actions5 with captured pattern resources; native photatoshapes1 library",
+    "limits": "64 components/8MP rasterization;128 presets/16MiB;API import base64<=3000000 chars; existing request4MiB/shared4MP/64-layer/128MiB limits."
+  },
+  "adobe_api": "No dedicated shape route in pinned Photoshop v2 contract. Proprietary shape actionJSON descriptors and editable PSD interchange remain unqualified; no fabricated routes. Existing Adobe route regression coverage remains independent.",
+  "menus": {
+    "entries": 802,
+    "bound_leaf_commands": 266,
+    "unavailable_leaf_commands": 459,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8
+  },
+  "limitations": [
+    "No live desktop qualification while last authoritative desktop state remains locked. Offscreen rendering and synthetic events are not live tests.",
+    "Full Photoshop pixel/stroke/corner/default/library/shortcut/platform equivalence remains open.",
+    "Editable PSD shape output remains explicitly unsupported; keep native original or rasterize/flatten an export copy.",
+    "Adobe CSH preset import/export and proprietary preset assets not implemented. Native presets work.",
+    "Gradient/pattern shape cross-profile document transfer explicitly requires rasterization; solid paints convert.",
+    "Compound drawing retains parametric components; multi-layer Combine Shapes menu operations and full vector manipulation remain open.",
+    "Path/pixel mode Actions capture remains separately incomplete; native Undo is supported.",
+    "Physical Intel/macOS14/macOS26 and App Store distribution remain unqualified."
+  ],
+  "next": "G04 major missing Pen/Paths workflows: Freeform/Curvature Pen, editable paths, fill/stroke, selection-to-path, native APIs and history. Fine numerical/cosmetic shape refinements deferred.",
+  "next_major_plan": "artifacts/runs/20261027T182427Z-199-live-shapes/next-major-plan01.json",
+  "no_running_build_test_workers_expected": true,
+  "development_audit": {
+    "status": "passed",
+    "milestones": 199,
+    "evidence_files": 38880,
+    "logs": 19474,
+    "missing_explicit_references": 0,
+    "refresh_log": "artifacts/runs/20261027T182427Z-199-live-shapes/development-history-audit/final01-refresh.log",
+    "check_log": "artifacts/runs/20261027T182427Z-199-live-shapes/development-history-audit/final01-check.log"
+  }
+}

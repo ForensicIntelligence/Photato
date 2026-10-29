@@ -16,17 +16,20 @@ For pull requests, describe the editing problem, resulting behavior, tests, and 
 
 Do not include private documents, downloaded model weights, credentials, build caches, app bundles or downloaded reference corpora in a source PR. Bundled small test fixtures need provenance and redistribution terms. Keep user projects out of bug reports; prefer a minimal reproducible fixture that can be shared.
 
-Financial support through optional App Store tips is voluntary. Bug reports, tests, documentation, accessibility improvements and code contributions are equally welcome. Tip purchases do not change editing features or determine whether a bug report is accepted. Run `./scripts/test-storekit.sh` with full Xcode for local app-hosted purchase integration tests; these are separate from the ordinary package tests and never charge an account.
+Photato will be released as free and open-source software under MIT OR Apache-2.0. Contributions of code, bug reports, tests, documentation and accessibility improvements are welcome. The app contains no tipping or purchase system.
 
 ## Development record
 
 The maintainer requires documentation of every development step, starting with the original source audit. [DEVLOG](docs/DEVLOG.md) is the narrative record, with an oldest-first index and stable step IDs. [DEVELOPMENT_HISTORY.json](docs/DEVELOPMENT_HISTORY.json) indexes the surviving evidence. These records are part of completing the work, not an optional release cleanup.
+
+[The development diary](docs/DEVELOPMENT_DIARY.md) provides the readable chronological account and links every recorded milestone to DEVLOG. Keep its index and material narrative current at completed checkpoints. Detailed notes must still be saved as work proceeds, including failed attempts and work that is later removed.
 
 For every meaningful investigation, design decision, implementation change, experiment and validation step, record:
 
 1. Date and stable step ID; include time and time zone when known. Describe the request or defect and the intended scope.
 2. Sources examined, behavior observed and affected files/modules. Identify external references, source translations and fixture provenance.
 3. What changed and why. Preserve rejected approaches, failed attempts, discovered defects and their repairs, including documentation-only work.
+   Explicitly record additions, modifications, deletions, renames, rollbacks and replacements across code, tests, assets, configuration, documentation and APIs. Name affected paths or modules, explain the before/after behavior, and identify the replacement when something is removed. Group related edits when useful, but do not omit removals or unverified work.
 4. Exact test/build/diagnostic commands, unique log paths, outcomes, failure/skip counts and relevant measurements. Distinguish focused/full tests, current/historical results, native round trips and independent Photoshop comparisons.
 5. Live UI actions and their observed outcome, including cancellation/undo and cleanup of disposable documents. Record the app/platform/binary actually checked. Never label an offscreen snapshot as a live interaction test.
 6. Remaining gaps, uncertainty, blockers and next steps. Update the current status, command matrix, plan and relevant reference manifests when their facts change.

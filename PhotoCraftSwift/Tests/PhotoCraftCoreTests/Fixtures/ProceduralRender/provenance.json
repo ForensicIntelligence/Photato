@@ -1,0 +1,2410 @@
+{
+  "source": "PhotoCraft crates/algo/src/render2.rs",
+  "source_sha256": "19ba86b0899da814a4e3d4dcaa2907a6069786cd9cdf50fb2b2a22f476e8b205",
+  "license": "MIT OR Apache-2.0",
+  "adaptation": "Original generators, primitive evaluation and raster_tile extracted unchanged; serde derives removed and minimal Rect supplied. Final source-over/byte conversion is a documented source-equivalent RGB8 adapter, not the unmodified full Surface/Session command. Synthetic inputs; not Photoshop references.",
+  "paths": [
+    [
+      {
+        "x": 20,
+        "y": 80
+      },
+      {
+        "x": 40,
+        "y": 64
+      },
+      {
+        "x": 80,
+        "y": 70
+      },
+      {
+        "x": 108,
+        "y": 25
+      }
+    ]
+  ],
+  "cases": [
+    {
+      "name": "flame-default",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 40,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 0,
+        "quality": 2
+      },
+      "sha256": "27226ebc421d150a781eb7c5b7504fe51d145273b95911e8c3a448a9da2604be"
+    },
+    {
+      "name": "flame-oneFlameAlongPath",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "2198a6fa97e10170de969c67f3fea2f223304436efb04f99ca1300739734cdc7"
+    },
+    {
+      "name": "flame-multipleFlamesAlongPath",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "multipleFlamesAlongPath",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "3f412c2ef30f9a650b19d570b7ec4d10a71dc81d9d842aa76d7336fa402bc834"
+    },
+    {
+      "name": "flame-multipleFlamesPathDirections",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "multipleFlamesPathDirections",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "b3ce17f5e190bcdd6139dbffc83c8463db328329ef68a46982701ae8e3319e03"
+    },
+    {
+      "name": "flame-multipleFlamesVariousLength",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "multipleFlamesVariousLength",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "21ef21e8ac8fe0e966fc23b25260d0625af92c7171982e7644605ec51148ba19"
+    },
+    {
+      "name": "flame-candleLight",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "candleLight",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "fbac374011dc7e0e78c30b2ce7f4f480f93306720d5e3882e39acd815422108a"
+    },
+    {
+      "name": "flame-multipleFlamesOneDirection",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "multipleFlamesOneDirection",
+        "length": 45,
+        "width": 16,
+        "angle": -32,
+        "interval": 24,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 42,
+        "quality": 2
+      },
+      "sha256": "1062099dcfb73db83b6d336310737262b4171f38e5a61f39dfa14a0e7a59a54a"
+    },
+    {
+      "name": "flame-shape-parallel",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 71,
+        "quality": 2
+      },
+      "sha256": "82f00f09b35971be9bf4f45eb93bb66e9d6599f0ba7fed8d2b80789fa2453852"
+    },
+    {
+      "name": "flame-shape-toCenter",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "toCenter",
+        "randomizeShapes": false,
+        "seed": 71,
+        "quality": 2
+      },
+      "sha256": "dcca72dfc7fd19a403e3c4050900c77d6e128a9076a357be57b3d0de23e421f7"
+    },
+    {
+      "name": "flame-shape-spread",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "spread",
+        "randomizeShapes": false,
+        "seed": 71,
+        "quality": 2
+      },
+      "sha256": "6b9defc19fb5e922916228bab6858429402b658b5afa3f0ed06d0b6bc35d5b12"
+    },
+    {
+      "name": "flame-shape-oval",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "oval",
+        "randomizeShapes": false,
+        "seed": 71,
+        "quality": 2
+      },
+      "sha256": "5f8ae54ccaacf006beb02acd0636f050f4da5d652c010ea70fee40c42a0a1edb"
+    },
+    {
+      "name": "flame-shape-pointed",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "pointed",
+        "randomizeShapes": false,
+        "seed": 71,
+        "quality": 2
+      },
+      "sha256": "28cd081afbeca9b9d03e10bd408f511e8ce700f8f34d10a45ec4e51e4e665acc"
+    },
+    {
+      "name": "flame-style-normal",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 123,
+        "quality": 4
+      },
+      "sha256": "29783497aa0d092b3d1598e1ca578a2dedfac8dab88d81930a2d24e3acb942a4"
+    },
+    {
+      "name": "flame-style-violent",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "violent",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 123,
+        "quality": 4
+      },
+      "sha256": "8d3a168a67d684a2c9fba95984c4eebf9cd0a1981f3d627499ca4bf2420bfea0"
+    },
+    {
+      "name": "flame-style-flat",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "oneFlameAlongPath",
+        "length": 150,
+        "width": 22,
+        "angle": 0,
+        "interval": 60,
+        "randomizeLength": false,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": false,
+        "color": {
+          "r": 1,
+          "g": 0.5,
+          "b": 0.1,
+          "a": 1
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "flat",
+        "flameShape": "parallel",
+        "randomizeShapes": false,
+        "seed": 123,
+        "quality": 4
+      },
+      "sha256": "2fc94f863bcab27c1998b9545813ac44f4bcc67e4038dafd258c87626a7a7008"
+    },
+    {
+      "name": "flame-custom",
+      "kind": "flame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "flameType": "multipleFlamesAlongPath",
+        "length": 50,
+        "width": 17,
+        "angle": 0,
+        "interval": 22,
+        "randomizeLength": true,
+        "adjustIntervalForLoops": true,
+        "useCustomColor": true,
+        "color": {
+          "r": 0.2,
+          "g": 0.4,
+          "b": 0.9,
+          "a": 0.7
+        },
+        "turbulent": 25,
+        "jag": 25,
+        "opacity": 75,
+        "flameLines": 20,
+        "flameBottomAlignment": 20,
+        "flameStyle": "normal",
+        "flameShape": "parallel",
+        "randomizeShapes": true,
+        "seed": 4294967295,
+        "quality": 0
+      },
+      "sha256": "32b49d0c51a5455c324a3e5d76e05202f2999fdcb92aa6e4232bd62585eaacb1"
+    },
+    {
+      "name": "tree-01",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 1,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "a59b5e77757b104c3cf597f4d3afdce51fb42e35ed9652b079577e8ed2d2eadd"
+    },
+    {
+      "name": "tree-02",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 2,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "530382673940be4990627c135ab8ab36a340cd63d4d5fd2b790763fae04d8e7c"
+    },
+    {
+      "name": "tree-03",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 3,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "60958bfc6ae62b9b3fe2c97c11acd6061d699d9a28b504a9da5ee4f7c409ecfc"
+    },
+    {
+      "name": "tree-04",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 4,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "ae54bf5bb96ab0af5cb2251069991c2ce719329203a75d46f95aa3ee3006ceab"
+    },
+    {
+      "name": "tree-05",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 5,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "b5f6719ceef78ad509d46d79c4bec1c60b71848f1003ea5f8525b49c7a3c6fc7"
+    },
+    {
+      "name": "tree-06",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 6,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "ad3db74305767f92931e54ba88c0e77d14604c12e246094240f5420d469ecc1b"
+    },
+    {
+      "name": "tree-07",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 7,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "806ad1f1041cb646cfc32a5ca44c40eec0d5bedc6f5666d74c91383905c6cf56"
+    },
+    {
+      "name": "tree-08",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 8,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "374c95f80921ca446b95f3ad4935da67338960306238974d55e302dfa242700a"
+    },
+    {
+      "name": "tree-09",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 9,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "72375fd42e21eb4cbce65218810006f9a97886034b24e702272b43ba11f99001"
+    },
+    {
+      "name": "tree-10",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 10,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "91b1e7ff05045c54fff5d6ca14d585fb255a5ae50e2e5e8fdfb072aa9b8cc2eb"
+    },
+    {
+      "name": "tree-11",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 11,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "b62f792186b7aef29a618ec7b09a212a7948295668794382549cb7c81a5bc8b3"
+    },
+    {
+      "name": "tree-12",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 12,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "a59f355200e932c01acf50073c8d5980a1d6fe82a023f654841da10a1422583d"
+    },
+    {
+      "name": "tree-13",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 13,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "ced6809c72a0e9827a6a02f4f259df7a92d1a2824045dd699cd1fefd59111c59"
+    },
+    {
+      "name": "tree-14",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 14,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "9042be5f6a823ab2b4b0b6c44a7df39ce780fca8923a93a9258132f90b01d39d"
+    },
+    {
+      "name": "tree-15",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 15,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "ec6059215161ccffce426fd5887fa0ba19266819a09509a8773e1c26483bf2cb"
+    },
+    {
+      "name": "tree-16",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 16,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "8c87a0eeb61566d64ab6355f15702aa35500e6a2e2111290fbb19764688f8805"
+    },
+    {
+      "name": "tree-17",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 17,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "5b8c5c2f606905941ef7d5aa1a5ec3560d1607ddc18737876e7f6762c0f9542d"
+    },
+    {
+      "name": "tree-18",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 18,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "3193336ea802e21bbb479502f00ee4aea5dfa73b17bfbef53c88152c7000bfca"
+    },
+    {
+      "name": "tree-19",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 19,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "854a70113e668014c17c1950d3527b109481e198673f04b3367c64212fba92e8"
+    },
+    {
+      "name": "tree-20",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 20,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "a823095d46cb78635210efeb7421f2eef86bd9de6be24455b3c6e05837e5d539"
+    },
+    {
+      "name": "tree-21",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 21,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "ed7329b5299bdcefa1bb5fdda610d6fb6a7d2c354ee4b59fc3ef9326efbe6fe4"
+    },
+    {
+      "name": "tree-22",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 22,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "fd7d9ba0ea7ca42303a3b46bd92b16417f82de25206f2832cb93790135359f23"
+    },
+    {
+      "name": "tree-23",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 23,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "f0f8ad1f3e8b2673dd71bed39c841937d7fbb0f64068ac3e8162e16e9523edf5"
+    },
+    {
+      "name": "tree-24",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 24,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "697b7c685e17fc1ff988d5a2f046591540cb4d21892276eafd2a5f692bb90cdf"
+    },
+    {
+      "name": "tree-25",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 25,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "883db61068d00efd89b2625d4b71fe806014eeea0ba0577f4b0e93be8a71c275"
+    },
+    {
+      "name": "tree-26",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 26,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "7bd0b5b1d1512b843940a9cbc3dee6a7099add468b4451488d68b6071902eddf"
+    },
+    {
+      "name": "tree-27",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 27,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "1678d3483e1c2e3e8fa9ab5dc49e632df092b341c28efb4c9a8240bc9e2f8040"
+    },
+    {
+      "name": "tree-28",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 28,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "f1ceedc9bba8717266a096c6a27d721f8df0173604f38c124608ebec0b195c34"
+    },
+    {
+      "name": "tree-29",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 29,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "9f99035c8904bd32bd4260f9e4828f4d28de474128fd57c27f292f8b5b3b9cd2"
+    },
+    {
+      "name": "tree-30",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 30,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "eb860fb16f8fbabeeecb777a0e81c614d784f7b87341f786e77502cbabf045d9"
+    },
+    {
+      "name": "tree-31",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 31,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "a8fa1d63a8e143f006a4a5b32a68787a6c44f1d03b892db4d40a2f69e2b287c6"
+    },
+    {
+      "name": "tree-32",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 32,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "bfe79a3d5cf94b7e8773f51fb4b9753fcdccacc839bc1476d23bd5d078cd58ce"
+    },
+    {
+      "name": "tree-33",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 33,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "8abb4bc6e7d9d912143680a88e0bd5ebecd65419bed2fb419ece9580b57303d1"
+    },
+    {
+      "name": "tree-34",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 34,
+        "lightDirection": 3,
+        "leavesAmount": 50,
+        "leavesSize": 100,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 0,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "7700019ea301c01c98057dfe197f50611d49096044c2bdb19ab2457e10b87f40"
+    },
+    {
+      "name": "tree-custom",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 14,
+        "lightDirection": 5,
+        "leavesAmount": 100,
+        "leavesSize": 160,
+        "branchesHeight": 150,
+        "branchesThickness": 175,
+        "defaultLeaves": false,
+        "customBranchColor": true,
+        "flatShading": false,
+        "leavesColor": {
+          "r": 0.9,
+          "g": 0.2,
+          "b": 0.4,
+          "a": 0.6
+        },
+        "branchesColor": {
+          "r": 0.25,
+          "g": 0.15,
+          "b": 0.7,
+          "a": 0.4
+        },
+        "seed": 42,
+        "x": 0.7,
+        "y": 0.8,
+        "size": 1.2
+      },
+      "sha256": "f05b6fc9b2dfc3f36c32b8492cd528a74a0818bdedc00ed0d4348a58cc5112c7"
+    },
+    {
+      "name": "tree-flat",
+      "kind": "tree",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "baseTreeType": 31,
+        "lightDirection": 3,
+        "leavesAmount": 75,
+        "leavesSize": 170,
+        "branchesHeight": 100,
+        "branchesThickness": 100,
+        "defaultLeaves": true,
+        "customBranchColor": false,
+        "flatShading": true,
+        "leavesColor": {
+          "r": 0.24,
+          "g": 0.52,
+          "b": 0.16,
+          "a": 1
+        },
+        "branchesColor": {
+          "r": 0.36,
+          "g": 0.25,
+          "b": 0.16,
+          "a": 1
+        },
+        "seed": 4294967295,
+        "x": 0.5,
+        "y": 0.95,
+        "size": 0.8
+      },
+      "sha256": "356ace9c4a39a1e2299e1a273a22db03f653612b52a99f654b2beaf774493a16"
+    },
+    {
+      "name": "frame-01",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 1,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "8d44a6142cc3a132540b5820b27edae26f328e9bd75bfce3ad6a0d81ef6471bf"
+    },
+    {
+      "name": "frame-02",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 2,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "a23a51224603c930ee154fc8b540269c6c9b354a2f4d391c677099eaf45c29f7"
+    },
+    {
+      "name": "frame-03",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 3,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "5f3785598327c7967b009b8d09db6f26766bbf3453f7e67e0d90be89a5480046"
+    },
+    {
+      "name": "frame-04",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 4,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "ccda44c82c1d50c80b6eae7636929c4c7ca5a92cff12718b0fea55ef34003921"
+    },
+    {
+      "name": "frame-05",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 5,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "cf4c0bba7587eb2fea369e5bc3d4d62d430706860f2f22181cb18572cfec231e"
+    },
+    {
+      "name": "frame-06",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 6,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "20b9b643db3f5301618747b3e73369962cedb70c270781d60ecbd618298acdde"
+    },
+    {
+      "name": "frame-07",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 7,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "aaed0553986715cf9244447757e67e1b4dccdad2f6cfb8bd8bebea0c58f691e6"
+    },
+    {
+      "name": "frame-08",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 8,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "5df260de55cbdc05e3ba660a526a851b1c805ace11c959f795f592804979668d"
+    },
+    {
+      "name": "frame-09",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 9,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "4cce393de425ec6ae9b5f18744905d52764e25eaa350d08d7023271c5907db0d"
+    },
+    {
+      "name": "frame-10",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 10,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "b2edc85094966a20ca718fcc9b4bdf38081a04717cadc5100eba7d69455431db"
+    },
+    {
+      "name": "frame-11",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 11,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "c0b778e527a40f377174d31467b634a194886a10a4f7c872279a20021fec3246"
+    },
+    {
+      "name": "frame-12",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 12,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "ff1d940a69cd003b66adbe5d2048c643be9d75af851b1e73b4d774f10afb9d35"
+    },
+    {
+      "name": "frame-13",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 13,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "ebe0fa47c7bd3d99c135310af052a25ab7e87be0106e5677d3b9257c52419040"
+    },
+    {
+      "name": "frame-14",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 14,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "063b3fbefc00fe5f76ed5478622be4aac850adbc04b2592f7b1b4bc47f8f518c"
+    },
+    {
+      "name": "frame-15",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 15,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "1374ddc8c197e9e063d5bc0b01f78399bbb740165d835056df0822455d6f205c"
+    },
+    {
+      "name": "frame-16",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 16,
+        "lines": 1,
+        "margin": 4,
+        "size": 50,
+        "arrangement": 50,
+        "thickness": 30,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 0
+      },
+      "sha256": "90ac7e9496bf002b82e4c8f2f9eccff7604411821afc79d3cb2bacce54cab929"
+    },
+    {
+      "name": "frame-custom",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 1,
+        "lines": 1,
+        "margin": 12,
+        "size": 72,
+        "arrangement": 83,
+        "thickness": 58,
+        "fade": 67,
+        "vineColor": {
+          "r": 0.5,
+          "g": 0.1,
+          "b": 0.2,
+          "a": 0.7
+        },
+        "flowerColor": {
+          "r": 0.2,
+          "g": 0.6,
+          "b": 0.9,
+          "a": 0.4
+        },
+        "leafColor": {
+          "r": 0.4,
+          "g": 0.8,
+          "b": 0.1,
+          "a": 0.8
+        },
+        "seed": 42
+      },
+      "sha256": "dd6cb6ac6193623b8551ad87f2ca6f2f909afd1c8e99efdee2d55650d2bf452b"
+    },
+    {
+      "name": "frame-lines",
+      "kind": "pictureFrame",
+      "width": 128,
+      "height": 96,
+      "parameters": {
+        "frame": 13,
+        "lines": 4,
+        "margin": 11,
+        "size": 48,
+        "arrangement": 23,
+        "thickness": 48,
+        "fade": 0,
+        "vineColor": {
+          "r": 0.25,
+          "g": 0.4,
+          "b": 0.15,
+          "a": 1
+        },
+        "flowerColor": {
+          "r": 0.9,
+          "g": 0.3,
+          "b": 0.45,
+          "a": 1
+        },
+        "leafColor": {
+          "r": 0.3,
+          "g": 0.6,
+          "b": 0.2,
+          "a": 1
+        },
+        "seed": 43
+      },
+      "sha256": "d9d56aa550a94ee2a49927cdc641650c38786ade5db4738e0747c2503b4b201a"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "step": "dev-step-188",
+  "status": "Native major Vanishing Point workflow implemented and tested. Full F05/Photoshop parity remains open.",
+  "run": "artifacts/runs/20261027T112757Z-188-vanishing-point",
+  "scope": "Saved perspective planes and connected planes, perspective paste/clone/brush, native preview workspace, local/document Undo, native32 persistence and shared Photato API.",
+  "upstream": [
+    "../photocraft-main/crates/algo/src/vanishing.rs",
+    "../photocraft-main/crates/engine/src/vp_cmds.rs"
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/vanishing-point-in-photoshop.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-04",
+      "scope": "Perspective workspace and tool families. Secondary marquee, measurement and healing remain open."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-09",
+      "scope": "Four-corner planes, related planes and angles, retained document planes."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/paint-in-vanishing-point.html",
+      "read": "2026-10-27",
+      "updated": "2026-10-09",
+      "scope": "Brush/clone controls and source alignment. Multi-surface wrapping and healing are not implemented."
+    },
+    {
+      "path": "docs/contracts/adobe-photoshop-v2.json",
+      "finding": "No dedicated Vanishing Point operation. Unqualified actionJSON remains explicitly unsupported."
+    }
+  ],
+  "implementation_choices": [
+    "Swift camera inference, projective plane mapping and related-plane Rodrigues rotation reuse the original Rust approach; brush painting extends the upstream paste/clone commands.",
+    "Sequential draft operations composite over the original visible sample; a clone stroke freezes its source. Source-layer paste uses raw raster pixels, matching the API; clipboard import performs color conversion.",
+    "Renderer Float32 samples convert to the document depth at the prepared-edit boundary. Selection, affine target placement and image/transparency locks apply, with optional new-layer output.",
+    "Saved canonical focal/center/root planes follow global canvas/path transforms. Related planes retain their links. Nonuniform camera recalibration remains unqualified.",
+    "Prepared edits are cancellable and reject stale source documents before commit. One command retains plane metadata and pixels together; local workspace undo is separate from document history."
+  ],
+  "photato_api": {
+    "commands": [
+      "filter.vanishingPoint"
+    ],
+    "catalogue_count": 71,
+    "native_archive_version": 32,
+    "state": "Strict settings/operation schemas; document and workspace saved settings plus resolved plane corners/metric dimensions; active tool, selection, preview/rendering, navigation and local history availability. Existing revision/busy/sharing protections apply.",
+    "parameters": [
+      "layerID",
+      "settings",
+      "operations",
+      "newLayer"
+    ]
+  },
+  "adobe_api": {
+    "new_route": null,
+    "scope": "No invented Adobe route. Unqualified Vanishing Point actionJSON and editable PSD/PSB plane metadata reject. Rendered raster export remains available."
+  },
+  "menus": {
+    "new_bindings": 1,
+    "entries": 802,
+    "bound": 256,
+    "unavailable": 469,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "paths": [
+      "Filter > Vanishing Point\u2026"
+    ],
+    "shortcut": "Option+Command+V"
+  },
+  "tests": {
+    "debug_focused": 117,
+    "debug_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/integration05.log",
+    "earlier_passing": {
+      "module02": 4,
+      "integration04": 116
+    },
+    "failed_attempts": [
+      "artifacts/runs/20261027T112757Z-188-vanishing-point/module01.log",
+      "artifacts/runs/20261027T112757Z-188-vanishing-point/integration01.log",
+      "artifacts/runs/20261027T112757Z-188-vanishing-point/integration02.log",
+      "artifacts/runs/20261027T112757Z-188-vanishing-point/integration03.log"
+    ],
+    "independent_evidence": "Analytical 3D camera/focal/aspect/perpendicular shared-edge checks, all-depth paste/clone/brush and clipping, selections/locks/transforms/history/cancellation/invalid atomicity/native32, native controllers and API equality/busy/stale/schema guards. Not independent Photoshop pixels.",
+    "offscreen": "artifacts/vanishing-point-offscreen/E6E0F90C-891C-4327-9D54-C9E505467540.png",
+    "offscreen_limit": "Inspected pixels, perspective brush/grid and native control arrangement. AppKit button/picker capture incomplete offscreen; no live visual/pointer qualification.",
+    "release_full": 1816,
+    "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
+    "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json"
+  },
+  "limitations": [
+    "Perspective marquee/floating selections/cut, measurement, healing modes and multi-surface stroke wrapping are absent. Full F05 remains open.",
+    "No recorded Actions integration for this prepared composite operation; playback/recording reports unsupported rather than silently omitting it. Direct desktop and API are implemented.",
+    "Target must be an ordinary raster layer. Native workspace admission currently needs an unlocked image target even when new-layer output would be possible in the engine/API.",
+    "32 planes,256 operations,16,384 supplied points,4,096 per stroke,128MiB embedded sources,8,388,608 canvas/target pixels and134,217,728 raster visits. Larger document performance remains open; API sharing limits apply separately.",
+    "Exact Adobe pixels, full color-mode matrix, complete grid/keyboard/context interactions and nonuniform transformed-camera recalibration are unqualified.",
+    "Native32 preserves planes. Adobe PSD/PSB plane metadata and .vpe interchange are unsupported; explicit save guards prevent silent metadata loss.",
+    "Latest desktop evidence remains locked. No re-probe/bypass. Live UI, physical Intel and macOS14/26 validation remain open; current-host tests and universal builds do not prove these gates."
+  ],
+  "next": "B01 major painting workflow: native Brush Settings, custom tips/dynamics and reusable presets with canvas/API/history integration. Defer exact kernels and cosmetic refinement.",
+  "qualification": "All117 focused Debug and1816 full optimized tests pass. The universal macOS14+ package verifies."
+}

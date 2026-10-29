@@ -1,0 +1,182 @@
+{
+  "step": "dev-step-157",
+  "status": "Functional increment qualified; Photoshop numerical/full feature parity remains open.",
+  "priority": "Breadth of usable major features first; numerical refinement deferred at maintainer request.",
+  "kinds": [
+    "gaussianBlur",
+    "boxBlur",
+    "motionBlur",
+    "unsharpMask",
+    "highPass",
+    "addNoise",
+    "mosaic",
+    "average"
+  ],
+  "implementation": [
+    "Sources/PhotoCraftCore/RasterFilter.swift",
+    "Sources/PhotoCraftCore/RasterFilterEngine.swift",
+    "Sources/PhotoCraft/FilterControls.swift",
+    "Sources/PhotoCraft/AutomationFilters.swift"
+  ],
+  "provenance": [
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "accessed": "2026-10-26",
+      "scope": "Filter parameter and method catalogue; no algorithm copied."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AdobeDocs/uxp-photoshop/main/src/pages/ps-reference/media/eventcodes.md",
+      "accessed": "2026-10-26",
+      "scope": "Adobe event identifiers, including Average $Avrg."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/filter-effects-reference.html",
+      "accessed": "2026-10-26",
+      "scope": "Filter workflow/category overview."
+    }
+  ],
+  "algorithms": "Original native Swift running box, separable Gaussian approximation, bilinear line sampling, premultiplied averages, unsharp/high-pass differences and deterministic noise. No Photoshop pixel-equivalence claim.",
+  "source_manifest": "artifacts/runs/20261026T173017Z-157-native-filters/source04.json",
+  "focused": {
+    "count": 59,
+    "failures": 0,
+    "result": "artifacts/runs/20261026T173017Z-157-native-filters/focused03.json",
+    "log": "artifacts/runs/20261026T173017Z-157-native-filters/focused03.log",
+    "scope": "Source03 (same production code as source04); source04 only updates eight existing catalogue-count assertions."
+  },
+  "live": {
+    "scope": "Owned arm64 Debug-object app using source02, before API-only action-identifier correction. In-memory workspace/preferences/recovery. All eight sheets open; Gaussian edit/preview/Escape, Mosaic32 commit, factory Undo/Redo and discard/quit observed.",
+    "screenshots": [
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-gaussian01.png",
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-mosaic-committed01.png",
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-mosaic-undo01.png"
+    ],
+    "records": [
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-sheets01.json",
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-sheets02.json",
+      "artifacts/runs/20261026T173017Z-157-native-filters/live-compile01.json"
+    ],
+    "cleanup": "Owned document discarded and probe quit; CUA inventory confirms exit. Empty-window AX timeout preserved in DEVLOG."
+  },
+  "api": {
+    "photato_command": "filter.apply",
+    "typed_commands": 22,
+    "job_routes": [
+      "/v1/action-jobs",
+      "/v2/execute-actions"
+    ],
+    "adobe_endpoints_coverage_unchanged": "Three partial, five unimplemented; expanded action interpreter only.",
+    "parameter_schema": "AutomationFilters.swift apiSchema; exposed in capabilities.filters"
+  },
+  "limits": [
+    "8,388,608 pixels per raster layer; existing smaller API budgets remain",
+    "Single unlocked composite RGB raster target; no component or mask targeting",
+    "Baked pixels, no editable Smart Filter stack",
+    "Gaussian approximated by three box passes; Motion Blur at most257 samples",
+    "Photato seeded noise differs from Photoshop randomness; Adobe adapter defaults to seed1",
+    "Full Photoshop output, platform and feature parity remain open"
+  ],
+  "release": {
+    "count": 1483,
+    "failures": 0,
+    "result": "artifacts/runs/20261026T173017Z-157-native-filters/release-tests03.json",
+    "log": "artifacts/runs/20261026T173017Z-157-native-filters/release-tests03.log"
+  },
+  "platform": "artifacts/runs/20261026T173017Z-157-native-filters/platform01.json",
+  "package": "artifacts/runs/20261026T173017Z-157-native-filters/package-verification01.json",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_157.json",
+  "filter_gallery_step203": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/FILTER_GALLERY_REFERENCES.json",
+    "qualification": "All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "typed_command_count": 107,
+      "filter_kind": "filterGallery",
+      "parameter": "artistic",
+      "settings": "effects array in application order, first runs first. Each has filter, visible, values, foreground/background/glowColor. Integer controls and zero-based choices; boolean controls0/1; colors RGBA0...1. Omitted controls use catalogue defaults.",
+      "state": "capabilities.filters.filterGallery includes full47-effect catalogue, typed schemas, defaults/choice lists, limits and qualification; document filterGallery exposes availability/workspace/preview/selection/local-history and settings. Existing Smart Filter state exposes saved settings.",
+      "history": "Shared cancellable prepared native command; selection and locks preserved, Smart Object source retained; stale/busy409, malformed400.",
+      "native_version": 36,
+      "actions_version": 8
+    },
+    "menus": {
+      "newly_bound": [
+        "Filter > Filter Gallery\u2026"
+      ],
+      "shortcuts": "Factory order/title retained; no primary factory shortcut for this dialog."
+    },
+    "adobe": {
+      "routes": [],
+      "existing_route": "Published /v2/execute-actions covers artistic filters but exact Gallery descriptors are not independently qualified. Existing supported descriptors remain unchanged; Gallery returns explicit unsupported rather than invented Adobe fields.",
+      "limits": "Adobe-compatible Gallery actions and editable PSD mappings remain tracked gaps. Native APIs are complete for this increment; no Adobe parity claim."
+    },
+    "supersedes": "Earlier statements that all Filter Gallery effects are unavailable; historical evidence remains scoped to its original checkpoint."
+  },
+  "photo_detail_step206": {
+    "status": "Native workflows implemented; full parity open",
+    "reference": "docs/PHOTO_DETAIL_REFERENCES.json",
+    "qualification": "All45 final focused Debug and1980 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "kinds": [
+        "smartSharpen",
+        "reduceNoise"
+      ],
+      "parameters": [
+        "sharpen",
+        "denoise"
+      ],
+      "state": "photoDetail availability/workspace/preview state; complete parameter schemas and capabilities",
+      "native_version": 37,
+      "actions_version": 9,
+      "adobe": "Published execute-actions supports Smart Sharpen, but exact descriptors and editable PSD are not independently qualified. Both new descriptor families explicitly reject; no invented Adobe routes.",
+      "limits": "8MP RGB raster/Smart Object layers; component/auxiliary channel targets unsupported. Selection and locks apply. RGB8/16 encoded, RGB32 linear unclipped. Original alpha and zero-alpha hidden samples retained. Source defaults, not verified Adobe defaults."
+    },
+    "menus": [
+      "Filter > Sharpen > Smart Sharpen\u2026",
+      "Filter > Noise > Reduce Noise\u2026"
+    ],
+    "supersedes": "Earlier pending-only entries for Smart Sharpen and Reduce Noise; prior evidence remains scoped to its checkpoint."
+  },
+  "lens_blur_step207": {
+    "status": "Native workflow implemented; full parity open",
+    "reference": "docs/LENS_BLUR_REFERENCES.json",
+    "qualification": "53 focused/1990 full optimized tests at207; combined208 universal package verifies with1991 full optimized tests.",
+    "api": {
+      "commands": [
+        "filter.apply",
+        "smartFilter.set"
+      ],
+      "kind": "lensBlur",
+      "parameter": "lensBlur",
+      "native_commands": 107,
+      "archive": 38,
+      "actions": 10,
+      "observable_state": "lensBlur availability/workspace/previewBusy/filter/depthSources/history/zoom",
+      "adobe": "No invented route or descriptor. Lens Blur editable Photoshop actionJSON/PSD rejects until independently qualified."
+    },
+    "menus": [
+      "Filter > Blur > Lens Blur\u2026"
+    ],
+    "native_extension": "Editable Lens Blur Smart Filter is Photato-specific; Adobe excludes Lens Blur from Smart Filter support. Adobe actionJSON/PSD descriptors remain unqualified.",
+    "supersedes": "Earlier pending-only Lens Blur inventory; historical results retain original scope."
+  },
+  "window_presentation_step208": {
+    "reference": "docs/WINDOW_PRESENTATION_REFERENCES.json",
+    "qualification": "All 59 focused Debug and 1,991 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
+    "api": {
+      "native_commands": 107,
+      "state_field": "documents[].windowTitle",
+      "new_editing_commands": 0,
+      "adobe": "Presentation-only change; no Adobe v2 contract or route change."
+    },
+    "menu_change": "No command/shortcut change in208;207 binds Lens Blur. Current menu inventory802 entries/285 bound leaves/440 unavailable/102 primary/8 alternative shortcuts."
+  }
+}

@@ -9,6 +9,7 @@ public enum ClipboardRenderer {
     throws -> ClipboardContent
   {
     try document.validate()
+    if document.restrictedMode != nil { return try copyRestricted(document, layerIDs: layerIDs, merged: merged) }
     if !merged && document.selection == nil {
       guard !layerIDs.isEmpty,
         layerIDs.allSatisfy({ id in document.layers.contains { $0.id == id } })
@@ -35,7 +36,7 @@ public enum ClipboardRenderer {
           text.layoutHeight = text.layoutHeight ?? document.height
           copied.layers[index].content = .text(text)
         }
-        let layer = copied.layers[index]
+        let layer = try SmartFilterEngine.renderedLayer(copied.layers[index], in: document)
         if layer.isGroup { continue }
         let area: IntRect
         switch layer.content {
@@ -67,10 +68,11 @@ public enum ClipboardRenderer {
       inverse = .identity
     } else {
       guard layerIDs.count == 1, let id = layerIDs.first,
-        let layer = document.layers.first(where: { $0.id == id })
+        let originalLayer = document.layers.first(where: { $0.id == id })
       else {
         throw CraftError.unsupported("Copy a pixel selection from one layer, or use Copy Merged.")
       }
+      let layer = try SmartFilterEngine.renderedLayer(originalLayer, in: document)
       pixels = try Renderer.layerSurface(layer, in: document)
       if layer.isGroup {
         inverse = .identity
@@ -126,7 +128,7 @@ public enum ClipboardRenderer {
     }
     return try .pixels(
       trimmed, x: area.x + x0, y: area.y + y0,
-      resolution: document.pixelsPerInch)
+      resolution: document.pixelsPerInch, workingICC: document.workingICC, untagged: document.profileIsUntagged == true)
   }
   public static func preview(_ content: ClipboardContent) throws -> Surface {
     if content.kind == .pixels, case .raster(let pixels) = content.document.layers[0].content {
@@ -134,7 +136,7 @@ public enum ClipboardRenderer {
     }
     if content.document.layers.count == 1, let layer = content.document.layers.first,
       layer.visible, layer.opacity == 1, layer.blendMode == .normal, !layer.isClipped,
-      layer.mask == nil, layer.vectorMask == nil, layer.affine == nil,
+      layer.mask == nil, layer.vectorMask == nil, layer.affine == nil, layer.smartFilters == nil,
       case .raster(let pixels) = layer.content,
       pixels.width == content.bounds.width, pixels.height == content.bounds.height,
       layer.x == content.bounds.x, layer.y == content.bounds.y
@@ -148,15 +150,25 @@ public enum ClipboardRenderer {
     if content.kind == .pixels { return content }
     return try .pixels(
       preview(content), x: content.bounds.x, y: content.bounds.y,
-      resolution: content.document.pixelsPerInch)
+      resolution: content.document.pixelsPerInch, workingICC: content.document.workingICC,
+      restrictedSamples: content.restrictedSamples ?? content.document.restrictedMode, untagged: content.document.profileIsUntagged == true)
   }
   /// TIFF retains source component precision; PNG is an SDR fallback.
   /// The private native representation remains authoritative for lossless layer/sample transfer.
-  public static func imageData(_ surface: Surface, type: UTType) throws -> Data {
+  public static func imageData(_ surface: Surface, type: UTType, document: CraftDocument? = nil)
+    throws -> Data
+  {
     guard type == .tiff || type == .png else {
       throw CraftError.invalid("Unsupported clipboard format.")
     }
-    let image = try type == .tiff ? tiffImage(surface) : RasterIO.displayImage(surface)
+    let image: CGImage
+    if type == .tiff {
+      image = try tiffImage(surface, document: document)
+    } else {
+      image =
+        try document.map { try ColorManagement.displayImage(surface, in: $0) }
+        ?? RasterIO.displayImage(surface)
+    }
     let data = NSMutableData()
     guard
       let destination = CGImageDestinationCreateWithData(data, type.identifier as CFString, 1, nil)
@@ -167,43 +179,31 @@ public enum ClipboardRenderer {
     }
     return data as Data
   }
-  private static func tiffImage(_ surface: Surface) throws -> CGImage {
-    if surface.depth == .f32 { return try RasterIO.cgImage(surface) }
-    if surface.depth == .u8 { return try RasterIO.displayImage(surface) }
-    let data = try surface.rgbaData(depth: .u16)
+  private static func tiffImage(_ surface: Surface, document: CraftDocument?) throws -> CGImage {
+    if surface.depth == .f32 {
+      return try document.map { try ColorManagement.image(surface, in: $0) }
+        ?? RasterIO.cgImage(surface)
+    }
+    let bits = surface.depth == .u8 ? 8 : 16
+    let data = try surface.rgbaData(depth: surface.depth)
     guard let provider = CGDataProvider(data: data as CFData),
       let image = CGImage(
         width: surface.width, height: surface.height,
-        bitsPerComponent: 16, bitsPerPixel: 64, bytesPerRow: surface.width * 8,
-        space: try RasterIO.colorSpace(),
-        bitmapInfo: [.byteOrder16Little, CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)],
+        bitsPerComponent: bits, bitsPerPixel: bits * 4, bytesPerRow: surface.width * bits / 2,
+        space: try document.map { try ColorManagement.space(for: $0) } ?? RasterIO.colorSpace(),
+        bitmapInfo: CGBitmapInfo(
+          rawValue: CGImageAlphaInfo.last.rawValue
+            | (bits == 16 ? CGBitmapInfo.byteOrder16Little.rawValue : 0)),
         provider: provider, decode: nil, shouldInterpolate: true, intent: .relativeColorimetric)
     else { throw CraftError.invalid("Could not create the 16-bit clipboard image.") }
     return image
   }
 
   public static func readImage(_ data: Data) throws -> ClipboardContent {
-    guard data.count <= 512 * 1024 * 1024,
-      let source = CGImageSourceCreateWithData(data as CFData, nil),
-      let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
-      let width = properties[kCGImagePropertyPixelWidth] as? Int,
-      let height = properties[kCGImagePropertyPixelHeight] as? Int
-    else {
-      throw CraftError.invalid("Clipboard does not contain a supported image.")
+    let document = try RasterIO.read(data)
+    guard document.layers.count == 1, case .raster(let pixels) = document.layers[0].content else {
+      throw CraftError.unsupported("Clipboard image must contain one raster layer.")
     }
-    _ = try Surface(width: width, height: height)
-    guard
-      let image = CGImageSourceCreateImageAtIndex(
-        source, 0,
-        [kCGImageSourceShouldCache: false] as CFDictionary)
-    else {
-      throw CraftError.invalid("Could not decode the clipboard image.")
-    }
-    let depth: PixelDepth =
-      image.bitsPerComponent > 16 ? .f32 : image.bitsPerComponent > 8 ? .u16 : .u8
-    let pixels = try RasterIO.oriented(
-      RasterIO.surface(image, depth: depth),
-      orientation: properties[kCGImagePropertyOrientation] as? Int ?? 1)
-    return try .pixels(pixels)
+    return try .pixels(pixels, resolution: document.pixelsPerInch, workingICC: document.workingICC, restrictedSamples: document.restrictedMode, untagged: document.profileIsUntagged == true)
   }
 }

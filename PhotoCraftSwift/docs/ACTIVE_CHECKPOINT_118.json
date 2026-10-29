@@ -1,0 +1,176 @@
+{
+  "goal_status": "active",
+  "full_goal_achieved": false,
+  "phase": 1,
+  "priority_order": "Major functions, then minor functions, then final details; necessary UI/API/accuracy dependencies stay with each major workflow",
+  "major_workflow": "D01 document lifecycle",
+  "major_workflow_closed": false,
+  "project_directory": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+  "project_location": {
+    "actual": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-",
+    "directory_rename_by_this_agent": false,
+    "note": "Externally renamed during116; continue here without automatic rename. Canonical stale module cache moved to a preserved backup and manifest check passes."
+  },
+  "intel_runtime_limit": "x86_64 Release engine objects under Rosetta, not physical Intel/macOS14 full-app qualification",
+  "api": {
+    "photato_typed_commands": 18,
+    "adobe_partial_endpoints": 2,
+    "adobe_unimplemented_endpoints": 6,
+    "new_routes": 0,
+    "coverage": "normalHierarchyComposition capability; eight group references through desktop/download/both job outputs with unchanged state/history. Counts unchanged."
+  },
+  "menu": {
+    "entries": 802,
+    "primary_shortcuts": 102,
+    "alternative_shortcuts": 8,
+    "bound_leaf_commands": 154,
+    "unavailable_leaf_commands": 571,
+    "changed": false
+  },
+  "backlog": "docs/FUNCTION_PHASES_109.json",
+  "step": "dev-step-118",
+  "recorded_at_utc": "2026-10-20T00:14:00.790975+00:00",
+  "status": "Automated/universal/Rosetta qualification complete; native UI pending Mac unlock",
+  "tested_source_freeze": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/tested-source-hashes02.json",
+    "sha256": "6e0101b97bfacc85224437d227f22b0ff7d97cbe49443b88e2dd414f3624c2fc"
+  },
+  "source_test_files": 404,
+  "validation_inputs": 749,
+  "validation_isolation": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/isolation01.json",
+    "sha256": "9afea8d38e5357821f4d6cf2a1ce535b4106604b120b356607eb45c921c6e3fe"
+  },
+  "tests": {
+    "full02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T233703Z-118-rgb32-groups/full02.log",
+      "sha256": "ca92c7eecfc5fe241e76a339381abdba9509d86cf10fa6e08ddc6022d7512082",
+      "passed": 1062,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 163.182
+    },
+    "release02": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261019T233703Z-118-rgb32-groups/release02.log",
+      "sha256": "07d0c28dd0de62b599ba79cca65601cf1fef547d458cbaeb2e0854b3bb1419ee",
+      "passed": 1062,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 45.014
+    }
+  },
+  "focus_tests": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 15.613,
+    "evidence": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/focused04.log",
+      "sha256": "675b316bde8419e687b89008d09995770555218527b0b5cd93ae66b19adaf05a"
+    }
+  },
+  "candidate_package": {
+    "extracted_app": "/private/tmp/photato118-verified-kvafvk_5/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "dacdfbeedd049a6c25cfa761649033f26cd81afb61be0556c77063534b4bfe6c",
+    "zip_sha256": "2668ab065de61286d3065b79c543f86d73ecdd455012b2b2eb68baae7c27e999",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true
+  },
+  "installed_package": {
+    "extracted_app": "/private/tmp/photato117-verified-wazhglvg/Photato.app",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_macos": "14.0",
+    "version": "0.2.0",
+    "build": "2",
+    "binary_sha256": "d0212ea04375d43d86ec97daf7afa8bf88f8273bd5c06a52df21085e0b5ee631",
+    "zip_sha256": "f094c64619722fda44d35dcd97c0fd3316fcb276eedc7e84ab8fb67db426f612",
+    "clean_zip_signature_verified": true,
+    "licenses_icon_links_verified": true,
+    "installed_project_app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.app",
+    "installed_project_zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+    "project_install_evidence": {
+      "path": "artifacts/runs/20261019T225228Z-117-rgb32-composite/project-install01.json",
+      "sha256": "db180769f7223cd2e3cba7b181bb0cc35951c12ae46a863a06e48ee293f1f422"
+    }
+  },
+  "installed_checkpoint": "docs/ACTIVE_CHECKPOINT_117.json",
+  "xcode_project": {
+    "path": "Photato.xcodeproj/project.pbxproj",
+    "sha256": "a63c41c4687c0fbc19dfc67bcb89e551b9f34e59cc3037cda38a288d9972bea2"
+  },
+  "release_evidence": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/package-verification01.json",
+    "sha256": "cede948b193181787f393ee9de368e19c5f1c8774eda0a0ca14baa2d2dc3f8e4"
+  },
+  "intel_numerical_evidence": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/intel-golden01.json",
+    "sha256": "c9c12231001a7f784c495a1f3741d5ff837ca50cf28a94b539082f400a3c0827"
+  },
+  "live_ui": {
+    "status": "not completed",
+    "blocker": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/ui-lock01.json",
+      "sha256": "49fbda8ff74e78eea0ab1e2580b35e093da86bb0799ad81259a4339641575b03"
+    },
+    "prepared_identity": {
+      "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/ui-release.json",
+      "sha256": "62bd65af9c88b2a5f9fcfce3887af62a1e3d96d89ec20035cea7909b6922be85"
+    },
+    "app_exit_not_yet_verified": true
+  },
+  "no_pending_test_build_or_intel_session": true,
+  "preceding_turn_classification": "Verified module/API and package progress; live workflow not yet qualified; D01 and master goal remain active",
+  "completed_this_increment": [
+    "Native linear Normal hierarchy evaluator for supported Pass Through/isolated group opacity/masks and default raster clipping",
+    "Ten independent Photoshop group references, 655360 merged RGBA bytes exact under all three layer compression options; source planes/masks/hierarchy retained",
+    "1062 Debug and1062 Release tests pass; clean universal package; x86_64 Release numerical comparisons under Rosetta",
+    "Desktop/download/both HTTP job outputs and capability documentation share the new behavior; no route/command/menu count changes"
+  ],
+  "remaining_major_dependencies": [
+    "Native118 live save/reopen and Photoshop read/cleanup; blocked only by locked Mac",
+    "Independent clipping blending flag disabled is explicitly unqualified; controlled inputs prepared",
+    "Clipped groups/non-Normal/affine/rich layers, arbitrary profiles and complete HDR editing",
+    "Complete document formats/options/metadata, colour policy, external-file/recent-item/recovery lifecycle",
+    "Physical Intel/macOS14 application runtime; full Photoshop menus/shortcuts/preferences and major features"
+  ],
+  "resume_first": "Read this pending118 checkpoint and DEVLOG118. Verify749 inputs/404 Swift files, candidate hashes and installed117 hashes. Resume existing disposable app only after Mac unlock; use next-major-qualification01.json. Do not rerun completed full tests or invent live success. Preserve external project rename and user documents.",
+  "runtime_cleanup": {
+    "test_app": "launched; exit pending",
+    "original_probe_unchanged": true,
+    "workspace_bytes_unchanged": true,
+    "photoshop_reference_capture_cleanup": "original dirty Untitled-1 retained; no118 output-open performed yet"
+  },
+  "next_reference_plan": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/next-major-qualification01.json",
+    "sha256": "bba1bc090b9684c41a53842136e237f201a85a4cc173822fa1e375e6bb7341f2"
+  },
+  "input_verification": {
+    "path": "artifacts/runs/20261019T233703Z-118-rgb32-groups/pending-ui-input-verification01.json",
+    "sha256": "70f39b6be4e0c3b963355c381cd6c230b65835e148a6146df73715c363a2a7f8"
+  },
+  "history_audit": {
+    "required": true,
+    "output_directory": "artifacts/development-history-audit/20261020-step118-pending-ui",
+    "refresh_command": "python3 scripts/audit-development-history.py",
+    "check_command": "python3 scripts/audit-development-history.py --check",
+    "initial_check": {
+      "check": "passed",
+      "milestones": 118,
+      "evidence_files": 30100,
+      "logs": 17944,
+      "missing_explicit_references": 0
+    },
+    "final_refresh_log": "artifacts/development-history-audit/20261020-step118-pending-ui/refresh02.log",
+    "final_check_log": "artifacts/development-history-audit/20261020-step118-pending-ui/check02.log"
+  }
+}

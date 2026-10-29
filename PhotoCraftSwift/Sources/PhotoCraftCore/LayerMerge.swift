@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LayerMergeOperation: String, CaseIterable, Sendable {
+public enum LayerMergeOperation: String, CaseIterable, Sendable, Codable {
   case down = "Merge Down"
   case selected = "Merge Layers"
   case visible = "Merge Visible"
@@ -20,6 +20,13 @@ public enum LayerMerge {
     _ operation: LayerMergeOperation, layerIDs: Set<UUID>, in document: CraftDocument
   ) -> Bool {
     (try? plan(operation, layerIDs: layerIDs, in: document)) != nil
+  }
+
+  /// Validate the operation and expose its allocation bounds before starting work.
+  public static func outputBounds(
+    _ operation: LayerMergeOperation, layerIDs: Set<UUID>, in document: CraftDocument
+  ) throws -> IntRect {
+    try plan(operation, layerIDs: layerIDs, in: document).bounds
   }
 
   private static func plan(
@@ -59,10 +66,10 @@ public enum LayerMerge {
     }
     for layer in members {
       guard case .raster = layer.content, !layer.locked, layer.blendMode == .normal,
-        layer.mask == nil, layer.vectorMask == nil, layer.affine == nil
+        layer.mask == nil, layer.vectorMask == nil, layer.affine == nil, layer.style == nil, layer.smartObject == nil
       else {
         throw CraftError.unsupported(
-          "This merge currently supports unlocked Normal pixel layers without masks or transforms.")
+          "This merge currently supports unlocked Normal pixel layers without masks, transforms or layer styles.")
       }
     }
     let visible = members.filter(\.visible)
@@ -115,10 +122,12 @@ public enum LayerMerge {
           let px = x - bounds.x
           let py = y - bounds.y
           let index = py * bounds.width + px
-          let source = document.depth == .f32
+          let source =
+            document.depth == .f32
             ? surface.linearPixel(x: x - layer.x, y: y - layer.y)
             : surface.pixel(x: x - layer.x, y: y - layer.y)
-          let storedBackdrop = document.depth == .f32
+          let storedBackdrop =
+            document.depth == .f32
             ? pixels.linearPixel(x: px, y: py) : pixels.pixel(x: px, y: py)
           let backdrop = occupied[index] ? storedBackdrop : Pixel(source.r, source.g, source.b, 0)
           let result = NormalLayerComposite.composite(
@@ -149,6 +158,7 @@ public enum LayerMerge {
       return p.removed.contains(layer.id) ? nil : layer
     }
     candidate.activeLayerID = merged.id
+    try candidate.reconcileModeStorage(from: document)
     try candidate.validate()
     try Task.checkCancellation()
     document = candidate

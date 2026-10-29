@@ -32,10 +32,10 @@ final class LayerViaWorkflowTests: XCTestCase {
       XCTAssertEqual(s.session.undoStack.count, 1)
       XCTAssertEqual(s.session.undoStack.last?.label, operation.rawValue)
       let result = s.document
-      s.undo()
+      await s.undo()
       s.renderTask?.cancel()
       XCTAssertEqual(s.document, original)
-      s.redo()
+      await s.redo()
       s.renderTask?.cancel()
       XCTAssertEqual(s.document, result)
     }
@@ -52,7 +52,7 @@ final class LayerViaWorkflowTests: XCTestCase {
     s.renderTask?.cancel()
     XCTAssertFalse(s.canLayerVia(.copy))
     XCTAssertFalse(s.canLayerVia(.cut))
-    s.undo()
+    await s.undo()
     s.renderTask?.cancel()
     let before = s.document
     s.layerVia(.cut)

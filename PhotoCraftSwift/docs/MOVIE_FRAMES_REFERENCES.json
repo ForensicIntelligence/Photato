@@ -1,0 +1,54 @@
+{
+  "step": 251,
+  "recorded_at_utc": "2026-10-29T14:59:04.332085+00:00",
+  "status": "Video Frames to Layers now imports complete or selected movie ranges into a new editable document, with every-N sampling, optional frame animation, native preview/cancellation and API upload options/state/cancel. 16 focused and 2632 full optimized tests pass on 2391 unchanged inputs. Independent FFmpeg/Pillow checks match 3,072 lossless RGBA channels. Exact Photoshop range/default/depth/codec behavior, HDR/larger media and live/platform parity remain open. Installed221/private universal243 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T142532Z-251-video-frames-import/source04.json",
+  "native_archive": 61,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "run": "artifacts/runs/20261029T142532Z-251-video-frames-import",
+  "interface": "Existing POST /v1/documents/import with X-Photato-Movie-Frames JSON; new upload cancellation route and capability state. Existing191 typed document commands retained.",
+  "adobe_routes_changed": false,
+  "references": [
+    "artifacts/runs/20261029T142532Z-251-video-frames-import/references01.json",
+    "artifacts/runs/20261029T142532Z-251-video-frames-import/design01.json",
+    "artifacts/runs/20261029T142532Z-251-video-frames-import/api-plan01.json"
+  ],
+  "verification": {
+    "full": {
+      "tests": 2632,
+      "failures": 0,
+      "seconds": 177.08,
+      "log": "artifacts/runs/20261029T142532Z-251-video-frames-import/full01.log",
+      "sha256": "5511e32c486fec964fc897b830f3f5edef36aab98da50a252dfbbcc11a53ed0d"
+    },
+    "focused": {
+      "tests": 16,
+      "failures": 0,
+      "seconds": 3.268,
+      "log": "artifacts/runs/20261029T142532Z-251-video-frames-import/focused03.log",
+      "sha256": "e74d593835259250a4c334ba9c4527a3af6eb57f997a66dc52fcac79194eabb0"
+    },
+    "unchanged_inputs": 2391,
+    "source_manifest": "artifacts/runs/20261029T142532Z-251-video-frames-import/source04.json",
+    "independent": "artifacts/runs/20261029T142532Z-251-video-frames-import/outputs-full01-independent.json",
+    "exact_RGBA_channels": 3072,
+    "binary_sha256": "4b6b350c9900255430c66b99c08775127cd62ba532b43015fba8868311006afb",
+    "architecture": "arm64",
+    "new_distribution_package": false,
+    "new_installed_app": false,
+    "full_photoshop_parity": false
+  },
+  "provenance": "Independent Swift AVFoundation integration guided by public Adobe workflow documentation and licensed Rust wrapper inspection. Original lossless/VFR/H.264 fixtures use FFmpeg only for fixture/oracle generation. No Adobe implementation examined. Native/independent checks do not prove Photoshop equality.",
+  "exact_photoshop_parity": false,
+  "full_feature_complete": false,
+  "open": [
+    "Exact Photoshop range inclusion, interval timing, defaults, depth, codec and pixel behavior need owned comparisons.",
+    "Native AVPlayer readiness is tested; an offscreen bitmap does not prove live video playback or full dialog interaction.",
+    "Native SDR sRGB16 conversion remains; HDR/color-profile preservation and complete codec coverage are open.",
+    "Source64MiB, decoded1GiB native/128MiB API, native512 layers/256 animation layers and API4MP/64layer limits remain.",
+    "Generic native/API movie opening is separate; frame animation does not retain source audio or the original movie container.",
+    "Physical Intel/macOS14 and Apple Silicon/macOS26 acceptance remains open.",
+    "Full major/minor/detail and byte-identical Photoshop acceptance remain active."
+  ]
+}
