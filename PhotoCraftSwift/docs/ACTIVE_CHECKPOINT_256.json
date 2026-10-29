@@ -1,0 +1,38 @@
+{
+  "step": 256,
+  "recorded_at_utc": "2026-10-29T19:20:13.507910+00:00",
+  "stage": "Qualified source255 published; development remains active",
+  "published_source_commit": "f2a9711d0f1e95c4e5bcf713bfa3181d31520057",
+  "repository_private": true,
+  "source_manifest": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source10.json",
+  "source_inputs": 2415,
+  "published_inputs": 2383,
+  "full": {
+    "tests": 2682,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 187.741,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full03.log",
+    "sha256": "9e715883b44af87032f101cf516453c2c09b650e3d783fb211166ca5527a1768"
+  },
+  "focused": {
+    "tests": 65,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 3.962,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/focused08.log",
+    "sha256": "7c1777d588c18f5024378a0293b15c6bfde9a749a7166091d1fb62e24a00fe0a"
+  },
+  "binary_sha256": "b71c4c9b458cef5d3b8a7460d128eb61705c3dbc5c156f44cbe6be04a893fd1a",
+  "architecture": "arm64",
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 255,
+  "new_package": false,
+  "new_installation": false,
+  "new_source_push": true,
+  "goal_complete": false,
+  "publication_receipt": "docs/SOURCE_PUBLICATION_256.json",
+  "next_integration_plan": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/next-major-plan04.json",
+  "next": "General raster/native/PSD/RAW Place Embedded transform preview with shared API and history; then genuine PDF source editing/interchange and linked-source workflows. Full Photoshop and platform acceptance remain open."
+}

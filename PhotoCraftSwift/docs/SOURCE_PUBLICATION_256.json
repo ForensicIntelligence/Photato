@@ -1,0 +1,21 @@
+{
+  "recorded_at_utc": "2026-10-29T19:20:13.507910+00:00",
+  "commit": "f2a9711d0f1e95c4e5bcf713bfa3181d31520057",
+  "remote_main": "f2a9711d0f1e95c4e5bcf713bfa3181d31520057",
+  "tree": "df8fbe011420e67f800f5a10ee93762faf5b2957",
+  "default_branch": "main",
+  "html_url": "https://github.com/ForensicIntelligence/Photato",
+  "private": true,
+  "source_manifest": "docs/SOURCE_SNAPSHOT_255.json",
+  "source_inputs_matched": 2383,
+  "qualified_local_inputs_unchanged": 2415,
+  "tracked_files": 3895,
+  "tracked_bytes": 134204522,
+  "source_checkpoint": 255,
+  "full_tests": 2682,
+  "failures": 0,
+  "focused_tests": 65,
+  "new_binary_upload": false,
+  "new_installation": false,
+  "goal_complete": false
+}
