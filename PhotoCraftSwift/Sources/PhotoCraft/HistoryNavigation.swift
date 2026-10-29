@@ -61,6 +61,7 @@ extension EditorStore {
   }
 
   func cancelActiveOperation() {
+    if embeddedPlacement != nil {cancelTransform();return}
     stopObjectFinder(); stopPeopleDetection()
     geometryTask?.cancel()
     cancelHistory()

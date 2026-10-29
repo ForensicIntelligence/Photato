@@ -146,13 +146,15 @@ extension EditorStore {
     } catch { self.error = error.localizedDescription }
   }
   func updateTransform(_ draft: TransformDraft) {
-    guard transformDraft?.layerID == draft.layerID else { return }
+    guard !geometryBusy, transformDraft?.layerID == draft.layerID else { return }
     do { try draft.delta.validated() } catch { return }
     transformDraft = draft
     if draft.contentAware { refreshContentAwareScale() }
     render()
   }
   func cancelTransform() {
+    if embeddedPlacement != nil,pdfPlacementOperationID != nil {geometryTask?.cancel();pdfPlacementOperationID = nil;geometryBusy = false}
+    discardEmbeddedPlacement()
     clearContentAwareScale()
     transformDraft = nil
     render()
@@ -160,6 +162,7 @@ extension EditorStore {
   }
   func commitTransform() {
     guard let draft = transformDraft else { return }
+    if embeddedPlacement != nil {commitEmbeddedPlacement(draft);return}
     if draft.contentAware {
       guard contentAwareScaleReadyDraft == draft,let edit = contentAwareScalePrepared else { return }
       transformDraft = nil; clearContentAwareScale(); performGeometry(.contentAwareScale(edit)); return
@@ -189,7 +192,7 @@ extension EditorStore {
     if let draft=shapedTypeDraft,draft.preview,let preview=draft.previewDocument{return preview}
     if shapeDraft != nil,let preview=shapePreview{return preview}
     if regionRetouchDraft != nil,let preview = regionRetouchPreview { return preview }
-    var doc = document
+    var doc = embeddedPlacement?.preview ?? document
     if let draft = typeEditingDraft, !draft.isNew, let i = doc.layers.firstIndex(where: { $0.id == draft.layer.id }) { doc.layers[i].visible = false }
     if let draft = layerVisibilityDraft, draft.baseline == document {
       try? LayerOrganization.setVisibility(draft.values, in: &doc)

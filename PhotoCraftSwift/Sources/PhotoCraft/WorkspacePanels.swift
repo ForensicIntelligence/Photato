@@ -162,7 +162,7 @@ extension WorkspaceView {
           }
           if let source = layer.smartObject {
             Text("Embedded: " + source.fileName).font(.caption).lineLimit(2)
-            Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObject)
+            Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObjectContents)
             Button("Replace Contents…") { store.placeEmbedded(replacing: true) }.disabled(!store.canEditSmartObject)
             Button("Export Contents…") { store.exportSmartObjectContents() }
           }

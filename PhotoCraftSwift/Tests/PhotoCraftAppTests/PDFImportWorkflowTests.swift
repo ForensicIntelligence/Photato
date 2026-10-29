@@ -42,7 +42,8 @@ final class PDFImportWorkflowTests: XCTestCase {
     let image = try RasterIO.displayImage(Surface(width:2,height:2,fill:.white))
     CGImageDestinationAddImage(destination,image,[kCGImagePropertyPNGDictionary:[kCGImagePropertyPNGDescription:"Metadata %PDF-1.7"]] as CFDictionary)
     XCTAssertTrue(CGImageDestinationFinalize(destination))
-    XCTAssertTrue(PDFImport.recognizes(bytes as Data),"Fixture must contain a PDF-like header within its first1024bytes")
+    XCTAssertNotNil((bytes as Data).prefix(1024).range(of:Data("%PDF-".utf8)),"Fixture must contain a PDF-like header within its first1024bytes")
+    XCTAssertFalse(PDFImport.recognizes(bytes as Data))
     XCTAssertEqual(DocumentOpenFormat.detect(bytes as Data),.png)
     let directory = try DocumentPersistenceTests().directory();defer {try? FileManager.default.removeItem(at:directory)}
     let url = directory.appendingPathComponent("misleading.pdf");try (bytes as Data).write(to:url)

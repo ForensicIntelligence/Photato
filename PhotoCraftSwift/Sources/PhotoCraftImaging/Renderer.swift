@@ -133,6 +133,9 @@ public enum Renderer {
     try Task.checkCancellation()
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(d, at:videoTime)
+    for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {
+      d.layers[i] = try PDFSmartObjectIO.renderedLayer(d.layers[i],in:d)
+    }
     for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil {
       d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
     }

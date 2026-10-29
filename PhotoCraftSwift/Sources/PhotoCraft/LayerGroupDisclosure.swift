@@ -4,7 +4,8 @@ import SwiftUI
 
 extension EditorStore {
   func layersInPanel(search: String = "", kind: String = "All") -> [Layer] {
-    document.layers.reversed().filter { layer in
+    let document = layerPanelDocument
+    return document.layers.reversed().filter { layer in
       layer.id == layerNameDraft?.layerID
         || ((search.isEmpty && kind == "All"
           ? !document.ancestors(of: layer.id).contains { $0.group?.expanded == false } : true)

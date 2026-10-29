@@ -1,0 +1,74 @@
+{
+  "step": 255,
+  "status": "PDF Page/Image placement now has a native single-selection chooser, crop/thumbnail controls, initial transform preview, atomic Return/Cancel, Replace Contents and frame placement. Original whole-PDF sources survive native62 saving, enlargement, ordinary Smart Filters and shared API operations. 65 focused and2682 full optimized tests pass on2415 unchanged inputs; independent vector/image checks match560016 RGBA values. The Place PDF controls are inspected offscreen. PDF source editing, linked files, Warp, editable PSD/PDF interchange and exact/live/platform parity remain open. Installed221, private universal243 and published source253 are unchanged.",
+  "source_manifest": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source10.json",
+  "source_inputs": 2415,
+  "last_full_qualification": {
+    "step": 255,
+    "tests": 2682,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 187.741,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full03.log",
+    "sha256": "9e715883b44af87032f101cf516453c2c09b650e3d783fb211166ca5527a1768"
+  },
+  "engine_qualification": {
+    "source": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source02.json",
+    "tests": 27,
+    "failures": 0,
+    "seconds": 0.636,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/module02.log",
+    "log_sha256": "33bcc8ef296c19cb02653d797a9176441047dd7ea8c7a013c92f0cfecd3e6089",
+    "independent": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/outputs-module02-independent.json",
+    "exact_RGBA_channels": 559872
+  },
+  "current_test": {
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full03.log",
+    "terminal": true,
+    "exit_code": 0
+  },
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "new_installation": false,
+  "new_package": false,
+  "new_source_push": false,
+  "goal_complete": false,
+  "next_plan": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/native-integration-plan02.json",
+  "source_publication": "Previous qualified253 source remains4b3fdb6; receiptbaf1b88, repository private.",
+  "next": [
+    "Continue major L05/D01 PDF Smart Object source editing and editable PSD/PDF interchange, then linked-source workflows. Use independent public format/owned-file evidence before encoding unsupported descriptors; preserve original bytes and guard source/editor lifecycle. Keep encrypted-source credentials, image pattern/annotation contexts, Warp, large-file budgets, Float32 precision and exact/live/platform acceptance open.",
+    "Revalidate source10 and process state before further product edits. Preserve each attempt and maintain both APIs/diary."
+  ],
+  "previous_api_test": {
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/focused01.log",
+    "tests": 38,
+    "failures": 1,
+    "unexpected": 0,
+    "reason": "Test helper expected PSD while the requested output was PNG; explicit expected media type supplied in source04."
+  },
+  "previous_full_test": {
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full01.log",
+    "session_id": 2721,
+    "terminal": true,
+    "tests": 2672,
+    "failures": 7,
+    "unexpected": 0,
+    "seconds": 182.301
+  },
+  "focused_qualification": {
+    "tests": 65,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 3.962,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/focused08.log",
+    "sha256": "7c1777d588c18f5024378a0293b15c6bfde9a749a7166091d1fb62e24a00fe0a"
+  },
+  "engine_api_qualification": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/engine-qualification01.json",
+  "native_ui_complete": false,
+  "no_outstanding_test_or_build_session": true,
+  "native_placement_controls_implemented": true,
+  "native_placement_controls_tested_offscreen": true,
+  "native_placement_qualification": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/native-qualification01.json",
+  "next_integration_plan": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/next-major-plan04.json"
+}

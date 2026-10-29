@@ -153,7 +153,7 @@ import SwiftUI
     if [#selector(loadImageStack), #selector(imageStatistics)].contains(item.action) { return controller.canPublishImageStack }
     if item.action == #selector(imageStackMode(_:)) {
       item.state = (store?.activeLayer?.smartObject?.stackMode?.title ?? "None") == item.title ? .on:.off
-      return store?.canEditSmartObject == true && store?.activeLayer?.smartObject?.rawDevelopment == nil
+      return store?.canEditSmartObject == true && store?.activeLayer?.smartObject?.rawDevelopment == nil && store?.activeLayer?.smartObject?.pdfSource == nil
     }
     if item.action == #selector(hdrMerge) { return controller.canPublishHDRMerge }
     if item.action == #selector(videoFramesToLayers) {return controller.movieFramesWorkspace != nil || controller.canFinishMovieFrames}
@@ -220,7 +220,8 @@ import SwiftUI
 
     if item.action == #selector(placeEmbedded) { return store?.clipboardTargetAvailable == true }
     if item.action == #selector(convertSmartObject) { return store?.canConvertSmartObject == true }
-    if [#selector(editSmartObjectContents), #selector(replaceSmartObjectContents),
+    if item.action == #selector(editSmartObjectContents) {return store?.canEditSmartObjectContents == true}
+    if [#selector(replaceSmartObjectContents),
       #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
       #selector(resetSmartObjectTransform)].contains(item.action) { return store?.canEditSmartObject == true }
     if item.action == #selector(fillDialog) { return store?.canUseMenuFill == true }

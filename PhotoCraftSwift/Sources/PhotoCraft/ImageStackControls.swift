@@ -69,7 +69,7 @@ extension CraftDocumentController {
 }
 extension EditorStore {
   func setImageStackMode(_ mode: ImageStackMode?) {
-    guard canEditSmartObject,let layer = activeLayer,layer.smartObject?.rawDevelopment == nil else { return }
+    guard canEditSmartObject,let layer = activeLayer,layer.smartObject?.rawDevelopment == nil,layer.smartObject?.pdfSource == nil else { return }
     performGeometry(label:"Stack Mode: " + (mode?.title ?? "None"),prepare:{ original in try ImageStack.command(in:original,layerID:layer.id,mode:mode) })
   }
 }

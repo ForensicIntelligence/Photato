@@ -17,19 +17,9 @@ extension PDFImportSettings.Crop {
 }
 struct PDFImportView: View {
   @Bindable var model: PDFImportWorkspace
-  private var columns: [GridItem] {[GridItem(.adaptive(minimum:CGFloat(model.thumbnailSize+24)),spacing:12)]}
-  var body: some View {
-    VStack(alignment:.leading,spacing:14) {
-      HStack {
-        Text("Name:");TextField("Document name",text:$model.name).accessibilityLabel("PDF document name")
-      }.disabled(model.busy)
-      HStack(alignment:.top,spacing:20) {
-        VStack(alignment:.leading,spacing:10) {
-          HStack {
-            Picker("Import",selection:Binding(get:{model.content},set:{model.changeContent($0)})) {Text("Pages").tag(PDFImportContent.pages);Text("Images").tag(PDFImportContent.images)}.pickerStyle(.segmented).labelsHidden().accessibilityLabel("PDF import content").frame(width:150).disabled(model.busy || model.loading)
-            Spacer()
-            Picker("Thumbnail Size",selection:$model.thumbnailSize) {Text("Small").tag(80);Text("Medium").tag(120);Text("Large").tag(180)}.frame(width:210)
-          }
+  private var thumbnailExtent: Int {model.thumbnailSize == 0 ? 360:model.thumbnailSize}
+  private var columns: [GridItem] {model.thumbnailSize == 0 ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:CGFloat(thumbnailExtent+24)),spacing:12)]}
+  private func thumbnails(viewport: CGSize) -> some View {
           ScrollView {
             LazyVGrid(columns:columns,spacing:12) {
               ForEach(model.items,id:\.self) {page in
@@ -43,7 +33,7 @@ struct PDFImportView: View {
                       if let data = model.thumbnails[page],let image = NSImage(data:data) {
                         Image(nsImage:image).resizable().scaledToFit().padding(6)
                       } else {Image(systemName:"doc").font(.largeTitle).foregroundStyle(.secondary)}
-                    }.frame(width:CGFloat(model.thumbnailSize),height:CGFloat(model.thumbnailSize))
+                    }.frame(width:model.thumbnailSize == 0 ? max(1,viewport.width-32):CGFloat(thumbnailExtent),height:model.thumbnailSize == 0 ? max(1,viewport.height-48):CGFloat(thumbnailExtent))
                       .overlay(RoundedRectangle(cornerRadius:4).stroke(model.selected.contains(page) ? Color.accentColor:Color.secondary.opacity(0.3),lineWidth:model.selected.contains(page) ? 3:1))
                     Text("\(page)").monospacedDigit()
                   }.padding(4)
@@ -54,15 +44,30 @@ struct PDFImportView: View {
               }
             }.padding(8)
           }.id(model.content).background(Color(nsColor:.controlBackgroundColor)).clipShape(RoundedRectangle(cornerRadius:5))
+  }
+  var body: some View {
+    VStack(alignment:.leading,spacing:14) {
+      if !model.placement { HStack {
+        Text("Name:");TextField("Document name",text:$model.name).accessibilityLabel("PDF document name")
+      }.disabled(model.busy) }
+      HStack(alignment:.top,spacing:20) {
+        VStack(alignment:.leading,spacing:10) {
+          HStack {
+            Picker("Import",selection:Binding(get:{model.content},set:{model.changeContent($0)})) {Text(model.placement ? "Page":"Pages").tag(PDFImportContent.pages);Text(model.placement ? "Image":"Images").tag(PDFImportContent.images)}.pickerStyle(.segmented).labelsHidden().accessibilityLabel("PDF import content").frame(width:150).disabled(model.busy || model.loading)
+            Spacer()
+            Picker("Thumbnail Size",selection:$model.thumbnailSize) {Text("Small").tag(80);Text("Medium").tag(120);Text("Large").tag(180);if model.placement {Text("Fit Page").tag(0)}}.frame(width:210)
+          }
+          GeometryReader {geometry in thumbnails(viewport:geometry.size)}
           HStack {
             Text("\(model.selected.count) selected").foregroundStyle(.secondary)
-            Spacer();Button("Select All") {model.selected = Set(model.items)}.disabled(model.info == nil || model.busy)
+            Spacer();if !model.placement {Button("Select All") {model.selected = Set(model.items)}.disabled(model.info == nil || model.busy)}
           }
         }.frame(maxWidth:.infinity,maxHeight:.infinity)
         VStack(alignment:.leading,spacing:14) {
           if model.content == .pages {
           Picker("Crop To:",selection:$model.settings.crop) {ForEach(PDFImportSettings.Crop.allCases,id:\.self) {Text($0.title).tag($0)}}
           Toggle("Anti-aliased",isOn:$model.settings.antialias)
+          if !model.placement {
           Divider()
           HStack {Text("Width:").frame(width:70,alignment:.leading);TextField("Automatic",text:$model.widthText).accessibilityLabel("PDF width");Text("px")}
           HStack {Text("Height:").frame(width:70,alignment:.leading);TextField("Automatic",text:$model.heightText).accessibilityLabel("PDF height");Text("px")}
@@ -73,13 +78,15 @@ struct PDFImportView: View {
             ForEach(model.settings.mode.depths,id:\.self) {depth in Text(depth == .u8 ? "8 Bits/Channel":depth == .u16 ? "16 Bits/Channel":"32 Bits/Channel").tag(depth)}
           }
           Text("Leave dimensions blank to use each page’s size at the chosen resolution.").font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
+          }
           } else {
             Text("Image Size").font(.headline)
-            Text("Embedded images keep their original pixel dimensions. Resolution changes print size.").font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
+            Text(model.placement ? "Embedded images keep their original pixel dimensions.":"Embedded images keep their original pixel dimensions. Resolution changes print size.").font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
             if model.selected.count == 1,let id = model.selected.first,let info = model.imageInfo?.first(where:{$0.number == id}) {Text("\(info.width) × \(info.height) px").monospacedDigit()}
-            HStack {Text("Resolution:");TextField("Resolution",value:$model.imageSettings.resolution,format:.number);Text("ppi")}
+            if !model.placement { HStack {Text("Resolution:");TextField("Resolution",value:$model.imageSettings.resolution,format:.number);Text("ppi")}
             Picker("Mode:",selection:$model.imageSettings.mode) {ForEach(DocumentColorMode.componentModes,id:\.self) {Text($0.title).tag($0)}}
             Picker("Bit Depth:",selection:$model.imageSettings.depth) {ForEach(model.imageSettings.mode.depths,id:\.self) {Text($0 == .u8 ? "8 Bits/Channel":$0 == .u16 ? "16 Bits/Channel":"32 Bits/Channel").tag($0)}}
+            }
             if model.imageInfo?.isEmpty == true {Text("No embedded images were found.").foregroundStyle(.secondary)}
           }
           Spacer()
@@ -104,7 +111,7 @@ struct PDFImportView: View {
   init(model: PDFImportWorkspace) {
     self.model = model
     let window = NSWindow(contentRect:NSRect(x:0,y:0,width:840,height:620),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
-    window.title = "Import PDF";window.isReleasedWhenClosed = false
+    window.title = model.placement ? "Place PDF":"Import PDF";window.isReleasedWhenClosed = false
     window.contentMinSize = NSSize(width:740,height:540)
     window.contentView = NSHostingView(rootView:PDFImportView(model:model));window.center()
     super.init(window:window);window.delegate = self

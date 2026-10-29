@@ -219,6 +219,11 @@ import UniformTypeIdentifiers
   var cropShowPreview = true { didSet { cropRevision += 1 } }
   @ObservationIgnored var cropTask: Task<Void,Never>?
   var transformDraft: TransformDraft?
+  var embeddedPlacement: EmbeddedPlacementDraft?
+  var pdfPlacementWorkspace: PDFImportWorkspace?
+  @ObservationIgnored var pdfPlacementWindow: PDFImportWindow?
+  @ObservationIgnored var pdfPlacementOperationID: UUID?
+  @ObservationIgnored var pdfPlacementPresenter: (@MainActor (PDFImportWorkspace) -> Void)?
   var contentAwareScalePreview: CraftDocument?
   var contentAwareScaleReadyDraft: TransformDraft?
   var contentAwareScaleBusy = false
@@ -334,6 +339,7 @@ import UniformTypeIdentifiers
   var aiTask: Task<Void, Never>?
   var document: CraftDocument { session.document }
   var activeLayer: Layer? {
+    if let layer = embeddedPlacement?.layer {return layer}
     guard let i = document.activeIndex else { return nil }
     let layer = document.layers[i]
     return smartFilterMaskEditing && maskEditingLayerID == layer.id ? (try? layer.filterMaskProjection()) ?? layer : layer
@@ -685,6 +691,12 @@ import UniformTypeIdentifiers
   }
   func rasterize() {
     guard let layer = activeLayer else { return }
+    if layer.smartObject?.pdfSource != nil {
+      performGeometry(label:"Rasterize Layer",prepare:{ original in
+        guard let current = original.layers.first(where:{$0.id == layer.id}) else {throw CraftError.invalid("Layer unavailable.")}
+        return try SmartObjectIO.rasterizationCommand(current,in:original)
+      });return
+    }
     do {
       perform(.rasterize(layer.id, try Renderer.layerSurface(layer, in: document)))
     } catch { self.error = error.localizedDescription }

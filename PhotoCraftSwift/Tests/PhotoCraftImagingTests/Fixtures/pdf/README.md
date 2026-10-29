@@ -1,3 +1,5 @@
 Original analytic PDFs authored with ReportLab and pypdf for Photato. No Adobe artwork or implementation. Page1: red rectangle(18,18,36,24), blue(90,60,18,24), media144x108 with five distinct page boxes; page2:72x108 rotated90 degrees, green(0,0,24,36) and magenta(48,72,24,36); page3: blank72x72. Coordinates are PDF points from bottom left. Password fixture uses test-only password photato-fixture. Source bytes are retained; password encryption has a random IV. Independent Poppler outputs live in the dated run, not in application resources.
 
 Step253 adds owned-images.pdf, independently authored with pypdf and Pillow. It contains shared RGB, nested Form gray/Decode and Indexed palette, soft mask, CMYK, RGB16, JPEG and inline named-color-space images. Source-generation and prior invalid fixture evidence are retained in the step253 run; no Adobe assets were used.
+
+Step255 adds owned-pdf-text.png: an original Pillow-authored 2x2 opaque red RGBA PNG with the uncompressed text comment “Source artwork described in %PDF-1.7 documentation”. It verifies that PDF header text in image metadata does not misclassify a valid PNG. No Adobe assets were used.

@@ -145,7 +145,7 @@ extension WorkspaceView {
         layer,
         metrics: LayerRowMetrics(
           size: size, layer: layer,
-          depth: store.document.ancestors(of: layer.id).count, availableWidth: geometry.size.width))
+          depth: store.layerPanelDocument.ancestors(of: layer.id).count, availableWidth: geometry.size.width))
     }.frame(height: size.controlHeight + 6)
   }
   func layerRowContent(_ layer: Layer, metrics: LayerRowMetrics) -> some View {
@@ -261,7 +261,7 @@ extension WorkspaceView {
     -> some View
   {
     LayerThumbnail(
-      layer: layer, document: store.document, revision: store.revision,
+      layer: layer, document: store.layerPanelDocument, revision: store.revision,
       storeID: store.identity, generation: store.layerPanelGeneration, size: metrics.size,
       contents: store.workspaceLibrary.layerPanelOptions.thumbnailContents,
       thumbnailWidth: metrics.thumbnailWidth, component: component

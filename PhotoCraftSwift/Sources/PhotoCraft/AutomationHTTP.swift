@@ -78,6 +78,8 @@ struct AutomationRequest: Sendable {
     let parts = path.split(separator: "/")
     if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString: String(parts[2])) != nil, parts[3] == "commands" { return max(LiquifyMeshFile.maximumBytes, (ICCProfile.maximumBytes + 2) / 3 * 4 + 16_384) }
     if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil, parts[3] == "audio" { return TimelineAudioSource.maximumBytes }
+    if parts.count == 5, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil,
+      parts[3] == "smart-objects", parts[4] == "pdf" { return PDFImport.maximumSourceBytes }
     if path == "/v1/preferences/color-settings" { return ColorSettings.maximumArchiveBytes }
     if path == "/v1/luts" { return ColorLUT.maximumFileBytes }
     if path == "/v1/documents/import" { return DocumentIO.maximumUploadBytes }

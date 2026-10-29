@@ -400,7 +400,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelPDFPlacement(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
@@ -443,7 +443,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelPDFPlacement(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
@@ -479,7 +479,7 @@ import SwiftUI
     store.invalidateHistory()
     fileOperationTask?.cancel()
     copyPanel?.cancel(nil)
-    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.transformDraft = nil
+    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelPDFPlacement(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil

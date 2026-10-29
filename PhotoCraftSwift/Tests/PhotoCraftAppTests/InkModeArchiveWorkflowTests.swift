@@ -44,7 +44,7 @@ final class InkModeArchiveWorkflowTests: XCTestCase {
         XCTAssertEqual(undoStatus, 200)
         XCTAssertTrue(document.store.document == original)
         let cap = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-        XCTAssertEqual(cap["inkModeVersion"] as? Int, 48); XCTAssertEqual(cap["readVersions"] as? [Int], Array(1...61))
+        XCTAssertEqual(cap["inkModeVersion"] as? Int, 48); XCTAssertEqual(cap["readVersions"] as? [Int], Array(1...62))
       }
     }
   }

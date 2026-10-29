@@ -106,6 +106,16 @@ public enum PDFImages {
   public static func inspect(_ data: Data,password: String? = nil) throws -> [PDFImageInfo] {
     try discover(data,password:password,selected:[],maximumBytes:PDFImport.maximumDecodedBytes).info
   }
+  /// Copies only the selected image graph for rendering; callers retain the
+  /// original whole PDF as the editable/source-download identity.
+  static func selectedPage(_ data: Data, image: Int) throws -> (PDFImageInfo,Data) {
+    guard (1...4096).contains(image) else {throw CraftError.invalid("Choose one embedded PDF image.")}
+    let scan = try discover(data,password:nil,selected:[image],maximumBytes:PDFImport.maximumSourceBytes)
+    guard let page = scan.pages[image],let info = scan.info.first(where:{$0.number == image}) else {
+      throw CraftError.invalid("The embedded PDF image does not exist.")
+    }
+    return (info,page)
+  }
   public static func documents(_ data: Data,name: String,settings: PDFImageImportSettings,password: String? = nil,
     maximumPixels: Int = Surface.maxPixels,maximumBytes: Int = PDFImport.maximumDecodedBytes) throws -> [CraftDocument] {
     try settings.validate()

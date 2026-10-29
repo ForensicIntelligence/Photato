@@ -48,7 +48,7 @@ final class RestrictedFormatWorkflowTests: XCTestCase {
         }
         XCTAssertEqual(document.store.document, before); XCTAssertTrue(document.store.session.undoStack.isEmpty)
         let caps = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-        XCTAssertEqual(caps["readVersions"] as? [Int], Array(1...61)); XCTAssertEqual(caps["restrictedModeVersion"] as? Int, 47)
+        XCTAssertEqual(caps["readVersions"] as? [Int], Array(1...62)); XCTAssertEqual(caps["restrictedModeVersion"] as? Int, 47)
       }
     }
   }

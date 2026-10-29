@@ -30,6 +30,7 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
 
 @MainActor @Observable final class PDFImportWorkspace {
   let source: PreparedPDFSource
+  let placement: Bool
   var name: String
   var password = ""
   var settings = PDFImportSettings()
@@ -48,6 +49,7 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
   var busy = false
   var finished = false
   @ObservationIgnored var completion: ((Result<[CraftDocument],Error>) -> Void)?
+  @ObservationIgnored var placementCompletion: ((Result<PDFSmartObjectOptions,Error>) -> Void)?
   @ObservationIgnored var loadTask: Task<Void,Never>?
   @ObservationIgnored var task: Task<Void,Never>?
   @ObservationIgnored var worker: Task<[CraftDocument],Error>?
@@ -57,7 +59,10 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
   @ObservationIgnored private var visiblePages = Set<Int>()
   @ObservationIgnored private var previewOrder: [Int] = []
   @ObservationIgnored private var selectionAnchor: Int?
-  init(source: PreparedPDFSource) {self.source = source;name = source.name}
+  init(source: PreparedPDFSource,placement: Bool = false) {
+    self.source = source;self.placement = placement;name = source.name
+    if placement {settings.resolution = 72}
+  }
   func inspect() {
     guard !finished,!loading,!busy else{return};loading = true;error = nil
     let data = source.data,password = password,content = content
@@ -89,7 +94,8 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
   }
   func select(_ page: Int,extend: Bool,toggle: Bool) {
     guard !busy,!finished,info != nil,items.contains(page) else{return}
-    if extend,let anchor = selectionAnchor {selected.formUnion(min(anchor,page)...max(anchor,page))}
+    if placement {selected = [page];selectionAnchor = page}
+    else if extend,let anchor = selectionAnchor {selected.formUnion(min(anchor,page)...max(anchor,page))}
     else if toggle {if !selected.insert(page).inserted {selected.remove(page)};selectionAnchor = page}
     else {selected = [page];selectionAnchor = page}
   }
@@ -129,6 +135,19 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
   }
   func run() {
     guard !finished,!loading,!busy,info != nil else{return}
+    if placement {
+      do {
+        guard selected.count == 1,let number = selected.first,items.contains(number) else {throw CraftError.invalid("Select one PDF page or image.")}
+        guard info?.encrypted == false else {throw CraftError.unsupported("Place an unencrypted PDF source.")}
+        var options = PDFSmartObjectOptions()
+        options.antialias = settings.antialias
+        if content == .pages {options.page = number;options.crop = settings.crop}
+        else {options.image = number}
+        try options.settings.validate()
+        finishPlacement(.success(options))
+      } catch {self.error = error.localizedDescription}
+      return
+    }
     var options = PDFImportSettings(),imageOptions = PDFImageImportSettings()
     do {if content == .pages {options = try self.options()} else {imageOptions = try self.imageOptions()}} catch {self.error = error.localizedDescription;return}
     let data = source.data,name = name,password = password,content = content
@@ -143,7 +162,14 @@ enum PDFImportContent: String,CaseIterable {case pages,images}
       } catch is CancellationError {if !self.finished {self.error = "PDF import cancelled."}} catch {self.error = error.localizedDescription}
     }
   }
-  func cancel() {finish(.failure(CancellationError()))}
+  func cancel() {
+    if placement {finishPlacement(.failure(CancellationError()))} else {finish(.failure(CancellationError()))}
+  }
+  private func finishPlacement(_ result: Result<PDFSmartObjectOptions,Error>) {
+    guard !finished else{return};finished = true
+    loadTask?.cancel();task?.cancel();worker?.cancel();previewTask?.cancel();password = ""
+    let callback = placementCompletion;placementCompletion = nil;callback?(result)
+  }
   private func finish(_ result: Result<[CraftDocument],Error>) {
     guard !finished else{return};finished = true
     loadTask?.cancel();task?.cancel();worker?.cancel();previewTask?.cancel();password = ""

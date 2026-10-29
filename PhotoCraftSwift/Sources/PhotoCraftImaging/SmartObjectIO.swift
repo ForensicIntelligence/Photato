@@ -75,6 +75,10 @@ public enum SmartObjectIO {
   }
   public static func placed(data: Data, fileName: String, in parent: CraftDocument,
     fit: Bool = true) throws -> Layer {
+    if PDFImport.recognizes(data) {
+      var settings = PDFImportSettings();settings.resolution = 72
+      return try PDFSmartObjectIO.placed(data,fileName:fileName,in:parent,settings:settings,fit:fit)
+    }
     let document = try decode(data, fileName: fileName)
     let (object, pixels) = try embedded(document: document, in: parent, originalData: data, fileName: fileName)
     var layer = Layer(name: (fileName as NSString).deletingPathExtension, content: .raster(pixels))
@@ -84,6 +88,10 @@ public enum SmartObjectIO {
     layer.y = Int((Double(parent.height) - Double(document.height) * scale) / 2)
     layer.affine = .scale(scale, scale)
     return layer
+  }
+  public static func rasterizationCommand(_ layer: Layer, in document: CraftDocument) throws -> Command {
+    let input = try PDFSmartObjectIO.renderedLayer(layer,in:document)
+    return .rasterize(layer.id,try Renderer.layerSurface(input,in:document))
   }
   public static func convert(in document: CraftDocument, selected: Set<UUID>) throws -> Command {
     try document.validate()

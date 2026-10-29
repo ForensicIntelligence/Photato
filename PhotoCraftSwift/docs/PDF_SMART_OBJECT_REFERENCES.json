@@ -1,0 +1,108 @@
+{
+  "status": "native_placement_and_api_subset_qualified",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_255.json",
+  "public_workflow": "https://helpx.adobe.com/photoshop/desktop/app-integrations/place-illustrator-files-or-pdf-in-photoshop.html",
+  "public_workflow_snapshot": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/adobe-pdf-placement01.html",
+  "adobe_contract": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/adobe-contract-review01.json",
+  "engine": {
+    "source": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source02.json",
+    "tests": 27,
+    "failures": 0,
+    "seconds": 0.636,
+    "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/module02.log",
+    "log_sha256": "33bcc8ef296c19cb02653d797a9176441047dd7ea8c7a013c92f0cfecd3e6089",
+    "independent": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/outputs-module02-independent.json",
+    "exact_RGBA_channels": 559872
+  },
+  "limits": [
+    "8MP source/temporary render and64MiB whole PDF; larger sources reject.",
+    "CoreGraphics16-bit intermediate; Float32/HDR and Adobe-exact rendering unqualified.",
+    "Affine transforms and ordinary Smart Filters rerender from retained source; PDF Warp, linked sources and editable PSD/PDF interchange remain open.",
+    "Native Page/Image chooser, transform/cancel/replacement/frame workflows pass automated tests; controls inspected offscreen only. Live Photoshop and physical supported-platform acceptance remain open.",
+    "PDF Edit Contents and Stack Mode are explicitly disabled until supported; no raster source-editor substitution. Encrypted sources reject, with no persisted password.",
+    "Non-RGB placement, semantic Actions and unsupported source/editor contexts remain unqualified.",
+    "No new installation, package or source push."
+  ],
+  "engine_api_qualification": {
+    "recorded_at_utc": "2026-10-29T18:28:19.283177+00:00",
+    "stage": "PDF Smart Object engine/API; native Place UI pending",
+    "full": {
+      "tests": 2673,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 181.561,
+      "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full02.log",
+      "sha256": "29287cbd0d31b20e535b8d70c6e58f44a582f19e556039d1eb1d6ff5c5f2bac7"
+    },
+    "focused": {
+      "tests": 65,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 9.804,
+      "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/focused05.log",
+      "sha256": "b0d500e3ac953618373bf111e6a81e0ec8b216ad27b50400affcf7d2eb0a29f8"
+    },
+    "source_manifest": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source07.json",
+    "unchanged_inputs": 2412,
+    "binary_sha256": "a5b909a2be71499a631f1bcf85dc07710a76383d61db5f1fff8a58629575954f",
+    "architecture": "arm64",
+    "independent": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/outputs-full02-independent.json",
+    "exact_RGBA_channels": 559872,
+    "protected_sha256": {
+      "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753"
+    },
+    "feature_complete": false,
+    "goal_complete": false,
+    "new_source_push": false,
+    "new_package": false,
+    "new_installation": false
+  },
+  "source_classification_regression": {
+    "fixture": "Tests/PhotoCraftImagingTests/Fixtures/pdf/owned-pdf-text.png",
+    "failed_probe": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/format-sniff-probe01.json",
+    "passing_test": "PDFSmartObjectTests.testPDFTextInPNGMetadataDoesNotChangeSmartObjectSourceType"
+  },
+  "native_placement_qualification": {
+    "step": 255,
+    "recorded_at_utc": "2026-10-29T19:05:49.476950+00:00",
+    "stage": "Native PDF Page/Image placement, transform, replacement and API subset",
+    "source_manifest": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/source10.json",
+    "source_inputs": 2415,
+    "focused": {
+      "tests": 65,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 3.962,
+      "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/focused08.log",
+      "sha256": "7c1777d588c18f5024378a0293b15c6bfde9a749a7166091d1fb62e24a00fe0a"
+    },
+    "full": {
+      "tests": 2682,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 187.741,
+      "log": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/full03.log",
+      "sha256": "9e715883b44af87032f101cf516453c2c09b650e3d783fb211166ca5527a1768"
+    },
+    "binary_sha256": "b71c4c9b458cef5d3b8a7460d128eb61705c3dbc5c156f44cbe6be04a893fd1a",
+    "architecture": "arm64",
+    "independent_vector": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/outputs-full03-independent.json",
+    "independent_image": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/outputs-full03-image-independent.json",
+    "exact_RGBA_values": 560016,
+    "offscreen": "artifacts/runs/20261029T173000Z-255-pdf-smart-objects/visual-review02.json",
+    "native_archive": 62,
+    "actions_version": 20,
+    "typed_commands": 191,
+    "installed_package_step": 221,
+    "private_package_step": 243,
+    "published_source_step": 253,
+    "new_package": false,
+    "new_installation": false,
+    "new_source_push": false,
+    "full_pdf_workflow_complete": false,
+    "goal_complete": false
+  }
+}

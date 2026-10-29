@@ -534,6 +534,20 @@ public enum Command: Sendable {
     case .rasterize(let id, let surface):
       let i = try index(id)
       var layer = d.layers[i]
+      if let object = layer.smartObject, object.pdfSource != nil,
+        surface.width != object.width || surface.height != object.height {
+        // The shared PDF renderer can supply a denser source-space surface.
+        // Preserve its document geometry and mask mapping when dropping source.
+        let sx = Double(surface.width)/Double(object.width)
+        let sy = Double(surface.height)/Double(object.height)
+        layer.affine = (layer.affine ?? .identity) * .scale(1/sx,1/sy)
+        if layer.mask != nil {
+          var properties = layer.effectiveMaskProperties
+          properties.transform = .scale(sx,sy) * properties.transform
+          layer.maskProperties = properties
+        }
+        layer.content = .raster(surface)
+      }
       if layer.smartFilters != nil || layer.warp != nil {
         layer = try SmartFilterEngine.renderedLayer(layer, in: d)
         for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }

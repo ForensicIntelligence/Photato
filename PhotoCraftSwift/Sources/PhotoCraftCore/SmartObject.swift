@@ -13,15 +13,18 @@ public struct SmartObject: Equatable, Sendable, Codable {
   public var height: Int
   public var stackMode: ImageStackMode?
   public var rawDevelopment: RawDevelopment?
+  public var pdfSource: PDFSmartObjectSource?
   public var resolution: Double
   public var revision: String {
     var bytes = data
     if let stackMode { bytes.append(Data(("\0stack:" + stackMode.rawValue).utf8)) }
     if let rawDevelopment { let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys; bytes.append((try? encoder.encode(rawDevelopment)) ?? Data()) }
+    if let pdfSource { let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys; bytes.append(Data("\0pdf-size:\(width)x\(height)@\(resolution)\0pdf:".utf8)); bytes.append((try? encoder.encode(pdfSource)) ?? Data()) }
     return SHA256.hash(data:bytes).map { String(format:"%02x",$0) }.joined()
   }
   public init(sourceID: UUID = UUID(), fileName: String, mediaType: String, data: Data,
-    width: Int, height: Int, resolution: Double = 72, rawDevelopment: RawDevelopment? = nil, stackMode: ImageStackMode? = nil) throws {
+    width: Int, height: Int, resolution: Double = 72, rawDevelopment: RawDevelopment? = nil, stackMode: ImageStackMode? = nil, pdfSource: PDFSmartObjectSource? = nil) throws {
+    self.pdfSource = pdfSource
     self.stackMode = stackMode
     self.rawDevelopment = rawDevelopment
     self.sourceID = sourceID; self.fileName = fileName; self.mediaType = mediaType
@@ -36,16 +39,18 @@ public struct SmartObject: Equatable, Sendable, Codable {
       !fileName.isEmpty, fileName.utf8.count <= 1024,
       !fileName.contains("/"), !fileName.contains("\\"), !fileName.contains("\0"),
       ["application/vnd.photato.document", "image/vnd.adobe.photoshop", "application/x-photoshop",
-        "image/x-camera-raw", "image/x-adobe-dng", "image/png", "image/jpeg", "image/tiff", "image/heic", "image/bmp", "image/gif"].contains(mediaType),
+        "application/pdf", "image/x-camera-raw", "image/x-adobe-dng", "image/png", "image/jpeg", "image/tiff", "image/heic", "image/bmp", "image/gif"].contains(mediaType),
       resolution.isFinite, (1...100_000).contains(resolution) else {
       throw CraftError.invalid("Invalid embedded Smart Object source or 64 MiB source limit exceeded.")
     }
     guard ["image/x-camera-raw","image/x-adobe-dng"].contains(mediaType) == (rawDevelopment != nil) else { throw CraftError.invalid("RAW sources require their development settings.") }
     guard stackMode == nil || rawDevelopment == nil else { throw CraftError.invalid("Developed RAW sources must be converted into a layered Smart Object before stacking.") }
+    guard (mediaType == "application/pdf") == (pdfSource != nil), pdfSource == nil || stackMode == nil else { throw CraftError.invalid("PDF Smart Objects require page metadata and cannot use image-stack modes.") }
+    try pdfSource?.validate()
     try rawDevelopment?.validate()
     _ = try Surface(width: width, height: height)
   }
-  private enum CodingKeys: CodingKey { case sourceID, fileName, mediaType, data, sourceBlob, width, height, resolution, rawDevelopment, stackMode }
+  private enum CodingKeys: CodingKey { case sourceID, fileName, mediaType, data, sourceBlob, width, height, resolution, rawDevelopment, stackMode, pdfSource }
   public init(from decoder: Decoder) throws {
     let c = try decoder.container(keyedBy: CodingKeys.self)
     sourceID = try c.decode(UUID.self, forKey: .sourceID)
@@ -53,6 +58,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
     mediaType = try c.decode(String.self, forKey: .mediaType)
     width = try c.decode(Int.self, forKey: .width); height = try c.decode(Int.self, forKey: .height)
     resolution = try c.decode(Double.self, forKey: .resolution)
+    pdfSource = try c.decodeIfPresent(PDFSmartObjectSource.self, forKey: .pdfSource)
     stackMode = try c.decodeIfPresent(ImageStackMode.self, forKey: .stackMode)
     rawDevelopment = try c.decodeIfPresent(RawDevelopment.self, forKey: .rawDevelopment)
     if c.contains(.sourceBlob) {
@@ -72,6 +78,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
     try c.encode(height, forKey: .height); try c.encode(resolution, forKey: .resolution)
     try c.encodeIfPresent(rawDevelopment,forKey:.rawDevelopment)
     try c.encodeIfPresent(stackMode,forKey:.stackMode)
+    try c.encodeIfPresent(pdfSource,forKey:.pdfSource)
     if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
       try c.encode(context.storeBytes(data), forKey: .sourceBlob)
     } else { try c.encode(data, forKey: .data) }

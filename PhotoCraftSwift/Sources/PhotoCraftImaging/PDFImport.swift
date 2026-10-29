@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import ImageIO
 import PhotoCraftCore
 
 /// Shared page-import engine. Native dialogs and automation must explicitly select
@@ -57,7 +58,19 @@ public enum PDFImport {
   public static let maximumPageCount = 4096
   public static let maximumDecodedBytes = 512 * 1024 * 1024
   public static func recognizes(_ data: Data) -> Bool {
-    data.prefix(1024).range(of:Data("%PDF-".utf8)) != nil
+    guard let header = data.prefix(1024).range(of:Data("%PDF-".utf8)) else {return false}
+    if header.lowerBound == data.startIndex {return true}
+    // A PDF header may follow leading bytes, but text metadata in another
+    // supported container must not turn an ordinary image/document into a PDF.
+    for signature in ["PHOTATO\0", "bplist00", "8BPS"] {
+      if data.starts(with:Data(signature.utf8)) {return false}
+    }
+    if let image = CGImageSourceCreateWithData(data as CFData,
+      [kCGImageSourceShouldCache:false] as CFDictionary), CGImageSourceGetCount(image) > 0,
+      let type = CGImageSourceGetType(image), type as String != "com.adobe.pdf" {
+      return false
+    }
+    return true
   }
   static func open(_ data: Data,password: String?) throws -> CGPDFDocument {
     try Task.checkCancellation()
@@ -73,7 +86,7 @@ public enum PDFImport {
     guard (1...maximumPageCount).contains(pdf.numberOfPages) else {throw CraftError.unsupported("PDF import supports one to4096 source pages.")}
     return pdf
   }
-  private static func orientedBox(_ page: CGPDFPage,_ box: CGPDFBox) throws -> CGRect {
+  static func orientedBox(_ page: CGPDFPage,_ box: CGPDFBox) throws -> CGRect {
     let media = page.getBoxRect(.mediaBox),rect = page.getBoxRect(box).intersection(media)
     guard !rect.isNull, !rect.isInfinite,
       [rect.minX,rect.minY,rect.width,rect.height].allSatisfy(\.isFinite),
@@ -105,13 +118,13 @@ public enum PDFImport {
       maximumPixels:160*160,maximumBytes:8*1024*1024)[0]
     return try RasterIO.encoded(document)
   }
-  private struct Plan {
+  struct Plan {
     let page: CGPDFPage
     let full: CGRect
     var region: CGRect
     let number: Int
   }
-  private static func dimensions(_ size: CGSize,maximumPixels: Int) throws -> (Int,Int) {
+  static func dimensions(_ size: CGSize,maximumPixels: Int) throws -> (Int,Int) {
     let w = size.width.rounded(),h = size.height.rounded()
     guard w.isFinite,h.isFinite,w >= 1,h >= 1,w <= Double(Surface.maxDimension),
       h <= Double(Surface.maxDimension),maximumPixels > 0,w*h <= Double(maximumPixels) else {
@@ -119,7 +132,7 @@ public enum PDFImport {
     }
     return (Int(w),Int(h))
   }
-  private static func surface(_ plan: Plan,box: CGPDFBox,width: Int,height: Int,
+  static func surface(_ plan: Plan,box: CGPDFBox,width: Int,height: Int,
     depth: PixelDepth,antialias: Bool,maximumBytes: Int) throws -> Surface {
     try Task.checkCancellation()
     // Float bitmap + native tiles + conversion scratch must fit before allocation.
@@ -151,6 +164,25 @@ public enum PDFImport {
     guard let image = context.makeImage() else {throw CraftError.invalid("The PDF page could not be rendered.")}
     return try RasterIO.surface(image,depth:depth,space:space,colorEncoding:depth == .f32 ? .linearRGB:.sRGB)
   }
+  static func plan(_ pdf: CGPDFDocument, number: Int, settings: PDFImportSettings,
+    maximumPixels: Int, maximumBytes: Int) throws -> Plan {
+      guard let page = pdf.page(at:number) else {throw CraftError.invalid("A selected PDF page does not exist.")}
+      let full = try orientedBox(page,settings.crop.box)
+      var plan = Plan(page:page,full:full,region:full,number:number)
+      if settings.crop == .bounding {
+        let (w,h) = try dimensions(CGSize(width:full.width*settings.resolution/72,height:full.height*settings.resolution/72),maximumPixels:maximumPixels)
+        let rendered = try surface(plan,box:settings.crop.box,width:w,height:h,depth:.f32,
+          antialias:settings.antialias,maximumBytes:maximumBytes)
+        if let bounds = try rendered.contentBounds() {
+          // Alpha bounds at the requested resolution, not a claim of Adobe's
+          // proprietary vector-content bounding algorithm. Blank pages retain trim.
+          plan.region = CGRect(x:Double(bounds.x)*full.width/Double(w),
+            y:Double(h-bounds.y-bounds.height)*full.height/Double(h),
+            width:Double(bounds.width)*full.width/Double(w),height:Double(bounds.height)*full.height/Double(h))
+        }
+      }
+    return plan
+  }
   public static func pages(_ data: Data,name: String,settings: PDFImportSettings,
     password: String? = nil,maximumPixels: Int = Surface.maxPixels,
     maximumBytes: Int = maximumDecodedBytes) throws -> [CraftDocument] {
@@ -162,21 +194,7 @@ public enum PDFImport {
     var plans: [Plan] = []
     for number in settings.pages {
       try Task.checkCancellation()
-      guard let page = pdf.page(at:number) else {throw CraftError.invalid("A selected PDF page does not exist.")}
-      let full = try orientedBox(page,settings.crop.box)
-      var plan = Plan(page:page,full:full,region:full,number:number)
-      if settings.crop == .bounding {
-        let (w,h) = try dimensions(CGSize(width:full.width*settings.resolution/72,height:full.height*settings.resolution/72),maximumPixels:pixelLimit)
-        let rendered = try surface(plan,box:settings.crop.box,width:w,height:h,depth:.f32,
-          antialias:settings.antialias,maximumBytes:maximumBytes)
-        if let bounds = try rendered.contentBounds() {
-          // Alpha bounds at the requested resolution, not a claim of Adobe's
-          // proprietary vector-content bounding algorithm. Blank pages retain trim.
-          plan.region = CGRect(x:Double(bounds.x)*full.width/Double(w),
-            y:Double(h-bounds.y-bounds.height)*full.height/Double(h),
-            width:Double(bounds.width)*full.width/Double(w),height:Double(bounds.height)*full.height/Double(h))
-        }
-      }
+      let plan = try plan(pdf,number:number,settings:settings,maximumPixels:pixelLimit,maximumBytes:maximumBytes)
       plans.append(plan)
     }
     let maxW = plans.map(\.region.width).max()!,maxH = plans.map(\.region.height).max()!

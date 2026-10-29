@@ -107,7 +107,7 @@ enum NativeChunkedArchive {
     }
   }
   static func write(_ document: CraftDocument, output: Output, recoveryContext: Data? = nil, minimumVersion: Int = 11) throws {
-    guard [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61].contains(minimumVersion) else { throw CraftError.invalid("Invalid native archive output version.") }
+    guard [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(minimumVersion) else { throw CraftError.invalid("Invalid native archive output version.") }
     guard (recoveryContext?.count ?? 0) <= NativeArchive.maximumRecoveryContextBytes else {
       throw CraftError.invalid("Recovery source information exceeds its size limit.")
     }
@@ -143,7 +143,7 @@ enum NativeChunkedArchive {
       count: count, maximumMetadataBytes: maximumMetadataBytes, read: read)
     let decoder = PropertyListDecoder()
     let table = try decoder.decode(Table.self, from: metadata)
-    guard table.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61].contains(table.version), table.blobs.count <= 65_536 else {
+    guard table.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(table.version), table.blobs.count <= 65_536 else {
       throw CraftError.invalid("Invalid native archive manifest.")
     }
     var expected = UInt64(header.count)
@@ -192,7 +192,7 @@ enum NativeChunkedArchive {
     }
     let decoder = PropertyListDecoder()
     let header = try decoder.decode(Header.self, from: metadata)
-    guard header.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61].contains(header.version) else {
+    guard header.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(header.version) else {
       throw CraftError.invalid("Invalid native archive manifest.")
     }
     _ = try Surface(width: header.document.width, height: header.document.height)
@@ -211,6 +211,7 @@ enum NativeChunkedArchive {
     let header12 = magic + integer(12, width: 4) + integer(0, width: 4)
     let header13 = magic + integer(13, width: 4) + integer(0, width: 4)
     let header14 = magic + integer(14, width: 4) + integer(0, width: 4)
+    let header62 = magic + integer(62, width: 4) + integer(0, width: 4)
     let header61 = magic + integer(61, width: 4) + integer(0, width: 4)
     let header60 = magic + integer(60, width: 4) + integer(0, width: 4)
     let header59 = magic + integer(59, width: 4) + integer(0, width: 4)
@@ -258,8 +259,8 @@ enum NativeChunkedArchive {
     let header17 = magic + integer(17, width: 4) + integer(0, width: 4)
     let header16 = magic + integer(16, width: 4) + integer(0, width: 4)
     let header15 = magic + integer(15, width: 4) + integer(0, width: 4)
-    let version = bytes == header61 ? 61 : bytes == header60 ? 60 : bytes == header59 ? 59 : bytes == header58 ? 58 : bytes == header57 ? 57 : bytes == header56 ? 56 : bytes == header55 ? 55 : bytes == header54 ? 54 : bytes == header53 ? 53 : bytes == header52 ? 52 : bytes == header51 ? 51 : bytes == header50 ? 50 : bytes == header49 ? 49 : bytes == header48 ? 48 : bytes == header47 ? 47 : bytes == header46 ? 46 : bytes == header45 ? 45 : bytes == header44 ? 44 : bytes == header43 ? 43 : bytes == header42 ? 42 : bytes == header41 ? 41 : bytes == header40 ? 40 : bytes == header39 ? 39 : bytes == header38 ? 38 : bytes == header37 ? 37 : bytes == header36 ? 36 : bytes == header35 ? 35 : bytes == header34 ? 34 : bytes == header33 ? 33 : bytes == header32 ? 32 : bytes == header31 ? 31 : bytes == header30 ? 30 : bytes == header29 ? 29 : bytes == header28 ? 28 : bytes == header27 ? 27 : bytes == header26 ? 26 : bytes == header25 ? 25 : bytes == header24 ? 24 : bytes == header23 ? 23 : bytes == header22 ? 22 : bytes == header21 ? 21 : bytes == header20 ? 20 : bytes == header19 ? 19 : bytes == header18 ? 18 : bytes == header17 ? 17 : bytes == header16 ? 16 : bytes == header15 ? 15 : bytes == header14 ? 14 : bytes == header13 ? 13 : bytes == header12 ? 12 : 11
-    guard bytes == header || bytes == header12 || bytes == header13 || bytes == header14 || bytes == header15 || bytes == header16 || bytes == header17 || bytes == header18 || bytes == header19 || bytes == header20 || bytes == header21 || bytes == header22 || bytes == header23 || bytes == header24 || bytes == header25 || bytes == header26 || bytes == header27 || bytes == header28 || bytes == header29 || bytes == header30 || bytes == header31 || bytes == header32 || bytes == header33 || bytes == header34 || bytes == header35 || bytes == header36 || bytes == header37 || bytes == header38 || bytes == header39 || bytes == header40 || bytes == header41 || bytes == header42 || bytes == header43 || bytes == header44 || bytes == header45 || bytes == header46 || bytes == header47 || bytes == header48 || bytes == header49 || bytes == header50 || bytes == header51 || bytes == header52 || bytes == header53 || bytes == header54 || bytes == header55 || bytes == header56 || bytes == header57 || bytes == header58 || bytes == header59 || bytes == header60 || bytes == header61 else {
+    let version = bytes == header62 ? 62 : bytes == header61 ? 61 : bytes == header60 ? 60 : bytes == header59 ? 59 : bytes == header58 ? 58 : bytes == header57 ? 57 : bytes == header56 ? 56 : bytes == header55 ? 55 : bytes == header54 ? 54 : bytes == header53 ? 53 : bytes == header52 ? 52 : bytes == header51 ? 51 : bytes == header50 ? 50 : bytes == header49 ? 49 : bytes == header48 ? 48 : bytes == header47 ? 47 : bytes == header46 ? 46 : bytes == header45 ? 45 : bytes == header44 ? 44 : bytes == header43 ? 43 : bytes == header42 ? 42 : bytes == header41 ? 41 : bytes == header40 ? 40 : bytes == header39 ? 39 : bytes == header38 ? 38 : bytes == header37 ? 37 : bytes == header36 ? 36 : bytes == header35 ? 35 : bytes == header34 ? 34 : bytes == header33 ? 33 : bytes == header32 ? 32 : bytes == header31 ? 31 : bytes == header30 ? 30 : bytes == header29 ? 29 : bytes == header28 ? 28 : bytes == header27 ? 27 : bytes == header26 ? 26 : bytes == header25 ? 25 : bytes == header24 ? 24 : bytes == header23 ? 23 : bytes == header22 ? 22 : bytes == header21 ? 21 : bytes == header20 ? 20 : bytes == header19 ? 19 : bytes == header18 ? 18 : bytes == header17 ? 17 : bytes == header16 ? 16 : bytes == header15 ? 15 : bytes == header14 ? 14 : bytes == header13 ? 13 : bytes == header12 ? 12 : 11
+    guard bytes == header62 || bytes == header || bytes == header12 || bytes == header13 || bytes == header14 || bytes == header15 || bytes == header16 || bytes == header17 || bytes == header18 || bytes == header19 || bytes == header20 || bytes == header21 || bytes == header22 || bytes == header23 || bytes == header24 || bytes == header25 || bytes == header26 || bytes == header27 || bytes == header28 || bytes == header29 || bytes == header30 || bytes == header31 || bytes == header32 || bytes == header33 || bytes == header34 || bytes == header35 || bytes == header36 || bytes == header37 || bytes == header38 || bytes == header39 || bytes == header40 || bytes == header41 || bytes == header42 || bytes == header43 || bytes == header44 || bytes == header45 || bytes == header46 || bytes == header47 || bytes == header48 || bytes == header49 || bytes == header50 || bytes == header51 || bytes == header52 || bytes == header53 || bytes == header54 || bytes == header55 || bytes == header56 || bytes == header57 || bytes == header58 || bytes == header59 || bytes == header60 || bytes == header61 else {
       throw CraftError.unsupported("Unsupported chunked Photato archive version.")
     }
     let footer = try read(count - footerSize, footerSize)

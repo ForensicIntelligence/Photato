@@ -103,6 +103,7 @@ enum PSDSmartObjects {
     }
   }
   static func placedDescriptor(_ layer: Layer) throws -> Data {
+    guard layer.smartObject?.pdfSource == nil else { throw CraftError.unsupported("Retained PDF Smart Object PSD interchange is not yet implemented. Save a native document to preserve the source.") }
     guard let source = layer.smartObject else { throw CraftError.invalid("Missing embedded source.") }
     guard layer.warp == nil else { throw CraftError.unsupported("Save editable Warp as Photato, or rasterize before PSD/PSB export. Warp descriptor interchange is not yet supported.") }
     guard source.stackMode == nil else { throw CraftError.unsupported("Save image stacks as Photato to preserve editable stack modes. PSD stack-mode interchange is not implemented.") }

@@ -562,6 +562,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-29 | 252 | [Native PDF page import](DEVLOG.md#dev-step-252) |
 | 2026-10-29 | 253 | [Embedded PDF images](DEVLOG.md#dev-step-253) |
 | 2026-10-29 | 254 | [Stable source publication](DEVLOG.md#dev-step-254) |
+| 2026-10-29 | 255 | [Native PDF Smart Object placement](DEVLOG.md#dev-step-255) |
+| 2026-10-29 | 256 | [Publish qualified PDF Smart Object source](DEVLOG.md#dev-step-256) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1338,3 +1340,21 @@ At the maintainer’s request, the complete current Swift source and development
 **Source published (step254):** The complete qualified step253 source is committed and pushed to private GitHub main as [`4b3fdb6`](https://github.com/ForensicIntelligence/Photato/commit/4b3fdb6cd08c07a32d8f47f627c4687c838f10d3). All2374 published qualification inputs match the tested candidate;1057 original Rust files are unchanged. Native source, tests/fixtures, Xcode project, scripts, assets and development records are included. Generated model/cache files, builds, runtime logs and private working documents are excluded. GitHub confirms the commit and private visibility. The source passed2660 full optimized tests; no new app installation or binary upload accompanies this source delivery. [Receipt](SOURCE_PUBLICATION_254.json).
 
 The update preserves existing repository history and the licensed Rust snapshot. A separate checkout prevents unrelated Desktop files from entering this repository. The bounded scan of3,880 tracked files found no tested credential patterns, excluded working files, oversized blobs, symbolic links or retired branding. Optional model weights can be reconstructed using the included instructions. The standalone diary remains usable without a server; source publication does not deploy the website. Retained-vector PDF Smart Objects remain next in the major-feature plan. [Detailed record](DEVLOG.md#dev-step-254).
+
+## 2026-10-29 — Step255: retain PDF artwork through placement and transforms
+
+Place Embedded now accepts PDF files through a native Place PDF window. Choose one page or embedded image, inspect thumbnails, select the page crop and then position, scale or rotate the artwork. Return commits one edit; Escape discards the preview without creating history or marking the document changed. Failed transform preparation preserves the draft for correction. Replace Contents and placement into frames also retain the original whole PDF. Unsupported PDF Edit Contents and Stack Mode stay disabled.
+
+The engine keeps the selected page/image and fixed crop metadata in native archive62, and re-renders retained artwork through enlargement, ordinary Smart Filters and rasterization. The Photato API exposes matching selection, cancellation, state and an optional initial transform in one transaction. Adobe-compatible resource inputs use their existing contract; no unsupported page/image selector is invented.
+
+PDF Page/Image placement now has a native single-selection chooser, crop/thumbnail controls, initial transform preview, atomic Return/Cancel, Replace Contents and frame placement. Original whole-PDF sources survive native62 saving, enlargement, ordinary Smart Filters and shared API operations. 65 focused and2682 full optimized tests pass on2415 unchanged inputs; independent vector/image checks match560016 RGBA values. The Place PDF controls are inspected offscreen. PDF source editing, linked files, Warp, editable PSD/PDF interchange and exact/live/platform parity remain open. Installed221, private universal243 and published source253 are unchanged.
+
+Qualification caught missing archive allowlists, stale version assertions and a PNG whose PDF-like text metadata confused source detection. Later checks caught image0 validation and an offscreen capture appearance mismatch. Those repairs, the two test-compilation mistakes, the incorrect PNG-job expectation and every failed run remain in the technical record. Independent checks use original analytic artwork; they establish the stated native samples, not Photoshop byte equivalence.
+
+Continue major L05/D01 PDF Smart Object source editing and editable PSD/PDF interchange, then linked-source workflows. Use independent public format/owned-file evidence before encoding unsupported descriptors; preserve original bytes and guard source/editor lifecycle. Keep encrypted-source credentials, image pattern/annotation contexts, Warp, large-file budgets, Float32 precision and exact/live/platform acceptance open. [Detailed record](DEVLOG.md#dev-step-255).
+
+## 2026-10-29 — Step256: publish the PDF Smart Object source
+
+The next complete source snapshot is prepared from the qualified step255 candidate, including retained PDF page/image Smart Objects, initial transform previews, atomic commit/cancel, replacement, frames and matching API support. All2,415 qualification inputs and the built executable still match the candidate that passed65 focused and2,682 full optimized tests. The Xcode project, tests/fixtures, scripts, assets and development records accompany the source. The original Rust snapshot and existing Git history are preserved.
+
+The repository remains private until release day. Generated optional models, build products, runtime evidence and private working documents stay out of source control; reconstruction instructions remain included. This source delivery does not replace the installed app or upload a new binary. Passing native tests does not establish complete Photoshop parity. The verified commit receipt will be recorded after push. [Detailed record](DEVLOG.md#dev-step-256).

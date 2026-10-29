@@ -18,6 +18,7 @@ extension EditorStore {
     clipboardTargetAvailable && activeLayer?.smartObject != nil
       && activeLayer.map { !document.isImageLocked($0.id) } == true
   }
+  var canEditSmartObjectContents: Bool {canEditSmartObject && activeLayer?.smartObject?.pdfSource == nil}
   var canConvertSmartObject: Bool {
     clipboardTargetAvailable && !groupSelectionIDs.isEmpty
       && groupSelectionIDs.allSatisfy { !document.isLocked($0) }
@@ -37,11 +38,17 @@ extension EditorStore {
     let frameID = replacing ? nil : selectedFrame?.id
     let panel = NSOpenPanel()
     panel.title = replacing ? "Replace Contents" : "Place Embedded"
-    panel.allowedContentTypes = [RawSourceIO.contentType, .png, .jpeg, .tiff, .heic, .bmp, .gif, UTType(filenameExtension: "psd") ?? .data,
+    panel.allowedContentTypes = [.pdf, RawSourceIO.contentType, .png, .jpeg, .tiff, .heic, .bmp, .gif, UTType(filenameExtension: "psd") ?? .data,
       UTType(filenameExtension: "psb") ?? .data, UTType(filenameExtension: "photato") ?? .data]
     panel.canChooseDirectories = false
     panel.begin { [weak self] response in
       guard response == .OK, let url = panel.url, let self, self.clipboardTargetAvailable else { return }
+      let access = url.startAccessingSecurityScopedResource()
+      let pdf = DocumentOpenFormat.detect(url) == .pdf
+      if access {url.stopAccessingSecurityScopedResource()}
+      if pdf {
+        self.placePDF(url,replacing:layerID,frame:frameID);return
+      }
       self.performGeometry(label: panel.title, prepare: { original in
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
@@ -61,7 +68,7 @@ extension EditorStore {
   }
   func editSmartObjectContents() {
     if activeLayer?.smartObject?.rawDevelopment != nil { beginRawDevelopment(); return }
-    guard canEditSmartObject, let layer = activeLayer, let source = layer.smartObject,
+    guard canEditSmartObjectContents, let layer = activeLayer, let source = layer.smartObject,
       let controller = documentController,
       let parent = controller.documents.compactMap({ $0 as? CraftNSDocument }).first(where: { $0.store === self }) else { return }
     if let existing = controller.documents.compactMap({ $0 as? CraftNSDocument }).first(where: {

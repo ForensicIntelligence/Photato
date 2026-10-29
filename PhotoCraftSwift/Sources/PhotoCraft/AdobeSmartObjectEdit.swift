@@ -94,12 +94,19 @@ struct AdobeSmartObjectEdit: Sendable {
       if let url {
         guard let data = resources[url] else { throw AdobeAPIError.invalid("Missing replacement resource.") }
         let filename = url.lastPathComponent.isEmpty ? "Contents" : url.lastPathComponent
+        if PDFImport.recognizes(data) {
+          var settings = PDFImportSettings();settings.resolution = 72
+          let (object,pixels) = try PDFSmartObjectIO.embedded(data,fileName:filename,in:session.document,
+            settings:settings,matching:autoResize ? previous:nil)
+          try session.execute(.replaceSmartObject(id,object,pixels,preserveSize:false,allInstances:false))
+        } else {
         var source = try SmartObjectIO.decode(data, fileName: filename)
         if autoResize {
           try Command.imageSize(previous.width, previous.height, previous.resolution, .bicubic).apply(to: &source)
         }
         try session.execute(SmartObjectIO.replacement(in: session.document, layerID: id, source: source,
           data: autoResize ? nil : data, fileName: autoResize ? nil : filename, preserveSize: false, allInstances: false))
+        }
       }
     }
     if let mode = transformMode, mode != "none", let layer = session.document.layers.first(where: { $0.id == id }), let source = layer.smartObject {

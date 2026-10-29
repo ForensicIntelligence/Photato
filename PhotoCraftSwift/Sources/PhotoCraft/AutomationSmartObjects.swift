@@ -6,7 +6,7 @@ extension SmartObject {
   var apiState: [String: Any] {
     ["sourceID": sourceID.uuidString, "revision": revision, "fileName": fileName,
       "mediaType": mediaType, "byteLength": data.count, "width": width, "height": height,
-      "resolution": resolution, "embedded": true, "stackMode": stackMode?.rawValue ?? "none", "rawDevelopment": rawDevelopment.map { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode($0))) ?? NSNull() } ?? NSNull()]
+      "resolution": resolution, "embedded": true, "pdfSource": pdfSource.map { BrushAPI.json($0) } ?? NSNull(), "stackMode": stackMode?.rawValue ?? "none", "rawDevelopment": rawDevelopment.map { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode($0))) ?? NSNull() } ?? NSNull()]
   }
   static var apiLayerStateSchema: [String: Any] {
     ["type": "object", "properties": [
@@ -17,17 +17,17 @@ extension SmartObject {
         "required": ["sourceID", "revision", "fileName", "mediaType", "byteLength", "width", "height", "resolution", "embedded"],
         "properties": ["sourceID": ["type": "string", "format": "uuid"], "revision": ["type": "string"],
           "fileName": ["type": "string"], "mediaType": ["type": "string"], "byteLength": ["type": "integer"],
-          "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["const": true], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
+          "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["const": true], "pdfSource": ["anyOf":[["type":"null"],PDFSmartObjectSource.apiSchema]], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
   }
   static var apiCapabilities: [String: Any] {
     ["embedded": true, "linked": false, "maximumSourceBytes": maximumSourceBytes,
       "maximumSourcePixels": SmartObjectIO.maximumCanvasPixels,
-      "layerStateSchema": apiLayerStateSchema,
+      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities,
       "commands": ["smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
       "sourceInput": "place/replace take sourceDocumentID and sourceRevision from another explicitly shared document. Upload a source using document transfers, then share it. Sources are embedded as editable Photato documents.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
-      "limitations": "Embedded raster or native editable sources. Linked files, warp/perspective and PDF/AI/SVG sources are not implemented."]
+      "limitations": "Embedded raster/native sources and retained PDF page sources. PDF uses native62; filtered and affine rendering reuses the native engine. PDF Warp, editable PSD/PDF interchange, source-editor UI, linked sources and general AI/SVG import remain unqualified or pending."]
   }
 }
 
@@ -82,7 +82,7 @@ extension AutomationCommand {
     case "layer.rasterize":
       let layerID = try id()
       let layer = document.layers.first { $0.id == layerID }!
-      return .rasterize(layer.id, try Renderer.layerSurface(layer, in: document))
+      return try SmartObjectIO.rasterizationCommand(layer,in:document)
     default: throw AutomationFailure(status: 422, message: "Unsupported Smart Object command.")
     }
   }
