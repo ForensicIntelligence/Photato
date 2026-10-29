@@ -1,0 +1,44 @@
+{
+  "step": 258,
+  "recorded_at_utc": "2026-10-29T20:13:55.232729+00:00",
+  "stage": "Qualified source257 published; development remains active",
+  "published_source_commit": "5115d649088720c395b3f3f5793e6f0fc361ead3",
+  "repository_private": true,
+  "source_manifest": "artifacts/runs/20261029T192605Z-257-embedded-placement/source02.json",
+  "source_inputs": 2419,
+  "published_inputs": 2387,
+  "full": {
+    "tests": 2690,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 184.592,
+    "log": "artifacts/runs/20261029T192605Z-257-embedded-placement/full01.log",
+    "sha256": "99e33b6d557a659fe3e59e5026f56c477b48ea1b93f2bf5c7a6f143ab3a43e63"
+  },
+  "focused": {
+    "tests": 70,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 8.943,
+    "log": "artifacts/runs/20261029T192605Z-257-embedded-placement/focused02.log",
+    "sha256": "0066437505f7385523d70c1396dc1004442c3b090dc50f2b9013d5922360fd8b"
+  },
+  "binary_sha256": "49dcbdd85c77acd1038e8ea57e4b5dd819b5add7bb5014f5e409df5d6fcfe277",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  },
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_package": false,
+  "new_installation": false,
+  "new_source_push": true,
+  "goal_complete": false,
+  "publication_receipt": "docs/SOURCE_PUBLICATION_258.json",
+  "next": "Continue major L05/D01 with genuine PDF source editing and editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence/relink/update/package workflows. Preserve source bytes and stale/cancel/history/API behavior; keep unsupported formats, large-file/color/RAW/XMP limits and exact/live/platform gates open."
+}

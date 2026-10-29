@@ -5753,6 +5753,35 @@
           "rolling_current_snapshot": false
         }
       ]
+    },
+    {
+      "id": "dev-step-258",
+      "title": "2026-10-29 \u2014 Publish qualified embedded placement source",
+      "link": "DEVLOG.md#dev-step-258",
+      "section_sha256": "73da5e29ce8cf4c3c501f9e19e576a5dd68608651c53ee097b6f4024177eabfe",
+      "references_explicitly_named_in_entry": [
+        {
+          "reference": "artifacts/runs/20261029T201015Z-258-source-publication/baseline01.json",
+          "existing_paths": [
+            "artifacts/runs/20261029T201015Z-258-source-publication/baseline01.json"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/runs/20261029T201015Z-258-source-publication/staged-scan01.json",
+          "existing_paths": [
+            "artifacts/runs/20261029T201015Z-258-source-publication/staged-scan01.json"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "docs/SOURCE_SNAPSHOT_257.json",
+          "existing_paths": [
+            "docs/SOURCE_SNAPSHOT_257.json"
+          ],
+          "rolling_current_snapshot": false
+        }
+      ]
     }
   ],
   "missing_explicit_references": [],
@@ -5771,8 +5800,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "94b0f38361773d5c895869a9cf74b394032656067d7de9f86cc3704db4643e86",
-      "bytes": 56511,
+      "sha256": "441af610dddef4f508437bb5f8134fd595942795650548c717d74ff6535ed854",
+      "bytes": 56589,
       "rolling_current_snapshot": false
     },
     {
@@ -522123,6 +522152,186 @@
       }
     },
     {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/baseline01.json",
+      "sha256": "b74e7d055dad7ac04d5c23e4dd31c1a036cdaa75de00101a4004a503e5c53582",
+      "bytes": 326948,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/commit01.log",
+      "sha256": "5eb1613848c1546eafb685d08c44f2ac10596590433e6c49f169613b553e4b33",
+      "bytes": 828,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/completion01.json",
+      "sha256": "5b7ad8c9c5d55e77221d68a4b59114edec5e4931c40df131eeee02fdad1f83c9",
+      "bytes": 1058,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diary-browser-source258.json",
+      "sha256": "2e8f213f3cd5b737e237fd9f795ea34385a4d60a2766d15572d443383c935abd",
+      "bytes": 1711,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diary-browser-source258final.json",
+      "sha256": "137f66c9c72001455b50207620a3916afb1e7fade070fc17371dc4690a0e2b08",
+      "bytes": 1721,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diary-browser01.log",
+      "sha256": "2e8f213f3cd5b737e237fd9f795ea34385a4d60a2766d15572d443383c935abd",
+      "bytes": 1711,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diary-browser02.log",
+      "sha256": "137f66c9c72001455b50207620a3916afb1e7fade070fc17371dc4690a0e2b08",
+      "bytes": 1721,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diarysource258-Photato NOTICE.txt",
+      "sha256": "65416538a61ecc2690e52fc48a4e14000bfb80fd6c4de80982aa8ad0014fe047",
+      "bytes": 3138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/diarysource258final-Photato NOTICE.txt",
+      "sha256": "65416538a61ecc2690e52fc48a4e14000bfb80fd6c4de80982aa8ad0014fe047",
+      "bytes": 3138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/fetch01.log",
+      "sha256": "f8af59350ca8474a1f3fe19e64d81a7afdff57d9e639b7c5b8fbaf202932d0b9",
+      "bytes": 99,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/preservation01.json",
+      "sha256": "11746ca0bfe0c134f7485814065ae9778dfa4df0ededf04b4f5f7e177b2a8dbe",
+      "bytes": 306,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-before01/master-photato/assets/diary-provenance.json",
+      "sha256": "f259d7f0ce468d796f7afd5245b61253ad9411c3cfce744eb83053b7847dddb0",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-before01/nusite/assets/diary-provenance.json",
+      "sha256": "f259d7f0ce468d796f7afd5245b61253ad9411c3cfce744eb83053b7847dddb0",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-before02/master-photato/assets/diary-provenance.json",
+      "sha256": "d4e422b7031103fd02790041df103fd9ac112be4cf2f9d19c9b470464e6163d2",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-before02/nusite/assets/diary-provenance.json",
+      "sha256": "d4e422b7031103fd02790041df103fd9ac112be4cf2f9d19c9b470464e6163d2",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-refresh01.log",
+      "sha256": "b949307ccbb050b5ac30950a8574915b7fa9d9e9a38e3cf698dc0b27b9480a1f",
+      "bytes": 166,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/public-refresh02.log",
+      "sha256": "b949307ccbb050b5ac30950a8574915b7fa9d9e9a38e3cf698dc0b27b9480a1f",
+      "bytes": 166,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/push01.log",
+      "sha256": "5b03a30da3558d557dc82ff07b9c164471612025631ffa43c0e661718e8e74c5",
+      "bytes": 89,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/remote-verification01.json",
+      "sha256": "a6792e17f0447aff6bc024cc481e383242aaacf6f2c6044a7a2db3cc9eda2a26",
+      "bytes": 286,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/source-verification01.json",
+      "sha256": "a05a21f4e3ab5c7494605d0c5552c50d7ebd865bb09062a2d2428f8f415740e6",
+      "bytes": 135,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/staged-scan01.json",
+      "sha256": "faaf32a9dd21d64e045d1ca06f4cd940cb02e56bec745257a8113f47d9ac52b5",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261029T201015Z-258-source-publication/whitespace01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/selection-development-tests.log",
       "sha256": "5d065fca855deba6c24aa955d6c86ee0dccbce7da91e75f0387da3f1883c0fcc",
       "bytes": 23595,
@@ -524139,6 +524348,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/ACTIVE_CHECKPOINT_258.json",
+      "sha256": "65885c9fa63d5a06613fe95648f6ce6fa9ed75bc9dc76768a453b9185b3e0486",
+      "bytes": 1859,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/ADJUSTMENT_BRUSH_REFERENCES.json",
       "sha256": "453b0ae81c8a9785eed40614fde60ee81a2ad70478554b3b28b1f3169a7a58df",
       "bytes": 7028,
@@ -524392,14 +524607,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "c2404096690da785e17bb528f8a89db4b2b14ef1ee5bf5a5b2372c48a3bf8398",
-      "bytes": 263286,
+      "sha256": "f3bc77e84648fdc41ae7268e401da4cd73918b855223d1d97e3827bb19137dba",
+      "bytes": 264613,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "e90aaeee2fc30c0521924b877beea3daae1f96a10bcbf8f8506d3fced3f651ae",
-      "bytes": 1983081,
+      "sha256": "11ca870d1a3a77c091420482b12a01931d24b75aad936718c13f21b3000b3a02",
+      "bytes": 1987709,
       "rolling_current_snapshot": false
     },
     {
@@ -525034,8 +525249,8 @@
     },
     {
       "path": "docs/OPEN_SOURCE_RELEASE.md",
-      "sha256": "f3251c91d047a2454a1cf234a6c5f4c67f7d1f7f75850e1bc6380dbc56ccd733",
-      "bytes": 5998,
+      "sha256": "50830f3c1814b2f5bec89614c1612ee400fde44249ddad65b693452d8a3d25de",
+      "bytes": 6065,
       "rolling_current_snapshot": false
     },
     {
@@ -525274,8 +525489,8 @@
     },
     {
       "path": "docs/PORTING_PLAN.md",
-      "sha256": "f3d28034e3d32aecbd4fc0c99ca510f010560c706caf4523fe93fa1ed786911f",
-      "bytes": 138537,
+      "sha256": "7c084fe29c07314d10eb72b20f5ff49ffed8789118a0a2de236cb65b175827a8",
+      "bytes": 139311,
       "rolling_current_snapshot": false
     },
     {
@@ -525543,6 +525758,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_258.json",
+      "sha256": "b2667e16f8b71b085a0296361bb8c4b05d7c92a141c920ddde9018d4de5855d6",
+      "bytes": 704,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -525561,6 +525782,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_257.json",
+      "sha256": "95f94bb5a49dcf902b69dc0ac2099a91df15f5ab0c0df2f16c8fd0727e3ec60b",
+      "bytes": 320174,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -525574,8 +525801,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "135cfb872cfd9413b97f2d604b66f1175edc9bb77d89559b1eea7a8ce81746db",
-      "bytes": 220377,
+      "sha256": "56d809d1eb41912c8bd4909006e66d82d6a25ce84dea24c51e1286a32c29b121",
+      "bytes": 221151,
       "rolling_current_snapshot": false
     },
     {
@@ -525982,9 +526209,9 @@
     }
   ],
   "counts": {
-    "milestones": 257,
-    "evidence_files": 53427,
-    "logs": 27869,
+    "milestones": 258,
+    "evidence_files": 53452,
+    "logs": 27877,
     "missing_explicit_references": 0
   }
 }
