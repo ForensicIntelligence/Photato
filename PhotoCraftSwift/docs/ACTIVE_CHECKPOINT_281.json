@@ -1,12 +1,93 @@
 {
   "step": 281,
-  "increment_complete": false,
+  "recorded_at_utc": "2026-10-30T23:51:17.144656+00:00",
+  "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+  "source_inputs": 2496,
+  "focused": {
+    "tests": 71,
+    "failures": 0,
+    "seconds": 40.168,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/focused05.log",
+    "sha256": "96e1cd4c7af45d6656e6d52591ba4c15c2dcc8b9e5bcd84bcd0359bffb695a94",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "full": {
+    "tests": 2829,
+    "failures": 0,
+    "seconds": 259.412,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/full01.log",
+    "sha256": "96da64ea91f022637b4c4e8506f35e9a72328a632d2a58f45d9b494dbf6ec4ec",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "binary_sha256": "de705f4886e53fe13c5cb5bbe2a1a4572f1d1aec0038df35457363bc0723d9f5",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Complete qualified native source280 published to private GitHub main, preserving original Rust/history, notices and exact qualified bytes."
+  ],
+  "remaining": [
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths.",
+    "Automatic recovery/history/legacy-inline admission, metadata buffers and specialized codec/API transfer limits remain separately bounded; qualify their full large-document lifecycles.",
+    "Qualify dense stress/disk-full/corruption/relaunch, physical60fps, universal distribution and macOS14/Intel/macOS26 runtime; full Photoshop pixel/settings/menu/workflow parity remains open."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T223835Z-280-native-paging/live-native01.json",
   "goal_complete": false,
-  "goal_status": "active",
-  "stage": "Publish qualified native source280",
-  "status": "Complete source publication in progress; private visibility preserved.",
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Complete qualified source280 is verified on private GitHub main as [`e4e359b`](https://github.com/ForensicIntelligence/Photato/commit/e4e359b6d230d5c95984eefaa94325a56e53885e). All2464 included qualified inputs match the candidate that passed71 focused and2829 full optimized tests;2496 local inputs remain unchanged. Sources, tests/licensed fixtures, Xcode project, scripts, assets, notices and records accompany1057 unchanged Rust files. Generated models/caches, builds, runtime evidence and working documents stay excluded. Local Preview280 and shared universal243 are unchanged; full Photoshop/capacity/platform parity remains open.",
+  "stage": "Qualified source280 published; goal active",
+  "native_archive": 62,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 280,
+  "new_source_push": true,
+  "new_package": false,
+  "new_installation": false,
+  "new_distribution_release": false,
   "normal_local_preview_step": 280,
-  "completed_this_increment": [],
-  "new_source_push": false,
-  "new_package": false
+  "next": [
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 280.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "db63e7081d6da864a8a1dda7d0f96a9602d6fdc841b9a7f07a9bc4cd10636b54",
+    "tested_binary_sha256": "de705f4886e53fe13c5cb5bbe2a1a4572f1d1aec0038df35457363bc0723d9f5",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-280.zip",
+    "zip_sha256": "3a49ccfeb512677a92db62959f15360c77f297fd9e8a0e05fb8b88330021a309",
+    "zip_bytes": 38550931,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview280-check-nmq7i9wp/Photato Editing Preview 280.app"
+  },
+  "completed_this_increment": [
+    "Complete qualified native source280 published to private GitHub main with independent input/tree/privacy verification."
+  ],
+  "goal_status": "active",
+  "published_source_commit": "e4e359b6d230d5c95984eefaa94325a56e53885e",
+  "published_inputs": 2464,
+  "repository_private": true,
+  "publication_receipt": "docs/SOURCE_PUBLICATION_281.json"
 }
