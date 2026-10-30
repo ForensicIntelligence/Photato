@@ -1,0 +1,88 @@
+{
+  "step": 278,
+  "recorded_at_utc": "2026-10-30T21:32:47.246727+00:00",
+  "source_manifest": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+  "source_inputs": 2488,
+  "focused": {
+    "tests": 102,
+    "failures": 0,
+    "seconds": 2.958,
+    "log": "artifacts/runs/20261030T204800Z-278-large-documents/focused05.log",
+    "sha256": "9a1aadb195308565bef3ea4607a86374761bc63654ca12fcd5e12efee0d6ea4a",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2810,
+    "failures": 0,
+    "seconds": 198.713,
+    "log": "artifacts/runs/20261030T204800Z-278-large-documents/full02.log",
+    "sha256": "46346224c631a7e536767c8b85f9bfe696ea3d686afbbd9526eade0de5c442ae",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "8143c21cd7d555c7edf728df215746f9cd26366b052e24e95532500cdca4bebf",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "300,000-square sparse RGB native documents: create, bounded viewport/zoom/pan, exact native raster-stack composition, far-edge brush/COW/history and native save/reopen; no full-area display allocation.",
+    "Optional API sharing/geometry discovery, bounded2048-side ordinary previews and native download use the same engine; 102 focused/2810 full tests and native maximum-size acceptance pass."
+  ],
+  "remaining": [
+    "Q01 remains open: implement disk-backed dense pixel/mask storage with bounded cache/COW history and hierarchical native archive indexing beyond512MiB, and the remaining512-layer native cap.",
+    "Stream large PSB/native files and all image import/export paths; contiguous raster import/processing still retains36MP and existing resident/file/transfer budgets. Sparse90GP is not dense Photoshop capacity parity.",
+    "Complete demand-driven large layer/group/style/mask/adjustment rendering, paged selection/modes/geometry/filters, both API job paths, cancellation/disk-full/corruption/performance and platform qualification.",
+    "Retain prior interactive60fps, heavy retouching, linked sources and remaining Photoshop workflow/byte-exact/universal-release requirements."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T204800Z-278-large-documents/live-native02.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Native RGB canvases now accept 300,000 pixels per side (90 GP logical area), with sparse raster composition, bounded viewport display and native/API brush, history and file workflows. All 102 focused and 2,810 full optimized tests pass on 2,488 frozen inputs; native maximum-size create/paint/save/reopen and Preview 278 are verified. Dense disk-backed images, streamed large PSB/native files and full operation, mode and platform capacity parity remain open.",
+  "stage": "Sparse maximum-size canvas foundation qualified; dense capacity open",
+  "native_archive": 62,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 278,
+  "next": [
+    "Q01 remains open: implement disk-backed dense pixel/mask storage with bounded cache/COW history and hierarchical native archive indexing beyond512MiB, and the remaining512-layer native cap.",
+    "Stream large PSB/native files and all image import/export paths; contiguous raster import/processing still retains36MP and existing resident/file/transfer budgets. Sparse90GP is not dense Photoshop capacity parity.",
+    "Complete demand-driven large layer/group/style/mask/adjustment rendering, paged selection/modes/geometry/filters, both API job paths, cancellation/disk-full/corruption/performance and platform qualification."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 278.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "e8fde2dfd1fd90d262ceb851506f1bd53e8c349f83e604e3cfd43dc56d5fb0b4",
+    "tested_binary_sha256": "8143c21cd7d555c7edf728df215746f9cd26366b052e24e95532500cdca4bebf",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-278.zip",
+    "zip_sha256": "8138887b76a7889ef09fe577c7c2101f43eeab5cb6825a9167412664f4ada627",
+    "zip_bytes": 38500245,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview278-check-2ecewp86/Photato Editing Preview 278.app"
+  },
+  "completed_this_increment": [
+    "300,000-square sparse RGB native documents: create, bounded viewport/zoom/pan, exact native raster-stack composition, far-edge brush/COW/history and native save/reopen; no full-area display allocation.",
+    "Optional API sharing/geometry discovery, bounded2048-side ordinary previews and native download use the same engine; 102 focused/2810 full tests and native maximum-size acceptance pass."
+  ],
+  "goal_status": "active"
+}

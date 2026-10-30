@@ -102,12 +102,7 @@ extension WorkspaceView {
           ForEach(BlendMode.allCases, id: \.self) { Text($0.rawValue).tag($0.rawValue) }
         }.labelsHidden().controlSize(.small).frame(maxWidth: .infinity).disabled(
           store.activeLayer == nil || store.activeLayer.map { store.document.isLocked($0.id) } == true)
-        percentField(
-          "Opacity:",
-          value: Binding(
-            get: { store.activeLayer?.opacity ?? 1 },
-            set: { if let l = store.activeLayer { store.perform(.opacity(l.id, $0)) } })
-        ).disabled(store.activeLayer == nil || store.activeLayer.map { store.document.isLocked($0.id) } == true)
+        LayerOpacityControl(store: store)
       }
       HStack(spacing: 6) {
         Text("Lock:").foregroundStyle(.secondary)
@@ -261,7 +256,7 @@ extension WorkspaceView {
     -> some View
   {
     LayerThumbnail(
-      layer: layer, document: store.layerPanelDocument, revision: store.revision,
+      layer: layer, document: store.layerPanelDocument, revision: store.canvasPresentationRevision,
       storeID: store.identity, generation: store.layerPanelGeneration, size: metrics.size,
       contents: store.workspaceLibrary.layerPanelOptions.thumbnailContents,
       thumbnailWidth: metrics.thumbnailWidth, component: component

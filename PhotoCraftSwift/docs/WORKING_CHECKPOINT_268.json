@@ -1,0 +1,13 @@
+{
+  "step": 268,
+  "status": "complete-increment",
+  "qualified_baseline": 267,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_268.json",
+  "run": "artifacts/runs/20261030T015727Z-268-brush-feedback",
+  "working_source": "artifacts/runs/20261030T015727Z-268-brush-feedback/source03.json",
+  "next": [
+    "Physical display presentation/input-to-photon timing and sustained high-rate tablet/curved strokes remain unqualified. Investigate view/display-aware scheduling and timestamped event/preview/draw traces; see display-timing-research01.json. AppKit coalescing is already scoped off during painting/retouch since262; the267 duplicate next-step hypothesis is corrected in268.",
+    "Brush outline/default/smoothing and Photoshop pixel-kernel fidelity, large tips, complex masks/modes/proofs, expanded/boundary and special tools remain open. Reduced redraw work does not prove all jagged curves fixed."
+  ],
+  "goal_complete": false
+}

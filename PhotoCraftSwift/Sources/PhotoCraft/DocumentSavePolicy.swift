@@ -35,6 +35,9 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
+    if document.width * document.height > Surface.maximumDensePixels {
+      return "Save this large canvas as Photato. Streamed full-size raster and PSD/PSB output is not yet available."
+    }
     if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }
     if document.videoTimeline != nil { return "Save as Photato to retain video frames and timing. Still-image copies contain only the current frame." }
     if document.animation != nil { return "Save as Photato to retain animation. Still-image copies contain only the selected frame." }
@@ -126,10 +129,8 @@ extension DocumentIO {
       guard document.depth == .u8 else {
         return "JPEG needs an 8-bit document. Use Save a Copy to convert."
       }
-      for y in 0..<pixels.height {
-        for x in 0..<pixels.width where pixels.pixel(x: x, y: y).a != 1 {
-          return "JPEG cannot retain transparency. Use Save a Copy to choose a matte."
-        }
+      guard (try? pixels.allStoredSamplesSatisfy({ $0.a == 1 })) == true else {
+        return "JPEG cannot retain transparency. Use Save a Copy to choose a matte."
       }
     }
     return nil

@@ -29,6 +29,7 @@ public struct SelectionMask: Equatable, Sendable, Codable {
   public let bounds: IntRect?
   public init(width: Int, height: Int, bytes: [UInt8]) throws {
     _ = try Surface(width: width, height: height)
+    guard width <= Surface.maximumDensePixels / height else { throw CraftError.unsupported("Dense selection coverage is not yet paged for large documents.") }
     guard bytes.count == width * height else {
       throw CraftError.invalid("Invalid selection coverage.")
     }
@@ -48,7 +49,7 @@ public struct SelectionMask: Equatable, Sendable, Codable {
         throw CraftError.invalid("Selection blob data requires its owned raster context.")
       }
       data = try context.bytes(
-        c.decode(String.self, forKey: .historyBytes), maximumBytes: Surface.maxPixels)
+        c.decode(String.self, forKey: .historyBytes), maximumBytes: Surface.maximumDensePixels)
     } else {
       data = try c.decode(Data.self, forKey: .bytes)
     }
@@ -90,6 +91,7 @@ public struct SelectionMask: Equatable, Sendable, Codable {
     throws -> Self
   {
     _ = try Surface(width: width, height: height)
+    guard width <= Surface.maximumDensePixels / height else { throw CraftError.unsupported("Dense selection coverage is not yet paged for large documents.") }
     var out = [UInt8](repeating: 0, count: width * height)
     let sub = antiAlias ? 4 : 1
     switch shape {
@@ -238,6 +240,7 @@ public struct SelectionMask: Equatable, Sendable, Codable {
   }
   public func transformed(by delta: Transform2D, width: Int, height: Int) throws -> Self {
     _ = try Surface(width: width, height: height)
+    guard width <= Surface.maximumDensePixels / height else { throw CraftError.unsupported("Dense selection coverage is not yet paged for large documents.") }
     let inverse = try delta.inverted()
     var out = [UInt8](repeating: 0, count: width * height)
     for y in 0..<height {

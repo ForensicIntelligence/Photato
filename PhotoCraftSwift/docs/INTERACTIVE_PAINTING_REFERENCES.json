@@ -1,0 +1,99 @@
+{
+  "step": 262,
+  "request": "Responsive brush and tool feedback, targeting 60fps.",
+  "public_reference": {
+    "url": "https://developer.apple.com/documentation/appkit/nsevent/ismousecoalescingenabled",
+    "accessed": "2026-10-29",
+    "fact": "AppKit normally coalesces mouse/drag/tablet events; capture all delivered samples during drawing and restore prior state afterward."
+  },
+  "source_manifest": "artifacts/runs/20261029T215008Z-262-interactive-painting/source05.json",
+  "qualified_binary_sha256": "3e3c1c1d6c9249d04c938f202c8fcab456c8038e3f7dc3b9f3cdbd4a78a95b53",
+  "focused": {
+    "tests": 64,
+    "failures": 0,
+    "seconds": 25.148,
+    "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/focused05.log",
+    "sha256": "fb380312eab5548cf4f425417079b6290e549e80bc4bfababf768b1f8256760b"
+  },
+  "full": {
+    "tests": 2721,
+    "failures": 0,
+    "seconds": 193.992,
+    "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/full02.log",
+    "sha256": "481afa217c05e8763b20ecdb485edc0e957899063df20500e910b423b987dae3"
+  },
+  "baseline": "artifacts/runs/20261029T215008Z-262-interactive-painting/baseline-performance01.json",
+  "sequential": "artifacts/runs/20261029T215008Z-262-interactive-painting/candidate-performance05.json",
+  "continuous": "artifacts/runs/20261029T215008Z-262-interactive-painting/extended-performance05.json",
+  "measurement_scope": "Dense RGB8 gradient plus two adjustments,120Hz timed input,60Hz preview pacing and960x640 offscreen AppKit draws. CPU timings; physical display presentation is not measured.",
+  "live": {
+    "accepted": true,
+    "scope": "Owned1200x800 RGB8 document; live native workflow smoke test, not physical frame-time measurement.",
+    "bundle": "/private/tmp/Photato-Painting-262b.app",
+    "signed_binary_sha256": "27d2ba0055fa54ab422d055a3db77c21b0de2b912314595fc9f20cd49988249b",
+    "native_file_backed_sections_match_tested_executable": 38,
+    "actions": [
+      "Select Brush with B; draw two30px diagonal strokes at76.83%.",
+      "Command-Z removes the second stroke; Shift-Command-Z restores it.",
+      "Set150% zoom; image remains clipped to canvas with title/options/panels intact.",
+      "Return to76.83%; select Eraser and remove a vertical strip; checkerboard transparency appears.",
+      "Undo restores the erased pixels.",
+      "Close and discard only the owned test document, then quit the isolated test app."
+    ],
+    "screenshots": [
+      "native-eraser01.png",
+      "native-brush-undo01.png"
+    ],
+    "not_qualified": [
+      "High-rate physical mouse/tablet curve fidelity and display-presented60fps.",
+      "Live mid-stroke cancellation; automated lifecycle tests provide that coverage."
+    ],
+    "user_documents_modified": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/focused01.log",
+      "reason": "Tiled CGImage display changes fractional-zoom filtering; replaced with packed immutable full-image buffer."
+    },
+    {
+      "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/full01.log",
+      "reason": "One of2720 tests fails because Clone Escape/abandoned drawing capture did not restore coalescing; fixed and regression tested."
+    },
+    {
+      "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/native-startup-sample01.txt",
+      "reason": "Wrapper-launched candidate is idle but CUA accessibility times out; superseded by direct Swift executable with isolated-session environment."
+    }
+  ],
+  "remaining": [
+    "Physical frame-presentation/input-latency instrumentation and sustained tablet/high-rate hand-drawn curves.",
+    "Dual-tip/symmetry brushes, retouch engines, special modes/masks/proof, expensive effects and first-frame setup still require separate 60fps qualification.",
+    "Large-brush frame spikes, larger/longer documents and physical Retina/Intel/macOS14 runtime acceptance.",
+    "Full Photoshop visual/algorithm/default/workflow parity remains open; linked-source261 is preserved and parked."
+  ],
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    }
+  },
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "adobe_api_impact": "No Adobe endpoint invented; preview state is a Photato-only presentation diagnostic. Existing atomic paint.stroke engine/history is unchanged."
+}

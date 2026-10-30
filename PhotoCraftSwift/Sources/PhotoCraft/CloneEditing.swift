@@ -109,13 +109,15 @@ struct CloneSourceRequest: Sendable {
       in: document, layerID: layerID, sampling: sampling, ignoreAdjustments: ignoreAdjustments,
       mask: mask)
     guard !mask, let target else { return sampled }
+    var origin = sampled.origin; origin?.convertToTarget = true
     return CloneSample(
       surface: try ColorManagement.converted(sampled.surface, from: document, to: target),
-      transform: sampled.transform, outside: sampled.outside)
+      transform: sampled.transform, outside: sampled.outside, origin: origin)
   }
 }
-struct CloneDraft: Sendable {
+@MainActor final class CloneDraft {
   let token = UUID()
+  let sessionGeneration: UUID
   let layerID: UUID
   let slot: Int
   let sourceToken: UUID
@@ -134,6 +136,17 @@ struct CloneDraft: Sendable {
   var sample: CloneSample?
   var points: [StrokePoint]
   var commitRequested = false
+  init(sessionGeneration: UUID, layerID: UUID, slot: Int, sourceToken: UUID,
+    mapping: CloneMapping, brush: CloneBrush, mask: Bool, aligned: Bool,
+    focus: FocusTool? = nil, focusOptions: FocusOptions = .init(), focusForeground: Pixel = .black,
+    toning: ToningTool? = nil, toningOptions: ToningOptions = .init(), healing: Bool = false,
+    spot: SpotHealingType? = nil, points: [StrokePoint]) {
+    self.sessionGeneration = sessionGeneration; self.layerID = layerID; self.slot = slot
+    self.sourceToken = sourceToken; self.mapping = mapping; self.brush = brush
+    self.mask = mask; self.aligned = aligned; self.focus = focus; self.focusOptions = focusOptions
+    self.focusForeground = focusForeground; self.toning = toning; self.toningOptions = toningOptions
+    self.healing = healing; self.spot = spot; self.points = points
+  }
   var command: Command? {
     if let toning {
       return .toning(
@@ -246,25 +259,28 @@ extension EditorStore {
       document: source.document, layerID: layerID, sampling: retouchSettings.sampling,
       ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: slot.mask, target: document)
   }
-  func beginClone(_ point: StrokePoint, alternate: Bool = false) {
+  func beginClone(_ point: StrokePoint, alternate: Bool = false, eventTimestamp: TimeInterval? = nil) {
     guard canClone, let layerID = activeLayer?.id else {
       if !hasToneDraft && !geometryBusy {
         error = "Select an unlocked pixel layer or pixel mask for retouching."
       }
       return
     }
+    stopRetouchPreview(); retouchPreviewDeadline = 0
+    retouchPreviewFrameCount = 0; retouchPreviewSampleCount = 0; retouchPreviewRenderMS = 0
     do {
       if let selected = tool.toningTool {
         let kind: ToningTool =
           alternate && selected != .sponge ? (selected == .dodge ? .burn : .dodge) : selected
         try retouchSettings.brush.validate()
         cloneDraft = CloneDraft(
-          layerID: layerID, slot: cloneState.active, sourceToken: cloneState.slot.token,
+          sessionGeneration: sessionGeneration, layerID: layerID, slot: cloneState.active, sourceToken: cloneState.slot.token,
           mapping: .init(source: .init(0, 0), anchor: .init(0, 0)), brush: retouchSettings.brush,
           mask: editingMask, aligned: false, toning: kind, toningOptions: retouchSettings.toning,
           points: [point])
+        canvasFrameTrace?.begin(tool: tool.rawValue, eventTimestamp: eventTimestamp)
         status = kind.rawValue
-        render()
+        scheduleRetouchPreview()
         return
       }
       let focus = tool.focusTool
@@ -292,7 +308,7 @@ extension EditorStore {
           document: document, layerID: layerID, sampling: retouchSettings.sampling,
           ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: false) : nil
       let draft = CloneDraft(
-        layerID: layerID, slot: cloneState.active, sourceToken: cloneState.slot.token,
+        sessionGeneration: sessionGeneration, layerID: layerID, slot: cloneState.active, sourceToken: cloneState.slot.token,
         mapping: mapping,
         brush: retouchSettings.brush, mask: editingMask,
         aligned: !automatic && retouchSettings.aligned,
@@ -300,7 +316,8 @@ extension EditorStore {
         healing: healing, spot: tool == .spotHealing ? retouchSettings.spotType : nil,
         points: [point])
       cloneDraft = draft
-      if automatic { render() }
+      canvasFrameTrace?.begin(tool: tool.rawValue, eventTimestamp: eventTimestamp)
+      if automatic { scheduleRetouchPreview() }
       status = "Preparing \(title)…"
       clonePrepareTask?.cancel()
       clonePrepareTask = Task { [weak self] in
@@ -311,39 +328,48 @@ extension EditorStore {
           let sample = try await withTaskCancellationHandler(
             operation: { try await worker.value }, onCancel: { worker.cancel() })
           guard let self, !Task.isCancelled, cloneDraft?.token == draft.token else { return }
+          guard self.sessionGeneration == draft.sessionGeneration else { self.cancelClone(); return }
           cloneDraft?.sample = sample.0
           cloneDraft?.destination = sample.1
           status = title
-          if cloneDraft?.commitRequested == true { commitClone() } else { render() }
+          if cloneDraft?.commitRequested == true { commitClone() } else { scheduleRetouchPreview() }
         } catch is CancellationError {} catch {
           guard let self, cloneDraft?.token == draft.token else { return }
-          cloneDraft = nil
+          canvasFrameTrace?.end(cancelled: true)
+          stopRetouchPreview(); cloneDraft = nil
           self.error = error.localizedDescription
           render()
         }
       }
     } catch { self.error = error.localizedDescription }
   }
-  func extendClone(_ point: StrokePoint) {
-    guard var draft = cloneDraft, !draft.commitRequested else { return }
+  func extendClone(_ point: StrokePoint, eventTimestamp: TimeInterval? = nil) {
+    guard let draft = cloneDraft, !draft.commitRequested else { return }
+    guard draft.sessionGeneration == sessionGeneration else { cancelClone(); return }
     guard draft.points.count < 100_000 else {
       cancelClone()
       error = "Retouching stroke is too long."
       return
     }
     draft.points.append(point)
-    cloneDraft = draft
-    if draft.command != nil || draft.spot != nil { render() }
+    canvasFrameTrace?.input(samples: draft.points.count, eventTimestamp: eventTimestamp)
+    if draft.command != nil || draft.spot != nil { scheduleRetouchPreview() }
   }
   func finishClone() {
     guard cloneDraft != nil else { return }
+    stopRetouchPreview(discardRenderer: false)
+    canvasFrameTrace?.end(cancelled: false)
     cloneDraft?.commitRequested = true
     if cloneDraft?.command != nil { commitClone() }
   }
   func commitClone() {
     guard let draft = cloneDraft, let command = draft.command else { return }
-    cloneDraft = nil
-    performGeometry(command) { [weak self] in
+    guard draft.sessionGeneration == sessionGeneration else { cancelClone(); return }
+    // Spot Healing has a marker preview, never finished healing pixels.
+    let retained = draft.spot == nil && !draft.healing && !editingComponent && !smartFilterMaskEditing ? interactiveRetouchPreview : nil
+    let points = draft.points
+    stopRetouchPreview(); cloneDraft = nil
+    let onSuccess: () -> Void = { [weak self] in
       guard let self else { return }
       if draft.aligned {
         // Do not rewrite a source that the user replaced in another document.
@@ -354,10 +380,17 @@ extension EditorStore {
       }
       cloneOverlayKey = nil
     }
+    if let retained {
+      performPreparedGeometry(label: command.label, cancelPreview: false, prepare: { original in
+        if let prepared = try await retained.prepareCommit(base: original, points: points) { return prepared }
+        return try PreparedEdit(command: command, document: original)
+      }, onSuccess: onSuccess)
+    } else { performGeometry(command, onSuccess: onSuccess) }
   }
   func cancelClone() {
     guard cloneDraft != nil else { return }
-    clonePrepareTask?.cancel()
+    canvasFrameTrace?.end(cancelled: true)
+    stopRetouchPreview(); clonePrepareTask?.cancel()
     cloneDraft = nil
     render()
     status = "Retouching cancelled"

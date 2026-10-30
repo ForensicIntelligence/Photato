@@ -1,0 +1,63 @@
+{
+  "step": 259,
+  "recorded_at_utc": "2026-10-29T20:49:09.714344+00:00",
+  "stage": "Superseded by qualified ACTIVE_CHECKPOINT_259.json",
+  "increment_complete": true,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/source04.json",
+  "source_inputs": 2422,
+  "changed_compiler_inputs": [
+    "Sources/PhotoCraft/AutomationHTTP.swift",
+    "Sources/PhotoCraft/AutomationPDFSourceEditing.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/AutomationSmartObjects.swift",
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/NativeDocument.swift",
+    "Sources/PhotoCraft/PDFSourceEditWorkspace.swift",
+    "Sources/PhotoCraft/SmartObjectEditing.swift",
+    "Sources/PhotoCraft/WorkspacePanels.swift",
+    "Sources/PhotoCraftImaging/PDFSmartObjectIO.swift"
+  ],
+  "last_qualified_source_step": 257,
+  "last_publication_step": 258,
+  "native_build_or_tests_started": true,
+  "live_native_acceptance": false,
+  "dashboard_repair": {
+    "step": "dashboard-step-004",
+    "tests": 13,
+    "failures": 0,
+    "live_completed_through": 258,
+    "ongoing_step_excluded": 259,
+    "record": "../photato-dashboard/DEVLOG.md"
+  },
+  "next": [
+    "Continue major L05/D01 with editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence, relink/update and packaging. Qualify native PDF editor handoff without disturbing user documents; keep full vector/annotation rendering and exact/platform gates open."
+  ],
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused01.log",
+      "exit_code": 1,
+      "reason": "Observation requires one tracked property per declaration; no tests executed"
+    },
+    {
+      "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused02.log",
+      "exit_code": 1,
+      "reason": "Async test wait helper needs an escaping condition; no tests executed"
+    }
+  ],
+  "focused": {
+    "tests": 53,
+    "failures": 0,
+    "seconds": 8.077,
+    "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused03.log"
+  },
+  "full": {
+    "tests": 2699,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 189.657,
+    "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/full01.log",
+    "sha256": "54f4e203717b6dbde57b1d458f745d0444ffa658e4b2a69d05cf63742cd0180a"
+  },
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_259.json"
+}

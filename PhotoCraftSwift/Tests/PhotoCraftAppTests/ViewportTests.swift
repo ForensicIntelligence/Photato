@@ -12,7 +12,7 @@ final class ViewportTests: XCTestCase {
     return store
   }
 
-  func testZoomStepsMatchExecutedOriginalRustFloatBits() throws {
+  func testZoomStepsRetainOriginalRustFloatBitsAboveFormerFloor() throws {
     struct Oracle: Decodable {
       let input_bits: UInt32
       let direction: Int
@@ -24,12 +24,17 @@ final class ViewportTests: XCTestCase {
     let cases = try JSONDecoder().decode([Oracle].self, from: Data(contentsOf: url))
     XCTAssertEqual(cases.count, 220)
     for item in cases {
+      let input = Float(bitPattern: item.input_bits)
+      // The new sub1% range deliberately replaces the original clamped floor.
+      if input < 0.01 || (input * 0.999 <= 0.01 && item.direction < 0) { continue }
       let actual = CanvasViewport.step(
         from: Double(Float(bitPattern: item.input_bits)), inward: item.direction > 0)
       XCTAssertEqual(Float(actual).bitPattern, item.output_bits)
     }
     XCTAssertEqual(CanvasViewport.step(from: 1, inward: true), 2)
     XCTAssertEqual(CanvasViewport.step(from: 32, inward: true), 32)
+    XCTAssertEqual(CanvasViewport.step(from: Double(Float(0.01)), inward: false), Double(Float(0.0067)))
+    XCTAssertEqual(CanvasViewport.step(from: 0.0001, inward: false), Double(Float(0.0001)))
   }
 
   @MainActor func testMenuZoomFromInitialFitMovesInRequestedDirectionAndPreservesDocument() throws {
@@ -143,7 +148,7 @@ final class ViewportTests: XCTestCase {
     }
     XCTAssertEqual(CanvasViewport.parsePercentage(CanvasViewport.percentage(32)), 32)
     XCTAssertEqual(CanvasViewport.bounded(.nan), 1)
-    XCTAssertEqual(CanvasViewport.bounded(-1), 0.01)
+    XCTAssertEqual(CanvasViewport.bounded(-1), 0.0001)
   }
 
   @MainActor func testNativePercentageCommitCancelAndDocumentReplacementKeepCorrectTarget() throws {
@@ -180,6 +185,79 @@ final class ViewportTests: XCTestCase {
     XCTAssertEqual(a.zoom, 0.5)
     XCTAssertEqual(b.zoom, 1)
     XCTAssertTrue(a.session.undoStack.isEmpty && b.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testPercentageReturnReleasesNativeEditorAndFitUpdatesTheField() throws {
+    let store = try fixture()
+    store.updateViewport(size: CGSize(width: 240, height: 140), backingScale: 1)
+    store.setZoom(1)
+    let original = store.document
+    let parent = ZoomPercentageField(store: store)
+    let coordinator = parent.makeCoordinator()
+    let field = NSTextField(frame: CGRect(x: 0, y: 0, width: 100, height: 24))
+    field.delegate = coordinator
+    let container = NSView(frame: CGRect(x: 0, y: 0, width: 240, height: 164))
+    let canvas = CraftCanvas(store: store)
+    canvas.frame = CGRect(x: 0, y: 24, width: 240, height: 140)
+    container.addSubview(canvas); container.addSubview(field)
+    let window = NSWindow(contentRect: container.frame, styleMask: [.titled], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false; window.contentView = container
+    defer { field.delegate = nil; window.close() }
+    window.makeKeyAndOrderFront(nil)
+    coordinator.synchronize(field, with: parent)
+    field.selectText(nil)
+    let editor = try XCTUnwrap(field.currentEditor())
+    // Programmatic text assignment bypasses AppKit’s should-begin-edit callback.
+    XCTAssertTrue(coordinator.control(field, textShouldBeginEditing: editor))
+    XCTAssertEqual(coordinator.editingDocument, store.identity)
+    editor.string = "150%"; field.validateEditing()
+    coordinator.submit(field)
+    XCTAssertEqual(store.effectiveZoom, 1.5)
+    XCTAssertNil(field.currentEditor(), "Return must release the editor so B/V shortcuts reach the workspace")
+    XCTAssertNil(coordinator.editingDocument)
+    XCTAssertTrue(window.firstResponder === canvas)
+    let brushKey = try XCTUnwrap(NSEvent.keyEvent(with: .keyDown, location: .zero,
+      modifierFlags: [], timestamp: 1, windowNumber: window.windowNumber, context: nil,
+      characters: "b", charactersIgnoringModifiers: "b", isARepeat: false, keyCode: 11))
+    window.firstResponder?.keyDown(with: brushKey)
+    XCTAssertEqual(store.tool, .brush, "Return must restore actual workspace shortcut routing")
+    store.fit(); coordinator.synchronize(field, with: parent)
+    XCTAssertEqual(field.stringValue, CanvasViewport.percentage(store.effectiveZoom))
+    XCTAssertEqual(store.effectiveZoom, 2)
+    XCTAssertEqual(store.document, original)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testExternalZoomSupersedesDraftButUnrelatedUpdatesPreserveIt() throws {
+    let store = try fixture(); store.setZoom(1)
+    let parent = ZoomPercentageField(store: store)
+    let coordinator = parent.makeCoordinator()
+    let field = NSTextField(frame: CGRect(x: 0, y: 0, width: 100, height: 24))
+    field.delegate = coordinator
+    let container = NSView(frame: CGRect(x: 0, y: 0, width: 240, height: 164))
+    let canvas = CraftCanvas(store: store)
+    canvas.frame = CGRect(x: 0, y: 24, width: 240, height: 140)
+    container.addSubview(canvas); container.addSubview(field)
+    let window = NSWindow(contentRect: container.frame, styleMask: [.titled], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false; window.contentView = container
+    defer { field.delegate = nil; window.close() }
+    window.makeKeyAndOrderFront(nil)
+    coordinator.synchronize(field, with: parent)
+    field.selectText(nil)
+    let editor = try XCTUnwrap(field.currentEditor())
+    // Programmatic text assignment bypasses AppKit’s should-begin-edit callback.
+    XCTAssertTrue(coordinator.control(field, textShouldBeginEditing: editor))
+    XCTAssertEqual(coordinator.editingDocument, store.identity)
+    editor.string = "225%"; field.validateEditing()
+    coordinator.synchronize(field, with: parent)
+    XCTAssertEqual(field.currentEditor()?.string, "225%")
+    store.setZoom(0.5); coordinator.synchronize(field, with: parent)
+    XCTAssertNil(field.currentEditor())
+    XCTAssertEqual(field.stringValue, "50%")
+    XCTAssertTrue(window.firstResponder === canvas)
+    coordinator.controlTextDidEndEditing(Notification(name: NSControl.textDidEndEditingNotification, object: field))
+    XCTAssertEqual(store.effectiveZoom, 0.5, "A late end-edit notification must not restore the superseded draft")
+    XCTAssertTrue(store.session.undoStack.isEmpty)
   }
 
   @MainActor func testScrollerUsesLogicalCanvasScaleAndHonorsActivationGuard() throws {

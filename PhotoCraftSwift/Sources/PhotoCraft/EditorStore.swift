@@ -51,6 +51,14 @@ import UniformTypeIdentifiers
   var gradientSelectionAnchor: UUID?
   var cloneDraft: CloneDraft?
   var clonePrepareTask: Task<Void, Never>?
+  @ObservationIgnored var retouchPreviewFrameCount = 0
+  @ObservationIgnored var retouchPreviewTask: Task<Void, Never>?
+  @ObservationIgnored var interactiveRetouchPreview: InteractiveRetouchPreview?
+  @ObservationIgnored var retouchPreviewGeneration = UUID()
+  @ObservationIgnored var retouchPreviewDeadline = 0.0
+  @ObservationIgnored var retouchPreviewFrameInterval = 1.0 / 60
+  @ObservationIgnored var retouchPreviewSampleCount = 0
+  @ObservationIgnored var retouchPreviewRenderMS = 0.0
   var cloneOverlayTask: Task<Void, Never>?
   var cloneOverlayKey: CloneOverlayKey?
   var cloneOverlay: CloneOverlayImage?
@@ -75,12 +83,21 @@ import UniformTypeIdentifiers
   var brushGesture: BrushGesture?
   @ObservationIgnored var brushPreviewTask: Task<Void,Never>?
   @ObservationIgnored var brushPreviewGeneration = UUID()
+  @ObservationIgnored var brushPreviewFrameInterval = 1.0 / 60
+  @ObservationIgnored var brushPreviewLastStart = 0.0
+  @ObservationIgnored var canvasFrameTrace = CanvasFrameTrace.fromEnvironment()
+  @ObservationIgnored var brushPreviewFrameCount = 0
+  @ObservationIgnored var brushPreviewSampleCount = 0
+  @ObservationIgnored var brushPreviewRenderMS = 0.0
   let actions: ActionLibrary
   var actionRevision = 0
   var session: EditorSession { didSet { if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
-  var image: CGImage?
+  @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
+  var canvasRasterPreview: CanvasRasterPreview?
+  @ObservationIgnored var ordinaryCanvasImage = false
+  var image: CGImage? { didSet { canvasRasterPreview = nil; ordinaryCanvasImage = false } }
   var surface: Surface? { didSet { channelCompositeRevision = UUID() } }
   private(set) var channelCompositeRevision = UUID()
   @ObservationIgnored var renderSnapshot: RenderSnapshot?
@@ -227,6 +244,10 @@ import UniformTypeIdentifiers
   @ObservationIgnored var rawPlacementPresenter: (@MainActor (RawPlacementWorkspace) -> Void)?
   var pdfPlacementWorkspace: PDFImportWorkspace?
   @ObservationIgnored var pdfPlacementWindow: PDFImportWindow?
+  var pdfSourceEditors: [UUID:PDFSourceEditWorkspace] = [:]
+  @ObservationIgnored var pdfSourceEditOperationID: UUID?
+  @ObservationIgnored var pdfSourceEditRoot: URL = FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("Photato/SourceEdits",isDirectory:true)
+  @ObservationIgnored var pdfSourceOpener: @MainActor (URL) async throws -> Void = PDFSourceEditWorkspace.openInAssociatedEditor
   @ObservationIgnored var embeddedPlacementOperationID: UUID?
   @ObservationIgnored var pdfPlacementPresenter: (@MainActor (PDFImportWorkspace) -> Void)?
   var contentAwareScalePreview: CraftDocument?
@@ -302,8 +323,13 @@ import UniformTypeIdentifiers
   var brushRevision = 0
   var brush = Brush() { didSet { if oldValue != brush { brushRevision += 1 } } }
   var zoom: Double = 0  // Zero requests the initial fit, resolved by the first canvas layout.
-  var pan = CGSize.zero
+  var pan = CGSize.zero {
+    didSet { if pan != oldValue, document.width * document.height > Surface.maximumDensePixels { render() } }
+  }
   var revision = 0
+  // Rendering requests and API staleness advance before pixels are ready. The
+  // canvas observes only accepted presentation changes, avoiding an old-frame draw.
+  var canvasPresentationRevision = 0
   var error: String?
   var status = "Ready"
   var rendering = false
@@ -319,6 +345,7 @@ import UniformTypeIdentifiers
   var showAI = false
   var showImagePlayground = false
   var coalescingChanges = false
+  var layerOpacityDraft: LayerOpacityDraft?
   var coalescedDirty = false
   var onChange: ((NSDocument.ChangeType) -> Void)?
   var timelinePreviewVideoFrame: Int?
@@ -484,6 +511,7 @@ import UniformTypeIdentifiers
     }
   }
   func render(isAnimationPlayback: Bool = false) {
+    if let draft = layerOpacityDraft, !draft.matches(self) { layerOpacityDraft = nil }
 
     if let id = selectedAudioTrackID, document.videoTimeline?.audioTracks?.contains(where: { $0.id == id }) != true { selectedAudioTrackID = nil }
     if let id = selectedAudioClipID, document.videoTimeline?.audioTracks?.flatMap(\.clips).contains(where: { $0.id == id }) != true { selectedAudioClipID = nil }
@@ -531,10 +559,13 @@ import UniformTypeIdentifiers
     let tonalSteps = tonalStepsDraft
     let gradientMap = gradientMapDraft
     let clone = cloneDraft?.previewCommand
-    let selectionTool = brushGesture.flatMap { $0.original==document && $0.generation==layerPanelGeneration ? $0.selectionRequest:nil }
+    let retouchPointCount = clone == nil ? 0 : cloneDraft?.points.count ?? 0
+    let retouchPoints = cloneDraft?.points ?? []
+    let interactiveRetouch = interactiveRetouchPreview
+    let selectionTool = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.selectionRequest:nil }
     let selectionOverlay = tool == .selectionBrush ? selectionOverlayColor:nil
     let painting = brushPreviewCommand
-    let paintTools = brushGesture.flatMap { $0.original==document && $0.generation==layerPanelGeneration ? $0.paintingRequest:nil }
+    let paintTools = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.paintingPreviewRequest:nil }
     let gradientFill = gradientFillDraft.flatMap { $0.preview ? $0.command : nil }
     let gradientGesture = gradientGesture?.command
     let gradientStopColor = gradientStopColorDraft?.command
@@ -549,11 +580,26 @@ import UniformTypeIdentifiers
       && (modeVisibility == nil || modeVisibility?.count == doc.colorMode.componentCount)
       && (inkVisibility == nil || inkVisibility?.count == doc.inkChannelTargets.count)
     let previous = renderSnapshot
+    let interactiveBrush: InteractiveBrushPreview?
+    if case .stroke? = painting { interactiveBrush = interactiveBrushPreview } else { interactiveBrush = nil }
+    let brushPoints = brushGesture?.points ?? []
+    let ordinaryDisplay = auxiliaryTarget == nil && maskView == nil && modeVisibility == nil && inkVisibility == nil
+      && channelView.visible.count == 3 && !proof.active && onionSource == nil
+    // The previous image must have the same presentation semantics as its snapshot.
+    let previousDisplay = ordinaryDisplay && ordinaryCanvasImage && previous != nil
+      ? canvasRasterPreview ?? image.map { CanvasRasterPreview(base: $0) } : nil
+    let displayScale = min(1, max(0.0001, viewport.resolvedZoom))
+    let largeCanvas = doc.width * doc.height > Surface.maximumDensePixels ? viewport.largeCanvasRequest : nil
     rendering = true
     selectionPath = nil
+    let renderStarted = ProcessInfo.processInfo.systemUptime
+    let frameTraceToken = canvasFrameTrace?.beginFrame(samples: max(brushPoints.count, retouchPointCount), revision: request)
     renderTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
         var doc = doc
+        if largeCanvas != nil, maskView != nil || auxiliaryTarget != nil {
+          throw CraftError.unsupported("Large-document auxiliary and mask-only presentations need tiled coverage, which is not yet available.")
+        }
         if let layerStyle, layerStyle.preview, (try? layerStyle.style.validate(in: doc)) != nil {
           try Command.layerStyle([layerStyle.id], layerStyle.style).apply(to: &doc)
         }
@@ -588,22 +634,38 @@ import UniformTypeIdentifiers
           try Command.applyAdjustment(gradientMap.id, .gradientMap(gradientMap.adjustment)).apply(
             to: &doc)
         }
-        if let clone { try clone.apply(to: &doc) }
+        let retouchSnapshot: RenderSnapshot?
+        if clone != nil && selectionTool == nil && painting == nil && paintTools == nil
+          && gradientFill == nil && gradientGesture == nil && gradientStopColor == nil && patternFill == nil {
+          retouchSnapshot = try await interactiveRetouch?.snapshot(base: doc, points: retouchPoints, previous: previous)
+        } else { retouchSnapshot = nil }
+        if let retouchSnapshot { doc = retouchSnapshot.document }
+        else if let clone { try clone.apply(to: &doc) }
         if let selectionTool {try await SelectionToolPreparation.command(selectionTool,in:doc).apply(to:&doc)}
-        if let painting { try painting.apply(to: &doc) }
+        let brushSnapshot: RenderSnapshot?
+        if paintTools == nil && gradientFill == nil && gradientGesture == nil && gradientStopColor == nil && patternFill == nil {
+          brushSnapshot = try await interactiveBrush?.snapshot(base: doc, points: brushPoints, previous: previous)
+        } else { brushSnapshot = nil }
+        if let brushSnapshot { doc = brushSnapshot.document }
+        else if let painting { try painting.apply(to: &doc) }
         if let paintTools { doc = try PaintingPreparation.prepare(paintTools,in:doc).result }
         if let gradientFill { try gradientFill.apply(to: &doc) }
         if let gradientGesture { try gradientGesture.apply(to: &doc) }
         if let gradientStopColor { try gradientStopColor.apply(to: &doc) }
         if let patternFill { try patternFill.apply(to: &doc) }
-        let snapshot = try Renderer.render(doc, reusing: previous)
+        let snapshot = try brushSnapshot ?? retouchSnapshot ?? Renderer.render(doc, reusing: previous)
         let displayComposite: Surface
         if proofComposite, let onionSource { displayComposite = try OnionSkinRenderer.render(onionSource, base: snapshot.surface) }
         else { displayComposite = snapshot.surface }
         let preview = try doc.inkMode != nil ? InkChannelPresentation.surface(doc, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(doc, visible: $0) } ?? channelView.applying(to: displayComposite)
-        var image =
-          try auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
-          ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: doc)
+        let boundedPreview = try largeCanvas.map { try preview.reducedPreview(in: $0.region, width: $0.width, height: $0.height) }
+        var canvasPreview = try largeCanvas == nil ? previousDisplay?.updating(snapshot, scale: displayScale) : nil
+        var image = try canvasPreview?.base ?? (auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+          ? RasterIO.displayImage(boundedPreview ?? preview) : ColorManagement.displayImage(boundedPreview ?? preview, in: doc))
+        if let largeCanvas { canvasPreview = CanvasRasterPreview(base: image, documentRegion: largeCanvas.region) }
+        else if ordinaryDisplay, canvasPreview == nil {
+          canvasPreview = try CanvasRasterPreview(base: image).scaled(to: displayScale)
+        }
         var proofFailure: String?
         if proof.active && proofComposite {
           do { image = try SoftProof.image(doc, composite: displayComposite, settings: proof) }
@@ -620,7 +682,7 @@ import UniformTypeIdentifiers
           maskImage = nil
         }
         let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0)} ?? nil
-        return (snapshot, image, path, maskImage,overlay,proofFailure)
+        return (snapshot, image, path, maskImage,overlay,proofFailure,canvasPreview)
       }
       do {
         let pair = try await withTaskCancellationHandler(
@@ -629,6 +691,19 @@ import UniformTypeIdentifiers
         self.renderSnapshot = pair.0
         self.surface = pair.0.surface
         self.image = pair.1
+        self.canvasRasterPreview = pair.6
+        self.ordinaryCanvasImage = ordinaryDisplay
+        self.canvasFrameTrace?.prepared(frameTraceToken)
+        if !brushPoints.isEmpty {
+          self.brushPreviewFrameCount += 1
+          self.brushPreviewSampleCount = brushPoints.count
+          self.brushPreviewRenderMS = (ProcessInfo.processInfo.systemUptime - renderStarted) * 1000
+        }
+        if retouchPointCount > 0 {
+          self.retouchPreviewFrameCount += 1
+          self.retouchPreviewSampleCount = retouchPointCount
+          self.retouchPreviewRenderMS = (ProcessInfo.processInfo.systemUptime - renderStarted) * 1000
+        }
         self.proofDisplayError = pair.5
         self.selectionPath = pair.2?.path
         self.selectionOverlayImage = pair.4
@@ -637,6 +712,7 @@ import UniformTypeIdentifiers
           self.renderedMaskView = maskView
         }
         self.rendering = false
+        self.canvasPresentationRevision += 1
       } catch is CancellationError {} catch {
         guard let self, self.revision == request else { return }
         self.error = error.localizedDescription

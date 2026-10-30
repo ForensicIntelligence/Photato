@@ -31,14 +31,14 @@ final class ToningWorkflowTests: XCTestCase {
       let before = s.document
       s.beginClone(.init(x: 40, y: 30))
       s.extendClone(.init(x: 45, y: 30))
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertNil(s.error)
       XCTAssertEqual(s.document, before)
       XCTAssertTrue(s.session.undoStack.isEmpty)
       let preview = try XCTUnwrap(s.surface)
       XCTAssertNotEqual(preview, try Renderer.composite(before))
       s.cancelClone()
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertEqual(s.document, before)
       XCTAssertEqual(s.surface, try Renderer.composite(before))
       s.beginClone(.init(x: 40, y: 30))
@@ -48,7 +48,7 @@ final class ToningWorkflowTests: XCTestCase {
       s.retouchSettings.brush.flow = 0
       s.finishClone()
       await s.geometryTask?.value
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertNil(s.error)
       XCTAssertEqual(s.surface, preview)
       XCTAssertEqual(s.session.undoStack.count, 1)
@@ -74,7 +74,7 @@ final class ToningWorkflowTests: XCTestCase {
     let before = s.document
     s.beginClone(.init(x: 40, y: 30))
     s.chooseTool(WorkspaceCatalog.tool("sponge"))
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
     XCTAssertNil(s.cloneDraft)
     XCTAssertEqual(s.document, before)
     s.perform(.lock(s.activeLayer!.id, true))
@@ -90,7 +90,7 @@ final class ToningWorkflowTests: XCTestCase {
     s.beginClone(.init(x: 40, y: 30))
     s.finishClone()
     await s.geometryTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
     XCTAssertNil(s.error)
     XCTAssertEqual(s.document.layers[0].content, before.layers[0].content)
     XCTAssertLessThan(try XCTUnwrap(s.activeLayer?.mask).pixel(x: 40, y: 30).r, 1)
@@ -130,7 +130,7 @@ final class ToningWorkflowTests: XCTestCase {
     XCTAssertEqual(s.cloneDraft?.toning, .burn)
     canvas.mouseUp(with: try mouse(.leftMouseUp, .option))
     await s.geometryTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
     XCTAssertEqual(s.tool, .dodge)
     XCTAssertEqual(s.session.undoStack.count, 1)
     XCTAssertLessThan(try XCTUnwrap(s.surface).pixel(x: 40, y: 30).r, 0.7)

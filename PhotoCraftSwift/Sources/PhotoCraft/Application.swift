@@ -1290,14 +1290,18 @@ import SwiftUI
     }
     let app = NSApplication.shared
     app.setActivationPolicy(.regular)
+    // Owned UI qualification bundles can launch normally without reading or
+    // writing the user's workspace, recovery index or color preferences.
+    let isolatedSession = CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+      || ProcessInfo.processInfo.environment["PHOTATO_ISOLATED_UI_SESSION"] == "1"
     let delegate = AppDelegate(
-      workspaces: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+      workspaces: isolatedSession
         ? WorkspaceLibrary() : .shared,
-      recoveryPreferences: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+      recoveryPreferences: isolatedSession
         ? RecoveryPreferencesStore() : .shared,
-      recoveryIndex: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+      recoveryIndex: isolatedSession
         ? RecoveryIndexStore() : .shared,
-      colorSettings: CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
+      colorSettings: isolatedSession
         ? ColorSettingsStore() : .shared)
     app.delegate = delegate
     withExtendedLifetime(delegate) { app.run() }

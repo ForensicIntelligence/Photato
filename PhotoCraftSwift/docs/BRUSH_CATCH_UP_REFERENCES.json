@@ -1,0 +1,109 @@
+{
+  "step": 273,
+  "summary": "Brush/Pencil/Mixer/Eraser smoothing now advances toward a paused pointer using a bounded native clock, while catch-up on release waits for commitment. Timed samples retain tablet attributes and share the final native/API history path. Both initial defects are reproduced; all 62 focused and 2777 full optimized tests pass on 2471 frozen inputs. Native painting/history checks and separate Preview273 packaging are verified. Physical60fps and exact Photoshop smoothing remain open.",
+  "source_manifest": "artifacts/runs/20261030T181050Z-273-brush-catch-up/source03.json",
+  "focused": {
+    "tests": 62,
+    "failures": 0,
+    "seconds": 3.503,
+    "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/focused03.log",
+    "sha256": "8ad59d31b5158164380c6c554a235fbcfe28639d413b2cc73643facfbeb53d12",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2777,
+    "failures": 0,
+    "seconds": 194.713,
+    "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/full01.log",
+    "sha256": "95a52b1c871833f192234940677a3a010c4c03883cd709bc609398b526db9e31",
+    "terminal_exit_code": 0
+  },
+  "live": {
+    "accepted": true,
+    "app": "/private/tmp/Photato-Feedback-273.app",
+    "source_manifest": "source03.json",
+    "scope": "CUA-driven native30px Brush at80% smoothing in disposable1200x800 blank. Visible stroke, single Undo to clean blank, Redo, then Undo and quit. Opacity arrow displays a focused native slider. Actual held-pause timing is covered by owned synthetic NSEvent/AppKit tests, not a physical input/display claim.",
+    "traces": [
+      {
+        "path": "stroke-55088914-FEBC-4A4F-ABE5-874BC9761046.json",
+        "sha256": "991e1596ed1eab0cfefd3442c241a694652ae6dec016c7e595e09b1e93b06d46",
+        "inputs": 4,
+        "native_event_timestamps": 4,
+        "generated_samples_without_event_timestamp": 0,
+        "previews": 0,
+        "outcome": "committed"
+      }
+    ],
+    "physical_60fps": false,
+    "diagnostic_closed": true,
+    "evidence": [
+      "native-smoothing-start01.png",
+      "native-painted01.png",
+      "native-undo01.png",
+      "native-redo01.png",
+      "native-opacity-popup01.png",
+      "native-clean01.txt"
+    ]
+  },
+  "handoff": {
+    "accepted": true,
+    "from_step": 272,
+    "to_step": 273,
+    "artwork_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "artwork_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "old_clean": true,
+    "new_clean": true,
+    "zoom_percent": 77.73,
+    "layer_opacity": 100,
+    "old_process_closed": true,
+    "unused_blank_closed": true,
+    "normal_app_running": true,
+    "evidence": [
+      "handoff-old272-clean01.txt",
+      "handoff-preview273.txt",
+      "handoff-preview273.png"
+    ],
+    "interaction_retry": "After opening the document, the connector requested a fresh app state before closing the unused blank. Refreshed AX and used its current close button successfully."
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 273.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "14b3a84137078561a854d7bf48e23a4500b28052866d89626c8f3618e30dc490",
+    "tested_binary_sha256": "4a18183ee5e8dd5511272529789281261e0d9196db5581a03527d3f7adfe885f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T181050Z-273-brush-catch-up/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-273.zip",
+    "zip_sha256": "4b5c2fa941787461842224cbd49f5dc6aa190ac56c15637262d25bed9c239771",
+    "zip_bytes": 38340473,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview273-check-u43_oybi/Photato Editing Preview 273.app"
+  },
+  "reference": "artifacts/runs/20261030T165926Z-271-active-preview/brush-reference01.json",
+  "reproduction": {
+    "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/reproduction01.log",
+    "tests": 2,
+    "failures": 3,
+    "reason": "No stationary samples; release tail prematurely visible."
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/focused01.log",
+      "reason": "Mask test assigned a read-only property; corrected to selectMask."
+    },
+    {
+      "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/focused02.log",
+      "reason": "Two new restart assertions incorrectly assumed a long elapsed gap leaves work; fixture timing corrected with application source unchanged."
+    }
+  ],
+  "remaining": [
+    "Continue editing responsiveness: qualify high-rate curves/tablet input and heavy-tool frame pacing. Sustained physical60fps and full Photoshop pixel parity remain open.",
+    "Pulled-string stationary catch-up interaction, exact smoothing kernels/defaults and high-pressure/high-rate physical tablet behavior remain unqualified. Native timer tests use owned synthetic events; live checks do not measure input-to-photon latency.",
+    "Physical Intel/macOS14/macOS26 and universal release qualification remain open. Opacity popup physical pointer delivery remains a prior qualification limit. Linked-source261 remains parked under the user editing-feedback priority."
+  ],
+  "API_impact": "Existing brush.configure/paint.stroke and typed native commands retained. Capability metadata describes60Hz clock, settling, explicit timed replay and release-tail boundary; no Adobe route or schema version changes."
+}

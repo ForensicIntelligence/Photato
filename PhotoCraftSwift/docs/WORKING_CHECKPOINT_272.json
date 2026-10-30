@@ -1,0 +1,12 @@
+{
+  "step": 272,
+  "status": "complete-increment",
+  "qualified_baseline": 271,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_272.json",
+  "run": "artifacts/runs/20261030T173813Z-272-layer-opacity",
+  "working_source": "artifacts/runs/20261030T173813Z-272-layer-opacity/source03.json",
+  "next": [
+    "Resume the saved brush pause catch-up task from checkpoint271. Sustained physical 60fps, high-rate curves/tablet input, heavy tools and full Photoshop pixel parity remain open."
+  ],
+  "goal_complete": false
+}

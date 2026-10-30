@@ -13,6 +13,8 @@ extension Renderer {
         "Clone source layer no longer exists. Option-click to set a new source.")
     }
     let layer = document.layers[i]
+    let origin = RetouchSampleOrigin(document: document, layerID: layerID,
+      sampling: sampling, ignoreAdjustments: ignoreAdjustments, mask: mask)
     if mask {
       guard let pixels = layer.mask else {
         throw CraftError.invalid("Clone source mask no longer exists.")
@@ -20,7 +22,7 @@ extension Renderer {
       let outside = layer.effectiveMaskProperties.outside
       return CloneSample(
         surface: pixels, transform: layer.maskCoordinateTransform,
-        outside: Pixel(outside, outside, outside))
+        outside: Pixel(outside, outside, outside), origin: origin)
     }
     if sampling == .current {
       if case .adjustment = layer.content {
@@ -35,7 +37,7 @@ extension Renderer {
       } else {
         transform = layer.coordinateTransform
       }
-      return CloneSample(surface: surface, transform: transform)
+      return CloneSample(surface: surface, transform: transform, origin: origin)
     }
     var probe = document
     let ancestors = Set(document.ancestors(of: layerID).map(\.id))
@@ -47,6 +49,6 @@ extension Renderer {
         probe.layers[index].visible = false
       }
     }
-    return CloneSample(surface: try composite(probe))
+    return CloneSample(surface: try composite(probe), origin: origin)
   }
 }

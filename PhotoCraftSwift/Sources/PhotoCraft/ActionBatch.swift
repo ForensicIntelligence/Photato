@@ -39,7 +39,7 @@ enum ActionBatch {
       try destination.resourceValues(forKeys: [.isDirectoryKey]).isDirectory == true else { throw CraftError.invalid("Choose 1–256 sources and an output folder.") }
     _ = try outputName("test", index: 0, suffix: suffix, format: format)
     let masterWorker = Task.detached(priority: .userInitiated) { () throws -> [(UUID, CraftDocument)] in
-      guard action.usesMasterPalette else { return [] }
+      guard action.usesMasterPalette || action.usesExternalRetouchSources else { return [] }
       var documents: [(UUID, CraftDocument)] = [], pixels = 0, bytes = 0
       for source in sources {
         try Task.checkCancellation()
@@ -47,10 +47,11 @@ enum ActionBatch {
         if let snapshot = source.document { document = snapshot }
         else if let url = source.url { document = try DocumentIO.read(url) }
         else { throw CraftError.invalid("Missing batch source.") }
-        guard document.depth == .u8 && [.rgb, .grayscale].contains(document.colorMode) else { continue }
+        if !action.usesExternalRetouchSources && !(document.depth == .u8 && [.rgb, .grayscale].contains(document.colorMode)) { continue }
         try validateOutput(document)
         pixels += document.width * document.height; bytes += document.estimatedBytes
-        guard pixels <= PaletteQuantization.maximumPixels, bytes <= 256 * 1024 * 1024 else { throw CraftError.invalid("Master palette batch sources exceed8,388,608 pixels or256MiB.") }
+        let maximumPixels = action.usesMasterPalette ? PaletteQuantization.maximumPixels : 40_000_000
+        guard pixels <= maximumPixels, bytes <= 256 * 1024 * 1024 else { throw CraftError.invalid("Action sampling sources exceed the batch pixel or256MiB limit.") }
         documents.append((source.id, document))
       }
       return documents

@@ -1,0 +1,91 @@
+{
+  "step": 280,
+  "recorded_at_utc": "2026-10-30T23:36:56.447999+00:00",
+  "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+  "source_inputs": 2496,
+  "focused": {
+    "tests": 71,
+    "failures": 0,
+    "seconds": 40.168,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/focused05.log",
+    "sha256": "96e1cd4c7af45d6656e6d52591ba4c15c2dcc8b9e5bcd84bcd0359bffb695a94",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "full": {
+    "tests": 2829,
+    "failures": 0,
+    "seconds": 259.412,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/full01.log",
+    "sha256": "96da64ea91f022637b4c4e8506f35e9a72328a632d2a58f45d9b494dbf6ec4ec",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "binary_sha256": "de705f4886e53fe13c5cb5bbe2a1a4572f1d1aec0038df35457363bc0723d9f5",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Checked mapped chunked native Data/file readers with unique tile sharing, COW/history and separate heap/scratch admission; native File Open/API upload preserve paged storage and exact samples.",
+    "Native file Open/Save stream beyond512MiB with separate4TiB file admission and unchanged512MiB Data/metadata and recovery policies; owned large-file/native/API/history workflows and Preview280 pass qualification."
+  ],
+  "remaining": [
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths.",
+    "Automatic recovery/history/legacy-inline admission, metadata buffers and specialized codec/API transfer limits remain separately bounded; qualify their full large-document lifecycles.",
+    "Qualify dense stress/disk-full/corruption/relaunch, physical60fps, universal distribution and macOS14/Intel/macOS26 runtime; full Photoshop pixel/settings/menu/workflow parity remains open."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T223835Z-280-native-paging/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Native file Open/Save now stream past the former512MiB file boundary, and checked chunked tile input stays mapped on reopen/API upload. Tests cover an owned >512MiB file, real40MP native editing and134MP/2GiB repeated tile references across all depths. All71 focused and2829 full optimized tests pass; separate Preview280 is verified. Hierarchical indexes, large PSB/all-operation/platform capacity parity remain open.",
+  "stage": "Paged native persistence qualified; full capacity open",
+  "native_archive": 62,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 280,
+  "next": [
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 280.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "db63e7081d6da864a8a1dda7d0f96a9602d6fdc841b9a7f07a9bc4cd10636b54",
+    "tested_binary_sha256": "de705f4886e53fe13c5cb5bbe2a1a4572f1d1aec0038df35457363bc0723d9f5",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-280.zip",
+    "zip_sha256": "3a49ccfeb512677a92db62959f15360c77f297fd9e8a0e05fb8b88330021a309",
+    "zip_bytes": 38550931,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview280-check-nmq7i9wp/Photato Editing Preview 280.app"
+  },
+  "completed_this_increment": [
+    "Checked mapped chunked native Data/file readers with unique tile sharing, COW/history and separate heap/scratch admission; native File Open/API upload preserve paged storage and exact samples.",
+    "Native file Open/Save stream beyond512MiB with separate4TiB file admission and unchanged512MiB Data/metadata and recovery policies; owned large-file/native/API/history workflows and Preview280 pass qualification."
+  ],
+  "goal_status": "active"
+}

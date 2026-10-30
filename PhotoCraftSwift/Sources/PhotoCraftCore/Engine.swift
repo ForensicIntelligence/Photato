@@ -317,10 +317,13 @@ public enum Command: Sendable {
       }
       return i
     }
-    func raster(_ i: Int) throws -> Surface {
+    func raster(_ i: Int, allowLarge: Bool = false) throws -> Surface {
       guard case .raster(let s) = d.layers[i].content else {
         throw CraftError.unsupported(
           "Rasterize this layer before painting or applying pixel filters.")
+      }
+      guard allowLarge || s.width <= Surface.maximumDensePixels / s.height else {
+        throw CraftError.unsupported("This whole-raster operation is not yet tiled for large documents. No pixels were changed.")
       }
       return s
     }
@@ -796,7 +799,7 @@ public enum Command: Sendable {
         selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
     case .stroke(let id, let points, let brush):
       let i = try index(id)
-      var s = try raster(i)
+      var s = try raster(i, allowLarge: true)
       try Painter.stroke(
         surface: &s, points: points, brush: brush, selection: d.selection,
         selectionMask: d.selectionMask, offsetX: d.layers[i].x,
@@ -984,6 +987,7 @@ public enum Command: Sendable {
         }
       }
       if let color = extensionColor, color.a > 0, width > old.width || height > old.height {
+        guard width <= Surface.maximumDensePixels / height else { throw CraftError.unsupported("Large colored canvas extensions need tiled region storage, which is not yet available.") }
         guard color.isFinite, d.layers.count < 512 else {
           throw CraftError.invalid("Invalid canvas extension or layer limit.")
         }
@@ -1093,6 +1097,10 @@ public struct PreparedEdit: Sendable {
   let result: CraftDocument
   public let label: String
   let recordingCommand: Command?
+  // Only the core's validated retained-stroke owner can produce this result.
+  init(retainedStrokeOriginal original: CraftDocument, result: CraftDocument, command: Command) {
+    self.original = original; self.result = result; label = command.label; recordingCommand = command
+  }
   /// Restore saved content as one undoable edit while retaining this open document's identity.
   public init(restoring saved: CraftDocument, over current: CraftDocument) throws {
     var restored = saved

@@ -1,0 +1,94 @@
+{
+  "step": 259,
+  "recorded_at_utc": "2026-10-29T20:51:55.324638+00:00",
+  "reference": {
+    "reference": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/edit-the-contents-of-a-smart-object.html",
+    "accessed": "2026-10-29",
+    "page_updated": "2026-02-23",
+    "observed": "Edit Contents opens the source in its format-matching editor; saving updates shared Smart Object instances. Public behavior only; no proprietary implementation was inspected or reverse-engineered."
+  },
+  "source_manifest": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/source04.json",
+  "source_inputs": 2422,
+  "focused": {
+    "tests": 53,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 8.077,
+    "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused03.log",
+    "sha256": "b72435356685d74405ab237e25dc4e9bdb440b7eedccc81383e47631a57a0e6a"
+  },
+  "full": {
+    "tests": 2699,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 189.657,
+    "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/full01.log",
+    "sha256": "54f4e203717b6dbde57b1d458f745d0444ffa658e4b2a69d05cf63742cd0180a"
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused01.log",
+      "exit_code": 1,
+      "reason": "Combined Observation properties; repaired by splitting declarations."
+    },
+    {
+      "log": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/focused02.log",
+      "exit_code": 1,
+      "reason": "Async test helper nonescaping closure; repaired with explicit escaping/MainActor condition."
+    }
+  ],
+  "binary_sha256": "4fde7726c351979d9e26fe7874a754f39abbe40c2a206bf30606e239f82549ae",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  },
+  "independent": "artifacts/runs/20261029T201801Z-259-pdf-source-editing/outputs-full01-independent.json",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "live_native_acceptance": false,
+  "implemented": [
+    "Durable PDF Edit Contents workspace and source-update Properties controls",
+    "Atomic/in-place saved PDF updates with shared instances and one Undo",
+    "Busy edit queuing, stale-source conflict handling and retained copies after close",
+    "Revision-bound PDF source upload/download, cancellation and session-state APIs",
+    "Adobe v2 PDF resource-job comparison through the shared source engine"
+  ],
+  "remaining": [
+    "Live associated-editor handoff and restart recovery UI",
+    "Full PDF vector/annotation rendering and editable PSD/PDF interchange",
+    "Linked sources, relink/update/package workflows",
+    "Exact Photoshop output, defaults and interaction fidelity",
+    "Universal/minimum OS/physical Intel/macOS26 distribution acceptance"
+  ],
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "PDF Edit Contents now creates a durable associated-editor working copy. Atomic and in-place saves update shared PDF instances in one Undo transaction while retaining page/image selection and transforms. Busy edits wait; stale sources, cancellation, invalid PDFs and closed parents cannot commit. The Photato source upload/download/cancel/session APIs share the native engine, with an Adobe resource-job equivalence check. All 53 focused and 2,699 full optimized tests pass on 2,422 unchanged inputs; independent checks match 3,072 analytic RGBA channels. Live editor handoff, restart recovery UI, full PDF/PSD interchange, linked sources and exact/platform fidelity remain open. Installed221, private universal243 and published source257 remain unchanged.",
+  "changed_compiler_inputs": [
+    "Sources/PhotoCraft/AutomationHTTP.swift",
+    "Sources/PhotoCraft/AutomationPDFSourceEditing.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/AutomationSmartObjects.swift",
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/NativeDocument.swift",
+    "Sources/PhotoCraft/PDFSourceEditWorkspace.swift",
+    "Sources/PhotoCraft/SmartObjectEditing.swift",
+    "Sources/PhotoCraft/WorkspacePanels.swift",
+    "Sources/PhotoCraftImaging/PDFSmartObjectIO.swift",
+    "Tests/PhotoCraftAppTests/PDFPlacementWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/PDFSourceEditingWorkflowTests.swift"
+  ],
+  "stage": "Qualified PDF source-editing implementation; broader Smart Object workflow remains open",
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_package": false,
+  "new_installation": false,
+  "new_source_push": false,
+  "next": "Continue major L05/D01 with editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence, relink/update and packaging. Qualify native PDF editor handoff without disturbing user documents; keep full vector/annotation rendering and exact/platform gates open."
+}

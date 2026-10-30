@@ -199,7 +199,7 @@ struct AuxiliaryChannelRow: View {
         Button("Cancel",role:.cancel) {}
         Button("OK") { store.perform(.channel(.rename(channel.id,name))) }
       }
-      .task(id:store.revision) {
+      .task(id:store.canvasPresentationRevision) {
         let source = channel.pixels
         thumbnail = try? await Task.detached(priority:.utility) { try RasterIO.displayImage(Renderer.channelThumbnails(source,maximumSize:64)[0]) }.value
       }

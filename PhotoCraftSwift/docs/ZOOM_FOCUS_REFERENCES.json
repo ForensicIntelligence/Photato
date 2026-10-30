@@ -1,0 +1,239 @@
+{
+  "step": 271,
+  "source_manifest": "artifacts/runs/20261030T165926Z-271-active-preview/source03.json",
+  "source_inputs": 2468,
+  "focused": {
+    "tests": 71,
+    "failures": 0,
+    "seconds": 6.145,
+    "log": "artifacts/runs/20261030T165926Z-271-active-preview/focused03.log",
+    "sha256": "921d6539d971a13fe70f40429a3b424e51fd1f44ec00e32f1506ff2e071f621e",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2764,
+    "failures": 0,
+    "seconds": 209.095,
+    "log": "artifacts/runs/20261030T165926Z-271-active-preview/full02.log",
+    "sha256": "ce8da00a4ddbe46625aa84b608ea880ceb738396309960558676b5f478c6ea25",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe\u2019s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
+    "Continue native frame timing work from270: display/input phase, high-rate curves/tablet input, larger documents/tips, masks/modes/proofs and special tools. Physical input-to-photon and sustained60fps remain unqualified.",
+    "Photoshop tool-selection attempts through CUA fail in271; reference screenshots remain unchanged. Published behavior is not numerical/default/kernel proof. Physical Intel/macOS14/macOS26 and universal release qualification remain open.",
+    "Linked-source261 remains parked while editing responsiveness is the priority; the full native Photoshop goal remains active."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "live": {
+    "accepted": true,
+    "recorded_at": "2026-10-30T17:29:33.000396+00:00",
+    "source_manifest": "source03.json",
+    "diagnostic_package": "diagnostic02.json",
+    "checks": {
+      "return_150_then_B_selects_brush": true,
+      "fit_supersedes_225_draft_and_V_selects_move": true,
+      "escape_cancels_200_draft_and_B_selects_brush": true,
+      "brush_stroke_visible_undo_clears_redo_restores": true,
+      "disposable_document_discarded": true,
+      "diagnostic_quit": true
+    },
+    "evidence": [
+      "zoom-return-brush02.txt",
+      "zoom-fit-draft02.txt",
+      "zoom-fit-move02.txt",
+      "zoom-escape-brush02.txt",
+      "native-zoom-ready02.png",
+      "native-brush-after02.png",
+      "native-brush-undo02.png",
+      "native-brush-redo02.png",
+      "native-brush-redo02.txt"
+    ],
+    "scope": "Live native UI interaction; not physical input-to-photon or sustained 60fps qualification."
+  },
+  "handoff": {
+    "retained_file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "bytes": 3194276,
+    "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "byte_identical_to_protected212_document": true,
+    "current_preview": "/Users/johnczlonka/Applications/Photato Editing Preview 271.app",
+    "native_open_verified": true,
+    "legacy_probe_quit": true,
+    "source_changed": true,
+    "accepted": true,
+    "binary_sha256": "8c30325e043b08d19501594a638cfd43fce3b4d14c0c59e7bee9c01da5641165",
+    "recorded_at": "2026-10-30T17:34:39.278689+00:00",
+    "normal270_quit": true,
+    "only_running_preview": 271,
+    "retained_document_clean": true,
+    "default_blank_closed": true,
+    "return_150_B_selects_brush": true,
+    "fit_restored_77_73": true,
+    "actual_pixels_edited": false,
+    "evidence": [
+      "normal270-before-handoff02.txt",
+      "normal271-zoom-brush01.txt",
+      "normal271-active01.txt",
+      "normal271-active01.png"
+    ],
+    "process": "20767 /Users/johnczlonka/Applications/Photato Editing Preview 271.app/Contents/MacOS/Photato"
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 271.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "8c30325e043b08d19501594a638cfd43fce3b4d14c0c59e7bee9c01da5641165",
+    "tested_binary_sha256": "c8cff9418b350c26136ce95b7664acab9178b650f15c9fcbe34f675235e94b4c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T165926Z-271-active-preview/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-271.zip",
+    "zip_sha256": "6337f9deaa463ce0bb517ba28f00ac90fc864cf606ca8196aa6aeac864769d7f",
+    "zip_bytes": 38313562,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview271-check-bn02kfok/Photato Editing Preview 271.app"
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    },
+    "preview265": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app/Contents/MacOS/Photato",
+      "sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+      "bytes": 80300480
+    },
+    "preview265_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+      "sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+      "bytes": 38247196
+    },
+    "preview266": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 266.app/Contents/MacOS/Photato",
+      "sha256": "53eee1a256b61164670c5983a5f6100d58031ae536f04e46e63f30ce5b654304",
+      "bytes": 80334128
+    },
+    "preview266_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-266.zip",
+      "sha256": "29b170d98f72a68701072835190217d744794569e533438f7a13dd06b3e9b1ff",
+      "bytes": 38277098
+    },
+    "preview267": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 267.app/Contents/MacOS/Photato",
+      "sha256": "4e747e80564b08168b9c609ee1dbb0a35adafd858fef56b89d324c116f61d2f4",
+      "bytes": 80333856
+    },
+    "preview267_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-267.zip",
+      "sha256": "af0ac73e00baa486124994ec303fd76ccce3bc60f2d84183fed0a9ae83b40858",
+      "bytes": 38276650
+    },
+    "preview268": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 268.app/Contents/MacOS/Photato",
+      "sha256": "ac7e47f4fe4554228f7ba1b0f92610c4f3b89701b0e10c2e709db1305989327c",
+      "bytes": 80351488
+    },
+    "preview268_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-268.zip",
+      "sha256": "5beffe1605a1120831206b009a8274ff4d5139fea093e76a946b1e3390f22d62",
+      "bytes": 38282367
+    },
+    "preview269_binary": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 269.app/Contents/MacOS/Photato",
+      "sha256": "aed650b1f45c2f083fba4eb076c95bfd1249fa9bb2c22d7e2cb4078a5a83c75e"
+    },
+    "preview269_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-269.zip",
+      "sha256": "b25a56835a703d9eb5c32c44c9115e8cbc8fe8ea7bd3a70aae0ce8d32ca941bc"
+    },
+    "preview270_binary": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 270.app/Contents/MacOS/Photato",
+      "sha256": "002855ae8a9a2db769e64acabe4f176a6d84c0f4faaac299cdb2f9a6fd6049eb"
+    },
+    "preview270_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-270.zip",
+      "sha256": "052586453d74fb10cc44d1845c7094918c578641228661279d5eed93d67e74d8"
+    }
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T165926Z-271-active-preview/focused01.log",
+      "tests": 71,
+      "failures": 1,
+      "reason": "New native fixture omitted the should-begin-edit callback before programmatic text assignment; source02 fixes tests only."
+    }
+  ],
+  "rejected_live_candidate": {
+    "source_manifest": "artifacts/runs/20261030T165926Z-271-active-preview/source02.json",
+    "focused_log": "artifacts/runs/20261030T165926Z-271-active-preview/focused02.log",
+    "focused_tests": 71,
+    "full_log": "artifacts/runs/20261030T165926Z-271-active-preview/full01.log",
+    "full_tests": 2764,
+    "reason": "Return focused the window; B did not select Brush. Source03 restores the matching canvas and tests actual key routing."
+  },
+  "reference_audit": {
+    "step": 271,
+    "read_date": "2026-10-30",
+    "sources": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/create-brush-set-painting-options.html",
+        "updated": "2026-02-23",
+        "summary": "Brush Tip Shape provides size, angle, roundness and spacing."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/create-smoother-more-polished-brush-strokes-with-stroke-smoothing.html",
+        "updated": "2026-02-23",
+        "summary": "Smoothing supports Brush/Pencil/Mixer/Eraser, values0\u2013100, and individually enabled pulled-string, catch-up while paused, catch-up on release and adjust-for-zoom options. Greater smoothing can increase preview delay."
+      }
+    ],
+    "live_attempt": {
+      "before": "Untitled-1 at100%, Layer1 RGB8, Paint Bucket60%opacity/tolerance32, pre-existing dirty flag",
+      "keyboard_brush": "CUA timeout; subsequent AX/screenshot unchanged",
+      "toolbar_brush": "CUA noWindowsAvailable; no successful tool selection or painting",
+      "qualified": false
+    },
+    "native_gap_to_reproduce": "CanvasView schedules stationary samples only for airbrush buildUp. BrushSmoother.catchUp advances only when push receives another point. Therefore pause-with-button-held catch-up may not advance without additional mouse events. Reproduce with deterministic native input and explicit smoothing before implementation; do not claim numeric Photoshop equivalence.",
+    "default_changes": false,
+    "proprietary_code_examined": false
+  },
+  "API_impact": "Brush interactivePreview display metadata describes navigation focus behavior. No new command, revision semantics, pixel/history algorithm or Adobe route."
+}

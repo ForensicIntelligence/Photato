@@ -6,7 +6,7 @@ public enum CloneSampling: String, CaseIterable, Codable, Sendable {
   case all = "All Layers"
 }
 
-public struct CloneBrush: Equatable, Sendable {
+public struct CloneBrush: Codable, Equatable, Sendable {
   public var size: Double = 30
   public var hardness: Float = 0.8
   public var opacity: Float = 1
@@ -24,7 +24,7 @@ public struct CloneBrush: Equatable, Sendable {
   }
 }
 
-public struct CloneMapping: Equatable, Sendable {
+public struct CloneMapping: Codable, Equatable, Sendable {
   public var source: PathPoint
   public var anchor: PathPoint
   public var width: Double = 100
@@ -59,10 +59,13 @@ public struct CloneSample: Equatable, Sendable {
   public let surface: Surface
   public let transform: Transform2D
   public let outside: Pixel
-  public init(surface: Surface, transform: Transform2D = .identity, outside: Pixel = .clear) {
+  public let origin: RetouchSampleOrigin?
+  public init(surface: Surface, transform: Transform2D = .identity, outside: Pixel = .clear,
+    origin: RetouchSampleOrigin? = nil) {
     self.surface = surface
     self.transform = transform
     self.outside = outside
+    self.origin = origin
   }
 }
 
@@ -164,68 +167,23 @@ public enum ClonePainter {
       sourceMapping: sourceMapping, selection: selection, selectionMask: selectionMask,
       coverage: coverage, preserveTransparency: preserveTransparency)
   }
-  static func strokeCoverage(_ stroke: CloneStroke, surface: Surface, transform: Transform2D)
-    throws -> RetouchCoverage
-  {
-    let inverse = try transform.inverted()
-    let brush = stroke.brush
-    // Sparse 64x64 scalar tiles bound coverage memory to 160 MiB, enough for a
-    // supported full-canvas stroke without a per-pixel hash table.
-    var tiles: [Int: [Float]] = [:]
-    let columns = (surface.width + 63) / 64
-    var dabCount = 0
-    func dab(_ p: StrokePoint) throws {
-      try Task.checkCancellation()
-      dabCount += 1
-      guard dabCount <= 200_000 else { throw CraftError.invalid("Clone Stamp stroke is too long.") }
-      guard p.pressure > 0 else { return }
-      let radius = max(0.25, brush.size * (brush.pressureSize ? Double(p.pressure) : 1) / 2)
-      let center = inverse.point(p.x, p.y)
-      let rx = (radius + 0.5) * hypot(inverse.a, inverse.c)
-      let ry = (radius + 0.5) * hypot(inverse.b, inverse.d)
-      let x0 = Int(max(0, min(Double(surface.width), floor(center.x - rx))))
-      let x1 = Int(max(-1, min(Double(surface.width - 1), ceil(center.x + rx))))
-      let y0 = Int(max(0, min(Double(surface.height), floor(center.y - ry))))
-      let y1 = Int(max(-1, min(Double(surface.height - 1), ceil(center.y + ry))))
-      guard x0 <= x1, y0 <= y1 else { return }
-      let ceiling: Float = brush.pressureOpacity ? p.pressure : 1
-      for y in y0...y1 {
-        try Task.checkCancellation()
-        for x in x0...x1 {
-          let q = transform.point(Double(x) + 0.5, Double(y) + 0.5)
-          let v =
-            coverage(
-              distance: Float(hypot(q.x - p.x, q.y - p.y)), radius: Float(radius),
-              hardness: brush.hardness) * brush.flow
-          guard v > 0 else { continue }
-          let key = (y / 64) * columns + x / 64
-          let i = (y % 64) * 64 + x % 64
-          if tiles[key] == nil {
-            guard tiles.count < 10_240 else {
-              throw CraftError.invalid("Clone Stamp coverage exceeds its memory limit.")
-            }
-            tiles[key] = [Float](repeating: 0, count: 4096)
-          }
-          let prior = tiles[key]?[i] ?? 0
-          tiles[key]?[i] = prior + v * max(0, ceiling - prior)
-        }
-      }
-    }
-    try RetouchDabs.forEach(brush: brush, points: stroke.points, body: dab)
-    return RetouchCoverage(
-      width: surface.width, height: surface.height, columns: columns, tiles: tiles)
+  static func strokeCoverage(_ stroke: CloneStroke, surface: Surface, transform: Transform2D) throws -> RetouchCoverage {
+    let coverage = try RetouchCoverageAccumulator(width: surface.width, height: surface.height,
+      transform: transform, brush: stroke.brush)
+    try coverage.append(stroke.points)
+    return coverage.snapshot()
   }
   static func applyCoverage(
     _ stroke: CloneStroke, on surface: inout Surface,
     transform: Transform2D, sourceMapping: Transform2D, selection: IntRect?,
     selectionMask: SelectionMask?, coverage: RetouchCoverage,
-    preserveTransparency: Bool = false
+    preserveTransparency: Bool = false, backdrop: Surface? = nil
   ) throws -> Bool {
     let map = sourceMapping * transform
     let nearest =
       map.a == 1 && map.b == 0 && map.c == 0 && map.d == 1
       && map.tx == map.tx.rounded() && map.ty == map.ty.rounded()
-    let original = surface
+    let original = backdrop ?? surface
     let brush = stroke.brush
     let columns = coverage.columns
     let tiles = coverage.tiles
@@ -281,7 +239,7 @@ public enum ClonePainter {
           throw CraftError.invalid("Clone Stamp produced a non-finite sample.")
         }
         let stored = out.quantized(surface.depth)
-        if !stored.hasSameBits(as: original.pixel(x: x, y: y)) {
+        if !stored.hasSameBits(as: surface.pixel(x: x, y: y)) {
           result.setPixel(x: x, y: y, stored)
           changed = true
         }

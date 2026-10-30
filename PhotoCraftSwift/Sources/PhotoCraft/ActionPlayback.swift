@@ -15,8 +15,8 @@ extension EditorStore {
       let original = document, generation = layerPanelGeneration
       let clipboardRevision = clipboard.changeCount
       let input = try action.requiresInitialClipboard ? clipboard.read() : nil
-      let masterDocuments = action.usesMasterPalette ? NSDocumentController.shared.documents.compactMap { $0 as? CraftNSDocument }
-        .filter { $0.store.document.id != original.id && $0.store.document.depth == .u8 && [.rgb, .grayscale].contains($0.store.document.colorMode) } : []
+      let masterDocuments = action.usesMasterPalette || action.usesExternalRetouchSources ? NSDocumentController.shared.documents.compactMap { $0 as? CraftNSDocument }
+        .filter { $0.store.document.id != original.id && (action.usesExternalRetouchSources || ($0.store.document.depth == .u8 && [.rgb, .grayscale].contains($0.store.document.colorMode))) } : []
       let masters = masterDocuments.map { $0.store.document }
       geometryBusy = true; renderTask?.cancel(); status = "Play \(action.name)"
       geometryTask = Task { [weak self] in

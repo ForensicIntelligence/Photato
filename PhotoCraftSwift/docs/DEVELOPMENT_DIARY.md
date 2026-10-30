@@ -19,7 +19,11 @@ Photato is an independent native Swift implementation, with licensed code ported
 
 **Source published (step254):** The complete qualified step253 source is committed and pushed to private GitHub main as [`4b3fdb6`](https://github.com/ForensicIntelligence/Photato/commit/4b3fdb6cd08c07a32d8f47f627c4687c838f10d3). All2374 published qualification inputs match the tested candidate;1057 original Rust files are unchanged. Native source, tests/fixtures, Xcode project, scripts, assets and development records are included. Generated model/cache files, builds, runtime logs and private working documents are excluded. GitHub confirms the commit and private visibility. The source passed2660 full optimized tests; no new app installation or binary upload accompanies this source delivery. [Receipt](SOURCE_PUBLICATION_254.json).
 
-**Current checkpoint (step253):** Embedded PDF images now open through the native Images selector and matching inspection/import/cancel API. Page/Form discovery, reused and inline images, intrinsic dimensions, color/depth controls and atomic editable-document publication share the native engine. 40 focused and2660 full optimized tests pass on2406 unchanged inputs. Independent checks match60 original RGBA channels,8 grayscale endpoint channels and25600 enlarged-thumbnail channels; existing page/crop/rotation comparisons also pass. Exact image ordering/defaults/color/masks, pattern/annotation images, vector Smart Objects, Photoshop PDF editing data and live/platform parity remain open. Installed221/private universal243 are unchanged.
+**Current checkpoint (step277):** Nine native retouch tools now record semantic Actions21 and share retouch.stroke in the optional Photato API. Playback resamples portable layer/source recipes, with explicit external-source admission and atomic history. All 88 focused and 2801 full optimized tests pass on2484 frozen inputs; native Actions recording/playback and separate Preview277 delivery are verified. Full Photoshop/Adobe descriptors/ATN, physical60fps and platform qualification remain open.
+
+**Previous pause (step276):** Paused at the maintainer’s request on stable Preview275. All2791 full tests previously passed;2478 compiler/test inputs and the delivered app/ZIP hashes are reverified unchanged. Retouch Actions/API investigation is saved, with no implementation started. No new application build or test run was needed for this documentation-only handoff. [Resume record](PAUSE_CHECKPOINT_276.json).
+
+**Latest implementation (step275):** Clone Stamp, Dodge/Burn/Sponge and Blur/Sharpen/Smudge now retain validated preview work through release, appending only unseen samples. On the owned 24 MP fixture, eligible release commitment improves from 12–40 ms to 0.8–1.0 ms with exact native command pixels and one history entry. All 50 focused and 2791 full optimized tests pass on 2478 frozen inputs. Native painting/history and separate Preview 275 packaging are verified. Healing final processing, retouch Actions/direct APIs, physical 60 fps and full Photoshop/platform parity remain open.
 
 **Earlier native keyframe milestone (step234):** Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged.
 
@@ -566,6 +570,29 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-29 | 256 | [Publish qualified PDF Smart Object source](DEVLOG.md#dev-step-256) |
 | 2026-10-29 | 257 | [General embedded placement workflow](DEVLOG.md#dev-step-257) |
 | 2026-10-29 | 258 | [Publish qualified embedded placement source](DEVLOG.md#dev-step-258) |
+| 2026-10-29 | 259 | [PDF source editing and completion dashboard repair](DEVLOG.md#dev-step-259) |
+| 2026-10-29 | 260 | [Retained PDF page PSD/PSB interchange](DEVLOG.md#dev-step-260) |
+| 2026-10-29 | 261 | [Linked-source work, preserved and parked](DEVLOG.md#dev-step-261) |
+| 2026-10-29 | 262 | [Interactive painting responsiveness](DEVLOG.md#dev-step-262) |
+| 2026-10-29 | 263 | [Interactive retouching responsiveness](DEVLOG.md#dev-step-263) |
+| 2026-10-29 | 264 | [Large-image toning responsiveness](DEVLOG.md#dev-step-264) |
+| 2026-10-29 | 265 | [Retained Focus-tool feedback](DEVLOG.md#dev-step-265) |
+| 2026-10-29 | 266 | [Faster stroke startup](DEVLOG.md#dev-step-266) |
+| 2026-10-29 | 267 | [Prepare the canvas at the right zoom](DEVLOG.md#dev-step-267) |
+| 2026-10-29 | 268 | [Redraw only changing feedback](DEVLOG.md#dev-step-268) |
+| 2026-10-29 | 269 | [Measure native editing feedback](DEVLOG.md#dev-step-269) |
+| 2026-10-30 | 270 | [Present accepted editing previews](DEVLOG.md#dev-step-270) |
+| 2026-10-30 | 271 | [Use the current preview and restore tool focus](DEVLOG.md#dev-step-271) |
+| 2026-10-30 | 272 | [Layer opacity slider](DEVLOG.md#dev-step-272) |
+| 2026-10-30 | 273 | [Held-pointer brush smoothing](DEVLOG.md#dev-step-273) |
+| 2026-10-30 | 274 | [Brush release responsiveness](DEVLOG.md#dev-step-274) |
+| 2026-10-30 | 275 | [Retouch release responsiveness](DEVLOG.md#dev-step-275) |
+| 2026-10-30 | 276 | [Stable preview pause and retouch automation handoff](DEVLOG.md#dev-step-276) |
+| 2026-10-30 | 277 | [Semantic retouch Actions and API](DEVLOG.md#dev-step-277) |
+| 2026-10-30 | 278 | [Large-document architecture](DEVLOG.md#dev-step-278) |
+| 2026-10-30 | 279 | [Disk-backed dense raster input](DEVLOG.md#dev-step-279) |
+| 2026-10-30 | 280 | [Paged native persistence and large file IO](DEVLOG.md#dev-step-280) |
+| 2026-10-30 | 281 | [Publish qualified native source280](DEVLOG.md#dev-step-281) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1378,3 +1405,200 @@ Continue major L05/D01 with genuine PDF source editing and editable PSD/PDF inte
 A complete source snapshot is committed and verified on private GitHub main from the qualified step257 candidate. It includes transform previews for raster, native, PSD/PSB and camera RAW placement; Camera Raw settings before placement; original-source retention; atomic cancellation/history; and the matching API workflows. All 2,419 qualification inputs and the compiled executable match the candidate that passed 70 focused and 2,690 full optimized tests. Sources, tests/fixtures, the Xcode project, scripts, assets, notices and development records are included alongside the unchanged Rust snapshot.
 
 The repository remains private until release day. Generated optional models, build products, runtime evidence and private working documents are excluded; model reconstruction instructions are included. This source delivery does not replace the installed app or upload a new binary. Passing native tests does not establish full Photoshop parity. Source commit: [`5115d64`](https://github.com/ForensicIntelligence/Photato/commit/5115d649088720c395b3f3f5793e6f0fc361ead3). [Verified receipt](SOURCE_PUBLICATION_258.json). [Detailed record](DEVLOG.md#dev-step-258).
+
+## 2026-10-29 — Step259: edit retained PDF sources and restore dashboard updates
+
+PDF Edit Contents now creates a durable associated-editor working copy. Atomic and in-place saves update shared PDF instances in one Undo transaction while retaining page/image selection and transforms. Busy edits wait; stale sources, cancellation, invalid PDFs and closed parents cannot commit. The Photato source upload/download/cancel/session APIs share the native engine, with an Adobe resource-job equivalence check. All 53 focused and 2,699 full optimized tests pass on 2,422 unchanged inputs; independent checks match 3,072 analytic RGBA channels. Live editor handoff, restart recovery UI, full PDF/PSD interchange, linked sources and exact/platform fidelity remain open. Installed221, private universal243 and published source257 remain unchanged.
+
+The associated macOS editor receives a durable original PDF copy. Saving updates the parent only after active work finishes; Undo or another source edit creates a conflict that needs explicit Apply Saved PDF. Closing or stopping leaves the working file intact. Tests use an injected editor opener and real filesystem events; they do not establish live third-party editor acceptance. Two compiler failures were preserved and repaired before the focused and full suites passed.
+
+The maintainer also found Completed Tasks stuck at checkpoint227. Its parser understood only older completion/test record shapes. The repaired companion recognizes both generations, restores qualified later checkpoints and test totals, and keeps unfinished work separate. Thirteen companion regression tests and desktop/mobile checks pass, including a repaired narrow-screen overflow. No broad parity package was closed by either change.
+
+Continue major L05/D01 with editable PSD/PDF interchange from independent public/owned-file evidence, then linked-source persistence, relink/update and packaging. Qualify native PDF editor handoff without disturbing user documents; keep full vector/annotation rendering and exact/platform gates open. [Detailed record](DEVLOG.md#dev-step-259).
+
+## 2026-10-29 — Step260: retain editable PDF pages across PSD and PSB
+
+Retained PDF page Smart Objects now import/export through PSD and PSB with original source bytes, page/crop selection, dimensions/resolution and shared affine instances. Transformed unfeathered raster masks are projected only in the export copy. Native persistence, Photato binary transfers and Adobe resource jobs share the codec. All40 focused and2708 full optimized tests pass on2430 unchanged inputs. Independent checks validate24 source payloads and186624 RGBA values; Photoshop2026 opens native PSD/PSB and rerenders Media/page2 and Trim/page1 at200%. PDF image-index/antialias/Warp variants, transformed feathered masks, linked files, general PDF rendering and full exact/live/platform parity remain open. Installed221, private universal243 and published source257 remain unchanged.
+
+PDF placements can travel through supported PSD/PSB files while preserving their original PDF bytes. Photoshop itself may extract a page into a new one-page PDF; the reader preserves that embedded source exactly. Normal UI observations and owned test files establish the supported records. The first focused run exposed a transformed-mask export rejection; the repaired export projects mask coverage without changing the native source. The independent checker also had one filename mismatch, preserved and repaired separately.
+
+The independent comparisons include a Photoshop re-save and forced200% vector rerenders, not just native round trips. They qualify these small owned fixtures, not every PDF or Photoshop operation. The developer dashboard picks up qualified completion records automatically.
+
+Continue major L05 with linked-source persistence, source availability/status, relink/update/embed and packaging through shared native/API transactions. Preserve the qualified PDF page interchange and defer fine rendering/default/platform parity gates without marking the broad workflow closed. [Detailed record](DEVLOG.md#dev-step-260).
+
+## 2026-10-29 — Step261: linked-source work, preserved and parked
+
+Work began on linked Smart Objects, source updates and packaging. Those edits were incomplete and had not been compiled or tested when the maintainer reported laggy painting. All thirteen modified and four new files were preserved with hashes, then the qualified step260 sources were restored. This is unfinished work, not a completed feature. [Detailed record](DEVLOG.md#dev-step-261).
+
+## 2026-10-29 — Step262: make painting respond promptly
+
+The maintainer reported laggy, jagged brush feedback and set a 60fps target. Profiling found that each preview replayed the entire stroke and processed the whole canvas. The new ordinary-brush path retains stroke coverage, accepts every delivered input sample and updates only changed pixels. Zoomed-out display pixels and transparency decoration are cached. Preview scheduling follows a 60Hz deadline, while document edits and Undo still use the same transactional commands. The optional API reports the target, published preview count, displayed sample count and latest render duration.
+
+A first tiled-image approach changed fractional-zoom filtering and was rejected. Dense-image profiling then identified repeated validation and minification costs. The full suite also caught Clone Stamp cancellation leaving event coalescing disabled; explicit cancellation and lifetime cleanup repaired it. All attempts, failures and measured scopes are preserved.
+
+Ordinary brush previews now retain stroke work and update only damaged pixels, with cached canvas display and 60Hz scheduling. All 64 focused and 2721 full optimized tests pass on 2440 frozen inputs. Continuous-input CPU benchmarks preserve all 240 samples and target 60 previews/second; they do not measure physical display presentation. Special tools, large-brush spikes and full platform/Photoshop parity remain open. Linked-source261 is parked.
+
+On the final candidate, the 24-megapixel sequential preview falls from 156.1ms to 3.5ms at the95th percentile. With a dense image and two adjustment layers, sampled preview work is6.2ms and offscreen drawing4.0ms at that percentile. The benchmark measures CPU preparation and offscreen drawing, not photons reaching the screen. Large-brush spikes and the remaining special-tool paths still need qualification. No full Photoshop parity or universal 60fps guarantee is claimed. [Detailed record](DEVLOG.md#dev-step-262).
+
+Live native checks confirm painting, erasing, undo/redo and zoomed workspace containment on an owned document. A separate Apple Silicon preview app is available locally; the existing installed app is unchanged. Cancellation and input cleanup are covered by automated lifecycle tests. Physical display timing and tablet acceptance remain open.
+
+A final packaging check caught Finder metadata invalidating the Desktop app signature. The verified preview is therefore stored separately in Applications and supplied as a clean ZIP; extracting that ZIP also passes signature verification.
+
+
+## 2026-10-29 — Step263: keep retouching visible while input continues
+
+The painting performance work exposed the same problem in retouching: every new sample could cancel a preview already being calculated. On a dense24-megapixel image, Clone Stamp showed no new previews during two seconds of continuous input. It only displayed the result afterward.
+
+Retouching now keeps all incoming samples while one paced preview finishes. Fixed-grid Clone Stamp and Spot Healing markers also retain coverage calculated earlier in the stroke. Healing, Dodge/Burn/Sponge and Blur/Sharpen/Smudge retain their existing algorithms with the improved scheduling. Final edits still create one Undo step. The optional API reports preview activity and counters; this does not claim that the currently missing general retouch-stroke API commands exist.
+
+The same24MP experiment now publishes119 previews during1.99 seconds of input, followed by the final snapshot, with all240 samples preserved. Clone Stamp's small-image sequential p95 falls from4.89ms to3.12ms. We checked144 stored pre-change native pixel prefixes, three pixel depths, transformed sampling, masks, selection and transparency locks. All124 focused and2731 full optimized tests pass. Native Smudge/Blur/Spot Healing, Undo/Redo and150% canvas containment were exercised on disposable artwork, then discarded.
+
+A separately signed Apple Silicon preview and ZIP preserve the existing installed app. This is a local test build, not a notarized universal release. CPU snapshot publication is not physical display presentation: first-frame work, longer/heavier strokes, large retouch documents, tablet input and all-platform60fps still need qualification. Smudge's measured final drain exceeded one frame interval in one case, and its algorithm/spacing remains a Photoshop fidelity gap. Linked-source work from261 stays preserved for resumption after the current feedback priority.
+
+## 2026-10-29 — Step264: faster Dodge, Burn and Sponge on large images
+
+The next measurements found that toning tools repeated all prior stroke work for every preview. Dodge, Burn and Sponge now keep their unquantized working pixels between updates and calculate only the new brush dabs. The final image, captured tool settings, cancellation and one-step Undo behavior remain the same. The API describes the improved preview capability; missing general retouch-stroke commands remain explicitly open.
+
+On a 24-megapixel test image, each tool publishes119 previews during about1.99 seconds of input, compared with56–58 before. Preview calculation at the95th percentile falls from42–45ms to9–12ms. Every one of240 input samples is preserved. We checked432 pre-change native pixel prefixes across three bit depths, selections, masks and transformed targets. All137 focused and2737 full optimized tests pass on2454 frozen inputs.
+
+Live native checks confirm lightening, darkening, desaturation and Undo/Redo on disposable gradient artwork. A file-dialog typing error and clipboard timeout were preserved as automation failures, then recovered through the visible path field. The edited fixture was discarded. Existing apps, packages and user artwork are unchanged; the normal local preview remains step263 while the remaining retouch work is checked together.
+
+The first preview still takes about94ms. Blur, Sharpen and Smudge remain slower on large images and are next. The visible repeated-dab texture also remains a smoothness/fidelity issue. CPU preview publication does not measure the frames actually presented by the display, and preserving Photato’s earlier pixels does not establish Photoshop pixel equivalence. Physical60fps, tablet input and full platform/workflow parity remain open. [Detailed record](DEVLOG.md#dev-step-264).
+
+## 2026-10-29 — Step265: keep Blur, Sharpen and Smudge work between previews
+
+Blur and Sharpen repeatedly rebuilt their neighborhoods; Smudge also rebuilt its paint pickup state. These tools now retain that work during supported strokes. Complete edits and previews share the same calculations. Strokes at unsupported boundaries or requiring larger layer storage use the complete renderer, preserving existing results.
+
+On the24-megapixel benchmark, Blur/Sharpen/Smudge publish119/119/119 previews during about two seconds, with95th-percentile preview work of9.33/7.71/10.34ms. Every case changes pixels, preserves all240 samples and matches the complete command. All648 saved native pixel prefixes match in both paths across three bit depths. All142 focused and2742 full optimized tests pass.
+
+The first two focused attempts exposed weak history fixtures: a smooth gradient produced no Blur or Sharpen edit, and protected Sharpen also left a hard checker pattern unchanged. The engine correctly avoided creating Undo entries for these no-ops. We preserved the failed runs, checked the fixtures independently, then required actual changes using textured artwork and an explicit sharpening option. A diagnostic expression also needed splitting for the Swift compiler. Application pixel code did not need alteration after the first test run.
+
+Native tools and Undo/Redo were checked on disposable artwork. A separate signed Apple Silicon preview and ZIP carry the verified changes, preserving the existing installation. The API describes the preview capabilities and keeps missing retouch submission commands explicit. Initial setup still takes substantially longer than one frame, and boundary/heavy cases, visible dab texture, tablet input and physical display timing remain open. CPU preview publication is not a universal60fps guarantee or proof of Photoshop pixel equivalence. [Detailed record](DEVLOG.md#dev-step-265).
+
+## 2026-10-29 — Step266: reduce the pause before a stroke appears
+
+Profiling found that startup repeatedly checked every pixel in already-validated images. Each24-megapixel scan took about11ms. Surface now retains proof that its privately owned tiles contain finite samples. Safe editing preserves that proof; decoding still checks untrusted data, and raw copies propagate it conservatively. Structural checks always run. Pixel values, file formats, undo semantics and equality are unchanged.
+
+The same validation benchmark now takes about0.04ms. Blur, Sharpen and Smudge startup improves from113–125ms to59–71ms. All six measured large-image toning/Focus tools preserve240 samples and exact native output while publishing119 previews during1.99 seconds. Ordinary painting publishes121 previews over the two-second stream; its24-megapixel case has6.57ms95th-percentile render work.
+
+All74 focused and2748 full optimized tests pass. Six new storage regressions cover malformed archives, non-finite padding, cached undo tiles, forged validation metadata, overflow, raw copies, repair and copy-on-write. Native painting and Undo/Redo are checked on disposable artwork. A separate signed Apple Silicon preview is available; previous installations remain intact. API capability metadata describes the optimization without claiming new retouch commands.
+
+This improves responsiveness but does not finish the performance goal: large-image startup still exceeds one frame, and visible jagged/dab texture, heavy tools, tablet curves and physical display timing need further work. No universal60fps or Photoshop pixel-equivalence claim is made. [Detailed record](DEVLOG.md#dev-step-266).
+
+## 2026-10-29 — Step267: prepare the canvas at the right zoom
+
+The remaining startup delay had a specific cause: initial layout and early zoom changes could leave the pending canvas preview sized for an earlier viewport. The first stroke then rebuilt the entire minified image. Four regression cases reproduced incorrect dimensions for initial fit, explicit zoom, rapid zoom changes and Artboard fit. The app now refreshes presentation even before its first image is ready; Artboard fit uses the same path.
+
+The24-megapixel moving-stroke comparison improves Dodge, Blur and Smudge startup from71–73ms to9–11ms. Initial canvas preparation remains about2.6 seconds, and a separate extra-warmup comparison confirms the normal path is already ready. All six large-image retouch tools preserve240 samples and complete-command pixels while publishing119 previews during1.99 seconds. Previous through266 startup reports remain preserved and are now explicitly identified as including cold rescaling after direct zoom assignment.
+
+An early benchmark incorrectly required a stationary first dab to alter pixels. XCTest tried to describe both entire24-megapixel documents on failure; we stopped the owned worker, preserved its oversized diagnostic losslessly in a compressed archive, and changed the test to a moving two-point stroke with bounded failure output. The repaired baseline exposed eight dimension assertions across four cases. All54 focused and2753 full optimized tests pass after the app correction.
+
+Native loading, zoom, painting and history were checked with disposable artwork; a separate signed Apple Silicon preview is packaged. No working pixels, brush kernels, file formats or API commands changed. Native input sampling and physical frame timing are next: these CPU results do not prove universal60fps or resolve every jagged stroke. [Detailed record](DEVLOG.md#dev-step-267).
+
+## 2026-10-29 — Step268: redraw only changing feedback
+
+The input audit corrected our previous next-step note: scoped uncoalesced mouse input was already implemented and tested in262. No duplicate input mechanism was added. The remaining source inspection found that every painting sample requested a full canvas redraw even before new pixels arrived, and moving a retouch cursor also invalidated the whole view. Painting now redraws with published previews, while pointer feedback redraws its old and new outlines and source marker. An unclipped Clone Source overlay still refreshes the whole image.
+
+Two initial test attempts incorrectly relied on AppKit's layer-backed needsDisplay getter; the first also omitted the flipped event-coordinate conversion. Their failures are preserved. A subsequent optimized test found a clipped-edge nearest-neighbor mismatch at150% zoom. An independent Quartz reproduction isolated it; magnified damage now aligns to both source and backing pixels, with full redraw retained for fractional pan or noncommensurate zoom. The failed candidate and its pixel differences are preserved. Corrected tests verify all1001 curved Brush/Eraser samples, exact native output and Undo, and independently compare partial redraws with full canvas images across64 cases. Painting input no longer requests redraw of unchanged previews; all samples still feed the paced worker. Retouch cursor feedback invalidates old/new rings and same-document source markers; unclipped source overlays retain whole-image redraw. All64 partial/full canvas comparisons match byte for byte. In the bounded offscreen cases, median draw cost is0.36ms versus3.07ms for whole-canvas redraw, touching2.17% of the canvas. All32 focused and2756 full optimized tests pass on2464 frozen inputs; native editing/history and a separate signed preview are checked. Physical60fps, jagged curves and broad heavy-tool qualification remain open.
+
+The Photoshop window was inspected read-only, but attempted tool selection failed through the UI connector; a follow-up screenshot confirmed unchanged Paint Bucket settings and artwork. This increment does not claim reference brush-default or kernel parity. Native input curves and physical display timing remain open. [Detailed record](DEVLOG.md#dev-step-268).
+
+## 2026-10-29 — Step269: measure native editing feedback
+
+Earlier checkpoints reduced preview preparation and redraw work, but did not measure when a live window draws each accepted preview. The optional local recorder now correlates input sample counts and receipt times, preparation, accepted revisions and AppKit drawing. View display-link callbacks add scheduling markers. These are CPU/scheduling observations, not physical frame or input-to-photon measurements. Normal editing creates neither recorder nor probe. No painting kernel, smoothing default or pacing change is claimed here.
+
+Reports exclude artwork, coordinates and document names. Diagnostic buffers are bounded, overflow is explicit, stale stroke revisions are rejected and unique output is asynchronous. Apple documentation identified an incompatible pair of Foundation write flags while the first frozen candidate compiled; its test run confirmed the fatal precondition. The failed attempt and corrected atomic-write candidate are preserved. Tests cover correlation, bounds, stale previews, cancellation, API metadata, exact native painting pixels and Undo. Opt-in bounded timing now correlates brush/retouch input, preparation, accepted previews and AppKit draws, with display-link scheduling markers. Normal editing has no recorder or display probe. All35 focused optimized tests pass on2466 frozen inputs. The full run records2432 passing cases before interruption during prolonged native Save-panel waits in the locked session; it is not a full-suite pass. The isolated diagnostic app is signed and matches tested code. Live trace collection is pending because the Mac is locked; no physical60fps or new pacing improvement is claimed. Normal preview remains268.
+
+Live inspection could not start because the Mac was locked and the UI connector could not unlock it. Manual unlock was requested while the automated suite ran. The separate diagnostic app is ready for owned-fixture painting, history verification and trace collection after unlock. The full suite then encountered prolonged native Save-panel initialization waits; a stack sample was saved, and the owned test process was stopped. Its completed cases have no assertion failures, but the suite is incomplete and must be rerun after unlock. The existing normal preview and user artwork are unchanged. The overall feature and60fps goals remain open. [Detailed record](DEVLOG.md#dev-step-269).
+
+**Step269 availability follow-up:** The Mac remains locked across three consecutive goal turns. Native UI access and the remaining full-suite/painting trace are blocked until manual unlock; source02 and normal preview268 are unchanged. The interrupted full run and failed initial report writer remain preserved. This availability check is not a new implementation milestone; live frame pacing and the complete Photoshop goal remain unqualified.
+
+**2026-10-30 — Step269 qualification after unlock.** Native access resumed and the full rerun passed. Owned Brush and Blur strokes, Undo/Redo and viewport containment were checked in the isolated app; the original test image was left unchanged and the diagnostic app quit. Short automation drags supplied only3–4 samples, so their traces could not establish continuous frame cadence. A new opt-in test therefore streams240 store-generated points over2 seconds into a real native window hosting the full workspace, recording actual AppKit draw callbacks without directly calling draw. It covers Brush, Blur, Dodge and Smudge and verifies all samples and exact complete-command pixels. These synthetic store gestures are distinct from physical tablet or mouse input.
+
+Optional per-stroke timing now correlates input, preparation, accepted previews and native AppKit draws. The real-workspace benchmark retains all240 samples and exact native pixels for Brush, Blur, Dodge and Smudge, while recording104–111 distinct preview draws during each roughly2-second stroke and about two canvas draws per accepted preview. Median newest-input-to-draw delay is20.7–22.6ms. All36 focused and2760 full optimized tests pass on2467 frozen inputs. Owned native painting/Undo/Redo and a separate signed preview are verified. This is scheduling/CPU evidence, not physical60fps; no kernel or pacing change is claimed in269. The roughly doubled draw count provides a concrete next investigation: remove redundant prepublication workspace updates, then repeat the same measurement. Earlier failures, locked-session attempts and the incomplete full run remain preserved. [Detailed record](DEVLOG.md#dev-step-269).
+
+<a id="diary-step-270"></a>
+
+## 2026-10-30 — Step270: present accepted editing previews
+
+Canvas and thumbnail updates now follow accepted preview publication, while live strokes avoid the per-preview busy indicator. The native-window Brush/Blur/Dodge/Smudge fixture retains all240 samples and exact native command pixels with 119–120 distinct preview draws over about2 seconds, each accepted preview drawn once instead of nearly twice. Median distinct-draw intervals are 16.57–16.80ms. All105 focused and2762 full optimized tests pass on2468 frozen inputs. Native painting/history checks and a separate signed preview are verified. Latency remains tool/run dependent; this is AppKit scheduling evidence, not physical60fps.
+
+The previous native-window trace showed almost two canvas draws for every accepted preview. The workspace was reacting when rendering started, before the next pixels existed. A separate accepted-presentation counter now updates the canvas and thumbnails after publication; request revisions still protect APIs and reject stale renders. The busy indicator no longer invalidates the workspace for each live stroke. Painting algorithms and stored document pixels are unchanged.
+
+The first focused run found a new test checking the wrong zoom buffer. That failed attempt and its measurements remain preserved; the corrected test checks both the reduced display preview and retained full-resolution image. Both performance attempts are retained because latency varies with timing phase, and one first-attempt Dodge latency was worse despite better cadence. Physical60fps, high-rate tablet curves, jaggedness and heavy-tool cases remain open. [Detailed record](DEVLOG.md#dev-step-270).
+
+## 2026-10-30 — Step271: use the current preview and restore tool focus
+
+Native zoom Return now releases keyboard focus for tool shortcuts, and external zoom/Fit changes supersede stale percentage drafts while unrelated updates preserve typing. The obsolete159 probe was retired after a byte-identical retained copy of its open document was verified; that document is now open in normal Preview271. All71 focused and2764 full optimized tests pass on2468 frozen inputs. Native zoom/shortcut/history checks and signed packaging pass. No new frame-rate or Photoshop pixel-equivalence claim is made; sustained60fps and stroke continuity remain open.
+
+Process and native-window inspection revealed that the only running Photato was the old159 probe, which predates the painting improvements. A fresh save from that actual window matched the protected original byte for byte. Its retained copy opened in the current build with the correct title and canvas clipping, then the old probe was closed. The handoff also exposed a stale zoom field that retained keyboard focus after Return, swallowing tool shortcuts. That focus defect is now repaired and tested; unrelated typing and document cancellation guards are preserved.
+
+Photoshop reference tool selection failed through the UI connector and did not alter the existing document. Adobe’s published smoothing description identifies pause catch-up as the next concrete brush behavior to reproduce; current native catch-up appears to require a new input point. This is a research finding, not a claim that that behavior has been fixed. Physical60fps, default/kernel equivalence and broad platform qualification remain open. [Detailed record](DEVLOG.md#dev-step-271).
+
+## 2026-10-30 — Step272: layer opacity slider
+
+The Layers panel now includes an arrow-triggered native opacity slider alongside numeric entry. Dragging previews the canvas; Return or outside dismissal commits one shared opacity command, and Escape preserves document/history/dirty state. Keyboard arrows use 1% steps and Shift uses 10%. All 69 focused and 2770 full optimized tests pass on 2470 frozen inputs; native slider/history checks and separate Preview272 packaging are verified.
+
+The requested arrow beside the opacity value opens a compact slider. Temporary values affect the canvas preview without creating history entries; acceptance uses the same native command as numeric entry and the optional API. Cancellation preserves existing redo history. Draft ownership prevents a stale pop-up from editing a replacement document. Adobe’s published control guidance informed Return, Escape and keyboard increments; the installed reference screenshot established the arrow placement, while the failed reference click is retained in the detailed record.
+
+Live inspection verifies native slider accessibility values, canvas preview, toggle acceptance, numeric entry and Undo/Redo. The connector cannot reliably target the separate popup for pointer drags or key delivery; the actual shown-window focus, Shift+Down and Escape paths are verified by AppKit regression tests. Physical popup interaction remains a qualification limit. The prior brush catch-up and sustained 60fps work remains active. [Detailed record](DEVLOG.md#dev-step-272).
+
+## 2026-10-30 — Step273: held-pointer brush smoothing
+
+Brush/Pencil/Mixer/Eraser smoothing now advances toward a paused pointer using a bounded native clock, while catch-up on release waits for commitment. Timed samples retain tablet attributes and share the final native/API history path. Both initial defects are reproduced; all 62 focused and 2777 full optimized tests pass on 2471 frozen inputs. Native painting/history checks and separate Preview273 packaging are verified. Physical60fps and exact Photoshop smoothing remain open.
+
+Investigation found two related problems: stationary updates were generated only by airbrush build-up, and previews applied catch-up-on-release before the stroke was released. Two regression cases reproduced both defects before repair. The held-stroke clock now uses the same smoothing geometry as the painter, stops when its work is done, and preserves the samples used by final commands. Native tests cover the timer, disabled/pulled-string guards, tool/window/document cancellation, ordinary and fallback painting, masks, tablet attributes and API/history replay. The opacity slider from272 remains available. This is a bounded editing-feedback improvement; physical frame rate, tablet curves, exact Adobe kernels and broad workflow parity remain open. [Detailed record](DEVLOG.md#dev-step-273).
+
+## 2026-10-30 — Step274: brush release responsiveness
+
+Ordinary raster brush strokes now retain preview work through release, processing only unseen samples and the release tail. The owned 24 MP fixture improves release commitment from about 290 ms to 1.0–6.0 ms with exact native command pixels and one history entry. All 69 focused and 2783 full optimized tests pass on 2474 frozen inputs. Native painting/history and separate Preview 274 packaging are verified. Physical 60 fps, special-tool release work and full Photoshop/platform parity remain open.
+
+The release path discarded completed brush work and replayed every dab. A retained native stroke owner now validates its target and input prefix, finishes the remaining samples and release-only smoothing, and uses the existing history transaction. Actions still record the original command rather than replacement pixels. Tests compare full-command results across depths, dynamics, transforms and selections, then verify replay, cancellation and stale-session rejection. The opacity slider remains available. The timed fixture and bounded native checks establish this improvement, while physical frame rate and Photoshop numerical equivalence remain open. [Detailed record](DEVLOG.md#dev-step-274).
+
+## 2026-10-30 — Step275: retouch release responsiveness
+
+Clone Stamp, Dodge/Burn/Sponge and Blur/Sharpen/Smudge now retain validated preview work through release, appending only unseen samples. On the owned 24 MP fixture, eligible release commitment improves from 12–40 ms to 0.8–1.0 ms with exact native command pixels and one history entry. All 50 focused and 2791 full optimized tests pass on 2478 frozen inputs. Native painting/history and separate Preview 275 packaging are verified. Healing final processing, retouch Actions/direct APIs, physical 60 fps and full Photoshop/platform parity remain open.
+
+The retouch release path discarded completed preview work and rebuilt each full stroke. A shared native owner now keeps validated Clone Stamp, toning and focus buffers, completes unseen input and commits through the same history transaction. Existing renderer interfaces remain available. Healing markers never substitute for finished output; unsupported storage and boundary cases still use complete preparation. Tests cover pixels and masks across depths, transforms and selections, pending input, cancellation and replaced documents, plus API history and busy-state behavior. The audit also confirms an existing gap: semantic retouch Actions and general stroke APIs remain unsupported and are explicitly tracked. These changes improve responsiveness without claiming physical frame rate or Photoshop numerical equivalence. [Detailed record](DEVLOG.md#dev-step-275).
+
+## 2026-10-30 — Step276: stable pause before a model switch
+
+Paused at the maintainer’s request on stable Preview275. All2791 full tests previously passed;2478 compiler/test inputs and the delivered app/ZIP hashes are reverified unchanged. Retouch Actions/API investigation is saved, with no implementation started. No new application build or test run was needed for this documentation-only handoff.
+
+The next investigation identified how Actions and an optional retouch stroke API can share the existing native tools. Sampling provenance and portable source references need explicit handling; the current code stores completed sample images without the recipe needed for portable replay. These findings and acceptance checks are saved for resumption. No new feature was added during this handoff. The broad Photoshop-equivalence goal remains unfinished and paused. [Detailed record](DEVLOG.md#dev-step-276).
+
+## 2026-10-30 — Step277: retouch Actions and API
+
+Nine native retouch tools now record semantic Actions21 and share retouch.stroke in the optional Photato API. Playback resamples portable layer/source recipes, with explicit external-source admission and atomic history. All 88 focused and 2801 full optimized tests pass on2484 frozen inputs; native Actions recording/playback and separate Preview277 delivery are verified. Full Photoshop/Adobe descriptors/ATN, physical60fps and platform qualification remain open.
+
+Actions retain the original samples, settings and source recipe. Each playback samples its current document; external sources must be explicit and unambiguous. The API uses the same native commands and protects pending work against source changes, revocation and cancellation. Existing older Action formats remain supported. Tests prove native equivalence across depths, masks, transforms and selections; Photoshop numerical parity remains a separate open requirement. [Detailed record](DEVLOG.md#dev-step-277).
+
+
+### 2026-10-30 — Large-document architecture (step278)
+
+Native RGB canvases now accept 300,000 pixels per side (90 GP logical area), with sparse raster composition, bounded viewport display and native/API brush, history and file workflows. All 102 focused and 2,810 full optimized tests pass on 2,488 frozen inputs; native maximum-size create/paint/save/reopen and Preview 278 are verified. Dense disk-backed images, streamed large PSB/native files and full operation, mode and platform capacity parity remain open.
+
+Adobe’s public specification supplies the geometry target. Native testing creates a300,000-square RGB8 document at0.27% fit, paints at100%, checks Undo/Redo, saves/reopens the owned33,936-byte sparse file and confirms the stroke. Python independently verifies its manifest dimensions/hash. Preserve the initial compile errors, interrupted main-thread Save scan, legacy boundary/zoom/fixture corrections and failed independent parser endian assumption beside their repaired evidence. The full density/large-file/operation/platform requirement remains open; this is the first capacity foundation. [Detailed record](DEVLOG.md#dev-step-278).
+
+
+## 2026-10-30 — Step279: disk-backed dense raster input
+
+Large RGB image import now converts bounded patches into immutable disk-backed tiles; painting promotes only edited tiles and history shares existing samples. An owned40MP PNG passes native Open/paint/Undo/Redo/save/reopen and authenticated API import/edit/history. All48 focused and2820 full optimized tests pass; separate Preview279 is verified. Full dense90GP/large PSB/native streaming and operation/platform capacity parity remain open.
+
+The former36MP restriction also affected real image input. Large RGB images now convert in2048×64 patches into private anonymous scratch files; immutable mapped tiles survive history snapshots and promote only touched samples into writable memory. Owned tests preserve8/16/32-bit samples, HDR/signed zero, profiles, EXIF orientation, cancellation, capacity failure and concurrent COW isolation. API storage accounting distinguishes owned heap from mapped references and OS-managed pages. An owned8000×5000 PNG provides a real40MP native/API workflow. Preserve the initial syntax failure, its repair and the final local-directory validation change.
+
+This is runtime paging, not complete dense Photoshop capacity: native reopening still restores owned arrays; large PSB/native streaming, hierarchical indexing, packed cold samples, all operations, disk stress and platform/display qualification remain open. [Detailed evidence](DEVLOG.md#dev-step-279).
+
+
+## 2026-10-30 — Step280: paged native persistence and large file IO
+
+Native file Open/Save now stream past the former512MiB file boundary, and checked chunked tile input stays mapped on reopen/API upload. Tests cover an owned >512MiB file, real40MP native editing and134MP/2GiB repeated tile references across all depths. All71 focused and2829 full optimized tests pass; separate Preview280 is verified. Hierarchical indexes, large PSB/all-operation/platform capacity parity remain open.
+
+Native reopening now validates each unique tile and keeps its samples in immutable private scratch. Mapped snapshots preserve copy-on-write and history; file identity, checksums, finite samples and cancellation remain checked before publication. The API shares this reader and reports file, Data, metadata and owned-storage limits separately. An independent native container crosses512MiB while reads/writes stay in64KiB chunks; repacking/reopening preserves its hidden sample bits. A separate high-entropy HDR fixture writes585693075bytes and reopens with exact sample probes. All-depth134MP repeated-reference and real40MP native/API workflows are separate evidence, not a dense90GP proof.
+
+Correct an earlier interpretation: the gray image thumbnail was present, with checkerboard in its aspect-fit margins. An opaque output test and read-only screenshot pixel inspection rule out the suspected missing-thumbnail defect; no speculative UI fix was applied. Preserve the initial UUID/dab fixture failures and their repair. Full hierarchical indexes, large PSB/all operations, recovery/dense stress and platform/display parity remain open. [Detailed record](DEVLOG.md#dev-step-280).
+
+
+## 2026-10-30 — Step281: publish qualified native source280
+
+Prepare the complete source from the stable candidate that passed71 focused and2829 full optimized tests. It includes the painting/retouch feedback work and API/Actions,300000-side sparse canvases, disk-backed dense RGB input and checked native paging with file IO beyond512MiB. Preserve all qualified input hashes, the original Rust snapshot, repository history and private visibility. Generated optional models/caches, builds, runtime evidence and working documents remain excluded; reconstruction instructions remain included. Publication is under qualification; the verified commit receipt follows. This does not close Photoshop, capacity, chooser, platform or physical60fps gaps. [Detailed record](DEVLOG.md#dev-step-281).

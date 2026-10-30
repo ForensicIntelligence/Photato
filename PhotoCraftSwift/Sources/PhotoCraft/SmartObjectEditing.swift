@@ -18,7 +18,7 @@ extension EditorStore {
     clipboardTargetAvailable && activeLayer?.smartObject != nil
       && activeLayer.map { !document.isImageLocked($0.id) } == true
   }
-  var canEditSmartObjectContents: Bool {canEditSmartObject && activeLayer?.smartObject?.pdfSource == nil}
+  var canEditSmartObjectContents: Bool {canEditSmartObject}
   var canConvertSmartObject: Bool {
     clipboardTargetAvailable && !groupSelectionIDs.isEmpty
       && groupSelectionIDs.allSatisfy { !document.isLocked($0) }
@@ -49,6 +49,7 @@ extension EditorStore {
     }
   }
   func editSmartObjectContents() {
+    if activeLayer?.smartObject?.pdfSource != nil { beginPDFSourceEditing(); return }
     if activeLayer?.smartObject?.rawDevelopment != nil { beginRawDevelopment(); return }
     guard canEditSmartObjectContents, let layer = activeLayer, let source = layer.smartObject,
       let controller = documentController,

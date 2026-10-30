@@ -35,7 +35,7 @@ final class HealingWorkflowTests: XCTestCase {
     store.finishClone()
     await store.clonePrepareTask?.value
     await store.geometryTask?.value
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
   }
   @MainActor func testPreviewAndSingleUndoWithCapturedSettingsAndSource() async throws {
     let state = CloneSources()
@@ -46,7 +46,7 @@ final class HealingWorkflowTests: XCTestCase {
     let before = s.document
     s.beginClone(.init(x: 96, y: 32))
     await s.clonePrepareTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
     XCTAssertEqual(s.document, before)
     XCTAssertTrue(s.session.undoStack.isEmpty)
     XCTAssertFalse(s.canBeginLevels)

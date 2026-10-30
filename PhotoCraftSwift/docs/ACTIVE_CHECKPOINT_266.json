@@ -1,0 +1,83 @@
+{
+  "step": 266,
+  "recorded_at_utc": "2026-10-30T01:19:55.565077+00:00",
+  "source_manifest": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json",
+  "source_inputs": 2461,
+  "focused": {
+    "tests": 74,
+    "failures": 0,
+    "seconds": 87.118,
+    "log": "artifacts/runs/20261030T010127Z-266-stroke-start/focused01.log",
+    "sha256": "79b52c612b7041e76d424943243ee08323b8f6bfead4befdc5165106879faf13",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2748,
+    "failures": 0,
+    "seconds": 192.858,
+    "log": "artifacts/runs/20261030T010127Z-266-stroke-start/full01.log",
+    "sha256": "78fe08959c841ef43e9f0fe4c6dbda72efeb94d21a959646be3ecca24a4f5368",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "5b5130fb434dd25f0e996dfdb5ad7368f1b7077212ff84bc938918e218535d1d",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Surface retains a private finite-sample proof across safe mutations and conservative raw copies; untrusted decoding still scans all samples, structural checks always run, and equality/archives ignore proof.",
+    "Measured24MP validation and first-stroke latency improve while painting/retouch input preservation and exact complete-command output pass.",
+    "API capability metadata, six malformed-data/storage regressions, full native suite and separate signed local preview are qualified."
+  ],
+  "remaining": [
+    "Large24MP retouch startup still takes59\u201371ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
+    "Jagged curves, repeated dab texture, native mouse/tablet sampling, display presentation/input-to-photon latency and heavy/boundary/expanded/Healing paths remain unqualified. CPU snapshot cadence is not physical60fps.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Current capability/state metadata does not imply new commands or Adobe endpoints.",
+    "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 remains preserved until the current editing-performance priority is resolved."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T010127Z-266-stroke-start/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Native pixel storage now retains finite-sample validation across safe edits, avoiding redundant whole-image scans at stroke startup. Dense24MP validation falls from about11ms to0.04ms; Blur/Sharpen/Smudge startup falls from113\u2013125ms to59\u201371ms while retaining119 previews during1.99s, all240 samples and exact native output. Ordinary painting publishes121 previews over the two-second input stream, with6.57ms p95 render work at24MP. All74 focused and2748 full optimized tests pass on2461 frozen inputs. Native painting/Undo/Redo and a separate signed preview are verified. Startup, jagged/dab texture, heavy cases and physical60fps remain open.",
+  "stage": "Qualified stroke-start validation optimization",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 266,
+  "next": [
+    "Large24MP retouch startup still takes59\u201371ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
+    "Jagged curves, repeated dab texture, native mouse/tablet sampling, display presentation/input-to-photon latency and heavy/boundary/expanded/Healing paths remain unqualified. CPU snapshot cadence is not physical60fps."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 266.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "53eee1a256b61164670c5983a5f6100d58031ae536f04e46e63f30ce5b654304",
+    "tested_binary_sha256": "5b5130fb434dd25f0e996dfdb5ad7368f1b7077212ff84bc938918e218535d1d",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-266.zip",
+    "zip_sha256": "29b170d98f72a68701072835190217d744794569e533438f7a13dd06b3e9b1ff",
+    "zip_bytes": 38277098,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview266-check-ciigryqg/Photato Editing Preview 266.app"
+  }
+}

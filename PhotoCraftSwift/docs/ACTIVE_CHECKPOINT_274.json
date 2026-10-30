@@ -1,0 +1,84 @@
+{
+  "step": 274,
+  "recorded_at_utc": "2026-10-30T19:03:12.399893+00:00",
+  "source_manifest": "artifacts/runs/20261030T183758Z-274-brush-release/source02.json",
+  "source_inputs": 2474,
+  "focused": {
+    "tests": 69,
+    "failures": 0,
+    "seconds": 3.705,
+    "log": "artifacts/runs/20261030T183758Z-274-brush-release/focused02.log",
+    "sha256": "8a093d47a4a56b197d23bc8ae042d11177fe29cdeb8f90d5677810fd51805fe7",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2783,
+    "failures": 0,
+    "seconds": 197.014,
+    "log": "artifacts/runs/20261030T183758Z-274-brush-release/full01.log",
+    "sha256": "a5fb63327227d21bc5df0703d63648d455f0a37cf4f3fe6a0dac750df0ac6ab2",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "8b5b7cfbae9375fb7efb73398647acb4ddade7b0e9faf596459bcff624096f7f",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Ordinary raster brush release reuses retained coverage, preserves release-only smoothing and records the original timed stroke for Actions/Undo/API replay.",
+    "Release correctness across pixel depths, dynamics, selections/transforms, cancellation and replacement sessions passes 69 focused and 2783 full tests, plus measured latency improvement and native Preview274 painting/history acceptance."
+  ],
+  "remaining": [
+    "Continue editing responsiveness: inspect release work for retouch and fallback tools; retain the user60fps target and exact native output/history.",
+    "Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark disables preview pacing and measures native service cost, not physical display output.",
+    "Exact Photoshop smoothing/painting kernels, complete Photoshop workflows, physical Intel/macOS14/macOS26 and universal release qualification remain open. Opacity popup physical pointer delivery remains a prior qualification limit. Linked-source261 remains parked under the user editing-feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T183758Z-274-brush-release/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Ordinary raster brush strokes now retain preview work through release, processing only unseen samples and the release tail. The owned 24 MP fixture improves release commitment from about 290 ms to 1.0\u20136.0 ms with exact native command pixels and one history entry. All 69 focused and 2783 full optimized tests pass on 2474 frozen inputs. Native painting/history and separate Preview 274 packaging are verified. Physical 60 fps, special-tool release work and full Photoshop/platform parity remain open.",
+  "stage": "Brush release responsiveness qualified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 274,
+  "next": [
+    "Continue editing responsiveness: inspect release work for retouch and fallback tools; retain the user60fps target and exact native output/history."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 274.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "10efbb0005d6cc0af36b7f0b544acaa4490892c76932e25f43fb3ac595c91224",
+    "tested_binary_sha256": "8b5b7cfbae9375fb7efb73398647acb4ddade7b0e9faf596459bcff624096f7f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T183758Z-274-brush-release/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-274.zip",
+    "zip_sha256": "d40c4b13dced868fe7cdab4e3add4edc08b1875f3e892eb6af31ef81bdb56868",
+    "zip_bytes": 38361123,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview274-check-3kvbii1r/Photato Editing Preview 274.app"
+  },
+  "completed_this_increment": [
+    "Ordinary raster brush release reuses retained coverage, preserves release-only smoothing and records the original timed stroke for Actions/Undo/API replay.",
+    "Release correctness across pixel depths, dynamics, selections/transforms, cancellation and replacement sessions passes 69 focused and 2783 full tests, plus measured latency improvement and native Preview274 painting/history acceptance."
+  ]
+}

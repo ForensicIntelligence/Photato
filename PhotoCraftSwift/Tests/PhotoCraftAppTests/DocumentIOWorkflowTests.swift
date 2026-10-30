@@ -211,7 +211,7 @@ final class DocumentIOWorkflowTests: XCTestCase {
     XCTAssertThrowsError(try NativeArchive.decode(data, rasterByteLimit: -1))
   }
   func testUploadDimensionsRejectedBeforePixelDecodeAndRouteBudgets() async throws {
-    let header: [String: Any] = ["document": ["width": 100_000, "height": 100_000]]
+    let header: [String: Any] = ["document": ["width": 300_001, "height": 1]]
     let data = try PropertyListSerialization.data(
       fromPropertyList: header, format: .binary, options: 0)
     XCTAssertThrowsError(try DocumentIO.decodeUpload(data, native: true, name: "Huge")) { error in

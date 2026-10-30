@@ -1,12 +1,22 @@
 import Foundation
 
-private final class BrushCoverageTile {
+fileprivate final class BrushCoverageTile {
   var coverage=[Float](repeating:0,count:4096)
   var colors:[SIMD4<Float>]
+  func copied() -> BrushCoverageTile { let copy = BrushCoverageTile(color: !colors.isEmpty); copy.coverage = coverage; copy.colors = colors; return copy }
   init(color:Bool) { colors=color ? [SIMD4<Float>](repeating:.zero,count:4096):[] }
 }
-private struct BrushCoverage {
+fileprivate struct BrushCoverage {
   var tiles:[Int:BrushCoverageTile]=[:]
+  var dirty: Set<Int> = []
+  var trackDirty = false
+  private var shared: Set<Int> = []
+  init(columns: Int, color: Bool) { self.columns = columns; self.color = color }
+  func fork() -> Self { var copy = self; copy.shared = Set(tiles.keys); copy.dirty = []; return copy }
+  mutating func writable(_ key: Int) -> BrushCoverageTile? {
+    guard let tile = tiles[key] else { return nil }
+    if shared.remove(key) != nil { let copy = tile.copied(); tiles[key] = copy; return copy }; return tile
+  }
   let columns:Int
   let color:Bool
   var bytes:Int { tiles.count*4096*(color ? 20:4) }
@@ -14,11 +24,11 @@ private struct BrushCoverage {
   mutating func accumulate(_ x:Int,_ y:Int,value:Float,ceiling:Float,maximum:Bool,ink:Pixel)throws {
     guard value>0 else { return };let (key,index)=location(x,y)
     let tile:BrushCoverageTile
-    if let found=tiles[key] { tile=found } else { guard bytes+4096*(color ? 20:4)<=128*1024*1024 else { throw CraftError.invalid("Brush stroke coverage exceeds128MiB.") };tile=BrushCoverageTile(color:color);tiles[key]=tile }
+    if let found=writable(key) { tile=found } else { guard bytes+4096*(color ? 20:4)<=128*1024*1024 else { throw CraftError.invalid("Brush stroke coverage exceeds128MiB.") };tile=BrushCoverageTile(color:color);tiles[key]=tile }
     let old=tile.coverage[index],next=maximum ? max(old,value*ceiling):max(old,old+value*(ceiling-old))
     guard next>old else { return }
     if color { let k=old<1 ? (next-old)/(1-old):0;let c=SIMD4(ink.r,ink.g,ink.b,ink.a);tile.colors[index]=c*k+tile.colors[index]*(1-k) }
-    tile.coverage[index]=next
+    tile.coverage[index]=next; if trackDirty { dirty.insert(key) }
   }
   func value(_ x:Int,_ y:Int)->Float { let (key,index)=location(x,y);return tiles[key]?.coverage[index] ?? 0 }
   mutating func union(_ other:Self)throws {
@@ -94,22 +104,15 @@ public enum BrushPainter {
     } }
     guard x.isFinite else { return nil };return .init(x:Int(floor(x)),y:Int(floor(y)),width:Int(ceil(r)-floor(x)),height:Int(ceil(b)-floor(y)))
   }
-  public static func stroke(surface:inout Surface,points:[StrokePoint],brush:Brush,selection:IntRect?=nil,selectionMask:SelectionMask?=nil,transform:Transform2D = .identity,grayscaleMask:Bool=false,preserveTransparency:Bool=false)throws {
-    try validate(brush,points:points);try transform.validated();guard let b=brush.settings,!points.isEmpty else { return };try Task.checkCancellation()
-    var generator=BrushDabGenerator(brush);var dabs=try generator.push(points);let tail=try generator.finish();dabs.0 += tail.0;dabs.1 += tail.1
-    let inverse=try transform.inverted(),columns=(surface.width+63)/64,color=b.colorDynamics.enabled
-    var merged=BrushCoverage(columns:columns,color:color),visits=0
-    for pass in symmetry(b.symmetry) {
-      let undoPass=try pass.inverted(),toLocal=inverse*pass,toOriginal=undoPass*transform
-      var primary=BrushCoverage(columns:columns,color:color),dual=BrushCoverage(columns:columns,color:false)
-      func raster(_ dabs:[BrushDab],isDual:Bool,map:inout BrushCoverage)throws {
+  fileprivate static func raster(_ dabs:[BrushDab],isDual:Bool,brush:Brush,toLocal:Transform2D,toOriginal:Transform2D,transform:Transform2D,width:Int,height:Int,map:inout BrushCoverage,visits:inout Int)throws {
+    let b=brush.settings!
         let bitmap=isDual ? b.dual.tip:b.tip,hardness=isDual ? b.dual.hardness:Double(brush.hardness)
         for (index,dab) in dabs.enumerated() {
           if index%32==0 { try Task.checkCancellation() }
           let reach=dab.radius*(bitmap==nil ? 1:Double(2).squareRoot())+1,center=toLocal.point(dab.x,dab.y)
           let rx=reach*hypot(toLocal.a,toLocal.c),ry=reach*hypot(toLocal.b,toLocal.d)
-          let x0=Int(max(0,min(Double(surface.width),floor(center.x-rx)))),x1=Int(max(-1,min(Double(surface.width-1),ceil(center.x+rx))))
-          let y0=Int(max(0,min(Double(surface.height),floor(center.y-ry)))),y1=Int(max(-1,min(Double(surface.height-1),ceil(center.y+ry))))
+          let x0=Int(max(0,min(Double(width),floor(center.x-rx)))),x1=Int(max(-1,min(Double(width-1),ceil(center.x+rx))))
+          let y0=Int(max(0,min(Double(height),floor(center.y-ry)))),y1=Int(max(-1,min(Double(height-1),ceil(center.y+ry))))
           guard x0<=x1,y0<=y1 else { continue }
           let area=(x1-x0+1)*(y1-y0+1);guard area<=134_217_728-visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") };visits += area
           for y in y0...y1 { for x in x0...x1 {
@@ -125,8 +128,17 @@ public enum BrushPainter {
           } }
         }
       }
-      try raster(dabs.0,isDual:false,map:&primary)
-      if b.dual.enabled { try raster(dabs.1,isDual:true,map:&dual) }
+
+  public static func stroke(surface:inout Surface,points:[StrokePoint],brush:Brush,selection:IntRect?=nil,selectionMask:SelectionMask?=nil,transform:Transform2D = .identity,grayscaleMask:Bool=false,preserveTransparency:Bool=false)throws {
+    try validate(brush,points:points);try transform.validated();guard let b=brush.settings,!points.isEmpty else { return };try Task.checkCancellation()
+    var generator=BrushDabGenerator(brush);var dabs=try generator.push(points);let tail=try generator.finish();dabs.0 += tail.0;dabs.1 += tail.1
+    let inverse=try transform.inverted(),columns=(surface.width+63)/64,color=b.colorDynamics.enabled
+    var merged=BrushCoverage(columns:columns,color:color),visits=0
+    for pass in symmetry(b.symmetry) {
+      let undoPass=try pass.inverted(),toLocal=inverse*pass,toOriginal=undoPass*transform
+      var primary=BrushCoverage(columns:columns,color:color),dual=BrushCoverage(columns:columns,color:false)
+      try raster(dabs.0,isDual:false,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,width:surface.width,height:surface.height,map:&primary,visits:&visits)
+      if b.dual.enabled { try raster(dabs.1,isDual:true,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,width:surface.width,height:surface.height,map:&dual,visits:&visits) }
       for (key,tile) in primary.tiles {
         let tx=(key%columns)*64,ty=(key/columns)*64
         for i in 0..<4096 where tile.coverage[i]>0 {
@@ -161,5 +173,120 @@ public enum BrushPainter {
       }
     }
     try Task.checkCancellation();surface=result
+  }
+}
+
+/// Retains spacing, smoothing, random state and stroke-wide opacity coverage between
+/// input batches. Confined to one worker; published Surface values remain immutable.
+/// Dual tips and symmetry retain the full painter until their incremental path is qualified.
+public final class BrushStrokeSession {
+  public static func supports(_ brush: Brush) -> Bool {
+    guard let settings = brush.settings else { return false }
+    return !settings.dual.enabled && settings.symmetry.mode == .off
+  }
+  private let original: Surface
+  private let brush: Brush
+  private let transform: Transform2D
+  private let inverse: Transform2D
+  private let selection: IntRect?
+  private let selectionMask: SelectionMask?
+  private let grayscale: Bool
+  private let preserveTransparency: Bool
+  private var generator: BrushDabGenerator
+  private var coverage: BrushCoverage
+  private var result: Surface
+  private var visits = 0
+  private var count = 0
+  private var previousTime = 0.0
+  private var previousTail: Set<Int> = []
+  private var failed = false
+
+  public init(surface: Surface, brush: Brush, selection: IntRect? = nil,
+    selectionMask: SelectionMask? = nil, transform: Transform2D = .identity,
+    grayscaleMask: Bool = false, preserveTransparency: Bool = false) throws {
+    guard Self.supports(brush) else { throw CraftError.unsupported("This brush uses the complete stroke renderer.") }
+    try BrushPainter.validate(brush, points: []); try surface.validated(); try transform.validated()
+    original = surface; result = surface; self.brush = brush; self.transform = transform
+    inverse = try transform.inverted(); self.selection = selection; self.selectionMask = selectionMask
+    grayscale = grayscaleMask; self.preserveTransparency = preserveTransparency
+    generator = BrushDabGenerator(brush)
+    coverage = BrushCoverage(columns: (surface.width + 63) / 64, color: brush.settings!.colorDynamics.enabled)
+    coverage.trackDirty = true
+  }
+
+  /// Preview includes a provisional smoothing tail, just like a complete stroke.
+  /// That tail is discarded before the next append, so input chunking cannot change pixels.
+  public func append(_ points: [StrokePoint], includingReleaseTail: Bool = true) throws -> Surface {
+    guard !failed else { throw CraftError.invalid("The cancelled or failed stroke must be restarted.") }
+    do { return try update(points, includingReleaseTail: includingReleaseTail) } catch { failed = true; throw error }
+  }
+  private func update(_ points: [StrokePoint], includingReleaseTail: Bool) throws -> Surface {
+    guard count + points.count <= 100_000 else { throw CraftError.invalid("Invalid brush input count.") }
+    for point in points {
+      try point.validatedBrushInput()
+      if let time = point.time { guard time >= previousTime else { throw CraftError.invalid("Brush timestamps must be monotonic.") }; previousTime = time }
+    }
+    try Task.checkCancellation(); count += points.count; coverage.dirty = []
+    let dabs = try generator.push(points)
+    try raster(dabs.0, into: &coverage, visits: &visits)
+    let changed = coverage.dirty
+    var preview = coverage.fork(), ending = generator, tailVisits = visits
+    try raster(ending.finish(includingReleaseTail: includingReleaseTail).0, into: &preview, visits: &tailVisits)
+    let tail = preview.dirty, keys = changed.union(tail).union(previousTail)
+    let settings = brush.settings!, columns = coverage.columns
+    for key in keys.sorted() {
+      try Task.checkCancellation()
+      let tile = preview.tiles[key], tx = (key % columns) * 64, ty = (key / columns) * 64
+      for i in 0..<4096 {
+        let x = tx + i % 64, y = ty + i / 64
+        guard x < original.width, y < original.height else { continue }
+        // Rebuild from the stroke's original pixels; never compound opacity per frame.
+        let base = original.pixel(x: x, y: y)
+        var painted = base
+        let doc = transform.point(Double(x) + 0.5, Double(y) + 0.5)
+        let dx = Int(floor(doc.x)), dy = Int(floor(doc.y))
+        let old = tile?.coverage[i] ?? 0
+        var value = Double(old)
+        if settings.texture.enabled && !settings.texture.eachTip {
+          value = settings.texture.mode.combine(value, BrushPainter.texture(settings.texture, doc.x, doc.y), settings.texture.depth)
+        }
+        if value > 0, selection?.contains(dx, dy) != false {
+          let amount = Float(value), mask = selectionMask?.coverage(x: dx, y: dy) ?? 1
+          var ink = brush.color
+          if settings.colorDynamics.enabled, let tile {
+            // Preserve the same Float32 rounding as the complete painter's texture pass.
+            let color = (tile.colors[i] * (amount / old)) / amount
+            ink = Pixel(color.x, color.y, color.z, color.w)
+          }
+          let alpha = unit(amount * brush.opacity * ink.a * mask)
+          var before = base
+          if grayscale {
+            before = Pixel(before.r, before.r, before.r)
+            let gray = unit(ink.r * 0.2126 + ink.g * 0.7152 + ink.b * 0.0722)
+            ink = Pixel(gray, gray, gray, ink.a)
+          }
+          if alpha > 0 && !(preserveTransparency && !grayscale && before.a <= 0) {
+            if brush.erase && !preserveTransparency && !grayscale {
+              painted = Pixel(before.r, before.g, before.b, before.a * (1 - alpha))
+            } else {
+              if brush.erase { ink = brush.backgroundColor ?? .white }; ink.a = alpha
+              painted = preserveTransparency && !grayscale
+                ? ProtectedPixels.composite(settings.mode, backdrop: before, source: ink, x: dx, y: dy)
+                : settings.mode.composite(backdrop: before, source: ink, x: dx, y: dy)
+            }
+          }
+        }
+        if painted.hasSameBits(as: base), original.colorEncoding == .linearRGB {
+          result.setLinearPixel(x: x, y: y, original.linearPixel(x: x, y: y))
+        } else { result.setPixel(x: x, y: y, painted) }
+      }
+    }
+    try Task.checkCancellation(); previousTail = tail
+    return result
+  }
+  private func raster(_ dabs: [BrushDab], into map: inout BrushCoverage, visits: inout Int) throws {
+    try BrushPainter.raster(dabs, isDual: false, brush: brush, toLocal: inverse,
+      toOriginal: transform, transform: transform, width: original.width, height: original.height,
+      map: &map, visits: &visits)
   }
 }

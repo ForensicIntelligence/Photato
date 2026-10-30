@@ -165,6 +165,7 @@ extension WorkspaceView {
             Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObjectContents)
             Button("Replace Contents…") { store.placeEmbedded(replacing: true) }.disabled(!store.canEditSmartObject)
             Button("Export Contents…") { store.exportSmartObjectContents() }
+            if source.pdfSource != nil { PDFSourceEditControls(store:store,sourceID:source.sourceID) }
           }
           if store.typeEditingDraft != nil { TypeControls(store: store) }
           if case .text = layer.content, store.typeEditingDraft == nil {

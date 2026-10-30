@@ -1,0 +1,16 @@
+{
+  "step": 280,
+  "status": "complete-increment",
+  "run": "artifacts/runs/20261030T223835Z-280-native-paging",
+  "working_source": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_280.json",
+  "goal_complete": false,
+  "next": [
+    "Publish the complete qualified280 source to the existing private ForensicIntelligence/Photato repository under the standing maintainer request, preserving original Rust/history and private visibility; then continue Q01.",
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths.",
+    "Automatic recovery/history/legacy-inline admission, metadata buffers and specialized codec/API transfer limits remain separately bounded; qualify their full large-document lifecycles.",
+    "Qualify dense stress/disk-full/corruption/relaunch, physical60fps, universal distribution and macOS14/Intel/macOS26 runtime; full Photoshop pixel/settings/menu/workflow parity remains open."
+  ]
+}

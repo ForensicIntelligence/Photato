@@ -283,3 +283,27 @@ final class RecoverySourceTests: XCTestCase {
     XCTAssertNil(RecoverySourceRecord.decode(try record.encoded()))
   }
 }
+
+
+extension RecoverySourceTests {
+  func testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget() throws {
+    let folder=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true)
+    defer{try? FileManager.default.removeItem(at:folder)}
+    let file=folder.appendingPathComponent("owned-large-source.photato")
+    XCTAssertTrue(FileManager.default.createFile(atPath:file.path,contents:nil))
+    let handle=try FileHandle(forWritingTo:file);defer{try? handle.close()}
+    let count=NativeArchive.maximumBytes+1
+    try handle.truncate(atOffset:UInt64(count));try handle.synchronize()
+    let fingerprint=try RecoverySourceReader.capture(file)
+    XCTAssertEqual(fingerprint.size,count);XCTAssertTrue(fingerprint.isValid)
+    let record=RecoverySourceRecord.make(url:file,format:.native,needsReview:false,fingerprint:fingerprint)
+    XCTAssertTrue(record.isValid);XCTAssertNotNil(RecoverySourceRecord.decode(try record.encoded()))
+    let status=record.verify(registeredURL:file,resolveBookmark:false).status
+    XCTAssertEqual(status,fingerprint.volume == nil ? .unverified:.unchanged)
+    try handle.seek(toOffset:0);try handle.write(contentsOf:Data([1]));try handle.synchronize()
+    XCTAssertEqual(record.verify(registeredURL:file,resolveBookmark:false).status,fingerprint.volume == nil ? .unverified:.changed)
+    var invalid=fingerprint;invalid.size=NativeArchive.maximumFileBytes+1;XCTAssertFalse(invalid.isValid)
+    XCTAssertEqual(NativeArchive.maximumBytes,536_870_912,"Data/metadata/recovery policies remain separate")
+  }
+}

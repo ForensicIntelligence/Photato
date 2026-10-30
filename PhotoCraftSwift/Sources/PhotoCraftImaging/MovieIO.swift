@@ -18,7 +18,7 @@ public enum MovieIO {
     }
     return ["moov","mdat","wide"].contains(tag ?? "")
   }
-  public static func read(_ url:URL,maximumBytes:Int=1_073_741_824,maximumPixels:Int=Surface.maxPixels)throws->CraftDocument {
+  public static func read(_ url:URL,maximumBytes:Int=1_073_741_824,maximumPixels:Int=Surface.maximumDensePixels)throws->CraftDocument {
     let file=try FileHandle(forReadingFrom:url);defer{try? file.close()}
     var data=Data()
     while true {
@@ -28,7 +28,7 @@ public enum MovieIO {
     }
     return try decode(data,name:url.deletingPathExtension().lastPathComponent,maximumBytes:maximumBytes,maximumPixels:maximumPixels)
   }
-  public static func decode(_ data:Data,name:String,maximumBytes:Int=1_073_741_824,maximumPixels:Int=Surface.maxPixels,frameOptions:MovieFrameImportOptions?=nil,maximumLayers:Int=512)throws->CraftDocument {
+  public static func decode(_ data:Data,name:String,maximumBytes:Int=1_073_741_824,maximumPixels:Int=Surface.maximumDensePixels,frameOptions:MovieFrameImportOptions?=nil,maximumLayers:Int=512)throws->CraftDocument {
     try Task.checkCancellation();try frameOptions?.validate()
     guard (1...512).contains(maximumLayers) else {throw CraftError.invalid("Choose at most512 output layers.")}
     guard recognizes(data),data.count<=MovieSource.maximumBytes,maximumBytes>data.count else {throw CraftError.invalid("Choose a supported MOV/MP4 movie within the source and decoded-memory limits.")}

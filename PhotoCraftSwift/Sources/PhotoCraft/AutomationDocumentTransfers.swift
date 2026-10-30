@@ -32,8 +32,8 @@ extension DocumentIO {
       else { throw AutomationFailure(status: 422, message: "Unsupported image data.") }
       (width, height) = (w, h)
     }
-    guard width > 0, height > 0, width <= 4_194_304 / height else {
-      throw AutomationFailure(status: 413, message: "Upload exceeds the 4,194,304 pixel API limit.")
+    guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension else {
+      throw AutomationFailure(status: 413, message: "Upload exceeds300,000 pixels per side. Codec, heap and transfer budgets apply separately.")
     }
     return try decode(data, native: native, name: name, rasterByteLimit: 128 * 1_024 * 1_024)
   }
@@ -43,6 +43,7 @@ extension AutomationService {
   static var documentTransferCapabilities: [String: Any] {
     [
       "encodingOptions": DocumentEncodingOptions.capabilities,
+      "pagedRasterInput": RasterStorageAPI.capabilities,
       "movieFramesImport": MovieFramesAPI.capabilities,
       "pdfImport": PDFImportAPI.capabilities,
       "import": [
@@ -96,6 +97,8 @@ extension AutomationService {
         "samplePreservation":
           "Exact stored Float32 bits, profiles, editable structure and metadata",
         "maxFileBytes": NativeArchive.maximumBytes,
+        "desktopFileMaximumBytes": NativeArchive.maximumFileBytes,
+        "dataAndMetadataMaximumBytes": NativeArchive.maximumBytes,
         "legacyEncode":
           "Core encode emits10, desktop saves11; partial protection requires12, layer styles13, Smart Objects14 and Smart Filters15. Native downloads require explicit opt-in to the required version.",
         "limits":

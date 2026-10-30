@@ -1,0 +1,66 @@
+{
+  "step": 264,
+  "recorded_at_utc": "2026-10-30T00:16:57.928903+00:00",
+  "source_manifest": "artifacts/runs/20261029T235228Z-264-large-retouching/source01.json",
+  "source_inputs": 2454,
+  "focused": {
+    "tests": 137,
+    "failures": 0,
+    "seconds": 51.984,
+    "log": "artifacts/runs/20261029T235228Z-264-large-retouching/focused01.log",
+    "sha256": "fa1ed8c5bfa6bf9867c62619d6c4400403fb0cb12b9a60f70af0fa23f7ff6b97",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2737,
+    "failures": 0,
+    "seconds": 215.712,
+    "log": "artifacts/runs/20261029T235228Z-264-large-retouching/full01.log",
+    "sha256": "60182973a14363a932f01e11b7a60c6f49a4fc4318e5f10a88a1941acb0c4233",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "c07bbbc7b54109b540d645332964c488a90b1fef593029b202a8ee14af76b7f8",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Retained Float32 Dodge/Burn/Sponge working tiles process only newly accepted samples while preserving exact existing native output and immutable snapshots.",
+    "Sealed incremental toning admission supports ordinary raster targets and fixed masks, with complete-command fallback for unsupported modes or expanding masks; history remains atomic.",
+    "API retouching capability metadata describes the retained toning path; existing preview state/schema and busy/stale behavior remain intact."
+  ],
+  "remaining": [
+    "Blur/Sharpen/Smudge still replay complete prefixes: measured 24MP candidate publishes 36/37/42 previews in about 2s, with p95 render work of 73.03/68.98/53.47ms and final drains of 147.65/124.20/75.81ms. Optimize retained neighborhood/pickup work next.",
+    "Dodge/Burn/Sponge first source and preview remains 93.61\u201394.60ms; initial validation/setup and perceived input latency need improvement.",
+    "Physical display-presented frame timing, sustained hand/tablet curves, large/long brushes, heavy layers, special modes, expanding masks, proof and expensive effects remain unqualified.",
+    "Visible repeated dab texture and Photoshop kernel/spacing/default fidelity remain unresolved; preserved native output is not proof of Photoshop pixel parity.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state and capability metadata do not imply those executable operations exist.",
+    "Full Photoshop parity and physical Intel/macOS14/macOS26 acceptance remain open. Preserve linked-source261 and resume after the maintainer\u2019s current feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261029T235228Z-264-large-retouching/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Dodge, Burn and Sponge retain unquantized working tiles between previews. On the measured 24MP image, each publishes 119 previews during 1.99 seconds of input, with p95 render work of 9.39\u201311.60ms instead of 41.99\u201345.10ms. All 432 pre-change native pixel prefixes, 137 focused tests and 2737 full optimized tests pass on 2454 frozen inputs. Owned native strokes and Undo/Redo pass. First preview remains about 94ms; large-image Blur/Sharpen/Smudge, visible dab texture and physical 60fps qualification remain open.",
+  "stage": "Qualified large-image toning responsiveness increment",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": false,
+  "new_installation": false,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 263,
+  "next": [
+    "Optimize the measured large-image Blur/Sharpen/Smudge work, preserving original native reference pixels. Then qualify initial feedback, curve smoothness and physical presentation."
+  ]
+}

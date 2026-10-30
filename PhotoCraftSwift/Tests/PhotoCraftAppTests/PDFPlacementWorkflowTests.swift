@@ -39,7 +39,7 @@ final class PDFPlacementWorkflowTests: XCTestCase {
     XCTAssertNil(store.error);XCTAssertEqual(store.session.undoStack.count,1);XCTAssertEqual(changes,1)
     XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth:.u8),expected)
     XCTAssertEqual(store.activeLayer?.smartObject?.data,try Data(contentsOf:fixture()))
-    XCTAssertFalse(store.canEditSmartObjectContents);XCTAssertTrue(store.canEditSmartObject)
+    XCTAssertTrue(store.canEditSmartObjectContents);XCTAssertTrue(store.canEditSmartObject)
     let placed = store.document
     await store.undo();XCTAssertEqual(store.document,original)
     await store.redo();XCTAssertEqual(store.document,placed)

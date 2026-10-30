@@ -1,0 +1,152 @@
+{
+  "step": 265,
+  "source_manifest": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+  "source_inputs": 2460,
+  "focused": {
+    "tests": 142,
+    "failures": 0,
+    "seconds": 54.202,
+    "log": "artifacts/runs/20261030T002221Z-265-focus-feedback/focused03.log",
+    "sha256": "1a5446781ac435f58dead45f3dd8f8c54195f397303bc03db5801975029dae09",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2742,
+    "failures": 0,
+    "seconds": 205.572,
+    "log": "artifacts/runs/20261030T002221Z-265-focus-feedback/full01.log",
+    "sha256": "1e476addf651b05b3b3421c8427b590fee700b40b299b52cdb44376b15fae5c6",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Focus first source/preview still measures 124.35/124.64/113.33ms (Blur/Sharpen/Smudge). Investigate repeated whole-document and source validation using sealed validated snapshots; preserve availability/error checks.",
+    "Boundary and expanding-storage Focus paths, Healing, special modes/proof, large or prolonged brushes and complex layers retain unqualified performance. The normal 64px interior benchmark is not a worst-case guarantee.",
+    "Physical display presentation and input-to-photon latency, sustained mouse/tablet curves, repeated dab texture and Photoshop kernel/spacing/default fidelity remain open.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state/capabilities do not imply those executable commands exist; no Adobe route is invented.",
+    "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 stays preserved until the maintainer\u2019s current performance priority is resolved."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "qualified_binary_sha256": "b561c2654ed84095b34094a7f01aaca48916a4e235306ab158f7b8feca4717d4",
+  "baseline": "artifacts/runs/20261029T235228Z-264-large-retouching/candidate-performance01.json",
+  "candidate": "artifacts/runs/20261030T002221Z-265-focus-feedback/candidate-performance03.json",
+  "native_prefix_regression": {
+    "fixture": "Tests/PhotoCraftCoreTests/Fixtures/focus-prefix-step264.json",
+    "prefixes": 648,
+    "checks": [
+      "complete command",
+      "incremental session"
+    ],
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "provenance": "Owned analytic outputs generated using qualified step264 Core objects before changing FocusPainter. Exact native regression, not a Photoshop oracle.",
+    "generator": "artifacts/runs/20261030T002221Z-265-focus-feedback/baseline-prefix.swift"
+  },
+  "measurement_scope": "Release CPU preview publication on dense 24MP RGB8 plus one adjustment, 64px brush, 240 samples at120Hz. Every case changes pixels and exactly matches the complete command. No physical display-presented timing or Photoshop equivalence claim.",
+  "live": {
+    "app": "/private/tmp/Photato-Focus-265.app",
+    "isolated": true,
+    "tested_binary_sha256": "b561c2654ed84095b34094a7f01aaca48916a4e235306ab158f7b8feca4717d4",
+    "signed_binary_sha256": "10edefcaca956dfc51153fdde61b24329ec714055e1c8d482c69ca392c68c5ca",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+    "accepted": true,
+    "scope": "Owned1200x800 RGB8 native workflow acceptance; physical frame timing is not measured.",
+    "actions": [
+      "Open owned-focus-pattern.png using the visible native Go to Folder path field.",
+      "Use30px Blur at50% across checker edges, then Sharpen with Protect Detail off on another checker row.",
+      "Use Smudge at50%, then set100% and drag from the owned dark stripe to produce a clearly visible stroke.",
+      "Command-Z visibly removes the100% stroke; Command-Shift-Z restores it.",
+      "Native History lists Blur Tool, Sharpen Tool and Smudge Tool.",
+      "Close the owned document with Don\u2019t Save; verify the remaining blank Untitled-1 and quit."
+    ],
+    "automation_issues": [
+      "The first Command-Shift-G arrived before the Open panel was ready; repeat after observing the panel, then set its visible path field successfully."
+    ],
+    "remaining": [
+      "The first50% Smudge drag is not independently qualified as a distinct visible edit; acceptance relies on the clearly visible100% stroke and native history.",
+      "Repeated pickup/dab texture remains visible at100% strength; physical smoothness, tablet input and Photoshop kernel/spacing equivalence remain open."
+    ],
+    "screenshots": [
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-blur01.png",
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-focus01.png",
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-smudge10001.png",
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-undo01.png",
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-redo01.png",
+      "artifacts/runs/20261030T002221Z-265-focus-feedback/native-history01.png"
+    ],
+    "fixture": {
+      "path": "owned-focus-pattern.png",
+      "sha256": "71aeb2f74d9be795014c28065013b527381368b23b636d1d16e9f296b330fa72",
+      "width": 1200,
+      "height": 800,
+      "provenance": "Owned analytic opaque gradient with 24px checker region and dark vertical stripe; generated for native Focus UI checks."
+    },
+    "fixture_unchanged": true,
+    "user_documents_modified": false,
+    "diagnostic_process_closed": true
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+    "tested_binary_sha256": "b561c2654ed84095b34094a7f01aaca48916a4e235306ab158f7b8feca4717d4",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+    "zip_sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+    "zip_bytes": 38247196,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview265-check-pa5tlahs/Photato Editing Preview 265.app"
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    }
+  },
+  "API_impact": "Presentation capability metadata; existing read-only preview schema and191 typed operations unchanged. General retouch submission gaps remain open."
+}

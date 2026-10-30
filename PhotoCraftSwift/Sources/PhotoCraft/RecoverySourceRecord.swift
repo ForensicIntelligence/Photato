@@ -130,7 +130,7 @@ struct RecoverySourceFingerprint: Codable, Equatable, Sendable {
   var modifiedNanoseconds: Int
   var sha256: String
   var isValid: Bool {
-    size >= 0 && size <= NativeArchive.maximumBytes && sha256.utf8.count == 64
+    size >= 0 && size <= NativeArchive.maximumFileBytes && sha256.utf8.count == 64
       && sha256.utf8.allSatisfy { (48...57).contains($0) || (97...102).contains($0) }
       && (0..<1_000_000_000).contains(birthNanoseconds)
       && (0..<1_000_000_000).contains(modifiedNanoseconds)
@@ -172,7 +172,7 @@ final class RecoverySourceReader {
       let error = Self.posixError(); Darwin.close(fd); throw error
     }
     guard info.st_mode & S_IFMT == S_IFREG, info.st_size >= 0,
-      info.st_size <= NativeArchive.maximumBytes
+      info.st_size <= NativeArchive.maximumFileBytes
     else {
       Darwin.close(fd)
       throw CraftError.invalid("Recovery verification requires a regular file within the file limit.")

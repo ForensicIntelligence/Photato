@@ -1,0 +1,90 @@
+{
+  "step": 276,
+  "recorded_at_utc": "2026-10-30T19:37:13.045722+00:00",
+  "source_manifest": "artifacts/runs/20261030T190609Z-275-retouch-release/source02.json",
+  "source_inputs": 2478,
+  "focused": {
+    "tests": 50,
+    "failures": 0,
+    "seconds": 4.094,
+    "log": "artifacts/runs/20261030T190609Z-275-retouch-release/focused02.log",
+    "sha256": "c443fdd53ee668c95b89a733d6ab68ba3b1750b4f9b29f1746084d3e14c6927f",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2791,
+    "failures": 0,
+    "seconds": 195.749,
+    "log": "artifacts/runs/20261030T190609Z-275-retouch-release/full01.log",
+    "sha256": "c9f0681f6ffe398881b23e2ad625722e6be0d04166b1aecbeff8fea9bc08e3bf",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "1054817da0a0603457d1330e76773dc7ffcc54bd5c6b1824f8a918ab111fafd8",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [],
+  "remaining": [
+    "Close the existing semantic retouch Action recording and general retouch stroke API gaps with shared native operations, schemas, history and relevant conformance coverage. Continue measuring healing/fallback responsiveness.",
+    "Healing Brush and Spot Healing still require complete final processing; the marker is not healed output. Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark measures native service cost with preview pacing disabled.",
+    "Exact Photoshop kernels, complete workflows, physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked under the user editing-feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T190609Z-275-retouch-release/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Paused at the maintainer\u2019s request on stable Preview275. All2791 full tests previously passed;2478 compiler/test inputs and the delivered app/ZIP hashes are reverified unchanged. Retouch Actions/API investigation is saved, with no implementation started. No new application build or test run was needed for this documentation-only handoff.",
+  "stage": "Paused at stable Preview275",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": false,
+  "new_installation": false,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 275,
+  "next": [
+    "Implement semantic retouch Actions and the shared native retouch stroke API after explicit resume."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 275.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "056eb4eca8eb0a569da33fd9de9350fa6dd7b5c0dd461c2755bbc2e2eab28da5",
+    "tested_binary_sha256": "1054817da0a0603457d1330e76773dc7ffcc54bd5c6b1824f8a918ab111fafd8",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T190609Z-275-retouch-release/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-275.zip",
+    "zip_sha256": "977b98764a219280c85168a573046de499eef264c67d4aa5b7bc44148eee1251",
+    "zip_bytes": 38382347,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview275-check-zkw5n_7_/Photato Editing Preview 275.app"
+  },
+  "completed_this_increment": [
+    "Saved stable275 source/package identity and retouch Actions/API investigation for the requested pause."
+  ],
+  "goal_status": "paused",
+  "reason": "Pause after the next stable build, update the diary and wait for a model switch. Stable275 was already qualified; subsequent work was read-only investigation.",
+  "last_implementation_checkpoint": "docs/ACTIVE_CHECKPOINT_275.json",
+  "qualification_inherited_from": 275,
+  "new_test_run": false,
+  "investigation_only": true,
+  "application_changes_since_275": false,
+  "no_build_or_test_workers": true,
+  "resume_next": "Wait for explicit user resume. Start by verifying PAUSE_CHECKPOINT_276 and source/package hashes, then read these findings. No partial code or compiler worker must be resumed.",
+  "investigation": "artifacts/runs/20261030T193713Z-276-stable-pause/retouch-actions-investigation01.json"
+}

@@ -117,7 +117,7 @@ public enum PDFImages {
     return (info,page)
   }
   public static func documents(_ data: Data,name: String,settings: PDFImageImportSettings,password: String? = nil,
-    maximumPixels: Int = Surface.maxPixels,maximumBytes: Int = PDFImport.maximumDecodedBytes) throws -> [CraftDocument] {
+    maximumPixels: Int = Surface.maximumDensePixels,maximumBytes: Int = PDFImport.maximumDecodedBytes) throws -> [CraftDocument] {
     try settings.validate()
     let scan = try discover(data,password:password,selected:Set(settings.images),maximumBytes:maximumBytes)
     guard scan.pages.count == settings.images.count else {throw CraftError.invalid("A selected embedded PDF image does not exist.")}

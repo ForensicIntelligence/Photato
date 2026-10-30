@@ -1,0 +1,13 @@
+{
+  "step": 265,
+  "status": "complete-increment",
+  "qualified_baseline": 264,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_265.json",
+  "run": "artifacts/runs/20261030T002221Z-265-focus-feedback",
+  "working_source": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+  "active_attempt": "artifacts/runs/20261030T002221Z-265-focus-feedback/full01.log",
+  "next": [
+    "Improve initial feedback latency and qualify stroke smoothness/physical presentation, then resume preserved linked-source261."
+  ],
+  "goal_complete": false
+}

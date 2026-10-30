@@ -106,9 +106,10 @@
     }
   },
   "latest_handoff_followup": {
-    "evidence": "artifacts/runs/20261028T154212Z-222-window-handoff/installation01.json",
-    "status": "Qualified221 installed unmodified in user Applications/Photato.app; old159, old PhotoCraft and installed209 untouched. Desktop explicitly locked; manual unlock requested. Same-document live handoff pending.",
-    "live_acceptance": false
+    "step": 277,
+    "evidence": "artifacts/runs/20261030T195857Z-277-retouch-automation/handoff-final01.json",
+    "status": "Preserved clean artwork reopened in Preview277; Preview275 closed. Original document and older packages unchanged.",
+    "live_acceptance": true
   },
   "latest_offscreen_regression": {
     "step": 222,
@@ -127,5 +128,57 @@
     "exit_code": 0,
     "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source12.json",
     "live_acceptance": false
+  },
+  "handoff_history": {
+    "step222": {
+      "evidence": "artifacts/runs/20261028T154212Z-222-window-handoff/installation01.json",
+      "status": "Qualified221 installed unmodified in user Applications/Photato.app; old159, old PhotoCraft and installed209 untouched. Desktop explicitly locked; manual unlock requested. Same-document live handoff pending.",
+      "live_acceptance": false
+    },
+    "step271": {
+      "step": 271,
+      "evidence": "artifacts/runs/20261030T165926Z-271-active-preview/handoff-final01.json",
+      "status": "Actual159 document saved byte-identically, opened in qualified Preview271; old probe retired, correct title and fit/150%/scroll containment verified. Protected originals and installed221 unchanged.",
+      "live_acceptance": true
+    },
+    "step272": {
+      "step": 272,
+      "evidence": "artifacts/runs/20261030T173813Z-272-layer-opacity/handoff-final01.json",
+      "status": "Preserved clean artwork reopened in Preview272 with layer opacity slider available; Preview271 closed. Originals and older packages unchanged.",
+      "live_acceptance": true
+    },
+    "step273": {
+      "step": 273,
+      "evidence": "artifacts/runs/20261030T181050Z-273-brush-catch-up/handoff-final01.json",
+      "status": "Preserved clean artwork reopened in Preview273; Preview272 closed. Originals and older packages unchanged.",
+      "live_acceptance": true
+    },
+    "step274": {
+      "step": 274,
+      "evidence": "artifacts/runs/20261030T183758Z-274-brush-release/handoff-final01.json",
+      "status": "Preserved clean artwork reopened in Preview274; Preview273 closed. Originals and older packages unchanged.",
+      "live_acceptance": true
+    },
+    "step275": {
+      "step": 275,
+      "evidence": "artifacts/runs/20261030T190609Z-275-retouch-release/handoff-final01.json",
+      "status": "Preserved clean artwork reopened in Preview275; Preview274 closed. Originals and older packages unchanged.",
+      "live_acceptance": true
+    },
+    "278": {
+      "summary": "Native RGB canvases now accept 300,000 pixels per side (90 GP logical area), with sparse raster composition, bounded viewport display and native/API brush, history and file workflows. All 102 focused and 2,810 full optimized tests pass on 2,488 frozen inputs; native maximum-size create/paint/save/reopen and Preview 278 are verified. Dense disk-backed images, streamed large PSB/native files and full operation, mode and platform capacity parity remain open.",
+      "handoff": "artifacts/runs/20261030T204800Z-278-large-documents/handoff-final01.json",
+      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 278.app"
+    },
+    "279": {
+      "summary": "Large RGB image import now converts bounded patches into immutable disk-backed tiles; painting promotes only edited tiles and history shares existing samples. An owned40MP PNG passes native Open/paint/Undo/Redo/save/reopen and authenticated API import/edit/history. All48 focused and2820 full optimized tests pass; separate Preview279 is verified. Full dense90GP/large PSB/native streaming and operation/platform capacity parity remain open.",
+      "handoff": "artifacts/runs/20261030T214215Z-279-paged-raster/handoff-final01.json",
+      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 279.app"
+    },
+    "280": {
+      "summary": "Native file Open/Save now stream past the former512MiB file boundary, and checked chunked tile input stays mapped on reopen/API upload. Tests cover an owned >512MiB file, real40MP native editing and134MP/2GiB repeated tile references across all depths. All71 focused and2829 full optimized tests pass; separate Preview280 is verified. Hierarchical indexes, large PSB/all-operation/platform capacity parity remain open.",
+      "handoff": "artifacts/runs/20261030T223835Z-280-native-paging/handoff-final01.json",
+      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 280.app"
+    }
   }
 }

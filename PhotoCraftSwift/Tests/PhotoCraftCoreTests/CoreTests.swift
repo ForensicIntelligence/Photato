@@ -17,7 +17,7 @@ final class CoreTests: XCTestCase {
     }
   }
   func testInvalidDimensions() {
-    for (w, h) in [(0, 10), (-1, 5), (Int.max, Int.max), (32768, 32768)] {
+    for (w, h) in [(0, 10), (-1, 5), (Int.max, Int.max), (300001, 300000)] {
       XCTAssertThrowsError(try Surface(width: w, height: h))
     }
   }

@@ -1,0 +1,100 @@
+{
+  "step": 260,
+  "recorded_at_utc": "2026-10-29T21:32:38.184653+00:00",
+  "reference": {
+    "public_spec": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "public_workflow": "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/import-files/place-a-file-in-photoshop.html",
+    "accessed": "2026-10-29",
+    "provenance": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/reference-provenance01.json",
+    "observed": "Owned Photoshop2026 files establish vector Type1, Media Crop3, Art Crop7 and v8 embedded-file records. Native-export Media PSD and Trim PSB are opened, enlarged and saved through normal Photoshop UI. Remaining crop codes are inferred from the displayed order; they have native matrix coverage but no equivalent live rerender acceptance. No proprietary application implementation inspected."
+  },
+  "source_manifest": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/source02.json",
+  "source_inputs": 2430,
+  "focused": {
+    "tests": 40,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 7.624,
+    "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/focused02.log",
+    "sha256": "2a39c8bde7953075449d8d63768a8bbbcc8824f67507a9a32fb3ebfba4ceb96e"
+  },
+  "full": {
+    "tests": 2708,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 210.844,
+    "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/full01.log",
+    "sha256": "f8bb87e0d0998574c7788c7d8e732f095dbee46432b81de7c6295b01ae9a239c"
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/focused01.log",
+      "exit_code": 1,
+      "reason": "39 tests, one transformed-mask export rejection; repaired with export-only raw mask projection."
+    },
+    {
+      "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/independent-focused02.log",
+      "reason": "Checker expected boundingBox filename instead of actual bounding; repaired checker attempt02, no native source change."
+    }
+  ],
+  "binary_sha256": "41407fe4fe5186d27a4111fd698edec9e726802b6301e9e7e6335f415c314969",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  },
+  "independent": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/outputs-full01-independent.json",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "live_native_acceptance": false,
+  "live_photoshop_interchange": [
+    "Media/page2 PSD opens as Embedded Smart Object, re-saves original PDF bytes and renders correct page at200%.",
+    "Trim/page1 PSB opens as Embedded Smart Object and renders expected cropped geometry at200%.",
+    "Both owned reference documents closed; original unsaved Untitled-1 remains."
+  ],
+  "implemented": [
+    "PDF page PSD/PSB import/export with original retained source and shared identity",
+    "Bounded Photoshop2026 v8 embedded-source records and page/crop metadata",
+    "Vector preview rendering and export-only transformed unfeathered mask projection",
+    "Native/Photato HTTP/Adobe resource-job transport through the same codec",
+    "Owned Photoshop live PSD/PSB rerender and independent source/pixel checks"
+  ],
+  "remaining": [
+    "PDF image-index selections, non-default antialias policies, Warp and transformed feathered mask PSD transport",
+    "Remaining crop live checks, general PDF rendering/annotations and exact color/composite output",
+    "Linked sources, relink/update/embed/package workflows",
+    "Native live Save/Open and full Photoshop factory settings/shortcut/workflow equivalence",
+    "Universal/minimum OS/physical Intel/macOS26 distribution acceptance"
+  ],
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Retained PDF page Smart Objects now import/export through PSD and PSB with original source bytes, page/crop selection, dimensions/resolution and shared affine instances. Transformed unfeathered raster masks are projected only in the export copy. Native persistence, Photato binary transfers and Adobe resource jobs share the codec. All40 focused and2708 full optimized tests pass on2430 unchanged inputs. Independent checks validate24 source payloads and186624 RGBA values; Photoshop2026 opens native PSD/PSB and rerenders Media/page2 and Trim/page1 at200%. PDF image-index/antialias/Warp variants, transformed feathered masks, linked files, general PDF rendering and full exact/live/platform parity remain open. Installed221, private universal243 and published source257 remain unchanged.",
+  "changed_compiler_inputs": [
+    "Sources/PhotoCraft/AutomationSmartObjects.swift",
+    "Sources/PhotoCraftImaging/PSDCodec.swift",
+    "Sources/PhotoCraftImaging/PSDMaskExport.swift",
+    "Sources/PhotoCraftImaging/PSDPDFSmartObjects.swift",
+    "Sources/PhotoCraftImaging/PSDSmartObjects.swift",
+    "Tests/PhotoCraftAppTests/PSDPDFInterchangeWorkflowTests.swift",
+    "Tests/PhotoCraftImagingTests/Fixtures/pdf-psd/README.md",
+    "Tests/PhotoCraftImagingTests/Fixtures/pdf-psd/photoshop-art-page.psd",
+    "Tests/PhotoCraftImagingTests/Fixtures/pdf-psd/photoshop-page2-media.psd",
+    "Tests/PhotoCraftImagingTests/Fixtures/pdf-psd/photoshop-page2-source.pdf",
+    "Tests/PhotoCraftImagingTests/PSDPDFSmartObjectTests.swift"
+  ],
+  "stage": "Qualified retained PDF page PSD/PSB interchange increment",
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_package": false,
+  "new_installation": false,
+  "new_source_push": false,
+  "next": [
+    "Continue major L05 with linked-source persistence, source availability/status, relink/update/embed and packaging through shared native/API transactions. Preserve the qualified PDF page interchange and defer fine rendering/default/platform parity gates without marking the broad workflow closed."
+  ]
+}

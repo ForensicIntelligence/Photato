@@ -30,7 +30,8 @@ final class GeometryTests: XCTestCase {
     for t in [Transform2D.scale(0, 1), Transform2D(tx: .infinity), Transform2D(a: .nan)] {
       XCTAssertThrowsError(try t.inverted())
     }
-    XCTAssertThrowsError(try Transform2D.scale(1000, 1000).bounds(width: 100, height: 100))
+    XCTAssertEqual(try Transform2D.scale(1000, 1000).bounds(width: 100, height: 100), .init(x:0,y:0,width:100_000,height:100_000))
+    XCTAssertThrowsError(try Transform2D.scale(4000, 4000).bounds(width: 100, height: 100))
   }
   func testPixelAndMaskFlipStayLinkedAtEveryDepth() throws {
     for depth in PixelDepth.allCases {

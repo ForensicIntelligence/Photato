@@ -11,12 +11,12 @@ public enum DocumentCreation {
       (resolution ?? 72).isFinite, (1...100_000).contains(resolution ?? 72) else {
       throw CraftError.invalid("Choose a finite background and resolution between 1 and 100,000 pixels/inch.")
     }
-    if let mode {
+    if let mode, mode != .rgb {
       guard width > 0, height > 0, width <= NativeModeRaster.maximumPixels / height else {
         throw CraftError.invalid("Native color-mode documents support up to 8,388,608 pixels.")
       }
       _ = try DocumentModeDescriptor(mode: mode, depth: depth, profile: profile)
-    } else if profile != nil {
+    } else if mode == nil, profile != nil {
       throw CraftError.invalid("Choose a document color mode before assigning its profile.")
     }
     var document = try CraftDocument(width: width, height: height, depth: depth, name: name)
@@ -25,7 +25,14 @@ public enum DocumentCreation {
     document.layers[0].name = background.a == 0 ? "Layer 1" : "Background"
     document.resolution = resolution
     if let mode {
-      document = try document.convertingMode(.init(mode: mode, depth: depth, profile: profile))
+      if mode == .rgb, width * height > NativeModeRaster.maximumPixels {
+        let descriptor = try DocumentModeDescriptor(mode: mode, depth: depth, profile: profile)
+        document.workingICC = descriptor.profile
+        document.layers[0].content = .raster(try Surface(width: width, height: height, depth: depth,
+          fill: background, colorEncoding: depth == .f32 ? .linearRGB : .sRGB))
+      } else {
+        document = try document.convertingMode(.init(mode: mode, depth: depth, profile: profile))
+      }
     }
     try document.validate()
     return document

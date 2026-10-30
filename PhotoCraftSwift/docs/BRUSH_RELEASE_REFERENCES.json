@@ -1,0 +1,231 @@
+{
+  "step": 274,
+  "summary": "Ordinary raster brush strokes now retain preview work through release, processing only unseen samples and the release tail. The owned 24 MP fixture improves release commitment from about 290 ms to 1.0\u20136.0 ms with exact native command pixels and one history entry. All 69 focused and 2783 full optimized tests pass on 2474 frozen inputs. Native painting/history and separate Preview 274 packaging are verified. Physical 60 fps, special-tool release work and full Photoshop/platform parity remain open.",
+  "source_manifest": "artifacts/runs/20261030T183758Z-274-brush-release/source02.json",
+  "focused": {
+    "tests": 69,
+    "failures": 0,
+    "seconds": 3.705,
+    "log": "artifacts/runs/20261030T183758Z-274-brush-release/focused02.log",
+    "sha256": "8a093d47a4a56b197d23bc8ae042d11177fe29cdeb8f90d5677810fd51805fe7",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2783,
+    "failures": 0,
+    "seconds": 197.014,
+    "log": "artifacts/runs/20261030T183758Z-274-brush-release/full01.log",
+    "sha256": "a5fb63327227d21bc5df0703d63648d455f0a37cf4f3fe6a0dac750df0ac6ab2",
+    "terminal_exit_code": 0
+  },
+  "live": {
+    "accepted": true,
+    "app": "/private/tmp/Photato-Feedback-274.app",
+    "source_manifest": "source02.json",
+    "scope": "CUA-driven native30px Brush at80% smoothing in disposable1200x800 blank. Visible stroke, one Undo to clean blank and Redo. Opacity arrow opens focused native slider; AX value50 previews, arrow dismissal accepts and one Undo restores100. Final Undo restores clean blank; quit verified. Physical pointer drag into popup and display timing are not claimed.",
+    "traces": [
+      {
+        "path": "stroke-DD579643-A847-4B3C-BEE9-968F70996FBF.json",
+        "sha256": "da47bed16ce0f14b97ac64f7fafdb8f0381e34e88ecbfdd1634e7df166ec87a3",
+        "inputs": 4,
+        "prepared_frames": 1,
+        "outcome": "committed",
+        "physicalPresentationMeasured": false
+      }
+    ],
+    "physical_60fps": false,
+    "diagnostic_closed": true,
+    "evidence": [
+      "native-opacity-undo01.txt",
+      "native-painted01.png",
+      "native-opacity-popup01.txt",
+      "native-start01.png",
+      "native-painted01.txt",
+      "native-opacity-popup01.png",
+      "native-opacity50-commit01.txt",
+      "native-redo01.png",
+      "native-opacity50-preview01.txt",
+      "native-undo01.png",
+      "native-opacity50-commit01.png",
+      "native-clean01.txt",
+      "native-undo01.txt"
+    ],
+    "trace_limit": "The connector drag delivers four input events in a short burst; this native check does not measure sustained pacing. The separate frozen benchmark owns480 samples."
+  },
+  "handoff": {
+    "accepted": true,
+    "from_step": 273,
+    "to_step": 274,
+    "artwork_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "artwork_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "old_clean": true,
+    "new_clean": true,
+    "zoom_percent": 77.73,
+    "layer_opacity": 100,
+    "old_process_closed": true,
+    "unused_blank_closed": true,
+    "normal_app_running": true,
+    "evidence": [
+      "handoff-old273-clean01.txt",
+      "handoff-preview274.txt",
+      "handoff-preview274.png"
+    ],
+    "interaction_note": "Open dialog validation briefly disabled Open; fresh UI showed it enabled. Load and unused blank closure succeeded without retry."
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 274.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "10efbb0005d6cc0af36b7f0b544acaa4490892c76932e25f43fb3ac595c91224",
+    "tested_binary_sha256": "8b5b7cfbae9375fb7efb73398647acb4ddade7b0e9faf596459bcff624096f7f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T183758Z-274-brush-release/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-274.zip",
+    "zip_sha256": "d40c4b13dced868fe7cdab4e3add4edc08b1875f3e892eb6af31ef81bdb56868",
+    "zip_bytes": 38361123,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview274-check-3kvbii1r/Photato Editing Preview 274.app"
+  },
+  "benchmark": {
+    "before": {
+      "cases": [
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 56.73524970188737,
+          "height": 800,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 57.17208329588175,
+          "release_render_ms": 57.94874997809529,
+          "release_submit_ms": 0.12008333578705788,
+          "smoothing": 0,
+          "width": 1200
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 55.695666931569576,
+          "height": 800,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 56.107166688889265,
+          "release_render_ms": 58.93104150891304,
+          "release_submit_ms": 0.05620857700705528,
+          "smoothing": 0.8,
+          "width": 1200
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 292.9916246794164,
+          "height": 4000,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 289.3960834480822,
+          "release_render_ms": 293.5467502102256,
+          "release_submit_ms": 0.12695835903286934,
+          "smoothing": 0,
+          "width": 6000
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 289.8892080411315,
+          "height": 4000,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 292.2500413842499,
+          "release_render_ms": 303.2256248407066,
+          "release_submit_ms": 0.14966633170843124,
+          "smoothing": 0.8,
+          "width": 6000
+        }
+      ],
+      "scope": "Owned dense RGB8 gradients,480 curved timed samples in batches of16,64px brush at30% flow/10% spacing, optional80% smoothing. Preview pacing disabled to isolate release service cost. Release timings include native preparation/history/render publication, not physical input or display latency."
+    },
+    "after": {
+      "cases": [
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 56.859541684389114,
+          "height": 800,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 0.4394166171550751,
+          "release_render_ms": 0.6072917021811008,
+          "release_submit_ms": 0.06920844316482544,
+          "smoothing": 0,
+          "width": 1200
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 56.35066656395793,
+          "height": 800,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 1.7819581553339958,
+          "release_render_ms": 4.012666642665863,
+          "release_submit_ms": 0.03062468022108078,
+          "smoothing": 0.8,
+          "width": 1200
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 295.1115001924336,
+          "height": 4000,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 1.004749909043312,
+          "release_render_ms": 1.97170814499259,
+          "release_submit_ms": 0.038333237171173096,
+          "smoothing": 0,
+          "width": 6000
+        },
+        {
+          "brush_size": 64,
+          "full_prepare_ms": 292.3859995789826,
+          "height": 4000,
+          "history_entries": 1,
+          "native_pixels_match": true,
+          "points": 480,
+          "release_commit_ms": 6.041208282113075,
+          "release_render_ms": 13.915374875068665,
+          "release_submit_ms": 0.043833162635564804,
+          "smoothing": 0.8,
+          "width": 6000
+        }
+      ],
+      "scope": "Owned dense RGB8 gradients,480 curved timed samples in batches of16,64px brush at30% flow/10% spacing, optional80% smoothing. Preview pacing disabled to isolate release service cost. Release timings include native preparation/history/render publication, not physical input or display latency."
+    },
+    "qualification": {
+      "tests": 1,
+      "failures": 0,
+      "seconds": 7.778,
+      "log": "artifacts/runs/20261030T183758Z-274-brush-release/candidate01.log",
+      "sha256": "f1c83b2638fbac458009f306324b7ec31d36afbf3fd834141af2e5a70282b375",
+      "terminal_exit_code": 0
+    },
+    "baseline_log": "artifacts/runs/20261030T183758Z-274-brush-release/baseline01.log",
+    "candidate_log": "artifacts/runs/20261030T183758Z-274-brush-release/candidate01.log"
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T183758Z-274-brush-release/focused01.log",
+      "reason": "Swift compiler type-check limit in a new point fixture; expressions split without changing application source."
+    }
+  ],
+  "remaining": [
+    "Continue editing responsiveness: inspect release work for retouch and fallback tools; retain the user60fps target and exact native output/history.",
+    "Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark disables preview pacing and measures native service cost, not physical display output.",
+    "Exact Photoshop smoothing/painting kernels, complete Photoshop workflows, physical Intel/macOS14/macOS26 and universal release qualification remain open. Opacity popup physical pointer delivery remains a prior qualification limit. Linked-source261 remains parked under the user editing-feedback priority."
+  ],
+  "API_impact": "Existing brush.configure/paint.stroke and typed commands retained. Capability metadata describes retained commitment and original Actions replay; no Adobe route or schema version changes."
+}

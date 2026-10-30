@@ -1,0 +1,12 @@
+{
+  "step": 274,
+  "status": "complete-increment",
+  "qualified_baseline": 273,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_274.json",
+  "run": "artifacts/runs/20261030T183758Z-274-brush-release",
+  "working_source": "artifacts/runs/20261030T183758Z-274-brush-release/source02.json",
+  "next": [
+    "Continue editing responsiveness: inspect release work for retouch and fallback tools; retain the user60fps target and exact native output/history."
+  ],
+  "goal_complete": false
+}

@@ -1,0 +1,154 @@
+{
+  "step": 267,
+  "source_manifest": "artifacts/runs/20261030T012617Z-267-canvas-startup/source01.json",
+  "source_inputs": 2462,
+  "focused": {
+    "tests": 54,
+    "failures": 0,
+    "seconds": 96.805,
+    "log": "artifacts/runs/20261030T012617Z-267-canvas-startup/focused01.log",
+    "sha256": "4e776cffd6ec6300849cf221f2d8c57eef2ed5c830ad5ba3b51641e27b630c73",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2753,
+    "failures": 0,
+    "seconds": 195.193,
+    "log": "artifacts/runs/20261030T012617Z-267-canvas-startup/full01.log",
+    "sha256": "d7c42dde0875948a256022341cd784890cf3a610164e80aabda40414385d7a5c",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Investigate native mouse/tablet input density and event coalescing for jagged curves, with prior-state restoration on finish/cancel/window lifecycle. Apple reference and current-source findings are preserved in input-research01.json; no coalescing change is implemented or qualified here.",
+    "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9\u201311ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee.",
+    "Initial24MP document composition still takes about2.6s in the fixture. Current work removes an avoidable cold rescale during the first stroke, not all loading costs.",
+    "General Clone/Healing/Toning/Focus stroke API submission remains an existing gap. Native191 typed commands and Adobe contracts are unchanged.",
+    "Full Photoshop pixel/default/menu/settings fidelity, physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked until the editing-performance priority is resolved."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "baseline": "artifacts/runs/20261030T012617Z-267-canvas-startup/baseline-startup02.json",
+  "candidate": "artifacts/runs/20261030T012617Z-267-canvas-startup/candidate-startup01.json",
+  "ongoing_cadence": "artifacts/runs/20261030T012617Z-267-canvas-startup/candidate-performance01.json",
+  "ordinary_painting": "artifacts/runs/20261030T012617Z-267-canvas-startup/painting-performance01.json",
+  "baseline_failure": {
+    "log": "artifacts/runs/20261030T012617Z-267-canvas-startup/baseline02.log",
+    "tests": 5,
+    "assertion_failures": 8,
+    "repaired_cases": 4
+  },
+  "failed_first_fixture": {
+    "preservation": "artifacts/runs/20261030T012617Z-267-canvas-startup/baseline-log-preservation01.json",
+    "summary": "artifacts/runs/20261030T012617Z-267-canvas-startup/baseline01-summary.log",
+    "stack_sample": "artifacts/runs/20261030T012617Z-267-canvas-startup/baseline-sample01.txt"
+  },
+  "measurement_scope": "Release CPU publication after production setZoom, with explicit extra-warmup comparison and setup time reported separately. Historical through266 large-retouch timing includes direct-assignment cold rescaling. No physical display/Photoshop equivalence claim.",
+  "live": {
+    "accepted": true,
+    "diagnostic": "diagnostic01.json",
+    "fixture_sha256": "71aeb2f74d9be795014c28065013b527381368b23b636d1d16e9f296b330fa72",
+    "actions": [
+      "Open owned 1200x800 PNG at initial fit 76.83%.",
+      "Zoom to25%,100%,50%; image remains within workspace and chrome unobstructed.",
+      "Paint30px black diagonal from290,570 to415,650 at50%; visible stroke and dirty tab.",
+      "Command-Z removes stroke and dirty marker; Command-Shift-Z restores both.",
+      "Close owned fixture, choose Don\u2019t Save, verify Untitled-1 only, quit diagnostic."
+    ],
+    "captures": {
+      "native-loaded01.png": "5b5e47884cf6dc08f40494d762f95ad56c6e13acb13f664c552cce45a5ace35f",
+      "native-zoom25-01.png": "09b4cd1f5654b5343b02a54695b6f49df33904442a090b1f8eba7938038a45d5",
+      "native-zoom100-01.png": "a1c394770a9888303e3b764530ae414388a70bef1a4ce3be9b26b09fcf3e3b33",
+      "native-zoom50-01.png": "c995a8764ac947925e3842e223efb8a6eac2b7e05e631001b35581280e6960d6",
+      "native-brush01.png": "1c8d86cc17323be7f519410804bafbf5ba96b119d1f370aef28685d04efd3004",
+      "native-undo01.png": "4c4f83d95d99d5a6f6370c6c39aba6be668f38405d660d0d0c8cd4e18bc51de7",
+      "native-redo01.png": "4eb2e1759b56a09a549fe6ac4cd270935c32f8963e6de34113b11da9dcfd0554"
+    },
+    "fixture_unchanged": true,
+    "diagnostic_exited": true,
+    "limits": [
+      "Native workflow smoke check only; no physical display-fps or input-to-photon measurement.",
+      "Artboard fit covered by automated tests, not native UI here.",
+      "No save/reopen, Photoshop pixel equivalence or universal-platform qualification."
+    ]
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 267.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "4e747e80564b08168b9c609ee1dbb0a35adafd858fef56b89d324c116f61d2f4",
+    "tested_binary_sha256": "39a7e4607bfa6b405a3893d6cb52474e41032e6f9ffdfd5c8a383369e616b50f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T012617Z-267-canvas-startup/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-267.zip",
+    "zip_sha256": "af0ac73e00baa486124994ec303fd76ccce3bc60f2d84183fed0a9ae83b40858",
+    "zip_bytes": 38276650,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview267-check-y950duv3/Photato Editing Preview 267.app"
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    },
+    "preview265": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app/Contents/MacOS/Photato",
+      "sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+      "bytes": 80300480
+    },
+    "preview265_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+      "sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+      "bytes": 38247196
+    },
+    "preview266": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 266.app/Contents/MacOS/Photato",
+      "sha256": "53eee1a256b61164670c5983a5f6100d58031ae536f04e46e63f30ce5b654304",
+      "bytes": 80334128
+    },
+    "preview266_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-266.zip",
+      "sha256": "29b170d98f72a68701072835190217d744794569e533438f7a13dd06b3e9b1ff",
+      "bytes": 38277098
+    }
+  },
+  "API_impact": "interactivePreview.display capability describes corrected viewport preparation; working/export pixels, schemas,191 commands and Adobe routes unchanged."
+}

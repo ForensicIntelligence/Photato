@@ -1,0 +1,84 @@
+{
+  "step": 268,
+  "recorded_at_utc": "2026-10-30T02:37:31.136941+00:00",
+  "source_manifest": "artifacts/runs/20261030T015727Z-268-brush-feedback/source03.json",
+  "source_inputs": 2464,
+  "focused": {
+    "tests": 32,
+    "failures": 0,
+    "seconds": 2.262,
+    "log": "artifacts/runs/20261030T015727Z-268-brush-feedback/focused02.log",
+    "sha256": "df3cf36d2218ac6ffea9d8b31ac55bbb75f07d6049e388d016c958e669036c98",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2756,
+    "failures": 0,
+    "seconds": 194.312,
+    "log": "artifacts/runs/20261030T015727Z-268-brush-feedback/full01.log",
+    "sha256": "f22a207ced0228151e880bb12ab162be0eb5e18b66ea1499a23d071caac9f41d",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "d881feb8e40861368ef8691fe5f46ba4545b690430b92641213d58b08b845ce0",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "All1001 curved Brush/Eraser samples retain exact coordinates, complete native pixels and history while painting invalidation follows published previews.",
+    "Bounded retouch cursor/source-marker redraw matches whole-canvas pixels in64 zoom, clipping and edge cases; unclipped source overlays preserve full redraw.",
+    "Native workflow acceptance, separate signed preview, API display capability and corrected input-coalescing history are recorded."
+  ],
+  "remaining": [
+    "Physical display presentation/input-to-photon timing and sustained high-rate tablet/curved strokes remain unqualified. Investigate view/display-aware scheduling and timestamped event/preview/draw traces; see display-timing-research01.json. AppKit coalescing is already scoped off during painting/retouch since262; the267 duplicate next-step hypothesis is corrected in268.",
+    "Brush outline/default/smoothing and Photoshop pixel-kernel fidelity, large tips, complex masks/modes/proofs, expanded/boundary and special tools remain open. Reduced redraw work does not prove all jagged curves fixed.",
+    "General Clone/Healing/Toning/Focus stroke API submission remains an existing gap. Native191 typed commands and Adobe contracts are unchanged.",
+    "Initial24MP document composition remains about2.6s in267 evidence; universal60fps, physical Intel/macOS14/macOS26 and universal release acceptance remain open.",
+    "Linked-source261 is parked until the editing-performance priority is resolved; the complete Photoshop feature/parity goal remains active."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T015727Z-268-brush-feedback/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Painting input no longer requests redraw of unchanged previews; all samples still feed the paced worker. Retouch cursor feedback invalidates old/new rings and same-document source markers; unclipped source overlays retain whole-image redraw. All64 partial/full canvas comparisons match byte for byte. In the bounded offscreen cases, median draw cost is0.36ms versus3.07ms for whole-canvas redraw, touching2.17% of the canvas. All32 focused and2756 full optimized tests pass on2464 frozen inputs; native editing/history and a separate signed preview are checked. Physical60fps, jagged curves and broad heavy-tool qualification remain open.",
+  "stage": "Qualified canvas feedback redraws",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 268,
+  "next": [
+    "Physical display presentation/input-to-photon timing and sustained high-rate tablet/curved strokes remain unqualified. Investigate view/display-aware scheduling and timestamped event/preview/draw traces; see display-timing-research01.json. AppKit coalescing is already scoped off during painting/retouch since262; the267 duplicate next-step hypothesis is corrected in268.",
+    "Brush outline/default/smoothing and Photoshop pixel-kernel fidelity, large tips, complex masks/modes/proofs, expanded/boundary and special tools remain open. Reduced redraw work does not prove all jagged curves fixed."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 268.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "ac7e47f4fe4554228f7ba1b0f92610c4f3b89701b0e10c2e709db1305989327c",
+    "tested_binary_sha256": "d881feb8e40861368ef8691fe5f46ba4545b690430b92641213d58b08b845ce0",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T015727Z-268-brush-feedback/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-268.zip",
+    "zip_sha256": "5beffe1605a1120831206b009a8274ff4d5139fea093e76a946b1e3390f22d62",
+    "zip_bytes": 38282367,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview268-check-ihocsfcg/Photato Editing Preview 268.app"
+  }
+}

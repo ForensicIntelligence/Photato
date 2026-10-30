@@ -44,7 +44,7 @@ final class PhotoshopActionProgramTests: XCTestCase {
     XCTAssertThrowsError(try program.applying(to: original))
     XCTAssertEqual(original.document, d)
     XCTAssertTrue(original.undoStack.isEmpty)
-    d.layers[1].x = 100_000
+    d.layers[1].x = 400_000
     XCTAssertThrowsError(
       try PhotoshopActionProgram(actionJSON: "[{\"_obj\":\"$Mrg2\"}]").applying(to: d))
   }

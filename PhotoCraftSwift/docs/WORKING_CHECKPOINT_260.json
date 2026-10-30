@@ -1,0 +1,29 @@
+{
+  "step": 260,
+  "recorded_at_utc": "2026-10-29T21:09:33.268542+00:00",
+  "stage": "Superseded by qualified ACTIVE_CHECKPOINT_260.json",
+  "increment_complete": true,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/source02.json",
+  "last_qualified_source_step": 259,
+  "live_reference": "Photoshop2026 opens native Media/page2 PSD and Trim/page1 PSB, rerenders at200%, preserves whole PDF source and analytic pixels. User original retained.",
+  "next": [
+    "Continue major L05 with linked-source persistence, source availability/status, relink/update/embed and packaging through shared native/API transactions. Preserve the qualified PDF page interchange and defer fine rendering/default/platform parity gates without marking the broad workflow closed."
+  ],
+  "focused": {
+    "tests": 40,
+    "failures": 0,
+    "seconds": 7.624,
+    "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/focused02.log"
+  },
+  "independent": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/outputs-focused02-independent.json",
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_260.json",
+  "full": {
+    "tests": 2708,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 210.844,
+    "log": "artifacts/runs/20261029T205537Z-260-pdf-psd-interchange/full01.log",
+    "sha256": "f8bb87e0d0998574c7788c7d8e732f095dbee46432b81de7c6295b01ae9a239c"
+  }
+}

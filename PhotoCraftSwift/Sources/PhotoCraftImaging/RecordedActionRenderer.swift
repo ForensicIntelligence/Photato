@@ -21,6 +21,8 @@ public enum RecordedActionRenderer {
     var lastIndexedPalette: [PaletteColor]?
     try action.apply(to: &result, resolve: { operation, document in
       switch operation {
+      case .retouch(let request):
+        try RetouchPreparation.command(request, in: document, sources: masters).apply(to: &document)
       case .inkMode(var request):
         // Recorded conversion is portable: destination channel identities belong
         // to the playback document, not the document used to record the action.

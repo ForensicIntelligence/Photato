@@ -22,27 +22,56 @@ struct ZoomPercentageField: NSViewRepresentable {
     return field
   }
   func updateNSView(_ field: NSTextField, context: Context) {
-    if context.coordinator.parent.store !== store {
-      // An unfinished value must never commit into a newly selected document.
-      context.coordinator.editingDocument = nil
-      field.abortEditing()
-    }
-    context.coordinator.parent = self
-    if field.currentEditor() == nil {
-      field.stringValue = CanvasViewport.percentage(store.effectiveZoom)
-    }
+    context.coordinator.synchronize(field, with: self)
   }
   @MainActor final class Coordinator: NSObject, NSTextFieldDelegate {
     var parent: ZoomPercentageField
     var editingDocument: UUID?
+    var presentedZoom: Double?
     init(_ parent: ZoomPercentageField) { self.parent = parent }
+    func synchronize(_ field: NSTextField, with next: ZoomPercentageField) {
+      // Observe zoom even while the field editor is active. An external Fit/zoom
+      // command supersedes its draft; unrelated updates preserve typed text.
+      let zoom = next.store.effectiveZoom
+      let superseded = parent.store !== next.store || (presentedZoom != nil && presentedZoom != zoom)
+      let wasEditing = field.currentEditor() != nil
+      if superseded {
+        editingDocument = nil
+        field.abortEditing()
+      }
+      parent = next
+      presentedZoom = zoom
+      if field.currentEditor() == nil {
+        field.stringValue = CanvasViewport.percentage(zoom)
+      }
+      if superseded && wasEditing { focusCanvas(from: field) }
+    }
     func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
       guard parent.activateDocument() else { return false }
       editingDocument = parent.store.identity
       return true
     }
     @objc func submit(_ field: NSTextField) {
-      if editingDocument == parent.store.identity,
+      commit(field)
+      // Return finishes navigation so tool shortcuts do not enter this field.
+      focusCanvas(from: field)
+    }
+    private func focusCanvas(from field: NSTextField) {
+      func canvas(in view: NSView) -> CraftCanvas? {
+        if let canvas = view as? CraftCanvas, canvas.store === parent.store,
+          !canvas.isHiddenOrHasHiddenAncestor { return canvas }
+        for child in view.subviews {
+          if let found = canvas(in: child) { return found }
+        }
+        return nil
+      }
+      guard let window = field.window else { return }
+      window.makeFirstResponder(window.contentView.flatMap { canvas(in: $0) })
+    }
+    private func commit(_ field: NSTextField) {
+      let target = editingDocument
+      editingDocument = nil
+      if target == parent.store.identity,
         let value = CanvasViewport.parsePercentage(field.stringValue)
       {
         parent.store.setZoom(value)
@@ -50,7 +79,7 @@ struct ZoomPercentageField: NSViewRepresentable {
       field.stringValue = CanvasViewport.percentage(parent.store.effectiveZoom)
     }
     func controlTextDidEndEditing(_ notification: Notification) {
-      if let field = notification.object as? NSTextField { submit(field) }
+      if let field = notification.object as? NSTextField { commit(field) }
       editingDocument = nil
     }
     func control(_ control: NSControl, textView: NSTextView, doCommandBy command: Selector) -> Bool
@@ -60,7 +89,7 @@ struct ZoomPercentageField: NSViewRepresentable {
       else { return false }
       editingDocument = nil
       field.stringValue = CanvasViewport.percentage(parent.store.effectiveZoom)
-      field.window?.makeFirstResponder(nil)
+      focusCanvas(from: field)
       return true
     }
   }

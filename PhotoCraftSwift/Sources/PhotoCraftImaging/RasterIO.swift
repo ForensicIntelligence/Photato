@@ -45,6 +45,10 @@ public enum RasterIO {
     _ image: CGImage, depth: PixelDepth = .u8,
     space workingSpace: CGColorSpace? = nil, colorEncoding: SurfaceColorEncoding = .sRGB
   ) throws -> Surface {
+    _ = try Surface(width: image.width, height: image.height, depth: depth, colorEncoding: colorEncoding)
+    if image.width * image.height > Surface.maximumDensePixels {
+      return try pagedSurface(image, depth: depth, space: workingSpace, colorEncoding: colorEncoding)
+    }
     let space = try workingSpace ?? colorSpace()
     if depth == .f32, colorEncoding == .linearRGB,
       let direct = try FloatRasterSamples.surface(image, space: space)
@@ -161,6 +165,9 @@ public enum RasterIO {
       throw CraftError.invalid("Invalid EXIF orientation.")
     }
     if orientation == 1 { return source }
+    if source.width * source.height > Surface.maximumDensePixels {
+      return try pagedOrientation(source, orientation: orientation)
+    }
     let swapped = orientation >= 5
     var result = try Surface(
       width: swapped ? source.height : source.width, height: swapped ? source.width : source.height,

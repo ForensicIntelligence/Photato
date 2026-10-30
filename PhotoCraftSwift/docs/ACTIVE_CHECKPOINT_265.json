@@ -1,0 +1,83 @@
+{
+  "step": 265,
+  "recorded_at_utc": "2026-10-30T00:50:16.076873+00:00",
+  "source_manifest": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+  "source_inputs": 2460,
+  "focused": {
+    "tests": 142,
+    "failures": 0,
+    "seconds": 54.202,
+    "log": "artifacts/runs/20261030T002221Z-265-focus-feedback/focused03.log",
+    "sha256": "1a5446781ac435f58dead45f3dd8f8c54195f397303bc03db5801975029dae09",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2742,
+    "failures": 0,
+    "seconds": 205.572,
+    "log": "artifacts/runs/20261030T002221Z-265-focus-feedback/full01.log",
+    "sha256": "1e476addf651b05b3b3421c8427b590fee700b40b299b52cdb44376b15fae5c6",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "b561c2654ed84095b34094a7f01aaca48916a4e235306ab158f7b8feca4717d4",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Shared FocusWorkBuffer retains Float32 neighborhoods, Smudge pickup state and dab spacing; complete and incremental commands share pixel calculations.",
+    "Sealed fixed-grid preview admission, immutable published pixels, failure/cancellation safety and complete boundary/storage fallback preserve native history and output.",
+    "API capability metadata describes retained Focus previews and remaining submission gaps; normal signed local preview and clean ZIP are verified."
+  ],
+  "remaining": [
+    "Focus first source/preview still measures 124.35/124.64/113.33ms (Blur/Sharpen/Smudge). Investigate repeated whole-document and source validation using sealed validated snapshots; preserve availability/error checks.",
+    "Boundary and expanding-storage Focus paths, Healing, special modes/proof, large or prolonged brushes and complex layers retain unqualified performance. The normal 64px interior benchmark is not a worst-case guarantee.",
+    "Physical display presentation and input-to-photon latency, sustained mouse/tablet curves, repeated dab texture and Photoshop kernel/spacing/default fidelity remain open.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state/capabilities do not imply those executable commands exist; no Adobe route is invented.",
+    "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 stays preserved until the maintainer\u2019s current performance priority is resolved."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T002221Z-265-focus-feedback/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Blur, Sharpen and Smudge retain their neighborhood and pickup buffers during interior fixed-grid strokes. The 24MP benchmark publishes 119/119/119 previews in about 2s, with p95 render work of 9.33/7.71/10.34ms, preserving all 240 samples and exact native output. All 648 pre-change full/incremental pixel prefixes, 142 focused tests and 2742 full optimized tests pass on 2460 frozen inputs. Native editing/history checks and a separate signed arm64 preview pass. Initial setup, boundary/expanded/heavy paths, visible dab texture and physical 60fps remain open.",
+  "stage": "Qualified retained Focus-tool responsiveness increment",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 265,
+  "next": [
+    "Improve initial feedback latency and qualify stroke smoothness/physical presentation, then resume preserved linked-source261."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+    "tested_binary_sha256": "b561c2654ed84095b34094a7f01aaca48916a4e235306ab158f7b8feca4717d4",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T002221Z-265-focus-feedback/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+    "zip_sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+    "zip_bytes": 38247196,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview265-check-pa5tlahs/Photato Editing Preview 265.app"
+  }
+}

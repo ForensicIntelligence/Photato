@@ -50,7 +50,7 @@ enum PNGCompression {
     default: throw CraftError.invalid("Unsupported PNG sample layout.")
     }
     guard width > 0, height > 0, width <= Surface.maxDimension,
-      height <= Surface.maxDimension, width <= Surface.maxPixels / height,
+      height <= Surface.maxDimension, width <= Surface.maximumDensePixels / height,
       [1, 2, 4, 8, 16].contains(bits), input[h + 10] == 0, input[h + 11] == 0,
       input[h + 12] <= 1 else { throw CraftError.invalid("Invalid PNG geometry.") }
     let passes = input[h + 12] == 0 ? [(0, 0, 1, 1)] :

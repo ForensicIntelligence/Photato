@@ -1,6 +1,6 @@
 import Foundation
 
-public enum SpotHealingType: String, CaseIterable, Sendable {
+public enum SpotHealingType: String, CaseIterable, Codable, Sendable {
   case contentAware = "Content-Aware"
   case createTexture = "Create Texture"
   case proximityMatch = "Proximity Match"

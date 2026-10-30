@@ -1,0 +1,81 @@
+{
+  "step": 262,
+  "recorded_at_utc": "2026-10-29T23:04:03.552811+00:00",
+  "source_manifest": "artifacts/runs/20261029T215008Z-262-interactive-painting/source05.json",
+  "source_inputs": 2440,
+  "focused": {
+    "tests": 64,
+    "failures": 0,
+    "seconds": 25.148,
+    "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/focused05.log",
+    "sha256": "fb380312eab5548cf4f425417079b6290e549e80bc4bfababf768b1f8256760b"
+  },
+  "full": {
+    "tests": 2721,
+    "failures": 0,
+    "seconds": 193.992,
+    "log": "artifacts/runs/20261029T215008Z-262-interactive-painting/full02.log",
+    "sha256": "481afa217c05e8763b20ecdb485edc0e957899063df20500e910b423b987dae3"
+  },
+  "binary_sha256": "3e3c1c1d6c9249d04c938f202c8fcab456c8038e3f7dc3b9f3cdbd4a78a95b53",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  },
+  "implemented": [
+    "Retained incremental ordinary brush previews with all delivered samples, exact command pixels and unchanged atomic history.",
+    "Regional display-pixel packing, area-filtered zoomed-out previews and cached transparency decoration.",
+    "60Hz preview deadlines, responsive input collection and drawing-event cleanup on completion/cancel/deactivation/destruction.",
+    "Optional API brush preview diagnostics and capability scope through the existing native engine."
+  ],
+  "remaining": [
+    "Physical frame-presentation/input-latency instrumentation and sustained tablet/high-rate hand-drawn curves.",
+    "Dual-tip/symmetry brushes, retouch engines, special modes/masks/proof, expensive effects and first-frame setup still require separate 60fps qualification.",
+    "Large-brush frame spikes, larger/longer documents and physical Retina/Intel/macOS14 runtime acceptance.",
+    "Full Photoshop visual/algorithm/default/workflow parity remains open; linked-source261 is preserved and parked."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261029T215008Z-262-interactive-painting/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Ordinary brush previews now retain stroke work and update only damaged pixels, with cached canvas display and 60Hz scheduling. All 64 focused and 2721 full optimized tests pass on 2440 frozen inputs. Continuous-input CPU benchmarks preserve all 240 samples and target 60 previews/second; they do not measure physical display presentation. Special tools, large-brush spikes and full platform/Photoshop parity remain open. Linked-source261 is parked.",
+  "stage": "Qualified interactive painting responsiveness increment",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "next": [
+    "Continue the 60fps cross-tool acceptance work; resume preserved linked-source261 after this responsiveness priority."
+  ],
+  "new_distribution_release": false,
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68",
+    "source_manifest": "artifacts/runs/20261029T215008Z-262-interactive-painting/source05.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+    "zip_sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b",
+    "zip_bytes": 38196417,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview262-check-bko8gava/Photato Painting Preview 262.app",
+    "replaces_previous_preview_path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato Painting Preview 262.app",
+    "reason": "Desktop File Provider added Finder metadata after initial signing; deliver a separate verified app outside Desktop and a metadata-free ZIP.",
+    "unqualified_desktop_copy_preserved_at": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261029T215008Z-262-interactive-painting/desktop-preview-unqualified.app"
+  },
+  "installation_scope": "Separate preview only; existing Photato.app unchanged."
+}

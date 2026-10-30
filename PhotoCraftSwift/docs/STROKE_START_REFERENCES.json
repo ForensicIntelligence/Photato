@@ -1,0 +1,149 @@
+{
+  "step": 266,
+  "source_manifest": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json",
+  "source_inputs": 2461,
+  "focused": {
+    "tests": 74,
+    "failures": 0,
+    "seconds": 87.118,
+    "log": "artifacts/runs/20261030T010127Z-266-stroke-start/focused01.log",
+    "sha256": "79b52c612b7041e76d424943243ee08323b8f6bfead4befdc5165106879faf13",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2748,
+    "failures": 0,
+    "seconds": 192.858,
+    "log": "artifacts/runs/20261030T010127Z-266-stroke-start/full01.log",
+    "sha256": "78fe08959c841ef43e9f0fe4c6dbda72efeb94d21a959646be3ecca24a4f5368",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Large24MP retouch startup still takes59\u201371ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
+    "Jagged curves, repeated dab texture, native mouse/tablet sampling, display presentation/input-to-photon latency and heavy/boundary/expanded/Healing paths remain unqualified. CPU snapshot cadence is not physical60fps.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Current capability/state metadata does not imply new commands or Adobe endpoints.",
+    "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 remains preserved until the current editing-performance priority is resolved."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "baseline_validation": "artifacts/runs/20261030T010127Z-266-stroke-start/validation-baseline01.json",
+  "candidate_validation": "artifacts/runs/20261030T010127Z-266-stroke-start/validation-candidate01.json",
+  "baseline_retouch": "artifacts/runs/20261030T002221Z-265-focus-feedback/candidate-performance03.json",
+  "candidate_retouch": "artifacts/runs/20261030T010127Z-266-stroke-start/candidate-performance01.json",
+  "ordinary_painting": "artifacts/runs/20261030T010127Z-266-stroke-start/painting-performance01.json",
+  "general_retouch": "artifacts/runs/20261030T010127Z-266-stroke-start/retouch-performance01.json",
+  "measurement_scope": "Release CPU snapshot publication and offscreen AppKit drawing on this arm64 macOS27 host; physical display timing, Intel and minimum-OS execution are not qualified.",
+  "live": {
+    "step": 266,
+    "accepted": true,
+    "diagnostic": {
+      "app": "/private/tmp/Photato-Feedback-266.app",
+      "isolated": true,
+      "tested_binary_sha256": "5b5130fb434dd25f0e996dfdb5ad7368f1b7077212ff84bc938918e218535d1d",
+      "signed_binary_sha256": "81d02e69083a1fc28053b002a27204a62135276b38c8122856d7ae819a090c07",
+      "native_file_backed_sections_match": 38,
+      "source_manifest": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json"
+    },
+    "fixture": {
+      "source": "artifacts/runs/20261030T002221Z-265-focus-feedback/owned-focus-pattern.png",
+      "copy": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T010127Z-266-stroke-start/owned-feedback-pattern.png",
+      "sha256": "71aeb2f74d9be795014c28065013b527381368b23b636d1d16e9f296b330fa72",
+      "provenance": "Reused original step265 analytic gradient/checker/stripe image, owned test artwork; no user document."
+    },
+    "platform": "arm64 macOS27.0.1, build26A434",
+    "actions": [
+      "Open owned1200x800 gradient/checker/stripe fixture at76.83%.",
+      "Paint30px Normal brush,100% opacity/flow,0 smoothing,pressure off from window(170,600) to(370,710); visible black stroke.",
+      "Command-Z visibly removes stroke and clears dirty state; Command-Shift-Z restores visible stroke and dirty state; undo again.",
+      "Select Blur30px,50% strength,current layer; drag(280,420) to(760,420) across checker pattern; visible softened strip.",
+      "Undo returns crisp checker; Redo restores edited state. Close owned image and discard only its unsaved edits; quit isolated diagnostic."
+    ],
+    "screenshots": {
+      "native-before01.png": "3b8624b5615af6dd61f3e2d9c1b94626c583cdcdadc4f2419f20e6a3b656628a",
+      "native-brush01.png": "aa78f6aa2dea94666c76e560c272b64f56a6ebd42373a1916ed614be52bc3140",
+      "native-blur-undo01.png": "b3a3be082442b824da966128cd2f4db6ef2b1ce74ecb7cd9400a7e2d6094ed8a",
+      "native-blur01.png": "3733de3a0c002c092fd9e992967d75d1c09e08ac3fa2833214bdff7b496ef0bd",
+      "native-redo01.png": "3d60806cea2f61fdb7e93157cd8c2ac4c6bf1531b0fb3dd617b44855df421146",
+      "native-undo01.png": "88e37120278c7e2c5b716dddf14ed2a36c40bcd75c4d2330c7c3dd3817b4be0d"
+    },
+    "cleanup": {
+      "process_exited": true,
+      "fixture_unchanged": true,
+      "user_documents_touched": false
+    },
+    "limits": [
+      "Native visual/history smoke check, not physical frame-timing or120Hz mouse/tablet qualification.",
+      "No new source save/reopen or Photoshop pixel-equivalence qualification claimed."
+    ]
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 266.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "53eee1a256b61164670c5983a5f6100d58031ae536f04e46e63f30ce5b654304",
+    "tested_binary_sha256": "5b5130fb434dd25f0e996dfdb5ad7368f1b7077212ff84bc938918e218535d1d",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-266.zip",
+    "zip_sha256": "29b170d98f72a68701072835190217d744794569e533438f7a13dd06b3e9b1ff",
+    "zip_bytes": 38277098,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview266-check-ciigryqg/Photato Editing Preview 266.app"
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    },
+    "preview265": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app/Contents/MacOS/Photato",
+      "sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+      "bytes": 80300480
+    },
+    "preview265_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+      "sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+      "bytes": 38247196
+    }
+  },
+  "API_impact": "Shared validation optimization and interactivePreview.validation metadata;191 typed commands and Adobe contracts unchanged."
+}

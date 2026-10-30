@@ -1,0 +1,88 @@
+{
+  "step": 271,
+  "recorded_at_utc": "2026-10-30T17:34:40.179562+00:00",
+  "source_manifest": "artifacts/runs/20261030T165926Z-271-active-preview/source03.json",
+  "source_inputs": 2468,
+  "focused": {
+    "tests": 71,
+    "failures": 0,
+    "seconds": 6.145,
+    "log": "artifacts/runs/20261030T165926Z-271-active-preview/focused03.log",
+    "sha256": "921d6539d971a13fe70f40429a3b424e51fd1f44ec00e32f1506ff2e071f621e",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2764,
+    "failures": 0,
+    "seconds": 209.095,
+    "log": "artifacts/runs/20261030T165926Z-271-active-preview/full02.log",
+    "sha256": "ce8da00a4ddbe46625aa84b608ea880ceb738396309960558676b5f478c6ea25",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "c8cff9418b350c26136ce95b7664acab9178b650f15c9fcbe34f675235e94b4c",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "The obsolete159 running probe is retired after preserving its actual document byte-for-byte; the qualified normal preview is now the active app with the retained artwork.",
+    "Native zoom Return releases text focus and external zoom/Fit supersedes stale drafts, with real-AppKit editor and document/history regressions.",
+    "Navigation-to-painting checks and the signed Preview271 package pass71 focused and2764 full optimized tests."
+  ],
+  "remaining": [
+    "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe\u2019s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
+    "Continue native frame timing work from270: display/input phase, high-rate curves/tablet input, larger documents/tips, masks/modes/proofs and special tools. Physical input-to-photon and sustained60fps remain unqualified.",
+    "Photoshop tool-selection attempts through CUA fail in271; reference screenshots remain unchanged. Published behavior is not numerical/default/kernel proof. Physical Intel/macOS14/macOS26 and universal release qualification remain open.",
+    "Linked-source261 remains parked while editing responsiveness is the priority; the full native Photoshop goal remains active."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T165926Z-271-active-preview/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Native zoom Return now releases keyboard focus for tool shortcuts, and external zoom/Fit changes supersede stale percentage drafts while unrelated updates preserve typing. The obsolete159 probe was retired after a byte-identical retained copy of its open document was verified; that document is now open in normal Preview271. All71 focused and2764 full optimized tests pass on2468 frozen inputs. Native zoom/shortcut/history checks and signed packaging pass. No new frame-rate or Photoshop pixel-equivalence claim is made; sustained60fps and stroke continuity remain open.",
+  "stage": "Active preview handoff and navigation focus qualified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 271,
+  "next": [
+    "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe\u2019s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
+    "Continue native frame timing work from270: display/input phase, high-rate curves/tablet input, larger documents/tips, masks/modes/proofs and special tools. Physical input-to-photon and sustained60fps remain unqualified."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 271.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "8c30325e043b08d19501594a638cfd43fce3b4d14c0c59e7bee9c01da5641165",
+    "tested_binary_sha256": "c8cff9418b350c26136ce95b7664acab9178b650f15c9fcbe34f675235e94b4c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T165926Z-271-active-preview/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-271.zip",
+    "zip_sha256": "6337f9deaa463ce0bb517ba28f00ac90fc864cf606ca8196aa6aeac864769d7f",
+    "zip_bytes": 38313562,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview271-check-bn02kfok/Photato Editing Preview 271.app"
+  },
+  "completed_this_increment": [
+    "The obsolete159 running probe is retired after preserving its actual document byte-for-byte; the qualified normal preview is now the active app with the retained artwork.",
+    "Native zoom Return releases text focus and external zoom/Fit supersedes stale drafts, with real-AppKit editor and document/history regressions.",
+    "Navigation-to-painting checks and the signed Preview271 package pass71 focused and2764 full optimized tests."
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "step": 263,
+  "recorded_at_utc": "2026-10-29T23:47:15.556781+00:00",
+  "source_manifest": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+  "source_inputs": 2449,
+  "focused": {
+    "tests": 124,
+    "failures": 0,
+    "seconds": 20.496,
+    "log": "artifacts/runs/20261029T231620Z-263-interactive-retouching/focused01.log",
+    "sha256": "753e153ab04165d5dcb8341a06fe7dc640f43b3973ea178aa81004757893ea82"
+  },
+  "full": {
+    "tests": 2731,
+    "failures": 0,
+    "seconds": 194.958,
+    "log": "artifacts/runs/20261029T231620Z-263-interactive-retouching/full01.log",
+    "sha256": "40b5bcf5873eed5524302a3270798c1c9a7c555ee6a911ed0ca235e47844ffe0"
+  },
+  "binary_sha256": "1d567841539182c2060641db4fc189a69ca18683df8443b23dfea93d510c873c",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false
+  },
+  "implemented": [
+    "Single60Hz retouch preview scheduler drains accepted input without cancelling every in-flight frame.",
+    "Fixed-grid Clone Stamp/Spot Healing marker coverage is retained while exact existing pixel algorithms and one-command history remain authoritative.",
+    "Read-only shared-document retouchPreview state and capability/result schema; existing API busy/stale checks retained."
+  ],
+  "remaining": [
+    "Physical display-presented frame times, end-to-end input latency and sustained mouse/tablet curves.",
+    "Large/long brushes, first-source/first-frame setup, expanded targets, special modes/masks/proof, heavy layers and expensive effects.",
+    "Healing, Toning and Focus still prepare complete prefixes; representative small-image cadence is improved, but24MP and prolonged paths require separate optimization/qualification. Smudge final drain measured26.54ms in one run; no per-frame guarantee.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API coverage gap; diagnostics do not imply executable operation support.",
+    "Photoshop exact brush/retouch kernels, spacing/defaults, complete feature parity and physical Intel/macOS14/macOS26 qualification remain open. Preserve linked-source261 and resume after the current feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261029T231620Z-263-interactive-retouching/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Clone Stamp and eight retouch tools now retain input while paced previews finish; fixed-grid Clone Stamp and Spot Healing markers reuse coverage. On the measured24MP image, continuous120Hz input publishes119 previews in1.99s instead of0, preserving all240 samples and exact existing command pixels. All124 focused and2731 full optimized tests pass on2449 frozen inputs. Owned native Smudge/Blur/Spot Healing, Undo/Redo and150% containment checks pass. Physical60fps, heavy/long strokes, kernel fidelity and full Photoshop/platform parity remain open.",
+  "stage": "Qualified interactive retouching responsiveness increment",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+    "tested_binary_sha256": "1d567841539182c2060641db4fc189a69ca18683df8443b23dfea93d510c873c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+    "zip_sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+    "zip_bytes": 38224478,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview263-check-_g1o3l72/Photato Editing Preview 263.app"
+  },
+  "installation_scope": "Separate local arm64 preview; existing Photato.app and preview262 unchanged.",
+  "next": [
+    "Continue measured cross-tool responsiveness, first-frame/heavy cases and physical input/presentation acceptance. Resume preserved linked-source261 after this priority."
+  ]
+}

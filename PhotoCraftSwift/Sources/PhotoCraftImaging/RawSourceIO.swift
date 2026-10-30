@@ -6,7 +6,7 @@ import PhotoCraftCore
 
 /// Native Apple sensor decoder. Never substitutes CGImageSource previews for RAW output.
 public enum RawSourceIO {
-  public static let maximumPixels = Surface.maxPixels
+  public static let maximumPixels = Surface.maximumDensePixels
   public static let mediaTypes = ["image/x-camera-raw","image/x-adobe-dng"]
   public static let contentType = UTType("public.camera-raw-image")!
   public struct Info: Codable, Equatable, Sendable {

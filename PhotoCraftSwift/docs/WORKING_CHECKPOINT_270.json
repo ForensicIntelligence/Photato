@@ -1,0 +1,13 @@
+{
+  "step": 270,
+  "status": "complete-increment",
+  "qualified_baseline": 269,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_270.json",
+  "run": "artifacts/runs/20261030T163533Z-270-preview-presentation",
+  "working_source": "artifacts/runs/20261030T163533Z-270-preview-presentation/source02.json",
+  "next": [
+    "Investigate preview timing relative to native display opportunities and input arrival. Retain both270 attempts: cadence improves but input-to-draw latency remains variable, including the first-attempt Dodge regression. Physical input-to-photon and sustained60fps remain unqualified.",
+    "Investigate jagged curves and visible dab texture with owned high-rate native/tablet input and independent Photoshop comparisons. Preserve all input samples and explicit smoothing defaults rather than hiding latency with extra smoothing."
+  ],
+  "goal_complete": false
+}

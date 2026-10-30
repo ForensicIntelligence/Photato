@@ -78,15 +78,26 @@ enum NativeChunkedArchive {
       return digest
     }
   }
-  final class InputContext: RasterBlobDecoding, @unchecked Sendable {
+  final class InputContext: MappedRasterBlobDecoding, @unchecked Sendable {
     let records: [String: Blob]
     let read: (Int, Int) throws -> Data
     private var tiles: [String: [Pixel]] = [:]
+    private var mappedTiles: [String: RasterTile] = [:]
+    private let backing: RasterTileStore?
+    var usesMappedTiles: Bool { backing != nil }
     private let decoder = TileArchive.Decoder()
     private(set) var used: Set<String> = []
-    init(records: [String: Blob], read: @escaping (Int, Int) throws -> Data) {
+    init(records: [String: Blob], backing: RasterTileStore? = nil, read: @escaping (Int, Int) throws -> Data) {
       self.records = records
+      self.backing = backing
       self.read = read
+    }
+    func storedTile(_ digest: String) throws -> RasterTile {
+      guard let backing else { return RasterTile(try tile(digest)) }
+      if let tile = mappedTiles[digest] { return tile }
+      let tile = try backing.append(RasterTile(try decoder.decode(bytes(digest, maximumBytes: TileArchive.byteCount + 1))))
+      mappedTiles[digest] = tile
+      return tile
     }
     func bytes(_ digest: String, maximumBytes: Int) throws -> Data {
       guard let blob = records[digest], blob.length <= UInt64(maximumBytes) else {
@@ -119,6 +130,9 @@ enum NativeChunkedArchive {
     encoder.outputFormat = .binary
     encoder.userInfo[.historyTileEncoder] = output
     let metadata = try encoder.encode(EncodingEnvelope(document: document, output: output, recoveryContext: recoveryContext, version: Int(version)))
+    guard metadata.count <= NativeArchive.maximumBytes else {
+      throw NativeArchiveMemoryLimit.metadata(requiredBytes:metadata.count,limitBytes:NativeArchive.maximumBytes)
+    }
     let start = output.count
     try output.append(metadata)
     try output.append(
@@ -131,16 +145,18 @@ enum NativeChunkedArchive {
     try decodeRecovery(count: count, rasterByteLimit: rasterByteLimit, read: read).document
   }
   static func decodeRecovery(count: Int, rasterByteLimit: Int,
-    maximumMetadataBytes: Int = NativeArchive.maximumBytes,
+    maximumMetadataBytes: Int = NativeArchive.maximumBytes, backing: RasterTileStore? = nil,
+    maximumFileBytes: Int = NativeArchive.maximumBytes,
     read: @escaping (Int, Int) throws -> Data)
     throws -> NativeArchive.RecoveryContents
   {
     try Task.checkCancellation()
-    guard count >= header.count + footerSize, count <= NativeArchive.maximumBytes,
+    guard count >= header.count + footerSize, count <= maximumFileBytes,
+      (0...NativeArchive.maximumFileBytes).contains(maximumFileBytes),
       (0...1_073_741_824).contains(rasterByteLimit)
     else { throw CraftError.invalid("Invalid native archive size or raster budget.") }
     let (metadata, offset) = try manifest(
-      count: count, maximumMetadataBytes: maximumMetadataBytes, read: read)
+      count: count, maximumMetadataBytes: maximumMetadataBytes, maximumFileBytes:maximumFileBytes, read: read)
     let decoder = PropertyListDecoder()
     let table = try decoder.decode(Table.self, from: metadata)
     guard table.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(table.version), table.blobs.count <= 65_536 else {
@@ -161,7 +177,7 @@ enum NativeChunkedArchive {
       expected += record.length
     }
     guard expected == offset else { throw CraftError.invalid("Unindexed native archive bytes.") }
-    let context = InputContext(records: records, read: read)
+    let context = InputContext(records: records, backing: backing, read: read)
     decoder.userInfo[.historyTileDecoder] = context
     decoder.userInfo[.rasterDecodeBudget] = RasterDecodeBudget(bytes: rasterByteLimit)
     var document = try decoder.decode(DocumentEnvelope.self, from: metadata).document
@@ -201,9 +217,11 @@ enum NativeChunkedArchive {
       width: header.document.width, height: header.document.height, manifestBytes: metadata.count)
   }
   static func manifest(count: Int, maximumMetadataBytes: Int = NativeArchive.maximumBytes,
+    maximumFileBytes: Int = NativeArchive.maximumBytes,
     read: (Int, Int) throws -> Data) throws -> (Data, UInt64)
   {
-    guard count >= header.count + footerSize, count <= NativeArchive.maximumBytes,
+    guard count >= header.count + footerSize, count <= maximumFileBytes,
+      (0...NativeArchive.maximumFileBytes).contains(maximumFileBytes),
       (0...NativeArchive.maximumBytes).contains(maximumMetadataBytes) else {
       throw CraftError.invalid("Invalid native archive size.")
     }
@@ -300,7 +318,11 @@ enum NativeChunkedArchive {
 }
 
 extension NativeArchive {
+  /// In-memory containers and metadata retain their original independent bound.
   public static let maximumBytes = 512 * 1024 * 1024
+  /// File transactions stream bounded chunks. Index/heap/scratch/metadata budgets
+  /// remain separate; this admission ceiling does not prove dense4TiB capacity.
+  public static let maximumFileBytes = 4_398_046_511_104
   public static let maximumRecoveryContextBytes = 128 * 1024
   public struct RecoveryContents: Sendable {
     public let document: CraftDocument
@@ -317,7 +339,7 @@ extension NativeArchive {
   /// Recovery-only opaque metadata shares the manifest integrity check and publication.
   /// Normal document saves and downloads omit it, including when saving a recovered model.
   public static func writeRecovery(_ document: CraftDocument, context: Data?, to url: URL) throws {
-    try write(document, to: url, recoveryContext: context) {
+    try write(document, to: url, maximumBytes: NativeArchive.maximumBytes, recoveryContext: context) {
       try AtomicFileWriter(to: $0, maximumBytes: $1)
     }
   }
@@ -334,17 +356,17 @@ extension NativeArchive {
     return output.data
   }
   public static func write(
-    _ document: CraftDocument, to url: URL, maximumBytes: Int = NativeArchive.maximumBytes
+    _ document: CraftDocument, to url: URL, maximumBytes: Int = NativeArchive.maximumFileBytes
   ) throws {
     try write(document, to: url, maximumBytes: maximumBytes) {
       try AtomicFileWriter(to: $0, maximumBytes: $1)
     }
   }
   static func write(
-    _ document: CraftDocument, to url: URL, maximumBytes: Int = NativeArchive.maximumBytes,
+    _ document: CraftDocument, to url: URL, maximumBytes: Int = NativeArchive.maximumFileBytes,
     recoveryContext: Data? = nil, makeFile: (URL, Int) throws -> AtomicFileWriter
   ) throws {
-    guard (0...Self.maximumBytes).contains(maximumBytes) else {
+    guard (0...Self.maximumFileBytes).contains(maximumBytes) else {
       throw CraftError.invalid("Invalid native archive output limit.")
     }
     let file = try makeFile(url, maximumBytes)

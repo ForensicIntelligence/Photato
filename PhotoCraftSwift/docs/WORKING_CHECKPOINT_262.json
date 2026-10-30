@@ -1,0 +1,18 @@
+{
+  "step": 262,
+  "status": "completed-increment",
+  "qualified_baseline": 262,
+  "working_source": "artifacts/runs/20261029T215008Z-262-interactive-painting/source05.json",
+  "active_attempt": null,
+  "intent": "Improve brush/tool response toward60fps with retained stroke work and regional canvas display.",
+  "parked_261": "artifacts/runs/20261029T213940Z-261-linked-smart-objects/parked01/manifest.json",
+  "not_yet_qualified": [
+    "Physical frame-presentation/input-latency instrumentation and sustained tablet/high-rate hand-drawn curves.",
+    "Dual-tip/symmetry brushes, retouch engines, special modes/masks/proof, expensive effects and first-frame setup still require separate 60fps qualification.",
+    "Large-brush frame spikes, larger/longer documents and physical Retina/Intel/macOS14 runtime acceptance.",
+    "Full Photoshop visual/algorithm/default/workflow parity remains open; linked-source261 is preserved and parked."
+  ],
+  "next": [
+    "Continue the 60fps cross-tool acceptance work; resume preserved linked-source261 after this responsiveness priority."
+  ]
+}

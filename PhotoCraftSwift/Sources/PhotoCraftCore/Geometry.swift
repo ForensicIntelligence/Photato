@@ -155,6 +155,9 @@ public enum RasterGeometry {
     clampEdges: Bool = false
   ) throws -> Surface {
     let inverse = try transform.inverted()
+    guard bounds.width > 0, bounds.height > 0, bounds.width <= Surface.maximumDensePixels / bounds.height else {
+      throw CraftError.unsupported("Large raster resampling needs tiled geometry processing, which is not yet available.")
+    }
     var output = try Surface(width: bounds.width, height: bounds.height, depth: surface.depth)
     for y in 0..<bounds.height {
       try Task.checkCancellation()

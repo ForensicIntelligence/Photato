@@ -1,0 +1,84 @@
+{
+  "step": 273,
+  "recorded_at_utc": "2026-10-30T18:31:16.635797+00:00",
+  "source_manifest": "artifacts/runs/20261030T181050Z-273-brush-catch-up/source03.json",
+  "source_inputs": 2471,
+  "focused": {
+    "tests": 62,
+    "failures": 0,
+    "seconds": 3.503,
+    "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/focused03.log",
+    "sha256": "8ad59d31b5158164380c6c554a235fbcfe28639d413b2cc73643facfbeb53d12",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2777,
+    "failures": 0,
+    "seconds": 194.713,
+    "log": "artifacts/runs/20261030T181050Z-273-brush-catch-up/full01.log",
+    "sha256": "95a52b1c871833f192234940677a3a010c4c03883cd709bc609398b526db9e31",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "4a18183ee5e8dd5511272529789281261e0d9196db5581a03527d3f7adfe885f",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Held-pointer smoothing advances through the shared brush geometry and stops after catch-up; release-only tails are excluded from eligible live previews.",
+    "Brush catch-up, fallback tools, masks, cancellation and HTTP/history replay are covered by 62 focused and 2777 full tests, with bounded native painting/history checks and a separate signed Preview273."
+  ],
+  "remaining": [
+    "Continue editing responsiveness: qualify high-rate curves/tablet input and heavy-tool frame pacing. Sustained physical60fps and full Photoshop pixel parity remain open.",
+    "Pulled-string stationary catch-up interaction, exact smoothing kernels/defaults and high-pressure/high-rate physical tablet behavior remain unqualified. Native timer tests use owned synthetic events; live checks do not measure input-to-photon latency.",
+    "Physical Intel/macOS14/macOS26 and universal release qualification remain open. Opacity popup physical pointer delivery remains a prior qualification limit. Linked-source261 remains parked under the user editing-feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T181050Z-273-brush-catch-up/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Brush/Pencil/Mixer/Eraser smoothing now advances toward a paused pointer using a bounded native clock, while catch-up on release waits for commitment. Timed samples retain tablet attributes and share the final native/API history path. Both initial defects are reproduced; all 62 focused and 2777 full optimized tests pass on 2471 frozen inputs. Native painting/history checks and separate Preview273 packaging are verified. Physical60fps and exact Photoshop smoothing remain open.",
+  "stage": "Held-pointer brush smoothing qualified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 273,
+  "next": [
+    "Continue editing responsiveness: qualify high-rate curves/tablet input and heavy-tool frame pacing. Sustained physical60fps and full Photoshop pixel parity remain open."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 273.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "14b3a84137078561a854d7bf48e23a4500b28052866d89626c8f3618e30dc490",
+    "tested_binary_sha256": "4a18183ee5e8dd5511272529789281261e0d9196db5581a03527d3f7adfe885f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T181050Z-273-brush-catch-up/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-273.zip",
+    "zip_sha256": "4b5c2fa941787461842224cbd49f5dc6aa190ac56c15637262d25bed9c239771",
+    "zip_bytes": 38340473,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview273-check-u43_oybi/Photato Editing Preview 273.app"
+  },
+  "completed_this_increment": [
+    "Held-pointer smoothing advances through the shared brush geometry and stops after catch-up; release-only tails are excluded from eligible live previews.",
+    "Brush catch-up, fallback tools, masks, cancellation and HTTP/history replay are covered by 62 focused and 2777 full tests, with bounded native painting/history checks and a separate signed Preview273."
+  ]
+}

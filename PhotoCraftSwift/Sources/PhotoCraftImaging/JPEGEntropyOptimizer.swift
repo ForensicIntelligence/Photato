@@ -158,7 +158,7 @@ enum JPEGEntropyOptimizer {
       frame.count == 6 + 3 * Int(frame[5]) else { throw JPEGContainer.invalid() }
     let height = Int(frame[1]) * 256 + Int(frame[2]), width = Int(frame[3]) * 256 + Int(frame[4])
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
-      width <= Surface.maxPixels / height else { throw JPEGContainer.invalid() }
+      width <= Surface.maximumDensePixels / height else { throw JPEGContainer.invalid() }
     let components = (0..<Int(frame[5])).map { index -> Component in
       let offset = 6 + 3 * index
       return Component(id: Int(frame[offset]), horizontal: Int(frame[offset + 1] >> 4),

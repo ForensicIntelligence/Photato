@@ -235,7 +235,7 @@ struct GeometrySheet: View {
       }
       guard px.isFinite, py.isFinite, px >= 1, py >= 1, px <= Double(Surface.maxDimension),
         py <= Double(Surface.maxDimension), px * py <= Double(Surface.maxPixels)
-      else { throw CraftError.invalid("Enter dimensions within the 36 megapixel limit.") }
+      else { throw CraftError.invalid("Enter dimensions from 1 to 300,000 pixels per side (maximum 90 gigapixels).") }
       let command: Command
       if isCanvas {
         let color: Pixel? =

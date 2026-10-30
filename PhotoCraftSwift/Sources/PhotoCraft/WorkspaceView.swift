@@ -178,7 +178,11 @@ struct WorkspaceView: View {
         }
         .onChange(of: store.identity) { _, id in proxy.scrollTo(id) }
       }
-      if store.rendering { ProgressView().controlSize(.mini).padding(.trailing, 8) }
+      // During a live stroke, the canvas itself is the feedback. Do not observe
+      // the per-frame busy toggle and rebuild the workspace twice per preview.
+      if store.brushGesture == nil && store.cloneDraft == nil && store.rendering {
+        ProgressView().controlSize(.mini).padding(.trailing, 8)
+      }
     }.frame(height: 29).background(StudioTheme.tab)
       .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
   }

@@ -1,0 +1,14 @@
+{
+  "step": 278,
+  "status": "complete-increment",
+  "run": "artifacts/runs/20261030T204800Z-278-large-documents",
+  "working_source": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_278.json",
+  "goal_complete": false,
+  "next": [
+    "Q01 remains open: implement disk-backed dense pixel/mask storage with bounded cache/COW history and hierarchical native archive indexing beyond512MiB, and the remaining512-layer native cap.",
+    "Stream large PSB/native files and all image import/export paths; contiguous raster import/processing still retains36MP and existing resident/file/transfer budgets. Sparse90GP is not dense Photoshop capacity parity.",
+    "Complete demand-driven large layer/group/style/mask/adjustment rendering, paged selection/modes/geometry/filters, both API job paths, cancellation/disk-full/corruption/performance and platform qualification.",
+    "Retain prior interactive60fps, heavy retouching, linked sources and remaining Photoshop workflow/byte-exact/universal-release requirements."
+  ]
+}

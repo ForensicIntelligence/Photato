@@ -98,7 +98,7 @@ enum DocumentIO {
   ) throws -> CraftDocument {
     try Task.checkCancellation()
     let document: CraftDocument
-    if native { document = try NativeArchive.decode(data, rasterByteLimit: rasterByteLimit) }
+    if native { document = try NativeArchive.decodePaged(data, heapByteLimit: rasterByteLimit) }
     else if MovieIO.recognizes(data) { document = try MovieIO.decode(data,name:name,maximumBytes:rasterByteLimit) }
     else if PcraftImport.recognizes(data) {
       document = try PcraftImport.read(data, rasterByteLimit: rasterByteLimit)
@@ -124,7 +124,7 @@ enum DocumentIO {
     return try readNative(url)
   }
   static func readNative(_ url: URL) throws -> CraftDocument {
-    let document = try NativeArchive.read(url)
+    let document = try NativeArchive.readPaged(url)
     _ = try ColorManagement.space(for: document)
     return document
   }

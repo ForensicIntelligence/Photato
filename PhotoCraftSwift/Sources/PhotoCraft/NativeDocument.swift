@@ -390,6 +390,7 @@ import SwiftUI
         recoverySnapshotContext = RecoverySnapshotContext.decode(recoveryContext)
         if let recoverySnapshotContext { recoveryGroupID = recoverySnapshotContext.recoveryID }
         recoveryContentGeneration &+= 1
+        store.layerOpacityDraft = nil
         store.finishNumericField(cancel: true)
         store.finishLayerName(cancel: true)
         store.layerVisibilityDraft = nil
@@ -400,7 +401,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
@@ -433,6 +434,7 @@ import SwiftUI
         recoverySnapshotContext = RecoverySnapshotContext.decode(recoveryContext)
         if let recoverySnapshotContext { recoveryGroupID = recoverySnapshotContext.recoveryID }
         recoveryContentGeneration &+= 1
+        store.layerOpacityDraft = nil
         store.finishNumericField(cancel: true)
         store.finishLayerName(cancel: true)
         store.layerVisibilityDraft = nil
@@ -443,7 +445,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
@@ -479,7 +481,7 @@ import SwiftUI
     store.invalidateHistory()
     fileOperationTask?.cancel()
     copyPanel?.cancel(nil)
-    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.transformDraft = nil
+    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
     resetPrintWorkspace()
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
@@ -497,7 +499,8 @@ import SwiftUI
     store.layerPanelOptionsDraft = nil
     store.channelDialog = nil
         store.channelPanelOptionsDraft = nil
-    store.finishNumericField(cancel: true)
+    store.layerOpacityDraft = nil
+        store.finishNumericField(cancel: true)
     store.finishLayerName(cancel: true)
     store.colorLookupDraft = nil
     store.classicAdjustmentDraft = nil

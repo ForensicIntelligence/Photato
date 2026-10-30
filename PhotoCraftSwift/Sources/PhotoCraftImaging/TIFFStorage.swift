@@ -65,6 +65,7 @@ enum TIFFStorage {
     if g.associated && !g.planar { return nil }
     var output = try Surface(width: g.width, height: g.height, depth: depth,
       fill: Pixel(0, 0, 0, g.channels == 3 ? 1 : 0), colorEncoding: encoding)
+    let scratch = g.width * g.height > Surface.maximumDensePixels ? try RasterTileStore() : nil
     let planes = g.planar ? g.channels : 1, components = g.planar ? 1 : g.channels
     let stripsPerPlane = (g.height - 1) / g.rows + 1, bps = g.bits / 8
     for plane in 0..<planes {
@@ -119,10 +120,14 @@ enum TIFFStorage {
             if encoding == .linearRGB { output.setLinearPixel(x: x, y: y0 + y, p) }
             else { output.setPixel(x: x, y: y0 + y, p) }
           }
+          if let scratch, (y0 + y + 1) % Surface.tileSide == 0 || y + 1 == rows {
+            output = try output.spillingTiles(to: scratch)
+          }
         }
       }
     }
     if g.associated {
+      if scratch != nil { return try associatedPaged(output, bits: g.bits, depth: depth, encoding: encoding, space: space) }
       let bytes = try output.rgbaData(depth: depth, colorEncoding: encoding)
       var info = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
       if depth == .u16 { info.insert(.byteOrder16Little) }
@@ -264,5 +269,31 @@ enum TIFFStorage {
       }
     }
     return bytes
+  }
+}
+
+
+extension TIFFStorage {
+  static func associatedPaged(_ input: Surface, bits: Int, depth: PixelDepth,
+    encoding: SurfaceColorEncoding, space: CGColorSpace?) throws -> Surface {
+    var output = try Surface(width: input.width, height: input.height, depth: depth, colorEncoding: encoding)
+    let store = try RasterTileStore(), colorSpace = try space ?? RasterIO.colorSpace()
+    var info = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+    if depth == .u16 { info.insert(.byteOrder16Little) }
+    if depth == .f32 { info.formUnion([.floatComponents, .byteOrder32Little]) }
+    for y in stride(from: 0, to: input.height, by: Surface.tileSide) {
+      for x in stride(from: 0, to: input.width, by: 2048) {
+        try Task.checkCancellation()
+        let r = IntRect(x:x,y:y,width:min(2048,input.width-x),height:min(Surface.tileSide,input.height-y))
+        let bytes = try input.cropped(to:r).rgbaData(depth:depth,colorEncoding:encoding)
+        guard let provider = CGDataProvider(data:bytes as CFData),
+          let image = CGImage(width:r.width,height:r.height,bitsPerComponent:bits,bitsPerPixel:bits*4,
+            bytesPerRow:r.width*(bits/8)*4,space:colorSpace,bitmapInfo:info,provider:provider,decode:nil,shouldInterpolate:false,intent:.defaultIntent)
+        else { throw CraftError.invalid("Invalid associated TIFF patch.") }
+        let patch = try RasterIO.surface(image,depth:depth,space:colorSpace,colorEncoding:encoding)
+        try output.importPatch(patch,atX:x,atY:y,backing:store)
+      }
+    }
+    return output
   }
 }

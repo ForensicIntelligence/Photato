@@ -26,7 +26,7 @@ extension AutomationService {
     let initial = try command.actionClipboardBytes()
     var inputs: [(UUID, String, CraftNSDocument)] = []
     if let raw = command.parameters["sources"] {
-      guard action.usesMasterPalette else { throw AutomationFailure(status: 400, message: "Additional sources require an enabled master-palette action step.") }
+      guard action.usesMasterPalette || action.usesExternalRetouchSources else { throw AutomationFailure(status: 400, message: "Additional sources require a master-palette or external retouch Action step.") }
       _ = try BrushAPI.merge(raw, schema: RestrictedModeAPI.schema("sources", command: ""), base: [])
       guard case .array(let sources) = raw else { throw AutomationFailure(status: 400, message: "Invalid master sources.") }
       for source in sources {

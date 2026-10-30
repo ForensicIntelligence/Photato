@@ -36,6 +36,16 @@ public struct RGBChannelView: Equatable, Sendable {
   public func applying(to source: Surface) throws -> Surface {
     try Task.checkCancellation()
     if visible == Self.components { return source }
+    if source.width * source.height > Surface.maximumDensePixels {
+      return try source.mappedStoredSamples(encoding: .sRGB) { stored in
+        let pixel = source.colorEncoding == .linearRGB ? SRGBTransfer.encoded(stored) : stored
+        if visible.count == 1, let single = visible.first {
+          let value = single == .red ? pixel.r : single == .green ? pixel.g : pixel.b
+          return Pixel(value, value, value, pixel.a)
+        }
+        return Pixel(visible.contains(.red) ? pixel.r : 0, visible.contains(.green) ? pixel.g : 0, visible.contains(.blue) ? pixel.b : 0, pixel.a)
+      }
+    }
     var result = source
     let single = visible.count == 1 ? visible.first : nil
     try result.mapPixels(in: IntRect(x: 0, y: 0, width: source.width, height: source.height)) {

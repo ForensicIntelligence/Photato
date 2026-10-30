@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 191
+  static let expectedCommandCount = 192
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -313,7 +313,9 @@ final class AutomationTests: XCTestCase {
   }
   @MainActor func testLimitsAndMenuEntryAreExplicitProductAdditions() throws {
     _ = NSApplication.shared
-    let oversized = try CraftNSDocument.blankModel(width: 2049, height: 2048, background: .clear)
+    var oversized = try CraftNSDocument.blankModel(width: 2049, height: 2048, background: .clear)
+    XCTAssertNoThrow(try AutomationService.checkLimits(oversized), "Logical area no longer determines API resident-data admission")
+    for i in 0..<64 { oversized.layers.append(Layer(name: "Limit \(i)", content: .raster(try Surface(width: 1, height: 1)))) }
     XCTAssertThrowsError(try AutomationService.checkLimits(oversized))
     let app = AppDelegate()
     XCTAssertFalse(app.automation.isRunning)

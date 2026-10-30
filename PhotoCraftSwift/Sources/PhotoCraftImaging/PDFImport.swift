@@ -184,7 +184,7 @@ public enum PDFImport {
     return plan
   }
   public static func pages(_ data: Data,name: String,settings: PDFImportSettings,
-    password: String? = nil,maximumPixels: Int = Surface.maxPixels,
+    password: String? = nil,maximumPixels: Int = Surface.maximumDensePixels,
     maximumBytes: Int = maximumDecodedBytes) throws -> [CraftDocument] {
     try settings.validate();try Task.checkCancellation()
     guard !name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty,name.utf8.count <= 240,

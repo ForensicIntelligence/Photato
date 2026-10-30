@@ -11,7 +11,7 @@ extension AutomationCommand {
     case "actionID", "stepID": return ["type": "string", "format": "uuid"]
     case "enabled": return ["type": "boolean"]
     case "index": return ["type": "integer", "minimum": 0, "maximum": 511]
-    case "data": return ["type": "string", "contentEncoding": "base64", "maxLength": 60_000, "description": "Version 1–20 Photato action library JSON encoded as base64; not an Adobe .atn file."]
+    case "data": return ["type": "string", "contentEncoding": "base64", "maxLength": 60_000, "description": "Version 1–21 Photato action library JSON encoded as base64; not an Adobe .atn file."]
     default: return ["type": "string", "minLength": 1, "maxLength": 256]
     }
   }

@@ -37,6 +37,11 @@ enum RecoveryMemoryPolicy {
   static func renderAllowance(width: Int, height: Int) -> Int {
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
       width <= Surface.maxPixels / height else { return Int.max }
+    if width * height > Surface.maximumDensePixels {
+      // Sparse document pixels are counted separately. Bound presentation/working
+      // reserve to the viewport instead of charging90GP of nonexistent tiles.
+      return 4_194_304 * 40
+    }
     let w = ((width + Surface.tileSide - 1) / Surface.tileSide) * Surface.tileSide
     let h = ((height + Surface.tileSide - 1) / Surface.tileSide) * Surface.tileSide
     return w * h * 40
@@ -92,7 +97,7 @@ struct RecoveryMemoryInput: Sendable {
       let image = store.image.map { $0.bytesPerRow * $0.height } ?? 0
       let mask = store.maskViewImage.map { $0.bytesPerRow * $0.height } ?? 0
       return .init(session: store.session,
-        actualRenderBytes: RecoveryMemoryPolicy.add(store.surface?.allocatedBytes ?? 0, image, mask))
+        actualRenderBytes: RecoveryMemoryPolicy.add(store.surface?.allocatedBytes ?? 0, image, mask, store.canvasRasterPreview?.allocatedBytes ?? 0))
     }
   }
 }

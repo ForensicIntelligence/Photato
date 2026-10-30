@@ -7,6 +7,7 @@ struct ActionLibraryFile: Codable {
   var actions: [RecordedAction] = []
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where: { $0.steps.contains { if case .retouch = $0.operation { return true }; return false } }) { return 21 }
     if actions.contains(where: { $0.steps.contains { if case .inkMode = $0.operation { return true }; return false } }) { return 20 }
     if actions.contains(where: { $0.steps.contains { switch $0.operation { case .documentMode, .restrictedMode, .clipboardCopy, .clipboardCut, .clipboardPaste: true; default: false } } }) { return 19 }
     if actions.contains(where:{$0.steps.contains{switch $0.operation{case .toneAdjustment:return true;case .filter(_,let f):return f.kind == .shadowsHighlights;case .filters(_,let s):return s?.filters.contains{$0.filter.kind == .shadowsHighlights} == true;default:return false}}}){return 18}
@@ -30,8 +31,8 @@ struct ActionLibraryFile: Codable {
     } } ? 2:1
   }
   func encoded() throws -> Data {
-    guard (1...20).contains(version), actions.count <= 128, Set(actions.map(\.id)).count == actions.count else {
-      throw CraftError.invalid("Invalid action library (versions 1–20, maximum 128 actions).")
+    guard (1...21).contains(version), actions.count <= 128, Set(actions.map(\.id)).count == actions.count else {
+      throw CraftError.invalid("Invalid action library (versions 1–21, maximum 128 actions).")
     }
     for action in actions { try action.validate() }
     let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
@@ -114,8 +115,8 @@ struct ActionLibraryFile: Codable {
     playPreparedAction(action)
   }
   var actionState: [String: Any] {
-    ["format": "photatoactions", "version": actions.file.version, "supportedVersions": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "libraryRevision": actions.revision,
-     "playback": ["semanticColorModes": true, "semanticClipboard": true, "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "adobeATN": false],
+    ["format": "photatoactions", "version": actions.file.version, "supportedVersions": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21], "libraryRevision": actions.revision,
+     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "adobeATN": false],
      "canRecord": canUseActions && session.actionRecording == nil && actions.loadError == nil,
      "canPlay": canUseActions && session.actionRecording == nil,
      "recording": session.actionRecording.map { Self.actionInfo($0.snapshot) } as Any? ?? NSNull(),

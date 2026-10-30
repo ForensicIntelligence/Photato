@@ -1,0 +1,84 @@
+{
+  "step": 275,
+  "recorded_at_utc": "2026-10-30T19:32:09.283012+00:00",
+  "source_manifest": "artifacts/runs/20261030T190609Z-275-retouch-release/source02.json",
+  "source_inputs": 2478,
+  "focused": {
+    "tests": 50,
+    "failures": 0,
+    "seconds": 4.094,
+    "log": "artifacts/runs/20261030T190609Z-275-retouch-release/focused02.log",
+    "sha256": "c443fdd53ee668c95b89a733d6ab68ba3b1750b4f9b29f1746084d3e14c6927f",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2791,
+    "failures": 0,
+    "seconds": 195.749,
+    "log": "artifacts/runs/20261030T190609Z-275-retouch-release/full01.log",
+    "sha256": "c9f0681f6ffe398881b23e2ad625722e6be0d04166b1aecbeff8fea9bc08e3bf",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "1054817da0a0603457d1330e76773dc7ffcc54bd5c6b1824f8a918ab111fafd8",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Seven eligible retouch tools retain validated raster/mask work through release, with unchanged final pixels, captured settings, aligned-source behavior and one history transaction. Healing markers and unsupported boundaries retain complete final preparation.",
+    "Retouch release, depth/mask/transform/selection correctness, pending input, cancellation, stale sessions and HTTP history/busy behavior pass 50 focused and 2791 full tests, measured improvement and native Preview275 acceptance."
+  ],
+  "remaining": [
+    "Close the existing semantic retouch Action recording and general retouch stroke API gaps with shared native operations, schemas, history and relevant conformance coverage. Continue measuring healing/fallback responsiveness.",
+    "Healing Brush and Spot Healing still require complete final processing; the marker is not healed output. Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark measures native service cost with preview pacing disabled.",
+    "Exact Photoshop kernels, complete workflows, physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked under the user editing-feedback priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T190609Z-275-retouch-release/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Clone Stamp, Dodge/Burn/Sponge and Blur/Sharpen/Smudge now retain validated preview work through release, appending only unseen samples. On the owned 24 MP fixture, eligible release commitment improves from 12\u201340 ms to 0.8\u20131.0 ms with exact native command pixels and one history entry. All 50 focused and 2791 full optimized tests pass on 2478 frozen inputs. Native painting/history and separate Preview 275 packaging are verified. Healing final processing, retouch Actions/direct APIs, physical 60 fps and full Photoshop/platform parity remain open.",
+  "stage": "Retouch release responsiveness qualified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 275,
+  "next": [
+    "Close the existing semantic retouch Action recording and general retouch stroke API gaps with shared native operations, schemas, history and relevant conformance coverage. Continue measuring healing/fallback responsiveness."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 275.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "056eb4eca8eb0a569da33fd9de9350fa6dd7b5c0dd461c2755bbc2e2eab28da5",
+    "tested_binary_sha256": "1054817da0a0603457d1330e76773dc7ffcc54bd5c6b1824f8a918ab111fafd8",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T190609Z-275-retouch-release/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-275.zip",
+    "zip_sha256": "977b98764a219280c85168a573046de499eef264c67d4aa5b7bc44148eee1251",
+    "zip_bytes": 38382347,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview275-check-zkw5n_7_/Photato Editing Preview 275.app"
+  },
+  "completed_this_increment": [
+    "Seven eligible retouch tools retain validated raster/mask work through release, with unchanged final pixels, captured settings, aligned-source behavior and one history transaction. Healing markers and unsupported boundaries retain complete final preparation.",
+    "Retouch release, depth/mask/transform/selection correctness, pending input, cancellation, stale sessions and HTTP history/busy behavior pass 50 focused and 2791 full tests, measured improvement and native Preview275 acceptance."
+  ]
+}

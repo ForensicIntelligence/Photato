@@ -45,6 +45,21 @@ public enum PDFSmartObjectIO {
       ?? embedded(data,fileName:fileName,in:parent,settings:settings)
     return .replaceSmartObject(layerID,object,pixels,preserveSize:preserveSize,allInstances:allInstances)
   }
+  /// A saved source edit keeps the selected page/image and existing instance transforms.
+  public static func sourceUpdate(_ data: Data, in parent: CraftDocument,
+    layerID: UUID, expectedRevision: String) throws -> Command {
+    guard let source = parent.layers.first(where: {$0.id == layerID})?.smartObject,
+      let selection = source.pdfSource else {throw CraftError.invalid("Select a retained PDF Smart Object.")}
+    guard source.revision == expectedRevision else {throw CraftError.invalid("The PDF source changed. Reopen its contents or explicitly apply the saved PDF.")}
+    guard !data.isEmpty,data.count <= SmartObject.maximumSourceBytes,PDFImport.recognizes(data) else {
+      throw CraftError.invalid("Choose a PDF source between1 byte and64MiB.")
+    }
+    var settings = PDFImportSettings();settings.pages = [selection.page]
+    settings.crop = PDFImportSettings.Crop(rawValue:selection.crop.rawValue)!
+    settings.resolution = source.resolution;settings.antialias = selection.antialias
+    return try replacement(data,fileName:source.fileName,in:parent,layerID:layerID,
+      settings:settings,image:selection.image,preserveSize:false,allInstances:true)
+  }
   public static func surface(_ object: SmartObject, width: Int, height: Int,
     in parent: CraftDocument) throws -> Surface {
     try object.validate();try Task.checkCancellation()

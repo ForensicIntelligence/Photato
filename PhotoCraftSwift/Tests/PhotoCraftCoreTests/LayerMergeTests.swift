@@ -161,7 +161,7 @@ final class LayerMergeTests: XCTestCase {
       case 3: d.layers[1].affine = .scale(2, 1)
       case 4: d.layers[1].content = .fill(.white)
       case 5: d.layers[1].clipped = true
-      case 6: d.layers[1].x = 100_000
+      case 6: d.layers[1].x = 400_000
       case 7: d.layers[1].visible = false
       default: d.layers[1].parentID = UUID()
       }

@@ -1,0 +1,191 @@
+{
+  "step": 280,
+  "status": "Paged native file persistence qualified; full capacity parity open",
+  "previous": "docs/PAGED_RASTER_REFERENCES.json",
+  "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+  "source_inputs": 2496,
+  "scope": "Explicit mapped chunked native Data/file persistence, native/API workflow and corrected dense-thumbnail interpretation.",
+  "design": {
+    "owned_apis": "Unchanged Core read/decode and legacy/history/recovery admission semantics.",
+    "paged": "Unique checked raster digests decode once into immutable anonymous scratch; Surface keeps128-byte reference estimates, other owned payloads keep decoded budgets.",
+    "file": "Stable regular-file descriptor/path identity and metadata, checksum/range validation and cancellation retained before publication.",
+    "api": "Existing native uploads and File Open share explicit paged reader; state/schema preserved and nativePagedInput capability reports policy.",
+    "thumbnail": "Baseline output and screenshot pixels show opaque gray image with checkerboard aspect-fit margins; earlier missing-thumbnail inference corrected, no speculative UI change."
+  },
+  "remaining": [
+    "Native chooser selection after SaveAs remains unqualified in the live attempt; Open Recent successfully reopens the saved file.",
+    "Q01 remains open: hierarchical persistent tile/blob indexes, packed cold samples and removal of flat65536-blob/resident dictionary/native512-layer constraints;4TiB admission is not full dense-capacity qualification.",
+    "Stream PSB/other formats beyond512MiB and complete all large group/style/mask/selection/mode/filter/geometry/export and Adobe resource-job paths.",
+    "Automatic recovery/history/legacy-inline admission, metadata buffers and specialized codec/API transfer limits remain separately bounded; qualify their full large-document lifecycles.",
+    "Qualify dense stress/disk-full/corruption/relaunch, physical60fps, universal distribution and macOS14/Intel/macOS26 runtime; full Photoshop pixel/settings/menu/workflow parity remains open."
+  ],
+  "capacity_parity_complete": false,
+  "file_policy": {
+    "desktop_native_file_admission": 4398046511104,
+    "native_data_and_metadata_limit": 536870912,
+    "physical_io_chunk": 65536,
+    "unique_blob_limit": 65536,
+    "capacity_parity_complete": false
+  },
+  "summary": "Native file Open/Save now stream past the former512MiB file boundary, and checked chunked tile input stays mapped on reopen/API upload. Tests cover an owned >512MiB file, real40MP native editing and134MP/2GiB repeated tile references across all depths. All71 focused and2829 full optimized tests pass; separate Preview280 is verified. Hierarchical indexes, large PSB/all-operation/platform capacity parity remain open.",
+  "focused": {
+    "tests": 71,
+    "failures": 0,
+    "seconds": 40.168,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/focused05.log",
+    "sha256": "96e1cd4c7af45d6656e6d52591ba4c15c2dcc8b9e5bcd84bcd0359bffb695a94",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "full": {
+    "tests": 2829,
+    "failures": 0,
+    "seconds": 259.412,
+    "log": "artifacts/runs/20261030T223835Z-280-native-paging/full01.log",
+    "sha256": "96da64ea91f022637b4c4e8506f35e9a72328a632d2a58f45d9b494dbf6ec4ec",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+  },
+  "live_native": {
+    "step": 280,
+    "accepted": true,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source05.json",
+    "binary_sha256": "fcde23418f4c26c581d012e5664f720fd8da4ab4794ca9e24dccf173c70db71f",
+    "scope": "Owned native >512MiB file Open/paint/history/SaveAs/OpenRecent; chooser post-save selection remains unqualified.",
+    "input": {
+      "source": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T223835Z-280-native-paging/focused03-captures/owned-native-over512.photato",
+      "native_input": "/private/tmp/Photato Owned Native over512 - 280.photato",
+      "bytes": 537861974,
+      "sha256": "a3568a709ac7ddb4219f39be65306500d40aa502d7e6bea240d02664fc93799e",
+      "reason": "Owned clone outside File Provider Desktop for isolated native large-file acceptance; original captured evidence preserved."
+    },
+    "saved": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T223835Z-280-native-paging/Owned large native edited 280.photato",
+      "bytes": 3548487,
+      "sha256": "7cb728a47cd9bda9f05dc03ddb30133e9fc44af3bec17b7827db2f2ec81b5a34",
+      "independent_parser": "Python stdlib little-endian footer/manifest SHA256/binary plist; no Photato decoder",
+      "width": 8192,
+      "height": 8192,
+      "version": 11,
+      "blobs": 8199
+    },
+    "actions": [
+      "File Open accepts537861974-byte8192-square owned input after source-verification repair",
+      "Fit9.72%,Command1,30px black Brush250,340\u2192700,580;Undo clean,Redo dirty",
+      "SaveAs owned new file3548487bytes; close; OpenRecent reopens exact saved path and100% stroke/dimensions persist",
+      "lsof confirms owned unlinked raster scratch descriptor; not RSS evidence",
+      "Quit diagnostic without querying its UI handle again"
+    ],
+    "known_issue": "Open chooser selected freshly saved/local copies but kept Open disabled; multiple attempts, transient UI focus/clipboard/offscreen/external-change events preserved. Root cause unqualified. Open Recent succeeds.",
+    "failed_native_attempt": "native-large-alert01.ax.txt",
+    "capacity_parity_complete": false,
+    "physical_60fps_qualified": false
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 280.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "db63e7081d6da864a8a1dda7d0f96a9602d6fdc841b9a7f07a9bc4cd10636b54",
+    "tested_binary_sha256": "de705f4886e53fe13c5cb5bbe2a1a4572f1d1aec0038df35457363bc0723d9f5",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-280.zip",
+    "zip_sha256": "3a49ccfeb512677a92db62959f15360c77f297fd9e8a0e05fb8b88330021a309",
+    "zip_bytes": 38550931,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview280-check-nmq7i9wp/Photato Editing Preview 280.app"
+  },
+  "handoff": {
+    "step": 280,
+    "accepted": true,
+    "normal_preview": 280,
+    "original_artwork_unchanged": true,
+    "clean": true,
+    "zoom": "77.73%",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "previous_preview_quit": true,
+    "diagnostics_quit": true,
+    "active_processes": [
+      "98313 /Users/johnczlonka/Applications/Photato Editing Preview 280.app/Contents/MacOS/Photato"
+    ],
+    "evidence": [
+      "handoff-before279-01.ax.txt",
+      "handoff-final01.ax.txt",
+      "handoff-final01.jpg"
+    ],
+    "capacity_parity_complete": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T223835Z-280-native-paging/focused01.log",
+      "result": "56 tests,4 assertions in2 new fixtures: fresh UUID comparison and1px between-center dab. Test-only source03 repair passes56 tests; source04 adds file-boundary work."
+    }
+  ],
+  "implementation_inputs": [
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+    "Sources/PhotoCraft/DocumentIO.swift",
+    "Sources/PhotoCraft/RasterStorageAPI.swift",
+    "Sources/PhotoCraft/RecoverySourceRecord.swift",
+    "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+    "Sources/PhotoCraftCore/NativePagedArchive.swift",
+    "Sources/PhotoCraftCore/RasterBlobCoding.swift",
+    "Sources/PhotoCraftCore/Surface.swift",
+    "Sources/PhotoCraftCore/TileArchive.swift",
+    "Tests/PhotoCraftAppTests/PagedRasterWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/RecoverySourceTests.swift",
+    "Tests/PhotoCraftCoreTests/NativePagedArchiveTests.swift",
+    "Tests/PhotoCraftImagingTests/PagedRasterTests.swift"
+  ],
+  "tests": [
+    {
+      "tests": 71,
+      "failures": 0,
+      "seconds": 40.168,
+      "log": "artifacts/runs/20261030T223835Z-280-native-paging/focused05.log",
+      "sha256": "96e1cd4c7af45d6656e6d52591ba4c15c2dcc8b9e5bcd84bcd0359bffb695a94",
+      "terminal_exit_code": 0,
+      "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+    },
+    {
+      "tests": 2829,
+      "failures": 0,
+      "seconds": 259.412,
+      "log": "artifacts/runs/20261030T223835Z-280-native-paging/full01.log",
+      "sha256": "96da64ea91f022637b4c4e8506f35e9a72328a632d2a58f45d9b494dbf6ec4ec",
+      "terminal_exit_code": 0,
+      "source_manifest": "artifacts/runs/20261030T223835Z-280-native-paging/source06.json"
+    }
+  ],
+  "large_output_measurement": {
+    "exactHDRProbes": 6,
+    "fileBytes": 585693075,
+    "heapEstimateBytes": 1152000,
+    "logicalPixels": 67108864,
+    "mappedSampleBytes": 589824000,
+    "scope": "Actual owned high-entropy finiteFloat32 RGB with unit alpha, native write/read across512MiB. Not Photoshop pixel, full4TiB or RSS qualification.",
+    "seconds": 11.479116082191467,
+    "storedPixels": 36864000
+  },
+  "failed_native_attempt": "artifacts/runs/20261030T223835Z-280-native-paging/native-large-alert01.ax.txt",
+  "large_file_measurement": {
+    "heapEstimateBytes": 1048704,
+    "logicalPixels": 67108864,
+    "mappedSampleBytes": 536936448,
+    "scope": "Owned independent sparse-file container with unique checked raw tile payloads; not a dense Photoshop pixel or RSS proof",
+    "seconds": 2.4938859939575195,
+    "sourceBytes": 537861974,
+    "uniqueRawTiles": 8193
+  },
+  "thumbnail_correction": {
+    "baseline_test": "artifacts/runs/20261030T223835Z-280-native-paging/thumbnail-baseline01.log",
+    "pixel_analysis": "artifacts/runs/20261030T223835Z-280-native-paging/thumbnail-screenshot-pixels01.json",
+    "finding": "Opaque gray thumbnail with checkerboard in aspect-fit margins; step279 missing-thumbnail inference was incorrect. No thumbnail implementation changed."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "step": 279,
+  "recorded_at_utc": "2026-10-30T22:34:19.255624+00:00",
+  "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+  "source_inputs": 2494,
+  "focused": {
+    "tests": 48,
+    "failures": 0,
+    "seconds": 10.405,
+    "log": "artifacts/runs/20261030T214215Z-279-paged-raster/focused02.log",
+    "sha256": "d7760af77ec3b448fbbcb6b998c8d600a0b9ef62c773f9ccac805ff89e2d59dd",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source02.json"
+  },
+  "full": {
+    "tests": 2820,
+    "failures": 0,
+    "seconds": 206.214,
+    "log": "artifacts/runs/20261030T214215Z-279-paged-raster/full02.log",
+    "sha256": "b87dd5f5e943ea1d4e20885e11eb1e4bc1a2d1b76c69a64dcb0bdfd9aacb7a3b",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json"
+  },
+  "binary_sha256": "dbecad0b251e7f619d0802cdf7c9a3a2658ea30279772cabd19264c6d42b205d",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Disk-backed dense RGB raster input beyond36MP, bounded ImageIO/profile/orientation conversion, immutable mapped tile COW/history and native40MP editing/save/reopen acceptance.",
+    "Optional API upload/painting/history and storage state/schema/capabilities share the same engine; heap estimates and mapped references are distinct. Full optimized regression and normal Preview279 verified."
+  ],
+  "remaining": [
+    "Dense40MP Layers thumbnail currently remains checkerboard; qualify and repair bounded large-layer thumbnail sampling alongside persistence.",
+    "Q01 remains open: persistent hierarchical tile index, packed cold samples, bounded whole-document metadata/cache and scratch disk preferences; 90GP dense capacity is not qualified.",
+    "Stream native/PSB large files: remove512MiB file,1GiB native decoded-data and65536 blob-table restrictions through a bounded format/index design, not unsafe cap increases; native reopening currently restores owned samples.",
+    "General large layer/group/style/mask/selection/mode/filter/geometry/export paths and all Adobe resource-job lifecycles still need paging and capacity tests.",
+    "ImageIO source/cache residency, Float32 provider1GiB admission, TIFF512MiB strips/planar write amplification and64MiB API upload/128MiB owned-heap admission remain separate limits.",
+    "Qualify disk-full/corruption/recovery/relaunch, dense stress and physical60fps across supported Macs; universal distribution/macOS14/Intel/macOS26 runtime and full Photoshop byte-exact workflows remain open."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T214215Z-279-paged-raster/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Large RGB image import now converts bounded patches into immutable disk-backed tiles; painting promotes only edited tiles and history shares existing samples. An owned40MP PNG passes native Open/paint/Undo/Redo/save/reopen and authenticated API import/edit/history. All48 focused and2820 full optimized tests pass; separate Preview279 is verified. Full dense90GP/large PSB/native streaming and operation/platform capacity parity remain open.",
+  "stage": "Paged runtime raster input qualified; full capacity open",
+  "native_archive": 62,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 279,
+  "next": [
+    "Dense40MP Layers thumbnail currently remains checkerboard; qualify and repair bounded large-layer thumbnail sampling alongside persistence.",
+    "Q01 remains open: persistent hierarchical tile index, packed cold samples, bounded whole-document metadata/cache and scratch disk preferences; 90GP dense capacity is not qualified.",
+    "Stream native/PSB large files: remove512MiB file,1GiB native decoded-data and65536 blob-table restrictions through a bounded format/index design, not unsafe cap increases; native reopening currently restores owned samples."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 279.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "5e01e030346f645901e027ff92f73a16f4276c0757bdde9303a4da046277d5da",
+    "tested_binary_sha256": "dbecad0b251e7f619d0802cdf7c9a3a2658ea30279772cabd19264c6d42b205d",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-279.zip",
+    "zip_sha256": "6744bf05e78a2eec2464488f8aa48c296d16d2e49effd61acfde4d539c0ce5d9",
+    "zip_bytes": 38547377,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview279-check-dkjnh8j0/Photato Editing Preview 279.app"
+  },
+  "completed_this_increment": [
+    "Disk-backed dense RGB raster input beyond36MP, bounded ImageIO/profile/orientation conversion, immutable mapped tile COW/history and native40MP editing/save/reopen acceptance.",
+    "Optional API upload/painting/history and storage state/schema/capabilities share the same engine; heap estimates and mapped references are distinct. Full optimized regression and normal Preview279 verified."
+  ],
+  "goal_status": "active"
+}

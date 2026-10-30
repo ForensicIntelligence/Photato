@@ -23,7 +23,7 @@ public enum AnimationGIF {
     let w = Int(data[6]) | Int(data[7]) << 8, h = Int(data[8]) | Int(data[9]) << 8
     // Account for tiled float storage and frame states before allocating any decoded images.
     guard w > 0, h > 0, w <= Surface.maxDimension, h <= Surface.maxDimension,
-      w <= Surface.maxPixels / h else { throw CraftError.invalid("GIF canvas exceeds the image limits.") }
+      w <= Surface.maximumDensePixels / h else { throw CraftError.invalid("GIF canvas exceeds the image limits.") }
     let perFrame = ((w + 63) / 64) * ((h + 63) / 64) * 65_536
     guard rasterByteLimit > 0, perFrame * count + count * count * 256 <= rasterByteLimit else {
       throw CraftError.invalid("Decoded GIF frames exceed the document memory limit.")

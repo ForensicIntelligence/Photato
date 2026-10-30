@@ -1,0 +1,10 @@
+{
+  "step": 281,
+  "status": "in-progress",
+  "run": "artifacts/runs/20261030T234058Z-281-source-publication",
+  "goal_complete": false,
+  "next": [
+    "Curate/scan/verify source280, fast-forward push and publication receipt",
+    "Return to Q01: chooser follow-up, hierarchical native indexes, large PSB/all operations and platform qualification"
+  ]
+}

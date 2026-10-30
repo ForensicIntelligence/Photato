@@ -1,0 +1,14 @@
+{
+  "step": 267,
+  "status": "complete-increment",
+  "qualified_baseline": 266,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_267.json",
+  "run": "artifacts/runs/20261030T012617Z-267-canvas-startup",
+  "working_source": "artifacts/runs/20261030T012617Z-267-canvas-startup/source01.json",
+  "active_attempt": "artifacts/runs/20261030T012617Z-267-canvas-startup/full01.log",
+  "next": [
+    "Investigate native mouse/tablet input density and event coalescing for jagged curves, with prior-state restoration on finish/cancel/window lifecycle. Apple reference and current-source findings are preserved in input-research01.json; no coalescing change is implemented or qualified here.",
+    "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9\u201311ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee."
+  ],
+  "goal_complete": false
+}

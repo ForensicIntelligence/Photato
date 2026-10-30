@@ -1,0 +1,12 @@
+{
+  "step": 263,
+  "status": "complete-increment",
+  "qualified_baseline": 263,
+  "run": "artifacts/runs/20261029T231620Z-263-interactive-retouching",
+  "next": [
+    "Continue measured cross-tool responsiveness, first-frame/heavy cases and physical input/presentation acceptance. Resume preserved linked-source261 after this priority."
+  ],
+  "active_attempt": null,
+  "working_source": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_263.json"
+}

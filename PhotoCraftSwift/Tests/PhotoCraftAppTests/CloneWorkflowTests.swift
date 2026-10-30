@@ -24,7 +24,7 @@ final class CloneWorkflowTests: XCTestCase {
     store.finishClone()
     await store.clonePrepareTask?.value
     await store.geometryTask?.value
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
   }
   @MainActor func stop(_ store: EditorStore) {
     store.cancelClone()
@@ -45,7 +45,7 @@ final class CloneWorkflowTests: XCTestCase {
     let original = store.document
     store.beginClone(.init(x: 10.5, y: 3.5))
     await store.clonePrepareTask?.value
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertTrue(store.document == original)
     XCTAssertTrue(store.session.undoStack.isEmpty)
     XCTAssertFalse(store.canBeginLevels)
@@ -87,7 +87,7 @@ final class CloneWorkflowTests: XCTestCase {
     await store.clonePrepareTask?.value
     store.extendClone(.init(x: 17.5, y: 3.5))
     store.cancelClone()
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertTrue(store.document == original)
     XCTAssertTrue(store.session.undoStack.isEmpty)
     XCTAssertNil(state.slot.anchor)
@@ -162,10 +162,15 @@ final class CloneWorkflowTests: XCTestCase {
     XCTAssertTrue(store.document == before)
   }
   @MainActor func testCanvasOptionClickDragEscapeAndShortcut() async throws {
+    let beforeAppKit = NSEvent.isMouseCoalescingEnabled
+    _ = NSApplication.shared
+    print("Clone native fixture coalescing before AppKit: \(beforeAppKit); after: \(NSEvent.isMouseCoalescingEnabled)")
+    let previousCoalescing = NSEvent.isMouseCoalescingEnabled
     let state = CloneSources()
     let store = try makeStore(state: state)
     defer { stop(store) }
     let canvas = CraftCanvas(store: store)
+    defer { canvas.drawingEvents.end() }
     canvas.frame = NSRect(x: 0, y: 0, width: 340, height: 180)
     func event(_ type: NSEvent.EventType, _ x: Double, _ flags: NSEvent.ModifierFlags = []) throws
       -> NSEvent
@@ -196,6 +201,7 @@ final class CloneWorkflowTests: XCTestCase {
         context: nil, characters: "\u{1b}", charactersIgnoringModifiers: "\u{1b}", isARepeat: false,
         keyCode: 53))
     canvas.keyDown(with: esc)
+    XCTAssertEqual(NSEvent.isMouseCoalescingEnabled, previousCoalescing)
     await store.clonePrepareTask?.value
     XCTAssertNil(store.cloneDraft)
     XCTAssertTrue(store.document == before)

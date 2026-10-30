@@ -2032,5 +2032,50 @@
     "state": "video.keyframes and video.keyframes capability schema; native53 download negotiation",
     "scope": "No dedicated Timeline/keyframe endpoint in pinned Adobe v2. Generic animation action descriptors remain open; no invented Adobe route. Existing native layer move/transform/opacity/style paths automatically capture enabled keys.",
     "verification": "Native video Timeline creation and Position/Opacity/Transform/Style keyframes, automatic capture, Linear/Hold interpolation, native53 and shared API editing pass 65 focused and 2,450 full optimized tests on 2,302 unchanged inputs. Independent PNG checks match 1,920 analytic RGBA8 channel values. Clip groups/splitting, transitions, audio, Render Video and full exact/live/platform parity remain open. Installed build221 and private universal build232 are unchanged."
+  },
+  "pdf_source_edit_step259": {
+    "reference": "docs/PDF_SOURCE_EDIT_REFERENCES.json",
+    "coverage_change": "Photato source-update/cancel/session state added. Published Adobe endpoint coverage unchanged; existing Smart Object file-resource edit uses the shared PDF replacement engine with its own autoResize/instance semantics.",
+    "evidence": "Owned real HTTP create-composite job output matches the native source update and3072 combined analytic RGBA checks. No external uploads or Adobe implementation access.",
+    "remaining": "Full Adobe contract, PSD/PDF interchange, source editor sessions and exact service output are not established."
+  },
+  "pdf_psd_interchange_step260": {
+    "reference": "docs/PDF_PSD_INTERCHANGE_REFERENCES.json",
+    "coverage_change": "Existing published PSD resource input/output jobs now retain supported PDF page Smart Objects through the shared codec. No new Adobe routes or credential/service equivalence claimed.",
+    "evidence": "Owned real HTTP create-composite resource job retains original PDF source and matches native shared engine output; native transfers reject unsupported forms without document mutation.",
+    "remaining": [
+      "PDF image-index selections, non-default antialias policies, Warp and transformed feathered mask PSD transport",
+      "Remaining crop live checks, general PDF rendering/annotations and exact color/composite output",
+      "Linked sources, relink/update/embed/package workflows",
+      "Native live Save/Open and full Photoshop factory settings/shortcut/workflow equivalence",
+      "Universal/minimum OS/physical Intel/macOS26 distribution acceptance"
+    ]
+  },
+  "retouch_automation_step277": {
+    "status": "native qualified; Adobe descriptors remain unsupported",
+    "photato_command": "retouch.stroke",
+    "native_actions_version": 21,
+    "source": "Pinned contract_baseline git blob and native command schemas",
+    "adobe_dedicated_endpoint": null,
+    "execute_actions_retouch_descriptors": "unsupported; no descriptor conformance claim",
+    "history": "Shared native tools, atomic document transaction and explicit external source admission.",
+    "evidence": "docs/RETOUCH_AUTOMATION_REFERENCES.json"
+  },
+  "large_document_capacity_278": {
+    "native_target_dimension": 300000,
+    "logical_pixels": 90000000000,
+    "photato": "Sparse sharing/geometry discovery, native download and bounded ordinary previews; separate resident/transfer/operation budgets remain.",
+    "adobe": "No new route. Existing resource jobs retain prior codec/geometry/transfer limits. Streamed large PSB/native and dense capacity remain unsupported.",
+    "evidence": "docs/LARGE_DOCUMENT_REFERENCES.json"
+  },
+  "paged_raster_input_279": {
+    "photato": "Authenticated40MP RGB import/edit/Undo and storage schemas qualified; transfer/heap/codec limits remain.",
+    "adobe": "No new route. Shared raster decoder changes; existing resource job contracts and limits remain. Large-job capacity and streamed large output require separate qualification.",
+    "evidence": "docs/PAGED_RASTER_REFERENCES.json"
+  },
+  "paged_native_persistence_280": {
+    "photato": "Native40MP chunked input/edit/Undo shares checked mapped file reader; native desktop file streaming exceeds512MiB with separate metadata/Data/heap/transfer limits.",
+    "adobe": "No new route. Shared raster decoder changes; existing resource job contracts and limits remain. Large-job capacity and streamed large output require separate qualification.",
+    "evidence": "docs/NATIVE_PAGING_REFERENCES.json"
   }
 }

@@ -7,7 +7,7 @@ enum GeometryAPI {
   static let turns: [String: CanvasTurn] = ["clockwise": .clockwise, "counterclockwise": .counterclockwise, "half": .half, "horizontal": .horizontal, "vertical": .vertical]
   static func schema(_ key: String) -> [String: Any] {
     switch key {
-    case "width", "height": return ["type": "integer", "minimum": 1, "maximum": 32768]
+    case "width", "height": return ["type": "integer", "minimum": 1, "maximum": Surface.maxDimension]
     case "resolution": return ["type": "number", "minimum": 1, "maximum": 100000]
     case "method": return ["type": "string", "enum": methods.keys.sorted(), "description": "Defaults to nearest for Indexed/Bitmap; bicubic for component modes."]
     case "anchor": return ["type": "string", "enum": CanvasAnchor.allCases.map(\.rawValue), "default": "center"]
@@ -33,7 +33,7 @@ extension AutomationCommand {
         guard let parsed = GeometryAPI.methods[try string("method")] else { throw AutomationFailure(status: 400, message: "Unknown resampling method.") }
         method = parsed
       } else { method = document.colorMode.isRestricted ? .nearest : .bicubic }
-      return .imageSize(try integer("width", range: 1...32768), try integer("height", range: 1...32768), try parameters["resolution"].map { _ in try number("resolution", range: 1...100000) } ?? document.pixelsPerInch, method)
+      return .imageSize(try integer("width", range: 1...Double(Surface.maxDimension)), try integer("height", range: 1...Double(Surface.maxDimension)), try parameters["resolution"].map { _ in try number("resolution", range: 1...100000) } ?? document.pixelsPerInch, method)
     case "document.canvasSize":
       let anchor: CanvasAnchor
       if parameters["anchor"] != nil {
@@ -49,7 +49,7 @@ extension AutomationCommand {
         }
         fill = Pixel(rgba[0], rgba[1], rgba[2], rgba[3])
       }
-      return .canvasSize(try integer("width", range: 1...32768), try integer("height", range: 1...32768), anchor, fill)
+      return .canvasSize(try integer("width", range: 1...Double(Surface.maxDimension)), try integer("height", range: 1...Double(Surface.maxDimension)), anchor, fill)
     case "document.rotate":
       guard let turn = GeometryAPI.turns[try string("turn")] else { throw AutomationFailure(status: 400, message: "Unknown canvas turn.") }
       return .rotateCanvas(turn)

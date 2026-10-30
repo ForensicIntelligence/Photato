@@ -80,6 +80,10 @@ enum RGB32NormalRenderer {
       layer.x <= 0, layer.y <= 0,
       layer.x + source.width >= document.width, layer.y + source.height >= document.height
     else { return false }
+    if layer.mask == nil, layer.vectorMask == nil, layer.x == 0, layer.y == 0,
+      source.width == document.width, source.height == document.height {
+      return try source.allStoredSamplesSatisfy { $0.a == 1 }
+    }
     let mask = try LayerMaskSampler.make(
       layer: layer, document: document,
       pixelRegion: IntRect(x: 0, y: 0, width: document.width, height: document.height))

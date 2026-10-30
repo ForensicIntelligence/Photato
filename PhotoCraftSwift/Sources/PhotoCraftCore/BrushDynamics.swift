@@ -36,6 +36,21 @@ struct BrushDab {
   var flow:Double,opacity:Double,color:Pixel,depth:Double
   var projectionAngle=0.0,projectionScale=1.0
 }
+/// Tracks the same smoothing geometry used by the painter without raster work.
+/// Native input uses this to stop its clock once a held stroke has caught up.
+public struct BrushSmoothingCursor {
+  private var smoother: BrushSmoother
+  public init(settings: BrushSmoothing, zoom: Double) {
+    smoother = BrushSmoother(settings: settings, zoom: zoom)
+  }
+  public mutating func append(_ point: StrokePoint) { _ = smoother.push(point) }
+  public var needsStationarySample: Bool {
+    let settings = smoother.settings
+    guard settings.amount > 0, settings.catchUp, !settings.pulledString,
+      let position = smoother.position, let target = smoother.last else { return false }
+    return hypot(target.x - position.x, target.y - position.y) > 0.01
+  }
+}
 private struct BrushSmoother {
   let settings:BrushSmoothing
   let zoom:Double
@@ -229,8 +244,8 @@ struct BrushDabGenerator {
     for p in samples { let smoothed=smoother.push(p);let d=try walk(smoothed);output.0 += d.0;output.1 += d.1 }
     return output
   }
-  mutating func finish()throws->([BrushDab],[BrushDab]) {
-    let end=smoother.finish();var out=try walk(end)
+  mutating func finish(includingReleaseTail: Bool = true)throws->([BrushDab],[BrushDab]) {
+    let end=includingReleaseTail ? smoother.finish() : [];var out=try walk(end)
     let steps=try walker.finish();for s in steps { out.0 += try build(s) }
     if settings.dual.enabled { let steps=try dualWalker.finish();for s in steps { out.1 += try buildDual(s) } }
     return out

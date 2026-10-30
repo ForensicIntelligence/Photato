@@ -28,6 +28,7 @@ public enum ActionLayerTarget: Codable, Equatable, Sendable {
 /// Native action format. Unsupported recording entries remain visible and block playback.
 /// This is deliberately not an Adobe .atn file or a Photoshop JavaScript program.
 public enum ActionOperation: Codable, Sendable {
+  indirect case retouch(RecordedRetouchStroke)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
   case inkMode(InkModeRequest)
@@ -95,6 +96,9 @@ public enum ActionOperation: Codable, Sendable {
       return ids.sorted().compactMap{id in supplied.first{$0.id==id} ?? d.pattern(id)}
     }
     switch command {
+    case .cloneStamp, .healingBrush, .spotHealing, .toning, .focus:
+      self = RecordedRetouchStroke(recording: command, in: d).map(Self.retouch)
+        ?? .unsupported("This retouch sample has no portable source provenance.")
     case .documentMode(let request): self = .documentMode(.init(request))
     case .preparedColorProfile(let edit): self = .unsupported("\(edit.title) semantic Action recording is not yet available.")
     case .preparedDocumentMode(let edit): self = edit.recording ?? .unsupported("\(edit.title) has no semantic recording settings.")
@@ -171,6 +175,8 @@ public enum ActionOperation: Codable, Sendable {
     func id(_ target: ActionLayerTarget) throws -> UUID { try target.resolve(in: d) }
     func ids(_ targets: [ActionLayerTarget]) throws -> Set<UUID> { try Set(targets.map(id)) }
     switch self {
+    case .retouch:
+      throw CraftError.unsupported("Retouch Actions require compositor sampling playback.")
     case .documentMode, .restrictedMode, .inkMode, .clipboardCopy, .clipboardCut, .clipboardPaste:
       throw CraftError.unsupported("This action requires compositor/clipboard playback.")
     case .toneAdjustment(let target,let settings):return .toneAdjustment(.init(settings,layerID:try target.map(id)))
@@ -262,6 +268,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
     }
     for step in steps {
+      if case .retouch(let request) = step.operation { try request.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }
       if case .inkMode(let request) = step.operation { try request.validate() }
@@ -292,6 +299,9 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
     switch step.operation { case .clipboardCopy, .clipboardCut: return true; default: return false }
   } }
   public var usesMasterPalette: Bool { steps.contains { if $0.enabled, case .restrictedMode(let request) = $0.operation { return request.usesMasterPalette }; return false } }
+  public var usesExternalRetouchSources: Bool {
+    steps.contains { if $0.enabled, case .retouch(let request) = $0.operation { return request.needsExternalSources }; return false }
+  }
   public func apply(to document: inout CraftDocument,
     resolve: ((ActionOperation, inout CraftDocument) throws -> Bool)? = nil,
     validate: @Sendable (CraftDocument) throws -> Void = { _ in }) throws {

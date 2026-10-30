@@ -22,12 +22,16 @@ extension SmartObject {
   static var apiCapabilities: [String: Any] {
     ["embedded": true, "linked": false, "maximumSourceBytes": maximumSourceBytes,
       "maximumSourcePixels": SmartObjectIO.maximumCanvasPixels,
-      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities,
+      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,
+      "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
+        "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
+        "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
+        "limits":"PDF render/source budgets; no linked files, PDF Warp or full Photoshop output/default/platform equivalence claim."],
       "commands": ["smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
       "sourceInput": "smartObject.place/replace take sourceDocumentID/sourceRevision from an explicitly shared document and embed an editable Photato snapshot. sourcePlacement uploads original file bytes without converting their format; pdfPlacement offers PDF page/image selection.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
-      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PDF Warp, editable PSD/PDF interchange, PDF source-editor UI, linked sources and general AI/SVG import remain unqualified or pending."]
+      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. PDF Warp, full editable PDF/PSD interchange, PDF source-editor live acceptance, linked sources and general AI/SVG import remain unqualified or pending."]
   }
 }
 

@@ -1,0 +1,89 @@
+{
+  "step": 269,
+  "recorded_at_utc": "2026-10-30T16:31:29.815991+00:00",
+  "source_manifest": "artifacts/runs/20261030T024557Z-269-native-frame-timing/source03.json",
+  "source_inputs": 2467,
+  "focused": {
+    "tests": 36,
+    "failures": 0,
+    "seconds": 13.785,
+    "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/hosted01.log",
+    "sha256": "f7f83d51d1c690244c5e24330de70ed97b01bd1edd28fcd237c3009bf797eaef",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2760,
+    "failures": 0,
+    "seconds": 193.809,
+    "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/full03.log",
+    "sha256": "411aebede007b1546007db4cb40cdaea4df252628d285be43b5133671c05c7cc",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "c5075428a66361728b956d4b0f3858364a8c4661a207dd4677d8b27e61d0e298",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Bounded opt-in input, accepted-preview and AppKit draw correlation passes pixel/history, stale-frame, overflow and cancellation regressions.",
+    "Native frame-diagnostic metadata and asynchronous reports pass36 focused and2760 full optimized tests, with a repeatable real-workspace continuous-stroke fixture.",
+    "Owned native Brush/Blur history checks, four-tool hosted timing evidence and a separately signed normal preview are verified."
+  ],
+  "remaining": [
+    "Remove demonstrated redundant prepublication workspace/canvas updates, after tracing revision and rendering observation. Compare dedicated hosted120Hz-input traces against the269 baseline; do not equate display callbacks or draw completion with physical presentation.",
+    "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3\u20134 samples and no sustained accepted preview stream.",
+    "Photoshop smoothing/default/kernel exactness, general Clone/Healing/Toning/Focus stroke API submission, physical Intel/macOS14/macOS26 and universal release qualification remain open.",
+    "Linked-source261 remains parked while editing responsiveness is the priority. Complete Photoshop parity remains the active master goal."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T024557Z-269-native-frame-timing/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Optional per-stroke timing now correlates input, preparation, accepted previews and native AppKit draws. The real-workspace benchmark retains all240 samples and exact native pixels for Brush, Blur, Dodge and Smudge, while recording104\u2013111 distinct preview draws during each roughly2-second stroke and about two canvas draws per accepted preview. Median newest-input-to-draw delay is20.7\u201322.6ms. All36 focused and2760 full optimized tests pass on2467 frozen inputs. Owned native painting/Undo/Redo and a separate signed preview are verified. This is scheduling/CPU evidence, not physical60fps; no kernel or pacing change is claimed in269.",
+  "stage": "Native frame timing qualified; redundant UI work identified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 269,
+  "next": [
+    "Remove demonstrated redundant prepublication workspace/canvas updates, after tracing revision and rendering observation. Compare dedicated hosted120Hz-input traces against the269 baseline; do not equate display callbacks or draw completion with physical presentation.",
+    "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3\u20134 samples and no sustained accepted preview stream."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 269.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "aed650b1f45c2f083fba4eb076c95bfd1249fa9bb2c22d7e2cb4078a5a83c75e",
+    "tested_binary_sha256": "c5075428a66361728b956d4b0f3858364a8c4661a207dd4677d8b27e61d0e298",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T024557Z-269-native-frame-timing/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-269.zip",
+    "zip_sha256": "b25a56835a703d9eb5c32c44c9115e8cbc8fe8ea7bd3a70aae0ce8d32ca941bc",
+    "zip_bytes": 38310585,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview269-check-yhxlr45k/Photato Editing Preview 269.app"
+  },
+  "completed_this_increment": [
+    "Bounded opt-in input, accepted-preview and AppKit draw correlation passes pixel/history, stale-frame, overflow and cancellation regressions.",
+    "Native frame-diagnostic metadata and asynchronous reports pass36 focused and2760 full optimized tests, with a repeatable real-workspace continuous-stroke fixture.",
+    "Owned native Brush/Blur history checks, four-tool hosted timing evidence and a separately signed normal preview are verified."
+  ],
+  "availability_audit": "artifacts/runs/20261030T024557Z-269-native-frame-timing/native-attempt04.json"
+}

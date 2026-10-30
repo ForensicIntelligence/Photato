@@ -325,7 +325,7 @@ struct CurvesSheet: View {
 extension EditorStore {
   var hasToneDraft: Bool {
     colorProfileWorkspace != nil || printBusy || printWorkspace != nil || proofWorkspace != nil || inkChannelOptions != nil || inkModeWorkspace != nil || restrictedModeWorkspace != nil || documentModeWorkspace != nil || classicToneWorkspace != nil || shapedTypeDraft != nil || freeformGesture != nil || shapeDraft != nil || shapeGesture != nil || brushGesture != nil || skyWorkspace != nil || vanishingWorkspace != nil || frameDraft != nil || frameGesture != nil || artboardDraft != nil || artboardGesture != nil || warpDraft != nil || photoAlignDraft != nil || photoBlendDraft != nil || regionRetouchDraft != nil || cropDraft != nil || proceduralWorkspace != nil || contentAwareDraft != nil || channelDialog != nil || selectMaskDraft != nil || colorLookupDraft != nil || classicAdjustmentDraft != nil || typeEditingDraft != nil || layerStyleDraft != nil || filterDraft != nil || layerPanelOptionsDraft != nil || channelPanelOptionsDraft != nil
-      || layerVisibilityDraft != nil || confirmingLayerDeletion
+      || layerVisibilityDraft != nil || layerOpacityDraft != nil || confirmingLayerDeletion
       || newLayerDraft != nil
       || newGroupDraft != nil
       || duplicateLayerDraft != nil || levelsDraft != nil

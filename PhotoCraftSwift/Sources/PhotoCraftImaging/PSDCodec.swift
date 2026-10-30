@@ -954,8 +954,10 @@ public enum PSDCodec {
     }
     collect(nil)
     entries = try entries.map { layer, section in
-      if case .text = layer.content { return (try PSDText.preview(layer, in: doc), section) }
-      return (layer.smartObject == nil ? layer : try PSDSmartObjects.bakedPreview(layer, in: doc), section)
+      let preview: Layer
+      if case .text = layer.content { preview = try PSDText.preview(layer,in:doc) }
+      else { preview = layer.smartObject == nil ? layer : try PSDSmartObjects.bakedPreview(layer,in:doc) }
+      return (try PSDMaskExport.prepared(preview),section)
     }
     try output.text("8BPS")
     try output.n(format.rawValue, 2)

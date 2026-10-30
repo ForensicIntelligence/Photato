@@ -1,0 +1,84 @@
+{
+  "step": 267,
+  "recorded_at_utc": "2026-10-30T01:53:25.848688+00:00",
+  "source_manifest": "artifacts/runs/20261030T012617Z-267-canvas-startup/source01.json",
+  "source_inputs": 2462,
+  "focused": {
+    "tests": 54,
+    "failures": 0,
+    "seconds": 96.805,
+    "log": "artifacts/runs/20261030T012617Z-267-canvas-startup/focused01.log",
+    "sha256": "4e776cffd6ec6300849cf221f2d8c57eef2ed5c830ad5ba3b51641e27b630c73",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2753,
+    "failures": 0,
+    "seconds": 195.193,
+    "log": "artifacts/runs/20261030T012617Z-267-canvas-startup/full01.log",
+    "sha256": "d7c42dde0875948a256022341cd784890cf3a610164e80aabda40414385d7a5c",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "39a7e4607bfa6b405a3893d6cb52474e41032e6f9ffdfd5c8a383369e616b50f",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Initial viewport and explicit zoom changes replace pending renders at the requested scale; latest zoom wins without editing pixels/history.",
+    "Artboard fit refreshes minified presentation through the common zoom path while preserving its anchor; four independent regressions pass after failing at266.",
+    "Paired startup and ongoing cadence benchmarks, API capability metadata, native acceptance and separate signed local preview are qualified."
+  ],
+  "remaining": [
+    "Investigate native mouse/tablet input density and event coalescing for jagged curves, with prior-state restoration on finish/cancel/window lifecycle. Apple reference and current-source findings are preserved in input-research01.json; no coalescing change is implemented or qualified here.",
+    "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9\u201311ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee.",
+    "Initial24MP document composition still takes about2.6s in the fixture. Current work removes an avoidable cold rescale during the first stroke, not all loading costs.",
+    "General Clone/Healing/Toning/Focus stroke API submission remains an existing gap. Native191 typed commands and Adobe contracts are unchanged.",
+    "Full Photoshop pixel/default/menu/settings fidelity, physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked until the editing-performance priority is resolved."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T012617Z-267-canvas-startup/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Initial layout, zoom during loading and Artboard fit now prepare the canvas at the requested presentation scale. The24MP moving-stroke benchmark improves Dodge/Blur/Smudge startup from71\u201373ms to9\u201311ms while initial canvas setup remains about2.6s. All six large-image retouch cases retain119 previews during1.99s,240 samples and exact native output. Four stale-viewport regressions are reproduced before repair; all54 focused and2753 full optimized tests pass on2462 frozen inputs. Native loading/zoom/painting/history and a separate signed preview are verified. Physical60fps, jagged input curves and heavy-path qualification remain open.",
+  "stage": "Qualified canvas startup and zoom preparation",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 267,
+  "next": [
+    "Investigate native mouse/tablet input density and event coalescing for jagged curves, with prior-state restoration on finish/cancel/window lifecycle. Apple reference and current-source findings are preserved in input-research01.json; no coalescing change is implemented or qualified here.",
+    "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9\u201311ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 267.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "4e747e80564b08168b9c609ee1dbb0a35adafd858fef56b89d324c116f61d2f4",
+    "tested_binary_sha256": "39a7e4607bfa6b405a3893d6cb52474e41032e6f9ffdfd5c8a383369e616b50f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T012617Z-267-canvas-startup/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-267.zip",
+    "zip_sha256": "af0ac73e00baa486124994ec303fd76ccce3bc60f2d84183fed0a9ae83b40858",
+    "zip_bytes": 38276650,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview267-check-y950duv3/Photato Editing Preview 267.app"
+  }
+}

@@ -28,7 +28,7 @@ public enum MovieFrames {
     guard size.width.isFinite,size.height.isFinite,size.width >= 1,size.height >= 1,size.width <= Double(Surface.maxDimension),size.height <= Double(Surface.maxDimension),duration.isFinite,duration > 0,duration <= 86_400 else {throw CraftError.invalid("Invalid movie dimensions or duration.")}
     return MovieFrameInfo(width:Int(size.width.rounded()),height:Int(size.height.rounded()),duration:duration,frameRate:Double(track.nominalFrameRate))
   }
-  public static func decode(_ data: Data,name: String,options: MovieFrameImportOptions,maximumBytes: Int = 1_073_741_824,maximumPixels: Int = Surface.maxPixels,maximumLayers: Int = 512) throws -> CraftDocument {
+  public static func decode(_ data: Data,name: String,options: MovieFrameImportOptions,maximumBytes: Int = 1_073_741_824,maximumPixels: Int = Surface.maximumDensePixels,maximumLayers: Int = 512) throws -> CraftDocument {
     try MovieIO.decode(data,name:name,maximumBytes:maximumBytes,maximumPixels:maximumPixels,frameOptions:options,maximumLayers:maximumLayers)
   }
   static func document(frames: [Surface],times: [MovieTime],end: MovieTime,indices: [Int],name: String,options: MovieFrameImportOptions,maximumBytes: Int) throws -> CraftDocument {

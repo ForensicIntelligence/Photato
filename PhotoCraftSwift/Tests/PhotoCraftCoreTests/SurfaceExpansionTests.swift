@@ -53,7 +53,7 @@ final class SurfaceExpansionTests: XCTestCase {
       IntRect(x: 1, y: 0, width: 2, height: 2),
       IntRect(x: Int.min, y: 0, width: Int.max, height: 2),
       IntRect(x: -1, y: -1, width: Int.max, height: Int.max),
-      IntRect(x: 0, y: 0, width: 32768, height: 32768),
+      IntRect(x: 0, y: 0, width: 300001, height: 300000),
     ] {
       XCTAssertThrowsError(try decoded.expanded(to: bounds, fill: .clear))
     }

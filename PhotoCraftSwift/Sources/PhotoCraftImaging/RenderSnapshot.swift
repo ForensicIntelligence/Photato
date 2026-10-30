@@ -21,6 +21,12 @@ extension Renderer {
   {
     try Task.checkCancellation()
     try d.validate()
+    return try renderValidated(d, reusing: previous)
+  }
+  // Only used by this module after validation, or by a sealed stroke session that
+  // can change nothing except pixels produced by the bounded native brush engine.
+  static func renderValidated(_ d: CraftDocument, reusing previous: RenderSnapshot?) throws -> RenderSnapshot {
+    try Task.checkCancellation()
     let damage = try previous.map { try renderDamage(from: $0.document, to: d) } ?? .full
     let surface: Surface
     switch damage {
@@ -29,6 +35,9 @@ extension Renderer {
     case .unchanged:
       surface = previous!.surface
     case .region(let region):
+      if region.width * region.height > Surface.maximumDensePixels {
+        return RenderSnapshot(document: d, surface: try compositeValidated(d), update: .full)
+      }
       let patch = try compositeValidated(d, region: region)
       var result = previous!.surface
       if result.colorEncoding == .linearRGB {

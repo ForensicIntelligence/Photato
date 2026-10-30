@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import PhotoCraftCore
 import PhotoCraftImaging
 import SwiftUI
@@ -19,11 +20,14 @@ struct CanvasHost: NSViewRepresentable {
     view.store = store
     view.activateDocument = activateDocument
     view.synchronizeTool()
+    view.synchronizeFrameProbe()
+    if store.brushGesture == nil && store.cloneDraft == nil { view.drawingEvents.end() }
     _ = store.typeEditingDraft?.content
     view.synchronizeTypeEditor()
     _ = store.peopleWorkspace.image
     _ = store.objectFinder.image
     store.refreshObjectFinderIfNeeded()
+    _ = store.canvasRasterPreview
     _ = store.selectionOverlayImage
     _ = store.displayedMaskImage
     _ = store.cloneOverlay
@@ -48,6 +52,10 @@ struct CanvasHost: NSViewRepresentable {
   var viewportUpdateQueued = false
   var cloneHover: CGPoint?
   var cloneTracking: NSTrackingArea?
+  let checkerboard = CanvasCheckerboard()
+  let drawingEvents = DrawingEventCapture()
+  var frameProbe: CanvasFrameProbe?
+  var drawingFocusObservation: AnyCancellable?
   var samples: [StrokePoint] = []
   var brushStartTime: TimeInterval = 0
   var airbrushTimer: Timer?
@@ -82,16 +90,30 @@ struct CanvasHost: NSViewRepresentable {
     layer?.masksToBounds = true
     registerForDraggedTypes([.string])
   }
+  isolated deinit { frameProbe?.invalidate(); airbrushTimer?.invalidate() }
   required init?(coder: NSCoder) { return nil }
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
-    if window == nil { airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
+    synchronizeFrameProbe()
+    if window == nil { drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
+    drawingFocusObservation = window.map { target in
+      NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)
+        .sink { [weak self, weak target] note in
+          guard let target, note.object as? NSWindow === target else { return }
+          MainActor.assumeIsolated {
+            self?.drawingEvents.end()
+            self?.airbrushTimer?.invalidate(); self?.airbrushTimer = nil
+            self?.store.cancelBrush(); self?.store.cancelClone()
+          }
+        }
+    }
     WorkspaceLayoutDiagnostics.log("canvas.attached", ["hasWindow": window != nil])
     window?.makeFirstResponder(self)
   }
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
     gestureToolID = store.selectedTool.id
+    drawingEvents.end()
     store.cancelClone()
     airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush()
     store.cancelGradientGesture()
@@ -165,14 +187,17 @@ struct CanvasHost: NSViewRepresentable {
   override func mouseMoved(with event: NSEvent) {
     if store.tool == .objectSelection {let p=docPoint(event);store.hoverObject(at:.init(p.x,p.y));needsDisplay=true;return}
     guard store.tool.usesRetouchStroke else { return }
+    let previous = cloneHover
     cloneHover = docPoint(event)
     store.refreshCloneOverlay()
-    needsDisplay = true
+    invalidateRetouchFeedback(from: previous)
   }
   override func mouseExited(with event: NSEvent) {
+    let previous = cloneHover
     store.clearObjectHover()
     cloneHover = nil
-    needsDisplay = true
+    if store.tool.usesRetouchStroke { invalidateRetouchFeedback(from: previous) }
+    else { needsDisplay = true }
   }
   func drawCloneOverlay(in c: CGContext) {
     guard store.tool.usesRetouchStroke, let hover = cloneHover else { return }
@@ -282,6 +307,8 @@ struct CanvasHost: NSViewRepresentable {
   override func draw(_ dirtyRect: NSRect) {
     guard let c = NSGraphicsContext.current?.cgContext else { return }
     // Zoomed/panned image bounds, shadows and tool overlays may exceed the viewport.
+    let drawTrace = store.canvasFrameTrace?.beginDraw()
+    defer { store.canvasFrameTrace?.drew(drawTrace) }
     c.saveGState()
     defer { c.restoreGState() }
     c.clip(to: bounds)
@@ -298,26 +325,13 @@ struct CanvasHost: NSViewRepresentable {
     c.saveGState()
     c.clip(to: r)
     let cell: CGFloat = max(2, 8 * scale)
-    c.setFillColor(NSColor(calibratedWhite: 0.77, alpha: 1).cgColor)
-    c.fill(r)
-    c.setFillColor(NSColor.white.cgColor)
-    let visible = r.intersection(bounds)
-    if !visible.isNull {
-      for row in Int(
-        floor((visible.minY - r.minY) / cell))...Int(ceil((visible.maxY - r.minY) / cell))
-      {
-        for column in Int(
-          floor((visible.minX - r.minX) / cell))...Int(ceil((visible.maxX - r.minX) / cell))
-        {
-          let x = r.minX + CGFloat(column) * cell
-          let y = r.minY + CGFloat(row) * cell
-          if (row + column) % 2 == 0 {
-            c.fill(CGRect(x: x, y: y, width: cell, height: cell))
-          }
-        }
-      }
-    }
-    if let image = store.image {
+    checkerboard.draw(in: c, viewport: bounds, imageRect: r, cell: cell,
+      backing: CGFloat(window?.backingScaleFactor ?? 1))
+    if let preview = store.canvasRasterPreview {
+      c.saveGState(); c.translateBy(x: r.minX, y: r.minY); c.scaleBy(x: scale, y: scale)
+      c.interpolationQuality = viewport.resolvedZoom >= 1 ? .none : .high
+      preview.draw(in: c); c.restoreGState()
+    } else if let image = store.image {
       c.saveGState()
       c.translateBy(x: r.minX, y: r.maxY)
       c.scaleBy(x: 1, y: -1)
@@ -611,7 +625,8 @@ struct CanvasHost: NSViewRepresentable {
         store.beginClone(
           StrokePoint(
             x: p.x, y: p.y, pressure: event.subtype == .tabletPoint ? unit(event.pressure) : 1),
-          alternate: event.modifierFlags.contains(.option))
+          alternate: event.modifierFlags.contains(.option), eventTimestamp: event.timestamp)
+        if store.cloneDraft != nil { drawingEvents.begin(); synchronizeFrameProbe() }
       }
       needsDisplay = true
       return
@@ -658,18 +673,9 @@ struct CanvasHost: NSViewRepresentable {
     if panningGesture { return }
     if store.tool.usesPaintingStroke {
       brushStartTime=event.timestamp
-      let point=brushSample(event);samples=[point];store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),selectionMode:store.selectionToolMode(modifiers:event.modifierFlags))
-      if store.brushGesture?.brush.settings?.buildUp == true {
-        airbrushTimer?.invalidate()
-        let began=ProcessInfo.processInfo.systemUptime
-        airbrushTimer=Timer.scheduledTimer(withTimeInterval:0.05,repeats:true) { [weak self] _ in
-          MainActor.assumeIsolated {
-            guard let self, var point=self.samples.last,self.store.brushGesture != nil,self.window?.isVisible == true else { self?.airbrushTimer?.invalidate();return }
-            point.time=max(point.time ?? 0,(ProcessInfo.processInfo.systemUptime-began)*1000)
-            self.samples.append(point);self.store.extendBrush(point)
-          }
-        }
-      }
+      let point=brushSample(event);samples=[point];store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),selectionMode:store.selectionToolMode(modifiers:event.modifierFlags),eventTimestamp:event.timestamp)
+      if store.brushGesture != nil { drawingEvents.begin(); synchronizeFrameProbe() }
+      synchronizeBrushClock()
     }
     if store.tool == .eyedropper, let s = store.surface {
       let x = Int(p.x)
@@ -687,7 +693,29 @@ struct CanvasHost: NSViewRepresentable {
   }
   func addSample(_ e:NSEvent) {
     guard store.brushGesture != nil,samples.count<100_000 else { return }
-    let point=brushSample(e);samples.append(point);store.extendBrush(point)
+    let point=brushSample(e);samples.append(point);store.extendBrush(point,eventTimestamp:e.timestamp)
+    if e.type == .leftMouseDragged { synchronizeBrushClock() }
+  }
+  func synchronizeBrushClock() {
+    guard store.brushGesture?.needsStationarySample == true else {
+      airbrushTimer?.invalidate(); airbrushTimer = nil; return
+    }
+    guard airbrushTimer == nil else { return }
+    let timer = Timer(timeInterval: 1.0 / 60, repeats: true) { [weak self] _ in
+      MainActor.assumeIsolated { self?.advanceBrushClock() }
+    }
+    airbrushTimer = timer
+    RunLoop.main.add(timer, forMode: .common)
+  }
+  func advanceBrushClock() {
+    guard window?.isVisible == true, store.selectedTool.id == gestureToolID,
+      samples.count < 100_000 else {
+      airbrushTimer?.invalidate(); airbrushTimer = nil; store.cancelBrush(); return
+    }
+    let time = (ProcessInfo.processInfo.systemUptime - brushStartTime) * 1000
+    guard time <= 3_600_000 else { airbrushTimer?.invalidate(); airbrushTimer = nil; return }
+    if let point = store.advanceStationaryBrush(time: time) { samples.append(point) }
+    synchronizeBrushClock()
   }
   override func mouseDragged(with event: NSEvent) {
     if dragShapeGesture(event) { return }
@@ -716,12 +744,13 @@ struct CanvasHost: NSViewRepresentable {
       return
     }
     if store.cloneDraft != nil {
+      let previous = cloneHover
       let p = docPoint(event)
       cloneHover = p
       store.extendClone(
         StrokePoint(
-          x: p.x, y: p.y, pressure: event.subtype == .tabletPoint ? unit(event.pressure) : 1))
-      needsDisplay = true
+          x: p.x, y: p.y, pressure: event.subtype == .tabletPoint ? unit(event.pressure) : 1), eventTimestamp: event.timestamp)
+      invalidateRetouchFeedback(from: previous)
       return
     }
     if store.freeformGesture != nil {let p=docPoint(event);store.extendFreeform(to:.init(p.x,p.y));needsDisplay=true;return}
@@ -743,7 +772,12 @@ struct CanvasHost: NSViewRepresentable {
     guard store.unavailableToolID == nil else { return }
     end = docPoint(event)
     dragModifiers = event.modifierFlags
-    if !panningGesture && store.tool.usesPaintingStroke { addSample(event) }
+    if !panningGesture && store.tool.usesPaintingStroke {
+      addSample(event)
+      // CanvasHost invalidates when a prepared preview is published. Input alone
+      // does not change the displayed pixels or a painting gesture overlay.
+      return
+    }
     if !panningGesture && (store.tool == .lasso || (store.tool == .objectSelection && store.objectSelectionMode == .lasso)), let end, lassoPoints.count < 100_000 {
       lassoPoints.append(SelectionPoint(end.x, end.y))
     }
@@ -754,6 +788,8 @@ struct CanvasHost: NSViewRepresentable {
     needsDisplay = true
   }
   override func mouseUp(with event: NSEvent) {
+    defer { synchronizeFrameProbe() }
+    drawingEvents.end()
     airbrushTimer?.invalidate();airbrushTimer=nil
     defer {
       start = nil
@@ -797,7 +833,7 @@ struct CanvasHost: NSViewRepresentable {
       cloneHover = p
       store.extendClone(
         StrokePoint(
-          x: p.x, y: p.y, pressure: event.subtype == .tabletPoint ? unit(event.pressure) : 1))
+          x: p.x, y: p.y, pressure: event.subtype == .tabletPoint ? unit(event.pressure) : 1), eventTimestamp: event.timestamp)
       store.finishClone()
       return
     }
@@ -929,6 +965,7 @@ struct CanvasHost: NSViewRepresentable {
       return
     }
     if event.keyCode == 53 && store.brushGesture != nil {
+      drawingEvents.end()
       airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush();start=nil;samples=[];needsDisplay=true;return
     }
     if event.keyCode == 53 && (store.peopleWorkspace.busy || store.peopleWorkspace.presented) {
@@ -942,6 +979,7 @@ struct CanvasHost: NSViewRepresentable {
       return
     }
     if event.keyCode == 53 && store.cloneDraft != nil {
+      drawingEvents.end()
       store.cancelClone()
       start = nil
       needsDisplay = true

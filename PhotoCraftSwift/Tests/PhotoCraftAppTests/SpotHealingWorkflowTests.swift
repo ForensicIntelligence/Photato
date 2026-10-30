@@ -29,7 +29,7 @@ final class SpotHealingWorkflowTests: XCTestCase {
     s.finishClone()
     await s.clonePrepareTask?.value
     await s.geometryTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
   }
   @MainActor func testMarkerPreviewCancellationAndOneUndoForAllTypes() async throws {
     for kind in SpotHealingType.allCases {
@@ -40,13 +40,13 @@ final class SpotHealingWorkflowTests: XCTestCase {
       XCTAssertNil(s.cloneState.slot.source)
       s.beginClone(.init(x: 40, y: 30))
       await s.clonePrepareTask?.value
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertNil(s.error)
       XCTAssertEqual(s.document, before)
       XCTAssertTrue(s.session.undoStack.isEmpty)
       XCTAssertLessThan(try XCTUnwrap(s.surface).pixel(x: 40, y: 30).r, 0.03)
       s.cancelClone()
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertEqual(s.document, before)
       XCTAssertEqual(s.surface, try Renderer.composite(before))
       s.beginClone(.init(x: 40, y: 30))

@@ -243,7 +243,7 @@ final class CloneExpansionTests: XCTestCase {
       try ClonePainter.paint(invalid, on: &layer, canvasWidth: 100, canvasHeight: 80))
     XCTAssertEqual(layer, original)
     invalid.points = [.init(x: 5, y: 5)]
-    layer.x = -100_000
+    layer.x = -400_000
     let farAway = layer
     XCTAssertThrowsError(
       try ClonePainter.paint(invalid, on: &layer, canvasWidth: 100, canvasHeight: 80))

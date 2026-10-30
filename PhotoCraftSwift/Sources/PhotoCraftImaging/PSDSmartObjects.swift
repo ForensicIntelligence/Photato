@@ -18,7 +18,9 @@ enum PSDSmartObjects {
         guard size <= SmartObject.maximumSourceBytes + 65_536 else { throw CraftError.unsupported("Embedded file exceeds 64 MiB.") }
         var item = try r.view(size)
         let kind = try item.string(4), version = try item.u32()
-        guard (1...7).contains(version) else { throw CraftError.unsupported("Unsupported linked-file version.") }
+        // Photoshop 2026's owned PDF fixtures use version 8. Its additional
+        // content-ID descriptor follows the embedded bytes inside this record.
+        guard (1...8).contains(version) else { throw CraftError.unsupported("Unsupported linked-file version.") }
         let id = try item.string(Int(item.u8()))
         let count = try item.u32()
         guard count <= 1024 else { throw CraftError.invalid("Embedded filename is too long.") }
@@ -51,9 +53,7 @@ enum PSDSmartObjects {
     guard descriptor["quiltWarp"] == nil else {
       throw CraftError.unsupported("Quilt warps are not yet editable.")
     }
-    for key in ["PgNm", "totalPages", "frameCount"] {
-      if let value = descriptor[key]?.number, value != 1 { throw CraftError.unsupported("Multipage or animated placed objects are not yet editable.") }
-    }
+    if let value = descriptor["frameCount"]?.number, value != 1 { throw CraftError.unsupported("Animated placed objects are not yet editable.") }
     if let value = descriptor["comp"]?.number, value != -1 { throw CraftError.unsupported("Smart Object layer comps are not yet editable.") }
     if case .object(let warp) = descriptor["warp"], case .enumerated(_, let kind) = warp["warpStyle"], kind.text != "warpNone" {
       throw CraftError.unsupported("Warped Smart Objects are not yet editable.")
@@ -72,8 +72,17 @@ enum PSDSmartObjects {
     guard let sourceID = UUID(uuidString: id), let file = files[id] else {
       throw CraftError.unsupported("Missing embedded Smart Object source; external links are not followed.")
     }
-    let source = try SmartObjectIO.decode(file.data, fileName: file.name)
-    var (object, pixels) = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
+    var object: SmartObject
+    let pixels: Surface
+    if PDFImport.recognizes(file.data) {
+      (object,pixels) = try PSDPDFSmartObjects.restore(file.data,fileName:file.name,descriptor:d,in:document)
+    } else {
+      for key in ["PgNm","totalPages"] {
+        if let value = d[key]?.number,value != 1 {throw CraftError.unsupported("Multipage non-PDF placed objects are not yet editable.")}
+      }
+      let source = try SmartObjectIO.decode(file.data, fileName: file.name)
+      (object,pixels) = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
+    }
     object.sourceID = sourceID
     let q = values.map { $0.number! }, w = Double(object.width), h = Double(object.height)
     let t = Transform2D(a: (q[2]-q[0])/w, b: (q[3]-q[1])/w,
@@ -103,8 +112,8 @@ enum PSDSmartObjects {
     }
   }
   static func placedDescriptor(_ layer: Layer) throws -> Data {
-    guard layer.smartObject?.pdfSource == nil else { throw CraftError.unsupported("Retained PDF Smart Object PSD interchange is not yet implemented. Save a native document to preserve the source.") }
     guard let source = layer.smartObject else { throw CraftError.invalid("Missing embedded source.") }
+    let pdf = try PSDPDFSmartObjects.exportSettings(source)
     guard layer.warp == nil else { throw CraftError.unsupported("Save editable Warp as Photato, or rasterize before PSD/PSB export. Warp descriptor interchange is not yet supported.") }
     guard source.stackMode == nil else { throw CraftError.unsupported("Save image stacks as Photato to preserve editable stack modes. PSD stack-mode interchange is not implemented.") }
     guard source.rawDevelopment == nil else { throw CraftError.unsupported("Save RAW Smart Objects as Photato to preserve their source and sensor settings. PSD RAW interchange is not implemented.") }
@@ -119,8 +128,8 @@ enum PSDSmartObjects {
       .init("warpRotate", .enumerated(PSDID("Ornt"), PSDID("Hrzn"))), .init("bounds", .object(bounds)),
       .init("uOrder", .integer(4)), .init("vOrder", .integer(4))])
     var descriptor = PSDDescriptor("null", items: [.init("Idnt", text(source.sourceID.uuidString)), .init("placed", text(layer.id.uuidString)),
-      .init("PgNm", .integer(1)), .init("totalPages", .integer(1)), .init("Crop", .integer(1)),
-      .init("frameStep", ratio()), .init("duration", ratio()), .init("frameCount", .integer(1)), .init("Annt", .integer(16)), .init("Type", .integer(2)),
+      .init("PgNm", .integer(pdf?.page ?? 1)), .init("totalPages", .integer(pdf?.pages ?? 1)), .init("Crop", .integer(pdf?.crop ?? 1)),
+      .init("frameStep", ratio()), .init("duration", ratio()), .init("frameCount", .integer(1)), .init("Annt", .integer(16)), .init("Type", .integer(pdf == nil ? 2:1)),
       .init("Trnf", quad), .init("nonAffineTransform", quad), .init("warp", .object(warp)),
       .init("Sz  ", .object(PSDDescriptor("Pnt ", items: [.init("Wdth", .number(w)), .init("Hght", .number(h))]))),
       .init("Rslt", .unit(Data("#Rsl".utf8), source.resolution.bitPattern)), .init("comp", .integer(-1)),
@@ -135,7 +144,7 @@ enum PSDSmartObjects {
     var preview: Layer
     if layer.smartFilters != nil { preview = try SmartFilterEngine.renderedLayer(layer, in: document) }
     else {
-      preview = layer; preview.smartObject = nil
+      preview = try PDFSmartObjectIO.renderedLayer(layer,in:document); preview.smartObject = nil
       preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document)
     }
     preview.smartObject = layer.smartObject
@@ -152,7 +161,7 @@ enum PSDSmartObjects {
       }
       seen[object.sourceID] = object
       var bytes = object.data, name = object.fileName
-      if !["image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType) {
+      if !["application/pdf", "image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType) {
         bytes = try SmartObjectIO.withNesting { try PSDCodec.writeRasterLayers(SmartObjectIO.sourceDocument(object), format: .psb) }
         name = (name as NSString).deletingPathExtension + ".psb"
       }
@@ -160,7 +169,7 @@ enum PSDSmartObjects {
       var item = PSDWriter(); item.text("liFD"); item.n(7, 4)
       let id = object.sourceID.uuidString; item.n(id.utf8.count, 1); item.text(id)
       let units = Array((name + "\0").utf16); item.n(units.count, 4); for unit in units { item.n(Int(unit), 2) }
-      let type = bytes.starts(with: Data("8BPS".utf8)) ? (bytes[5] == 2 ? "8BPB" : "8BPS") : object.mediaType == "image/png" ? "PNGf" : object.mediaType == "image/jpeg" ? "JPEG" : "TIFF"
+      let type = bytes.starts(with: Data("8BPS".utf8)) ? (bytes[5] == 2 ? "8BPB" : "8BPS") : object.mediaType == "application/pdf" ? "PDF " : object.mediaType == "image/png" ? "PNGf" : object.mediaType == "image/jpeg" ? "JPEG" : "TIFF"
       item.text(type); item.text("8BIM"); item.n(bytes.count, 8); item.n(0, 1); item.data.append(bytes)
       item.n(0, 4); item.n(0, 8); item.n(0, 1)
       out.n(item.data.count, 8); out.data.append(item.data)

@@ -1,0 +1,130 @@
+{
+  "step": 272,
+  "summary": "The Layers panel now includes an arrow-triggered native opacity slider alongside numeric entry. Dragging previews the canvas; Return or outside dismissal commits one shared opacity command, and Escape preserves document/history/dirty state. Keyboard arrows use 1% steps and Shift uses 10%. All 69 focused and 2770 full optimized tests pass on 2470 frozen inputs; native slider/history checks and separate Preview272 packaging are verified.",
+  "source_manifest": "artifacts/runs/20261030T173813Z-272-layer-opacity/source03.json",
+  "source_inputs": 2470,
+  "focused": {
+    "tests": 69,
+    "failures": 0,
+    "seconds": 7.544,
+    "log": "artifacts/runs/20261030T173813Z-272-layer-opacity/focused03.log",
+    "sha256": "ea9255a9e2350ee1c436ecdd827d894fafe99d3a19c5a05e87d05b51f46eb054",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2770,
+    "failures": 0,
+    "seconds": 196.284,
+    "log": "artifacts/runs/20261030T173813Z-272-layer-opacity/full01.log",
+    "sha256": "3fb83af5083086491a6dd871bbb140f6be4ad4012abe3403ae3c6e268c5543a7",
+    "terminal_exit_code": 0
+  },
+  "live": {
+    "accepted": true,
+    "recorded_at": "2026-10-30T17:59:32.881679+00:00",
+    "source_manifest": "source03.json",
+    "diagnostic_package": "diagnostic02.json",
+    "checks": {
+      "native_arrow_opens_slider": true,
+      "native_AX_reports_slider_focused": true,
+      "native_slider_accessibility_value_40_updates_canvas_and_field": true,
+      "preview_document_remains_clean": true,
+      "toggle_accepts_one_edit": true,
+      "undo100_redo40": true,
+      "numeric_entry75_and_separate_undo": true,
+      "owned_document_restored_and_diagnostic_quit": true
+    },
+    "automated_native_window_checks": [
+      "Shown NSPopover firstResponder is slider",
+      "Shift+Down changes100 to90",
+      "Escape closes and leaves history empty",
+      "Unit keyboard1/10% increments, Return and Escape callbacks"
+    ],
+    "limitations": [
+      "CUA pointer drags and key/outside-click actions target the containing document window rather than reliably reaching the separate pop-up; these are not claimed as physical drag/Escape/click-away validation.",
+      "Physical pointer sampling and large-document slider frame rate remain unqualified."
+    ],
+    "evidence": [
+      "native-popup01.png",
+      "native-preview02.png",
+      "native-preview02.txt",
+      "native-toggle-accept02.txt",
+      "native-undo03.txt",
+      "native-redo03.txt",
+      "native-numeric02.txt"
+    ]
+  },
+  "handoff": {
+    "accepted": true,
+    "recorded_at": "2026-10-30T18:04:33.796436+00:00",
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 272.app",
+    "binary_sha256": "64f48b8c3db2592a863785f6c0568b64a8707718c79c8ffeff0b8aebff5117ba",
+    "retained_file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "retained_file_unchanged": true,
+    "clean_native_open_verified": true,
+    "new_layer_opacity_arrow_present": true,
+    "opacity": 100,
+    "default_blank_closed": true,
+    "previous_preview_quit": true,
+    "only_running_preview": 272,
+    "process": "25746 /Users/johnczlonka/Applications/Photato Editing Preview 272.app/Contents/MacOS/Photato",
+    "evidence": [
+      "normal271-before-handoff01.txt",
+      "normal272-handoff-state01.txt",
+      "normal272-active01.txt",
+      "normal272-active01.png"
+    ]
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 272.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "64f48b8c3db2592a863785f6c0568b64a8707718c79c8ffeff0b8aebff5117ba",
+    "tested_binary_sha256": "ffe8bf919d85cc1df2fe43a3630b5b4507dcbb2c02d6fa7c6d36819395374f66",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T173813Z-272-layer-opacity/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-272.zip",
+    "zip_sha256": "4cfe5251f38022bde27f251cee1053f243cb98b542902c6271496508be855ab3",
+    "zip_bytes": 38336274,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview272-check-a4nm8jmm/Photato Editing Preview 272.app"
+  },
+  "reference": {
+    "observed": "Photoshop2026 shows numeric layer opacity plus down-arrow. Clicking the arrow through CUA failed with noWindowsAvailable; no reference document change was made.",
+    "sources": [
+      "https://helpx.adobe.com/photoshop/using/panels-menus.html",
+      "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/set-layer-opacity-and-blending-modes.html"
+    ],
+    "documented": "Arrow opens pop-up slider; drag adjusts opacity; Return/outside closes; Escape cancels; Shift+Up/Down changes by10%.",
+    "scope": "Native opacity popup, numeric entry retained, transactional live preview. Label scrubbing, exact popover geometry and multi-layer behavior are separate parity work."
+  },
+  "rejected_native_candidate": {
+    "source_manifest": "source02.json",
+    "focused_pass": 68,
+    "observed": [
+      "Popup appears",
+      "AX setValue50 previews transparency while document stays clean",
+      "Toggle accepts50; Undo100, Redo50 work",
+      "Pointer drags and keyboard attempts while popup is open do not visibly change the value; Escape does not dismiss"
+    ],
+    "decision": "Do not accept keyboard/pointer interaction yet. Replace SwiftUI popover lifecycle with an explicit AppKit popover coordinator and verify focus after didShow.",
+    "reference_document_changed": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T173813Z-272-layer-opacity/focused01.log",
+      "reason": "New test fixture used private session.document setter and compared non-Equatable HistoryEntry arrays; corrected fixture uses public commands and retained redo IDs/documents."
+    }
+  ],
+  "remaining": [
+    "Resume the saved brush pause catch-up task from checkpoint271. Sustained physical 60fps, high-rate curves/tablet input, heavy tools and full Photoshop pixel parity remain open.",
+    "Layer opacity label scrubbing, multiselection behavior and exact Photoshop popover geometry are not newly qualified. The reference app arrow was observed, but its connector rejected the attempted click; documented behavior guided implementation.",
+    "Physical popup pointer/keyboard validation remains limited by CUA targeting; shown-window keyboard focus/cancellation and key steps are covered by automated AppKit tests. Physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked while editing responsiveness is the priority."
+  ],
+  "API_impact": "Existing layer.opacity command/schema/state shared; capability description updated; HTTP mutations remain busy during the desktop draft. No Adobe endpoint or schema expansion."
+}

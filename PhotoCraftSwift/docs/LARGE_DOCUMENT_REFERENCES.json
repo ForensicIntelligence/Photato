@@ -1,0 +1,227 @@
+{
+  "step": 278,
+  "status": "Sparse native maximum-size foundation qualified; complete capacity parity open",
+  "references": [
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "title": "Adobe Photoshop File Formats Specification",
+      "accessed_utc": "2026-10-30T20:58:22.468855+00:00",
+      "fact": "PSB supports up to300,000 pixels in either dimension; PSD header limits remain30,000."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html",
+      "title": "Image file formats supported in Photoshop",
+      "accessed_utc": "2026-10-30",
+      "fact": "Current official Photoshop help confirms300,000-pixel PSB width/height."
+    }
+  ],
+  "target": {
+    "maximum_dimension": 300000,
+    "maximum_square_pixels": 90000000000,
+    "native_code": true
+  },
+  "implementation_inputs": [
+    "Sources/PhotoCraft/AutomationGeometry.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/CanvasViewport.swift",
+    "Sources/PhotoCraft/DocumentSavePolicy.swift",
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/RecoveryMemoryAdmission.swift",
+    "Sources/PhotoCraftCore/DocumentCreation.swift",
+    "Sources/PhotoCraftCore/Engine.swift",
+    "Sources/PhotoCraftCore/Geometry.swift",
+    "Sources/PhotoCraftCore/LayerMerge.swift",
+    "Sources/PhotoCraftCore/Selection.swift",
+    "Sources/PhotoCraftCore/Surface.swift",
+    "Sources/PhotoCraftImaging/AnimationGIF.swift",
+    "Sources/PhotoCraftImaging/CanvasRasterPreview.swift",
+    "Sources/PhotoCraftImaging/JPEGEntropyOptimizer.swift",
+    "Sources/PhotoCraftImaging/MovieFrames.swift",
+    "Sources/PhotoCraftImaging/MovieIO.swift",
+    "Sources/PhotoCraftImaging/PDFImages.swift",
+    "Sources/PhotoCraftImaging/PDFImport.swift",
+    "Sources/PhotoCraftImaging/PNGCompression.swift",
+    "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift",
+    "Sources/PhotoCraftImaging/RGBChannelView.swift",
+    "Sources/PhotoCraftImaging/RasterIO.swift",
+    "Sources/PhotoCraftImaging/RawSourceIO.swift",
+    "Sources/PhotoCraftImaging/RenderSnapshot.swift",
+    "Sources/PhotoCraftImaging/Renderer.swift",
+    "Sources/PhotoCraftImaging/SparseCanvasRenderer.swift",
+    "Sources/PhotoCraftImaging/TIFFStorage.swift",
+    "Sources/PhotoCraftImaging/ThumbnailCoverage.swift",
+    "Tests/PhotoCraftAppTests/AutomationTests.swift",
+    "Tests/PhotoCraftAppTests/LargeCanvasWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/ViewportTests.swift",
+    "Tests/PhotoCraftCoreTests/CloneExpansionTests.swift",
+    "Tests/PhotoCraftCoreTests/CoreTests.swift",
+    "Tests/PhotoCraftCoreTests/GeometryTests.swift",
+    "Tests/PhotoCraftCoreTests/LargeDocumentTests.swift",
+    "Tests/PhotoCraftCoreTests/LayerMergeTests.swift",
+    "Tests/PhotoCraftCoreTests/PhotoshopActionProgramTests.swift",
+    "Tests/PhotoCraftCoreTests/SurfaceExpansionTests.swift",
+    "Tests/PhotoCraftImagingTests/LargeCanvasTests.swift",
+    "Tests/PhotoCraftImagingTests/RestrictedModeInputTests.swift"
+  ],
+  "source_manifest": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+  "test_claims": [],
+  "independent_pixel_parity": false,
+  "capacity_parity_complete": false,
+  "remaining": [
+    "Q01 remains open: implement disk-backed dense pixel/mask storage with bounded cache/COW history and hierarchical native archive indexing beyond512MiB, and the remaining512-layer native cap.",
+    "Stream large PSB/native files and all image import/export paths; contiguous raster import/processing still retains36MP and existing resident/file/transfer budgets. Sparse90GP is not dense Photoshop capacity parity.",
+    "Complete demand-driven large layer/group/style/mask/adjustment rendering, paged selection/modes/geometry/filters, both API job paths, cancellation/disk-full/corruption/performance and platform qualification.",
+    "Retain prior interactive60fps, heavy retouching, linked sources and remaining Photoshop workflow/byte-exact/universal-release requirements."
+  ],
+  "plan": [
+    {
+      "phase": "A",
+      "scope": "Maximum native logical extent, sparse pixels and exact raster-stack composition, bounded preview, native create/paint/history/save/reopen/API tests",
+      "status": "qualified sparse subset278; Q01 still open"
+    },
+    {
+      "phase": "B",
+      "scope": "Disk-backed tile storage, bounded LRU working set, durable large archive indexing, streaming PSB and tiled compositor",
+      "status": "open"
+    },
+    {
+      "phase": "C",
+      "scope": "All remaining operations/modes/formats and high-density large-file parity qualification",
+      "status": "open"
+    }
+  ],
+  "api": {
+    "photato": "Existing sharing/geometry routes admit sparse large documents under64-layer/128MiB resident-data budgets; preview.png above36MP bounded to2048 per side. No new command count.",
+    "adobe": "No new route invented. Current resource-job and PSD/PSB input/output constraints remain; large PSB compatibility is explicitly open."
+  },
+  "summary": "Native RGB canvases now accept 300,000 pixels per side (90 GP logical area), with sparse raster composition, bounded viewport display and native/API brush, history and file workflows. All 102 focused and 2,810 full optimized tests pass on 2,488 frozen inputs; native maximum-size create/paint/save/reopen and Preview 278 are verified. Dense disk-backed images, streamed large PSB/native files and full operation, mode and platform capacity parity remain open.",
+  "focused": {
+    "tests": 102,
+    "failures": 0,
+    "seconds": 2.958,
+    "log": "artifacts/runs/20261030T204800Z-278-large-documents/focused05.log",
+    "sha256": "9a1aadb195308565bef3ea4607a86374761bc63654ca12fcd5e12efee0d6ea4a",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2810,
+    "failures": 0,
+    "seconds": 198.713,
+    "log": "artifacts/runs/20261030T204800Z-278-large-documents/full02.log",
+    "sha256": "46346224c631a7e536767c8b85f9bfe696ea3d686afbbd9526eade0de5c442ae",
+    "terminal_exit_code": 0
+  },
+  "live_native": {
+    "step": 278,
+    "accepted": true,
+    "app": "/private/tmp/Photato-Feedback-278-04.app",
+    "source_manifest": "artifacts/runs/20261030T204800Z-278-large-documents/source04.json",
+    "dimensions": [
+      300000,
+      300000
+    ],
+    "mode": "RGB8",
+    "native_actions": [
+      "File New300000-square at0.27% fit",
+      "Canvas zoom100%",
+      "Brush drag250,350\u2192700,600 at30px",
+      "Undo clean then Redo dirty",
+      "Save native owned fixture",
+      "Close/reopen through File Open",
+      "Zoom100% confirms black stroke persisted",
+      "Quit diagnostic"
+    ],
+    "fixture": "artifacts/runs/20261030T204800Z-278-large-documents/Owned maximum canvas 278.photato",
+    "fixture_bytes": 33936,
+    "fixture_sha256": "8693237016b02b3f87a19fcae9c04a7eaa85e960779de30bc2f4d9f91eeaa07c",
+    "evidence": [
+      "native-new01.ax",
+      "native-fit01.png",
+      "native-painted01.ax",
+      "native-painted01.png",
+      "native-undo01.ax",
+      "native-redo01.ax",
+      "native-saved01.ax",
+      "native-saved01.png",
+      "native-reopened01.ax",
+      "native-reopened100-01.ax",
+      "native-reopened100-01.png"
+    ],
+    "harness_corrections": [
+      "Refreshed accessibility indices after screenshot invalidated prior277 index; failed action did not change model.",
+      "GoTo keystrokes initially reached Save name before GoTo focus; reset full path and exact fixture name before saving."
+    ],
+    "full_Photoshop_capacity_parity": false,
+    "limitations": [
+      "Sparse native canvas, not a fully populated90GP raster",
+      "No physical60fps, dense paging, large PSB or cross-platform claim"
+    ],
+    "cleanup": "First Quit closed maximum-size document while blank remained; second Quit confirmed App quit and exact executable absent."
+  },
+  "independent_format_check": "artifacts/runs/20261030T204800Z-278-large-documents/fixture-independent02.json",
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 278.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "e8fde2dfd1fd90d262ceb851506f1bd53e8c349f83e604e3cfd43dc56d5fb0b4",
+    "tested_binary_sha256": "8143c21cd7d555c7edf728df215746f9cd26366b052e24e95532500cdca4bebf",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-278.zip",
+    "zip_sha256": "8138887b76a7889ef09fe577c7c2101f43eeab5cb6825a9167412664f4ada627",
+    "zip_bytes": 38500245,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview278-check-2ecewp86/Photato Editing Preview 278.app"
+  },
+  "handoff": {
+    "step": 278,
+    "accepted": true,
+    "normal_preview": "/Users/johnczlonka/Applications/Photato Editing Preview 278.app",
+    "prior_preview277_quit": true,
+    "diagnostic_quit": true,
+    "current_document": "artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "document_clean": true,
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "zoom_percent": 77.73,
+    "opacity_percent": 100,
+    "unused_blank_closed": true,
+    "protected_hashes_match": true,
+    "evidence": [
+      "handoff-old277-01.ax",
+      "handoff-new278-01.ax",
+      "handoff-new278-01.png"
+    ],
+    "full_capacity_parity_complete": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T204800Z-278-large-documents/focused01.log",
+      "result": "Compilation type-inference failure;0 tests."
+    },
+    {
+      "log": "artifacts/runs/20261030T204800Z-278-large-documents/focused02.log",
+      "result": "Interrupted after sampled90GP JPEG eligibility scan;8 observed assertions, no completed suite total. Stack and exact process termination preserved."
+    },
+    {
+      "log": "artifacts/runs/20261030T204800Z-278-large-documents/focused03.log",
+      "result": "63 tests,1 legacy zoom-floor assertion; all new maximum-size tests pass. Fixture-only repair for focused04."
+    },
+    {
+      "log": "artifacts/runs/20261030T204800Z-278-large-documents/full01.log",
+      "result": "2810 tests,4 assertions in3 retired-size fixtures; test-only source05 repair, native source/binary unchanged."
+    }
+  ],
+  "native_acceptance_source_correspondence": {
+    "accepted_source": "artifacts/runs/20261030T204800Z-278-large-documents/source04.json",
+    "qualified_source": "artifacts/runs/20261030T204800Z-278-large-documents/source05.json",
+    "changes": "Three test fixtures only; all native compiler inputs and tested binary identical.",
+    "proof": "artifacts/runs/20261030T204800Z-278-large-documents/source05-test-only.json"
+  }
+}

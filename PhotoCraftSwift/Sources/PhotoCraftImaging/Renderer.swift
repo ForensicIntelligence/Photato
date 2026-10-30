@@ -131,6 +131,11 @@ public enum Renderer {
     _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil
   ) throws -> Surface {
     try Task.checkCancellation()
+    let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
+    if requested.width * requested.height > Surface.maximumDensePixels {
+      if inputTarget == nil, videoTime == nil, let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
+      throw CraftError.unsupported("This large document needs bounded viewport composition for its layer types. Full-canvas dense composition is not yet available; no document pixels were changed.")
+    }
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(d, at:videoTime)
     for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {

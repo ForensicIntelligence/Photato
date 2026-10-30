@@ -1,0 +1,16 @@
+{
+  "step": 279,
+  "status": "complete-increment",
+  "run": "artifacts/runs/20261030T214215Z-279-paged-raster",
+  "working_source": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_279.json",
+  "goal_complete": false,
+  "next": [
+    "Dense40MP Layers thumbnail currently remains checkerboard; qualify and repair bounded large-layer thumbnail sampling alongside persistence.",
+    "Q01 remains open: persistent hierarchical tile index, packed cold samples, bounded whole-document metadata/cache and scratch disk preferences; 90GP dense capacity is not qualified.",
+    "Stream native/PSB large files: remove512MiB file,1GiB native decoded-data and65536 blob-table restrictions through a bounded format/index design, not unsafe cap increases; native reopening currently restores owned samples.",
+    "General large layer/group/style/mask/selection/mode/filter/geometry/export paths and all Adobe resource-job lifecycles still need paging and capacity tests.",
+    "ImageIO source/cache residency, Float32 provider1GiB admission, TIFF512MiB strips/planar write amplification and64MiB API upload/128MiB owned-heap admission remain separate limits.",
+    "Qualify disk-full/corruption/recovery/relaunch, dense stress and physical60fps across supported Macs; universal distribution/macOS14/Intel/macOS26 runtime and full Photoshop byte-exact workflows remain open."
+  ]
+}

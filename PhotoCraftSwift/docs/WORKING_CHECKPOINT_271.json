@@ -1,0 +1,13 @@
+{
+  "step": 271,
+  "status": "complete-increment",
+  "qualified_baseline": 270,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_271.json",
+  "run": "artifacts/runs/20261030T165926Z-271-active-preview",
+  "working_source": "artifacts/runs/20261030T165926Z-271-active-preview/source03.json",
+  "next": [
+    "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe\u2019s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
+    "Continue native frame timing work from270: display/input phase, high-rate curves/tablet input, larger documents/tips, masks/modes/proofs and special tools. Physical input-to-photon and sustained60fps remain unqualified."
+  ],
+  "goal_complete": false
+}

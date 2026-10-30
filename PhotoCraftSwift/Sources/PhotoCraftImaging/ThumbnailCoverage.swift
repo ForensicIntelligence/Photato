@@ -94,6 +94,11 @@ struct ThumbnailCoverage {
   private mutating func rectangle(
     _ source: Surface, left: Double, top: Double, right: Double, bottom: Double
   ) throws -> Pixel {
+    if case .rgba = channels, source.width * source.height > Surface.maximumDensePixels {
+      let sampled = try source.sparseAreaSample(left: left, top: top, right: right, bottom: bottom, maximumSamples: remainingSamples)
+      remainingSamples -= sampled.samples
+      return sampled.pixel
+    }
     let left = max(0, left)
     let top = max(0, top)
     let right = min(Double(source.width), right)

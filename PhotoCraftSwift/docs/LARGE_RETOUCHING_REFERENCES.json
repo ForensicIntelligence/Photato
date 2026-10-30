@@ -1,0 +1,128 @@
+{
+  "step": 264,
+  "source_manifest": "artifacts/runs/20261029T235228Z-264-large-retouching/source01.json",
+  "focused": {
+    "tests": 137,
+    "failures": 0,
+    "seconds": 51.984,
+    "log": "artifacts/runs/20261029T235228Z-264-large-retouching/focused01.log",
+    "sha256": "fa1ed8c5bfa6bf9867c62619d6c4400403fb0cb12b9a60f70af0fa23f7ff6b97",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2737,
+    "failures": 0,
+    "seconds": 215.712,
+    "log": "artifacts/runs/20261029T235228Z-264-large-retouching/full01.log",
+    "sha256": "60182973a14363a932f01e11b7a60c6f49a4fc4318e5f10a88a1941acb0c4233",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Blur/Sharpen/Smudge still replay complete prefixes: measured 24MP candidate publishes 36/37/42 previews in about 2s, with p95 render work of 73.03/68.98/53.47ms and final drains of 147.65/124.20/75.81ms. Optimize retained neighborhood/pickup work next.",
+    "Dodge/Burn/Sponge first source and preview remains 93.61\u201394.60ms; initial validation/setup and perceived input latency need improvement.",
+    "Physical display-presented frame timing, sustained hand/tablet curves, large/long brushes, heavy layers, special modes, expanding masks, proof and expensive effects remain unqualified.",
+    "Visible repeated dab texture and Photoshop kernel/spacing/default fidelity remain unresolved; preserved native output is not proof of Photoshop pixel parity.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state and capability metadata do not imply those executable operations exist.",
+    "Full Photoshop parity and physical Intel/macOS14/macOS26 acceptance remain open. Preserve linked-source261 and resume after the maintainer\u2019s current feedback priority."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "request": "Responsive brush and all-tool editing feedback, targeting 60fps.",
+  "qualified_binary_sha256": "c07bbbc7b54109b540d645332964c488a90b1fef593029b202a8ee14af76b7f8",
+  "baseline": "artifacts/runs/20261029T235228Z-264-large-retouching/baseline-performance01.json",
+  "candidate": "artifacts/runs/20261029T235228Z-264-large-retouching/candidate-performance01.json",
+  "native_prefix_regression": {
+    "fixture": "Tests/PhotoCraftCoreTests/Fixtures/toning-prefix-step263.json",
+    "prefixes": 432,
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "provenance": "Owned analytic inputs rendered with qualified step263 Core objects before altering ToningPainter; exact native regression, not a Photoshop oracle.",
+    "original_generator": "artifacts/runs/20261029T235228Z-264-large-retouching/baseline-prefix.swift",
+    "fixture_sha256": "ad0aeab54f481f28704b192b0495c61dedeb703461be9610199d51b330de032a"
+  },
+  "measurement_scope": "Release EditorStore CPU preview publications on a 6000x4000 patterned RGB8 document with one adjustment, 64px brush and 240 samples at 120Hz. All six tools preserve every sample and match the complete command composite. No physical display-presented timing or Photoshop pixel-equivalence claim.",
+  "live": {
+    "app": "/private/tmp/Photato-Toning-264.app",
+    "isolated": true,
+    "tested_binary_sha256": "c07bbbc7b54109b540d645332964c488a90b1fef593029b202a8ee14af76b7f8",
+    "signed_binary_sha256": "d5c9afe236bb980a1523f052e934890c054facb5a282f62a717669d78c42b984",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261029T235228Z-264-large-retouching/source01.json",
+    "accepted": true,
+    "scope": "Owned 1200x800 RGB8 native workflow smoke test; no physical frame-presentation timing.",
+    "actions": [
+      "Open generated owned-toning-gradient.png in the isolated diagnostic app.",
+      "Select Dodge and drag a 30px diagonal stroke; Shift-O switches to Burn and then Sponge, each followed by a separate diagonal stroke.",
+      "Observe lightened Dodge, darkened Burn and desaturated Sponge output inside the workspace.",
+      "Command-Z visibly removes Sponge; Command-Shift-Z restores it.",
+      "Close the owned document, choose Don\u2019t Save, verify the remaining blank Untitled-1, then quit without a post-quit AX query."
+    ],
+    "automation_issues": [
+      "Initial fast typing into Go to Folder dropped path characters; no file was opened.",
+      "Clipboard paste timed out with -10005. Setting the visible path field through accessibility recovered; Open selected the exact owned fixture."
+    ],
+    "screenshots": [
+      "artifacts/runs/20261029T235228Z-264-large-retouching/native-toning01.png",
+      "artifacts/runs/20261029T235228Z-264-large-retouching/native-undo01.png",
+      "artifacts/runs/20261029T235228Z-264-large-retouching/native-redo01.png"
+    ],
+    "fixture": {
+      "path": "artifacts/runs/20261029T235228Z-264-large-retouching/owned-toning-gradient.png",
+      "sha256": "31a04d097e6edad6657de150f7e44df5ed817a06bd6bfcbafed9a189a0b49a72",
+      "provenance": "Owned analytic opaque gradient: r=50+x*130/1199, g=70+y*100/799, b=180; 1200x800."
+    },
+    "diagnostic_process_closed": true,
+    "user_documents_modified": false,
+    "remaining": [
+      "Visible repeated dab texture in Dodge/Burn remains an existing spacing/kernel fidelity issue.",
+      "Physical sustained hand/tablet curves, display-presented frame intervals and input-to-photon latency are not measured."
+    ]
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    }
+  },
+  "normal_local_preview_step": 263,
+  "new_normal_package": false,
+  "API_impact": "Presentation performance and discoverable retouching capability metadata; no schema, typed-operation count or Adobe route change. Existing general retouch submission gaps remain open."
+}

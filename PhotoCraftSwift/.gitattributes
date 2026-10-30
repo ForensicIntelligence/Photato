@@ -1,0 +1,4 @@
+# Preserve offset-sensitive PDF fixture streams without text normalization.
+*.pdf binary
+# The command inventory uses standard CSV CRLF records.
+*.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

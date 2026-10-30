@@ -1,0 +1,12 @@
+{
+  "step": 281,
+  "increment_complete": false,
+  "goal_complete": false,
+  "goal_status": "active",
+  "stage": "Publish qualified native source280",
+  "status": "Complete source publication in progress; private visibility preserved.",
+  "normal_local_preview_step": 280,
+  "completed_this_increment": [],
+  "new_source_push": false,
+  "new_package": false
+}

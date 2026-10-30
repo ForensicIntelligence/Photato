@@ -1,0 +1,88 @@
+{
+  "step": 270,
+  "recorded_at_utc": "2026-10-30T16:56:40.929313+00:00",
+  "source_manifest": "artifacts/runs/20261030T163533Z-270-preview-presentation/source02.json",
+  "source_inputs": 2468,
+  "focused": {
+    "tests": 105,
+    "failures": 0,
+    "seconds": 16.366,
+    "log": "artifacts/runs/20261030T163533Z-270-preview-presentation/focused02.log",
+    "sha256": "ad0e6cbf5f934b68719c7b2b8e1a91e3427f2369c49ff06a75bb458e7a1e09a0",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2762,
+    "failures": 0,
+    "seconds": 193.603,
+    "log": "artifacts/runs/20261030T163533Z-270-preview-presentation/full01.log",
+    "sha256": "5d36a239642c7321d8c2f571e94c6fe638c86871405fa1c0e3402487ba56786f",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "ea8baa9e06bb9896d3285173979a89e8c607d34ec99806512059967b41b01e29",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Accepted canvas and thumbnail presentation revisions remove redundant prepublication draws while preserving request/API stale guards and cancelled-render behavior.",
+    "Native-window redraw regression coverage preserves240 input samples and exact command pixels across Brush, Blur, Dodge and Smudge;105 focused and2762 full tests pass.",
+    "Owned native painting, zoom, Undo/Redo and a separately signed Photato Editing Preview270 package are verified."
+  ],
+  "remaining": [
+    "Investigate preview timing relative to native display opportunities and input arrival. Retain both270 attempts: cadence improves but input-to-draw latency remains variable, including the first-attempt Dodge regression. Physical input-to-photon and sustained60fps remain unqualified.",
+    "Investigate jagged curves and visible dab texture with owned high-rate native/tablet input and independent Photoshop comparisons. Preserve all input samples and explicit smoothing defaults rather than hiding latency with extra smoothing.",
+    "Larger documents/tips, masks/modes/proofs/boundaries/special tools, general Clone/Healing/Toning/Focus API stroke submission, physical Intel/macOS14/macOS26 and universal release qualification remain open.",
+    "Linked-source261 remains parked while editing responsiveness is the priority. Complete Photoshop parity remains the active master goal."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T163533Z-270-preview-presentation/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Canvas and thumbnail updates now follow accepted preview publication, while live strokes avoid the per-preview busy indicator. The native-window Brush/Blur/Dodge/Smudge fixture retains all240 samples and exact native command pixels with 119\u2013120 distinct preview draws over about2 seconds, each accepted preview drawn once instead of nearly twice. Median distinct-draw intervals are 16.57\u201316.80ms. All105 focused and2762 full optimized tests pass on2468 frozen inputs. Native painting/history checks and a separate signed preview are verified. Latency remains tool/run dependent; this is AppKit scheduling evidence, not physical60fps.",
+  "stage": "Accepted preview presentation qualified; latency and jaggedness remain open",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 270,
+  "next": [
+    "Investigate preview timing relative to native display opportunities and input arrival. Retain both270 attempts: cadence improves but input-to-draw latency remains variable, including the first-attempt Dodge regression. Physical input-to-photon and sustained60fps remain unqualified.",
+    "Investigate jagged curves and visible dab texture with owned high-rate native/tablet input and independent Photoshop comparisons. Preserve all input samples and explicit smoothing defaults rather than hiding latency with extra smoothing."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 270.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "002855ae8a9a2db769e64acabe4f176a6d84c0f4faaac299cdb2f9a6fd6049eb",
+    "tested_binary_sha256": "ea8baa9e06bb9896d3285173979a89e8c607d34ec99806512059967b41b01e29",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T163533Z-270-preview-presentation/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-270.zip",
+    "zip_sha256": "052586453d74fb10cc44d1845c7094918c578641228661279d5eed93d67e74d8",
+    "zip_bytes": 38313805,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview270-check-2nk0__jd/Photato Editing Preview 270.app"
+  },
+  "completed_this_increment": [
+    "Accepted canvas and thumbnail presentation revisions remove redundant prepublication draws while preserving request/API stale guards and cancelled-render behavior.",
+    "Native-window redraw regression coverage preserves240 input samples and exact command pixels across Brush, Blur, Dodge and Smudge;105 focused and2762 full tests pass.",
+    "Owned native painting, zoom, Undo/Redo and a separately signed Photato Editing Preview270 package are verified."
+  ]
+}

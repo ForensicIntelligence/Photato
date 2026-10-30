@@ -30,7 +30,7 @@ import PhotoCraftCore
 extension EditorStore {
   func fitArtboard(_ rect: IntRect) {
     let next = CanvasViewport.bounded(min(max(1, viewportSize.width - 60) / Double(rect.width), max(1, viewportSize.height - 60) / Double(rect.height)) * viewport.backing)
-    zoom = next; measuredZoom = next
+    setZoom(next, center: true)
     pan = CGSize(width: (Double(document.width) / 2 - Double(rect.x) - Double(rect.width) / 2) * next / viewport.backing, height: (Double(document.height) / 2 - Double(rect.y) - Double(rect.height) / 2) * next / viewport.backing)
   }
   func finishArtboardGesture() {

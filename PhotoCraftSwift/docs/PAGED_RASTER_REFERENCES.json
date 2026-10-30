@@ -1,0 +1,182 @@
+{
+  "step": 279,
+  "status": "Runtime paged raster input qualified; full capacity parity open",
+  "previous": "docs/LARGE_DOCUMENT_REFERENCES.json",
+  "scope": "Runtime paging and real dense raster input beyond36MP using native Swift/CoreGraphics/ImageIO/Darwin. Preserve the full Q01/Photoshop scope.",
+  "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+  "source_inputs": 2494,
+  "design": {
+    "scratch": "Private600-mode unlinked append-only files;64MiB read-only mappings, published pixels immutable; heap promotion only on edited tiles. OS manages page residency.",
+    "conversion": "2048\u00d764 patches; small-image conversion remains the reference path. Straight Float32 provider retained once, bounded to1GiB; patches preserve HDR bits.",
+    "portable": "Scratch representation is session-only; native archives continue portable little-endian compressed Float32 tiles, existing version/byte budgets.",
+    "history": "Shared immutable mapped samples survive writer/other document lifetime; changed tiles become COW arrays.",
+    "api": "Existing uploads admit300k geometry with transfer/heap/codec limits; rasterStorage exposes heap estimate versus referenced mapped samples. No invented Adobe route."
+  },
+  "remaining": [
+    "Dense40MP Layers thumbnail currently remains checkerboard; qualify and repair bounded large-layer thumbnail sampling alongside persistence.",
+    "Q01 remains open: persistent hierarchical tile index, packed cold samples, bounded whole-document metadata/cache and scratch disk preferences; 90GP dense capacity is not qualified.",
+    "Stream native/PSB large files: remove512MiB file,1GiB native decoded-data and65536 blob-table restrictions through a bounded format/index design, not unsafe cap increases; native reopening currently restores owned samples.",
+    "General large layer/group/style/mask/selection/mode/filter/geometry/export paths and all Adobe resource-job lifecycles still need paging and capacity tests.",
+    "ImageIO source/cache residency, Float32 provider1GiB admission, TIFF512MiB strips/planar write amplification and64MiB API upload/128MiB owned-heap admission remain separate limits.",
+    "Qualify disk-full/corruption/recovery/relaunch, dense stress and physical60fps across supported Macs; universal distribution/macOS14/Intel/macOS26 runtime and full Photoshop byte-exact workflows remain open."
+  ],
+  "capacity_parity_complete": false,
+  "tests": [
+    {
+      "tests": 48,
+      "failures": 0,
+      "seconds": 10.405,
+      "log": "artifacts/runs/20261030T214215Z-279-paged-raster/focused02.log",
+      "sha256": "d7760af77ec3b448fbbcb6b998c8d600a0b9ef62c773f9ccac805ff89e2d59dd",
+      "terminal_exit_code": 0,
+      "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source02.json"
+    },
+    {
+      "tests": 2820,
+      "failures": 0,
+      "seconds": 206.214,
+      "log": "artifacts/runs/20261030T214215Z-279-paged-raster/full02.log",
+      "sha256": "b87dd5f5e943ea1d4e20885e11eb1e4bc1a2d1b76c69a64dcb0bdfd9aacb7a3b",
+      "terminal_exit_code": 0,
+      "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json"
+    }
+  ],
+  "summary": "Large RGB image import now converts bounded patches into immutable disk-backed tiles; painting promotes only edited tiles and history shares existing samples. An owned40MP PNG passes native Open/paint/Undo/Redo/save/reopen and authenticated API import/edit/history. All48 focused and2820 full optimized tests pass; separate Preview279 is verified. Full dense90GP/large PSB/native streaming and operation/platform capacity parity remain open.",
+  "focused": {
+    "tests": 48,
+    "failures": 0,
+    "seconds": 10.405,
+    "log": "artifacts/runs/20261030T214215Z-279-paged-raster/focused02.log",
+    "sha256": "d7760af77ec3b448fbbcb6b998c8d600a0b9ef62c773f9ccac805ff89e2d59dd",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source02.json"
+  },
+  "full": {
+    "tests": 2820,
+    "failures": 0,
+    "seconds": 206.214,
+    "log": "artifacts/runs/20261030T214215Z-279-paged-raster/full02.log",
+    "sha256": "b87dd5f5e943ea1d4e20885e11eb1e4bc1a2d1b76c69a64dcb0bdfd9aacb7a3b",
+    "terminal_exit_code": 0,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json"
+  },
+  "live_native": {
+    "step": 279,
+    "accepted": true,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+    "binary_sha256": "3f1ce55afc6f2dc83e07f4d7c70e57e0729a0f33b50ac8059a3b1772ebd3f664",
+    "scope": "Owned40MP native input/edit/history/persistence; full large-document workflow not closed.",
+    "actions": [
+      "Open owned8000x5000 RGB8 PNG through File Open;11.52% fit",
+      "Command1 zoom100%,30px black brush drag250,340 to700,580; visible stroke remains within canvas",
+      "CommandZ removes stroke and clears dirty marker; CommandShiftZ restores stroke and dirty marker",
+      "SaveAs owned native fixture; close/reopen;8000x5000 dimension and100% painted stroke retained",
+      "Quit isolated diagnostic; direct process inventory confirms it absent without requerying quit handle"
+    ],
+    "fixture": {
+      "independent_parser": "Python stdlib little-endian footer, SHA256, binary plist; no Photato decoder",
+      "path": "artifacts/runs/20261030T214215Z-279-paged-raster/Owned dense 40MP 279.photato",
+      "bytes": 636186,
+      "sha256": "09b9162804f37ed8e20f9c7829e263d362567d24da1495e7bc558c903cc37b70",
+      "manifest_sha256": "cc1ecdc96140e7ba0c2e2cdc8a9bac810d776c44c599f9a07b78a9322bc36578",
+      "width": 8000,
+      "height": 5000,
+      "blobs": 27,
+      "version": 11
+    },
+    "screenshots": [
+      "native-open100-01.png",
+      "native-painted01.png",
+      "native-undo02.png",
+      "native-reopened100-01.png"
+    ],
+    "known_issue": "Dense40MP Layers thumbnail displays checkerboard while full canvas/persistence are correct; bounded layer thumbnail path remains to qualify/repair.",
+    "independent_photoshop_pixel_equivalence": false,
+    "physical_60fps_qualified": false,
+    "capacity_parity_complete": false
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 279.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "5e01e030346f645901e027ff92f73a16f4276c0757bdde9303a4da046277d5da",
+    "tested_binary_sha256": "dbecad0b251e7f619d0802cdf7c9a3a2658ea30279772cabd19264c6d42b205d",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T214215Z-279-paged-raster/source04.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-279.zip",
+    "zip_sha256": "6744bf05e78a2eec2464488f8aa48c296d16d2e49effd61acfde4d539c0ce5d9",
+    "zip_bytes": 38547377,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview279-check-dkjnh8j0/Photato Editing Preview 279.app"
+  },
+  "handoff": {
+    "step": 279,
+    "accepted": true,
+    "normal_preview": 279,
+    "retained_artwork_unchanged": true,
+    "retained_document": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "clean": true,
+    "zoom": "77.73%",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "previous_preview_quit": true,
+    "diagnostic_quit": true,
+    "active_processes": [
+      "87444 /Users/johnczlonka/Applications/Photato Editing Preview 279.app/Contents/MacOS/Photato"
+    ],
+    "evidence": [
+      "handoff-before278-01.ax.txt",
+      "handoff-final02.ax.txt",
+      "handoff-final02.png"
+    ],
+    "capacity_parity_complete": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T214215Z-279-paged-raster/focused01.log",
+      "result": "Compilation failed: extra capability literal bracket;0 tests. Repaired source02 passes48 focused tests. Source03 adds local scratch URL guard and assertion; full suite covers final inputs."
+    },
+    {
+      "log": "artifacts/runs/20261030T214215Z-279-paged-raster/full01.log",
+      "result": "2820 tests,1 retired API upload-boundary assertion; repaired300001-side fixture and stale geometry alert on final source04."
+    }
+  ],
+  "implementation_inputs": [
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/GeometrySheet.swift",
+    "Sources/PhotoCraft/RasterStorageAPI.swift",
+    "Sources/PhotoCraftCore/RasterTileStorage.swift",
+    "Sources/PhotoCraftCore/Surface.swift",
+    "Sources/PhotoCraftImaging/ColorManagement.swift",
+    "Sources/PhotoCraftImaging/FloatRasterSamples.swift",
+    "Sources/PhotoCraftImaging/PagedRasterImport.swift",
+    "Sources/PhotoCraftImaging/RasterIO.swift",
+    "Sources/PhotoCraftImaging/SparseCanvasRenderer.swift",
+    "Sources/PhotoCraftImaging/TIFFStorage.swift",
+    "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/PagedRasterWorkflowTests.swift",
+    "Tests/PhotoCraftCoreTests/RasterScratchTests.swift",
+    "Tests/PhotoCraftImagingTests/PagedRasterTests.swift"
+  ],
+  "dense_fixture_measurement": {
+    "heapEstimateBytes": 1271176,
+    "inputBytes": 6562372,
+    "mappedSampleBytes": 647168000,
+    "pixels": 40000000,
+    "scope": "Owned analytic PNG/native pixels and history; not Photoshop byte or physical60fps qualification",
+    "seconds": 6.081644058227539
+  },
+  "brush_release_measurement": "artifacts/runs/20261030T214215Z-279-paged-raster/brush-release03.json",
+  "thumbnail_review_280": {
+    "status": "Earlier missing-thumbnail inference ruled out",
+    "evidence": "docs/NATIVE_PAGING_REFERENCES.json",
+    "reason": "Opaque thumbnail test and screenshot pixel analysis show checkerboard only in aspect-fit margins; no thumbnail code changed."
+  }
+}

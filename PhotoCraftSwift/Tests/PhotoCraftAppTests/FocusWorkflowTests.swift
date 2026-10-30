@@ -43,7 +43,7 @@ final class FocusWorkflowTests: XCTestCase {
     s.finishClone()
     await s.clonePrepareTask?.value
     await s.geometryTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
   }
   @MainActor func testPreviewCancelAndOneUndoForAllTools() async throws {
     for kind in FocusTool.allCases {
@@ -52,14 +52,14 @@ final class FocusWorkflowTests: XCTestCase {
       let before = s.document
       paint(s)
       await s.clonePrepareTask?.value
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertNil(s.error)
       XCTAssertEqual(s.document, before)
       XCTAssertTrue(s.session.undoStack.isEmpty)
       let preview = try XCTUnwrap(s.surface)
       XCTAssertNotEqual(preview, try Renderer.composite(before))
       s.cancelClone()
-      await s.renderTask?.value
+      await s.retouchPreviewTask?.value; await s.renderTask?.value
       XCTAssertEqual(s.document, before)
       XCTAssertEqual(s.surface, try Renderer.composite(before))
       paint(s)
@@ -154,7 +154,7 @@ final class FocusWorkflowTests: XCTestCase {
     canvas.mouseUp(with: try mouse(.leftMouseUp, 40.5, .option))
     await s.clonePrepareTask?.value
     await s.geometryTask?.value
-    await s.renderTask?.value
+    await s.retouchPreviewTask?.value; await s.renderTask?.value
     XCTAssertNil(s.error)
     XCTAssertEqual(s.session.undoStack.count, 1)
     XCTAssertFalse(s.retouchSettings.focus.fingerPainting)

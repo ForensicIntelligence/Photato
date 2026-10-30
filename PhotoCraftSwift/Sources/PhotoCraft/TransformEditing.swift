@@ -193,6 +193,9 @@ extension EditorStore {
     if shapeDraft != nil,let preview=shapePreview{return preview}
     if regionRetouchDraft != nil,let preview = regionRetouchPreview { return preview }
     var doc = embeddedPlacement?.preview ?? document
+    if let draft = layerOpacityDraft, draft.matches(self) {
+      try? Command.opacity(draft.layerID, draft.value).apply(to: &doc)
+    }
     if let draft = typeEditingDraft, !draft.isNew, let i = doc.layers.firstIndex(where: { $0.id == draft.layer.id }) { doc.layers[i].visible = false }
     if let draft = layerVisibilityDraft, draft.baseline == document {
       try? LayerOrganization.setVisibility(draft.values, in: &doc)
@@ -252,6 +255,13 @@ extension EditorStore {
     label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, prepare: @escaping @Sendable (CraftDocument) async throws -> Command,
     onSuccess: (() -> Void)? = nil
   ) {
+    performPreparedGeometry(label: label, allowAuxiliary: allowAuxiliary, allowModeComponents: allowModeComponents,
+      prepare: { original in try await PreparedEdit(command: prepare(original), document: original) }, onSuccess: onSuccess)
+  }
+  func performPreparedGeometry(
+    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, cancelPreview: Bool = true,
+    prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit, onSuccess: (() -> Void)? = nil
+  ) {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
     guard !editingComponent || (allowAuxiliary && isCompositeColorTarget) || (allowModeComponents && canEditModeComponents) else {
       error = "This operation requires the RGB editing target."
@@ -259,18 +269,22 @@ extension EditorStore {
     }
     let original = document
     let generation = layerPanelGeneration
+    let sourceSession = sessionGeneration
     geometryBusy = true
-    renderTask?.cancel()
+    if cancelPreview { renderTask?.cancel() }
     status = label
     geometryTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
-        try await PreparedEdit(command: prepare(original), document: original)
+        try await prepare(original)
       }
       do {
         let prepared = try await withTaskCancellationHandler(
           operation: { try await worker.value }, onCancel: { worker.cancel() })
         try Task.checkCancellation()
         guard let self, self.layerPanelGeneration == generation else { return }
+        guard self.sessionGeneration == sourceSession else {
+          self.geometryBusy = false; self.render(); return
+        }
         try self.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents)
         if self.document != original { self.onChange?(.changeDone) }
         self.geometryBusy = false

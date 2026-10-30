@@ -16,7 +16,7 @@ final class CloneExpansionWorkflowTests: XCTestCase {
     store.finishClone()
     await store.clonePrepareTask?.value
     await store.geometryTask?.value
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
   }
   @MainActor func testCroppedLayerPreviewCancelRepeatedSamplingAndUndo() async throws {
     var document = try CraftDocument(width: 100, height: 80, depth: .u16)
@@ -31,16 +31,16 @@ final class CloneExpansionWorkflowTests: XCTestCase {
     let store = EditorStore(document: document, cloneState: state)
     defer { stop(store) }
     store.chooseTool(WorkspaceCatalog.tool("clone"))
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     store.setCloneSource(at: .init(42.5, 32.5))
     let expected = Pixel(0.3, 0.7, 0.2).quantized(.u16)
     store.beginClone(.init(x: 12.5, y: 12.5))
     await store.clonePrepareTask?.value
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertEqual(store.document, document)
     XCTAssertEqual(store.surface?.pixel(x: 12, y: 12), expected)
     store.cancelClone()
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertEqual(store.surface?.pixel(x: 12, y: 12), .clear)
     for point in [StrokePoint(x: 12.5, y: 12.5), .init(x: 72.5, y: 62.5)] {
       store.beginClone(point)
@@ -53,11 +53,11 @@ final class CloneExpansionWorkflowTests: XCTestCase {
     XCTAssertLessThan(try XCTUnwrap(store.activeLayer?.x), 40)
     await store.undo()
     await store.undo()
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertEqual(store.document, document)
     await store.redo()
     await store.redo()
-    await store.renderTask?.value
+    await store.retouchPreviewTask?.value; await store.renderTask?.value
     XCTAssertEqual(store.surface?.pixel(x: 72, y: 62), expected)
   }
 

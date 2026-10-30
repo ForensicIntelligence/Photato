@@ -88,7 +88,7 @@ public enum LayerMerge {
     if operation == .visible { bounds = bounds.clipped(toWidth: d.width, height: d.height) }
     guard bounds.width > 0, bounds.height > 0,
       bounds.width <= Surface.maxDimension, bounds.height <= Surface.maxDimension,
-      bounds.width * bounds.height <= Surface.maxPixels
+      bounds.width * bounds.height <= Surface.maximumDensePixels
     else {
       throw CraftError.unsupported(
         "The merged layer exceeds the supported raster bounds or lies outside the canvas.")

@@ -1,0 +1,14 @@
+{
+  "step": 266,
+  "status": "complete-increment",
+  "qualified_baseline": 265,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_266.json",
+  "run": "artifacts/runs/20261030T010127Z-266-stroke-start",
+  "working_source": "artifacts/runs/20261030T010127Z-266-stroke-start/source01.json",
+  "active_attempt": "artifacts/runs/20261030T010127Z-266-stroke-start/full01.log",
+  "next": [
+    "Large24MP retouch startup still takes59\u201371ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
+    "Jagged curves, repeated dab texture, native mouse/tablet sampling, display presentation/input-to-photon latency and heavy/boundary/expanded/Healing paths remain unqualified. CPU snapshot cadence is not physical60fps."
+  ],
+  "goal_complete": false
+}

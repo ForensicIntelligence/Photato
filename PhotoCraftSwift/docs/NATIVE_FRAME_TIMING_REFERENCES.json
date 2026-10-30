@@ -1,0 +1,410 @@
+{
+  "step": 269,
+  "source_manifest": "artifacts/runs/20261030T024557Z-269-native-frame-timing/source03.json",
+  "source_inputs": 2467,
+  "focused": {
+    "tests": 36,
+    "failures": 0,
+    "seconds": 13.785,
+    "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/hosted01.log",
+    "sha256": "f7f83d51d1c690244c5e24330de70ed97b01bd1edd28fcd237c3009bf797eaef",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2760,
+    "failures": 0,
+    "seconds": 193.809,
+    "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/full03.log",
+    "sha256": "411aebede007b1546007db4cb40cdaea4df252628d285be43b5133671c05c7cc",
+    "terminal_exit_code": 0
+  },
+  "remaining": [
+    "Remove demonstrated redundant prepublication workspace/canvas updates, after tracing revision and rendering observation. Compare dedicated hosted120Hz-input traces against the269 baseline; do not equate display callbacks or draw completion with physical presentation.",
+    "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3\u20134 samples and no sustained accepted preview stream.",
+    "Photoshop smoothing/default/kernel exactness, general Clone/Healing/Toning/Focus stroke API submission, physical Intel/macOS14/macOS26 and universal release qualification remain open.",
+    "Linked-source261 remains parked while editing responsiveness is the priority. Complete Photoshop parity remains the active master goal."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "scope": "Timed store-gesture input in an actual NSWindow hosting WorkspaceView. CPU draw completion and view display callbacks; no physical input-to-photon or high-rate tablet qualification. Each preview revision counted once. The diagnostic stroke is cancelled after comparison with the complete native command.",
+  "hosted_analysis": {
+    "scope": "Timed store-gesture input in an actual NSWindow hosting WorkspaceView. CPU draw completion and view display callbacks; no physical input-to-photon or high-rate tablet qualification. Each preview revision counted once. The diagnostic stroke is cancelled after comparison with the complete native command.",
+    "strokes": [
+      {
+        "path": "stroke-2FFA01EC-D3DB-494F-83F1-71913369690E.json",
+        "sha256": "3d42cdc2960799033f7bd4625c9ffff4e0085aa039e7b68d8d813cdf8995fd94",
+        "tool": "Brush",
+        "outcome": "cancelled",
+        "events": 800,
+        "dropped_events": 0,
+        "input_count": 240,
+        "last_sample_count": 240,
+        "input_duration_seconds": 1.9926697500050068,
+        "ready_previews": 109,
+        "unique_preview_draws": 109,
+        "display_callbacks": 122,
+        "input_to_ready_ms": {
+          "count": 109,
+          "median": 16.868541948497295,
+          "p95": 33.10154192149639,
+          "maximum": 49.31404162198305
+        },
+        "prepare_to_ready_ms": {
+          "count": 109,
+          "median": 10.452624876052141,
+          "p95": 16.850458458065987,
+          "maximum": 49.20424986630678
+        },
+        "ready_to_draw_ms": {
+          "count": 109,
+          "median": 3.8095833733677864,
+          "p95": 4.401541780680418,
+          "maximum": 5.761291831731796
+        },
+        "input_to_draw_ms": {
+          "count": 109,
+          "median": 20.722541492432356,
+          "p95": 36.460500210523605,
+          "maximum": 53.31129161641002
+        },
+        "draw_cpu_ms": {
+          "count": 219,
+          "median": 0.04212465137243271,
+          "p95": 0.06420817226171494,
+          "maximum": 0.10079191997647285
+        },
+        "distinct_draw_interval_ms": {
+          "count": 108,
+          "median": 16.922270879149437,
+          "p95": 32.4072502553463,
+          "maximum": 55.19933300092816
+        },
+        "display_callback_interval_ms": {
+          "count": 121,
+          "median": 16.654666978865862,
+          "p95": 26.934250257909298,
+          "maximum": 55.28883356601
+        },
+        "physical_presentation_measured": false
+      },
+      {
+        "path": "stroke-6631CE8B-369F-4701-8205-5DCA484DC73C.json",
+        "sha256": "9da1fd4a061ff7152ef279b223132f2b45e961bc1d94f29b2a42741db30da140",
+        "tool": "Blur",
+        "outcome": "cancelled",
+        "events": 809,
+        "dropped_events": 0,
+        "input_count": 240,
+        "last_sample_count": 240,
+        "input_duration_seconds": 1.9948127502575517,
+        "ready_previews": 111,
+        "unique_preview_draws": 111,
+        "display_callbacks": 123,
+        "input_to_ready_ms": {
+          "count": 111,
+          "median": 17.95525010675192,
+          "p95": 26.017125230282545,
+          "maximum": 63.339708372950554
+        },
+        "prepare_to_ready_ms": {
+          "count": 111,
+          "median": 9.15279146283865,
+          "p95": 15.785500407218933,
+          "maximum": 60.95587462186813
+        },
+        "ready_to_draw_ms": {
+          "count": 111,
+          "median": 3.5347086377441883,
+          "p95": 4.3952083215117455,
+          "maximum": 4.901249893009663
+        },
+        "input_to_draw_ms": {
+          "count": 111,
+          "median": 21.406791638582945,
+          "p95": 29.771333560347557,
+          "maximum": 68.06587520986795
+        },
+        "draw_cpu_ms": {
+          "count": 223,
+          "median": 0.038541387766599655,
+          "p95": 0.06354134529829025,
+          "maximum": 0.09545823559165001
+        },
+        "distinct_draw_interval_ms": {
+          "count": 110,
+          "median": 16.891270875930786,
+          "p95": 25.45091649517417,
+          "maximum": 71.77454186603427
+        },
+        "display_callback_interval_ms": {
+          "count": 122,
+          "median": 16.709395684301853,
+          "p95": 25.325500406324863,
+          "maximum": 42.040541768074036
+        },
+        "physical_presentation_measured": false
+      },
+      {
+        "path": "stroke-787CDCC6-5BB5-4EEA-86EF-8F4684627794.json",
+        "sha256": "b70a07de6bebe0fa244c741426f606c1b13e296fda44b7d59444d57b0b499b6f",
+        "tool": "Smudge",
+        "outcome": "cancelled",
+        "events": 783,
+        "dropped_events": 0,
+        "input_count": 240,
+        "last_sample_count": 240,
+        "input_duration_seconds": 1.992652750108391,
+        "ready_previews": 104,
+        "unique_preview_draws": 104,
+        "display_callbacks": 125,
+        "input_to_ready_ms": {
+          "count": 104,
+          "median": 19.1065208055079,
+          "p95": 34.376250114291906,
+          "maximum": 35.88200034573674
+        },
+        "prepare_to_ready_ms": {
+          "count": 104,
+          "median": 10.669916868209839,
+          "p95": 17.10091670975089,
+          "maximum": 23.455291986465454
+        },
+        "ready_to_draw_ms": {
+          "count": 104,
+          "median": 3.603666555136442,
+          "p95": 4.592916928231716,
+          "maximum": 4.831874743103981
+        },
+        "input_to_draw_ms": {
+          "count": 104,
+          "median": 22.62304164469242,
+          "p95": 37.66279201954603,
+          "maximum": 40.6487500295043
+        },
+        "draw_cpu_ms": {
+          "count": 209,
+          "median": 0.03991648554801941,
+          "p95": 0.06262492388486862,
+          "maximum": 0.10041659697890282
+        },
+        "distinct_draw_interval_ms": {
+          "count": 103,
+          "median": 17.61695835739374,
+          "p95": 31.578625086694956,
+          "maximum": 34.77300005033612
+        },
+        "display_callback_interval_ms": {
+          "count": 124,
+          "median": 16.658166656270623,
+          "p95": 25.545458309352398,
+          "maximum": 33.356208354234695
+        },
+        "physical_presentation_measured": false
+      },
+      {
+        "path": "stroke-C6D6FA5E-6887-411A-854D-F66DC2D6F48B.json",
+        "sha256": "68b97ff248c2c39daab49b7f23ebd3bfcd2e037f1d6a2bb9b998cbfbfc85b940",
+        "tool": "Dodge",
+        "outcome": "cancelled",
+        "events": 796,
+        "dropped_events": 0,
+        "input_count": 240,
+        "last_sample_count": 240,
+        "input_duration_seconds": 2.001878541894257,
+        "ready_previews": 107,
+        "unique_preview_draws": 107,
+        "display_callbacks": 126,
+        "input_to_ready_ms": {
+          "count": 107,
+          "median": 18.43604166060686,
+          "p95": 33.718000166118145,
+          "maximum": 43.876000214368105
+        },
+        "prepare_to_ready_ms": {
+          "count": 107,
+          "median": 11.360249947756529,
+          "p95": 18.394541926681995,
+          "maximum": 20.400500390678644
+        },
+        "ready_to_draw_ms": {
+          "count": 107,
+          "median": 3.3739586360752583,
+          "p95": 4.158708266913891,
+          "maximum": 4.471333231776953
+        },
+        "input_to_draw_ms": {
+          "count": 107,
+          "median": 21.735166665166616,
+          "p95": 37.243083119392395,
+          "maximum": 48.34733344614506
+        },
+        "draw_cpu_ms": {
+          "count": 215,
+          "median": 0.03966642543673515,
+          "p95": 0.0633331947028637,
+          "maximum": 0.09099999442696571
+        },
+        "distinct_draw_interval_ms": {
+          "count": 106,
+          "median": 17.198124900460243,
+          "p95": 30.66399972885847,
+          "maximum": 34.31754186749458
+        },
+        "display_callback_interval_ms": {
+          "count": 125,
+          "median": 16.59591682255268,
+          "p95": 27.411791495978832,
+          "maximum": 35.65287496894598
+        },
+        "physical_presentation_measured": false
+      }
+    ]
+  },
+  "hosted_summary": "artifacts/runs/20261030T024557Z-269-native-frame-timing/hosted-traces01/summary.json",
+  "live": {
+    "accepted": true,
+    "scope": "Native functional workflow only; CUA drags deliver3\u20134 samples and end before sustained preview publication. No cadence or physical60fps claim.",
+    "app": "/private/tmp/Photato-Feedback-269.app",
+    "tested_source": "source02.json",
+    "fixture": "artifacts/runs/20261030T015727Z-268-brush-feedback/owned-canvas-feedback.png",
+    "fixture_sha256": "71aeb2f74d9be795014c28065013b527381368b23b636d1d16e9f296b330fa72",
+    "actions": [
+      "Open owned analytic fixture;50% Brush30px strokes;Undo removes and Redo restores black diagonal",
+      "150% Blur30px50% strength across checker;Undo restores crisp checker and Redo restores blur",
+      "Close owned document with Dont Save; confirm only Untitled-1 remains; quit diagnostic app"
+    ],
+    "issues": [
+      "Clipboard paste reported timeout though path reached GoTo field; verified current field then continued",
+      "Return in zoom keeps text focus; b initially entered zoom field; restored50 and selected Brush through toolbar"
+    ],
+    "screenshots": [
+      "native-brush-undo04.png",
+      "native-brush-redo04.png",
+      "native-blur-undo04.png",
+      "native-blur-redo04.png",
+      "native-brush04.png",
+      "native-initial04.png",
+      "native-blur04.png"
+    ],
+    "cleanup": {
+      "app_quit": true,
+      "fixture_unchanged": true,
+      "user_document_opened": false
+    }
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 269.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "aed650b1f45c2f083fba4eb076c95bfd1249fa9bb2c22d7e2cb4078a5a83c75e",
+    "tested_binary_sha256": "c5075428a66361728b956d4b0f3858364a8c4661a207dd4677d8b27e61d0e298",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T024557Z-269-native-frame-timing/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-269.zip",
+    "zip_sha256": "b25a56835a703d9eb5c32c44c9115e8cbc8fe8ea7bd3a70aae0ce8d32ca941bc",
+    "zip_bytes": 38310585,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview269-check-yhxlr45k/Photato Editing Preview 269.app"
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    },
+    "preview263": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app/Contents/MacOS/Photato",
+      "sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+      "bytes": 80217520
+    },
+    "preview263_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+      "sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+      "bytes": 38224478
+    },
+    "preview265": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 265.app/Contents/MacOS/Photato",
+      "sha256": "2dab74ec795b116c6933f8102be54a0342b84666572d90413b795345f30b5c9b",
+      "bytes": 80300480
+    },
+    "preview265_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-265.zip",
+      "sha256": "2c79b35273cd1e9277b961c7b33b9d1bd8f1b168903fa208ac31c466ef58e7f6",
+      "bytes": 38247196
+    },
+    "preview266": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 266.app/Contents/MacOS/Photato",
+      "sha256": "53eee1a256b61164670c5983a5f6100d58031ae536f04e46e63f30ce5b654304",
+      "bytes": 80334128
+    },
+    "preview266_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-266.zip",
+      "sha256": "29b170d98f72a68701072835190217d744794569e533438f7a13dd06b3e9b1ff",
+      "bytes": 38277098
+    },
+    "preview267": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 267.app/Contents/MacOS/Photato",
+      "sha256": "4e747e80564b08168b9c609ee1dbb0a35adafd858fef56b89d324c116f61d2f4",
+      "bytes": 80333856
+    },
+    "preview267_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-267.zip",
+      "sha256": "af0ac73e00baa486124994ec303fd76ccce3bc60f2d84183fed0a9ae83b40858",
+      "bytes": 38276650
+    },
+    "preview268": {
+      "path": "/Users/johnczlonka/Applications/Photato Editing Preview 268.app/Contents/MacOS/Photato",
+      "sha256": "ac7e47f4fe4554228f7ba1b0f92610c4f3b89701b0e10c2e709db1305989327c",
+      "bytes": 80351488
+    },
+    "preview268_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-268.zip",
+      "sha256": "5beffe1605a1120831206b009a8274ff4d5139fea093e76a946b1e3390f22d62",
+      "bytes": 38282367
+    }
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/focused01.log",
+      "reason": "Foundation fatal precondition from incompatible write flags; repaired in source02."
+    },
+    {
+      "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/full01.log",
+      "reason": "Interrupted during prolonged Save-panel waits while locked;2432 observed passes, incomplete suite."
+    }
+  ],
+  "earlier_pass": {
+    "log": "artifacts/runs/20261030T024557Z-269-native-frame-timing/full02.log",
+    "tests": 2759,
+    "reason": "Source02 fully passes after unlock; source03 adds only the dedicated hosted timing test."
+  },
+  "API_impact": "Brush interactivePreview.diagnostics exposes optional local recorder configuration/limits/scope. Native191 command and Adobe contracts unchanged; no new editing endpoint."
+}

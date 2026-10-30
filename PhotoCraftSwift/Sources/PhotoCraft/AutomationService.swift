@@ -58,6 +58,10 @@ import UniformTypeIdentifiers
   @ObservationIgnored var embeddedSourcePreparation: @Sendable (Data,String,CraftDocument,EmbeddedSourceOptions) async throws -> Command = {data,name,document,options in
     try EmbeddedSourceAPI.prepare(data,name,document,options)
   }
+  @ObservationIgnored var pdfSourceUpdatePreparation: @Sendable (Data,CraftDocument,UUID,String) async throws -> Command = {
+    try PDFSmartObjectIO.sourceUpdate($0,in:$1,layerID:$2,expectedRevision:$3)
+  }
+  @ObservationIgnored var pdfSourceUpdateOperations: [UUID:(id:UUID,layerID:UUID)] = [:]
   @ObservationIgnored var embeddedSourceOperations: [UUID:UUID] = [:]
   @ObservationIgnored var pdfImportTask: Task<PDFImportAPI.Prepared,Error>?
   @ObservationIgnored var pdfImportOperationID: UUID?
@@ -277,13 +281,14 @@ import UniformTypeIdentifiers
     }
   }
   nonisolated static func checkLimits(_ document: CraftDocument) throws {
-    guard document.width * document.height <= 4_194_304, document.layers.count <= 64,
+    guard document.width > 0, document.height > 0,
+      document.width <= Surface.maxDimension, document.height <= Surface.maxDimension, document.layers.count <= 64,
       document.estimatedBytes <= 128 * 1024 * 1024
     else {
       throw AutomationFailure(
         status: 413,
         message:
-          "API v1 supports canvases up to 4,194,304 pixels, 64 layers and 128 MiB of document data."
+          "API v1 supports canvases up to300,000 pixels per side,64 layers and128MiB of estimated owned heap data. Mapped-page residency, decoder and transfer budgets are separate."
       )
     }
   }
@@ -298,6 +303,7 @@ import UniformTypeIdentifiers
     return [
       "id": share.id.uuidString, "name": document.displayName ?? "Untitled",
       "windowTitle": document.photatoWindowTitle,
+      "rasterStorage": RasterStorageAPI.state(store.document),
       "video": store.videoState,
       "audio": TimelineAudioAPI.state(store),
       "videoSequenceCreation": videoSequenceCreationState,
@@ -310,6 +316,8 @@ import UniformTypeIdentifiers
       "printing": store.printState,
       "revision": revision(store),
       "brush":store.brushState,
+      "retouchPreview":store.retouchPreviewState,
+      "retouchTools":store.retouchToolState,
       "sky":store.skyState,
       "peopleSelection":store.peopleState,
       "objectFinder":store.objectFinderState,
@@ -405,6 +413,7 @@ import UniformTypeIdentifiers
       "regionRetouch": ["available":store.canBeginRegionRetouch,"hasSelection":store.document.selection != nil,"previewOpen":store.regionRetouchDraft != nil,"previewBusy":store.regionRetouchBusy,"previewError":store.regionRetouchError as Any? ?? NSNull()],
       "pdfPlacement":store.pdfPlacementState,
       "embeddedPlacement":store.embeddedPlacementState,
+      "pdfSourceEditing":store.pdfSourceEditingState,
       "contentAwareScale": ["available":store.canBeginContentAwareScale,"transformOpen":store.transformDraft?.contentAware == true,"previewBusy":store.contentAwareScaleBusy,"previewError":store.contentAwareScaleError as Any? ?? NSNull()],
       "contentAwareFill": ["available":store.canBeginContentAwareFill,"workspaceOpen":store.contentAwareDraft != nil],
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
@@ -504,6 +513,7 @@ import UniformTypeIdentifiers
       if let response = try handleActionJobRequest(request) { return response }
       if let response = try await handleLUTTransfer(request) { return response }
       if let response = try cancelMovieFramesImport(request) {return response}
+      if let response = try await handlePDFSourceUpdate(request) {return response}
       if let response = try await handleEmbeddedSource(request) {return response}
       if let response = try await handlePDFSmartObject(request) {return response}
       if let response = try await handlePDFImport(request) {return response}
@@ -516,6 +526,7 @@ import UniformTypeIdentifiers
         result["movieFramesImportState"] = ["open":controller.movieFramesWorkspace != nil,"loading":controller.movieFramesWorkspace?.loading ?? false,"importing":controller.movieFramesWorkspace?.busy ?? false,"uploadOperationID":movieFramesImportOperationID?.uuidString as Any? ?? NSNull()]
         result["pdfImportState"] = pdfImportState
         result["pdfSmartObjectOperations"] = Dictionary(uniqueKeysWithValues:pdfSmartObjectOperations.map {($0.key.uuidString,$0.value.uuidString)})
+        result["pdfSourceUpdateOperations"] = Dictionary(uniqueKeysWithValues:pdfSourceUpdateOperations.map {($0.key.uuidString,["operationID":$0.value.id.uuidString,"layerID":$0.value.layerID.uuidString])})
         result["embeddedSourceOperations"] = Dictionary(uniqueKeysWithValues:embeddedSourceOperations.map {($0.key.uuidString,$0.value.uuidString)})
         result["imageProcessorState"] = ["exportingFromAPI":imageProcessorOperationID != nil]
         result["cropStraightenState"] = ["busy":controller.scanCropOperationID != nil,"creatingFromAPI":scanCropOperationID != nil]
@@ -943,6 +954,10 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in .painting(try PaintingPreparation.prepare(request,in:original)) }
         return .json(state(share,document:document))
       }
+      if command.name == RetouchStrokeAPI.name {
+        try await executeRetouchStroke(command, document: document, shareID: id)
+        return .json(state(share, document: document))
+      }
       if command.name == "paint.stroke" {
         let current=store.brush,library=store.brushes.file
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in try command.brushStroke(document:original,current:current,library:library) }
@@ -1134,7 +1149,16 @@ import UniformTypeIdentifiers
     try Task.checkCancellation()
     let composite = try onionSkin ? OnionSkinRenderer.render(document):Renderer.composite(document)
     try Task.checkCancellation()
-    let preview = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: composite)
+    let large = document.width * document.height > Surface.maximumDensePixels
+    if large && (onionSkin || proof?.active == true || auxiliary != nil || modeVisibility != nil || inkVisibility != nil || channelView.visible.count != 3) {
+      throw AutomationFailure(status: 413, message: "This large-document presentation mode is not yet tiled. Ordinary preview.png is bounded to2048 pixels per side.")
+    }
+    let bounded: Surface
+    if large {
+      let scale = min(1, 2048 / Double(max(document.width, document.height)))
+      bounded = try composite.reducedPreview(in: .init(x: 0, y: 0, width: document.width, height: document.height), width: max(1, Int(Double(document.width) * scale)), height: max(1, Int(Double(document.height) * scale)))
+    } else { bounded = composite }
+    let preview = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: bounded)
     let image =
       try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
       ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: document)
@@ -1194,7 +1218,7 @@ import UniformTypeIdentifiers
       "previews": [
         "onion-preview.png": "Committed video playhead with onion-skin presentation, separate from ordinary exports.",
         "proof-preview.png": "Committed composite with committed proof/gamut display settings. Excludes drafts and preserves original exports.",
-        "preview.png": "Committed document composite, independent of channel visibility.",
+        "preview.png": "Committed document composite, independent of channel visibility. Above36MP, a bounded overview (maximum2048 pixels per side); working pixels and export dimensions are unchanged.",
         "channel-preview.png":
           "Committed native channel view, including selected alpha/Quick Mask gray or overlay. Excludes uncommitted drafts.",
       ],
@@ -1275,6 +1299,7 @@ import UniformTypeIdentifiers
       "selectionTools":SelectionToolAPI.capabilities,
       "adjustmentBrush":AdjustmentBrushAPI.capabilities,
       "paintingTools":PaintingAPI.capabilities,
+      "retouchStrokes": RetouchStrokeAPI.capabilities,
       "regionRetouch": RegionRetouchAPI.capabilities,
       "contentAwareScale": ContentAwareScaleRequest.apiCapabilities,
       "clipboard": ClipboardAPI.capabilities,
@@ -1294,6 +1319,7 @@ import UniformTypeIdentifiers
         "audio": TimelineAudioAPI.stateSchema,
         "videoSequenceCreation": BrushAPI.object(["operationID":["type":["string","null"],"format":"uuid"],"sourceIDs":["type":"array","items":["type":"string","format":"uuid"]]],required:["operationID","sourceIDs"]),
         "animation": AnimationAPI.stateSchema,
+        "rasterStorage": RasterStorageAPI.stateSchema,
         "printing": PrintAPI.stateSchema, "proofing": ProofAPI.stateSchema, "inkMode": InkModeAPI.stateSchema,
         "classicTone":ClassicToneAPI.stateSchema,
         "proceduralRender":ProceduralAPI.stateSchema,
@@ -1308,6 +1334,7 @@ import UniformTypeIdentifiers
         "subjectDetection": ForegroundSelection.apiStateSchema,
         "foregroundLayerMask": ForegroundSelection.apiLayerStateSchema,
         "smartObject": SmartObject.apiLayerStateSchema,
+        "pdfSourceEditing": PDFSourceEditAPI.stateSchema,
         "recovery": recoveryStateSchema,
         "recoverySource": recoverySourceSchema,
         "recoveryRegistration": recoveryRegistrationSchema,
@@ -1398,7 +1425,8 @@ import UniformTypeIdentifiers
         ],
       ],
       "limits": [
-        "maxCanvasPixels": 4_194_304, "maxLayers": 64, "maxDocumentBytes": 134_217_728,
+        "maxCanvasPixels": Surface.maxPixels, "maxCanvasDimension": Surface.maxDimension,
+        "maxPreviewPixels": 4_194_304, "maxLayers": 64, "maxDocumentBytes": 134_217_728,
         "maxSharedDocuments": 8, "maxRequestBytes": 65_536, "maxCommandRequestBytes": LiquifyMeshFile.maximumBytes,
       ],
       "commandEnvelope": [

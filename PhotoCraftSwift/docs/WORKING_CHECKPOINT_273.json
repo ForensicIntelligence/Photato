@@ -1,0 +1,12 @@
+{
+  "step": 273,
+  "status": "complete-increment",
+  "qualified_baseline": 272,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_273.json",
+  "run": "artifacts/runs/20261030T181050Z-273-brush-catch-up",
+  "working_source": "artifacts/runs/20261030T181050Z-273-brush-catch-up/source03.json",
+  "next": [
+    "Continue editing responsiveness: qualify high-rate curves/tablet input and heavy-tool frame pacing. Sustained physical60fps and full Photoshop pixel parity remain open."
+  ],
+  "goal_complete": false
+}

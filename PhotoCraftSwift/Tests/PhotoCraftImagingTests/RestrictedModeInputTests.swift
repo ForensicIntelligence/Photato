@@ -47,7 +47,7 @@ final class RestrictedModeInputTests: XCTestCase {
     XCTAssertThrowsError(try RestrictedModeInput.indexed(.init(), in: rgb.convertingMode(.init(mode: .rgb, depth: .u16))))
     let gray = try rgb.convertingMode(.init(mode: .grayscale, depth: .u8))
     bitmap.outputResolution = 9600
-    let big = try CraftDocument(width: 300, height: 1).convertingMode(.init(mode: .grayscale, depth: .u8))
+    let big = try CraftDocument(width: 3000, height: 1).convertingMode(.init(mode: .grayscale, depth: .u8))
     XCTAssertThrowsError(try RestrictedModeInput.bitmap(bitmap, in: big))
     bitmap.outputResolution = 72
     var converted = gray; try RestrictedModeInput.bitmap(bitmap, in: gray).apply(to: &converted)

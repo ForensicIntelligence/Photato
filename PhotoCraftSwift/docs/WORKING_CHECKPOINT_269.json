@@ -1,0 +1,18 @@
+{
+  "step": 269,
+  "status": "complete-increment",
+  "qualified_baseline": 268,
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_269.json",
+  "run": "artifacts/runs/20261030T024557Z-269-native-frame-timing",
+  "working_source": "artifacts/runs/20261030T024557Z-269-native-frame-timing/source03.json",
+  "next": [
+    "Remove demonstrated redundant prepublication workspace/canvas updates, after tracing revision and rendering observation. Compare dedicated hosted120Hz-input traces against the269 baseline; do not equate display callbacks or draw completion with physical presentation.",
+    "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3\u20134 samples and no sustained accepted preview stream."
+  ],
+  "goal_complete": false,
+  "availability_audit": {
+    "consecutive_goal_turns_with_same_blocker": 0,
+    "evidence": "artifacts/runs/20261030T024557Z-269-native-frame-timing/native-attempt04.json",
+    "resolved": true
+  }
+}

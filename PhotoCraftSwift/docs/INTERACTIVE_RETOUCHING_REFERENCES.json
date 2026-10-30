@@ -1,0 +1,124 @@
+{
+  "step": 263,
+  "source_manifest": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+  "focused": {
+    "tests": 124,
+    "failures": 0,
+    "seconds": 20.496,
+    "log": "artifacts/runs/20261029T231620Z-263-interactive-retouching/focused01.log",
+    "sha256": "753e153ab04165d5dcb8341a06fe7dc640f43b3973ea178aa81004757893ea82"
+  },
+  "full": {
+    "tests": 2731,
+    "failures": 0,
+    "seconds": 194.958,
+    "log": "artifacts/runs/20261029T231620Z-263-interactive-retouching/full01.log",
+    "sha256": "40b5bcf5873eed5524302a3270798c1c9a7c555ee6a911ed0ca235e47844ffe0"
+  },
+  "remaining": [
+    "Physical display-presented frame times, end-to-end input latency and sustained mouse/tablet curves.",
+    "Large/long brushes, first-source/first-frame setup, expanded targets, special modes/masks/proof, heavy layers and expensive effects.",
+    "Healing, Toning and Focus still prepare complete prefixes; representative small-image cadence is improved, but24MP and prolonged paths require separate optimization/qualification. Smudge final drain measured26.54ms in one run; no per-frame guarantee.",
+    "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API coverage gap; diagnostics do not imply executable operation support.",
+    "Photoshop exact brush/retouch kernels, spacing/defaults, complete feature parity and physical Intel/macOS14/macOS26 qualification remain open. Preserve linked-source261 and resume after the current feedback priority."
+  ],
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "request": "Responsive brush and all-tool editing feedback, targeting60fps.",
+  "qualified_binary_sha256": "1d567841539182c2060641db4fc189a69ca18683df8443b23dfea93d510c873c",
+  "baseline": "artifacts/runs/20261029T231620Z-263-interactive-retouching/baseline-performance01.json",
+  "candidate": "artifacts/runs/20261029T231620Z-263-interactive-retouching/candidate-performance01.json",
+  "native_prefix_regression": {
+    "fixture": "Tests/PhotoCraftCoreTests/Fixtures/clone-prefix-step262.json",
+    "prefixes": 144,
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "provenance": "Owned analytic inputs rendered before changing ClonePainter; exact native regression, not a Photoshop oracle.",
+    "original_generator": "artifacts/runs/20261029T231620Z-263-interactive-retouching/baseline-prefix.swift",
+    "fixture_sha256": "11d7e20f823c1a3dfc7f9cd9745e35833246a5c97083153427ccca97c3710820"
+  },
+  "measurement_scope": "Release EditorStore CPU preview publications on dense RGB8 plus one adjustment. Sequential24-sample service checks all nine tools. Continuous120Hz input for2s checks small Clone/Blur/Smudge and24MP Clone; all240 samples remain. No physical display-presented timing or Photoshop pixel-equivalence claim.",
+  "live": {
+    "app": "/private/tmp/Photato-Retouch-263.app",
+    "isolated": true,
+    "tested_binary_sha256": "1d567841539182c2060641db4fc189a69ca18683df8443b23dfea93d510c873c",
+    "signed_binary_sha256": "437d02bade36036bf3e77b69f96270ea650aadf9b67b3c923d4bfa4568122f1f",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+    "accepted": true,
+    "scope": "Owned1200x800 RGB8 native workflow smoke test; physical display timing is not measured.",
+    "actions": [
+      "Paint two30px diagonal black Brush strokes at76.83%.",
+      "Choose Smudge through native tool group and drag horizontally across a painted edge.",
+      "Undo visibly removes the smear; Redo restores it.",
+      "Choose Blur and drag along another painted edge.",
+      "Choose Spot Healing with J and drag on blank owned pixels.",
+      "Set150% zoom; image remains clipped below tabs and inside canvas; toolbar and panels remain visible.",
+      "Discard the owned document and quit the isolated app. A state query after quitting relaunched an empty diagnostic window; quit that window again without another AX query."
+    ],
+    "screenshots": [
+      "native-smudge01.png",
+      "native-zoom15001.png"
+    ],
+    "user_documents_modified": false,
+    "not_qualified": [
+      "Native Option-click Clone Stamp input, mid-stroke Escape and physical mouse/tablet frame times: automated coverage only.",
+      "Smudge kernel/spacing fidelity and Photoshop exact brush pixels."
+    ]
+  },
+  "protected": {
+    "installed": {
+      "path": "/Users/johnczlonka/Applications/Photato.app/Contents/MacOS/Photato",
+      "sha256": "a84ae47fc560fc6cf24c01c92cc579431fbf66ebee3df60b82845e81eac741df",
+      "bytes": 122050000
+    },
+    "private_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato.zip",
+      "sha256": "53c601ff497fdb254133c3e0f473ff33a34298bf7a69c21fd979644c27be0241",
+      "bytes": 53347272
+    },
+    "artwork": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T234451Z-212-distortion-workflows/retained-documents/Owned on-device subject workflow.photato",
+      "sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+      "bytes": 3194276
+    },
+    "master_index": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/forensicintelligence-site/index.html",
+      "sha256": "251416ce78ea3340bc5b7e65cfd6f20dbc465ff069db403ecb0ca94077493fc4",
+      "bytes": 86851
+    },
+    "preview262": {
+      "path": "/Users/johnczlonka/Applications/Photato Painting Preview 262.app/Contents/MacOS/Photato",
+      "sha256": "31a308ec417e2c9496c019e877a79bc159153afd482d6b6c3df882cb17312f68"
+    },
+    "preview262_zip": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Painting-Preview-262.zip",
+      "sha256": "0eb8ccded6f5510580192510fcdd52669b72fe1b9670e9651e98f9126460077b"
+    }
+  },
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 263.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "f47639fa8f02254597bece46d6cf5d6b58e9d132b1ab6b691a4fb307ae33aa78",
+    "tested_binary_sha256": "1d567841539182c2060641db4fc189a69ca18683df8443b23dfea93d510c873c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261029T231620Z-263-interactive-retouching/source01.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-263.zip",
+    "zip_sha256": "70c319d64ae5cbbf96444e42ab42d49433bf7773d14a434bf5baa19e5d042a8a",
+    "zip_bytes": 38224478,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview263-check-_g1o3l72/Photato Editing Preview 263.app"
+  },
+  "failed_native_build_or_test_attempts": [],
+  "api_impact": "Presentation-only diagnostics and result schema through existing authenticated Photato document/capabilities responses.191 typed commands unchanged. No Adobe endpoint invented; existing unsupported general retouch-stroke APIs remain tracked.",
+  "previous_painting_reference": "docs/INTERACTIVE_PAINTING_REFERENCES.json"
+}

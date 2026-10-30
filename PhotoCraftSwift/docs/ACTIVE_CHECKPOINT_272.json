@@ -1,0 +1,84 @@
+{
+  "step": 272,
+  "recorded_at_utc": "2026-10-30T18:04:34.740946+00:00",
+  "source_manifest": "artifacts/runs/20261030T173813Z-272-layer-opacity/source03.json",
+  "source_inputs": 2470,
+  "focused": {
+    "tests": 69,
+    "failures": 0,
+    "seconds": 7.544,
+    "log": "artifacts/runs/20261030T173813Z-272-layer-opacity/focused03.log",
+    "sha256": "ea9255a9e2350ee1c436ecdd827d894fafe99d3a19c5a05e87d05b51f46eb054",
+    "terminal_exit_code": 0
+  },
+  "full": {
+    "tests": 2770,
+    "failures": 0,
+    "seconds": 196.284,
+    "log": "artifacts/runs/20261030T173813Z-272-layer-opacity/full01.log",
+    "sha256": "3fb83af5083086491a6dd871bbb140f6be4ad4012abe3403ae3c6e268c5543a7",
+    "terminal_exit_code": 0
+  },
+  "binary_sha256": "ffe8bf919d85cc1df2fe43a3630b5b4507dcbb2c02d6fa7c6d36819395374f66",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Layers opacity now has an accessible native pop-up slider with live preview, numeric entry, keyboard adjustment, single-command acceptance and Escape cancellation.",
+    "Opacity slider lifecycle, locked/stale guards, rendered output and HTTP busy/equivalence are verified by 69 focused and 2770 full tests, live native checks and a signed Preview272."
+  ],
+  "remaining": [
+    "Resume the saved brush pause catch-up task from checkpoint271. Sustained physical 60fps, high-rate curves/tablet input, heavy tools and full Photoshop pixel parity remain open.",
+    "Layer opacity label scrubbing, multiselection behavior and exact Photoshop popover geometry are not newly qualified. The reference app arrow was observed, but its connector rejected the attempted click; documented behavior guided implementation.",
+    "Physical popup pointer/keyboard validation remains limited by CUA targeting; shown-window keyboard focus/cancellation and key steps are covered by automated AppKit tests. Physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked while editing responsiveness is the priority."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261030T173813Z-272-layer-opacity/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "The Layers panel now includes an arrow-triggered native opacity slider alongside numeric entry. Dragging previews the canvas; Return or outside dismissal commits one shared opacity command, and Escape preserves document/history/dirty state. Keyboard arrows use 1% steps and Shift uses 10%. All 69 focused and 2770 full optimized tests pass on 2470 frozen inputs; native slider/history checks and separate Preview272 packaging are verified.",
+  "stage": "Layer opacity slider qualified",
+  "native_archive": 62,
+  "actions_version": 20,
+  "typed_commands": 191,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 257,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 272,
+  "next": [
+    "Resume the saved brush pause catch-up task from checkpoint271. Sustained physical 60fps, high-rate curves/tablet input, heavy tools and full Photoshop pixel parity remain open."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 272.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "64f48b8c3db2592a863785f6c0568b64a8707718c79c8ffeff0b8aebff5117ba",
+    "tested_binary_sha256": "ffe8bf919d85cc1df2fe43a3630b5b4507dcbb2c02d6fa7c6d36819395374f66",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261030T173813Z-272-layer-opacity/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-272.zip",
+    "zip_sha256": "4cfe5251f38022bde27f251cee1053f243cb98b542902c6271496508be855ab3",
+    "zip_bytes": 38336274,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview272-check-a4nm8jmm/Photato Editing Preview 272.app"
+  },
+  "completed_this_increment": [
+    "Layers opacity now has an accessible native pop-up slider with live preview, numeric entry, keyboard adjustment, single-command acceptance and Escape cancellation.",
+    "Opacity slider lifecycle, locked/stale guards, rendered output and HTTP busy/equivalence are verified by 69 focused and 2770 full tests, live native checks and a signed Preview272."
+  ]
+}
