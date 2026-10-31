@@ -511,5 +511,200 @@
       "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965"
     },
     "future_tool_rule": "AGENTS/CONTRIBUTING explicitly require all16 Control/Command/Option/Shift combinations in every new tool increment."
+  },
+  "continued_regression_298": {
+    "step": 298,
+    "implemented_tools": 52,
+    "modifier_combinations": 16,
+    "tests": 9,
+    "full": {
+      "tests": 2980,
+      "failed": 0,
+      "seconds": 627.041,
+      "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+      "scope": "Complete inventoried XCTest set, qualified in bounded module/class processes; not a passing monolithic run. Prior297 Source04 interrupted AppKit lifecycle gate remains open.",
+      "monolithic_pass": false,
+      "source_binding": "All groups on identical frozen Source05 after channel arithmetic integration; prior long-lived AppKit hang remains open.",
+      "inventory": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/inventory05-normalized.log",
+      "plan": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification-plan05.json",
+      "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification05.log",
+      "groups": [
+        {
+          "group": 1,
+          "module": "PhotoCraftAITests",
+          "tests": 4,
+          "failed": 0,
+          "seconds": 0.004,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-01.log",
+          "sha256": "3fca61c2c8ef814fb76ec4a6bec32ba9df322444040c5a8cf0abc1581e4ba9ed",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 2,
+          "module": "PhotoCraftAppTests",
+          "tests": 149,
+          "failed": 0,
+          "seconds": 14.689,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-02.log",
+          "sha256": "eb9ba0daafcafbfe7de06318005e3d1d9f8e78c08a3d528dd55bfcc172e9046e",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 3,
+          "module": "PhotoCraftAppTests",
+          "tests": 139,
+          "failed": 0,
+          "seconds": 16.374,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-03.log",
+          "sha256": "78c251a09dd4ec1fa54aded7451460695817d9df5b80eca721ed767b8b738cea",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 4,
+          "module": "PhotoCraftAppTests",
+          "tests": 141,
+          "failed": 0,
+          "seconds": 18.121,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-04.log",
+          "sha256": "70ac6a870c3af5a56bfe6b5167663cbfb14ef9089fdae3d02e477b6684cde357",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 5,
+          "module": "PhotoCraftAppTests",
+          "tests": 148,
+          "failed": 0,
+          "seconds": 12.241,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-05.log",
+          "sha256": "fabeab6579ef205be3538ffe0e7f3eca33076e7f0b32679998b9d696b5f4e95a",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 6,
+          "module": "PhotoCraftAppTests",
+          "tests": 145,
+          "failed": 0,
+          "seconds": 105.6,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-06.log",
+          "sha256": "e798888da0dc7566b5db1c1df899cd73dde10f54a8470edc81750af6014c07a6",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 7,
+          "module": "PhotoCraftAppTests",
+          "tests": 149,
+          "failed": 0,
+          "seconds": 15.872,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-07.log",
+          "sha256": "9a2b03cbf50344063f70be36cda43404c3b923f9f9cda81b1ab5815687077d58",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 8,
+          "module": "PhotoCraftAppTests",
+          "tests": 144,
+          "failed": 0,
+          "seconds": 189.162,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-08.log",
+          "sha256": "b905d1fbb04b9b139bf7a049e1b4bc4b10dfd2f622cfce683e935982883d41ed",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 9,
+          "module": "PhotoCraftAppTests",
+          "tests": 143,
+          "failed": 0,
+          "seconds": 39.889,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-09.log",
+          "sha256": "962ee04fd1557c3326f750f98c9d885c0ab9e556a9cb165305d4f6d2d082ece0",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 10,
+          "module": "PhotoCraftAppTests",
+          "tests": 148,
+          "failed": 0,
+          "seconds": 17.012,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-10.log",
+          "sha256": "0e8d77d474d53ebea21d3e563c4c3de8dd9af07aa7f71245b0cc2e62754417f1",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 11,
+          "module": "PhotoCraftAppTests",
+          "tests": 147,
+          "failed": 0,
+          "seconds": 20.42,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-11.log",
+          "sha256": "d02565d1991e3dc25489c802dd7486310070ecf4ffaf7ff92158337e34163a5c",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 12,
+          "module": "PhotoCraftAppTests",
+          "tests": 105,
+          "failed": 0,
+          "seconds": 7.677,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-12.log",
+          "sha256": "90cfd4240d5639c19593e932ff95ecaa6df1a1c5b449e4c8f9645823323b8746",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 13,
+          "module": "PhotoCraftCoreTests",
+          "tests": 398,
+          "failed": 0,
+          "seconds": 4.949,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-13.log",
+          "sha256": "be89553c32bf8c693ba30ea9f7fca173da009ab7fba84c632349bfd303d7f803",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 14,
+          "module": "PhotoCraftCoreTests",
+          "tests": 398,
+          "failed": 0,
+          "seconds": 58.204,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-14.log",
+          "sha256": "3f1bee933eb886910df661c3b9585547d4e0e046ce1e0fdea7fe0f9ca4b132a3",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 15,
+          "module": "PhotoCraftCoreTests",
+          "tests": 4,
+          "failed": 0,
+          "seconds": 0.129,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-15.log",
+          "sha256": "1c91287b3f0ad58f42cf818e779d5c0f9c3e665d09273bbe52fbef9060d673b7",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 16,
+          "module": "PhotoCraftImagingTests",
+          "tests": 393,
+          "failed": 0,
+          "seconds": 93.199,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-16.log",
+          "sha256": "888651d1e05da9e3f619e0c256c74bc5cae866aed3d9844139a2b0663f13f8a4",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        },
+        {
+          "group": 17,
+          "module": "PhotoCraftImagingTests",
+          "tests": 225,
+          "failed": 0,
+          "seconds": 13.499,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-17.log",
+          "sha256": "84d5cae4d1519f97655516fb283387e54bf2d892965c55138c292eff7bff2910",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
+        }
+      ],
+      "recorded_at_utc": "2026-10-31T18:34:59.160326+00:00",
+      "sha256": "ec656dd235e0a8c67e3acf90ddc0929223fc3d450439a805c73c343554367899"
+    },
+    "new_tools": false,
+    "policy_unchanged": true,
+    "reference": "docs/CHANNEL_ARITHMETIC_REFERENCES.json"
   }
 }

@@ -161,6 +161,9 @@ final class DocumentSaveWorkflowTests: XCTestCase {
   @MainActor func testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory()
     async throws
   {
+    _ = NSApplication.shared
+    let bootstrap = CraftDocumentController(workspaces: WorkspaceLibrary())
+    defer { withExtendedLifetime(bootstrap) {} }
     let folder = try directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let doc = CraftNSDocument(model: try fixture())

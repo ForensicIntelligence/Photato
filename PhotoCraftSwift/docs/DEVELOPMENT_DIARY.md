@@ -609,6 +609,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-31 | 295 | [Streamed Smart Filter cache interchange](DEVLOG.md#dev-step-295) |
 | 2026-10-31 | 296 | [Large isolated resource jobs](DEVLOG.md#dev-step-296) |
 | 2026-10-31 | 297 | [Modern adjustment layers](DEVLOG.md#dev-step-297) |
+| 2026-10-31 | 298 | [Apply Image and Calculations (software qualified)](DEVLOG.md#dev-step-298) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1755,3 +1756,9 @@ Color and vibrance, Light, Clarity/Dehaze and Grain are distinct live masked lay
 The record retains the failed menu/version assertions, worker-stack crashes, test-bootstrap correction and interrupted single-process AppKit run. Pixel/filter entry points now use isolated stack frames with the original adjustment loop unchanged. Every one of2965 inventoried cases passes on the same final Source07 in16 bounded processes, with no missing cases. This does not qualify native long-session behavior or Photoshop numerical equality. Normal283/artwork are preserved; native visual acceptance remains pending while the Mac is locked. [Detailed record](DEVLOG.md#dev-step-297) · [Evidence](MODERN_ADJUSTMENT_REFERENCES.json).
 
 Complete software-qualified source297 is backed up privately as [d4d6e04](https://github.com/ForensicIntelligence/Photato/commit/d4d6e04e1c5ad2a79477d7e423c8f9d00cfea782). All2869 included qualification inputs and1057 original Rust files verify; build products, model/cache outputs, runtime evidence and working documents stay excluded. This source delivery uploads no new binary and does not change repository visibility. [Publication receipt](SOURCE_PUBLICATION_297.json).
+
+## 2026-10-31 — Step298: Apply Image and Calculations
+
+Apply Image and Calculations now have native sheets, retained document/layer/channel sources, independent masks,21 channel blends/Add/Subtract controls, pixel/component/mask/alpha/ink targets and all three Calculations outputs. The desktop and197 typed Photato commands share native preparation/history; external API sources require explicit sharing/current revisions. All2980 inventoried optimized arm64 cases pass in17 bounded processes on2911 frozen inputs. Preserve the failed attempts, repaired orphan-document test bootstrap and signed isolated candidate. Normal283/artwork remain unchanged. Native visual acceptance, Photoshop exact kernels/ICC/modes, semantic Actions recording, published Adobe actionJSON descriptors, larger native-mode storage and supported-platform/Intel/long-session gates remain open.
+
+Both commands use retained source snapshots and atomic history. Apply Image supports the active pixel/channel/mask target; Calculations creates a channel, selection or grayscale document. Tests preserve strict numerical assertions and cover sparse300000-side RGB/coverage data, source revocation, stale previews, undo and native persistence. The record retains two one-bit Float32 failures and their production arithmetic repair, plus an isolated save-test bootstrap crash and fixture correction. Earlier source/packages and failed evidence are preserved. C03 stays open and retains its phase2 classification; work returns to missing major workflows after this in-flight batch. [Detailed record](DEVLOG.md#dev-step-298) · [Evidence](CHANNEL_ARITHMETIC_REFERENCES.json).

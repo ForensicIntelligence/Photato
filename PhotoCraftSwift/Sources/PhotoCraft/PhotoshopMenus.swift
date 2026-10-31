@@ -5,6 +5,8 @@ import PhotoCraftCore
   /// Bind only implemented operations. Unavailable commands remain visible and disabled.
   func installPhotoshopMenus() {
     var actions: [String: Selector] = [
+      "Image > Apply Image…": #selector(applyImageDialog),
+      "Image > Calculations…": #selector(calculationsDialog),
       "Image > Variables > Define…": #selector(defineVariables),
       "Image > Variables > Data Sets…": #selector(editVariableDataSets),
       "Image > Apply Data Set…": #selector(applyVariableDataSet),

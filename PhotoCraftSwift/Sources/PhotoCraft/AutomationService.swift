@@ -9,6 +9,9 @@ import UniformTypeIdentifiers
 
 @MainActor @Observable final class AutomationService {
   var liquifyFaceDetector: any LiquifyFaceDetecting = VisionLiquifyFaces()
+  @ObservationIgnored var channelArithmeticPrepare: @Sendable (ChannelArithmeticRequest,ChannelArithmeticTarget?,CraftDocument,[CraftDocument]) async throws -> PreparedChannelArithmetic = {request,target,document,sources in
+    try ChannelArithmeticPreparation.prepare(request,target:target,document:document,sources:sources)
+  }
   struct Share: Identifiable {
     let id = UUID()
     weak var document: CraftNSDocument?
@@ -322,6 +325,7 @@ import UniformTypeIdentifiers
       "peopleSelection":store.peopleState,
       "objectFinder":store.objectFinderState,
       "maskAllObjects":store.maskAllObjectsState,
+      "channelArithmetic":store.channelArithmeticState,
       "focusArea":store.focusAreaState,
       "actions": store.actionState, "batch": actionBatchState,
       "width": store.document.width, "height": store.document.height,
@@ -1099,6 +1103,7 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in try command.channelEdit(document:original) }
         return .json(state(share,document:document))
       }
+      if ChannelArithmeticAPI.commands.contains(command.name) {return try await executeChannelArithmetic(command,document:document,share:share)}
       if command.name == "selection.refine" || command.name == "selection.focus" { return try await refineSelection(command,document:document,share:share) }
       if command.name == "raw.develop" {
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in try command.rawCommand(original) }
@@ -1320,6 +1325,7 @@ import UniformTypeIdentifiers
       "peopleSelection":PeopleAPI.capabilities,
       "objectFinder":ObjectFinderAPI.capabilities,
       "maskAllObjects":MaskAllObjectsAPI.capabilities,
+      "channelArithmetic":ChannelArithmeticAPI.capabilities,
       "focusArea":FocusAreaAPI.capabilities,
       "selectionTools":SelectionToolAPI.capabilities,
       "adjustmentBrush":AdjustmentBrushAPI.capabilities,
@@ -1354,6 +1360,7 @@ import UniformTypeIdentifiers
         "peopleSelection":PeopleAPI.stateSchema,
         "objectFinder":ObjectFinderAPI.stateSchema,
         "maskAllObjects":MaskAllObjectsAPI.stateSchema,
+        "channelArithmetic":ChannelArithmeticAPI.stateSchema,
         "focusArea":FocusAreaAPI.stateSchema,
         "selectionTools":SelectionToolAPI.stateSchema,
         "layerProtection": protectionStateSchema,

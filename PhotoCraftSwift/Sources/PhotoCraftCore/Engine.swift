@@ -7,6 +7,7 @@ public enum Command: Sendable {
   case documentMode(DocumentModeConversion)
   case preparedColorProfile(ColorProfileEdit)
   case preparedDocumentMode(DocumentModeEdit)
+  case channelArithmetic(ChannelArithmeticEdit)
   case modeChannel(ModeChannelEdit)
   case modeComponents(ModeComponentEdit)
   indirect case toneAdjustment(ClassicToneRequest)
@@ -128,6 +129,7 @@ public enum Command: Sendable {
     case .documentMode(let request):request.mode.title
     case .preparedColorProfile(let edit):edit.title
     case .preparedDocumentMode(let edit):edit.title
+    case .channelArithmetic(let edit):edit.title
     case .modeChannel:"Edit Color Channel"
     case .modeComponents(let edit):edit.label
     case .proceduralRender(let request):request.settings.kind.title
@@ -279,6 +281,7 @@ public enum Command: Sendable {
     case .documentMode(let request):d=try d.convertingMode(request)
     case .preparedColorProfile(let edit):d=try edit.applied(to:d)
     case .preparedDocumentMode(let edit):d=try edit.applied(to:d)
+    case .channelArithmetic(let edit):d=try edit.applied(to:d)
     case .modeChannel(let edit):try d.editModeChannel(edit)
     case .modeComponents(let edit):try edit.apply(to:&d)
     case .frame(let command):try command.apply(to:&d)
@@ -332,7 +335,7 @@ public enum Command: Sendable {
       return s
     }
     switch self {
-    case .mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
+    case .channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
@@ -1051,6 +1054,7 @@ public struct HistoryEntry: Sendable {
   }
 }
 public struct PreparedEdit: Sendable {
+  public var channelArithmeticEdit: ChannelArithmeticEdit? { if case .channelArithmetic(let edit) = recordingCommand { return edit }; return nil }
   public var modeComponentEdit: ModeComponentEdit? { if case .modeComponents(let edit) = recordingCommand { return edit }; return nil }
   public var adjustmentBrushTarget:UUID? {if case .adjustmentBrush(let request)=recordingCommand {return request.layerID ?? request.newLayerID};return nil}
   public var paintingSession: PaintingSessionResult? {

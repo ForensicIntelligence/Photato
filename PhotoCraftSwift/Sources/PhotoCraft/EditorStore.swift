@@ -208,6 +208,7 @@ import UniformTypeIdentifiers
   var previousIndexedPalette: [PaletteColor]?
   var documentModeWorkspace: DocumentModeWorkspace?
   var classicToneWorkspace:ClassicToneWorkspace?
+  var channelArithmeticWorkspace:ChannelArithmeticWorkspace?
   var shadowWorkspace:ClassicToneWorkspace?
   var proceduralWorkspace:ProceduralWorkspace?
   var classicDetailWorkspace: ClassicDetailWorkspace?

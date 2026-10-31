@@ -121,6 +121,8 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(applyImageDialog) {return store?.canBeginChannelArithmetic(.applyImage)==true}
+    if item.action == #selector(calculationsDialog) {return store?.canBeginChannelArithmetic(.calculations)==true}
     let modern:[Selector:ModernAdjustment.Kind]=[#selector(newColorVibrance):.colorVibrance,#selector(newLight):.light,#selector(newClarityDehaze):.clarityDehaze,#selector(newGrain):.grain]
     if let action=item.action,let kind=modern[action] {return store?.canAddModernAdjustment(kind)==true}
 

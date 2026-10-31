@@ -105,6 +105,7 @@ public enum ActionOperation: Codable, Sendable {
     case .cut(let ids, let background): self = .clipboardCut(targets(Set(ids)), background: background)
     case .paste(_, let placement, let center): self = .clipboardPaste(placement, center: center)
     case .toneAdjustment(let request):self = .toneAdjustment((request.layerID ?? d.activeLayerID).map(target),request.settings)
+    case .channelArithmetic:self = .unsupported("Apply Image and Calculations semantic source recording is not yet qualified. The committed pixels/channels remain editable and save natively.")
     case .hdrToning:self = .unsupported("HDR Toning needs the full compositor; semantic Actions playback is not implemented yet.")
     case .proceduralRender(let request):
       self = .proceduralRender((request.layerID ?? d.activeLayerID).map(target),request.settings,request.newLayer,request.settings.kind == .flame ? ProceduralRenderEngine.resolvedPath(request,in:d):nil)

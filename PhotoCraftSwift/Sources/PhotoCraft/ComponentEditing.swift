@@ -88,7 +88,11 @@ extension EditorStore {
     }
   }
 
-  func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false) throws {
+  func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false) throws {
+    if allowChannelArithmetic {
+      guard let edit=prepared.channelArithmeticEdit,edit.source==document else {throw CraftError.invalid("Missing or stale channel transaction.")}
+      try session.executePrepared(prepared);return
+    }
     if allowModeComponents {
       guard let edit = prepared.modeComponentEdit else { throw CraftError.invalid("Missing color component edit.") }
       try validateComponentContext(.modeComponents(edit))

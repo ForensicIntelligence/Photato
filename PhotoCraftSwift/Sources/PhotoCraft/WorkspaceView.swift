@@ -142,6 +142,7 @@ struct WorkspaceView: View {
     .sheet(item: $store.inkModeWorkspace, onDismiss: { store.render() }) { draft in InkModeSheet(store: store, model: draft) }
     .sheet(item: $store.restrictedModeWorkspace, onDismiss: { store.render() }) { draft in RestrictedModeSheet(store: store, model: draft) }
     .sheet(item: $store.documentModeWorkspace, onDismiss: { store.render() }) { draft in DocumentModeSheet(store: store, model: draft) }
+    .sheet(item:$store.channelArithmeticWorkspace,onDismiss:{store.render()}) {draft in ChannelArithmeticSheet(store:store,model:draft)}
     .sheet(item:$store.classicToneWorkspace,onDismiss:{store.render()}) {draft in ClassicToneSheet(store:store,model:draft)}
     .sheet(item: $store.proceduralWorkspace, onDismiss: {store.render()}) {draft in ProceduralSheet(store:store,model:draft)}
     .sheet(item: $store.contentAwareDraft, onDismiss: { store.render() }) { draft in ContentAwareSheet(store:store,model:draft) }

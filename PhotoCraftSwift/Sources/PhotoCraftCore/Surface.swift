@@ -1133,6 +1133,16 @@ extension Surface {
 }
 
 extension Surface {
+  /// Quantize existing stored components without changing their sample encoding.
+  /// Paged/implicit storage stays bounded; this is not a color-space conversion.
+  func quantizedStoredDepth(_ depth: PixelDepth) throws -> Surface {
+    let mapped = try mappedStoredSamples { $0.quantized(depth) }
+    var output = try Surface(width: width, height: height, depth: depth,
+      colorEncoding: colorEncoding)
+    output.storedDefaultPixel = mapped.storedDefaultPixel
+    output.tiles = mapped.tiles; output.tilesAreKnownFinite = mapped.tilesAreKnownFinite
+    return output
+  }
   /// Retag already quantized grayscale coverage without another sample round trip.
   func retaggedCoverageStorage(depth:PixelDepth = .u8)throws->Surface {
     var out=try Surface(width:width,height:height,depth:depth,fill:.black)
