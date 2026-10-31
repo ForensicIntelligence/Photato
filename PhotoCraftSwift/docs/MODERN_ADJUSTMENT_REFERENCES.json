@@ -307,5 +307,11 @@
   "native_acceptance": false,
   "native_access_evidence": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/native-access01.json",
   "routing_isolation_proof": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07-isolation-proof.json",
-  "case_inventory": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/qualification-plan07.json"
+  "case_inventory": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/qualification-plan07.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_297.json",
+  "worker_stack_repairs": {
+    "merge": "Existing noninlined nested primitive helper.",
+    "pixel_filter_stack": "PixelCommandEngine.swift direct noninlined entry points; source07-isolation-proof.json preserves the exact prior adjustment loop.",
+    "qualification": "All2965 unique cases/16 groups pass on Source07. Single-process AppKit hang remains open."
+  }
 }

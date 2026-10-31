@@ -307,5 +307,21 @@
     "refresh": "artifacts/development-history-audit/297-final01-refresh.log",
     "check": "artifacts/development-history-audit/297-final01-check.log"
   },
-  "native_access_evidence": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/native-access01.json"
+  "native_access_evidence": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/native-access01.json",
+  "source_publication": {
+    "receipt": "docs/SOURCE_PUBLICATION_297.json",
+    "commit": "d4d6e04e1c5ad2a79477d7e423c8f9d00cfea782",
+    "repository_private": true,
+    "published_inputs": 2869,
+    "binary_upload": false
+  },
+  "diary_verification": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/diary-verification01.json",
+  "dashboard_verification": {
+    "evidence": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/dashboard-status01.json",
+    "latest_milestone": 297,
+    "active_native": 283,
+    "stale": false,
+    "warnings": [],
+    "test_display_scope": "Existing active-native283 test display retained; software297 qualification is separately bound in this working checkpoint."
+  }
 }
