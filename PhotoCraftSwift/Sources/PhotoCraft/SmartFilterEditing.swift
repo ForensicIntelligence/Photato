@@ -40,7 +40,7 @@ extension EditorStore {
   }
   func beginSmartFilter(_ layerID: UUID, filterID: UUID) {
     select(layerID)
-    guard canBeginFilter, let item = activeLayer?.smartFilters?.filters.first(where: { $0.id == filterID }) else { return }
+    guard let item = activeLayer?.smartFilters?.filters.first(where: { $0.id == filterID }),canBeginFilterKind(item.filter.kind) else { return }
     filterDraft = FilterDraft(id: layerID, filter: item.filter, filterID: item.id,
       opacity: item.opacity, blendMode: item.blendMode)
     render()

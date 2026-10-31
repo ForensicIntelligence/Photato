@@ -4,6 +4,8 @@ import Foundation
 import PhotoCraftCore
 
 public enum Renderer {
+  public static var maximumCompositionPatchPixels: Int {PagedCanvasRenderer.patchWidth*PagedCanvasRenderer.patchHeight}
+  public static var maximumCompositionMaskCacheBytes: Int {CompositionFacts.maximumDerivedMaskCacheBytes}
   public static func layerSurface(_ layer: Layer, in document: CraftDocument) throws -> Surface {
     switch layer.content {
     case .raster(let s): return s
@@ -28,6 +30,9 @@ public enum Renderer {
       if shape.kind == .rectangle {
         return try Surface(
           width: shape.width, height: shape.height, depth: document.depth, fill: shape.color)
+      }
+      guard shape.width <= Surface.maximumDensePixels / shape.height else {
+        throw CraftError.unsupported("Large ellipse rasterization needs bounded shape coverage.")
       }
       for y in 0..<shape.height {
         for x in 0..<shape.width {
@@ -71,6 +76,9 @@ public enum Renderer {
       CGSize(width: layoutWidth, height: layoutHeight), nil)
     let width = max(1, min(layoutWidth, Int(ceil(size.width)) + 4))
     let height = max(1, min(layoutHeight, Int(ceil(size.height)) + 8))
+    guard width <= Surface.maximumDensePixels / height else {
+      throw CraftError.unsupported("This text raster exceeds the current native layout buffer budget.")
+    }
     guard
       let context = CGContext(
         data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
@@ -134,7 +142,7 @@ public enum Renderer {
     let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
     if requested.width * requested.height > Surface.maximumDensePixels {
       if inputTarget == nil, videoTime == nil, let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
-      throw CraftError.unsupported("This large document needs bounded viewport composition for its layer types. Full-canvas dense composition is not yet available; no document pixels were changed.")
+      try PagedCanvasRenderer.validateResources(d)
     }
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(d, at:videoTime)
@@ -144,12 +152,21 @@ public enum Renderer {
     for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil {
       d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
     }
-    let region = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
-      .clipped(toWidth: d.width, height: d.height)
+    if requested.width * requested.height > Surface.maximumDensePixels {
+      return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
+        video: videoTransitions)
+    }
+    return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
+      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil)
+  }
+  /// Sources/transitions are prepared once before bounded patch composition.
+  static func compositePrepared(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
+    video videoTransitions: VideoTransitionRenderContext? = nil, facts: CompositionFacts? = nil
+  ) throws -> Surface {
     let output = try emptyCanvas(d)
     guard region.width > 0, region.height > 0 else { return output }
     if inputTarget == nil, videoTransitions == nil,
-      let linear = try RGB32NormalRenderer.composite(d, over: output, region: region)
+      let linear = try RGB32NormalRenderer.composite(d, over: output, region: region, facts: facts)
     {
       return linear
     }
@@ -168,16 +185,16 @@ public enum Renderer {
           "This grouped document exceeds the current CPU compositing memory budget.")
       }
       if inputTarget == nil, videoTransitions == nil,
-        let linear = try RGB32HierarchyRenderer.composite(d, region: region)
+        let linear = try RGB32HierarchyRenderer.composite(d, region: region, facts: facts)
       {
         return linear
       }
       return try compositeStack(
         d.children(of: nil), in: d, over: output,
-        cache: GroupRenderCache(inputTarget: inputTarget, region: region, video:videoTransitions))
+        cache: GroupRenderCache(inputTarget: inputTarget, region: region, video:videoTransitions, facts:facts))
     }
     return try compositeFlat(
-      d.layers, in: d, over: output, inputTarget: inputTarget, region: region)
+      d.layers, in: d, over: output, inputTarget: inputTarget, region: region, facts: facts)
   }
   static func emptyCanvas(_ d: CraftDocument) throws -> Surface {
     try Surface(
@@ -186,7 +203,7 @@ public enum Renderer {
   }
   static func compositeFlat(
     _ layers: [Layer], in d: CraftDocument, over backdrop: Surface,
-    inputTarget: UUID? = nil, region: IntRect? = nil
+    inputTarget: UUID? = nil, region: IntRect? = nil, facts: CompositionFacts? = nil
   ) throws
     -> Surface
   {
@@ -200,7 +217,7 @@ public enum Renderer {
         output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region)
         continue
       }
-      let mask = try LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
+      let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
       if case .adjustment(let adjustment) = layer.content {
         let evaluate = try adjustment.spatialEvaluator(depth: d.depth)
         for y in region.y..<region.y + region.height {

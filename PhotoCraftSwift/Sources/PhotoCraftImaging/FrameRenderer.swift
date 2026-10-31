@@ -4,6 +4,10 @@ import PhotoCraftCore
 
 public enum FrameRenderer {
   static func coverage(_ path: CGPath, region: IntRect) throws -> SelectionMask {
+    guard region.width > 0, region.height > 0,
+      region.width <= Surface.maximumDensePixels / region.height else {
+      throw CraftError.unsupported("This local path raster needs bounded coverage before rendering.")
+    }
     guard let context = CGContext(data: nil, width: region.width, height: region.height, bitsPerComponent: 8, bytesPerRow: region.width, space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue), let data = context.data else { throw CraftError.invalid("Could not rasterize the frame.") }
     context.translateBy(x: 0, y: Double(region.height)); context.scaleBy(x: 1, y: -1)
     context.translateBy(x: -Double(region.x), y: -Double(region.y)); context.setShouldAntialias(true)

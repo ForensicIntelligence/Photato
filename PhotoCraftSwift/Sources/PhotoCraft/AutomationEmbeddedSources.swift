@@ -76,7 +76,8 @@ enum EmbeddedSourceAPI {
      "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. The desktop offers a cancellable transform preview; RAW first opens native Camera Raw controls.",
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
-     "limits":"Transfers enabled, explicit target sharing,64MiB source,8MP/256MiB ordinary source or existing36MP native RAW decoder limit, plus shared-document budgets; permission revocation/stale target/cancellation cannot commit.",
+     "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,
+     "limits":"Transfers enabled, explicit target sharing,64MiB encoded source and256MiB owned content. Paged native/RGB sources admit the logical native extent; non-RGB/PDF and RAW retain their decoder limits. Format, physical scratch, dense capacity, cross-profile preparation and shared-document budgets remain independent; permission revocation/stale target/cancellation cannot commit.",
      "adobe":"Existing file-input/bounds/autoResize contracts continue through the shared native engine; no new Adobe fields or endpoints.",
      "remaining":"Linked sources, general AI/SVG inputs, complete PSD/RAW fidelity, exact Photoshop pixels/defaults and live/platform acceptance."]
   }

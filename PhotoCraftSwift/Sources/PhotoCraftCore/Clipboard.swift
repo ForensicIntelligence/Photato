@@ -243,6 +243,25 @@ public struct ClipboardContent: Equatable, Sendable {
 extension Surface {
   public func converted(to depth: PixelDepth) throws -> Surface {
     if depth == self.depth { return self }
+    if width>Surface.maximumDensePixels/height || mappedBytes>0 {
+      let output=try Surface(width:width,height:height,depth:depth,fill:defaultPixel)
+      let builder=try Surface.PagedBuilder(template:output),columns=(width+63)/64
+      var keys=storedTileKeys.makeIterator(),next=keys.next()
+      while let first=next {
+        try Task.checkCancellation()
+        let row=first/columns;var end=first+1;next=keys.next()
+        while let key=next,key==end,key/columns==row,end-first<32 {end+=1;next=keys.next()}
+        let left=first%columns*64,top=row*64
+        var patch=try Surface(width:min(width-left,(end-first)*64),height:min(64,height-top),depth:depth,fill:defaultPixel)
+        for y in 0..<patch.height {try Task.checkCancellation();for x in 0..<patch.width {
+          let value=pixel(x:left+x,y:top+y).quantized(depth)
+          // Match the legacy value comparison, including signed-zero folding.
+          if value != output.defaultPixel {patch.setPixel(x:x,y:y,value)}
+        }}
+        try builder.append(patch,atX:left,atY:top)
+      }
+      return try builder.finish()
+    }
     var output = try Surface(width: width, height: height, depth: depth, fill: defaultPixel)
     for y in 0..<height {
       try Task.checkCancellation()

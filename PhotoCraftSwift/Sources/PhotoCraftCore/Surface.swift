@@ -66,6 +66,11 @@ public struct Surface: Codable, Equatable, Sendable {
       && lhs.colorEncoding == rhs.colorEncoding && lhs.tiles == rhs.tiles
   }
   public var tileCount: Int { tiles.count }
+  /// Ordered allocated tile keys, including paged bases and COW edits. A caller can
+  /// merge several grids without constructing a whole-canvas Set or descriptor array.
+  public var storedTileKeys: AnySequence<Int> {
+    AnySequence(tiles.entries(in: 0..<(columns * ((height + Self.tileSide - 1) / Self.tileSide))).lazy.map { $0.0 })
+  }
   /// Owned heap samples plus a conservative index/reference allowance for mapped tiles.
   /// File-backed pages are reclaimable by macOS and are reported separately.
   public var allocatedBytes: Int { tiles.residentBytes }
@@ -939,7 +944,7 @@ extension Surface {
                 colorEncoding:SurfaceColorEncoding = .sRGB,backing:RasterTileStore? = nil) throws {
       try self.init(template:Surface(width:width,height:height,depth:depth,fill:fill,colorEncoding:colorEncoding),backing:backing)
     }
-    init(template:Surface,backing:RasterTileStore? = nil) throws {
+    public init(template:Surface,backing:RasterTileStore? = nil) throws {
       guard template.tileCount==0 else {throw CraftError.invalid("Paged template must contain only an implicit value.")}
       try template.validated();self.template=template
       self.backing=try backing ?? RasterTileStore();index=try RuntimeTileIndex.Builder()
@@ -990,6 +995,14 @@ extension Surface {
   func reframedImplicitValue(width:Int,height:Int) throws -> Surface {
     var output=try Surface(width:width,height:height,depth:depth,colorEncoding:colorEncoding)
     output.storedDefaultPixel=storedDefaultPixel;return output
+  }
+  /// Apply the ordinary setter once, preserving its depth/encoding/hidden-bit
+  /// rules, then use that stored result as the implicit value of a new extent.
+  func reframedImplicitValue(width:Int,height:Int,sample:Pixel,linear:Bool)throws->Surface {
+    var probe=try reframedImplicitValue(width:1,height:1)
+    if linear {probe.setLinearPixel(x:0,y:0,sample)}else{probe.setPixel(x:0,y:0,sample)}
+    var output=try reframedImplicitValue(width:width,height:height)
+    output.storedDefaultPixel=probe.storedPixel(x:0,y:0);return output
   }
   func projectedGeometrySupport(_ transform:Transform2D,bounds:IntRect,halo:Int) throws -> [IntRect] {
     var rectangles:[IntRect]=[];rectangles.reserveCapacity(tiles.count)

@@ -1,0 +1,132 @@
+{
+  "step": 290,
+  "recorded_at_utc": "2026-10-31T10:14:49.171869+00:00",
+  "status": "ARM software qualified; native/Photoshop/full Intel and capacity parity remain open",
+  "run": "artifacts/runs/20261031T095300Z-290-paged-layer-composition",
+  "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+  "source_inputs": 2729,
+  "design": {
+    "engine": "Existing native prepared regional compositor in actual document coordinates",
+    "maximum_patch_pixels": 131072,
+    "maximum_derived_mask_cache_bytes": 536870912,
+    "implicit_background": "Only full-canvas aligned coordinate-independent raster/fill/group/pointwise-adjustment stacks; merge ordered allocated tile keys, evaluate a real missing pixel with actual global opacity facts.",
+    "spatial_content": "Complete patch evaluation; no scaled proxy replaces working samples.",
+    "cache": "One immutable prepared document; preserve mask variants and global RGB32 opacity; derived mask byte budget separate from source aliases, scratch and OS-managed mapping residency."
+  },
+  "prior_native": {
+    "cases": 24,
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "provenance": "Tests/PhotoCraftImagingTests/Fixtures/paged-composition/provenance.json",
+    "description": "Captured through qualified Source13 objects before rebuilding; byte identities/hashes in manifest. Owned original fixture data, not Photoshop generated.",
+    "capture": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/prior288-composition01"
+  },
+  "api": {
+    "shared_native_engine": true,
+    "typed_operations": 195,
+    "capability": "documentTransfers.pagedRasterInput.pagedComposition",
+    "new_adobe_routes": false,
+    "scope": "Existing resource/action jobs retain independently pinned request/output/job constraints and unsupported descriptors."
+  },
+  "native_acceptance": false,
+  "goal_complete": false,
+  "remaining": [
+    "Large styles/effect maps, enabled vector masks, oversized feather/local raster planes, Smart Filter/Warp and non-RGB limits.",
+    "Dense90GP/4TiB throughput/capacity, packed GRAY8, explicit paged coverage Actions, recovery and preview pyramids.",
+    "Full Photoshop numeric/filter/default/cursor parity, physical60fps, Intel full-suite failures and physical macOS14+/26+ qualification.",
+    "Manual native acceptance remains pending; normal283 and user artwork preserved."
+  ],
+  "focused": {
+    "tests": 46,
+    "failed": 0,
+    "seconds": 35.654,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/focused02.log"
+  },
+  "intel": {
+    "build_seconds": 150.11,
+    "tests": 5,
+    "assertion_failures": 9,
+    "unexpected": 0,
+    "full_40mp_samples_pass": true,
+    "same_architecture_exact_cases": 24,
+    "prior_arm64_exact_cases": 15,
+    "total_reference_cases": 24,
+    "translated_not_physical": true,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/intel-imaging01/component01-run.log",
+    "comparison": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/intel-imaging01/comparison02/run01.json"
+  },
+  "failures_retained": [
+    "Source01 focused01 compiler failure: qualify Swift.min inside Sequence iterator. Source02 fixes name resolution without changing math/oracles.",
+    "Source02 Intel component01:9 strict differences from prior-arm64 bytes across5 tests; comparison02 proves24/24 same-architecture legacy/paged identities. No reference/tolerance change."
+  ],
+  "full": {
+    "tests": 2919,
+    "failed": 0,
+    "seconds": 332.804,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/full01.log",
+    "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965"
+  },
+  "integrity": {
+    "verified_current_inputs": 2729,
+    "frozen_members": 2729,
+    "verified_protected_assets": 26,
+    "frozen_sha256": "cbdf88eca0e117cb63aed542bfafe76bce3008aff6d013e2e3ba866a826f20c1",
+    "tested_binary_sha256": "ed0dac00463878bc2a37d6ba99a82e26cbe172803b94c8d16540e7dbba91ad0c",
+    "candidate_binary_sha256": "91bbfd699d30acf19f03af53f1c14326b3cdb1a5f59416022970bd47eccc3d1e",
+    "candidate_zip_sha256": "75bad1b76c50669e3757f90dce020199d931425827f529945c7b52b15930c7ca",
+    "normal_preview_step": 283,
+    "compiler_test_workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Composition-Candidate-290-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "91bbfd699d30acf19f03af53f1c14326b3cdb1a5f59416022970bd47eccc3d1e",
+    "tested_binary_sha256": "ed0dac00463878bc2a37d6ba99a82e26cbe172803b94c8d16540e7dbba91ad0c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Composition-Candidate-290.zip",
+    "zip_sha256": "75bad1b76c50669e3757f90dce020199d931425827f529945c7b52b15930c7ca",
+    "zip_bytes": 38997895,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate290-check-mc_c1xrs/Photato-Composition-Candidate-290-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access": {
+    "checked_at_utc": "2026-10-31T10:28:47.488029+00:00",
+    "compiler_test_workers_live": false,
+    "inventory_found_running_preview283": true,
+    "attempt": "cua.getApp ca.forensicintelligence.photato.preview283",
+    "result": "Mac locked; automatic unlock could not unlock it.",
+    "native_acceptance": false,
+    "candidate_launched": false,
+    "existing_manual_unlock_request_pending": true,
+    "normal_preview_replaced": false
+  },
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/dashboard-status01.json",
+    "latest_milestone": 290,
+    "native_checkpoint": 283,
+    "stale": false,
+    "warnings": []
+  },
+  "diary_evidence": {
+    "path": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/diary-verification03.json",
+    "entries": 290,
+    "standalone": true
+  },
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/290-final02-refresh.log",
+    "check": "artifacts/development-history-audit/290-final02-check.log",
+    "scope": "Document/evidence integrity only; complete native/platform/Photoshop acceptance remains open."
+  }
+}

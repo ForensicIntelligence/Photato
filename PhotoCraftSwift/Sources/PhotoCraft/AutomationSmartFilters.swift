@@ -38,6 +38,11 @@ extension SmartFilterStack {
   static var apiCapabilities: [String: Any] {
     ["commands": ["filter.apply", "smartFilter.set", "smartFilter.maskStroke", "smartFilter.maskFill"],
       "stackSchema": apiSchema, "layerStateSchema": apiStateSchema, "maximumFilters": maximumFilters,
+      "largeRGBStacks":["kinds":RasterFilterEngine.pagedFilterKinds.map(\.rawValue),
+        "maximumDimension":Surface.maxDimension,"logicalMaximumPixels":Surface.maxPixels,
+        "maximumOutputPatchPixels":RasterGeometry.maximumPatchPixels,
+        "behavior":"Affine placement, ordered editable filters, per-filter blend/opacity/visibility, selection and pixel masks share the native engine. Source bytes and original samples remain unchanged.",
+        "limits":"Other filter families, non-RGB, Warp and large feather kernels retain separate limits. Embedded source64MiB and owned-content256MiB remain independent; dense capacity, RSS, throughput and Photoshop/platform parity remain open."],
       "order": "filters is application order, bottom first. set replaces the list, permitting edit, reorder, remove and per-filter enable/blend/opacity. null clears the stack.",
       "masks": "First filter creates a white mask, or uses current selection. Mask painting uses document coordinates and respects selection. Read layers[].smartFilters for state; set accepts enabled, filters and mask settings only.",
       "persistence": "Native15 archives retain editable stacks. Supported PSD filters use filterFX/FEid. Raster exports render the result.",

@@ -53,14 +53,14 @@ public enum ColorManagement {
     _ surface: Surface, from source: CraftDocument,
     to target: CraftDocument
   ) throws -> Surface {
-    if surface.width * surface.height > Surface.maximumDensePixels {
-      return try convertedPaged(surface, from: source, to: target)
-    }
     let fromSpace = try space(for: source)
     let toSpace = try space(for: target)
     let encoding: SurfaceColorEncoding = target.depth == .f32 ? .linearRGB : .sRGB
     if fromSpace == toSpace && (source.depth == .f32) == (target.depth == .f32) {
       return try surface.converted(to: target.depth)
+    }
+    if surface.width * surface.height > Surface.maximumDensePixels {
+      return try convertedPaged(surface, from: source, to: target)
     }
     // Convert opaque RGB so transparent pixels keep hidden colour. Alpha is never colour-managed.
     let inputEncoding: SurfaceColorEncoding = source.depth == .f32 ? .linearRGB : .sRGB

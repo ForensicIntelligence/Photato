@@ -1,0 +1,113 @@
+{
+  "step": 290,
+  "status": "paged-layer-composition-arm64-software-qualified-native-and-full-platform-parity-open",
+  "run": "artifacts/runs/20261031T095300Z-290-paged-layer-composition",
+  "qualified_software_previous": "docs/WORKING_CHECKPOINT_288.json",
+  "qualified_native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "source_inputs": 2729,
+  "native_acceptance": false,
+  "increment_complete": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "next": [
+    "Native/Photoshop/physical held-key acceptance after manual unlock; preserve normal283 and artwork.",
+    "Extend large styles/vector/feather/local-raster/Smart Filter/Warp/non-RGB/proof/onion workflows and remaining operation limits.",
+    "Compact coverage storage and explicit paged-coverage Actions, recovery, chooser and preview pyramids remain open.",
+    "Full dense90GP/4TiB/performance, exact Photoshop output/defaults/cursors and physical supported-platform qualification, including strict Intel/ARM numeric failures."
+  ],
+  "working_source": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+  "frozen_input_backup": {
+    "archive": "frozen-source02.tar.gz",
+    "bytes": 49921283,
+    "sha256": "cbdf88eca0e117cb63aed542bfafe76bce3008aff6d013e2e3ba866a826f20c1",
+    "inputs": 2729
+  },
+  "api_review": "Existing native/Photato/Adobe resource rendering shares bounded composition; pagedComposition capability added,195 typed operations unchanged, no Adobe route invented.",
+  "focused": {
+    "tests": 46,
+    "failed": 0,
+    "seconds": 35.654,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/focused02.log"
+  },
+  "intel": {
+    "build_seconds": 150.11,
+    "tests": 5,
+    "assertion_failures": 9,
+    "unexpected": 0,
+    "full_40mp_samples_pass": true,
+    "same_architecture_exact_cases": 24,
+    "prior_arm64_exact_cases": 15,
+    "total_reference_cases": 24,
+    "translated_not_physical": true,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/intel-imaging01/component01-run.log",
+    "comparison": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/intel-imaging01/comparison02/run01.json"
+  },
+  "full": {
+    "tests": 2919,
+    "failed": 0,
+    "seconds": 332.804,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/full01.log",
+    "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965"
+  },
+  "integrity": {
+    "verified_current_inputs": 2729,
+    "frozen_members": 2729,
+    "verified_protected_assets": 26,
+    "frozen_sha256": "cbdf88eca0e117cb63aed542bfafe76bce3008aff6d013e2e3ba866a826f20c1",
+    "tested_binary_sha256": "ed0dac00463878bc2a37d6ba99a82e26cbe172803b94c8d16540e7dbba91ad0c",
+    "candidate_binary_sha256": "91bbfd699d30acf19f03af53f1c14326b3cdb1a5f59416022970bd47eccc3d1e",
+    "candidate_zip_sha256": "75bad1b76c50669e3757f90dce020199d931425827f529945c7b52b15930c7ca",
+    "normal_preview_step": 283,
+    "compiler_test_workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Composition-Candidate-290-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "91bbfd699d30acf19f03af53f1c14326b3cdb1a5f59416022970bd47eccc3d1e",
+    "tested_binary_sha256": "ed0dac00463878bc2a37d6ba99a82e26cbe172803b94c8d16540e7dbba91ad0c",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Composition-Candidate-290.zip",
+    "zip_sha256": "75bad1b76c50669e3757f90dce020199d931425827f529945c7b52b15930c7ca",
+    "zip_bytes": 38997895,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate290-check-mc_c1xrs/Photato-Composition-Candidate-290-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "recorded_at_utc": "2026-10-31T10:28:48.839931+00:00",
+  "native_access": {
+    "checked_at_utc": "2026-10-31T10:28:47.488029+00:00",
+    "compiler_test_workers_live": false,
+    "inventory_found_running_preview283": true,
+    "attempt": "cua.getApp ca.forensicintelligence.photato.preview283",
+    "result": "Mac locked; automatic unlock could not unlock it.",
+    "native_acceptance": false,
+    "candidate_launched": false,
+    "existing_manual_unlock_request_pending": true,
+    "normal_preview_replaced": false
+  },
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/dashboard-status01.json",
+    "latest_milestone": 290,
+    "native_checkpoint": 283,
+    "stale": false,
+    "warnings": []
+  },
+  "diary_evidence": {
+    "path": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/diary-verification03.json",
+    "entries": 290,
+    "standalone": true
+  },
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/290-final02-refresh.log",
+    "check": "artifacts/development-history-audit/290-final02-check.log",
+    "scope": "Document/evidence integrity only; complete native/platform/Photoshop acceptance remains open."
+  }
+}

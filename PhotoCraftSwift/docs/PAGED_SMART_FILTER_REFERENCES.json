@@ -1,0 +1,96 @@
+{
+  "step": 293,
+  "status": "paged-smart-filter-workflows-software-qualified-native-and-full-parity-open",
+  "run": "artifacts/runs/20261031T121118Z-293-paged-smart-filters",
+  "source_manifest": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source06.json",
+  "prior_native_vectors": 48,
+  "provenance": "Tests/PhotoCraftCoreTests/Fixtures/paged-smart-filters/provenance.json",
+  "not_photoshop_reference_outputs": true,
+  "api": "Existing filter.apply/smartFilter.set/mask/source operations and Adobe basic actionJSON share the native engine. Large RGB source/stack admission is discoverable; Adobe resource/job/output/interchange limits remain independent.195 typed commands unchanged; no invented Adobe route.",
+  "remaining": [
+    "Native/Photoshop visual acceptance after manual unlock; retain normal283 and owned artwork.",
+    "Other large filter families/modes/Warp/feather, large PSD/PSB Smart Filter cache/mask interchange and resource-job/output limits.",
+    "Embedded source64MiB/owned256MiB, cross-depth/profile preparation, dense90GP/cumulative scratch/RSS/throughput/frame rate and supported-platform qualification; earlier full Intel failures stay open.",
+    "Full Photoshop byte/default/shortcut/preferences parity and remaining major workflows."
+  ],
+  "goal_complete": false,
+  "native_acceptance": false,
+  "working_source": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source06.json",
+  "source_inputs": 2878,
+  "frozen_input_backup": {
+    "archive": "frozen-source06.tar.gz",
+    "inputs": 2878,
+    "bytes": 57186820,
+    "sha256": "9763122bd7a8c63af42c03046a10647768e1b2bb1a58bef89efa864353de5b79"
+  },
+  "compiler_test_workers_live": false,
+  "application_integration_complete": true,
+  "full": {
+    "tests": 2942,
+    "failed": 0,
+    "seconds": 348.652,
+    "log": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/full01.log",
+    "sha256": "dcbc3723a1fb78cf0162bb8bc7219f2b4351dae536d6e15a2b333e022480e089",
+    "source_manifest": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source06.json"
+  },
+  "focused": {
+    "tests": 90,
+    "failed": 0,
+    "seconds": 19.232,
+    "log": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/focused05.log",
+    "sha256": "4825c76d25764cb956f33604523ef3344a351f7170dcf98b4501e2cd99fc6462",
+    "source_manifest": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source05.json"
+  },
+  "intel_source06": {
+    "tests": 6,
+    "failed": 0,
+    "seconds": 0.643,
+    "log": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/intel01/component06-run.log",
+    "sha256": "8f2adc0c016e46524ac412ac997cfe655920235f50aa710cfbfe5b4ab1a2b7e4",
+    "source_manifest": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source06.json",
+    "translated_not_physical": true
+  },
+  "integrity": {
+    "inputs": 2878,
+    "frozen_members": 2878,
+    "frozen_sha256": "9763122bd7a8c63af42c03046a10647768e1b2bb1a58bef89efa864353de5b79",
+    "protected_assets": 32,
+    "tested_binary_sha256": "c03215ffdbe2cff36ba75c8b8055df20afdad62d9b626eb6901d0eb6c08268ce",
+    "candidate_sha256": "7c07e1aa5ac494f55648c4f95821fb4811a8f822f716807ebca7f3735ce61d14",
+    "zip_sha256": "4594b799b295b720c6d0e90e526979dc9a277ead45f5879be6bb3e99f065f5b8",
+    "normal_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Smart-Filter-Candidate-293-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "7c07e1aa5ac494f55648c4f95821fb4811a8f822f716807ebca7f3735ce61d14",
+    "tested_binary_sha256": "c03215ffdbe2cff36ba75c8b8055df20afdad62d9b626eb6901d0eb6c08268ce",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Smart-Filter-Candidate-293.zip",
+    "zip_sha256": "4594b799b295b720c6d0e90e526979dc9a277ead45f5879be6bb3e99f065f5b8",
+    "zip_bytes": 39041498,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-smart-candidate293-check-naeblz0w/Photato-Smart-Filter-Candidate-293-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "api_review": "Existing filter.apply/smartFilter.set/mask/source operations and Adobe basic actionJSON share the native engine. Large RGB source/stack admission is discoverable; Adobe resource/job/output/interchange limits remain independent.195 typed commands unchanged; no invented Adobe route.",
+  "increment_complete": false,
+  "recorded_at_utc": "2026-10-31T13:00:07.518239+00:00",
+  "native_access_evidence": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/native-access01.json",
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/293-final01-refresh.log",
+    "check": "artifacts/development-history-audit/293-final01-check.log"
+  },
+  "production_equivalence_evidence": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/source05-source06-production-equivalence.json",
+  "diary_verification": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/diary-verification01.json",
+  "dashboard_snapshot": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/dashboard-status01.json"
+}

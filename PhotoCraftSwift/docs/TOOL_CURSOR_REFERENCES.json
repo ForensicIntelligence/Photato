@@ -494,5 +494,22 @@
       "result": "9 tests/7 assertions: standalone XCTest cannot become foreground/key. Deterministic event-admission window double replaces ineffective activation."
     }
   ],
-  "key_window_qualification": "Event admission logic is tested with controlled NSWindow isKeyWindow; real views, NSEvents, hit testing, action/history and notifications remain native. This is not physical modifier-key delivery proof."
+  "key_window_qualification": "Event admission logic is tested with controlled NSWindow isKeyWindow; real views, NSEvents, hit testing, action/history and notifications remain native. This is not physical modifier-key delivery proof.",
+  "continued_regression_290": {
+    "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+    "cursor_tests": 9,
+    "tool_modifier_combinations": 832,
+    "failed": 0,
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/focused02.log",
+    "physical_held_key_comparison": false,
+    "policy_unchanged": true,
+    "full": {
+      "tests": 2919,
+      "failed": 0,
+      "seconds": 332.804,
+      "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/full01.log",
+      "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965"
+    },
+    "future_tool_rule": "AGENTS/CONTRIBUTING explicitly require all16 Control/Command/Option/Shift combinations in every new tool increment."
+  }
 }

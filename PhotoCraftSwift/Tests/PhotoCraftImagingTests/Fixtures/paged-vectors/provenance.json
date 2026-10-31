@@ -1,0 +1,8 @@
+{
+  "kind": "Owned original geometry and actual prior-native290 GRAY8 bytes",
+  "license": "MIT OR Apache-2.0",
+  "not_photoshop_output": true,
+  "source_fixture": "PagedVectorFixture.swift",
+  "cases": 32,
+  "capture_run": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/prior290"
+}

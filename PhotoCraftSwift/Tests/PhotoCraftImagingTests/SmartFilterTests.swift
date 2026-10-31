@@ -94,7 +94,7 @@ final class SmartFilterTests: XCTestCase {
     oversized.layers[0].affine = .scale(1000, 1000)
     let huge = oversized
     var hugeSession = EditorSession(document: huge)
-    XCTAssertThrowsError(try hugeSession.execute(.applyFilter(huge.layers[0].id, RasterFilter(.boxBlur))))
+    XCTAssertThrowsError(try hugeSession.execute(.applyFilter(huge.layers[0].id, RasterFilter(.cameraRaw))))
     XCTAssertEqual(hugeSession.document, huge)
   }
   func testSupportedPSDPSBFiltersMasksAndCacheAtEveryDepth() throws {

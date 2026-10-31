@@ -84,6 +84,7 @@ extension ChannelCommand {
       }
       try d.setChannel(value,at:target)
     case .filter(let target,let filter):
+      guard d.width<=RasterFilterEngine.maximumPixels/d.height else {throw CraftError.unsupported("Channel filter preparation retains its 8,388,608-pixel limit.")}
       guard filter.kind != .shadowsHighlights && !filter.kind.isClassicDetail && !filter.kind.isOtherVideo && !filter.kind.isRender && !filter.kind.isStylize && !filter.kind.isPixelate && !filter.kind.isDistortion && filter.kind != .lensBlur && filter.kind != .smartSharpen && filter.kind != .reduceNoise && filter.kind != .filterGallery && filter.kind != .adaptiveWideAngle && filter.kind != .lensCorrection && filter.kind != .blurGallery && filter.kind != .cameraRaw && filter.kind != .puppetWarp && filter.kind != .perspectiveWarp else { throw CraftError.unsupported("This filter requires an RGB image target.") }
       var value = try d.channel(target)
       var proxy = try CraftDocument(width:d.width,height:d.height,depth:d.depth)

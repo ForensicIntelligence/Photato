@@ -1,0 +1,142 @@
+{
+  "step": 291,
+  "status": "unfeathered-vector-and-path-coverage-software-qualified-native-and-full-parity-open",
+  "run": "artifacts/runs/20261031T103808Z-291-paged-vector-masks",
+  "qualified_previous": "docs/WORKING_CHECKPOINT_290.json",
+  "native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "goal_complete": false,
+  "increment_complete": false,
+  "working_source": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/source06.json",
+  "source_inputs": 2767,
+  "frozen_input_backup": {
+    "archive": "frozen-source06.tar.gz",
+    "inputs": 2767,
+    "bytes": 49946835,
+    "sha256": "93eb94c2521f26f185ecc307cd6da65608fc24f277dee4ac3e1fb377fbc63ea2"
+  },
+  "compiler_test_workers_live": false,
+  "api_review": "Source06 full2923 tests qualify native/API vector preview, history/persistence and stale/busy behavior.195 typed operations and existing path.edit/selection/resource interfaces share native coverage. No Adobe route/tool/menu/shortcut added; unsupported descriptors and remaining gates stay open.",
+  "native_acceptance": false,
+  "next": [
+    "Native/Photoshop acceptance after manual unlock; preserve normal283/artwork.",
+    "Large vector/pixel feather, styles/effects, local planes, Smart Filter/Warp, non-RGB/proof/onion and remaining operation paths.",
+    "Exact Photoshop/cross-coordinate-block AA/defaults, explicit coverage Actions, packed coverage, recovery/chooser and preview pyramids.",
+    "Dense90GP/4TiB/performance and physical macOS14+/Intel/macOS26+ qualification, including earlier strict Intel failures."
+  ],
+  "component": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.251,
+    "source_manifest": "source02.json",
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/component02-run.log"
+  },
+  "intel_component_source03": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.412,
+    "translated": true,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/intel01/component03-run.log"
+  },
+  "intel_component_source04": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.411,
+    "translated": true,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/intel01/component04-run.log"
+  },
+  "intel_component_source05": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.4,
+    "translated_not_physical": true,
+    "strict_prior_arm64_gray_vectors": 32,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/intel01/component05-run.log"
+  },
+  "focused_source05": {
+    "tests": 62,
+    "failed": 0,
+    "seconds": 29.963,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/focused03.log"
+  },
+  "intel_component_source06": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.549,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/intel01/component06-run.log",
+    "sha256": "438c95ee4ba0e8a2af2bb9873936bd95cb05a9f2408e3dd72cc8da6b6866a1fa",
+    "source_manifest": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/source06.json",
+    "translated_not_physical": true
+  },
+  "full": {
+    "tests": 2923,
+    "failed": 0,
+    "seconds": 333.506,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/full01.log",
+    "sha256": "e3a684b6630bcb889880089ed533bc1ae6421e6a281021e78d05e73417fdfbd2",
+    "source_manifest": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/source06.json"
+  },
+  "focused": {
+    "tests": 62,
+    "failed": 0,
+    "seconds": 29.963,
+    "log": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/focused03.log",
+    "sha256": "841a2e14f64b6743766b20b3bca27932796d8b70f5f4a1ddcec637515d3fbfe7",
+    "source_manifest": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/source05.json"
+  },
+  "integrity": {
+    "inputs": 2767,
+    "frozen_members": 2767,
+    "protected_assets": 28,
+    "frozen_sha256": "93eb94c2521f26f185ecc307cd6da65608fc24f277dee4ac3e1fb377fbc63ea2",
+    "tested_binary_sha256": "b17f87738b0976ed3e63181959752a35d962325eda3efd23fb42fb712a67631d",
+    "candidate_sha256": "ac7044508b062431440867d07769e1d4f9b8e206f287e454ed67cf86c43309e1",
+    "zip_sha256": "8719845a8923aba664a336ec1f0b33f32bbcabbaf1533616bd1e13b3a29beead",
+    "normal_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Vector-Candidate-291-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "ac7044508b062431440867d07769e1d4f9b8e206f287e454ed67cf86c43309e1",
+    "tested_binary_sha256": "b17f87738b0976ed3e63181959752a35d962325eda3efd23fb42fb712a67631d",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Vector-Candidate-291.zip",
+    "zip_sha256": "8719845a8923aba664a336ec1f0b33f32bbcabbaf1533616bd1e13b3a29beead",
+    "zip_bytes": 39010532,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate291-check-_5hyip9o/Photato-Vector-Candidate-291-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "recorded_at_utc": "2026-10-31T11:21:02.648685+00:00",
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/291-final01-refresh.log",
+    "check": "artifacts/development-history-audit/291-final01-check.log"
+  },
+  "native_access": {
+    "checked_at_utc": "2026-10-31T11:22:34.267371+00:00",
+    "workers_live": false,
+    "app_attempt": "ca.forensicintelligence.photato.preview283: cgWindowNotFound",
+    "inventory_result": "Mac locked; automatic unlock unsuccessful.",
+    "native_acceptance": false,
+    "candidate_launched": false,
+    "manual_unlock_request_already_pending": true
+  },
+  "diary_evidence": {
+    "path": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/diary-verification01.json",
+    "entries": 291,
+    "standalone": true
+  },
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T103808Z-291-paged-vector-masks/dashboard-status01.json",
+    "expected_latest": 291,
+    "native_checkpoint": 283
+  }
+}

@@ -973,7 +973,7 @@ import UniformTypeIdentifiers
     } catch { self.error = error.localizedDescription }
   }
   func blur(radius: Double = 5) {
-    guard canBeginFilter, let id = activeLayer?.id else { return }
+    guard canBeginFilterKind(.gaussianBlur), let id = activeLayer?.id else { return }
     var filter = RasterFilter(.gaussianBlur)
     filter.radius = radius
     performGeometry(.applyFilter(id, filter))

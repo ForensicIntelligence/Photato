@@ -1,0 +1,130 @@
+[
+  {
+    "file" : "0-false-false.gray",
+    "sha256" : "5bc52d259ba2951f8224a8a51850b070399316796c88c419f0ea238f5180a604"
+  },
+  {
+    "file" : "0-false-true.gray",
+    "sha256" : "bc92f0fae9e78394a9e6a9368470b35e7593dc11d6b3e47bb397d090ef716465"
+  },
+  {
+    "file" : "0-true-false.gray",
+    "sha256" : "8188ab6161442fceef9304bd872422c090b5d72bd799b65b41536285f6a3d422"
+  },
+  {
+    "file" : "0-true-true.gray",
+    "sha256" : "fd77979d0b9b311f87825aebccf0938f2052a8bef740017ea7390c008c4a6f11"
+  },
+  {
+    "file" : "1-false-false.gray",
+    "sha256" : "abade703b2a782fcb1ff2064dba945e1ebfa370f9c6ce616e021648a33c80d4f"
+  },
+  {
+    "file" : "1-false-true.gray",
+    "sha256" : "f01fed895cf3f9f135c4f3f47697f9d2c3c7abe31edb92b9c35c1e9c2d93760c"
+  },
+  {
+    "file" : "1-true-false.gray",
+    "sha256" : "2d13918493a3b11145a3406ccd45c08e6281239b1912fe288692df77effdcb68"
+  },
+  {
+    "file" : "1-true-true.gray",
+    "sha256" : "2ac494546964795283b7d10834ecfff5f11a768c78eee133318fa8826934716e"
+  },
+  {
+    "file" : "2-false-false.gray",
+    "sha256" : "fcd2463e20fe0009a2d572e691b7def240a7beec7c01dbca9d44827e49c37667"
+  },
+  {
+    "file" : "2-false-true.gray",
+    "sha256" : "5353bdf4102a3cddb29a65e8ecf3af423ffc864d973ca593978bdb593a99c005"
+  },
+  {
+    "file" : "2-true-false.gray",
+    "sha256" : "a91896ac9c66d8f8d81a94c14d320780756cbc9179338540ea59d0e5e0886eb2"
+  },
+  {
+    "file" : "2-true-true.gray",
+    "sha256" : "cff3d56322e6a147a793c775d9fae91982d897512fbff74596b7722ad55aec4c"
+  },
+  {
+    "file" : "3-false-false.gray",
+    "sha256" : "abade703b2a782fcb1ff2064dba945e1ebfa370f9c6ce616e021648a33c80d4f"
+  },
+  {
+    "file" : "3-false-true.gray",
+    "sha256" : "f01fed895cf3f9f135c4f3f47697f9d2c3c7abe31edb92b9c35c1e9c2d93760c"
+  },
+  {
+    "file" : "3-true-false.gray",
+    "sha256" : "2d13918493a3b11145a3406ccd45c08e6281239b1912fe288692df77effdcb68"
+  },
+  {
+    "file" : "3-true-true.gray",
+    "sha256" : "2ac494546964795283b7d10834ecfff5f11a768c78eee133318fa8826934716e"
+  },
+  {
+    "file" : "4-false-false.gray",
+    "sha256" : "5bc52d259ba2951f8224a8a51850b070399316796c88c419f0ea238f5180a604"
+  },
+  {
+    "file" : "4-false-true.gray",
+    "sha256" : "bc92f0fae9e78394a9e6a9368470b35e7593dc11d6b3e47bb397d090ef716465"
+  },
+  {
+    "file" : "4-true-false.gray",
+    "sha256" : "8188ab6161442fceef9304bd872422c090b5d72bd799b65b41536285f6a3d422"
+  },
+  {
+    "file" : "4-true-true.gray",
+    "sha256" : "fd77979d0b9b311f87825aebccf0938f2052a8bef740017ea7390c008c4a6f11"
+  },
+  {
+    "file" : "5-false-false.gray",
+    "sha256" : "73352114f953369df796db6037effe7bbdd66ec65b5efdef7545f78f65dfb37b"
+  },
+  {
+    "file" : "5-false-true.gray",
+    "sha256" : "39f1aa760b29c1d72f4b6a5cc6a43e33b6e0165d9ffd906b7beebc5589da3ce2"
+  },
+  {
+    "file" : "5-true-false.gray",
+    "sha256" : "9d942d3cad6fffb3a004d2ec703523204efad32287ac4ac8160420141c812aec"
+  },
+  {
+    "file" : "5-true-true.gray",
+    "sha256" : "33e85450d6eef7f0841dac487c4beb7a54d110cd60973a540d4ecd2642c6ae33"
+  },
+  {
+    "file" : "6-false-false.gray",
+    "sha256" : "ae11cf92a2942e919cf6bfcc59b6b82575316d3ecc1e095eece76fbc6a033439"
+  },
+  {
+    "file" : "6-false-true.gray",
+    "sha256" : "1bbcbfd76a0278392c8929368486d9116563d7f23dfb0102115a0377be70a8f0"
+  },
+  {
+    "file" : "6-true-false.gray",
+    "sha256" : "ae11cf92a2942e919cf6bfcc59b6b82575316d3ecc1e095eece76fbc6a033439"
+  },
+  {
+    "file" : "6-true-true.gray",
+    "sha256" : "1bbcbfd76a0278392c8929368486d9116563d7f23dfb0102115a0377be70a8f0"
+  },
+  {
+    "file" : "7-false-false.gray",
+    "sha256" : "ae11cf92a2942e919cf6bfcc59b6b82575316d3ecc1e095eece76fbc6a033439"
+  },
+  {
+    "file" : "7-false-true.gray",
+    "sha256" : "1bbcbfd76a0278392c8929368486d9116563d7f23dfb0102115a0377be70a8f0"
+  },
+  {
+    "file" : "7-true-false.gray",
+    "sha256" : "ae11cf92a2942e919cf6bfcc59b6b82575316d3ecc1e095eece76fbc6a033439"
+  },
+  {
+    "file" : "7-true-true.gray",
+    "sha256" : "1bbcbfd76a0278392c8929368486d9116563d7f23dfb0102115a0377be70a8f0"
+  }
+]

@@ -11,7 +11,7 @@ enum SparseCanvasRenderer {
     guard layers.allSatisfy({ layer in
       let t=layer.coordinateTransform
       guard t.a==1,t.b==0,t.c==0,t.d==1,t.tx==t.tx.rounded(),t.ty==t.ty.rounded(),layer.vectorMask == nil,
-        layer.style == nil, layer.smartObject == nil, layer.smartFilters == nil,
+        layer.style == nil, layer.smartObject?.pdfSource == nil, layer.smartFilters == nil,
         layer.warp == nil, layer.blendMode != .dissolve else { return false }
       if let mask=layer.mask,layer.effectiveMaskProperties.enabled {
         guard mask.width==d.width,mask.height==d.height,
@@ -23,6 +23,9 @@ enum SparseCanvasRenderer {
       default: return false
       }
     }) else { return nil }
+    // An ordinary unfiltered Smart Object draws its validated raster cache.
+    // Its retained source metadata does not change pointwise pixel composition.
+    // PDF sources retain their independent preparation path.
     let sources=try layers.map {layer -> Surface in
       var source=try Renderer.layerSurface(layer,in:d)
       if !layer.isCanvasFill && (layer.coordinateTransform != .identity || source.width != d.width || source.height != d.height) {

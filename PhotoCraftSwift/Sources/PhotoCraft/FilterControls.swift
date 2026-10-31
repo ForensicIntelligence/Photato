@@ -139,6 +139,12 @@ extension EditorStore {
   func canBeginFilterKind(_ kind: RasterFilter.Kind) -> Bool {
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels && InkChannelCommand.filters.contains(kind) }
     if !modeComponentTargets.isEmpty { return canEditModeComponents && ModeComponentEdit.filters.contains(kind) }
+    if RasterFilterEngine.pagedFilterKinds.contains(kind),document.colorMode == .rgb,
+      editingChannel==nil,!editingComponent,!geometryBusy,transformDraft==nil,!hasToneDraft,!editingMask,
+      let layer=activeLayer,!document.isImageLocked(layer.id),
+      selectedLayerIDs.isEmpty || selectedLayerIDs==[layer.id],case .raster=layer.content {
+      return layer.smartObject==nil || (try? SmartFilterEngine.renderBounds(layer,in:document)) != nil
+    }
     if kind == .shadowsHighlights {return canBeginFilter && editingChannel == nil}
     if kind.isClassicDetail {return canBeginFilter && editingChannel == nil && ClassicDetailSettings.depths(kind).contains(document.depth) && document.width<=RasterFilterEngine.maximumPixels/document.height}
     if kind.isOtherVideo {return canBeginFilter && editingChannel == nil && document.width<=RasterFilterEngine.maximumPixels/document.height}

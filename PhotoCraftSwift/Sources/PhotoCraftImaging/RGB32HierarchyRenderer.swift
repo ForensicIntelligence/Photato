@@ -13,9 +13,9 @@ enum RGB32HierarchyRenderer {
     let opaque: Bool
   }
 
-  static func composite(_ document: CraftDocument, region: IntRect) throws -> Surface? {
+  static func composite(_ document: CraftDocument, region: IntRect, facts:CompositionFacts? = nil) throws -> Surface? {
     guard !document.hasArtboards && !document.hasFrames, !document.layers.contains(where: { $0.style != nil }), document.depth == .f32,
-      let nodes = try nodes(document.children(of: nil), document: document, region: region)
+      let nodes = try nodes(document.children(of: nil), document: document, region: region,facts:facts)
     else { return nil }
     var result = try Renderer.emptyCanvas(document)
     let opaque = nodes.first?.opaque ?? false
@@ -33,7 +33,7 @@ enum RGB32HierarchyRenderer {
   }
 
   private static func nodes(
-    _ layers: [Layer], document: CraftDocument, region: IntRect
+    _ layers: [Layer], document: CraftDocument, region: IntRect, facts:CompositionFacts?
   ) throws -> [Node]? {
     var result: [Node] = []
     var index = 0
@@ -44,7 +44,7 @@ enum RGB32HierarchyRenderer {
       let firstClip = index
       while index < layers.count && layers[index].isClipped { index += 1 }
       guard layer.visible && layer.opacity > 0 else { continue }
-      guard var built = try node(layer, document: document, region: region) else { return nil }
+      guard var built = try node(layer, document: document, region: region,facts:facts) else { return nil }
       if built.pixels == nil && built.children.isEmpty { continue }
       let clips = layers[firstClip..<index].filter { $0.visible && $0.opacity > 0 }
       if !clips.isEmpty {
@@ -53,7 +53,7 @@ enum RGB32HierarchyRenderer {
         guard !layer.isGroup && layer.clipsBlendAsGroup else { return nil }
         for clip in clips {
           guard !clip.isGroup,
-            let child = try node(clip, document: document, region: region)
+            let child = try node(clip, document: document, region: region,facts:facts)
           else { return nil }
           built.clips.append(child)
         }
@@ -64,22 +64,23 @@ enum RGB32HierarchyRenderer {
   }
 
   private static func node(
-    _ layer: Layer, document: CraftDocument, region: IntRect
+    _ layer: Layer, document: CraftDocument, region: IntRect,facts:CompositionFacts?
   ) throws -> Node? {
     guard layer.affine == nil && layer.blendMode == .normal else { return nil }
-    let mask = try LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
+    let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
     let pixels: Surface?
     let children: [Node]
     let opaque: Bool
     if layer.isGroup {
       guard
         let built = try nodes(
-          document.children(of: layer.id), document: document, region: region)
+          document.children(of: layer.id), document: document, region: region,facts:facts)
       else { return nil }
       pixels = nil
       children = built
       var covered = layer.opacity == 1 && built.first?.opaque == true
-      if covered,
+      if let facts {covered=try facts.opaqueGroup(layer,firstChildOpaque:built.first?.opaque ?? false)}
+      else if covered,
         let fullMask = try LayerMaskSampler.make(layer: layer, document: document)
       {
         scan: for y in 0..<document.height {
@@ -96,7 +97,7 @@ enum RGB32HierarchyRenderer {
     } else if case .raster(let surface) = layer.content {
       pixels = surface
       children = []
-      opaque = try RGB32NormalRenderer.hasOpaqueBase(layer, document: document)
+      opaque = try facts.map {try $0.opaqueBase(layer)} ?? RGB32NormalRenderer.hasOpaqueBase(layer, document: document)
     } else {
       return nil
     }

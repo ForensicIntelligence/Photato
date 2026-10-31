@@ -1,0 +1,14 @@
+{
+  "author": "Photato project",
+  "source": "Owned PagedCompositionFixture.swift inputs, actual qualified Source13 Core/Imaging renderer objects linked before rebuild.",
+  "reference_scope": "Prior native behavior, not Adobe/Photoshop pixel equivalence.",
+  "cases": 24,
+  "depths": [
+    8,
+    16,
+    32
+  ],
+  "license": "MIT OR Apache-2.0, same as the native project",
+  "capture": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/prior288-composition01",
+  "failed_attempt": "compile01 fixture tried read-only isClipped/clipsBlendAsGroup accessors; compile02 writes stored fields. No reference bytes or algorithms were changed."
+}

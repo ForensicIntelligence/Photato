@@ -2,6 +2,8 @@ import Foundation
 
 public enum RasterFilterEngine {
   public static let maximumPixels = 8_388_608
+  public static var pagedFilterKinds:[RasterFilter.Kind] {PagedRasterFilters.kinds}
+  public static var maximumPagedScratchPlaneBytes:Int {PagedRasterFilters.maximumPlaneBytes}
   typealias Sample = SIMD4<Double>
 
   public static func apply(_ filter: RasterFilter, to layerID: UUID, in document: inout CraftDocument) throws {
@@ -10,8 +12,12 @@ public enum RasterFilterEngine {
       !document.isLocked(layerID), !document.isImageLocked(layerID),
       case .raster(let source) = document.layers[index].content
     else { throw CraftError.invalid("Filters require an unlocked pixel layer.") }
-    guard source.width <= maximumPixels / source.height else {
-      throw CraftError.unsupported("This filter supports layers up to 8,388,608 pixels.")
+    if source.width > maximumPixels/source.height {
+      guard pagedFilterKinds.contains(filter.kind),document.colorMode == .rgb,
+        document.inkMode==nil,document.restrictedMode==nil else {
+        throw CraftError.unsupported("This filter or mode retains its 8,388,608-pixel preparation limit.")
+      }
+      try PagedRasterFilters.apply(filter,to:layerID,in:&document);return
     }
     if let settings=filter.tone {try ClassicToneEngine.apply(.init(settings,layerID:layerID),to:&document);return}
     if let settings=filter.classicDetail {try ClassicDetailEngine.apply(settings,kind:filter.kind,source:source,layerID:layerID,index:index,document:&document);return}

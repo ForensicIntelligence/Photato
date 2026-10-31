@@ -5,14 +5,15 @@ final class GroupRenderCache {
   let inputTarget: UUID?
   let region: IntRect?
   let video: VideoTransitionRenderContext?
+  let facts: CompositionFacts?
   let disabledTransitions: Set<UUID>
-  func suppressing(_ id:UUID)->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,region:region,video:video,disabledTransitions:disabledTransitions.union([id]))}
-  func fullCanvas()->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,video:video,disabledTransitions:disabledTransitions)}
+  func suppressing(_ id:UUID)->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,region:region,video:video,disabledTransitions:disabledTransitions.union([id]),facts:facts)}
+  func fullCanvas()->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,video:video,disabledTransitions:disabledTransitions,facts:facts)}
   func crossfade(from id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind == .crossFade && $0.transition.previousLayerID==id && !disabledTransitions.contains($0.transition.id)}}
   func fade(on id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind != .crossFade && $0.transition.layerID==id && !disabledTransitions.contains($0.transition.id)}}
-  init(inputTarget: UUID? = nil, region: IntRect? = nil, video:VideoTransitionRenderContext?=nil, disabledTransitions:Set<UUID>=[]) {
+  init(inputTarget: UUID? = nil, region: IntRect? = nil, video:VideoTransitionRenderContext?=nil, disabledTransitions:Set<UUID>=[],facts:CompositionFacts?=nil) {
     self.inputTarget = inputTarget
-    self.region = region;self.video=video;self.disabledTransitions=disabledTransitions
+    self.region = region;self.video=video;self.disabledTransitions=disabledTransitions;self.facts=facts
   }
   func bounds(_ d: CraftDocument) -> IntRect {
     (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
@@ -92,7 +93,7 @@ extension Renderer {
           normal.blendMode = .normal
           output = try blendCanvas(clipped, over: before, layer: normal, in: d, region: region)
         }
-        output = try mixGroup(before: before, after: output, layer: base, in: d, region: region)
+        output = try mixGroup(before: before, after: output, layer: base, in: d, region: region, facts:cache.facts)
       } else if case .adjustment = base.content {
         var full = base
         full.opacity = 1
@@ -100,12 +101,12 @@ extension Renderer {
         full.maskProperties = nil
         full.vectorMask = nil
         var adjusted = try compositeFlat(
-          [full], in: d, over: output, inputTarget: cache.inputTarget, region: cache.region)
+          [full], in: d, over: output, inputTarget: cache.inputTarget, region: cache.region, facts:cache.facts)
         adjusted = try compositeClips(clips, onto: adjusted, in: d, cache: cache)
-        output = try mixGroup(before: output, after: adjusted, layer: base, in: d, region: region)
+        output = try mixGroup(before: output, after: adjusted, layer: base, in: d, region: region, facts:cache.facts)
       } else if clips.isEmpty && !base.isGroup {
         output = try compositeFlat(
-          [base], in: d, over: output, inputTarget: cache.inputTarget, region: cache.region)
+          [base], in: d, over: output, inputTarget: cache.inputTarget, region: cache.region, facts:cache.facts)
       } else {
         let source = try isolatedContent(base, in: d, cache: cache)
         if base.clipsBlendAsGroup {
@@ -150,7 +151,7 @@ extension Renderer {
         try backdrop.mapPixels(in: region) { _, _, _ in board.background }
       }
       pixels = try compositeStack(d.children(of: layer.id), in: d, over: backdrop,
-        cache: GroupRenderCache(inputTarget: cache.inputTarget, region: region))
+        cache: GroupRenderCache(inputTarget: cache.inputTarget, region: region,facts:cache.facts))
     } else {
       pixels = try compositeStack(d.children(of: layer.id), in: d, over: emptyCanvas(d), cache: cache)
     }
@@ -162,7 +163,7 @@ extension Renderer {
   {
     if layer.isGroup {
       var result = try rawGroupContent(layer, in: d, cache: cache)
-      let sampler = try LayerMaskSampler.make(layer: layer, document: d)
+      let sampler = try cache.facts.map {try $0.mask(layer,region:cache.region)} ?? LayerMaskSampler.make(layer: layer, document: d)
       if let sampler {
         try result.mapPixels(in: cache.bounds(d)) { x, y, p in
           var p = p
@@ -176,7 +177,7 @@ extension Renderer {
     source.opacity = 1
     source.blendMode = .normal
     return try compositeFlat(
-      [source], in: d, over: emptyCanvas(d), inputTarget: cache.inputTarget, region: cache.region)
+      [source], in: d, over: emptyCanvas(d), inputTarget: cache.inputTarget, region: cache.region, facts:cache.facts)
   }
   static func compositeClips(
     _ clips: [Layer], onto base: Surface, in d: CraftDocument, cache: GroupRenderCache
@@ -263,11 +264,12 @@ extension Renderer {
     return encoded(Pixel(rgb.x, rgb.y, rgb.z, alpha), d)
   }
   static func mixGroup(
-    before: Surface, after: Surface, layer: Layer, in d: CraftDocument, region: IntRect
+    before: Surface, after: Surface, layer: Layer, in d: CraftDocument, region: IntRect,
+    facts:CompositionFacts? = nil
   ) throws
     -> Surface
   {
-    let mask = try LayerMaskSampler.make(layer: layer, document: d)
+    let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: d)
     if layer.opacity == 1 && mask == nil { return after }
     var result = before
     for y in region.y..<region.y + region.height {

@@ -3,7 +3,8 @@ import PhotoCraftCore
 /// The measured RGB32 Normal raster-stack path. Other layer kinds, blend modes,
 /// groups and transforms continue through the general renderer.
 enum RGB32NormalRenderer {
-  static func composite(_ document: CraftDocument, over backdrop: Surface, region: IntRect)
+  static func composite(_ document: CraftDocument, over backdrop: Surface, region: IntRect,
+    facts:CompositionFacts? = nil)
     throws -> Surface?
   {
     guard !document.layers.contains(where: { $0.style != nil }), document.depth == .f32,
@@ -17,11 +18,11 @@ enum RGB32NormalRenderer {
       })
     else { return nil }
     var output = backdrop
-    let opaqueBase = try hasOpaqueBase(layers.first, document: document)
+    let opaqueBase = try facts.map {try $0.opaqueBase(layers.first)} ?? hasOpaqueBase(layers.first, document: document)
     for (index, layer) in layers.enumerated() {
       try Task.checkCancellation()
       guard case .raster(let source) = layer.content else { continue }
-      let mask = try LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
+      let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
       // Photoshop's opaque and alpha-bearing stack paths expand opacity bytes
       // differently. Keep the model value canonical; change only evaluation.
       let opacity = expandedOpacity(layer.opacity, opaque: opaqueBase)

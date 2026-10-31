@@ -1,0 +1,89 @@
+{
+  "step": 292,
+  "status": "Software qualified direct eight-filter RGB subset; full Photoshop/native/platform/capacity gates open",
+  "run": "artifacts/runs/20261031T113055Z-292-paged-basic-filters",
+  "source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json",
+  "module_source02": {
+    "tests": 4,
+    "failed": 0,
+    "seconds": 14.812,
+    "build_seconds": 107.62
+  },
+  "prior_native": {
+    "vectors": 48,
+    "wide_band_hashes": 30,
+    "provenance": "Tests/PhotoCraftCoreTests/Fixtures/paged-filters/provenance.json",
+    "wide_qualification": "Actual291 Box/Gaussian filtering of6000x1000 input; first960 rows safely precede the bottom boundary/kernel support. New6000x1500(9MP) outputs compare every Float32 byte in those bands. Full-width reduction starts/order and source patterns are identical.",
+    "not_photoshop_output": true
+  },
+  "algorithm": "Same premultiplied Float64 reduction order, three running-box Gaussian passes, original layer-edge clamps, global Noise counter, selection/alpha protection and final depth/storage quantization. Completed unlinked checked scratch planes are mapped readonly; output uses2048x64 patches.",
+  "api": "Existing native dialogs/filter.apply and mapped Adobe basic filter actionJSON share the public engine. Per-kind large direct RGB limits are discoverable; generic8MP/Smart Filter/channel/mode/other-family/job/output limits remain independent. No new commands/routes.",
+  "remaining": [
+    "Native/Photoshop acceptance after unlock; preserve normal283 and artwork.",
+    "Smart Filters and other large filter families/modes/channels and combined professional workflow capacity.",
+    "Full Photoshop kernels, ranges/defaults/descriptors, dense90GP/performance/cumulative scratch and supported-platform qualification, earlier Intel full-suite failures."
+  ],
+  "goal_complete": false,
+  "native_acceptance": false,
+  "intel_source03": {
+    "tests": 5,
+    "failed": 0,
+    "seconds": 19.604,
+    "log": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/intel01/component03-run.log",
+    "sha256": "cd502e3d2ca5600520665ab467256f264bd7eb265b3d977e4ee8abd983fed8d0",
+    "source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json",
+    "translated_not_physical": true
+  },
+  "focused": {
+    "tests": 59,
+    "failed": 0,
+    "seconds": 17.069,
+    "log": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/focused01.log",
+    "sha256": "ddc5f1378a4a47f2fd73dc286165af322990f881c85e09357bf0b67f93565847",
+    "source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json"
+  },
+  "full": {
+    "tests": 2930,
+    "failed": 0,
+    "seconds": 349.302,
+    "log": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/full01.log",
+    "sha256": "09f14bc9c1f2a9137fec3da9b663656521e4a4cc5837f9dd390dc208da44ad30",
+    "source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json"
+  },
+  "integrity": {
+    "inputs": 2823,
+    "frozen_members": 2823,
+    "frozen_sha256": "21313f604898363c230e7808464a6623656bef825f3255698233b98421e6c593",
+    "protected_assets": 30,
+    "tested_binary_sha256": "adeee596a05a4a3083c706bbb3222f0547234101b06aaca051454c1ac6458c8b",
+    "candidate_sha256": "0990da5989e8d58b2bcf11d74e679f2aa898cc8213471eaba08927d65185c7b8",
+    "zip_sha256": "b03d4e95ed176dac37a003f83d072d42adc4637b74a564d86ce4e4e6d3799979",
+    "normal_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Filter-Candidate-292-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "0990da5989e8d58b2bcf11d74e679f2aa898cc8213471eaba08927d65185c7b8",
+    "tested_binary_sha256": "adeee596a05a4a3083c706bbb3222f0547234101b06aaca051454c1ac6458c8b",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Filter-Candidate-292.zip",
+    "zip_sha256": "b03d4e95ed176dac37a003f83d072d42adc4637b74a564d86ce4e4e6d3799979",
+    "zip_bytes": 39028199,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate292-check-ebdf1yqv/Photato-Filter-Candidate-292-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access_evidence": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/native-access01.json",
+  "native_access_status": "Mac locked; candidate unlaunched, normal283 unchanged. Manual unlock request remains pending.",
+  "diary_verification": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/diary-verification01.json",
+  "dashboard_snapshot": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/dashboard-status01.json"
+}

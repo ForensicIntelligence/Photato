@@ -22,6 +22,10 @@ extension SmartObject {
   static var apiCapabilities: [String: Any] {
     ["embedded": true, "linked": false, "maximumSourceBytes": maximumSourceBytes,
       "maximumSourcePixels": SmartObjectIO.maximumCanvasPixels,
+      "largeRGBSources":["logicalMaximumPixels":SmartObjectIO.maximumPagedRGBPixels,
+        "maximumDimension":Surface.maxDimension,"maximumOwnedContentBytes":256*1_024*1_024,
+        "maximumEncodedSourceBytes":maximumSourceBytes,
+        "limits":"Paged native/RGB input and editable conversion retain independent format, source-byte, owned-heap and physical scratch limits. maximumSourcePixels remains the common non-RGB/PDF preparation limit; dense maximum capacity and full Photoshop/platform parity remain open."],
       "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",

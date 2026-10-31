@@ -1,0 +1,10 @@
+{
+  "producer": "Actual checkpoint292 optimized arm64 SmartFilterEngine before rebuilding Core.",
+  "kind": "Prior-native regression references, not Photoshop output.",
+  "owned_input": "Authored131x69 pixels, retained editable native source bytes, affine placement, eight basic filters, three depths, plain and multi-filter fractional-mask/opacity/Screen-or-Dissolve variants.",
+  "vectors": 48,
+  "fixture_source_sha256": "3559c5b1befc915901069769b27cf9922eae3680275755d0620aeeadf30d8fdb",
+  "previous_source_manifest": "artifacts/runs/20261031T113055Z-292-paged-basic-filters/source03.json",
+  "capture_run": "artifacts/runs/20261031T121118Z-293-paged-smart-filters/prior292",
+  "license": "MIT OR Apache-2.0; authored data and outputs."
+}

@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 
 public enum SmartObjectIO {
   public static let maximumCanvasPixels = 8_388_608
+  public static let maximumPagedRGBPixels = Surface.maxPixels
   @TaskLocal static var nesting = 0
   public static func withNesting<T>(_ operation: () throws -> T) throws -> T {
     guard nesting < 8 else { throw CraftError.unsupported("Embedded Smart Object nesting exceeds eight levels.") }
@@ -16,7 +17,7 @@ public enum SmartObjectIO {
         throw CraftError.invalid("Embedded source exceeds 64 MiB.")
       }
       if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
-        let document = try NativeArchive.decode(data, rasterByteLimit: 256 * 1_024 * 1_024)
+        let document = try NativeArchive.decodePaged(data, heapByteLimit: 256 * 1_024 * 1_024)
         try check(document); return document
       }
       if RawSourceIO.recognizes(data) { return try RawSourceIO.open(data,fileName:fileName) }
@@ -29,8 +30,9 @@ public enum SmartObjectIO {
         let w = properties[kCGImagePropertyPixelWidth] as? Int, let h = properties[kCGImagePropertyPixelHeight] as? Int {
         width = w; height = h
       } else { throw CraftError.unsupported("Unsupported embedded image format.") }
-      guard width > 0, height > 0, width <= maximumCanvasPixels / height else {
-        throw CraftError.unsupported("Embedded source exceeds 8,388,608 pixels.")
+      guard width > 0, height > 0,width<=Surface.maxDimension,height<=Surface.maxDimension,
+        width <= maximumPagedRGBPixels / height else {
+        throw CraftError.unsupported("Embedded source exceeds the native canvas extent.")
       }
       let document = try RasterIO.read(data, name: (fileName as NSString).deletingPathExtension)
       try check(document); return document
@@ -46,9 +48,10 @@ public enum SmartObjectIO {
   }
   public static func check(_ document: CraftDocument) throws {
     try document.validate()
-    guard document.width <= maximumCanvasPixels / document.height,
+    let pagedRGB=document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil
+    guard (pagedRGB || document.width <= maximumCanvasPixels / document.height),
       document.estimatedBytes <= 256 * 1_024 * 1_024 else {
-      throw CraftError.unsupported("Smart Object editing supports 8,388,608 source pixels and 256 MiB decoded content.")
+      throw CraftError.unsupported("Smart Objects require at most256 MiB owned content; non-RGB sources retain8,388,608-pixel admission. Encoded sources retain the64 MiB limit.")
     }
   }
   public static func embedded(document: CraftDocument, in parent: CraftDocument,
