@@ -1,6 +1,6 @@
 {
   "step": 294,
-  "status": "private-source-backup-prepared-not-yet-published",
+  "status": "source-published-receipt-verification-recorded-separately",
   "qualified_previous": "docs/WORKING_CHECKPOINT_293.json",
   "native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
   "source_manifest": "docs/SOURCE_SNAPSHOT_293.json",
@@ -14,12 +14,29 @@
   "new_native_tests": false,
   "native_functions_unchanged": true,
   "api_review": "Source/record backup only; all195 typed operations and both interfaces unchanged. Source293 API behavior and its qualification remain the current basis.",
-  "increment_complete": false,
+  "increment_complete": true,
   "goal_complete": false,
   "next": [
     "Native/Photoshop visual acceptance after manual unlock; retain normal283 and owned artwork.",
     "Other large filter families/modes/Warp/feather, large PSD/PSB Smart Filter cache/mask interchange and resource-job/output limits.",
     "Embedded source64MiB/owned256MiB, cross-depth/profile preparation, dense90GP/cumulative scratch/RSS/throughput/frame rate and supported-platform qualification; earlier full Intel failures stay open.",
     "Full Photoshop byte/default/shortcut/preferences parity and remaining major workflows."
-  ]
+  ],
+  "source_commit": "fbb9edaf9841930a443568d33a4fcec14de752b4",
+  "published_source_commit": "fbb9edaf9841930a443568d33a4fcec14de752b4",
+  "published_source_step": 293,
+  "publication_receipt": "docs/SOURCE_PUBLICATION_294.json",
+  "new_source_push": true,
+  "full_workflow_complete": false,
+  "completed_this_increment": [
+    "Complete software-qualified source293 published to private GitHub main; included inputs, tree, original Rust, history and visibility verified."
+  ],
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/294-final02-refresh.log",
+    "check": "artifacts/development-history-audit/294-final02-check.log"
+  },
+  "recorded_at_utc": "2026-10-31T13:08:58.283221+00:00",
+  "documentation_followup_output": "artifacts/development-history-audit/294-final02",
+  "diary_verification": "artifacts/runs/20261031T130447Z-294-source-publication/diary-verification02.json",
+  "dashboard_snapshot": "artifacts/runs/20261031T130447Z-294-source-publication/dashboard-status02.json"
 }
