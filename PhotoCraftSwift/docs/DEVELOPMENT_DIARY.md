@@ -1674,8 +1674,8 @@ The record preserves compiler migration failures, a reproduced worker-stack SIGB
 
 Separate signed candidates are preserved. Normal283/artwork remain unchanged; native/Photoshop acceptance awaits manual unlock. General large rich-stack/mode/proof/onion composition, explicit paged-coverage Actions, compact one-byte storage (current tiles use16-byte RGBA Float samples), Adobe descriptors/UXP, full dense capacity/frame rate and supported-platform qualification remain open. The master goal stays active; no source publication or distribution release is claimed. [Evidence](PAGED_SELECTION_REFERENCES.json) · [Native64](NATIVE_ARCHIVE_FORMAT_64.json) · [Detailed record](DEVLOG.md#dev-step-288).
 
-## 2026-10-31 — Step289: save the qualified source to private GitHub (in progress)
+## 2026-10-31 — Step289: save the qualified source to private GitHub
 
-Prepare the complete native source from Source13, which passed2,912 full optimized arm64 tests,37 focused workflows and14 translated Intel component tests. Preserve the original Rust snapshot/history, licenses, Xcode project, tests and fixture provenance. Builds, generated models/caches, local runtime evidence and working documents stay excluded.
+Published and independently verified the complete native source from Source13, which passed 2,912 full optimized arm64 tests, 37 focused workflows and 14 translated Intel component tests. Preserve the original Rust snapshot/history, licenses, Xcode project, tests and fixture provenance. Builds, generated models/caches, local runtime evidence and working documents stay excluded.
 
-This delivers source only; the Mac remains locked for native acceptance. Normal283 and retained artwork stay unchanged. The repository remains private until release day, and full Photoshop/capacity/platform qualification stays open. The verified publication receipt follows after push.
+This delivers source only; the Mac remains locked for native acceptance. Normal283 and retained artwork stay unchanged. The repository remains private until release day, and full Photoshop/capacity/platform qualification stays open. Source commit: [`8556551`](https://github.com/ForensicIntelligence/Photato/commit/85565519fdff911a6a16fbda6739cd173d27970b). [Verified receipt](SOURCE_PUBLICATION_289.json).

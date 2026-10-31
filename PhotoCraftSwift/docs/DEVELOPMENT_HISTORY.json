@@ -6251,9 +6251,9 @@
     },
     {
       "id": "dev-step-289",
-      "title": "2026-10-31 \u2014 Publish qualified source288 (in progress)",
+      "title": "2026-10-31 \u2014 Publish qualified source288",
       "link": "DEVLOG.md#dev-step-289",
-      "section_sha256": "2da5db4d5fde34b4556c940d9fa602da75106f4b768e566c49b9152e71260ed2",
+      "section_sha256": "f3b7a4d84b327946481c13063f518a875ce0c6c30a6145c0329c9b6355473a4d",
       "references_explicitly_named_in_entry": []
     }
   ],
@@ -538545,6 +538545,114 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/dashboard-status01.json",
+      "sha256": "45c79fd20ef1626259f7754760f959250dec4cccf51f603649400b09709481ca",
+      "bytes": 5643922,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/diary-verification01.json",
+      "sha256": "e0c9e6dd47b3ce24194b78cdd97eb28ef9e553cebeebc47013324b9d2e89ceaf",
+      "bytes": 474,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/public-before01/master/assets/diary-provenance.json",
+      "sha256": "1e470defd410ba892e89bfbf904a2c393f7e6cd4a961324e27efd837e8b20a80",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/public-before01/product/assets/diary-provenance.json",
+      "sha256": "1e470defd410ba892e89bfbf904a2c393f7e6cd4a961324e27efd837e8b20a80",
+      "bytes": 1121,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/qualification01.json",
+      "sha256": "f56d9225af6470e51907a668a8abff40f4940c3c04da09928022037798d2f8c5",
+      "bytes": 407,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/remote-verification01.json",
+      "sha256": "1c986e8fe75fc0cac803495c2220d030940d67faf02d3cc21cb3ec2ea6fc0a38",
+      "bytes": 426,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-commit-message01.txt",
+      "sha256": "084f7af7768eef67b63f1f4b03b33235a87b012ad65affc253439a00ff5f3161",
+      "bytes": 516,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-commit01.json",
+      "sha256": "60ad9ad837aa9ed611aea4b73b8b651ad615ef0851c13b9216685981f5d61ecb",
+      "bytes": 256,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-commit01.log",
+      "sha256": "43d217f957cc311c0cb18b0618c9b2eb63cc7d4246ec8a18b2420df7c14eb303",
+      "bytes": 23433,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-push01-exit.json",
+      "sha256": "e89df0eae5ec7db81135aed16463968955c578bcc4f2ec43172eff351f080c17",
+      "bytes": 17,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-push01.log",
+      "sha256": "1e0b8bb2485f7216b9e0f2b0ad27208e2a8bdb937a3062c6162f3fe5e51fe262",
+      "bytes": 89,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/source-verification01.json",
+      "sha256": "58dadfcee8c822bca69b24c7c4a3c9ef65f6e63e42af73158bf3b4d11c0db9e4",
+      "bytes": 221,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/staged-changes01.txt",
+      "sha256": "baf77b419f44276154ab8ccded8f41bb97c2466c9256d63b93f7af1f38a72bba",
+      "bytes": 26230,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/staged-scan01-whitespace.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261031T093100Z-289-source-publication/staged-scan01.json",
+      "sha256": "18c01191c96b8bf6e9d4c72c8218bdda3bf502641ee0496376b875544bf0301a",
+      "bytes": 481,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/selection-development-tests.log",
       "sha256": "5d065fca855deba6c24aa955d6c86ee0dccbce7da91e75f0387da3f1883c0fcc",
       "bytes": 23595,
@@ -541216,14 +541324,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "f2494239e39de59e1d5a2da7bd3dcb7414d68ae1b8ad673596c98bfd728de853",
-      "bytes": 321537,
+      "sha256": "984a7b6ef39fe762fb50ff8b0e881a64a66ef414b2a2839959590d235d2b2b1e",
+      "bytes": 321676,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "24804fe57a71d3dfcadfa2d9085ff113a10b4c93cd5eb6daee510695d6342a2a",
-      "bytes": 2287915,
+      "sha256": "0122cccd40fa72f1bc8a3f00289bd5e98ba59563f977eebeecc7733a78b80e65",
+      "bytes": 2290058,
       "rolling_current_snapshot": false
     },
     {
@@ -541644,6 +541752,12 @@
       "path": "docs/FUNCTION_PHASES_288.json",
       "sha256": "0f5245486d6a6ba2a805826cb2e3c480d739c7467412cd8054e340a25d2227d7",
       "bytes": 286245,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/FUNCTION_PHASES_289.json",
+      "sha256": "12c15f8a9335dc6b3c4ea0bc12e38c3c48ec4cc19f4be48f2ffba9ab0a904dd6",
+      "bytes": 286524,
       "rolling_current_snapshot": false
     },
     {
@@ -542092,8 +542206,8 @@
     },
     {
       "path": "docs/OPEN_SOURCE_RELEASE.md",
-      "sha256": "6f840a7a402280df84f9a1605ad04f65b9788514ae43f0b9d6fbc32bf599ae9d",
-      "bytes": 6269,
+      "sha256": "b1f39f59ce1c8eff54835971021fb581515814a035795c532a1e413f779bca81",
+      "bytes": 6270,
       "rolling_current_snapshot": false
     },
     {
@@ -542368,8 +542482,8 @@
     },
     {
       "path": "docs/PORTING_PLAN.md",
-      "sha256": "f8af30299215d0a401781e041050eae7d8be9aebc0be7ac05112d71a7b843b4c",
-      "bytes": 158148,
+      "sha256": "e666532e06a3b6e55a9d519926baabbad8620853d157d1ecbf39dc48527f035e",
+      "bytes": 158966,
       "rolling_current_snapshot": false
     },
     {
@@ -542673,6 +542787,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_289.json",
+      "sha256": "a186d72d001558eeb62a693be0cb29222252e93ef2e3de0cf5fd23d8d3ec7ca1",
+      "bytes": 1062,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -542722,8 +542842,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "8ca908b4f386f41e0fb7d1d96de8e9f31907de24f1d9695f561add7d20923d02",
-      "bytes": 240193,
+      "sha256": "8625efa0f27cf665dcb4cff686f7d0cc75cac8586436fdb59ff481a1a655f32d",
+      "bytes": 241011,
       "rolling_current_snapshot": false
     },
     {
@@ -543280,8 +543400,8 @@
     },
     {
       "path": "docs/WORKING_CHECKPOINT_289.json",
-      "sha256": "e9969664ab7d44dc6befdde34908fbffc709c046f6dc363bed4b9517df0345e2",
-      "bytes": 780,
+      "sha256": "8bfb0a647aa7a74ca903b2fa7ff98cb414eb35ce76cebb94e0b34066eabe5e36",
+      "bytes": 2250,
       "rolling_current_snapshot": false
     },
     {
@@ -543329,8 +543449,8 @@
   ],
   "counts": {
     "milestones": 289,
-    "evidence_files": 55799,
-    "logs": 28234,
+    "evidence_files": 55816,
+    "logs": 28237,
     "missing_explicit_references": 0
   }
 }

@@ -1,19 +1,45 @@
 {
   "step": 289,
-  "status": "source-publication-preparation",
+  "status": "source-published-verified",
   "run": "artifacts/runs/20261031T093100Z-289-source-publication",
   "source_checkpoint": 288,
   "qualified_software_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
   "qualified_previous": "docs/ACTIVE_CHECKPOINT_283.json",
   "source_inputs": 2698,
   "repository_private": true,
-  "increment_complete": false,
+  "increment_complete": true,
   "goal_complete": false,
   "native_acceptance": false,
   "compiler_test_workers_live": false,
   "next": [
-    "Curate source/manifest and review staged blobs.",
-    "Push a fast-forward source commit and verify exact GitHub commit/tree/private state.",
-    "Record the receipt, refresh diary/dashboard/audit, and preserve it in a documentation-only follow-up."
-  ]
+    "General large rich-stack/mode/proof/onion composition and Photoshop preview-filter fidelity remain open.",
+    "Complete explicit paged-coverage Actions contexts and compact one-byte physical coverage storage.",
+    "Native/Photoshop acceptance after manual unlock; preserve normal283 and retained artwork.",
+    "Full dense90GP/4TiB/performance, Adobe descriptors/UXP, exact Photoshop ranges/kernels and physical supported-platform qualification; retain earlier full Intel failures."
+  ],
+  "source_commit": "85565519fdff911a6a16fbda6739cd173d27970b",
+  "published_source_commit": "85565519fdff911a6a16fbda6739cd173d27970b",
+  "published_source_step": 288,
+  "source_manifest": "docs/SOURCE_SNAPSHOT_288.json",
+  "publication_receipt": "docs/SOURCE_PUBLICATION_289.json",
+  "new_source_push": true,
+  "new_package": false,
+  "new_installation": false,
+  "native_functions_unchanged": true,
+  "normal_preview_step": 283,
+  "published_inputs": 2666,
+  "full_workflow_complete": false,
+  "completed_this_increment": [
+    "Complete software-qualified source288 published to private GitHub main; exact included inputs, tree, original Rust and visibility independently verified."
+  ],
+  "recorded_at_utc": "2026-10-31T09:35:31.662273+00:00",
+  "documentation_followup": "Receipt/diary/evidence inventory prepared for a separate documentation-only commit; remote verification retained separately after push.",
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T093100Z-289-source-publication/dashboard-status01.json",
+    "stale": false,
+    "warnings": 0,
+    "latest_milestone": 289,
+    "native_checkpoint": 283
+  },
+  "diary_evidence": "artifacts/runs/20261031T093100Z-289-source-publication/diary-verification01.json"
 }
