@@ -134,6 +134,11 @@ struct AutomationResponse: Sendable {
   private var listener: NWListener?
   private var connections: [UUID: AutomationHTTPConnection] = [:]
   private(set) var port: UInt16?
+  private let connectionTimeout: Duration
+
+  init(connectionTimeout: Duration = .seconds(15)) {
+    self.connectionTimeout = connectionTimeout
+  }
 
   func start(onState: @escaping @MainActor (UInt16?, String?) -> Void, handler: @escaping Handler)
     throws
@@ -166,7 +171,8 @@ struct AutomationResponse: Sendable {
           return
         }
         let id = UUID()
-        let client = AutomationHTTPConnection(connection: connection, port: port, handler: handler)
+        let client = AutomationHTTPConnection(connection: connection, port: port,
+          connectionTimeout: self.connectionTimeout, handler: handler)
         { [weak self] in
           self?.connections.removeValue(forKey: id)
         }
@@ -189,6 +195,7 @@ struct AutomationResponse: Sendable {
 @MainActor private final class AutomationHTTPConnection {
   let connection: NWConnection
   let port: UInt16
+  let connectionTimeout: Duration
   let handler: AutomationHTTPServer.Handler
   let onFinish: @MainActor () -> Void
   var data = Data()
@@ -196,22 +203,29 @@ struct AutomationResponse: Sendable {
   var timeout: Task<Void, Never>?
   var work: Task<Void, Never>?
   init(
-    connection: NWConnection, port: UInt16, handler: @escaping AutomationHTTPServer.Handler,
+    connection: NWConnection, port: UInt16, connectionTimeout: Duration,
+    handler: @escaping AutomationHTTPServer.Handler,
     onFinish: @escaping @MainActor () -> Void
   ) {
     self.connection = connection
     self.port = port
+    self.connectionTimeout = connectionTimeout
     self.handler = handler
     self.onFinish = onFinish
   }
   func start() {
     connection.start(queue: .main)
+    armTransferTimeout()
+    receive()
+  }
+  private func armTransferTimeout() {
+    timeout?.cancel()
     timeout = Task { [weak self] in
-      try? await Task.sleep(for: .seconds(15))
+      guard let duration = self?.connectionTimeout else { return }
+      try? await Task.sleep(for: duration)
       guard !Task.isCancelled else { return }
       self?.finish()
     }
-    receive()
   }
   func receive() {
     connection.receive(minimumIncompleteLength: 1, maximumLength: 16_384) {
@@ -230,6 +244,10 @@ struct AutomationResponse: Sendable {
               throw AutomationFailure(
                 status: 403, message: "Only same-origin local clients are accepted.")
             }
+            // Framing/delivery deadlines must not cancel valid long-running native work.
+            // Server stop still cancels the work through finish().
+            self.timeout?.cancel()
+            self.timeout = nil
             self.work = Task { [weak self] in
               guard let self, !self.finished else { return }
               let response = await self.handler(request)
@@ -253,6 +271,7 @@ struct AutomationResponse: Sendable {
   func send(_ response: AutomationResponse) {
     guard !finished else { response.didSend?(false); return }
     pendingDelivery = response.didSend
+    armTransferTimeout()
     connection.send(
       content: response.wire,
       completion: .contentProcessed { [weak self] error in

@@ -15,6 +15,8 @@ extension Command {
       return surface
     }
     switch self {
+    case .mergeLayers(let ids,let operation):
+      try LayerMerge.apply(operation,layerIDs:ids,to:&d)
     case .addGradientFill(var layer, let createMask):
       guard case .gradientFill(let fill) = layer.content else {
         throw CraftError.invalid("Expected a gradient fill layer.")

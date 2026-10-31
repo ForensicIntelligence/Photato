@@ -14,8 +14,8 @@ public struct RenderSnapshot: Sendable {
 
 extension Renderer {
   /// Reuses pixels only when every compositing input outside the damaged region is unchanged.
-  /// Current adjustments are pointwise. A future spatial adjustment must expand its dependency
-  /// footprint or opt out here before it can participate in incremental composition.
+  /// Neighborhood adjustments opt out of local reuse because a changed input can affect
+  /// pixels outside the damaged region.
   public static func render(_ d: CraftDocument, reusing previous: RenderSnapshot? = nil) throws
     -> RenderSnapshot
   {
@@ -91,6 +91,8 @@ extension Renderer {
       if case .adjustment(let a) = after.content {
         // Exhaustive switch deliberately makes any new adjustment reconsider locality.
         switch a {
+        case .modern(let modern):
+          if modern.needsNeighborhood, old != d { return .full }
         case .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup, .tonalSteps, .gradientMap, .exposure,
           .brightnessContrast, .saturation, .invert, .grayscale:
           break

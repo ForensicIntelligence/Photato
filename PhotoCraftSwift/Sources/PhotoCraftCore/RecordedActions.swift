@@ -194,6 +194,7 @@ public enum ActionOperation: Codable, Sendable {
     case .newLayer(let v, let below): return .newPixelLayer(v, below: below)
     case .newGroup(let v, let children, let below): return .newGroup(v, children: try children.map(id), below: below)
     case .addContent(let name, let content):
+      if case .adjustment(.modern(let value))=content {return .addLayer(try value.layer(in:d,name:name))}
       switch content { case .adjustment, .text, .shape: return .addLayer(Layer(name: name, content: content)); default: throw CraftError.unsupported("Only adjustment, text and shape content can be added by an action.") }
     case .delete(let t): return .deleteLayers(try ids(t))
     case .duplicate(let t, let name): return .duplicateLayers(try ids(t), name: name)
@@ -285,6 +286,8 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       }
       if case .adjustmentBrush(let value)=step.operation {try value.request.validate()}
       if case .replaceAdjustment(_,let value)=step.operation {try value.validate()}
+      if case .adjustment(_,let value)=step.operation {try value.validate()}
+      if case .addContent(_, .adjustment(.modern(let value)))=step.operation {try value.validate()}
     }
     for step in steps { if case .stroke(_,let points,let brush,_) = step.operation { try BrushPainter.validate(brush,points:points) } }
   }

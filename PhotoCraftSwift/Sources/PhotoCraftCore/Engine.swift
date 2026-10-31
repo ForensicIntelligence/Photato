@@ -236,6 +236,7 @@ public enum Command: Sendable {
     case .applyAdjustment(_, .hueSaturation): "Hue/Saturation"
     case .applyAdjustment(_, .colorLookup): "Color Lookup"
     case .applyAdjustment(_, .classic(let value)): value.kind.title
+    case .applyAdjustment(_, .modern(let value)): value.kind.title
     case .applyAdjustment(_, .colorBalance): "Color Balance"
     case .applyAdjustment(_, .gradientMap): "Gradient Map"
     case .applyAdjustment(_, .tonalSteps(let settings)): settings.kind.rawValue
@@ -288,7 +289,10 @@ public enum Command: Sendable {
     case .channel(let command):try command.apply(to:&d)
     case .inkChannel(let command):try command.apply(to:&d)
     case .smartFilterMask(let id,let command):try SmartFilterEngine.editMask(command,on:id,in:&d)
-    case .addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate:try applyNestedPrimitive(to:&d)
+    case .applyAdjustment(let id,let adjustment):try PixelCommandEngine.adjust(id,adjustment,in:&d)
+    case .applyFilter(let id,let filter):try PixelCommandEngine.filter(id,filter,in:&d)
+    case .smartFilters(let id,let stack):try PixelCommandEngine.stack(id,stack,in:&d)
+    case .mergeLayers,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate:try applyNestedPrimitive(to:&d)
     default:try applyPrimitive(to:&d)
     }
     if hadAnimation, d.animation == nil {
@@ -328,6 +332,7 @@ public enum Command: Sendable {
       return s
     }
     switch self {
+    case .mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
@@ -336,8 +341,6 @@ public enum Command: Sendable {
       try content.paste(into: &d, placement: placement, center: center)
     case .layerVia(let id, let operation):
       try LayerVia.apply(operation, layerID: id, to: &d)
-    case .mergeLayers(let ids, let operation):
-      try LayerMerge.apply(operation, layerIDs: ids, to: &d)
     case .cut(let requested, let background):
       let ids = Set(requested)
       guard !ids.isEmpty, ids.allSatisfy({ id in d.layers.contains { $0.id == id } }) else {
@@ -866,40 +869,6 @@ public enum Command: Sendable {
         d.layers[i].style = style
         for tag in ["lfx2", "lmfx", "lrFX", "iOpa"] { d.layers[i].sourceTags?.removeValue(forKey: tag) }
       }
-    case .smartFilters(let id, let stack):
-      try SmartFilterEngine.set(stack, on: id, in: &d)
-    case .applyFilter(let id, let filter):
-      if d.layers.first(where: { $0.id == id })?.smartObject != nil {
-        try SmartFilterEngine.append(filter, to: id, in: &d)
-      } else { try RasterFilterEngine.apply(filter, to: id, in: &d) }
-    case .applyAdjustment(let id, let a):
-      try a.validate()
-      let evaluate = try a.spatialEvaluator(depth: d.depth)
-      let i = try index(id)
-      var s = try raster(i)
-      let matrix = d.layers[i].coordinateTransform
-      let before = d
-      for y in 0..<s.height {
-        try Task.checkCancellation()
-        for x in 0..<s.width {
-          let p = s.pixel(x: x, y: y)
-          let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
-          let coverage = before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
-          if coverage == 0 { continue }
-          let edited = evaluate(p, Int(floor(q.x)), Int(floor(q.y)))
-          let result: Pixel
-          if a.usesDocumentToneSpace {
-            result = LevelsTransfer.mix(p, with: edited, coverage: coverage, depth: before.depth)
-            guard result.isFinite else {
-              throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
-            }
-          } else {
-            result = p.mixing(edited, coverage: coverage)
-          }
-          s.setPixel(x: x, y: y, result)
-        }
-      }
-      d.layers[i].content = .raster(s)
     case .cropDocument(let edit):
       d = try edit.applied(to:d)
     case .crop(let r):

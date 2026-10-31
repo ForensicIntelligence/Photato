@@ -113,9 +113,10 @@ final class NativeIndexedArchiveTests:XCTestCase {
   func testBudgetsCorruptionInvalidVersionsAndPageShapesReject()throws {
     let bytes=try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:63)
     XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,heapByteLimit:0));XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,scratchByteLimit:0));XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,maximumMetadataBytes:0))
-    XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),maximumBytes:16,minimumVersion:63));XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:65))
+    XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),maximumBytes:16,minimumVersion:63));XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:66))
     let model64=try fixture(.u8),version64=try NativeArchive.encodeChunked(model64,minimumVersion:64)
     XCTAssertEqual(try NativeArchive.decodePaged(version64),model64)
+    XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(model64,minimumVersion:65)),model64)
     for at in [16,bytes.count-1,bytes.count-56] {var bad=bytes;bad[at]^=1;XCTAssertThrowsError(try NativeArchive.decodePaged(bad))}
     XCTAssertThrowsError(try NativeTilePage.encode([]));XCTAssertThrowsError(try NativeTilePage.encode([(-1,0)]));XCTAssertThrowsError(try NativeTilePage.decode(Data()))
     let page=try NativeTilePage.encode([(0,7),(1,8)]);XCTAssertEqual(try NativeTilePage.decode(page).map{$0.1},[7,8]);XCTAssertThrowsError(try NativeTilePage.decode(page+Data([0])))

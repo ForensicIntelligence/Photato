@@ -24,8 +24,11 @@ enum PagedSmartFilterStorage {
     try Task.checkCancellation()
     let implicitA=try a.reframedImplicitValue(width:1,height:1)
     let implicitB=try b.reframedImplicitValue(width:1,height:1)
-    let value=implicitOperation?(read(implicitA,0,0),read(implicitB,0,0))
-      ?? operation(read(implicitA,0,0),read(implicitB,0,0),0,0)
+    // The legacy combiner chooses one working domain from the base layer,
+    // including when a derived filter result has a different storage depth.
+    func working(_ s:Surface,_ x:Int,_ y:Int)->Pixel {a.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)}
+    let value=implicitOperation?(working(implicitA,0,0),working(implicitB,0,0))
+      ?? operation(working(implicitA,0,0),working(implicitB,0,0),0,0)
     // Spatial operations have no global default proof and visit every patch.
     let template=try a.reframedImplicitValue(width:a.width,height:a.height,
       sample:pointwise ? value:.clear,linear:a.depth == .f32)
@@ -33,7 +36,7 @@ enum PagedSmartFilterStorage {
     func append(_ rect:IntRect)throws {
       var patch=try template.reframedImplicitValue(width:rect.width,height:rect.height)
       for y in 0..<rect.height {try Task.checkCancellation();for x in 0..<rect.width {
-        let px=rect.x+x,py=rect.y+y,p=operation(read(a,px,py),read(b,px,py),px,py)
+        let px=rect.x+x,py=rect.y+y,p=operation(working(a,px,py),working(b,px,py),px,py)
         if a.depth == .f32 {patch.setLinearPixel(x:x,y:y,p)}else{patch.setPixel(x:x,y:y,p)}
       }}
       try builder.append(patch,atX:rect.x,atY:rect.y)

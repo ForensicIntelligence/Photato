@@ -23,9 +23,7 @@ struct AdobeDocumentCreation: Sendable {
     ])
     width = try image.integer("width", range: 1...32_000)
     height = try image.integer("height", range: 1...32_000)
-    guard width <= AdobeActionAssets.maximumCanvasPixels / height else {
-      throw AdobeAPIError.invalid("Creation exceeds the local 4,194,304 pixel canvas limit.")
-    }
+    try AdobeActionAssets.checkDimensions(width: width, height: height)
     let modeName = try image.fields["mode"] == nil ? "rgb" : image.string("mode")
     guard let colorMode = DocumentColorMode(rawValue: modeName) else {
       guard ["bitmap", "indexed", "hsb", "duotone", "multichannel"].contains(modeName) else {
@@ -169,7 +167,7 @@ struct AdobeDocumentCreation: Sendable {
       ],
       "allOf": [["if": ["required": ["mode"], "properties": ["mode": ["enum": ["cmyk", "lab"]]]],
         "then": ["properties": ["depth": ["enum": [8, 16]]]]]],
-      "description": "Additional runtime constraints: at most 4,194,304 pixels and 128 MiB; ICC mode/name/bytes must agree. Named profiles are linearized at 32 bits; custom 32-bit ICC must already be linear.",
+      "description": "Runtime constraints: at most 64 layers and 128 MiB resident document data; native mode, codec, source and output budgets apply independently. RGB blank canvases retain implicit samples. ICC mode/name/bytes must agree. Named profiles are linearized at 32 bits; custom 32-bit ICC must already be linear.",
     ]
   }
 }

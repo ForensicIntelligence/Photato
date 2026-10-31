@@ -1,0 +1,114 @@
+{
+  "step": 295,
+  "status": "streamed-filter-cache-interchange-software-qualified-native-and-full-parity-open",
+  "run": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches",
+  "qualified_previous": "docs/WORKING_CHECKPOINT_293.json",
+  "source_publication_previous": "docs/SOURCE_PUBLICATION_294.json",
+  "native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "working_source": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json",
+  "source_inputs": 2893,
+  "frozen_input_backup": {
+    "archive": "frozen-source06.tar.gz",
+    "sha256": "beb79837bdb83ce2335e8b6ddcf39db0bfaf1fa3c48e89c8f3082292d0184f5b",
+    "bytes": 57782669,
+    "files": 2893,
+    "inputs": 2893
+  },
+  "compiler_test_workers_live": false,
+  "goal_complete": false,
+  "increment_complete": false,
+  "native_acceptance": false,
+  "api_review": "Native PSD/PSB Save/Open and Photato import/download/local saves share streamed cache/mask/source composition; existing Adobe basic actions/resource jobs share the codec under their independent budgets. Transfer metadata records actual scope;195 typed commands unchanged, no invented Adobe route.",
+  "remaining": [
+    "Native/Photoshop visual acceptance after unlock; preserve normal preview 283 and owned artwork.",
+    "Embedded source64MiB, API64MiB transfers/128MiB decoded heap, local Adobe4MP job canvas and other output/resource budgets remain independent.",
+    "Unsupported descriptors/modes/mask options, broader large workflows, full Photoshop byte/default/shortcut/preferences/format parity.",
+    "Dense90GP/4TiB/cumulative scratch/RSS/throughput/frame-rate and supported-platform/physical Intel/macOS14/26 qualification; earlier full Intel failures remain open."
+  ],
+  "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json",
+  "intel_source04": {
+    "tests": 5,
+    "failed": 0,
+    "seconds": 63.994,
+    "log": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/intel01/component04-run.log",
+    "sha256": "f9db7303fd4a8d5f22aaf0d5b3175cd5998b921d66d39b288a21611723121ce7",
+    "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source04.json",
+    "translated_not_physical": true
+  },
+  "current_source": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json",
+  "current_frozen_source": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/frozen-source06.json",
+  "current_qualification": "Focused06 and full01 pass on frozen Source06; native and full parity remain open.",
+  "connection_lifecycle_repair": "8. **Connection lifecycle repair after focused05.** Source05 focused05 finishes60 tests with2 failures(1 unexpected) in138.186s: all59 other tests, including9 cursor regressions, pass, while the new large HTTP test receives429 after a long download, then attempts to decode the error body. Stage timestamps establish import returned in3s and download took53s. AutomationHTTPConnection used one15s timer for framing, native work and response delivery; timeout cancelled accepted encoding and client retry encountered the still-running transfer. The earlier client timeout hypothesis was insufficient. AutomationHTTP.swift now disarms the receipt timer after a valid complete request and rearms a delivery timer when sending; explicit stop still cancels work. Add AutomationHTTPDeadlineTests.swift with a150ms transport deadline/450ms native worker, one invocation and successful delivery. Keep real9MP HTTP workflow with180s client allowance and unchanged strict pixels. Expose the lifecycle in transfer capability metadata; no new commands/tools or Adobe routes. Freeze2893 Source06 inputs before focused06/full01. Previous failures/reference vectors and protected assets remain untouched.",
+  "focused06": {
+    "tests": 61,
+    "failures": 0,
+    "seconds": 194.529,
+    "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json",
+    "log": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/focused06.log",
+    "sha256": "7600e96147793cde918ae5b56352e1c972a3849888673e3d96b06535f37295ec"
+  },
+  "application_integration_complete": true,
+  "full": {
+    "tests": 2950,
+    "failed": 0,
+    "seconds": 524.359,
+    "log": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/full01.log",
+    "sha256": "d9ad3676418c1bd787aa310d117f19fd473d3f2bf492685f87f2795d649569b0",
+    "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json"
+  },
+  "focused": {
+    "tests": 61,
+    "failed": 0,
+    "seconds": 194.529,
+    "log": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/focused06.log",
+    "sha256": "7600e96147793cde918ae5b56352e1c972a3849888673e3d96b06535f37295ec",
+    "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json"
+  },
+  "integrity": {
+    "inputs": 2893,
+    "frozen_members": 2893,
+    "frozen_sha256": "beb79837bdb83ce2335e8b6ddcf39db0bfaf1fa3c48e89c8f3082292d0184f5b",
+    "protected_assets": 34,
+    "tested_binary_sha256": "1e7ab9f002878a659af602ad27e5d391e111e4cf482404ed9b4f29059b1f54f9",
+    "candidate_sha256": "ddbb7a32d141d9258e15de1cd23d1053973a7a6dc572573e04b83f45c930a148",
+    "zip_sha256": "94e5975c69da9f14dc710a0fbfdda94aa513c35695e6f4d58be499f2f32615cd",
+    "normal_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Filter-Cache-Candidate-295-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "ddbb7a32d141d9258e15de1cd23d1053973a7a6dc572573e04b83f45c930a148",
+    "tested_binary_sha256": "1e7ab9f002878a659af602ad27e5d391e111e4cf482404ed9b4f29059b1f54f9",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Filter-Cache-Candidate-295.zip",
+    "zip_sha256": "94e5975c69da9f14dc710a0fbfdda94aa513c35695e6f4d58be499f2f32615cd",
+    "zip_bytes": 39049253,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-cache-candidate295-check-2_coygwp/Photato-Filter-Cache-Candidate-295-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "api": "Native PSD/PSB Save/Open and Photato import/download/local saves share streamed cache/mask/source composition; existing Adobe basic actions/resource jobs share the codec under their independent budgets. Transfer metadata records actual scope;195 typed commands unchanged, no invented Adobe route.",
+  "recorded_at_utc": "2026-10-31T14:26:35.825136+00:00",
+  "native_access_evidence": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/native-access01.json",
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/295-final01-refresh.log",
+    "check": "artifacts/development-history-audit/295-final01-check.log"
+  },
+  "diary_verification": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/diary-verification01.json",
+  "dashboard_verification": {
+    "evidence": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/dashboard-status01.json",
+    "latest_milestone": 295,
+    "active_native": 283,
+    "stale": false,
+    "warnings": []
+  }
+}

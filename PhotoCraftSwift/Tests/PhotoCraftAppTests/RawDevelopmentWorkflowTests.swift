@@ -118,10 +118,19 @@ final class RawDevelopmentWorkflowTests: XCTestCase {
     await store.undo(); XCTAssertEqual(store.document,d); await store.redo(); XCTAssertEqual(store.document,expected)
   }
   @MainActor func testFileOpenPreservesSourceWithoutWritableRAWAssociation() throws {
+    // Match application startup: AppKit's canonical controller must precede NSDocument.
+    _ = NSApplication.shared
+    let controller=CraftDocumentController(workspaces:WorkspaceLibrary())
     let folder = try DocumentPersistenceTests().directory(); defer { try? FileManager.default.removeItem(at:folder) }
     let url = folder.appendingPathComponent("Camera.dng"); try data().write(to:url)
     let prepared = try PreparedLocalDocument.read(url,format:.raw); XCTAssertNil(prepared.format)
-    let document = prepared.makeDocument(url:url); XCTAssertNil(document.fileURL); XCTAssertEqual(document.importedSourceURL,url); XCTAssertTrue(document.openRawDevelopmentOnDisplay)
+    let document = prepared.makeDocument(url:url)
+    controller.addDocument(document)
+    defer {document.store.renderTask?.cancel();controller.removeDocument(document)}
+    XCTAssertTrue(NSDocumentController.shared === controller)
+    XCTAssertTrue(document.ownerController === controller)
+    XCTAssertTrue(controller.documentWindows.groups.isEmpty)
+    XCTAssertNil(document.fileURL); XCTAssertEqual(document.importedSourceURL,url); XCTAssertTrue(document.openRawDevelopmentOnDisplay)
     XCTAssertEqual(document.store.document.layers[0].smartObject?.data,try data()); XCTAssertTrue(DocumentIO.readableTypes.contains("public.camera-raw-image"))
   }
   @MainActor func testPhotatoRawAPIImportInspectDevelopExportAndGuards() async throws {

@@ -277,6 +277,8 @@ extension WorkspaceView {
         .id(layer.id).disabled(store.document.isLocked(layer.id))
     case .colorLookup:
       ColorLookupEditor(store: store, layerID: layer.id)
+    case .modern:
+      ModernAdjustmentEditor(store:store,layerID:layer.id).id(layer.id)
     case .classic:
       ClassicAdjustmentEditor(store: store, layerID: layer.id)
         .id(layer.id).disabled(store.document.isLocked(layer.id))
@@ -337,6 +339,10 @@ extension WorkspaceView {
         adjustmentButton("Black & White", "rectangle.lefthalf.filled", .classic(.init(.blackWhite)))
         adjustmentButton("Photo Filter", "camera.filters", .classic(.init(.photoFilter)))
         adjustmentButton("Channel Mixer", "circle.grid.2x2", .classic(.init(.channelMixer)))
+        adjustmentButton("Color and vibrance", "camera.filters", .modern(.init(.colorVibrance)))
+        adjustmentButton("Light", "sun.max", .modern(.init(.light)))
+        adjustmentButton("Clarity and dehaze", "cloud.fog", .modern(.init(.clarityDehaze)))
+        adjustmentButton("Grain", "circle.dotted", .modern(.init(.grain)))
         adjustmentButton("Color Lookup", "square.grid.3x3", .colorLookup(.init()))
         adjustmentButton("Selective Color", "square.lefthalf.filled", .classic(.init(.selectiveColor)))
         adjustmentButton("Invert", "square.lefthalf.filled", .invert)
@@ -359,6 +365,8 @@ extension WorkspaceView {
       if let adjustment {
         if case .colorLookup = adjustment {
           store.addColorLookup()
+        } else if case .modern(let value) = adjustment {
+          store.addModernAdjustment(value.kind)
         } else if case .classic(let value) = adjustment {
           store.addClassicAdjustment(value.kind)
         } else if case .levels = adjustment {
@@ -383,7 +391,7 @@ extension WorkspaceView {
         Image(systemName: symbol).font(.system(size: 17))
         Text(title).font(.system(size: 9)).multilineTextAlignment(.center).frame(height: 26)
       }.frame(maxWidth: .infinity)
-    }.buttonStyle(.plain).disabled(adjustment == nil).help(
+    }.buttonStyle(.plain).disabled(adjustment == nil || {if case .modern(let value)=adjustment{return !store.canAddModernAdjustment(value.kind)};return false}()).help(
       adjustment == nil ? "\(title) — not available yet" : "New \(title) adjustment layer")
   }
 }

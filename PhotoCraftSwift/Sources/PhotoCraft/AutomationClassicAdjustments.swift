@@ -49,6 +49,7 @@ extension AutomationCommand {
       return .applyAdjustment(id,.colorLookup(lookup))
     }
     guard let raw = parameters["adjustment"] else { throw AutomationFailure(status:400,message:"Missing adjustment.") }
+    if let object=raw.jsonValue as? [String:Any],let kind=object["kind"] as? String,ModernAdjustment.Kind(rawValue:kind) != nil {return try modernAdjustmentCommand(document:document,raw:object)}
     let value = try ClassicAdjustment.decodeAPI(raw.jsonValue)
     if name == "adjustment.create" {
       return .addLayer(try value.layer(in:document,name: parameters["name"] == nil ? nil : string("name")))

@@ -4,6 +4,7 @@ import PhotoCraftCore
 /// Native translation of PhotoCraft smart_map.rs and filter_effects.rs (MIT OR Apache-2.0).
 /// Unsupported filter descriptors reject instead of substituting a cached appearance.
 enum PSDSmartFilters {
+  static let maximumRetainedCacheBytes=8*1_024*1_024
   static let classes: [RasterFilter.Kind: String] = [.gaussianBlur: "GsnB", .boxBlur: "boxblur", .motionBlur: "MtnB",
     .unsharpMask: "UnsM", .highPass: "HghP", .addNoise: "AdNs", .mosaic: "Msc ", .emboss: "Embs"]
   static func number(_ d: PSDDescriptor, _ key: String, unit: String? = nil) throws -> Double {
@@ -123,11 +124,15 @@ enum PSDSmartFilters {
   }
 
   struct Mask { var pixels: Surface; var transform: Transform2D }
-  static func masks(in document: CraftDocument) throws -> [String: Mask] {
+  static func masks(in document: CraftDocument,readers:[PSDReader]? = nil,paging:PSDRasterPaging.Context? = nil) throws -> [String: Mask] {
     var masks: [String: Mask] = [:], seen: Set<String> = []
-    for key in ["FEid", "FXid"] {
-      guard let bytes = document.sourceMetadata?["psdGlobal_" + key] else { continue }
-      var reader = PSDReader(data: bytes)
+    var context=paging
+    let sources:[PSDReader]=readers ?? ["FEid","FXid"].compactMap {key in
+      guard let bytes=document.sourceMetadata?["psdGlobal_"+key] else{return nil}
+      return PSDReader(data:bytes)
+    }
+    for source in sources {
+      var reader=source
       guard (1...3).contains(try reader.u32()) else { throw CraftError.unsupported("Unsupported filter cache version.") }
       while reader.remaining > 0 {
         if reader.remaining < 8 { guard try reader.consumePadding(0) else { throw CraftError.invalid("Invalid filter cache tail.") }; break }
@@ -139,13 +144,22 @@ enum PSDSmartFilters {
           _ = try readRect(&planes); let depth = try planes.u32(), channels = try planes.u32()
           guard [8, 16, 32].contains(depth), channels <= 64 else { throw CraftError.invalid("Invalid filter cache depth or channels.") }
           for _ in 0..<(channels + 2) {
-            if try planes.u32() != 0 { _ = try planes.bytes(planes.length(8)) }
+            if try planes.u32() != 0 { _ = try planes.view(planes.length(8)) }
           }
           guard planes.remaining == 0 else { throw CraftError.invalid("Invalid filter cache planes.") }
           if section.remaining > 0, try section.u8() != 0 {
-            let rect = try readRect(&section), plane = try section.bytes(section.length(8))
-            guard rect.width <= RasterFilterEngine.maximumPixels / rect.height else { throw CraftError.unsupported("Filter mask exceeds8,388,608 pixels.") }
-            let raw = try PSDChannelCodec.decode(plane, width: rect.width, height: rect.height, depth: depth, format: .psb)
+            let rect = try readRect(&section), plane = try section.view(section.length(8))
+            _ = try Surface(width:rect.width,height:rect.height)
+            if paging != nil || rect.width>RasterFilterEngine.maximumPixels/rect.height {
+              if context==nil {context=try PSDRasterPaging.Context()}
+              let context=context!,channel=try PSDChannelReader(plane,width:rect.width,height:rect.height,depth:depth,format:.psb)
+              try context.admitRaster(bytes:((rect.width+63)/64)*((rect.height+63)/64)*65536)
+              let pixels=try PSDRasterPaging.layer(width:rect.width,height:rect.height,depth:document.depth,components:1,
+                mask:true,sourceDepth:depth,clampMask:false,context:context){_ in [try channel.nextRow()]}
+              masks[id]=Mask(pixels:pixels,transform:.translation(Double(rect.x),Double(rect.y)));continue
+            }
+            var packed=plane
+            let raw = try PSDChannelCodec.decode(packed.bytes(packed.remaining), width: rect.width, height: rect.height, depth: depth, format: .psb)
             var pixels = try Surface(width: rect.width, height: rect.height, depth: document.depth)
             for y in 0..<rect.height {
               try Task.checkCancellation()
@@ -171,57 +185,58 @@ enum PSDSmartFilters {
   private static func rect(_ bounds: IntRect, to w: inout PSDWriter) {
     for value in [bounds.y, bounds.x, bounds.y + bounds.height, bounds.x + bounds.width] { w.n(value, 4) }
   }
-  static func cacheData(_ document: CraftDocument) throws -> Data {
-    var out = PSDWriter(); out.n(3, 4)
+  static func cacheData(_ document:CraftDocument)throws->Data {
+    let output=PSDOutput();try writeCache(document,to:output);return output.data
+  }
+  static func writeCache(_ document:CraftDocument,to out:PSDOutput,compression:PSDCompression = .zipPrediction)throws {
+    try out.n(3,4)
     for original in document.layers where original.smartFilters != nil {
-      var layer = original; layer.smartFilters?.enabled = false
-      let base = try SmartFilterEngine.renderedLayer(layer, in: document)
-      guard case .raster(let pixels) = base.content, let stack = original.smartFilters else { throw CraftError.invalid("Missing Smart Filter source.") }
-      let bounds = IntRect(x: base.x, y: base.y, width: pixels.width, height: pixels.height)
-      let depth = document.depth == .u8 ? 8 : document.depth == .u16 ? 16 : 32
-      func plane(_ values: [UInt8]) throws -> Data {
-        try PSDChannelCodec.encode(values, width: bounds.width, height: bounds.height, depth: depth, compression: .zipPrediction, format: .psb)
-      }
-      var planes = PSDWriter(); rect(bounds, to: &planes); planes.n(depth, 4); planes.n(24, 4)
+      try Task.checkCancellation()
+      var layer=original;layer.smartFilters?.enabled=false
+      let base=try SmartFilterEngine.renderedLayer(layer,in:document)
+      guard case .raster(let pixels)=base.content,let stack=original.smartFilters else {throw CraftError.invalid("Missing Smart Filter source.")}
+      let bounds=IntRect(x:base.x,y:base.y,width:pixels.width,height:pixels.height)
+      let depth=document.depth == .u8 ? 8:document.depth == .u16 ? 16:32
+      let itemLength=try out.reserveLength(8),id=original.id.uuidString
+      try out.n(id.utf8.count,1);try out.text(id);try out.n(1,4)
+      let planesLength=try out.reserveLength(8)
+      try writeRect(bounds,to:out);try out.n(depth,4);try out.n(24,4)
       for slot in 0..<26 {
-        guard slot < 3 || slot == 25 else { planes.n(0, 4); continue }
-        var bytes: [UInt8] = []; bytes.reserveCapacity(bounds.width * bounds.height * (depth / 8))
-        for y in 0..<bounds.height {
-          try Task.checkCancellation()
+        guard slot<3 || slot==25 else {try out.n(0,4);continue}
+        try out.n(1,4);let planeLength=try out.reserveLength(8)
+        try PSDChannelWriter.write(width:bounds.width,height:bounds.height,depth:depth,compression:compression,format:.psb,to:out){y in
+          var bytes:[UInt8]=[];bytes.reserveCapacity(bounds.width*(depth/8))
           for x in 0..<bounds.width {
-            let p = depth == 32 ? pixels.linearPixel(x: x, y: y) : pixels.pixel(x: x, y: y)
-            let v = slot == 25 ? p.a : p.a == 0 ? 1 : [p.r, p.g, p.b][slot]
-            try PSDChannelCodec.append(v, depth: depth, to: &bytes)
-          }
+            let p=depth==32 ? pixels.linearPixel(x:x,y:y):pixels.pixel(x:x,y:y)
+            let value=slot==25 ? p.a:p.a==0 ? 1:slot==0 ? p.r:slot==1 ? p.g:p.b
+            try PSDChannelCodec.append(value,depth:depth,to:&bytes)
+          };return bytes
         }
-        let packed = try plane(bytes); planes.n(1, 4); planes.n(packed.count, 8); planes.data.append(packed)
+        try out.finishLength(planeLength,width:8)
       }
-      var item = PSDWriter(); let id = original.id.uuidString
-      item.n(id.utf8.count, 1); item.text(id); item.n(1, 4); item.n(planes.data.count, 8); item.data.append(planes.data)
-      if stack.mask != nil {
-        // Density/feather rejected by descriptor writer; export the geometric mask
-        // without applying enabled, so disabled masks remain editable after import.
-        var projected = try original.filterMaskProjection(); projected.maskProperties?.enabled = true
-        let sampler = try MaskSampler(layer: projected, feather: false)
-        let sourceMask = stack.mask!
-        let maskBounds = try stack.maskProperties.transform.bounds(width: sourceMask.width, height: sourceMask.height)
-        let x = min(bounds.x, maskBounds.x), y = min(bounds.y, maskBounds.y)
-        let area = IntRect(x: x, y: y, width: max(bounds.x + bounds.width, maskBounds.x + maskBounds.width) - x,
-          height: max(bounds.y + bounds.height, maskBounds.y + maskBounds.height) - y)
-        guard area.width <= RasterFilterEngine.maximumPixels / area.height else { throw CraftError.unsupported("Export filter mask exceeds8,388,608 pixels.") }
-        var bytes: [UInt8] = []
-        for y in 0..<area.height {
-          try Task.checkCancellation()
+      try out.finishLength(planesLength,width:8)
+      if let sourceMask=stack.mask {
+        var projected=try original.filterMaskProjection();projected.maskProperties?.enabled=true
+        let sampler=try MaskSampler(layer:projected,feather:false)
+        let maskBounds=try stack.maskProperties.transform.bounds(width:sourceMask.width,height:sourceMask.height)
+        let x=min(bounds.x,maskBounds.x),y=min(bounds.y,maskBounds.y)
+        let area=IntRect(x:x,y:y,width:max(bounds.x+bounds.width,maskBounds.x+maskBounds.width)-x,
+          height:max(bounds.y+bounds.height,maskBounds.y+maskBounds.height)-y)
+        _ = try Surface(width:area.width,height:area.height)
+        try out.n(1,1);try writeRect(area,to:out);let maskLength=try out.reserveLength(8)
+        try PSDChannelWriter.write(width:area.width,height:area.height,depth:depth,compression:compression,format:.psb,to:out){y in
+          var bytes:[UInt8]=[];bytes.reserveCapacity(area.width*(depth/8))
           for x in 0..<area.width {
-            try PSDChannelCodec.append(sampler.coverage(x: Double(x + area.x) + 0.5, y: Double(y + area.y) + 0.5), depth: depth, to: &bytes)
-          }
+            try PSDChannelCodec.append(sampler.coverage(x:Double(x+area.x)+0.5,y:Double(y+area.y)+0.5),depth:depth,to:&bytes)
+          };return bytes
         }
-        let packed = try PSDChannelCodec.encode(bytes, width: area.width, height: area.height, depth: depth, compression: .zipPrediction, format: .psb)
-        item.n(1, 1); rect(area, to: &item); item.n(packed.count, 8); item.data.append(packed)
-      } else { item.n(0, 1) }
-      out.n(item.data.count, 8); out.data.append(item.data)
-      while out.data.count % 4 != 0 { out.n(0, 1) }
+        try out.finishLength(maskLength,width:8)
+      }else{try out.n(0,1)}
+      try out.finishLength(itemLength,width:8)
+      while out.count%4 != 0 {try out.n(0,1)}
     }
-    return out.data
+  }
+  private static func writeRect(_ bounds:IntRect,to out:PSDOutput)throws {
+    for value in [bounds.y,bounds.x,bounds.y+bounds.height,bounds.x+bounds.width]{try out.n(value,4)}
   }
 }

@@ -81,7 +81,7 @@ final class AdobeDocumentCreationTests: XCTestCase {
   func testInvalidAndUnsupportedParametersFailBeforeJobsOrAllocations() throws {
     let cases: [([String: Any], Int)] = [
       (["width": true], 400), (["height": 0], 400), (["height": 2.5], 400),
-      (["width": 32_000, "height": 32_000], 400), (["mode": "unknown"], 400),
+      (["width": 32_001, "height": 32_000], 400), (["mode": "unknown"], 400),
       (["mode": "indexed"], 422), (["depth": 12], 400), (["depth": 1], 422),
       (["mode": "cmyk", "depth": 32], 422), (["name": String(repeating: "x", count: 256)], 400),
       (["unit": "points_unit"], 422), (["unit": "bad"], 400), (["pixelScaleFactor": true], 400),

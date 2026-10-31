@@ -8,7 +8,7 @@ enum NativeIndexedArchive {
   static let footer = Data("PHTEND63".utf8)
   static func containerHeader(_ version:Int)->Data {NativeChunkedArchive.magic+NativeChunkedArchive.integer(UInt64(version),width:4)+NativeChunkedArchive.integer(0,width:4)}
   static func containerFooter(_ version:Int)->Data {Data("PHTEND\(version)".utf8)}
-  static func supportsHeader(_ bytes:Data)->Bool {bytes==header || bytes==containerHeader(64)}
+  static func supportsHeader(_ bytes:Data)->Bool {bytes==header || bytes==containerHeader(64) || bytes==containerHeader(65)}
   static func identifier(_ ordinal:UInt64)->String { "b\(ordinal)" }
   private enum Keys:String,CodingKey {case magic,version,document,index,recoveryContext}
   private struct Envelope:Encodable {
@@ -104,9 +104,9 @@ enum NativeIndexedArchive {
   static func write(_ document:CraftDocument,output:NativeChunkedArchive.Output,recoveryContext:Data?=nil,minimumVersion:Int=63)throws {
     try Task.checkCancellation();try document.validate()
     guard (recoveryContext?.count ?? 0)<=NativeArchive.maximumRecoveryContextBytes else {throw CraftError.invalid("Recovery context exceeds its limit.")}
-    guard [63,64].contains(minimumVersion) else {throw CraftError.invalid("Invalid indexed native output version.")}
+    guard [63,64,65].contains(minimumVersion) else {throw CraftError.invalid("Invalid indexed native output version.")}
     let version=max(minimumVersion,document.minimumArchiveVersion)
-    guard [63,64].contains(version) else {throw CraftError.invalid("Unsupported indexed document features.")}
+    guard [63,64,65].contains(version) else {throw CraftError.invalid("Unsupported indexed document features.")}
     try output.append(containerHeader(version))
     let context=try Output(sink:output),encoder=PropertyListEncoder();encoder.outputFormat = .binary
     encoder.userInfo[.historyTileEncoder]=context

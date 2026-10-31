@@ -95,7 +95,7 @@ enum PagedRasterFilters {
         if linear {one.setLinearPixel(x:0,y:0,value)}else{one.setPixel(x:0,y:0,value)}
       }
       let raw=one.colorEncoding == .linearRGB ? one.linearPixel(x:0,y:0):one.pixel(x:0,y:0)
-      let result=try source.mappedStoredSamples{_ in raw}
+      let result=try source.reframedImplicitValue(width:w,height:h,sample:raw,linear:one.colorEncoding == .linearRGB)
       try Task.checkCancellation();document.layers[index].content = .raster(result);return
     }
     let builder=try Surface.PagedBuilder(width:w,height:h,depth:source.depth,colorEncoding:source.colorEncoding)

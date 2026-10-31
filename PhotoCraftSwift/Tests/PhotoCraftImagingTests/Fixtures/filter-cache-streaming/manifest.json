@@ -1,0 +1,50 @@
+[
+  {
+    "file" : "0-0.cache",
+    "sha256" : "bda517a16878e1724bfa7322121f4d7b0dd7aeee61589ed9b13218422cb1dc35"
+  },
+  {
+    "file" : "0-1.cache",
+    "sha256" : "89b305b510277a1cd5d6f84bc86dd22461ce0ccd65c3bef607a7b90e4c0436af"
+  },
+  {
+    "file" : "0-mask.rgba",
+    "height" : 75,
+    "sha256" : "cffc3ecca6498f77040e6389229fa20d2a301ab5007fde8cb192675dd8909554",
+    "width" : 138,
+    "x" : -1,
+    "y" : 0
+  },
+  {
+    "file" : "1-0.cache",
+    "sha256" : "ede8c717de8288c9edc3b9608e45763d07c8d830ecbbf6717c7c178ff5588869"
+  },
+  {
+    "file" : "1-1.cache",
+    "sha256" : "53642a3b6ca8003ad25d8170068c083d24c133af772bdcace8b9d0f4f62d6e04"
+  },
+  {
+    "file" : "1-mask.rgba",
+    "height" : 75,
+    "sha256" : "1ceaba1c9df1e78f5cb513ecf61b424757067e82694020843599326ecb142672",
+    "width" : 138,
+    "x" : -1,
+    "y" : 0
+  },
+  {
+    "file" : "2-0.cache",
+    "sha256" : "b52be51d8d59c070b7e33b067a24883eb403ce83e837961ddc5ab60184710c6c"
+  },
+  {
+    "file" : "2-1.cache",
+    "sha256" : "9f516f21b09a5715d685305814737f4712bb125b8aa1a49e4885ce5125a7cb36"
+  },
+  {
+    "file" : "2-mask.rgba",
+    "height" : 75,
+    "sha256" : "212050f5743ee7190c40f08a6bab1e13f54037641d213524623703f4288f087c",
+    "width" : 138,
+    "x" : -1,
+    "y" : 0
+  }
+]

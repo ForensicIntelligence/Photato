@@ -119,6 +119,7 @@ enum PagedCanvasRenderer {
         guard group.frame==nil,group.artboard==nil else {return nil}
       case .adjustment(let adjustment):
         switch adjustment {
+        case .modern(let value):if value.needsNeighborhood || value.variesWithPosition {return nil}
         case .colorLookup,.gradientMap:return nil
         case .levels,.curves,.hueSaturation,.colorBalance,.classic,.tonalSteps,
           .exposure,.brightnessContrast,.saturation,.invert,.grayscale:break

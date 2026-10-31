@@ -37,6 +37,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
   case hueSaturation(HueSaturationAdjustment)
   case colorBalance(ColorBalanceAdjustment)
   case classic(ClassicAdjustment)
+  case modern(ModernAdjustment)
   case colorLookup(ColorLookupAdjustment)
   case tonalSteps(TonalStepsAdjustment)
   case gradientMap(GradientMapAdjustment)
@@ -51,6 +52,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
     case .hueSaturation(let settings): return HueSaturationTransfer(settings, depth: .f32).apply(p)
     case .colorLookup(let settings): return (try? ColorLookupTransfer(settings, depth: .f32))?.apply(p) ?? p
     case .classic(let settings): return ClassicAdjustmentTransfer(settings, depth: .f32).apply(p)
+    case .modern(let settings): return ModernAdjustmentTransfer(settings).apply(p,x:0,y:0)
     case .colorBalance(let settings): return ColorBalanceTransfer(settings, depth: .f32).apply(p)
     case .tonalSteps(let settings): return TonalStepsTransfer(settings, depth: .f32).apply(p)
     case .gradientMap(let settings):
@@ -107,6 +109,11 @@ public enum Adjustment: Codable, Equatable, Sendable {
   }
   /// Document-space coordinates keep ordered dither stable across tiles and cropped layers.
   public func spatialEvaluator(depth: PixelDepth) throws -> @Sendable (Pixel, Int, Int) -> Pixel {
+    if case .modern(let settings) = self {
+      guard !settings.needsNeighborhood else {throw CraftError.unsupported("This adjustment needs its complete layer input.")}
+      let transfer=ModernAdjustmentTransfer(settings)
+      return {transfer.apply($0,x:$1,y:$2)}
+    }
     if case .colorLookup(let settings) = self {
       let transfer = try ColorLookupTransfer(settings, depth: depth)
       return { transfer.apply($0, x: $1, y: $2) }
@@ -120,7 +127,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
   }
   public var usesDocumentToneSpace: Bool {
     switch self {
-    case .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup, .tonalSteps, .gradientMap: true
+    case .levels, .curves, .hueSaturation, .colorBalance, .classic, .modern, .colorLookup, .tonalSteps, .gradientMap: true
     default: false
     }
   }
@@ -140,6 +147,9 @@ public enum Adjustment: Codable, Equatable, Sendable {
       try settings.validate()
       valid = true
     case .classic(let settings):
+      try settings.validate()
+      valid = true
+    case .modern(let settings):
       try settings.validate()
       valid = true
     case .colorBalance(let settings):
@@ -193,6 +203,7 @@ public enum LayerContent: Codable, Equatable, Sendable {
     case .adjustment(.hueSaturation): "Hue/Saturation"
     case .adjustment(.colorLookup): "Color Lookup"
     case .adjustment(.classic(let value)): value.kind.title
+    case .adjustment(.modern(let value)): value.kind.title
     case .adjustment(.colorBalance): "Color Balance"
     case .adjustment(.gradientMap): "Gradient Map"
     case .adjustment(.tonalSteps(let settings)): settings.kind.rawValue
@@ -449,6 +460,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         try s.validate(in: self)
       case .adjustment(let a):
         try a.validate()
+        if case .modern(let value)=a {try value.validate(in:self)}
         if case .colorLookup(let lookup) = a { bytes += lookup.lut?.estimatedBytes ?? 0 }
       case .group: break
       }

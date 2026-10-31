@@ -309,6 +309,7 @@ public enum PSDCodec {
       layerSection.remaining > 0
       ? try layerSection.section(lengthBytes: format.sectionLengthBytes) : PSDReader(data: Data())
     var mergedTransparency = false
+    var filterCacheViews:[String:PSDReader]=[:]
     if layerSection.remaining > 0 {
       let global = try layerSection.section()
       guard global.remaining == 0 || global.remaining >= 13 else {
@@ -333,6 +334,11 @@ public enum PSDCodec {
             throw CraftError.unsupported("Conflicting PSD layer-depth sections.")
           }
           info = contentView
+          continue
+        }
+        if ["FEid","FXid"].contains(tag) {
+          filterCacheViews[tag]=contentView
+          if length<=PSDSmartFilters.maximumRetainedCacheBytes {doc.sourceMetadata?["psdGlobal_"+tag]=try contentView.data}
           continue
         }
         let content = try contentView.data
@@ -609,7 +615,7 @@ public enum PSDCodec {
           passThrough: sectionBlend == "pass", clipped: clipping == 1))
     }
     let embeddedFiles = try PSDSmartObjects.files(doc)
-    let filterMasks = try PSDSmartFilters.masks(in: doc)
+    let filterMasks = try PSDSmartFilters.masks(in:doc,readers:["FEid","FXid"].compactMap {filterCacheViews[$0]},paging:paging)
     var layers: [Layer] = []
     var groupStack: [UUID] = []
     for record in records {
@@ -935,9 +941,13 @@ public enum PSDCodec {
   }
   public static func writeRasterLayers(
     _ doc: CraftDocument, compression: PSDCompression = .zipPrediction,
-    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw
+    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw,
+    maximumBytes: Int = maximumInputBytes
   ) throws -> Data {
-    let output = PSDOutput()
+    guard (1...maximumInputBytes).contains(maximumBytes) else {
+      throw CraftError.invalid("Invalid Photoshop Data output budget.")
+    }
+    let output = PSDOutput(maximumBytes: maximumBytes)
     try writeRasterLayers(doc, compression: compression, format: format,
       compositeCompression: compositeCompression, output: output)
     return output.data
@@ -1129,6 +1139,8 @@ public enum PSDCodec {
         surface = nil
       } else if case .adjustment(.colorLookup(let settings)) = layer.content {
         _ = try PSDColorLookup.write(settings); surface = nil
+      } else if case .adjustment(.modern) = layer.content {
+        throw CraftError.unsupported("Modern adjustment descriptors are not yet qualified for editable PSD/PSB. Save the Photato65 original or explicitly export a flattened copy.")
       } else if case .adjustment(.classic(let settings)) = layer.content {
         _ = try PSDClassicAdjustment.write(settings)
         surface = nil
@@ -1407,10 +1419,11 @@ public enum PSDCodec {
       for _ in 0..<((4 - linked.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if doc.layers.contains(where: { $0.smartFilters != nil }) {
-      let caches = try PSDSmartFilters.cacheData(doc)
       try layerMask.text("8BIMFEid")
-      try layerMask.section(caches, lengthBytes: format.tagLengthBytes("FEid"))
-      for _ in 0..<((4 - caches.count % 4) % 4) { try layerMask.n(0, 1) }
+      let width=format.tagLengthBytes("FEid"),mark=try layerMask.reserveLength(width),start=layerMask.count
+      try PSDSmartFilters.writeCache(doc,to:layerMask)
+      let length=layerMask.count-start;try layerMask.finishLength(mark,width:width)
+      for _ in 0..<((4 - length % 4) % 4) {try layerMask.n(0,1)}
     }
     try output.finishLength(maskLength, width: format.sectionLengthBytes)
     if !includeComposite { return }

@@ -1,0 +1,126 @@
+{
+  "step": 296,
+  "status": "large-resource-jobs-software-qualified-native-and-full-parity-open",
+  "run": "artifacts/runs/20261031T143251Z-296-large-resource-jobs",
+  "previous": "docs/WORKING_CHECKPOINT_295.json",
+  "native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "remaining": [
+    "Native/Photoshop visual acceptance awaits manual unlock; normal283 and owned artwork remain unchanged.",
+    "Hosted Adobe5GB resource capacity is not met by current local64MiB resources/128MiB aggregates; external-service/identity interoperability, larger file transport and durable jobs remain open.",
+    "Nonpaged PNG/TIFF/PhotoCraft input, Color Edit analysis and artboard flattening retain4MP. Other native mode/action/profile/output/source-cache budgets remain independent. PSD output retains30000-side format maximum; no PSB media type added.",
+    "Dense90GP/scratch/physical memory/frame-rate, exact Photoshop/default/descriptor/file behavior, universal distribution, physical Intel/macOS14/26 and prior Intel numeric differences remain open.",
+    "Other major features, including modern Color and vibrance/Clarity and dehaze/Grain/Light adjustment layers, remain open."
+  ],
+  "goal_complete": false,
+  "native_acceptance": false,
+  "source_manifest": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source03.json",
+  "frozen_source": {
+    "archive": "frozen-source03.tar.gz",
+    "files": 2894,
+    "bytes": 57780840,
+    "sha256": "519f9dc74e8ff280bdaac152721ad4ed3d104b3ea53d1d7ca4bd41221e0e32f7"
+  },
+  "source_inputs": 2894,
+  "compiler_test_workers_live": false,
+  "current_qualification": "Full2954-test engine suite passes on Source02. Metadata-only Source03 passes3 focused checks; all2892 remaining inputs, including Core/Imaging, match Source02. Native/Photoshop/platform/full parity remain open.",
+  "api_review": "Existing shared native PSD/PSB serializer and both isolated job interfaces; paged RGB input and sparse blank creation gain logical admission, PSD Data output is bounded during writing. Independent resource/resident/layer/format/analysis budgets stay explicit.195 typed commands and existing HTTP routes unchanged.",
+  "primary_references": [
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
+      "accessed": "2026-10-31",
+      "observation": "Adobe documents larger hosted-resource capacity and longer complex jobs. Current local64MiB resource and128MiB aggregate transport remain explicitly nonconformant to hosted capacity; this increment changes paged geometry/admission, not hosted-service equivalence."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/adjust-image-lighting-with-light.html",
+      "accessed": "2026-10-31",
+      "observation": "Modern Light combines exposure/contrast/highlights/shadows/whites/blacks; legacy lighting versions remain accessible. Independent Light adjustment layers remain in major A04, not implemented by renaming Camera Raw."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/adjust-contrast-with-clarity-and-dehaze.html",
+      "accessed": "2026-10-31",
+      "observation": "Editable masked Clarity/Dehaze adjustment layers are a current major workflow; no parity inferred from the existing Camera Raw filter."
+    }
+  ],
+  "interruption_evidence": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/intentional-stop01.json",
+  "profile_evidence": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/large-resource-sample01.txt",
+  "model_budget_is_not_process_rss": true,
+  "large_resource_module": {
+    "tests": 4,
+    "failures": 0,
+    "seconds": 89.304,
+    "source_manifest": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source02.json",
+    "log": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/full02.log",
+    "scope": "LargeResourceJobTests only; full suite still running.40MP all-sample/native output73.417s; both5.4MP HTTP jobs15.865s; logical/blank/limits0.020s; output/cancel0.001s.",
+    "timing_basis": "XCTest suite summary (individual rounded durations sum to89.303s)"
+  },
+  "full_engine_source": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source02.json",
+  "full_engine_result": {
+    "tests": 2954,
+    "failures": 0,
+    "seconds": 614.94,
+    "log": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/full02.log"
+  },
+  "source_difference": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source03-difference-proof.json",
+  "recorded_at_utc": "2026-10-31T15:16:04.326938+00:00",
+  "full": {
+    "tests": 2954,
+    "failed": 0,
+    "seconds": 614.94,
+    "log": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/full02.log",
+    "sha256": "6fe056f7b0312864147dadb5386bdd6b5c3f966dff28b148b74f53a561bea149",
+    "source_manifest": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source02.json"
+  },
+  "focused": {
+    "tests": 3,
+    "failed": 0,
+    "seconds": 0.3,
+    "log": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/focused03.log",
+    "sha256": "21cbebf4c6a107a347d9f21f4a69741fbd09e9a54d0902593bea877883df3443",
+    "source_manifest": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source03.json"
+  },
+  "integrity": {
+    "verified_inputs": 2894,
+    "frozen_members": 2894,
+    "frozen_sha256": "519f9dc74e8ff280bdaac152721ad4ed3d104b3ea53d1d7ca4bd41221e0e32f7",
+    "protected_assets": 36,
+    "tested_binary_sha256": "30a1905a6b9aa8528dfada8f114a8e5f6f5088299650bfff107c2111173d9d8b",
+    "candidate_sha256": "942343655326a58b8a672cc2ef0c6ec3a42dc2ec36527126db0451403c4ecf68",
+    "native_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Resource-Job-Candidate-296-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "942343655326a58b8a672cc2ef0c6ec3a42dc2ec36527126db0451403c4ecf68",
+    "tested_binary_sha256": "30a1905a6b9aa8528dfada8f114a8e5f6f5088299650bfff107c2111173d9d8b",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Resource-Job-Candidate-296.zip",
+    "zip_sha256": "334f35a463ae9bd4eee3a92f3425fecd28fbe41d9bafbc4962b13dfe7a3e2f17",
+    "zip_bytes": 39058017,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-cache-candidate296-check-egthr7r0/Photato-Resource-Job-Candidate-296-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "increment_complete": false,
+  "native_access_evidence": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/native-access01.json",
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/296-final01-refresh.log",
+    "check": "artifacts/development-history-audit/296-final01-check.log"
+  },
+  "diary_verification": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/diary-verification01.json",
+  "dashboard_verification": {
+    "evidence": "artifacts/runs/20261031T143251Z-296-large-resource-jobs/dashboard-status01.json",
+    "latest_milestone": 296,
+    "active_native": 283,
+    "stale": false,
+    "warnings": []
+  }
+}

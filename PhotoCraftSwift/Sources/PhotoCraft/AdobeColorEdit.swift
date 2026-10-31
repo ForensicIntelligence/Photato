@@ -55,15 +55,18 @@ struct AdobeColorEditRequest: Sendable {
     let source: CraftDocument
     if RawSourceIO.recognizes(data) {
       let info = try RawSourceIO.inspect(data)
-      guard info.nativeWidth <= AdobeActionAssets.maximumCanvasPixels/info.nativeHeight else { throw AdobeAPIError.invalid("RAW input exceeds the local4MP resource limit.") }
+      guard info.nativeWidth <= AdobeActionAssets.maximumAnalysisPixels/info.nativeHeight else { throw AdobeAPIError.invalid("RAW input exceeds the local4MP analysis limit.") }
       source = try RawSourceIO.open(data,fileName:input.lastPathComponent)
     } else if data.starts(with:[0xff,0xd8]) {
       guard let image = CGImageSourceCreateWithData(data as CFData,nil),
         let properties = CGImageSourceCopyPropertiesAtIndex(image,0,nil) as? [CFString:Any],
         let w = properties[kCGImagePropertyPixelWidth] as? Int, let h = properties[kCGImagePropertyPixelHeight] as? Int,
-        w > 0, h > 0, w <= AdobeActionAssets.maximumCanvasPixels / h else { throw AdobeAPIError.invalid("Invalid or oversized JPEG input.") }
+        w > 0, h > 0, w <= AdobeActionAssets.maximumAnalysisPixels / h else { throw AdobeAPIError.invalid("Invalid or oversized JPEG analysis input.") }
       source = try RasterIO.read(data,name:"Color Edit")
     } else { source = try AdobeActionAssets.decode(data) }
+    guard source.width <= AdobeActionAssets.maximumAnalysisPixels/source.height else {
+      throw AdobeAPIError.invalid("Color Edit exceeds the local4MP analysis limit; larger paged documents can use supported execute-actions operations.")
+    }
     try AdobeActionAssets.check(source)
     var flat = source
     let layer = Layer(name:"Color Edit",content:.raster(try Renderer.composite(source)))

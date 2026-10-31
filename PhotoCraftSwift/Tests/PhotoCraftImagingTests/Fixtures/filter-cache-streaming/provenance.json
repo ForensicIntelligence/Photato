@@ -1,0 +1,8 @@
+{
+  "producer": "Actual checkpoint293 optimized arm64 PSDSmartFilters.cacheData and masks before rebuilding Imaging.",
+  "references": "6 complete FEid cache wire buffers and3 decoded transformed mask RGBA Float32 buffers across RGB8/16/32, including disabled masks and hidden/transparent/HDR source pixels.",
+  "not_photoshop_outputs": true,
+  "fixture_source_capture_sha256": "c53a379a5628c7b71664d00a1c568bf6d03b0c0d005ffc0163087537a9986ee0",
+  "capture_run": "artifacts/runs/20261031T132357Z-295-streamed-filter-caches/prior293",
+  "license": "MIT OR Apache-2.0; authored input/output."
+}

@@ -45,7 +45,12 @@ final class PDFSmartObjectWorkflowTests: XCTestCase {
       XCTAssertEqual(native.0.statusCode,200);XCTAssertEqual(try NativeArchive.decode(native.1),parent.store.document)
       let indexed = try await helper.request(service,path:"/v1/documents/\(shared)/file.photato",headers:["X-Photato-Archive-Version":"63"])
       XCTAssertEqual(indexed.0.statusCode,200);XCTAssertEqual(try NativeArchive.decodePaged(indexed.1),parent.store.document)
-      let unknown = try await helper.request(service,path:"/v1/documents/\(shared)/file.photato",headers:["X-Photato-Archive-Version":"64"])
+      for version in ["64","65"] {
+        let current=try await helper.request(service,path:"/v1/documents/\(shared)/file.photato",headers:["X-Photato-Archive-Version":version])
+        XCTAssertEqual(current.0.statusCode,200)
+        XCTAssertEqual(try NativeArchive.decodePaged(current.1),parent.store.document)
+      }
+      let unknown = try await helper.request(service,path:"/v1/documents/\(shared)/file.photato",headers:["X-Photato-Archive-Version":"66"])
       XCTAssertEqual(unknown.0.statusCode,400)
     }
   }

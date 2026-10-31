@@ -8,7 +8,19 @@ import PhotoCraftImaging
 enum AdobeActionAssets {
   static let maximumResourceBytes = 64 * 1_024 * 1_024
   static let maximumOutputBytes = 128 * 1_024 * 1_024
-  static let maximumCanvasPixels = 4_194_304
+  static let maximumCanvasPixels = Surface.maxPixels
+  static let maximumDocumentBytes = 128 * 1_024 * 1_024
+  // These codecs/analysis workflows do not yet use the paged Photoshop input path.
+  static let maximumUnpagedInputPixels = 4_194_304
+  static let maximumAnalysisPixels = 4_194_304
+  static let maximumArtboardPixels = 4_194_304
+
+  static func checkDimensions(width: Int, height: Int) throws {
+    guard width > 0, height > 0, width <= Surface.maxDimension,
+      height <= Surface.maxDimension, width <= maximumCanvasPixels / height else {
+      throw AdobeAPIError.invalid("Input exceeds the local 300,000-pixel side limit.")
+    }
+  }
 
   struct Encoded: Sendable {
     let output: AdobeActionsRequest.Output
@@ -27,18 +39,20 @@ enum AdobeActionAssets {
     }
     if allowPhotatoInput && PcraftImport.recognizes(data) {
       let (w, h) = try PcraftImport.dimensions(data)
-      guard w > 0, h > 0, w <= maximumCanvasPixels / h else {
-        throw AdobeAPIError.invalid("Input exceeds the local 4,194,304 pixel canvas limit.")
+      try checkDimensions(width: w, height: h)
+      guard w <= maximumUnpagedInputPixels / h else {
+        throw AdobeAPIError.invalid("PhotoCraft input exceeds the local 4,194,304 pixel decoder limit.")
       }
       let document = try DocumentIO.decode(data, native: false, name: "Action Input",
-        rasterByteLimit: 128 * 1_024 * 1_024)
+        rasterByteLimit: maximumDocumentBytes)
       try check(document)
       return document
     }
     let width: Int
     let height: Int
     let isTIFF = data.starts(with: [73, 73, 42, 0]) || data.starts(with: [77, 77, 0, 42])
-    if data.starts(with: Data("8BPS".utf8)) {
+    let isPhotoshop = data.starts(with: Data("8BPS".utf8))
+    if isPhotoshop {
       guard data.count >= 26 else { throw AdobeAPIError.invalid("Truncated PSD header.") }
       func number(_ start: Int, _ count: Int) -> Int {
         data[start..<(start + count)].reduce(0) { ($0 << 8) | Int($1) }
@@ -66,10 +80,13 @@ enum AdobeActionAssets {
       width = w
       height = h
     }
-    guard width > 0, height > 0, width <= maximumCanvasPixels / height else {
-      throw AdobeAPIError.invalid("Input exceeds the local 4,194,304 pixel canvas limit.")
+    try checkDimensions(width: width, height: height)
+    if !isPhotoshop, width > maximumUnpagedInputPixels / height {
+      throw AdobeAPIError.invalid("Raster input exceeds the local 4,194,304 pixel decoder limit; use a supported paged PSD/PSB resource for larger RGB documents.")
     }
-    let document = try RasterIO.read(data, name: "Action Input")
+    let document = isPhotoshop
+      ? try PSDCodec.readPaged(data, name: "Action Input", heapByteLimit: maximumDocumentBytes)
+      : try RasterIO.read(data, name: "Action Input")
     if !isTIFF && !data.starts(with: Data("8BPS".utf8)), document.depth != .u8 {
       throw AdobeAPIError.unsupported("PNG action input currently requires RGB8.")
     }
@@ -79,11 +96,11 @@ enum AdobeActionAssets {
 
   static func check(_ document: CraftDocument) throws {
     try document.validate()
-    guard document.width <= maximumCanvasPixels / document.height,
-      document.layers.count <= 64, document.estimatedBytes <= 128 * 1_024 * 1_024
+    try checkDimensions(width: document.width, height: document.height)
+    guard document.layers.count <= 64, document.estimatedBytes <= maximumDocumentBytes
     else {
       throw AdobeAPIError.invalid(
-        "Input exceeds the local canvas, 64-layer or 128 MiB document limit.")
+        "Input exceeds the local 64-layer or 128 MiB resident document limit.")
     }
   }
 
@@ -116,7 +133,12 @@ enum AdobeActionAssets {
         switch output.mediaType {
         case .json:
           data = try AdobeArtboardRequest.manifest(edited)
-        case .psd, .jpeg:
+        case .psd:
+          data = try PSDCodec.writeRasterLayers(converted,
+            compression: output.encodingOptions.psdLayerCompression?.codec ?? .zipPrediction,
+            compositeCompression: output.encodingOptions.psdCompositeCompression?.codec ?? .raw,
+            maximumBytes: maximumResourceBytes)
+        case .jpeg:
           data = try DocumentIO.encode(converted, format: output.mediaType.format!, options: output.encodingOptions)
         case .png, .tiff:
           guard edited.depth != .f32 || output.mediaType == .tiff else {

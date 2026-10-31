@@ -34,7 +34,8 @@ public enum SmartObjectIO {
         width <= maximumPagedRGBPixels / height else {
         throw CraftError.unsupported("Embedded source exceeds the native canvas extent.")
       }
-      let document = try RasterIO.read(data, name: (fileName as NSString).deletingPathExtension)
+      let name=(fileName as NSString).deletingPathExtension
+      let document = try data.starts(with:Data("8BPS".utf8)) ? PSDCodec.readPaged(data,name:name,heapByteLimit:256*1_024*1_024):RasterIO.read(data,name:name)
       try check(document); return document
     }
   }
@@ -57,7 +58,7 @@ public enum SmartObjectIO {
   public static func embedded(document: CraftDocument, in parent: CraftDocument,
     originalData: Data? = nil, fileName: String? = nil) throws -> (SmartObject, Surface) {
     if let originalData, RawSourceIO.recognizes(originalData), let object = document.layers.first?.smartObject, object.rawDevelopment != nil {
-      return (object,try ColorManagement.converted(Renderer.composite(document),from:document,to:parent))
+      return (object,try ColorManagement.converted(sourceComposite(document),from:document,to:parent))
     }
     try check(document)
     let data = try originalData ?? NativeArchive.encodeChunked(document)
@@ -73,8 +74,12 @@ public enum SmartObjectIO {
     let name = fileName ?? "Contents.photato"
     let object = try SmartObject(fileName: name, mediaType: type, data: data,
       width: document.width, height: document.height, resolution: document.pixelsPerInch)
-    let pixels = try ColorManagement.converted(Renderer.composite(document), from: document, to: parent)
+    let pixels = try ColorManagement.converted(sourceComposite(document), from: document, to: parent)
     return (object, pixels)
+  }
+  private static func sourceComposite(_ document:CraftDocument)throws->Surface {
+    if document.colorMode == .rgb,document.width>maximumCanvasPixels/document.height {return try Renderer.compositePaged(document)}
+    return try Renderer.composite(document)
   }
   public static func placed(data: Data, fileName: String, in parent: CraftDocument,
     fit: Bool = true) throws -> Layer {

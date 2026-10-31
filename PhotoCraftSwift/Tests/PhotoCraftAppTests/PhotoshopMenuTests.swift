@@ -63,9 +63,13 @@ final class PhotoshopMenuTests: XCTestCase {
       let items = allItems(menu).filter {
         !$0.isSeparatorItem && !$0.isHidden && $0.identifier != nil
       }
-      XCTAssertEqual(items.count, 801)
-      XCTAssertEqual(
-        items.map { $0.identifier!.rawValue }, expected.map { $0.path.joined(separator: " > ") })
+      // Keep every independently captured27.2 entry and shortcut intact. These three
+      // released additions are separately documented; their current native order is unqualified.
+      let additions = ["Light…","Clarity and dehaze…","Grain…"].map {"Layer > New Adjustment Layer > " + $0}
+      XCTAssertEqual(items.count, 804)
+      XCTAssertEqual(items.filter { !additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue },
+        expected.map { $0.path.joined(separator: " > ") })
+      XCTAssertEqual(items.filter { additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue }, additions)
       let report: [String: Any] = [
         "menus": menu.items.map(\.title), "entries": items.count,
         "default_preset": PhotoshopMenuCatalog.presetName,
@@ -91,7 +95,7 @@ final class PhotoshopMenuTests: XCTestCase {
       let flags: [String: NSEvent.ModifierFlags] = [
         "command": .command, "option": .option, "shift": .shift, "control": .control,
       ]
-      for (item, row) in zip(items, expected) {
+      for (item, row) in zip(items.filter { !additions.contains($0.identifier!.rawValue) }, expected) {
         XCTAssertEqual(item.title, row.path.last, row.path.joined(separator: " > "))
         XCTAssertEqual(item.keyEquivalent, row.key, row.path.joined(separator: " > "))
         let modifiers = try row.modifiers.reduce(into: NSEvent.ModifierFlags()) { result, value in

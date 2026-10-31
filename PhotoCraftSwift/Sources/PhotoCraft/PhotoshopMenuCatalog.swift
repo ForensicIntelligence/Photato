@@ -499,6 +499,10 @@ enum PhotoshopMenuCatalog {
             .item("Posterize…"),
             .item("Threshold…"),
             .item("Gradient Map…"),
+            // Released2026 additions documented by Adobe; precise current order awaits native capture.
+            .item("Light…"),
+            .item("Clarity and dehaze…"),
+            .item("Grain…"),
           ]),
         .separator,
         .item("Harmonize"),

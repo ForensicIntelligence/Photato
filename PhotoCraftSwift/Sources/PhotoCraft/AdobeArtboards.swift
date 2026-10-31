@@ -45,7 +45,7 @@ struct AdobeArtboardRequest: Sendable {
       guard !PcraftImport.recognizes(bytes) else { throw AdobeAPIError.unsupported("Native Photato/PhotoCraft inputs are not part of the Adobe contract.") }
       try AdobeActionAssets.check(source)
       width += source.width; height = max(height, source.height); sources.append(source)
-      guard width <= 32768, width <= AdobeActionAssets.maximumCanvasPixels / height else { throw AdobeAPIError.invalid("Combined artboard canvas exceeds the local4MP limit.") }
+      guard width <= 32768, width <= AdobeActionAssets.maximumArtboardPixels / height else { throw AdobeAPIError.invalid("Combined artboard canvas exceeds the local4MP flattening limit.") }
     }
     var output = try CraftDocument(width: width, height: height, name: "Artboards")
     output.layers = []; output.activeLayerID = nil

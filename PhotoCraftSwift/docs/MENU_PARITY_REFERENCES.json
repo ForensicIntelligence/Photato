@@ -1734,5 +1734,20 @@
     "removed_product_addition": "Help > Support Development\u2026",
     "reason": "Maintainer chose pure FOSS; no Photoshop reference command was removed.",
     "report": "artifacts/runs/20261029T015500Z-237-foss-release/menu-after01.json"
+  },
+  "modern_adjustments_step297": {
+    "reference": "docs/MODERN_ADJUSTMENT_REFERENCES.json",
+    "original_captured_entries": 801,
+    "current_catalogue_entries": 804,
+    "bindings": [
+      "Layer > New Adjustment Layer > Color and vibrance\u2026",
+      "Layer > New Adjustment Layer > Light\u2026",
+      "Layer > New Adjustment Layer > Clarity and dehaze\u2026",
+      "Layer > New Adjustment Layer > Grain\u2026"
+    ],
+    "provenance": "Color and vibrance already present in captured factory catalogue; remaining three current released adjustment types documented by official Adobe help. The old801-entry fixture remains byte-unchanged. Three additions checked separately.",
+    "order_qualified": false,
+    "shortcuts_added": false,
+    "native_acceptance": false
   }
 }

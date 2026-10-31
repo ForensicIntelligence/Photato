@@ -121,6 +121,9 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    let modern:[Selector:ModernAdjustment.Kind]=[#selector(newColorVibrance):.colorVibrance,#selector(newLight):.light,#selector(newClarityDehaze):.clarityDehaze,#selector(newGrain):.grain]
+    if let action=item.action,let kind=modern[action] {return store?.canAddModernAdjustment(kind)==true}
+
     if let result = validateVariableMenu(item) { return result }
     if item.action == #selector(renderVideo) { return store?.canRenderVideo == true }
     if [#selector(printDocument), #selector(printOneCopy)].contains(item.action) { return (controller.currentDocument as? CraftNSDocument)?.canBeginPrint == true }

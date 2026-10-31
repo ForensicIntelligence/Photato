@@ -26,6 +26,7 @@ final class PagedRasterFilterTests:XCTestCase {
       try PagedRasterFilters.apply(filter,to:large.layers[0].id,in:&large)
       try RasterFilterEngine.apply(filter,to:small.layers[0].id,in:&small)
       guard case .raster(let a)=large.layers[0].content,case .raster(let b)=small.layers[0].content else{return XCTFail("Missing pixels")}
+      XCTAssertEqual(a.depth,depth);XCTAssertEqual(a.colorEncoding,b.colorEncoding)
       XCTAssertEqual(a.tileCount,0);XCTAssertTrue(a.pixel(x:299_999,y:299_999).hasSameBits(as:b.pixel(x:0,y:0)),"\(depth)/\(kind)")
     }}
   }

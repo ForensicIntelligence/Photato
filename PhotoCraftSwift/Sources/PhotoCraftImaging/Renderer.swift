@@ -135,29 +135,51 @@ public enum Renderer {
     try d.validate()
     return try compositeValidated(d, inputTarget: inputTarget)
   }
+  /// Large embedded RGB source caches share normal preparation and composition,
+  /// but retain output pages even below the ordinary36MP dense threshold.
+  static func compositePaged(_ d:CraftDocument)throws->Surface {
+    try d.validate()
+    guard d.colorMode == .rgb,d.inkMode==nil,d.restrictedMode==nil else {throw CraftError.unsupported("Paged source composition requires RGB.")}
+    return try compositeValidated(d,preferPaged:true)
+  }
   static func compositeValidated(
-    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil
+    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil,preferPaged:Bool = false
   ) throws -> Surface {
     try Task.checkCancellation()
     let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
-    if requested.width * requested.height > Surface.maximumDensePixels {
-      if inputTarget == nil, videoTime == nil, let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
+    if d.layers.contains(where:{if case .adjustment(.modern(let value))=$0.content {return value.needsNeighborhood};return false}),
+      requested != IntRect(x:0,y:0,width:d.width,height:d.height) {
+      let full=try compositeValidated(d,inputTarget:inputTarget,videoTime:videoTime)
+      var projection=try emptyCanvas(d)
+      try projection.mapPixels(in:requested) {x,y,_ in full.pixel(x:x,y:y)}
+      return projection
+    }
+    if preferPaged || requested.width * requested.height > Surface.maximumDensePixels {
+      if (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
+        let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
       try PagedCanvasRenderer.validateResources(d)
     }
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
-    var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(d, at:videoTime)
+    let (d,videoTransitions) = try preparedSources(d,videoTime:videoTime)
+    if preferPaged || requested.width * requested.height > Surface.maximumDensePixels {
+      return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
+        video: videoTransitions)
+    }
+    return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
+      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil)
+  }
+  /// Prepare immutable sources once for a composition or streamed export snapshot.
+  /// Callers validate the original document before entering this shared preparation.
+  static func preparedSources(_ original:CraftDocument,videoTime:Double? = nil) throws
+    -> (CraftDocument,VideoTransitionRenderContext?) {
+    var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(original, at:videoTime)
     for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {
       d.layers[i] = try PDFSmartObjectIO.renderedLayer(d.layers[i],in:d)
     }
     for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil {
       d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
     }
-    if requested.width * requested.height > Surface.maximumDensePixels {
-      return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
-        video: videoTransitions)
-    }
-    return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
-      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil)
+    return (d,videoTransitions)
   }
   /// Sources/transitions are prepared once before bounded patch composition.
   static func compositePrepared(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
@@ -219,7 +241,11 @@ public enum Renderer {
       }
       let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
       if case .adjustment(let adjustment) = layer.content {
-        let evaluate = try adjustment.spatialEvaluator(depth: d.depth)
+        let evaluate: @Sendable (Pixel,Int,Int)->Pixel
+        if case .modern(let settings)=adjustment,settings.needsNeighborhood {
+          let developed=try settings.neighborhood(output)
+          evaluate={_,x,y in developed.pixel(x:x,y:y)}
+        } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth)}
         for y in region.y..<region.y + region.height {
           try Task.checkCancellation()
           for x in region.x..<region.x + region.width {

@@ -1,0 +1,311 @@
+{
+  "step": 297,
+  "status": "modern-adjustments-software-qualified-native-and-full-parity-open",
+  "run": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers",
+  "previous": "docs/WORKING_CHECKPOINT_296.json",
+  "native_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "goal_complete": false,
+  "native_acceptance": false,
+  "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json",
+  "current_worker": null,
+  "references": "docs/MODERN_ADJUSTMENT_REFERENCES.json",
+  "remaining": [
+    "RGB only; current Light8/16. Other three additionally permit native32-bit, without claiming Adobe context equality.",
+    "Active spatial Clarity/Dehaze or Light Highlights/Shadows use existing8,388,608-pixel engine. Larger spatial processing remains open.",
+    "Live modern PSD/PSB descriptors reject explicitly; retain native65 or explicitly flatten/export a copy.",
+    "Actual menu placement/legacy Light versions/independent Photoshop kernels/defaults/ICC/timeline/full platform/Intel/performance remain unqualified.",
+    "Native desktop acceptance awaits existing manual unlock request; normal283 and user artwork preserved.",
+    "Long-lived monolithic XCTest/AppKit file-access and animation hang remains unresolved (full02 sample/intentional stop). Complete isolated-process case coverage does not qualify native long-session behavior."
+  ],
+  "recorded_at_utc": "2026-10-31T17:10:26.324509+00:00",
+  "focused03": {
+    "tests": 53,
+    "failures": 0,
+    "seconds": 6.861,
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/focused03.log",
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source03.json"
+  },
+  "failed_full01": {
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/full01.log",
+    "crash": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/full01-crash.ips",
+    "exit": 1,
+    "completed_passing_cases": 161,
+    "assertion_failures": 0,
+    "result": "SIGBUS thread stack size exceeded; not a passing full suite"
+  },
+  "focused04": {
+    "tests": 84,
+    "failures": 0,
+    "seconds": 10.078,
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/focused04.log",
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source04.json"
+  },
+  "next_after_qualification": [
+    "Preserve an isolated signed candidate and verify final source/assets; native acceptance after manual unlock.",
+    "Refresh diary/dashboard/evidence and retain all failed attempts.",
+    "Publish software-qualified complete source297 to the existing private repository, retaining original Rust and excluded runtime/user files.",
+    "Advance missing major workflow breadth; keep modern PSD/legacy/spatial/Photoshop/platform gates open."
+  ],
+  "full02_pending_repair": "DocumentIOWorkflowTests.swift:511 still probes newly supported64 as invalid; replace only after full02 worker terminates. Other full results pending.",
+  "full02": {
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/full02.log",
+    "exit": 1,
+    "intentional_stop": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/intentional-stop02.json",
+    "sample": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/full02-wait-sample01.txt",
+    "completed_passing_cases": 2223,
+    "assertion_failures": 2,
+    "long_lived_AppKit_recovery_gate": "open"
+  },
+  "focused05": {
+    "tests": 23,
+    "failures": 0,
+    "seconds": 1.982,
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/focused05.log",
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source05.json"
+  },
+  "raw_fixture_failure": {
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module05-10.log",
+    "crash": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module05-10-crash.ips",
+    "isolated_pass": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/raw-isolated01.log",
+    "repair": "Test bootstrap only; native production unchanged."
+  },
+  "second_stack_failure": {
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module06-11.log",
+    "crash": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module06-11-crash.ips",
+    "repair": "Isolate native pixel/filter/stack entry points from broad command switch; exact adjustment loop and shared engines retained."
+  },
+  "compiler_test_workers_live": false,
+  "application_integration_complete": true,
+  "full": {
+    "tests": 2965,
+    "failed": 0,
+    "seconds": 620.153,
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json",
+    "scope": "Complete inventoried XCTest set, qualified in bounded module/class processes; not a passing monolithic run. Source04 interrupted AppKit lifecycle gate remains open.",
+    "monolithic_pass": false,
+    "source_binding": "All groups on identical frozen Source07 after native pixel/filter stack isolation.",
+    "inventory": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/inventory05-normalized.log",
+    "plan": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/qualification-plan07.json",
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/qualification07.log",
+    "groups": [
+      {
+        "group": 1,
+        "module": "PhotoCraftAITests",
+        "tests": 4,
+        "failed": 0,
+        "seconds": 0.004,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-01.log",
+        "sha256": "bc9f3368b5e3742fca59ec777bebf3a58af9efb76d61fa473efb535239e1db61",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 2,
+        "module": "PhotoCraftAppTests",
+        "tests": 149,
+        "failed": 0,
+        "seconds": 13.903,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-02.log",
+        "sha256": "2a7e255733f95c58df3aefa9a8d17ee89b30e21a55bd81166e8be41aca19ca78",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 3,
+        "module": "PhotoCraftAppTests",
+        "tests": 146,
+        "failed": 0,
+        "seconds": 16.735,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-03.log",
+        "sha256": "f284eafcf9f027c8257fb4ecb71031d60e91aff1b0cbb1fcb2809253082091cb",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 4,
+        "module": "PhotoCraftAppTests",
+        "tests": 139,
+        "failed": 0,
+        "seconds": 18.691,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-04.log",
+        "sha256": "1746afa45b9aeacba273308384003b359916539d5a73a4ac267959e7fe0361c5",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 5,
+        "module": "PhotoCraftAppTests",
+        "tests": 141,
+        "failed": 0,
+        "seconds": 11.084,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-05.log",
+        "sha256": "026b68234eae98a9afa171d2fe4bf933733b45f2632ce73318edafa8cb85fc90",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 6,
+        "module": "PhotoCraftAppTests",
+        "tests": 141,
+        "failed": 0,
+        "seconds": 104.851,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-06.log",
+        "sha256": "14ce16d554172b58ea1c992b9c5bd093edd8b193df402c40a60887c8968f4c80",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 7,
+        "module": "PhotoCraftAppTests",
+        "tests": 149,
+        "failed": 0,
+        "seconds": 15.9,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-07.log",
+        "sha256": "3f5027d72d5c973f410bc8d65ef4d1883ca68bb407569fde650188ae2fb5e699",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 8,
+        "module": "PhotoCraftAppTests",
+        "tests": 144,
+        "failed": 0,
+        "seconds": 184.483,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-08.log",
+        "sha256": "36ace3b781e66230b76f9c5df4caf39bb1e92a809a75b7cccb1d9eaef0f59157",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 9,
+        "module": "PhotoCraftAppTests",
+        "tests": 143,
+        "failed": 0,
+        "seconds": 39.704,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-09.log",
+        "sha256": "ed3f758c50435424510a02fbe39764be28defbbe0e15fa7c1b01869d842dced1",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 10,
+        "module": "PhotoCraftAppTests",
+        "tests": 148,
+        "failed": 0,
+        "seconds": 16.787,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-10.log",
+        "sha256": "4e655e624450f09765ed2577ef59ddf4dc3ee19968292c1c8e9b6a582fd922df",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 11,
+        "module": "PhotoCraftAppTests",
+        "tests": 147,
+        "failed": 0,
+        "seconds": 20.908,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-11.log",
+        "sha256": "7df9756d87186e7921f342a464c5146c58e6629bdfb7531450954ae94938b467",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 12,
+        "module": "PhotoCraftAppTests",
+        "tests": 105,
+        "failed": 0,
+        "seconds": 7.668,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-12.log",
+        "sha256": "e968d11628a1292e778fb22359ffae8e77d39d11cb9f7bf9a86532a449b61357",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 13,
+        "module": "PhotoCraftCoreTests",
+        "tests": 399,
+        "failed": 0,
+        "seconds": 4.931,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-13.log",
+        "sha256": "983a8084451df88f86d474f66af30a2983985d9f8b1afb0c8d40a29e15322810",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 14,
+        "module": "PhotoCraftCoreTests",
+        "tests": 396,
+        "failed": 0,
+        "seconds": 58.617,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-14.log",
+        "sha256": "fe003ffa687ecd50b39cfc683ff8194130bdf202c25f21caf22a6c12cddfdbfc",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 15,
+        "module": "PhotoCraftImagingTests",
+        "tests": 398,
+        "failed": 0,
+        "seconds": 92.41,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-15.log",
+        "sha256": "e942b792a5948387c4b589c996406beee067861069bed9fff733bca782e5ebea",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      },
+      {
+        "group": 16,
+        "module": "PhotoCraftImagingTests",
+        "tests": 216,
+        "failed": 0,
+        "seconds": 13.477,
+        "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/module07-16.log",
+        "sha256": "da54ceed14224941b12f6e8e0bd9971bcf91f5f67d083fa4a7392dc9fe362be7",
+        "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json"
+      }
+    ],
+    "recorded_at_utc": "2026-10-31T17:07:45.853972+00:00",
+    "sha256": "d7d57c4deaa69ff30aa45831aea6eeb0865cc402c969e195a351245424b9cc2d"
+  },
+  "focused": {
+    "tests": 23,
+    "failed": 0,
+    "seconds": 1.982,
+    "log": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/focused05.log",
+    "sha256": "535ebc596a84403bdde5a6b5cb7094d04cde407a95a6dd614c14dc81d5e82648",
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source05.json"
+  },
+  "focused_scope": "Earlier Source05; all its cases also pass in complete Source07 qualification.",
+  "integrity": {
+    "inputs": 2901,
+    "frozen_members": 2901,
+    "frozen_sha256": "f0cfa17d43b9161fe7e8bb96253746e21633738f36cb1f26efc290836e0a5b21",
+    "protected_assets": 38,
+    "tested_binary_sha256": "f375c3a12df0d8f20b8fe06ecfa7a0df872fa9a692d13eee377230486624e5a9",
+    "candidate_sha256": "6eab411cda2aa53eb04c037f8484d074b75edb5cd047fcddfc61d234776bf055",
+    "zip_sha256": "ca9576dd68c452734e1d78b5f0a30f4618ef9890506d572fd21629ce7f86fb74",
+    "normal_preview": 283,
+    "workers_live": false
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Modern-Adjustment-Candidate-297-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "6eab411cda2aa53eb04c037f8484d074b75edb5cd047fcddfc61d234776bf055",
+    "tested_binary_sha256": "f375c3a12df0d8f20b8fe06ecfa7a0df872fa9a692d13eee377230486624e5a9",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source07.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Modern-Adjustment-Candidate-297.zip",
+    "zip_sha256": "ca9576dd68c452734e1d78b5f0a30f4618ef9890506d572fd21629ce7f86fb74",
+    "zip_bytes": 39103615,
+    "extracted_signature_verified": true,
+    "extracted_app": "/private/tmp/photato-modern297-check-3pipnplb/Photato-Modern-Adjustment-Candidate-297-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false,
+    "recorded_at_utc": "2026-10-31T17:09:11.247738+00:00"
+  },
+  "frozen_source": {
+    "archive": "frozen-source07.tar.gz",
+    "files": 2901,
+    "bytes": 57788975,
+    "sha256": "f0cfa17d43b9161fe7e8bb96253746e21633738f36cb1f26efc290836e0a5b21"
+  },
+  "source_inputs": 2901,
+  "current_qualification": "Color and vibrance, Light, Clarity/Dehaze and Grain now have distinct editable native adjustment layers, Properties controls, masks, opacity/blends, history, native65, Actions22 and shared Photato adjustment commands. All2965 inventoried optimized arm64 tests in bounded module processes pass on2901 frozen inputs. Earlier Source05 also passed23 focused checks; the current complete inventory includes those same cases. Existing published Adobe /v2/edit controls share native transfers; no modern live-layer descriptors or routes are invented. A signed isolated candidate is preserved; normal283/artwork remain unchanged. The long-lived monolithic AppKit test hang, modern PSD/PSB descriptors, legacy Light versions, larger spatial processing, independent Photoshop/menu/default/ICC/numerical, native and supported-platform qualification remain open.",
+  "increment_complete": false,
+  "final_history_audit": {
+    "refresh": "artifacts/development-history-audit/297-final01-refresh.log",
+    "check": "artifacts/development-history-audit/297-final01-check.log"
+  },
+  "native_access_evidence": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/native-access01.json"
+}

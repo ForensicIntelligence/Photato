@@ -73,6 +73,14 @@ final class PagedSmartFilterTests:XCTestCase {
     guard case .raster(let a)=legacy.content,case .raster(let b)=paged.content else{return XCTFail("Missing pixels")}
     XCTAssertEqual(try a.rgbaData(depth:.f32,colorEncoding:.linearRGB),try b.rgbaData(depth:.f32,colorEncoding:.linearRGB))
   }
+  func testMixedDepthBlendUsesLegacyBaseWorkingDomain()throws {
+    let a=try Surface(width:65,height:65,depth:.u8,fill:.white)
+    let b=try Surface(width:65,height:65,depth:.f32,fill:Pixel(0.5,0.5,0.5))
+    let output=try PagedSmartFilterStorage.combine(a,b,pointwise:true){p,q,x,y in BlendMode.normal.composite(backdrop:p,source:q,opacity:0.5,x:x,y:y)}
+    var expected=a
+    expected.setPixel(x:0,y:0,BlendMode.normal.composite(backdrop:a.pixel(x:0,y:0),source:b.pixel(x:0,y:0),opacity:0.5,x:0,y:0))
+    XCTAssertTrue(output.pixel(x:64,y:64).hasSameBits(as:expected.pixel(x:0,y:0)))
+  }
   func testMaximumDepthConversionMatchesLegacySettersAndSharesSparseExtent()throws {
     for from in PixelDepth.allCases {for to in PixelDepth.allCases where from != to {
       var large=try Surface(width:300_000,height:300_000,depth:from,fill:Pixel(0.3,0.7,0.2),colorEncoding:from == .f32 ? .linearRGB:.sRGB)

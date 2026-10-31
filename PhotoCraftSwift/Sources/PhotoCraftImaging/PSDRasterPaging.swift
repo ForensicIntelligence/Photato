@@ -35,10 +35,10 @@ enum PSDRasterPaging {
   /// Interleaved layer readers allow a64-row staging window. No full raster or
   /// whole strip of Float32 pixels is retained in heap memory, even at300000 px.
   static func layer(width:Int,height:Int,depth:PixelDepth,components:Int,
-    fill:Pixel = .clear,mask:Bool = false,context:Context,
+    fill:Pixel = .clear,mask:Bool = false,sourceDepth:Int? = nil,clampMask:Bool = true,context:Context,
     rows:(Int)throws->[[UInt8]]) throws -> Surface {
-    let bits=depth == .u8 ? 8:depth == .u16 ? 16:32
-    let encoding:SurfaceColorEncoding = bits == 32 && !mask ? .linearRGB:.sRGB
+    let bits=sourceDepth ?? (depth == .u8 ? 8:depth == .u16 ? 16:32)
+    let encoding:SurfaceColorEncoding = depth == .f32 && !mask ? .linearRGB:.sRGB
     let builder=try Surface.PagedBuilder(width:width,height:height,depth:depth,fill:fill,colorEncoding:encoding,backing:context.backing)
     let stripe=try PSDPlaneScratch(width:width,height:min(64,height),depth:bits,components:components)
     for y in stride(from:0,to:height,by:64) {
@@ -48,7 +48,7 @@ enum PSDRasterPaging {
         guard values.count == components else {throw CraftError.invalid("Missing Photoshop staging plane.")}
         for c in 0..<components {try stripe.write(values[c],row:py,component:c)}
       }
-      try appendBand(stripe,to:builder,width:width,originY:y,storedY:0,height:h,depth:depth,fill:fill,mask:mask,merged:false)
+      try appendBand(stripe,to:builder,width:width,originY:y,storedY:0,height:h,depth:depth,fill:fill,mask:mask,merged:false,clampMask:clampMask)
     }
     return try builder.finish()
   }
@@ -67,7 +67,7 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
   private static func appendBand(_ planes:PSDPlaneScratch,to builder:Surface.PagedBuilder,
-    width:Int,originY:Int,storedY:Int,height:Int,depth:PixelDepth,fill:Pixel,mask:Bool,merged:Bool) throws {
+    width:Int,originY:Int,storedY:Int,height:Int,depth:PixelDepth,fill:Pixel,mask:Bool,merged:Bool,clampMask:Bool = true) throws {
     let linear=depth == .f32 && !mask
     for x in stride(from:0,to:width,by:patchWidth) {
       var patch=try Surface(width:min(patchWidth,width-x),height:height,depth:depth,fill:fill,
@@ -76,7 +76,7 @@ enum PSDRasterPaging {
         try Task.checkCancellation()
         for px in 0..<patch.width {
           let p:Pixel
-          if mask {let v=unit(try planes.sample(x:x+px,y:storedY+py,component:0));p=Pixel(v,v,v)}
+          if mask {let sample=try planes.sample(x:x+px,y:storedY+py,component:0),v=clampMask ? unit(sample):sample;p=Pixel(v,v,v)}
           else {
             let alpha=planes.components == 4 ? try planes.sample(x:x+px,y:storedY+py,component:3):1
             let value=try Pixel(planes.sample(x:x+px,y:storedY+py,component:0),planes.sample(x:x+px,y:storedY+py,component:1),planes.sample(x:x+px,y:storedY+py,component:2),alpha)
