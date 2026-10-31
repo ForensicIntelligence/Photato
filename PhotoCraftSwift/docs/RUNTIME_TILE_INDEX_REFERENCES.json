@@ -1,0 +1,139 @@
+{
+  "step": 284,
+  "status": "software-qualified-awaiting-live-native",
+  "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index",
+  "source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source08.json",
+  "source_inputs": 2516,
+  "independent_component": {
+    "maximum_records": 21977344,
+    "mapped_index_bytes": 351637504,
+    "referenced_samples": 1440307216384,
+    "actual_sample_scratch": 72089600,
+    "cow_path_nodes": 4,
+    "test_log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/probe03/run02.log",
+    "measurements": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/probe03/measurements.json",
+    "scope": "Repaired foundation before conservative counter integration; repeated procedural samples, not dense90GP/RSS/Photoshop proof."
+  },
+  "format": "Private process-local immutable16-byte key/segment-offset records; portable native63 unchanged. No external filenames or addresses in the file format.",
+  "implementation": [
+    "Four-level persistent radix COW edit paths, sorted/range streaming and shared-branch differences.",
+    "No RasterTile heap object per index read; immutable sample segments and owned Array COW.",
+    "Structural/finite proof, cached counts/estimates and index/sample page accounting.",
+    "Mapped packing3/4 runtime indexes; legacy metadata keys still require resident parsing/sorting.",
+    "One-pass large ImageIO/orientation/profile patch import and mapped pointwise outputs.",
+    "Native63 automatic file save for runtime-paged documents; old small owned bytes and explicit Data version requests retained.",
+    "API mapped-index state/discovery; shared editing implementations, no new Adobe route.",
+    "Hybrid repair04 retains a bounded16,384-tile direct working set and existing small-reference accounting; larger sets transition to the persistent tree. Performance qualification pending.",
+    "Repair05 exposes trivial pixel helpers across a paged-only non-inlined ownership boundary and constant-time proven contiguous index lookup, with sparse binary fallback; under test."
+  ],
+  "pending": [
+    "After the user unlocks and replies, inspect isolated diagnostic284, open owned40MP PNG, paint/Undo/Redo, native SaveAs and reopen; preserve exact observations/limits.",
+    "Inspect old normal283 artwork without discarding changes; hand off separately to normal284 with preserved clean artwork/zoom100/opacity100 and old preview quit.",
+    "Run finalize03.py only after creating actual live-native01.json and normal-handoff01.json; rebuild/mirror diaries, run final verification and history audit last."
+  ],
+  "remaining": [
+    "Whole document metadata still resident; legacy decoding includes full keys.",
+    "Mutable edit metadata grows with touched tiles; sparse partial outputs/crop/expansion and many algorithms still need broader paging/performance qualification.",
+    "Native63 cache beyond256 ordinals can decode repeats again. Mip pyramids, dense90GP/4TiB/PSB, full masks/modes/layers/operations/history/recovery, chooser and platform/Photoshop gates stay open."
+  ],
+  "source03_results": {
+    "focused_tests": 109,
+    "failures": 20015,
+    "unexpected": 1,
+    "independent_oracle": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/focused03-captures/independent-runtime-index01.json",
+    "timing_review": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/performance-review01.json",
+    "scope": "Failures and material performance regression preserved; source03 is not qualified."
+  },
+  "source04_results": {
+    "focused_tests": 110,
+    "failures": 0,
+    "seconds": 66.5,
+    "benchmark_tests": 7,
+    "benchmark_seconds": 141.288,
+    "performance_review": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/performance-review04.json",
+    "accepted_for_delivery": false,
+    "reason": "CPU preview/release/setup regression; repair05 narrows paged ownership boundary."
+  },
+  "source05_results": {
+    "focused": 111,
+    "focused_failures": 0,
+    "full": "full01 crashes with worker stack overflow in layer-merge API path; not qualified",
+    "independent": "focused05-captures/independent-runtime-index01.json passes",
+    "benchmark": "performance05.log passes7 tests; benchmark JSON preserved",
+    "repair": "source06 compacts inline map counters but compiler rejects Render closure; source07 localizes sample boundary to that closure."
+  },
+  "tests": [
+    {
+      "tests": 268,
+      "failures": 0,
+      "seconds": 55.842,
+      "log_sha256": "bb60125a5879357aa32508af7a0f74421b9c647ef9a3237fc183ef558e7aefe2",
+      "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/focused07.log"
+    },
+    {
+      "tests": 2863,
+      "failures": 0,
+      "seconds": 238.509,
+      "log_sha256": "20cc92d5e9b898e31f74d9a2494fb259d3b619be3998ba1093e692466a129d4b",
+      "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/full02.log"
+    }
+  ],
+  "benchmark": {
+    "tests": 7,
+    "failures": 0,
+    "seconds": 47.886,
+    "log_sha256": "c0a3d3472bc487178b7547ca2ea8c1697c22b0d8128d3f36fb0b1a29ac18d208",
+    "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/performance07.log",
+    "preview": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/brush-preview07.json",
+    "brush_release": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/brush-release07.json",
+    "retouch_release": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/retouch-release07.json"
+  },
+  "independent_evidence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/focused07-captures/independent-runtime-index01.json",
+  "candidate_verification": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/candidate-verification01.json",
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 284.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "815521b9e1e14d57e6335e75e20937815fb6689fa8020c25e6a643b31d937857",
+    "tested_binary_sha256": "d449cb00e72eee14214009486e02e8f098862fb2ac77c3617d6af59df76db4f9",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-284.zip",
+    "zip_sha256": "5d5702caf8a28c7bcd9075426a8d677a9a2eaea91121b75bf1c52171c4cbd78f",
+    "zip_bytes": 38849577,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview284-check-vjfyhxru/Photato Editing Preview 284.app"
+  },
+  "native_acceptance": false,
+  "increment_complete": false,
+  "tested_swift_source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+  "configuration_correspondence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07-to08.json",
+  "universal_xcode": {
+    "first_attempt_exit": 65,
+    "repair_exit": 0,
+    "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/universal-xcode01",
+    "qualification": "Build only; resource/signature and translated Intel execution pending; no physical Intel/macOS14/native UI claim."
+  },
+  "cross_architecture_fidelity": {
+    "status": "unresolved",
+    "intel_full_tests": 2863,
+    "assertion_failures": 320,
+    "unexpected": 0,
+    "numeric_assertions": 319,
+    "hosted_focus_assertions": 1,
+    "evidence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/failure-summary01.json",
+    "scalar_probe": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/cross-architecture-math01/comparison01.json",
+    "policy": "Keep strict fixtures and full parity gate; do not substitute visual similarity. Numerical refinement is deferred behind major workflows per step157."
+  },
+  "next_capacity_reproduction": {
+    "evidence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/ordinal-cache-amplification01/result01.json",
+    "unique_tiles": 269,
+    "references": 807,
+    "unique_scratch_limit_rejected": true,
+    "all_sample_probe_bits_preserved_with_reference_capacity": true
+  }
+}

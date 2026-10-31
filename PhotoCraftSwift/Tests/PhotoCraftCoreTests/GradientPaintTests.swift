@@ -88,7 +88,7 @@ final class GradientPaintTests: XCTestCase {
             let blend = mode.composite(
               backdrop: linear ? SRGBTransfer.linear(old) : old,
               source: linear ? SRGBTransfer.linear(source) : source,
-              opacity: 0.5 * Float(selection.bytes[x]) / 255, x: x, y: 0)
+              opacity: 0.5 * Float(try selection.bytes[x]) / 255, x: x, y: 0)
             let expected = (linear ? SRGBTransfer.encoded(blend) : blend).quantized(depth)
             XCTAssertTrue(raster.pixel(x: x, y: 0).hasSameBits(as: expected))
           }

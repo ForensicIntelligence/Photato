@@ -573,6 +573,14 @@ import UniformTypeIdentifiers
         return .init(status: 200, contentType: source.mediaType, body: source.data)
       }
       if request.method == "GET", parts.count == 5, parts[4] == "print.pdf" { return try await printPDF(share, document: document) }
+      if request.method == "GET", parts.count == 7, parts[4] == "layers",
+        parts[6] == "mask-gray.png" || parts[6] == "mask-overlay.png" {
+        guard let layerID = UUID(uuidString: String(parts[5])) else {
+          throw AutomationFailure(status: 400, message: "Invalid mask layer UUID.")
+        }
+        return try await maskPreview(document, shareID: id, layerID: layerID,
+          mode: parts[6] == "mask-gray.png" ? .gray : .overlay)
+      }
       if request.method == "GET", parts.count == 5,
         parts[4] == "preview.png" || parts[4] == "channel-preview.png" || parts[4] == "proof-preview.png" || parts[4] == "onion-preview.png"
       {
@@ -1041,7 +1049,7 @@ import UniformTypeIdentifiers
         }
         return .json(state(share,document:document))
       }
-      if GeometryAPI.commands.contains(command.name) {
+      if GeometryAPI.preparedCommands.contains(command.name) {
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in try command.geometryCommand(in: original) }
         return .json(state(share, document: document))
       }
@@ -1150,18 +1158,19 @@ import UniformTypeIdentifiers
     let composite = try onionSkin ? OnionSkinRenderer.render(document):Renderer.composite(document)
     try Task.checkCancellation()
     let large = document.width * document.height > Surface.maximumDensePixels
-    if large && (onionSkin || proof?.active == true || auxiliary != nil || modeVisibility != nil || inkVisibility != nil || channelView.visible.count != 3) {
+    if large && (onionSkin || proof?.active == true || modeVisibility != nil || inkVisibility != nil) {
       throw AutomationFailure(status: 413, message: "This large-document presentation mode is not yet tiled. Ordinary preview.png is bounded to2048 pixels per side.")
     }
-    let bounded: Surface
-    if large {
-      let scale = min(1, 2048 / Double(max(document.width, document.height)))
-      bounded = try composite.reducedPreview(in: .init(x: 0, y: 0, width: document.width, height: document.height), width: max(1, Int(Double(document.width) * scale)), height: max(1, Int(Double(document.height) * scale)))
-    } else { bounded = composite }
-    let preview = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: bounded)
+    let request = try large ? RasterPreviewRequest.overview(width: document.width, height: document.height) : nil
+    let source = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: composite)
+    let preview = try auxiliary == nil ? request.map { try $0.reducing(source) } ?? source : source
     let image =
-      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
       ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: document)
+    return try png(image)
+  }
+  nonisolated static func png(_ image: CGImage) throws -> Data {
+    try Task.checkCancellation()
     let bytes = NSMutableData()
     guard
       let destination = CGImageDestinationCreateWithData(
@@ -1186,6 +1195,7 @@ import UniformTypeIdentifiers
       }
     }
     return [
+      "toolCursorFeedback": ToolCursorAPI.capabilities,
       "apiVersion": 1, "transport": "loopback HTTP; bearer token; same origin",
       "recoveryPreferences": recoveryPreferencesCapabilities,
       "photoshopFilePreferences": photoshopFilePreferencesCapabilities,
@@ -1220,7 +1230,9 @@ import UniformTypeIdentifiers
         "proof-preview.png": "Committed composite with committed proof/gamut display settings. Excludes drafts and preserves original exports.",
         "preview.png": "Committed document composite, independent of channel visibility. Above36MP, a bounded overview (maximum2048 pixels per side); working pixels and export dimensions are unchanged.",
         "channel-preview.png":
-          "Committed native channel view, including selected alpha/Quick Mask gray or overlay. Excludes uncommitted drafts.",
+          "Committed native channel view, including selected alpha/Quick Mask gray or overlay. Large RGB/component/alpha/Quick Mask views use bounded2048-side overviews. Excludes uncommitted drafts; other large mode/proof/onion restrictions remain.",
+        "layers/{layerID}/mask-gray.png": "Raw editable pixel-mask gray, independent of enablement/density/feather/layer opacity. Large documents return a bounded2048-side document-coordinate overview.",
+        "layers/{layerID}/mask-overlay.png": "Raw red half-opacity mask overlay RGBA only; composite over the corresponding image preview. Same geometry, budgets and state checks as mask-gray.png.",
       ],
       "channelView": [
         "preview": "Current color-mode composite or component name", "visible": "Nonempty array of component names in the current color mode",
@@ -1304,6 +1316,7 @@ import UniformTypeIdentifiers
       "contentAwareScale": ContentAwareScaleRequest.apiCapabilities,
       "clipboard": ClipboardAPI.capabilities,
       "geometry": GeometryAPI.capabilities,
+      "selectionGeometry":SelectionGeometryAPI.capabilities,
       "crop": CropRequest.apiCapabilities,
       "subjectDetection": ForegroundSelection.apiCapabilities,
       "atomicPersistence": atomicPersistenceCapabilities,

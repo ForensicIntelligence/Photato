@@ -2077,5 +2077,21 @@
     "photato": "Native40MP chunked input/edit/Undo shares checked mapped file reader; native desktop file streaming exceeds512MiB with separate metadata/Data/heap/transfer limits.",
     "adobe": "No new route. Shared raster decoder changes; existing resource job contracts and limits remain. Large-job capacity and streamed large output require separate qualification.",
     "evidence": "docs/NATIVE_PAGING_REFERENCES.json"
+  },
+  "native_index_282": {
+    "photato": "Native63 header/download/import/schema and shared file decoder/history qualified; optional APIs retain their Data/transfer budgets.",
+    "adobe": "No new Adobe route/native-file contract is invented. Existing adapters retain pinned resource/job/media limits; new native storage does not establish Adobe/large-job/Photoshop equivalence.",
+    "reference": "docs/NATIVE_INDEX_REFERENCES.json"
+  },
+  "tool_cursor_feedback_step283": {
+    "photato": "Presentation-only toolCursorFeedback discovery metadata; existing typed editing/history contracts unchanged.",
+    "adobe": "No corresponding pointer-presentation endpoint in pinned v2 contract; no route added.",
+    "reference": "docs/TOOL_CURSOR_REFERENCES.json"
+  },
+  "runtime_tile_index_step284": {
+    "status": "implementation-under-test",
+    "photato": "rasterStorage.referencedMappedIndexBytes and runtime-index capability/limits; existing typed edits/transfers/history shared.",
+    "adobe": "No runtime metadata endpoint defined; no route added. Existing shared native/image storage improvements preserve the pinned interface and resource/job budgets.",
+    "reference": "docs/RUNTIME_TILE_INDEX_REFERENCES.json"
   }
 }

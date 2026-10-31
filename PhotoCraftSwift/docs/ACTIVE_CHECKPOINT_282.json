@@ -1,0 +1,96 @@
+{
+  "step": 282,
+  "recorded_at_utc": "2026-10-31T00:52:27.495599+00:00",
+  "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+  "source_inputs": 2501,
+  "focused": {
+    "log": "artifacts/runs/20261031T000325Z-282-native-index/focused04.log",
+    "sha256": "81c8b39d75a2f48f30ee0241fd01ae55cca5abef7db60df5a156ae805cf263fd",
+    "tests": 63,
+    "failures": 0,
+    "seconds": 35.839,
+    "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json"
+  },
+  "full": {
+    "log": "artifacts/runs/20261031T000325Z-282-native-index/full01.log",
+    "sha256": "cf8dd4f1e40c9c8bf468ad75cf3dac8823bc702e078f36a5042bfa07bc15c9f8",
+    "tests": 2840,
+    "failures": 0,
+    "seconds": 235.853,
+    "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json"
+  },
+  "binary_sha256": "23370151b725d95e1337e73d173268caed41d88880f726bfa6f31f8a78e9acf6",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Native63 authenticated ordinal B-tree and1024-entry Surface pages; legacy1\u201362 readable and small-file bytes retained.",
+    "Bounded1024-hash writer dedup,8-node reader cache,256-tile cache and budgeted per-record use map; exact payload/node/metadata integrity and ownership.",
+    "Native file-save atomic63 fallback after legacy table fills; cancellation/failure preserves existing destination.",
+    "Photato native download63/import/File Open/shared history and PDF feature negotiation; advertised schemas/limits; no new typed command or Adobe route.",
+    "300000-record multi-level index/independent parser,65792-tile grid, actual585190202-byte63 file and exact HDR probes; full/native workflow and separate Preview282 delivery."
+  ],
+  "remaining": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open.",
+    "Newly saved native file can be selected with Open disabled; current280 issue reproduced. Open Recent succeeds. Investigate chooser metadata/filtering without speculative code.",
+    "Full Photoshop byte/interaction/default parity, physical60fps, universal distribution and physical Intel/macOS14/macOS26 qualification remain open."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261031T000325Z-282-native-index/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "Native63 replaces the flat archive table with bounded authenticated index nodes and compact raster pages. Native/API/sample/history/file checks pass, including300000 index records,65792 tile references and an actual585MB63 file. All63 focused and2840 full optimized tests pass on2501 frozen inputs; native maximum300000-square and40MP painting/save/reopen pass. Separate Preview282 is verified. Runtime indexing, chooser, large PSB/all-operation/platform capacity parity remain open.",
+  "stage": "Indexed native archives qualified; full capacity open",
+  "native_archive": 63,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 280,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 282,
+  "next": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 282.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "5104332b22454903049c05e288f98224faf001ccf2e4427500e7e7bea138dfcf",
+    "tested_binary_sha256": "23370151b725d95e1337e73d173268caed41d88880f726bfa6f31f8a78e9acf6",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-282.zip",
+    "zip_sha256": "90e34268c2ce08d4ae8b0faac0c78c24d43e1789fc98c9288ab32f731314f619",
+    "zip_bytes": 38645681,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview282-check-rd39xxm6/Photato Editing Preview 282.app"
+  },
+  "completed_this_increment": [
+    "Native63 authenticated ordinal B-tree and1024-entry Surface pages; legacy1\u201362 readable and small-file bytes retained.",
+    "Bounded1024-hash writer dedup,8-node reader cache,256-tile cache and budgeted per-record use map; exact payload/node/metadata integrity and ownership.",
+    "Native file-save atomic63 fallback after legacy table fills; cancellation/failure preserves existing destination.",
+    "Photato native download63/import/File Open/shared history and PDF feature negotiation; advertised schemas/limits; no new typed command or Adobe route.",
+    "300000-record multi-level index/independent parser,65792-tile grid, actual585190202-byte63 file and exact HDR probes; full/native workflow and separate Preview282 delivery."
+  ],
+  "goal_status": "active",
+  "source_publication_record": "docs/SOURCE_PUBLICATION_281.json"
+}

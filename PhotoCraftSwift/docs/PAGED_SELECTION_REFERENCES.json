@@ -1,0 +1,199 @@
+{
+  "step": 288,
+  "status": "Paged selection and bounded RGB/alpha/Quick Mask/raw-mask presentations software qualified; native/general composition/Actions/storage/Photoshop/platform gates open",
+  "run": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage",
+  "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+  "source_inputs": 2698,
+  "implementation": [
+    "PagedSelectionCoverage.swift: bounded shape/feather patches, integer byte combination, inversion, exact numeric bilinear selection formula, raw grid/constant fast paths and checked dense extraction.",
+    "Surface.swift: shared rectangular tiles/indexes, implicit-range exact bounds and numeric quantization.",
+    "Selection.swift and its consumers: immutable dense/paged selection storage, checked array extraction and bounded point sampling; actual resident/index estimates.",
+    "NativeIndexedArchive/NativeChunkedArchive: explicit version64 coverage persistence, legacy forms and recovery/scratch history.",
+    "App SelectionOutline/AutomationSelectionGeometry: bounded viewport contours and three shared prepared selection commands; channel model conversion uses the same plane.",
+    "RasterPreviewRequest and projected Surface area reduction bound numerical coverage and RGB/channel previews without whole-canvas display buffers.",
+    "Raw mask output-cell-center projection and Selection Brush overlays retain document regions; EditorStore/CanvasView preserve cropped positioning.",
+    "Read-only layer mask-gray/mask-overlay resources share native rendering and admission/lifecycle guards."
+  ],
+  "storage": "Quantized GRAY8 values in the existing16-byte RGBA Float raster tile/page engine; not compact one-byte physical coverage. Logical area is independent of the sample-heap estimate; mapped residency is controlled by macOS.",
+  "reference_provenance": {
+    "prior_native": "76 owned actual qualified287 Core outputs; not Photoshop output",
+    "fixtures": "Tests/PhotoCraftCoreTests/Fixtures/paged-selection",
+    "independent_scope": "40MP procedural full-byte replay; capacity/bounds/quantization/cancellation assertions."
+  },
+  "failures_retained": [
+    "typecheck01: three incorrect PagedBuilder method names; repaired.",
+    "component01 compile: missing Swift XCTest overlay search path; repaired using SDK/SwiftPM flags.",
+    "component02:17 strict numeric transform/bounds assertions fail; repaired with existing selection-specific formula; expected bytes/bounds unchanged.",
+    "Source07 full01 and isolated merge-Actions reproduction SIGBUS at worker stack guard; inline selection stride136 expanded nested command/document values. Source08 immutable storage box and footprint regression pass the same path.",
+    "Source08 full02:2903 tests/9 stale contract assertions;6 test-file expectation repairs qualified on Source10; Source10 full03 then completed2903 tests with1 remaining IndexedNativeWorkflow capability assertion. Source11 updates only that max read-version expectation; all production remains identical Source08.",
+    "Source12 focused12: test fixture MainActor isolation compiler failure. Source13 annotates that helper only; production unchanged and focused37/full2912 pass."
+  ],
+  "api_review": "The three selection commands remain within195 total typed operations. Expanded channel-preview and two read-only pixel-mask resources share native bounded rendering with model/auth/busy/revision/revocation/cancellation guards, discovery and documentation. No Adobe route invented; corresponding descriptor/UXP gaps remain.",
+  "application_integration_complete": false,
+  "native64_implemented": true,
+  "increment_complete": false,
+  "goal_complete": false,
+  "pending": [
+    "General large rich-stack/mode/proof/onion composition and Photoshop preview-filter fidelity remain open.",
+    "Complete explicit paged-coverage Actions contexts and compact one-byte physical coverage storage.",
+    "Native/Photoshop acceptance after manual unlock; preserve normal283 and retained artwork.",
+    "Full dense90GP/4TiB/performance, Adobe descriptors/UXP, exact Photoshop ranges/kernels and physical supported-platform qualification; retain earlier full Intel failures."
+  ],
+  "intel": {
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source12.json",
+    "build_seconds": 98.99,
+    "tests": 14,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 17.732,
+    "translated_not_physical": true,
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/intel-core03/component03-run.log",
+    "production_identical_to_source13": true
+  },
+  "references": [
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/selection/",
+      "accessed": "2026-10-31",
+      "scope": "Public semantic selection methods;8-bit coverage, ellipse/rectangle, inverse/feather. Off-canvas behavior and full Photoshop ranges/algorithms remain unqualified."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions",
+      "accessed": "2026-10-31",
+      "scope": "Existing published execute-actions envelope; generic actions/UXP do not establish captured selection descriptors or native equivalence."
+    }
+  ],
+  "full": {
+    "tests": 2912,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 325.815,
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full05.log",
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json"
+  },
+  "focused": {
+    "tests": 37,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 7.946,
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/focused13.log"
+  },
+  "candidate": {
+    "app": "/private/tmp/Photato-Selection-Candidate-288-02.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "550ef1b5d515494dd1da92c118fe4dbb45d63bfbe40f0d09d1dc8187769cf395",
+    "tested_binary_sha256": "e747bc9c1c1fbf6381c10a853d3385c249a8de6e2e29e1a620adf9cb5d3594f8",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Selection-Candidate-288-02.zip",
+    "zip_sha256": "8aedf090d1eab5c5263eb395165f0c41b8d7522e7ea5a8dc45994a6e1ab82437",
+    "zip_bytes": 38978952,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate288-check-tsa1ejpe/Photato-Selection-Candidate-288-02.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access": {
+    "recorded_at_utc": "2026-10-31T09:19:33.427368+00:00",
+    "method": "normal283.getAXState then cua.getState after all compiler/test workers exited.",
+    "direct_app_observation": "cgWindowNotFound",
+    "inventory": "apps empty; native error explicitly reports Mac locked and automatic unlock unsuccessful.",
+    "candidate_launched": false,
+    "normal_preview_replaced": false,
+    "native_acceptance": false,
+    "user_unlock_request_already_pending": true
+  },
+  "representation": "Immutable Sendable storage box restores selection stride 64; Array extraction throws above its budget, point sampling is allocation-free. Logical GRAY8 still uses 16-byte RGBA Float sample tiles; compact physical coverage remains open.",
+  "first_integrated_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source03.json",
+  "current_integrated_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+  "record_finalization_repair": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/finalize-record02-failure.json",
+  "qualification_before_presentation_continuation": {
+    "arm64": {
+      "tests": 6,
+      "failed": 0,
+      "unexpected": 0,
+      "seconds": 2.274,
+      "strict_prior_native_vectors": 76,
+      "full_40mp_byte_comparison": true,
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/component03-run.log"
+    },
+    "focused": {
+      "tests": 81,
+      "failed": 0,
+      "seconds": 19.16,
+      "source_manifest": "source08.json",
+      "production_identical_to_source11": true
+    },
+    "contract_focus": {
+      "tests": 27,
+      "failed": 0,
+      "seconds": 7.519,
+      "source_manifest": "source10.json",
+      "production_identical_to_source11": true
+    },
+    "intel": {
+      "tests": 11,
+      "failed": 0,
+      "seconds": 15.825,
+      "translated_not_physical": true,
+      "source_manifest": "source08.json",
+      "production_identical_to_source11": true
+    },
+    "full": {
+      "tests": 2903,
+      "failed": 0,
+      "unexpected": 0,
+      "seconds": 320.108,
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full04.log",
+      "source_manifest": "source11.json"
+    },
+    "candidate": {
+      "app": "/private/tmp/Photato-Selection-Candidate-288-01.app",
+      "architecture": "arm64",
+      "minimum_os": "14.0",
+      "signature_verified": true,
+      "diagnostic_isolation": true,
+      "binary_sha256": "549ea336bf1c1eec0d7e2aa2fd931b821e183a91ce0e8f275f13fbb90bd9f976",
+      "tested_binary_sha256": "df21363d637fc2c581b9e1f302d3223717c1f743e089d79577e5a10578d6eb52",
+      "native_file_backed_sections_match": 38,
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source11.json",
+      "distribution_qualification": false,
+      "installed_app_replaced": false,
+      "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Selection-Candidate-288.zip",
+      "zip_sha256": "e386a026df544fe472e7096e5beface6a0f0f223a22f0fc8b60cddd63098c446",
+      "zip_bytes": 38967246,
+      "extracted_signature_verified": true,
+      "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate288-check-c4mtkozs/Photato-Selection-Candidate-288-01.app",
+      "native_acceptance": false,
+      "normal_preview_replaced": false,
+      "full_platform_qualification": false
+    },
+    "native_access": {
+      "recorded_at_utc": "2026-10-31T08:57:18.237375+00:00",
+      "direct_existing_normal283_ax": "The Mac is locked and automatic unlock could not unlock it. Manual unlock required.",
+      "native_inventory": "getState listed cached app/browser inventory; direct existing app observation confirms Mac locked, so inventory is not evidence of UI access.",
+      "method": "cua.rewriteDocumentation(); cua.getState(); existing normal283.getAXState() after all compiler/test workers exited.",
+      "candidate_launched": false,
+      "normal_preview_replaced": false,
+      "native_acceptance": false,
+      "physical_modifier_fidelity": false,
+      "user_unlock_request_already_pending": true
+    }
+  },
+  "presentation_reference": {
+    "source": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/edit-and-refine-layer-masks.html",
+    "observed": "Current official help describes Option-click a layer-mask thumbnail to display its channel and choosing the layer thumbnail to restore editing. It establishes the UI concept, not numerical preview filtering.",
+    "scope": "UI concept only, no sample/preview filter/global Photoshop equivalence.",
+    "earlier_url": "https://helpx.adobe.com/photoshop/using/masking-layers.html",
+    "redirect": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/add-layer-masks.html",
+    "redirect_scope": "Creation guidance; not used as evidence of preview sampling.",
+    "read_full_page": true,
+    "last_updated": "2026-09-29"
+  }
+}

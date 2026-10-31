@@ -54,11 +54,23 @@ struct SkySheet:View {
 struct SkyCanvas:NSViewRepresentable {
   @Bindable var model:SkyWorkspace
   func makeNSView(context:Context)->SkyCanvasView{let v=SkyCanvasView();v.model=model;return v}
-  func updateNSView(_ v:SkyCanvasView,context:Context){_=model.previewImage;_=model.maskImage;_=model.showOriginal;_=model.showMask;_=model.zoom;_=model.pan;_=model.stroke;_=model.tool;v.model=model;v.needsDisplay=true}
+  func updateNSView(_ v:SkyCanvasView,context:Context){_=model.previewImage;_=model.maskImage;_=model.showOriginal;_=model.showMask;_=model.zoom;_=model.pan;_=model.stroke;_=model.tool;v.model=model;v.needsDisplay=true;v.refreshToolCursor()}
 }
-@MainActor final class SkyCanvasView:NSView {
+@MainActor final class SkyCanvasView:ModifierCursorView {
+  override var toolCursor: ToolCursor {
+    guard let model else { return .unavailable }
+    if (panning && cursorPointerDown) || (!cursorPointerDown && (spaceHeld || model.tool == .hand)) { return cursorPointerDown ? .closedHand:.openHand }
+    switch model.tool {
+    case .move: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+    case .brush: return .symbol("paintbrush.pointed",(model.stroke?.add ?? (model.add != cursorModifiers.contains(.option))) ? .add:.subtract)
+    case .zoom: return EditorTool.zoom.cursor(modifiers:cursorModifiers)
+    case .hand: return .openHand
+    }
+  }
+
   weak var model:SkyWorkspace?
-  private var start:CGPoint?,previous:CGPoint?,space=false,panning=false
+  private var start:CGPoint?,previous:CGPoint?
+  var panning=false
   override var isFlipped:Bool{true}
   override var acceptsFirstResponder:Bool{true}
   var imageRect:CGRect {
@@ -73,19 +85,21 @@ struct SkyCanvas:NSViewRepresentable {
     if let stroke=m.stroke{let path=NSBezierPath();for (i,p) in stroke.points.enumerated(){let q=CGPoint(x:r.minX+p.x*r.width/Double(m.original.width),y:r.minY+p.y*r.height/Double(m.original.height));if i==0{path.move(to:q)}else{path.line(to:q)}};path.lineWidth=max(1,stroke.size*r.width/Double(m.original.width));path.lineCapStyle = .round;(stroke.add ? NSColor.systemRed:NSColor.systemBlue).withAlphaComponent(0.5).setStroke();path.stroke()}
   }
   override func mouseDown(with event:NSEvent){
-    guard let m=model,m.ready else{return};window?.makeFirstResponder(self);let p=convert(event.locationInWindow,from:nil);guard imageRect.contains(p) else{return};start=p;previous=p;panning=space || m.tool == .hand
+    beginCursorGesture(event);defer{refreshToolCursor()}
+    guard let m=model,m.ready else{return};window?.makeFirstResponder(self);let p=convert(event.locationInWindow,from:nil);guard imageRect.contains(p) else{return};start=p;previous=p;panning=spaceHeld || m.tool == .hand
     if panning{return};switch m.tool{case .move:m.beginMove();case .brush:m.beginStroke(point(p),alternate:event.modifierFlags.contains(.option));case .zoom:m.zoom=min(16,max(0.125,m.zoom*(event.modifierFlags.contains(.option) ? 0.8:1.25)));case .hand:break};needsDisplay=true
   }
   override func mouseDragged(with event:NSEvent){
+    updateCursorModifiers(event.modifierFlags)
     guard let m=model,let start else{return};let p=convert(event.locationInWindow,from:nil)
     if panning,let previous{m.pan.width+=p.x-previous.x;m.pan.height+=p.y-previous.y}
     else if m.tool == .move{let scale=Double(m.original.width)/max(1,imageRect.width);m.move(.init(width:(p.x-start.x)*scale,height:(p.y-start.y)*scale))}
     else if m.tool == .brush{m.dragStroke(point(p))};previous=p;needsDisplay=true
   }
-  override func mouseUp(with event:NSEvent){guard start != nil else{return};if !panning{if model?.tool == .brush{model?.endStroke()}else if model?.tool == .move{model?.endMove()}};start=nil;previous=nil;panning=false;needsDisplay=true}
+  override func mouseUp(with event:NSEvent){defer{endCursorGesture(event)};guard start != nil else{return};if !panning{if model?.tool == .brush{model?.endStroke()}else if model?.tool == .move{model?.endMove()}};start=nil;previous=nil;panning=false;needsDisplay=true}
   override func scrollWheel(with event:NSEvent){guard let m=model else{return};if event.modifierFlags.contains(.option){m.zoom=min(16,max(0.125,m.zoom*exp(-event.scrollingDeltaY*0.01)))}else{m.pan.width-=event.scrollingDeltaX;m.pan.height-=event.scrollingDeltaY};needsDisplay=true}
   override func magnify(with event:NSEvent){if let m=model{m.zoom=min(16,max(0.125,m.zoom*(1+event.magnification)))}}
   override func performKeyEquivalent(with event:NSEvent)->Bool{guard window?.firstResponder === self,event.modifierFlags.contains(.command),event.charactersIgnoringModifiers?.lowercased()=="z" else{return super.performKeyEquivalent(with:event)};if event.modifierFlags.contains(.shift){model?.redo()}else{model?.undo()};return true}
-  override func keyDown(with event:NSEvent){if event.charactersIgnoringModifiers==" "{space=true}else{super.keyDown(with:event)}}
-  override func keyUp(with event:NSEvent){if event.charactersIgnoringModifiers==" "{space=false}else{super.keyUp(with:event)}}
+  override func keyDown(with event:NSEvent){if event.charactersIgnoringModifiers==" "{spaceHeld=true}else{super.keyDown(with:event)}}
+  override func keyUp(with event:NSEvent){if event.charactersIgnoringModifiers==" "{spaceHeld=false}else{super.keyUp(with:event)}}
 }

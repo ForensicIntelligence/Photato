@@ -1,0 +1,27 @@
+{
+  "version": 64,
+  "status": "Software qualified on full optimized arm64 and translated Intel component tests; native/physical/platform acceptance pending",
+  "base": "docs/NATIVE_ARCHIVE_FORMAT_63.json",
+  "run": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage",
+  "container": {
+    "header": "Existing8-byte chunked magic, little-endian UInt32 version64, UInt32 reserved0",
+    "footer": "PHTEND64 followed by UInt64 manifest offset, UInt64 manifest length and32-byte SHA256 manifest digest",
+    "index": "Unchanged bounded authenticated63 B-tree, ordinal blobs and raster reference pages",
+    "agreement": "Header, manifest and footer versions must agree.63 remains readable/writable for documents not requiring64."
+  },
+  "feature": {
+    "selection_key": "document.selectionMask.pagedCoverage",
+    "selection_fields": [
+      "width",
+      "height",
+      "pagedCoverage"
+    ],
+    "coverage": "Surface payload with u8 depth, sRGB numeric encoding, opaque alpha1, equal RGB components and exact0...255/255 GRAY8 values. Cached bounds are derived from the samples.",
+    "legacy": "Dense bytes/historyBytes remain unchanged below the36MP bound; pagedCoverage cannot be mixed with them.",
+    "large": "Paged selection dimensions must exceed36MP and match the selection/document grid. Generated empty coverage is discarded by setCoverageSelection.",
+    "context": "Writing pagedCoverage requires an owned raster-blob context. Native64 supplies indexed ordinals; history supplies its owned blob codec.",
+    "versioning": "Any document containing paged selection coverage requires native64; ordinary public saves select it automatically. Generic inline encode delegates to the indexed container for such documents."
+  },
+  "limits": "Existing file/metadata/scratch/heap admissions remain; current physical backing uses16-byte RGBA Float samples rather than compact one-byte coverage. Full dense capacity and physical/platform/Photoshop qualification remain open.",
+  "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source11.json"
+}

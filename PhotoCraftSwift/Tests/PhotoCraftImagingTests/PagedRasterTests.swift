@@ -57,6 +57,7 @@ final class PagedRasterTests:XCTestCase {
     XCTAssertEqual(document.width*document.height,40_000_000)
     guard case .raster(let pixels)=document.layers[0].content else{return XCTFail("Missing raster")}
     XCTAssertGreaterThanOrEqual(pixels.mappedBytes,640_000_000)
+    XCTAssertGreaterThan(pixels.mappedTileIndexBytes,0)
     XCTAssertLessThan(document.estimatedBytes,16*1024*1024)
     for (x,y) in [(0,0),(63,63),(2048,64),(7999,4999),(4000,2500)]{
       let p=pixels.pixel(x:x,y:y)
@@ -74,6 +75,7 @@ final class PagedRasterTests:XCTestCase {
     let paged = try NativeArchive.readPaged(file)
     XCTAssertEqual(paged,session.document)
     XCTAssertGreaterThanOrEqual(paged.mappedRasterBytes,640_000_000)
+    XCTAssertGreaterThan(paged.mappedRasterIndexBytes,0)
     XCTAssertLessThan(paged.estimatedBytes,16*1024*1024)
     if let path=ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
       let out=URL(fileURLWithPath:path);try FileManager.default.createDirectory(at:out,withIntermediateDirectories:true)

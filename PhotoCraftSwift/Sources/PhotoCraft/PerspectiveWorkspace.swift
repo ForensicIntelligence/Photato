@@ -180,6 +180,8 @@ struct PerspectivePreview:View {
           }
         }
         if let a=drawingStart,let b=drawingEnd { let rect=CGRect(x:min(a.x,b.x),y:min(a.y,b.y),width:abs(a.x-b.x),height:abs(a.y-b.y));context.stroke(Path(rect),with:.color(.cyan),lineWidth:1) }
+      }.toolCursor { flags in
+        warped && flags.contains(.shift) ? .symbol("lock"):.symbol(warped ? "arrow.up.and.down.and.arrow.left.and.right":"plus")
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
         func documentPoint(_ p:CGPoint)->PathPoint { PathPoint((p.x-offset.x)/scale,(p.y-offset.y)/scale) }
         let point=documentPoint(value.startLocation)

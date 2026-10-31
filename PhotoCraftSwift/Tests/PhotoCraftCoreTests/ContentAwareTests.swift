@@ -45,7 +45,7 @@ final class ContentAwareTests: XCTestCase {
   func testSamplingStrokesValidationAndCancellation() async throws {
     let mask = try SelectionMask(width:24,height:16,bytes:Array(repeating:0,count:384))
     var stroke = ContentAwareStroke(); stroke.add = true; stroke.size = 6; stroke.points = [[4,8],[12,8]]
-    let painted = try stroke.applying(to:mask); XCTAssertEqual(painted.bytes[8*24+8],255)
+    let painted = try stroke.applying(to:mask); XCTAssertEqual(try painted.bytes[8*24+8],255)
     stroke.add = false; XCTAssertEqual(try stroke.applying(to:painted),mask)
     XCTAssertThrowsError(try ContentAwareSettings.decodeJSON(Data("{\"scale\":1}".utf8)))
     XCTAssertThrowsError(try ContentAwareSettings.decodeJSON(Data("{\"unknown\":1}".utf8)))

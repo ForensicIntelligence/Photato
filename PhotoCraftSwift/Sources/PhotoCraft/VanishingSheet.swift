@@ -94,6 +94,14 @@ struct VanishingPreview:View {
         let points=model.pending.isEmpty ? stroke:model.pending
         var path=Path();for (i,p) in points.enumerated() { let q=screen(p);if i==0 { path.move(to:q) } else { path.addLine(to:q) };if !model.pending.isEmpty { context.fill(Path(ellipseIn:CGRect(x:q.x-3,y:q.y-3,width:6,height:6)),with:.color(.orange)) } };context.stroke(path,with:.color(.orange),lineWidth:2)
         if let source=model.cloneSource { let p=screen(source);var cross=Path();cross.move(to:.init(x:p.x-7,y:p.y));cross.addLine(to:.init(x:p.x+7,y:p.y));cross.move(to:.init(x:p.x,y:p.y-7));cross.addLine(to:.init(x:p.x,y:p.y+7));context.stroke(cross,with:.color(.yellow),lineWidth:1.5) }
+      }.toolCursor { flags in
+        switch model.tool {
+        case .hand: return pressed ? .closedHand:.openHand
+        case .stamp: return .symbol((pressed ? sampled:flags.contains(.option)) ? "scope":"paintbrush.pointed")
+        case .brush: return .symbol("paintbrush.pointed")
+        case .edit,.transform: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+        case .create: return .symbol("plus")
+        }
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
         func point(_ p:CGPoint)->PathPoint { .init((p.x-offset.x)/scale,(p.y-offset.y)/scale) }
         if !pressed {

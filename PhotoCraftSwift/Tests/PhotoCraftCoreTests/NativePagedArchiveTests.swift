@@ -172,7 +172,12 @@ extension NativePagedArchiveTests {
       try surface.importPatch(patch,atX:(i%128)*64,atY:(i/128)*64,backing:backing)
     }
     document.layers[0].content = .raster(surface)
-    let start=Date();try NativeArchive.write(document,to:file)
+    let start=Date(),writer=try AtomicFileWriter(to:file,maximumBytes:NativeArchive.maximumFileBytes)
+    defer{writer.discard()}
+    try NativeIndexedArchive.write(document,output:.init(file:writer,maximumBytes:NativeArchive.maximumFileBytes));try writer.commit()
+    let header=try FileHandle(forReadingFrom:file);defer{try? header.close()}
+    XCTAssertEqual(try header.read(upToCount:16),NativeIndexedArchive.header)
+    XCTAssertLessThanOrEqual(writer.maximumWriteBytes,65536)
     let fileBytes=try file.resourceValues(forKeys:[.fileSizeKey]).fileSize!
     XCTAssertGreaterThan(fileBytes,NativeArchive.maximumBytes,"Exercise actual native output above512MiB, not only file admission")
     XCTAssertThrowsError(try NativeArchive.read(file))
@@ -183,7 +188,8 @@ extension NativePagedArchiveTests {
     for(x,y,expected)in probes {XCTAssertTrue(result.linearPixel(x:x,y:y).hasSameBits(as:expected))}
     if let path=ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
       let out=URL(fileURLWithPath:path);try FileManager.default.createDirectory(at:out,withIntermediateDirectories:true)
-      try JSONSerialization.data(withJSONObject:["fileBytes":fileBytes,"logicalPixels":8192*8192,"storedPixels":count*4096,"mappedSampleBytes":reopened.mappedRasterBytes,"heapEstimateBytes":reopened.estimatedBytes,"exactHDRProbes":probes.count,"seconds":Date().timeIntervalSince(start),"scope":"Actual owned high-entropy finiteFloat32 RGB with unit alpha, native write/read across512MiB. Not Photoshop pixel, full4TiB or RSS qualification."],options:[.prettyPrinted,.sortedKeys]).write(to:out.appendingPathComponent("native-large-write.json"))
+      try FileManager.default.copyItem(at:file,to:out.appendingPathComponent("native63-high-entropy.photato"))
+      try JSONSerialization.data(withJSONObject:["formatVersion":63,"probes":probes.map{["x":$0.0,"y":$0.1,"bits":[$0.2.r.bitPattern,$0.2.g.bitPattern,$0.2.b.bitPattern,$0.2.a.bitPattern]]},"fileBytes":fileBytes,"logicalPixels":8192*8192,"storedPixels":count*4096,"mappedSampleBytes":reopened.mappedRasterBytes,"heapEstimateBytes":reopened.estimatedBytes,"exactHDRProbes":probes.count,"seconds":Date().timeIntervalSince(start),"scope":"Actual owned high-entropy finiteFloat32 RGB with unit alpha, native63 write/read across512MiB. Not Photoshop pixel, full4TiB or RSS qualification."],options:[.prettyPrinted,.sortedKeys]).write(to:out.appendingPathComponent("native-large-write.json"))
     }
   }
 }

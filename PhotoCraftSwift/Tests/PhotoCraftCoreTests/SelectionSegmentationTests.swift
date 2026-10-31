@@ -32,7 +32,7 @@ final class SelectionSegmentationTests:XCTestCase {
   }
   func overlap(_ mask:SelectionMask,_ truth:[Bool])->Double {
     var intersection=0,union=0
-    for i in truth.indices {let actual=mask.bytes[i]>=128;if actual && truth[i]{intersection+=1};if actual || truth[i]{union+=1}}
+    for i in truth.indices {let actual=mask.byte(at:i)>=128;if actual && truth[i]{intersection+=1};if actual || truth[i]{union+=1}}
     return Double(intersection)/Double(max(1,union))
   }
   func testObjectRectangleAndLassoExtractTexturedSubject()throws {

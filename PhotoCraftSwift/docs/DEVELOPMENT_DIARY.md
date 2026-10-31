@@ -593,6 +593,14 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-10-30 | 279 | [Disk-backed dense raster input](DEVLOG.md#dev-step-279) |
 | 2026-10-30 | 280 | [Paged native persistence and large file IO](DEVLOG.md#dev-step-280) |
 | 2026-10-30 | 281 | [Publish qualified native source280](DEVLOG.md#dev-step-281) |
+| 2026-10-30 | 282 | [Indexed native archives](DEVLOG.md#dev-step-282) |
+| 2026-10-30 | 283 | [Modifier-aware tool cursors](DEVLOG.md#dev-step-283) |
+| 2026-10-30 | 284 | [Paged runtime tile index (under test)](DEVLOG.md#dev-step-284) |
+| 2026-10-30 | 285 | [Persistent native tile ordinal reuse (software qualified; UI pending)](DEVLOG.md#dev-step-285) |
+| 2026-10-30 | 286 | [Large PSD/PSB file workflows (software qualified; UI pending)](DEVLOG.md#dev-step-286) |
+| 2026-10-30 | 287 | [Paged document geometry (software qualified; native acceptance pending)](DEVLOG.md#dev-step-287) |
+| 2026-10-31 | 288 | [Paged selections and bounded channel views (software qualified)](DEVLOG.md#dev-step-288) |
+| 2026-10-31 | 289 | [Publish qualified source288](DEVLOG.md#dev-step-289) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -1602,3 +1610,72 @@ Correct an earlier interpretation: the gray image thumbnail was present, with ch
 ## 2026-10-30 — Step281: publish qualified native source280
 
 Publish and independently verify the complete source from the stable candidate that passed71 focused and2829 full optimized tests. It includes the painting/retouch feedback work and API/Actions,300000-side sparse canvases, disk-backed dense RGB input and checked native paging with file IO beyond512MiB. Preserve all qualified input hashes, the original Rust snapshot, repository history and private visibility. Generated optional models/caches, builds, runtime evidence and working documents remain excluded; reconstruction instructions remain included. Source commit: [`e4e359b`](https://github.com/ForensicIntelligence/Photato/commit/e4e359b6d230d5c95984eefaa94325a56e53885e). [Verified receipt](SOURCE_PUBLICATION_281.json). This does not close Photoshop, capacity, chooser, platform or physical60fps gaps. [Detailed record](DEVLOG.md#dev-step-281).
+
+
+## 2026-10-30 — Step282: indexed native archives
+
+Native63 removes the flat archive-table barrier with a bounded authenticated hierarchy and compact1024-entry tile-reference pages. Native File Open, optional API63, exact sample/history behavior and atomic save fallback share the engine. An independent parser checks300000 index records, all-depth sample bits,65792 repeated tile references and a real585MB high-entropy output with six original HDR probes.
+
+All63 focused and2840 full optimized tests pass. In the native app, a300000-square canvas and a real40MP image accept painting/Undo/Redo/SaveAs/OpenRecent with the stroke preserved. Preview282 is separately signed, packaged and running with the unchanged retained artwork at100% zoom. Preserve the initial test-fixture crash and serializer-wrapped save-cap defect and their repairs. The newly saved-file chooser can still disable Open while Open Recent succeeds; this known issue stays open. Runtime tile dictionaries, large PSB, dense maximum/all operations/recovery and platform/Photoshop parity remain open. [Evidence](NATIVE_INDEX_REFERENCES.json) · [Detailed record](DEVLOG.md#dev-step-282).
+
+
+## 2026-10-30 — Step283: modifier-aware tool cursors
+
+Modifier keys now refresh the icon for the existing tool operation without needing a mouse move. All52 current tools share the policy; selection/source/toning/geometry alternates and sheet workspaces show meaningful native glyphs. Stroke and polygon modes stay tied to the action captured when the gesture starts. Space/Hand feedback restores correctly after release, focus changes and detachment, without stealing text/control cursors. Every new tool/action must include this behavior and tests under the contributor rules.
+
+All9 new cursor tests and2849 full optimized tests pass, including an832-case tool/modifier matrix and native Zoom/history/captured-mode checks. Separate Preview283 is signed, verified and running with the retained clean artwork. The development record preserves compiler/fixture repairs, a focused document-controller startup-order crash and the test-host inability to become foreground. Event admission is checked with controlled key-window state; physical held-key Photoshop comparison remains open. API discovery describes local presentation; editing/history contracts and Adobe routes remain unchanged. Missing Photoshop modifier actions, pointer preferences/exact hover and capacity/platform parity remain open. [Audit and evidence](TOOL_CURSOR_REFERENCES.json) · [Detailed record](DEVLOG.md#dev-step-283).
+
+
+## 2026-10-30 — Step284: paged runtime index and universal qualification (remaining gates open)
+
+Large mapped images now retain a private file-backed descriptor index and bounded copy-on-write edits. Ordinary images keep a bounded fast path; large imports construct ordered descriptors in one pass. Existing native63 saving is automatic for runtime-paged documents, and APIs distinguish index pages, sample pages and estimated heap use.
+
+The arm64 source passes268 focused and2,863 full optimized tests. Independent checks verify all21,977,344 maximum-index records and all65,537 unique tiles (>4GiB raw samples) in the owned native file. Repeated samples in the maximum-index probe do not establish a dense90GP raster. Software brush preview p95 is2.67–3.56ms in the measured cases; physical60fps remains unproven. The record preserves and repairs coroutine/compiler failures, signed-zero/admission errors, performance regressions and a layer-merge worker-stack overflow.
+
+The Xcode Release build succeeds for Apple Silicon and Intel, with macOS14.0 deployment metadata and verified signatures/resources/ZIP. An optional-model script dependency repair keeps script sandboxing enabled; valid/missing/corrupt model cases are checked. Only the project specification/generated project differ from the arm64-tested source. Newer Apple frameworks are weak-linked. These checks do not prove a physical macOS14 or Intel launch.
+
+All277 focused Intel tests and independent descriptor/sample checks pass under Rosetta. The full Intel run executes2,863 tests but fails320 assertions:319 strict numeric comparisons and one hosted rename-focus check. Native scalar probes show some architecture math differences; promoting to Double would also alter existing arm64 output, so that shortcut was rejected. Expected hashes and tolerances remain strict. The hosted assertion repeats in isolated Intel execution while its arm64 counterpart passes; visible behavior still needs native access. These are unresolved fidelity gates, not a fully qualified Intel release.
+
+The UI tool still reports the Mac locked. Native40MP paint/save/reopen and normal-preview handoff remain pending; Preview283 stays the qualified normal build. All candidate284 packages and frozen source inputs are preserved. No new source push or distribution release is claimed. The next major capacity defect is reproduced:269 unique tiles referenced807 times require excess scratch after cache eviction. Full metadata/pyramids, dense capacity, large PSB, general operations/recovery, chooser, supported-platform and Photoshop equivalence remain open. [Runtime evidence](RUNTIME_TILE_INDEX_REFERENCES.json) · [Universal evidence](UNIVERSAL_BUILD_284.json) · [Detailed record](DEVLOG.md#dev-step-284).
+
+## 2026-10-30 — Step285: repeated native tile references (software qualified; UI pending)
+
+The native63 loader previously forgot aliases outside its256-entry cache. An owned file with269 unique tiles referenced807 times therefore required excess scratch. A new decode-local cache keeps sparse8-byte descriptors in a private, immediately unlinked file and retains immutable samples. Readonly mappings plus checked writes preserve explicit I/O failure handling. Desktop Open and native HTTP uploads share the fix, with API discovery/documentation updated; owned decoding and portable bytes stay unchanged.
+
+All48 focused and2,871 full optimized arm64 tests pass. The first focused attempt retained a test-fixture error:269 one-channel values collapse at8-bit quantization. Two quantized channels repair only the fixture; the strict one-byte-under-scratch assertion remains. Independent Python authenticates the original archive and compares all3,305,472 decoded pixels to both its tile payloads and procedural reference bits. Both arm64 and translated Intel Core now open that exact file at17,629,184 scratch bytes and match every bit. This is a concrete capacity repair, not full Photoshop or maximum-dense-document proof.
+
+The isolated signed candidate ZIP and2518 exact source inputs are preserved. Native UI access still reports the Mac locked, so the candidate has not launched and normal Preview283/artwork remain unchanged. Candidate284 stays frozen separately with its319 numerical assertions and one hosted Intel focus failure still open. No new source publication, distribution release or complete parity claim is made. [Implementation and evidence](NATIVE_ORDINAL_REUSE_REFERENCES.json) · [Detailed record](DEVLOG.md#dev-step-285).
+
+## 2026-10-30 — Step286: large Photoshop files (software qualified; UI pending)
+
+Native PSD/PSB interchange now pages RGB8/16/32 layers, raster masks and flat composites into immutable scratch samples. Layered import reuses bounded raw rows; flat channel-major input stages raw planes on disk. Large merged previews render bounded regions. File admission, retained metadata, heap workspace, sample/staging scratch and API transport quotas remain separate. Final prepared-file copying now admits precisely the staged size, removing a second512MiB restriction affecting large native/Photoshop saves.
+
+All2,878 optimized arm64 tests pass. The first83-test focus run passes82 cases; its new group fixture fails because I placed a marker before its child. Correcting only that fixture makes the exact regional/full-render comparison pass at all depths.36 independent Python vectors retain every raw sample and native PSB byte from actual prior285 output. A real640,003,428-byte40MP RGB16 PSB exports/reopens, while independent Python checks all640,000,000 layer/merged sample bytes. The full coordinated copy compares every byte; compressed40MP HTTP import/painting/stale-revision/Undo also passes. Intel Core/Imaging compile and translated36-vector/every40-million-pixel replay pass. These are format/native/translated checks, not Photoshop output or maximum dense90GP proof.
+
+The signed isolated candidate and2561 exact source inputs are preserved. The Mac remains locked for native/Photoshop acceptance; candidate286 has not launched and normal283/artwork stay unchanged. The older Intel numerical/hosted-focus failures, full content/mode/recovery/rendering/dense capacity and physical supported-platform gates remain open. No source push, distribution release or complete parity claim is made. [Design and evidence](LARGE_PSB_WORKFLOW_REFERENCES.json) · [Detailed record](DEVLOG.md#dev-step-286).
+
+## 2026-10-30 — Step287: large-document geometry (software qualified; native acceptance pending)
+
+Image Size/rotation rejected large raster output, coloured canvas growth rejected large canvases, and saved channels allocated full results in memory. A retained prior286 probe also shows a32-bit linear identity transform changing one HDR component by one bit through an encoded colour round trip. Bounded resampling patches, exact raw grid permutations, preserved encoding and paged/shared rectangular borders replace those paths. Sparse support stays bounded.
+
+All55 focused and2890 full optimized arm64 tests pass on2610 frozen Source03 inputs. Tests cover maximum sparse geometry, a real dense40MP resize/turn/history/native round trip, masks/channels, invalid/busy/stale/cancel behavior and API parity. All36 actual prior286 sRGB outputs match, independent raw32 maps preserve special sample bits, and translated Intel component replay passes. The strict renderer matrix compares80 depth/translation/mask/opacity/encoding combinations. These are native/independent/translated checks, not Photoshop kernel or maximum dense90GP proof.
+
+The record preserves the typecheck typo, failed maximum masked API preview, its repair, a separately discovered linear-mask encoding mismatch and the final correction. Both passing full runs and failed evidence are retained. The signed isolated candidate is preserved; native/Photoshop acceptance awaits manual unlock and normal283/artwork stay unchanged. Dense selections, general composition, mode/operation limits, exact Photoshop variants and previous Intel/physical-platform gates remain open. No source push or distribution release is claimed. [Design and evidence](PAGED_GEOMETRY_REFERENCES.json) · [Detailed record](DEVLOG.md#dev-step-287).
+
+## 2026-10-31 — Step288: paged selections and bounded channel views (software qualified)
+
+Large selections use immutable paged coverage. Native64 retains coverage through saves, recovery and scratch-backed history. Shape/inverse/feather share prepared desktop and API commands; small legacy data stays compatible. Whole-array extraction is checked, point sampling does not allocate, and contours use bounded viewport sampling.
+
+The continuation adds bounded saved-alpha/Quick Mask, RGB component, raw pixel-mask and Selection Brush previews. Cropped mask overlays keep their document position while panning. Numerical channel coverage ignores source alpha. The API's channel preview shares native rendering; two read-only per-layer mask resources return gray or RGBA overlay. They require authentication/shared documents and reject busy, absent, cancelled or revoked work without modifying history or stored pixels.
+
+All 2,912 full optimized arm64 tests pass, with 37 focused workflow tests and 14 translated Intel component tests on corresponding production. Checks include complete 40 MP coverage/area input, 76 preserved prior-native selection vectors, maximum sparse/constant canvases, native64/history and matched native/API preview pixels. Native-size raw mask previews retain exact existing samples; reduced mask previews sample output-cell centers, and alpha overlays reduce composite/coverage before mixing. Full Photoshop preview-filter fidelity is unqualified.
+
+The record preserves compiler migration failures, a reproduced worker-stack SIGBUS, stale capability expectations and the continuation's test-fixture actor-isolation error. Immutable selection storage restores stride64; the original crash path, footprint guard and complete suite pass. The fixture repair changes no production code; output oracles and tolerances were not weakened.
+
+Separate signed candidates are preserved. Normal283/artwork remain unchanged; native/Photoshop acceptance awaits manual unlock. General large rich-stack/mode/proof/onion composition, explicit paged-coverage Actions, compact one-byte storage (current tiles use16-byte RGBA Float samples), Adobe descriptors/UXP, full dense capacity/frame rate and supported-platform qualification remain open. The master goal stays active; no source publication or distribution release is claimed. [Evidence](PAGED_SELECTION_REFERENCES.json) · [Native64](NATIVE_ARCHIVE_FORMAT_64.json) · [Detailed record](DEVLOG.md#dev-step-288).
+
+## 2026-10-31 — Step289: save the qualified source to private GitHub (in progress)
+
+Prepare the complete native source from Source13, which passed2,912 full optimized arm64 tests,37 focused workflows and14 translated Intel component tests. Preserve the original Rust snapshot/history, licenses, Xcode project, tests and fixture provenance. Builds, generated models/caches, local runtime evidence and working documents stay excluded.
+
+This delivers source only; the Mac remains locked for native acceptance. Normal283 and retained artwork stay unchanged. The repository remains private until release day, and full Photoshop/capacity/platform qualification stays open. The verified publication receipt follows after push.

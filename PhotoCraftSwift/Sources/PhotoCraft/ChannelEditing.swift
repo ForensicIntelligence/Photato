@@ -65,9 +65,26 @@ extension EditorStore {
 
 /// Channel coverage is numeric. Only the document composite is color managed.
 enum ChannelPresentation {
-  static func image(_ composite: Surface, document: CraftDocument,target: ChannelPlaneTarget?,overlay: Bool) throws -> CGImage {
-    guard let target else { return try ColorManagement.displayImage(composite,in:document) }
+  static func image(_ composite: Surface, document: CraftDocument,target: ChannelPlaneTarget?,overlay: Bool,
+    request: RasterPreviewRequest? = nil
+  ) throws -> CGImage {
+    guard let target else { return try ColorManagement.displayImage(request.map { try $0.reducing(composite) } ?? composite,in:document) }
     let channel = try document.channel(target)
+    if let request {
+      let plane = try channel.pixels.reducedPreview(in: request.region, width: request.width,
+        height: request.height, encoding: .sRGB, projectingStoredSamples: { p in
+          let v = overlay ? p.r : channel.options.display(p.r)
+          let numeric = Pixel(v,v,v)
+          return overlay ? numeric : numeric.quantized(.u8)
+        })
+      if !overlay { return try RasterIO.displayImage(plane) }
+      var display = try RasterIO.surface(ColorManagement.displayImage(request.reducing(composite),in:document))
+      try display.mapPixels(in: .init(x: 0, y: 0, width: request.width, height: request.height)) { x,y,p in
+        let k = channel.options.overlay(plane.pixel(x:x,y:y).r), c = channel.options.color
+        return Pixel(p.r*(1-k)+c.r*k,p.g*(1-k)+c.g*k,p.b*(1-k)+c.b*k,max(p.a,k))
+      }
+      return try RasterIO.displayImage(display)
+    }
     if !overlay {
       var plane = try Surface(width:document.width,height:document.height,depth:.u8,fill:.black)
       try plane.mapPixels(in:.init(x:0,y:0,width:document.width,height:document.height)) { x,y,_ in

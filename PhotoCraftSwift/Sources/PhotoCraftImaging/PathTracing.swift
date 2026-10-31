@@ -7,7 +7,7 @@ public enum PathTracing {
   public static func trace(_ mask:SelectionMask,tolerance:Double)throws->VectorPath {
     guard tolerance.isFinite,(0.5...10).contains(tolerance),mask.width*mask.height<=16_777_216 else{throw CraftError.invalid("Make Work Path supports 0.5–10 pixel tolerance and selections up to 16MP.")}
     var next:[Edge:Edge]=[:],positions:[Edge:PathPoint]=[:]
-    func value(_ x:Int,_ y:Int)->Double{x>=0 && y>=0 && x<mask.width && y<mask.height ? Double(mask.bytes[y*mask.width+x])/255:0}
+    func value(_ x:Int,_ y:Int)->Double{x>=0 && y>=0 && x<mask.width && y<mask.height ? Double(mask.byte(at:y*mask.width+x))/255:0}
     func position(_ e:Edge)->PathPoint{let a=value(e.x,e.y),b=value(e.x+(e.vertical ? 0:1),e.y+(e.vertical ? 1:0)),t=abs(b-a)>1e-12 ? (0.5-a)/(b-a):0.5;return .init(Double(e.x)+0.5+(e.vertical ? 0:t),Double(e.y)+0.5+(e.vertical ? t:0))}
     for y in -1..<mask.height {try Task.checkCancellation();for x in -1..<mask.width {
       let a=value(x,y),b=value(x+1,y),c=value(x+1,y+1),d=value(x,y+1),code=(a>=0.5 ? 1:0)+(b>=0.5 ? 2:0)+(c>=0.5 ? 4:0)+(d>=0.5 ? 8:0)

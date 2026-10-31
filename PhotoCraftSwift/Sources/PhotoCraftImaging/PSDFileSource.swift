@@ -45,7 +45,7 @@ final class PSDFileSource {
     return counters
   }
 
-  init(_ url: URL, maximumBytes: Int = PSDCodec.maximumInputBytes) throws {
+  init(_ url: URL, maximumBytes: Int = PSDCodec.maximumFileBytes) throws {
     try Task.checkCancellation()
     guard url.isFileURL, maximumBytes >= 0 else {
       throw CraftError.invalid("Choose a local regular image file.")

@@ -19,7 +19,7 @@ final class FocusAreaWorkflowTests:XCTestCase {
     let state=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:s.focusAreaState));XCTAssertNoThrow(try BrushAPI.merge(state,schema:FocusAreaAPI.stateSchema))
     let first=try XCTUnwrap(m.refinedMask),automatic=try XCTUnwrap(m.effectiveFocus),controls=FocusAreaControls(model:m)
     controls.flag(\.autoRange).wrappedValue=false;await settle(m);XCTAssertEqual(m.state.focus?.range,automatic.range)
-    controls.number(\.range,automatic:\.autoRange).wrappedValue=0;await settle(m);XCTAssertTrue(m.refinedMask!.bytes.allSatisfy{$0==255})
+    controls.number(\.range,automatic:\.autoRange).wrappedValue=0;await settle(m);XCTAssertTrue(try m.refinedMask!.bytes.allSatisfy{$0==255})
     m.undo();await settle(m);XCTAssertEqual(m.refinedMask,first);m.redo();await settle(m)
     m.tool = .subtract;m.size=20;m.hardness=1;m.begin(x:20,y:20,alternate:false);m.drag(x:30,y:20);m.end();await settle(m);XCTAssertEqual(m.refinedMask?.coverage(x:25,y:20),0)
     let mask=m.refinedMask;m.refineFocusEdges();await settle(m);XCTAssertFalse(m.isFocus);XCTAssertEqual(m.refinedMask,mask);XCTAssertTrue(s.document==original)

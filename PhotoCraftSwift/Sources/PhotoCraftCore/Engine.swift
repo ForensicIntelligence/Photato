@@ -936,7 +936,7 @@ public enum Command: Sendable {
       try d.transformChannels(from:original,by:.translation(-Double(r.x),-Double(r.y)))
     case .flip(let id, let horizontal):
       let i = try index(id)
-      let s = try raster(i)
+      let s = try raster(i,allowLarge:true)
       let layer = d.layers[i]
       let delta =
         Transform2D.translation(Double(layer.x), Double(layer.y))
@@ -987,17 +987,11 @@ public enum Command: Sendable {
         }
       }
       if let color = extensionColor, color.a > 0, width > old.width || height > old.height {
-        guard width <= Surface.maximumDensePixels / height else { throw CraftError.unsupported("Large colored canvas extensions need tiled region storage, which is not yet available.") }
         guard color.isFinite, d.layers.count < 512 else {
           throw CraftError.invalid("Invalid canvas extension or layer limit.")
         }
-        var pixels = try Surface(width: width, height: height, depth: d.depth)
-        for y in 0..<height {
-          try Task.checkCancellation()
-          for x in 0..<width where x < dx || y < dy || x >= dx + old.width || y >= dy + old.height {
-            pixels.setPixel(x: x, y: y, color)
-          }
-        }
+        let pixels=try Surface.canvasExtension(width:width,height:height,depth:d.depth,color:color,
+          original:IntRect(x:dx,y:dy,width:old.width,height:old.height))
         d.layers.insert(Layer(name: "Canvas Extension", content: .raster(pixels)), at: 0)
       }
       if let origin = d.artboardOrigin { d.artboardOrigin = .init(x: origin.x - dx, y: origin.y - dy) }

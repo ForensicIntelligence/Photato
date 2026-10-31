@@ -34,7 +34,14 @@ public enum SelectionToolPreparation {
     if request.kind == .object {mask=try ObjectFinderScene.coverage(mask,hardEdge:request.hardEdge)}
     try Task.checkCancellation();return .selectionCoverage(mask,request.mode)
   }
-  public static func overlay(_ mask:SelectionMask?,color:Pixel)throws->CGImage? {
+  public static func overlay(_ mask:SelectionMask?,color:Pixel,request:RasterPreviewRequest? = nil)throws->CGImage? {
+    if let request, let mask {
+      var surface = try request.reducing(mask.coverageSurface())
+      try surface.mapPixels(in: .init(x: 0, y: 0, width: surface.width, height: surface.height)) { _,_,p in
+        Pixel(color.r,color.g,color.b,unit(p.r)*color.a)
+      }
+      return try RasterIO.displayImage(surface)
+    }
     guard let mask else{return nil};var surface=try Surface(width:mask.width,height:mask.height)
     for y in 0..<mask.height {try Task.checkCancellation();for x in 0..<mask.width {let alpha=mask.coverage(x:x,y:y)*color.a;if alpha>0{surface.setPixel(x:x,y:y,Pixel(color.r,color.g,color.b,alpha))}}}
     return try RasterIO.displayImage(surface)

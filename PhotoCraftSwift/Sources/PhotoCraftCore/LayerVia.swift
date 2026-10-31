@@ -74,7 +74,7 @@ public enum LayerVia {
     for y in top..<bottom {
       try Task.checkCancellation()
       for x in left..<right {
-        let coverage = document.selectionMask?.bytes[y * document.width + x] ?? 255
+        let coverage = document.selectionMask?.byte(at:y * document.width + x) ?? 255
         var pixel = source.pixel(x: x - original.x, y: y - original.y)
         let result = alpha(source: pixel.a, selection: coverage, depth: document.depth)
         if operation == .cut && coverage > 0 {

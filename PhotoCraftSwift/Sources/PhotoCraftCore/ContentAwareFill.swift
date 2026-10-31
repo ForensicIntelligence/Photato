@@ -44,10 +44,10 @@ public struct ContentAwareStroke: Codable, Equatable, Sendable {
   }
   public func applying(to mask: SelectionMask) throws -> SelectionMask {
     try validate(); let w = mask.width, h = mask.height
-    var bytes = mask.bytes
+    var bytes = (try mask.bytes)
     if kind == .lasso {
       let shape = try SelectionMask.make(.polygon(points.map { SelectionPoint($0[0],$0[1]) }),width:w,height:h,antiAlias:true)
-      for y in 0..<h { try Task.checkCancellation(); for x in 0..<w { let i = y*w+x; bytes[i] = add ? max(bytes[i],shape.bytes[i]):min(bytes[i],255-shape.bytes[i]) } }
+      for y in 0..<h { try Task.checkCancellation(); for x in 0..<w { let i = y*w+x; bytes[i] = add ? max(bytes[i],shape.byte(at:i)):min(bytes[i],255-shape.byte(at:i)) } }
     } else {
       var visits = 0; let r = size/2
       for j in points.indices {

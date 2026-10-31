@@ -28,6 +28,10 @@ public struct AlphaChannel: Codable, Equatable, Identifiable, Sendable {
     try options.validate()
   }
   public func selection(invert: Bool = false) throws -> SelectionMask {
+    if pixels.width>Surface.maximumDensePixels/pixels.height {
+      let source=try invert ? pixels.mappedStoredSamples {p in let v=1-unit(p.r);return Pixel(v,v,v)}:pixels
+      return try SelectionMask(coverage:source)
+    }
     var bytes = [UInt8](repeating:0,count:pixels.width*pixels.height)
     for y in 0..<pixels.height { try Task.checkCancellation(); for x in 0..<pixels.width {
       let v = unit(pixels.pixel(x:x,y:y).r); bytes[y*pixels.width+x] = UInt8(((invert ? 1-v:v)*255).rounded())
@@ -36,10 +40,14 @@ public struct AlphaChannel: Codable, Equatable, Identifiable, Sendable {
   }
   public static func coverage(_ selection: SelectionMask?,width: Int,height: Int,depth: PixelDepth) throws -> Surface {
     if let selection { guard selection.width == width, selection.height == height else { throw CraftError.invalid("Selection/channel canvas sizes differ.") } }
+    if let selection,selection.isPaged {
+      let mapped=try selection.coverageSurface().mappedStoredSamples {p in Pixel(p.r,p.r,p.r).quantized(depth)}
+      return try mapped.retaggedCoverageStorage(depth:depth)
+    }
     var surface = try Surface(width:width,height:height,depth:depth,fill:selection == nil ? .white:.black)
     if let selection {
       for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
-        let value = Float(selection.bytes[y*width+x])/255
+        let value = Float(selection.byte(at:y*width+x))/255
         if value > 0 { surface.setPixel(x:x,y:y,Pixel(value,value,value)) }
       } }
     }
@@ -97,16 +105,12 @@ extension CraftDocument {
     }
   }
   mutating func transformChannels(from old: CraftDocument,by transform: Transform2D,method: Resampling = .nearest) throws {
-    guard old.hasAuxiliaryChannels else { return }; let inverse = try transform.inverted()
+    guard old.hasAuxiliaryChannels else { return }
     func mapped(_ value: AlphaChannel) throws -> AlphaChannel {
       var result = value
-      var pixels = try Surface(width:width,height:height,depth:depth,fill:.black)
-      for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
-        let p = inverse.point(Double(x)+0.5,Double(y)+0.5)
-        let v = unit(RasterGeometry.sample(value.pixels,x:p.x,y:p.y,method:method).r)
-        if v > 0 { pixels.setPixel(x:x,y:y,Pixel(v,v,v)) }
-      } }
-      result.pixels = pixels; return result
+      result.pixels = try RasterGeometry.renderChannel(value.pixels,transform:transform,
+        bounds:IntRect(x:0,y:0,width:width,height:height),method:method)
+      return result
     }
     alphaChannels = try old.alphaChannels?.map(mapped); quickMask = try old.quickMask.map(mapped)
   }

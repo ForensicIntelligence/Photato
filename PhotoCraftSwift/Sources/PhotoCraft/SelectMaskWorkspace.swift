@@ -62,7 +62,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
   }
   func remember(_ old: SelectMaskState) {
     guard old != state else { return }; undoStates.append(old); redoStates.removeAll()
-    let limit = min(24,max(2,64*1024*1024/max(1,(input?.mask.bytes.count ?? 1))))
+    let limit = min(24,max(2,64*1024*1024/max(1,(input?.mask.pixelCount ?? 1))))
     if undoStates.count > limit { undoStates.removeFirst(undoStates.count-limit) }
   }
   func change(_ next: SelectMaskState,remember save: Bool = true) {
@@ -76,8 +76,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
   }
   func begin(x: Double,y: Double,alternate: Bool) {
     guard ready, stroke == nil else { return }
-    let alternateTool: [SelectionRefinementStroke.Tool:SelectionRefinementStroke.Tool] = [.add:.subtract,.subtract:.add,.refine:.eraseRefinement,.eraseRefinement:.refine,.lassoAdd:.lassoSubtract,.lassoSubtract:.lassoAdd]
-    let value = SelectionRefinementStroke(tool:alternate ? alternateTool[tool] ?? tool : tool,size:size,hardness:hardness,points:[[x,y]])
+    let value = SelectionRefinementStroke(tool:resolvedTool(alternate:alternate),size:size,hardness:hardness,points:[[x,y]])
     do { try value.validate(); stroke = value; refresh() } catch { self.error = error.localizedDescription }
   }
   func drag(x: Double,y: Double) {
@@ -140,7 +139,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
     var out = try Surface(width:w,height:h)
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
       let sx = min(mask.width-1,Int(Double(x)/factor)), sy = min(mask.height-1,Int(Double(y)/factor))
-      let a = Float(mask.bytes[sy*mask.width+sx])/255, p = guide.pixel(x:sx,y:sy)
+      let a = Float(mask.byte(at:sy*mask.width+sx))/255, p = guide.pixel(x:sx,y:sy)
       let checker: Float = (x/12+y/12)%2 == 0 ? 0.75:0.6
       var rgb: SIMD3<Float>
       switch view {

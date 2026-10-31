@@ -29,8 +29,8 @@ public struct ContentAwareInput: Sendable {
       source = try sampling ?? SelectionMask(width:original.width,height:original.height,bytes:Array(repeating:0,count:original.width*original.height))
     } else { source = try SelectionMask.make(.rectangle(rect),width:original.width,height:original.height,antiAlias:false) }
     for stroke in strokes where stroke.target == .sampling { source = try stroke.applying(to:source) }
-    var bytes = source.bytes
-    for y in 0..<original.height { try Task.checkCancellation(); for x in 0..<original.width where selected.bytes[y*original.width+x] > 0 { bytes[y*original.width+x] = 0 } }
+    var bytes = try source.bytes
+    for y in 0..<original.height { try Task.checkCancellation(); for x in 0..<original.width where selected.byte(at:y*original.width+x) > 0 { bytes[y*original.width+x] = 0 } }
     return (selected,try SelectionMask(width:original.width,height:original.height,bytes:bytes))
   }
   public func edit(settings: ContentAwareSettings,output: ContentAwareOutput = .new,strokes: [ContentAwareStroke] = [],sampling: SelectionMask? = nil) throws -> ContentAwareEdit {
@@ -45,7 +45,7 @@ public struct ContentAwareInput: Sendable {
       let dx = x+window.x,dy = y+window.y,i = y*window.width+x,j = dy*original.width+dx
       let p = original.depth == .f32 ? guide.linearPixel(x:dx,y:dy):guide.pixel(x:dx,y:dy)
       image[i*4] = p.r; image[i*4+1] = p.g; image[i*4+2] = p.b; image[i*4+3] = p.a
-      hole[i] = masks.selection.bytes[j] > 0; allowed[i] = masks.sampling.bytes[j] > 127
+      hole[i] = masks.selection.byte(at:j) > 0; allowed[i] = masks.sampling.byte(at:j) > 127
     } }
     let filled = try ContentAwareSynthesis.fill(width:window.width,height:window.height,image:image,hole:hole,source:allowed,settings:settings,hdr:original.depth == .f32)
     var pixels = try Surface(width:window.width,height:window.height,depth:original.depth,colorEncoding:original.depth == .f32 ? .linearRGB:.sRGB)

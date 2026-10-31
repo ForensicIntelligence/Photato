@@ -37,14 +37,14 @@ final class ObjectFinderWorkflowTests: XCTestCase {
     let calls = await detector.calls; XCTAssertEqual(calls,1); XCTAssertEqual(s.document,original); XCTAssertTrue(s.session.undoStack.isEmpty)
     try s.session.startActionRecording(name:"Find")
     s.selectFoundObject(at:.init(6,6),mode:.replace); await s.geometryTask?.value
-    XCTAssertEqual(s.objectFinder.cacheID,identity); XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],128)
+    XCTAssertEqual(s.objectFinder.cacheID,identity); XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],128)
     XCTAssertEqual(s.session.undoStack.count,1)
     let selected = s.document; var replay = original
     try XCTUnwrap(s.session.actionRecording?.snapshot).apply(to:&replay); XCTAssertEqual(replay,selected)
     _ = await s.requestHistory(redo:false).value; XCTAssertEqual(s.document,original); XCTAssertEqual(s.objectFinder.cacheID,identity)
     _ = await s.requestHistory(redo:true).value; XCTAssertEqual(s.document,selected)
     s.objectFinderHardEdge = true; s.selectFoundObject(at:.init(6,6),mode:.replace); await s.geometryTask?.value
-    XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],255)
+    XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],255)
     s.hoverObject(at:nil); XCTAssertNil(s.objectFinder.image); XCTAssertNil(s.objectFinder.hoveredID)
   }
   @MainActor func testSourceChangesRefreshCancellationAndToolSwitchDiscardStaleResults() async throws {
@@ -67,7 +67,7 @@ final class ObjectFinderWorkflowTests: XCTestCase {
     defer { stop(s); document.updateChangeCount(.changeCleared); document.close() }
     s.allObjectsDetector = FinderFixture(delay:.milliseconds(100)); s.tool = .objectSelection
     s.selectFoundObject(at:.init(23,6),mode:.replace); await s.objectFinder.task?.value; await s.geometryTask?.value
-    XCTAssertEqual(s.document.selectionMask?.bytes[6*32+23],255); XCTAssertEqual(s.session.undoStack.count,1)
+    XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+23],255); XCTAssertEqual(s.session.undoStack.count,1)
     s.requestObjectFinder(force:true); let reading = s.objectFinder.task; var loaded = try fixture(); loaded.name = "Reload"
     try document.read(from:NativeArchive.encodeChunked(loaded),ofType:CraftNSDocument.nativeType); await reading?.value
     XCTAssertEqual(s.document,loaded); XCTAssertNil(s.objectFinder.scene)
@@ -86,7 +86,7 @@ final class ObjectFinderWorkflowTests: XCTestCase {
     XCTAssertEqual(s.objectFinder.hoveredID,2); XCTAssertNotNil(s.objectFinder.image)
     if let bitmap=canvas.bitmapImageRepForCachingDisplay(in:canvas.bounds) {canvas.cacheDisplay(in:canvas.bounds,to:bitmap);try bitmap.representation(using:.png,properties:[:])?.write(to:URL(fileURLWithPath:FileManager.default.currentDirectoryPath).appendingPathComponent("artifacts/object-finder-canvas-offscreen.png"))}
     canvas.mouseDown(with:try event(.leftMouseDown,6,6)); canvas.mouseUp(with:try event(.leftMouseUp,6,6)); await s.geometryTask?.value
-    XCTAssertEqual(s.document.selectionMask?.bytes[6*32+6],255)
+    XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+6],255)
     canvas.mouseExited(with:try event(.mouseMoved,40,20)); XCTAssertNil(s.objectFinder.hoveredID)
     let host = NSHostingView(rootView:SelectionToolOptionsView(store:s)), window = NSWindow(contentRect:.init(x:0,y:0,width:1200,height:80),styleMask:[.titled],backing:.buffered,defer:false)
     window.appearance=NSAppearance(named:.darkAqua);window.contentView=host;defer{window.contentView=nil};host.frame = .init(x:0,y:0,width:1200,height:80);host.layoutSubtreeIfNeeded();try await Task.sleep(for:.milliseconds(80));window.displayIfNeeded();host.layoutSubtreeIfNeeded()
@@ -110,16 +110,16 @@ final class ObjectFinderWorkflowTests: XCTestCase {
       let fields=json.filter{["revision","objectFinder","objectMasks"].contains($0.key)}
       let decoded=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:fields)); XCTAssertNoThrow(try BrushAPI.merge(decoded,schema:ObjectFinderAPI.resultSchema))
       let masks=try XCTUnwrap(json["objectMasks"] as? [[String:Any]]); XCTAssertEqual(masks.count,2)
-      XCTAssertEqual(Data(base64Encoded:try XCTUnwrap(masks[0]["coverageBase64"] as? String)),Data(s.objectFinder.scene!.objects[0].mask.bytes))
+      XCTAssertEqual(Data(base64Encoded:try XCTUnwrap(masks[0]["coverageBase64"] as? String)),Data(try s.objectFinder.scene!.objects[0].mask.bytes))
       let cache=s.objectFinder.cacheID.uuidString
       let hover=try await h.edit(service,document,"selection.hoverObject",["cacheID":cache,"instanceID":2]); XCTAssertEqual(hover,200); XCTAssertEqual(s.objectFinder.hoveredID,2)
       let clear=try await h.edit(service,document,"selection.hoverObject",["cacheID":cache]); XCTAssertEqual(clear,200); XCTAssertNil(s.objectFinder.hoveredID)
       XCTAssertEqual(s.document,original); XCTAssertTrue(s.session.undoStack.isEmpty)
       let config=try await h.edit(service,document,"selection.configure",["hardEdge":true,"finderOverlayColor":["r":1,"g":0,"b":0,"a":0.6]]); XCTAssertEqual(config,200)
       let select=try await h.edit(service,document,"selection.selectFoundObject",["cacheID":cache,"instanceID":2,"mode":"replace"]); XCTAssertEqual(select,200)
-      XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],255); XCTAssertEqual(s.session.undoStack.count,1)
+      XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],255); XCTAssertEqual(s.session.undoStack.count,1)
       let undo=try await h.edit(service,document,"history.undo"); XCTAssertEqual(undo,200); XCTAssertEqual(s.document,original)
-      let redo=try await h.edit(service,document,"history.redo"); XCTAssertEqual(redo,200); XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],255)
+      let redo=try await h.edit(service,document,"history.redo"); XCTAssertEqual(redo,200); XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],255)
     }
   }
   @MainActor func testInvalidStaleBusyRefreshAndRevokedDetectionAPI() async throws {

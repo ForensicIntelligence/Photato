@@ -24,7 +24,7 @@ final class SelectMaskWorkflowTests: XCTestCase {
     store.beginSelectMask(); let m = try XCTUnwrap(store.selectMaskDraft); await ready(m)
     XCTAssertNotNil(m.image); XCTAssertTrue(store.hasToneDraft); XCTAssertFalse(store.canBeginFilter)
     m.size = 12; m.begin(x:6,y:24,alternate:false); m.drag(x:12,y:24); m.end(); await ready(m)
-    let painted = try XCTUnwrap(m.refinedMask); XCTAssertGreaterThan(painted.bytes[24*64+6],0); XCTAssertEqual(store.document,d)
+    let painted = try XCTUnwrap(m.refinedMask); XCTAssertGreaterThan(painted.byte(at:24*64+6),0); XCTAssertEqual(store.document,d)
     m.undo(); await ready(m); XCTAssertEqual(m.refinedMask,try d.coverageSelection()); m.redo(); await ready(m); XCTAssertEqual(m.refinedMask,painted)
     m.update(\.feather,2); await ready(m); let expected = m.refinedMask
     store.commitSelectMask(); await m.commitTask?.value
@@ -38,20 +38,20 @@ final class SelectMaskWorkflowTests: XCTestCase {
     m.detect(using:RefinementSubject()); await m.detectionTask?.value; await ready(m)
     XCTAssertNotEqual(m.refinedMask,try d.coverageSelection()); XCTAssertEqual(store.document,d)
     m.tool = .lassoAdd; m.begin(x:0,y:0,alternate:false); m.drag(x:10,y:0); m.drag(x:10,y:10); m.drag(x:0,y:10); m.end(); await ready(m)
-    XCTAssertEqual(m.refinedMask?.bytes[4*64+4],255)
+    XCTAssertEqual(m.refinedMask?.byte(at:4*64+4),255)
     for view in SelectMaskView.allCases { m.view = view; m.refresh(); await ready(m); XCTAssertNil(m.error); XCTAssertEqual(m.image?.width,64) }
     var state = m.state; state.output = .layerMask; m.change(state); store.commitSelectMask(); await m.commitTask?.value
     XCTAssertNotNil(store.document.layers[0].mask); let mask = try XCTUnwrap(store.document.layers[0].mask)
     store.beginSelectMask(fromMask:true); let refine = try XCTUnwrap(store.selectMaskDraft); await ready(refine)
-    XCTAssertEqual(refine.state.output,.layerMask); XCTAssertEqual(Float(refine.input!.mask.bytes[4*64+4])/255,mask.pixel(x:4,y:4).r)
+    XCTAssertEqual(refine.state.output,.layerMask); XCTAssertEqual(Float(refine.input!.mask.byte(at:4*64+4))/255,mask.pixel(x:4,y:4).r)
   }
   func testBrushProgramAllDepthsDecontaminationAndGuards() throws {
     var d = try fixture(); d.selection = nil
     let input = try SelectionRefinementInput.prepare(d,layerID:d.layers[0].id)
     let add = SelectionRefinementStroke(size:12,points:[[12,24],[36,24]])
-    let mask = try input.refined(settings:.init(),strokes:[add]); XCTAssertEqual(mask.bytes[24*64+20],255); XCTAssertEqual(mask.bytes[0],0)
+    let mask = try input.refined(settings:.init(),strokes:[add]); XCTAssertEqual(mask.byte(at:24*64+20),255); XCTAssertEqual(mask.byte(at:0),0)
     var subtract = add; subtract.tool = .subtract
-    let removed = try input.refined(settings:.init(),strokes:[add,subtract]); XCTAssertEqual(removed.bytes[24*64+20],0)
+    let removed = try input.refined(settings:.init(),strokes:[add,subtract]); XCTAssertEqual(removed.byte(at:24*64+20),0)
     var p = SelectionRefinement(); p.decontaminate = true; p.feather = 2
     let edit = try input.edit(settings:p,output:.selection,strokes:[add]); XCTAssertEqual(edit.output,.newLayerWithMask)
     let previewGuide = try input.previewGuide(mask:edit.mask,settings:p)

@@ -133,10 +133,13 @@ final class RasterDecodeBudget {
     try reserve(bytes: tiles * TileArchive.byteCount)
   }
   func reserveMappedReferences(tiles: Int) throws {
-    guard tiles >= 0, tiles <= Int.max / 128 else { throw CraftError.invalid("Invalid mapped tile index allocation.") }
-    try reserve(bytes: tiles * 128)
+    guard tiles >= 0, tiles <= Int.max/Surface.smallMappedReferenceAdmissionBytes else { throw CraftError.invalid("Invalid mapped tile index allocation.") }
+    // Small mapped surfaces retain the bounded direct working-set representation.
+    // Large mapped surfaces instead reserve writer/retained-segment metadata.
+    try reserve(bytes:tiles*Surface.smallMappedReferenceAdmissionBytes)
   }
-  private func reserve(bytes: Int) throws {
+  func reserve(bytes: Int) throws {
+    guard bytes >= 0 else { throw CraftError.invalid("Invalid raster allocation.") }
     guard bytes <= remaining else {
       let required = (limit - remaining).addingReportingOverflow(bytes)
       throw NativeArchiveMemoryLimit.raster(

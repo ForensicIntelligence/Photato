@@ -25,7 +25,7 @@ public struct SelectionRefinementEdit: Sendable {
     }
     var coverage = try Surface(width:mask.width,height:mask.height,depth:original.depth,fill:Pixel(0,0,0))
     for y in 0..<mask.height { try Task.checkCancellation(); for x in 0..<mask.width {
-      let a = Float(mask.bytes[y*mask.width+x])/255
+      let a = Float(mask.byte(at:y*mask.width+x))/255
       if a > 0 { coverage.setPixel(x:x,y:y,Pixel(a,a,a)) }
     } }
     var properties = MaskProperties(); properties.outside = 0; properties.transform = try layer.coordinateTransform.inverted()
@@ -36,7 +36,7 @@ public struct SelectionRefinementEdit: Sendable {
       for y in 0..<pixels.height { try Task.checkCancellation(); for x in 0..<pixels.width {
         let point = layer.coordinateTransform.point(Double(x)+0.5,Double(y)+0.5)
         let ix = Int(floor(point.x)), iy = Int(floor(point.y))
-        let a: Float = ix >= 0 && iy >= 0 && ix < mask.width && iy < mask.height ? Float(mask.bytes[iy*mask.width+ix])/255 : 0
+        let a: Float = ix >= 0 && iy >= 0 && ix < mask.width && iy < mask.height ? Float(mask.byte(at:iy*mask.width+ix))/255 : 0
         var p = pixels.depth == .f32 ? cutout.linearPixel(x:x,y:y) : cutout.pixel(x:x,y:y); p.a *= a
         if pixels.depth == .f32 { cutout.setLinearPixel(x:x,y:y,p) } else { cutout.setPixel(x:x,y:y,p) }
       } }

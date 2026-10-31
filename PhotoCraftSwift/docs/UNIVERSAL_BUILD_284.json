@@ -1,0 +1,112 @@
+{
+  "step": 284,
+  "status": "universal-build-qualified-full-intel-execution-fails-native-ui-pending",
+  "source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source08.json",
+  "source_inputs": 2516,
+  "prior_arm64_test_source": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+  "configuration_correspondence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07-to08.json",
+  "package": {
+    "source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source08.json",
+    "tested_spm_source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+    "configuration_correspondence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07-to08.json",
+    "xcode_build_passed": true,
+    "app": "/private/tmp/Photato-Universal-Candidate-284-01.app",
+    "diagnostic_isolation": true,
+    "signature_verified": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "slices": {
+      "arm64": {
+        "sha256": "6e2dd2b6c00f80499700927b0da0edeadb707a90a2eb7ef2764121d418b66239",
+        "file_backed_sections_match_unsigned_xcode": 38,
+        "minimum_os": "14.0",
+        "dependency_record": "dependencies-arm64.txt"
+      },
+      "x86_64": {
+        "sha256": "7dd231cc14b3d7f2534a87405ed7bd2a13f2724e2aa24366121ea1c0280c3c53",
+        "file_backed_sections_match_unsigned_xcode": 36,
+        "minimum_os": "14.0",
+        "dependency_record": "dependencies-x86_64.txt"
+      }
+    },
+    "model_resources_verified": true,
+    "binary_sha256": "16e12fab1cc0c3dc9edf86206fa829fefbd227ee0571ed0d57fd951b778f2bcd",
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Universal-Candidate-284.zip",
+    "zip_bytes": 56993139,
+    "zip_sha256": "26c1ccc4738b01503dffb17a5c07aba467c5029f32e7e97e8d9aa0bec8925ba2",
+    "extracted_signature_and_binary_verified": true,
+    "native_ui_qualified": false,
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "universal_release_qualified": false,
+    "scope": "Universal Xcode compilation, deployment metadata, model resources, native section/signature/ZIP integrity. SPM tests prove corresponding unchanged Swift source, not this Xcode executable; native UI/distribution and physical supported-platform qualification remain open."
+  },
+  "model_phase": {
+    "sandbox_enabled": true,
+    "recursive_declared_model_directory": true,
+    "valid_model_all_resource_hashes_match": true,
+    "corrupt_model_build_rejects_and_prior_resources_unchanged": true,
+    "missing_optional_model_build_succeeds_and_owned_stale_resources_removed": true,
+    "production_scripts_identical": true,
+    "source_model_not_modified": true,
+    "scope": "Actual Xcode sandbox phase/production scripts in a minimal owned app fixture; no installed app or source model is modified."
+  },
+  "model_phase_evidence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/universal-xcode01/model-phase-probe02/result01.json",
+  "arm64_tests": {
+    "focused": 268,
+    "full": 2863,
+    "failures": 0,
+    "scope": "Source07 SPM code; Source08 differs only in two Xcode configuration files."
+  },
+  "intel_tests": {
+    "status": "full01 fails320 assertions;277 focused and independent bytes pass",
+    "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01",
+    "scope": "x86_64 under Rosetta on Apple Silicon/macOS27; physical Intel/macOS14 remain open.",
+    "focused": {
+      "tests": 277,
+      "failures": 0,
+      "seconds": 89.088,
+      "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01",
+      "log": "focused02.log",
+      "independent_all_records_and_tiles": true
+    },
+    "live_full_run": {
+      "exec_session_id": 43602,
+      "pid": 47838,
+      "observed_at_utc": "2026-10-31T04:25:25.607877+00:00",
+      "process": "47838 /Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+      "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/full01.log",
+      "exit_record": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/full01-exit.json",
+      "note": "Resume/poll this existing run; do not restart merely because an observation expires. Full result not yet claimed."
+    },
+    "full": {
+      "tests": 2863,
+      "failures": 320,
+      "unexpected": 0,
+      "seconds": 357.155,
+      "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/full01.log",
+      "failure_summary": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/failure-summary01.json"
+    },
+    "hosted_isolation": {
+      "arm64_tests": 5,
+      "arm64_failures": 0,
+      "intel_tests": 5,
+      "intel_failures": 1,
+      "note": "Native lock persists; actual visible/key-window behavior awaits unlock. Do not infer architecture cause solely from isolated host tests."
+    }
+  },
+  "native_ui": {
+    "qualified": false,
+    "reason": "Mac locked; existing manual-unlock request pending."
+  },
+  "api_impact": "Xcode packaging only. Both native/Adobe contracts, schema, native63 and192 typed commands unchanged. Existing model availability reporting is unchanged.",
+  "goal_complete": false,
+  "distribution_release": false,
+  "remaining": [
+    "Native live284 painting/save/reopen and protected artwork handoff.",
+    "Complete x86_64 execution and independently inspect results; do not infer physical Intel/macOS14 qualification.",
+    "Physical supported-platform/AI/distribution and full Photoshop parity."
+  ]
+}

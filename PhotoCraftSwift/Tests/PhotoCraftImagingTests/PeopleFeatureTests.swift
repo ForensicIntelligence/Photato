@@ -26,7 +26,7 @@ final class PeopleFeatureTests: XCTestCase {
     XCTAssertEqual(try scene.coverage(instanceIDs:[1,2],hardEdge:false,features:[.hair,.faceSkin]).bytes,[255,128])
     XCTAssertEqual(try scene.coverage(instanceIDs:[1,2],hardEdge:true,features:[.hair]).bytes,[255,0])
     var session=EditorSession(document:document);try session.execute(scene.command(instanceIDs:[1],mode:.replace,hardEdge:false,features:[.hair]));let selected=session.document
-    XCTAssertEqual(selected.selectionMask?.bytes,[204,0]);XCTAssertEqual(selected.layers,document.layers);try session.undo();XCTAssertEqual(session.document,document);try session.redo();XCTAssertEqual(session.document,selected)
+    XCTAssertEqual(try selected.selectionMask?.bytes,[204,0]);XCTAssertEqual(selected.layers,document.layers);try session.undo();XCTAssertEqual(session.document,document);try session.redo();XCTAssertEqual(session.document,selected)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(selected)),selected)
     let unavailable=try PeopleScene(source:source,input:input,masks:masks,featureError:"Missing model")
     XCTAssertEqual(unavailable.availableFeatures,[.wholePerson]);XCTAssertThrowsError(try unavailable.coverage(instanceIDs:[1],hardEdge:false,features:[.hair]))

@@ -33,7 +33,7 @@ public enum SkyReplacement {
   public static let maximumPixels=8_388_608
   public static func refined(_ mask:SelectionMask,settings:SkyReplacementSettings,strokes:[SkyMaskStroke])throws->SelectionMask {
     try settings.validate();guard mask.width<=maximumPixels/mask.height,strokes.count<=128,mask.width*mask.height<=134_217_728/max(1,strokes.count) else{throw CraftError.unsupported("Sky Replacement supports8,388,608 canvas pixels and128 refinement strokes.")}
-    let w=mask.width,h=mask.height;var values=mask.bytes.map{Float($0)/255}
+    let w=mask.width,h=mask.height;var values=(try mask.bytes).map{Float($0)/255}
     let shift=Int((settings.shiftEdge/100*20).rounded())
     if shift != 0{values=try MattingFilters.morph(values,w,h,abs(shift),grow:shift>0)}
     if settings.fadeEdge>0{values=try MattingFilters.gaussian(values,w,h,Float(settings.fadeEdge/100*5))}
@@ -46,7 +46,7 @@ public enum SkyReplacement {
     return result
   }
   public static func edgeMask(_ mask:SelectionMask)throws->SelectionMask {
-    let v=mask.bytes.map{Float($0)/255},w=mask.width,h=mask.height
+    let v=(try mask.bytes).map{Float($0)/255},w=mask.width,h=mask.height
     let hi=try MattingFilters.extreme(v,w,h,5,maximum:true),lo=try MattingFilters.extreme(v,w,h,5,maximum:false)
     return try .init(width:w,height:h,bytes:v.indices.map{UInt8(min(255,max(0,((hi[$0]-lo[$0])*(1-v[$0])*255).rounded())))})
   }

@@ -34,7 +34,7 @@ final class ColorRegionTests: XCTestCase {
       let actual = try ColorRegion.selection(
         pixels: pixels, width: w, height: h,
         seedX: sx, seedY: sy, options: options)
-      XCTAssertEqual(actual.bytes, expected, "Rust reference case \(cases)")
+      XCTAssertEqual(try actual.bytes, expected, "Rust reference case \(cases)")
       count += w * h
       cases += 1
     }
@@ -83,7 +83,7 @@ final class ColorRegionTests: XCTestCase {
       let coverage = try ColorRegion.selection(
         source: mask, width: 6, height: 3,
         seed: .init(0.5, 0.5), options: o, mask: true)
-      XCTAssertEqual(coverage.bytes.filter { $0 == 255 }.count, 17)
+      XCTAssertEqual(try coverage.bytes.filter { $0 == 255 }.count, 17)
       XCTAssertEqual(coverage.coverage(x: 2, y: 1), 0)
     }
   }
@@ -97,11 +97,11 @@ final class ColorRegionTests: XCTestCase {
     var session = EditorSession(document: d)
     let sample = CloneSample(surface: source)
     try session.execute(.magicWand(sample, .init(0, 0), o, .replace, false))
-    XCTAssertEqual(session.document.selectionMask?.bytes, [255, 255, 0, 0, 0])
+    XCTAssertEqual(try session.document.selectionMask?.bytes, [255, 255, 0, 0, 0])
     try session.execute(.magicWand(sample, .init(4, 0), o, .add, false))
-    XCTAssertEqual(session.document.selectionMask?.bytes, [255, 255, 0, 0, 255])
+    XCTAssertEqual(try session.document.selectionMask?.bytes, [255, 255, 0, 0, 255])
     try session.execute(.magicWand(sample, .init(0, 0), o, .subtract, false))
-    XCTAssertEqual(session.document.selectionMask?.bytes, [0, 0, 0, 0, 255])
+    XCTAssertEqual(try session.document.selectionMask?.bytes, [0, 0, 0, 0, 255])
     d = session.document
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(d)), d)
     try session.execute(.magicWand(sample, .init(0, 0), o, .intersect, false))
@@ -126,7 +126,7 @@ final class ColorRegionTests: XCTestCase {
     let selected = try ColorRegion.selection(
       source: source, width: 4, height: 1,
       seed: .init(1.5, 0.5), options: options, mask: true)
-    XCTAssertEqual(selected.bytes, [0, 255, 0, 255])
+    XCTAssertEqual(try selected.bytes, [0, 255, 0, 255])
   }
 
   func testInvalidAndOutsideSeedsAndCancellationDoNotModifyDocument() async throws {

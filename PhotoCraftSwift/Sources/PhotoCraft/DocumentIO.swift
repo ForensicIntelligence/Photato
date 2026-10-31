@@ -99,6 +99,7 @@ enum DocumentIO {
     try Task.checkCancellation()
     let document: CraftDocument
     if native { document = try NativeArchive.decodePaged(data, heapByteLimit: rasterByteLimit) }
+    else if data.starts(with:Data("8BPS".utf8)) {document = try PSDCodec.readPaged(data,name:name,heapByteLimit:rasterByteLimit)}
     else if MovieIO.recognizes(data) { document = try MovieIO.decode(data,name:name,maximumBytes:rasterByteLimit) }
     else if PcraftImport.recognizes(data) {
       document = try PcraftImport.read(data, rasterByteLimit: rasterByteLimit)

@@ -72,7 +72,10 @@ final class LargeDocumentTests: XCTestCase {
     let overview = try source.reducedPreview(in: .init(x: 0, y: 0, width: 300_000, height: 300_000), width: 64, height: 64)
     XCTAssertEqual(overview.width, 64); XCTAssertEqual(source.tileCount, 1)
     XCTAssertThrowsError(try source.reducedPreview(in: .init(x: 0, y: 0, width: 300_000, height: 300_000), width: 3000, height: 3000))
-    XCTAssertThrowsError(try SelectionMask.make(.rectangle(.init(x: 0, y: 0, width: 20, height: 20)), width: 300_000, height: 300_000))
+    let coverage=try SelectionMask.make(.rectangle(.init(x:0,y:0,width:20,height:20)),width:300000,height:300000)
+    XCTAssertTrue(coverage.isPaged);XCTAssertEqual(coverage.bounds,IntRect(x:0,y:0,width:20,height:20))
+    XCTAssertEqual(coverage.coverage(x:19,y:19),1);XCTAssertEqual(coverage.coverage(x:20,y:20),0)
+    XCTAssertThrowsError(try coverage.denseBytes())
   }
   func testOpaqueBoundsUseMissingTilesAndIgnorePadding() throws {
     var s = try Surface(width: 65, height: 65, fill: .white)

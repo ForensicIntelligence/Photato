@@ -61,7 +61,7 @@ public struct MaskAllObjectsEdit: Sendable {
       for y in 0..<original.height {
         try Task.checkCancellation()
         for x in 0..<original.width {
-          let value = Float(object.mask.bytes[y * original.width + x]) / 255
+          let value = Float(object.mask.byte(at:y * original.width + x)) / 255
           if value > 0 { mask.setPixel(x: x, y: y, Pixel(value, value, value)) }
         }
       }

@@ -24,9 +24,9 @@ public enum FrameRenderer {
     var result = source
     try result.mapPixels(in: region) { x, y, pixel in
       let offset = (y - region.y) * region.width + x - region.x
-      var p = pixel; p.a *= Float(mask.bytes[offset]) / 255
+      var p = pixel; p.a *= Float(mask.byte(at:offset)) / 255
       if let stroke {
-        var color = definition.strokeColor; color.a *= Float(stroke.bytes[offset]) / 255
+        var color = definition.strokeColor; color.a *= Float(stroke.byte(at:offset)) / 255
         p = Renderer.compositePixel(.normal, backdrop: p, source: color, opacity: 1, depth: document.depth, x: x, y: y)
       }
       return p.a > 0 ? p : .clear

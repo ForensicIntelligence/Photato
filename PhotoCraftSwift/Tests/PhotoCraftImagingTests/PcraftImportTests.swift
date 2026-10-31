@@ -56,7 +56,7 @@ final class PcraftImportTests: XCTestCase {
       XCTAssertEqual(model.paths?.first?.name, "Source Bézier")
       XCTAssertEqual(model.paths?.last?.isWorkPath, true)
       XCTAssertEqual(model.selection, IntRect(x: 1, y: 2, width: 7, height: 4))
-      XCTAssertEqual(model.selectionMask?.bytes[2 * 12 + 1], 51)
+      XCTAssertEqual(model.selectionMask?.byte(at:2 * 12 + 1), 51)
       if bits == "f32" {
         guard case .raster(let surface) = layer.content else { return XCTFail("Editable pixels") }
         let hidden = surface.linearPixel(x: 256, y: 256)

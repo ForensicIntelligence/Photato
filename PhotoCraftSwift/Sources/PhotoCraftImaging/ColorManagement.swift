@@ -164,17 +164,16 @@ public enum ColorManagement {
 
 extension ColorManagement {
   static func convertedPaged(_ surface: Surface, from source: CraftDocument, to target: CraftDocument) throws -> Surface {
-    var output = try Surface(width: surface.width, height: surface.height, depth: target.depth,
-      colorEncoding: target.depth == .f32 ? .linearRGB : .sRGB)
-    let store = try RasterTileStore()
+    let builder=try Surface.PagedBuilder(width:surface.width,height:surface.height,depth:target.depth,
+      colorEncoding:target.depth == .f32 ? .linearRGB:.sRGB)
     for y in stride(from: 0, to: surface.height, by: Surface.tileSide) {
       for x in stride(from: 0, to: surface.width, by: 2048) {
         try Task.checkCancellation()
         let bounds = IntRect(x: x, y: y, width: min(2048, surface.width - x), height: min(Surface.tileSide, surface.height - y))
         let patch = try converted(surface.cropped(to: bounds), from: source, to: target)
-        try output.importPatch(patch, atX: x, atY: y, backing: store)
+        try builder.append(patch,atX:x,atY:y)
       }
     }
-    return output
+    return try builder.finish()
   }
 }

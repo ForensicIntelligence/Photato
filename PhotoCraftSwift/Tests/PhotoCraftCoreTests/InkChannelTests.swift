@@ -56,7 +56,7 @@ final class InkChannelTests: XCTestCase {
     d.selection = .init(x: 1, y: 0, width: 1, height: 1)
     try Command.inkChannel(.edit([.duotone], .fill(0, 1))).apply(to: &d)
     guard case .duotone(let before) = original.inkMode, case .duotone(let after) = d.inkMode, case .raster(let cache) = d.layers[0].content else { return XCTFail() }
-    XCTAssertEqual(after.gray.bytes, Data([0,0,128,255,1,100,200,254])); XCTAssertEqual(after.settings, before.settings)
+    XCTAssertEqual(try after.gray.bytes, Data([0,0,128,255,1,100,200,254])); XCTAssertEqual(after.settings, before.settings)
     XCTAssertTrue(cache == (try after.gray.surface()))
     d.layers[0].locked = true; let locked = d
     XCTAssertThrowsError(try Command.inkChannel(.write(.duotone, 0, [1])).apply(to: &d)); XCTAssertTrue(d == locked)
@@ -99,7 +99,7 @@ final class InkChannelTests: XCTestCase {
       try Command.inkChannel(.edit([target], .stroke([.init(x: 0.5, y: 0.5)], brush))).apply(to: &d)
       XCTAssertEqual(try d.inkChannel(target).value(at: 0), 1); XCTAssertTrue(Array(try d.multichannelRaster().plates.dropFirst()) == Array(before.plates.dropFirst()))
       try Command.inkChannel(.loadSelection(target, .replace, false)).apply(to: &d)
-      XCTAssertEqual(d.selectionMask?.bytes[0], 0); XCTAssertEqual(d.selectionMask?.bytes[3], 0)
+      XCTAssertEqual(try d.selectionMask?.bytes[0], 0); XCTAssertEqual(try d.selectionMask?.bytes[3], 0)
       let others = Array(try d.multichannelRaster().plates.dropFirst())
       try Command.inkChannel(.edit([target], .filter(.init(.average)))).apply(to: &d)
       XCTAssertTrue(Array(try d.multichannelRaster().plates.dropFirst()) == others)
@@ -113,6 +113,6 @@ final class InkChannelTests: XCTestCase {
       var d = original; XCTAssertThrowsError(try bad.apply(to: &d)); XCTAssertTrue(d == original)
     }
     XCTAssertThrowsError(try plane(.u16).mapped { _, _, _ in .nan })
-    let exact = try plane(.u16); XCTAssertEqual(try exact.mapped { _, _, value in value }.bytes, exact.bytes)
+    let exact = try plane(.u16); XCTAssertEqual(try exact.mapped { _, _, value in value }.bytes, try exact.bytes)
   }
 }

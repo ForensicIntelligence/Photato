@@ -93,7 +93,7 @@ public enum RasterIO {
     let source = try PSDFileSource(url)
     let name = url.deletingPathExtension().lastPathComponent
     if try source.bytes(at: 0, count: min(4, source.count)) == Data("8BPS".utf8) {
-      return try PSDCodec.read(PSDReader(file: source), name: name)
+      return try PSDCodec.read(PSDReader(file: source), name: name,paging:PSDRasterPaging.Context())
     }
     // Preserve ImageIO's existing mapped-Data path. The bounded channel reader
     // above handles Photoshop containers; other formats keep their own pipeline.

@@ -42,10 +42,63 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.cloneState.overlayBlend
     store.refreshCloneOverlay()
     view.needsDisplay = true
-    view.window?.invalidateCursorRects(for: view)
+    view.refreshToolCursor()
   }
 }
-@MainActor final class CraftCanvas: NSView {
+@MainActor final class CraftCanvas: ModifierCursorView {
+  override var toolCursor: ToolCursor {
+    guard store.unavailableToolID == nil else { return .unavailable }
+    if (panningGesture && cursorPointerDown) || (spaceHeld && !cursorPointerDown) || store.tool == .hand {
+      return cursorPointerDown ? .closedHand : .openHand
+    }
+    let captured = store.brushGesture != nil || store.cloneDraft != nil
+    let flags = captured ? cursorGestureModifiers ?? cursorModifiers : cursorModifiers
+    if store.tool == .frame, flags.contains(.option), let point = cursorDocumentPoint {
+      let cornerHit = store.selectedFrame?.frameBounds.map { rect in
+        artboardCorners(rect).contains { hypot($0.x-point.x,$0.y-point.y)*scale < 9 }
+      } ?? false
+      if !cornerHit { return .symbol("viewfinder",.add) }
+    }
+    if store.transformDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right",ToolCursor.geometry(flags)) }
+    let selection: SelectionMode
+    if let capturedSelection = store.brushGesture?.selection?.mode {
+      selection = capturedSelection
+    } else if (start != nil && !panningGesture) || !polygonPoints.isEmpty {
+      selection = selectionDragMode
+    } else if [.quickSelection,.selectionBrush,.objectSelection].contains(store.tool) {
+      selection = store.selectionToolMode(modifiers: flags)
+    } else { selection = store.selectionMode(modifiers: flags) }
+    if [.patch,.contentAwareMove].contains(store.tool) {
+      if store.regionRetouchDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right", ToolCursor.geometry(flags)) }
+      if !regionRetouchSelecting, flags.intersection([.option,.shift]).isEmpty,
+         let point = cursorDocumentPoint, point.x.isFinite, point.y.isFinite,
+         store.document.selectionCoverage(x:Int(floor(point.x)),y:Int(floor(point.y))) > 0 {
+        return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+      }
+    }
+    if store.tool == .pen, let point = cursorDocumentPoint, let path = store.selectedVectorPath, store.pathIsEditable {
+      let p = PathPoint(point.x,point.y), tolerance = 6 / max(0.000001,scale)
+      if let c = store.penComponent, path.components.indices.contains(c),
+         !path.components[c].closed, path.components[c].knots.count >= 2,
+         let first = path.components[c].knots.first, hypot(first.anchor.x-p.x,first.anchor.y-p.y) <= tolerance {
+        return .symbol("pencil.tip.crop.circle")
+      }
+      if path.components.contains(where: { $0.knots.contains { hypot($0.anchor.x-p.x,$0.anchor.y-p.y) <= tolerance } }) {
+        return flags.contains(.option) ? .symbol("point.3.connected.trianglepath.dotted") : .symbol("pencil.tip",.subtract)
+      }
+      if store.nearestSegment(in:path,to:p,tolerance:tolerance) != nil { return .symbol("pencil.tip",.add) }
+    }
+    if let adjustment = store.brushGesture?.adjustment {
+      return .symbol("paintbrush.pointed",adjustment.subtract ? .subtract:.add)
+    }
+    if let draft = store.cloneDraft {
+      if let toning = draft.toning, toning != .sponge { return .symbol(toning == .burn ? "flame":"sun.max") }
+      if draft.focus == .smudge { return .symbol(draft.focusOptions.fingerPainting ? "hand.draw.fill":"hand.draw") }
+    }
+    return store.tool.cursor(modifiers:flags,selection:selection,
+      adjustmentSubtract:store.adjustmentBrushSubtract,fingerPainting:store.retouchSettings.focus.fingerPainting)
+  }
+
   var store: EditorStore
   var typeOverlay: CanvasTypeEditor?
   var activateDocument: () -> Bool = { true }
@@ -63,7 +116,8 @@ struct CanvasHost: NSViewRepresentable {
   var end: CGPoint?
   var dragLayerOrigin = CGPoint.zero
   var dragPanOrigin = CGSize.zero
-  var spaceHeld = false
+  var cursorLocationInView: CGPoint?
+  var cursorDocumentPoint: CGPoint? { cursorLocationInView.map { viewport.documentPoint(at:$0) } }
   var panningGesture = false
   var dragModifiers: NSEvent.ModifierFlags = []
   var cropStart: CropDraft?
@@ -184,7 +238,12 @@ struct CanvasHost: NSViewRepresentable {
     addTrackingArea(area)
     cloneTracking = area
   }
+  override func mouseEntered(with event: NSEvent) {
+    cursorLocationInView = convert(event.locationInWindow,from:nil);super.mouseEntered(with:event)
+  }
   override func mouseMoved(with event: NSEvent) {
+    cursorLocationInView = convert(event.locationInWindow,from:nil)
+    super.mouseMoved(with: event)
     if store.tool == .objectSelection {let p=docPoint(event);store.hoverObject(at:.init(p.x,p.y));needsDisplay=true;return}
     guard store.tool.usesRetouchStroke else { return }
     let previous = cloneHover
@@ -193,6 +252,8 @@ struct CanvasHost: NSViewRepresentable {
     invalidateRetouchFeedback(from: previous)
   }
   override func mouseExited(with event: NSEvent) {
+    cursorLocationInView = nil
+    super.mouseExited(with: event)
     let previous = cloneHover
     store.clearObjectHover()
     cloneHover = nil
@@ -285,14 +346,6 @@ struct CanvasHost: NSViewRepresentable {
     }
     c.restoreGState()
   }
-  override func resetCursorRects() {
-    let cursor: NSCursor =
-      store.unavailableToolID != nil
-      ? .operationNotAllowed
-      : (spaceHeld || store.tool == .hand)
-        ? .openHand : store.tool == .move ? .arrow : [.text,.verticalText].contains(store.tool) ? .iBeam : .crosshair
-    addCursorRect(bounds, cursor: cursor)
-  }
   var viewport: CanvasViewport {
     CanvasViewport(
       documentSize: CGSize(width: store.document.width, height: store.document.height),
@@ -341,10 +394,14 @@ struct CanvasHost: NSViewRepresentable {
     }
     if let maskImage = store.tool == .selectionBrush ? store.selectionOverlayImage:store.displayedMaskImage {
       c.saveGState()
-      c.translateBy(x: r.minX, y: r.maxY)
-      c.scaleBy(x: 1, y: -1)
       c.interpolationQuality = viewport.resolvedZoom >= 1 ? .none : .high
-      c.draw(maskImage, in: CGRect(origin: .zero, size: r.size))
+      if let region = store.tool == .selectionBrush ? store.selectionOverlayRegion:store.maskViewRegion {
+        c.translateBy(x: r.minX, y: r.minY); c.scaleBy(x: scale, y: scale)
+        CanvasRasterPreview(base: maskImage, documentRegion: region).draw(in: c)
+      } else {
+        c.translateBy(x: r.minX, y: r.maxY); c.scaleBy(x: 1, y: -1)
+        c.draw(maskImage, in: CGRect(origin: .zero, size: r.size))
+      }
       c.restoreGState()
     }
     if store.tool == .objectSelection, store.canFindObjects, let overlay = store.peopleWorkspace.image ?? (store.objectFinderEnabled ? store.objectFinder.image:nil) {
@@ -546,6 +603,8 @@ struct CanvasHost: NSViewRepresentable {
     c.restoreGState()
   }
   override func mouseDown(with event: NSEvent) {
+    cursorLocationInView = convert(event.locationInWindow,from:nil)
+    beginCursorGesture(event); defer { refreshToolCursor() }
     guard activateDocument() else { return }
     synchronizeTool()
     if store.typeEditingDraft != nil, !store.finishType() { return }
@@ -718,6 +777,7 @@ struct CanvasHost: NSViewRepresentable {
     synchronizeBrushClock()
   }
   override func mouseDragged(with event: NSEvent) {
+    cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
     if dragShapeGesture(event) { return }
     if dragFrameGesture(event) { return }
     if dragArtboardGesture(event) { return }
@@ -788,6 +848,7 @@ struct CanvasHost: NSViewRepresentable {
     needsDisplay = true
   }
   override func mouseUp(with event: NSEvent) {
+    defer { endCursorGesture(event) }
     defer { synchronizeFrameProbe() }
     drawingEvents.end()
     airbrushTimer?.invalidate();airbrushTimer=nil
@@ -925,6 +986,7 @@ struct CanvasHost: NSViewRepresentable {
     needsDisplay = true
   }
   override func keyDown(with event: NSEvent) {
+    updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
     if store.handleWorkspaceKey(event) { return }
     if store.gradientFillDraft != nil {

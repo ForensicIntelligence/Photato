@@ -1,0 +1,19 @@
+{
+  "step": 289,
+  "status": "source-publication-preparation",
+  "run": "artifacts/runs/20261031T093100Z-289-source-publication",
+  "source_checkpoint": 288,
+  "qualified_software_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+  "qualified_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "source_inputs": 2698,
+  "repository_private": true,
+  "increment_complete": false,
+  "goal_complete": false,
+  "native_acceptance": false,
+  "compiler_test_workers_live": false,
+  "next": [
+    "Curate source/manifest and review staged blobs.",
+    "Push a fast-forward source commit and verify exact GitHub commit/tree/private state.",
+    "Record the receipt, refresh diary/dashboard/audit, and preserve it in a documentation-only follow-up."
+  ]
+}

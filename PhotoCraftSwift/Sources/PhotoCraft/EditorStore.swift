@@ -143,6 +143,7 @@ import UniformTypeIdentifiers
   var layerMaskView: LayerMaskView?
   var renderedMaskView: LayerMaskView?
   var maskViewImage: CGImage?
+  var maskViewRegion: IntRect?
   var smartFilterMaskEditing = false
   var maskEditingLayerID: UUID?
   var editingMask: Bool { activeLayer?.id == maskEditingLayerID && activeLayer?.mask != nil }
@@ -158,6 +159,7 @@ import UniformTypeIdentifiers
   var selectionEnhanceEdge=false
   var selectionOverlayColor=Pixel(1,0,0,0.5)
   var selectionOverlayImage:CGImage?
+  var selectionOverlayRegion: IntRect?
   var selectionAntiAlias = true
   var wandOptions = ColorMatchOptions()
   var wandSampleAllLayers = false
@@ -597,8 +599,8 @@ import UniformTypeIdentifiers
     renderTask = Task { [weak self] in
       let worker = Task.detached(priority: .userInitiated) {
         var doc = doc
-        if largeCanvas != nil, maskView != nil || auxiliaryTarget != nil {
-          throw CraftError.unsupported("Large-document auxiliary and mask-only presentations need tiled coverage, which is not yet available.")
+        let presentation = try largeCanvas.map {
+          try RasterPreviewRequest(region: $0.region, width: $0.width, height: $0.height)
         }
         if let layerStyle, layerStyle.preview, (try? layerStyle.style.validate(in: doc)) != nil {
           try Command.layerStyle([layerStyle.id], layerStyle.style).apply(to: &doc)
@@ -658,9 +660,9 @@ import UniformTypeIdentifiers
         if proofComposite, let onionSource { displayComposite = try OnionSkinRenderer.render(onionSource, base: snapshot.surface) }
         else { displayComposite = snapshot.surface }
         let preview = try doc.inkMode != nil ? InkChannelPresentation.surface(doc, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(doc, visible: $0) } ?? channelView.applying(to: displayComposite)
-        let boundedPreview = try largeCanvas.map { try preview.reducedPreview(in: $0.region, width: $0.width, height: $0.height) }
+        let boundedPreview = try auxiliaryTarget == nil ? presentation.map { try $0.reducing(preview) } : nil
         var canvasPreview = try largeCanvas == nil ? previousDisplay?.updating(snapshot, scale: displayScale) : nil
-        var image = try canvasPreview?.base ?? (auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+        var image = try canvasPreview?.base ?? (auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay,request:presentation) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
           ? RasterIO.displayImage(boundedPreview ?? preview) : ColorManagement.displayImage(boundedPreview ?? preview, in: doc))
         if let largeCanvas { canvasPreview = CanvasRasterPreview(base: image, documentRegion: largeCanvas.region) }
         else if ordinaryDisplay, canvasPreview == nil {
@@ -672,16 +674,17 @@ import UniformTypeIdentifiers
           catch is CancellationError { throw CancellationError() }
           catch { proofFailure = error.localizedDescription }
         }
-        let path = try doc.selectionMask.map { try SelectionOutline.path($0) }
+        let path = try doc.selectionMask.map { try SelectionOutline.path($0,region:largeCanvas?.region,sampleStep:largeCanvas.map {max(1,($0.region.width+max(1,$0.width)-1)/max(1,$0.width),($0.region.height+max(1,$0.height)-1)/max(1,$0.height))} ?? 1) }
         let maskImage: CGImage?
         if let maskView, let layer = doc.layers.first(where: { $0.id == maskView.layerID }) {
-          maskImage = try RasterIO.displayImage(
-            Renderer.maskPresentation(
-              maskView.smartFilter ? try layer.filterMaskProjection() : layer, mode: maskView.mode, width: doc.width, height: doc.height))
+          let maskLayer = maskView.smartFilter ? try layer.filterMaskProjection() : layer
+          maskImage = try RasterIO.displayImage(presentation.map {
+            try Renderer.maskPresentation(maskLayer, mode: maskView.mode, request: $0)
+          } ?? Renderer.maskPresentation(maskLayer, mode: maskView.mode, width: doc.width, height: doc.height))
         } else {
           maskImage = nil
         }
-        let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0)} ?? nil
+        let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0,request:presentation)} ?? nil
         return (snapshot, image, path, maskImage,overlay,proofFailure,canvasPreview)
       }
       do {
@@ -707,8 +710,10 @@ import UniformTypeIdentifiers
         self.proofDisplayError = pair.5
         self.selectionPath = pair.2?.path
         self.selectionOverlayImage = pair.4
+        self.selectionOverlayRegion = largeCanvas?.region
         if (self.adjustmentBrushMaskView ?? self.currentMaskView) == maskView {
           self.maskViewImage = pair.3
+          self.maskViewRegion = largeCanvas?.region
           self.renderedMaskView = maskView
         }
         self.rendering = false

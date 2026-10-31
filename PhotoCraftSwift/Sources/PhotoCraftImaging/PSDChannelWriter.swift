@@ -10,7 +10,7 @@ enum PSDChannelWriter {
     channels: Int = 1, format: PSDFileFormat = .psd,
     to output: PSDOutput, row: (Int) throws -> [UInt8]
   ) throws {
-    _ = try PSDChannelCodec.byteCount(width: width, height: height, depth: depth, channels: channels)
+    _ = try PSDChannelCodec.streamByteCount(width: width, height: height, depth: depth, channels: channels)
     try output.n(compression.rawValue, 2)
     let table = output.count
     if compression == .rle {

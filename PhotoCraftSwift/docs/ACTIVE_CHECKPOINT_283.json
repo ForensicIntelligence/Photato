@@ -1,0 +1,98 @@
+{
+  "step": 283,
+  "recorded_at_utc": "2026-10-31T01:37:23.869562+00:00",
+  "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+  "source_inputs": 2505,
+  "focused": {
+    "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06.log",
+    "sha256": "58cbb741c9c6c3d48ad46e77edbe536b3b66dec36872cc26dbf639bfe9fb09d6",
+    "tests": 9,
+    "failures": 0,
+    "seconds": 0.581,
+    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
+  },
+  "full": {
+    "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/full01.log",
+    "sha256": "bf892a9bfeb6c4ae1c227303fb95388ba3de5036550f241b3b07b18e38d62796",
+    "tests": 2849,
+    "failures": 0,
+    "seconds": 239.905,
+    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
+  },
+  "binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
+  "architecture": "arm64",
+  "tested_platform": {
+    "operating_system": "macOS27.0.1",
+    "build": "26A434",
+    "architecture": "arm64",
+    "physical_Intel_qualified": false,
+    "macOS14_runtime_qualified": false,
+    "macOS26_runtime_qualified": false
+  },
+  "implemented": [
+    "Shared AppKit flagsChanged/Space-release, entry, tool/settings, focus and detach lifecycle; keyboard events are not consumed and controls retain their own cursors.",
+    "Semantic Zoom direction, selection modes, clone/mixer sampling, Dodge/Burn/Smudge/Adjustment Brush, geometry and open/closed Hand feedback; captured stroke/selection modes follow dispatched operations.",
+    "All52 EditorTool cases plus SelectMask/Focus/Liquify/ContentAware/Sky and SwiftUI Vanishing/BlurGallery/Perspective/WideAngle/LensCorrection cursor regions.",
+    "API presentation discovery and both-interface impact recorded; AGENTS/CONTRIBUTING enforce future tool cursor/action/test coverage.",
+    "832-case authored-image matrix, native in-process action/history tests, separate Preview283 packaging/handoff and complete preserved development record."
+  ],
+  "remaining": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open.",
+    "Newly saved native file can be selected with Open disabled; current280 issue reproduced. Open Recent succeeds. Investigate chooser metadata/filtering without speculative code.",
+    "Full Photoshop byte/interaction/default parity, physical60fps, universal distribution and physical Intel/macOS14/macOS26 qualification remain open.",
+    "Complete Photoshop modifier functionality, pointer preferences/Caps Lock/brush HUD, exact artwork/hotspots and exhaustive hover/resize states remain open. Physical held-key cursor comparison and macOS14/Intel/macOS26 qualification are not inferred from host unit tests.",
+    "Standalone focused suites that create AppKit windows before the native document-controller singleton can crash in the pre-existing close path; preserve focused03 and its isolated passing check. Key-window admission tests use an explicit controlled NSWindow subclass because xctest cannot become foreground on this host."
+  ],
+  "live_native_acceptance": true,
+  "live_evidence": "artifacts/runs/20261031T010106Z-283-tool-cursors/live-native01.json",
+  "goal_complete": false,
+  "full_workflow_complete": false,
+  "increment_complete": true,
+  "status": "All52 current tools have shared live modifier cursor feedback, with832 tool/modifier combinations and captured gesture modes. All9 cursor tests and2849 full optimized tests pass on2505 frozen inputs; separate Preview283 is verified. Existing Photoshop modifier-action gaps, exact pointer preferences/hover and physical/platform qualification remain open.",
+  "stage": "Existing modifier cursor feedback qualified; full Photoshop tool parity open",
+  "native_archive": 63,
+  "actions_version": 21,
+  "typed_commands": 192,
+  "installed_package_step": 221,
+  "private_package_step": 243,
+  "published_source_step": 280,
+  "new_source_push": false,
+  "new_package": true,
+  "new_installation": true,
+  "new_distribution_release": false,
+  "normal_local_preview_step": 283,
+  "next": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open."
+  ],
+  "local_preview": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
+    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-283.zip",
+    "zip_sha256": "4fd45f13861f4ad630309e123b867c59d62713fe877a20c8ff27b60158c890e0",
+    "zip_bytes": 38689480,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview283-check-7bb17izy/Photato Editing Preview 283.app"
+  },
+  "completed_this_increment": [
+    "Shared AppKit flagsChanged/Space-release, entry, tool/settings, focus and detach lifecycle; keyboard events are not consumed and controls retain their own cursors.",
+    "Semantic Zoom direction, selection modes, clone/mixer sampling, Dodge/Burn/Smudge/Adjustment Brush, geometry and open/closed Hand feedback; captured stroke/selection modes follow dispatched operations.",
+    "All52 EditorTool cases plus SelectMask/Focus/Liquify/ContentAware/Sky and SwiftUI Vanishing/BlurGallery/Perspective/WideAngle/LensCorrection cursor regions.",
+    "API presentation discovery and both-interface impact recorded; AGENTS/CONTRIBUTING enforce future tool cursor/action/test coverage.",
+    "832-case authored-image matrix, native in-process action/history tests, separate Preview283 packaging/handoff and complete preserved development record."
+  ],
+  "goal_status": "active",
+  "source_publication_record": "docs/SOURCE_PUBLICATION_281.json"
+}

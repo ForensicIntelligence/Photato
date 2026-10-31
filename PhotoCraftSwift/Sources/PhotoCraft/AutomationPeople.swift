@@ -71,7 +71,7 @@ extension AutomationService {
       guard features.allSatisfy({scene.availableFeatures.contains($0)}) else {throw AutomationFailure(status:422,message:scene.featureError ?? "Requested person features are unavailable in this build.")}
       if masks { response["peopleMasks"] = try scene.people.map{person in
         let mask=try scene.coverage(instanceIDs:[person.instanceID],hardEdge:false,features:features)
-        return ["instanceID":person.instanceID,"width":mask.width,"height":mask.height,"coverageBase64":Data(mask.bytes).base64EncodedString(),"features":features.map(\.rawValue)] as [String:Any]
+        return ["instanceID":person.instanceID,"width":mask.width,"height":mask.height,"coverageBase64":Data((try mask.bytes)).base64EncodedString(),"features":features.map(\.rawValue)] as [String:Any]
       } }
       if thumbnails { response["peopleThumbnails"] = scene.people.compactMap { person -> [String:Any]? in
         guard let image = scene.thumbnails[person.instanceID], let data = NSBitmapImageRep(cgImage:image).representation(using:.png,properties:[:]) else { return nil }

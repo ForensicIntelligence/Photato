@@ -1,0 +1,498 @@
+{
+  "step": 283,
+  "status": "Existing implemented-action feedback qualified on arm64/macOS27 host; full Photoshop cursor/tool parity open",
+  "reference_date": "2026-10-30 America/Vancouver",
+  "run": "artifacts/runs/20261031T010106Z-283-tool-cursors",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/zoom-images.html",
+      "kind": "public Adobe documentation",
+      "observation": "Option-click switches Zoom Out; independently authored native glyphs, no Adobe assets copied."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/change-tool-pointers.html",
+      "kind": "public Adobe documentation",
+      "observation": "Tool pointer preferences and precision/brush styles exist; complete preference parity is not claimed."
+    },
+    {
+      "url": "https://helpx.adobe.com/uk/photoshop/using/tool-techniques/hand-tool.html",
+      "kind": "reference fetch failed",
+      "observation": "2026-10-30 fetch timeout retained; not accepted as successful web verification."
+    }
+  ],
+  "implementation": {
+    "lifecycle": "ModifierCursorView; same key-window flagsChanged monitor, explicit mouse-event reconciliation, cursorUpdate/entry, tool/settings refresh, focus/detach cleanup. Keyboard events returned unchanged. Cursor does not steal AppKit text/control hit regions. Cached native images, no full image redraw solely for flagsChanged.",
+    "tool_policy": "Exhaustive EditorTool switch. All tools receive all16 Control/Command/Option/Shift combinations. Modifiers with no dispatched function change keep the same glyph. Stroke modes follow actual captured state.",
+    "api": "GET /v1/capabilities.toolCursorFeedback describes local presentation semantics and current coverage. Existing typed edits/history remain unchanged; no Adobe pointer endpoint exists in the pinned contract and none is invented."
+  },
+  "current_tool_audit": [
+    {
+      "id": "move",
+      "name": "Move",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "frame",
+      "name": "Frame",
+      "existing_modifier_behavior": "Shift constrains frame geometry. Option new-Frame plus badge when selected-corner hit does not win; actual body bypass remains unchanged.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "artboard",
+      "name": "Artboard",
+      "existing_modifier_behavior": "Shift constrains Artboard geometry.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "marquee",
+      "name": "Rectangular Marquee",
+      "existing_modifier_behavior": "Shift add, Option subtract, both intersect before start. Captured operation remains while later Shift/Option constrain/from-center geometry.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "ellipticalMarquee",
+      "name": "Elliptical Marquee",
+      "existing_modifier_behavior": "Same captured selection/geometry behavior as Rectangular Marquee.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "lasso",
+      "name": "Lasso",
+      "existing_modifier_behavior": "Shift add, Option subtract, both intersect; mode captured at start.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "polygonLasso",
+      "name": "Polygonal Lasso",
+      "existing_modifier_behavior": "Selection mode captured at first vertex and retained between clicks until finish/cancel.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "objectSelection",
+      "name": "Object Selection",
+      "existing_modifier_behavior": "Configured replace/add/subtract/intersect; Shift/Option override. Captured rectangle/lasso mode and immediate point mode.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "quickSelection",
+      "name": "Quick Selection",
+      "existing_modifier_behavior": "Configured painting selection mode with Shift add, Option subtract and both intersect; captured per stroke.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "selectionBrush",
+      "name": "Selection Brush",
+      "existing_modifier_behavior": "Same effective painting-selection mode as Quick Selection; captured per stroke.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "magicWand",
+      "name": "Magic Wand",
+      "existing_modifier_behavior": "Shift add, Option subtract, both intersect on click.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "paintBucket",
+      "name": "Paint Bucket",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "gradient",
+      "name": "Gradient",
+      "existing_modifier_behavior": "Shift constrains gradient direction.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "cloneStamp",
+      "name": "Clone Stamp",
+      "existing_modifier_behavior": "Option samples source; otherwise paint from configured source. Space temporary Hand.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "healingBrush",
+      "name": "Healing Brush",
+      "existing_modifier_behavior": "Option samples source; otherwise sampled healing. Space temporary Hand.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "blur",
+      "name": "Blur",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "sharpen",
+      "name": "Sharpen",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "smudge",
+      "name": "Smudge",
+      "existing_modifier_behavior": "Option toggles configured finger painting for the captured stroke.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "dodge",
+      "name": "Dodge",
+      "existing_modifier_behavior": "Option begins Burn stroke; captured stroke mode remains after Option release.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "burn",
+      "name": "Burn",
+      "existing_modifier_behavior": "Option begins Dodge stroke; captured stroke mode remains after Option release.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "sponge",
+      "name": "Sponge",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "patch",
+      "name": "Patch",
+      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "contentAwareMove",
+      "name": "Content-Aware Move",
+      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "redEye",
+      "name": "Red Eye",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "spotHealing",
+      "name": "Spot Healing Brush",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "pencil",
+      "name": "Pencil",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "colorReplacement",
+      "name": "Color Replacement",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "mixerBrush",
+      "name": "Mixer Brush",
+      "existing_modifier_behavior": "Option samples mixer load; otherwise Mixer stroke.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "patternStamp",
+      "name": "Pattern Stamp",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "backgroundEraser",
+      "name": "Background Eraser",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "magicEraser",
+      "name": "Magic Eraser",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "adjustmentBrush",
+      "name": "Adjustment Brush",
+      "existing_modifier_behavior": "Option XOR configured subtract flag; captured painting/object mode.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "brush",
+      "name": "Brush",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "eraser",
+      "name": "Eraser",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "rectangle",
+      "name": "Rectangle",
+      "existing_modifier_behavior": "Shift constrain and Option from-center, including combined indicator.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "ellipse",
+      "name": "Ellipse",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "triangle",
+      "name": "Triangle",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "polygon",
+      "name": "Polygon",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "star",
+      "name": "Star",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "line",
+      "name": "Line",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "customShape",
+      "name": "Custom Shape",
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "text",
+      "name": "Horizontal Type",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "verticalText",
+      "name": "Vertical Type",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "eyedropper",
+      "name": "Eyedropper",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "hand",
+      "name": "Hand",
+      "existing_modifier_behavior": "Open Hand at rest, closed Hand while dragging; Space temporary Hand on canvas.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "crop",
+      "name": "Crop",
+      "existing_modifier_behavior": "Shift/Option geometric modifiers; straighten/handle pointer details remain separate hover qualification.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "zoom",
+      "name": "Zoom",
+      "existing_modifier_behavior": "Option changes click to Zoom Out; other modifier-only keys have no different dispatched click operation. Command/Option wheel zoom remains.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "pen",
+      "name": "Pen",
+      "existing_modifier_behavior": "Hover-sensitive close path, delete anchor, Option convert hit anchor and add segment anchor glyphs.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "freeformPen",
+      "name": "Freeform Pen",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "curvaturePen",
+      "name": "Curvature Pen",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "pathSelection",
+      "name": "Path Selection",
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "directSelection",
+      "name": "Direct Selection",
+      "existing_modifier_behavior": "Option independently moves selected handles; Control/Command alternate tools are not currently implemented.",
+      "covered_by_shared_policy": true
+    }
+  ],
+  "workspaces": [
+    {
+      "name": "Select and Mask / Focus Area",
+      "cursor_behavior": "Option swaps add/subtract, refine/erase or lasso modes using the same resolver as begin stroke."
+    },
+    {
+      "name": "Liquify",
+      "cursor_behavior": "Option freeze/thaw, clockwise/counterclockwise twirl, pucker/bloat, lasso mask add/subtract; captured stroke state."
+    },
+    {
+      "name": "Content-Aware Fill",
+      "cursor_behavior": "Option XOR configured add mode; output preview arrow; Space/Hand panning."
+    },
+    {
+      "name": "Sky Replacement",
+      "cursor_behavior": "Option mask add/subtract or Zoom Out; captured stroke mode; Space/Hand panning."
+    },
+    {
+      "name": "Vanishing Point",
+      "cursor_behavior": "Option Stamp source sampling; gesture-latched sampling flag; native SwiftUI cursor region."
+    },
+    {
+      "name": "Blur Gallery",
+      "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region."
+    },
+    {
+      "name": "Perspective Warp",
+      "cursor_behavior": "Shift edge lock; native SwiftUI cursor region."
+    },
+    {
+      "name": "Adaptive Wide Angle",
+      "cursor_behavior": "Shift axis constraint for new constraint; native SwiftUI cursor region."
+    },
+    {
+      "name": "Lens Correction",
+      "cursor_behavior": "Tool-specific pointers and open/closed Hand; no alternate modifier edit currently dispatched."
+    },
+    {
+      "name": "Timeline and other panel controls",
+      "cursor_behavior": "Existing Command/Shift selection controls and native AppKit text/resize controls retain their standard pointer; no separate modifier tool action identified."
+    }
+  ],
+  "future_requirement": "AGENTS.md and CONTRIBUTING.md require shared policy/lifecycle, captured-state consistency, modifier matrix regression coverage and API/discovery audit for every new tool/action.",
+  "remaining": [
+    "This audit repairs feedback for existing implemented actions; it does not claim complete Photoshop modifier functionality. Brush Option temporary Eyedropper, Command temporary Move/Direct Selection, Command/Option+Space temporary Zoom and other missing Photoshop actions remain feature gaps.",
+    "Complete Photoshop pointer preferences (normal/precise/full-size, Caps Lock and brush-size HUD), exact glyphs/hotspots, exhaustive hover/resize states and physical held-key comparison remain open.",
+    "Control usually invokes contextual UI; merely holding it does not necessarily require a new tool icon. Command/Control without a dispatched alternate operation are observed without invented behavior.",
+    "Host tests do not qualify physical macOS14/Intel/macOS26 pointer appearance or performance.",
+    "Standalone focused suites that create AppKit windows before the native document-controller singleton can crash in the pre-existing close path; preserve focused03 and its isolated passing check. Key-window admission tests use an explicit controlled NSWindow subclass because xctest cannot become foreground on this host."
+  ],
+  "summary": "All52 current tools have shared live modifier cursor feedback, with832 tool/modifier combinations and captured gesture modes. All9 cursor tests and2849 full optimized tests pass on2505 frozen inputs; separate Preview283 is verified. Existing Photoshop modifier-action gaps, exact pointer preferences/hover and physical/platform qualification remain open.",
+  "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+  "source_inputs": 2505,
+  "tests": [
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06.log",
+      "sha256": "58cbb741c9c6c3d48ad46e77edbe536b3b66dec36872cc26dbf639bfe9fb09d6",
+      "tests": 9,
+      "failures": 0,
+      "seconds": 0.581,
+      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
+    },
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/full01.log",
+      "sha256": "bf892a9bfeb6c4ae1c227303fb95388ba3de5036550f241b3b07b18e38d62796",
+      "tests": 2849,
+      "failures": 0,
+      "seconds": 239.905,
+      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
+    }
+  ],
+  "matrix": {
+    "rows": 832,
+    "path": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-modifier-matrix.json",
+    "artwork": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
+    "stock_pointer_raster": "AppKit may provide dynamic stock pointers without TIFF; custom glyph raster images are validated."
+  },
+  "native": {
+    "step": 283,
+    "passed": true,
+    "scope": "Native app launch/Open, tool selection and Zoom navigation; original retained pixels untouched",
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
+    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
+    "observations": [
+      "Open retained native271 artwork; startup blank closes; document remains clean.",
+      "Enter100% releases focus; Z selects Zoom; native click500,400 changes100% to200%.",
+      "H selects Hand. A drag was attempted but AX exposed no pan delta and no before/after screenshot was retained; live Hand pan is not claimed as verified here.",
+      "Command0 returns77.73% Fit; restore100%/opacity100/Zoom tool for handoff."
+    ],
+    "evidence": [
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom02.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-hand01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg"
+    ],
+    "physical_modifier_hold_comparison": false,
+    "cursor_artwork_qa": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
+    "modifier_semantics": "Native NSEvent/action/history tests plus controlled key-window admission fixture; physical held-key/Photoshop/default cursor comparison remains open."
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
+    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-283.zip",
+    "zip_sha256": "4fd45f13861f4ad630309e123b867c59d62713fe877a20c8ff27b60158c890e0",
+    "zip_bytes": 38689480,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview283-check-7bb17izy/Photato Editing Preview 283.app"
+  },
+  "handoff": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "retained_artwork": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "retained_artwork_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "clean": true,
+    "zoom_percent": 100,
+    "opacity_percent": 100,
+    "selected_tool": "Zoom",
+    "ax": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
+    "screenshot": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg",
+    "previous_preview282_quit": true,
+    "startup_placeholder_closed_cleanly": true,
+    "document_saved_or_modified": false
+  },
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused01.log",
+      "result": "Swift6 Notification capture isolation error; Sendable Boolean repairs it."
+    },
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused02.log",
+      "result": "Test tuple type inference error; explicit tuple type repairs it."
+    },
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused03.log",
+      "result": "4 canvas tests pass, then document-controller startup-order crash; standalone close test passes unchanged. Crash retained."
+    },
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused04.log",
+      "result": "9 tests/131 assertions: stock-pointer raster assumption and missing test key-window activation."
+    },
+    {
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused05.log",
+      "result": "9 tests/7 assertions: standalone XCTest cannot become foreground/key. Deterministic event-admission window double replaces ineffective activation."
+    }
+  ],
+  "key_window_qualification": "Event admission logic is tested with controlled NSWindow isKeyWindow; real views, NSEvents, hit testing, action/history and notifications remain native. This is not physical modifier-key delivery proof."
+}

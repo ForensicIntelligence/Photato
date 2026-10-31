@@ -106,6 +106,13 @@ struct LensCorrectionPreview:View {
           context.stroke(grid,with:.color(gridColor),lineWidth:0.5)
         }
         if let a=lineStart,let b=lineEnd { var line=Path();line.move(to:a);line.addLine(to:b);context.stroke(line,with:.color(.orange),lineWidth:2) }
+      }.toolCursor { _ in
+        switch model.tool {
+        case .hand: return pressed ? .closedHand:.openHand
+        case .grid: return .symbol("square.grid.3x3")
+        case .straighten: return .symbol("level")
+        case .distortion: return .symbol("viewfinder")
+        }
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed { pressed=true;initialPan=model.pan;initialGrid=model.gridOrigin;model.beginGesture() }
         func normalized(_ p:CGPoint)->PathPoint { let q=PathPoint((p.x-offset.x)/scale,(p.y-offset.y)/scale).transformed(inverse);return .init(q.x/sourceSize.width,q.y/sourceSize.height) }

@@ -86,7 +86,7 @@ public struct PeopleScene: Sendable {
     for person in people where instanceIDs.contains(person.instanceID) {
       for y in 0..<person.mask.height {
         try Task.checkCancellation()
-        for x in 0..<person.mask.width { let i = y*person.mask.width+x; bytes[i] = max(bytes[i],person.mask.bytes[i]) }
+        for x in 0..<person.mask.width { let i = y*person.mask.width+x; bytes[i] = max(bytes[i],person.mask.byte(at:i)) }
       }
     }
     let whole=try SelectionMask(width:source.document.width,height:source.document.height,bytes:bytes)

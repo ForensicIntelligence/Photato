@@ -84,7 +84,7 @@ public struct ContentAwareScaleEdit: Sendable {
     else { throw CraftError.invalid("Content-Aware Scale source changed or is locked.") }
     var document = original;document.layers[i] = result;document.setCoverageSelection(selection);try document.validate();return document
   }
-  private static func coverage(_ m: SelectionMask,_ x: Int,_ y: Int) -> Float { x >= 0 && y >= 0 && x < m.width && y < m.height ? Float(m.bytes[y*m.width+x])/255:0 }
+  private static func coverage(_ m: SelectionMask,_ x: Int,_ y: Int) -> Float { x >= 0 && y >= 0 && x < m.width && y < m.height ? Float(m.byte(at:y*m.width+x))/255:0 }
   private static func read(_ s: Surface,_ x: Int,_ y: Int) -> Pixel { s.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y) }
   private static func write(_ p: Pixel,to s: inout Surface,x: Int,y: Int) { if s.depth == .f32 { s.setLinearPixel(x:x,y:y,p) } else { s.setPixel(x:x,y:y,p) } }
   /// Sample premultiplied pixels without clamping HDR RGB; outside storage is transparent.

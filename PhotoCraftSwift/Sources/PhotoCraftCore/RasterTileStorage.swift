@@ -21,7 +21,7 @@ public final class RasterTileStore: @unchecked Sendable {
   private let file: ScratchDescriptor
   private let maximumBytes: Int
   private let lock = NSLock()
-  private var segments: [ScratchSegment] = []
+  private var segments: [RasterScratchSegment] = []
   private var count = 0
   public var storedBytes: Int { lock.lock(); defer { lock.unlock() }; return count }
   public init(maximumBytes: Int = defaultMaximumBytes, directory: URL? = nil) throws {
@@ -55,7 +55,7 @@ public final class RasterTileStore: @unchecked Sendable {
       let mapping = mmap(nil, Self.segmentBytes, PROT_READ, MAP_SHARED, file.fd, off_t(index * Self.segmentBytes))
       guard let mapping, mapping != MAP_FAILED else { throw RasterScratchFailure.io(operation: "mapping", code: errno) }
       _ = madvise(mapping, Self.segmentBytes, MADV_RANDOM)
-      segments.append(ScratchSegment(file: file, address: mapping, length: Self.segmentBytes))
+      segments.append(RasterScratchSegment(file: file, address: mapping, length: Self.segmentBytes))
     }
     try tile.withUnsafeBufferPointer { samples in
       let bytes = UnsafeRawBufferPointer(samples)
@@ -78,70 +78,68 @@ fileprivate final class ScratchDescriptor: @unchecked Sendable {
   init(_ fd: Int32) { self.fd = fd }
   deinit { close(fd) }
 }
-fileprivate final class ScratchSegment: @unchecked Sendable {
-  let file: ScratchDescriptor
+final class RasterScratchSegment: @unchecked Sendable {
+  fileprivate let file: ScratchDescriptor
   let address: UnsafeMutableRawPointer
   let length: Int
-  init(file: ScratchDescriptor, address: UnsafeMutableRawPointer, length: Int) {
+  fileprivate init(file: ScratchDescriptor, address: UnsafeMutableRawPointer, length: Int) {
     self.file = file; self.address = address; self.length = length
   }
   deinit { munmap(address, length) }
 }
 
-/// A value-semantic tile. Mutation promotes only the touched immutable disk tile
-/// to a uniquely owned Array. Dictionary COW still isolates document snapshots.
+/// A value-semantic tile. Immutable mappings are cheap values; reading a paged
+/// index never allocates a per-tile object. Native Array COW isolates owned edits.
 struct RasterTile: RandomAccessCollection, MutableCollection, Equatable, @unchecked Sendable {
   typealias Index = Int
   typealias Element = Pixel
-  private final class Storage: @unchecked Sendable {
-    var array: [Pixel]?
-    let segment: ScratchSegment?
-    let offset: Int
-    init(_ array: [Pixel]) { self.array = array; segment = nil; offset = 0 }
-    init(segment: ScratchSegment, offset: Int) { array = nil; self.segment = segment; self.offset = offset }
-  }
-  private var storage: Storage
-  init(_ array: [Pixel]) { storage = Storage(array) }
-  init(repeating pixel: Pixel, count: Int) { storage = Storage(Array(repeating: pixel, count: count)) }
-  fileprivate init(segment: ScratchSegment, offset: Int) { storage = Storage(segment: segment, offset: offset) }
+  private var array: [Pixel]?
+  private(set) var segment: RasterScratchSegment?
+  private(set) var offset: Int = 0
+  init(_ array: [Pixel]) { self.array = array }
+  init(repeating pixel: Pixel, count: Int) { array = Array(repeating:pixel,count:count) }
+  init(segment: RasterScratchSegment, offset: Int) { self.segment = segment; self.offset = offset }
   func index(after i: Int) -> Int { i + 1 }
   func index(before i: Int) -> Int { i - 1 }
   func index(_ i: Int, offsetBy n: Int) -> Int { i + n }
   func distance(from start: Int, to end: Int) -> Int { end - start }
   var startIndex: Int { 0 }
-  var endIndex: Int { storage.array?.count ?? TileArchive.pixelCount }
-  var isBacked: Bool { storage.segment != nil }
-  var residentBytes: Int { (storage.array?.count ?? 0) * MemoryLayout<Pixel>.stride }
-  var identity: UInt { withUnsafeBufferPointer { UInt(bitPattern: $0.baseAddress!) } }
+  var endIndex: Int { array?.count ?? TileArchive.pixelCount }
+  var isBacked: Bool { segment != nil }
+  var residentBytes: Int { (array?.count ?? 0) * MemoryLayout<Pixel>.stride }
+  var identity: UInt { withUnsafeBufferPointer { UInt(bitPattern:$0.baseAddress!) } }
   private mutating func makeMutable() {
-    if !isKnownUniquelyReferenced(&storage) || storage.array == nil {
-      storage = Storage(withUnsafeBufferPointer { Array($0) })
+    if array == nil {
+      array = withUnsafeBufferPointer { Array($0) }
+      segment = nil; offset = 0
     }
   }
   subscript(index: Int) -> Pixel {
     get {
       precondition(index >= 0 && index < endIndex)
-      if let array = storage.array { return array[index] }
-      return storage.segment!.address.advanced(by: storage.offset).assumingMemoryBound(to: Pixel.self)[index]
+      if let array { return array[index] }
+      return segment!.address.advanced(by:offset).assumingMemoryBound(to:Pixel.self)[index]
     }
     _modify {
       precondition(index >= 0 && index < endIndex)
-      makeMutable()
-      yield &storage.array![index]
+      makeMutable(); yield &array![index]
     }
   }
   func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Pixel>) throws -> T) rethrows -> T {
-    if let array = storage.array { return try array.withUnsafeBufferPointer(body) }
-    let segment = storage.segment!
+    if let array { return try array.withUnsafeBufferPointer(body) }
+    let segment = segment!
     return try withExtendedLifetime(segment) {
-      try body(UnsafeBufferPointer(start: segment.address.advanced(by: storage.offset).assumingMemoryBound(to: Pixel.self), count: TileArchive.pixelCount))
+      try body(UnsafeBufferPointer(start:segment.address.advanced(by:offset).assumingMemoryBound(to:Pixel.self),count:TileArchive.pixelCount))
     }
   }
   mutating func replaceSubrange<C: Collection>(_ range: Range<Int>, with values: C) where C.Element == Pixel {
-    makeMutable(); storage.array!.replaceSubrange(range, with: values)
+    makeMutable(); array!.replaceSubrange(range,with:values)
   }
   static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.storage === rhs.storage || lhs.elementsEqual(rhs)
+    if let a=lhs.segment, a === rhs.segment, lhs.offset == rhs.offset { return true }
+    return lhs.withUnsafeBufferPointer { a in rhs.withUnsafeBufferPointer { b in
+      a.baseAddress == b.baseAddress || a.elementsEqual(b)
+    } }
   }
 }
 
@@ -162,6 +160,26 @@ extension CraftDocument {
     if let quickMask { account(quickMask.pixels) }
     for pattern in patterns ?? [] { account(pattern.surface) }
     for image in variables?.images ?? [] { account(image.pixels) }
+    bytes += selectionMask?.mappedBytes ?? 0
+    return bytes
+  }
+}
+
+extension CraftDocument {
+  /// Referenced immutable runtime-index pages, separate from sample pages and RSS.
+  public var mappedRasterIndexBytes:Int {
+    var bytes=0
+    func account(_ s:Surface){bytes+=s.mappedTileIndexBytes}
+    for layer in layers {
+      if case .raster(let s)=layer.content {account(s)}
+      if let s=layer.mask {account(s)};if let s=layer.smartFilters?.mask {account(s)}
+      for s in layer.video?.frames ?? [] {account(s)}
+    }
+    for c in alphaChannels ?? [] {account(c.pixels)}
+    if let quickMask {account(quickMask.pixels)}
+    for p in patterns ?? [] {account(p.surface)}
+    for image in variables?.images ?? [] {account(image.pixels)}
+    bytes += selectionMask?.mappedIndexBytes ?? 0
     return bytes
   }
 }

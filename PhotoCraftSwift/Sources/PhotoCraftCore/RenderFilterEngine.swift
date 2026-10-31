@@ -3,6 +3,17 @@ import Foundation
 /// Native translation of PhotoCraft extra_cmds.rs and render.rs (MIT OR Apache-2.0).
 /// Source equality does not establish Photoshop numerical equivalence.
 public enum RenderFilterEngine {
+  // Swift6.4 CopyPropagation cannot verify the expanded storage borrows in
+  // paintTarget's throwing closure. Isolate just this filter's sample boundary;
+  // ordinary Surface/brush loops keep their optimized direct storage path.
+  @inline(never)
+  private static func readTarget(_ surface:Surface,x:Int,y:Int,linear:Bool) -> Pixel {
+    linear ? surface.linearPixel(x:x,y:y):surface.pixel(x:x,y:y)
+  }
+  @inline(never)
+  private static func writeTarget(_ surface:inout Surface,x:Int,y:Int,pixel:Pixel,linear:Bool) {
+    if linear {surface.setLinearPixel(x:x,y:y,pixel)}else{surface.setPixel(x:x,y:y,pixel)}
+  }
   static func clamp(_ value: Float) -> Float {min(1,max(0,value))}
   static func smoothstep(_ e0:Float,_ e1:Float,_ x:Float)->Float {
     // Preserve the upstream helper's explicit reversed-edge fallback.
@@ -120,13 +131,13 @@ public enum RenderFilterEngine {
         let q=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(q.x)),dy=Int(floor(q.y))
         guard dx>=clipping.x,dy>=clipping.y,dx<clipping.x+clipping.width,dy<clipping.y+clipping.height else {continue}
         let coverage=original.selectionCoverage(x:dx,y:dy);if coverage<=0 {continue}
-        let before=linear ? pixels.linearPixel(x:x,y:y):pixels.pixel(x:x,y:y)
+        let before=readTarget(pixels,x:x,y:y,linear:linear)
         guard before.isFinite,max(abs(before.r),abs(before.g),abs(before.b))<=1e12 else {throw CraftError.invalid("Render input exceeds the supported numeric range.")}
         if protect && before.a==0 {continue}
         var after=pixel(before,x:Float(q.x-0.5),y:Float(q.y-0.5),kind:kind,settings:s,width:original.width,height:original.height,flare:flare)
         if protect {after.a=before.a};let value=before.mixing(after,coverage:coverage)
         if value.hasSameBits(as:before) {continue};changed=true
-        if linear {pixels.setLinearPixel(x:x,y:y,value)} else {pixels.setPixel(x:x,y:y,value)}
+        writeTarget(&pixels,x:x,y:y,pixel:value,linear:linear)
       }};return changed
     }
     document.layers[index]=layer

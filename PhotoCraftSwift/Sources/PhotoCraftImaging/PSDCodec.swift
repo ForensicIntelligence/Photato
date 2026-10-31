@@ -10,41 +10,54 @@ struct PSDReader {
   private let storage: PSDByteStorage
   private let start: Int
   private let count: Int
+  private let metadataBudget: PSDMetadataBudget
+  var byteCount: Int { count }
   private(set) var offset = 0
   var remaining: Int { offset >= 0 && offset <= count ? count - offset : 0 }
   // Materialize retained metadata only. Nested sections/channels use view(),
   // avoiding whole-file loads and repeated complete section copies.
-  var data: Data { get throws { try storage.bytes(at: start, count: count) } }
+  var data: Data { get throws {
+    try metadataBudget.reserve(count)
+    return try storage.bytes(at: start, count: count)
+  } }
   init(data: Data, offset: Int = 0) {
     self.offset = offset
     storage = .memory(data)
     start = 0
     count = data.count
+    metadataBudget = PSDMetadataBudget()
   }
   init(file: PSDFileSource) {
     storage = .file(file)
     start = 0
     count = file.count
+    metadataBudget = PSDMetadataBudget()
   }
   func validateUnchanged() throws { try storage.validateUnchanged() }
-  private init(storage: PSDByteStorage, start: Int, count: Int) {
+  private init(storage: PSDByteStorage, start: Int, count: Int, metadataBudget: PSDMetadataBudget) {
     self.storage = storage
     self.start = start
     self.count = count
+    self.metadataBudget = metadataBudget
   }
   mutating func view(_ count: Int) throws -> PSDReader {
     guard offset >= 0, offset <= self.count, count >= 0, count <= remaining else {
       throw CraftError.invalid("Truncated PSD section at byte \(offset).")
     }
     defer { offset += count }
-    return PSDReader(storage: storage, start: start + offset, count: count)
+    return PSDReader(storage: storage, start: start + offset, count: count, metadataBudget: metadataBudget)
   }
   mutating func bytes(_ count: Int) throws -> Data {
-    guard offset >= 0, offset <= self.count, count >= 0, count <= remaining else {
+    guard offset >= 0, offset <= self.count, count >= 0, count <= remaining,
+      count <= PSDCodec.maximumInputBytes else {
       throw CraftError.invalid("Truncated PSD section at byte \(offset).")
     }
     defer { offset += count }
     return try storage.bytes(at: start + offset, count: count)
+  }
+  mutating func retainedBytes(_ count: Int) throws -> Data {
+    try metadataBudget.reserve(count)
+    return try bytes(count)
   }
   mutating func consumePadding(_ byte: UInt8) throws -> Bool {
     guard offset >= 0, offset <= count else { return false }
@@ -92,6 +105,11 @@ struct PSDWriter {
 }
 public enum PSDCodec {
   public static let maximumInputBytes = 512 * 1024 * 1024
+  /// Implementation admission, not a claim about the PSB format's upper size.
+  public static let maximumFileBytes = 4_398_046_511_104
+  public static let maximumMetadataBytes = 512 * 1024 * 1024
+  public static let maximumPSDFileBytes = 2_147_483_648
+  public static let pagedWorkingHeapReserveBytes = 16 * 1024 * 1024
   public static let fileReadWindowBytes = PSDFileSource.pageBytes
   public static let maximumFileCacheBytes =
     PSDFileSource.pageBytes * PSDFileSource.maximumCachedPages
@@ -99,7 +117,8 @@ public enum PSDCodec {
   public static func read(_ url: URL, name: String? = nil) throws -> CraftDocument {
     let source = try PSDFileSource(url)
     return try read(
-      PSDReader(file: source), name: name ?? url.deletingPathExtension().lastPathComponent)
+      PSDReader(file: source), name: name ?? url.deletingPathExtension().lastPathComponent,
+      paging: PSDRasterPaging.Context())
   }
 
   private static func storageBytes(width: Int, height: Int) -> Int {
@@ -167,13 +186,27 @@ public enum PSDCodec {
     }
     return try read(PSDReader(data: data), name: name)
   }
+  /// API Data retains its container and metadata/workspace heap admission. The
+  /// same paged assembly serves native files; sample pages have separate disk bounds.
+  public static func readPaged(_ data: Data, name: String = "Imported PSD",
+    heapByteLimit: Int = 1_073_741_824,
+    scratchByteLimit: Int = RasterTileStore.defaultMaximumBytes) throws -> CraftDocument {
+    guard data.count <= maximumInputBytes,(0...1_073_741_824).contains(heapByteLimit) else {
+      throw CraftError.invalid("Invalid paged Photoshop input budget.")
+    }
+    return try read(PSDReader(data:data),name:name,
+      paging:PSDRasterPaging.Context(heapByteLimit:heapByteLimit,scratchByteLimit:scratchByteLimit))
+  }
   static func read(_ source: PSDReader, name: String, tiffComposite: Surface? = nil,
-    tiffNativeComposite: NativeModeRaster? = nil) throws -> CraftDocument {
+    tiffNativeComposite: NativeModeRaster? = nil, paging: PSDRasterPaging.Context? = nil) throws -> CraftDocument {
     try Task.checkCancellation()
     var r = source
     guard try r.string(4) == "8BPS" else { throw CraftError.invalid("This is not a PSD file.") }
     guard let format = PSDFileFormat(rawValue: try r.u16()) else {
       throw CraftError.unsupported("Unsupported Photoshop file version; expected PSD or PSB.")
+    }
+    guard source.byteCount <= (format == .psd ? maximumPSDFileBytes:maximumFileBytes) else {
+      throw CraftError.invalid("Photoshop file exceeds the selected container's file budget.")
     }
     guard try r.bytes(6).allSatisfy({ $0 == 0 }) else {
       throw CraftError.invalid("Invalid PSD reserved header.")
@@ -372,7 +405,8 @@ public enum PSDCodec {
         throw CraftError.invalid("Invalid PSD layer bounds.")
       }
       _ = try Surface(width: max(1, w), height: max(1, h))
-      decodedBudget += storageBytes(width: max(1, w), height: max(1, h))
+      if let paging,colorMode == .rgb {try paging.admitRaster(bytes:storageBytes(width:max(1,w),height:max(1,h)))}
+      else {decodedBudget += storageBytes(width: max(1, w), height: max(1, h))}
       if colorMode != .rgb {
         guard h == 0 || w <= NativeModeRaster.maximumPixels / h else { throw CraftError.invalid("Mode layer exceeds the native pixel limit.") }
         decodedBudget += max(1, w) * max(1, h) * (colorChannels + 1) * (depth / 8)
@@ -431,7 +465,7 @@ public enum PSDCodec {
         }
         let tag = try extra.string(4)
         let size = try extra.length(format.tagLengthBytes(tag))
-        let content = try extra.bytes(size)
+        let content = try extra.retainedBytes(size)
         if size % 2 != 0 { _ = try extra.bytes(1) }
         guard tags[tag] == nil else { throw CraftError.invalid("Duplicate PSD layer block.") }
         tags[tag] = content
@@ -587,7 +621,8 @@ public enum PSDCodec {
             throw CraftError.invalid("Missing PSD mask record.")
           }
           let (b, _) = try metadata.selected(id)
-          decodedBudget += storageBytes(width: max(1, b.width), height: max(1, b.height))
+          if let paging,colorMode == .rgb {try paging.admitRaster(bytes:storageBytes(width:max(1,b.width),height:max(1,b.height)))}
+          else {decodedBudget += storageBytes(width: max(1, b.width), height: max(1, b.height))}
           guard decodedBudget <= 512 * 1024 * 1024 else {
             throw CraftError.invalid("PSD masks exceed the memory budget.")
           }
@@ -638,14 +673,21 @@ public enum PSDCodec {
       var surface = try Surface(
         width: native == nil ? max(1, record.w) : 1, height: native == nil ? max(1, record.h) : 1, depth: pixelDepth,
         colorEncoding: depth == 32 ? .linearRGB : .sRGB)
-      for y
-        in 0..<(record.section == 0 && record.tags["SoCo"] == nil && record.tags["PtFl"] == nil
+      let rasterRows = record.section == 0 && record.tags["SoCo"] == nil && record.tags["PtFl"] == nil
         && record.tags["GdFl"] == nil
         && record.tags["clrL"] == nil && !PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
         && record.tags["levl"] == nil
         && record.tags["curv"] == nil && record.tags["hue2"] == nil && record.tags["blnc"] == nil
         && record.tags["thrs"] == nil && record.tags["post"] == nil && record.tags["grdm"] == nil
-        ? record.h : 0)
+        ? record.h : 0
+      if let paging,native == nil,rasterRows > 0 {
+        let components=planes[-1] == nil ? 3:4
+        surface=try PSDRasterPaging.layer(width:record.w,height:record.h,depth:pixelDepth,components:components,context:paging) { _ in
+          var rows=try (0..<3).map {try planes[$0]!.nextRow()}
+          if let alpha=planes[-1] {rows.append(try alpha.nextRow())};return rows
+        }
+      }
+      for y in 0..<(paging != nil && native == nil ? 0:rasterRows)
       {
         if native != nil {
           let rows = try (0..<colorChannels).map { try planes[$0]!.nextRow() }
@@ -767,7 +809,10 @@ public enum PSDCodec {
         var mask = try Surface(
           width: max(1, b.width), height: max(1, b.height), depth: pixelDepth,
           fill: Pixel(properties.outside, properties.outside, properties.outside))
-        if !b.empty, let channel = planes[id] {
+        if !b.empty,let channel=planes[id],let paging,colorMode == .rgb {
+          mask=try PSDRasterPaging.layer(width:b.width,height:b.height,depth:pixelDepth,components:1,
+            fill:Pixel(properties.outside,properties.outside,properties.outside),mask:true,context:paging) {_ in [try channel.nextRow()]}
+        } else if !b.empty, let channel = planes[id] {
           for y in 0..<b.height {
             let values = try channel.nextRow()
             for x in 0..<b.width {
@@ -842,6 +887,11 @@ public enum PSDCodec {
       }
       var layer = Layer(name: "Background", content: .raster(try native.surface())); layer.nativeMode = native
       doc.layers = [layer]; doc.activeLayerID = layer.id
+    } else if count == 0,let paging {
+      try paging.admitRaster(bytes:storageBytes(width:width,height:height))
+      let surface=try PSDRasterPaging.merged(width:width,height:height,depth:pixelDepth,components:channels,
+        transparency:mergedTransparency,context:paging,reader:merged)
+      let layer=Layer(name:"Background",content:.raster(surface));doc.layers=[layer];doc.activeLayerID=layer.id
     } else if count == 0 {
       guard storageBytes(width: width, height: height) <= 512 * 1024 * 1024 else {
         throw CraftError.invalid("PSD pixels exceed the memory budget.")
@@ -898,10 +948,11 @@ public enum PSDCodec {
     _ doc: CraftDocument, to url: URL, compression: PSDCompression = .zipPrediction,
     format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw
   ) throws {
-    let file = try AtomicFileWriter(to: url, maximumBytes: maximumInputBytes)
+    let maximumBytes=format == .psd ? maximumPSDFileBytes:maximumFileBytes
+    let file = try AtomicFileWriter(to: url, maximumBytes: maximumBytes)
     try writeRasterLayers(
       doc, compression: compression, format: format,
-      compositeCompression: compositeCompression, output: PSDOutput(file: file))
+      compositeCompression: compositeCompression, output: PSDOutput(file: file,maximumBytes:maximumBytes))
     try file.commit()
   }
 
@@ -1363,14 +1414,16 @@ public enum PSDCodec {
     }
     try output.finishLength(maskLength, width: format.sectionLengthBytes)
     if !includeComposite { return }
-    let composite = try Renderer.composite(doc)
+    let pagedComposite = doc.colorMode == .rgb && doc.width*doc.height > Surface.maximumDensePixels ? PSDCompositeRows(doc):nil
+    let composite = try pagedComposite == nil ? Renderer.composite(doc):nil
     let nativeComposite = try doc.modeDescriptor.map { descriptor in
-      try NativeModeRaster.converting(composite, to: descriptor.mode, depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
+      try NativeModeRaster.converting(composite!, to: descriptor.mode, depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
     }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
       compression: compositeCompression, channels: colorChannels + 1, format: format, to: output) { index in
         let channel = index / doc.height, y = index % doc.height
         try Task.checkCancellation()
+        if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}
         var bytes: [UInt8] = []
         bytes.reserveCapacity(doc.width * (depth / 8))
         for x in 0..<doc.width {
@@ -1378,8 +1431,8 @@ public enum PSDCodec {
           if let nativeComposite { value = PSDModeStorage.mergedSample(nativeComposite, component: channel, index: y * doc.width + x) }
           else {
             let p = depth == 32
-              ? PSDMergedSample.encodeLinear(composite.linearPixel(x: x, y: y))
-              : PSDMergedSample.encode(composite.pixel(x: x, y: y), depth: depth)
+              ? PSDMergedSample.encodeLinear(composite!.linearPixel(x: x, y: y))
+              : PSDMergedSample.encode(composite!.pixel(x: x, y: y), depth: depth)
             value = [p.r, p.g, p.b, p.a][channel]
           }
           try PSDChannelCodec.append(

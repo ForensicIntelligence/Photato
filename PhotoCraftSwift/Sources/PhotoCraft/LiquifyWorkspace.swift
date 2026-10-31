@@ -71,8 +71,7 @@ import PhotoCraftImaging
   }
   func begin(x: Double,y: Double,pressure pen: Double,alternate: Bool) {
     guard ready, stroke == nil else { return }
-    var selected = tool
-    if alternate { selected = tool == .freeze ? .thaw : tool == .thaw ? .freeze : tool == .twirlCw ? .twirlCcw : tool == .pucker ? .bloat : tool == .bloat ? .pucker : tool }
+    let selected = resolvedTool(alternate:alternate)
     var s = LiquifyStroke(tool:selected,size:size,points:[[x,y,pen]])
     s.density = density; s.pressure = pressure; s.rate = rate
     if selected == .lassoMask { s.amount = alternate ? 0 : 1 }

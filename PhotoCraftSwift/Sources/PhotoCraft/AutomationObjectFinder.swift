@@ -68,7 +68,7 @@ extension AutomationService {
       }
       guard let scene = store.objectFinder.scene else { throw AutomationFailure(status:422,message:store.objectFinder.error ?? "No detected objects are available.") }
       var response = state(share,document:document)
-      if masks { response["objectMasks"] = scene.objects.map { ["instanceID":$0.instanceID,"width":$0.mask.width,"height":$0.mask.height,"coverageBase64":Data($0.mask.bytes).base64EncodedString()] } }
+      if masks { response["objectMasks"] = try scene.objects.map { ["instanceID":$0.instanceID,"width":$0.mask.width,"height":$0.mask.height,"coverageBase64":Data(try $0.mask.bytes).base64EncodedString()] } }
       return response
     }
     let cacheID = try command.actionUUID("cacheID")

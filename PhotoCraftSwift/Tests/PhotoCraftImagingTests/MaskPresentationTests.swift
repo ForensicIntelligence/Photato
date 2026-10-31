@@ -37,7 +37,7 @@ final class MaskPresentationTests: XCTestCase {
     var layer = try fixture()
     layer.maskProperties?.transform = .translation(1, 0)
     let selection = try Renderer.maskSelection(layer, kind: .pixel, width: 5, height: 1)
-    XCTAssertEqual(selection.bytes, [191, 191, 64, 255, 191])
+    XCTAssertEqual(try selection.bytes, [191, 191, 64, 255, 191])
   }
   func testVectorSelectionUsesDocumentCoordinatesAndIgnoresDisabledDensityFeather() throws {
     var layer = try fixture()

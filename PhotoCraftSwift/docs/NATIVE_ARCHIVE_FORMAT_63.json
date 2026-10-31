@@ -1,0 +1,93 @@
+{
+  "format": "PhotatoIndexed",
+  "version": 63,
+  "status": "Qualified internal format/workflow subset in step282; full capacity parity open",
+  "byte_order": "littleEndian",
+  "container": {
+    "headerBytes": 16,
+    "header": "PHOTATO NUL,UInt32(63),UInt32(0)",
+    "regions": [
+      "header",
+      "contiguous variable-length payloads",
+      "postorder authenticated index nodes",
+      "binary-plist manifest",
+      "56-byte footer"
+    ],
+    "footer": "PHTEND63 + UInt64(manifestOffset) + UInt64(manifestLength) + SHA256(manifest)",
+    "manifest": [
+      "magic=PhotatoIndexed",
+      "version=63",
+      "document (existing editable feature representations)",
+      "index: NativeBlobIndex.Catalog",
+      "optional recoveryContext bounded128KiB"
+    ],
+    "admission": {
+      "fileMaximumBytes": 4398046511104,
+      "dataMaximumBytes": 536870912,
+      "metadataMaximumBytes": 536870912,
+      "physicalIOBytes": 65536
+    }
+  },
+  "index": {
+    "magic": "PHTIDX01",
+    "headerBytes": 32,
+    "header": "magic8 + levelU32 + entryCountU32 + firstOrdinalU64 + recordCountU64",
+    "leaf": {
+      "capacity": 1024,
+      "recordBytes": 48,
+      "layout": "payloadOffsetU64 + payloadLengthU64 + sha256[32]"
+    },
+    "branch": {
+      "capacity": 256,
+      "referenceBytes": 80,
+      "layout": "nodeOffsetU64 + nodeLengthU32 + levelU32 + firstU64 + countU64 + spanStartU64 + spanEndU64 + sha256[32]"
+    },
+    "maximumNodeBytes": 65536,
+    "maximumLevel": 16,
+    "catalog": [
+      "root (optional Reference)",
+      "recordsU64",
+      "indexBytesU64",
+      "payloadEndU64"
+    ],
+    "referenceOffsets": "relative to start of index region at catalog.payloadEnd",
+    "validation": [
+      "Nodes hashed and exact size/header checked",
+      "Children cover contiguous ordinals and nonoverlapping postorder spans; root spans exactly the entire index region",
+      "Leaf payloads cover exactly bytes16\u2026payloadEnd, in ordinal order",
+      "Every referenced payload hash checked before decoding; one-bit-per-record map rejects any unreferenced payload"
+    ],
+    "boundedWriter": "1024 leaf records and up to255 references per unfinished branch level; emitted nodes kept in private unlinked scratch",
+    "boundedReader": "8 cached nodes plus bounded hierarchy traversal;256 decoded tile cache entries",
+    "deduplication": "At most1024 recent payload hashes; identical bytes can have different ordinals after eviction. No global digest uniqueness requirement."
+  },
+  "raster": {
+    "packingVersion": 4,
+    "metadata": [
+      "dimensions/depth/defaultSample/optional colorEncoding",
+      "tileCount",
+      "tilePages: ordered array of canonical b<UInt64 ordinal> identifiers"
+    ],
+    "pageMagic": "PHTTIL04",
+    "pageHeader": "magic8 + entryCountU32",
+    "entry": "tileKeyU64 + blobOrdinalU64",
+    "entryBytes": 16,
+    "maximumEntries": 1024,
+    "validation": "Announced tile count/admission; exact page count and lengths; ordered canonical in-bounds tile keys without duplicates; valid checked sample payloads. Legacy tileData/tiles fields reject in packing4."
+  },
+  "compatibility": {
+    "read": "Existing legacy1\u202662 preserved. New native63 dispatch does not repurpose older formats.",
+    "write": "Existing small-file bytes/default native API versions preserved. Explicit native63 download/output; desktop file save retries atomically in63 after legacy table fills.",
+    "featureVersion": "Document feature minimum currently\u226462 is independent of container63.",
+    "API": "X-Photato-Archive-Version:63; native upload/shared File Open; no new editing command or Adobe-specific route."
+  },
+  "remaining": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open.",
+    "Newly saved native file can be selected with Open disabled; current280 issue reproduced. Open Recent succeeds. Investigate chooser metadata/filtering without speculative code.",
+    "Full Photoshop byte/interaction/default parity, physical60fps, universal distribution and physical Intel/macOS14/macOS26 qualification remain open."
+  ],
+  "source": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+  "qualification": "docs/NATIVE_INDEX_REFERENCES.json"
+}

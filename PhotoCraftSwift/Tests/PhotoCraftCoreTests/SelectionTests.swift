@@ -7,13 +7,13 @@ final class SelectionTests: XCTestCase {
   func testPolygonAreaCoverageAndHardEdgesMatchSourceCases() throws {
     let square = try SelectionMask.make(
       .polygon([.init(2, 2), .init(12, 2), .init(12, 12), .init(2, 12)]), width: 20, height: 20)
-    XCTAssertEqual(square.bytes.reduce(0) { $0 + Int($1) }, 100 * 255)
+    XCTAssertEqual(try square.bytes.reduce(0) { $0 + Int($1) }, 100 * 255)
     let shape = SelectionShape.polygon([.init(0, 0), .init(10, 0), .init(0, 10)])
     let triangle = try SelectionMask.make(shape, width: 20, height: 20)
-    XCTAssertEqual(triangle.bytes.reduce(0) { $0 + Double($1) / 255 }, 50, accuracy: 0.05)
-    XCTAssertTrue(triangle.bytes.contains { $0 > 0 && $0 < 255 })
+    XCTAssertEqual(try triangle.bytes.reduce(0) { $0 + Double($1) / 255 }, 50, accuracy: 0.05)
+    XCTAssertTrue(try triangle.bytes.contains { $0 > 0 && $0 < 255 })
     let hard = try SelectionMask.make(shape, width: 20, height: 20, antiAlias: false)
-    XCTAssertTrue(hard.bytes.allSatisfy { $0 == 0 || $0 == 255 })
+    XCTAssertTrue(try hard.bytes.allSatisfy { $0 == 0 || $0 == 255 })
     let empty = try SelectionMask.make(.polygon([.init(0, 0), .init(1, 1)]), width: 2, height: 2)
     XCTAssertNil(empty.bounds)
   }
@@ -22,7 +22,7 @@ final class SelectionTests: XCTestCase {
       .ellipse(.init(x: 2, y: 3, width: 20, height: 10)), width: 24, height: 16)
     XCTAssertEqual(ellipse.coverage(x: 12, y: 8), 1)
     XCTAssertEqual(ellipse.coverage(x: 2, y: 3), 0)
-    XCTAssertEqual(ellipse.bytes.reduce(0) { $0 + Double($1) / 255 }, .pi * 10 * 5, accuracy: 1)
+    XCTAssertEqual(try ellipse.bytes.reduce(0) { $0 + Double($1) / 255 }, .pi * 10 * 5, accuracy: 1)
     for y in 0..<16 {
       for x in 0..<24 {
         XCTAssertEqual(ellipse.coverage(x: x, y: y), ellipse.coverage(x: 23 - x, y: 15 - y))
@@ -31,7 +31,7 @@ final class SelectionTests: XCTestCase {
     let clipped = try SelectionMask.make(
       .ellipse(.init(x: -10, y: -5, width: 20, height: 10)), width: 12, height: 8)
     XCTAssertEqual(
-      clipped.bytes.reduce(0) { $0 + Double($1) / 255 }, .pi * 10 * 5 / 4, accuracy: 0.5)
+      try clipped.bytes.reduce(0) { $0 + Double($1) / 255 }, .pi * 10 * 5 / 4, accuracy: 0.5)
   }
   func testFractionalCombinationsQuantizeExactlyLikeSource() throws {
     let a = try SelectionMask(width: 4, height: 1, bytes: [0, 64, 128, 255])
@@ -51,7 +51,7 @@ final class SelectionTests: XCTestCase {
     XCTAssertGreaterThan(feather.coverage(x: 5, y: 10), 0.3)
     XCTAssertLessThan(feather.coverage(x: 5, y: 10), 0.8)
     XCTAssertGreaterThan(feather.coverage(x: 4, y: 10), 0)
-    XCTAssertEqual(feather.bytes.reduce(0) { $0 + Double($1) / 255 }, 100, accuracy: 1)
+    XCTAssertEqual(try feather.bytes.reduce(0) { $0 + Double($1) / 255 }, 100, accuracy: 1)
     for y in 0..<20 {
       for x in 0..<20 {
         XCTAssertEqual(feather.coverage(x: x, y: y), feather.coverage(x: 19 - x, y: 19 - y))

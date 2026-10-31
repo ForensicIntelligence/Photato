@@ -98,6 +98,7 @@ struct AutomationCommand: Sendable {
         }
         if RegionRetouchAPI.commands.contains(name),let schema = RegionRetouchAPI.schema(key,command:name) { properties[key] = schema; continue }
         if ClipboardAPI.commands.contains(name) { properties[key] = ClipboardAPI.schema(key); continue }
+        if SelectionGeometryAPI.commands.contains(name) { properties[key] = SelectionGeometryAPI.schema(key); continue }
         if GeometryAPI.commands.contains(name) { properties[key] = GeometryAPI.schema(key); continue }
         if name == "document.crop",let schema = CropRequest.apiSchema(key) { properties[key] = schema; continue }
         if name == "contentAware.scale",let schema = ContentAwareScaleRequest.apiSchema(key) { properties[key] = schema; continue }
@@ -401,6 +402,9 @@ struct AutomationCommand: Sendable {
         "x": "integer, >=0", "y": "integer, >=0", "width": "integer, >=1", "height": "integer, >=1",
       ], description: "Replace selection with a rectangle contained in the canvas."),
     .init(name: "selection.clear", parameters: [:], description: "Deselect."),
+    .init(name:"selection.shape",parameters:["shape":"One rectangle, ellipse or polygon","mode":"replace/add/subtract/intersect","antiAlias":"Subpixel coverage","feather":"Native feather radius0–100"],description:"Create or combine canvas-space coverage through native prepared selection history.",optionalParameters:["mode","antiAlias","feather"]),
+    .init(name:"selection.inverse",parameters:[:],description:"Invert the current selection through native history."),
+    .init(name:"selection.feather",parameters:["radius":"Native feather radius0–100"],description:"Feather current coverage through native prepared history."),
     .init(
       name: "history.undo", parameters: [:],
       description: "Undo the latest shared desktop/API document edit."),
@@ -516,7 +520,7 @@ struct AutomationCommand: Sendable {
     case "adjustment.create", "adjustment.set", "adjustment.apply": return try classicAdjustmentCommand(document: document, lookup: lookup)
     case "ink.channel.write", "ink.channel.edit", "ink.channel.manage": return try inkChannelCommand(in: document)
     case "mode.channel.edit": return try modeComponentEdit(in: document)
-    case "document.resize", "document.canvasSize", "document.rotate", "document.resolution": return try geometryCommand(in: document)
+    case "document.resize", "document.canvasSize", "document.rotate", "document.resolution", "selection.shape", "selection.inverse", "selection.feather": return try geometryCommand(in: document)
     case "document.convertDuotone", "document.convertMultichannel": return try inkModeRequest(in: document).command(in: document)
     case "document.convertIndexed", "document.convertBitmap", "indexed.colorTable.write": return try restrictedModeRequest(in: document).command(in: document)
     case "indexed.indices.write": return try indexedWrite(in: document)

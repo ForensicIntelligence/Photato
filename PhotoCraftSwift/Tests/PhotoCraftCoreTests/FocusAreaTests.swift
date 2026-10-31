@@ -20,15 +20,15 @@ final class FocusAreaTests:XCTestCase {
     let analysis=try FocusAreaAnalysis.prepare(source());var p=FocusAreaSettings();p.autoRange=false;p.autoNoise=false;p.range=0
     XCTAssertTrue(try analysis.mask(settings:p).bytes.allSatisfy{$0==255})
     p.range=2;let broad=try analysis.mask(settings:p);p.range=9;let narrow=try analysis.mask(settings:p)
-    XCTAssertGreaterThanOrEqual(broad.bytes.filter{$0>0}.count,narrow.bytes.filter{$0>0}.count)
-    p.noise=1;let noisy=try analysis.mask(settings:p);XCTAssertLessThanOrEqual(noisy.bytes.filter{$0>0}.count,narrow.bytes.filter{$0>0}.count)
+    XCTAssertGreaterThanOrEqual(try broad.bytes.filter{$0>0}.count,try narrow.bytes.filter{$0>0}.count)
+    p.noise=1;let noisy=try analysis.mask(settings:p);XCTAssertLessThanOrEqual(try noisy.bytes.filter{$0>0}.count,try narrow.bytes.filter{$0>0}.count)
     let effective=try analysis.effectiveSettings(.init());XCTAssertTrue((0...10).contains(effective.range));XCTAssertTrue((0...1).contains(effective.noise))
   }
   func testFlatSmallAndSoftenedReducedResolution()throws {
     for size in [1,3,64]{let analysis=try FocusAreaAnalysis.prepare(Surface(width:size,height:size,fill:Pixel(0.4,0.4,0.4)));XCTAssertNil(try analysis.mask(settings:.init()).bounds)}
     let analysis=try FocusAreaAnalysis.prepare(source(width:600,height:400),workingPixels:60_000);XCTAssertGreaterThan(analysis.step,1)
     var p=FocusAreaSettings();p.softenEdge=true;let mask=try analysis.mask(settings:p)
-    XCTAssertEqual(mask.width,600);XCTAssertGreaterThan(mask.coverage(x:80,y:200),0.9);XCTAssertLessThan(mask.coverage(x:500,y:200),0.1);XCTAssertTrue(mask.bytes.contains{$0>0 && $0<255})
+    XCTAssertEqual(mask.width,600);XCTAssertGreaterThan(mask.coverage(x:80,y:200),0.9);XCTAssertLessThan(mask.coverage(x:500,y:200),0.1);XCTAssertTrue(try mask.bytes.contains{$0>0 && $0<255})
   }
   func testHardMaskRetainsComponentCleanup()throws {
     var image=try Surface(width:160,height:96,fill:Pixel(0.5,0.5,0.5))

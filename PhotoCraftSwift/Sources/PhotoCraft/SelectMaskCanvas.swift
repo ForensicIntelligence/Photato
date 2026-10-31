@@ -6,15 +6,26 @@ struct SelectMaskCanvas: NSViewRepresentable {
   func makeNSView(context: Context) -> SelectMaskCanvasView { let v = SelectMaskCanvasView(); v.model = model; return v }
   func updateNSView(_ view: SelectMaskCanvasView,context: Context) {
     _ = model.image; _ = model.zoom; _ = model.pan; _ = model.size; _ = model.stroke
-    view.model = model; view.needsDisplay = true
+    _ = model.tool; _ = model.panTool
+    view.model = model; view.needsDisplay = true; view.refreshToolCursor()
   }
 }
-@MainActor final class SelectMaskCanvasView: NSView {
+@MainActor final class SelectMaskCanvasView: ModifierCursorView {
+  override var toolCursor: ToolCursor {
+    guard let model else { return .unavailable }
+    if (panning && cursorPointerDown) || (!cursorPointerDown && (spaceHeld || model.panTool)) { return cursorPointerDown ? .closedHand : .openHand }
+    let tool = model.stroke?.tool ?? model.resolvedTool(alternate:cursorModifiers.contains(.option))
+    switch tool {
+    case .add,.subtract: return .symbol("paintbrush.pointed",tool == .add ? .add:.subtract)
+    case .refine,.eraseRefinement: return .symbol("wand.and.stars",tool == .refine ? .add:.subtract)
+    case .lassoAdd,.lassoSubtract: return .symbol("lasso",tool == .lassoAdd ? .add:.subtract)
+    }
+  }
+
   weak var model: SelectMaskWorkspace?
   private var cursor: CGPoint?
   private var previous: CGPoint?
-  private var spaceHeld = false
-  private var panning = false
+  var panning = false
   private var tracking: NSTrackingArea?
   override var isFlipped: Bool { true }
   override var acceptsFirstResponder: Bool { true }
@@ -52,19 +63,21 @@ struct SelectMaskCanvas: NSViewRepresentable {
     return CGPoint(x:(p.x-r.minX)/max(1,r.width)*Double(input.mask.width),y:(p.y-r.minY)/max(1,r.height)*Double(input.mask.height))
   }
   override func mouseDown(with event: NSEvent) {
+    beginCursorGesture(event); defer { refreshToolCursor() }
     guard let m = model, m.ready else { return }; window?.makeFirstResponder(self)
     let p = convert(event.locationInWindow,from:nil); previous = p; cursor = p; panning = spaceHeld || m.panTool
     if !panning && imageRect.contains(p) { let q = coordinates(p); m.begin(x:q.x,y:q.y,alternate:event.modifierFlags.contains(.option)) }
   }
   override func mouseDragged(with event: NSEvent) {
+    updateCursorModifiers(event.modifierFlags)
     guard let m = model else { return }; let p = convert(event.locationInWindow,from:nil)
     if panning,let previous { m.pan.width += p.x-previous.x; m.pan.height += p.y-previous.y }
     else { let q = coordinates(p); m.drag(x:q.x,y:q.y) }
     previous = p; cursor = p; needsDisplay = true
   }
-  override func mouseUp(with event: NSEvent) { model?.end(); previous = nil; panning = false; needsDisplay = true }
-  override func mouseMoved(with event: NSEvent) { cursor = convert(event.locationInWindow,from:nil); needsDisplay = true }
-  override func mouseExited(with event: NSEvent) { cursor = nil; needsDisplay = true }
+  override func mouseUp(with event: NSEvent) { defer { endCursorGesture(event) }; model?.end(); previous = nil; panning = false; needsDisplay = true }
+  override func mouseMoved(with event: NSEvent) { super.mouseMoved(with:event); cursor = convert(event.locationInWindow,from:nil); needsDisplay = true }
+  override func mouseExited(with event: NSEvent) { super.mouseExited(with:event); cursor = nil; needsDisplay = true }
   override func scrollWheel(with event: NSEvent) {
     guard let m = model else { return }
     if event.modifierFlags.contains(.option) { m.zoom = min(16,max(0.125,m.zoom*exp(-event.scrollingDeltaY*0.01))) }
@@ -76,6 +89,7 @@ struct SelectMaskCanvas: NSViewRepresentable {
     if event.modifierFlags.contains(.shift) { model?.redo() } else { model?.undo() }; return true
   }
   override func keyDown(with event: NSEvent) {
+    updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard let m = model, let key = event.charactersIgnoringModifiers?.lowercased() else { return }
     switch key {
     case " ": spaceHeld = true

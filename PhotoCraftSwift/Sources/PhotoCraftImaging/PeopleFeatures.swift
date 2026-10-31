@@ -42,7 +42,7 @@ public struct PeopleFeatureMap: Sendable {
     guard !features.isEmpty,Set(features).count==features.count else { throw CraftError.invalid("Choose unique person features.") }
     if features.contains(.wholePerson) { return mask }
     let channels=features.map(\.channel)
-    var bytes=mask.bytes
+    var bytes=(try mask.bytes)
     for y in 0..<mask.height {
       try Task.checkCancellation()
       let sy=max(0,min(Double(height-1),(Double(y)+0.5)*Double(height)/Double(mask.height)-0.5)),y0=Int(sy),y1=min(height-1,y0+1),fy=Float(sy-Double(y0))
@@ -54,7 +54,7 @@ public struct PeopleFeatureMap: Sendable {
           let bottom=probabilities[(y1*width+x0)*6+c]*(1-fx)+probabilities[(y1*width+x1)*6+c]*fx
           probability+=top*(1-fy)+bottom*fy
         }
-        let i=y*mask.width+x;bytes[i]=UInt8((Float(mask.bytes[i])*min(1,max(0,probability))).rounded())
+        let i=y*mask.width+x;bytes[i]=UInt8((Float(mask.byte(at:i))*min(1,max(0,probability))).rounded())
       }
     }
     return try .init(width:mask.width,height:mask.height,bytes:bytes)

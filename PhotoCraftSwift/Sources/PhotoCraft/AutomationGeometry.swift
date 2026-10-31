@@ -3,6 +3,7 @@ import PhotoCraftCore
 
 enum GeometryAPI {
   static let commands = ["document.resize", "document.canvasSize", "document.rotate", "document.resolution"]
+  static let preparedCommands = commands + SelectionGeometryAPI.commands
   static let methods: [String: Resampling] = ["nearest": .nearest, "bilinear": .bilinear, "bicubic": .bicubic]
   static let turns: [String: CanvasTurn] = ["clockwise": .clockwise, "counterclockwise": .counterclockwise, "half": .half, "horizontal": .horizontal, "vertical": .vertical]
   static func schema(_ key: String) -> [String: Any] {
@@ -17,16 +18,23 @@ enum GeometryAPI {
     }
   }
   static var capabilities: [String: Any] { [
+    "largeRGB":["maximumDimension":Surface.maxDimension,"maximumPixels":Surface.maxPixels,
+      "maximumPatchPixels":RasterGeometry.maximumPatchPixels,"sparseGridSourceTileFastPath":RasterGeometry.sparseGridSourceTileLimit,
+      "pagedRasterOutput":true,"exactGridPermutations":true,"preservesSourceEncoding":true,"colouredCanvasExtensions":true,"pagedSavedChannels":true,
+      "largeComposite":"Ungrouped raster/fill stacks with integer translations and document-aligned unfeathered raster masks, including inversion/density. General affine placement, groups, clipping, vector/feathered/offset masks and other layer content retain separate large-render limits.",
+      "scratchMaximumBytes":RasterTileStore.defaultMaximumBytes,
+      "notice":"Raster output streams immutable samples and index pages; grid transforms retain raw/default/HDR/hidden/signed-zero bits.16-bit/8-bit and encoded-sRGB interpolation retain the existing native kernel.32-bit linear interpolation now stays in its source encoding. These are native semantics, not Photoshop kernel equivalence or a physical frame-rate claim."],
     "commands": commands, "restrictedMaximumPixels": PaletteQuantization.maximumPixels, "inkMaximumPixels": InkPlane.maximumPixels,
     "inkModes": "Duotone geometry transforms its gray source; Multichannel transforms each numeric ink plate. Grid transforms preserve exact8/16-bit samples. Saved alpha masks and selections transform with the canvas. Duotone extension uses gray background/paper; Multichannel extension requires paper (omitted or white fill). Off-canvas ink samples are discarded; Undo restores them.",
     "behavior": "Whole-document geometry uses the desktop commands and one prepared Undo transaction. Width/height are pixels; resolution is pixels/inch. Resolution-only changes never resample. Native color mode, palette and bit storage are retained.",
     "restricted": "Nearest sampling and integer crop/canvas/quarter-turn transforms preserve exact indices, including duplicate colors. Bilinear/bicubic results map back to the current palette or black/white. Bitmap extension is white; Indexed extension is transparent when available, otherwise white mapped to the table. Canvas shrinking discards outside samples; Undo restores them.",
-    "limits": "8,388,608 output pixels in Indexed/Bitmap/Duotone/Multichannel. Exact Photoshop resampling and corresponding Adobe action descriptors remain unqualified. No Adobe route is added."] }
+    "limits": "8,388,608 output pixels in Indexed/Bitmap/Duotone/Multichannel. Large GRAY8 selections page their samples and index; dense extraction in remaining consumers retains its36MP guard and unsupported combinations fail atomically. Native mode/ink/restricted limits remain. Exact Photoshop resampling, automatic/Preserve Details variants and corresponding Adobe action descriptors remain unqualified. No Adobe route is added."] }
 }
 
 extension AutomationCommand {
   func geometryCommand(in document: CraftDocument) throws -> Command {
     switch name {
+    case "selection.shape","selection.inverse","selection.feather":return try selectionGeometryCommand()
     case "document.resize":
       let method: Resampling
       if parameters["method"] != nil {

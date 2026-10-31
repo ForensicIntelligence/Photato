@@ -35,6 +35,8 @@ final class PagedRasterWorkflowTests:XCTestCase {
       let storage=try XCTUnwrap(state["rasterStorage"]as?[String:Any])
       XCTAssertGreaterThanOrEqual((storage["referencedMappedSampleBytes"]as?Int) ?? 0,640_000_000)
       XCTAssertLessThan((storage["heapEstimateBytes"]as?Int) ?? Int.max,16*1024*1024)
+      XCTAssertGreaterThan((storage["referencedMappedIndexBytes"]as?Int) ?? 0,0)
+      XCTAssertEqual(Set(storage.keys),Set((RasterStorageAPI.stateSchema["required"]as? [String]) ?? []))
       let baseline=document.store.document
       guard case .raster(let p)=baseline.layers[0].content else{return XCTFail("Missing raster")}
       for(x,y)in[(0,0),(2048,64),(7999,4999)]{XCTAssertEqual(p.pixel(x:x,y:y),Pixel(Float((x*13+y*3)%256)/255,Float((x*7+y*11)%256)/255,Float((x*5+y*17)%256)/255))}
@@ -52,10 +54,14 @@ final class PagedRasterWorkflowTests:XCTestCase {
 extension PagedRasterWorkflowTests {
   @MainActor func testHTTPDenseNativeUploadAndFileOpenKeepMappedStorage()async throws {
     let png=try ownedPNG(),model=try RasterIO.read(png,name:"Owned native40MP")
-    let bytes=try NativeArchive.encodeChunked(model),helper=AutomationTests()
+    let bytes=try NativeArchive.encodeChunked(model,minimumVersion:63),helper=AutomationTests()
     let folder=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true)
     defer{try? FileManager.default.removeItem(at:folder)}
+    if let directory=ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
+      let capture=URL(fileURLWithPath:directory);try FileManager.default.createDirectory(at:capture,withIntermediateDirectories:true)
+      try bytes.write(to:capture.appendingPathComponent("Owned dense native63 40MP.photato"))
+    }
     let file=folder.appendingPathComponent("owned.photato");try bytes.write(to:file)
     let desktop=try DocumentIO.readNative(file)
     XCTAssertEqual(desktop,model);XCTAssertGreaterThanOrEqual(desktop.mappedRasterBytes,640_000_000);XCTAssertLessThan(desktop.estimatedBytes,16*1024*1024)
@@ -71,6 +77,14 @@ extension PagedRasterWorkflowTests {
       defer{shared.store.renderTask?.cancel();service.controller.removeDocument(shared)}
       XCTAssertEqual(shared.store.document,desktop);XCTAssertGreaterThanOrEqual(shared.store.document.mappedRasterBytes,640_000_000)
       let storage=try XCTUnwrap(state["rasterStorage"]as?[String:Any]);XCTAssertLessThan((storage["heapEstimateBytes"]as?Int) ?? Int.max,16*1024*1024)
+      XCTAssertEqual(storage["referencedMappedIndexBytes"]as?Int,shared.store.document.mappedRasterIndexBytes)
+      XCTAssertGreaterThan(shared.store.document.mappedRasterIndexBytes,0)
+      let runtime=try XCTUnwrap((try XCTUnwrap(RasterStorageAPI.capabilities["nativePagedInput"]as?[String:Any]))["runtimeTileIndex"]as?[String:Any])
+      XCTAssertEqual(runtime["minimumTiles"]as?Int,Surface.pagedIndexMinimumTiles)
+      XCTAssertEqual(runtime["recordBytes"]as?Int,16);XCTAssertEqual(runtime["copyOnWriteLevels"]as?Int,4)
+      let reuse=try XCTUnwrap((try XCTUnwrap(RasterStorageAPI.capabilities["nativePagedInput"]as?[String:Any]))["tileOrdinalReuse"]as?[String:Any])
+      XCTAssertEqual(reuse["persistentForDecode"]as?Bool,true);XCTAssertEqual(reuse["recordBytes"]as?Int,8)
+      XCTAssertEqual(reuse["frontCacheEntries"]as?Int,256)
       let parameters:[String:Any]=["points":[["x":4000,"y":2500]],"brush":["size":8,"color":["r":1,"g":0,"b":0,"a":1]]]
       let stale=try await helper.request(service,path:"/v1/documents/\(id)/commands",body:["command":"paint.stroke","revision":"stale","parameters":parameters]);XCTAssertEqual(stale.0.statusCode,409)
       let edit=try await helper.request(service,path:"/v1/documents/\(id)/commands",body:["command":"paint.stroke","revision":service.revision(shared.store),"parameters":parameters]);XCTAssertEqual(edit.0.statusCode,200);XCTAssertNotEqual(shared.store.document,desktop)
@@ -78,4 +92,32 @@ extension PagedRasterWorkflowTests {
       let capability=try XCTUnwrap(RasterStorageAPI.capabilities["nativePagedInput"]as?[String:Any]);XCTAssertEqual(capability["nativeFileMaximumBytes"]as?Int,NativeArchive.maximumFileBytes)
     }
   }
+  @MainActor func testRepeatedNative63OrdinalsMatchDesktopAndHTTPImport() async throws {
+    let unique=269
+    var model=try CraftDocument(width:unique*64,height:192,depth:.f32)
+    var surface=try Surface(width:model.width,height:model.height,depth:.f32,colorEncoding:.linearRGB)
+    for y in 0..<3 {for x in 0..<unique {surface.setLinearPixel(x:x*64,y:y*64,Pixel(Float(x+1)/269,0.5,-0.0,1))}}
+    model.layers[0].content = .raster(surface)
+    let bytes=try NativeArchive.encodeChunked(model,minimumVersion:63)
+    let folder=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true);defer{try? FileManager.default.removeItem(at:folder)}
+    let file=folder.appendingPathComponent("owned-aliases.photato");try bytes.write(to:file)
+    let desktop=try DocumentIO.readNative(file);XCTAssertEqual(desktop,model)
+    try await AutomationTests().withService(pressedMouseButtons:{0}) {service,_ in
+      service.setDocumentTransfersEnabled(true)
+      var request=URLRequest(url:URL(string:service.endpoint!+"/v1/documents/import")!)
+      request.httpMethod="POST";request.httpBody=bytes;request.timeoutInterval=120
+      request.setValue("Bearer "+service.token!,forHTTPHeaderField:"Authorization")
+      request.setValue("application/vnd.photato.document",forHTTPHeaderField:"Content-Type")
+      let (data,response)=try await URLSession.shared.data(for:request)
+      XCTAssertEqual((response as?HTTPURLResponse)?.statusCode,201,String(decoding:data.prefix(500),as:UTF8.self))
+      let state=try XCTUnwrap(JSONSerialization.jsonObject(with:data)as?[String:Any]),id=try XCTUnwrap(state["id"]as?String)
+      let shared=try XCTUnwrap(service.shares.first{$0.id.uuidString==id}?.document)
+      defer{shared.store.renderTask?.cancel();service.controller.removeDocument(shared)}
+      XCTAssertEqual(shared.store.document,desktop)
+      guard case .raster(let imported)=shared.store.document.layers[0].content else {return XCTFail("Missing raster")}
+      for y in 0..<3 {for x in 0..<unique {XCTAssertTrue(imported.linearPixel(x:x*64,y:y*64).hasSameBits(as:surface.linearPixel(x:x*64,y:y*64)))}}
+    }
+  }
+
 }

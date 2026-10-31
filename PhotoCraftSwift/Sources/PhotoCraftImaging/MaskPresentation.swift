@@ -57,4 +57,27 @@ extension Renderer {
     }
     return output
   }
+
+  /// Viewport-only projection of the raw editable mask. Exact at native pixel centers;
+  /// reduced views sample their document-space centers, without materializing the canvas.
+  public static func maskPresentation(
+    _ layer: Layer, mode: MaskViewMode, request: RasterPreviewRequest
+  ) throws -> Surface {
+    try Task.checkCancellation()
+    let sampler = try rawMaskSampler(layer)
+    var output = try Surface(width: request.width, height: request.height, depth: .f32)
+    let sx = Double(request.region.width) / Double(request.width)
+    let sy = Double(request.region.height) / Double(request.height)
+    for y in 0..<request.height {
+      try Task.checkCancellation()
+      for x in 0..<request.width {
+        let value = sampler.coverage(
+          x: Double(request.region.x) + (Double(x) + 0.5) * sx,
+          y: Double(request.region.y) + (Double(y) + 0.5) * sy)
+        output.setPixel(x: x, y: y,
+          mode == .gray ? Pixel(value, value, value) : Pixel(1, 0, 0, 0.5 * (1 - value)))
+      }
+    }
+    return output
+  }
 }

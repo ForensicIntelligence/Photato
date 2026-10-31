@@ -16,3 +16,9 @@ protocol MappedRasterBlobDecoding: RasterBlobDecoding {
   var usesMappedTiles: Bool { get }
   func storedTile(_ digest: String) throws -> RasterTile
 }
+
+/// Version63 uses compact ordinal pages instead of a manifest key per tile.
+protocol IndexedRasterBlobEncoding: RasterBlobEncoding {
+  func storeOrdinal(_ data: Data) throws -> UInt64
+}
+protocol IndexedRasterBlobDecoding: MappedRasterBlobDecoding {}

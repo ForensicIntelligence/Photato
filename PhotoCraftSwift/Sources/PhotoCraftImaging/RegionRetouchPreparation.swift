@@ -45,7 +45,7 @@ public enum RegionRetouchPreparation {
     guard box.width > 0,box.height > 0,box.width <= maximumRegionPixels/box.height else { throw CraftError.invalid("Retouching region exceeds 4 megapixels.") }
     var result = [Bool](repeating:false,count:box.width*box.height)
     for y in 0..<box.height { try Task.checkCancellation();for x in 0..<box.width {
-      result[y*box.width+x] = mask.bytes[(y+box.y)*mask.width+x+box.x] > threshold
+      result[y*box.width+x] = mask.byte(at:(y+box.y)*mask.width+x+box.x) > threshold
     } }
     return result
   }
@@ -119,7 +119,7 @@ public enum RegionRetouchPreparation {
     }
     var coverage = targetMask
     if r.transparent {
-      var bytes = coverage.bytes
+      var bytes = (try coverage.bytes)
       for y in 0..<box.height { for x in 0..<box.width { let i = y*box.width+x,j = (y+box.y)*d.width+x+box.x; bytes[j] = UInt8((Float(bytes[j])*unit(src[i*4+3])).rounded()) } }
       coverage = try SelectionMask(width:d.width,height:d.height,bytes:bytes)
     }
@@ -141,7 +141,7 @@ public enum RegionRetouchPreparation {
       var settings = ContentAwareSettings();settings.seed = r.seed
       let filled = try ContentAwareSynthesis.fill(width:region.width,height:region.height,image:image,hole:hole,source:hole.map { !$0 },settings:settings,hdr:d.depth == .f32)
       for y in 0..<window.height { try Task.checkCancellation(); for x in 0..<window.width {
-        let px = x+window.x,py = y+window.y,k = Float(selection.bytes[py*d.width+px])/255
+        let px = x+window.x,py = y+window.y,k = Float(selection.byte(at:py*d.width+px))/255
         guard k > 0 else { continue }
         let i = (y*window.width+x)*4,j = ((py-region.y)*region.width+px-region.x)*4
         for c in 0..<4 { output[i+c] += (filled[j+c]-output[i+c])*k }
@@ -160,8 +160,8 @@ public enum RegionRetouchPreparation {
     let amount = Float(r.color)/10 * (1-Float(r.structure-1)/12)
     var changed = [UInt8](repeating:0,count:d.width*d.height)
     for y in 0..<window.height { try Task.checkCancellation(); for x in 0..<window.width {
-      let j = (y+window.y)*d.width+x+window.x,i = (y*window.width+x)*4,k = Float(moved.bytes[j])/255
-      if r.moveMode == .move && selection.bytes[j] > 0 { changed[j] = 255 }
+      let j = (y+window.y)*d.width+x+window.x,i = (y*window.width+x)*4,k = Float(moved.byte(at:j))/255
+      if r.moveMode == .move && selection.byte(at:j) > 0 { changed[j] = 255 }
       if k > 0 {
         changed[j] = 255
         let a = unit(source[i+3])*k,oldA = unit(output[i+3]),outA = a+oldA*(1-a)
@@ -180,7 +180,7 @@ public enum RegionRetouchPreparation {
     for y in 0..<box.height { try Task.checkCancellation(); for x in 0..<box.width {
       let p = guide.pixel(x:x+box.x,y:y+box.y),i = y*box.width+x
       let red = max(0,p.r-max(p.g,p.b)*1.35-0.04)
-      let selected = Float(selection?.bytes[(y+box.y)*d.width+x+box.x] ?? 255)/255
+      let selected = Float(selection?.byte(at:(y+box.y)*d.width+x+box.x) ?? 255)/255
       let weight = red*selected*p.a;weights[i] = weight
       total += Double(weight);cx += Double(weight)*(Double(x)+0.5);cy += Double(weight)*(Double(y)+0.5)
     } }
@@ -195,7 +195,7 @@ public enum RegionRetouchPreparation {
       let p = i*4,neutral = (output[p+1]+output[p+2])/2,amount = Float(r.darken/100)
       output[p] = neutral*(1-0.75*amount)
       output[p+1] *= 1-0.75*amount;output[p+2] *= 1-0.75*amount
-      coverage[j] = UInt8((edge*Double(selection?.bytes[j] ?? 255)).rounded())
+      coverage[j] = UInt8((edge*Double(selection?.byte(at:j) ?? 255)).rounded())
     } }
     let mask = try SelectionMask(width:d.width,height:d.height,bytes:coverage)
     guard mask.bounds != nil else { return RegionRetouchEdit(source:d,result:d,label:r.label) }

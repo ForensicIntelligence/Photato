@@ -34,7 +34,11 @@ final class DocumentIOWorkflowTests: XCTestCase {
       let capabilities = AutomationService.documentTransferCapabilities
       let container = try XCTUnwrap(capabilities["photoshopContainers"] as? [String: Any])
       XCTAssertEqual(container["readVersions"] as? [Int], [1, 2])
-      XCTAssertEqual(container["streamingLargeFiles"] as? Bool, false)
+      XCTAssertEqual(container["streamingLargeFiles"] as? Bool, true)
+      XCTAssertEqual(container["maximumFileBytes"]as?Int,PSDCodec.maximumFileBytes)
+      XCTAssertEqual(container["maximumDataBytes"]as?Int,PSDCodec.maximumInputBytes)
+      let paging=try XCTUnwrap(container["pagedRGB"]as?[String:Any]);XCTAssertEqual(paging["apiHeapMaximumBytes"]as?Int,134_217_728)
+      XCTAssertEqual(paging["rowPatchHeapReserveBytes"]as?Int,16*1024*1024)
       XCTAssertEqual(container["maximumDimension"] as? Int, Surface.maxDimension)
       let output = try XCTUnwrap(container["fileOutput"] as? [String: Any])
       XCTAssertEqual(output["boundedWrites"] as? Bool, true)
@@ -504,7 +508,7 @@ extension DocumentIOWorkflowTests {
         XCTAssertEqual(currentOutput.0.statusCode, 200)
         XCTAssertEqual(currentOutput.1, bytes)
       }
-      for version in ["9", "63", "invalid"] {
+      for version in ["9", "64", "invalid"] {
         let rejected = try await self.request(
           service, path: "/v1/documents/\(id)/file.photato",
           headers: ["X-Photato-Archive-Version": version])
@@ -532,7 +536,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...62))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...64))
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),
         type: "application/vnd.photato.document")

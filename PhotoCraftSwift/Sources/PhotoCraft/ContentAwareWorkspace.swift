@@ -116,9 +116,9 @@ struct ContentAwareState: Equatable, Sendable {
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
       let sx = min(image.width-1,Int(Double(x)/factor)),sy = min(image.height-1,Int(Double(y)/factor)),i = sy*image.width+sx,p = image.pixel(x:sx,y:sy)
       let checker: Float = (x/12+y/12)%2 == 0 ? 0.75:0.6
-      let a = Float(sampling?.bytes[i] ?? 0)/255,k = visible ? (excluded ? 1-a:a)*Float(opacity):0
+      let a = Float(sampling?.byte(at:i) ?? 0)/255,k = visible ? (excluded ? 1-a:a)*Float(opacity):0
       var rgb = (p.rgb*p.a+SIMD3(repeating:checker*(1-p.a)))*(1-k)+color.rgb*k
-      if selection.bytes[i] > 0 && (sx == 0 || sy == 0 || sx+1 == image.width || sy+1 == image.height || selection.bytes[i-1] == 0 || selection.bytes[i+1] == 0 || selection.bytes[i-image.width] == 0 || selection.bytes[i+image.width] == 0) { rgb = SIMD3(repeating:(x+y)%8 < 4 ? 1:0) }
+      if selection.byte(at:i) > 0 && (sx == 0 || sy == 0 || sx+1 == image.width || sy+1 == image.height || selection.byte(at:i-1) == 0 || selection.byte(at:i+1) == 0 || selection.byte(at:i-image.width) == 0 || selection.byte(at:i+image.width) == 0) { rgb = SIMD3(repeating:(x+y)%8 < 4 ? 1:0) }
       out.setPixel(x:x,y:y,Pixel(rgb.x,rgb.y,rgb.z))
     } }
     return try ColorManagement.displayImage(out,in:document)

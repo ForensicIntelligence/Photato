@@ -24,15 +24,15 @@ final class SelectionMattingTests: XCTestCase {
     XCTAssertEqual(try SelectionMatting.refine(mask,guide:guide,settings:p),mask)
     p.feather = 3
     let feather = try SelectionMatting.refine(mask,guide:guide,settings:p)
-    XCTAssertTrue(feather.bytes.contains { $0 > 0 && $0 < 255 }); XCTAssertGreaterThan(feather.bytes[12*32+7],0)
+    XCTAssertTrue(try feather.bytes.contains { $0 > 0 && $0 < 255 }); XCTAssertGreaterThan(try feather.bytes[12*32+7],0)
     p.contrast = 100
     let contrast = try SelectionMatting.refine(mask,guide:guide,settings:p)
-    XCTAssertLessThan(contrast.bytes.filter { $0 > 0 && $0 < 255 }.count,feather.bytes.filter { $0 > 0 && $0 < 255 }.count)
+    XCTAssertLessThan(try contrast.bytes.filter { $0 > 0 && $0 < 255 }.count,try feather.bytes.filter { $0 > 0 && $0 < 255 }.count)
     p = .init(); p.shiftEdge = 100
     let grown = try SelectionMatting.refine(mask,guide:guide,settings:p)
-    XCTAssertGreaterThan(grown.bytes.filter { $0>0 }.count,mask.bytes.filter { $0>0 }.count)
+    XCTAssertGreaterThan(try grown.bytes.filter { $0>0 }.count,try mask.bytes.filter { $0>0 }.count)
     p.shiftEdge = -100
-    XCTAssertLessThan(try SelectionMatting.refine(mask,guide:guide,settings:p).bytes.filter { $0>0 }.count,mask.bytes.filter { $0>0 }.count)
+    XCTAssertLessThan(try SelectionMatting.refine(mask,guide:guide,settings:p).bytes.filter { $0>0 }.count,try mask.bytes.filter { $0>0 }.count)
     p.radius = 3; p.smartRadius = true; p.smooth = 25
     for byte: UInt8 in [0,255] {
       let constant = try SelectionMask(width:32,height:24,bytes:Array(repeating:byte,count:32*24))
@@ -47,7 +47,7 @@ final class SelectionMattingTests: XCTestCase {
     var p = SelectionRefinement(); p.radius = 4
     let result = try SelectionMatting.refine(mask,guide:guide,settings:p)
     XCTAssertNotEqual(result,mask)
-    for y in 0..<h { for x in [250,255,256,257,511,512] { XCTAssertEqual(result.bytes[y*w+x],result.bytes[y*w+200]) } }
+    for y in 0..<h { for x in [250,255,256,257,511,512] { XCTAssertEqual(try result.bytes[y*w+x],try result.bytes[y*w+200]) } }
     let excluded = try SelectionMask(width:w,height:h,bytes:Array(repeating:255,count:w*h))
     XCTAssertEqual(try SelectionMatting.refine(mask,guide:guide,settings:p,excluded:excluded),mask)
   }

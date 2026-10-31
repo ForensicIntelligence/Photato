@@ -9,8 +9,7 @@ extension RasterIO {
     space: CGColorSpace? = nil, colorEncoding: SurfaceColorEncoding = .sRGB,
     backing: RasterTileStore? = nil) throws -> Surface {
     let target = try space ?? colorSpace()
-    var result = try Surface(width: image.width, height: image.height, depth: depth, colorEncoding: colorEncoding)
-    let store = try backing ?? RasterTileStore()
+    let builder=try Surface.PagedBuilder(width:image.width,height:image.height,depth:depth,colorEncoding:colorEncoding,backing:backing)
     let direct = depth == .f32 && colorEncoding == .linearRGB ? try FloatRasterSamples.Reader(image, space: target) : nil
     for y in stride(from: 0, to: image.height, by: Surface.tileSide) {
       for x in stride(from: 0, to: image.width, by: 2048) {
@@ -22,16 +21,15 @@ extension RasterIO {
           guard let crop = image.cropping(to: CGRect(x: x, y: y, width: region.width, height: region.height)) else { throw CraftError.invalid("Could not decode an image patch.") }
           patch = try surface(crop, depth: depth, space: target, colorEncoding: colorEncoding)
         }
-        try result.importPatch(patch, atX: x, atY: y, backing: store)
+        try builder.append(patch,atX:x,atY:y)
       }
     }
-    try result.validated(); return result
+    return try builder.finish()
   }
   static func pagedOrientation(_ source: Surface, orientation: Int) throws -> Surface {
     let swapped = orientation >= 5
     let width = swapped ? source.height : source.width, height = swapped ? source.width : source.height
-    var output = try Surface(width: width, height: height, depth: source.depth, colorEncoding: source.colorEncoding)
-    let store = try RasterTileStore()
+    let builder=try Surface.PagedBuilder(width:width,height:height,depth:source.depth,colorEncoding:source.colorEncoding)
     for y in stride(from: 0, to: height, by: Surface.tileSide) {
       for x in stride(from: 0, to: width, by: 2048) {
         var patch = try Surface(width: min(2048,width-x),height: min(Surface.tileSide,height-y),depth:source.depth,colorEncoding:source.colorEncoding)
@@ -53,9 +51,9 @@ extension RasterIO {
             else { patch.setPixel(x:px,y:py,source.pixel(x:sx,y:sy)) }
           }
         }
-        try output.importPatch(patch,atX:x,atY:y,backing:store)
+        try builder.append(patch,atX:x,atY:y)
       }
     }
-    return output
+    return try builder.finish()
   }
 }

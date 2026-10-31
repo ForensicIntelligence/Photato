@@ -31,7 +31,7 @@ final class SkySelectionTests:XCTestCase {
     let image=try landscape(600,400),mask=try XCTUnwrap(SkySelection.mask(image,workingPixels:4000))
     XCTAssertGreaterThan(mask.coverage(x:100,y:180),0.9);XCTAssertLessThan(mask.coverage(x:100,y:280),0.1)
     for x in [255,256,511,512]{XCTAssertGreaterThan(mask.coverage(x:x,y:20),0.9)}
-    XCTAssertTrue(mask.bytes.contains{$0>0 && $0<255})
+    XCTAssertTrue(try mask.bytes.contains{$0>0 && $0<255})
   }
   func testManualMaskRefinementPlacementAndValidation()throws {
     let mask=try SelectionMask.make(.rectangle(.init(x:0,y:0,width:40,height:20)),width:40,height:40,antiAlias:false)

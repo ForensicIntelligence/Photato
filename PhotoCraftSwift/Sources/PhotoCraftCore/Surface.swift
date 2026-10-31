@@ -33,6 +33,11 @@ public enum SurfaceColorEncoding: String, Codable, Sendable {
 }
 public struct Surface: Codable, Equatable, Sendable {
   public static let tileSide = 64
+  public static let pagedIndexMinimumTiles = 1024
+  public static let runtimeIndexRecordBytes = 16
+  public static let smallMappedReferenceAdmissionBytes = 128
+  public static let directTileIndexLimit = RasterTileMap.directLimit
+  public static let runtimeIndexWriteBufferBytes = 65_536
   /// Photoshop's PSB/native canvas extent. Logical area is independent of resident tiles.
   public static let maxDimension = 300_000
   public static let maxPixels = 90_000_000_000
@@ -48,8 +53,8 @@ public struct Surface: Codable, Equatable, Sendable {
   private func encodedSample(_ p: Pixel) -> Pixel {
     colorEncoding == .linearRGB ? SRGBTransfer.encoded(p) : p
   }
-  // Dictionary, value-semantic tile references and Arrays preserve copy-on-write.
-  private var tiles: [Int: RasterTile] = [:]
+  // Immutable mapped bases and persistent radix edit paths preserve copy-on-write.
+  private var tiles: RasterTileMap = [:]
   // Only this type can write tiles. Quantized setters preserve finite samples;
   // raw crop/expansion copies propagate proof conservatively. Decoding starts
   // untrusted and earns proof only after a full scan, including tile padding.
@@ -63,20 +68,12 @@ public struct Surface: Codable, Equatable, Sendable {
   public var tileCount: Int { tiles.count }
   /// Owned heap samples plus a conservative index/reference allowance for mapped tiles.
   /// File-backed pages are reclaimable by macOS and are reported separately.
-  public var allocatedBytes: Int { tiles.values.reduce(0) { $0 + $1.residentBytes + ($1.isBacked ? 128 : 0) } }
-  public var mappedBytes: Int { tiles.values.reduce(0) { $0 + ($1.isBacked ? TileArchive.byteCount : 0) } }
-  public var mappedTileCount: Int { tiles.values.reduce(0) { $0 + ($1.isBacked ? 1 : 0) } }
-  func accountHistoryTiles(_ seen: inout Set<UInt>) -> Int {
-    var bytes = 0
-    for pixels in tiles.values {
-      pixels.withUnsafeBufferPointer { buffer in
-        if let address = buffer.baseAddress, seen.insert(UInt(bitPattern: address)).inserted {
-          bytes += pixels.isBacked ? 128 : buffer.count * MemoryLayout<Pixel>.stride
-        }
-      }
-    }
-    return bytes
-  }
+  public var allocatedBytes: Int { tiles.residentBytes }
+  public var mappedBytes: Int { tiles.mappedTileCount * TileArchive.byteCount }
+  public var mappedTileCount: Int { tiles.mappedTileCount }
+  public var mappedTileIndexBytes: Int { tiles.mappedIndexBytes }
+  public var residentTileIndexEstimate: Int { tiles.residentIndexBytes }
+  func accountHistoryTiles(_ seen: inout Set<UInt>) -> Int { tiles.accountHistory(&seen) }
   /// Nonzero-alpha extent, independent of hidden RGB and unused tile padding.
   public func contentBounds() throws -> IntRect? {
     var x0 = width
@@ -137,7 +134,7 @@ public struct Surface: Codable, Equatable, Sendable {
       colorEncoding: colorEncoding)
     output.storedDefaultPixel = storedDefaultPixel
     output.tilesAreKnownFinite = tilesAreKnownFinite && storedDefaultPixel.isFinite
-    for (key, tile) in tiles {
+    for (key, tile) in tilesIntersecting(bounds) {
       try Task.checkCancellation()
       let left = key % columns * Self.tileSide
       let top = key / columns * Self.tileSide
@@ -179,8 +176,8 @@ public struct Surface: Codable, Equatable, Sendable {
   private func storedPixel(x: Int, y: Int) -> Pixel {
     guard x >= 0, y >= 0, x < width, y < height else { return .clear }
     let key = (y / Self.tileSide) * columns + x / Self.tileSide
-    return tiles[key]?[(y % Self.tileSide) * Self.tileSide + x % Self.tileSide]
-      ?? storedDefaultPixel
+    return tiles.pixel(key:key,offset:(y % Self.tileSide) * Self.tileSide + x % Self.tileSide,
+      default:storedDefaultPixel)
   }
   public func pixel(x: Int, y: Int) -> Pixel { encodedSample(storedPixel(x: x, y: y)) }
   public func linearPixel(x: Int, y: Int) -> Pixel {
@@ -227,14 +224,15 @@ public struct Surface: Codable, Equatable, Sendable {
     let value = Pixel(depth.quantize(p.r), depth.quantize(p.g), depth.quantize(p.b), alpha)
     setStoredPixel(x: x, y: y, value)
   }
+  // RasterTileMap isolates paged ownership; the ordinary bounded Dictionary
+  // path stays visible to optimization in pixel loops.
   private mutating func setStoredPixel(x: Int, y: Int, _ p: Pixel) {
     let key = (y / Self.tileSide) * columns + x / Self.tileSide
     // The default subscript yields the stored Array directly. Optional chaining
     // here creates an allocating read/modify/write coroutine for every pixel.
     // The default allocation is evaluated only when this tile is absent.
     let offset = (y % Self.tileSide) * Self.tileSide + x % Self.tileSide
-    tiles[key, default: RasterTile(repeating: storedDefaultPixel, count: Self.tileSide * Self.tileSide)][
-      offset] = p
+    tiles.setPixel(key:key,offset:offset,pixel:p,default:storedDefaultPixel)
   }
   public mutating func mapPixels(_ transform: (Int, Int, Pixel) -> Pixel) {
     for y in 0..<height {
@@ -297,7 +295,7 @@ public struct Surface: Codable, Equatable, Sendable {
     var y0 = height
     var x1 = 0
     var y1 = 0
-    for key in Set(tiles.keys).union(old.tiles.keys) {
+    for key in tiles.candidateKeys(comparedTo: old.tiles) {
       try Task.checkCancellation()
       let a = tiles[key]
       let b = old.tiles[key]
@@ -421,10 +419,12 @@ public struct Surface: Codable, Equatable, Sendable {
       tiles.count <= columns * ((height + Self.tileSide - 1) / Self.tileSide)
     else { throw CraftError.invalid("Invalid raster storage.") }
     let maxKey = columns * ((height + Self.tileSide - 1) / Self.tileSide)
-    for (key, pixels) in tiles {
-      guard key >= 0, key < maxKey, pixels.count == Self.tileSide * Self.tileSide,
-        tilesAreKnownFinite || pixels.allSatisfy(\.isFinite)
-      else { throw CraftError.invalid("Corrupt raster tile.") }
+    guard tiles.isStructurallyValid(maximumKey:maxKey) else { throw CraftError.invalid("Corrupt raster tile metadata.") }
+    if !tilesAreKnownFinite {
+      for (_,pixels) in tiles {
+        try Task.checkCancellation()
+        guard pixels.allSatisfy(\.isFinite) else {throw CraftError.invalid("Corrupt raster tile.")}
+      }
     }
   }
   /// Straight-alpha interleaved RGBA, little-endian for 16/32-bit samples.
@@ -512,7 +512,7 @@ public struct Surface: Codable, Equatable, Sendable {
   }
   private enum CodingKeys: String, CodingKey {
     case width, height, depth, defaultPixel, defaultSample, tiles, packingVersion, tileData,
-      colorEncoding
+      colorEncoding, tilePages, tileCount
   }
   private struct TileKey: CodingKey {
     var stringValue: String
@@ -529,12 +529,25 @@ public struct Surface: Codable, Equatable, Sendable {
     try c.encode(TileArchive.encodeSample(storedDefaultPixel), forKey: .defaultSample)
     let history = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding
     try c.encode(
-      history == nil ? (colorEncoding == .linearRGB ? 2 : 1) : 3, forKey: .packingVersion)
+      history == nil ? (colorEncoding == .linearRGB ? 2 : 1) : (history is any IndexedRasterBlobEncoding ? 4 : 3), forKey: .packingVersion)
     if colorEncoding == .linearRGB { try c.encode(colorEncoding, forKey: .colorEncoding) }
+    if let indexed = history as? any IndexedRasterBlobEncoding {
+      var pages: [String] = [], entries: [(Int, UInt64)] = []
+      for (key,tile) in tiles {
+        try Task.checkCancellation()
+        entries.append((key, try indexed.storeOrdinal(TileArchive.encode(Array(tile)))))
+        if entries.count == NativeTilePage.capacity {
+          pages.append(try indexed.storeBytes(NativeTilePage.encode(entries))); entries.removeAll(keepingCapacity:true)
+        }
+      }
+      if !entries.isEmpty { pages.append(try indexed.storeBytes(NativeTilePage.encode(entries))) }
+      try c.encode(tiles.count, forKey: .tileCount); try c.encode(pages, forKey: .tilePages)
+      return
+    }
     var packed = c.nestedContainer(keyedBy: TileKey.self, forKey: .tileData)
-    for key in tiles.keys.sorted() {
+    for (key,tile) in tiles {
       try Task.checkCancellation()
-      let bytes = try TileArchive.encode(Array(tiles[key]!))
+      let bytes = try TileArchive.encode(Array(tile))
       if let history {
         try packed.encode(history.storeBytes(bytes), forKey: TileKey(intValue: key)!)
       } else {
@@ -549,10 +562,10 @@ public struct Surface: Codable, Equatable, Sendable {
     depth = try c.decode(PixelDepth.self, forKey: .depth)
     let version = try c.decodeIfPresent(Int.self, forKey: .packingVersion)
     let history = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding
-    guard version == nil || version == 1 || version == 2 || (version == 3 && history != nil) else {
+    guard version == nil || version == 1 || version == 2 || (version == 3 && history != nil) || (version == 4 && history is any IndexedRasterBlobDecoding) else {
       throw CraftError.unsupported("Unsupported native raster packing version.")
     }
-    if version == 2 || version == 3 {
+    if version == 2 || version == 3 || version == 4 {
       colorEncoding =
         try c.decodeIfPresent(SurfaceColorEncoding.self, forKey: .colorEncoding) ?? .sRGB
       guard version != 2 || colorEncoding == .linearRGB,
@@ -579,6 +592,42 @@ public struct Surface: Codable, Equatable, Sendable {
     guard version == nil ? !c.contains(.tileData) : !c.contains(.tiles) else {
       throw CraftError.invalid("Ambiguous native raster storage.")
     }
+    if version == 4, let history {
+      guard !c.contains(.tiles), !c.contains(.tileData) else { throw CraftError.invalid("Ambiguous paged raster storage.") }
+      let count = try c.decode(Int.self, forKey:.tileCount)
+      let maximum = ((width + Self.tileSide - 1) / Self.tileSide) * ((height + Self.tileSide - 1) / Self.tileSide)
+      guard count >= 0, count <= maximum else { throw CraftError.invalid("Invalid paged raster tile count.") }
+      let mapped = history as? any MappedRasterBlobDecoding
+      let usesMapped = mapped?.usesMappedTiles == true
+      let budget = decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget
+      let indexBuilder: RuntimeTileIndex.Builder?
+      if usesMapped && count>=Self.pagedIndexMinimumTiles {
+        try budget?.reserve(bytes:Self.runtimeIndexWriteBufferBytes+512)
+        indexBuilder=try RuntimeTileIndex.Builder(reserveSegment:{try budget?.reserve(bytes:$0)})
+      } else {
+        indexBuilder=nil
+        if usesMapped {try budget?.reserveMappedReferences(tiles:count)}else{try budget?.reserve(tiles:count)}
+      }
+      let pages = try c.decode([String].self, forKey:.tilePages)
+      guard pages.count == (count + NativeTilePage.capacity - 1) / NativeTilePage.capacity else { throw CraftError.invalid("Invalid raster page count.") }
+      tiles = [:]; var previous = -1, seen = 0
+      for page in pages {
+        let entries = try NativeTilePage.decode(history.bytes(page, maximumBytes:NativeTilePage.maximumBytes))
+        guard entries.count == min(NativeTilePage.capacity, count-seen) else { throw CraftError.invalid("Invalid raster page coverage.") }
+        for (key, ordinal) in entries {
+          try Task.checkCancellation()
+          guard key > previous, key < maximum else { throw CraftError.invalid("Invalid or duplicate paged tile index.") }
+          let identifier = NativeIndexedArchive.identifier(ordinal)
+          let tile = try usesMapped ? mapped!.storedTile(identifier) : RasterTile(history.tile(identifier))
+          if let indexBuilder {try indexBuilder.append(key:key,tile:tile)}else{tiles[key]=tile}
+          previous = key; seen += 1
+        }
+      }
+      guard seen == count else { throw CraftError.invalid("Missing raster tiles.") }
+      if let indexBuilder {tiles=RasterTileMap(base:try indexBuilder.finish());tilesAreKnownFinite=true}
+      try validated(); tilesAreKnownFinite = true; return
+    }
+    guard !c.contains(.tilePages), !c.contains(.tileCount) else { throw CraftError.invalid("Ambiguous raster page storage.") }
     let container = try c.nestedContainer(
       keyedBy: TileKey.self,
       forKey: version == nil ? .tiles : .tileData)
@@ -590,18 +639,25 @@ public struct Surface: Codable, Equatable, Sendable {
     }
     let mapped = history as? any MappedRasterBlobDecoding
     let usesMapped = version == 3 && mapped?.usesMappedTiles == true
-    if let budget = decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget {
-      if usesMapped { try budget.reserveMappedReferences(tiles: container.allKeys.count) }
-      else { try budget.reserve(tiles: container.allKeys.count) }
+    let budget=decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget
+    let count=container.allKeys.count,indexBuilder:RuntimeTileIndex.Builder?
+    if usesMapped && count>=Self.pagedIndexMinimumTiles {
+      try budget?.reserve(bytes:Self.runtimeIndexWriteBufferBytes+512)
+      indexBuilder=try RuntimeTileIndex.Builder(reserveSegment:{try budget?.reserve(bytes:$0)})
+    } else {
+      indexBuilder=nil
+      if usesMapped {try budget?.reserveMappedReferences(tiles:count)}else{try budget?.reserve(tiles:count)}
     }
     tiles = [:]
-    for key in container.allKeys {
+    let keys=indexBuilder == nil ? container.allKeys:container.allKeys.sorted {($0.intValue ?? -1)<($1.intValue ?? -1)}
+    for key in keys {
       try Task.checkCancellation()
       guard let index = key.intValue, index >= 0, index < maxKey, String(index) == key.stringValue,
         tiles[index] == nil
       else { throw CraftError.invalid("Invalid native tile index.") }
       if usesMapped, let mapped {
-        tiles[index] = try mapped.storedTile(container.decode(String.self, forKey: key))
+        let tile=try mapped.storedTile(container.decode(String.self, forKey:key))
+        if let indexBuilder {try indexBuilder.append(key:index,tile:tile)}else{tiles[index]=tile}
       } else if version == 3, let history {
         tiles[index] = RasterTile(try history.tile(container.decode(String.self, forKey: key)))
       } else if version != nil {
@@ -617,6 +673,7 @@ public struct Surface: Codable, Equatable, Sendable {
         tiles[index] = RasterTile(pixels)
       }
     }
+    if let indexBuilder {tiles=RasterTileMap(base:try indexBuilder.finish());tilesAreKnownFinite=true}
     try validated()
     tilesAreKnownFinite = true
   }
@@ -634,15 +691,18 @@ extension Surface {
     var output = try Surface(width: width, height: height, depth: .f32,
       colorEncoding: encoding ?? colorEncoding)
     output.storedDefaultPixel = value
-    let scratch = width * height > Self.maximumDensePixels ? try RasterTileStore() : nil
+    let scratch = width * height > Self.maximumDensePixels || mappedTileIndexBytes>0 ? try RasterTileStore() : nil
+    let indexBuilder = scratch == nil ? nil:try RuntimeTileIndex.Builder()
     for (key, tile) in tiles {
       try Task.checkCancellation()
       let values = try tile.map(transform)
       guard values.allSatisfy(\.isFinite) else { throw CraftError.invalid("Non-finite sparse raster result.") }
       if !values.allSatisfy({ $0.hasSameBits(as: value) }) {
-        let tile = RasterTile(values); output.tiles[key] = try scratch?.append(tile) ?? tile
+        let tile = RasterTile(values),stored=try scratch?.append(tile) ?? tile
+        if let indexBuilder {try indexBuilder.append(key:key,tile:stored)}else{output.tiles[key]=stored}
       }
     }
+    if let indexBuilder {output.tiles=RasterTileMap(base:try indexBuilder.finish())}
     return output
   }
   public func combiningStoredSamples(
@@ -655,8 +715,9 @@ extension Surface {
     guard value.isFinite else { throw CraftError.invalid("Non-finite sparse raster result.") }
     var output = try Surface(width: width, height: height, depth: .f32, colorEncoding: colorEncoding)
     output.storedDefaultPixel = value
-    let scratch = width * height > Self.maximumDensePixels ? try RasterTileStore() : nil
-    for key in Set(tiles.keys).union(other.tiles.keys) {
+    let scratch = width * height > Self.maximumDensePixels || mappedTileIndexBytes>0 ? try RasterTileStore() : nil
+    let indexBuilder = scratch == nil ? nil:try RuntimeTileIndex.Builder()
+    for key in tiles.unionKeys(with: other.tiles) {
       try Task.checkCancellation()
       let a = tiles[key], b = other.tiles[key]
       var values = [Pixel](); values.reserveCapacity(Self.tileSide * Self.tileSide)
@@ -666,9 +727,11 @@ extension Surface {
         values.append(p)
       }
       if !values.allSatisfy({ $0.hasSameBits(as: value) }) {
-        let tile = RasterTile(values); output.tiles[key] = try scratch?.append(tile) ?? tile
+        let tile = RasterTile(values),stored=try scratch?.append(tile) ?? tile
+        if let indexBuilder {try indexBuilder.append(key:key,tile:stored)}else{output.tiles[key]=stored}
       }
     }
+    if let indexBuilder {output.tiles=RasterTileMap(base:try indexBuilder.finish())}
     return output
   }
   public func allStoredSamplesSatisfy(_ predicate: (Pixel) -> Bool) throws -> Bool {
@@ -686,6 +749,23 @@ extension Surface {
   /// only allocated source pixels are visited, including fractional boundary coverage.
   /// Operates in the stored color encoding and never changes working pixels.
   public func reducedPreview(in region: IntRect, width outWidth: Int, height outHeight: Int) throws -> Surface {
+    try reducedPreview(in: region, width: outWidth, height: outHeight,
+      encoding: colorEncoding, projection: nil)
+  }
+  /// Projects numeric channels before area reduction, ignoring source alpha when the
+  /// projection supplies opaque coverage. Visits only intersecting allocated samples.
+  public func reducedPreview(in region: IntRect, width outWidth: Int, height outHeight: Int,
+    encoding: SurfaceColorEncoding, projectingStoredSamples projection: (Pixel) throws -> Pixel
+  ) throws -> Surface {
+    try withoutActuallyEscaping(projection) { project in
+      try reducedPreview(in: region, width: outWidth, height: outHeight,
+        encoding: encoding, projection: project)
+    }
+  }
+  private func reducedPreview(in region: IntRect, width outWidth: Int, height outHeight: Int,
+    encoding: SurfaceColorEncoding, projection: ((Pixel) throws -> Pixel)?
+  ) throws -> Surface {
+    try Task.checkCancellation()
     try validated()
     guard region.width > 0, region.height > 0,
       region == region.clipped(toWidth: width, height: height),
@@ -693,14 +773,28 @@ extension Surface {
       outWidth <= 4_194_304 / outHeight else {
       throw CraftError.invalid("The bounded preview must contain at most4,194,304 pixels inside the source.")
     }
-    if outWidth == region.width, outHeight == region.height { return try cropped(to: region) }
+    if outWidth == region.width, outHeight == region.height {
+      guard let projection else { return try cropped(to: region) }
+      var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: encoding)
+      for y in 0..<outHeight {
+        try Task.checkCancellation()
+        for x in 0..<outWidth {
+          let value = try projection(storedPixel(x: region.x + x, y: region.y + y))
+          guard value.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
+          result.setStoredPixel(x: x, y: y, value)
+        }
+      }
+      return result
+    }
     func pm(_ p: Pixel) -> SIMD4<Double> {
       SIMD4(Double(p.r) * Double(p.a), Double(p.g) * Double(p.a), Double(p.b) * Double(p.a), Double(p.a))
     }
     let sx = Double(region.width) / Double(outWidth), sy = Double(region.height) / Double(outHeight)
-    let area = sx * sy, background = pm(storedDefaultPixel)
+    let implicit = try projection?(storedDefaultPixel) ?? storedDefaultPixel
+    guard implicit.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
+    let area = sx * sy, background = pm(implicit)
     var sums = [SIMD4<Double>](repeating: background * area, count: outWidth * outHeight)
-    for (key, tile) in tiles {
+    for (key, tile) in tilesIntersecting(region) {
       try Task.checkCancellation()
       let left = key % columns * Self.tileSide, top = key / columns * Self.tileSide
       let x0 = max(region.x, left), y0 = max(region.y, top)
@@ -710,7 +804,10 @@ extension Surface {
       for y in y0..<y1 {
         let t = Double(y - region.y) / sy, b = Double(y + 1 - region.y) / sy
         for x in x0..<x1 {
-          let delta = pm(tile[(y - top) * Self.tileSide + x - left]) - background
+          let stored = tile[(y - top) * Self.tileSide + x - left]
+          let value = try projection?(stored) ?? stored
+          guard value.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
+          let delta = pm(value) - background
           if delta == .zero { continue }
           let l = Double(x - region.x) / sx, r = Double(x + 1 - region.x) / sx
           for oy in max(0, Int(floor(t)))..<min(outHeight, Int(ceil(b))) {
@@ -723,7 +820,7 @@ extension Surface {
         }
       }
     }
-    var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: colorEncoding)
+    var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: encoding)
     for y in 0..<outHeight {
       try Task.checkCancellation()
       for x in 0..<outWidth {
@@ -748,7 +845,8 @@ extension Surface {
     func pm(_ p: Pixel) -> SIMD4<Double> { SIMD4(Double(p.r) * Double(p.a), Double(p.g) * Double(p.a), Double(p.b) * Double(p.a), Double(p.a)) }
     let background = pm(defaultPixel)
     var sum = background * ((r - l) * (b - t)), samples = 0
-    for (key, tile) in tiles {
+    let region=IntRect(x:Int(floor(l)),y:Int(floor(t)),width:Int(ceil(r))-Int(floor(l)),height:Int(ceil(b))-Int(floor(t)))
+    for (key, tile) in tilesIntersecting(region) {
       try Task.checkCancellation()
       let tx = key % columns * Self.tileSide, ty = key / columns * Self.tileSide
       let x0 = max(tx, Int(floor(l))), y0 = max(ty, Int(floor(t)))
@@ -782,6 +880,11 @@ extension Surface {
       result.tiles[key] = try store.append(tile)
     }
     try Task.checkCancellation()
+    if result.mappedTileIndexBytes==0 && result.tileCount>=Self.pagedIndexMinimumTiles && result.mappedTileCount==result.tileCount {
+      let index=try RuntimeTileIndex.Builder()
+      for (key,tile) in result.tiles {try index.append(key:key,tile:tile)}
+      result.tiles=RasterTileMap(base:try index.finish())
+    }
     return result
   }
   /// Shares the existing numeric samples for a Float32 compositing backdrop.
@@ -814,5 +917,267 @@ extension Surface {
       else { result.tiles[destination] = try backing.append(RasterTile(repeating: patch.storedDefaultPixel, count: TileArchive.pixelCount)) }
     } }
     try Task.checkCancellation(); self = result
+  }
+}
+
+
+extension Surface {
+  private func tilesIntersecting(_ region: IntRect) -> AnySequence<(Int,RasterTile)> {
+    let r=region.clipped(toWidth:width,height:height)
+    guard r.width>0,r.height>0 else {return AnySequence(EmptyCollection<(Int,RasterTile)>())}
+    let firstColumn=r.x/Self.tileSide,lastColumn=(r.x+r.width-1)/Self.tileSide
+    let rows=r.y/Self.tileSide...(r.y+r.height-1)/Self.tileSide
+    return AnySequence(rows.lazy.flatMap { row in tiles.entries(in:(row*columns+firstColumn)..<(row*columns+lastColumn+1)) })
+  }
+  /// One-pass, row-major bounded patch import. No complete heap descriptor map is built.
+  public final class PagedBuilder {
+    private let template:Surface
+    private let backing:RasterTileStore
+    private let index:RuntimeTileIndex.Builder
+    private var lastVisited = -1,finished=false,failed=false
+    public convenience init(width:Int,height:Int,depth:PixelDepth = .u8,fill:Pixel = .clear,
+                colorEncoding:SurfaceColorEncoding = .sRGB,backing:RasterTileStore? = nil) throws {
+      try self.init(template:Surface(width:width,height:height,depth:depth,fill:fill,colorEncoding:colorEncoding),backing:backing)
+    }
+    init(template:Surface,backing:RasterTileStore? = nil) throws {
+      guard template.tileCount==0 else {throw CraftError.invalid("Paged template must contain only an implicit value.")}
+      try template.validated();self.template=template
+      self.backing=try backing ?? RasterTileStore();index=try RuntimeTileIndex.Builder()
+    }
+    public func append(_ patch:Surface,atX:Int,atY:Int) throws {
+      do {
+        try Task.checkCancellation()
+        guard !finished,!failed,patch.depth==template.depth,patch.colorEncoding==template.colorEncoding,
+          atX>=0,atY>=0,atX%Surface.tileSide==0,atY%Surface.tileSide==0,
+          patch.width<=template.width-atX,patch.height<=template.height-atY,
+          patch.width%Surface.tileSide==0 || atX+patch.width==template.width,
+          patch.height%Surface.tileSide==0 || atY+patch.height==template.height else {throw CraftError.invalid("Paged patches must match the destination grid and lifecycle.")}
+        try patch.validated()
+        for row in 0..<(patch.height+Surface.tileSide-1)/Surface.tileSide {
+          for column in 0..<patch.columns {
+            try Task.checkCancellation()
+            let key=(row+atY/Surface.tileSide)*template.columns+column+atX/Surface.tileSide
+            guard key>lastVisited else {throw CraftError.invalid("Paged import patches must be ordered and must not overlap.")}
+            lastVisited=key
+            let tile=patch.tiles[row*patch.columns+column] ?? (patch.storedDefaultPixel.hasSameBits(as:template.storedDefaultPixel) ? nil:RasterTile(repeating:patch.storedDefaultPixel,count:TileArchive.pixelCount))
+            if let tile {try index.append(key:key,tile:tile.isBacked ? tile:backing.append(tile))}
+          }
+        }
+      } catch {failed=true;throw error}
+    }
+    public func finish() throws -> Surface {
+      do {
+        try Task.checkCancellation();guard !finished,!failed else {throw CraftError.invalid("Paged import builder is no longer usable.")}
+        let base=try index.finish();var result=template
+        if base.count>=Surface.pagedIndexMinimumTiles {result.tiles=RasterTileMap(base:base)}
+        else {for i in 0..<base.count {result.tiles[base.key(at:i)]=base.tile(at:i)}}
+        result.tilesAreKnownFinite=true;try result.validated();finished=true;return result
+      } catch {failed=true;throw error}
+    }
+  }
+}
+
+extension Surface {
+  /// Grid-aligned owned patches share their Array COW values; no pixel re-encoding.
+  mutating func importOwnedPatch(_ patch:Surface,atX:Int,atY:Int) throws {
+    guard patch.depth==depth,patch.colorEncoding==colorEncoding,
+      patch.storedDefaultPixel.hasSameBits(as:storedDefaultPixel),atX%64==0,atY%64==0,
+      atX>=0,atY>=0,atX+patch.width<=width,atY+patch.height<=height else {throw CraftError.invalid("Invalid owned geometry patch.")}
+    for (key,tile) in patch.tiles {
+      tiles[(atY/64+key/patch.columns)*columns+atX/64+key%patch.columns]=tile
+    }
+  }
+  func reframedImplicitValue(width:Int,height:Int) throws -> Surface {
+    var output=try Surface(width:width,height:height,depth:depth,colorEncoding:colorEncoding)
+    output.storedDefaultPixel=storedDefaultPixel;return output
+  }
+  func projectedGeometrySupport(_ transform:Transform2D,bounds:IntRect,halo:Int) throws -> [IntRect] {
+    var rectangles:[IntRect]=[];rectangles.reserveCapacity(tiles.count)
+    for (key,_) in tiles {
+      try Task.checkCancellation()
+      let x=(key%columns)*64,y=(key/columns)*64
+      let x0=Double(x-halo),y0=Double(y-halo),x1=Double(min(width,x+64)+halo),y1=Double(min(height,y+64)+halo)
+      let points=[transform.point(x0,y0),transform.point(x1,y0),transform.point(x0,y1),transform.point(x1,y1)]
+      let left=max(0,min(Double(bounds.width),floor(points.map(\.x).min()!)-Double(bounds.x)-1))
+      let top=max(0,min(Double(bounds.height),floor(points.map(\.y).min()!)-Double(bounds.y)-1))
+      let right=max(0,min(Double(bounds.width),ceil(points.map(\.x).max()!)-Double(bounds.x)+1))
+      let bottom=max(0,min(Double(bounds.height),ceil(points.map(\.y).max()!)-Double(bounds.y)+1))
+      if right>left,bottom>top {rectangles.append(IntRect(x:Int(left),y:Int(top),width:Int(right-left),height:Int(bottom-top)))}
+    }
+    return rectangles
+  }
+  /// Exact integer permutations retain raw/default bits and process only stored
+  /// samples. Sparse candidates are bounded; dense indexes stream in key order.
+  func permutingGrid(_ map:RasterGridMap,width:Int,height:Int) throws -> Surface {
+    var output=try Surface(width:width,height:height,depth:depth,colorEncoding:colorEncoding)
+    output.storedDefaultPixel=storedDefaultPixel
+    guard tiles.count>0 else {return output}
+    let paged=width*height>Self.maximumDensePixels || mappedBytes>0
+    let backing=paged ? try RasterTileStore():nil,index=paged ? try RuntimeTileIndex.Builder():nil
+    var candidates:Set<Int> = []
+    let sparse=tiles.count<=RasterGeometry.sparseGridSourceTileLimit
+    if sparse {
+      for (key,_) in tiles {
+        try Task.checkCancellation()
+        let x=(key%columns)*64,y=(key/columns)*64
+        let right=min(self.width-1,x+63),bottom=min(self.height-1,y+63)
+        let points=[map.destination(x,y),map.destination(right,y),map.destination(x,bottom),map.destination(right,bottom)]
+        let x0=points.map{$0.0}.min()!,x1=points.map{$0.0}.max()!,y0=points.map{$0.1}.min()!,y1=points.map{$0.1}.max()!
+        for row in y0/64...y1/64 {for column in x0/64...x1/64 {candidates.insert(row*output.columns+column)}}
+      }
+    }
+    let keys:AnySequence<Int> = sparse ? AnySequence(candidates.sorted()):AnySequence(0..<(output.columns*((height+63)/64)))
+    for key in keys {
+      try Task.checkCancellation()
+      let x=(key%output.columns)*64,y=(key/output.columns)*64,w=min(64,width-x),h=min(64,height-y)
+      let points=[map.source(x,y),map.source(x+w-1,y),map.source(x,y+h-1),map.source(x+w-1,y+h-1)]
+      let x0=points.map{$0.0}.min()!,x1=points.map{$0.0}.max()!,y0=points.map{$0.1}.min()!,y1=points.map{$0.1}.max()!
+      var sourceTiles:[Int:RasterTile]=[:]
+      for row in y0/64...y1/64 {for column in x0/64...x1/64 {
+        let k=row*columns+column;if let tile=tiles[k] {sourceTiles[k]=tile}
+      }}
+      guard !sourceTiles.isEmpty else {continue}
+      var patch=try Surface(width:w,height:h,depth:depth,colorEncoding:colorEncoding)
+      patch.storedDefaultPixel=storedDefaultPixel
+      for py in 0..<h {for px in 0..<w {
+        let (sx,sy)=map.source(x+px,y+py)
+        let value=sourceTiles[(sy/64)*columns+sx/64]?[(sy%64)*64+sx%64] ?? storedDefaultPixel
+        if !value.hasSameBits(as:storedDefaultPixel) {patch.setStoredPixel(x:px,y:py,value)}
+      }}
+      if let tile=patch.tiles[0] {
+        if let index,let backing {try index.append(key:key,tile:backing.append(tile))}
+        else {output.tiles[key]=tile}
+      }
+    }
+    if let index {
+      let base=try index.finish()
+      if base.count>=Self.pagedIndexMinimumTiles {output.tiles=RasterTileMap(base:base)}
+      else {for i in 0..<base.count {output.tiles[base.key(at:i)]=base.tile(at:i)}}
+    }
+    output.tilesAreKnownFinite=true;return output
+  }
+  /// Coloured canvas borders use an implicit majority value and shared constant
+  /// tiles. Only rectangle boundaries need distinct samples; index writes stream.
+  static func canvasExtension(width:Int,height:Int,depth:PixelDepth,color:Pixel,original:IntRect) throws -> Surface {
+    _ = try Surface(width:width,height:height,depth:depth)
+    guard color.isFinite else {throw CraftError.invalid("Invalid canvas extension colour.")}
+    let hole=original.clipped(toWidth:width,height:height),value=color.quantized(depth)
+    let paged=width*height>Self.maximumDensePixels
+    let colorDefault=paged && hole.width*hole.height < width*height-hole.width*hole.height
+    let implicit:Pixel=colorDefault ? value:.clear
+    var output=try Surface(width:width,height:height,depth:depth,fill:implicit)
+    let backing=paged ? try RasterTileStore():nil,index=paged ? try RuntimeTileIndex.Builder():nil
+    var palette:RasterTile?
+    let regions:[IntRect]
+    if colorDefault {regions=[hole]}
+    else {
+      regions=[IntRect(x:0,y:0,width:width,height:hole.y),
+        IntRect(x:0,y:hole.y+hole.height,width:width,height:height-hole.y-hole.height),
+        IntRect(x:0,y:hole.y,width:hole.x,height:hole.height),
+        IntRect(x:hole.x+hole.width,y:hole.y,width:width-hole.x-hole.width,height:hole.height)]
+    }
+    for row in 0..<(height+63)/64 {
+      try Task.checkCancellation()
+      var ranges:[Range<Int>]=[]
+      for r in regions where r.width>0 && r.height>0 && row*64<r.y+r.height && row*64+64>r.y {
+        ranges.append((r.x/64)..<((r.x+r.width+63)/64))
+      }
+      var next=0
+      for range in ranges.sorted(by:{$0.lowerBound<$1.lowerBound}) {
+        let low=max(next,range.lowerBound);guard low<range.upperBound else {continue}
+        for column in low..<range.upperBound {
+          let x=column*64,y=row*64,w=min(64,width-x),h=min(64,height-y),key=row*output.columns+column
+          let overlapW=max(0,min(x+w,hole.x+hole.width)-max(x,hole.x))
+          let overlapH=max(0,min(y+h,hole.y+hole.height)-max(y,hole.y))
+          let area=overlapW*overlapH
+          if (area==0 || area==w*h) && w==64 && h==64 {
+            let p:Pixel=area==0 ? value:.clear
+            if p.hasSameBits(as:implicit) {continue}
+            if palette==nil {
+              let tile=RasterTile(repeating:p,count:4096);palette=try backing?.append(tile) ?? tile
+            }
+            if let index {try index.append(key:key,tile:palette!)} else {output.tiles[key]=palette!}
+          } else {
+            var samples=RasterTile(repeating:implicit,count:4096)
+            for py in 0..<h {for px in 0..<w {
+              let inside=x+px>=hole.x && x+px<hole.x+hole.width && y+py>=hole.y && y+py<hole.y+hole.height
+              samples[py*64+px]=inside ? .clear:value
+            }}
+            if let index,let backing {try index.append(key:key,tile:backing.append(samples))}
+            else {output.tiles[key]=samples}
+          }
+        }
+        next=max(next,range.upperBound)
+      }
+    }
+    if let index {
+      let base=try index.finish()
+      if base.count>=Self.pagedIndexMinimumTiles {output.tiles=RasterTileMap(base:base)}
+      else {for i in 0..<base.count {output.tiles[base.key(at:i)]=base.tile(at:i)}}
+    }
+    output.tilesAreKnownFinite=true;return output
+  }
+}
+
+extension Surface {
+  /// Retag already quantized grayscale coverage without another sample round trip.
+  func retaggedCoverageStorage(depth:PixelDepth = .u8)throws->Surface {
+    var out=try Surface(width:width,height:height,depth:depth,fill:.black)
+    out.storedDefaultPixel=storedDefaultPixel;out.tiles=tiles;out.tilesAreKnownFinite=tilesAreKnownFinite
+    return out
+  }
+  func quantizedCoverageStorage()throws->Surface {
+    let encoded=colorEncoding == .linearRGB ? try mappedStoredSamples(encoding:.sRGB) {SRGBTransfer.encoded($0)}:self
+    let mapped=try encoded.mappedStoredSamples {p in let v=(unit(p.r)*255).rounded()/255;return Pixel(v,v,v)}
+    return try mapped.retaggedCoverageStorage()
+  }
+  /// Exact bounds of nonzero GRAY8 samples. Missing tile ranges contribute
+  /// analytically, including inverted/constant maximum-size selections.
+  func scalarCoverageBounds()throws->IntRect? {
+    try Task.checkCancellation()
+    var x0=width,y0=height,x1=0,y1=0,found=false
+    func include(_ a:Int,_ b:Int,_ c:Int,_ d:Int) {
+      guard c>a,d>b else {return};found=true;x0=min(x0,a);y0=min(y0,b);x1=max(x1,c);y1=max(y1,d)
+    }
+    func implicit(_ start:Int,_ end:Int) {
+      guard storedDefaultPixel.r>0,end>start else {return}
+      let first=start/columns,last=(end-1)/columns
+      if first==last {include(start%columns*Self.tileSide,first*Self.tileSide,min(width,((end-1)%columns+1)*Self.tileSide),min(height,(first+1)*Self.tileSide))}
+      else {include(0,first*Self.tileSide,width,min(height,(last+1)*Self.tileSide))}
+    }
+    var previous=0
+    for (key,tile) in tiles {
+      try Task.checkCancellation();implicit(previous,key);previous=key+1
+      let tx=key%columns*Self.tileSide,ty=key/columns*Self.tileSide
+      for y in 0..<min(Self.tileSide,height-ty) {for x in 0..<min(Self.tileSide,width-tx) where tile[y*Self.tileSide+x].r>0 {include(tx+x,ty+y,tx+x+1,ty+y+1)}}
+    }
+    implicit(previous,columns*((height+Self.tileSide-1)/Self.tileSide))
+    return found ? IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0):nil
+  }
+  static func rectangularCoverage(width:Int,height:Int,rectangle:IntRect)throws->Surface {
+    var out=try Surface(width:width,height:height,depth:.u8,fill:.black);let r=rectangle.clipped(toWidth:width,height:height)
+    guard r.width>0,r.height>0 else {return out}
+    if r.x==0,r.y==0,r.width==width,r.height==height {return try Surface(width:width,height:height,depth:.u8,fill:.white)}
+    let scratch=width*height>maximumDensePixels ? try RasterTileStore():nil
+    let index=scratch == nil ? nil:try RuntimeTileIndex.Builder()
+    var patterns=[String:RasterTile]()
+    for row in r.y/tileSide...(r.y+r.height-1)/tileSide {
+      try Task.checkCancellation()
+      for col in r.x/tileSide...(r.x+r.width-1)/tileSide {
+        let ox=col*tileSide,oy=row*tileSide,l=max(0,r.x-ox),t=max(0,r.y-oy),right=min(tileSide,r.x+r.width-ox),bottom=min(tileSide,r.y+r.height-oy)
+        let id="\(l),\(t),\(right),\(bottom)";let stored:RasterTile
+        if let prior=patterns[id] {stored=prior}
+        else {
+          var pixels=[Pixel](repeating:.black,count:tileSide*tileSide)
+          for y in t..<bottom {for x in l..<right {pixels[y*tileSide+x] = .white}}
+          let tile=RasterTile(pixels);stored=try scratch?.append(tile) ?? tile
+          patterns[id]=stored
+        }
+        let key=row*out.columns+col
+        if let index {try index.append(key:key,tile:stored)}else {out.tiles[key]=stored}
+      }
+    }
+    if let index {out.tiles=RasterTileMap(base:try index.finish())}
+    return out
   }
 }

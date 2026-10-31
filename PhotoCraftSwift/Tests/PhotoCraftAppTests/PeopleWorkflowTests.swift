@@ -35,12 +35,12 @@ final class PeopleWorkflowTests: XCTestCase {
     for id in [2,7,2] {s.hoverPerson(id);await s.peopleWorkspace.overlayTask?.value;XCTAssertNotNil(s.peopleWorkspace.image)}
     s.requestPeople();let calls=await detector.calls;XCTAssertEqual(calls,1);XCTAssertEqual(s.document,original);XCTAssertTrue(s.session.undoStack.isEmpty)
     let cache=s.peopleWorkspace.cacheID;try s.session.startActionRecording(name:"People")
-    await s.selectPeople([2,7])?.value;let selected=s.document;XCTAssertEqual(selected.selectionMask?.bytes[6*32+4],128);XCTAssertEqual(selected.selectionMask?.bytes[6*32+23],255)
+    await s.selectPeople([2,7])?.value;let selected=s.document;XCTAssertEqual(try selected.selectionMask?.bytes[6*32+4],128);XCTAssertEqual(try selected.selectionMask?.bytes[6*32+23],255)
     XCTAssertEqual(s.session.undoStack.count,1);XCTAssertEqual(s.peopleWorkspace.cacheID,cache)
     var replay=original;try XCTUnwrap(s.session.actionRecording?.snapshot).apply(to:&replay);XCTAssertEqual(replay,selected)
     _=await s.requestHistory(redo:false).value;XCTAssertEqual(s.document,original);_=await s.requestHistory(redo:true).value;XCTAssertEqual(s.document,selected)
     s.peopleWorkspace.selectedIDs=[2];s.objectFinderHardEdge=true;s.selectPeopleAndRefine();await s.geometryTask?.value;await s.selectMaskDraft?.task?.value
-    XCTAssertNotNil(s.selectMaskDraft);XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],255);XCTAssertFalse(s.peopleWorkspace.presented)
+    XCTAssertNotNil(s.selectMaskDraft);XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],255);XCTAssertFalse(s.peopleWorkspace.presented)
   }
   @MainActor func testSourceSamplingToolEscapeReloadAndCloseInvalidateDetection() async throws {
     let document=CraftNSDocument(model:try fixture(),actions:ActionLibrary(),skies:SkyLibrary()),s=document.store
@@ -74,7 +74,7 @@ final class PeopleWorkflowTests: XCTestCase {
       XCTAssertEqual(response.0.statusCode,200);let json=try XCTUnwrap(JSONSerialization.jsonObject(with:response.1) as? [String:Any]);let fields=json.filter{["revision","peopleSelection","peopleMasks","peopleThumbnails"].contains($0.key)}
       let value=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:fields));XCTAssertNoThrow(try BrushAPI.merge(value,schema:PeopleAPI.resultSchema))
       let masks=try XCTUnwrap(json["peopleMasks"] as? [[String:Any]]),thumbs=try XCTUnwrap(json["peopleThumbnails"] as? [[String:Any]]);XCTAssertEqual(masks.count,2);XCTAssertEqual(thumbs.count,2)
-      XCTAssertEqual(Data(base64Encoded:try XCTUnwrap(masks[0]["coverageBase64"] as? String)),Data(s.peopleWorkspace.scene!.people[0].mask.bytes))
+      XCTAssertEqual(Data(base64Encoded:try XCTUnwrap(masks[0]["coverageBase64"] as? String)),Data(try s.peopleWorkspace.scene!.people[0].mask.bytes))
       let png=try XCTUnwrap(Data(base64Encoded:try XCTUnwrap(thumbs[0]["pngBase64"] as? String)));let bitmap=try XCTUnwrap(NSBitmapImageRep(data:png));XCTAssertLessThanOrEqual(bitmap.pixelsWide,96)
       let cache=s.peopleWorkspace.cacheID.uuidString
       let hover=try await h.edit(service,document,"selection.hoverPerson",["cacheID":cache,"instanceID":2]);XCTAssertEqual(hover,200);XCTAssertEqual(s.peopleWorkspace.hoveredID,2)
@@ -125,10 +125,10 @@ extension PeopleWorkflowTests {
     s.peopleWorkspace.selectedIDs=[2];s.togglePeopleFeature(.hair);XCTAssertEqual(s.peopleWorkspace.selectedFeatures,[.hair])
     s.hoverPerson(2,feature:.hair);await s.peopleWorkspace.overlayTask?.value;XCTAssertNotNil(s.peopleWorkspace.image);XCTAssertEqual(s.peopleWorkspace.hoveredFeature,.hair)
     try s.session.startActionRecording(name:"Hair");await s.selectPeople([2])?.value
-    XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],96);XCTAssertEqual(s.document.selectionMask?.bytes[6*32+6],191)
+    XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],96);XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+6],191)
     var replay=original;try XCTUnwrap(s.session.actionRecording?.snapshot).apply(to:&replay);XCTAssertEqual(replay,s.document)
     s.togglePeopleFeature(.faceSkin);s.selectPeopleAndRefine();await s.geometryTask?.value;await s.selectMaskDraft?.task?.value
-    XCTAssertNotNil(s.selectMaskDraft);XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],128)
+    XCTAssertNotNil(s.selectMaskDraft);XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],128)
   }
   @MainActor func testFeatureAPIExportHoverSelectionAndStrictParameters() async throws {
     let h=AutomationTests()
@@ -140,7 +140,7 @@ extension PeopleWorkflowTests {
       let subset=json.filter{["revision","peopleSelection","peopleMasks"].contains($0.key)},decoded=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:subset));XCTAssertNoThrow(try BrushAPI.merge(decoded,schema:PeopleAPI.resultSchema))
       let cache=s.peopleWorkspace.cacheID.uuidString
       let hover=try await h.edit(service,document,"selection.hoverPerson",["cacheID":cache,"instanceID":2,"feature":"hair"]);XCTAssertEqual(hover,200);XCTAssertEqual(s.peopleWorkspace.hoveredFeature,.hair)
-      let select=try await h.edit(service,document,"selection.selectPeople",["cacheID":cache,"instanceIDs":[2],"features":["hair"]]);XCTAssertEqual(select,200);XCTAssertEqual(s.document.selectionMask?.bytes[6*32+4],96);XCTAssertEqual(s.peopleWorkspace.selectedFeatures,[.hair])
+      let select=try await h.edit(service,document,"selection.selectPeople",["cacheID":cache,"instanceIDs":[2],"features":["hair"]]);XCTAssertEqual(select,200);XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+4],96);XCTAssertEqual(s.peopleWorkspace.selectedFeatures,[.hair])
       for features:[Any] in [[],["hair","hair"],["beard"],[1]] {let code=try await h.edit(service,document,"selection.selectPeople",["cacheID":cache,"instanceIDs":[2],"features":features]);XCTAssertEqual(code,400)}
       let invalid=try await h.edit(service,document,"selection.hoverPerson",["cacheID":cache,"instanceID":2,"feature":"beard"]);XCTAssertEqual(invalid,400)
     }
@@ -148,7 +148,7 @@ extension PeopleWorkflowTests {
   @MainActor func testFeatureFailureRetainsWholePeopleAndCancellationDiscardsBothModels() async throws {
     let s=try store();defer{stop(s)};s.peopleFeaturesDetector=PeopleFeaturesFixture(fail:true)
     s.requestPeople();await s.peopleWorkspace.task?.value;XCTAssertNotNil(s.peopleWorkspace.scene?.featureError);XCTAssertEqual(s.peopleWorkspace.scene?.availableFeatures,[.wholePerson])
-    await s.selectPeople([2],features:[.wholePerson])?.value;XCTAssertEqual(s.document.selectionMask?.bytes[6*32+6],255)
+    await s.selectPeople([2],features:[.wholePerson])?.value;XCTAssertEqual(try s.document.selectionMask?.bytes[6*32+6],255)
     s.peopleFeaturesDetector=PeopleFeaturesFixture(delay:.milliseconds(200));s.requestPeople(force:true);let pending=s.peopleWorkspace.task;await Task.yield();s.stopPeopleDetection();await pending?.value;XCTAssertNil(s.peopleWorkspace.scene);XCTAssertFalse(s.peopleWorkspace.busy)
     let h=AutomationTests()
     try await h.withService(actions:ActionLibrary(),skies:SkyLibrary(),pressedMouseButtons:{0}) {service,document in

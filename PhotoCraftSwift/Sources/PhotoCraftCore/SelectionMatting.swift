@@ -13,7 +13,7 @@ public enum SelectionMatting {
       [edge,excluded].allSatisfy({ $0 == nil || ($0!.width == w && $0!.height == h) }) else { throw CraftError.invalid("Refinement canvas sizes differ.") }
     try Task.checkCancellation()
     if p.neutral && edge?.bounds == nil { return mask }
-    let input = mask.bytes.map { Float($0)/255 }; var result = input
+    let input = (try mask.bytes).map { Float($0)/255 }; var result = input
     let radius = max(p.radius,edge?.bounds == nil ? 0 : 5)
     if radius > 0 {
       let r = min(64,max(1,Int(ceil(radius)))), halo = max(2*r+2,Int(ceil(radius))+2)
@@ -38,8 +38,8 @@ public enum SelectionMatting {
           let local = widths.map { min(Float(radius),max(1.5,$0[j])) } ?? Float(radius)
           var k = min(1,max(0,local+1-distance[j]))
           // Manual refinement extends the band; erase protects the original edge.
-          if let edge { k = max(k,Float(edge.bytes[i])/255) }
-          if let excluded { k *= 1-Float(excluded.bytes[i])/255 }
+          if let edge { k = max(k,Float(edge.byte(at:i))/255) }
+          if let excluded { k *= 1-Float(excluded.byte(at:i))/255 }
           result[i] = min(1,max(0,m[j]+(q[j]-m[j])*k))
         } }
       } }
@@ -63,14 +63,14 @@ public enum SelectionMatting {
     let w = source.width, h = source.height, n = w*h
     var pixels = [Pixel](); pixels.reserveCapacity(n)
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w { pixels.append(source.depth == .f32 ? source.linearPixel(x:x,y:y) : source.pixel(x:x,y:y)) } }
-    let weights = (0..<n).map { mask.bytes[$0] >= 250 ? pixels[$0].a : 0 }
+    let weights = (0..<n).map { mask.byte(at:$0) >= 250 ? pixels[$0].a : 0 }
     let radius = max(3,Int(ceil(p.radius)))
     let nearW = try MattingFilters.box(weights,w,h,radius), farW = try MattingFilters.box(weights,w,h,radius*4)
     let near = try (0..<3).map { c in try MattingFilters.box((0..<n).map { pixels[$0].rgb[c]*weights[$0] },w,h,radius) }
     let far = try (0..<3).map { c in try MattingFilters.box((0..<n).map { pixels[$0].rgb[c]*weights[$0] },w,h,radius*4) }
     var out = source
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
-      let i = y*w+x, a = Float(mask.bytes[i])/255
+      let i = y*w+x, a = Float(mask.byte(at:i))/255
       guard a > 0.02, a < 0.98 else { continue }
       let den = nearW[i] > 1e-5 ? nearW[i] : farW[i]
       guard den > 1e-5 else { continue }

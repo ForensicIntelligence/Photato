@@ -1,0 +1,256 @@
+{
+  "step": 287,
+  "status": "Software qualified on optimized arm64 plus translated Intel component replay; native/Photoshop/platform gates open",
+  "run": "artifacts/runs/20261031T060148Z-287-paged-document-geometry",
+  "prior_native_evidence": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/prior286-geometry01",
+  "independent_raw_maps": "Tests/PhotoCraftCoreTests/Fixtures/paged-geometry/linear-grid.json",
+  "prior_srgb_maps": "Tests/PhotoCraftCoreTests/Fixtures/paged-geometry/prior286.json",
+  "implementation": {
+    "maximum_dimension": 300000,
+    "maximum_logical_pixels": 90000000000,
+    "maximum_patch_pixels": 131072,
+    "sparse_fast_path_source_tiles": 1024,
+    "exact_grid_raw_bits": true,
+    "preserves_source_encoding": true,
+    "paged_channels": true,
+    "constant_canvas_borders": "Implicit majority value, shared constant tiles and streamed boundary descriptors.",
+    "large_composite": "Ungrouped raster/fill stacks, integer translations and document-aligned unfeathered numeric raster masks, including inversion/density.",
+    "linear_mask_coverage": "Matches existing encoded MaskSampler view, including linear-stored masks."
+  },
+  "api": {
+    "operations": [
+      "document.resize",
+      "document.canvasSize",
+      "document.rotate",
+      "document.resolution"
+    ],
+    "typed_command_count_unchanged": true,
+    "new_adobe_routes": 0,
+    "state": "Existing storage/history/revision state; new geometry.largeRGB policy metadata."
+  },
+  "pending": [
+    "Native/Photoshop acceptance after manual unlock.",
+    "Dense nonrectangular selection coverage and mode-specific limits.",
+    "General large composition: groups/clipping/affine/vector/feathered/offset masks and other content.",
+    "Full dense90GP/content/recovery/physical supported-platform qualification, exact Photoshop kernels/variants and earlier Intel full-suite failures."
+  ],
+  "goal_complete": false,
+  "increment_complete": false,
+  "focused01": {
+    "tests": 52,
+    "assertion_failures": 15,
+    "unexpected": 0,
+    "all_new_core_tests_passed": true,
+    "root_cause": "Downstream maximum masked preview rejection; later API/history actions blocked by error state.",
+    "repair_pending": "Source02 repair passes55 focused and2890 full tests; additional Source03 mask encoding repair separately qualifies."
+  },
+  "full": {
+    "tests": 2890,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 308.537,
+    "log": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/full02.log",
+    "source_manifest": "source03.json"
+  },
+  "focused": {
+    "tests": 55,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 4.584,
+    "log": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/focused03.log",
+    "source_manifest": "source03.json"
+  },
+  "source_manifest": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/source03.json",
+  "source_inputs": 2610,
+  "candidate": {
+    "app": "/private/tmp/Photato-Geometry-Candidate-287-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "467be887360161a5a628296de933d4ec702127ef4925deb330e56c8931846c32",
+    "tested_binary_sha256": "afd791049904bb61d857800ac806eb70323204705aaada4b8f844c4a58b8af26",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Geometry-Candidate-287.zip",
+    "zip_sha256": "5bee6e468adddc41b6605c04247e38c9a0932a534c26030489e18af32bd861f0",
+    "zip_bytes": 38900971,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate287-check-sgaazv5x/Photato-Geometry-Candidate-287-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access": {
+    "recorded_at_utc": "2026-10-31T07:04:09.702426+00:00",
+    "direct_existing_normal283_ax": "cgWindowNotFound",
+    "native_inventory": "Mac locked; automatic unlock could not unlock it. Native app inventory empty. Manual unlock required.",
+    "method": "cua_repl: existing normal283.getAXState(), then cua.getState() after all compiler/test workers exited.",
+    "candidate_launched": false,
+    "normal_preview_replaced": false,
+    "native_acceptance": false,
+    "physical_modifier_fidelity": false,
+    "user_unlock_request_already_pending": true
+  },
+  "correspondence": {
+    "source_manifest": "source03.json",
+    "srgb_vectors": 36,
+    "prior286_and_both_architectures_exact": true,
+    "results": [
+      {
+        "file": "16 bit-flip-Bicubic.rgba",
+        "sha256": "1709b2153ca7a02ea248cdfedaced3049fdc1b691dfb0f7f670f522c0e206ffa"
+      },
+      {
+        "file": "16 bit-flip-Bilinear.rgba",
+        "sha256": "1709b2153ca7a02ea248cdfedaced3049fdc1b691dfb0f7f670f522c0e206ffa"
+      },
+      {
+        "file": "16 bit-flip-Nearest-Neighbor.rgba",
+        "sha256": "a6eebe53335ee6aab32b0a5253dc953c73efedb20e152ecd2a7a1cbcbb219231"
+      },
+      {
+        "file": "16 bit-identity-Bicubic.rgba",
+        "sha256": "5c73bd1527110705c9ae356a0e698969f79b2217155d01d61b06cc74c4ecaf21"
+      },
+      {
+        "file": "16 bit-identity-Bilinear.rgba",
+        "sha256": "5c73bd1527110705c9ae356a0e698969f79b2217155d01d61b06cc74c4ecaf21"
+      },
+      {
+        "file": "16 bit-identity-Nearest-Neighbor.rgba",
+        "sha256": "2ef40f069b6c0d6a4219b83c671caadaa537c8def1342514abbdcf9ff63261b7"
+      },
+      {
+        "file": "16 bit-rotate-Bicubic.rgba",
+        "sha256": "adc1dc87db99529d32da0b6991378e9d63fe9f636ba2700b305857b8b065888c"
+      },
+      {
+        "file": "16 bit-rotate-Bilinear.rgba",
+        "sha256": "f45850b8be1bc76b1a2b571aa7ca1afe301caf48a5052c0036911f824a890ec5"
+      },
+      {
+        "file": "16 bit-rotate-Nearest-Neighbor.rgba",
+        "sha256": "5fd524fe8f600d2c88bafa1a0a1dd26e7c8a5403f45a8c9b319cd12a5ddfa758"
+      },
+      {
+        "file": "16 bit-scale-Bicubic.rgba",
+        "sha256": "c33dfd4dba55ef27b7a04045ea89fc8d8069f673dc1d9ada8b1a20319696429b"
+      },
+      {
+        "file": "16 bit-scale-Bilinear.rgba",
+        "sha256": "2d4b72a6c97e9c16018687c7d1985a29795bac840b210885f041c9185e80ee9b"
+      },
+      {
+        "file": "16 bit-scale-Nearest-Neighbor.rgba",
+        "sha256": "61ba545e25a6e1e57668c5be858010499bbbea1f1a8864539b761a0dac24ad06"
+      },
+      {
+        "file": "32 bit-flip-Bicubic.rgba",
+        "sha256": "119c86ce591974e7054955e46d6230270c8320cc847b562dbde58cd911a39e8f"
+      },
+      {
+        "file": "32 bit-flip-Bilinear.rgba",
+        "sha256": "119c86ce591974e7054955e46d6230270c8320cc847b562dbde58cd911a39e8f"
+      },
+      {
+        "file": "32 bit-flip-Nearest-Neighbor.rgba",
+        "sha256": "4862c8a40fe8649c1d282a18d30df1f3a12c63e804c0b13ef3f198b8de1ffbc8"
+      },
+      {
+        "file": "32 bit-identity-Bicubic.rgba",
+        "sha256": "5ee9bd6b3e015eef2039fbcd0805b2cb90f533c92296bd623ee473122e0b2e3d"
+      },
+      {
+        "file": "32 bit-identity-Bilinear.rgba",
+        "sha256": "5ee9bd6b3e015eef2039fbcd0805b2cb90f533c92296bd623ee473122e0b2e3d"
+      },
+      {
+        "file": "32 bit-identity-Nearest-Neighbor.rgba",
+        "sha256": "25068af4183f4c24d768e0d753e6940d72563c5cd8cc8e20f92d758a26fa0c0e"
+      },
+      {
+        "file": "32 bit-rotate-Bicubic.rgba",
+        "sha256": "2041abd48e735970ac4f8dee26b9479991fd3bed7d2d58b93cd49af27a38d15d"
+      },
+      {
+        "file": "32 bit-rotate-Bilinear.rgba",
+        "sha256": "1ddbfbc1ff0547d3a736be2b119736c5295344dbc29123da6dbea0c9dfadb830"
+      },
+      {
+        "file": "32 bit-rotate-Nearest-Neighbor.rgba",
+        "sha256": "7a95cfe2a3c43441bceb36bc3c6af0003f95bf19450383fac36f96a927fdd392"
+      },
+      {
+        "file": "32 bit-scale-Bicubic.rgba",
+        "sha256": "8b2dbedf03f330688cdfe5f372075f778254294eba9b5706890eaa848bd5f57e"
+      },
+      {
+        "file": "32 bit-scale-Bilinear.rgba",
+        "sha256": "1f42359358fa5bca70a0705ed34135197a33213bd2b64958ecc2ab7b4baf8c39"
+      },
+      {
+        "file": "32 bit-scale-Nearest-Neighbor.rgba",
+        "sha256": "325d228fd706eabae437036332195c568a46b7434df5956f2e174bd5a55d37a0"
+      },
+      {
+        "file": "8 bit-flip-Bicubic.rgba",
+        "sha256": "c851ac1cfa9fd083ec965ffa6c84749d12eb69f3323177b75a2bbd648db63783"
+      },
+      {
+        "file": "8 bit-flip-Bilinear.rgba",
+        "sha256": "c851ac1cfa9fd083ec965ffa6c84749d12eb69f3323177b75a2bbd648db63783"
+      },
+      {
+        "file": "8 bit-flip-Nearest-Neighbor.rgba",
+        "sha256": "ddd9141f15abcd12bd85f676867af7ab6388666845c7d11a7bacab4d2d2e1321"
+      },
+      {
+        "file": "8 bit-identity-Bicubic.rgba",
+        "sha256": "9b06ede25c1b81fba580e46b03b5615d0dd012caa5287ab6720231d0a916985e"
+      },
+      {
+        "file": "8 bit-identity-Bilinear.rgba",
+        "sha256": "9b06ede25c1b81fba580e46b03b5615d0dd012caa5287ab6720231d0a916985e"
+      },
+      {
+        "file": "8 bit-identity-Nearest-Neighbor.rgba",
+        "sha256": "3df74e828121507d307b8c61e8c604a8d5b8250f9e86934ad64e4246d70c0af0"
+      },
+      {
+        "file": "8 bit-rotate-Bicubic.rgba",
+        "sha256": "51a35d2321f0b8de3caaa0fb9c33a2e8efe339e86f83366044dc3bdec501950e"
+      },
+      {
+        "file": "8 bit-rotate-Bilinear.rgba",
+        "sha256": "0ecfaa5bd8c682e7a38ad7822133e0a26cf81d4b27864788099377f387b710e1"
+      },
+      {
+        "file": "8 bit-rotate-Nearest-Neighbor.rgba",
+        "sha256": "7f362e73869fbcc111c158b8d9ac10039de56762c6a61b6721ebb6db3c0f2a2a"
+      },
+      {
+        "file": "8 bit-scale-Bicubic.rgba",
+        "sha256": "a4995e81619c45dacff80ce6b65f94b1ccb955147d788fd623ac1d28dc69327b"
+      },
+      {
+        "file": "8 bit-scale-Bilinear.rgba",
+        "sha256": "3f005bab23c91078d98d75574c064724e796a22133e0d4ddc4414013c6f9e4a2"
+      },
+      {
+        "file": "8 bit-scale-Nearest-Neighbor.rgba",
+        "sha256": "8f8f91eee4b196e76d043ecb46f2f80d5b32fb74fc992c538679731c10d5271a"
+      }
+    ],
+    "linear_identity_bits_and_encoding_exact": true,
+    "linear_stored_mask_alpha_bits_small_and_maximum": [
+      1060913242,
+      1060913242
+    ],
+    "maximum_masked_and_translated_extension": true,
+    "intel_translated_not_physical": true,
+    "full_intel_suite_rerun": false
+  }
+}

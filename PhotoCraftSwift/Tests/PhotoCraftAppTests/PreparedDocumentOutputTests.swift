@@ -7,6 +7,24 @@ import XCTest
 @testable import PhotoCraft
 
 final class PreparedDocumentOutputTests: XCTestCase {
+  func testActualLargePSBPreparedCopyRetainsAllBytesBeyondOld512MiBBoundary() throws {
+    let folder=try DocumentPersistenceTests().directory();defer{try? FileManager.default.removeItem(at:folder)}
+    var model=try CraftDocument(width:8000,height:5000,depth:.u16)
+    model.layers[0].content = .raster(try Surface(width:8000,height:5000,depth:.u16,fill:Pixel(0.25,0.5,0.75,1)))
+    let options=RasterEncodingOptions(psdLayerCompression:.raw,psdCompositeCompression:.raw)
+    let prepared=try DocumentIO.prepareOutput(model,format:.psb,persistence:false,options:options)
+    XCTAssertGreaterThan(prepared.count,PSDCodec.maximumInputBytes)
+    let destination=folder.appendingPathComponent("large-copy.psb");try Data([9,8,7]).write(to:destination)
+    try prepared.write(to:destination)
+    XCTAssertEqual(try destination.resourceValues(forKeys:[.fileSizeKey]).fileSize,prepared.count)
+    guard case .file(let staged)=prepared else {return XCTFail("Expected streamed staging")}
+    let a=try FileHandle(forReadingFrom:staged.url),b=try FileHandle(forReadingFrom:destination)
+    defer{try? a.close();try? b.close()}
+    while let left=try a.read(upToCount:65536),!left.isEmpty {
+      XCTAssertEqual(try b.read(upToCount:65536),left)
+    }
+    XCTAssertTrue(try b.read(upToCount:1)?.isEmpty ?? true)
+  }
   func testPreparedFileLifetimeAndCopyAreBoundedAndByteIdentical() throws {
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }

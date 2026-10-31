@@ -29,6 +29,17 @@ extension ChannelCommand {
       guard pixels.width == d.width, pixels.height == d.height else { throw CraftError.invalid("Selection/channel canvas sizes differ.") }
       var value = try id.map { try d.channel(.alpha($0)) } ?? AlphaChannel(name:name ?? d.suggestedChannelName,pixels:Surface(width:d.width,height:d.height,depth:d.depth,fill:.black))
       if let name { value.name = name }
+      if d.width>Surface.maximumDensePixels/d.height {
+        let encoded=pixels.colorEncoding == .linearRGB ? try pixels.mappedStoredSamples(encoding:.sRGB) {SRGBTransfer.encoded($0)}:pixels
+        let out=try value.pixels.combiningStoredSamples(with:encoded) {old,new in
+          let v:Float,n=unit(new.r)
+          switch mode {case .replace:v=n;case .add:v=max(old.r,n);case .subtract:v=max(0,old.r-n);case .intersect:v=min(old.r,n)}
+          return Pixel(v,v,v).quantized(d.depth)
+        }
+        value.pixels=try out.retaggedCoverageStorage(depth:d.depth)
+        if let id {try d.setChannel(value,at:.alpha(id))}else{try ChannelCommand.create(value).apply(to:&d)}
+        break
+      }
       var out = value.pixels
       for y in 0..<d.height { try Task.checkCancellation(); for x in 0..<d.width {
         let old = value.pixels.pixel(x:x,y:y).r, new = unit(pixels.pixel(x:x,y:y).r)
@@ -48,7 +59,7 @@ extension ChannelCommand {
         d.setCoverageSelection(nil)
       } else if let channel = d.quickMask {
         let mask = try channel.selection(); d.quickMask = nil
-        d.setCoverageSelection(mask.bytes.allSatisfy { $0 == 255 } ? nil:mask)
+        d.setCoverageSelection((try mask.isFullCoverage) ? nil:mask)
       }
     case .stroke(let target,let points,let brush):
       var value = try d.channel(target), brush = brush

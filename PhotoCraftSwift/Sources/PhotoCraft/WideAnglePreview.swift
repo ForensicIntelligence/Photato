@@ -64,6 +64,9 @@ struct WideAnglePreview:View {
           var line=Path();for (i,p) in pending.enumerated() { let q=coordinates.screen(p);if i==0 { line.move(to:q) } else { line.addLine(to:q) };context.fill(Path(ellipseIn:CGRect(x:q.x-3,y:q.y-3,width:6,height:6)),with:.color(.yellow)) }
           context.stroke(line,with:.color(.yellow),lineWidth:2)
         }
+      }.toolCursor { flags in
+        if model.tool == .hand { return pressed ? .closedHand:.openHand }
+        return .symbol("line.diagonal",model.tool == .constraint && hitConstraint == nil && flags.contains(.shift) ? .constrain:nil)
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
           pressed=true;initialPan=model.pan;frozen=coordinates;hitConstraint=nil;hitPoint=nil;start=coordinates.source(value.startLocation);end=start;model.beginGesture()

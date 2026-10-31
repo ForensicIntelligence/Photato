@@ -37,8 +37,8 @@ public enum ShapeRenderer {
     var output=try Surface(width:bounds.width,height:bounds.height,depth:document.depth)
     for y in 0..<bounds.height {try Task.checkCancellation();for x in 0..<bounds.width {
       let i=y*bounds.width+x,lx=x+bounds.x,ly=y+bounds.y
-      var pixel=fill.sample(lx,ly);pixel.a *= Float(fillMask.bytes[i])/255
-      if let strokeMask,strokeMask.bytes[i]>0 {var color=edge.sample(lx,ly);color.a *= Float(strokeMask.bytes[i])/255;pixel=Renderer.compositePixel(.normal,backdrop:pixel,source:color,opacity:1,depth:document.depth,x:lx,y:ly)}
+      var pixel=fill.sample(lx,ly);pixel.a *= Float(fillMask.byte(at:i))/255
+      if let strokeMask,strokeMask.byte(at:i)>0 {var color=edge.sample(lx,ly);color.a *= Float(strokeMask.byte(at:i))/255;pixel=Renderer.compositePixel(.normal,backdrop:pixel,source:color,opacity:1,depth:document.depth,x:lx,y:ly)}
       if pixel.a>0{output.setPixel(x:x,y:y,pixel)}
     }}
     return output

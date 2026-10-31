@@ -103,7 +103,7 @@ final class SelectionWorkflowTests: XCTestCase {
     await store.geometryTask?.value
     store.renderTask?.cancel()
     XCTAssertEqual(
-      store.document.selectionMask?.bytes.reduce(0) { $0 + Double($1) / 255 } ?? 0, 50,
+      try store.document.selectionMask?.bytes.reduce(0) { $0 + Double($1) / 255 } ?? 0, 50,
       accuracy: 0.05)
     XCTAssertTrue(canvas.polygonPoints.isEmpty)
     let before = store.document

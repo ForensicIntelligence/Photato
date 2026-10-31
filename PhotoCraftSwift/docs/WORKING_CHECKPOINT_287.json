@@ -1,0 +1,130 @@
+{
+  "step": 287,
+  "status": "software-qualified-native-acceptance-pending",
+  "run": "artifacts/runs/20261031T060148Z-287-paged-document-geometry",
+  "qualified_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "preserved_candidate286": "docs/WORKING_CHECKPOINT_286.json",
+  "goal_complete": false,
+  "increment_complete": false,
+  "native_acceptance": false,
+  "next": [
+    "Native/Photoshop acceptance after manual unlock; preserve normal283 and retained artwork.",
+    "Major Q01 dependencies: paged nonrectangular selection coverage and general large composition/remaining operation limits.",
+    "Full dense capacity/content/mode/recovery and physical supported-platform qualification; keep previous Intel numeric/hosted-focus failures open."
+  ],
+  "working_source": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/source03.json",
+  "source_inputs": 2610,
+  "focused01": {
+    "tests": 52,
+    "assertion_failures": 15,
+    "unexpected": 0,
+    "reason": "Large masked preview rendering sets an error after successful API geometry; repaired for Source02, qualification pending."
+  },
+  "focused02": {
+    "tests": 55,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 4.754
+  },
+  "prior_native_regression": {
+    "srgb_vectors": 36,
+    "exact": 36,
+    "linear_identity_bits_and_encoding_corrected": true
+  },
+  "intel_component_replay": {
+    "build_seconds": 46.91,
+    "vectors": 36,
+    "exact": 36,
+    "maximum_masked_preview": true,
+    "maximum_coloured_extension_preview": true,
+    "translated": true,
+    "full_suite": false,
+    "source_manifest": "source03.json",
+    "linear_mask_encoded_coverage_corrected": true
+  },
+  "source02_full": {
+    "tests": 2890,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 311.916
+  },
+  "recorded_at_utc": "2026-10-31T07:04:09.958901+00:00",
+  "full": {
+    "tests": 2890,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 308.537,
+    "log": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/full02.log",
+    "source_manifest": "source03.json"
+  },
+  "focused03": {
+    "tests": 55,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 4.584,
+    "log": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/focused03.log",
+    "source_manifest": "source03.json"
+  },
+  "package": {
+    "app": "/private/tmp/Photato-Geometry-Candidate-287-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "467be887360161a5a628296de933d4ec702127ef4925deb330e56c8931846c32",
+    "tested_binary_sha256": "afd791049904bb61d857800ac806eb70323204705aaada4b8f844c4a58b8af26",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/source03.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Geometry-Candidate-287.zip",
+    "zip_sha256": "5bee6e468adddc41b6605c04247e38c9a0932a534c26030489e18af32bd861f0",
+    "zip_bytes": 38900971,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate287-check-sgaazv5x/Photato-Geometry-Candidate-287-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access": {
+    "recorded_at_utc": "2026-10-31T07:04:09.702426+00:00",
+    "direct_existing_normal283_ax": "cgWindowNotFound",
+    "native_inventory": "Mac locked; automatic unlock could not unlock it. Native app inventory empty. Manual unlock required.",
+    "method": "cua_repl: existing normal283.getAXState(), then cua.getState() after all compiler/test workers exited.",
+    "candidate_launched": false,
+    "normal_preview_replaced": false,
+    "native_acceptance": false,
+    "physical_modifier_fidelity": false,
+    "user_unlock_request_already_pending": true
+  },
+  "frozen_input_backup": {
+    "source_manifest": "source03.json",
+    "files": 2610,
+    "archive": "frozen-source03.tar.gz",
+    "bytes": 49608621,
+    "sha256": "dc9f532224763bed6df85c3363550724234e2b85ba10f22b43a94d61d7993fae",
+    "scope": "Local immutable compiler/test input backup; not a source release."
+  },
+  "normal_preview_step": 283,
+  "source_publication_step": 281,
+  "compiler_test_workers_live": false,
+  "source03_correspondence": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/source03-correspondence01.json",
+  "integrity": {
+    "verified_current_inputs": 2610,
+    "frozen_members": 2610,
+    "verified_protected_assets": 18,
+    "frozen_sha256": "dc9f532224763bed6df85c3363550724234e2b85ba10f22b43a94d61d7993fae",
+    "candidate_binary_sha256": "467be887360161a5a628296de933d4ec702127ef4925deb330e56c8931846c32",
+    "candidate_zip_sha256": "5bee6e468adddc41b6605c04247e38c9a0932a534c26030489e18af32bd861f0",
+    "normal_preview_step": 283,
+    "compiler_test_workers_live": false
+  },
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T060148Z-287-paged-document-geometry/dashboard-status03.json",
+    "stale": false,
+    "warnings": 0,
+    "latest_milestone": 287,
+    "qualified_checkpoint": 283,
+    "workflow_ledger": "docs/FUNCTION_PHASES_287.json"
+  }
+}

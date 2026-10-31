@@ -302,7 +302,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         + (layer.style?.estimatedBytes ?? 0) + (layer.shape?.definition?.estimatedBytes ?? 0)
         + ((layer.vectorMask?.path.knotCount ?? 0) + (layer.frame?.customPath?.knotCount ?? 0)) * 64
         + (layer.sourceTags?.values.reduce(0) { $0 + $1.count } ?? 0)
-    } + (paths?.reduce(0) { $0 + $1.path.knotCount * 64 } ?? 0) + (selectionMask?.bytes.count ?? 0)
+    } + (paths?.reduce(0) { $0 + $1.path.knotCount * 64 } ?? 0) + (selectionMask?.allocatedBytes ?? 0)
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
       + (alphaChannels?.reduce(0) { $0 + $1.pixels.allocatedBytes + $1.name.utf8.count + 128 } ?? 0)
       + (quickMask?.pixels.allocatedBytes ?? 0)
@@ -378,7 +378,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     guard (alphaChannels?.count ?? 0) <= Self.maximumAlphaChannels, Set(channels.map(\.id)).count == channels.count else { throw CraftError.invalid("Channel limit or duplicate identifier.") }
     for channel in channels { try channel.validate(width:width,height:height,depth:depth) }
     var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
-      + (selectionMask?.bytes.count ?? 0) + knots * 64
+      + (selectionMask?.allocatedBytes ?? 0) + knots * 64
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
     guard bytes <= 1_073_741_824 else {
       throw CraftError.invalid("This document exceeds the current 1 GiB raster budget.")
@@ -465,6 +465,7 @@ public enum NativeArchive {
     var document: CraftDocument
   }
   public static func encode(_ document: CraftDocument) throws -> Data {
+    if document.minimumArchiveVersion>=64 {return try encodeChunked(document,minimumVersion:64)}
     try document.validate()
     let encoder = PropertyListEncoder()
     encoder.outputFormat = .binary

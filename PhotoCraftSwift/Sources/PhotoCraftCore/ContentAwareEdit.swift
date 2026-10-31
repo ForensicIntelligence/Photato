@@ -24,7 +24,7 @@ public struct ContentAwareEdit: Sendable {
     if output == .new {
       var patch = pixels
       for y in 0..<window.height { try Task.checkCancellation(); for x in 0..<window.width {
-        let a = Float(selection.bytes[(y+window.y)*selection.width+x+window.x])/255
+        let a = Float(selection.byte(at:(y+window.y)*selection.width+x+window.x))/255
         var p = original.depth == .f32 ? pixels.linearPixel(x:x,y:y):pixels.pixel(x:x,y:y); p.a *= a
         if original.depth == .f32 { patch.setLinearPixel(x:x,y:y,p) } else { patch.setPixel(x:x,y:y,p) }
       } }
@@ -38,7 +38,7 @@ public struct ContentAwareEdit: Sendable {
         for y in 0..<target.height { try Task.checkCancellation(); for x in 0..<target.width {
           let p = transform.point(Double(x)+0.5,Double(y)+0.5), ix = Int(floor(p.x)),iy = Int(floor(p.y))
           guard window.contains(ix,iy) else { continue }
-          let k = Float(selection.bytes[iy*selection.width+ix])/255; guard k > 0 else { continue }
+          let k = Float(selection.byte(at:iy*selection.width+ix))/255; guard k > 0 else { continue }
           let old = original.depth == .f32 ? target.linearPixel(x:x,y:y):target.pixel(x:x,y:y)
           if preserve && old.a == 0 { continue }
           let fill = original.depth == .f32 ? pixels.linearPixel(x:ix-window.x,y:iy-window.y):pixels.pixel(x:ix-window.x,y:iy-window.y)

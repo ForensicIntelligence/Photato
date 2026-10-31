@@ -25,7 +25,7 @@ enum PreparedDocumentOutput: Sendable {
     case .file(let file):
       let source = try FileHandle(forReadingFrom: file.url)
       defer { try? source.close() }
-      let output = try AtomicFileWriter(to: url, destinationHidden: destinationHidden)
+      let output = try AtomicFileWriter(to: url, maximumBytes: file.count, destinationHidden: destinationHidden)
       defer { output.discard() }
       while let bytes = try source.read(upToCount: AtomicFileWriter.chunkBytes), !bytes.isEmpty {
         try output.append(bytes)

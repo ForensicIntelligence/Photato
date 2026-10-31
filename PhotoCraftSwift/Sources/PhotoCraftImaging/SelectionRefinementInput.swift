@@ -32,14 +32,14 @@ public struct SelectionRefinementInput: Sendable {
   public func refined(settings: SelectionRefinement,strokes: [SelectionRefinementStroke] = [], initial: SelectionMask? = nil) throws -> SelectionMask {
     let input = initial ?? mask, w = guide.width, h = guide.height
     guard input.width == w, input.height == h, strokes.count <= 1024, strokes.reduce(0,{ $0+$1.points.count }) <= 16384 else { throw CraftError.invalid("Refinement brush limit exceeded or input size differs.") }
-    var bytes = input.bytes, edge = [UInt8](repeating:0,count:w*h), excluded = edge
+    var bytes = (try input.bytes), edge = [UInt8](repeating:0,count:w*h), excluded = edge
     var visits = 0
     for stroke in strokes {
       try stroke.validate()
       if stroke.tool == .lassoAdd || stroke.tool == .lassoSubtract {
         visits += w*h; guard visits <= 250_000_000 else { throw CraftError.invalid("Refinement brush work limit exceeded.") }
         let polygon = try SelectionMask.make(.polygon(stroke.points.map { SelectionPoint($0[0],$0[1]) }),width:w,height:h,antiAlias:true)
-        for i in bytes.indices { bytes[i] = stroke.tool == .lassoAdd ? max(bytes[i],polygon.bytes[i]) : min(bytes[i],255-polygon.bytes[i]) }
+        for i in bytes.indices { bytes[i] = stroke.tool == .lassoAdd ? max(bytes[i],polygon.byte(at:i)) : min(bytes[i],255-polygon.byte(at:i)) }
         continue
       }
       var coverage = [UInt8](repeating:0,count:w*h)
@@ -86,7 +86,7 @@ public struct SelectionRefinementInput: Sendable {
       var bytes = [UInt8](repeating:0,count:source.width*source.height)
       for y in 0..<source.height { try Task.checkCancellation(); for x in 0..<source.width {
         let p = layer.coordinateTransform.point(Double(x)+0.5,Double(y)+0.5), ix = Int(floor(p.x)), iy = Int(floor(p.y))
-        if ix >= 0, iy >= 0, ix < mask.width, iy < mask.height { bytes[y*source.width+x] = mask.bytes[iy*mask.width+ix] }
+        if ix >= 0, iy >= 0, ix < mask.width, iy < mask.height { bytes[y*source.width+x] = mask.byte(at:iy*mask.width+ix) }
       } }
       corrected = try SelectionMatting.decontaminate(source,mask:SelectionMask(width:source.width,height:source.height,bytes:bytes),settings:settings)
     }

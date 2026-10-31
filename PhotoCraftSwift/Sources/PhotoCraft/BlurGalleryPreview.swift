@@ -81,6 +81,9 @@ struct BlurGalleryPreview:View {
             context.fill(handle.kind == .center || handle.kind == .pathPoint ? Path(ellipseIn:rect):Path(rect),with:.color(handle.index==model.selected ? .orange:.white))
           }
         }
+      }.toolCursor { flags in
+        .symbol(model.mode == .path ? "point.topleft.down.curvedto.point.bottomright.up":"scope",
+          model.mode == .path && model.path != nil && flags.contains(.option) ? .add:nil)
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
         func normalized(_ p:CGPoint)->PathPoint { let q=PathPoint((p.x-offset.x)/scale,(p.y-offset.y)/scale).transformed(inverse);return .init(q.x/sourceSize.width,q.y/sourceSize.height) }
         if !pressed {

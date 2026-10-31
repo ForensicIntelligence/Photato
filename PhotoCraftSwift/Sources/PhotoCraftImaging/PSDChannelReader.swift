@@ -20,7 +20,7 @@ final class PSDChannelReader {
     _ source: PSDReader, width: Int, height: Int, depth: Int, channels: Int = 1,
     format: PSDFileFormat = .psd
   ) throws {
-    let expected = try PSDChannelCodec.byteCount(
+    let expected = try PSDChannelCodec.streamByteCount(
       width: width, height: height, depth: depth, channels: channels)
     self.source = source
     self.width = width
@@ -34,7 +34,7 @@ final class PSDChannelReader {
     case 1:
       lengths = try self.source.view(remainingRows * rowLengthBytes)
     case 2, 3:
-      zip = try PSDZIPReader(self.source, expected: expected)
+      zip = try PSDZIPReader(self.source, expected: expected, largeStream: true)
     default:
       throw CraftError.unsupported("Unknown PSD channel compression \(compression).")
     }
@@ -87,9 +87,9 @@ final class PSDZIPReader {
   private var decoded = 0
   private let expected: Int
 
-  init(_ source: PSDReader, expected: Int) throws {
-    guard expected > 0, expected <= PSDChannelCodec.byteLimit,
-      source.remaining > 0, source.remaining <= PSDChannelCodec.byteLimit
+  init(_ source: PSDReader, expected: Int, largeStream: Bool = false) throws {
+    guard expected > 0, expected <= (largeStream ? Surface.maxPixels*4*56:PSDChannelCodec.byteLimit),
+      source.remaining > 0, source.remaining <= (largeStream ? PSDCodec.maximumFileBytes:PSDChannelCodec.byteLimit)
     else { throw CraftError.invalid("Invalid PSD ZIP size.") }
     self.source = source
     self.expected = expected
@@ -104,7 +104,8 @@ final class PSDZIPReader {
   }
 
   func read(_ count: Int) throws -> [UInt8] {
-    guard count > 0, count <= expected - decoded else {
+    try Task.checkCancellation()
+    guard count > 0, count <= Surface.maxDimension*4, count <= expected - decoded else {
       throw CraftError.invalid("PSD ZIP output exceeds its declared size.")
     }
     var output = [UInt8](repeating: 0, count: count)

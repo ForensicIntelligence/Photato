@@ -25,6 +25,7 @@ extension EditorStore {
     layerMaskView = nil
     renderedMaskView = nil
     maskViewImage = nil
+    maskViewRegion = nil
   }
   func canUseMaskThumbnail(_ id: UUID, kind: MaskThumbnailKind) -> Bool {
     guard canBeginLayerCreation, let layer = document.layers.first(where: { $0.id == id })

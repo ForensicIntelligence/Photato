@@ -1,0 +1,75 @@
+{
+  "step": 285,
+  "status": "arm64-software-qualified; Intel Core replay passes; native UI and full platform/fidelity gates open",
+  "recorded_at_utc": "2026-10-31T04:48:17.164411+00:00",
+  "source_manifest": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/source02.json",
+  "previous_reproduction": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/ordinal-cache-amplification01/result01.json",
+  "scope": "Persistent sample reuse for repeated native63 raster ordinals during one paged decode. No change to portable document version or sample encoding.",
+  "implementation": {
+    "source": "Sources/PhotoCraftCore/NativeMappedTileCache.swift",
+    "slot_bytes": 8,
+    "slot_count": "Validated native63 catalog record count, including non-raster blobs; unused slots remain sparse zeros.",
+    "mapping": "Readonly private unlinked file; checked pwrite handles storage exhaustion without writable-mmap publication.",
+    "heap_admission": "512 cache metadata plus128 per retained64MiB sample segment; existing use-bitset and Surface/front-cache policies remain. Not RSS or physical disk accounting.",
+    "lifetime": "Cache discarded after decode; returned surfaces retain immutable sample segments.",
+    "owned_decode": "Unchanged bounded256-entry cache."
+  },
+  "api": {
+    "discovery": "pagedRasterInput.nativePagedInput.tileOrdinalReuse",
+    "desktop_and_native_http": "Same decoder, validation and failure behavior; no new command/route.",
+    "adobe": "No native63 cache route in pinned Adobe contract; supported Adobe jobs keep their existing formats and limits."
+  },
+  "pending": [
+    "After manual unlock inspect owned807-reference native63 opening/painting/Undo/Redo/SaveAs/reopen in isolated285; preserve normal283 and retained artwork.",
+    "Keep284 Intel strict numerical and hosted-focus failures, physical/platform acceptance and full capacity/Photoshop gates open.",
+    "Continue major Q01 capacity work: streamed metadata, mip previews, large PSB, durable recovery and general operation admission.",
+    "Full source publication awaits a stable handoff; last published source280 remains unchanged."
+  ],
+  "goal_complete": false,
+  "increment_complete": false,
+  "focused": {
+    "tests": 48,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 33.3,
+    "log": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/focused02.log",
+    "sha256": "b3d03b367d2fb7f182d943afa061a8828ec07bc81cad6d1f1126b4a5575d1ca3",
+    "source_manifest": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/source02.json"
+  },
+  "independent_arm64": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/independent01/result01.json",
+  "independent_intel_rosetta": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/intel-core01/result01.json",
+  "test_fixture_correction": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/source01-to02.json",
+  "full_arm64": {
+    "tests": 2871,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 241.174,
+    "log": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/full01.log",
+    "sha256": "c1d68d87fc875a91e01e7bdcd4e8b7918900f58f83153e911e2dbc7e4f9ac93e",
+    "source_manifest": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/source02.json"
+  },
+  "package": {
+    "app": "/private/tmp/Photato-Capacity-Candidate-285-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "a31f5670897c81fd9358d68dcec15b55f5bb4310ed349e9fe3f6045f74bac591",
+    "tested_binary_sha256": "16544764577e26e2d458b5a47c7cb9e996fd61cc596aa825e02adf8b529db500",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Capacity-Candidate-285.zip",
+    "zip_sha256": "681ad077c0bb7b6cc4ebc2541aa075ca9c177a713fdf831cb486ed141bc89287",
+    "zip_bytes": 38853959,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate285-check-wzaqq2k8/Photato-Capacity-Candidate-285-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_acceptance": false,
+  "native_access": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/native-access01.json",
+  "frozen_input_backup": "artifacts/runs/20261031T044446Z-285-native-ordinal-reuse/frozen-source02.json"
+}

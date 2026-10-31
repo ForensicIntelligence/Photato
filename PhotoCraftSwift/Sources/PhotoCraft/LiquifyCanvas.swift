@@ -10,17 +10,40 @@ struct LiquifyCanvas: NSViewRepresentable {
     _ = model.image; _ = model.originalImage; _ = model.field; _ = model.preview
     _ = model.showMask; _ = model.showMesh; _ = model.showBackdrop; _ = model.backdropOpacity
     _ = model.zoom; _ = model.pan; _ = model.size; _ = model.selectedFace; _ = model.settings
-    view.model = model; view.needsDisplay = true
+    _ = model.tool; _ = model.panTool
+    view.model = model; view.needsDisplay = true; view.refreshToolCursor()
   }
   static func dismantleNSView(_ view: LiquifyCanvasView,coordinator: ()) { view.stopDabs() }
 }
-@MainActor final class LiquifyCanvasView: NSView {
+@MainActor final class LiquifyCanvasView: ModifierCursorView {
+  override var toolCursor: ToolCursor {
+    guard let model else { return .unavailable }
+    if (panning && cursorPointerDown) || (!cursorPointerDown && (spaceHeld || model.panTool)) { return cursorPointerDown ? .closedHand : .openHand }
+    let tool = model.stroke?.tool ?? model.resolvedTool(alternate:cursorModifiers.contains(.option))
+    switch tool {
+    case .freeze: return .symbol("snowflake",.add)
+    case .thaw: return .symbol("snowflake",.subtract)
+    case .twirlCw: return .symbol("arrow.clockwise")
+    case .twirlCcw: return .symbol("arrow.counterclockwise")
+    case .pucker: return .symbol("arrow.down.right.and.arrow.up.left")
+    case .bloat: return .symbol("arrow.up.left.and.arrow.down.right")
+    case .lassoMask:
+      let subtract = model.stroke.map { ($0.amount ?? 1) == 0 } ?? cursorModifiers.contains(.option)
+      return .symbol("lasso",subtract ? .subtract:.add)
+    case .forwardWarp: return .symbol("hand.draw")
+    case .reconstruct: return .symbol("arrow.uturn.backward")
+    case .smooth: return .symbol("drop")
+    case .pushLeft: return .symbol("arrow.left")
+    case .reconstructAll,.freezeAll,.thawAll,.invertFreeze: return .unavailable
+    }
+  }
+
   weak var model: LiquifyWorkspace?
   override var isFlipped: Bool { true }
   override var acceptsFirstResponder: Bool { true }
   private var tracking: NSTrackingArea?
   private var cursorPoint: CGPoint?, previous: CGPoint?
-  private var panning = false, spaceHeld = false
+  var panning = false
   private var dabTask: Task<Void,Never>?
   var imageRect: CGRect {
     guard let m = model, let image = m.originalImage else { return .zero }
@@ -96,20 +119,22 @@ struct LiquifyCanvas: NSViewRepresentable {
   }
   private func pressure(_ event: NSEvent) -> Double { event.subtype == .tabletPoint ? max(0,Double(event.pressure)) : 1 }
   override func mouseDown(with event: NSEvent) {
+    beginCursorGesture(event); defer { refreshToolCursor() }
     guard let m = model, m.ready else { return }; window?.makeFirstResponder(self)
     let p = point(event); previous = p; cursorPoint = p; panning = m.panTool || spaceHeld
     guard !panning, imageRect.contains(p) else { return }
     let q = coordinates(p); m.begin(x:q.x,y:q.y,pressure:pressure(event),alternate:event.modifierFlags.contains(.option)); startDabs()
   }
   override func mouseDragged(with event: NSEvent) {
+    updateCursorModifiers(event.modifierFlags)
     guard let m = model else { return }; let p = point(event); cursorPoint = p
     if panning, let previous { m.pan.width += p.x-previous.x; m.pan.height += p.y-previous.y }
     else { let q = coordinates(p); m.drag(x:q.x,y:q.y,pressure:pressure(event)) }
     previous = p; needsDisplay = true
   }
-  override func mouseUp(with event: NSEvent) { stopDabs(); model?.end(); previous = nil; panning = false; needsDisplay = true }
-  override func mouseMoved(with event: NSEvent) { cursorPoint = point(event); needsDisplay = true }
-  override func mouseExited(with event: NSEvent) { cursorPoint = nil; needsDisplay = true }
+  override func mouseUp(with event: NSEvent) { defer { endCursorGesture(event) }; stopDabs(); model?.end(); previous = nil; panning = false; needsDisplay = true }
+  override func mouseMoved(with event: NSEvent) { super.mouseMoved(with:event); cursorPoint = point(event); needsDisplay = true }
+  override func mouseExited(with event: NSEvent) { super.mouseExited(with:event); cursorPoint = nil; needsDisplay = true }
   override func scrollWheel(with event: NSEvent) {
     guard let m = model else { return }
     if event.modifierFlags.contains(.option) { m.zoom = min(16,max(0.125,m.zoom*exp(-event.scrollingDeltaY*0.01))) }
@@ -122,6 +147,7 @@ struct LiquifyCanvas: NSViewRepresentable {
     stopDabs(); if event.modifierFlags.contains(.shift) { model?.redo() } else { model?.undo() }; return true
   }
   override func keyDown(with event: NSEvent) {
+    updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard let m = model, let key = event.charactersIgnoringModifiers?.lowercased() else { return }
     let map: [String:LiquifyTool] = ["w":.forwardWarp,"r":.reconstruct,"e":.smooth,"c":.twirlCw,"s":.pucker,"b":.bloat,"o":.pushLeft,"f":.freeze,"d":.thaw,"l":.lassoMask]
     if key == " " { spaceHeld = true }

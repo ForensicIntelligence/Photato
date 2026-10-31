@@ -109,15 +109,20 @@ public enum CanvasTurn: String, CaseIterable, Sendable, Codable {
 }
 
 public enum RasterGeometry {
+  public static let maximumPatchPixels = 2048*64
+  public static let sparseGridSourceTileLimit = 1024
   /// Samples at pixel centers, interpolating premultiplied alpha to avoid color fringes.
   public static func sample(
     _ s: Surface, x: Double, y: Double, method: Resampling, clampEdges: Bool = false
   ) -> Pixel {
+    sample(s,x:x,y:y,method:method,clampEdges:clampEdges,encoding:.sRGB)
+  }
+  private static func sample(_ s:Surface,x:Double,y:Double,method:Resampling,
+    clampEdges:Bool,encoding:SurfaceColorEncoding) -> Pixel {
     guard x.isFinite, y.isFinite, abs(x) < 10_000_000, abs(y) < 10_000_000 else { return .clear }
     func pixel(_ ix: Int, _ iy: Int) -> Pixel {
-      s.pixel(
-        x: clampEdges ? min(s.width - 1, max(0, ix)) : ix,
-        y: clampEdges ? min(s.height - 1, max(0, iy)) : iy)
+      let x=clampEdges ? min(s.width-1,max(0,ix)):ix,y=clampEdges ? min(s.height-1,max(0,iy)):iy
+      return encoding == .linearRGB ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)
     }
     if method == .nearest { return pixel(Int(floor(x)), Int(floor(y))) }
     let sx = x - 0.5
@@ -154,24 +159,72 @@ public enum RasterGeometry {
     _ surface: Surface, transform: Transform2D, bounds: IntRect, method: Resampling,
     clampEdges: Bool = false
   ) throws -> Surface {
+    try render(surface,transform:transform,bounds:bounds,method:method,clampEdges:clampEdges,channel:false)
+  }
+  static func renderChannel(_ surface:Surface,transform:Transform2D,bounds:IntRect,method:Resampling) throws -> Surface {
+    try render(surface,transform:transform,bounds:bounds,method:method,clampEdges:false,channel:true)
+  }
+  private static func render(_ surface:Surface,transform:Transform2D,bounds:IntRect,method:Resampling,
+    clampEdges:Bool,channel:Bool) throws -> Surface {
+    try Task.checkCancellation()
+    try surface.validated()
     let inverse = try transform.inverted()
-    guard bounds.width > 0, bounds.height > 0, bounds.width <= Surface.maximumDensePixels / bounds.height else {
-      throw CraftError.unsupported("Large raster resampling needs tiled geometry processing, which is not yet available.")
+    let encoding:SurfaceColorEncoding=channel ? .sRGB:surface.colorEncoding
+    var output=try Surface(width:bounds.width,height:bounds.height,depth:surface.depth,
+      fill:channel ? .black:.clear,colorEncoding:encoding)
+    if method == .nearest,let grid=RasterGridMap(transform,inverse:inverse,width:surface.width,height:surface.height,bounds:bounds) {
+      return try surface.permutingGrid(grid,width:bounds.width,height:bounds.height)
     }
-    var output = try Surface(width: bounds.width, height: bounds.height, depth: surface.depth)
-    for y in 0..<bounds.height {
-      try Task.checkCancellation()
-      for x in 0..<bounds.width {
+    if channel,surface.tileCount==0,surface.defaultPixel.r==0 {return output}
+    let corners=[inverse.point(Double(bounds.x)+0.5,Double(bounds.y)+0.5),
+        inverse.point(Double(bounds.x)+Double(bounds.width)-0.5,Double(bounds.y)+0.5),
+        inverse.point(Double(bounds.x)+0.5,Double(bounds.y)+Double(bounds.height)-0.5),
+        inverse.point(Double(bounds.x)+Double(bounds.width)-0.5,Double(bounds.y)+Double(bounds.height)-0.5)]
+    let complete=corners.allSatisfy({$0.x>=0 && $0.y>=0 && $0.x<Double(surface.width) && $0.y<Double(surface.height)})
+    let usesSourceDefault=method == .nearest && complete
+    if usesSourceDefault {output=try surface.reframedImplicitValue(width:bounds.width,height:bounds.height)}
+    if surface.tileCount==0,usesSourceDefault {return output}
+    let sparse=surface.tileCount<=sparseGridSourceTileLimit && (usesSourceDefault || (channel ? surface.defaultPixel.r==0:surface.defaultPixel.hasSameBits(as:.clear)))
+    let supports:[IntRect]
+    if sparse {
+      supports=try surface.projectedGeometrySupport(transform,bounds:bounds,halo:method == .nearest ? 0:method == .bilinear ? 1:2)
+    } else {
+      let halo=channel ? (method == .nearest ? 0:method == .bilinear ? 1:2):0
+      let corners=[transform.point(Double(-halo),Double(-halo)),transform.point(Double(surface.width+halo),Double(-halo)),
+        transform.point(Double(-halo),Double(surface.height+halo)),transform.point(Double(surface.width+halo),Double(surface.height+halo))]
+      let x0=max(0,min(Double(bounds.width),floor(corners.map(\.x).min()!)-Double(bounds.x)-1))
+      let y0=max(0,min(Double(bounds.height),floor(corners.map(\.y).min()!)-Double(bounds.y)-1))
+      let x1=max(0,min(Double(bounds.width),ceil(corners.map(\.x).max()!)-Double(bounds.x)+1))
+      let y1=max(0,min(Double(bounds.height),ceil(corners.map(\.y).max()!)-Double(bounds.y)+1))
+      supports=[IntRect(x:Int(x0),y:Int(y0),width:Int(x1-x0),height:Int(y1-y0))]
+    }
+    let paged = bounds.width*bounds.height > Surface.maximumDensePixels || surface.mappedBytes > 0
+    let builder = paged ? try Surface.PagedBuilder(template:output):nil
+    let implicit=encoding == .linearRGB ? output.linearPixel(x:0,y:0):output.defaultPixel
+    for region in GeometryPatchRegions(width:bounds.width,height:bounds.height,rectangles:supports) {
+      let px=region.x,py=region.y
+      var patch=try output.reframedImplicitValue(width:region.width,height:region.height)
+      for dy in 0..<patch.height {
+        try Task.checkCancellation()
+        for dx in 0..<patch.width {
+        let x=px+dx,y=py+dy
         let p = inverse.point(
           Double(x) + Double(bounds.x) + 0.5, Double(y) + Double(bounds.y) + 0.5)
         // Never stretch edge pixels outside the transformed source rectangle.
-        guard p.x >= 0, p.y >= 0, p.x < Double(surface.width), p.y < Double(surface.height) else {
+        guard channel || (p.x >= 0 && p.y >= 0 && p.x < Double(surface.width) && p.y < Double(surface.height)) else {
           continue
         }
-        let pixel = sample(surface, x: p.x, y: p.y, method: method, clampEdges: clampEdges)
-        if pixel != .clear { output.setPixel(x: x, y: y, pixel) }
+        var pixel = sample(surface,x:p.x,y:p.y,method:method,clampEdges:clampEdges,encoding:encoding)
+        if channel {let v=unit(pixel.r);pixel=Pixel(v,v,v)}
+        if encoding == .linearRGB {
+          if !pixel.hasSameBits(as:implicit) {patch.setLinearPixel(x:dx,y:dy,pixel)}
+        } else if !pixel.hasSameBits(as:implicit) {patch.setPixel(x:dx,y:dy,pixel)}
+        }
       }
+      if let builder {try builder.append(patch,atX:px,atY:py)}
+      else {try output.importOwnedPatch(patch,atX:px,atY:py)}
     }
+    if let builder {return try builder.finish()}
     return output
   }
 }

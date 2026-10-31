@@ -1,0 +1,38 @@
+{
+  "provenance": "Procedural owned samples generated from the actual compiled qualified283 Core module before rebuilding284. Fixed document/layer UUIDs;123x97; explicit integer/HDR/signed-zero/partial-edge and empty-tile samples. No Adobe or user document content.",
+  "reference_run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/legacy-reference01",
+  "license": "MIT OR Apache-2.0, same as Photato",
+  "claim": "Regression of prior native/Surface serialization bytes only, not Photoshop byte equivalence.",
+  "files": [
+    {
+      "file": "native63-16 bit.photato",
+      "sha256": "e5e90b8de73dbe1e12736a09a3ba73dffca42df1d55720335ac146eb3a7be495",
+      "bytes": 1821
+    },
+    {
+      "file": "native63-32 bit.photato",
+      "sha256": "cc8ec77c1f33ce03dcb8286241d64b8fd1d8c1ad634340f49929f386e36f5599",
+      "bytes": 1839
+    },
+    {
+      "file": "native63-8 bit.photato",
+      "sha256": "c2bf64c36de6f2a670c44cab7a49948240c232c4c1ab98aba739f2dff55117f8",
+      "bytes": 1820
+    },
+    {
+      "file": "surface-16 bit.plist",
+      "sha256": "0fcdaee7d2e51e6e8a8ae6da4f0c75537b9b2368d42375bb280a00cf2baa4da9",
+      "bytes": 856
+    },
+    {
+      "file": "surface-32 bit.plist",
+      "sha256": "de40f3e5b592072ad8b477994a143de216d930651a9ccaabc45030c520781eeb",
+      "bytes": 874
+    },
+    {
+      "file": "surface-8 bit.plist",
+      "sha256": "60da16226166c60db3423e0fad126b59c17656eb3513dc0026b15e69c1e282bc",
+      "bytes": 855
+    }
+  ]
+}

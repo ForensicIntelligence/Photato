@@ -1,0 +1,84 @@
+{
+  "step": 284,
+  "status": "arm64-and-universal-build-qualified-intel-fidelity-and-native-ui-open",
+  "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index",
+  "qualified_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "working_source": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source08.json",
+  "source_inputs": 2516,
+  "goal_complete": false,
+  "increment_complete": false,
+  "candidate_verification": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/candidate-verification01.json",
+  "checks": {
+    "focused07": {
+      "tests": 268,
+      "failures": 0,
+      "seconds": 55.842,
+      "log_sha256": "bb60125a5879357aa32508af7a0f74421b9c647ef9a3237fc183ef558e7aefe2"
+    },
+    "performance07": {
+      "tests": 7,
+      "failures": 0,
+      "seconds": 47.886,
+      "log_sha256": "c0a3d3472bc487178b7547ca2ea8c1697c22b0d8128d3f36fb0b1a29ac18d208"
+    },
+    "full02": {
+      "tests": 2863,
+      "failures": 0,
+      "seconds": 238.509,
+      "log_sha256": "20cc92d5e9b898e31f74d9a2494fb259d3b619be3998ba1093e692466a129d4b"
+    }
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 284.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "815521b9e1e14d57e6335e75e20937815fb6689fa8020c25e6a643b31d937857",
+    "tested_binary_sha256": "d449cb00e72eee14214009486e02e8f098862fb2ac77c3617d6af59df76db4f9",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-284.zip",
+    "zip_sha256": "5d5702caf8a28c7bcd9075426a8d677a9a2eaea91121b75bf1c52171c4cbd78f",
+    "zip_bytes": 38849577,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview284-check-vjfyhxru/Photato Editing Preview 284.app"
+  },
+  "native_acceptance": false,
+  "blocker": "CUA reports Mac locked and requires manual unlock. Asynchronous user request is pending; do not bypass the lock.",
+  "next": [
+    "Implement bounded persistent native63 ordinal-to-sample reuse for the proven269-unique/807-reference scratch amplification; preserve frozen284 and strict fidelity tests.",
+    "Keep319 Intel numeric assertions and the reproducible hosted Intel field-editor failure as open gates; no tolerance/golden weakening. See cross-architecture-math01 and isolated logs.",
+    "When manual native access returns, inspect isolated284, open owned40MP PNG, paint/Undo/Redo/SaveAs/reopen and preserve exact observations. Do not discard old283 user work.",
+    "Before finalizing284, adapt finalize/verification scripts to Source08 vs testedSource07 correspondence, actual Intel failures and universal package scopes; existing finalize03.py is not current and must not be run unchanged.",
+    "Full Q01/master parity, physical supported platforms and source publication remain open; stable published source is280."
+  ],
+  "test_source": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07.json",
+  "configuration_correspondence": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/source07-to08.json",
+  "universal_xcode_build": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/universal-xcode01/exit02.json",
+  "universal_test_scope": "Both architectures compile through Xcode; slice/resource/signature and translated x86_64 tests pending. Native UI remains locked.",
+  "universal_reference": "docs/UNIVERSAL_BUILD_284.json",
+  "intel_test_run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01",
+  "native_source_and_packages": "SPM normal/diagnostic284 are Source07; Xcode universal candidate is Source08 with two configuration-only differences. All are separate preserved candidates, with no native handoff.",
+  "intel_focused": {
+    "tests": 277,
+    "failures": 0,
+    "seconds": 89.088,
+    "run": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01",
+    "log": "focused02.log",
+    "independent_all_records_and_tiles": true
+  },
+  "live_full_run": {
+    "exec_session_id": 43602,
+    "pid": 47838,
+    "observed_at_utc": "2026-10-31T04:25:25.607877+00:00",
+    "process": "47838 /Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+    "log": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/full01.log",
+    "exit_record": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/intel-rosetta01/full01-exit.json",
+    "note": "Terminal. Do not restart full01. Preserve320 assertions and diagnose before retry.",
+    "terminal_exit_code": 1
+  },
+  "frozen_input_backup": "artifacts/runs/20261031T014417Z-284-runtime-tile-index/frozen-source08.json"
+}

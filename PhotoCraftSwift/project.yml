@@ -94,6 +94,7 @@ targets:
       base:
         PRODUCT_NAME: Photato
         PRODUCT_MODULE_NAME: PhotoCraft
+        USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES: YES
         PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift
         INFOPLIST_FILE: scripts/Info.plist
         GENERATE_INFOPLIST_FILE: NO
@@ -113,7 +114,7 @@ targets:
         script: '"$SRCROOT/scripts/copy-people-model.sh" "$SRCROOT" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"'
         basedOnDependencyAnalysis: false
         inputFiles:
-          - $(SRCROOT)/Assets/GeneratedModels
+          - $(SRCROOT)/Assets/GeneratedModels/
           - $(SRCROOT)/scripts/copy-people-model.sh
           - $(SRCROOT)/scripts/verify-people-model.py
         outputFiles:

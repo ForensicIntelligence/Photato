@@ -1,0 +1,250 @@
+{
+  "step": 282,
+  "status": "Native63 subset qualified on arm64/macOS27 host; Q01/full parity open",
+  "summary": "Native63 replaces the flat archive table with bounded authenticated index nodes and compact raster pages. Native/API/sample/history/file checks pass, including300000 index records,65792 tile references and an actual585MB63 file. All63 focused and2840 full optimized tests pass on2501 frozen inputs; native maximum300000-square and40MP painting/save/reopen pass. Separate Preview282 is verified. Runtime indexing, chooser, large PSB/all-operation/platform capacity parity remain open.",
+  "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+  "source_inputs": 2501,
+  "native_archive_version": 63,
+  "maximum_document_feature_version": 62,
+  "action_library_version": 21,
+  "typed_commands": 192,
+  "tests": [
+    {
+      "log": "artifacts/runs/20261031T000325Z-282-native-index/focused04.log",
+      "sha256": "81c8b39d75a2f48f30ee0241fd01ae55cca5abef7db60df5a156ae805cf263fd",
+      "tests": 63,
+      "failures": 0,
+      "seconds": 35.839,
+      "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json"
+    },
+    {
+      "log": "artifacts/runs/20261031T000325Z-282-native-index/full01.log",
+      "sha256": "cf8dd4f1e40c9c8bf468ad75cf3dac8823bc702e078f36a5042bfa07bc15c9f8",
+      "tests": 2840,
+      "failures": 0,
+      "seconds": 235.853,
+      "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json"
+    }
+  ],
+  "independent_index": "artifacts/runs/20261031T000325Z-282-native-index/probe02/independent-python02.json",
+  "independent_native_files": "artifacts/runs/20261031T000325Z-282-native-index/focused04-captures/independent-native63-final.json",
+  "large_file_measurement": {
+    "exactHDRProbes": 6,
+    "fileBytes": 585190202,
+    "formatVersion": 63,
+    "heapEstimateBytes": 1152000,
+    "logicalPixels": 67108864,
+    "mappedSampleBytes": 589824000,
+    "probes": [
+      {
+        "bits": [
+          3164101456,
+          1236407689,
+          1801793800,
+          1062118123
+        ],
+        "x": 0,
+        "y": 0
+      },
+      {
+        "bits": [
+          363137582,
+          686988190,
+          195931550,
+          1062756530
+        ],
+        "x": 63,
+        "y": 63
+      },
+      {
+        "bits": [
+          1318385991,
+          3862053561,
+          1656980715,
+          1057183045
+        ],
+        "x": 1280,
+        "y": 2240
+      },
+      {
+        "bits": [
+          2210253970,
+          2136842533,
+          3033923577,
+          1055076313
+        ],
+        "x": 1343,
+        "y": 2303
+      },
+      {
+        "bits": [
+          2236655468,
+          2786105842,
+          285142981,
+          1061355911
+        ],
+        "x": 2496,
+        "y": 4480
+      },
+      {
+        "bits": [
+          3868225898,
+          4279624628,
+          789250725,
+          1060054091
+        ],
+        "x": 2559,
+        "y": 4543
+      }
+    ],
+    "scope": "Actual owned high-entropy finiteFloat32 RGB with unit alpha, native63 write/read across512MiB. Not Photoshop pixel, full4TiB or RSS qualification.",
+    "seconds": 11.027390003204346,
+    "storedPixels": 36864000
+  },
+  "paged_grid_measurement": {
+    "archiveBytes": 1058365,
+    "blobRecords": 66,
+    "manifestBytes": 1320,
+    "referencedSampleBytes": 4311744512,
+    "tileReferences": 65792
+  },
+  "native": {
+    "app": "/private/tmp/Photato-Index-282-01.app",
+    "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+    "native_maximum": {
+      "dimensions": [
+        300000,
+        300000
+      ],
+      "initial_native_version": 63,
+      "fit_percent": 0.27,
+      "zoom_percent": 100,
+      "brush_size": 30,
+      "drag": [
+        [
+          250,
+          340
+        ],
+        [
+          700,
+          580
+        ]
+      ],
+      "undo_clean": true,
+      "redo_modified": true,
+      "save_as_and_open_recent": true,
+      "persisted_stroke_at100": true
+    },
+    "native_dense": {
+      "dimensions": [
+        8000,
+        5000
+      ],
+      "initial_native_version": 63,
+      "fit_percent": 11.52,
+      "zoom_percent": 100,
+      "paint_undo_redo": true,
+      "save_as_open_recent_persisted_stroke": true
+    },
+    "chooser_limit": {
+      "reproduced": true,
+      "selected_file_open_button_disabled": true,
+      "evidence": "artifacts/runs/20261031T000325Z-282-native-index/native-dense-reopen-chooser.ax.txt",
+      "open_recent_succeeded": true,
+      "scope": "Existing280 issue reproduced; no speculative chooser fix/closure claimed. Immediate first save snapshot was in progress; later clean title/save completion verified before closing."
+    },
+    "diagnostic_quit_verified": true,
+    "files": [
+      {
+        "path": "artifacts/runs/20261031T000325Z-282-native-index/ui-fixtures/Owned maximum native63.photato",
+        "bytes": 750,
+        "sha256": "85ceaa90ff06e4c7df48ec13edcb63293ee94d9849faba2a6e02facdae3dc0f4"
+      },
+      {
+        "path": "artifacts/runs/20261031T000325Z-282-native-index/ui-fixtures/Owned maximum edited 282.photato",
+        "bytes": 34542,
+        "sha256": "79dca0142f4f576f61510cba314ed648635eb1a059c64b39d89b1b4d082ef746"
+      },
+      {
+        "path": "artifacts/runs/20261031T000325Z-282-native-index/focused04-captures/Owned dense native63 40MP.photato",
+        "bytes": 374419,
+        "sha256": "5bce5dd81899d6363fe0e783e5fa9e05e3a225d1e2cd3b2fc35b262f875d77de"
+      },
+      {
+        "path": "artifacts/runs/20261031T000325Z-282-native-index/focused04-captures/Owned dense edited 282.photato",
+        "bytes": 636187,
+        "sha256": "ee00f75e3f2dfc626a4932e781ad37749855b247b822aae127b827110ea531df"
+      }
+    ],
+    "physical_dense_90gp_qualified": false
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 282.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": false,
+    "binary_sha256": "5104332b22454903049c05e288f98224faf001ccf2e4427500e7e7bea138dfcf",
+    "tested_binary_sha256": "23370151b725d95e1337e73d173268caed41d88880f726bfa6f31f8a78e9acf6",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T000325Z-282-native-index/source05.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-282.zip",
+    "zip_sha256": "90e34268c2ce08d4ae8b0faac0c78c24d43e1789fc98c9288ab32f731314f619",
+    "zip_bytes": 38645681,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview282-check-rd39xxm6/Photato Editing Preview 282.app"
+  },
+  "handoff": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 282.app",
+    "retained_artwork": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "clean": true,
+    "zoom_percent": 100,
+    "opacity_percent": 100,
+    "ax": "artifacts/runs/20261031T000325Z-282-native-index/normal-preview-handoff02.ax.txt",
+    "screenshot": "artifacts/runs/20261031T000325Z-282-native-index/normal-preview-handoff01.jpg",
+    "previous_preview280_quit": true,
+    "diagnostic282_quit": true
+  },
+  "format": "docs/NATIVE_ARCHIVE_FORMAT_63.json",
+  "capacity_parity_complete": false,
+  "remaining": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open.",
+    "Newly saved native file can be selected with Open disabled; current280 issue reproduced. Open Recent succeeds. Investigate chooser metadata/filtering without speculative code.",
+    "Full Photoshop byte/interaction/default parity, physical60fps, universal distribution and physical Intel/macOS14/macOS26 qualification remain open."
+  ],
+  "failed_attempts": [
+    {
+      "log": "artifacts/runs/20261031T000325Z-282-native-index/focused01.log",
+      "result": "App compiles;6 existing tests pass, new API test traps on unshared fixture. Crash report preserved; explicit share/XCTest unwrap repairs it."
+    },
+    {
+      "log": "artifacts/runs/20261031T000325Z-282-native-index/focused02.log",
+      "result": "57 tests/2 failures: stale version63 rejection and serializer-wrapped cap error hiding retry. Owned-output admission flag and fixtures repaired."
+    }
+  ],
+  "source04_to05": "Two Core test-only changes; accepted production04 binary unchanged for focused04/full01/UI/package.",
+  "implementation_inputs": [
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+    "Sources/PhotoCraft/RasterStorageAPI.swift",
+    "Sources/PhotoCraftCore/NativeBlobIndex.swift",
+    "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+    "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+    "Sources/PhotoCraftCore/RasterBlobCoding.swift",
+    "Sources/PhotoCraftCore/Surface.swift",
+    "Sources/PhotoCraftCore/TileArchive.swift",
+    "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/IndexedNativeWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/InkModeArchiveWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/PDFSmartObjectWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/PagedRasterWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/RestrictedFormatWorkflowTests.swift",
+    "Tests/PhotoCraftCoreTests/NativeBlobIndexTests.swift",
+    "Tests/PhotoCraftCoreTests/NativeIndexedArchiveTests.swift",
+    "Tests/PhotoCraftCoreTests/NativePagedArchiveTests.swift"
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "step": 288,
+  "status": "paged-selection-and-bounded-presentations-software-qualified-native-and-remaining-contexts-pending",
+  "run": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage",
+  "qualified_previous": "docs/ACTIVE_CHECKPOINT_283.json",
+  "preserved_candidate287": "docs/WORKING_CHECKPOINT_287.json",
+  "native_acceptance": false,
+  "increment_complete": false,
+  "goal_complete": false,
+  "working_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+  "source_inputs": 2698,
+  "frozen_input_backup": {
+    "source_manifest": "source13.json",
+    "files": 2698,
+    "archive": "frozen-source13.tar.gz",
+    "bytes": 49683290,
+    "sha256": "9dd76d2e4565b798c841724a29ef7a1b4894d5e86e7ec4accd3163d614eb0127",
+    "production_identical_to_source12": true
+  },
+  "api_review": "The three selection commands remain within195 total typed operations. Expanded channel-preview and two read-only pixel-mask resources share native bounded rendering with model/auth/busy/revision/revocation/cancellation guards, discovery and documentation. No Adobe route invented; corresponding descriptor/UXP gaps remain.",
+  "next": [
+    "General large rich-stack/mode/proof/onion composition and Photoshop preview-filter fidelity remain open.",
+    "Complete explicit paged-coverage Actions contexts and compact one-byte physical coverage storage.",
+    "Native/Photoshop acceptance after manual unlock; preserve normal283 and retained artwork.",
+    "Full dense90GP/4TiB/performance, Adobe descriptors/UXP, exact Photoshop ranges/kernels and physical supported-platform qualification; retain earlier full Intel failures."
+  ],
+  "recorded_at_utc": "2026-10-31T09:25:38.864389+00:00",
+  "core_arm64_build_seconds": 94.84,
+  "component_arm64": {
+    "tests": 6,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 2.274,
+    "strict_prior_native_vectors": 76,
+    "full_40mp_byte_comparison": true,
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/component03-run.log"
+  },
+  "native_archive_version_implemented": 64,
+  "application_integration_complete": false,
+  "core_intel_build_seconds": 105.4,
+  "component_intel": {
+    "tests": 6,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 3.916,
+    "translated_not_physical": true,
+    "strict_prior_native_vectors": 76,
+    "full_40mp_byte_comparison": true,
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/intel-core01/component03-run.log"
+  },
+  "integrity": {
+    "verified_current_inputs": 2698,
+    "frozen_members": 2698,
+    "verified_protected_assets": 22,
+    "frozen_sha256": "9dd76d2e4565b798c841724a29ef7a1b4894d5e86e7ec4accd3163d614eb0127",
+    "candidate_binary_sha256": "550ef1b5d515494dd1da92c118fe4dbb45d63bfbe40f0d09d1dc8187769cf395",
+    "candidate_zip_sha256": "8aedf090d1eab5c5263eb395165f0c41b8d7522e7ea5a8dc45994a6e1ab82437",
+    "normal_preview_step": 283,
+    "compiler_test_workers_live": false,
+    "previous_selection_candidate_preserved": true
+  },
+  "compiler_test_workers_live": false,
+  "normal_preview_step": 283,
+  "dashboard_evidence": {
+    "path": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/presentations01/dashboard-status01.json",
+    "stale": false,
+    "warnings": 0,
+    "latest_milestone": 288,
+    "qualified_checkpoint": 283,
+    "software_tests": 2912
+  },
+  "integration_failures": {
+    "focused04": "Compiler-only failure during checked-array migration; tests did not run.",
+    "focused05": "One scalar helper and one Content-Aware selection access still needed migration.",
+    "focused06": "Two Imaging-test coverage accesses still needed migration.",
+    "focused07": "A malformed closure receiver from the migration script; repaired and affected Select/Mask workflow reads changed to point sampling.",
+    "current": "Repaired and qualified by Source11 full04:2,903 tests, zero failures; all failed attempts retained."
+  },
+  "focused08": {
+    "tests": 66,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 16.983,
+    "source_manifest": "source07.json",
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/focused08.log"
+  },
+  "focused09": {
+    "tests": 81,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 19.16,
+    "source_manifest": "source08.json",
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/focused09.log"
+  },
+  "full01": {
+    "outcome": "crashed",
+    "signal": 10,
+    "source_manifest": "source07.json",
+    "reproduced": "crash-repro01",
+    "report": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full01-crash.ips"
+  },
+  "selection_value_stride": 64,
+  "integrated_intel": {
+    "build_seconds": 107.44,
+    "tests": 11,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 15.825,
+    "translated_not_physical": true,
+    "source_manifest": "source08.json",
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/intel-core02/component03-run.log"
+  },
+  "focused11": {
+    "tests": 27,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 7.519,
+    "source_manifest": "source10.json"
+  },
+  "full02": {
+    "tests": 2903,
+    "assertion_failures": 9,
+    "unexpected": 0,
+    "seconds": 320.865,
+    "source_manifest": "source08.json",
+    "cause": "Stale pre-feature expectations in6 test files; repaired/qualified focused11."
+  },
+  "full03": {
+    "tests": 2903,
+    "assertion_failures": 1,
+    "unexpected": 0,
+    "seconds": 322.841,
+    "source_manifest": "source10.json",
+    "cause": "IndexedNativeWorkflowTests max advertised read version63\u219264; no production change."
+  },
+  "full": {
+    "tests": 2912,
+    "failed": 0,
+    "unexpected": 0,
+    "seconds": 325.815,
+    "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full05.log",
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json"
+  },
+  "package": {
+    "app": "/private/tmp/Photato-Selection-Candidate-288-02.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "550ef1b5d515494dd1da92c118fe4dbb45d63bfbe40f0d09d1dc8187769cf395",
+    "tested_binary_sha256": "e747bc9c1c1fbf6381c10a853d3385c249a8de6e2e29e1a620adf9cb5d3594f8",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Selection-Candidate-288-02.zip",
+    "zip_sha256": "8aedf090d1eab5c5263eb395165f0c41b8d7522e7ea5a8dc45994a6e1ab82437",
+    "zip_bytes": 38978952,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate288-check-tsa1ejpe/Photato-Selection-Candidate-288-02.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "native_access": {
+    "recorded_at_utc": "2026-10-31T09:19:33.427368+00:00",
+    "method": "normal283.getAXState then cua.getState after all compiler/test workers exited.",
+    "direct_app_observation": "cgWindowNotFound",
+    "inventory": "apps empty; native error explicitly reports Mac locked and automatic unlock unsuccessful.",
+    "candidate_launched": false,
+    "normal_preview_replaced": false,
+    "native_acceptance": false,
+    "user_unlock_request_already_pending": true
+  },
+  "source_publication_step": 281,
+  "new_source_push": false,
+  "diary_evidence": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/presentations01/diary-refresh01.json",
+  "audit_commands": {
+    "refresh_log": "artifacts/development-history-audit/288-final03-refresh.log",
+    "check_log": "artifacts/development-history-audit/288-final03-check.log",
+    "scope": "Final documentation/evidence inventory, not native/Photoshop/platform acceptance."
+  },
+  "presentation_continuation": {
+    "run": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/presentations01",
+    "previous_software_qualification": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source11.json",
+    "working_qualified": false,
+    "status": "software-qualified-native-and-remaining-contexts-pending",
+    "working_source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+    "source_inputs": 2698,
+    "core_typecheck_exit": 0,
+    "parse_exit": 0,
+    "session": null,
+    "intel_component": {
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source12.json",
+      "build_seconds": 98.99,
+      "tests": 14,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 17.732,
+      "translated_not_physical": true,
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/intel-core03/component03-run.log",
+      "production_identical_to_source13": true
+    },
+    "focused12": "Compiler-only test fixture actor isolation failure; repaired by annotation, production unchanged.",
+    "focused": {
+      "tests": 37,
+      "failures": 0,
+      "unexpected": 0,
+      "seconds": 7.946,
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/focused13.log"
+    },
+    "native_access": {
+      "recorded_at_utc": "2026-10-31T09:19:33.427368+00:00",
+      "method": "normal283.getAXState then cua.getState after all compiler/test workers exited.",
+      "direct_app_observation": "cgWindowNotFound",
+      "inventory": "apps empty; native error explicitly reports Mac locked and automatic unlock unsuccessful.",
+      "candidate_launched": false,
+      "normal_preview_replaced": false,
+      "native_acceptance": false,
+      "user_unlock_request_already_pending": true
+    },
+    "full": {
+      "tests": 2912,
+      "failed": 0,
+      "unexpected": 0,
+      "seconds": 325.815,
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full05.log",
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json"
+    },
+    "package": {
+      "app": "/private/tmp/Photato-Selection-Candidate-288-02.app",
+      "architecture": "arm64",
+      "minimum_os": "14.0",
+      "signature_verified": true,
+      "diagnostic_isolation": true,
+      "binary_sha256": "550ef1b5d515494dd1da92c118fe4dbb45d63bfbe40f0d09d1dc8187769cf395",
+      "tested_binary_sha256": "e747bc9c1c1fbf6381c10a853d3385c249a8de6e2e29e1a620adf9cb5d3594f8",
+      "native_file_backed_sections_match": 38,
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source13.json",
+      "distribution_qualification": false,
+      "installed_app_replaced": false,
+      "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Selection-Candidate-288-02.zip",
+      "zip_sha256": "8aedf090d1eab5c5263eb395165f0c41b8d7522e7ea5a8dc45994a6e1ab82437",
+      "zip_bytes": 38978952,
+      "extracted_signature_verified": true,
+      "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate288-check-tsa1ejpe/Photato-Selection-Candidate-288-02.app",
+      "native_acceptance": false,
+      "normal_preview_replaced": false,
+      "full_platform_qualification": false
+    }
+  },
+  "previous_software_qualification": {
+    "full": {
+      "tests": 2903,
+      "failed": 0,
+      "unexpected": 0,
+      "seconds": 320.108,
+      "log": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/full04.log",
+      "source_manifest": "source11.json"
+    },
+    "package": {
+      "app": "/private/tmp/Photato-Selection-Candidate-288-01.app",
+      "architecture": "arm64",
+      "minimum_os": "14.0",
+      "signature_verified": true,
+      "diagnostic_isolation": true,
+      "binary_sha256": "549ea336bf1c1eec0d7e2aa2fd931b821e183a91ce0e8f275f13fbb90bd9f976",
+      "tested_binary_sha256": "df21363d637fc2c581b9e1f302d3223717c1f743e089d79577e5a10578d6eb52",
+      "native_file_backed_sections_match": 38,
+      "source_manifest": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source11.json",
+      "distribution_qualification": false,
+      "installed_app_replaced": false,
+      "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Selection-Candidate-288.zip",
+      "zip_sha256": "e386a026df544fe472e7096e5beface6a0f0f223a22f0fc8b60cddd63098c446",
+      "zip_bytes": 38967246,
+      "extracted_signature_verified": true,
+      "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate288-check-c4mtkozs/Photato-Selection-Candidate-288-01.app",
+      "native_acceptance": false,
+      "normal_preview_replaced": false,
+      "full_platform_qualification": false
+    },
+    "source": "artifacts/runs/20261031T071423Z-288-paged-selection-coverage/source11.json",
+    "integrity": {
+      "verified_current_inputs": 2693,
+      "frozen_members": 2693,
+      "verified_protected_assets": 20,
+      "frozen_sha256": "ab98156cdc902e78f763dba75dfcc96039e6ef8c64dc2716f38c67cd222c0ac6",
+      "candidate_binary_sha256": "549ea336bf1c1eec0d7e2aa2fd931b821e183a91ce0e8f275f13fbb90bd9f976",
+      "candidate_zip_sha256": "e386a026df544fe472e7096e5beface6a0f0f223a22f0fc8b60cddd63098c446",
+      "normal_preview_step": 283,
+      "compiler_test_workers_live": false
+    }
+  }
+}

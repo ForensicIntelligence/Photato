@@ -1,0 +1,90 @@
+{
+  "step": 286,
+  "status": "arm64-software-qualified; Intel codec replay passes; native UI/full parity open",
+  "source": "Sources/PhotoCraftImaging/PSDRasterPaging.swift",
+  "references": [
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "accessed_utc": "2026-10-31",
+      "scope": "Public November2019 PSD/PSB framing/channel/length/compression specification."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/photoshop-file-formats-overview.html",
+      "accessed_utc": "2026-10-31",
+      "scope": "PSD2GB and PSB large-document format selection."
+    }
+  ],
+  "native_file_admission": {
+    "psb_bytes": 4398046511104,
+    "psd_bytes": 2147483648,
+    "data_bytes": 536870912,
+    "retained_metadata_bytes": 536870912,
+    "note": "Implementation limits, not full PSB format maximum. RGB8/16/32 paged paths; other guards retained."
+  },
+  "pixel_storage": {
+    "patch_pixels": 131072,
+    "layer_raw_rows": 64,
+    "tile_scratch_limit": 2199023255552,
+    "raw_staging_limit": 2199023255552,
+    "budget_notice": "Separate final sample and raw staging budgets; OS-managed mapped residency is not a heap/RSS measure."
+  },
+  "api": {
+    "upload_bytes": 67108864,
+    "heap_bytes": 134217728,
+    "output_bytes": 134217728,
+    "workspace_reserve_bytes": 16777216,
+    "shared_implementation": true,
+    "new_typed_commands": 0,
+    "new_adobe_routes": 0,
+    "job_quotas": "Unchanged; native file admission does not waive service quotas."
+  },
+  "independent_vectors": "Tests/PhotoCraftImagingTests/Fixtures/psb-paged/provenance.json",
+  "prior285_oracle": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/prior285-oracle01",
+  "pending": [
+    "After manual unlock inspect isolated286 >512MiB PSB Open/paint/Undo/Redo/SaveAs/reopen and compare in Photoshop; preserve normal283/artwork.",
+    "Keep284 Intel numerical/hosted-focus and physical macOS14/Intel/macOS26 gates open; codec replay is narrower.",
+    "Continue major Q01 work: general large-document operations, bounded rendering/mips and durable recovery; full PSD/PSB content/mode/dense-capacity parity remains open.",
+    "Publish a full source update after a stable native handoff; last published source280 remains unchanged."
+  ],
+  "goal_complete": false,
+  "increment_complete": false,
+  "source_manifest": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/source02.json",
+  "source_inputs": 2561,
+  "focused_attempt": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/focused01.log",
+  "fixture_repair": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/focused02.log",
+  "independent_large_file": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/independent-large01.json",
+  "prior285_correspondence": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/prior285-correspondence01.json",
+  "intel": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/intel-imaging01/correspondence01.json",
+  "full_arm64": {
+    "tests": 2878,
+    "failures": 0,
+    "unexpected": 0,
+    "seconds": 304.626,
+    "log": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/full01.log",
+    "sha256": "197bf59881e2d2b47909e2e7c530ac87a28cce2d6fc52bbc38622659d55521d7",
+    "source_manifest": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/source02.json"
+  },
+  "package": {
+    "app": "/private/tmp/Photato-PSB-Candidate-286-01.app",
+    "architecture": "arm64",
+    "minimum_os": "14.0",
+    "signature_verified": true,
+    "diagnostic_isolation": true,
+    "binary_sha256": "2dd03c4e05006b653f4c6b87a2b680c5e847582976b7355d7891b2a9bfaf2319",
+    "tested_binary_sha256": "4e79f778241a3bdb36ffaca3a4031f74c86f39eaf441ef227ce040f1c3e87fe6",
+    "native_file_backed_sections_match": 38,
+    "source_manifest": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/source02.json",
+    "distribution_qualification": false,
+    "installed_app_replaced": false,
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-PSB-Candidate-286.zip",
+    "zip_sha256": "3b183ff4960e274f559701f6be06e6139246048aff7c323357d70e07209b5770",
+    "zip_bytes": 38873680,
+    "extracted_signature_verified": true,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-candidate286-check-6ur16jso/Photato-PSB-Candidate-286-01.app",
+    "native_acceptance": false,
+    "normal_preview_replaced": false,
+    "full_platform_qualification": false
+  },
+  "frozen_input_backup": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/frozen-source02.json",
+  "native_access": "artifacts/runs/20261031T051426Z-286-large-photoshop-files/native-access01.json"
+}

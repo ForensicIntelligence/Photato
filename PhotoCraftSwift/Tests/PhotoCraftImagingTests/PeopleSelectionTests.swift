@@ -11,7 +11,7 @@ final class PeopleSelectionTests: XCTestCase {
     XCTAssertEqual(scene.people.map(\.instanceID),[2,7]); XCTAssertEqual(scene.thumbnails.count,2)
     XCTAssertTrue(scene.thumbnails.values.allSatisfy{$0.width<=96 && $0.height<=96})
     let union = try scene.coverage(instanceIDs:[7,2],hardEdge:false)
-    XCTAssertEqual(union.bytes,[255,127,240,255,0,0,200,255])
+    XCTAssertEqual(try union.bytes,[255,127,240,255,0,0,200,255])
     XCTAssertEqual(try scene.coverage(instanceIDs:[2],hardEdge:true).bytes,[0,0,255,255,0,0,255,255])
     for mode in SelectionMode.allCases {
       var session = EditorSession(document:d); try session.execute(.selection(.init(x:0,y:0,width:2,height:2)))

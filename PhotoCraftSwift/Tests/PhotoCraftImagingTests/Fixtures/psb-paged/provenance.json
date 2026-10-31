@@ -1,0 +1,333 @@
+{
+  "license": "MIT OR Apache-2.0, same as this fork",
+  "generator": "scripts/generate-paged-psb-fixtures.py",
+  "generator_sha256": "c4fa88c8935576d6a9cf09b460a84baa1716ec198402d3f95153aa39a0830f0c",
+  "provenance": "Owned procedural samples, framing/prediction/RLE/ZIP from Adobe public PSD/PSB specification; Python struct/zlib, no Photoshop implementation or native encoder used. These are format vectors, not Photoshop output comparisons.",
+  "specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "cases": [
+    {
+      "file": "flat-8-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 0,
+      "layered": false,
+      "sha256": "e35fd2bfaa0e881e5239f4125bf82672983e633695181d7e263fa5e1c93aa4dd"
+    },
+    {
+      "file": "layers-mask-8-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 0,
+      "layered": true,
+      "sha256": "7c0c582d2ee89e7fa453b243528c37badd90a58f07d60071d7b992477049f0ea"
+    },
+    {
+      "file": "flat-8-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 1,
+      "layered": false,
+      "sha256": "369ff72258f7d1845e33132cfcd96a2c7877ea0aeb513a1d6679bc69acf46d37"
+    },
+    {
+      "file": "layers-mask-8-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 1,
+      "layered": true,
+      "sha256": "c990a56f42e5817d4ee4cda879d12284723f0ee96293a36b7e6b4d14e0580d8d"
+    },
+    {
+      "file": "flat-8-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 2,
+      "layered": false,
+      "sha256": "9ff8488701d30ce9af9e95d8c418fc2b9fc89b1a8091b1287a7b56fc38d56546"
+    },
+    {
+      "file": "layers-mask-8-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 2,
+      "layered": true,
+      "sha256": "5f82a0934f656882342daa755115cfedb4350dd28a5731ed812c457c68191b39"
+    },
+    {
+      "file": "flat-8-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 3,
+      "layered": false,
+      "sha256": "dd45e69f1803562b21875a1432e405a828d0d51037333c73e28ba85c6841830c"
+    },
+    {
+      "file": "layers-mask-8-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 3,
+      "layered": true,
+      "sha256": "002f487548cd393a2eb6779fe330770210da37fae27955373d8905a9d4baa54a"
+    },
+    {
+      "file": "flat-16-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 0,
+      "layered": false,
+      "sha256": "3c7b0f6d3848b3857a164f40a4f57b00dd58953eabf96c13d8ab871124735595"
+    },
+    {
+      "file": "layers-mask-16-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 0,
+      "layered": true,
+      "sha256": "98d6007e15c0ee714b10ad2e3cfb12bbfc35ea0999b640ac3c1eb760f7cadc27"
+    },
+    {
+      "file": "flat-16-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 1,
+      "layered": false,
+      "sha256": "2dc4dba130956c60334d8f5df2e001eb0d55ee43c6ed472d75dbc19c60fc246f"
+    },
+    {
+      "file": "layers-mask-16-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 1,
+      "layered": true,
+      "sha256": "e8f5398261bd0295b3b2d0477cffc8d790321c7e18fb8c7d054bad3ed546ece4"
+    },
+    {
+      "file": "flat-16-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 2,
+      "layered": false,
+      "sha256": "0ee93623ac376c7f9fa163010485839b9608f17daf7bbc8a0e005d3db2065669"
+    },
+    {
+      "file": "layers-mask-16-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 2,
+      "layered": true,
+      "sha256": "9bb291b0e7209796d7c340d3db71faa411b62649deb4d494f29d57b3c4329119"
+    },
+    {
+      "file": "flat-16-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 3,
+      "layered": false,
+      "sha256": "fbc488f83d953c5aca0064a1a34cd158968e341722d1525576481f42cd94afd7"
+    },
+    {
+      "file": "layers-mask-16-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 3,
+      "layered": true,
+      "sha256": "9372afb670c8075024d811a87ea1b66455c10d7470f843353d5de1e6aa99b5ac"
+    },
+    {
+      "file": "flat-32-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 0,
+      "layered": false,
+      "sha256": "9ac272e8928ec54888f2ed704c47427cb7d248837ad319c6887b9845fde550e8"
+    },
+    {
+      "file": "layers-mask-32-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 0,
+      "layered": true,
+      "sha256": "6d2413e91affc40d75462295feb36decd0fb6f1450dbadf21bc321ad25172072"
+    },
+    {
+      "file": "flat-32-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 1,
+      "layered": false,
+      "sha256": "cda49df9be372179511aaf3f1163bb28881d57c8eeda3a172030ac97300f9853"
+    },
+    {
+      "file": "layers-mask-32-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 1,
+      "layered": true,
+      "sha256": "6c0e42a2ffe2dba3f4920bf2e3588d1c51403703f347cd6c4b9b8f4481ed37fb"
+    },
+    {
+      "file": "flat-32-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 2,
+      "layered": false,
+      "sha256": "0294e9cd560826aa3fb226c9333d6bd6f3e6d41e513bb58e9ee3cf70bd289377"
+    },
+    {
+      "file": "layers-mask-32-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 2,
+      "layered": true,
+      "sha256": "d8bffcba4610be33b09aac60803b1a02fde4154593bc808c3784b0b455225e99"
+    },
+    {
+      "file": "flat-32-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 3,
+      "layered": false,
+      "sha256": "6f150c85628bcb64bf32ca31f8ed603d342a1bb6552d370492edc85312ea463a"
+    },
+    {
+      "file": "layers-mask-32-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 3,
+      "layered": true,
+      "sha256": "1f61d5f2171af69a81350e1261fe03077d18ae664b7078767e6e2358a432e457"
+    },
+    {
+      "file": "flat-alpha-8-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 0,
+      "layered": false,
+      "sha256": "bfdc6841d5ad6987a6ffc9f1748113606ddf9c0a5a3cd059f13e68b44534adef"
+    },
+    {
+      "file": "flat-alpha-8-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 1,
+      "layered": false,
+      "sha256": "0b57daf38e3799bf8600a9197163205b7327b839a4dacfe498e70d4c9f3fd973"
+    },
+    {
+      "file": "flat-alpha-8-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 2,
+      "layered": false,
+      "sha256": "a46e9e5b2acdf3ad3c4132eafee8be60b8b7f88babc6e609f3a28d8f9ca02a39"
+    },
+    {
+      "file": "flat-alpha-8-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 8,
+      "compression": 3,
+      "layered": false,
+      "sha256": "e062519f0f01707649e07ae91d1478c98b293fad696420fcd691f0b366bf3f6c"
+    },
+    {
+      "file": "flat-alpha-16-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 0,
+      "layered": false,
+      "sha256": "45e7e0308ae06cb16e8d33d3bb0c34c11f3b0350c53529a0f38d70da841eb120"
+    },
+    {
+      "file": "flat-alpha-16-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 1,
+      "layered": false,
+      "sha256": "299201b4b37edf432c587d5d517bcfddda58c8ca2684e82409c37b45a3f30c2c"
+    },
+    {
+      "file": "flat-alpha-16-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 2,
+      "layered": false,
+      "sha256": "74b017784921c18b62a40b8df54876efb2174e06b49823efc2c1d19c13bb8047"
+    },
+    {
+      "file": "flat-alpha-16-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 16,
+      "compression": 3,
+      "layered": false,
+      "sha256": "7ac938cbb6a30e459b08840f60e801f241e0f3fc83d65d07aeb2076e50607794"
+    },
+    {
+      "file": "flat-alpha-32-0.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 0,
+      "layered": false,
+      "sha256": "03c5fc185c6968f782bcb8bb5f0056d40a4761a6185e5f2fbf27c5ead0aea01e"
+    },
+    {
+      "file": "flat-alpha-32-1.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 1,
+      "layered": false,
+      "sha256": "31f1dbba0148d588257feacd18efd49c9a2b9574df895ec9ff3aeeb4e7d93c92"
+    },
+    {
+      "file": "flat-alpha-32-2.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 2,
+      "layered": false,
+      "sha256": "036905f095a396f7484b997ee31e187a7fddc1588682c60fa9df7709074b0db0"
+    },
+    {
+      "file": "flat-alpha-32-3.psb",
+      "width": 129,
+      "height": 65,
+      "depth": 32,
+      "compression": 3,
+      "layered": false,
+      "sha256": "d2c6b61fa77cd41cc841ca2504794ea0bbc00848ffd90897659d96d808588c83"
+    }
+  ]
+}

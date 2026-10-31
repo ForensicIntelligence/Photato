@@ -1,6 +1,8 @@
 import CryptoKit
 import Foundation
 
+struct NativeFlatIndexLimit:Error,LocalizedError { var errorDescription:String? { "Too many blobs for a legacy native archive; use version63." } }
+
 /// Version11: a portable container with individually checked raster/selection
 /// blobs and a binary-plist document manifest. File and Data output share this
 /// serializer; only the file sink avoids retaining the complete output.
@@ -49,13 +51,16 @@ enum NativeChunkedArchive {
   final class Output: RasterBlobEncoding, @unchecked Sendable {
     private let file: AtomicFileWriter?
     private let maximumBytes: Int
+    private let recordLimit: Int
     private(set) var data = Data()
     private(set) var count = 0
     private var digests: Set<String> = []
     private(set) var records: [Blob] = []
-    init(file: AtomicFileWriter? = nil, maximumBytes: Int) {
+    private(set) var reachedRecordLimit = false
+    init(file: AtomicFileWriter? = nil, maximumBytes: Int, recordLimit: Int = 65_536) {
       self.file = file
       self.maximumBytes = maximumBytes
+      self.recordLimit = recordLimit
     }
     func append(_ bytes: Data) throws {
       try Task.checkCancellation()
@@ -68,8 +73,9 @@ enum NativeChunkedArchive {
     func storeBytes(_ data: Data) throws -> String {
       let digest = hexHash(data)
       if digests.contains(digest) { return digest }
-      guard records.count < 65_536 else {
-        throw CraftError.invalid("Too many native archive blobs.")
+      guard records.count < recordLimit else {
+        reachedRecordLimit = true
+        throw NativeFlatIndexLimit()
       }
       let record = Blob(digest: digest, offset: UInt64(count), length: UInt64(data.count))
       try append(data)
@@ -118,6 +124,7 @@ enum NativeChunkedArchive {
     }
   }
   static func write(_ document: CraftDocument, output: Output, recoveryContext: Data? = nil, minimumVersion: Int = 11) throws {
+    guard document.minimumArchiveVersion<63 else {throw CraftError.invalid("This document requires indexed native output.")}
     guard [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(minimumVersion) else { throw CraftError.invalid("Invalid native archive output version.") }
     guard (recoveryContext?.count ?? 0) <= NativeArchive.maximumRecoveryContextBytes else {
       throw CraftError.invalid("Recovery source information exceeds its size limit.")
@@ -151,6 +158,9 @@ enum NativeChunkedArchive {
     throws -> NativeArchive.RecoveryContents
   {
     try Task.checkCancellation()
+    if count >= 16, NativeIndexedArchive.supportsHeader(try read(0,16)) {
+      return try NativeIndexedArchive.decodeRecovery(count:count,rasterByteLimit:rasterByteLimit,maximumMetadataBytes:maximumMetadataBytes,backing:backing,maximumFileBytes:maximumFileBytes,read:read)
+    }
     guard count >= header.count + footerSize, count <= maximumFileBytes,
       (0...NativeArchive.maximumFileBytes).contains(maximumFileBytes),
       (0...1_073_741_824).contains(rasterByteLimit)
@@ -208,7 +218,7 @@ enum NativeChunkedArchive {
     }
     let decoder = PropertyListDecoder()
     let header = try decoder.decode(Header.self, from: metadata)
-    guard header.magic == "PhotatoChunked", [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(header.version) else {
+    guard (header.magic == "PhotatoIndexed" && [63,64].contains(header.version)) || (header.magic == "PhotatoChunked" && [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62].contains(header.version)) else {
       throw CraftError.invalid("Invalid native archive manifest.")
     }
     _ = try Surface(width: header.document.width, height: header.document.height)
@@ -226,6 +236,9 @@ enum NativeChunkedArchive {
       throw CraftError.invalid("Invalid native archive size.")
     }
     let bytes = try read(0, header.count)
+    if NativeIndexedArchive.supportsHeader(bytes) {
+      return try NativeIndexedArchive.manifest(count:count,maximumMetadataBytes:maximumMetadataBytes,maximumFileBytes:maximumFileBytes,read:read)
+    }
     let header12 = magic + integer(12, width: 4) + integer(0, width: 4)
     let header13 = magic + integer(13, width: 4) + integer(0, width: 4)
     let header14 = magic + integer(14, width: 4) + integer(0, width: 4)
@@ -352,7 +365,8 @@ extension NativeArchive {
       throw CraftError.invalid("Invalid native archive output limit.")
     }
     let output = NativeChunkedArchive.Output(maximumBytes: maximumBytes)
-    try NativeChunkedArchive.write(document, output: output, minimumVersion: minimumVersion)
+    if minimumVersion >= 63 || document.minimumArchiveVersion >= 64 { try NativeIndexedArchive.write(document,output:output,minimumVersion:max(63,minimumVersion)) }
+    else { try NativeChunkedArchive.write(document, output: output, minimumVersion: minimumVersion) }
     return output.data
   }
   public static func write(
@@ -364,16 +378,32 @@ extension NativeArchive {
   }
   static func write(
     _ document: CraftDocument, to url: URL, maximumBytes: Int = NativeArchive.maximumFileBytes,
-    recoveryContext: Data? = nil, makeFile: (URL, Int) throws -> AtomicFileWriter
+    recoveryContext: Data? = nil, legacyRecordLimit: Int = 65_536, makeFile: (URL, Int) throws -> AtomicFileWriter
   ) throws {
-    guard (0...Self.maximumFileBytes).contains(maximumBytes) else {
+    guard (0...Self.maximumFileBytes).contains(maximumBytes), (0...65_536).contains(legacyRecordLimit) else {
       throw CraftError.invalid("Invalid native archive output limit.")
     }
     let file = try makeFile(url, maximumBytes)
     defer { file.discard() }
-    try NativeChunkedArchive.write(
-      document, output: .init(file: file, maximumBytes: maximumBytes), recoveryContext: recoveryContext)
-    try file.commit()
+    let output = NativeChunkedArchive.Output(file:file,maximumBytes:maximumBytes,recordLimit:legacyRecordLimit)
+    if document.mappedRasterIndexBytes>0 || document.minimumArchiveVersion>=64 {
+      try NativeIndexedArchive.write(document,output:output,recoveryContext:recoveryContext)
+      try file.commit();return
+    }
+    do {
+      try NativeChunkedArchive.write(document, output:output, recoveryContext:recoveryContext)
+      try file.commit()
+    } catch {
+      // PropertyListEncoder wraps errors from nested Codable values. The owned
+      // output records this exact admission failure; other errors never retry.
+      guard output.reachedRecordLimit else { throw error }
+      // Older small-document output remains byte-compatible. Retry the atomic
+      // transaction with the hierarchical format only when the flat table fills.
+      file.discard()
+      let indexed = try makeFile(url,maximumBytes); defer { indexed.discard() }
+      try NativeIndexedArchive.write(document,output:.init(file:indexed,maximumBytes:maximumBytes),recoveryContext:recoveryContext)
+      try indexed.commit()
+    }
   }
   /// Inspect dimensions without inflating any tile; upload limits are enforced first.
   public static func dimensions(_ data: Data) throws -> (width: Int, height: Int) {

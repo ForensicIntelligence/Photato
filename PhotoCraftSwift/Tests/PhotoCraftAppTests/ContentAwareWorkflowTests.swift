@@ -21,7 +21,7 @@ final class ContentAwareWorkflowTests: XCTestCase {
     store.beginContentAwareFill(); let m = try XCTUnwrap(store.contentAwareDraft); await ready(m)
     XCTAssertNil(m.error); XCTAssertTrue(m.canCommit); XCTAssertNotNil(m.previewImage); XCTAssertNotNil(m.samplingImage); XCTAssertNotNil(m.originalImage); XCTAssertEqual(store.document,d)
     m.size = 3; m.begin(x:2,y:2,alternate:false); m.drag(x:4,y:2); m.end(); await ready(m)
-    XCTAssertEqual(m.sampled?.bytes[2*24+3],0); let painted = m.sampled
+    XCTAssertEqual(try m.sampled?.bytes[2*24+3],0); let painted = m.sampled
     m.undo(); await ready(m); XCTAssertNotEqual(m.sampled,painted); m.redo(); await ready(m); XCTAssertEqual(m.sampled,painted)
     let expected = try XCTUnwrap(m.edit).applied(to:d)
     store.commitContentAwareFill(); await m.commitTask?.value

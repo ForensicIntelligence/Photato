@@ -1,0 +1,17 @@
+{
+  "step": 283,
+  "status": "complete-increment",
+  "run": "artifacts/runs/20261031T010106Z-283-tool-cursors",
+  "working_source": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+  "qualified_checkpoint": "docs/ACTIVE_CHECKPOINT_283.json",
+  "goal_complete": false,
+  "next": [
+    "Q01 remains open: runtime Surface dictionary, sorted keys and complete metadata still resident; build an immutable paged runtime index with bounded COW edits.",
+    "Default save fallback is qualified with an injected low legacy cap and actual65537/300000 index records separately; a full65537-unique-raster file remains an end-to-end capacity gate.",
+    "Long-distance repeated63 tile ordinals may decode again after bounded cache eviction and consume extra scratch. Full dense90GP/4TiB capacity, broad large operations/masks/modes/layers/history/recovery and streamed large PSB remain open.",
+    "Newly saved native file can be selected with Open disabled; current280 issue reproduced. Open Recent succeeds. Investigate chooser metadata/filtering without speculative code.",
+    "Full Photoshop byte/interaction/default parity, physical60fps, universal distribution and physical Intel/macOS14/macOS26 qualification remain open.",
+    "Complete Photoshop modifier functionality, pointer preferences/Caps Lock/brush HUD, exact artwork/hotspots and exhaustive hover/resize states remain open. Physical held-key cursor comparison and macOS14/Intel/macOS26 qualification are not inferred from host unit tests.",
+    "Standalone focused suites that create AppKit windows before the native document-controller singleton can crash in the pre-existing close path; preserve focused03 and its isolated passing check. Key-window admission tests use an explicit controlled NSWindow subclass because xctest cannot become foreground on this host."
+  ]
+}

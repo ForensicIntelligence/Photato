@@ -49,7 +49,7 @@ public struct ObjectFinderScene: Sendable {
     // Soft-edge overlap chooses the strongest coverage. Ties retain ascending instance order.
     var best: FoundObject?, coverage: UInt8 = 127
     for object in objects where object.bounds.contains(x,y) {
-      let value = object.mask.bytes[y * object.mask.width + x]
+      let value = object.mask.byte(at:y * object.mask.width + x)
       if value > coverage { best = object; coverage = value }
     }
     return best
@@ -60,7 +60,7 @@ public struct ObjectFinderScene: Sendable {
   }
   public static func coverage(_ mask: SelectionMask, hardEdge: Bool) throws -> SelectionMask {
     guard hardEdge else { return mask }
-    var bytes = mask.bytes
+    var bytes = (try mask.bytes)
     for y in 0..<mask.height {
       try Task.checkCancellation()
       for x in 0..<mask.width { let i = y * mask.width + x; bytes[i] = bytes[i] >= 128 ? 255 : 0 }

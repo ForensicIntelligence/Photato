@@ -7,6 +7,14 @@ import zlib
 enum PSDChannelCodec {
   static let byteLimit = 512 * 1024 * 1024
   static func byteCount(width: Int, height: Int, depth: Int, channels: Int) throws -> Int {
+    let count = try streamByteCount(width:width,height:height,depth:depth,channels:channels)
+    guard count <= byteLimit else {
+      throw CraftError.invalid("PSD channel data exceeds the memory budget.")
+    }
+    return count
+  }
+  /// A logical byte total for row streaming, never an allocation request.
+  static func streamByteCount(width: Int, height: Int, depth: Int, channels: Int) throws -> Int {
     guard [8, 16, 32].contains(depth), (1...56).contains(channels),
       width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
       width <= Surface.maxPixels / height
@@ -14,9 +22,6 @@ enum PSDChannelCodec {
       throw CraftError.invalid("Invalid PSD channel geometry.")
     }
     let count = width * height * (depth / 8) * channels
-    guard count <= byteLimit else {
-      throw CraftError.invalid("PSD channel data exceeds the memory budget.")
-    }
     return count
   }
   static func decode(
