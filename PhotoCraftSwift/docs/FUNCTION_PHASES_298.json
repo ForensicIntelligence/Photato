@@ -7193,5 +7193,12 @@
     "receipt": "docs/SOURCE_PUBLICATION_294.json",
     "native_functions_unchanged": true
   },
-  "scheduling_reconciliation_298": "Initial selection described C03 as major; retained ledger assigns it phase2. Finish already implemented batch; resume actual phase1 major breadth rather than further C03 polish."
+  "scheduling_reconciliation_298": "Initial selection described C03 as major; retained ledger assigns it phase2. Finish already implemented batch; resume actual phase1 major breadth rather than further C03 polish.",
+  "source_publication_298": {
+    "commit": "e91e5ef92c6fa973dee38488640d5023be199150",
+    "receipt": "docs/SOURCE_PUBLICATION_298.json",
+    "private": true,
+    "qualified_inputs": 2879,
+    "unchanged_original_rust": 1057
+  }
 }

@@ -299,5 +299,10 @@
     "full_platform_qualification": false,
     "recorded_at_utc": "2026-10-31T18:35:24.463483+00:00"
   },
-  "summary": "Apply Image and Calculations now have native sheets, retained document/layer/channel sources, independent masks,21 channel blends/Add/Subtract controls, pixel/component/mask/alpha/ink targets and all three Calculations outputs. The desktop and197 typed Photato commands share native preparation/history; external API sources require explicit sharing/current revisions. All2980 inventoried optimized arm64 cases pass in17 bounded processes on2911 frozen inputs. Preserve the failed attempts, repaired orphan-document test bootstrap and signed isolated candidate. Normal283/artwork remain unchanged. Native visual acceptance, Photoshop exact kernels/ICC/modes, semantic Actions recording, published Adobe actionJSON descriptors, larger native-mode storage and supported-platform/Intel/long-session gates remain open."
+  "summary": "Apply Image and Calculations now have native sheets, retained document/layer/channel sources, independent masks,21 channel blends/Add/Subtract controls, pixel/component/mask/alpha/ink targets and all three Calculations outputs. The desktop and197 typed Photato commands share native preparation/history; external API sources require explicit sharing/current revisions. All2980 inventoried optimized arm64 cases pass in17 bounded processes on2911 frozen inputs. Preserve the failed attempts, repaired orphan-document test bootstrap and signed isolated candidate. Normal283/artwork remain unchanged. Native visual acceptance, Photoshop exact kernels/ICC/modes, semantic Actions recording, published Adobe actionJSON descriptors, larger native-mode storage and supported-platform/Intel/long-session gates remain open.",
+  "source_publication": {
+    "commit": "e91e5ef92c6fa973dee38488640d5023be199150",
+    "receipt": "docs/SOURCE_PUBLICATION_298.json",
+    "private": true
+  }
 }
