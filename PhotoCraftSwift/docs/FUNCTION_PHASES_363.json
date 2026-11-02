@@ -7160,7 +7160,7 @@
     "reference": "docs/CANVAS_EDGES_REFERENCES.json"
   },
   "scheduling_correction_157": "Maintain major-first functional breadth. Do not revisit numerical feather/filter refinement while missing major workflows can be implemented.",
-  "next_major_workflow": "Finish the requested private source delivery, then resume missing major Photoshop workflows. Keep all104complete scopes open; private source delivery is not a software release.",
+  "next_major_workflow": "Resume missing major Photoshop workflows, including rich merge/rasterization, Transform Again/arbitrary geometry, specialized numerical/frame composition and published automation gaps. Full current-suite, independent Photoshop/UI/platform/dense/60fps gates stay open; Rust matching does not define acceptance.",
   "previous_ledger": "docs/FUNCTION_PHASES_362.json",
   "withdrawn_work_packages": [
     {
@@ -7359,7 +7359,7 @@
     "step": 363,
     "source": "362 Source03",
     "reference": "docs/WORKING_CHECKPOINT_363.json",
-    "status": "Private source staged and verified; commit/push verification pending"
+    "status": "Complete private native source delivery verified at45148392a5a3977ed731c4624730e8cbfcb9e29f; full Photoshop/platform/performance scopes remain open"
   },
   "source_publication_289": {
     "source_checkpoint": 288,
@@ -7458,5 +7458,6 @@
     "scope": "The saved-composition foundation needed for Layer Comps to Files/PDF is phase1 dependency work. Existing L08 local reusable assets, cross-document clipboard and remaining optional scope retain phase2 scheduling. No scope or acceptance criteria are removed.",
     "qualification": "260 affected and17 new optimized cases pass. No package closure; full Photoshop and supported-platform gates remain open."
   },
-  "inventory_reconciliation_336": "Added the existing PDF export command; removed identical duplicate Keyboard Shortcuts rows from CSV and phase ledger; mapped the existing layer.smartObjects.embedAllLinked command to L05.651 distinct commands now match651 distinct phase records. Existing command implementation states and104 package scopes are preserved."
+  "inventory_reconciliation_336": "Added the existing PDF export command; removed identical duplicate Keyboard Shortcuts rows from CSV and phase ledger; mapped the existing layer.smartObjects.embedAllLinked command to L05.651 distinct commands now match651 distinct phase records. Existing command implementation states and104 package scopes are preserved.",
+  "source_publication": "docs/SOURCE_PUBLICATION_363.json"
 }

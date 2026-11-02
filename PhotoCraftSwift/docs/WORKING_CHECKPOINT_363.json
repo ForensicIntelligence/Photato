@@ -1,7 +1,7 @@
 {
   "step": "dev-step-363",
   "run": "artifacts/runs/20261102T191247Z-363-private-source",
-  "status": "Private source staged; commit/push verification pending",
+  "status": "Complete private full-source delivery verified; full Photoshop/platform/performance goal remains open",
   "qualified_source_step": 362,
   "source_manifest": "docs/SOURCE_SNAPSHOT_363.json",
   "source_inputs": 7033,
@@ -28,5 +28,9 @@
   "public_release": false,
   "repository_private": true,
   "function_phases": "docs/FUNCTION_PHASES_363.json",
-  "next_work": "Finish the requested private source delivery, then resume missing major Photoshop workflows. Keep all104complete scopes open; private source delivery is not a software release."
+  "next_work": "Resume missing major Photoshop workflows, including rich merge/rasterization, Transform Again/arbitrary geometry, specialized numerical/frame composition and published automation gaps. Full current-suite, independent Photoshop/UI/platform/dense/60fps gates stay open; Rust matching does not define acceptance.",
+  "source_commit": "45148392a5a3977ed731c4624730e8cbfcb9e29f",
+  "source_tree": "80f136d9fc3c2a4cfb4718978c7f08fc6b6845ef",
+  "source_publication": "docs/SOURCE_PUBLICATION_363.json",
+  "new_source_push": true
 }

@@ -21,11 +21,11 @@ This is independent implementation with black-box compatibility research. Resear
 <!-- current-status-step:363 -->
 ## Current status — 2 November 2026 UTC
 
-The diary contains **363 development steps**. Private source delivery is in preparation from **362 Source03**. All24new Trim/Reveal All cases pass;302of304affected cases pass. Two known PSD Layer Comp failures remain. Production code and its tested binary are unchanged during publication work.
+The diary contains **363 development steps**. Private source delivery 363 is complete from **362 Source03**. All 24 new Trim/Reveal All cases pass;302 of 304affected cases pass. Two known PSD Layer Comp failures remain. Production code and its tested binary are unchanged during publication work.
 
 The snapshot includes all native app/test code, the Xcode project, scripts, notices and developer records. It excludes generated models/caches, runtime artifacts, signing material and one external PSD whose license excludes image assets. The reference remains available locally for qualification; the source includes its pinned URL/hash and opt-in acquisition instructions. The existing repository stays private until release day.
 
-Photoshop2026 remains the reference. Full Photoshop/live UI, current full-suite, supported-platform, dense-capacity and physical60fps acceptance remain open. The source backup is not a software release. Installed283andstore archive332are unchanged.
+Photoshop2026 remains the reference. Full Photoshop/live UI, current full-suite, supported-platform, dense-capacity and physical60fps acceptance remain open. The source backup is not a software release. Installed preview 283 and store archive 332 are unchanged.
 
 [Source manifest](SOURCE_SNAPSHOT_363.json) · [Record](DEVLOG.md#dev-step-363)
 <!-- current-status:end -->
@@ -2437,4 +2437,6 @@ Temporal and ink-mode canvas rebasing, layered native component Trim, advanced m
 
 ## 2026-11-02 — Step363: Private full-source backup
 
-Prepare the complete current native source for the existing private repository, preserving the Rust snapshot and history. Retain actual qualification limits and known failures. Check every included qualified input against362Source03. Exclude generated/private runtime material and the external Layer Comp PSD identified by the upstream image-asset exception; retain source/hash/acquisition instructions. Verify the no-network helper, package/project structure, staged blob contents and destination privacy before committing. Publication results follow in the detailed record. [Record](DEVLOG.md#dev-step-363).
+Deliver the complete current native source to the existing private repository, preserving the Rust snapshot and history. Retain actual qualification limits and known failures. Check every included qualified input against362Source03. Exclude generated/private runtime material and the external Layer Comp PSD identified by the upstream image-asset exception; retain source/hash/acquisition instructions. Verify the no-network helper, package/project structure, staged blob contents and destination privacy before committing. The source commit is [4514839](https://github.com/ForensicIntelligence/Photato/commit/45148392a5a3977ed731c4624730e8cbfcb9e29f); GitHub commit/tree and private visibility are verified. [Record](DEVLOG.md#dev-step-363).
+
+Private source commit [4514839](https://github.com/ForensicIntelligence/Photato/commit/45148392a5a3977ed731c4624730e8cbfcb9e29f) includes the complete current native app/test code and the documented source exclusions. GitHub main/tree and private visibility are verified. The app was not installed, uploaded as a binary, submitted to Apple or released.
