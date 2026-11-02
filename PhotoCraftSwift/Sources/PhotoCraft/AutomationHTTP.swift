@@ -81,7 +81,7 @@ struct AutomationRequest: Sendable {
     if parts.count == 5, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil,
       parts[3] == "smart-objects", ["pdf","source"].contains(parts[4]) { return PDFImport.maximumSourceBytes }
     if parts.count == 6, parts[0] == "v1",parts[1] == "documents",UUID(uuidString:String(parts[2])) != nil,
-      parts[3] == "smart-objects",UUID(uuidString:String(parts[4])) != nil,parts[5] == "source" {return SmartObject.maximumSourceBytes}
+      parts[3] == "smart-objects",UUID(uuidString:String(parts[4])) != nil,["source","linked-source"].contains(parts[5]) {return SmartObject.maximumSourceBytes}
     if path == "/v1/preferences/color-settings" { return ColorSettings.maximumArchiveBytes }
     if path == "/v1/luts" { return ColorLUT.maximumFileBytes }
     if path == "/v1/documents/import" { return DocumentIO.maximumUploadBytes }
@@ -98,6 +98,7 @@ struct AutomationResponse: Sendable {
   let contentType: String
   let body: Data
   var didSend: (@MainActor @Sendable (Bool) -> Void)? = nil
+  var headers:[String:String]=[:]
   static func json(_ value: [String: Any], status: Int = 200) -> Self {
     Self(
       status: status, contentType: "application/json",
@@ -123,8 +124,12 @@ struct AutomationResponse: Sendable {
     return .json(["error": error.message], status: error.status)
   }
   var wire: Data {
+    let reserved:Set<String>=["content-type","content-length","connection","cache-control","x-content-type-options","x-frame-options","referrer-policy","content-security-policy"]
+    let custom=headers.sorted{$0.key.lowercased()<$1.key.lowercased()}.filter {key,value in
+      !key.isEmpty && !reserved.contains(key.lowercased()) && key.utf8.allSatisfy{(65...90).contains($0)||(97...122).contains($0)||(48...57).contains($0)||$0==45} && value.utf8.count<=8192 && value.utf8.allSatisfy{(32...126).contains($0)}
+    }.map{"\($0.key): \($0.value)\r\n"}.joined()
     let text =
-      "HTTP/1.1 \(status) \(status == 200 ? "OK" : status == 201 ? "Created" : status == 202 ? "Accepted" : "Error")\r\nContent-Type: \(contentType)\r\nContent-Length: \(body.count)\r\nConnection: close\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: DENY\r\nReferrer-Policy: no-referrer\r\nContent-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'\r\n\r\n"
+      "HTTP/1.1 \(status) \(status == 200 ? "OK" : status == 201 ? "Created" : status == 202 ? "Accepted" : "Error")\r\nContent-Type: \(contentType)\r\nContent-Length: \(body.count)\r\nConnection: close\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: DENY\r\nReferrer-Policy: no-referrer\r\nContent-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'\r\n\(custom)\r\n"
     return Data(text.utf8) + body
   }
 }

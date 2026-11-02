@@ -16,6 +16,8 @@ struct CanvasHost: NSViewRepresentable {
   var activateDocument: () -> Bool = { true }
   func makeNSView(context: Context) -> CraftCanvas { CraftCanvas(store: store) }
   func updateNSView(_ view: CraftCanvas, context: Context) {
+    _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
+    _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
     view.store = store
     view.activateDocument = activateDocument
@@ -46,10 +48,24 @@ struct CanvasHost: NSViewRepresentable {
   }
 }
 @MainActor final class CraftCanvas: ModifierCursorView {
+  var magneticPrecision=false
+  override func updateCursorModifiers(_ flags:NSEvent.ModifierFlags) {
+    if store.magneticDraft == nil {magneticPrecision=flags.contains(.capsLock)}
+    if !flags.contains(.option) {store.magneticDraft?.alternateReady=true}
+    super.updateCursorModifiers(flags)
+    if store.tool == .magneticLasso {needsDisplay=true}
+    if let original=transformStart,original.movingLayers,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateWholeLayerMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
+    if let original=transformStart,original.movingPixels,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateSelectedPixelMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
+  }
   override var toolCursor: ToolCursor {
+    if !spaceHeld, let point=cursorLocationInView,let axis=guideAxis(at:point) {return ToolCursor.guide(axis,modifiers:cursorModifiers,selection:guideCursorSelection(at:point))}
     guard store.unavailableToolID == nil else { return .unavailable }
     if (panningGesture && cursorPointerDown) || (spaceHeld && !cursorPointerDown) || store.tool == .hand {
       return cursorPointerDown ? .closedHand : .openHand
+    }
+    if store.tool == .magneticLasso {
+      let draft=store.magneticDraft
+      return ToolCursor.magnetic(modifiers:cursorModifiers,mode:draft?.mode ?? store.selectionMode(modifiers:cursorModifiers),active:draft != nil,alternateReady:draft?.alternateReady ?? true,nearStart:magneticNearStart,precision:magneticPrecision)
     }
     let captured = store.brushGesture != nil || store.cloneDraft != nil
     let flags = captured ? cursorGestureModifiers ?? cursorModifiers : cursorModifiers
@@ -58,6 +74,22 @@ struct CanvasHost: NSViewRepresentable {
         artboardCorners(rect).contains { hypot($0.x-point.x,$0.y-point.y)*scale < 9 }
       } ?? false
       if !cornerHit { return .symbol("viewfinder",.add) }
+    }
+    if let draft=store.transformDraft,draft.movingLayers{if store.geometryBusy{return .unavailable};return .selectedPixels(copy:draft.copyWholeLayers,constrained:cursorModifiers.contains(.shift),unsnapped:store.snappingEnabled && store.snapToGuides && (cursorModifiers.contains(.command) || cursorModifiers.contains(.shift)))}
+    if let draft=store.transformDraft,draft.movingPixels {
+      if store.geometryBusy{return .unavailable}
+      return .selectedPixels(copy:draft.copySelectedPixels,constrained:cursorModifiers.contains(.shift),unsnapped:store.snappingEnabled && store.snapToGuides && (cursorModifiers.contains(.command) || cursorModifiers.contains(.shift)))
+    }
+    if store.transformDraft==nil,store.document.selection != nil,store.tool == .move,!store.editingMask,!store.editingComponent,let point=cursorDocumentPoint,point.x>=0,point.y>=0,point.x<Double(store.document.width),point.y<Double(store.document.height),store.document.selectionCoverage(x:Int(point.x),y:Int(point.y))>0 {
+      guard store.canBeginSelectedPixelMove else{return .unavailable}
+      return .selectedPixels(copy:flags.contains(.option),constrained:flags.contains(.shift),unsnapped:store.snappingEnabled && store.snapToGuides && (flags.contains(.command) || flags.contains(.shift)))
+    }
+    if store.transformDraft==nil,store.document.selection==nil,store.tool == .move,!store.editingMask,!store.editingComponent{guard store.canBeginWholeLayerMove(copy:flags.contains(.option)) else{return .unavailable};return .selectedPixels(copy:flags.contains(.option),constrained:flags.contains(.shift),unsnapped:store.snappingEnabled && store.snapToGuides && (flags.contains(.command) || flags.contains(.shift)))}
+    if let draft=store.transformDraft,draft.selection {
+      let handle=cursorPointerDown ? transformHandle:cursorDocumentPoint.map{selectionTransformHit($0,draft:draft)} ?? 4
+      let mode=selectionTransformGestureMode ?? draft.selectionMode(handle:handle,modifiers:cursorModifiers)
+      guard draft.supportsSelectionMode(mode) else{return .unavailable}
+      return ToolCursor.selectionTransform(mode,handle:handle,flags:cursorModifiers,proportional:draft.proportional)
     }
     if store.transformDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right",ToolCursor.geometry(flags)) }
     let selection: SelectionMode
@@ -123,6 +155,7 @@ struct CanvasHost: NSViewRepresentable {
   var cropStart: CropDraft?
   var cropHandle = -1
   var cropLineGesture = false
+  var selectionTransformGestureMode:SelectionTransformMode?
   var transformStart: TransformDraft?
   var gradientDragStart: GradientFill?
   var patternDragStart: PatternFill?
@@ -149,7 +182,7 @@ struct CanvasHost: NSViewRepresentable {
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
     synchronizeFrameProbe()
-    if window == nil { drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
+    if window == nil {if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil{store.cancelTransform()}; store.guideGesture=nil; drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
     drawingFocusObservation = window.map { target in
       NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)
         .sink { [weak self, weak target] note in
@@ -157,7 +190,7 @@ struct CanvasHost: NSViewRepresentable {
           MainActor.assumeIsolated {
             self?.drawingEvents.end()
             self?.airbrushTimer?.invalidate(); self?.airbrushTimer = nil
-            self?.store.cancelBrush(); self?.store.cancelClone()
+            if self?.store.transformDraft?.movingPixels == true || self?.store.transformDraft?.pixelMask == true || self?.store.transformDraft?.channelTarget != nil || self?.store.transformDraft?.collectionLayerIDs != nil{self?.store.cancelTransform()}; self?.store.guideGesture=nil; self?.store.cancelMagneticLasso(); self?.store.cancelBrush(); self?.store.cancelClone()
           }
         }
     }
@@ -167,9 +200,11 @@ struct CanvasHost: NSViewRepresentable {
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
     gestureToolID = store.selectedTool.id
+    if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil,(store.tool != .move || store.unavailableToolID != nil){store.cancelTransform()}
     drawingEvents.end()
     store.cancelClone()
     airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush()
+    store.guideGesture=nil
     store.cancelGradientGesture()
     cloneHover = nil
     store.resetPathGesture()
@@ -244,6 +279,7 @@ struct CanvasHost: NSViewRepresentable {
   override func mouseMoved(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil)
     super.mouseMoved(with: event)
+    if magneticMotion(event,dragging:false) {return}
     if store.tool == .objectSelection {let p=docPoint(event);store.hoverObject(at:.init(p.x,p.y));needsDisplay=true;return}
     guard store.tool.usesRetouchStroke else { return }
     let previous = cloneHover
@@ -380,7 +416,10 @@ struct CanvasHost: NSViewRepresentable {
     let cell: CGFloat = max(2, 8 * scale)
     checkerboard.draw(in: c, viewport: bounds, imageRect: r, cell: cell,
       backing: CGFloat(window?.backingScaleFactor ?? 1))
-    if let preview = store.canvasRasterPreview {
+    if store.transformDraft?.selectedPixels == true,let image=store.selectionTransform?.pixelPreview?.image {
+      c.saveGState();c.translateBy(x:r.minX,y:r.maxY);c.scaleBy(x:1,y:-1);c.interpolationQuality = .high
+      c.draw(image,in:CGRect(origin:.zero,size:r.size));c.restoreGState()
+    } else if let preview = store.canvasRasterPreview {
       c.saveGState(); c.translateBy(x: r.minX, y: r.minY); c.scaleBy(x: scale, y: scale)
       c.interpolationQuality = viewport.resolvedZoom >= 1 ? .none : .high
       preview.draw(in: c); c.restoreGState()
@@ -392,10 +431,10 @@ struct CanvasHost: NSViewRepresentable {
       c.draw(image, in: CGRect(origin: .zero, size: r.size))
       c.restoreGState()
     }
-    if let maskImage = store.tool == .selectionBrush ? store.selectionOverlayImage:store.displayedMaskImage {
+    if let maskImage = store.transformDraft?.pixelMask == true ? store.selectionTransform?.pixelPreview?.maskImage:(store.tool == .selectionBrush ? store.selectionOverlayImage:store.displayedMaskImage) {
       c.saveGState()
       c.interpolationQuality = viewport.resolvedZoom >= 1 ? .none : .high
-      if let region = store.tool == .selectionBrush ? store.selectionOverlayRegion:store.maskViewRegion {
+      if let region = store.transformDraft?.pixelMask == true ? nil:(store.tool == .selectionBrush ? store.selectionOverlayRegion:store.maskViewRegion) {
         c.translateBy(x: r.minX, y: r.minY); c.scaleBy(x: scale, y: scale)
         CanvasRasterPreview(base: maskImage, documentRegion: region).draw(in: c)
       } else {
@@ -412,8 +451,9 @@ struct CanvasHost: NSViewRepresentable {
     drawCloneOverlay(in: c)
     drawGradientOverlay(in: c)
     drawVectorPath(in: c)
-    if store.selectionPath != nil && store.tool != .selectionBrush {
-      if let path = store.selectionPath {
+    let selectionPath=store.transformDraft?.collectionLayerIDs != nil || store.transformDraft?.pixelMask == true || (store.transformDraft?.channelTarget != nil && store.document.selection==nil) ? nil:store.transformDraft?.selection == true ? (store.selectionTransform?.previewPath ?? store.selectionPath):store.selectionPath
+    if selectionPath != nil && store.tool != .selectionBrush {
+      if let path = selectionPath {
         c.saveGState()
         c.translateBy(x: r.minX, y: r.minY)
         c.scaleBy(x: scale, y: scale)
@@ -427,7 +467,7 @@ struct CanvasHost: NSViewRepresentable {
         c.strokePath()
         c.restoreGState()
       }
-    } else if let s = store.document.selection,store.tool != .selectionBrush {
+    } else if let s = store.document.selection,store.tool != .selectionBrush,store.transformDraft?.selection != true {
       outline(
         CGRect(
           x: r.minX + CGFloat(s.x) * scale, y: r.minY + CGFloat(s.y) * scale,
@@ -477,13 +517,14 @@ struct CanvasHost: NSViewRepresentable {
       c.strokePath()
       c.restoreGState()
     }
+    drawMagneticLasso(in:c)
     drawArtboards(in: c)
     drawShapeGesture(in:c)
     drawFrames(in: c)
     drawCrop(in:c)
     drawRegionRetouch(in:c)
     if let draft = store.transformDraft {
-      drawTransform(draft, in: c)
+      if !draft.movingPixels && !draft.movingLayers{drawTransform(draft, in: c)}
     } else if store.showLayerBounds, store.tool == .move,
       let boxInDocument = store.activeLayerBounds
     {
@@ -494,11 +535,13 @@ struct CanvasHost: NSViewRepresentable {
       c.setLineWidth(1)
       c.stroke(box)
     }
+    drawDocumentGuides(in:c)
     if store.showRulers { drawRulers(in: c, imageRect: r) }
   }
   func viewPoint(_ p: CGPoint) -> CGPoint {
     CGPoint(x: imageRect.minX + p.x * scale, y: imageRect.minY + p.y * scale)
   }
+  override func menu(for event:NSEvent)->NSMenu? {selectionTransformMenu(for:event) ?? super.menu(for:event)}
   func drawTransform(_ draft: TransformDraft, in c: CGContext) {
     let points = draft.handles.map(viewPoint)
     c.setLineDash(phase: 0, lengths: [])
@@ -514,7 +557,8 @@ struct CanvasHost: NSViewRepresentable {
       c.fill(box)
       c.stroke(box)
     }
-    let center = viewPoint(CGPoint(x: draft.centerX, y: draft.centerY))
+    let pivot=draft.selection ? draft.selectionReferencePoint:PathPoint(draft.centerX,draft.centerY)
+    let center = viewPoint(CGPoint(x:pivot.x,y:pivot.y))
     c.move(to: CGPoint(x: center.x - 5, y: center.y))
     c.addLine(to: CGPoint(x: center.x + 5, y: center.y))
     c.move(to: CGPoint(x: center.x, y: center.y - 5))
@@ -611,6 +655,8 @@ struct CanvasHost: NSViewRepresentable {
     synchronizeTypeEditor()
     window?.makeFirstResponder(self)
     guard !store.geometryBusy else { return }
+    if magneticDown(event) {return}
+    if beginGuideGesture(event) {return}
     guard spaceHeld || store.canUseComponentCanvasTool else {
       store.status = "This tool is not available for individual channels yet. Select RGB to use it."
       return
@@ -635,6 +681,7 @@ struct CanvasHost: NSViewRepresentable {
     if let draft = store.transformDraft, !spaceHeld {
       transformStart = draft
       start = p
+      if draft.selection {transformHandle=selectionTransformHit(p,draft:draft);selectionTransformGestureMode=draft.selectionMode(handle:transformHandle,modifiers:event.modifierFlags);return}
       let nearest = draft.handles.enumerated().min {
         hypot($0.element.x - p.x, $0.element.y - p.y)
           < hypot($1.element.x - p.x, $1.element.y - p.y)
@@ -721,6 +768,11 @@ struct CanvasHost: NSViewRepresentable {
     lassoPoints = []
     if (store.tool == .lasso || (store.tool == .objectSelection && store.objectSelectionMode == .lasso)) && !spaceHeld { lassoPoints.append(SelectionPoint(p.x, p.y)) }
     panningGesture = spaceHeld || store.tool == .hand
+    if store.tool == .move,store.document.selection != nil,!store.editingMask,!store.editingComponent,!panningGesture,p.x>=0,p.y>=0,p.x<Double(store.document.width),p.y<Double(store.document.height),store.document.selectionCoverage(x:Int(p.x),y:Int(p.y))>0 {
+      if store.beginSelectedPixelMove(at:p,modifiers:event.modifierFlags){start=p;end=p;transformStart=store.transformDraft;needsDisplay=true}
+      else {store.error="Selected pixel movement requires an editable RGB raster or Background layer."}
+      return
+    }
     if store.tool == .move && store.autoSelect && !store.editingMask && !panningGesture {
       store.autoSelectLayer(at: p)
     }
@@ -730,6 +782,7 @@ struct CanvasHost: NSViewRepresentable {
     dragPanOrigin = store.pan
     if let l = store.activeLayer { dragLayerOrigin = CGPoint(x: l.x, y: l.y) }
     if panningGesture { return }
+    if store.tool == .move,!store.editingMask,!store.editingComponent,store.document.selection==nil,store.beginWholeLayerMove(modifiers:event.modifierFlags){transformStart=store.transformDraft;transformHandle = -1;needsDisplay=true;return}
     if store.tool.usesPaintingStroke {
       brushStartTime=event.timestamp
       let point=brushSample(event);samples=[point];store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),selectionMode:store.selectionToolMode(modifiers:event.modifierFlags),eventTimestamp:event.timestamp)
@@ -778,6 +831,8 @@ struct CanvasHost: NSViewRepresentable {
   }
   override func mouseDragged(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
+    if magneticMotion(event,dragging:true) {return}
+    if dragGuideGesture(event) {return}
     if dragShapeGesture(event) { return }
     if dragFrameGesture(event) { return }
     if dragArtboardGesture(event) { return }
@@ -821,6 +876,9 @@ struct CanvasHost: NSViewRepresentable {
       return
     }
     if let original = transformStart, let start {
+      if original.movingLayers{store.updateWholeLayerMove(original,from:start,to:docPoint(event),modifiers:event.modifierFlags,zoom:Double(scale));needsDisplay=true;return}
+      if original.movingPixels {store.updateSelectedPixelMove(original,from:start,to:docPoint(event),modifiers:event.modifierFlags,zoom:Double(scale));needsDisplay=true;return}
+      if original.selection {guard original.supportsSelectionMode(selectionTransformGestureMode ?? .free) else{return};store.updateTransform(original.selectionDragging(handle:transformHandle,from:start,to:docPoint(event),mode:selectionTransformGestureMode ?? .free,shift:event.modifierFlags.contains(.shift),option:event.modifierFlags.contains(.option)));needsDisplay=true;return}
       store.updateTransform(
         original.dragging(
           handle: transformHandle, from: start, to: docPoint(event),
@@ -858,12 +916,14 @@ struct CanvasHost: NSViewRepresentable {
       samples = []
       lassoPoints = []
       panningGesture = false
-      transformStart = nil
+      transformStart = nil;selectionTransformGestureMode=nil
       cropStart = nil; cropLineGesture = false
       patternDragStart = nil
       gradientDragStart = nil
       needsDisplay = true
     }
+    if store.tool == .magneticLasso,store.magneticDraft != nil,!panningGesture {return}
+    if endGuideGesture(event) {return}
     if endShapeGesture(event) { return }
     if endFrameGesture(event) { return }
     if endArtboardGesture(event) { return }
@@ -903,6 +963,8 @@ struct CanvasHost: NSViewRepresentable {
       store.endPathGesture()
       return
     }
+    if let original=transformStart,original.movingLayers,let start{store.updateWholeLayerMove(original,from:start,to:docPoint(event),modifiers:event.modifierFlags,zoom:Double(scale));store.commitTransform();return}
+    if let original=transformStart,original.movingPixels,let start {store.updateSelectedPixelMove(original,from:start,to:docPoint(event),modifiers:event.modifierFlags,zoom:Double(scale));store.commitTransform();return}
     if transformStart != nil { return }
     guard let a = start, store.unavailableToolID == nil, !panningGesture else { return }
     let b = docPoint(event)
@@ -917,8 +979,11 @@ struct CanvasHost: NSViewRepresentable {
             store.updateMask(l.id) { $0.transform = inverse * delta * l.maskCoordinateTransform }
           }
         } else {
-          store.perform(
-            .move(l.id, Int(dragLayerOrigin.x + b.x - a.x), Int(dragLayerOrigin.y + b.y - a.y)))
+          var dx=Double(b.x-a.x),dy=Double(b.y-a.y)
+          if let bounds=store.activeLayerBounds {
+            (dx,dy)=store.guideMoveOffset(bounds,dx:dx,dy:dy,zoom:Double(scale),modifiers:event.modifierFlags)
+          }
+          store.perform(.move(l.id,Int(Double(dragLayerOrigin.x)+dx),Int(Double(dragLayerOrigin.y)+dy)))
         }
       }
     case .objectSelection:
@@ -988,6 +1053,10 @@ struct CanvasHost: NSViewRepresentable {
   override func keyDown(with event: NSEvent) {
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
+    if store.transformDraft?.movingPixels == true || store.transformDraft?.movingLayers == true {if event.keyCode==53{store.cancelTransform()}else if [36,76].contains(event.keyCode){store.commitTransform()};return}
+    if event.keyCode==53,store.guideGesture != nil {store.guideGesture=nil;needsDisplay=true;return}
+    if [51,117].contains(event.keyCode),store.tool == .move,!store.selectedGuides.isEmpty,!event.modifierFlags.contains(.command) {store.clearCanvasGuides(selected:true);needsDisplay=true;return}
+    if magneticKey(event) {return}
     if store.handleWorkspaceKey(event) { return }
     if store.gradientFillDraft != nil {
       if event.keyCode == 53 {
@@ -1100,6 +1169,7 @@ struct CanvasHost: NSViewRepresentable {
       case 123, 124, 125, 126:
         if var draft = store.transformDraft {
           let step = event.modifierFlags.contains(.shift) ? 10.0 : 1.0
+          if draft.selection {let dx=event.keyCode==123 ? -step:event.keyCode==124 ? step:0,dy=event.keyCode==125 ? step:event.keyCode==126 ? -step:0;store.updateTransform(draft.selectionApplying(.translation(dx,dy)));return}
           if event.keyCode == 123 { draft.centerX -= step }
           if event.keyCode == 124 { draft.centerX += step }
           if event.keyCode == 125 { draft.centerY += step }
@@ -1110,6 +1180,8 @@ struct CanvasHost: NSViewRepresentable {
       default: break
       }
     }
+    if store.nudgeSelectedPixels(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
+    if store.nudgeWholeLayers(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     guard !event.modifierFlags.contains(.command),
       let key = event.charactersIgnoringModifiers?.lowercased()
     else {

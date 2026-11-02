@@ -11,9 +11,17 @@ private final class NativeTypeContainer:NSTextContainer {
 public enum NativeTextLayout {
   private static let optionsKey=NSAttributedString.Key("PhotatoFontOptions")
   private static let glyphKey=NSAttributedString.Key("PhotatoGlyphOverride")
+  private static let richStyleKey=NSAttributedString.Key("PhotatoRichStyle")
+  private static let richParagraphKey=NativeParagraphFormatting.key
   private static let sourceFontKey=NSAttributedString.Key("PhotatoSourceFont")
   private static let horizontal = NSAttributedString.Key("PhotatoHorizontalScale")
   private static let vertical = NSAttributedString.Key("PhotatoVerticalScale")
+  public static let linearColorSpace=NSColorSpace(cgColorSpace:CGColorSpace(name:CGColorSpace.extendedLinearSRGB)!)!
+  public static func color(_ style:TypeStyle)->NSColor {
+    let color=style.color
+    if style.characterFormatting?.linearColor == true {return NSColor(colorSpace:linearColorSpace,components:[CGFloat(color.r),CGFloat(color.g),CGFloat(color.b),CGFloat(color.a)],count:4)}
+    return NSColor(srgbRed:CGFloat(color.r),green:CGFloat(color.g),blue:CGFloat(color.b),alpha:CGFloat(color.a))
+  }
   public static func attributes(_ style: TypeStyle, paragraph: TypeParagraph, dpi: Double, orientation:TextTypography.Orientation = .horizontal) throws -> [NSAttributedString.Key: Any] {
     let font = try NativeFonts.font(style,dpi:dpi)
     let p = NSMutableParagraphStyle()
@@ -25,12 +33,15 @@ public enum NativeTextLayout {
     p.paragraphSpacingBefore = paragraph.spaceBefore * unit; p.paragraphSpacing = paragraph.spaceAfter * unit
     p.hyphenationFactor = paragraph.hyphenation ? 1 : 0
     if style.leading > 0 { p.minimumLineHeight = style.leading * unit; p.maximumLineHeight = style.leading * unit }
-    var result:[NSAttributedString.Key:Any] = [.font: font, .foregroundColor: NSColor(srgbRed: CGFloat(style.color.r), green: CGFloat(style.color.g), blue: CGFloat(style.color.b), alpha: CGFloat(style.color.a)),
-      .kern: style.tracking * style.size * unit / 1000, .baselineOffset: style.baseline * unit,
+    else if let formatting=paragraph.formatting {p.minimumLineHeight=style.size*unit*formatting.autoLeading*style.verticalScale;p.maximumLineHeight=p.minimumLineHeight}
+    var result:[NSAttributedString.Key:Any] = [.font: font, .foregroundColor: color(style),
+      .kern: (style.tracking+(style.characterFormatting?.manualKerning ?? 0)) * style.size * unit / 1000, .baselineOffset: style.baseline * unit,
       .underlineStyle: style.underline ? NSUnderlineStyle.single.rawValue : 0,
       .strikethroughStyle: style.strikethrough ? NSUnderlineStyle.single.rawValue : 0,
       .paragraphStyle: p, horizontal: style.horizontalScale, vertical: style.verticalScale]
-    if style.tracking == 0 { result.removeValue(forKey:.kern) }
+    if style.tracking == 0,style.characterFormatting?.manualKerning ?? 0 == 0,style.characterFormatting?.kerning != .off,style.characterFormatting?.kerning != .optical { result.removeValue(forKey:.kern) }
+    if let character=style.characterFormatting {result[richStyleKey]=try JSONEncoder().encode(style);result[.ligature]=character.ligatures ? 1:0;if character.fauxBold{result[.strokeWidth] = -2.5}}
+    if paragraph.formatting != nil || paragraph.firstIndent<0 || paragraph.startIndent<0 || paragraph.endIndent<0 {result[richParagraphKey]=try JSONEncoder().encode(paragraph);result[richStyleKey]=try JSONEncoder().encode(style)}
     result[sourceFontKey]=style.font;result[.verticalGlyphForm]=orientation == .vertical ? 1:0
     if let options=style.fontOptions{result[optionsKey]=try JSONEncoder().encode(options);if let language=options.language{result[NSAttributedString.Key(kCTLanguageAttributeName as String)]=language};if let liga=options.features.first(where:{$0.tag=="liga"}){result[.ligature]=liga.value==0 ? 0:1}}
     if let glyph=style.glyphOverride{result[glyphKey]=try JSONEncoder().encode(glyph);if let info=NSGlyphInfo(glyph:NSGlyph(glyph.glyph),for:font,baseString:glyph.baseString){result[.glyphInfo]=info}}
@@ -42,7 +53,7 @@ public enum NativeTextLayout {
     let base=glyph.unicode ?? "\u{FFFC}";style.glyphOverride = .init(glyph:glyph.id,baseString:base)
     return NSAttributedString(string:base,attributes:try attributes(style,paragraph:paragraph,dpi:dpi,orientation:orientation))
   }
-  public static func attributed(_ content: TextContent, dpi: Double) throws -> NSAttributedString {
+  public static func attributed(_ content: TextContent, dpi: Double,rendering:Bool=false) throws -> NSAttributedString {
     try content.validate()
     let text = content.promoted(dpi: dpi), type = text.typography!
     let result = NSMutableAttributedString(string: text.text,
@@ -52,9 +63,32 @@ public enum NativeTextLayout {
       result.setAttributes(try attributes(run.style, paragraph: run.paragraph, dpi: dpi, orientation:type.writingOrientation), range: NSRange(location: offset, length: run.length))
       offset += run.length
     }
+    if rendering {
+      let transformed=NSMutableAttributedString(string:"")
+      result.enumerateAttributes(in:NSRange(location:0,length:result.length)){attributes,range,_ in
+        let original=(result.string as NSString).substring(with:range)
+        let style=(attributes[richStyleKey]as?Data).flatMap{try? JSONDecoder().decode(TypeStyle.self,from:$0)}
+        let caps=style?.characterFormatting?.caps ?? .normal
+        if caps == .allCaps {transformed.append(NSAttributedString(string:original.uppercased(),attributes:attributes))}
+        else if caps == .smallCaps,let style,(try? NativeFonts.availableFeatures(style.font).contains("smcp")) != true {
+          for scalar in original.unicodeScalars {var attrs=attributes;let string=String(scalar);if CharacterSet.lowercaseLetters.contains(scalar),let font=attrs[.font]as?NSFont{attrs[.font]=NSFont(descriptor:font.fontDescriptor,size:font.pointSize*0.7)};transformed.append(NSAttributedString(string:string.uppercased(),attributes:attrs))}
+        }else{transformed.append(NSAttributedString(string:original,attributes:attributes))}
+      }
+      try NativeOpticalKerning.apply(to:transformed,stylesKey:richStyleKey,dpi:dpi)
+      return transformed
+    }
     return result
   }
   public static func styles(_ attributes: [NSAttributedString.Key: Any], dpi: Double) -> (TypeStyle, TypeParagraph) {
+    let retainedStyle=(attributes[richStyleKey]as?Data).flatMap{try? JSONDecoder().decode(TypeStyle.self,from:$0)}
+    let retainedParagraph=(attributes[richParagraphKey]as?Data).flatMap{try? JSONDecoder().decode(TypeParagraph.self,from:$0)}
+    if let retainedStyle,let expected=try? self.attributes(retainedStyle,paragraph:retainedParagraph ?? .init(),dpi:dpi) {
+      let keys:[NSAttributedString.Key]=[.font,.foregroundColor,.kern,.baselineOffset,.underlineStyle,.strikethroughStyle,.paragraphStyle,.strokeWidth]
+      if keys.allSatisfy({key in
+        let a=expected[key]as?NSObject,b=attributes[key]as?NSObject
+        return a==nil ? b==nil:a?.isEqual(b)==true
+      }){return(retainedStyle,retainedParagraph ?? .init())}
+    }
     var style = TypeStyle(), para = TypeParagraph()
     let unit = 72 / dpi
     if let font = attributes[.font] as? NSFont { style.font = font.fontName; style.size = font.pointSize * unit }
@@ -70,14 +104,17 @@ public enum NativeTextLayout {
     if let p = attributes[.paragraphStyle] as? NSParagraphStyle {
       para.alignment = [.left: .left, .center: .center, .right: .right, .justified: .justified][p.alignment] ?? .left
       para.direction = [.natural: .natural, .leftToRight: .leftToRight, .rightToLeft: .rightToLeft][p.baseWritingDirection] ?? .natural
-      para.startIndent = p.headIndent * unit; para.firstIndent = max(0, p.firstLineHeadIndent * unit - para.startIndent)
-      para.endIndent = max(0, -p.tailIndent * unit)
+      para.startIndent = p.headIndent * unit; para.firstIndent = p.firstLineHeadIndent * unit - para.startIndent
+      para.endIndent = -p.tailIndent * unit
       para.spaceBefore = p.paragraphSpacingBefore * unit; para.spaceAfter = p.paragraphSpacing * unit
       para.hyphenation = p.hyphenationFactor > 0; style.leading = p.maximumLineHeight * unit
     }
     if let name=attributes[sourceFontKey] as? String{style.font=name}
     if let data=attributes[optionsKey] as? Data{style.fontOptions=try? JSONDecoder().decode(TypeFontOptions.self,from:data)}
     if let data=attributes[glyphKey] as? Data{style.glyphOverride=try? JSONDecoder().decode(TypeGlyphOverride.self,from:data)}
+    style.characterFormatting=retainedStyle?.characterFormatting
+    para.formatting=retainedParagraph?.formatting
+    if let extra=style.characterFormatting{style.tracking-=extra.manualKerning}
     return (style, para)
   }
   public static func content(_ value: NSAttributedString, template: TextContent, dpi: Double) throws -> TextContent {
@@ -105,30 +142,36 @@ public enum NativeTextLayout {
     public var origin:PathPoint = .init(0,0)
   }
   private static func layout(_ text: TextContent, dpi: Double) throws -> (NSTextStorage, NSLayoutManager, NSTextContainer, Metrics) {
-    let storage = NSTextStorage(attributedString: try attributed(text, dpi: dpi))
+    let storage = NSTextStorage(attributedString: try attributed(text, dpi: dpi,rendering:true))
     let manager = NSLayoutManager(); manager.usesFontLeading = true
     let paragraph = text.typography?.kind == .paragraph
     let isVertical=text.typography?.writingOrientation == .vertical
+    let sourceFrame=text.typography?.sourceFrame
     let width = paragraph ? text.layoutWidth ?? 1 : 32768
     let height = paragraph ? text.layoutHeight ?? 1 : 32768
-    let container = NativeTypeContainer(containerSize: NSSize(width: isVertical ? height:width, height: isVertical ? width:height))
+    let frameWidth=paragraph && sourceFrame?.kind == .box ? sourceFrame!.width:Double(width)
+    let frameHeight=paragraph && sourceFrame?.kind == .box ? sourceFrame!.height:Double(height)
+    let container = NativeTypeContainer(containerSize: NSSize(width: isVertical ? frameHeight:frameWidth, height: isVertical ? frameWidth:frameHeight))
     container.verticalWriting=isVertical
     container.lineFragmentPadding = 0
     manager.addTextContainer(container); storage.addLayoutManager(manager)
     manager.ensureLayout(for: container)
+    try NativeParagraphFormatting.apply(storage:storage,manager:manager,container:container,dpi:dpi)
     let used = manager.usedRect(for: container)
     let range = manager.glyphRange(for: container)
     let baseline = range.length > 0 ? manager.location(forGlyphAt: range.location).y : 0
-    let metrics = Metrics(width: paragraph ? width : max(1, Int(ceil(isVertical ? used.maxY:used.maxX)) + 2),
+    var metrics = Metrics(width: paragraph ? width : max(1, Int(ceil(isVertical ? used.maxY:used.maxX)) + 2),
       height: paragraph ? height : max(1, Int(ceil(isVertical ? used.maxX:used.maxY)) + 2), firstBaseline: baseline,
       overset: NSMaxRange(range) < manager.numberOfGlyphs)
+    if let frame=sourceFrame {metrics.origin=frame.kind == .point ? .init(frame.x,frame.y-baseline):.init(frame.x,frame.y)}
     guard paragraph || !metrics.overset else { throw CraftError.unsupported("Point text exceeds the native layout extent. Use a paragraph frame or a shorter text layer.") }
     guard metrics.width <= 32768, metrics.height <= 32768, metrics.width * metrics.height <= 16_777_216 else {
       throw CraftError.unsupported("This text frame exceeds the 16 megapixel type rendering limit.")
     }
     return (storage, manager, container, metrics)
   }
-  public static func metrics(_ text: TextContent, dpi: Double) throws -> Metrics { if text.typography?.geometry?.isActive==true{return try ShapedTextLayout.metrics(text,dpi:dpi)};return try layout(text, dpi: dpi).3 }
+  public static func metrics(_ text: TextContent, dpi: Double) throws -> Metrics { if let source=text.pristineSourceAppearance,let pixels=source.pixels{return .init(width:pixels.width,height:pixels.height,firstBaseline:0,overset:false,origin:.init(Double(source.x),Double(source.y)))};if text.typography?.geometry?.isActive==true{return try ShapedTextLayout.metrics(text,dpi:dpi)};return try layout(text, dpi: dpi).3 }
+  public static func editingMetrics(_ text:TextContent,dpi:Double)throws->Metrics {var editable=text;editable.importedAppearance=nil;return try metrics(editable,dpi:dpi)}
   /// Reuse TextKit glyph positions for shape/type-to-frame conversion. Color-only
   /// glyphs without vector outlines remain unsupported rather than becoming boxes.
   public static func outline(_ text: TextContent, dpi: Double) throws -> CGPath {
@@ -157,6 +200,7 @@ public enum NativeTextLayout {
     return path
   }
   public static func render(_ text: TextContent, document: CraftDocument) throws -> Surface {
+    if let source=text.pristineSourceAppearance,let pixels=source.pixels{guard pixels.depth==document.depth else{throw CraftError.invalid("Type cache depth must match its document.")};return pixels}
     if text.typography?.geometry?.isActive==true{return try ShapedTextLayout.render(text,document:document)}
     let (storage, manager, container, metrics) = try layout(text, dpi: document.pixelsPerInch)
     let floating = document.depth != .u8
@@ -164,7 +208,7 @@ public enum NativeTextLayout {
     guard let context = CGContext(data: nil, width: metrics.width, height: metrics.height,
       bitsPerComponent: floating ? 32 : 8, bytesPerRow: metrics.width * (floating ? 16 : 4),
       space: try ColorManagement.space(for: document), bitmapInfo: info) else { throw CraftError.invalid("Could not allocate the type renderer.") }
-    context.setShouldAntialias(text.typography?.antialias ?? true)
+    context.setShouldAntialias(text.typography?.antialiasMode.map{$0 != .none} ?? text.typography?.antialias ?? true)
     context.translateBy(x: 0, y: CGFloat(metrics.height)); context.scaleBy(x: 1, y: -1)
     if text.typography?.writingOrientation == .vertical {context.translateBy(x:CGFloat(metrics.width),y:0);context.rotate(by:.pi/2)}
     NSGraphicsContext.saveGraphicsState()

@@ -21,6 +21,10 @@ public enum RecordedActionRenderer {
     var lastIndexedPalette: [PaletteColor]?
     try action.apply(to: &result, resolve: { operation, document in
       switch operation {
+      case .canvasEdges(let operation,let background):
+        try CanvasEdgePreparation.command(document,operation:operation,background:background).apply(to:&document)
+      case .flattenImage:
+        try FlattenPreparation.command(document).apply(to:&document)
       case .retouch(let request):
         try RetouchPreparation.command(request, in: document, sources: masters).apply(to: &document)
       case .inkMode(var request):

@@ -34,6 +34,9 @@ struct PathsPanel: View {
                 }
               }
           }
+          if let layer=store.activeLayer,let path=try? layer.shapePath() {
+            row("\(layer.name) Shape Path",path:path,target:.shape(layer.id))
+          }
           if let layer = store.activeLayer, let mask = layer.vectorMask {
             row("\(layer.name) Vector Mask", path: mask.path, target: .vectorMask(layer.id))
           }

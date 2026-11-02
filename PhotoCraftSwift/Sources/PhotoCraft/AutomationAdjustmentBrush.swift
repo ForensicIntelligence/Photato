@@ -12,7 +12,7 @@ enum AdjustmentBrushAPI {
     func integer(_ a:Double,_ b:Double)->[String:Any] {BrushAPI.number(a,b,integer:true)}
     switch kind {
     case .brightnessContrast:return obj(["brightness":n(-1,1,false),"contrast":n(0,10,false)])
-    case .exposure:return obj(["exposure":n(-20,20,false)])
+    case .exposure:return obj(["exposure":n(-20,20,false),"offset":n(-0.5,0.5,false),"gammaCorrection":n(0.01,9.99,false)])
     case .levels:
       let channel=obj(["inputBlack":integer(0,253),"inputWhite":integer(2,255),"gamma":n(0.1,9.99,false),"outputBlack":integer(0,255),"outputWhite":integer(0,255)])
       return obj(Dictionary(uniqueKeysWithValues:["rgb","red","green","blue"].map{($0,channel)}))
@@ -60,7 +60,12 @@ enum AdjustmentBrushAPI {
       let value:Adjustment
       switch kind {
       case .brightnessContrast:let v=try decode([String:Float].self);value = .brightnessContrast(v["brightness"]!,v["contrast"]!)
-      case .exposure:let v=try decode([String:Float].self);value = .exposure(v["exposure"]!)
+      case .exposure:
+        let v=try decode([String:Float].self)
+        // Existing gain-only brush layers retain their legacy operation until
+        // the client explicitly supplies a new full-control parameter.
+        if case .exposure = base, (input.jsonValue as? [String:Any])?["offset"] == nil, (input.jsonValue as? [String:Any])?["gammaCorrection"] == nil { value = .exposure(v["exposure"]!) }
+        else { value = .classic(.exposure(.init(exposure:v["exposure"] ?? 0,offset:v["offset"] ?? 0,gammaCorrection:v["gammaCorrection"] ?? 1))) }
       case .levels:value = .levels(try decode(LevelsAdjustment.self));case .curves:value = .curves(try decode(CurvesAdjustment.self))
       case .hueSaturation:value = .hueSaturation(try decode(HueSaturationAdjustment.self));case .colorBalance:value = .colorBalance(try decode(ColorBalanceAdjustment.self))
       case .vibrance,.blackWhite,.photoFilter,.channelMixer,.selectiveColor:
@@ -85,7 +90,7 @@ enum AdjustmentBrushAPI {
     }
   }
   static var capabilities:[String:Any] {
-    ["commands":commands,"types":AdjustmentBrushKind.allCases.map{["kind":$0.rawValue,"title":$0.title,"settings":settings($0.initial),"schema":settingsSchema($0)]},"behavior":"Editable adjustment layer and mask; first paint/object and subsequent strokes each use one Undo. RGB editing target required. Existing masks retain transform, density and feather. New/subtract and disabled/locked masks reject.","objectProvider":"Apple Vision on-device instance mask, macOS14+, at most8388608 pixels and6000 per side; no foreground at point rejects, no cloud fallback.","limits":"4MiB body,4096 stroke samples; native brush limits apply. Object-mask stored raster at most16MP.","adobe":"No dedicated published Adjustment Brush route; unqualified tool/actionJSON descriptors remain unsupported. Existing classic adjustment and edit routes retain their documented subset.","defaults":"Native starting values; complete Photoshop presets/defaults and exact output remain unqualified."]
+    ["commands":commands,"types":AdjustmentBrushKind.allCases.map{["kind":$0.rawValue,"title":$0.title,"settings":settings($0.initial),"schema":settingsSchema($0)]},"behavior":"Editable adjustment layer and mask; first paint/object and subsequent strokes each use one Undo. RGB editing target required. Existing masks retain transform, density and feather. New/subtract and disabled/locked masks reject.","objectProvider":"Apple Vision on-device instance mask, macOS14+, at most8388608 pixels and6000 per side; no foreground at point rejects, no cloud fallback.","limits":"4MiB body,4096 stroke samples; native brush limits apply. Object-mask stored raster at most16MP.","adobe":"No dedicated published Adjustment Brush route; unqualified tool/actionJSON descriptors remain unsupported. Existing classic adjustment and edit routes retain their documented subset.","legacyExposureCreationDefault":["exposure":1],"exposureCompatibility":"New API strokes or retyped layers without offset/gammaCorrection use the original gain-only Exposure. Include either new field for full controls. Existing full-control layers retain their model for partial edits. Native brush creation starts with full controls.","defaults":"Native starting values; complete Photoshop presets/defaults and exact output remain unqualified."]
   }
 }
 extension AutomationCommand {
@@ -101,7 +106,7 @@ extension AutomationCommand {
     let id=try parameters["layerID"].map{_ in try actionUUID("layerID")} ?? (new ? nil:store.adjustmentBrushLayer?.id)
     let old:Adjustment?=id.flatMap{id in guard let layer=store.document.layers.first(where:{$0.id==id}),case .adjustment(let v)=layer.content else{return nil};return v}
     let kind=try adjustmentBrushKind(old.flatMap(AdjustmentBrushKind.init(adjustment:)) ?? store.adjustmentBrushKind)
-    let base=old.flatMap{AdjustmentBrushKind(adjustment:$0)==kind ? $0:nil} ?? kind.initial
+    let base=old.flatMap{AdjustmentBrushKind(adjustment:$0)==kind ? $0:nil} ?? (kind == .exposure ? .exposure(1):kind.initial)
     let value=try AdjustmentBrushAPI.decode(parameters["settings"],kind:kind,base:base)
     let brush=try BrushAPI.decode(parameters["brush"],base:store.brush)
     var points:[StrokePoint]=[]

@@ -23,7 +23,7 @@ final class ComponentEditingWorkflowTests: XCTestCase {
     }
   }
   @MainActor func testTargetIsIndependentOfPreviewAndPreservesDocumentHistory() throws {
-    let doc = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 3, height: 2))
+    let doc = CraftNSDocument(model: try CraftDocument(width: 3, height: 2))
     defer { doc.close() }
     let store = doc.store
     let original = store.document
@@ -78,7 +78,7 @@ final class ComponentEditingWorkflowTests: XCTestCase {
   }
 
   @MainActor func testBusyMaskReloadAndShortcutLifecycle() throws {
-    let doc = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 3, height: 2))
+    let doc = CraftNSDocument(model: try CraftDocument(width: 3, height: 2))
     defer { doc.close() }
     let store = doc.store
     let saved = try doc.data(ofType: CraftNSDocument.nativeType)

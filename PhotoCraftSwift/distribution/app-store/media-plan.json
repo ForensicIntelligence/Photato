@@ -1,0 +1,84 @@
+{
+  "status": "CAPTURE_PENDING_MAC_UNLOCK",
+  "source": "Actual Photato archive331 UI using owned sample documents only. Do not use Adobe app screenshots, generated UI, private documents or historical-build captures as this archive.",
+  "screenshots": {
+    "format": "PNG, opaque sRGB",
+    "size": [
+      2880,
+      1800
+    ],
+    "shots": [
+      {
+        "title": "A native workspace for your next image",
+        "scene": "Owned colourful illustration in the full native editor; Layers panel visible."
+      },
+      {
+        "title": "Compose with editable layers",
+        "scene": "Owned photo composite with group, pixel mask and adjustment layers; show actual supported controls."
+      },
+      {
+        "title": "Paint and retouch",
+        "scene": "Owned brush sample document with actual brush controls and canvas marks."
+      },
+      {
+        "title": "Type, shapes and guides",
+        "scene": "Owned poster with editable text, shapes and the new document guides."
+      }
+    ]
+  },
+  "preview": {
+    "format": "MP4 H.264, progressive, High Profile Level4.0",
+    "size": [
+      1920,
+      1080
+    ],
+    "frameRate": 30,
+    "targetBitRateMbps": 11,
+    "durationSeconds": 25,
+    "maxFileBytes": 500000000,
+    "audio": "No music; silent preview unless an owned narration is recorded.",
+    "timeline": [
+      {
+        "seconds": [
+          0,
+          4
+        ],
+        "caption": "Photato \u00b7 Native image editing for Mac",
+        "action": "Reveal the real application and an owned layered image."
+      },
+      {
+        "seconds": [
+          4,
+          10
+        ],
+        "caption": "Layers and masks",
+        "action": "Toggle a layer and adjust opacity using the real slider."
+      },
+      {
+        "seconds": [
+          10,
+          16
+        ],
+        "caption": "Paint, then refine",
+        "action": "Draw a short brush stroke and undo/redo."
+      },
+      {
+        "seconds": [
+          16,
+          22
+        ],
+        "caption": "Text, shapes and document guides",
+        "action": "Show editable poster and drag an actual guide."
+      },
+      {
+        "seconds": [
+          22,
+          25
+        ],
+        "caption": "Alpha \u00b7 Features and compatibility are incomplete",
+        "action": "Keep actual editor visible; no performance claim or simulated AI result."
+      }
+    ]
+  },
+  "submissionRule": "Rehearse each demonstrated action on the signed app. Inspect all frames, cursor feedback and visible app version, then validate dimensions/duration/codec/file size. No timed release or auto-distribution."
+}

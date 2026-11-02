@@ -14,6 +14,7 @@ lipo -create /private/tmp/photocraft-swift-build/release/Photato /private/tmp/ph
 cp scripts/Info.plist "$app/Contents/Info.plist"
 cp LICENSE-MIT LICENSE-APACHE LICENSE-psd-tools NOTICE ATTRIBUTION.md "$app/Contents/Resources/"
 cp scripts/ProjectLinks.json "$app/Contents/Resources/ProjectLinks.json"
+cp scripts/PrivacyInfo.xcprivacy "$app/Contents/Resources/PrivacyInfo.xcprivacy"
 ./scripts/copy-people-model.sh "$PWD" "$app/Contents/Resources"
 # Package the maintainer's original artwork at each macOS icon resolution.
 iconset="$stage_root/Photato.iconset"

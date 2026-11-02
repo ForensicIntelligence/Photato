@@ -93,7 +93,10 @@ struct WorkspaceView: View {
     .sheet(item: $store.channelPanelOptionsDraft) { draft in
       ChannelPanelOptionsSheet(store: store, draft: draft)
     }
+    .sheet(item:$store.backgroundLayerDraft){draft in BackgroundLayerSheet(store:store,draft:draft)}
     .sheet(item: $store.newLayerDraft) { draft in NewLayerSheet(store: store, draft: draft) }
+    .sheet(item:$store.trimDraft){draft in TrimSheet(store:store,draft:draft)}
+    .sheet(item: $store.documentDuplicateDraft) { draft in DocumentDuplicateSheet(store:store,draft:draft) }
     .sheet(item: $store.duplicateLayerDraft) { draft in
       DuplicateLayerSheet(store: store, draft: draft)
     }
@@ -102,6 +105,12 @@ struct WorkspaceView: View {
     .sheet(item:$store.shapedTypeDraft,onDismiss:{store.cancelShapedType()}){ShapedTypeSheet(store:store,model:$0)}
     .sheet(item: $store.shapeDraft,onDismiss:{store.shapePreview=nil;store.render()}) { ShapeSheet(store:store,draft:$0) }
     .sheet(item: $store.frameDraft) { FrameSheet(store: store, draft: $0) }
+    .sheet(item: $store.layerFileDraft) { LayerFileSheet(store: store, draft: $0) }
+    .sheet(item: $store.imageExportDraft) { ImageExportSheet(store: store, draft: $0) }
+    .sheet(item:$store.selectionModifyDraft){SelectionModifySheet(store:store,draft:$0)}
+    .sheet(item: $store.colorRangeDraft) { ColorRangeSheet(store: store, model: $0) }
+    .sheet(item: $store.fileInfoDraft) { FileInfoSheet(store: store, draft: $0) }
+    .sheet(item:$store.guideDraft) { GuideSheet(store:store,draft:$0) }
     .sheet(item: $store.artboardDraft) { ArtboardSheet(store: store, draft: $0) }
     .sheet(item: $store.newGroupDraft) { draft in NewGroupSheet(store: store, draft: draft) }
     .sheet(item: $store.gradientStopColorDraft, onDismiss: { store.render() }) { _ in

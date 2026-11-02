@@ -82,6 +82,8 @@ enum PSDRestrictedStorage {
     }
     let savedPaths = try paths(blocks, width: width, height: height)
     document.paths = savedPaths.isEmpty ? nil : savedPaths
+    document.globalLight = try PSDGlobalLight.read(blocks)
+    try PSDGuides.read(into:&document)
     try r.validateUnchanged(); try document.validate(); return document
   }
   static func write(_ document: CraftDocument, format: PSDFileFormat, compression: PSDCompression, to output: PSDOutput) throws {
@@ -94,7 +96,7 @@ enum PSDRestrictedStorage {
     try output.n(1, 2); try output.n(document.height, 4); try output.n(document.width, 4)
     try output.n(document.bitsPerChannel, 2); try output.n(document.colorMode == .indexed ? 2 : 0, 2)
     var color = Data()
-    let resources = try resources(document)
+    let resources = try PSDGlobalLight.applying(resources(document), document: document)
     var bytes: Data, rowBytes: Int
     switch raster {
     case .indexed(let r):
@@ -135,7 +137,7 @@ enum PSDRestrictedStorage {
       if !saved.isWorkPath { pathID += 1 }
     }
     guard resources.count <= PSDImageResources.maximumBytes else { throw CraftError.invalid("Restricted image resources exceed the metadata budget.") }
-    return resources
+    return try PSDGuides.applying(resources,document:document)
   }
   static func paths(_ blocks: [PSDImageResources.Block], width: Int, height: Int) throws -> [NamedPath] {
     try blocks.filter { $0.id == 1025 || (2000...2997).contains($0.id) }.map { block in

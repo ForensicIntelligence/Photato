@@ -15,9 +15,10 @@ public struct TypeStyle: Codable, Equatable, Sendable {
   public var strikethrough = false
   public var fontOptions: TypeFontOptions?
   public var glyphOverride: TypeGlyphOverride?
+  public var characterFormatting: TypeCharacterFormatting?
   public init() {}
   public func validate() throws {
-    try fontOptions?.validate();try glyphOverride?.validate()
+    try fontOptions?.validate();try glyphOverride?.validate();try characterFormatting?.validate()
     guard !font.isEmpty, font.utf8.count <= 256, size.isFinite, (0.1...4096).contains(size),
       color.isFinite, [color.r, color.g, color.b, color.a].allSatisfy({ (0...1).contains($0) }),
       tracking.isFinite, (-1000...10000).contains(tracking), baseline.isFinite,
@@ -38,9 +39,11 @@ public struct TypeParagraph: Codable, Equatable, Sendable {
   public var spaceBefore: Double = 0
   public var spaceAfter: Double = 0
   public var hyphenation = false
+  public var formatting: TypeParagraphFormatting?
   public init() {}
   public func validate() throws {
-    guard [firstIndent, startIndent, endIndent, spaceBefore, spaceAfter].allSatisfy({ $0.isFinite && (0...16384).contains($0) })
+    try formatting?.validate()
+    guard [firstIndent,startIndent,endIndent].allSatisfy({$0.isFinite && (-16384...16384).contains($0)}),[spaceBefore,spaceAfter].allSatisfy({$0.isFinite && (0...16384).contains($0)})
     else { throw CraftError.invalid("Invalid paragraph formatting.") }
   }
 }
@@ -61,9 +64,11 @@ public struct TextTypography: Codable, Equatable, Sendable {
   public var antialias = true
   public var orientation: Orientation?
   public var geometry: TextGeometry?
+  public var sourceFrame: TypeSourceFrame?
+  public var antialiasMode: TypeAntialias?
   public init() {}
   public func validate(text: String) throws {
-    try geometry?.validate()
+    try geometry?.validate();try sourceFrame?.validate()
     try defaultStyle.validate(); try defaultParagraph.validate()
     let utf16=Array(text.utf16),count = utf16.count
     guard count <= 100_000, runs.count <= 4096 else { throw CraftError.invalid("Text exceeds the native type limit.") }
@@ -95,6 +100,7 @@ extension TextContent {
     return result
   }
   public func validate() throws {
+    try importedAppearance?.validate()
     guard size.isFinite, (0.1...4096).contains(size), text.utf16.count <= 100_000, color.isFinite else {
       throw CraftError.invalid("Invalid text layer.")
     }

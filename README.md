@@ -2,7 +2,7 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
-**Development preview:** feature parity is not complete. The checkpoint293 source passes 2,942 full optimized arm64 tests; native acceptance of recent candidates and physical supported-platform qualification remain pending. It remains a development preview, with Photoshop parity and distribution qualification still open. See the [native implementation status](PhotoCraftSwift/docs/STATUS.md) and [development log](PhotoCraftSwift/docs/DEVLOG.md) for the scope of completed validation and remaining gaps.
+**Development preview:** Photoshop2026 is the functionality, behavior, UI, shortcut and output standard. The original Rust project supplies inspiration and licensed material. Current native source362adds Trim/Reveal All, following Duplicate/Flatten and the other native workflows. All24new feature cases pass;302of304affected optimized arm64 cases pass, retaining two PSD Layer Comp failures (one unexpected error). Complete Photoshop parity, the full current suite and supported-platform/dense-capacity/performance acceptance remain open. See the [native status](PhotoCraftSwift/docs/STATUS.md) and [portable source manifest](PhotoCraftSwift/docs/SOURCE_SNAPSHOT_363.json).
 
 ## Project layout
 
@@ -24,3 +24,5 @@ PhotoCraft-derived source retains **MIT OR Apache-2.0** licensing: [MIT](PhotoCr
 Local build products, downloaded corpora, development artifacts, logs, and machine-specific settings are excluded from Git. Documentation may refer to evidence kept locally; the repository is not a backup of that excluded material.
 
 The repository remains private during development and will become public on the same day the software is released.
+
+The source snapshot includes all native app/test code and the Xcode project. Generated models, caches, local runtime evidence, signing material and user documents are excluded. One external PSD is not redistributed because its upstream license excludes image assets; see the [optional reference instructions](PhotoCraftSwift/Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md). This private source backup does not install or distribute a new binary and does not approve a software release.

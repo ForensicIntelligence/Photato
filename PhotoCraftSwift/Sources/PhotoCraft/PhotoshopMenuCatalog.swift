@@ -950,6 +950,8 @@ enum PhotoshopMenuCatalog {
             .item("Minimum…"),
             .item("Offset…"),
           ]),
+        .separator,
+        .menu("Photato", [.item("Relight…"),.item("Lighting Effects…")]),
       ]),
     .menu(
       "View",

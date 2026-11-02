@@ -1,0 +1,146 @@
+{
+  "step": 328,
+  "recorded_at_utc": "2026-11-01T15:18:47.220190+00:00",
+  "status": "functional-subset-qualified",
+  "functional_subset_qualified": true,
+  "full_photoshop_parity": false,
+  "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+  "source_inputs": 6711,
+  "production_swift_files": 904,
+  "native_version": 76,
+  "actions_version": 30,
+  "photato_commands": 206,
+  "new_cases": 12,
+  "original_fixtures": {
+    "projects": 3,
+    "channel_planes": 12,
+    "separation_words": 2244,
+    "overprint_vectors": 3,
+    "overprint_words": 2244,
+    "photoshop_generated": false,
+    "provenance": "Tests/PhotoCraftImagingTests/Fixtures/SourceChannels/provenance.json"
+  },
+  "public_reference": {
+    "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/work-with-spot-color-channels.html",
+    "final_url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/work-with-spot-color-channels.html",
+    "retrieved_at_utc": "2026-11-01T15:17:31.615284+00:00",
+    "sha256": "42b0a898de90c98473a6c64c19a157942ea10c3cb662eb7b01537cd94c6d9b0d",
+    "bytes": 801738,
+    "scope": "Official public control semantics, not an independent Photoshop pixel oracle. Raw downloaded reference retained privately."
+  },
+  "native_access": "artifacts/runs/20261101T150700Z-328-source-channels/native-access01.json",
+  "open": [
+    "PSD/PSB separations",
+    "multiple simultaneous auxiliary visibility",
+    "Merge Spot",
+    "ink libraries",
+    "printing/composite export",
+    "semantic Actions",
+    "Photoshop exact output and UI",
+    "source modes/guides/metadata",
+    "capacity/platform/60fps/full-current inventory"
+  ],
+  "binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+  "tests": {
+    "step": 328,
+    "source": "Source03",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+    "build_succeeded": true,
+    "build_seconds": 39.41,
+    "cases": 102,
+    "passed_cases": 102,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.229,
+    "classes": {
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.AlphaChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AlphaChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ChannelPanelTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ChannelViewWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkChannelTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkChannelWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InteractivePaintingWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeChannelPresentationWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PaintToolTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RGBChannelViewTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceChannelImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SpotChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SpotChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "new_cases": 12,
+    "new_cases_passed": 12,
+    "failed_case_names": [],
+    "source_unchanged": true
+  },
+  "source02_source03_binding": "artifacts/runs/20261101T150700Z-328-source-channels/source02-source03-binding.json",
+  "verification": "artifacts/runs/20261101T150700Z-328-source-channels/verification01.json",
+  "original_words_exact": true,
+  "documentation_verification_result": {
+    "passed": true,
+    "checks": 49,
+    "issues": [],
+    "path": "artifacts/runs/20261101T150700Z-328-source-channels/verification01.json"
+  }
+}

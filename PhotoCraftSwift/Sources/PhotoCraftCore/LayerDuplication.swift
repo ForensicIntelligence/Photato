@@ -6,9 +6,10 @@ public enum LayerDuplication {
     guard !selected.isEmpty, selected.isSubset(of: Set(document.layers.map(\.id))) else {
       throw CraftError.invalid("Select existing layers to duplicate.")
     }
+    let hierarchy = LayerHierarchyIndex(document)
     return document.layers.filter {
       selected.contains($0.id)
-        && !document.ancestors(of: $0.id).contains { selected.contains($0.id) }
+        && !hierarchy.ancestors(of: $0.id).contains { selected.contains($0.id) }
     }
   }
 
@@ -23,9 +24,10 @@ public enum LayerDuplication {
 
   public static func canDuplicate(in document: CraftDocument, selected: Set<UUID>) -> Bool {
     guard let roots = try? roots(in: document, selected: selected) else { return false }
-    let count = roots.reduce(0) { $0 + document.subtreeIDs($1.id).count }
-    return document.layers.count + count <= 512
-      && roots.allSatisfy { $0.parentID.map { !document.isLocked($0) } ?? true }
+    let hierarchy = LayerHierarchyIndex(document)
+    let count = hierarchy.subtreeIDs(Set(roots.map(\.id))).count
+    return document.layers.count + count <= LayerLimits.maximumLayers
+      && roots.allSatisfy { $0.parentID.map { !hierarchy.effectiveProtection($0).fullyLocks } ?? true }
   }
 
   static func duplicate(in document: inout CraftDocument, selected: Set<UUID>, name: String?) throws
@@ -36,7 +38,7 @@ public enum LayerDuplication {
       throw CraftError.invalid("Rename one duplicate at a time.")
     }
     guard canDuplicate(in: document, selected: selected) else {
-      throw CraftError.invalid("Unlock the parent group or free space below the 512-layer limit.")
+      throw CraftError.invalid("Unlock the parent group or free space below the \(LayerLimits.maximumLayers)-layer limit.")
     }
     var candidate = document
     var active: UUID?
@@ -46,6 +48,7 @@ public enum LayerDuplication {
       let mapping = Dictionary(uniqueKeysWithValues: ids.map { ($0, UUID()) })
       let copies = document.layers.filter { ids.contains($0.id) }.map { original in
         var copy = original
+        if copy.isBackground {copy.background=nil;copy.protection=[];copy.sourceTags?.removeValue(forKey:"lyid")}
         copy.id = mapping[original.id]!
         copy.videoKeyframes = copy.videoKeyframes?.map { var key = $0; key.id = UUID(); return key }
         if let parent = original.parentID, let replacement = mapping[parent] {
@@ -76,6 +79,7 @@ public enum LayerDuplication {
       try candidate.refreshVideoDuration()
       candidate.reconcileVideoTransitions()
     }
+    LayerLinks.independentCopies(in:&candidate,layerIDs:Set(candidate.layers.map(\.id)).subtracting(document.layers.map(\.id)))
     try candidate.validate()
     document = candidate
   }
@@ -96,8 +100,8 @@ public enum LayerDuplication {
         "Duplicate between documents with matching color profiles. Profile conversion is not yet supported."
       )
     }
-    let ids = roots.reduce(into: Set<UUID>()) { $0.formUnion(source.subtreeIDs($1.id)) }
-    guard target.layers.count + ids.count <= 512 else {
+    let ids = LayerHierarchyIndex(source).subtreeIDs(Set(roots.map(\.id)))
+    guard target.layers.count + ids.count <= LayerLimits.maximumLayers else {
       throw CraftError.invalid("Layer limit reached.")
     }
     let parent: UUID?
@@ -122,6 +126,7 @@ public enum LayerDuplication {
     for original in source.layers where ids.contains(original.id) {
       try Task.checkCancellation()
       var copy = original
+      if copy.isBackground {copy.background=nil;copy.protection=[];copy.sourceTags?.removeValue(forKey:"lyid")}
       copy.id = mapping[original.id]!
       if let id = copy.smartObject?.sourceID {
         if smartMapping[id] == nil { smartMapping[id] = UUID() }
@@ -158,6 +163,7 @@ public enum LayerDuplication {
     candidate.layers.insert(contentsOf: copies, at: insertion)
     candidate.activeLayerID =
       source.activeLayerID.flatMap { mapping[$0] } ?? roots.last.flatMap { mapping[$0.id] }
+    LayerLinks.independentCopies(in:&candidate,layerIDs:Set(copies.map(\.id)))
     try candidate.validate()
     target = candidate
   }

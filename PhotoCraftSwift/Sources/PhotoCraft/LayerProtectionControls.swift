@@ -40,6 +40,7 @@ extension EditorStore {
   func toggleFullLayerProtection() {
     guard canChangeLayerProtection else { return }
     let layers = document.layers.filter { groupSelectionIDs.contains($0.id) }
+    if layers.count==1,layers[0].isBackground {convertBackgroundImmediately(layers[0].id);return}
     let value: LayerProtection = layers.allSatisfy { $0.protection.fullyLocks } ? [] : .fullyLocked
     perform(.protection(Dictionary(uniqueKeysWithValues: layers.map { ($0.id, value) })))
   }

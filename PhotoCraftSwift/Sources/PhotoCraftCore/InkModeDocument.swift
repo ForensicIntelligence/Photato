@@ -96,10 +96,10 @@ extension CraftDocument {
 
   mutating func convertAuxiliaryChannelDepth(to outputDepth: PixelDepth) throws {
     if var channels = alphaChannels {
-      for i in channels.indices { channels[i].pixels = try channels[i].pixels.converted(to: outputDepth) }
+      for i in channels.indices { channels[i] = try channels[i].convertedCoverage(to:outputDepth) }
       alphaChannels = channels
     }
-    if var channel = quickMask { channel.pixels = try channel.pixels.converted(to: outputDepth); quickMask = channel }
+    if let channel = quickMask { quickMask = try channel.convertedCoverage(to:outputDepth) }
   }
 
   /// PhotoCraft's matching-channel conversion interprets plate samples as target

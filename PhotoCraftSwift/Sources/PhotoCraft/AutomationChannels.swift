@@ -4,11 +4,23 @@ import PhotoCraftImaging
 
 /// Explicit Photato channel operations; no invented Adobe routes or action descriptors.
 enum ChannelAPI {
-  static let actions = ["create","delete","duplicate","rename","move","saveSelection","loadSelection","quickMask","options","stroke","fill","invert","filter"]
-  static let fields: [String:String] = ["action":"Channel operation","target":"Alpha UUID or quickMask","name":"Channel name","index":"Zero-based order","mode":"Selection combination","invert":"Invert loaded selection","enabled":"Quick Mask enabled","value":"Grayscale ink, 0–1","opacity":"Paint or overlay opacity","size":"Brush diameter","hardness":"Brush hardness","points":"Stroke samples","filter":"Raster filter","overlayColor":"RGB overlay color","indicates":"maskedAreas or selectedAreas"]
-  static var capabilities: [String:Any] { ["editCommand":"channel.edit","viewCommand":"channel.view","actions":actions,"maximumAlphaChannels":CraftDocument.maximumAlphaChannels,"storage":"Native20 grayscale at document depth; native files retain alpha channels and temporary Quick Mask. Large selection coverage uses native64 paging.","painting":"Black protects; white selects. selectedAreas reverses displayed gray and paint interpretation without changing stored coverage. Existing selection limits channel painting.","filters":"Channel filtering rejects Camera Raw, Puppet Warp and Perspective Warp, which require an RGB image target.","largePresentation":["maximumBufferPixels":RasterPreviewRequest.maximumPixels,"apiMaximumSide":2048,"channelPreview":"RGB components, alpha gray/overlay and Quick Mask use the shared bounded native projection. Numeric coverage ignores source alpha; overlays reduce composite and coverage before display mixing.","layerMaskResources":["layers/{layerID}/mask-gray.png","layers/{layerID}/mask-overlay.png"],"maskSampling":"Raw editable mask at document-space pixel centers; reduced masks sample output-cell centers. General rich-stack composition and Photoshop preview-filter fidelity remain open."],"interchange":"PSD/PSB channel interchange and spot ink are pending; export rejects channel-bearing documents instead of dropping masks. Flat image exports contain the image composite only.","adobe":"No dedicated published channel or mask-preview endpoint. Channel actionJSON descriptors remain explicitly unsupported; no Adobe route is invented."] }
+  static let actions = ["create","createSpot","configure","delete","duplicate","rename","move","saveSelection","loadSelection","quickMask","options","stroke","fill","invert","filter"]
+  static let fields: [String:String] = ["action":"Channel operation","spot":"Spot ink {color:[r,g,b],solidity:0...1}; null converts to alpha","target":"Alpha UUID or quickMask","name":"Channel name","index":"Zero-based order","mode":"Selection combination","invert":"Invert loaded selection","enabled":"Quick Mask enabled","value":"Grayscale ink, 0–1","opacity":"Paint or overlay opacity","size":"Brush diameter","hardness":"Brush hardness","points":"Stroke samples","filter":"Raster filter","overlayColor":"RGB overlay color","indicates":"maskedAreas or selectedAreas"]
+  static var photoshopCapabilities:[String:Any] {[
+    "formats":["psd","psb"],"modes":["RGB8/16/32","Grayscale8/16/32","CMYK8/16","Lab8/16"],"maximumTotalChannels":56,
+    "preserves":["alpha/spot planes","Quick Mask and initially-empty flag","Unicode names","channel IDs","supported display records","unchanged Float32 spot gray words"],
+    "nativeRetentionVersion":77,"compression":["raw","rle","zip","zipPrediction"],
+    "routes":["POST /v1/documents/import","GET /v1/documents/{id}/file.psd","GET /v1/documents/{id}/file.psb","document.saveAs","existing PSD/PSB job inputs/outputs"],
+    "limits":"56 total process/transparency/saved/Quick Mask planes. Opacity/Solidity store whole percentages and changed display colors use16-bit RGB; supported imported records reuse exact bytes. New native-density-to-Float32-gray conversion has format rounding; imported unmodified source gray is retained exactly. Private color-book records, TIFF extra-plane mapping, multiple visible spots/Merge/print policy and full Photoshop/platform/output qualification remain open. Native-mode raster and file/API/scratch budgets apply separately."
+  ]}
+  static var capabilities: [String:Any] { ["transformCommand":"channel.transform","transformActionsVersion":36,"editCommand":"channel.edit","viewCommand":"channel.view","actions":actions,"maximumAlphaChannels":CraftDocument.maximumAlphaChannels,"photoshopInterchange":photoshopCapabilities,"storage":"Native20 alpha/Quick Mask and native76 auxiliary spot channels at document depth; native files retain alpha channels and temporary Quick Mask. Large selection coverage uses native64 paging.","spotChannels":["archiveVersion":76,"create":"createSpot starts with selection density or empty paper; optional value supplies uniform initial density.","configure":"Atomic name/options/spot metadata; alpha/spot conversion preserves editing gray. Solidity changes preview only. The original raw density convention is zero=paper, one=ink.","view":"Select spot gray or overlay via channel.view; overlay uses the licensed source overprint equation for the selected channel.","limits":"No simultaneous auxiliary spot visibility, spot Merge, color-library catalog or semantic channel Actions beyond transforms36yet; full Photoshop prepress qualification remains open."],"painting":"For spots, black adds ink, white removes it and gray adds partial density. For alpha, black protects; white selects. selectedAreas reverses displayed gray and paint interpretation without changing stored coverage. Existing selection limits channel painting.","filters":"Channel filtering rejects Camera Raw, Puppet Warp and Perspective Warp, which require an RGB image target.","largePresentation":["maximumBufferPixels":RasterPreviewRequest.maximumPixels,"apiMaximumSide":2048,"channelPreview":"RGB components, alpha gray/overlay and Quick Mask use the shared bounded native projection. Numeric coverage ignores source alpha; overlays reduce composite and coverage before display mixing.","layerMaskResources":["layers/{layerID}/mask-gray.png","layers/{layerID}/mask-overlay.png"],"maskSampling":"Raw editable mask at document-space pixel centers; reduced masks sample output-cell centers. General rich-stack composition and Photoshop preview-filter fidelity remain open."],"interchange":"PSD/PSB ordinary-mode alpha/spot/Quick Mask planes, names, display records and identifiers are retained; Float32 spots keep source gray for exact unchanged words (native77). Unsupported color-book records, TIFF auxiliary mapping and full Photoshop preview/print qualification remain open. Flat image exports contain the image composite only.","adobe":"No dedicated published channel or mask-preview endpoint. Channel actionJSON descriptors remain explicitly unsupported; no Adobe route is invented."] }
+  static var spotSchema:[String:Any] { ["anyOf":[["type":"null"],["type":"object","additionalProperties":false,"required":["color","solidity"],"properties":["color":["type":"array","minItems":3,"maxItems":3,"items":["type":"number","minimum":0,"maximum":1]],"solidity":["type":"number","minimum":0,"maximum":1]]]]] }
+  static func state(_ channel:AlphaChannel)->[String:Any] {
+    ["id":channel.id.uuidString,"name":channel.name,"opacity":channel.options.opacity,"indicates":channel.options.indicates.rawValue,"color":[channel.options.color.r,channel.options.color.g,channel.options.color.b],"kind":channel.spot == nil ? "alpha":"spot","psd":["identifier":channel.psdIdentifier.map{Int($0) as Any} ?? NSNull(),"retainedDisplay":channel.psdDisplay != nil,"retainedFloat32SpotGray":channel.psdSpotGray != nil,"quickMaskInitiallyEmpty":channel.psdQuickMaskInitiallyEmpty.map{$0 as Any} ?? NSNull()],"spot":channel.spot.map{["color":[$0.color.r,$0.color.g,$0.color.b],"solidity":$0.solidity]as[String:Any]} ?? NSNull()]
+  }
   static func parameterSchema(_ key: String) -> [String:Any]? {
     switch key {
+    case "spot":return spotSchema
     case "action": return ["type":"string","enum":actions]
     case "target": return ["type":"string","pattern":"^(quickMask|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"]
     case "index": return ["type":"integer","minimum":0,"maximum":51]
@@ -29,7 +41,7 @@ extension AutomationCommand {
   func channelEdit(document: CraftDocument) throws -> Command {
     let action = try string("action")
     let allowed: [String:Set<String>] = [
-      "create":["name","value"],"delete":["target"],"duplicate":["target","name"],"rename":["target","name"],"move":["target","index"],
+      "create":["name","value"],"createSpot":["name","value","spot"],"configure":["target","name","overlayColor","opacity","indicates","spot"],"delete":["target"],"duplicate":["target","name"],"rename":["target","name"],"move":["target","index"],
       "saveSelection":["target","name","mode"],"loadSelection":["target","mode","invert"],"quickMask":["enabled"],
       "options":["target","overlayColor","opacity","indicates"],"stroke":["target","points","size","hardness","opacity","value"],
       "fill":["target","value","opacity"],"invert":["target"],"filter":["target","filter"]]
@@ -40,9 +52,18 @@ extension AutomationCommand {
     func value(_ key: String, default fallback: Double, range: ClosedRange<Double> = 0...1) throws -> Double { parameters[key] == nil ? fallback:try number(key,range:range) }
     func alpha() throws -> UUID { guard case .alpha(let id) = try channelTarget() else { throw AutomationFailure(status:400,message:"This action requires an alpha channel UUID.") }; return id }
     func mode() throws -> SelectionMode { guard parameters["mode"] != nil else { return .replace }; guard let mode = SelectionMode(rawValue:try string("mode")) else { throw AutomationFailure(status:400,message:"Invalid selection mode.") }; return mode }
+    func spot()throws->SpotInk? {
+      guard let raw=parameters["spot"] else{return nil};if case .null=raw{return nil}
+      guard case .object(let fields)=raw,Set(fields.keys)==Set(["color","solidity"]),case .array(let color)=fields["color"],color.count==3,case .number(let solidity)=fields["solidity"],solidity.isFinite,(0...1).contains(solidity)else{throw AutomationFailure(status:400,message:"spot requires RGB color and solidity.")}
+      let rgb=try color.map{value->Float in guard case .number(let n)=value,n.isFinite,(0...1).contains(n)else{throw AutomationFailure(status:400,message:"Invalid spot color.")};return Float(n)}
+      return SpotInk(color:Pixel(rgb[0],rgb[1],rgb[2]),solidity:Float(solidity))
+    }
     let name = try parameters["name"].map { _ in try string("name") }
     let command: ChannelCommand
     switch action {
+    case "createSpot":
+      let ink=try spot() ?? SpotInk()
+      command = .create(try document.newSpotChannel(name:name ?? "Spot Color",ink:ink,density:parameters["value"] == nil ? nil:Float(number("value",range:0...1))))
     case "create":
       let gray = Float(try value("value",default:0))
       command = .create(AlphaChannel(name:name ?? document.suggestedChannelName,pixels:try Surface(width:document.width,height:document.height,depth:document.depth,fill:Pixel(gray,gray,gray))))
@@ -55,7 +76,7 @@ extension AutomationCommand {
     case "quickMask":
       guard parameters["enabled"] != nil else { throw AutomationFailure(status:400,message:"enabled is required.") }
       command = try .quickMask(flag("enabled"),document.quickMask?.options ?? .init())
-    case "options":
+    case "options","configure":
       let target = try channelTarget(); var options = try document.channel(target).options
       if parameters["opacity"] != nil { options.opacity = Float(try number("opacity",range:0...1)) }
       if parameters["indicates"] != nil {
@@ -66,7 +87,10 @@ extension AutomationCommand {
         let values = try a.map { v -> Float in guard case .number(let n) = v, n.isFinite, (0...1).contains(n) else { throw AutomationFailure(status:400,message:"Invalid overlay color.") }; return Float(n) }
         options.color = Pixel(values[0],values[1],values[2])
       }
-      command = .options(target,options)
+      if action == "configure" {
+        let id=try alpha(),old=try document.channel(.alpha(id))
+        command = .configure(id,name ?? old.name,options,parameters["spot"] == nil ? old.spot:try spot())
+      }else{command = .options(target,options)}
     case "stroke":
       guard case .array(let raw) = parameters["points"], !raw.isEmpty, raw.count <= 4096 else { throw AutomationFailure(status:400,message:"Supply 1–4096 stroke points.") }
       let points = try raw.map { v -> StrokePoint in

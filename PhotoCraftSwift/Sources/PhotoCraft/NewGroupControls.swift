@@ -166,7 +166,7 @@ extension AppDelegate {
         rootView: NewGroupSheet(store: store, draft: draft)
           .background(StudioTheme.panel).preferredColorScheme(.dark))
       host.frame = .init(x: 0, y: 0, width: 560, height: 200)
-      let window = NSWindow(
+      let window = PhotatoWindow(
         contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
       window.contentView = host
       window.appearance = NSAppearance(named: .darkAqua)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DAB1E49DB4FB6F4450F2B37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */; };
 		267EA0B88D65C27CE2E37DDE /* libPhotoCraftCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D3743736613E0F5B55B1E5 /* libPhotoCraftCore.a */; };
 		35EAB322B0ED0495E630C108 /* LICENSE-psd-tools in Resources */ = {isa = PBXBuildFile; fileRef = 180D45D6C9E9A5CB1B77DAF9 /* LICENSE-psd-tools */; };
 		4090C3A1A34E4CAB12B4A711 /* NOTICE in Resources */ = {isa = PBXBuildFile; fileRef = DCF830E1FDD481F89CCA4319 /* NOTICE */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		03047F2D5718367D6E608C03 /* generate-clone-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-clone-oracle.py"; sourceTree = "<group>"; };
 		075E6071F4AF9AC292E76077 /* generate-hue-saturation-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-hue-saturation-oracle.py"; sourceTree = "<group>"; };
+		0AADED90CA0512A27BA71AEB /* Photato-AppStore.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Photato-AppStore.entitlements"; sourceTree = "<group>"; };
 		0ADE3579A9626E8D20D52F07 /* generate-gradient-method-probes.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-method-probes.cpython-314.pyc"; sourceTree = "<group>"; };
 		0CCB099864BC7E5510C5F6A0 /* verify-gradient-library.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-library.py"; sourceTree = "<group>"; };
 		0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */ = {isa = PBXFileReference; path = "LICENSE-APACHE"; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		3E1056D38CADC8F07BC7A1D5 /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F81E4870E3EF86DC9404954 /* inspect-gradient-map-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-map-reference.cpython-314.pyc"; sourceTree = "<group>"; };
 		405B129060151DD64114C76F /* generate-descriptor-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-descriptor-oracle.py"; sourceTree = "<group>"; };
+		4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		41A26C612B16371CC2D60B68 /* inspect-gradient-method-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-method-reference.cpython-314.pyc"; sourceTree = "<group>"; };
 		42B7A810ACFF862380BAF321 /* libPhotoCraftImaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftImaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F15F18808A340B326E5108 /* audit-development-history.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "audit-development-history.py"; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 		7FC22B3B62746343BC1772D4 /* verify-people-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-people-model.py"; sourceTree = "<group>"; };
 		800C49CD70B97DD476E45C58 /* convert.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = convert.py; sourceTree = "<group>"; };
 		8312A948D501F66B09C3D2FB /* LICENSE-MIT */ = {isa = PBXFileReference; path = "LICENSE-MIT"; sourceTree = "<group>"; };
+		89B501547E10784817616B51 /* generate-grid-geometry-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-grid-geometry-fixtures.py"; sourceTree = "<group>"; };
+		89FF409A821601B7BC92A921 /* ExportOptions-Validation.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ExportOptions-Validation.plist"; sourceTree = "<group>"; };
 		8A332958D09537569C919212 /* generate-blend-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-blend-oracle.py"; sourceTree = "<group>"; };
 		8A380EB9F5709CC646080E8D /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		8C847D4534E01E99359851F5 /* verify-app-package.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-app-package.cpython-314.pyc"; sourceTree = "<group>"; };
@@ -116,6 +121,7 @@
 		92CCE703AC1A82CE65310A07 /* generate-psd-stream-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psd-stream-fixtures.py"; sourceTree = "<group>"; };
 		92D3743736613E0F5B55B1E5 /* libPhotoCraftCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		954120E2C6159FACEB17389C /* verify-gradient-tool.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-tool.py"; sourceTree = "<group>"; };
+		95BC0298D5569584DC2064AD /* generate-paged-psb-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-paged-psb-fixtures.py"; sourceTree = "<group>"; };
 		97D68880DB7FA72FAC1840C5 /* generate-histogram-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-histogram-oracle.py"; sourceTree = "<group>"; };
 		9A16B120AC489221182D0BCC /* fetch-gradient-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-gradient-fixtures.py"; sourceTree = "<group>"; };
 		9C8829F2D6FDF63ADB0F1AD7 /* generate-curves-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-curves-oracle.py"; sourceTree = "<group>"; };
@@ -128,6 +134,7 @@
 		BD3C155362B89C68D673DEA8 /* generate-pattern-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-pattern-oracle.py"; sourceTree = "<group>"; };
 		BE9B7D456CF36B08CB33A55F /* inspect-gradient-method-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-gradient-method-reference.py"; sourceTree = "<group>"; };
 		C4A78ACF4208028644F39007 /* ProjectLinks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ProjectLinks.json; sourceTree = "<group>"; };
+		C510BA956776314ED9FBDBC4 /* ExportOptions-AppStore.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ExportOptions-AppStore.plist"; sourceTree = "<group>"; };
 		CA9C5A152E60D96CA3BECCCB /* build-xcode-icon.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-xcode-icon.sh"; sourceTree = "<group>"; };
 		CBAE0BCBE03AAF8DC533A121 /* generate-smooth-stop-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-smooth-stop-probes.py"; sourceTree = "<group>"; };
 		CBB546A2DB13D3B94D3584F9 /* generate-gradient-oracle.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-oracle.cpython-314.pyc"; sourceTree = "<group>"; };
@@ -228,6 +235,8 @@
 				F8196FFE6233909937893D42 /* build-app.sh */,
 				CA9C5A152E60D96CA3BECCCB /* build-xcode-icon.sh */,
 				FA199405C53DF623B10604F9 /* copy-people-model.sh */,
+				C510BA956776314ED9FBDBC4 /* ExportOptions-AppStore.plist */,
+				89FF409A821601B7BC92A921 /* ExportOptions-Validation.plist */,
 				2B4A00D08E4D2EB26ACFB2E6 /* fetch-adjustment-fixtures.py */,
 				9A16B120AC489221182D0BCC /* fetch-gradient-fixtures.py */,
 				661A30D78EF6398ED1654D2E /* fetch-pattern-fixtures.py */,
@@ -248,11 +257,13 @@
 				6E0632B20D14D066DB261CE0 /* generate-gradient-oracle.py */,
 				AF7C4CA44771D04C3CF808B8 /* generate-gradient-preset-oracle.py */,
 				DAA706F226E4E7E0FCB353F7 /* generate-gradient-tool-oracle.py */,
+				89B501547E10784817616B51 /* generate-grid-geometry-fixtures.py */,
 				3B449462E698F7FD635D62C4 /* generate-healing-oracle.py */,
 				97D68880DB7FA72FAC1840C5 /* generate-histogram-oracle.py */,
 				075E6071F4AF9AC292E76077 /* generate-hue-saturation-oracle.py */,
 				F141843DBA7C77A9760F7CCC /* generate-inpaint-oracle.py */,
 				F35828DD417398FB04E9755C /* generate-levels-oracle.py */,
+				95BC0298D5569584DC2064AD /* generate-paged-psb-fixtures.py */,
 				BD3C155362B89C68D673DEA8 /* generate-pattern-oracle.py */,
 				3B89C3AB704AD720D4570BC1 /* generate-psb-reference-fixtures.py */,
 				0E20C58868021ED75AE65ED0 /* generate-psd-channel-oracles.py */,
@@ -270,7 +281,9 @@
 				BE9B7D456CF36B08CB33A55F /* inspect-gradient-method-reference.py */,
 				21575FFED931A12E3776C713 /* inspect-rgb16-matte-reference.py */,
 				4E7648FA0CE94E167A7321B2 /* inspect-smooth-gradient-probes.py */,
+				0AADED90CA0512A27BA71AEB /* Photato-AppStore.entitlements */,
 				DC2777689D7A89D6313653A0 /* prepare-people-model.py */,
+				4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */,
 				C4A78ACF4208028644F39007 /* ProjectLinks.json */,
 				8A380EB9F5709CC646080E8D /* test.sh */,
 				371BDE46A9E2AE068F404052 /* verify-app-package.py */,
@@ -491,9 +504,6 @@
 					667094F3B2CA9A54B6F14B1C = {
 						ProvisioningStyle = Manual;
 					};
-					7FAAD7954589D8833C67EF82 = {
-						ProvisioningStyle = Manual;
-					};
 				};
 			};
 			buildConfigurationList = A714AB693A0A150D708C1623 /* Build configuration list for PBXProject "Photato" */;
@@ -528,6 +538,7 @@
 				9AE57AFDD0D731A9FF85E27F /* LICENSE-MIT in Resources */,
 				35EAB322B0ED0495E630C108 /* LICENSE-psd-tools in Resources */,
 				4090C3A1A34E4CAB12B4A711 /* NOTICE in Resources */,
+				0DAB1E49DB4FB6F4450F2B37 /* PrivacyInfo.xcprivacy in Resources */,
 				E7ECCCB917FBF8351388B93B /* ProjectLinks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,6 +670,37 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		14CB7E66F5958D605CBB70CE /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "scripts/Photato-AppStore.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PATM9DNCLA;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = scripts/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ca.forensicintelligence.photato;
+				PRODUCT_MODULE_NAME = PhotoCraft;
+				PRODUCT_NAME = Photato;
+				SDKROOT = macosx;
+				SKIP_INSTALL = NO;
+				USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES;
+			};
+			name = AppStore;
+		};
 		51E4314793412DA99DE36CC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -688,6 +730,21 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
+		};
+		7A183A5DCCFD44837DBEC686 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = local.photocraft.swift.ai;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = AppStore;
 		};
 		8558147052867076FBD84033 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -779,6 +836,97 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
+		};
+		C07BE02DE353AFD4427C938C /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "arm64 x86_64";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = AppStore;
+		};
+		CC9C0E1B681E21AD8ACAEC8C /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = local.photocraft.swift.imaging;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = AppStore;
+		};
+		CDEE1EA4A7E6D659B93CDD47 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = local.photocraft.swift.core;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = AppStore;
 		};
 		CFBC56194194B85A7F836A64 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -889,7 +1037,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = local.photocraft.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.forensicintelligence.photato;
 				PRODUCT_MODULE_NAME = PhotoCraft;
 				PRODUCT_NAME = Photato;
 				SDKROOT = macosx;
@@ -911,7 +1059,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = local.photocraft.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.forensicintelligence.photato;
 				PRODUCT_MODULE_NAME = PhotoCraft;
 				PRODUCT_NAME = Photato;
 				SDKROOT = macosx;
@@ -926,6 +1074,7 @@
 		3BA6C5C54C1D5D5A10BE41A9 /* Build configuration list for PBXNativeTarget "Photato" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				14CB7E66F5958D605CBB70CE /* AppStore */,
 				E19B639F789D7E79F5CB099D /* Debug */,
 				F48612E3D343B42D76CAA627 /* Release */,
 			);
@@ -935,6 +1084,7 @@
 		574EAA9F3E494DE18A8BC15B /* Build configuration list for PBXNativeTarget "PhotoCraftCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				CDEE1EA4A7E6D659B93CDD47 /* AppStore */,
 				D5F8910497A571BFCADB16CB /* Debug */,
 				79A22765154CA7ACCA7FBFA1 /* Release */,
 			);
@@ -944,6 +1094,7 @@
 		610C1E194763EA458DAD36A5 /* Build configuration list for PBXNativeTarget "PhotoCraftImaging" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				CC9C0E1B681E21AD8ACAEC8C /* AppStore */,
 				8EB3C91AA6F4235ACF56495B /* Debug */,
 				D3D48C47C7FDB040D6A4EC86 /* Release */,
 			);
@@ -953,6 +1104,7 @@
 		73AE8D8E6ED8457204928DA5 /* Build configuration list for PBXNativeTarget "PhotoCraftAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				7A183A5DCCFD44837DBEC686 /* AppStore */,
 				51E4314793412DA99DE36CC8 /* Debug */,
 				A1F4F85450CCEA2B14C3ABB9 /* Release */,
 			);
@@ -962,6 +1114,7 @@
 		A714AB693A0A150D708C1623 /* Build configuration list for PBXProject "Photato" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				C07BE02DE353AFD4427C938C /* AppStore */,
 				CFBC56194194B85A7F836A64 /* Debug */,
 				8558147052867076FBD84033 /* Release */,
 			);

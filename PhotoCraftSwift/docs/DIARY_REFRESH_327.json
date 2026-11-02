@@ -1,0 +1,114 @@
+{
+  "step": 327,
+  "recorded_at_utc": "2026-11-01T15:01:40.860204+00:00",
+  "recorded_at_local": "2026-11-01T08:01:40.860204-07:00",
+  "run": "artifacts/runs/20261101T145930Z-327-diary-refresh",
+  "scope": "Documentation reconciliation only; updated overview, chronological index, narrative, status and standalone diary mirrors.",
+  "latest_tested_engineering_checkpoint": 326,
+  "implementation_step": 324,
+  "source": "Source07",
+  "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+  "application_inputs": 6685,
+  "production_swift_files": 902,
+  "binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+  "latest_affected_selection": {
+    "step": 324,
+    "source": "Source07",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+    "binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+    "build_succeeded": true,
+    "build_seconds": 307.77,
+    "cases": 67,
+    "passed_cases": 64,
+    "failed_cases": 3,
+    "failed_assertions": 136,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.004,
+    "classes": {
+      "PhotoCraftCoreTests.AdvancedLayerEffectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AutomationActionJobsTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LayerStyleTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LayerStyleWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+    ]
+  },
+  "latest_complete_execution_checkpoint": 321,
+  "last_entirely_passing_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "application_inputs_changed": false,
+  "api_behavior_changed": false,
+  "command_statuses_changed": false,
+  "package_statuses_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T145930Z-327-diary-refresh/verification01.json",
+  "audit_receipt": "artifacts/development-history-audit/327-checkpoint01-receipt.json",
+  "browser_preview": {
+    "attempted": false,
+    "live_visual_acceptance": false,
+    "reason": "Documentation-only refresh; standalone resource and JavaScript checks. Prior file-URL browser restriction is not bypassed."
+  },
+  "verification_result": {
+    "passed": true,
+    "checks": 35,
+    "issues": [],
+    "application_tests_rerun": false
+  },
+  "standalone_bytes": 5584612,
+  "generation_command": "python3 ../../nusite/scripts/build-diary.py",
+  "verification_command": "python3 /Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261101T145930Z-327-diary-refresh/photato-verify-diary327.py",
+  "reproduction_scripts": {
+    "photato-refresh-diary327.py": "ad12c4645f8ba565df162edc49f758f8483eaf58e519fafcd7e6b57d02409dcc",
+    "photato-verify-diary327.py": "093d47e16a835390f27664c1d9b64a5be97d974983cd22908880fababff7f0f9"
+  }
+}

@@ -54,7 +54,7 @@ struct MovieFramesView: View {
   let model: MovieFramesWorkspace
   init(model: MovieFramesWorkspace) {
     self.model = model
-    let window = NSWindow(contentRect:NSRect(x:0,y:0,width:820,height:540),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
+    let window = PhotatoWindow(contentRect:NSRect(x:0,y:0,width:820,height:540),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
     window.title = "Import Video To Layers";window.isReleasedWhenClosed = false;window.contentView = NSHostingView(rootView:MovieFramesView(model:model));window.center()
     super.init(window:window);window.delegate = self
   }

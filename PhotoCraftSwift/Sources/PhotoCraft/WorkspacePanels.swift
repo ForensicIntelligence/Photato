@@ -161,11 +161,23 @@ extension WorkspaceView {
             }.disclosureGroupStyle(ExpandedSectionStyle())
           }
           if let source = layer.smartObject {
-            Text("Embedded: " + source.fileName).font(.caption).lineLimit(2)
+            SmartObjectLayerCompControls(store: store, source: source)
+            Text((source.linkedSource == nil ? "Embedded: ":"Linked: ") + source.fileName).font(.caption).lineLimit(2)
             Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObjectContents)
             Button("Replace Contents…") { store.placeEmbedded(replacing: true) }.disabled(!store.canEditSmartObject)
             Button("Export Contents…") { store.exportSmartObjectContents() }
-            if source.pdfSource != nil { PDFSourceEditControls(store:store,sourceID:source.sourceID) }
+            if source.linkedSource != nil {
+              if store.hasRelativePackageLinks {Button("Locate Package Sources…"){store.locatePackageSources()}.disabled(!store.canManageLinkedArtwork)}
+              Text(store.linkedArtworkState(source).status.title).font(.caption).foregroundStyle(.secondary)
+              HStack {
+                Button("Relink…") {store.placeLinked(replacing:true)}.disabled(!store.canUpdateLinkedArtwork)
+                Button("Update") {store.updateLinkedArtwork()}.disabled(!store.canUpdateLinkedArtwork)
+                Button("Embed") {store.embedLinkedArtwork()}.disabled(!store.canEmbedLinkedArtwork)
+              }
+            } else {
+              Button("Convert to Linked…") {store.convertToLinkedArtwork()}.disabled(!store.canConvertToLinked)
+            }
+            if source.linkedSource == nil,source.pdfSource != nil { PDFSourceEditControls(store:store,sourceID:source.sourceID) }
           }
           if store.typeEditingDraft != nil { TypeControls(store: store) }
           if case .text = layer.content, store.typeEditingDraft == nil {
@@ -239,7 +251,7 @@ extension WorkspaceView {
               if store.editingMask { store.select(layer.id) } else { store.selectMask(layer.id) }
             }
             Button("Invert Mask") { store.perform(.invertMask(layer.id)) }
-          }.controlSize(.small).disabled(layer.locked)
+          }.controlSize(.small).disabled(layer.locked || layer.isBackground)
         }
         Text("⌄  Quick Actions").fontWeight(.medium)
         HStack(spacing: 6) {
@@ -253,7 +265,7 @@ extension WorkspaceView {
           Button("Rasterize") { store.rasterize() }.disabled(
             (isRaster(layer) && layer.video == nil) || isAdjustment(layer) || layer.isGroup)
           Button(layer.mask == nil ? "Add Mask" : "Remove Mask") { store.addMask() }
-        }.controlSize(.small).disabled(layer.locked || store.editingComponent)
+        }.controlSize(.small).disabled(layer.locked || layer.isBackground || store.editingComponent)
       } else {
         Label("Document", systemImage: "doc")
         Text(
@@ -269,6 +281,8 @@ extension WorkspaceView {
   @ViewBuilder func adjustmentProperties(_ a: Adjustment, layer: Layer) -> some View {
     Divider()
     switch a {
+    case .source:
+      SourceAdjustmentEditor(store:store,layerID:layer.id).id(layer.id).disabled(store.document.isLocked(layer.id))
     case .levels:
       LevelsEditor(store: store, layerID: layer.id)
         .id(layer.id).disabled(store.document.isLocked(layer.id))
@@ -332,7 +346,7 @@ extension WorkspaceView {
         adjustmentButton("Levels", "chart.bar", .levels(.init()))
         adjustmentButton(
           "Curves", "point.topleft.down.curvedto.point.bottomright.up", .curves(.init()))
-        adjustmentButton("Exposure", "plus.forwardslash.minus", .exposure(0))
+        adjustmentButton("Exposure", "plus.forwardslash.minus", .classic(.init(.exposure)))
         adjustmentButton("Vibrance", "triangle", .classic(.init(.vibrance)))
         adjustmentButton("Hue/Saturation", "slider.horizontal.3", .hueSaturation(.init()))
         adjustmentButton("Color Balance", "slider.horizontal.3", .colorBalance(.init()))

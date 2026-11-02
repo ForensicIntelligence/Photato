@@ -15,7 +15,7 @@ extension DocumentIO.Format {
     case .native: return "Keeps all editable Photato content."
     case .psd, .psb:
       return
-        "Keeps supported editable layers, masks and the RGB working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
+        "Keeps supported editable layers, masks, alpha/spot channels, Quick Mask and the working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
     case .png:
       return
         "Saves a single pixel layer at its current 8- or 16-bit depth, using its RGB working profile. Use Save a Copy for a flattened version of a layered document."
@@ -35,7 +35,8 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
-    if document.width * document.height > Surface.maximumDensePixels {
+    if (format == .psd || format == .psb),let issue=DocumentGuideInput.photoshopPersistenceIssue(document){return issue}
+    if document.width * document.height > Surface.maximumDensePixels, format != .psd, format != .psb {
       return "Save this large canvas as Photato. Streamed full-size raster and PSD/PSB output is not yet available."
     }
     if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }
@@ -65,7 +66,7 @@ extension DocumentIO {
       }
       return nil
     }
-    if document.hasAuxiliaryChannels { return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image." }
+    if document.hasAuxiliaryChannels,format != .psd,format != .psb { return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image." }
     if document.restrictedMode != nil {
       if format == .jpeg { return "JPEG cannot retain Indexed Color or Bitmap mode. Use Save a Copy or convert the document to RGB." }
       if format == .png, !(document.paths ?? []).isEmpty { return "Save as Photato, PSD or TIFF to retain saved paths." }
@@ -85,8 +86,14 @@ extension DocumentIO {
         return "Dimensions or resolution exceed the selected Photoshop format's limits."
       }
       for layer in document.layers {
+        let photoshopSmartObject=(format == .psd || format == .psb) && layer.smartObject != nil
+        if photoshopSmartObject,let source=layer.smartObject {
+          if source.linkedSource != nil,source.mediaType=="application/vnd.photato.document" {return "Use a Photato package for linked Photato originals, or convert the original to a Photoshop-supported format."}
+          if layer.warp != nil || source.stackMode != nil || source.rawDevelopment != nil {return "Save as Photato to retain editable Warp, image-stack or RAW Smart Object settings."}
+          if let pdf=source.pdfSource,pdf.image != nil || !pdf.antialias {return "Save as Photato to retain PDF image selection and nondefault antialias settings."}
+        }
         switch layer.content {
-        case .raster where layer.affine == nil, .group, .fill, .gradientFill, .patternFill: break
+        case .raster where layer.affine == nil || photoshopSmartObject, .group, .fill, .gradientFill, .patternFill: break
         case .text(let t):
           if let space = try? ColorManagement.space(for: document), let srgb = try? RasterIO.colorSpace(),
             space != srgb && !(document.depth == .f32 && space == CGColorSpace(name: CGColorSpace.linearSRGB)) { return "Editable PSD type requires an sRGB working profile." }

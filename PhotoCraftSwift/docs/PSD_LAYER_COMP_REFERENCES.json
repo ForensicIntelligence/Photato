@@ -1,0 +1,208 @@
+{
+  "step": "dev-step-339",
+  "recorded_at_utc": "2026-11-02T00:01:05.722546+00:00",
+  "run": "artifacts/runs/20261101T230904Z-339-psd-layer-comps",
+  "reference_standard": "Photoshop2026",
+  "source_manifest": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/source03.json",
+  "inputs": 6905,
+  "production_swift_files": 927,
+  "binary_sha256": "706a954e14c5e716b51c9313e782d694cdee53128d59cfb4453bd568992c423e",
+  "qualification": {
+    "cases": 409,
+    "passed_cases": 408,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 46.01,
+    "new_cases": 13,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 486.31
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.LayerCompEmptyOptionsTests/testClearingSourceCompsPersistsExplicitIntentThroughNativeHistoryAndRecapture",
+    "PhotoCraftCoreTests.LayerCompEmptyOptionsTests/testNoPropertyCompIsValidRetainedByNative82AndDoesNotChangeLayers",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testAllDepthPSDPSBVariationsRetainLibraryAndMatchEveryCompositeSample",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testEmbeddedSharedSourcePSDPSBRetainsIndependentSelectedCompsAndFreshCaches",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testIntegerIdentityMappingAndVisibilityInheritanceDefaultMatchPublishedRepro",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testLegacyNativeOpaqueCompMetadataIsPreservedRatherThanMistakenForClear",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testMalformedOrUnrepresentedMetadataRejectsWithoutPartiallyAssigningALibrary",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testOtherLayerMetadataSurvivesAndClearRemovesBothCompResourcesAndLayerRecords",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testUnsupportedAppearanceParentChildFractionalAndMissingStatesFailBeforeFileReplacement",
+    "PhotoCraftAppTests.PSDLayerCompWorkflowTests/testHTTPPSBImportNativeAPIApplyHistoryAndPSDDownloadsShareTheSerializer",
+    "PhotoCraftAppTests.PSDLayerCompWorkflowTests/testNoPropertyCaptureUsesNative82NegotiationAndUnsupportedExportKeepsSourceHistory",
+    "PhotoCraftAppTests.PSDLayerCompWorkflowTests/testPublishedAdobeOutputEncodingRetainsSupportedCompsThroughTheSharedSwiftSerializer"
+  ],
+  "independent_metadata": {
+    "source_outputs": "339 Source03",
+    "reader_sha256": "6bf0c31aeb3a092d6963d6858f2420e56babf306f3229621eecb85e1f6ab243f",
+    "files": 6,
+    "passed": 6,
+    "failed": 0,
+    "results": [
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-16 bit.psb",
+        "passed": true,
+        "sha256": "7706f51ba32dedfb78848ff0098de02bfc13035c33308b5ec7872253d0cc9787",
+        "depth": 16,
+        "version": 2,
+        "comp_ids": [
+          153209967,
+          808305301,
+          1408083849
+        ],
+        "layer_id": 2
+      },
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-16 bit.psd",
+        "passed": true,
+        "sha256": "b21a25f1563db85a4c6658ff53bb0c3f51571629de064a4d7705c157e6941b54",
+        "depth": 16,
+        "version": 1,
+        "comp_ids": [
+          153209967,
+          808305301,
+          1408083849
+        ],
+        "layer_id": 2
+      },
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-32 bit.psb",
+        "passed": true,
+        "sha256": "c1bf2def9dc662fb2525e86d65b2f6eaebe9d09e3ba0b35d0fb961a55fd277a9",
+        "depth": 32,
+        "version": 2,
+        "comp_ids": [
+          305942253,
+          960477265,
+          2141771685
+        ],
+        "layer_id": 2
+      },
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-32 bit.psd",
+        "passed": true,
+        "sha256": "f1af281790386fa686c4f452c6e92a250e099ee58053565b63a71f57d4f8cdf0",
+        "depth": 32,
+        "version": 1,
+        "comp_ids": [
+          305942253,
+          960477265,
+          2141771685
+        ],
+        "layer_id": 2
+      },
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-8 bit.psb",
+        "passed": true,
+        "sha256": "c0fc4ac5d6a4eb6598b77f9b7ad99d9e3161b6114ce9d779a36a8adfcb08d442",
+        "depth": 8,
+        "version": 2,
+        "comp_ids": [
+          660854690,
+          1608588780,
+          1574517308
+        ],
+        "layer_id": 2
+      },
+      {
+        "path": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/focused03-captures/layer-comps-8 bit.psd",
+        "passed": true,
+        "sha256": "b7b5fe66319693b2c4f7864d31ee46edb5967fd5527bd60f907eb893100a1414",
+        "depth": 8,
+        "version": 1,
+        "comp_ids": [
+          660854690,
+          1608588780,
+          1574517308
+        ],
+        "layer_id": 2
+      }
+    ],
+    "scope": "Independent descriptor envelopes/IDs/options/visibility/position/prior-state metadata only; no pixel decoding or Photoshop2026 execution"
+  },
+  "external_reference": {
+    "recorded_at_utc": "2026-11-01T23:09:42.618202+00:00",
+    "repository": "Agamnentzar/ag-psd",
+    "commit": "a74425db6584cc07b1cc135e370916cb4eccfb32",
+    "role": "Licensed public format implementation and independent saved-file fixture, not proof of Photoshop2026 behavior",
+    "official_specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "files": [
+      {
+        "path": "LICENSE",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/LICENSE",
+        "bytes": 1449,
+        "sha256": "3907e1664a7d749644e33d1936ccad8c3d23df35277fca9ecec61146b46dc8fd"
+      },
+      {
+        "path": "src/imageResources.ts",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/src/imageResources.ts",
+        "bytes": 69653,
+        "sha256": "345b0fbac334dd27c8156d9eedb77265b68f5869ab6ab90a61b4e6501841e548"
+      },
+      {
+        "path": "src/additionalInfo.ts",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/src/additionalInfo.ts",
+        "bytes": 182547,
+        "sha256": "b9639c9e0ad4446762fcb9a9266ab06d66dc7b35c481d1b1ff33fe9166dc287e"
+      },
+      {
+        "path": "src/psd.ts",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/src/psd.ts",
+        "bytes": 54373,
+        "sha256": "dca10f997c387a4143806464230524b78974a3416bd636950bd2aa4561b6a6e5"
+      },
+      {
+        "path": "test/read-write/layer-comps/src.psd",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/test/read-write/layer-comps/src.psd",
+        "bytes": 36014,
+        "sha256": "d6b4daeed5856d1fcfd6f4ae72cf10c9ac91a415d6e9db26da483027b6ded366"
+      },
+      {
+        "path": "test/read-write/layer-comps/data.json",
+        "error": "HTTP Error 404: Not Found"
+      },
+      {
+        "path": "test/read/layer-comps/src.psd",
+        "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/test/read/layer-comps/src.psd",
+        "bytes": 36014,
+        "sha256": "d6b4daeed5856d1fcfd6f4ae72cf10c9ac91a415d6e9db26da483027b6ded366"
+      }
+    ],
+    "official_layer_comp_guide": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/create-and-manage-layer-comps.html",
+    "official_uxp": "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/layercomp",
+    "supporting_report": {
+      "url": "https://github.com/storytold/photocraft/issues/8093",
+      "scope": "User-reported Photoshop2026 visibility inheritance; not a new owned native comparison",
+      "implementation_copied": false
+    },
+    "native_access": {
+      "first": "cgWindowNotFound",
+      "inventory": "Mac locked",
+      "live_UI_qualified": false
+    },
+    "independent_fixture_count": 1,
+    "duplicate_fixture_paths_are_independent": false
+  },
+  "known_failure": {
+    "name": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "same_two_vectors_as_332": true,
+    "strict_assertions_retained": true
+  },
+  "native_version": 82,
+  "api_commands": 213,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Changing appearance and parent Smart Object comp records in PSD",
+    "Full effect-reference/group/fractional geometry, modes and missing-source behavior",
+    "Cached-only linked child choices and automatic legacy native comp promotion",
+    "Owned Photoshop2026 output/defaults/UI qualification; Actions/ATN descriptors",
+    "Full current suite, supported platforms/max capacity/physical60fps"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

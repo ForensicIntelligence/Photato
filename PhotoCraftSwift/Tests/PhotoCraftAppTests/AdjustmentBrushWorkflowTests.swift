@@ -109,9 +109,27 @@ final class AdjustmentBrushWorkflowTests:XCTestCase {
     try s.session.startActionRecording(name:"Local light");s.beginBrush(.init(x:12,y:12),zoom:1);s.finishBrush();await s.geometryTask?.value
     s.replaceAdjustmentBrush(.exposure);await s.geometryTask?.value
     let action=try XCTUnwrap(s.session.actionRecording?.snapshot);XCTAssertEqual(action.steps.count,2);XCTAssertTrue(action.steps.allSatisfy{$0.operation.unsupportedReason==nil})
-    let data=try ActionLibraryFile(actions:[action]).encoded(),decoded=try ActionLibraryFile.decode(data);XCTAssertEqual(decoded.version,3)
+    let data=try ActionLibraryFile(actions:[action]).encoded(),decoded=try ActionLibraryFile.decode(data);XCTAssertEqual(decoded.version,23)
     var result=original;try decoded.actions[0].apply(to:&result);XCTAssertEqual(result.layers.count,2);XCTAssertEqual(result.layers.last!.mask,s.document.layers.last!.mask);XCTAssertEqual(result.layers.last!.content,s.document.layers.last!.content)
     var bad=decoded;bad.version=2;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONEncoder().encode(bad)))
+    bad.version=22;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONEncoder().encode(bad)))
+    var legacy=action
+    for i in legacy.steps.indices {
+      switch legacy.steps[i].operation {
+      case .replaceAdjustment(let target,.classic(let value)) where value.kind == .exposure:
+        legacy.steps[i].operation = .replaceAdjustment(target,.exposure(value.exposureSettings!.exposure))
+      case .adjustmentBrush(var value):
+        if case .classic(let settings)=value.request.adjustment,settings.kind == .exposure {
+          value.request.adjustment = .exposure(settings.exposureSettings!.exposure)
+          legacy.steps[i].operation = .adjustmentBrush(value)
+        }
+      default:break
+      }
+    }
+    let old=try ActionLibraryFile.decode(ActionLibraryFile(actions:[legacy]).encoded());XCTAssertEqual(old.version,3)
+    var oldResult=original;try old.actions[0].apply(to:&oldResult)
+    XCTAssertEqual(oldResult.layers.last?.content,.adjustment(.exposure(1)))
+    XCTAssertEqual(oldResult.layers.last?.mask,s.document.layers.last?.mask)
   }
   @MainActor func testRecordedObjectCoverageReplaysWithoutDetection()async throws {
     let s=try store();defer{s.renderTask?.cancel()};let original=s.document

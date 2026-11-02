@@ -109,7 +109,7 @@ public enum MovieIO {
   }
   public static func layer(from source:CraftDocument,into target:CraftDocument,maximumBytes:Int=1_073_741_824)throws->Layer {
     try source.validate();try target.validate()
-    guard source.layers.count==1,var clip=source.layers[0].video,target.animation==nil,!target.hasArtboards,!target.hasAuthoritativeModeStorage,target.layers.count<512 else{throw CraftError.unsupported("Choose one video source and an RGB target without frame animation or artboards.")}
+    guard source.layers.count==1,var clip=source.layers[0].video,target.animation==nil,!target.hasArtboards,!target.hasAuthoritativeModeStorage,target.layers.count<LayerLimits.maximumLayers else{throw CraftError.unsupported("Choose one video source and an RGB target without frame animation or artboards.")}
     guard clip.estimatedBytes<=maximumBytes-target.estimatedBytes else{throw CraftError.invalid("Video layer exceeds the document memory budget.")}
     for i in clip.frames.indices {try Task.checkCancellation();clip.frames[i]=try ColorManagement.converted(clip.frames[i],from:source,to:target)}
     clip.startTime=target.videoTimeline?.seconds ?? 0

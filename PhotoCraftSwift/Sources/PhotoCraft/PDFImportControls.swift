@@ -110,7 +110,7 @@ struct PDFImportView: View {
   let model: PDFImportWorkspace
   init(model: PDFImportWorkspace) {
     self.model = model
-    let window = NSWindow(contentRect:NSRect(x:0,y:0,width:840,height:620),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
+    let window = PhotatoWindow(contentRect:NSRect(x:0,y:0,width:840,height:620),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
     window.title = model.placement ? "Place PDF":"Import PDF";window.isReleasedWhenClosed = false
     window.contentMinSize = NSSize(width:740,height:540)
     window.contentView = NSHostingView(rootView:PDFImportView(model:model));window.center()

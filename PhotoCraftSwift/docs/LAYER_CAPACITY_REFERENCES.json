@@ -1,0 +1,140 @@
+{
+  "step": "dev-step-359",
+  "date_utc": "2026-11-02T16:21:20.807609+00:00",
+  "reference_standard": "Photoshop 2026",
+  "Rust_policy": "Inspiration and supporting regression diagnostics; not a Photoshop acceptance prerequisite",
+  "run": "artifacts/runs/20261102T152626Z-359-layer-capacity",
+  "source_manifest": "artifacts/runs/20261102T152626Z-359-layer-capacity/source04.json",
+  "binary_sha256": "3f7ddff79b0dd5470e09fda4b4c28d9092e9a6f48a8aa552140a15609879060e",
+  "source_inputs": 7012,
+  "production_swift_files": 984,
+  "development_target_layers": 8000,
+  "Photoshop2026_ceiling_independently_verified": false,
+  "PSD_PSB_physical_records": 16000,
+  "Adobe_output_selection_maxItems": 100,
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "LayerCapacity|AdvancedLayerEffect|AdvancedLayerStyleWorkflow|LayerEffect|LayerCreation|GroupCreation|LayerDuplication|LayerVia|LayerHierarchy|LayerProtection|LayerLayout|LayerCollectionTransform|LayerLinks|LayerOrganization|LayerComp|LayerFile|NewLayer|NewGroup|Clipboard|PSDTests|PSBTests|PSDCompression|PSDLayerLinks|PSDLayerProtection|PSDLayerCompTests|NativeIndexedArchive|NativeArchive|PcraftImport|PcraftProject|PcraftFill|PcraftSmart|BackgroundLayer|PSDBackground|LargeCrop|MovieLayer|VideoTimeline|VideoArrangement|Artboard|SkyReplacement|Vanishing|SelectionRefinement|MaskAllObjects|PhotoBlend|ActionsWorkflow|ActionBatch|AutomationTests|AutomationActionJobs|Adobe|WindowPresentation|ToolCursor|PanelTearOff|HistoryNavigation"
+    ],
+    "source_manifest": "artifacts/runs/20261102T152626Z-359-layer-capacity/source04.json",
+    "inputs": 7012,
+    "production_swift_files": 984,
+    "started_at_utc": "2026-11-02T16:17:03.398787+00:00",
+    "exit_code": 1,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "3f7ddff79b0dd5470e09fda4b4c28d9092e9a6f48a8aa552140a15609879060e",
+    "finished_at_utc": "2026-11-02T16:20:13.308394+00:00",
+    "cases": 648,
+    "passed_cases": 640,
+    "failed_cases": 8,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LargeCropIOTests/testLargePSBCropRetainsEditedWordsAllDepthsAndPSDRejectsOversize",
+      "PhotoCraftImagingTests.PSDLayerCompTests/testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState",
+      "PhotoCraftImagingTests.PSDLayerCompTests/testLegacyNativeOpaqueCompMetadataIsPreservedRatherThanMistakenForClear",
+      "PhotoCraftAppTests.PanelTearOffTests/testNativeContainerDoesNotChangeHostedWorkspacePixels",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+    ],
+    "failed_assertions": 149,
+    "unexpected": 1,
+    "crashes": 0,
+    "test_seconds": 65.873
+  },
+  "new_cases": 19,
+  "all_new_passed": true,
+  "independent": {
+    "passed": true,
+    "source": "359 Source04",
+    "reader": "Independent Python PSD/PSB header, layer-record/name and raw-channel parser; own 2x1 red and empty-group fixtures",
+    "Photoshop_generated": false,
+    "files": [
+      {
+        "file": "capacity-8000-raster.psd",
+        "sha256": "9d49ed4c8448e89690f5dc33a7fbcaa7f41a5bb999d24e0609865ac9ab39d7af",
+        "physical_records": 8000,
+        "native_layer_names_verified": 8000,
+        "raw_8bit_samples_compared": 64000,
+        "signed_count": -8000
+      },
+      {
+        "file": "capacity-8000-groups.psd",
+        "sha256": "2a45ab35ab0c00a6bf1b5d1daa3a3f9825a3fe4b3f155fc7c8187a57270b6f2f",
+        "physical_records": 16000,
+        "native_layer_names_verified": 8000,
+        "raw_8bit_samples_compared": 0,
+        "signed_count": -16000
+      },
+      {
+        "file": "capacity-8000-raster.psb",
+        "sha256": "bfd2148078a97dc23bf3b738961acf6ea17e7aad092a803bad25c6706e3b7bd4",
+        "physical_records": 8000,
+        "native_layer_names_verified": 8000,
+        "raw_8bit_samples_compared": 64000,
+        "signed_count": -8000
+      },
+      {
+        "file": "capacity-8000-groups.psb",
+        "sha256": "390efef73ec6262fd157a1fa309be76748658c19d18b1fde9cd0bed38211bed3",
+        "physical_records": 16000,
+        "native_layer_names_verified": 8000,
+        "raw_8bit_samples_compared": 0,
+        "signed_count": -16000
+      }
+    ],
+    "total_names": 32000,
+    "raw_8bit_samples": 128000,
+    "limits": "Verifies owned serializer output representation; not independent Photoshop2026 numerical/UI/capacity qualification."
+  },
+  "independent_summary": "artifacts/runs/20261102T152626Z-359-layer-capacity/independent04-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/work-with-the-layers-panel.html",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "Native layer/group visibility, hierarchy and standard panel workflow remain the target."
+      ],
+      "limits": "Current extracted desktop panel/overview pages do not state8000or8,000. They are not evidence of the exact Photoshop2026 ceiling."
+    },
+    {
+      "url": "https://helpx.adobe.com/in/photoshop-elements/desktop/working-with-layers/creating-layers.html",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "Adobe documents8000layers with memory constraints for Photoshop Elements."
+      ],
+      "limits": "This is Elements, not independent Photoshop2026 desktop limit qualification. Use8000as an explicit development target; do not claim exact desktop ceiling parity."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "revision": "November2019",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "PSD/PSB signed16bit layer/group record count and group divider records bound serialization."
+      ],
+      "limits": "File representation does not establish native UI capacity or the current desktop product limit."
+    }
+  ],
+  "published_contract": "docs/contracts/adobe-photoshop-v2.json#/components/schemas/PhotoshopOutput/properties/layers",
+  "api_commands": 235,
+  "native_archive_version": 84,
+  "actions_version": 42,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": "The exact Photoshop 2026 layer ceiling remains unverified. Dense stacks, sustained interaction speed, live UI, complete Photoshop output, supported Macs, the full current suite and physical 60fps are not qualified. All 104 complete package scopes remain open.",
+  "preservation": "Installed283/private full298/store332 unchanged; no installation, push, archive, upload or release.",
+  "strict_reference_review": "artifacts/runs/20261102T152626Z-359-layer-capacity/strict-reference-review04.json",
+  "strict_UI_review": "artifacts/runs/20261102T152626Z-359-layer-capacity/strict-ui-comparison04.json",
+  "production_and_binary_unchanged_from_source03": true,
+  "instruction_guidance_files": [
+    "AGENTS.md",
+    "CONTRIBUTING.md"
+  ]
+}

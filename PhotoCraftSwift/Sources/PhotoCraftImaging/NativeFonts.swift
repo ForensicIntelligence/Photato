@@ -38,15 +38,39 @@ public enum NativeFonts {
   }
   public static func font(_ style:TypeStyle,dpi:Double)throws->NSFont {
     try style.validate()
-    guard let base=NSFont(name:style.font,size:style.size*dpi/72) else{throw CraftError.unsupported("The font ‘\(style.font)’ is not installed on this Mac.")}
+    let character=style.characterFormatting
+    let sourceFaceMatches=character?.sourceFontReference==style.font && (character?.sourceWeight==nil || character?.sourceWeight==character?.weight) && (character?.sourceItalic==nil || character?.sourceItalic==character?.italic)
+    let requested=sourceFaceMatches ? character?.sourcePostScriptName ?? style.font:style.font
+    let fallback=style.characterFormatting?.sourceFontReference==style.font ? NSFont.systemFont(ofSize:style.size*dpi/72):nil
+    guard var base=NSFont(name:requested,size:style.size*dpi/72) ?? NSFont(name:style.font,size:style.size*dpi/72) ?? fallback else{throw CraftError.unsupported("The font ‘\(style.font)’ is not installed on this Mac.")}
+    if let character=style.characterFormatting {
+      let stops:[(Int,Double)]=[(100,-0.8),(200,-0.6),(300,-0.4),(400,0),(500,0.23),(600,0.3),(700,0.4),(800,0.56),(900,0.62)]
+      let upper=stops.firstIndex(where:{$0.0>=character.weight}) ?? stops.count-1,lower=max(0,upper-1)
+      let factor=upper==lower ? 0:Double(character.weight-stops[lower].0)/Double(stops[upper].0-stops[lower].0)
+      let weight=stops[lower].1+(stops[upper].1-stops[lower].1)*factor
+      let traits:[NSFontDescriptor.TraitKey:Any]=[.weight:weight,.symbolic:NSFontDescriptor.SymbolicTraits(rawValue:character.italic ? NSFontDescriptor.SymbolicTraits.italic.rawValue:0).rawValue]
+      if character.sourcePostScriptName==nil || !sourceFaceMatches {
+        let descriptor=base.fontDescriptor.addingAttributes([.traits:traits]);base=NSFont(descriptor:descriptor,size:base.pointSize) ?? base
+      }
+    }
     var attributes:[CFString:Any]=[:]
+    var selectedFeatures=style.fontOptions?.features ?? []
+    if let character=style.characterFormatting {
+      func feature(_ tag:String,_ value:Int){if !selectedFeatures.contains(where:{$0.tag==tag}){selectedFeatures.append(.init(tag,value))}}
+      feature("liga",character.ligatures ? 1:0);feature("clig",character.ligatures ? 1:0);feature("dlig",character.discretionaryLigatures ? 1:0)
+      if character.kerning != .metrics{feature("kern",0)}
+      if character.caps == .smallCaps{feature("smcp",1)}
+    }
     if let options=style.fontOptions {
-      let available=try axes(style.font)
-      for choice in options.variations{guard let axis=available.first(where:{$0.id==choice.axis}), (axis.minimum...axis.maximum).contains(choice.value) else{throw CraftError.invalid("Variation axis is absent or outside this font’s range.")}}
-      if !options.features.isEmpty{attributes[kCTFontFeatureSettingsAttribute]=options.features.map{[kCTFontOpenTypeFeatureTag:$0.tag,kCTFontOpenTypeFeatureValue:$0.value] as [CFString:Any]}}
+      if !options.variations.isEmpty {
+        let available=try axes(style.font)
+        for choice in options.variations{guard let axis=available.first(where:{$0.id==choice.axis}), (axis.minimum...axis.maximum).contains(choice.value) else{throw CraftError.invalid("Variation axis is absent or outside this font’s range.")}}
+      }
+      
       if !options.variations.isEmpty{attributes[kCTFontVariationAttribute]=Dictionary(uniqueKeysWithValues:options.variations.map{(NSNumber(value:$0.axis),NSNumber(value:$0.value))})}
     }
-    var matrix=CGAffineTransform(scaleX:style.horizontalScale,y:style.verticalScale)
+    if !selectedFeatures.isEmpty{attributes[kCTFontFeatureSettingsAttribute]=selectedFeatures.map{[kCTFontOpenTypeFeatureTag:$0.tag,kCTFontOpenTypeFeatureValue:$0.value]as[CFString:Any]}}
+    var matrix=CGAffineTransform(a:style.horizontalScale,b:0,c:style.characterFormatting?.fauxItalic == true ? tan(12*Double.pi/180)*style.verticalScale:0,d:style.verticalScale,tx:0,ty:0)
     let font=CTFontCreateCopyWithAttributes(base as CTFont,base.pointSize,&matrix,CTFontDescriptorCreateWithAttributes(attributes as CFDictionary))
     if let glyph=style.glyphOverride,Int(glyph.glyph)>=CTFontGetGlyphCount(font){throw CraftError.invalid("Glyph is outside this font’s glyph table.")}
     return font as NSFont

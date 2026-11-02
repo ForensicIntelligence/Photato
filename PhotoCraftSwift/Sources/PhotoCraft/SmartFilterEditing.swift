@@ -43,6 +43,7 @@ extension EditorStore {
     guard let item = activeLayer?.smartFilters?.filters.first(where: { $0.id == filterID }),canBeginFilterKind(item.filter.kind) else { return }
     filterDraft = FilterDraft(id: layerID, filter: item.filter, filterID: item.id,
       opacity: item.opacity, blendMode: item.blendMode)
+    if item.filter.kind == .lightingEffects || item.filter.kind == .relight{filterDraft?.preview=false}
     render()
   }
   func createSmartFilterMask(_ id: UUID, selection: Bool) {
@@ -98,6 +99,11 @@ struct SmartFilterRows: View {
             .accessibilityLabel("Toggle \(item.filter.kind.title)")
           Button(item.filter.kind.title) { store.beginSmartFilter(layer.id, filterID: item.id) }
             .help("Edit filter settings and blending")
+          if let source=item.filter.distortion?.source,source.map==nil {
+            Image(systemName:"exclamationmark.triangle.fill").foregroundStyle(.orange)
+              .help("Original displacement map was not stored. Open Displace and choose a map to edit this filter.")
+              .accessibilityLabel("Displacement map required")
+          }
           Spacer()
           Image(systemName: "slider.horizontal.3").foregroundStyle(.secondary)
         }.padding(.leading, 18).contextMenu {

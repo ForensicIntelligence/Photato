@@ -98,7 +98,7 @@ enum DocumentIO {
   ) throws -> CraftDocument {
     try Task.checkCancellation()
     let document: CraftDocument
-    if native { document = try NativeArchive.decodePaged(data, heapByteLimit: rasterByteLimit) }
+    if native { document = try GlobalLightInput.adoptingLegacyLight(DocumentGuideInput.adoptingLegacyGuides(NativeArchive.decodePaged(data, heapByteLimit: rasterByteLimit))) }
     else if data.starts(with:Data("8BPS".utf8)) {document = try PSDCodec.readPaged(data,name:name,heapByteLimit:rasterByteLimit)}
     else if MovieIO.recognizes(data) { document = try MovieIO.decode(data,name:name,maximumBytes:rasterByteLimit) }
     else if PcraftImport.recognizes(data) {
@@ -125,7 +125,7 @@ enum DocumentIO {
     return try readNative(url)
   }
   static func readNative(_ url: URL) throws -> CraftDocument {
-    let document = try NativeArchive.readPaged(url)
+    let document = try GlobalLightInput.adoptingLegacyLight(DocumentGuideInput.adoptingLegacyGuides(NativeArchive.readPaged(url)))
     _ = try ColorManagement.space(for: document)
     return document
   }

@@ -30,12 +30,18 @@ enum AdobeActionAssets {
     let type: AdobeActionsRequest.MediaType
     let options: RasterEncodingOptions
     let profile: AdobeOutputProfile?
+    let selection: AdobeLayerOutput?
   }
 
   static func decode(_ data: Data, allowPhotatoInput: Bool = false) throws -> CraftDocument {
     try Task.checkCancellation()
     guard data.count <= maximumResourceBytes else {
       throw AdobeAPIError.invalid("Input exceeds the local 64 MiB resource limit.")
+    }
+    if allowPhotatoInput && (data.starts(with:Data("PHOTATO\0".utf8)) || data.starts(with:Data("bplist00".utf8))) {
+      let (w,h)=try NativeArchive.dimensions(data);try checkDimensions(width:w,height:h)
+      let document=try DocumentIO.decode(data,native:true,name:"Action Input",rasterByteLimit:maximumDocumentBytes)
+      try check(document);return document
     }
     if allowPhotatoInput && PcraftImport.recognizes(data) {
       let (w, h) = try PcraftImport.dimensions(data)
@@ -97,10 +103,10 @@ enum AdobeActionAssets {
   static func check(_ document: CraftDocument) throws {
     try document.validate()
     try checkDimensions(width: document.width, height: document.height)
-    guard document.layers.count <= 64, document.estimatedBytes <= maximumDocumentBytes
+    guard document.layers.count <= LayerLimits.maximumLayers, document.estimatedBytes <= maximumDocumentBytes
     else {
       throw AdobeAPIError.invalid(
-        "Input exceeds the local 64-layer or 128 MiB resident document limit.")
+        "Input exceeds the local 8,000-layer or 128 MiB resident document limit.")
     }
   }
 
@@ -122,11 +128,12 @@ enum AdobeActionAssets {
     return try request.outputs.map { output in
       try Task.checkCancellation()
       let data: Data
-      let key = EncodingKey(type: output.mediaType, options: output.encodingOptions, profile: output.colorProfile)
+      let key = EncodingKey(type: output.mediaType, options: output.encodingOptions, profile: output.colorProfile, selection: output.layerExport)
       if let existing = cache[key] {
         data = existing
       } else {
-        let converted = try output.colorProfile?.convert(edited, resources: resources, rasterOutput: output.mediaType != .psd) ?? edited
+        let isolated = try output.layerExport?.document(edited) ?? edited
+        let converted = try output.colorProfile?.convert(isolated, resources: resources, rasterOutput: output.mediaType != .psd) ?? isolated
         if output.colorProfile != nil, [.png, .jpeg].contains(output.mediaType), converted.colorMode != .rgb {
           throw AdobeAPIError.unsupported("Non-RGB output ICC profiles currently require PSD or TIFF.")
         }

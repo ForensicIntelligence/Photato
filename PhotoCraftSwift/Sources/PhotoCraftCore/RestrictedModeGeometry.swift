@@ -61,6 +61,7 @@ public enum RestrictedModeGeometry {
     var result = original; result.width = width; result.height = height; result.restrictedMode = changed
     result.layers[0].content = .raster(try changed.surface())
     result.transformSavedPaths(by: transform)
+    try result.mapGuides( transform)
     if clearSelection { result.setCoverageSelection(nil) } else { try result.mapSelection(from: original, by: transform) }
     try result.validate(); return result
   }

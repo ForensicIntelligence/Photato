@@ -1,0 +1,209 @@
+{
+  "step": "dev-step-362",
+  "recorded_at_utc": "2026-11-02T19:01:05.458812+00:00",
+  "reference_standard": "Photoshop2026; Rust inspiration only",
+  "run": "artifacts/runs/20261102T181145Z-362-canvas-edges",
+  "source_manifest": "artifacts/runs/20261102T181145Z-362-canvas-edges/source03.json",
+  "source_inputs": 7033,
+  "production_swift_files": 996,
+  "binary_sha256": "71ef61a8f39325eaabea802011758cefc594f9258062b4bfb2be00b66ea44641",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "CanvasEdge|DocumentDuplicat|BackgroundLayer|LargeCanvas|SurfaceTests|GeometryTests|CropGeometry|PagedGeometry|SelectionGeometry|DocumentIOWorkflow|HistoryNavigation|AutomationTests|RecordedAction|ActionRecording|ActionsWorkflow|PhotoshopMenu|ToolCursor|LayerCapacity|FlattenImage|NativeArchive|LayerComp"
+    ],
+    "source_manifest": "artifacts/runs/20261102T181145Z-362-canvas-edges/source03.json",
+    "inputs": 7033,
+    "production_swift_files": 996,
+    "started_at_utc": "2026-11-02T18:52:31.045995+00:00",
+    "exit_code": 1,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "71ef61a8f39325eaabea802011758cefc594f9258062b4bfb2be00b66ea44641",
+    "finished_at_utc": "2026-11-02T18:55:18.826507+00:00",
+    "cases": 304,
+    "passed_cases": 302,
+    "failed_cases": 2,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PSDLayerCompTests/testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState",
+      "PhotoCraftImagingTests.PSDLayerCompTests/testLegacyNativeOpaqueCompMetadataIsPreservedRatherThanMistakenForClear"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 1,
+    "crashes": 0,
+    "test_seconds": 41.998
+  },
+  "new_cases": 24,
+  "all_new_passed": true,
+  "independent": {
+    "passed": true,
+    "method": "Independent fixed-value rectangle expectations and Pillow PNG decoder. PSD/PSB checks are headers only; no claim of independent complete layer/composite decoding or Photoshop comparison.",
+    "vectors": [
+      {
+        "depth": "8 bit",
+        "PNG": "trim-owned-8 bit.png",
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f",
+        "RGBA_bytes": 48
+      },
+      {
+        "depth": "16 bit",
+        "PNG": "trim-owned-16 bit.png",
+        "sha256": "4069b1401ca25288c4b7af4d9258c25c925d2601c49ab5a1638c37e503e39784",
+        "RGBA_bytes": 48
+      },
+      {
+        "depth": "32 bit",
+        "PNG": "trim-owned-32 bit.png",
+        "sha256": "4069b1401ca25288c4b7af4d9258c25c925d2601c49ab5a1638c37e503e39784",
+        "RGBA_bytes": 48
+      },
+      {
+        "kind": "reveal",
+        "PNG": "reveal-owned.png",
+        "sha256": "12a911aecd7d06f48de99f59540ee622802bd6897b317fa1ab24d4f510e0335f",
+        "RGBA_bytes": 48
+      }
+    ],
+    "total_RGBA_bytes": 336,
+    "PSD_PSB_headers": [
+      {
+        "file": "edges-reveal-16 bit.psb",
+        "sha256": "f218986f5b6ed751ac68afa1846f4cf06f129bd52d0bdbdd215f5766d140e750",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "edges-reveal-16 bit.psd",
+        "sha256": "659d81d890bf9ee6d0d2fa617ffbdc664347ee76032b68a83ef9d69d605d92b5",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "edges-reveal-32 bit.psb",
+        "sha256": "4dea951f9588e2d2a49435593dc7b3efc93f76e0570aef0baad792b207fc55b2",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "edges-reveal-32 bit.psd",
+        "sha256": "f0483da4babaa403e1da5b5774bd7db9393b2f4646ae0ef7dbed9acd0c1edcbc",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "edges-reveal-8 bit.psb",
+        "sha256": "fd9841b06323b31d9764752d4c80af525c854270f8fe777d1fd5575c41a11219",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 8,
+        "mode": 3
+      },
+      {
+        "file": "edges-reveal-8 bit.psd",
+        "sha256": "df19c0e9698494d4d9256c6d7aea487c0dbe0699b933a9ac42bc1503b33b163b",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 8,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-16 bit.psb",
+        "sha256": "fd47c0919c38ce73287c889827d3905b2791775bde9303dac3b0035f609f4a20",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-16 bit.psd",
+        "sha256": "b878096f3ee920379b247b80ecb4c299f403b909e875beda35b63b36ee01983c",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-32 bit.psb",
+        "sha256": "42e8ffd805257554ad89fe2a4c53151e8969fc3fc5867dfbacba55f7bef8be6b",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-32 bit.psd",
+        "sha256": "e396ef2be35f0f2b696d4c68d42f3a7ead7f6c78400b898d474d39860d9d205e",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-8 bit.psb",
+        "sha256": "a5cdff22046e5c140f6894a37208bbfb82e0504746403c8ea803777c09af4099",
+        "version": 2,
+        "width": 4,
+        "height": 3,
+        "depth": 8,
+        "mode": 3
+      },
+      {
+        "file": "edges-trim-8 bit.psd",
+        "sha256": "e57353dd253c42f9416712d1688ad992f2c6d0ffee30cc0aaedd9c0d3cf72fc8",
+        "version": 1,
+        "width": 4,
+        "height": 3,
+        "depth": 8,
+        "mode": 3
+      }
+    ],
+    "Photoshop_comparison": false
+  },
+  "independent_summary": "artifacts/runs/20261102T181145Z-362-canvas-edges/independent03-summary.json",
+  "references": {
+    "reference_standard": "Photoshop2026, Rust inspiration only",
+    "recorded_at_utc": "2026-11-02T18:33:29.946334+00:00",
+    "public_sources": [
+      "https://helpx.adobe.com/sk/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/crop-and-straighten-images.html",
+      "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/document"
+    ],
+    "normal_interface_metadata": "Installed Photoshop.sdef: trim8BIMTrim defaults top-left/all edges; reveal all8BIMRvAl. AppleScript terminology is not proof of actionJSON descriptors.",
+    "live_UI": "Home screenshot/tree readable; two input attempts timed out, no document opened and no result qualified.",
+    "uncertainty": "Exact Photoshop hidden/mask/effect bounds, trimming deletion/selection/comp/default behavior across contexts, complete numerical/frame/plate composition and supported platform/output qualification remain open."
+  },
+  "retained_failed_case_identities": [
+    "PhotoCraftImagingTests.PSDLayerCompTests/testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testLegacyNativeOpaqueCompMetadataIsPreservedRatherThanMistakenForClear"
+  ],
+  "failed_case_identity_is_not_pixel_equivalence": true,
+  "api_commands": 239,
+  "native_archive_version": 84,
+  "actions_version": 44,
+  "old_flatten_actions_minimum": 43,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": "Temporal and ink-mode canvas rebasing, layered native component Trim, advanced mask/effect bounds, authoritative Adobe actionJSON descriptors, exact Photoshop defaults/output/live UI, supported Macs, full current suite, dense maximum capacity and physical60fps remain open. All104complete package scopes remain open."
+}

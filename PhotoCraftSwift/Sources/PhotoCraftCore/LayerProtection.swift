@@ -64,8 +64,10 @@ public struct LayerProtection: OptionSet, Codable, Equatable, Sendable {
 extension Layer {
   public var protection: LayerProtection {
     get {
-      if let protectionFlags { return locked ? protectionFlags.union(.all) : protectionFlags }
-      return locked ? .fullyLocked : []
+      var value=protectionFlags ?? (locked ? .fullyLocked:[])
+      if locked {value.insert(.all)}
+      if isBackground {value.formUnion([.transparency,.position])}
+      return value
     }
     set {
       locked = newValue.fullyLocks

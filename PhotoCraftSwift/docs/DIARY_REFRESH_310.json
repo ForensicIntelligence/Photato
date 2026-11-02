@@ -1,0 +1,56 @@
+{
+  "step": 310,
+  "recorded_at_utc": "2026-11-01T04:24:03.747307+00:00",
+  "recorded_at_local": "2026-10-31T21:24:03.747307-07:00",
+  "run": "artifacts/runs/20261101T042240Z-310-diary-refresh",
+  "scope": "Documentation-only synchronization with in-progress309 and tested308; no app changes or new test run.",
+  "latest_engineering_checkpoint": 309,
+  "latest_engineering_status": "Source Smart Object prerequisites are in progress at309 Source03. The optimized app/test targets build and all10 isolated model tests pass, but the affected workflow selection and its isolated Smart Object reproduction crash with signal10. Import remains disabled; current source is not a stable or fully tested build.",
+  "last_completed_focused_selection": {
+    "checkpoint": 308,
+    "source": "Source06",
+    "cases": 144,
+    "passed_cases": 139,
+    "failed_cases": 5,
+    "failed_assertions": 26
+  },
+  "current_model_subset": {
+    "checkpoint": 309,
+    "source": "Source03",
+    "cases": 10,
+    "failures": 0,
+    "full_selection_passed": false
+  },
+  "latest_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "application_inputs": 3011,
+  "engineering_inventory": "artifacts/runs/20261101T042240Z-310-diary-refresh/309-working-tree-inventory.json",
+  "application_inputs_before": "artifacts/runs/20261101T042240Z-310-diary-refresh/application-inputs-before.json",
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "command_statuses_changed": false,
+  "package_statuses_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T042240Z-310-diary-refresh/verification02.json",
+  "audit_receipt": "artifacts/development-history-audit/310-checkpoint01-receipt.json",
+  "first_verification": {
+    "checks": 31,
+    "passed": true,
+    "path": "artifacts/runs/20261101T042240Z-310-diary-refresh/verification01.json",
+    "application_inputs_unchanged": 3011,
+    "protected_assets_unchanged": 40,
+    "original_rust_files_unchanged": 1057,
+    "entries": 310,
+    "dashboard_journal_latest": 310,
+    "dashboard_completed_scope_latest": 283
+  },
+  "retained_editions": [
+    "edition01",
+    "edition02"
+  ]
+}

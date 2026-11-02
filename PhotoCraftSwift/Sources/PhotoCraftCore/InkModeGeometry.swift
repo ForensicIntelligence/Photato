@@ -62,6 +62,7 @@ public enum InkModeGeometry {
     }
     result.width = width; result.height = height
     result.transformSavedPaths(by: transform)
+    try result.mapGuides( transform)
     try result.transformChannels(from: original, by: transform, method: method)
     if clearSelection { result.setCoverageSelection(nil) } else { try result.mapSelection(from: original, by: transform) }
     try result.validate(); return result

@@ -43,11 +43,11 @@ import SwiftUI
     task=Task { [weak self] in
       do { try await Task.sleep(for:.milliseconds(80))
         let worker=Task.detached(priority:.userInitiated) { ()throws->(CGImage,CGImage?) in
-          var edited=document;if request.filter.kind != .displace || request.filter.distortion?.map != nil { try request.command(in:document).apply(to:&edited) }
+          var edited=document;if request.filter.kind != .displace || request.filter.distortion?.hasDisplacementMap == true { try request.command(in:document).apply(to:&edited) }
           return (try ColorManagement.displayImage(Renderer.composite(edited),in:document),needOriginal ? try ColorManagement.displayImage(Renderer.composite(document),in:document):nil)
         }
         let result=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()};try Task.checkCancellation()
-        guard let self,!self.closed,self.generation==token else{return};self.image=result.0;if let image=result.1 { self.originalImage=image };self.rendering=false;if self.filter.kind == .displace && self.filter.distortion?.map == nil { self.error="Choose a displacement map." }
+        guard let self,!self.closed,self.generation==token else{return};self.image=result.0;if let image=result.1 { self.originalImage=image };self.rendering=false;if self.filter.kind == .displace && self.filter.distortion?.hasDisplacementMap != true { self.error="Choose a displacement map." }
       } catch { guard let self,!self.closed,self.generation==token else{return};self.rendering=false;if !Task.isCancelled { self.error=error.localizedDescription } }
     }
   }
@@ -55,9 +55,12 @@ import SwiftUI
     guard !closed,filter.kind == .displace else{return}
     importing=true;error=nil
     do {
-      let worker=Task.detached(priority:.userInitiated) { try Self.readMap(url) }
+      let isSource=filter.distortion?.source != nil
+      let worker=Task.detached(priority:.userInitiated) { ()throws->(DisplacementMap?,FloatDisplacementMap?) in
+        if isSource{return(nil,try Self.readFloatMap(url))};return(try Self.readMap(url),nil)
+      }
       let map=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
-      try Task.checkCancellation();guard !closed else{return};importing=false;update{$0.distortion?.map=map}
+      try Task.checkCancellation();guard !closed else{return};importing=false;update{if var source=$0.distortion?.source{source.map=map.1;$0.distortion?.source=source}else{$0.distortion?.map=map.0}}
     } catch { if !closed { importing=false;self.error=error.localizedDescription } }
   }
   nonisolated static func readMap(_ url:URL)throws->DisplacementMap {
@@ -75,6 +78,14 @@ import SwiftUI
     var samples=Data();samples.reserveCapacity(red.count*(gray ? 1:2))
     for i in red.indices {samples.append(red[i]);if !gray {samples.append(green[i])}}
     let map=DisplacementMap(width:document.width,height:document.height,channels:gray ? 1:2,samples:samples,name:String(url.lastPathComponent.prefix(80)));try map.validate();return map
+  }
+  nonisolated static func readFloatMap(_ url:URL)throws->FloatDisplacementMap {
+    guard url.isFileURL else{throw CraftError.invalid("Choose a local displacement map.")}
+    let size=(try url.resourceValues(forKeys:[.fileSizeKey])).fileSize ?? Int.max
+    guard url.isFileURL,size<=64*1024*1024 else{throw CraftError.invalid("Choose a local displacement image up to64MiB.")}
+    let data=try Data(contentsOf:url),document=try DocumentIO.decode(data,native:DocumentIO.isNativeFile(url),name:url.lastPathComponent,rasterByteLimit:64*1024*1024)
+    guard document.width<=FloatDisplacementMap.maximumPixels/document.height else{throw CraftError.unsupported("Displacement maps retain their1,048,576-pixel limit.")}
+    return try FloatDisplacementMap.read(Renderer.composite(document),name:url.lastPathComponent)
   }
   func chooseMap() {
     let panel=NSOpenPanel();panel.title="Choose Displacement Map";panel.allowsMultipleSelection=false;panel.canChooseDirectories=false;panel.allowedContentTypes=DocumentIO.readableContentTypes
@@ -100,7 +111,7 @@ struct DistortionSheet:View {
           if [.displace,.wave,.shear].contains(model.filter.kind) {
             Divider();Picker("Undefined Areas",selection:choice(\.edge)) {ForEach(DistortionSettings.Edge.allCases,id:\.self){Text($0.title).tag($0)}}.pickerStyle(.radioGroup)
           }
-          Divider();Button("Reset") {var f=RasterFilter(model.filter.kind);f.distortion?.map=settings.map;model.change(f)}
+          Divider();Button("Reset") {var f=RasterFilter(model.filter.kind);f.distortion?.map=settings.map;f.distortion?.source=settings.source;model.change(f)}
         }.padding(.trailing,5)}.frame(width:275)
       }
       HStack {
@@ -133,8 +144,8 @@ struct DistortionSheet:View {
   }
   func numeric(_ title:String,_ value:Binding<Double>,_ range:ClosedRange<Double>)->some View {
     VStack(spacing:3) {
-      HStack{Text(title);Spacer();TextField(title,value:value,format:.number.precision(.fractionLength(0))).frame(width:65).textFieldStyle(.roundedBorder)}
-      Slider(value:value,in:range,step:1,onEditingChanged:{editing in if editing{model.beginGesture()}else{model.endGesture()}}).accessibilityLabel(title)
+      HStack{Text(title);Spacer();TextField(title,value:value,format:.number.precision(.fractionLength(0...((model.filter.kind == .displace && settings.source != nil) ? 8:0)))).frame(width:65).textFieldStyle(.roundedBorder)}
+      Slider(value:value,in:range,step:(model.filter.kind == .displace && settings.source != nil) ? 0.01:1,onEditingChanged:{editing in if editing{model.beginGesture()}else{model.endGesture()}}).accessibilityLabel(title)
     }
   }
   @ViewBuilder var controls:some View {
@@ -142,8 +153,15 @@ struct DistortionSheet:View {
     case .displace:
       number("Horizontal Scale",\.horizontalScale,-999...999);number("Vertical Scale",\.verticalScale,-999...999)
       Picker("Displacement Map",selection:choice(\.fit)){Text("Stretch To Fit").tag(DistortionSettings.Fit.stretchToFit);Text("Tile").tag(DistortionSettings.Fit.tile)}.pickerStyle(.radioGroup)
-      Button(settings.map==nil ? "Choose Map…":"Replace Map…"){model.chooseMap()}.disabled(model.importing)
+      Button(settings.hasDisplacementMap ? "Replace Map…":"Choose Map…"){model.chooseMap()}.disabled(model.importing)
       if let map=settings.map {Text(map.name).lineLimit(2);Text("\(map.width) × \(map.height) · \(map.channels) channel(s)").font(.caption).foregroundStyle(.secondary)}
+      if let source=settings.source {
+        Text(source.map==nil ? "Original map required":"Original map bound").font(.caption).foregroundStyle(source.map==nil ? .orange:.secondary)
+        Text(source.reference.label).font(.caption).lineLimit(3).textSelection(.enabled)
+        if let map=source.map {Text(map.name).lineLimit(2);Text("\(map.width) × \(map.height) · Float32 · \(map.channels) channel(s)").font(.caption).foregroundStyle(.secondary)}
+        Text(source.map==nil ? "Choose the map image used for this filter.":"The chosen map is saved with this document.").font(.caption).foregroundStyle(.secondary)
+      }
+
     case .wave:
       numeric("Number of Generators",Binding(get:{Double(settings.generators)},set:{v in guard v.isFinite,(1...999).contains(v) else{return};model.update{$0.distortion?.generators=Int(v.rounded())}}),1...999)
       Picker("Type",selection:choice(\.waveType)){ForEach(DistortionSettings.Wave.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}

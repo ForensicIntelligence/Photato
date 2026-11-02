@@ -28,6 +28,10 @@ public enum ActionLayerTarget: Codable, Equatable, Sendable {
 /// Native action format. Unsupported recording entries remain visible and block playback.
 /// This is deliberately not an Adobe .atn file or a Photoshop JavaScript program.
 public enum ActionOperation: Codable, Sendable {
+  case canvasEdges(CanvasEdgeOperation, Pixel)
+  case flattenImage
+  case layerStyles(RecordedStyleEdit)
+  case globalLight(GlobalLight)
   indirect case retouch(RecordedRetouchStroke)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
@@ -40,6 +44,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case createShape(String,ShapeDefinition,Transform2D,[RasterPattern])
   indirect case setShape(ActionLayerTarget,ShapeDefinition,[RasterPattern])
   indirect case appendShape(ActionLayerTarget,ShapeComponent)
+  indirect case editType(ActionLayerTarget,TextContent,PathPoint,imported:Bool)
   indirect case selectionCoverage(SelectionMask?,SelectionMode)
   indirect case adjustmentBrush(RecordedAdjustmentBrush)
   indirect case replaceAdjustment(ActionLayerTarget,Adjustment)
@@ -82,6 +87,19 @@ public enum ActionOperation: Codable, Sendable {
   case crop(IntRect)
   case flip(ActionLayerTarget, Bool)
   case transform(ActionLayerTarget, Transform2D, Resampling)
+  case moveLayers([ActionLayerTarget],Int,Int,Bool)
+  case layerLinks(String,[ActionLayerTarget],Bool?)
+  case pixelPaint(PixelPaintKind,ActionPixelPaintTarget,PixelPaintSettings)
+  case patternPixelPaint(ActionPixelPaintTarget,RasterPattern,PatternPlacement,PixelPaintSettings)
+  case projectLayers([ActionLayerTarget],ProjectiveTransform,Resampling)
+  case transformLayers([ActionLayerTarget],Transform2D,Resampling)
+  case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
+  case transformPixelMask(ActionLayerTarget,ProjectiveTransform,Resampling)
+  case transformPixels(ActionLayerTarget,ProjectiveTransform,Resampling)
+  case transformBackgroundPixels(ActionLayerTarget,ProjectiveTransform,Resampling,Pixel)
+  case transformCopyPixels(ActionLayerTarget,ProjectiveTransform,Resampling,Pixel?)
+  case movePixels(ActionLayerTarget,Double,Double,Bool,Bool,Pixel?)
+  case backgroundLayer(BackgroundLayerAction)
   case canvasSize(Int, Int, CanvasAnchor, Pixel?)
   case imageSize(Int, Int, Double, Resampling)
   case resolution(Double)
@@ -96,6 +114,10 @@ public enum ActionOperation: Codable, Sendable {
       return ids.sorted().compactMap{id in supplied.first{$0.id==id} ?? d.pattern(id)}
     }
     switch command {
+    case .canvasEdges(let edit):self = .canvasEdges(edit.operation,edit.background)
+    case .flattenImage:self = .flattenImage
+    case .layerStyles(let edit):self = .layerStyles(RecordedStyleEdit(edit,in:d))
+    case .globalLight(let value):self = .globalLight(value)
     case .cloneStamp, .healingBrush, .spotHealing, .toning, .focus:
       self = RecordedRetouchStroke(recording: command, in: d).map(Self.retouch)
         ?? .unsupported("This retouch sample has no portable source provenance.")
@@ -105,10 +127,14 @@ public enum ActionOperation: Codable, Sendable {
     case .cut(let ids, let background): self = .clipboardCut(targets(Set(ids)), background: background)
     case .paste(_, let placement, let center): self = .clipboardPaste(placement, center: center)
     case .toneAdjustment(let request):self = .toneAdjustment((request.layerID ?? d.activeLayerID).map(target),request.settings)
+    case .linkedSmartObject:self = .unsupported("Linked source actions require an authorized source recipe; semantic recording is not yet qualified.")
+    case .guides:self = .unsupported("Guide identity/selection Actions recording is not yet qualified. Guides remain editable and save natively.")
     case .channelArithmetic:self = .unsupported("Apply Image and Calculations semantic source recording is not yet qualified. The committed pixels/channels remain editable and save natively.")
     case .hdrToning:self = .unsupported("HDR Toning needs the full compositor; semantic Actions playback is not implemented yet.")
     case .proceduralRender(let request):
       self = .proceduralRender((request.layerID ?? d.activeLayerID).map(target),request.settings,request.newLayer,request.settings.kind == .flame ? ProceduralRenderEngine.resolvedPath(request,in:d):nil)
+    case .importedType(let edit):self = .editType(target(edit.layerID),edit.content,edit.origin,imported:true)
+    case .editType(let id,let content,let origin):self = .editType(target(id),content,origin,imported:false)
     case .shape(let edit):
       switch edit {case .create(let name,let definition,let placement,let patterns):self = .createShape(name,definition,placement,shapePatterns(definition,patterns));case .configure(let id,let definition,let patterns):self = .setShape(target(id),definition,shapePatterns(definition,patterns));case .append(let id,let component):self = .appendShape(target(id),component)}
     case .maskAllObjects: self = .unsupported("Mask All Objects is not yet recordable. The generated masks remain editable and save with the document.")
@@ -118,7 +144,15 @@ public enum ActionOperation: Codable, Sendable {
     case .replaceContent(let id, .adjustment(let value)):self = .replaceAdjustment(target(id),value)
     case .newPixelLayer(let v, let below): self = .newLayer(v, below: below)
     case .newGroup(let v, let children, let below): self = .newGroup(v, children: children.map(target), below: below)
+    case .addLayer(let layer) where layer.smartObject?.linkedSource != nil:
+      self = .unsupported("Linked placement actions require an authorized source recipe; semantic recording is not yet qualified.")
     case .addLayer(let layer):
+      if case .adjustment(.classic(let value))=layer.content,value.kind == .exposure {
+        guard var expected=try? value.layer(in:d,name:layer.name) else {self = .unsupported("Invalid Exposure settings.");return}
+        expected.id=layer.id
+        guard expected==layer else {self = .unsupported("Exposure creation metadata is not recordable.");return}
+        self = .addContent(layer.name,layer.content);return
+      }
       var standard = Layer(name: layer.name, content: layer.content); standard.id = layer.id
       guard standard == layer else { self = .unsupported("Adding content with placement or layer metadata is not yet recordable."); return }
       switch layer.content {
@@ -148,6 +182,9 @@ public enum ActionOperation: Codable, Sendable {
     case .invertMask(let id): self = .invertMask(target(id))
     case .selection(let v): self = .selection(v)
     case .selectShape(let shape, let mode, let aa, let feather): self = .selectShape(shape, mode, aa, feather)
+    case .magneticSelection(let mask,let mode):self = .selectionCoverage(mask,mode)
+    case .modifiedSelection(let mask,_),.reselectedSelection(let mask),.transformedSelection(let mask):self = .selectionCoverage(mask,.replace)
+    case .colorRange(let mask):self = .selectionCoverage(mask,.replace)
     case .selectionCoverage(let mask,let mode):self = .selectionCoverage(mask,mode)
     case .invertSelection: self = .invertSelection
     case .featherSelection(let v): self = .featherSelection(v)
@@ -164,6 +201,16 @@ public enum ActionOperation: Codable, Sendable {
     case .crop(let v): self = .crop(v)
     case .flip(let id, let v): self = .flip(target(id), v)
     case .transform(let id, let matrix, let method): self = .transform(target(id), matrix, method)
+    case .movePixels(let request):self = .movePixels(target(request.layerID),request.dx,request.dy,request.copy,request.constrain,request.backgroundColor)
+    case .moveLayers(let request):self = .moveLayers(request.layerIDs.map(target),request.dx,request.dy,request.copy == true)
+    case .pixelPaint(let request):if let pattern=request.pattern{self = .patternPixelPaint(.init(request.target,in:d),pattern,request.patternPlacement ?? .init(),request.settings)}else{self = .pixelPaint(request.kind,.init(request.target,in:d),request.settings)}
+    case .layerLinks(let command):switch command{case .link(let ids):self = .layerLinks("link",ids.map(target),nil);case .unlink(let ids):self = .layerLinks("unlink",ids.map(target),nil);case .enabled(let ids,let value):self = .layerLinks("enabled",ids.map(target),value)}
+    case .transformLayers(let request):if let matrix=request.projection{self = .projectLayers(request.layerIDs.map(target),matrix,request.interpolation)}else{self = .transformLayers(request.layerIDs.map(target),request.matrix,request.interpolation)}
+    case .transformChannel(let request):self = .transformChannel(.init(request.target,in:d),request.matrix,request.interpolation,request.backgroundValue,request.copy)
+    case .transformPixelMask(let request):self = .transformPixelMask(target(request.layerID),request.matrix,request.interpolation)
+    case .transformPixels(let request):
+      if request.copy == true {self = .transformCopyPixels(target(request.layerID),request.matrix,request.interpolation,request.backgroundColor)}else if d.layers.first(where:{$0.id==request.layerID})?.isBackground == true {self = .transformBackgroundPixels(target(request.layerID),request.matrix,request.interpolation,request.backgroundColor ?? .white)}else{self = .transformPixels(target(request.layerID),request.matrix,request.interpolation)}
+    case .backgroundLayer(let edit):self = .backgroundLayer(.init(edit,in:d))
     case .canvasSize(let w, let h, let anchor, let fill): self = .canvasSize(w, h, anchor, fill)
     case .imageSize(let w, let h, let dpi, let method): self = .imageSize(w, h, dpi, method)
     case .resolution(let v): self = .resolution(v)
@@ -176,6 +223,12 @@ public enum ActionOperation: Codable, Sendable {
     func id(_ target: ActionLayerTarget) throws -> UUID { try target.resolve(in: d) }
     func ids(_ targets: [ActionLayerTarget]) throws -> Set<UUID> { try Set(targets.map(id)) }
     switch self {
+    case .layerStyles(let edit):return .layerStyles(try edit.resolved(in:d))
+    case .globalLight(let value):return .globalLight(value)
+    case .canvasEdges:
+      throw CraftError.unsupported("Canvas edge Actions require native compositor playback.")
+    case .flattenImage:
+      throw CraftError.unsupported("Flatten Image Actions require the native compositor.")
     case .retouch:
       throw CraftError.unsupported("Retouch Actions require compositor sampling playback.")
     case .documentMode, .restrictedMode, .inkMode, .clipboardCopy, .clipboardCut, .clipboardPaste:
@@ -183,6 +236,8 @@ public enum ActionOperation: Codable, Sendable {
     case .toneAdjustment(let target,let settings):return .toneAdjustment(.init(settings,layerID:try target.map(id)))
     case .proceduralRender(let target,let settings,let newLayer,let path):return .proceduralRender(.init(settings,layerID:try target.map(id),newLayer:newLayer,path:path))
     case .createShape(let name,let definition,let placement,let patterns):return .shape(.create(name,definition,placement,patterns:patterns))
+    case .editType(let target,let text,let origin,let imported):
+      let layerID=try id(target);return imported ? .importedType(.init(layerID:layerID,content:text,origin:origin)):.editType(layerID,text,originDelta:origin)
     case .setShape(let target,let definition,let patterns):return .shape(.configure(try id(target),definition,patterns:patterns))
     case .appendShape(let target,let component):return .shape(.append(try id(target),component))
     case .adjustmentBrush(let value):return try value.command(in:d)
@@ -195,6 +250,7 @@ public enum ActionOperation: Codable, Sendable {
     case .newLayer(let v, let below): return .newPixelLayer(v, below: below)
     case .newGroup(let v, let children, let below): return .newGroup(v, children: try children.map(id), below: below)
     case .addContent(let name, let content):
+      if case .adjustment(.classic(let value))=content,value.kind == .exposure {return .addLayer(try value.layer(in:d,name:name))}
       if case .adjustment(.modern(let value))=content {return .addLayer(try value.layer(in:d,name:name))}
       switch content { case .adjustment, .text, .shape: return .addLayer(Layer(name: name, content: content)); default: throw CraftError.unsupported("Only adjustment, text and shape content can be added by an action.") }
     case .delete(let t): return .deleteLayers(try ids(t))
@@ -236,6 +292,19 @@ public enum ActionOperation: Codable, Sendable {
     case .crop(let v): return .crop(v)
     case .flip(let t, let v): return .flip(try id(t), v)
     case .transform(let t, let m, let r): return .transform(try id(t), m, r)
+    case .moveLayers(let targets,let dx,let dy,let copy):return .moveLayers(.init(layerIDs:try targets.map(id),dx:dx,dy:dy,copy:copy))
+    case .patternPixelPaint(let target,let pattern,let placement,let settings):return .pixelPaint(.init(.fill,target:try target.resolve(in:d),settings:settings,pattern:pattern,placement:placement))
+    case .pixelPaint(let kind,let target,let settings):return .pixelPaint(.init(kind,target:try target.resolve(in:d),settings:settings))
+    case .layerLinks(let operation,let targets,let value):let ids=try targets.map(id);switch operation{case "link":return .layerLinks(.link(ids));case "unlink":return .layerLinks(.unlink(ids));case "enabled":guard let value else{throw CraftError.invalid("Missing recorded link participation.")};return .layerLinks(.enabled(ids,value));default:throw CraftError.invalid("Unknown recorded layer-link operation.")}
+    case .projectLayers(let targets,let matrix,let method):return .transformLayers(.init(layerIDs:try targets.map(id),projection:matrix,interpolation:method))
+    case .transformLayers(let targets,let matrix,let method):return .transformLayers(.init(layerIDs:try targets.map(id),matrix:matrix,interpolation:method))
+    case .transformChannel(let t,let m,let r,let background,let copy):return .transformChannel(.init(target:try t.resolve(in:d),matrix:m,interpolation:r,backgroundValue:background,copy:copy))
+    case .transformPixelMask(let t,let m,let r):return .transformPixelMask(.init(layerID:try id(t),matrix:m,interpolation:r))
+    case .transformPixels(let t,let m,let r):return .transformPixels(.init(layerID:try id(t),matrix:m,interpolation:r))
+    case .transformBackgroundPixels(let t,let m,let r,let color):return .transformPixels(.init(layerID:try id(t),matrix:m,interpolation:r,backgroundColor:color))
+    case .transformCopyPixels(let t,let m,let r,let color):return .transformPixels(.init(layerID:try id(t),matrix:m,interpolation:r,backgroundColor:color,copy:true))
+    case .movePixels(let t,let x,let y,let copy,let constrain,let color):return .movePixels(.init(layerID:try id(t),dx:x,dy:y,copy:copy,constrain:constrain,backgroundColor:color))
+    case .backgroundLayer(let edit):return .backgroundLayer(try edit.edit(in:d))
     case .canvasSize(let w, let h, let a, let f): return .canvasSize(w, h, a, f)
     case .imageSize(let w, let h, let dpi, let r): return .imageSize(w, h, dpi, r)
     case .resolution(let v): return .resolution(v)
@@ -270,6 +339,8 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
     }
     for step in steps {
+      if case .layerStyles(let edit)=step.operation {try edit.validate()}
+      if case .globalLight(let value)=step.operation {try value.validate()}
       if case .retouch(let request) = step.operation { try request.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }
@@ -288,6 +359,8 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .adjustmentBrush(let value)=step.operation {try value.request.validate()}
       if case .replaceAdjustment(_,let value)=step.operation {try value.validate()}
       if case .adjustment(_,let value)=step.operation {try value.validate()}
+      if case .editType(_,let text,let origin,_)=step.operation {try text.validate();guard origin.x.isFinite,origin.y.isFinite,abs(origin.x)<=1_000_000,abs(origin.y)<=1_000_000 else{throw CraftError.invalid("Invalid recorded type origin.")}}
+      if case .addContent(_, .adjustment(.source(let value)))=step.operation {try value.validate()}
       if case .addContent(_, .adjustment(.modern(let value)))=step.operation {try value.validate()}
     }
     for step in steps { if case .stroke(_,let points,let brush,_) = step.operation { try BrushPainter.validate(brush,points:points) } }

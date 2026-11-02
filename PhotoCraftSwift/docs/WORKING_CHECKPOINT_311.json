@@ -1,0 +1,77 @@
+{
+  "step": 311,
+  "recorded_at_utc": "2026-11-01T04:26:23.944332+00:00",
+  "run": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair",
+  "status": "command-worker-regression-repaired-in-progress-source-smart-migration",
+  "increment_complete": false,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "native_acceptance": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "source_import_activated": false,
+  "current_worker": null,
+  "application_build_executed": true,
+  "source_manifest": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source02.json",
+  "source_inputs": 3012,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T04:36:50.429997+00:00",
+    "source_manifest": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source01.json",
+    "inputs": 3012,
+    "current_binary_sha256": "2edf48c12e8cb3c2e959f25c5e3fc2e227c7ca49d0d48babc697e2e879a8c126",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "full_inventory_result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/full-inventory01-result.json",
+  "focused02_result": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-11-01T04:53:10.193368+00:00",
+    "source_manifest": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source02.json",
+    "inputs": 3012,
+    "current_binary_sha256": "2edf48c12e8cb3c2e959f25c5e3fc2e227c7ca49d0d48babc697e2e879a8c126",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "phase": 1,
+  "package": "I03",
+  "binary_sha256": "2edf48c12e8cb3c2e959f25c5e3fc2e227c7ca49d0d48babc697e2e879a8c126",
+  "repair_functional_cases_passed": true,
+  "latest_entirely_passing_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "last_recorded_private_source_checkpoint": 298,
+  "focused": {
+    "source": "Source02",
+    "cases": 24,
+    "failures": 0,
+    "result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/focused02-summary.json"
+  },
+  "full": {
+    "source": "Source01",
+    "cases": 3105,
+    "passed_cases": 3098,
+    "failed_cases": 7,
+    "failed_assertions": 30,
+    "all_cases_executed": true,
+    "all_passed": false,
+    "result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/full-inventory01-result.json",
+    "scope": "All tests executed in bounded groups on identical production; Source02 changes only one version test and reruns24 cases, not the complete inventory."
+  },
+  "remaining_strict_gates": {
+    "cases": 6,
+    "assertions": 28,
+    "scope": "Six existing strict output cases remain open; old full result retains the two subsequently repaired version assertions."
+  },
+  "source_comparison": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source01-source02-comparison.json",
+  "next_work": [
+    "Finish source Smart Object cache/rasterize/reset/replacement consumers and embedded/nested originals.",
+    "Integrate source filters/adjustments/stack/warp/projective/masks and unknown linked extents with explicit authorized resolution.",
+    "Complete native editing/history/API state/operations/format boundaries and owned original-engine fixtures before source import activation."
+  ],
+  "documentation_verification": {
+    "first_checks": 33,
+    "first_passed": true,
+    "first_result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/verification01.json",
+    "final_result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/verification02.json",
+    "audit_receipt": "artifacts/development-history-audit/311-checkpoint01-receipt.json"
+  }
+}

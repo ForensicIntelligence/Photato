@@ -117,7 +117,7 @@ public enum ChannelArithmeticPreparation {
     guard let layerID else{return try Renderer.composite(document)}
     guard let original=document.layers.first(where:{$0.id==layerID}) else{throw CraftError.invalid("Source layer not found.")}
     if original.isGroup || {if case .adjustment=original.content{return true};return false}() {
-      var proxy=document;let ids=Set(document.subtreeIDs(layerID));proxy.layers=document.layers.filter{ids.contains($0.id)}
+      var proxy=document;let ids=Set(document.subtreeIDs(layerID));proxy.layers=document.layers.filter{ids.contains($0.id)};LayerLinks.prune(in:&proxy)
       let i=proxy.layers.firstIndex(where:{$0.id==layerID})!
       proxy.layers[i].parentID=nil;proxy.layers[i].clipped=false;proxy.layers[i].visible=true
       proxy.activeLayerID=layerID;return try Renderer.composite(proxy)
@@ -153,7 +153,7 @@ public enum ChannelArithmeticPreparation {
     }
     var proxy=document
     if let layerID {
-      let ids=Set(document.subtreeIDs(layerID));proxy.layers=document.layers.filter{ids.contains($0.id)}
+      let ids=Set(document.subtreeIDs(layerID));proxy.layers=document.layers.filter{ids.contains($0.id)};LayerLinks.prune(in:&proxy)
       guard let i=proxy.layers.firstIndex(where:{$0.id==layerID}) else{throw CraftError.invalid("Source layer not found.")}
       proxy.layers[i].parentID=nil;proxy.layers[i].clipped=false;proxy.layers[i].visible=true;proxy.activeLayerID=layerID
     }

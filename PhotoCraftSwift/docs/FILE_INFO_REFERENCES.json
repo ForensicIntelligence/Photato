@@ -1,0 +1,67 @@
+{
+  "step": 334,
+  "scope": "Qualified native eight-field File Info subset and original source metadata retention; full parity open",
+  "frozen_source": "artifacts/runs/20261101T203308Z-334-file-info/source04.json",
+  "source_oracle": {
+    "log": "artifacts/runs/20261101T203308Z-334-file-info/rust03.log",
+    "sha256": "9d115267ef308b1e786134dc37c04a8a24c5fef25e7c9eceb03cbde52fe5b2a6",
+    "fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/FileInfo/provenance.json",
+    "projects": 3,
+    "expected_fields": 24,
+    "upstream_modified": false,
+    "failure_attempts_retained": [
+      "artifacts/runs/20261101T203308Z-334-file-info/rust01.log",
+      "artifacts/runs/20261101T203308Z-334-file-info/rust02.log"
+    ]
+  },
+  "public_imageio_probe": {
+    "source": "artifacts/runs/20261101T203308Z-334-file-info/metadata-probe01.swift",
+    "build": "artifacts/runs/20261101T203308Z-334-file-info/metadata-probe01-build.log",
+    "result": "artifacts/runs/20261101T203308Z-334-file-info/metadata-probe01.log"
+  },
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/my_en/photoshop/using/metadata-notes.html",
+      "accessed_utc": "2026-11-01",
+      "scope": "Older general XMP/metadata documentation; not 2026 UI proof."
+    },
+    {
+      "path": "docs/MENU_PARITY_REFERENCES.json",
+      "scope": "Captured factory menu/shortcut"
+    }
+  ],
+  "api": {
+    "typed_commands": 209,
+    "new_command": "file.info",
+    "native_archive_unchanged": 78,
+    "actions_archive_unchanged": 30,
+    "adobe_metadata_descriptor_supported": false
+  },
+  "new_cases": 14,
+  "photoshop_acceptance": false,
+  "physical_ui_acceptance": false,
+  "full_current_suite_passed": false,
+  "store_candidate_unchanged": 332,
+  "latest_frozen_source": "artifacts/runs/20261101T203308Z-334-file-info/source04.json",
+  "focused": "artifacts/runs/20261101T203308Z-334-file-info/focused04-summary.json",
+  "binary_sha256": "33afe14d9a5e51cb225b410991fe7f24d89507e196c651b85cff5c4085446510",
+  "all_new_cases_passed": true,
+  "independent": "artifacts/runs/20261101T203308Z-334-file-info/independent-metadata04.json",
+  "qualification": "artifacts/runs/20261101T203308Z-334-file-info/qualification04.json",
+  "failed_attempts": [
+    "artifacts/runs/20261101T203308Z-334-file-info/focused01-summary.json",
+    "artifacts/runs/20261101T203308Z-334-file-info/focused02-summary.json",
+    "artifacts/runs/20261101T203308Z-334-file-info/focused03-summary.json"
+  ],
+  "determinism_probe": "artifacts/runs/20261101T203308Z-334-file-info/metadata-probe03.log",
+  "empty_namespace_probe": "artifacts/runs/20261101T203308Z-334-file-info/metadata-probe02.log",
+  "remaining": [
+    "Full Photoshop File Info schemas/panels/templates and live UI",
+    "Exact Adobe/Rust packet serialization and full EXIF/global-block interpretation/export",
+    "Semantic File Info Actions",
+    "IPTC list formatting/synchronization beyond the tested File Info readback",
+    "Supported-platform/physical/performance/full-current-suite qualification"
+  ],
+  "initial_frozen_source": "artifacts/runs/20261101T203308Z-334-file-info/source01.json",
+  "static_preservation_verification": "artifacts/runs/20261101T203308Z-334-file-info/final-verification01.json"
+}

@@ -155,7 +155,7 @@ final class SmartObjectWorkflowTests: XCTestCase {
   }
   func testPublishedContractRejectsUnsupportedLinkedAndTransforms() throws {
     let base: [String: Any] = ["name": "Object", "type": "smart_object_layer", "operation": ["type": "edit"], "smartObject": [:]]
-    for extra: [String: Any] in [["smartObject": ["isLinked": true]], ["transform": ["angle": 30]], ["transformMode": "custom"], ["smartObject": ["autoResize": 1]], ["pixelMask": [:]]] {
+    for extra: [String: Any] in [["smartObject": ["isLinked": "invalid"]], ["transform": ["angle": 30]], ["transformMode": "custom"], ["smartObject": ["autoResize": 1]], ["pixelMask": [:]]] {
       var fields = base; fields.merge(extra) { _, new in new }
       XCTAssertThrowsError(try AdobeSmartObjectEdit(fields, path: "edit"))
     }

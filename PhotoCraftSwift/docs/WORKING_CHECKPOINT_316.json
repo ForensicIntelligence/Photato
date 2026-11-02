@@ -1,0 +1,32 @@
+{
+  "step": 316,
+  "recorded_at_utc": "2026-11-01T07:09:36.090171+00:00",
+  "run": "artifacts/runs/20261101T070936Z-316-native-relight",
+  "phase": 1,
+  "package": "I03",
+  "status": "native-relight-in-progress",
+  "increment_complete": false,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_315.json",
+  "diary_reconciliation": {
+    "step": 317,
+    "record": "docs/DIARY_REFRESH_317.json",
+    "application_inputs": 4441,
+    "inventory": "artifacts/runs/20261101T074012Z-317-diary-refresh/316-working-tree-inventory.json",
+    "application_build_executed": false,
+    "swift_tests_executed": false,
+    "authored_unexecuted_core_cases": 4,
+    "authored_unexecuted_imaging_cases": 3,
+    "app_workflow_tests_pending": true,
+    "original_engine_vectors": 19,
+    "original_engine_fixture_files": 117,
+    "core_probe_exit_code": 1,
+    "core_helper_repair_rechecked": false
+  }
+}

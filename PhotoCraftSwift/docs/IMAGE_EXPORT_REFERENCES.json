@@ -1,0 +1,131 @@
+{
+  "step": "dev-step-341",
+  "recorded_at_utc": "2026-11-02T01:25:49.459740+00:00",
+  "run": "artifacts/runs/20261102T004453Z-341-production-export",
+  "reference_standard": "Photoshop2026",
+  "source_manifest": "artifacts/runs/20261102T004453Z-341-production-export/source05.json",
+  "inputs": 6919,
+  "production_swift_files": 933,
+  "binary_sha256": "4e48715deca0b9ea5f5be02fc48773b9964d6468520e34406dcd37b709b54690",
+  "qualification": {
+    "cases": 317,
+    "passed_cases": 317,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 22.57,
+    "new_cases": 19,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 380.34
+  },
+  "new_case_names": [
+    "PhotoCraftAppTests.AdobeLayerOutputTests/testPublishedAsyncJobPublishesSelectedAssetAndPreservesHostedLifecycle",
+    "PhotoCraftAppTests.AdobeLayerOutputTests/testPublishedValidationRejectsAmbiguousMissingAndInvalidReferencesBeforeOutput",
+    "PhotoCraftAppTests.AdobeLayerOutputTests/testSingleGroupPSDRemainsEditableAndMixedProfilesStayIndependent",
+    "PhotoCraftAppTests.AdobeLayerOutputTests/testSingleMultiDocumentTrimAndNameOutputsUseDistinctCacheEntries",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testArtboardBackgroundBoundsAndSourceHistoryArePreserved",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testAssetCroppingRetainsAffinePixelsAndMasksWithoutResamplingArtwork",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testCancellationDoesNotYieldAssets",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testDocumentScalesAndCanvasMatchAnalyticalPixelsWithoutChangingSource",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testHighDepthAspectRatioAndNativeResamplingAreImmutable",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testMetadataAllowlistDoesNotLeakTitleKeywordsOrOriginalPackets",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testSelectedHiddenLayersGroupsAndOffCanvasBoundsAreIsolated",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testTransparencyJPEGMatteGIFAndEmbeddedProfileChoices",
+    "PhotoCraftImagingTests.ImageAssetExportTests/testValidationBudgetsDuplicateNamesAndDimensionOverflow",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testCancellationAndRevocationPublishNoOutputUsingDeterministicWorkerGate",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testFactoryExportMenusBindBothDocumentAndLayerShortcuts",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testInvalidStaleBusyAndPreferenceSchemasAreExplicit",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testNativeWorkspaceCancelPreviewAndSharedAPIExportLeaveHistoryUntouched",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testPublicationPreservesExistingFilesAndValidatesAllDestinationsBeforeWriting",
+    "PhotoCraftAppTests.ImageExportWorkflowTests/testQuickPreferencesPersistenceCancelAndAPIEquivalence"
+  ],
+  "independent_png": {
+    "source_outputs": "341 Source05",
+    "files": 5,
+    "passed": 5,
+    "failed": 0,
+    "analytic_rgba_channels_compared": 412,
+    "results": [
+      {
+        "file": "document.png",
+        "width": 4,
+        "height": 3,
+        "sha256": "4651ee33d60f1d80827c2cadd89062702df153720629c72b747a8088c9ac17b8",
+        "passed": true
+      },
+      {
+        "file": "document-2x.png",
+        "width": 8,
+        "height": 6,
+        "sha256": "84da4653d03d66e470b8ac38a76b96b12fd0ade2ada3c0cca9771a72713680ec",
+        "passed": true
+      },
+      {
+        "file": "canvas.png",
+        "width": 6,
+        "height": 5,
+        "sha256": "7920047cddd766eaeccb6cc43caf4ef071afbcdcaae34161d6c7400066b2d9fb",
+        "passed": true
+      },
+      {
+        "file": "layer.png",
+        "width": 2,
+        "height": 2,
+        "sha256": "34cbfa01140f575b598d556b5ea55bc877eee262f4d846f7b6a5fc1fcbe94800",
+        "passed": true
+      },
+      {
+        "file": "artboard.png",
+        "width": 3,
+        "height": 3,
+        "sha256": "f51006228163dd2bffa53515ad268d28f39b6d4ea510798c7327881332eddf53",
+        "passed": true
+      }
+    ],
+    "scope": "Independent standard-library PNG transport and analytical owned pixels. Not Photoshop visual/encoder equivalence."
+  },
+  "external_references": {
+    "step": "dev-step-341",
+    "recorded_at_utc": "2026-11-02T00:59:13.885057+00:00",
+    "reference_standard": "Photoshop2026",
+    "official_sources": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-settings-and-export-location-preferences.html",
+        "scope": "Native Export As assets/scales/dimensions/canvas/transparency/quality/color and limited metadata options. Full defaults and exact encoders remain unqualified."
+      },
+      {
+        "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/export-layers-migration",
+        "scope": "Published create-composite per-output layers and crop modes, defaults and single/multiple format restrictions. Local source identifiers follow the existing local manifest."
+      }
+    ],
+    "native_UI_access": {
+      "getApp": "No captured window",
+      "inventory": "Mac locked",
+      "live_qualified": false
+    },
+    "external_code_copied": false,
+    "existing_codec_reuse": "Native Swift renderer, geometry, ColorSync, ImageIO, ZIP and Adobe job transport. No Rust runtime."
+  },
+  "native_version_unchanged": 82,
+  "api_commands": 216,
+  "actions_version_unchanged": 30,
+  "new_commands": [
+    "image.export",
+    "image.export.cancel",
+    "export.preferences"
+  ],
+  "preference_write_gate": "Existing native preferenceChangesEnabled opt-in; reads remain available.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Per-asset independent options, PNG8 optimization, complete copyright/contact metadata and Photoshop encoder/resampling/defaults",
+    "Save for Web, Layers to Files, asset generation/slices and remaining I05 scope",
+    "Selected temporal layers and full rich/group/clipping/effect bounds",
+    "Data encoders, large dense capacity and physical responsiveness",
+    "Live Photoshop/native UI, full current suite and supported macOS/Intel runtime matrix"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

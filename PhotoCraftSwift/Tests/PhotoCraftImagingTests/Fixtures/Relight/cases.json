@@ -1,0 +1,382 @@
+[
+  {
+    "cached": "default-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "default-u8-expected.rgba32",
+    "height": 19,
+    "input": "default-u8-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 40.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "default-u8-smart.rgba32",
+    "source": "default-u8-source.pcraft",
+    "uncached": "default-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "identity-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "identity-u8-expected.rgba32",
+    "height": 19,
+    "input": "identity-u8-input.rgba32",
+    "name": "identity",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 0.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "identity-u8-smart.rgba32",
+    "source": "identity-u8-source.pcraft",
+    "uncached": "identity-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "cool-left-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "cool-left-u8-expected.rgba32",
+    "height": 19,
+    "input": "cool-left-u8-input.rgba32",
+    "name": "cool-left",
+    "params": {
+      "ambient": 30.0,
+      "angle": -135.0,
+      "elevation": 25.0,
+      "intensity": 65.0,
+      "softness": 90.0,
+      "warmth": -60.0
+    },
+    "smartExpected": "cool-left-u8-smart.rgba32",
+    "source": "cool-left-u8-source.pcraft",
+    "uncached": "cool-left-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "warm-overhead-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "warm-overhead-u8-expected.rgba32",
+    "height": 19,
+    "input": "warm-overhead-u8-input.rgba32",
+    "name": "warm-overhead",
+    "params": {
+      "ambient": 10.0,
+      "angle": 90.0,
+      "elevation": 85.0,
+      "intensity": 80.0,
+      "softness": 55.0,
+      "warmth": 75.0
+    },
+    "smartExpected": "warm-overhead-u8-smart.rgba32",
+    "source": "warm-overhead-u8-source.pcraft",
+    "uncached": "warm-overhead-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "ambient-u8-expected.rgba32",
+    "height": 19,
+    "input": "ambient-u8-input.rgba32",
+    "name": "ambient",
+    "params": {
+      "ambient": 100.0,
+      "angle": 0.0,
+      "elevation": 0.0,
+      "intensity": 50.0,
+      "softness": 1.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "ambient-u8-smart.rgba32",
+    "source": "ambient-u8-source.pcraft",
+    "uncached": "ambient-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "transparent-u8-expected.rgba32",
+    "height": 19,
+    "input": "transparent-u8-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambient": 45.0,
+      "angle": 180.0,
+      "elevation": 45.0,
+      "intensity": 75.0,
+      "softness": 100.0,
+      "warmth": 20.0
+    },
+    "smartExpected": "transparent-u8-smart.rgba32",
+    "source": "transparent-u8-source.pcraft",
+    "uncached": "transparent-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "default-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "default-u16-expected.rgba32",
+    "height": 19,
+    "input": "default-u16-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 40.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "default-u16-smart.rgba32",
+    "source": "default-u16-source.pcraft",
+    "uncached": "default-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "identity-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "identity-u16-expected.rgba32",
+    "height": 19,
+    "input": "identity-u16-input.rgba32",
+    "name": "identity",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 0.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "identity-u16-smart.rgba32",
+    "source": "identity-u16-source.pcraft",
+    "uncached": "identity-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "cool-left-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "cool-left-u16-expected.rgba32",
+    "height": 19,
+    "input": "cool-left-u16-input.rgba32",
+    "name": "cool-left",
+    "params": {
+      "ambient": 30.0,
+      "angle": -135.0,
+      "elevation": 25.0,
+      "intensity": 65.0,
+      "softness": 90.0,
+      "warmth": -60.0
+    },
+    "smartExpected": "cool-left-u16-smart.rgba32",
+    "source": "cool-left-u16-source.pcraft",
+    "uncached": "cool-left-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "warm-overhead-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "warm-overhead-u16-expected.rgba32",
+    "height": 19,
+    "input": "warm-overhead-u16-input.rgba32",
+    "name": "warm-overhead",
+    "params": {
+      "ambient": 10.0,
+      "angle": 90.0,
+      "elevation": 85.0,
+      "intensity": 80.0,
+      "softness": 55.0,
+      "warmth": 75.0
+    },
+    "smartExpected": "warm-overhead-u16-smart.rgba32",
+    "source": "warm-overhead-u16-source.pcraft",
+    "uncached": "warm-overhead-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "ambient-u16-expected.rgba32",
+    "height": 19,
+    "input": "ambient-u16-input.rgba32",
+    "name": "ambient",
+    "params": {
+      "ambient": 100.0,
+      "angle": 0.0,
+      "elevation": 0.0,
+      "intensity": 50.0,
+      "softness": 1.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "ambient-u16-smart.rgba32",
+    "source": "ambient-u16-source.pcraft",
+    "uncached": "ambient-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "transparent-u16-expected.rgba32",
+    "height": 19,
+    "input": "transparent-u16-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambient": 45.0,
+      "angle": 180.0,
+      "elevation": 45.0,
+      "intensity": 75.0,
+      "softness": 100.0,
+      "warmth": 20.0
+    },
+    "smartExpected": "transparent-u16-smart.rgba32",
+    "source": "transparent-u16-source.pcraft",
+    "uncached": "transparent-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "default-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "default-f32-expected.rgba32",
+    "height": 19,
+    "input": "default-f32-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 40.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "default-f32-smart.rgba32",
+    "source": "default-f32-source.pcraft",
+    "uncached": "default-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "identity-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "identity-f32-expected.rgba32",
+    "height": 19,
+    "input": "identity-f32-input.rgba32",
+    "name": "identity",
+    "params": {
+      "ambient": 55.0,
+      "angle": 45.0,
+      "elevation": 40.0,
+      "intensity": 0.0,
+      "softness": 25.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "identity-f32-smart.rgba32",
+    "source": "identity-f32-source.pcraft",
+    "uncached": "identity-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "cool-left-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "cool-left-f32-expected.rgba32",
+    "height": 19,
+    "input": "cool-left-f32-input.rgba32",
+    "name": "cool-left",
+    "params": {
+      "ambient": 30.0,
+      "angle": -135.0,
+      "elevation": 25.0,
+      "intensity": 65.0,
+      "softness": 90.0,
+      "warmth": -60.0
+    },
+    "smartExpected": "cool-left-f32-smart.rgba32",
+    "source": "cool-left-f32-source.pcraft",
+    "uncached": "cool-left-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "warm-overhead-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "warm-overhead-f32-expected.rgba32",
+    "height": 19,
+    "input": "warm-overhead-f32-input.rgba32",
+    "name": "warm-overhead",
+    "params": {
+      "ambient": 10.0,
+      "angle": 90.0,
+      "elevation": 85.0,
+      "intensity": 80.0,
+      "softness": 55.0,
+      "warmth": 75.0
+    },
+    "smartExpected": "warm-overhead-f32-smart.rgba32",
+    "source": "warm-overhead-f32-source.pcraft",
+    "uncached": "warm-overhead-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "ambient-f32-expected.rgba32",
+    "height": 19,
+    "input": "ambient-f32-input.rgba32",
+    "name": "ambient",
+    "params": {
+      "ambient": 100.0,
+      "angle": 0.0,
+      "elevation": 0.0,
+      "intensity": 50.0,
+      "softness": 1.0,
+      "warmth": 0.0
+    },
+    "smartExpected": "ambient-f32-smart.rgba32",
+    "source": "ambient-f32-source.pcraft",
+    "uncached": "ambient-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "transparent-f32-expected.rgba32",
+    "height": 19,
+    "input": "transparent-f32-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambient": 45.0,
+      "angle": 180.0,
+      "elevation": 45.0,
+      "intensity": 75.0,
+      "softness": 100.0,
+      "warmth": 20.0
+    },
+    "smartExpected": "transparent-f32-smart.rgba32",
+    "source": "transparent-f32-source.pcraft",
+    "uncached": "transparent-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "tile-boundary-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "tile-boundary-f32-expected.rgba32",
+    "height": 129,
+    "input": "tile-boundary-f32-input.rgba32",
+    "name": "tile-boundary",
+    "params": {
+      "ambient": 40.0,
+      "angle": -45.0,
+      "elevation": 55.0,
+      "intensity": 55.0,
+      "softness": 100.0,
+      "warmth": -25.0
+    },
+    "smartExpected": "tile-boundary-f32-smart.rgba32",
+    "source": "tile-boundary-f32-source.pcraft",
+    "uncached": "tile-boundary-f32-uncached.pcraft",
+    "width": 257
+  }
+]

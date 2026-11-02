@@ -89,7 +89,7 @@ final class LayerCreationTests: XCTestCase {
     XCTAssertEqual(session.document, locked)
     try session.execute(.newPixelLayer(.init(name: "Outside"), below: true))
     var full = document
-    for i in 1..<512 { full.layers.append(Layer(name: "\(i)", content: .fill(.white))) }
+    for i in 1..<LayerLimits.maximumLayers { full.layers.append(Layer(name: "\(i)", content: .fill(.white))) }
     session = EditorSession(document: full)
     XCTAssertThrowsError(try session.execute(.newPixelLayer(.init(name: "Over limit"))))
     XCTAssertEqual(session.document, full)

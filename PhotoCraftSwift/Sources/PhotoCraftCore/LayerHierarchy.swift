@@ -7,21 +7,48 @@ extension Layer {
   public var group: GroupContent? { if case .group(let value) = content { value } else { nil } }
 }
 
+/// An immutable view reused by bulk hierarchy operations and panel/API snapshots.
+public struct LayerHierarchyIndex: Sendable {
+  public let byID: [UUID: Layer]
+  private let childrenByParent: [UUID?: [Layer]]
+  public init(_ document: CraftDocument) {
+    byID = Dictionary(document.layers.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+    childrenByParent = Dictionary(grouping: document.layers, by: \.parentID)
+  }
+  public func ancestors(of id: UUID) -> [Layer] {
+    var result: [Layer] = [], next = byID[id]?.parentID
+    var visited: Set<UUID> = [id]
+    while let key = next, visited.insert(key).inserted, let layer = byID[key] {
+      result.append(layer); next = layer.parentID
+    }
+    return result
+  }
+  public func subtreeIDs(_ roots: Set<UUID>) -> Set<UUID> {
+    var pending = Array(roots), result = Set<UUID>()
+    while let id = pending.popLast() {
+      guard byID[id] != nil, result.insert(id).inserted else { continue }
+      pending.append(contentsOf: (childrenByParent[id] ?? []).map(\.id))
+    }
+    return result
+  }
+  public func effectiveProtection(_ id: UUID) -> LayerProtection {
+    ancestors(of: id).reduce(byID[id]?.protection ?? []) { $0.union($1.protection) }
+  }
+}
+
 extension CraftDocument {
   public func children(of parent: UUID?) -> [Layer] { layers.filter { $0.parentID == parent } }
   public func ancestors(of id: UUID) -> [Layer] {
     let byID = Dictionary(layers.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-    var result: [Layer] = []
-    var next = byID[id]?.parentID
+    var result: [Layer] = [], next = byID[id]?.parentID
     var visited: Set<UUID> = [id]
     while let key = next, visited.insert(key).inserted, let layer = byID[key] {
-      result.append(layer)
-      next = layer.parentID
+      result.append(layer); next = layer.parentID
     }
     return result
   }
   public func subtreeIDs(_ id: UUID) -> Set<UUID> {
-    Set(layers.filter { $0.id == id || ancestors(of: $0.id).contains { $0.id == id } }.map(\.id))
+    LayerHierarchyIndex(self).subtreeIDs([id])
   }
   public func isLocked(_ id: UUID) -> Bool {
     effectiveProtection(id).fullyLocks
@@ -53,11 +80,12 @@ extension CraftDocument {
         throw CraftError.invalid("A layer's parent must be an existing group.")
       }
     }
+    let indexedChildren = Dictionary(grouping: layers, by: \.parentID)
     var ordered: [UUID] = []
     var visited = Set<UUID>()
     func walk(_ parent: UUID?, depth: Int) throws {
       guard depth <= 32 else { throw CraftError.invalid("Groups may be nested at most 32 levels.") }
-      for layer in children(of: parent) {
+      for layer in indexedChildren[parent] ?? [] {
         guard visited.insert(layer.id).inserted else {
           throw CraftError.invalid("Cyclic layer group.")
         }
@@ -88,6 +116,7 @@ extension CraftDocument {
     block[block.count - 1].parentID = parent
     layers.removeAll { ids.contains($0.id) }
     let siblings = children(of: parent)
+    let position=parent==nil && siblings.first?.isBackground==true ? max(1,position):position
     let insertion: Int
     if position < siblings.count {
       let next = siblings[max(0, position)]

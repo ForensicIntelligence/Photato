@@ -23,6 +23,7 @@ public final class AtomicFileWriter {
   private var failed = false
   private var original: Identity?
   private let requestedVisibility: Bool?
+  private let followSymbolicLinks: Bool
 
   public enum Synchronization: String, Sendable { case full, file }
   public private(set) var synchronization: Synchronization?
@@ -61,28 +62,30 @@ public final class AtomicFileWriter {
   /// A coordinating outer save may provide its final destination's visibility
   /// when this transaction writes to an intermediate URL owned by that save.
   public convenience init(to url: URL, maximumBytes: Int = 512 * 1024 * 1024,
-    destinationHidden: Bool? = nil) throws {
+    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true) throws {
     try self.init(to: url, maximumBytes: maximumBytes,
-      destinationHidden: destinationHidden, operations: Operations())
+      destinationHidden: destinationHidden, followSymbolicLinks: followSymbolicLinks, operations: Operations())
   }
 
   init(to url: URL, maximumBytes: Int = 512 * 1024 * 1024,
-    destinationHidden: Bool? = nil, operations: Operations) throws {
+    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true, operations: Operations) throws {
     try Task.checkCancellation()
     guard url.isFileURL, maximumBytes >= 0 else {
       throw CraftError.invalid("Choose a local file and a valid output limit.")
     }
-    destination = url.standardizedFileURL.resolvingSymlinksInPath()
+    self.followSymbolicLinks = followSymbolicLinks
+    destination = followSymbolicLinks ? url.standardizedFileURL.resolvingSymlinksInPath() : url
     parent = destination.deletingLastPathComponent()
     destinationName = destination.lastPathComponent
     temporaryName = ".photato-save-" + UUID().uuidString
     self.operations = operations
     requestedVisibility = destinationHidden
     self.maximumBytes = maximumBytes
-    directoryDescriptor = parent.withUnsafeFileSystemRepresentation { path in
-      // Holding the directory for relative operations does not require listing it.
-      path.map { Darwin.open($0, O_SEARCH | O_NOFOLLOW | O_CLOEXEC) } ?? -1
-    }
+    if followSymbolicLinks {
+      directoryDescriptor = parent.withUnsafeFileSystemRepresentation { path in
+        path.map { Darwin.open($0, O_SEARCH | O_NOFOLLOW | O_CLOEXEC) } ?? -1
+      }
+    }else{directoryDescriptor = try Self.openPhysicalDirectory(parent)}
     guard directoryDescriptor >= 0 else { throw Self.posixError() }
     do {
       directoryIdentity = try Self.identity(descriptor: directoryDescriptor)
@@ -265,7 +268,26 @@ public final class AtomicFileWriter {
     }
   }
 
+  /// A previously authorized physical path must not gain a symlink at any component.
+  private static func openPhysicalDirectory(_ url:URL)throws->Int32 {
+    guard url.isFileURL,url.path.hasPrefix("/"),!url.pathComponents.contains("..") else{throw CraftError.invalid("Choose an absolute physical destination.")}
+    var fd=Darwin.open("/",O_SEARCH|O_DIRECTORY|O_CLOEXEC)
+    guard fd>=0 else{throw posixError()}
+    do {
+      for part in url.pathComponents where part != "/" {
+        let next=part.withCString{Darwin.openat(fd,$0,O_SEARCH|O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC)}
+        guard next>=0 else{throw posixError()};Darwin.close(fd);fd=next
+      }
+      return fd
+    }catch{Darwin.close(fd);throw error}
+  }
+
   private func validateParent() throws {
+    if !followSymbolicLinks {
+      let fd=try Self.openPhysicalDirectory(parent);defer{Darwin.close(fd)}
+      guard let directoryIdentity,Self.sameFile(directoryIdentity,try Self.identity(descriptor:fd))else{throw CraftError.invalid("The destination folder changed while preparing the save.")}
+      return
+    }
     var value = stat()
     let result = parent.withUnsafeFileSystemRepresentation { path in
       path.map { fstatat(AT_FDCWD, $0, &value, AT_SYMLINK_NOFOLLOW) } ?? -1

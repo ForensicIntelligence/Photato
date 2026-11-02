@@ -8,23 +8,29 @@ public struct AnimationLayerPayload: Codable, Equatable, Sendable {
   public var maskProperties: MaskProperties?
   public var vectorMask: VectorMask?
   public var smartFilters: SmartFilterStack?
+  public var sourceProjection:ProjectiveTransform?
+  public var importedSmartAppearance:ImportedSmartAppearance?
   public init(_ layer: Layer) {
     content=layer.content;mask=layer.mask;maskProperties=layer.maskProperties
-    vectorMask=layer.vectorMask;smartFilters=layer.smartFilters
+    vectorMask=layer.vectorMask;smartFilters=layer.smartFilters;sourceProjection=layer.sourceProjection;importedSmartAppearance=layer.importedSmartAppearance
   }
   public func apply(to layer: inout Layer) {
     layer.content=content;layer.mask=mask;layer.maskProperties=maskProperties
-    layer.vectorMask=vectorMask;layer.smartFilters=smartFilters
+    layer.vectorMask=vectorMask;layer.smartFilters=smartFilters;layer.sourceProjection=sourceProjection;layer.importedSmartAppearance=importedSmartAppearance
   }
   public var rasterBytes: Int {
     let image: Int
-    if case .raster(let surface)=content {image=surface.allocatedBytes}else{image=0}
-    return image+(mask?.allocatedBytes ?? 0)+(smartFilters?.mask?.allocatedBytes ?? 0)
+    if case .raster(let surface)=content {image=surface.allocatedBytes}else if case .shape(let shape)=content {image=shape.importedAppearance?.pixels?.allocatedBytes ?? 0}else if case .text(let text)=content {image=text.importedAppearance?.pixels?.allocatedBytes ?? 0}else{image=0}
+    return image+(importedSmartAppearance?.pixels?.allocatedBytes ?? 0)+(importedSmartAppearance?.reference.sourcePixels.allocatedBytes ?? 0)+(mask?.allocatedBytes ?? 0)+(smartFilters?.mask?.allocatedBytes ?? 0)
   }
   public var metadataBytes: Int {
     let lookup: Int
     if case .adjustment(.colorLookup(let a))=content {lookup=a.lut?.estimatedBytes ?? 0}else{lookup=0}
-    return 256+lookup+(vectorMask?.path.knotCount ?? 0)*64+(smartFilters?.programBytes ?? 0)
+    let typeBytes:Int
+    if case .text(let text)=content {typeBytes=(text.importedAppearance?.reference.estimatedBytes ?? 0)+(text.importedAppearance?.typeRecord?.count ?? 0); }else{typeBytes=0}
+    let shapeBytes:Int
+    if case .shape(let shape)=content {shapeBytes=(shape.definition?.estimatedBytes ?? 0)+(shape.importedAppearance?.definition.estimatedBytes ?? 0)+(shape.importedAppearance?.vectorRecord?.count ?? 0)}else{shapeBytes=0}
+    return 256+(importedSmartAppearance?.reference.source.data.count ?? 0)+(importedSmartAppearance?.placedRecord?.count ?? 0)+lookup+shapeBytes+typeBytes+(vectorMask?.path.knotCount ?? 0)*64+(smartFilters?.programBytes ?? 0)
   }
   public func validate(layer: Layer, in document: CraftDocument)throws {
     var sample=layer;apply(to:&sample);sample.parentID=nil;sample.clipped=nil

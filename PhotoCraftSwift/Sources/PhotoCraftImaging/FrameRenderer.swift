@@ -85,6 +85,7 @@ public enum FrameRenderer {
       }
       return .frame(.convert(id, .init(width: shape.width, height: shape.height, shape: shape.kind == .ellipse ? .ellipse : .rectangle)))
     case .text(let text):
+      guard text.pristineSourceAppearance==nil else{throw CraftError.unsupported("Convert imported source type to a frame after an explicit type edit; source baseline-to-outline conversion is not qualified.")}
       let (path, bounds) = try normalized(NativeTextLayout.outline(text, dpi: document.pixelsPerInch))
       return .frame(.convert(id, .init(width: bounds.width, height: bounds.height, shape: .custom, customPath: path), offset: .init(Double(bounds.x), Double(bounds.y))))
     default: throw CraftError.invalid("Select a shape or type layer to convert to a frame.")

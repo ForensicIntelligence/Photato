@@ -40,7 +40,7 @@ extension AppDelegate {
       .background(StudioTheme.panel).tint(StudioTheme.accent).preferredColorScheme(.dark)
     let host = NSHostingView(rootView: view)
     host.frame = NSRect(x: 0, y: 0, width: 990, height: 820)
-    let window = NSWindow(
+    let window = PhotatoWindow(
       contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
     window.contentView = host
     window.appearance = NSAppearance(named: .darkAqua)

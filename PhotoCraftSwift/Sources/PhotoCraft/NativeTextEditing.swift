@@ -92,6 +92,11 @@ extension EditorStore {
     text.typography?.kind = kind
     if kind == .paragraph { text.layoutWidth = width ?? text.layoutWidth ?? max(1, document.width / 2); text.layoutHeight = height ?? text.layoutHeight ?? max(1, document.height / 2) }
     else { text.layoutWidth = nil; text.layoutHeight = nil }
+    if var frame=text.typography?.sourceFrame {
+      frame.kind=kind == .paragraph ? .box:.point
+      if let width{frame.width=Double(width)};if let height{frame.height=Double(height)}
+      text.typography?.sourceFrame=frame
+    }
     do {
       _ = try NativeTextLayout.metrics(text, dpi: document.pixelsPerInch)
       if let draft = typeEditingDraft { draft.content = text; typeEditor?.configureContainer(); typeEditor?.superview?.needsLayout = true }
@@ -131,7 +136,9 @@ extension EditorStore {
     if layoutOrientation != orientation{setLayoutOrientation(orientation)}
     isHorizontallyResizable = false; isVerticallyResizable = false
     textContainer?.widthTracksTextView = false; textContainer?.heightTracksTextView = false
-    let width=draft.content.typography?.kind == .paragraph ? draft.content.layoutWidth ?? 1:32768,height=draft.content.typography?.kind == .paragraph ? draft.content.layoutHeight ?? 1:32768
+    let paragraph=draft.content.typography?.kind == .paragraph,frame=draft.content.typography?.sourceFrame
+    let width=paragraph ? (frame?.kind == .box ? frame!.width:Double(draft.content.layoutWidth ?? 1)):32768
+    let height=paragraph ? (frame?.kind == .box ? frame!.height:Double(draft.content.layoutHeight ?? 1)):32768
     textContainer?.containerSize = NSSize(width:vertical ? height:width,height:vertical ? width:height)
   }
   @discardableResult func updateDraft() -> Bool {
@@ -197,10 +204,11 @@ extension CraftCanvas {
       } catch { store.error = error.localizedDescription; _ = store.finishType(cancel: true); return }
     }
     guard let editor = typeOverlay else { return }
-    let metrics = try? NativeTextLayout.metrics(draft.content, dpi: store.document.pixelsPerInch)
+    let metrics = try? NativeTextLayout.editingMetrics(draft.content, dpi: store.document.pixelsPerInch)
     let width = draft.content.typography?.kind == .paragraph ? draft.content.layoutWidth ?? 1 : max(400, (metrics?.width ?? 1) + 100)
     let height = draft.content.typography?.kind == .paragraph ? draft.content.layoutHeight ?? 1 : max(100, (metrics?.height ?? 1) + 60)
-    let origin = draft.layer.coordinateTransform.point(0, 0)
+    let sourceTransform=try? draft.layer.sourceTypeTransform()
+    let origin = sourceTransform.map{$0.point(metrics?.origin.x ?? 0,metrics?.origin.y ?? 0)} ?? draft.layer.coordinateTransform.point(0,0)
     editor.frame = NSRect(origin: viewPoint(CGPoint(x: origin.x, y: origin.y)), size: NSSize(width: Double(width) * scale, height: Double(height) * scale))
     let vertical=draft.content.typography?.writingOrientation == .vertical
     editor.bounds = NSRect(x: 0, y: 0, width: vertical ? height:width, height: vertical ? width:height)

@@ -1,0 +1,56 @@
+[
+  {
+    "depth": "u8",
+    "expected": {
+      "author": "First Author; Second Author",
+      "authorTitle": "Artist",
+      "copyright": "Owned test work",
+      "copyrightStatus": "publicDomain",
+      "copyrightUrl": "https://example.invalid/rights?x=1&y=2",
+      "description": "Oil & canvas — owned fixture",
+      "keywords": [
+        "stars",
+        "night",
+        "café"
+      ],
+      "title": "Night <Sky>"
+    },
+    "project": "info-u8.pcraft"
+  },
+  {
+    "depth": "u16",
+    "expected": {
+      "author": "First Author; Second Author",
+      "authorTitle": "Artist",
+      "copyright": "Owned test work",
+      "copyrightStatus": "publicDomain",
+      "copyrightUrl": "https://example.invalid/rights?x=1&y=2",
+      "description": "Oil & canvas — owned fixture",
+      "keywords": [
+        "stars",
+        "night",
+        "café"
+      ],
+      "title": "Night <Sky>"
+    },
+    "project": "info-u16.pcraft"
+  },
+  {
+    "depth": "f32",
+    "expected": {
+      "author": "First Author; Second Author",
+      "authorTitle": "Artist",
+      "copyright": "Owned test work",
+      "copyrightStatus": "publicDomain",
+      "copyrightUrl": "https://example.invalid/rights?x=1&y=2",
+      "description": "Oil & canvas — owned fixture",
+      "keywords": [
+        "stars",
+        "night",
+        "café"
+      ],
+      "title": "Night <Sky>"
+    },
+    "project": "info-f32.pcraft"
+  }
+]

@@ -1,0 +1,374 @@
+{
+  "step": 321,
+  "recorded_at_utc": "2026-11-01T10:00:16.975199+00:00",
+  "status": "bounded-functional-subset-qualified-strict-boundary-and-photoshop-gates-open",
+  "run": "artifacts/runs/20261101T093255Z-321-lighting-qualification",
+  "checkpoint": "docs/WORKING_CHECKPOINT_321.json",
+  "guide": "docs/LIGHTING_EFFECTS.md",
+  "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02.json",
+  "native_version": 72,
+  "actions_version": 27,
+  "original_fixture_provenance": "Tests/PhotoCraftImagingTests/Fixtures/Lighting/provenance.json",
+  "original_vectors": 64,
+  "fixture_files": 387,
+  "native_extension_menu": "Filter > Photato > Lighting Effects\u2026",
+  "factory_menu_fixture_changed": false,
+  "new_default_shortcut": false,
+  "new_workspace_pointer_actions": [
+    "Option duplicates a light at gesture start",
+    "Shift constrains position or snaps Infinite direction15 degrees",
+    "Captured mode/cursor persists until release",
+    "Capacity rejection and focus cleanup"
+  ],
+  "tool_cursor_policy": "Sources/PhotoCraft/ToolCursorPolicies.swift",
+  "photato_api": {
+    "commands": [
+      "filter.apply",
+      "smartFilter.set"
+    ],
+    "state": "Lighting settings/schema/presets/workspace and shared pointer presentation capabilities."
+  },
+  "adobe_boundary": "No unqualified actionJSON or editable PSD/PSB descriptor is invented; published input-format restrictions remain explicit.",
+  "full_current_suite_passed": false,
+  "native_visual_acceptance": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "full_photoshop_parity": false,
+  "reference_provenance": "artifacts/runs/20261101T082234Z-319-lighting-effects/reference-provenance01.json",
+  "open": [
+    "Global Colorize and independently qualified Photoshop tint behavior",
+    "Complete historical Photoshop Lighting Effects style library/binary preset interchange",
+    "Named-alpha preset/Action remapping across unrelated channel identities",
+    "Two exact source translated-boundary vectors and all Photoshop output/menu/UI fidelity",
+    "Nine current strict output cases/224 assertions and passing current full inventory",
+    "Large operation capacity, physical60fps, native visual and universal/Intel/macOS14+ runtime qualification"
+  ],
+  "last_executed_source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source03.json",
+  "binary_source": "Source01; Source02 test-only changes",
+  "binary_sha256": "c24497658068c64291508452c0ee3420ac9cbf9617c8888b8f0dd7a8d47a7164",
+  "last_executed_summary": "artifacts/runs/20261101T082234Z-319-lighting-effects/focused03-summary.json",
+  "last_executed_results": {
+    "cases": 273,
+    "passed_cases": 256,
+    "failed_cases": 17,
+    "failed_assertions": 309,
+    "unexpected": 84,
+    "crashes": 0,
+    "new_cases_passed": 8,
+    "new_cases_total": 15
+  },
+  "original_words": {
+    "source": "Source01",
+    "direct": {
+      "vectors": 22,
+      "exact": 22,
+      "words": 169320,
+      "numerical_differences": 0,
+      "render_errors": 0
+    },
+    "cached": {
+      "vectors": 64,
+      "exact": 64,
+      "words": 242736,
+      "numerical_differences": 0,
+      "render_errors": 0
+    },
+    "uncached": {
+      "vectors": 64,
+      "exact": 62,
+      "words": 242736,
+      "numerical_differences": 2,
+      "render_errors": 0
+    },
+    "archive_checks_passed": true,
+    "remaining": "Two translated16/32-bit programs each differ in24 RGB words at a transparent placed-content boundary; expected words remain unchanged."
+  },
+  "current_compile_error": null,
+  "staged_repairs_qualified": true,
+  "diary_refresh_step": 320,
+  "source_inputs": 4837,
+  "production_swift_files": 884,
+  "functional_qualification": {
+    "new_cases": 15,
+    "functional_cases": 14,
+    "passed_functional_cases": 14,
+    "core": 4,
+    "imaging_functional": 2,
+    "app": 8,
+    "strict_case_failed": 1,
+    "source": "Source01",
+    "production_identical_to_source02": true
+  },
+  "focused_selection": {
+    "step": 321,
+    "source": "Source01",
+    "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source01.json",
+    "binary_sha256": "c24497658068c64291508452c0ee3420ac9cbf9617c8888b8f0dd7a8d47a7164",
+    "build_succeeded": true,
+    "build_seconds": 366.42,
+    "cases": 273,
+    "passed_cases": 266,
+    "failed_cases": 7,
+    "failed_assertions": 220,
+    "unexpected": 0,
+    "crashes": 0,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LightingImportTests/testUncachedProgramsMatchIndependentOriginalWordsExactly",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftFilterImportTests/testUncachedProgramsMatchStrictOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftShapeImportTests/testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftTextImportTests/testUncachedSourceTextCompositeMatchesExactOriginalWords"
+    ],
+    "classes": {
+      "PhotoCraftAppTests.ActionsWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdobeActionsRequestTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ArtisticGalleryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicDetailTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DistortionTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeSmartFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LargeSmartObjectTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LensBlurTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LensBlurWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LightingImportTests": {
+        "passed": 2,
+        "failed": 1
+      },
+      "PhotoCraftCoreTests.LightingTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LightingWorkflowTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LinkedSmartObjectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.OtherVideoTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFImageSmartObjectTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFSmartObjectTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PDFSmartObjectWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDLinkedFileTypeTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDPDFSmartObjectTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedSmartFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftFilterImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftShapeImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftImagingTests.PcraftSmartImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftTextImportTests": {
+        "passed": 5,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PhotoDetailTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoDetailWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PixelateTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RelightImportTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RelightTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RelightWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RenderFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartFilterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartFilterWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartObjectTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartObjectWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceSmartModelTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.StylizeTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.WarpWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "test_seconds": 87.502
+  },
+  "complete_inventory": "artifacts/runs/20261101T093255Z-321-lighting-qualification/full02-summary.json",
+  "test_contract_repair": {
+    "step": 321,
+    "source": "Source02",
+    "cases": 30,
+    "passed_cases": 30,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "build_seconds": 107.19,
+    "test_seconds": 1.02,
+    "classes": {
+      "PhotoCraftAppTests.AutomationTests": {
+        "passed": 14,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RasterFilterTests": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "binary_sha256": "c24497658068c64291508452c0ee3420ac9cbf9617c8888b8f0dd7a8d47a7164"
+  },
+  "source02_equivalence": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02-equivalence.json",
+  "previous_evidence": "artifacts/runs/20261101T093255Z-321-lighting-qualification/before/LIGHTING_EFFECTS_REFERENCES.json",
+  "native_visual_reason": "Fresh native CUA inspection reports Mac locked.",
+  "supported_binary": {
+    "architecture": "arm64",
+    "minimum_macos": "14.0",
+    "universal_runtime_qualified": false
+  },
+  "processing_limits": {
+    "maximum_source_pixels": 8388608,
+    "maximum_preview_side": 192,
+    "maximum_lights": 64
+  },
+  "documentation_verification": "artifacts/runs/20261101T093255Z-321-lighting-qualification/verification02.json"
+}

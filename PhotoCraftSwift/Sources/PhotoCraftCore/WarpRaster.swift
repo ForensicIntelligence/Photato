@@ -5,14 +5,16 @@ import Foundation
 public enum WarpRaster {
   public static let maximumPixels = 8_388_608
   public struct Mapping: Sendable { public let bounds:IntRect;public let uv:[PathPoint] }
-  public static func mapping(_ warp:WarpDefinition,width:Int,height:Int,transform:Transform2D) throws -> Mapping {
+  public static func mapping(_ warp:WarpDefinition,width:Int,height:Int,transform:Transform2D,projection:ProjectiveTransform?=nil) throws -> Mapping {
     try warp.validate();try transform.validated()
     guard width>0,height>0,width<=maximumPixels/height else { throw CraftError.unsupported("Warp supports source and output layers up to8,388,608 pixels.") }
     let nx=min(256,max(16,(width+7)/8)),ny=min(256,max(16,(height+7)/8))
     var vertices=[PathPoint](),inputs=[PathPoint]()
     for j in 0...ny { try Task.checkCancellation();for i in 0...nx {
       let p=PathPoint(Double(i)*Double(width)/Double(nx),Double(j)*Double(height)/Double(ny))
-      let q=warp.point(p.x,p.y,width:Double(width),height:Double(height)).transformed(transform)
+      let warped=warp.point(p.x,p.y,width:Double(width),height:Double(height))
+      let mapped=try projection.map{try $0.point(warped.x,warped.y)} ?? warped
+      let q=mapped.transformed(transform)
       guard q.x.isFinite,q.y.isFinite,abs(q.x)<=1_000_000,abs(q.y)<=1_000_000 else { throw CraftError.invalid("Warp exceeds supported coordinates.") }
       inputs.append(p);vertices.append(q)
     } }
@@ -45,9 +47,9 @@ public enum WarpRaster {
     for t in triangles { try triangle(t[0],t[1],t[2]) }
     return Mapping(bounds:bounds,uv:uv)
   }
-  public static func sample(_ s:Surface,_ p:PathPoint,method:Resampling,clampEdges:Bool=true) -> Pixel {
+  public static func sample(_ s:Surface,_ p:PathPoint,method:Resampling,clampEdges:Bool=true,encoding:SurfaceColorEncoding?=nil) -> Pixel {
     guard p.x.isFinite,p.y.isFinite else { return .clear }
-    func read(_ x:Int,_ y:Int)->Pixel { if !clampEdges && (x<0 || y<0 || x>=s.width || y>=s.height) { return .clear };let x=max(0,min(s.width-1,x)),y=max(0,min(s.height-1,y));return s.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y) }
+    func read(_ x:Int,_ y:Int)->Pixel { if !clampEdges && (x<0 || y<0 || x>=s.width || y>=s.height) { return .clear };let x=max(0,min(s.width-1,x)),y=max(0,min(s.height-1,y));return (encoding ?? (s.depth == .f32 ? .linearRGB:.sRGB)) == .linearRGB ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y) }
     if method == .nearest { return read(Int(floor(p.x)),Int(floor(p.y))) }
     let xx=p.x-0.5,yy=p.y-0.5,ix=Int(floor(xx)),iy=Int(floor(yy)),fx=Float(xx-Double(ix)),fy=Float(yy-Double(iy))
     func cubic(_ value:Float)->Float { let t=abs(value);if t<=1 { return 1.5*t*t*t-2.5*t*t+1 };if t<2 { return -0.5*t*t*t+2.5*t*t-4*t+2 };return 0 }
@@ -67,14 +69,30 @@ public enum WarpRaster {
   }
   /// Derives display pixels, leaving the committed source/cache and masks untouched.
   public static func baked(_ layer:Layer,in document:CraftDocument) throws -> Layer {
-    guard let warp=layer.warp,case .raster(let source)=layer.content else { return layer }
-    let mapping=try mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform)
+    guard case .raster(let source)=layer.content,layer.warp != nil || layer.sourceProjection != nil else{return layer}
+    if let projection=layer.sourceProjection,let affine=try projection.affineValue(),layer.warp?.isIdentity != false {
+      let maskWorld=layer.maskCoordinateTransform
+      var result=layer;result.x=0;result.y=0;result.affine=layer.coordinateTransform*affine
+      result.sourceProjection=nil;result.warp=nil;result.importedSmartAppearance=nil
+      if layer.mask != nil,!layer.effectiveMaskProperties.linked {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*maskWorld;result.maskProperties=properties}
+      return result
+    }
+    if let projection=layer.sourceProjection,layer.warp?.isIdentity != false {
+      let full=try projection.followed(by:layer.coordinateTransform),bounds=try full.bounds(width:source.width,height:source.height)
+      var result=layer;result.content = .raster(try ProjectiveRaster.renderPaged(source,placement:full,bounds:bounds,method:layer.warp?.interpolation ?? .bicubic))
+      result.x=bounds.x;result.y=bounds.y;result.affine=nil;result.sourceProjection=nil;result.warp=nil;result.importedSmartAppearance=nil
+      if layer.mask != nil {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*layer.maskCoordinateTransform;result.maskProperties=properties}
+      return result
+    }
+    if layer.sourceProjection != nil,layer.mask != nil,layer.effectiveMaskProperties.linked {throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")}
+    guard let warp=layer.warp else{return layer}
+    let mapping=try mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform,projection:layer.sourceProjection)
     return try baked(layer,in:document,using:mapping,method:warp.interpolation)
   }
   public static func baked(_ layer:Layer,in document:CraftDocument,using mapping:Mapping,method:Resampling,clampEdges:Bool=true) throws -> Layer {
     guard case .raster(let source)=layer.content else { throw CraftError.invalid("Warp requires raster pixels.") }
     let b=mapping.bounds
-    var result=layer;result.content = .raster(try render(source,using:mapping,method:method,clampEdges:clampEdges));result.x=b.x;result.y=b.y;result.affine=nil;result.warp=nil
+    var result=layer;result.content = .raster(try render(source,using:mapping,method:method,clampEdges:clampEdges));result.x=b.x;result.y=b.y;result.affine=nil;result.warp=nil;result.sourceProjection=nil;result.importedSmartAppearance=nil
     if layer.mask != nil {
       if layer.effectiveMaskProperties.linked {
         // Warp mask storage, preserving disabled/inverted/density/feather controls.

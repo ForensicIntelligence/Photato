@@ -34,12 +34,12 @@ public struct MaskAllObjectsEdit: Sendable {
     guard layer.parentID.map({ !original.isLocked($0) }) ?? true else {
       throw CraftError.invalid("Unlock the containing group before creating object masks.")
     }
-    guard original.layers.count < 512 else { throw CraftError.invalid("Layer limit reached.") }
+    guard original.layers.count < LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
   }
   public func applied(to original: CraftDocument) throws -> CraftDocument {
     try Self.checkTarget(original, layerID: layerID)
     try Self.checkBudget(width: original.width, height: original.height, count: objects.count)
-    guard original.layers.count + objects.count <= 512,
+    guard original.layers.count + objects.count <= LayerLimits.maximumLayers,
       Set(objects.map(\.instanceID)).count == objects.count,
       objects.allSatisfy({ $0.instanceID > 0 && $0.mask.width == original.width && $0.mask.height == original.height && $0.mask.bounds != nil }),
       groupIDs.allSatisfy({ id in !original.layers.contains { $0.id == id } }) else {

@@ -9,6 +9,7 @@ public enum EditorTool: String, CaseIterable, Identifiable, Sendable {
   case ellipticalMarquee = "Elliptical Marquee"
   case lasso = "Lasso"
   case polygonLasso = "Polygonal Lasso"
+  case magneticLasso = "Magnetic Lasso"
   case objectSelection = "Object Selection"
   case quickSelection = "Quick Selection"
   case selectionBrush = "Selection Brush"
@@ -113,7 +114,7 @@ enum WorkspaceCatalog {
       .init(
         "polygonLasso", "Polygonal Lasso", "point.topleft.down.curvedto.point.bottomright.up", "L",
         .polygonLasso),
-      .init("magneticLasso", "Magnetic Lasso", "lasso", "L"),
+      .init("magneticLasso", "Magnetic Lasso", "lasso", "L", .magneticLasso),
       .init("selectionBrush", "Selection Brush", "paintbrush.pointed", "", .selectionBrush),
     ],
     [

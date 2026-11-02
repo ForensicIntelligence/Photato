@@ -72,13 +72,13 @@ enum EmbeddedSourceAPI {
      "revisionHeader":"Required X-Photato-Revision; stale/missing returns409.",
      "nameHeader":"Optional X-Photato-Name, default Contents.photato; at most240 printable ASCII bytes without path separators.",
      "result":"HTTP200 shared target state. New layer by default; layerID replaces content, frameID replaces frame artwork. One native Undo transaction.",
-     "source":"Original raster, native, PSD/PSB or supported camera RAW bytes remain embedded and downloadable. RAW settings are retained separately. PDF uses the existing pdf endpoint.",
+     "source":"Original raster, native, supported PhotoCraft ZIP projects, PSD/PSB or supported camera RAW bytes remain embedded and downloadable. RAW settings are retained separately. PDF uses the existing pdf endpoint.",
      "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. The desktop offers a cancellable transform preview; RAW first opens native Camera Raw controls.",
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
      "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,
      "limits":"Transfers enabled, explicit target sharing,64MiB encoded source and256MiB owned content. Paged native/RGB sources admit the logical native extent; non-RGB/PDF and RAW retain their decoder limits. Format, physical scratch, dense capacity, cross-profile preparation and shared-document budgets remain independent; permission revocation/stale target/cancellation cannot commit.",
-     "adobe":"Existing file-input/bounds/autoResize contracts continue through the shared native engine; no new Adobe fields or endpoints.",
+     "adobe":"Existing file-input/bounds/autoResize contracts continue through the shared native engine. PhotoCraft sources remain Photato-only; no new Adobe fields or endpoints.",
      "remaining":"Linked sources, general AI/SVG inputs, complete PSD/RAW fidelity, exact Photoshop pixels/defaults and live/platform acceptance."]
   }
 }

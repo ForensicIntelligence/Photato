@@ -8,7 +8,7 @@ public enum ClassicToneInput {
     if let id=layerID {
       guard let original=source.layers.first(where:{$0.id==id}) else{throw CraftError.invalid("Statistics source layer no longer exists.")}
       if case .adjustment=original.content{throw CraftError.unsupported("Choose a rendered layer or Merged for color statistics.")}
-      let ids=Set(source.subtreeIDs(id));document.layers=source.layers.filter{ids.contains($0.id)}
+      let ids=Set(source.subtreeIDs(id));document.layers=source.layers.filter{ids.contains($0.id)};LayerLinks.prune(in:&document)
       guard let i=document.layers.firstIndex(where:{$0.id==id}) else{throw CraftError.invalid("Missing source layer.")}
       document.layers[i].parentID=nil;document.layers[i].clipped=false;document.layers[i].visible=true;document.activeLayerID=id
     }

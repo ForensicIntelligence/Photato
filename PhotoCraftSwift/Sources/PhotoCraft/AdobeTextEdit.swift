@@ -44,8 +44,9 @@ struct AdobeTextEdit: Sendable {
     if input.fields["textOrientation"] != nil {guard let orientation=TextTypography.Orientation(rawValue:try input.string("textOrientation")) else{throw AdobeAPIError.invalid("Unknown text orientation.")};content.typography?.orientation=orientation == .horizontal ? nil:orientation}
     if input.fields["antiAliasing"] != nil {
       let aa = try input.string("antiAliasing")
-      guard ["none", "smooth"].contains(aa) else { throw AdobeAPIError.unsupported("Only none/smooth antialiasing is implemented.") }
+      guard ["none","sharp","crisp","strong","smooth"].contains(aa),let mode=TypeAntialias(rawValue:aa) else { throw AdobeAPIError.unsupported("Unknown published text antialiasing value.") }
       content.typography?.antialias = aa != "none"
+      if !["none","smooth"].contains(aa) || content.typography?.antialiasMode != nil{content.typography?.antialiasMode=mode}
     }
     if input.fields["content"] != nil {
       content.text = try input.string("content"); content.typography?.runs = []
@@ -55,6 +56,7 @@ struct AdobeTextEdit: Sendable {
     var frameOrigin: CGPoint?
     if input.fields["frame"] != nil {
       let frame = try input.object("frame", allowed: ["type", "origin", "bounds"])
+      content.typography?.sourceFrame=nil
       switch try frame.string("type") {
       case "point":
         guard frame.fields["bounds"] == nil else { throw AdobeAPIError.invalid("Point frames cannot have bounds.") }
@@ -109,10 +111,18 @@ struct AdobeTextEdit: Sendable {
     for raw in try input.fields["characterStyles"].map({ _ in try input.array("characterStyles", count: 0...4096) }) ?? [] {
       let item = try Object(raw, at: "character style", allowed: ["apply", "characterStyle"])
       let style = try item.object("characterStyle", allowed: ["font", "fontSize", "fontAlpha", "letterSpacing", "lineHeight", "autoLeading", "underline", "syntheticBold", "syntheticItalic", "capsOption"])
-      guard try style.optionalBool("syntheticBold") != true, try style.optionalBool("syntheticItalic") != true else { throw AdobeAPIError.unsupported("Synthetic font faces are not implemented.") }
-      if style.fields["capsOption"] != nil, !["normal_caps","small_caps"].contains(try style.string("capsOption")) { throw AdobeAPIError.unsupported("Caps transformations are not implemented.") }
+      let bold=try style.optionalBool("syntheticBold"),italic=try style.optionalBool("syntheticItalic")
+      if style.fields["capsOption"] != nil, !["normal_caps","small_caps","all_caps"].contains(try style.string("capsOption")) { throw AdobeAPIError.unsupported("All-small-caps and unknown caps values are not implemented.") }
       try apply(inclusive(item, count: attributed.length)) { s, _ in
-        if style.fields["capsOption"] != nil {var options=s.fontOptions ?? .init();options.features.removeAll{$0.tag=="smcp"};if try style.string("capsOption")=="small_caps"{options.features.append(.init("smcp",1))};s.fontOptions=options.isEmpty ? nil:options}
+        if bold != nil || italic != nil {
+          if s.characterFormatting != nil || bold == true || italic == true {
+            var formatting=s.characterFormatting ?? .init();if let bold{formatting.fauxBold=bold};if let italic{formatting.fauxItalic=italic};s.characterFormatting=formatting
+          }
+        }
+        if style.fields["capsOption"] != nil {
+          let caps=try style.string("capsOption");var options=s.fontOptions ?? .init();options.features.removeAll{$0.tag=="smcp"};if caps=="small_caps"{options.features.append(.init("smcp",1))};s.fontOptions=options.isEmpty ? nil:options
+          if s.characterFormatting != nil || caps=="all_caps" {var formatting=s.characterFormatting ?? .init();formatting.caps=caps=="all_caps" ? .allCaps:caps=="small_caps" ? .smallCaps:.normal;s.characterFormatting=formatting}
+        }
         if style.fields["font"] != nil { s.font = try resolve(style.object("font", allowed: ["postScriptName"]).string("postScriptName")) }
         if style.fields["fontSize"] != nil { s.size = try number(style, "fontSize") * 72 / dpi }
         if style.fields["fontAlpha"] != nil { s.color.a = Float(try number(style, "fontAlpha")) }
@@ -133,7 +143,11 @@ struct AdobeTextEdit: Sendable {
       let first = paragraphs[range.location], last = paragraphs[NSMaxRange(range) - 1]
       try apply(NSRange(location: first.location, length: NSMaxRange(last) - first.location)) { _, p in
         if style.fields["alignment"] != nil {
-          guard let value = ["left": TypeParagraph.Alignment.left, "center": .center, "right": .right, "justify_left": .justified][try style.string("alignment")] else { throw AdobeAPIError.unsupported("This justification variant is not implemented.") }; p.alignment = value
+          let alignment=try style.string("alignment")
+          guard let value = ["left": TypeParagraph.Alignment.left,"center":.center,"right":.right,"justify_left":.justified,"justify_center":.justified,"justify_right":.justified,"justify":.justified][alignment] else { throw AdobeAPIError.unsupported("Unknown published paragraph alignment.") };p.alignment=value
+          if value == .justified,alignment != "justify_left" || p.formatting != nil {
+            var formatting=p.formatting ?? .init();formatting.lastLine=alignment=="justify_center" ? .center:alignment=="justify_right" ? .right:alignment=="justify" ? .justified:.left;p.formatting=formatting
+          }
         }
         if style.fields["writingDirection"] != nil {
           guard let value = ["left_to_right": TypeParagraph.Direction.leftToRight, "right_to_left": .rightToLeft][try style.string("writingDirection")] else { throw AdobeAPIError.invalid("Invalid writing direction.") }; p.direction = value
@@ -151,7 +165,7 @@ struct AdobeTextEdit: Sendable {
     if let clipped = try root.optionalBool("isClipped") { layer.clipped = clipped }
     if adding { try session.execute(.addLayer(layer)) }
     else {
-      try session.execute(.replaceContent(layer.id, layer.content))
+      try session.execute(ShapedTextLayout.replacement(session.document.layers.first{$0.id==layer.id}!,content:content,document:session.document))
       if let original = session.document.layers.first(where: { $0.id == layer.id }), frameOrigin != nil {
         try session.execute(.transform(layer.id, layer.coordinateTransform * original.coordinateTransform.inverted(), .bicubic))
       }

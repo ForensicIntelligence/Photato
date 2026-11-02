@@ -21,7 +21,7 @@ public struct SkyReplacementInput:Sendable {
     let mask=try SkyReplacement.refined(detected,settings:p,strokes:strokes)
     guard mask.bounds != nil else{throw CraftError.invalid("The sky mask is empty.")}
     let sky=try ColorManagement.converted(Renderer.composite(source),from:source,to:original),matrix=p.transform(sky:sky,width:original.width,height:original.height)
-    guard original.layers.count+7<=512 else{throw CraftError.invalid("Remove layers before creating Sky Replacement output.")}
+    guard original.layers.count+7<=LayerLimits.maximumLayers else{throw CraftError.invalid("Remove layers before creating Sky Replacement output.")}
     var result=original;let group=Layer(name:"Sky Replacement",content:.group(.init(passThrough:true)))
     func raster(_ coverage:SelectionMask,inverted:Bool=false)throws->Surface {
       var out=try Surface(width:coverage.width,height:coverage.height,fill:inverted ? .white:.black)

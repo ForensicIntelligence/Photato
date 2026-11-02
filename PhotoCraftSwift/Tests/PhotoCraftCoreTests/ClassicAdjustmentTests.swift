@@ -45,7 +45,7 @@ final class ClassicAdjustmentTests: XCTestCase {
         XCTAssertEqual(layer.mask?.pixel(x:0,y:0),.black)
         XCTAssertEqual(layer.mask?.pixel(x:1,y:0),.white)
         var session = EditorSession(document:d)
-        try session.execute(.addLayer(layer)); XCTAssertEqual(session.document.minimumArchiveVersion,17)
+        try session.execute(.addLayer(layer)); XCTAssertEqual(session.document.minimumArchiveVersion,kind == .exposure ? 67:17)
         XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(session.document)),session.document)
         XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(session.document)),session.document)
         var baked = d; try Command.applyAdjustment(d.layers[0].id,.classic(v)).apply(to:&baked)

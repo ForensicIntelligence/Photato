@@ -1,0 +1,467 @@
+{
+  "step": 323,
+  "recorded_at_utc": "2026-11-01T11:30:14.832203+00:00",
+  "run": "artifacts/runs/20261101T113014Z-323-source-adjustments",
+  "phase": 1,
+  "package": "I03",
+  "status": "functional-subset-qualified-whole-document-strict-gate-open",
+  "increment_complete": true,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_322.json",
+  "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+  "source_inputs": 5976,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T11:46:43.228407+00:00",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source01.json",
+    "inputs": 5846,
+    "current_binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T11:52:41.694720+00:00",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source02.json",
+    "inputs": 5975,
+    "current_binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused03_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T11:57:39.792890+00:00",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source03.json",
+    "inputs": 5975,
+    "current_binary_sha256": "30aa2a7ab5c67dbdb6cb79218d407cc8460f1cbf1c33aa8148b1257fc04ac703",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused04_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T12:01:51.771448+00:00",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source04.json",
+    "inputs": 5975,
+    "current_binary_sha256": "30aa2a7ab5c67dbdb6cb79218d407cc8460f1cbf1c33aa8148b1257fc04ac703",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused05_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T12:15:05.328488+00:00",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+    "inputs": 5976,
+    "current_binary_sha256": "d4bee07142e284a82add1bcdaa4ed6c67c3f5628b9d67c050e915529bdb5cb89",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "functional_subset_qualified": true,
+  "full_current_suite_passed": false,
+  "production_swift_files": 892,
+  "binary_sha256": "d4bee07142e284a82add1bcdaa4ed6c67c3f5628b9d67c050e915529bdb5cb89",
+  "focused_source05": {
+    "step": 323,
+    "source": "Source05",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+    "binary_sha256": "d4bee07142e284a82add1bcdaa4ed6c67c3f5628b9d67c050e915529bdb5cb89",
+    "build_succeeded": true,
+    "build_seconds": 465.74,
+    "cases": 355,
+    "passed_cases": 350,
+    "failed_cases": 5,
+    "failed_assertions": 111,
+    "unexpected": 0,
+    "crashes": 0,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LightingImportTests/testUncachedProgramsMatchIndependentOriginalWordsExactly",
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.SourceAdjustmentImportTests/testOriginalDepthEncodedCompositeWordsExactly"
+    ],
+    "classes": {
+      "PhotoCraftAppTests.ActionsWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdobeActionsRequestTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.CanvasFeedbackTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicAdjustmentTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ClassicAdjustmentWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.ClassicGradientMapRenderTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicGradientMapTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicToneTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ClassicToneWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ColorBalanceTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ColorBalanceWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ColorLookupTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ColorLookupWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.CurvesTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.CurvesWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.FrameWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.GradientMapRenderTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.GradientMapStopLimitTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.GradientMapTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.GradientMapToneRenderTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.GradientMapToneTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.GradientMapWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.GradientStripesTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.HueSaturationReferenceTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.HueSaturationTests": {
+        "passed": 10,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.HueSaturationWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkChannelTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.InkModeInputTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeRasterTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeSmartFilterWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LargeSmartObjectTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LensCorrectionWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LevelsAnalysisTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LevelsAnalysisWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LevelsTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LevelsWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LightingImportTests": {
+        "passed": 2,
+        "failed": 1
+      },
+      "PhotoCraftCoreTests.LightingTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LightingWorkflowTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LinkedSmartObjectContractTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests": {
+        "passed": 3,
+        "failed": 1
+      },
+      "PhotoCraftCoreTests.LinkedSmartObjectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.ModernAdjustmentRenderingTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ModernAdjustmentTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ModernAdjustmentWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeBlobIndexTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFImageSmartObjectTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFSmartObjectTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PDFSmartObjectWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDClassicAdjustmentTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDColorBalanceTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDColorLookupTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDCurvesTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDHueSaturationTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDLevelsTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDPDFSmartObjectTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDTonalStepsTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PathWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftContainerTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftProjectTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PcraftWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RasterEncodingOptionsTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RelightImportTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RelightTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RelightWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RestrictedFormatTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartObjectTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartObjectWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceAdjustmentImportTests": {
+        "passed": 3,
+        "failed": 1
+      },
+      "PhotoCraftCoreTests.SourceAdjustmentTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SourceAdjustmentWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceDisplacementImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceDisplacementTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SourceDisplacementWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceSmartModelTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.TonalStepsTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.TonalStepsWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.WideAngleTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.WideAngleWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "test_seconds": 68.843
+  },
+  "original_word_metrics": "artifacts/runs/20261101T113014Z-323-source-adjustments/word-metrics05.json",
+  "composition_metrics": "artifacts/runs/20261101T113014Z-323-source-adjustments/composition-metrics05.json",
+  "functional_cases_passed": 11,
+  "new_cases": 12,
+  "native_version": 74,
+  "actions_version": 29,
+  "source_filter_mappings": 110,
+  "source_adjustment_executable_kinds": 16,
+  "known_strict_cases_at_least": 10,
+  "latest_complete_inventory": "artifacts/runs/20261101T093255Z-321-lighting-qualification/full02-summary.json",
+  "full_inventory_at323_executed": false,
+  "native_visual_reason": "Fresh CUA Photoshop bundle lookup returns cgWindowNotFound; no screenshot/live acceptance.",
+  "documentation_verification": "artifacts/runs/20261101T113014Z-323-source-adjustments/verification02.json",
+  "history_audit": "artifacts/development-history-audit/323-checkpoint01-receipt.json"
+}

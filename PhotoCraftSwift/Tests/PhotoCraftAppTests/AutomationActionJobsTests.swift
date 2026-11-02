@@ -286,10 +286,16 @@ final class AutomationActionJobsTests: XCTestCase {
       service.setDocumentTransfersEnabled(true)
       try service.share(shared)
       let id = try XCTUnwrap(service.shares.first?.id)
+      let requiredVersion=max(11,desktop.document.minimumArchiveVersion)
+      if requiredVersion>11 {
+        let legacy=try await AutomationTests().request(service,path:"/v1/documents/\(id)/file.\(DocumentIO.Format.native.rawValue)",headers:["X-Photato-Archive-Version":"11"])
+        XCTAssertEqual(legacy.0.statusCode,422)
+        if let folder=ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {let url=URL(fileURLWithPath:folder);try FileManager.default.createDirectory(at:url,withIntermediateDirectories:true);try JSONSerialization.data(withJSONObject:["requiredVersion":requiredVersion,"legacyStatus":legacy.0.statusCode,"legacyBody":String(decoding:legacy.1,as:UTF8.self)],options:.sortedKeys).write(to:url.appendingPathComponent("native-download-admission.json"))}
+      }
       for format in [DocumentIO.Format.native, .psd] {
         let response = try await AutomationTests().request(
           service, path: "/v1/documents/\(id)/file.\(format.rawValue)",
-          headers: format == .native ? ["X-Photato-Archive-Version": "11"] : [:])
+          headers: format == .native ? ["X-Photato-Archive-Version": String(requiredVersion)] : [:])
         XCTAssertEqual(response.0.statusCode, 200)
         XCTAssertEqual(response.1, try DocumentIO.encode(desktop.document, format: format))
       }

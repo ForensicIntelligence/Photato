@@ -25,7 +25,8 @@ final class LargeCanvasWorkflowTests: XCTestCase {
     XCTAssertEqual(CanvasViewport.parsePercentage("0.01%"),0.0001)
     store.channelView.selectPreview(.red);store.render();await store.renderTask?.value
     XCTAssertEqual(store.canvasRasterPreview?.documentRegion,store.viewport.largeCanvasRequest.region)
-    XCTAssertEqual(DocumentIO.Format.allCases.filter { DocumentIO.persistenceIssue(model,format:$0) == nil },[.native])
+    // Format admission does not qualify physical maximum-size PSB writing.
+    XCTAssertEqual(DocumentIO.Format.allCases.filter { DocumentIO.persistenceIssue(model,format:$0) == nil },[.native,.psb])
   }
   @MainActor func testHTTPMaximumCanvasBrushHistoryPreviewAndStaleness() async throws {
     let helper = AutomationTests()
@@ -46,7 +47,9 @@ final class LargeCanvasWorkflowTests: XCTestCase {
       let image = try XCTUnwrap(CGImageSourceCreateImageAtIndex(input,0,nil))
       XCTAssertEqual(image.width,2048);XCTAssertEqual(image.height,2048)
       service.setDocumentTransfersEnabled(true)
-      let download = try await helper.request(service,path:"/v1/documents/\(id)/file.photato",headers:["X-Photato-Archive-Version":"62"])
+      let legacy = try await helper.request(service,path:"/v1/documents/\(id)/file.photato",headers:["X-Photato-Archive-Version":"62"])
+      XCTAssertEqual(legacy.0.statusCode,422,"Explicit Background requires native83 or later; an old transfer header must not silently lose its semantics.")
+      let download = try await helper.request(service,path:"/v1/documents/\(id)/file.photato",headers:["X-Photato-Archive-Version":"84"])
       XCTAssertEqual(download.0.statusCode,200)
       XCTAssertEqual(try NativeArchive.decode(download.1),document.store.document)
       let undo = try await helper.edit(service,document,"history.undo");XCTAssertEqual(undo,200);XCTAssertEqual(document.store.document,original)

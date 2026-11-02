@@ -6,36 +6,40 @@ extension SmartObject {
   var apiState: [String: Any] {
     ["sourceID": sourceID.uuidString, "revision": revision, "fileName": fileName,
       "mediaType": mediaType, "byteLength": data.count, "width": width, "height": height,
-      "resolution": resolution, "embedded": true, "pdfSource": pdfSource.map { BrushAPI.json($0) } ?? NSNull(), "stackMode": stackMode?.rawValue ?? "none", "rawDevelopment": rawDevelopment.map { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode($0))) ?? NSNull() } ?? NSNull()]
+      "layerComps": layerComps.map { BrushAPI.json($0) } ?? NSNull(),
+      "resolution": resolution, "embedded": linkedSource==nil,"linked":linkedSource != nil,"originalAvailable":!data.isEmpty,"sourceByteLength":linkedSource?.byteLength ?? UInt64(data.count), "pdfSource": pdfSource.map { BrushAPI.json($0) } ?? NSNull(), "stackMode": stackMode?.rawValue ?? "none", "rawDevelopment": rawDevelopment.map { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode($0))) ?? NSNull() } ?? NSNull()]
   }
   static var apiLayerStateSchema: [String: Any] {
     ["type": "object", "properties": [
       "kind": ["type": "string"],
+      "sourceSmartObject":SourceSmartObjectAPI.stateSchema,
       "transform": ["type": "object", "required": ["a", "b", "c", "d", "tx", "ty"],
         "properties": Dictionary(uniqueKeysWithValues: ["a", "b", "c", "d", "tx", "ty"].map { ($0, ["type": "number"]) })],
       "smartObject": ["anyOf": [["type": "null"], ["type": "object",
         "required": ["sourceID", "revision", "fileName", "mediaType", "byteLength", "width", "height", "resolution", "embedded"],
         "properties": ["sourceID": ["type": "string", "format": "uuid"], "revision": ["type": "string"],
           "fileName": ["type": "string"], "mediaType": ["type": "string"], "byteLength": ["type": "integer"],
-          "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["const": true], "pdfSource": ["anyOf":[["type":"null"],PDFSmartObjectSource.apiSchema]], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
+          "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["type": "boolean"],"linked":["type":"boolean"],"originalAvailable":["type":"boolean"],"sourceByteLength":["type":"integer","minimum":0], "layerComps": SmartObjectLayerCompAPI.stateSchema, "pdfSource": ["anyOf":[["type":"null"],PDFSmartObjectSource.apiSchema]], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
   }
   static var apiCapabilities: [String: Any] {
-    ["embedded": true, "linked": false, "maximumSourceBytes": maximumSourceBytes,
+    ["sourceProjectImport":SourceSmartObjectAPI.capabilities, "embedded": true, "linked": true, "maximumSourceBytes": maximumSourceBytes,
       "maximumSourcePixels": SmartObjectIO.maximumCanvasPixels,
       "largeRGBSources":["logicalMaximumPixels":SmartObjectIO.maximumPagedRGBPixels,
         "maximumDimension":Surface.maxDimension,"maximumOwnedContentBytes":256*1_024*1_024,
         "maximumEncodedSourceBytes":maximumSourceBytes,
         "limits":"Paged native/RGB input and editable conversion retain independent format, source-byte, owned-heap and physical scratch limits. maximumSourcePixels remains the common non-RGB/PDF preparation limit; dense maximum capacity and full Photoshop/platform parity remain open."],
-      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,
+      "layerCompSelection": SmartObjectLayerCompAPI.capabilities,
+      "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,"linkedSourceEditing":LinkedSourceFileAPI.capabilities,
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
         "limits":"PDF render/source budgets; no linked files, PDF Warp or full Photoshop output/default/platform equivalence claim."],
-      "commands": ["smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
+      "commands": [SmartObjectLayerCompAPI.name, "smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
       "sourceInput": "smartObject.place/replace take sourceDocumentID/sourceRevision from an explicitly shared document and embed an editable Photato snapshot. sourcePlacement uploads original file bytes without converting their format; pdfPlacement offers PDF page/image selection.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
-      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. PDF Warp, full editable PDF/PSD interchange, PDF source-editor live acceptance, linked sources and general AI/SVG import remain unqualified or pending."]
+      "linkedArtwork": LinkedArtworkAPI.capabilities,
+      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. PDF Warp, full editable PDF/PSD interchange, PDF source-editor live acceptance, linked PSD exact fidelity, nested source monitoring, package and general AI/SVG import remain unqualified or pending."]
   }
 }
 
@@ -64,8 +68,8 @@ extension AutomationCommand {
       try t.validated()
       return .transform(try id(), t, .bicubic)
     case "smartObject.convert":
-      guard case .array(let values) = parameters["layerIDs"], (1...64).contains(values.count) else {
-        throw AutomationFailure(status: 400, message: "Select one to 64 layer UUIDs.")
+      guard case .array(let values) = parameters["layerIDs"], (1...LayerLimits.maximumLayers).contains(values.count) else {
+        throw AutomationFailure(status: 400, message: "Select one to 8,000 layer UUIDs.")
       }
       let ids = try values.map { value -> UUID in
         guard case .string(let text) = value, let id = UUID(uuidString: text) else {

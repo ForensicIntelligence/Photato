@@ -165,12 +165,12 @@ final class PcraftImportTests: XCTestCase {
   }
   func testUnsupportedFeaturesAndUnknownFieldsRejectInsteadOfFlattening() throws {
     let input = try fixture()
-    let documentCases: [(String, Any)] = [("channels", [1]), ("guides", ["horizontal": [12], "vertical": []]),
+    let documentCases: [(String, Any)] = [("channels", [1]), ("guides", ["horizontal": [1000001], "vertical": []]),
       ("unrecognizedFeature", true), ("timeline", [String: Any]()), ("patterns", [1])]
     for (key, value) in documentCases {
       XCTAssertThrowsError(try convert(source(input) { $0[key] = value }), key)
     }
-    let layerCases: [(String, Any)] = [("fill_opacity", 0.5), ("label", "Unknown"),
+    let layerCases: [(String, Any)] = [("fill_opacity", -0.5), ("label", "Unknown"),
       ("link_group", 7), ("excluded_channels", 1), ("unrecognizedLayerFeature", false)]
     for (key, value) in layerCases {
       XCTAssertThrowsError(try convert(source(input) { doc in

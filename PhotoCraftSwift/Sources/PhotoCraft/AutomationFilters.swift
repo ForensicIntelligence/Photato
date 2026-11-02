@@ -42,7 +42,7 @@ extension RasterFilter {
     ]
     return ["oneOf": Kind.allCases.map { kind -> [String: Any] in
       var properties: [String: Any] = ["kind": ["const": kind.rawValue]]
-      for key in kind.parameters { properties[key] = key == "tone" ? ClassicToneAPI.settings(.shadowsHighlights) : key == "classicDetail" ? ClassicDetailSettings.apiSchema(kind:kind) : key == "otherVideo" ? OtherVideoSettings.apiSchema(kind:kind) : key == "render" ? RenderSettings.apiSchema(kind:kind) : key == "stylize" ? StylizeSettings.apiSchema(kind:kind) : key == "pixelate" ? PixelateSettings.apiSchema(kind:kind) : key == "distortion" ? DistortionSettings.apiSchema(kind:kind) : key == "lensBlur" ? LensBlurSettings.apiSchema : key == "sharpen" ? SmartSharpenSettings.apiSchema : key == "denoise" ? ReduceNoiseSettings.apiSchema : key == "artistic" ? ArtisticGallerySettings.apiSchema : key == "wideAngle" ? WideAngleSettings.apiSchema : key == "lens" ? LensCorrectionSettings.apiSchema : key == "gallery" ? BlurGallerySettings.apiSchema : key == "perspective" ? PerspectiveSettings.apiSchema : key == "puppet" ? PuppetSettings.apiSchema : key == "cameraRaw" ? CameraRawSettings.apiSchema : key == "liquify" ? LiquifySettings.apiSchema : numbers[key] }
+      for key in kind.parameters { properties[key] = key == "tone" ? ClassicToneAPI.settings(.shadowsHighlights) : key == "classicDetail" ? ClassicDetailSettings.apiSchema(kind:kind) : key == "otherVideo" ? OtherVideoSettings.apiSchema(kind:kind) : key == "render" ? RenderSettings.apiSchema(kind:kind) : key == "stylize" ? StylizeSettings.apiSchema(kind:kind) : key == "pixelate" ? PixelateSettings.apiSchema(kind:kind) : key == "distortion" ? DistortionSettings.apiSchema(kind:kind) : key == "lighting" ? LightingSettings.apiSchema : key == "relight" ? RelightSettings.apiSchema : key == "lensBlur" ? LensBlurSettings.apiSchema : key == "sharpen" ? SmartSharpenSettings.apiSchema : key == "denoise" ? ReduceNoiseSettings.apiSchema : key == "artistic" ? ArtisticGallerySettings.apiSchema : key == "wideAngle" ? WideAngleSettings.apiSchema : key == "lens" ? LensCorrectionSettings.apiSchema : key == "gallery" ? BlurGallerySettings.apiSchema : key == "perspective" ? PerspectiveSettings.apiSchema : key == "puppet" ? PuppetSettings.apiSchema : key == "cameraRaw" ? CameraRawSettings.apiSchema : key == "liquify" ? LiquifySettings.apiSchema : numbers[key] }
       if kind == .boxBlur { properties["radius"] = ["type": "integer", "minimum": 1, "maximum": 1000] }
       if kind == .addNoise { properties["amount"] = ["type": "number", "minimum": 0.1, "maximum": 400] }
       if kind == .unsharpMask { properties["amount"] = ["type": "number", "minimum": 1, "maximum": 500] }
@@ -58,6 +58,8 @@ extension RasterFilter {
      "stylize": StylizeSettings.apiCapabilities,
      "pixelate": PixelateSettings.apiCapabilities,
      "distortion": DistortionSettings.apiCapabilities,
+     "lightingEffects":LightingSettings.apiCapabilities,
+     "relight":RelightSettings.apiCapabilities,
      "lensBlur": LensBlurSettings.apiCapabilities,
      "smartSharpen": SmartSharpenSettings.apiCapabilities,
      "reduceNoise": ReduceNoiseSettings.apiCapabilities,

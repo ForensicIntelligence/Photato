@@ -1,0 +1,20 @@
+{
+  "bundleID": "ca.forensicintelligence.photato",
+  "teamID": "PATM9DNCLA",
+  "price": {
+    "amount": "0.00",
+    "currency": "CAD",
+    "appliesToAllAvailableTerritories": true,
+    "status": "REQUESTED_NOT_CONFIRMED_IN_PORTAL"
+  },
+  "releaseType": "MANUAL",
+  "automaticRelease": false,
+  "preOrder": false,
+  "automaticTestFlightDistribution": false,
+  "submitForReview": false,
+  "releaseRequiresHumanApproval": true,
+  "portalSettingsVerified": false,
+  "repositoryPublicOnReleaseDay": true,
+  "repositoryVisibilityChangeAuthorizedNow": false,
+  "note": "This file records requested settings, not proof of remote configuration. Apply and verify MANUAL for every future version; no release endpoint/action is part of the build scripts."
+}

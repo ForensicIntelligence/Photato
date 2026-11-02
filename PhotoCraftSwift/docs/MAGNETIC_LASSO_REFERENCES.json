@@ -1,0 +1,76 @@
+{
+  "step": "dev-step-344",
+  "recorded_at_utc": "2026-11-02T03:20:06.184895+00:00",
+  "run": "artifacts/runs/20261102T030316Z-344-magnetic-lasso",
+  "source_manifest": "artifacts/runs/20261102T030316Z-344-magnetic-lasso/source02.json",
+  "inputs": 6938,
+  "production_swift_files": 946,
+  "binary_sha256": "0b6d266844e7b3502cfe930d688d604e53462a023e150a63ba50f3b56037da3f",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 235,
+    "passed_cases": 235,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 34.262,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 420.11
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.MagneticLassoTests/testContrastAndColorGradientNotJustLuminance",
+    "PhotoCraftCoreTests.MagneticLassoTests/testFrequencyControlsAutomaticFastening",
+    "PhotoCraftCoreTests.MagneticLassoTests/testHistoryModesAndCoverageActions",
+    "PhotoCraftCoreTests.MagneticLassoTests/testInvalidEventsSettingsAndCancellation",
+    "PhotoCraftCoreTests.MagneticLassoTests/testManualFreehandStraightWidthAndDelete",
+    "PhotoCraftCoreTests.MagneticLassoTests/testManualMaskIndependentCaptureAndFeather",
+    "PhotoCraftCoreTests.MagneticLassoTests/testSnapsToImageEdgeWithinWidthAndPressure",
+    "PhotoCraftCoreTests.MagneticLassoTests/testSparseMaximumDimensions",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testAll16CursorCombinationsCapturedModeAndWidthDeleteCancel",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testAPIReplayMatchesNativeEveryModeAndConfiguration",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testCancelToolReadCloseAndStaleSource",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testDepthProfileLockedCompositeAnd32BitAvailability",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testInvalidBusyStaleAndDeterministicRevocation",
+    "PhotoCraftAppTests.MagneticLassoWorkflowTests/testNativeCanvasWorkflowHistoryAndFactoryToolCycle"
+  ],
+  "independent_mask": {
+    "passed": true,
+    "source_outputs": "344 Source02",
+    "file": "magnetic-analytical.json",
+    "sha256": "aafc6e50c943fb745e9daa8b641b1275eb24bfc139d80cf219374983fde72b9d",
+    "analytical_bytes_compared": 768,
+    "selected_pixels": 224,
+    "oracle": "Owned four manual fastening points; integer16\u00d714 rectangle,768 independent GRAY8 membership checks, not Photoshop-generated path/pixels."
+  },
+  "references": {
+    "standard": "Photoshop2026",
+    "previous_turn": "progress;6931 frozen343 inputs and binary revalidated unchanged",
+    "guide": "https://helpx.adobe.com/photoshop/desktop/make-selections/freehand-selections/snap-to-image-edges-using-magnetic-lasso-tool.html",
+    "guide_updated": "2026-02-23",
+    "supporting_guide": "https://helpx.adobe.com/photoshop/using/tool-techniques/magnetic-lasso-tool.html",
+    "legacy_guide_fetch": "Canadian selecting-lasso-tools URL returned404; search excerpt only, not verified page content",
+    "native_access": "344 getApp(com.adobe.Photoshop) cgWindowNotFound; listApps reports Mac locked/automatic unlock failed. No UI interaction or screenshots qualified.",
+    "algorithm": "Independently authored native RGB gradient ridge following; exact Adobe trace/defaults unqualified.",
+    "remaining": [
+      "Photoshop exact edge path and pixel comparison",
+      "Live gestures/tablet/defaults/pointer preferences",
+      "Full S02 and supported-platform/capacity/60fps qualification"
+    ]
+  },
+  "api_commands": 221,
+  "native_version_unchanged": 82,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Exact Photoshop edge trace/pixel masks and all closure/modifier/default behavior",
+    "Tablet/live physical feedback and complete pointer preferences",
+    "Remaining S02 Skin Tones/Detect Faces/Out of Gamut and averaged Magic Wand samples",
+    "Complete current suite and supported-platform/capacity/physical60fps acceptance"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

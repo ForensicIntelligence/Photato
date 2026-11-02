@@ -17,8 +17,8 @@ public struct DisplacementMap: Codable, Equatable, Sendable {
 
 /// Indirect storage keeps command values small while retaining copy-on-write value semantics.
 public struct DistortionSettings: Codable, Equatable, Sendable {
-  public enum Edge: String, Codable, CaseIterable, Sendable { case repeatEdge, wrapAround
-    public var title:String { self == .repeatEdge ? "Repeat Edge Pixels" : "Wrap Around" }
+  public enum Edge: String, Codable, CaseIterable, Sendable { case repeatEdge, wrapAround, transparent
+    public var title:String { self == .repeatEdge ? "Repeat Edge Pixels" : self == .wrapAround ? "Wrap Around":"Transparent (Photato)" }
   }
   public enum Fit: String, Codable, CaseIterable, Sendable { case stretchToFit, tile }
   public enum Sphere: String, Codable, CaseIterable, Sendable { case normal, horizontalOnly, verticalOnly }
@@ -51,6 +51,7 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
     var zigzagStyle:ZigZag = .pondRipples
     var points:[Point] = [Point(0,0),Point(1,0)]
     var map:DisplacementMap? = nil
+    var source:SourceDisplacement? = nil
   }
   private indirect enum Storage: Equatable, Sendable { case value(Values) }
   private var storage:Storage = .value(Values())
@@ -83,10 +84,11 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
   public var zigzagStyle:ZigZag { get { values.zigzagStyle } set { var v=values;v.zigzagStyle=newValue;values=v } }
   public var points:[Point] { get { values.points } set { var v=values;v.points=newValue;values=v } }
   public var map:DisplacementMap? { get { values.map } set { var v=values;v.map=newValue;values=v } }
-  public var estimatedBytes:Int { (map?.samples.count ?? 0)+points.count*16+512 }
+  public var source:SourceDisplacement? {get{values.source}set{var v=values;v.source=newValue;values=v}}
+  public var estimatedBytes:Int { (map?.samples.count ?? 0)+(source?.estimatedBytes ?? 0)+points.count*16+512 }
   public static func keys(_ kind:RasterFilter.Kind)->Set<String> {
     switch kind {
-    case .displace: ["horizontalScale","verticalScale","fit","edge","map"]
+    case .displace: ["horizontalScale","verticalScale","fit","edge","map","source"]
     case .shear: ["points","edge"]
     case .wave: ["generators","wavelengthMin","wavelengthMax","amplitudeMin","amplitudeMax","horizontalScale","verticalScale","waveType","seed","edge"]
     case .pinch: ["amount"]
@@ -105,8 +107,9 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
     }
     switch kind {
     case .displace:
-      try number(horizontalScale,-999...999);try number(verticalScale,-999...999)
-      if requireMap && map == nil { throw CraftError.invalid("Choose a displacement map first.") };try map?.validate()
+      if source != nil {guard horizontalScale.isFinite,verticalScale.isFinite,(-999...999).contains(horizontalScale),(-999...999).contains(verticalScale),map==nil else{throw CraftError.invalid("Invalid source displacement scales or mixed map encodings.")};try source?.validate()}
+      else{try number(horizontalScale,-999...999);try number(verticalScale,-999...999)}
+      if requireMap && !hasDisplacementMap { throw CraftError.invalid("Choose a displacement map first.") };try map?.validate()
     case .wave:
       guard (1...999).contains(generators),wavelengthMin<wavelengthMax,amplitudeMin<amplitudeMax else { throw CraftError.invalid("Wave requires 1–999 generators and minimum values below maximum values.") }
       for v in [wavelengthMin,wavelengthMax,amplitudeMin,amplitudeMax] { try number(v,1...999) }
@@ -119,7 +122,7 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
     case .pinch,.spherize,.zigzag: try number(amount,-100...100);if kind == .zigzag { try number(ridges,0...20) }
     default: break
     }
-    if kind != .displace && map != nil { throw CraftError.invalid("Map data belongs only to Displace.") }
+    if kind != .displace && (map != nil || source != nil) { throw CraftError.invalid("Map data belongs only to Displace.") }
   }
   public func isIdentity(_ kind:RasterFilter.Kind)->Bool {
     switch kind {
@@ -140,9 +143,10 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
       guard Set(map.keys).isSubset(of:["width","height","channels","samples","name"]),let text=map["samples"] as? String,text.utf8.count<=2_796_204 else { throw CraftError.invalid("Invalid displacement map payload.") }
       var m=map;if m["name"]==nil { m["name"]="Displacement Map" };complete["map"]=m
     }
+    if let value=d["source"] {complete["source"]=try JSONSerialization.jsonObject(with:JSONEncoder().encode(SourceDisplacement.decodeJSON(value)))}
     if let points=d["points"] as? [[String:Any]] { guard points.count<=64,points.allSatisfy({Set($0.keys)==["position","offset"]}) else { throw CraftError.invalid("Invalid Shear point fields.") } }
     result=try JSONDecoder().decode(Self.self,from:JSONSerialization.data(withJSONObject:complete))
-    try result.validate(kind:kind);return result
+    try result.validate(kind:kind,requireMap:result.source==nil);return result
   }
   public func apiParameters(kind:RasterFilter.Kind)->[String:Any] {
     ((try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) as? [String:Any] ?? [:]).filter{Self.keys(kind).contains($0.key)}
@@ -154,18 +158,20 @@ public struct DistortionSettings: Codable, Equatable, Sendable {
     let enums:[String:[String]]=["edge":Edge.allCases.map(\.rawValue),"fit":Fit.allCases.map(\.rawValue),"sphereMode":Sphere.allCases.map(\.rawValue),"rippleSize":Ripple.allCases.map(\.rawValue),"polarMode":Polar.allCases.map(\.rawValue),"waveType":Wave.allCases.map(\.rawValue),"zigzagStyle":ZigZag.allCases.map(\.rawValue)]
     for key in keys(kind) {
       if let choices=enums[key] { p[key] = ["type":"string","enum":choices,"default":values[key]!] }
+      else if key=="source" {p[key]=SourceDisplacement.apiSchema}
       else if key=="map" { p[key] = ["type":"object","additionalProperties":false,"required":["width","height","channels","samples"],"properties":["width":["type":"integer","minimum":1,"maximum":1048576],"height":["type":"integer","minimum":1,"maximum":1048576],"channels":["type":"integer","enum":[1,2]],"samples":["type":"string","contentEncoding":"base64","maxLength":2796204],"name":["type":"string","maxLength":256]],"description":"Row-major interleaved 8-bit channels: first horizontal, second vertical (or first if monochrome), neutral128. Product width×height <=1048576; exact byte count required."] }
       else if key=="points" { p[key] = ["type":"array","minItems":2,"maxItems":64,"items":["type":"object","additionalProperties":false,"required":["position","offset"],"properties":["position":["type":"number","minimum":0,"maximum":1],"offset":["type":"number","minimum":-1,"maximum":1]]],"description":"Strictly ascending position from0 to1; offset in half-widths. Endpoints required."] }
       else {
         let lo:Double=key=="seed" || key=="ridges" ? 0 : key=="amount" ? (kind == .ripple ? -999:-100) : key=="angle" || kind == .displace ? -999:1
         let hi:Double=key=="seed" ? Double(UInt32.max) : key=="ridges" ? 20 : key=="amount" && kind != .ripple ? 100 : kind == .wave && (key=="horizontalScale" || key=="verticalScale") ? 100:999
-        p[key] = ["type":"integer","minimum":lo,"maximum":hi,"default":values[key]!]
+        p[key] = ["type":kind == .displace ? "number":"integer","minimum":lo,"maximum":hi,"default":values[key]!]
       }
     }
-    return ["type":"object","additionalProperties":false,"properties":p,"required":kind == .displace ? ["map"]:[],"description":"Wave min must be strictly below max; Shear positions strictly increase. Invalid combinations reject."]
+    var result:[String:Any] = ["type":"object","additionalProperties":false,"properties":p,"required":[],"description":"Displace requires either legacy map or source Float32 context. Source references are inert; ordinary apply requires a bound map. Legacy scales are whole; source scales preserve Float32 fractions. Wave min must be below max; Shear positions strictly increase."]
+    if kind == .displace{result["oneOf"]=[["required":["map"]],["required":["source"]]]};return result
   }
   public static var apiCapabilities:[String:Any] {
-    ["kinds":RasterFilter.Kind.allCases.filter(\.isDistortion).map(\.rawValue),"mapStorage":"Embedded immutable8-bit data; no filesystem paths. Import through desktop or supply map samples in filter.apply/smartFilter.set.","nativeVersion":39,"actionsVersion":11,"maximumMapPixels":DisplacementMap.maximumPixels,"algorithm":"PhotoCraft inverse maps ported to Swift with premultiplied sampling. Wave evaluates all1–999 generators with row/column precomputation; Displace uses neutral128. Exact Photoshop output and Adobe actionJSON/PSD mappings remain unqualified."]
+    ["kinds":RasterFilter.Kind.allCases.filter(\.isDistortion).map(\.rawValue),"sourceMapVersion":73,"sourceMapActionsVersion":28,"sourceMapStorage":"Optional embedded Float32 channels with inert original path/session hints; no automatic file access. Missing-map original Smart stages render identity; native edits require explicit rebinding.","mapStorage":"Embedded immutable8-bit data; no filesystem paths. Import through desktop or supply map samples in filter.apply/smartFilter.set.","nativeVersion":39,"actionsVersion":11,"maximumMapPixels":DisplacementMap.maximumPixels,"algorithm":"PhotoCraft inverse maps ported to Swift with premultiplied sampling. Wave evaluates all1–999 generators with row/column precomputation; Displace uses neutral128. Exact Photoshop output and Adobe actionJSON/PSD mappings remain unqualified."]
   }
 }
 

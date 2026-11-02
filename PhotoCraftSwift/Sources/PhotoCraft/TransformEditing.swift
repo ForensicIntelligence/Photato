@@ -3,6 +3,24 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 struct TransformDraft: Equatable {
+  var collectionLayerIDs:[UUID]?
+  var collectionProjective=false
+  var collectionViewIDs:Set<UUID>?
+  var movingLayers=false
+  var copyWholeLayers=false
+  var channelTarget:ChannelPlaneTarget?
+  var channelBackgroundValue:Float = 1
+  var channelOverlay=false
+  var pixelMask=false
+  var pixelMaskViewMode:MaskViewMode?
+  var movingPixels=false
+  var copySelectedPixels=false
+  var moveOffsetX=0,moveOffsetY=0
+  var selectedPixels=false
+  var selectedPixelsBackgroundColor:Pixel?
+  var selection=false
+  var selectionQuad:[PathPoint]?
+  var selectionMode=SelectionTransformMode.free
   var layerID: UUID
   var bounds: IntRect
   var centerX: Double
@@ -30,7 +48,8 @@ struct TransformDraft: Equatable {
         -Double(bounds.x) - Double(bounds.width) / 2, -Double(bounds.y) - Double(bounds.height) / 2)
   }
   var handles: [CGPoint] {
-    [(-1.0, -1.0), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)].map { x, y in
+    if selection {let q=selectionCorners;return (0..<8).map{i in let a=q[i/2];if i%2==0{return CGPoint(x:a.x,y:a.y)};let b=q[(i/2+1)%4];return CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2)}}
+    return [(-1.0, -1.0), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)].map { x, y in
       let p = delta.point(
         Double(bounds.x) + Double(bounds.width) * (x + 1) / 2,
         Double(bounds.y) + Double(bounds.height) * (y + 1) / 2)
@@ -111,22 +130,29 @@ extension EditorStore {
       let bottom = bounds.reduce(first.y + first.height) { max($0, $1.y + $1.height) }
       return IntRect(x: x, y: y, width: right - x, height: bottom - y)
     }
+    if layer.importedSmartAppearance != nil || layer.sourceProjection != nil,
+      let bounds=try Renderer.layoutBounds(layer,in:document,stored:false) {
+      return bounds
+    }
     let pixels = try Renderer.layerSurface(layer, in: document)
     return try layer.coordinateTransform.bounds(width: pixels.width, height: pixels.height)
   }
   var activeLayerBounds: IntRect? { activeLayer.flatMap { try? layerBounds($0) } }
   var canTransformActiveLayer: Bool {
+    if editingChannel != nil{return canBeginChannelTransform}
+    if editingMask{return canBeginPixelMaskTransform}
+    if document.selection != nil {return canBeginSelectedPixelTransform}
+    if wantsLayerCollectionTransform{return canBeginLayerCollectionTransform}
     guard !editingComponent, !editingMask, !geometryBusy, !hasToneDraft,
       transformDraft == nil, let layer = activeLayer, layer.canTransform
     else { return false }
     return !document.isPositionLocked(layer.id)
   }
   func beginTransform() {
-    guard !editingMask else {
-      error =
-        "Mask Free Transform is not available yet. Unlink the mask and use Move to reposition it, or select the layer content to transform the layer."
-      return
-    }
+    if editingChannel != nil{beginChannelTransform();return}
+    if editingMask {beginPixelMaskTransform();return}
+    if document.selection != nil {beginSelectedPixelTransform();return}
+    if wantsLayerCollectionTransform{beginLayerCollectionTransform();return}
     guard !editingComponent, !geometryBusy, !hasToneDraft, transformDraft == nil,
       let layer = activeLayer,
       layer.canTransform,
@@ -135,11 +161,6 @@ extension EditorStore {
       return
     }
     do {
-      guard document.selection == nil else {
-        throw CraftError.unsupported(
-          "Deselect before transforming the whole layer. Transforming selected pixels is not available yet."
-        )
-      }
       transformDraft = TransformDraft(layerID: layer.id, bounds: try layerBounds(layer))
       tool = .move
       status = "Free Transform · Return to apply · Escape to cancel"
@@ -147,12 +168,14 @@ extension EditorStore {
   }
   func updateTransform(_ draft: TransformDraft) {
     guard !geometryBusy, transformDraft?.layerID == draft.layerID else { return }
-    do { try draft.delta.validated() } catch { return }
+    do { if draft.selection {let projection=try draft.selectionProjection;if draft.collectionLayerIDs != nil,!draft.collectionProjective,try projection.affineValue()==nil{throw CraftError.unsupported("Projective geometry for these target types is not implemented yet.")}}else{try draft.delta.validated()} } catch {selectionTransform?.error=error.localizedDescription;return}
     transformDraft = draft
+    if draft.selection {selectionTransform?.refresh(draft);return}
     if draft.contentAware { refreshContentAwareScale() }
     render()
   }
   func cancelTransform() {
+    if selectionTransform != nil {cancelSelectionTransform();geometryBusy=false}
     if embeddedPlacement != nil,embeddedPlacementOperationID != nil {geometryTask?.cancel();embeddedPlacementOperationID = nil;geometryBusy = false}
     discardEmbeddedPlacement()
     clearContentAwareScale()
@@ -162,6 +185,7 @@ extension EditorStore {
   }
   func commitTransform() {
     guard let draft = transformDraft else { return }
+    if draft.selection {commitSelectionTransform(draft);return}
     if embeddedPlacement != nil {commitEmbeddedPlacement(draft);return}
     if draft.contentAware {
       guard contentAwareScaleReadyDraft == draft,let edit = contentAwareScalePrepared else { return }
@@ -201,7 +225,7 @@ extension EditorStore {
       try? LayerOrganization.setVisibility(draft.values, in: &doc)
     }
     if let draft = transformDraft, draft.contentAware { return contentAwareScalePreview ?? doc }
-    if let draft = transformDraft {
+    if let draft = transformDraft,!draft.selection {
       let ids = doc.subtreeIDs(draft.layerID)
       for i in doc.layers.indices where ids.contains(doc.layers[i].id) {
         let old = doc.layers[i]
@@ -228,9 +252,22 @@ extension EditorStore {
     {
       doc.layers[i].vectorMask?.path = gesture.preview
     }
+    if let gesture=pathGesture,case .shape(let id)=pathTarget,let layer=doc.layers.first(where:{$0.id==id}),let definition=try? layer.replacingShapePath(gesture.preview,canvas:.init(x:0,y:0,width:doc.width,height:doc.height)) {
+      try? Command.shape(.configure(id,definition)).apply(to:&doc)
+    }
     return doc
   }
   func transformLayer(angle: Double = 0, horizontal: Bool = false, vertical: Bool = false) {
+    if editingChannel != nil,transformDraft==nil{transformChannel(angle:angle,horizontal:horizontal,vertical:vertical);return}
+    if wantsLayerCollectionTransform,transformDraft==nil,!editingMask,!editingComponent{transformLayerCollection(angle:angle,horizontal:horizontal,vertical:vertical);return}
+    if editingMask,transformDraft==nil{transformPixelMask(angle:angle,horizontal:horizontal,vertical:vertical);return}
+    if var draft=transformDraft,draft.selection {let p=draft.selectionReferencePoint;draft=draft.selectionApplying(.translation(p.x,p.y) * .rotation(angle) * .scale(horizontal ? -1:1,vertical ? -1:1) * .translation(-p.x,-p.y));updateTransform(draft);return}
+    if document.selection != nil {
+      guard canBeginSelectedPixelTransform,let layer=activeLayer,let bounds=document.selection else{return}
+      let x=Double(bounds.x)+Double(bounds.width)/2,y=Double(bounds.y)+Double(bounds.height)/2
+      let matrix=Transform2D.translation(x,y) * .rotation(angle) * .scale(horizontal ? -1:1,vertical ? -1:1) * .translation(-x,-y)
+      performGeometry(.transformPixels(.init(layerID:layer.id,matrix:.init(matrix),backgroundColor:layer.isBackground ? backgroundColor:nil)));return
+    }
     guard let layer = activeLayer, layer.canTransform, !document.isPositionLocked(layer.id) else { return }
     do {
       let box = try layerBounds(layer)
@@ -247,23 +284,23 @@ extension EditorStore {
     do { routed = routedMaskCommand(try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))) }
     catch { self.error = error.localizedDescription; return }
     let auxiliary: Bool
-    switch routed { case .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: auxiliary = true; default: auxiliary = false }
+    switch routed { case .transformChannel, .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: auxiliary = true; default: auxiliary = false }
     let modeComponents: Bool; if case .modeComponents = routed { modeComponents = true } else { modeComponents = false }
     performGeometry(label: routed.label, allowAuxiliary: auxiliary, allowModeComponents: modeComponents, prepare: { _ in routed }, onSuccess: onSuccess)
   }
   func performGeometry(
-    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, prepare: @escaping @Sendable (CraftDocument) async throws -> Command,
+    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false, prepare: @escaping @Sendable (CraftDocument) async throws -> Command,
     onSuccess: (() -> Void)? = nil
   ) {
-    performPreparedGeometry(label: label, allowAuxiliary: allowAuxiliary, allowModeComponents: allowModeComponents,
+    performPreparedGeometry(label: label, allowAuxiliary: allowAuxiliary, allowModeComponents: allowModeComponents, allowLinkedSmartObject: allowLinkedSmartObject,
       prepare: { original in try await PreparedEdit(command: prepare(original), document: original) }, onSuccess: onSuccess)
   }
   func performPreparedGeometry(
-    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, cancelPreview: Bool = true,
-    prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit, onSuccess: (() -> Void)? = nil
+    label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false, cancelPreview: Bool = true,
+    prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit, validateCommit: @escaping @MainActor () throws -> Void = {}, onSuccess: (() -> Void)? = nil
   ) {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
-    guard !editingComponent || (allowAuxiliary && isCompositeColorTarget) || (allowModeComponents && canEditModeComponents) else {
+    guard allowLinkedSmartObject || !editingComponent || (allowAuxiliary && isCompositeColorTarget) || (allowModeComponents && canEditModeComponents) else {
       error = "This operation requires the RGB editing target."
       return
     }
@@ -285,7 +322,8 @@ extension EditorStore {
         guard self.sessionGeneration == sourceSession else {
           self.geometryBusy = false; self.render(); return
         }
-        try self.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents)
+        try validateCommit()
+        try self.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents,allowLinkedSmartObject:allowLinkedSmartObject)
         if self.document != original { self.onChange?(.changeDone) }
         self.geometryBusy = false
         onSuccess?()

@@ -10,6 +10,7 @@ public struct PhotoshopActionProgram: Sendable {
     case imageStack(ImageStackMode)
     case photoAlign(PhotoAlignSettings)
     case photoBlend(PhotoBlendSettings)
+    case flattenImage
     case mergeSelected
     case mergeVisible
     case selectComponents(RGBComponents?)
@@ -42,6 +43,7 @@ public struct PhotoshopActionProgram: Sendable {
     public init(mode: DocumentColorMode, components: Set<Int>) { self.mode = mode; self.components = components }
   }
 
+  public typealias FlattenRenderer = @Sendable (CraftDocument) throws -> Command
   public typealias StackRenderer = @Sendable (CraftDocument, UUID, ImageStackMode) throws -> Command
   public typealias ModeConverter = @Sendable (CraftDocument, DocumentModeConversion, Bool) throws -> Command
   public let steps: [Step]
@@ -101,18 +103,18 @@ public struct PhotoshopActionProgram: Sendable {
   /// Work on an isolated session. Validation, unsupported contexts, cancellation
   /// and later-step errors never partially replace the caller's document.
   public func applying(to document: CraftDocument, components initial: RGBComponents? = nil,
-    modeComponents: ModeComponentTarget? = nil, stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil)
+    modeComponents: ModeComponentTarget? = nil, stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil)
     throws -> Result
   {
     try applying(to: EditorSession(document: document), components: initial,
-      modeComponents: modeComponents, stackRenderer: stackRenderer, modeConverter: modeConverter)
+      modeComponents: modeComponents, stackRenderer: stackRenderer, modeConverter: modeConverter, flattenRenderer: flattenRenderer)
   }
 
   /// Continue another action resource without losing its history or target.
   public func applying(
     to original: EditorSession, components initial: RGBComponents? = nil,
     selectedLayerIDs initialLayers: Set<UUID>? = nil, modeComponents initialMode: ModeComponentTarget? = nil,
-    stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil
+    stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil
   )
     throws -> Result
   {
@@ -190,6 +192,10 @@ public struct PhotoshopActionProgram: Sendable {
             "Select All Layers currently requires unlocked root layers and the RGB target.")
         }
         selectedLayers = Set(session.document.layers.map(\.id))
+      case .flattenImage:
+        guard !hasComponentTarget, let flattenRenderer else {throw CraftError.unsupported("Flatten Image requires the composite target and native compositor.")}
+        try session.execute(flattenRenderer(session.document))
+        selectedLayers = Set(session.document.activeLayerID.map{[$0]} ?? [])
       case .mergeSelected, .mergeVisible:
         guard !hasComponentTarget else {
           throw CraftError.unsupported("Merge requires the RGB target.")
@@ -286,6 +292,7 @@ public struct PhotoshopActionProgram: Sendable {
       return Pixel(values[0],values[1],values[2])
     }
     switch kind {
+    case .exposure: throw CraftError.unsupported("Exposure actionJSON descriptors are not yet qualified; use create-composite Exposure adjustments.")
     case .vibrance:
       try known(fields,keys:metadata.union(["vibrance","saturation"]))
       value.vibrance = try number(fields,"vibrance",0); value.saturation = try number(fields,"saturation",0)
@@ -406,6 +413,8 @@ public struct PhotoshopActionProgram: Sendable {
       case .diffuse, .emboss, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind: throw CraftError.unsupported("Stylize actionJSON descriptors are not qualified; use the Photato API.")
       case .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize: throw CraftError.unsupported("Pixelate actionJSON descriptors are not qualified; use the Photato API.")
       case .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag: throw CraftError.unsupported("Distortion Photoshop descriptors are not qualified; use the Photato API.")
+      case .lightingEffects: throw CraftError.unsupported("Lighting Effects Adobe actionJSON descriptors are not qualified.")
+      case .relight: throw CraftError.unsupported("Photato Relight has no published Adobe actionJSON descriptor.")
       case .lensBlur: throw CraftError.unsupported("Lens Blur Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .smartSharpen, .reduceNoise: throw CraftError.unsupported("Smart Sharpen / Reduce Noise Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .filterGallery: throw CraftError.unsupported("Filter Gallery actionJSON descriptors are not qualified.")
@@ -452,6 +461,9 @@ public struct PhotoshopActionProgram: Sendable {
     case "invert":
       try known(fields, keys: metadata)
       return .invertComponents
+    case "flattenImage", "$FltI":
+      try known(fields, keys: metadata)
+      return .flattenImage
     case "$Mrg2":
       try known(fields, keys: metadata)
       return .mergeSelected

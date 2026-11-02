@@ -1,0 +1,232 @@
+{
+  "step": "dev-step-340",
+  "recorded_at_utc": "2026-11-02T00:38:51.039110+00:00",
+  "run": "artifacts/runs/20261102T000557Z-340-psd-global-light",
+  "reference_standard": "Photoshop2026",
+  "source_manifest": "artifacts/runs/20261102T000557Z-340-psd-global-light/source02.json",
+  "inputs": 6911,
+  "production_swift_files": 928,
+  "binary_sha256": "fb1e93c6b52513315e20cd609bed09b4bdbc1dce7796285e318a017d80e0b36e",
+  "qualification": {
+    "cases": 484,
+    "passed_cases": 482,
+    "failed_cases": 2,
+    "failed_assertions": 120,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 52.853,
+    "new_cases": 11,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 176.8
+  },
+  "new_case_names": [
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testAllDepthPSDPSBResourcesFlagsLocalAnglesAndCompositeWordsRoundTrip",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testGlobalDirectionsAreExactlyPeriodicInBothNativeRenderers",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testIndependentPublicFilePromotesItsDocumentLightAndRetainsGlobalParticipation",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testIndexedAndMultichannelWritersRetainDocumentLightAndModePlanes",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testLegacyFallbackInferenceAndPrecisionGuardsKeepExistingFilesAtomic",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testLegacyNativeAdoptionIsConservativeAndLeavesSourceUntouched",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testLocalBevelAngleAndAltitudeIgnoreDocumentLightInBothRenderers",
+    "PhotoCraftImagingTests.PSDGlobalLightTests/testResourceDefaultsDuplicatesLengthsRangesAndStaleReplacement",
+    "PhotoCraftAppTests.PSDGlobalLightWorkflowTests/testAdobeOutputUsesSharedResourcesAndPrecisionErrorsDoNotMutateSource",
+    "PhotoCraftAppTests.PSDGlobalLightWorkflowTests/testNativeGlobalLightDialogAndAPIHistoryMatchAcrossPhotoshopFileDownloads",
+    "PhotoCraftAppTests.PSDGlobalLightWorkflowTests/testNativeLegacyOpenAndHTTPImportAdoptLightWithoutRewritingOriginalBytes"
+  ],
+  "independent_metadata": {
+    "source_outputs": "340 Source02",
+    "reader_sha256": "8b187660c81e4016564d4f026316372d6b94d5cdcf80a1efe342ab9ecea23622",
+    "passed": 6,
+    "failed": 0,
+    "files": 6,
+    "results": [
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-16 bit.psb",
+        "sha256": "9a8a61e92f5410eaaa899023a1b931e6e5f1bdf1d56998e0c6b2279fc1829c6b",
+        "depth": 16,
+        "version": 2,
+        "passed": true
+      },
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-16 bit.psd",
+        "sha256": "98aa6e9d21d8dd2292662d9691428501ae24ec08e14d5d328744c531090ddbe2",
+        "depth": 16,
+        "version": 1,
+        "passed": true
+      },
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-32 bit.psb",
+        "sha256": "6365751f8b0b590664fd72543a7cdc5c8fd3ba50f1eb5f5d899456e3d00b1842",
+        "depth": 32,
+        "version": 2,
+        "passed": true
+      },
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-32 bit.psd",
+        "sha256": "2c8337225c98945cb21cc187e3ed6b4ed40c3f7a6090166e6f5e33a966217e73",
+        "depth": 32,
+        "version": 1,
+        "passed": true
+      },
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-8 bit.psb",
+        "sha256": "06c9eff1efc9023fdc423926615f81aa0d1cb25913f0c008cefb7cc5ddaef287",
+        "depth": 8,
+        "version": 2,
+        "passed": true
+      },
+      {
+        "path": "artifacts/runs/20261102T000557Z-340-psd-global-light/focused02-captures/global-light-8 bit.psd",
+        "sha256": "a20665755887cefecf3c5359254b6dce2bbd838ff14cae45c1d8775a1decbe81",
+        "depth": 8,
+        "version": 1,
+        "passed": true
+      }
+    ],
+    "scope": "Independent PSD resources/global flags/inactive local angle metadata only; no Photoshop rendering claim."
+  },
+  "external_references": {
+    "step": "dev-step-340",
+    "recorded_at_utc": "2026-11-02T00:18:16.811376+00:00",
+    "official_specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "guide": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/set-a-global-lighting-angle-for-all-layers.html",
+    "fields": {
+      "1037": "4-byte global angle; public spec0..359. Reader also accepts validated signed native directions. Export wraps to canonical whole degrees.",
+      "1049": "4-byte altitude, native supported0..90."
+    },
+    "public_implementation": "ag-psd a74425db6584cc07b1cc135e370916cb4eccfb32 src/imageResources.ts reads angle Int32 and altitude UInt32; already preserved at339 references01",
+    "existing_fixture_scan": "existing-resource-scan01.json",
+    "native_access": {
+      "inventory": "returned app inventory",
+      "Photoshop_capture": "Mac locked",
+      "live_UI_qualified": false
+    },
+    "implementation": "Independent Swift resource mapping and shared direction/routing; no proprietary script code copied."
+  },
+  "public_style_references": [
+    {
+      "label": "effects",
+      "path": "test/read-write/effects/src.psd",
+      "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/test/read-write/effects/src.psd",
+      "sha256": "1b28aca32edab6afe254fa5cec3c3f2179a123a8c2b49dc1cd92b3c2acd49a0b",
+      "bytes": 109514,
+      "light": {
+        "angle": 132,
+        "altitude": 30
+      },
+      "styles": [
+        {
+          "layer": "other2",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "GrFl"
+          ]
+        },
+        {
+          "layer": "other",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "GrFl",
+            "ChFX"
+          ]
+        },
+        {
+          "layer": "drop shadow",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "DrSh"
+          ]
+        },
+        {
+          "layer": "inner shadow",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "IrSh"
+          ]
+        },
+        {
+          "layer": "inner outer glow",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "OrGl",
+            "IrGl"
+          ]
+        },
+        {
+          "layer": "bevel",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "ebbl"
+          ]
+        },
+        {
+          "layer": "solid fill",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "SoFi"
+          ]
+        },
+        {
+          "layer": "stroke",
+          "keys": [
+            "Scl ",
+            "masterFXSwitch",
+            "FrFX"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "groups",
+      "path": "test/read/group-drop-shadows/src.psd",
+      "url": "https://raw.githubusercontent.com/Agamnentzar/ag-psd/a74425db6584cc07b1cc135e370916cb4eccfb32/test/read/group-drop-shadows/src.psd",
+      "sha256": "a9083a424b939d42e6fe3d3f27da676d7ea63dc86a469d368fcbd6d5f017cfcd",
+      "bytes": 386078,
+      "light": {
+        "angle": 133,
+        "altitude": 30
+      },
+      "styles": []
+    }
+  ],
+  "public_raw_fixture": {
+    "path": "Tests/PhotoCraftImagingTests/Fixtures/GlobalLight/ag-psd-shadow.lfx2",
+    "bytes": 628,
+    "sha256": "3b4f210fd4dc6ac1af354aa796958c6ed6e215551f60653fbddbac78826d5435",
+    "extraction_script": "artifacts/runs/20261102T000557Z-340-psd-global-light/extract-reference-descriptor01.py",
+    "source_commit": "a74425db6584cc07b1cc135e370916cb4eccfb32",
+    "license": "MIT",
+    "document_angle": 132,
+    "inactive_shadow_angle": 120,
+    "full_original_file_import_qualified": false
+  },
+  "known_failures": {
+    "names": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+    ],
+    "diagnostics_match_332": true,
+    "strict_assertions_retained": true
+  },
+  "native_version_unchanged": 82,
+  "shared_light_minimum_native_version": 75,
+  "api_commands_unchanged": 213,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Full rich PSD effects and exact Photoshop output/defaults",
+    "Live Photoshop2026/native interaction and modifier context qualification",
+    "Full current suite and supported macOS/Intel runtime qualification",
+    "Maximum dense capacity and physical60fps"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

@@ -3,12 +3,14 @@
 <plist version="1.0"><dict>
 <key>CFBundleName</key><string>Photato</string>
 <key>CFBundleDisplayName</key><string>Photato</string>
-<key>CFBundleIdentifier</key><string>local.photocraft.swift</string>
+<key>CFBundleIdentifier</key><string>ca.forensicintelligence.photato</string>
 <key>CFBundleExecutable</key><string>Photato</string>
 <key>CFBundleIconFile</key><string>Photato</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.2.0</string>
-<key>CFBundleVersion</key><string>2</string>
+<key>CFBundleShortVersionString</key><string>0.3.0</string>
+<key>CFBundleVersion</key><string>332</string>
+<key>LSApplicationCategoryType</key><string>public.app-category.graphics-design</string>
+<key>ITSAppUsesNonExemptEncryption</key><false/>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSPrincipalClass</key><string>NSApplication</string>

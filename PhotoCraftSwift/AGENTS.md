@@ -1,3 +1,11 @@
+# Photoshop 2026 is the reference
+
+The maintainer’s step335 clarification makes **Photoshop 2026 the gold standard** for functionality, professional workflows, UI/UX, factory menus, shortcuts, defaults and output behavior. The Rust PhotoCraft project supplies inspiration and optional licensed implementation material; it does not define the target or limit the scope. Choose work by missing Photoshop workflows and the major-first priority below. Do not require completion of Rust migration before implementing missing Photoshop features.
+
+Rust differential tests help detect regressions and understand the licensed source. Passing them does not establish Photoshop equivalence or close a Photoshop acceptance gate. Resolve reference conflicts against observed Photoshop 2026 behavior and authoritative Adobe documentation, recording uncertainty and unqualified comparisons. Keep the application fully native Swift and retain required source attribution.
+
+**Maintainer reminder (step359, 2026-11-02):** Rust provides inspiration only; Photoshop 2026 remains the gold standard. Rust comparisons are supporting regression diagnostics, not a requirement to reproduce Rust behavior when it differs from Photoshop. They do not establish Photoshop parity or take priority over missing Photoshop major functions. Resolve behavior against Photoshop evidence and record unverified cases.
+
 # Current implementation priority
 
 The maintainer’s step108 order is **major functions, then minor functions, then final details**. Complete every major function before the minor-function phase, and every minor function before final polish. Include the UI, menu/shortcut integration, APIs and validation needed to make each function complete. Smaller dependencies needed to close a major function belong to that function; optional polish waits. Keep unresolved parity requirements open. This supersedes the earlier UI-first scheduling. Read `docs/WORK_PRIORITIES_108.json` with the preserved step107 checkpoint before resuming. Do not resume implementation until the user unpauses or explicitly requests it.
@@ -41,3 +49,9 @@ Maintain both interfaces as supported product APIs: the Photato API for native d
 # Tool modifier feedback
 
 Every new tool and alternate modifier action must define its effective cursor in the shared `ToolCursor` policy and use `ModifierCursorView` or the SwiftUI `toolCursor` region. Keep cursor semantics tied to the dispatched action, including settings and modes captured at gesture start; do not advertise unavailable modifier actions. Refresh on modifier press/release, tool/settings changes, pointer entry and focus changes without consuming keyboard events or stealing text/control cursors. Test all 16 combinations of Control, Command, Option and Shift, gesture capture and restoration. Extend `docs/TOOL_CURSOR_REFERENCES.json` and API capability metadata with coverage and remaining Photoshop differences in the same increment.
+
+# App Store distribution and manual release
+
+The maintainer's checkpoint331 request sets the app bundle ID to `ca.forensicintelligence.photato` under the FI Forensic Intelligence team. Photato is completely free, without purchases, tips or subscriptions. Every App Store version must use **Manually release this version**; each actual release requires the maintainer's explicit approval. Do not enable automatic release, scheduled automatic release, pre-orders or automatic TestFlight group distribution. Building, archiving, validation, draft metadata and requested media preparation do not authorize release.
+
+Describe the current build truthfully as an alpha with much planned functionality unavailable, and explain its AI-aided development without claiming complete Photoshop parity. Apple Review Guideline2.2 directs unfinished beta/demo software to TestFlight. Preserve the distinction between local listing/policy files and settings actually saved and verified in App Store Connect. Keep the repository private until software release day. See `docs/APP_STORE_PREPARATION.md` and `distribution/app-store/release-policy.json` for the current preparation/account gate.

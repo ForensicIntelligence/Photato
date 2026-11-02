@@ -91,7 +91,7 @@ extension CraftDocument {
   }
 
   mutating func insertNewLayer(_ incoming: Layer, below: Bool = false) throws {
-    guard layers.count < 512, !layers.contains(where: { $0.id == incoming.id }) else {
+    guard layers.count < LayerLimits.maximumLayers, !layers.contains(where: { $0.id == incoming.id }) else {
       throw CraftError.invalid("Layer limit or duplicate identifier.")
     }
     var layer = incoming
@@ -115,6 +115,7 @@ extension CraftDocument {
         throw CraftError.invalid("A clipping mask needs a base layer below it in the same group.")
       }
     }
+    if insertion==0,layers.first?.isBackground==true{insertion=1}
     layers.insert(layer, at: insertion)
     activeLayerID = layer.id
   }

@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-335",
+  "recorded_at_utc": "2026-11-01T21:15:11.466757+00:00",
+  "run": "artifacts/runs/20261101T211511Z-335-photoshop-reference-priority",
+  "status": "Documentation clarification; application unchanged",
+  "reference_standard": "Photoshop 2026",
+  "rust_role": "Inspiration and optional licensed reference; supporting tests do not establish Photoshop parity",
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_334.json",
+  "phase_ledger": "docs/FUNCTION_PHASES_335.json",
+  "last_tested_source": "334 Source04",
+  "source_manifest": "artifacts/runs/20261101T203308Z-334-file-info/source04.json",
+  "api_commands": 209,
+  "new_archive": false,
+  "new_source_push": false,
+  "new_app_installed": false,
+  "goal_complete": false,
+  "photoshop_parity": false,
+  "next": "Choose the next missing Photoshop major workflow with shared native UI/API/history and focused validation. Retain all open acceptance gates."
+}

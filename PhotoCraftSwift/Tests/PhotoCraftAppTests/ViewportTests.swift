@@ -5,7 +5,11 @@ import XCTest
 @testable import PhotoCraft
 
 final class ViewportTests: XCTestCase {
+  // Match application startup: install the custom controller before plain
+  // AppKit views can ask for NSDocumentController.shared.
+  @MainActor private static let applicationController = CraftDocumentController(workspaces: WorkspaceLibrary())
   @MainActor func fixture(width: Int = 100, height: Int = 50) throws -> EditorStore {
+    _ = Self.applicationController
     _ = NSApplication.shared
     let store = EditorStore(document: try CraftDocument(width: width, height: height))
     store.renderTask?.cancel()

@@ -1,0 +1,23 @@
+{
+  "step": 305,
+  "source": "Licensed unchanged photocraft-main/crates/{doc,vector,raster,color,geom,format}",
+  "ownership": "Original test artwork created for Photato; MIT OR Apache-2.0",
+  "generator": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/rust-oracle02",
+  "files": {
+    "README.txt": "46b85473802b90dd95d74ab385f7a4dd022ad9dbee4f2665b1e41a58a6388f2a",
+    "expected-f32.json": "7c4b299ace63e614c6dcd042efe8057c18c6a179e65e64551041869456bcaa8d",
+    "expected-u16.json": "02440bf86b2bf2009a8c821d2ff8dbb73ec430abcfac76d47fbeebb2334e21ba",
+    "expected-u8.json": "3e4473077eacc837592cd78b305a757b1646a489a4685bd35d599d131e1722ba",
+    "shapes-f32.pcraft": "35e796eb0dc69f19fc44f03a73236ff8f83266917dd4e9ca085c5899d37ed07a",
+    "shapes-u16.pcraft": "5b9e695350fe35a81fa2cb2e3d39869c8e55b19f53cfc5309b89c93ee18a54aa",
+    "shapes-u8.pcraft": "6b822242b2ddfbffb200011ccea108e288892ac587d5f0f81a0d4252375075e4"
+  },
+  "cases_per_depth": 13,
+  "depths": [
+    "u8",
+    "u16",
+    "f32"
+  ],
+  "native_generated": false,
+  "photoshop_generated": false
+}

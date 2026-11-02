@@ -28,7 +28,7 @@ public enum ImageStack {
       if case .adjustment = root.content { throw CraftError.unsupported("Place adjustments inside a source group before computing image statistics.") }
       var isolated = source
       let ids = Set(source.subtreeIDs(root.id)).union(outer.map { [$0.id] } ?? [])
-      isolated.layers = source.layers.filter { ids.contains($0.id) }
+      isolated.layers = source.layers.filter { ids.contains($0.id) };LayerLinks.prune(in:&isolated)
       isolated.activeLayerID = root.id
       isolated.selection = nil; isolated.selectionMask = nil; isolated.quickMask = nil
       for i in isolated.layers.indices where isolated.layers[i].id == root.id || isolated.layers[i].id == outer?.id {
@@ -55,7 +55,7 @@ public enum ImageStack {
   }
   public static func command(in document: CraftDocument,layerID: UUID,mode: ImageStackMode?) throws -> Command {
     guard let object = document.layers.first(where:{$0.id == layerID})?.smartObject,!document.isImageLocked(layerID),object.rawDevelopment == nil else { throw CraftError.invalid("Select an unlocked layered Smart Object.") }
-    let source = try SmartObjectIO.sourceDocument(object)
+    let source = try SmartObjectLayerCompIO.presentation(SmartObjectIO.sourceDocument(object), compID: object.layerComps?.selectedID)
     let pixels = try mode.map { try render(source,mode:$0,in:document) } ?? ColorManagement.converted(Renderer.composite(source),from:source,to:document)
     return .smartObjectStack(layerID,mode,pixels)
   }

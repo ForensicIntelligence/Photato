@@ -1,0 +1,73 @@
+{
+  "step": 320,
+  "recorded_at_utc": "2026-11-01T09:30:01.057786+00:00",
+  "recorded_at_local": "2026-11-01T02:30:01.057786-07:00",
+  "run": "artifacts/runs/20261101T093001Z-320-diary-refresh",
+  "scope": "Documentation-only synchronization with incomplete319; Source04 compiler failure and last executed Source03.",
+  "latest_engineering_checkpoint": 319,
+  "latest_engineering_status": "Lighting Effects319 remains in progress. Source03 builds on4,837 frozen inputs/884 production Swift files and finishes273 focused cases:256 pass,17 fail with309 assertions/84 unexpected errors, zero crashes. All22 direct Float32 and64 cached appearance vectors match169,320 and242,736 original words;59/64 uncached vectors match. The Source04 repair fails compilation on optional PcraftNode access, so no tests run on current source. The retained binary is Source03; complete functional/native/Photoshop qualification remains open. Diary320 reconciles these facts without changing application inputs, installing an app, pushing source or closing a package.",
+  "current_source": "319 Source04",
+  "last_completed_focused_selection": {
+    "checkpoint": 319,
+    "source": "Source03",
+    "cases": 273,
+    "passed_cases": 256,
+    "failed_cases": 17,
+    "failed_assertions": 309,
+    "unexpected": 84,
+    "crashes": 0,
+    "passed": false
+  },
+  "current_source_build": {
+    "source": "Source04",
+    "exit_code": 1,
+    "tests_executed": false,
+    "staged_repairs_qualified": false
+  },
+  "latest_complete_execution": {
+    "checkpoint": 311,
+    "source": "Source01",
+    "cases": 3105,
+    "passed_cases": 3098,
+    "failed_cases": 7,
+    "failed_assertions": 30,
+    "passed": false
+  },
+  "last_entirely_passing_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "application_inputs": 4837,
+  "production_swift_files": 884,
+  "application_inputs_before": "artifacts/runs/20261101T093001Z-320-diary-refresh/application-inputs-before.json",
+  "retained_binary_sha256": "46585623fddbbacc1ddf9753f785337b5677a831f149c74a38f2731a35a7d2de",
+  "binary_source": "319 Source03",
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "command_statuses_changed": false,
+  "package_statuses_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T093001Z-320-diary-refresh/verification02.json",
+  "audit_receipt": "artifacts/development-history-audit/320-checkpoint01-receipt.json",
+  "retained_editions": [
+    "editions-before/nusite",
+    "editions-before/forensicintelligence-site/photato",
+    "edition01",
+    "edition02"
+  ],
+  "first_verification": {
+    "checks": 44,
+    "passed": true,
+    "path": "artifacts/runs/20261101T093001Z-320-diary-refresh/verification01.json",
+    "application_inputs_unchanged": 4837,
+    "production_swift_files_unchanged": 884,
+    "protected_assets_unchanged": 40,
+    "original_rust_files_unchanged": 1057,
+    "entries": 320,
+    "dashboard_journal_latest": 320,
+    "dashboard_completed_scope_latest": 283
+  }
+}

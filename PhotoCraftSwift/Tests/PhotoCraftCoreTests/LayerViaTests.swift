@@ -109,7 +109,7 @@ final class LayerViaTests: XCTestCase {
       case 4: d.selection = nil
       case 5: d.layers[0].content = .raster(try Surface(width: 5, height: 4))
       default:
-        for i in 1..<512 {
+        for i in 1..<LayerLimits.maximumLayers {
           d.layers.append(
             Layer(name: "Empty \(i)", content: .raster(try Surface(width: 1, height: 1))))
         }

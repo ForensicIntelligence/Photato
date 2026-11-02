@@ -15,7 +15,7 @@ struct CropDraft: Equatable {
   var width: Double { Double(frame.bounds.width)*frame.scaleX/100 }
   var height: Double { Double(frame.bounds.height)*frame.scaleY/100 }
   func request(background: Pixel) throws -> CropRequest {
-    guard width.isFinite,height.isFinite,(1...60000).contains(width),(1...60000).contains(height),frame.centerX.isFinite,frame.centerY.isFinite,abs(frame.centerX) <= 1_000_000,abs(frame.centerY) <= 1_000_000 else { throw CraftError.invalid("Crop must be1–60000 pixels per side.") }
+    guard width.isFinite,height.isFinite,(1...Double(Surface.maxDimension)).contains(width),(1...Double(Surface.maxDimension)).contains(height),frame.centerX.isFinite,frame.centerY.isFinite,abs(frame.centerX) <= 1_000_000,abs(frame.centerY) <= 1_000_000 else { throw CraftError.invalid("Crop must be1–300,000 pixels per side.") }
     let w = Int(width.rounded()),h = Int(height.rounded());var value = CropRequest(x:Int(floor(frame.centerX-Double(w)/2)),y:Int(floor(frame.centerY-Double(h)/2)),width:w,height:h)
     value.angle = frame.angle;value.deleteCroppedPixels = deletePixels;value.fill = fill;value.seed = seed;value.backgroundColor = Pixel(background.r,background.g,background.b,1);try value.validate();return value
   }
@@ -33,8 +33,10 @@ struct CropDraft: Equatable {
   }
 }
 extension EditorStore {
+  var canRetainCroppedPixels:Bool{document.restrictedMode==nil && document.inkMode==nil && !document.layers.contains(where:{$0.isBackground})}
+  var cropState:[String:Any]{["available":canBeginCrop,"canRetainCroppedPixels":canRetainCroppedPixels,"workspaceOpen":cropDraft != nil,"previewBusy":cropBusy,"previewReady":cropDraft != nil && cropReadyDraft==cropDraft && cropPrepared != nil,"previewError":cropError as Any? ?? NSNull(),"maximumDimension":Surface.maxDimension,"maximumPixels":CropRequest.maximumPixels,"maximumPreviewDimension":1024]}
   var canBeginCrop: Bool {
-    !geometryBusy && !aiBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && !editingMask && !editingComponent && document.width <= CropRequest.maximumPixels/document.height
+    !geometryBusy && !aiBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && !editingMask && !editingComponent
   }
   func beginCrop() {
     guard cropDraft == nil,canBeginCrop else { return }
@@ -46,12 +48,12 @@ extension EditorStore {
   }
   func refreshCrop() {
     cropTask?.cancel();cropReadyDraft = nil;cropPrepared = nil;cropError = nil
-    guard let draft = cropDraft else { return };let original = document,background = backgroundColor;cropBusy = true
+    guard let draft = cropDraft else { return };let original = document,background = backgroundColor,prepare=cropPreparation;cropBusy = true
     cropTask = Task { [weak self] in
       do {
         try await Task.sleep(nanoseconds:100_000_000)
         let request = try draft.request(background:background)
-        let worker = Task.detached(priority:.userInitiated) { let edit = try CropPreparation.prepare(request,document:original);return (edit,try ColorManagement.displayImage(Renderer.composite(edit.result),in:edit.result)) }
+        let worker = Task.detached(priority:.userInitiated) { let edit = try prepare(request,original);return (edit,try CropPreparation.preview(edit.result)) }
         let value = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation();guard let self,self.cropDraft == draft,self.document == original else { return }
         self.cropPrepared = value.0;self.cropPreviewImage = value.1;self.cropReadyDraft = draft;self.cropBusy = false;self.cropRevision += 1

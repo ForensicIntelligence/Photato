@@ -110,7 +110,7 @@ struct RecoveryMaintenanceView: View {
   private var savePanel: NSSavePanel?
   init(controller: CraftDocumentController) {
     manager = controller.recoveryMaintenance
-    let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 470),
+    let window = PhotatoWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 470),
       styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
     window.title = "Photato — Recovery Backups"
     window.isReleasedWhenClosed = false

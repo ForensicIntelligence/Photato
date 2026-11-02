@@ -1,0 +1,320 @@
+{
+  "step": 318,
+  "recorded_at_utc": "2026-11-01T07:44:43.587360+00:00",
+  "run": "artifacts/runs/20261101T074443Z-318-relight-qualification",
+  "phase": 1,
+  "package": "I03",
+  "status": "relight-functional-and-independent-source-subset-qualified",
+  "increment_complete": true,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_316.json",
+  "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
+  "source_inputs": 4442,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T07:49:27.854628+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source01.json",
+    "inputs": 4442,
+    "current_binary_sha256": "e98a4b2be0c61a485c3a3d7b513387643040ad4420cc52532d1033d4f30672c0",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T07:51:42.379125+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source02.json",
+    "inputs": 4442,
+    "current_binary_sha256": "e98a4b2be0c61a485c3a3d7b513387643040ad4420cc52532d1033d4f30672c0",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused03_result": {
+    "exit_code": 130,
+    "finished_at_utc": "2026-11-01T07:54:15.646453+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source03.json",
+    "inputs": 4442,
+    "current_binary_sha256": "e98a4b2be0c61a485c3a3d7b513387643040ad4420cc52532d1033d4f30672c0",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused04_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T07:58:18.101124+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source04.json",
+    "inputs": 4442,
+    "current_binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused05_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T08:01:36.193566+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source05.json",
+    "inputs": 4442,
+    "current_binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused06_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T08:06:48.795985+00:00",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
+    "inputs": 4442,
+    "current_binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "increment_scope": "Bounded native photographic Relight, source import and shared workflow/API/storage subset; complete Photoshop/source parity remains open.",
+  "functional_subset_qualified": true,
+  "focused_selection": {
+    "step": 318,
+    "source": "Source06",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
+    "binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "build_succeeded": true,
+    "build_seconds": 106.77,
+    "cases": 258,
+    "passed_cases": 252,
+    "failed_cases": 6,
+    "failed_assertions": 218,
+    "unexpected": 0,
+    "crashes": 0,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftFilterImportTests/testUncachedProgramsMatchStrictOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftShapeImportTests/testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftTextImportTests/testUncachedSourceTextCompositeMatchesExactOriginalWords"
+    ],
+    "classes": {
+      "PhotoCraftAppTests.ActionsWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdobeActionsRequestTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ArtisticGalleryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicDetailTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DistortionTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeSmartFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LargeSmartObjectTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LensBlurTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LensBlurWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LinkedSmartObjectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.OtherVideoTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFImageSmartObjectTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFSmartObjectTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PDFSmartObjectWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDLinkedFileTypeTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDPDFSmartObjectTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedSmartFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftFilterImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftShapeImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftImagingTests.PcraftSmartImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftTextImportTests": {
+        "passed": 5,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PhotoDetailTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoDetailWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PixelateTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RelightImportTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RelightTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RelightWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RenderFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartFilterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartFilterWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartObjectTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartObjectWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceSmartModelTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.StylizeTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.WarpWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "test_seconds": 64.389
+  },
+  "binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+  "production_swift_files": 879,
+  "full_current_suite_passed": false,
+  "exact_reference_vectors": {
+    "direct_float32": 7,
+    "source_uncached": 19,
+    "source_cached": 19
+  },
+  "next_work": [
+    "Multi-light Lighting Effects engine/UI/shared APIs/source mapping",
+    "Displace original source-map context",
+    "Source masks/transparent edges/ranges/processing depths",
+    "Linked originals and source adjustments/metadata",
+    "Exact earlier source/Photoshop outputs and full-current/native/platform/capacity/physical60fps gates"
+  ],
+  "documentation_verification": "artifacts/runs/20261101T074443Z-318-relight-qualification/verification02.json",
+  "audit_receipt": "artifacts/development-history-audit/318-checkpoint01-receipt.json",
+  "first_documentation_verification": {
+    "checks": 43,
+    "passed": true,
+    "path": "artifacts/runs/20261101T074443Z-318-relight-qualification/verification01.json"
+  }
+}

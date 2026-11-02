@@ -34,7 +34,7 @@ struct RecoveryDiscoveryView: View {
 }
 @MainActor final class RecoveryDiscoveryWindowController: NSWindowController {
   init(discovery: RecoveryDiscovery) {
-    let window = NSWindow(contentRect: .init(x: 0, y: 0, width: 420, height: 320),
+    let window = PhotatoWindow(contentRect: .init(x: 0, y: 0, width: 420, height: 320),
       styleMask: [.titled], backing: .buffered, defer: false)
     window.title = "Photato — Recovering Documents"
     window.isReleasedWhenClosed = false

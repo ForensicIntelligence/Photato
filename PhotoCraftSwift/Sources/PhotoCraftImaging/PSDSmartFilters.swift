@@ -38,6 +38,7 @@ enum PSDSmartFilters {
       var filter = RasterFilter(kind)
       let known: Set<String>
       switch kind {
+      case .lightingEffects: throw CraftError.unsupported("Lighting Effects Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .gaussianBlur, .boxBlur, .highPass:
         known = ["Rds "]; filter.radius = try number(f, "Rds ", unit: "#Pxl")
       case .motionBlur:
@@ -59,7 +60,7 @@ enum PSDSmartFilters {
         filter.distribution = distribution.text == "Gsn " ? .gaussian : .uniform
         if case .integer(let seed) = f["FlRs"] { filter.seed = UInt32(bitPattern: seed) }
       case .cameraRaw: throw CraftError.unsupported("Save editable Camera Raw filters in native Photato format; Photoshop Camera Raw descriptor interchange is not implemented.")
-      case .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind: throw CraftError.unsupported("Stylize Photoshop descriptors are not qualified; retain editable settings in Photato format.")
+      case .relight, .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind: throw CraftError.unsupported("Stylize Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize: throw CraftError.unsupported("Pixelate Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag: throw CraftError.unsupported("Distortion Photoshop descriptors are not qualified; retain editable settings in Photato format.")
       case .lensBlur: throw CraftError.unsupported("Lens Blur Photoshop descriptors are not qualified; retain editable settings in Photato format.")
@@ -97,6 +98,8 @@ enum PSDSmartFilters {
       guard let code = classes[f.kind] else { throw CraftError.unsupported("\(f.kind.title) Smart Filter PSD mapping is not qualified; save as Photato.") }
       var settings: [PSDDescriptor.Item] = []
       switch f.kind {
+      case .lightingEffects: throw CraftError.unsupported("Save editable Lighting Effects in Photato format or rasterize before PSD/PSB export.")
+      case .relight: throw CraftError.unsupported("Save editable Photato Relight in native format or rasterize before PSD/PSB export.")
       case .gaussianBlur, .boxBlur, .highPass: settings = [.init("Rds ", u(f.radius, "#Pxl"))]
       case .motionBlur:
         guard f.angle.rounded() == f.angle else { throw CraftError.unsupported("PSD Motion Blur requires an integer angle.") }

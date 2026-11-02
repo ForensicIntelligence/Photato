@@ -1,24 +1,30 @@
 import Foundation
 import PhotoCraftCore
 
-struct PcraftLayerMapper {
+final class PcraftLayerMapper {
+  let document:CraftDocument
+  var smartSources:[String:PcraftSmartObjects.Decoded]=[:]
   let project: PcraftProject
   let namespace: Data
   let depth: PixelDepth
   var remainingBytes: Int
+  let patterns: [RasterPattern]
+  let dpi:Double
+  let canvas: IntRect
   private var count = 0
-  init(project: PcraftProject, namespace: Data, depth: PixelDepth, remainingBytes: Int) {
-    self.project = project; self.namespace = namespace; self.depth = depth
-    self.remainingBytes = remainingBytes
+  init(project: PcraftProject, document:CraftDocument, namespace: Data, depth: PixelDepth, remainingBytes: Int, patterns: [RasterPattern] = [], dpi:Double=72, canvas: IntRect = .init(x:0,y:0,width:1,height:1)) {
+    self.document=document; self.project = project; self.namespace = namespace; self.depth = depth
+    self.remainingBytes = remainingBytes; self.patterns = patterns; self.canvas = canvas;self.dpi=dpi
   }
-  mutating func layers(_ node: PcraftNode, parent: UUID?) throws -> [Layer] {
+  @inline(never) func layers(_ node: PcraftNode, parent: UUID?) throws -> [Layer] {
     var output: [Layer] = []
     for item in try node.array() {
       try Task.checkCancellation()
       count += 1
-      guard count <= 512 else { throw item.unsupported("The native 512-layer limit was exceeded.") }
+      guard count <= LayerLimits.maximumLayers else { throw item.unsupported("The native \(LayerLimits.maximumLayers)-layer limit was exceeded.") }
       try item.keys("id name visible locks blend opacity fill_opacity clipped mask vector_mask effects label content psd_blocks psd_id fill_cache link_group excluded_channels blend_if video")
-      try item.defaultValue("fill_opacity", "1")
+      let fillOpacity = try item.optional("fill_opacity")?.float() ?? 1
+      guard (0...1).contains(fillOpacity) else { throw item.invalid }
       let labelName = try item.field("label").string()
       guard let label = LayerColorLabel.allCases.first(where: { $0.title == labelName }), label.rawValue <= 7 else {
         throw item.unsupported("Unknown source layer color label.")
@@ -28,16 +34,32 @@ struct PcraftLayerMapper {
       for field in ["fill_cache", "link_group", "blend_if", "video"] { try item.defaultValue(field, "null") }
       try item.defaultValue("excluded_channels", "0")
       let effects = try item.field("effects")
-      try effects.keys("enabled items psd_raw reference")
-      _ = try effects.field("enabled").boolean()
-      try effects.defaultValue("items", "[]")
-      try effects.defaultValue("psd_raw", "null")
-      try effects.defaultValue("reference", "null")
       let id = PcraftImport.identity(namespace, role: "layer", id: try item.field("id").unsigned())
       let content = try item.field("content")
       let blend = try item.field("blend").string()
       var layer: Layer
       switch try content.field("kind").string() {
+      case "smart":
+        layer=try PcraftSmartObjects.layer(content,name:item.field("name").string(),project:project,namespace:namespace,parent:document,budget:&remainingBytes,sources:&smartSources)
+      case "text":
+        layer=try PcraftText.layer(content,name:item.field("name").string(),project:project,depth:depth,dpi:dpi,budget:&remainingBytes)
+      case "shape":
+        layer=try PcraftShapes.layer(content,name:item.field("name").string(),project:project,patterns:patterns,depth:depth,canvas:canvas,budget:&remainingBytes)
+      case "adjustment":
+        try content.keys("kind adjustment")
+        let node = try content.field("adjustment")
+        if case .object(let fields)=node.value,fields.keys.sorted()==["Exposure"] {
+        try node.keys("Exposure")
+        let values = try node.field("Exposure")
+        try values.keys("exposure offset gamma")
+        let settings = try ExposureAdjustment(exposure:values.field("exposure").float(),offset:values.field("offset").float(),gammaCorrection:values.field("gamma").float())
+        try settings.validate()
+        layer = Layer(name:try item.field("name").string(),content:.adjustment(.classic(.exposure(settings))))
+        } else {
+          let settings=try PcraftAdjustments.read(node)
+          _ = try SourceAdjustmentTransfer(settings,depth:depth)
+          layer=Layer(name:try item.field("name").string(),content:.adjustment(.source(settings)))
+        }
       case "raster":
         try content.keys("kind surface")
         let surface = try content.field("surface")
@@ -48,6 +70,9 @@ struct PcraftLayerMapper {
         let placed = try PcraftSamples.placed(source, mask: false, budget: &remainingBytes)
         layer = Layer(name: try item.field("name").string(), content: .raster(placed.surface))
         layer.x = placed.x; layer.y = placed.y
+      case "fill":
+        try content.keys("kind fill")
+        layer = Layer(name: try item.field("name").string(), content: try PcraftFills.content(content.field("fill"), patterns: patterns))
       case "group":
         try content.keys("kind children expanded artboard")
         try content.defaultValue("artboard", "null")
@@ -61,6 +86,7 @@ struct PcraftLayerMapper {
       if label != .none { layer.colorLabel = label }
       layer.visible = try item.field("visible").boolean()
       layer.opacity = try item.field("opacity").float()
+      layer.style=try PcraftEffects.read(effects,fillOpacity:fillOpacity,layer:layer,document:document,project:project,budget:&remainingBytes)
       layer.clipped = try item.field("clipped").boolean()
       if blend == "PassThrough" {
         guard case .group = layer.content else { throw item.unsupported("Pass Through requires a group.") }
@@ -86,7 +112,7 @@ struct PcraftLayerMapper {
         let placed = try PcraftSamples.placed(source, mask: true, budget: &remainingBytes)
         layer.mask = placed.surface
         var properties = MaskProperties()
-        properties.transform = .translation(Double(placed.x - layer.x), Double(placed.y - layer.y))
+        properties.transform = try layer.coordinateTransform.inverted() * .translation(Double(placed.x),Double(placed.y))
         properties.outside = placed.outside
         properties.enabled = try mask.field("enabled").boolean()
         properties.linked = try mask.field("linked").boolean()
@@ -95,6 +121,9 @@ struct PcraftLayerMapper {
         layer.maskProperties = properties
       }
       if let vector = item.optional("vector_mask") { layer.vectorMask = try PcraftPaths.mask(vector) }
+      if case .patternFill(let fill) = layer.content, fill.linked, layer.mask != nil || layer.vectorMask != nil {
+        throw content.unsupported("Linked pattern masks require the source frame-anchor mapping before import.")
+      }
       output.append(layer)
     }
     return output

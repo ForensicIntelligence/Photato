@@ -14,6 +14,7 @@ import UniformTypeIdentifiers
   let patterns: PatternLibrary
   let gradients: GradientLibrary
   var gradientNameDraft: GradientNameDraft?
+  var backgroundLayerDraft:BackgroundLayerDraft?
   var newLayerDraft: NewLayerDraft?
   var newGroupDraft: NewGroupDraft?
   let shapes: ShapeLibrary
@@ -30,10 +31,42 @@ import UniformTypeIdentifiers
   var frameShape: FrameDefinition.Shape = .rectangle
   var frameSides = 5
   var frameTarget: FrameTarget = .both
+  var layerFileDraft: LayerFileDraft?
+  var layerFilesID: UUID?
+  var layerFilesProgress = LayerFileProgress()
+  @ObservationIgnored var layerFilesWorker: Task<LayerFileExportResult, Error>?
+  @ObservationIgnored var layerFilePreparation: @Sendable (CraftDocument,LayerFileExportSettings,URL,@Sendable (LayerFileProgress)->Void) throws -> PreparedLayerFiles = { try LayerFileExport.prepare($0,options:$1,directory:$2,progress:$3) }
+  var imageExportDraft: ImageExportDraft?
+  var imageExportID: UUID?
+  @ObservationIgnored var imageExportWorker: Task<ImageExportOutput, Error>?
+  @ObservationIgnored var imageExportPreparation: @Sendable (CraftDocument, ImageExportSettings) throws -> ImageExportOutput = ImageExportPreparation.render
+  var selectionModifyDraft:SelectionModifyDraft?
+  var selectionRecall:SelectionRecall?
+  var selectionModificationPreparation:@Sendable(CraftDocument,SelectionModification)throws->Command = {try $1.command(in:$0)}
+  var magneticDraft:MagneticLassoDraft?
+  var magneticSettings=MagneticLassoSettings()
+  var magneticPreparation:@Sendable(CraftDocument)throws->MagneticLassoInput = {try MagneticLassoInput.prepare($0)}
+  var colorRangeDraft: ColorRangeWorkspace?
+  var colorRangeSettings = ColorRangeSettings()
+  var colorRangePreparation: @Sendable (CraftDocument) throws -> ColorRangeInput = {try ColorRangeInput.prepare($0)}
+  var fileInfoDraft: FileInfoDraft?
+  var layerCompExportID: UUID?
+  @ObservationIgnored var layerCompExportWorker: Task<LayerCompExportOutput, Error>?
+  var guideDraft:GuideDraft?
+  var guideGesture:GuideGesture?
+  var selectedGuideIDs:Set<UUID>=[]
+  var showCanvasGuides=true
+  var guidesLocked=false
+  var snapToGuides=true
+  var snappingEnabled=true
   var artboardDraft: ArtboardDraft?
   var artboardGesture: ArtboardGesture?
   var showArtboardNames = true
   var showArtboardGuides = true
+  var trimDraft: TrimDraft?
+  @ObservationIgnored var canvasEdgePreparation: @Sendable (CraftDocument,CanvasEdgeOperation,Pixel) throws -> Command = {try CanvasEdgePreparation.command($0,operation:$1,background:$2)}
+  var documentDuplicateDraft: DocumentDuplicateDraft?
+  @ObservationIgnored var documentDuplicatePreparation: @Sendable (CraftDocument,String,Bool) throws -> CraftDocument = { try DocumentDuplicatePreparation.copy($0,name:$1,merged:$2) }
   var duplicateLayerDraft: DuplicateLayerDraft?
   var layerNameDraft: LayerNameDraft?
   var layerProtectionDraft: LayerProtectionDraft?
@@ -41,10 +74,17 @@ import UniformTypeIdentifiers
   var channelPanelOptionsDraft: ChannelPanelOptionsDraft?
   var layerVisibilityDraft: LayerVisibilityDraft?
   @ObservationIgnored var layerVisibilityIsolation: LayerVisibilityIsolation?
+  var flattenImageConfirmationID: UUID?
+  @ObservationIgnored var flattenImageAlert: NSAlert?
+  @ObservationIgnored var flattenImageConfirmation: (@MainActor (FlattenImageRequest) -> Bool)?
+  @ObservationIgnored var flattenImagePreparation: @Sendable (CraftDocument) throws -> Command = FlattenPreparation.command
   var confirmingLayerDeletion = false
   @ObservationIgnored var layerDeletionConfirmation:
     ((LayerDeletionRequest) -> LayerDeletionChoice)?
   var duplicateTask: Task<Void, Never>?
+  @ObservationIgnored var linkedArtworkOperationID:UUID?
+  var linkedSourceController: LinkedSourceController?
+  @ObservationIgnored var linkedSourceRegistry = LinkedSourceRegistry.shared
   @ObservationIgnored weak var documentController: CraftDocumentController?
   @ObservationIgnored var colorPolicyReviewer: ColorPolicyReviewer = ColorPolicyDialog.present
   var gradientLibraryTask: Task<Void, Never>?
@@ -91,7 +131,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var brushPreviewRenderMS = 0.0
   let actions: ActionLibrary
   var actionRevision = 0
-  var session: EditorSession { didSet { if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
+  var session: EditorSession { didSet { rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
   @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
@@ -106,6 +146,7 @@ import UniformTypeIdentifiers
     didSet {
       unavailableToolID = nil
       if oldValue != tool {
+        cancelMagneticLasso()
         objectFinder.cancel(); peopleWorkspace.close()
         artboardGesture = nil; frameGesture = nil; shapeGesture = nil; _ = finishType()
         if oldValue == .crop { cancelCrop() }
@@ -129,6 +170,11 @@ import UniformTypeIdentifiers
   }
   var showRulers = false
   var autoSelect = true
+  var lastPixelStroke=PixelPaintSettings()
+  var lastPixelFill=PixelPaintSettings()
+  var lastPixelFillContents="Foreground Color"
+  var lastPixelFillPatternID:String?
+  @ObservationIgnored var pixelPaintPreparation:@Sendable (CraftDocument,PixelPaintRequest)throws->Command = {_,request in .pixelPaint(request)}
   var showLayerBounds = false
   var selectedLayerIDs: Set<UUID> = []
   var layoutTarget = LayerLayoutTarget.selection
@@ -176,6 +222,7 @@ import UniformTypeIdentifiers
     (layer: Layer, width: Int, height: Int, frame: IntRect)?
   var patternFillDraft: PatternFillDraft?
   var showFeatherSelection = false
+  @ObservationIgnored var cropPreparation:@Sendable(CropRequest,CraftDocument)throws->CropEdit = {try CropPreparation.prepare($0,document:$1)}
   var cropDraft: CropDraft?
   var cropReadyDraft: CropDraft?
   var cropPrepared: CropEdit?
@@ -218,6 +265,8 @@ import UniformTypeIdentifiers
   var pixelateWorkspace: PixelateWorkspace?
   var distortionWorkspace: DistortionWorkspace?
   var lensBlurWorkspace: LensBlurWorkspace?
+  var lightingWorkspace:LightingWorkspace?
+  var relightWorkspace:RelightWorkspace?
   var photoDetailWorkspace: PhotoDetailWorkspace?
   var artisticGalleryWorkspace: ArtisticGalleryWorkspace?
   var blurGalleryWorkspace: BlurGalleryWorkspace?
@@ -238,6 +287,14 @@ import UniformTypeIdentifiers
   @ObservationIgnored var regionRetouchTask: Task<Void,Never>?
   var cropShowPreview = true { didSet { cropRevision += 1 } }
   @ObservationIgnored var cropTask: Task<Void,Never>?
+  var wholeLayerMovePreparation:@Sendable(CraftDocument,LayerMoveRequest)throws->Command = {_,request in .moveLayers(request)}
+  var layerCollectionTransformPreparation:@Sendable(CraftDocument,LayerCollectionTransformRequest)throws->Command = {_,request in .transformLayers(request)}
+  var channelTransformPreparation:@Sendable(CraftDocument,ChannelTransformRequest)throws->Command = {_,request in .transformChannel(request)}
+  var pixelMaskTransformPreparation:@Sendable(CraftDocument,PixelMaskTransformRequest)throws->Command = {_,request in .transformPixelMask(request)}
+  var selectedPixelMovePreparation:@Sendable(CraftDocument,SelectedPixelMoveRequest)throws->Command = {_,request in .movePixels(request)}
+  var selectedPixelTransformPreparation:@Sendable(CraftDocument,SelectedPixelTransformRequest)throws->Command = {_,request in .transformPixels(request)}
+  var selectionTransform:SelectionTransformSession?
+  var selectionTransformPreparation:@Sendable(CraftDocument,ProjectiveTransform,Resampling)throws->Command = {try SelectionTransform.command(in:$0,projection:$1,interpolation:$2)}
   var transformDraft: TransformDraft?
   var embeddedPlacement: EmbeddedPlacementDraft?
   var embeddedPlacementSourceName: String?
@@ -476,6 +533,7 @@ import UniformTypeIdentifiers
     alphaEditingID = nil
     session.selectLayer(id)
     if case .vectorMask = pathTarget { selectPath(nil) }
+    if case .shape = pathTarget { selectPath(nil) }
     maskEditingLayerID = nil
     smartFilterMaskEditing = false
     clearMaskView()
@@ -604,7 +662,8 @@ import UniformTypeIdentifiers
           try RasterPreviewRequest(region: $0.region, width: $0.width, height: $0.height)
         }
         if let layerStyle, layerStyle.preview, (try? layerStyle.style.validate(in: doc)) != nil {
-          try Command.layerStyle([layerStyle.id], layerStyle.style).apply(to: &doc)
+          if !layerStyle.globalLightOnly {try Command.layerStyle([layerStyle.id], layerStyle.style).apply(to: &doc)}
+          if let light=layerStyle.globalLight {try Command.globalLight(light).apply(to:&doc)}
         }
         if let filter, filter.preview, (try? filter.filter.validate()) != nil {
           try filter.command(in: doc).apply(to: &doc)
@@ -821,7 +880,7 @@ import UniformTypeIdentifiers
   }
   func clear() {
     if document.inkMode != nil, editingChannel == nil, !editingMask { fill(color: .white); return }
-    if let layer = activeLayer { perform(editingMask ? .maskFill(layer.id, 0) : .clear(layer.id)) }
+    if let layer = activeLayer { perform(editingMask ? .maskFill(layer.id, 0) : layer.isBackground && !editingComponent ? .backgroundLayer(.clear(layer.id,backgroundColor)):.clear(layer.id)) }
   }
   func fill(color: Pixel? = nil, opacity: Float = 1) {
     let color = color ?? brush.color
@@ -941,22 +1000,7 @@ import UniformTypeIdentifiers
       } catch { self.error = error.localizedDescription }
     }
   }
-  func exportImage() {
-    let panel = NSSavePanel()
-    panel.allowedContentTypes = [.png, .jpeg, .tiff]
-    panel.nameFieldStringValue = document.name + ".png"
-    panel.title = "Export Flattened Image"
-    panel.begin { [weak self] response in
-      guard response == .OK, let url = panel.url, let self else { return }
-      do {
-        let type: UTType =
-          url.pathExtension.lowercased() == "jpg" || url.pathExtension.lowercased() == "jpeg"
-          ? .jpeg : ["tif", "tiff"].contains(url.pathExtension.lowercased()) ? .tiff : .png
-        try RasterIO.write(self.document, to: url, type: type)
-        self.status = "Exported \(url.lastPathComponent)"
-      } catch { self.error = error.localizedDescription }
-    }
-  }
+  func exportImage() { beginImageExport() }
   func exportPSD() {
     do {
       let data = try PSDCodec.writeRasterLayers(document)
@@ -1089,8 +1133,14 @@ import UniformTypeIdentifiers
         else { continue }
         color = sample
       } else {
-        guard let raster = try? Renderer.layerSurface(l, in: document),
-          let inverse = try? l.coordinateTransform.inverted()
+        // Imported Smart appearance is already in document coordinates. Hit the
+        // same derived layer shown on canvas, including projective placement.
+        let displayed:Layer
+        if l.importedSmartAppearance != nil || l.sourceProjection != nil {
+          guard let prepared=try? SmartFilterEngine.renderedLayer(l,in:document) else{continue};displayed=prepared
+        }else{displayed=l}
+        guard let raster = try? Renderer.layerSurface(displayed, in: document),
+          let inverse = try? displayed.coordinateTransform.inverted()
         else { continue }
         let local = inverse.point(point.x, point.y)
         color =

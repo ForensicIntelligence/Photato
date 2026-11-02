@@ -68,9 +68,20 @@ struct ShapeSheet:View {
         if geometry.wrappedValue.kind == .star{HStack{Text("Inner radius ratio");Slider(value:geometry.starRatio,in:0.01...1);TextField("Ratio",value:geometry.starRatio,format:.number).frame(width:70)}}
         if geometry.wrappedValue.kind == .line{VStack{HStack{Text("Weight");TextField("Pixels",value:geometry.lineWeight,format:.number);Toggle("Start arrow",isOn:geometry.arrowStart);Toggle("End arrow",isOn:geometry.arrowEnd)};HStack{Text("Arrow width");TextField("Pixels",value:geometry.arrowWidth,format:.number);Text("Length");TextField("Pixels",value:geometry.arrowLength,format:.number);Text("Concavity");TextField("Ratio",value:geometry.arrowConcavity,format:.number)}}}
         if draft.definition.components.count>1{Picker("Combine",selection:Binding(get:{draft.definition.components[draft.component].operation},set:{draft.definition.components[draft.component].operation=$0})){ForEach(PathOperation.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}}
+        Picker("Fill Rule",selection:$draft.definition.fillRule){ForEach(PathFillRule.allCases,id:\.self){Text($0.rawValue).tag($0)}}
+        Toggle("Invert Shape",isOn:Binding(get:{draft.definition.inverted == true},set:{value in
+          do {
+            let origin=try draft.layerID.flatMap{id in draft.original.layers.first{$0.id==id}}?.shapeTransform() ?? .identity
+            draft.definition.inversionBounds=try value ? ShapeDefinition.inversionFrame(canvas:.init(x:0,y:0,width:store.document.width,height:store.document.height),transform:origin):nil
+            draft.definition.inverted=value ? true:nil
+          }catch{draft.error=error.localizedDescription}
+        }))
         ShapePaintControls(title:"Fill",paint:$draft.definition.fill,store:store)
         ShapePaintControls(title:"Stroke",paint:$draft.definition.stroke.paint,store:store)
         if draft.definition.stroke.paint.kind != .none{VStack{
+          HStack{Text("Opacity");Slider(value:Binding(get:{Double(draft.definition.stroke.opacity ?? 1)*100},set:{draft.definition.stroke.opacity=Float($0/100)}),in:0...100);TextField("Percent",value:Binding(get:{Double(draft.definition.stroke.opacity ?? 1)*100},set:{if $0.isFinite{draft.definition.stroke.opacity=Float(min(100,max(0,$0))/100)}}),format:.number).frame(width:65)}
+          Toggle("Follow Path Contours",isOn:Binding(get:{draft.definition.stroke.pathContours ?? false},set:{draft.definition.stroke.pathContours=$0}))
+          Toggle("Scale Dashes with Stroke Width",isOn:Binding(get:{draft.definition.stroke.widthRelativeDashes ?? false},set:{draft.definition.stroke.widthRelativeDashes=$0}))
           HStack{Text("Width");TextField("Pixels",value:$draft.definition.stroke.width,format:.number);Picker("Align",selection:$draft.definition.stroke.alignment){ForEach(ShapeStroke.Alignment.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}}
           HStack{Picker("Caps",selection:$draft.definition.stroke.cap){ForEach(ShapeStroke.Cap.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}};Picker("Join",selection:$draft.definition.stroke.join){ForEach(ShapeStroke.Join.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}};TextField("Miter limit",value:$draft.definition.stroke.miterLimit,format:.number)}
           HStack{Toggle("Dashed",isOn:Binding(get:{!draft.definition.stroke.dash.isEmpty},set:{draft.definition.stroke.dash=$0 ? [8,4]:[]}));if !draft.definition.stroke.dash.isEmpty{ForEach(draft.definition.stroke.dash.indices,id:\.self){i in TextField("Dash/gap px",value:Binding(get:{draft.definition.stroke.dash[i]},set:{draft.definition.stroke.dash[i]=$0}),format:.number)};TextField("Phase",value:$draft.definition.stroke.phase,format:.number)}}

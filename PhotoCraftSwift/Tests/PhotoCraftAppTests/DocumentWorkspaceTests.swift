@@ -10,7 +10,7 @@ final class DocumentWorkspaceTests: XCTestCase {
   {
     _ = NSApplication.shared
     let document = CraftNSDocument(
-      model: try CraftNSDocument.blankModel(width: 8, height: 6, name: name))
+      model: try CraftDocument(width: 8, height: 6, name: name))
     document.store.renderTask?.cancel()
     controller.addDocument(document)
     document.makeWindowControllers()

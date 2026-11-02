@@ -6,6 +6,8 @@ struct LayerStyleDraft: Identifiable, Sendable {
   let id: UUID
   let original: CraftDocument
   var style: LayerStyle
+  var globalLight:GlobalLight?
+  var globalLightOnly=false
   var selected: Int = 0
   var preview = true
 }
@@ -23,12 +25,18 @@ extension EditorStore {
   var canClearLayerStyle: Bool { canBeginLayerStyle && document.layers.contains { groupSelectionIDs.contains($0.id) && $0.style != nil } }
   func beginLayerStyle(_ kind: LayerEffect.Kind? = nil) {
     guard canBeginLayerStyle, let layer = activeLayer else { return }
-    layerStyleDraft = .init(id: layer.id, original: document, style: layer.style ?? LayerStyle())
+    layerStyleDraft = .init(id: layer.id, original: document, style: layer.style ?? LayerStyle(),globalLight:document.globalLight)
     if let kind {
       if let index = layerStyleDraft?.style.effects.firstIndex(where: { $0.kind == kind }) {
         layerStyleDraft?.selected = index
       } else { addLayerEffect(kind) }
     }
+    render()
+  }
+  func beginGlobalLight() {
+    guard canBeginLayerCreation else{return}
+    let style=activeLayer?.style ?? LayerStyle(),light=document.globalLight ?? GlobalLight(angle:style.lightAngle,altitude:style.lightAltitude)
+    layerStyleDraft=LayerStyleDraft(id:activeLayer?.id ?? UUID(),original:document,style:style,globalLight:light,globalLightOnly:true)
     render()
   }
   func addLayerEffect(_ kind: LayerEffect.Kind) {
@@ -58,10 +66,24 @@ extension EditorStore {
     guard let draft = layerStyleDraft else { return }
     do {
       guard draft.original == document else { throw CraftError.invalid("The document changed. Cancel and reopen Layer Style.") }
+      if draft.globalLightOnly {
+        guard let light=draft.globalLight else {throw CraftError.invalid("Missing shared light.")};try light.validate();layerStyleDraft=nil;perform(.globalLight(light));return
+      }
       try draft.style.validate(in: document)
       layerStyleDraft = nil
-      perform(.layerStyle([draft.id], draft.style))
+      if draft.globalLight != draft.original.globalLight {perform(.layerStyles(LayerStyleEdit(layerIDs:[draft.id],style:draft.style,globalLight:draft.globalLight)))}
+      else {perform(.layerStyle([draft.id], draft.style))}
     } catch { self.error = error.localizedDescription }
+  }
+  func expandLayerEffect(_ index:Int) {
+    guard var draft=layerStyleDraft,draft.style.effects.indices.contains(index),draft.style.effects[index].advanced==nil else{return}
+    var effect=draft.style.effects[index],advanced=LayerEffectAdvanced()
+    if let fill=effect.gradient {
+      let stops=fill.gradient.colors.map{EffectGradientStop($0.position,$0.color.resolved(foreground:.black,background:.white))}
+      advanced.paint=EffectPaint(.gradient,gradient:EffectGradient(stops:stops,opacityStops:fill.gradient.opacity.map{[$0.position,$0.opacity]},placement:fill.placement,aligned:fill.aligned,dither:fill.dither))
+    }
+    if let fill=effect.pattern,let placement=try? fill.flattenedPlacement(){advanced.paint=EffectPaint(.pattern,pattern:EffectPattern(patternID:fill.patternID,scale:placement.scale/100,angle:placement.angle,linked:fill.linked,phase:PathPoint(Double(placement.phaseX),Double(placement.phaseY))))}
+    effect.advanced=advanced;draft.style.effects[index]=effect;layerStyleDraft=draft;render()
   }
   func copyLayerStyle() { if canCopyLayerStyle { Self.copiedLayerStyle = activeLayer?.style } }
   func pasteLayerStyle() {
@@ -70,6 +92,7 @@ extension EditorStore {
   }
   func clearLayerStyle() { if canClearLayerStyle { perform(.layerStyle(groupSelectionIDs, nil)) } }
   func validateLayerStyleMenu(_ path: String) -> Bool {
+    if path.hasSuffix("Global Light…"){return canBeginLayerCreation}
     if path.hasSuffix("Copy Layer Style") { return canCopyLayerStyle }
     if path.hasSuffix("Paste Layer Style") { return canPasteLayerStyle }
     if path.hasSuffix("Clear Layer Style") { return canClearLayerStyle }
@@ -98,11 +121,16 @@ struct LayerStyleSheet: View {
       store.updateLayerEffect(index) { $0[keyPath: key] = newValue }
     })
   }
+  func sharedLight(_ key:WritableKeyPath<GlobalLight,Double>)->Binding<Double> {
+    Binding(get:{(draft?.globalLight ?? GlobalLight(angle:draft?.style.lightAngle ?? 120,altitude:draft?.style.lightAltitude ?? 30))[keyPath:key]},set:{value in
+      guard var d=store.layerStyleDraft else{return};var light=d.globalLight ?? GlobalLight(angle:d.style.lightAngle,altitude:d.style.lightAltitude);light[keyPath:key]=value;d.globalLight=light;d.style.lightAngle=light.angle;d.style.lightAltitude=light.altitude;store.layerStyleDraft=d;store.render()
+    })
+  }
   private func numeric(_ label: String, _ binding: Binding<Double>, _ range: ClosedRange<Double>) -> some View {
     HStack {
       Text(label).frame(width: 115, alignment: .leading)
       Slider(value: binding, in: range).accessibilityLabel(label)
-      TextField(label, value: binding, format: .number.precision(.fractionLength(0...1)))
+      TextField(label, value: binding, format: .number.precision(.fractionLength(0...4)))
         .frame(width: 65).textFieldStyle(.roundedBorder)
     }
   }
@@ -126,7 +154,10 @@ struct LayerStyleSheet: View {
   }
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text("Layer Style").font(.title2.bold())
+      Text(draft?.globalLightOnly == true ? "Global Light":"Layer Style").font(.title2.bold())
+      if draft?.globalLightOnly == true {
+        VStack(spacing:12){numeric("Angle",sharedLight(\.angle),-360...360);numeric("Altitude",sharedLight(\.altitude),0...90)}.frame(width:360)
+      }else{
       HStack(alignment: .top, spacing: 20) {
         VStack(alignment: .leading) {
           Toggle("Enable Effects", isOn: style(\.enabled, true))
@@ -157,19 +188,26 @@ struct LayerStyleSheet: View {
           VStack(alignment: .leading, spacing: 10) {
             numeric("Fill Opacity (%)", scalar(style(\.fillOpacity, 1)), 0...100)
             numeric("Effects Scale (%)", style(\.scale, 100), 1...1000)
-            numeric("Shared Light Angle", style(\.lightAngle, 120), -180...180)
-            numeric("Light Altitude", style(\.lightAltitude, 30), 0...90)
+            numeric("Shared Light Angle", sharedLight(\.angle), -360...360)
+            numeric("Light Altitude", sharedLight(\.altitude), 0...90)
+            if let bytes=draft?.style.sourcePSDData?.count {Text("Original effects data retained (\(bytes.formatted()) bytes). Editable PSD export is unavailable for this style.").font(.caption).foregroundStyle(.secondary)}
             Divider()
             if let effect {
               Text(effect.kind.title).font(.headline)
+              if !(effect.kind == .bevelEmboss && effect.advanced != nil) {
               Picker("Blend Mode", selection: value(\.blendMode, .normal)) {
                 ForEach(BlendMode.allCases, id: \.self) { mode in Text(mode.rawValue).tag(mode) }
               }
               numeric("Opacity (%)", scalar(value(\.opacity, 1)), 0...100)
+              }
               effectControls(effect)
+              if effect.advanced != nil {
+                AdvancedLayerEffectControls(effect:Binding(get:{self.effect ?? effect},set:{value in store.updateLayerEffect(selected){$0=value}}),document:store.document)
+              }else{Button("Expanded Effect Controls…"){store.expandLayerEffect(selected)};Text("Expanded controls can change the existing appearance. Review Preview before applying.").font(.caption).foregroundStyle(.secondary)}
             } else { Text("Choose Add Effect to style this layer.").foregroundStyle(.secondary) }
           }.padding(.trailing, 8)
         }.frame(width: 400, height: 330)
+      }
       }
       if let validationError { Text(validationError).foregroundStyle(.red).font(.caption) }
       Divider()
@@ -183,7 +221,7 @@ struct LayerStyleSheet: View {
     }.padding(20)
   }
   @ViewBuilder private func effectControls(_ effect: LayerEffect) -> some View {
-    if ![.gradientOverlay, .patternOverlay, .bevelEmboss].contains(effect.kind) {
+    if ![.gradientOverlay, .patternOverlay, .bevelEmboss].contains(effect.kind) && (effect.advanced?.paint?.kind == nil || effect.advanced?.paint?.kind == .color) {
       ColorPicker("Color", selection: colour(value(\.color, .black)), supportsOpacity: false)
     }
     if [.stroke, .innerShadow, .innerGlow, .outerGlow, .dropShadow, .satin, .bevelEmboss].contains(effect.kind) {
@@ -213,14 +251,14 @@ struct LayerStyleSheet: View {
       ColorPicker("Shadow", selection: colour(value(\.shadowColor, .black)), supportsOpacity: false)
       numeric("Shadow (%)", scalar(value(\.shadowOpacity, 0.5)), 0...100)
     }
-    if effect.kind == .gradientOverlay {
+    if effect.kind == .gradientOverlay && effect.advanced == nil {
       ColorPicker("Start Color", selection: colour(gradientColor(false)), supportsOpacity: false)
       ColorPicker("End Color", selection: colour(gradientColor(true)), supportsOpacity: false)
       numeric("Gradient Angle", Binding(get: { Double(effect.gradient?.placement.angle ?? 90) }, set: {
         let angle = Float($0); store.updateLayerEffect(selected) { $0.gradient?.placement.angle = angle }
       }), -180...180)
     }
-    if effect.kind == .patternOverlay {
+    if effect.kind == .patternOverlay && effect.advanced == nil {
       Picker("Pattern", selection: Binding(get: { effect.pattern?.patternID ?? "" }, set: {
         let id = $0; store.updateLayerEffect(selected) { $0.pattern?.patternID = id }
       })) { ForEach(store.document.patterns ?? [], id: \.id) { Text($0.name).tag($0.id) } }
@@ -230,17 +268,18 @@ struct LayerStyleSheet: View {
     }
   }
   private var validationError: String? {
-    do { try draft?.style.validate(in: store.document); return nil } catch { return error.localizedDescription }
+    do { try draft?.style.validate(in: store.document);try draft?.globalLight?.validate(); return nil } catch { return error.localizedDescription }
   }
 }
 
 @MainActor extension AppDelegate {
   static var layerStyleMenuPaths: [String] {
-    (["Blending Options…"] + LayerEffect.Kind.allCases.map { $0.title + "…" }
+    (["Blending Options…", "Global Light…"] + LayerEffect.Kind.allCases.map { $0.title + "…" }
       + ["Copy Layer Style", "Paste Layer Style", "Clear Layer Style"]).map { "Layer > Layer Style > " + $0 }
   }
   @objc func layerStyleMenu(_ sender: NSMenuItem) {
     switch sender.identifier?.rawValue.components(separatedBy: " > ").last {
+    case "Global Light…": store?.beginGlobalLight()
     case "Copy Layer Style": store?.copyLayerStyle()
     case "Paste Layer Style": store?.pasteLayerStyle()
     case "Clear Layer Style": store?.clearLayerStyle()

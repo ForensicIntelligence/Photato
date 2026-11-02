@@ -145,7 +145,7 @@ final class GroupCreationTests: XCTestCase {
     options.opacity = 0
     XCTAssertEqual(try options.layer().opacity, 0)
     var full = document
-    full.layers += (1..<512).map { Layer(name: "\($0)", content: .fill(.white)) }
+    full.layers += (1..<LayerLimits.maximumLayers).map { Layer(name: "\($0)", content: .fill(.white)) }
     var session = EditorSession(document: full)
     XCTAssertThrowsError(
       try session.execute(.newGroup(.init(name: "Over cap"), children: [full.layers[0].id])))

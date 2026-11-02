@@ -4,7 +4,7 @@ import Foundation
 /// These bounded RGB approximations do not establish Photoshop pixel equality.
 public struct ClassicAdjustment: Codable, Equatable, Sendable {
   public enum Kind: String, Codable, CaseIterable, Sendable {
-    case vibrance, blackWhite, photoFilter, channelMixer, selectiveColor
+    case vibrance, blackWhite, photoFilter, channelMixer, selectiveColor, exposure
     public var title: String {
       switch self {
       case .vibrance: "Vibrance"
@@ -12,6 +12,7 @@ public struct ClassicAdjustment: Codable, Equatable, Sendable {
       case .photoFilter: "Photo Filter"
       case .channelMixer: "Channel Mixer"
       case .selectiveColor: "Selective Color"
+      case .exposure: "Exposure"
       }
     }
     public var parameters: Set<String> {
@@ -21,6 +22,7 @@ public struct ClassicAdjustment: Codable, Equatable, Sendable {
       case .photoFilter: ["color", "density", "preserveLuminosity"]
       case .channelMixer: ["matrix", "monochrome"]
       case .selectiveColor: ["adjustments", "relative"]
+      case .exposure: ["exposure", "offset", "gammaCorrection"]
       }
     }
   }
@@ -38,10 +40,22 @@ public struct ClassicAdjustment: Codable, Equatable, Sendable {
   public var relative = true
   /// Reds, Yellows, Greens, Cyans, Blues, Magentas, Whites, Neutrals, Blacks; CMYK percent.
   public var adjustments = Array(repeating: [0, 0, 0, 0], count: 9)
-  public init(_ kind: Kind) { self.kind = kind }
+  /// Absent for older kinds, preserving their original Codable representation.
+  public var exposureSettings: ExposureAdjustment?
+  public init(_ kind: Kind) {
+    self.kind = kind
+    if kind == .exposure { exposureSettings = .init() }
+  }
+  public static func exposure(_ settings: ExposureAdjustment = .init()) -> Self {
+    var value = Self(.exposure); value.exposureSettings = settings; return value
+  }
   public static let rangeNames = ["Reds", "Yellows", "Greens", "Cyans", "Blues", "Magentas", "Whites", "Neutrals", "Blacks"]
   public static let defaultTint = Pixel(225.0 / 255, 211.0 / 255, 179.0 / 255)
   public func validate() throws {
+    if kind == .exposure {
+      guard let exposureSettings else { throw CraftError.invalid("Missing Exposure settings.") }
+      try exposureSettings.validate()
+    } else if exposureSettings != nil { throw CraftError.invalid("Exposure settings require an Exposure adjustment.") }
     func validColor(_ p: Pixel) -> Bool { p.isFinite && p.a == 1 && [p.r,p.g,p.b].allSatisfy { (0...1).contains($0) } }
     guard (-100...100).contains(vibrance), (-100...100).contains(saturation),
       weights.count == 6, weights.allSatisfy({ (-200...300).contains($0) }),
@@ -57,6 +71,7 @@ public struct ClassicAdjustment: Codable, Equatable, Sendable {
     case .photoFilter: density == 0
     case .channelMixer: !monochrome && matrix == [[100,0,0,0], [0,100,0,0], [0,0,100,0]]
     case .selectiveColor: adjustments.allSatisfy { $0.allSatisfy { $0 == 0 } }
+    case .exposure: exposureSettings?.isIdentity == true
     }
   }
   /// Build the same selection-derived mask for desktop and API creation.
@@ -79,6 +94,7 @@ public struct ClassicAdjustmentTransfer: Sendable {
   }
   public func apply(_ pixel: Pixel) -> Pixel {
     guard valid, !value.isIdentity, pixel.a > 0, pixel.isFinite else { return pixel }
+    if let exposure = value.exposureSettings { return exposure.apply(pixel, depth: depth) }
     // Renderer/Command pass document tone-space coordinates. RGB32 has already
     // been encoded by that bridge, matching the existing Color Balance transfer.
     let input = depth == .f32 ? SRGBTransfer.linear(pixel) : pixel
@@ -87,6 +103,7 @@ public struct ClassicAdjustmentTransfer: Sendable {
     func luma(_ v: SIMD3<Float>) -> Float { 0.299 * v.x + 0.587 * v.y + 0.114 * v.z }
     var out = c
     switch value.kind {
+    case .exposure: return pixel // Valid Exposure returned above.
     case .vibrance:
       let hsl = HSLColor.components(c)
       // Greys have no hue: keep them neutral rather than inventing red.

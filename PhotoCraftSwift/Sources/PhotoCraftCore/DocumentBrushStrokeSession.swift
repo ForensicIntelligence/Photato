@@ -20,7 +20,7 @@ public final class DocumentBrushStrokeSession {
     var checked = document; try Command.stroke(layerID, [], brush).apply(to: &checked)
     guard checked == document else { throw CraftError.unsupported("This stroke requires document reconciliation.") }
     original = document; self.index = index; self.layerID = layerID; self.brush = brush
-    stroke = try BrushStrokeSession(surface: surface, brush: brush,
+    stroke = try BrushStrokeSession(surface: surface, brush:document.layers[index].backgroundBrush(brush),
       selection: document.selection, selectionMask: document.selectionMask,
       transform: document.layers[index].coordinateTransform,
       preserveTransparency: document.isTransparencyLocked(layerID))

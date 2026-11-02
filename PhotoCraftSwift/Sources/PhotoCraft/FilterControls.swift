@@ -62,13 +62,13 @@ struct FilterSheet: View {
     }
   }
   var body: some View {
-    if filter.kind == .shadowsHighlights {ShadowHighlightsSheet(store:store)} else if filter.kind.isClassicDetail {ClassicDetailSheet(store:store)} else if filter.kind.isOtherVideo {OtherVideoSheet(store:store)} else if filter.kind.isRender {RenderSheet(store:store)} else if filter.kind.isStylize {StylizeSheet(store:store)} else if filter.kind.isPixelate { PixelateSheet(store:store) } else if filter.kind.isDistortion { DistortionSheet(store:store) } else if filter.kind == .lensBlur { LensBlurSheet(store:store) } else if filter.kind == .smartSharpen || filter.kind == .reduceNoise { PhotoDetailSheet(store:store) } else if filter.kind == .filterGallery { ArtisticGallerySheet(store:store) } else if filter.kind == .adaptiveWideAngle { WideAngleSheet(store:store) } else if filter.kind == .lensCorrection { LensCorrectionSheet(store:store) } else if filter.kind == .blurGallery { BlurGallerySheet(store:store) } else if filter.kind == .perspectiveWarp { PerspectiveSheet(store:store) } else if filter.kind == .puppetWarp { PuppetSheet(store:store) } else if filter.kind == .liquify { LiquifySheet(store: store) } else if filter.kind == .cameraRaw { CameraRawSheet(store:store) } else { ordinaryBody }
+    if filter.kind == .lightingEffects {LightingSheet(store:store)} else if filter.kind == .relight {RelightSheet(store:store)} else if filter.kind == .shadowsHighlights {ShadowHighlightsSheet(store:store)} else if filter.kind.isClassicDetail {ClassicDetailSheet(store:store)} else if filter.kind.isOtherVideo {OtherVideoSheet(store:store)} else if filter.kind.isRender {RenderSheet(store:store)} else if filter.kind.isStylize {StylizeSheet(store:store)} else if filter.kind.isPixelate { PixelateSheet(store:store) } else if filter.kind.isDistortion { DistortionSheet(store:store) } else if filter.kind == .lensBlur { LensBlurSheet(store:store) } else if filter.kind == .smartSharpen || filter.kind == .reduceNoise { PhotoDetailSheet(store:store) } else if filter.kind == .filterGallery { ArtisticGallerySheet(store:store) } else if filter.kind == .adaptiveWideAngle { WideAngleSheet(store:store) } else if filter.kind == .lensCorrection { LensCorrectionSheet(store:store) } else if filter.kind == .blurGallery { BlurGallerySheet(store:store) } else if filter.kind == .perspectiveWarp { PerspectiveSheet(store:store) } else if filter.kind == .puppetWarp { PuppetSheet(store:store) } else if filter.kind == .liquify { LiquifySheet(store: store) } else if filter.kind == .cameraRaw { CameraRawSheet(store:store) } else { ordinaryBody }
   }
   private var ordinaryBody: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text(filter.kind.title).font(.title2.bold())
       switch filter.kind {
-      case .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .emboss, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind, .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize, .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag, .liquify, .cameraRaw, .puppetWarp, .perspectiveWarp, .blurGallery, .lensCorrection, .adaptiveWideAngle, .filterGallery, .smartSharpen, .reduceNoise, .lensBlur: EmptyView()
+      case .lightingEffects, .relight, .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .emboss, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind, .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize, .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag, .liquify, .cameraRaw, .puppetWarp, .perspectiveWarp, .blurGallery, .lensCorrection, .adaptiveWideAngle, .filterGallery, .smartSharpen, .reduceNoise, .lensBlur: EmptyView()
       case .gaussianBlur, .highPass: field("Radius (pixels)", \.radius, 0.1...1000)
       case .boxBlur: field("Radius (pixels)", \.radius, 1...1000, step: 1)
       case .motionBlur:
@@ -137,6 +137,7 @@ extension EditorStore {
     return pixels.width <= RasterFilterEngine.maximumPixels / pixels.height
   }
   func canBeginFilterKind(_ kind: RasterFilter.Kind) -> Bool {
+    if kind == .lightingEffects || kind == .relight{return document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil && editingChannel==nil && modeComponentTargets.isEmpty && canBeginFilter}
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels && InkChannelCommand.filters.contains(kind) }
     if !modeComponentTargets.isEmpty { return canEditModeComponents && ModeComponentEdit.filters.contains(kind) }
     if RasterFilterEngine.pagedFilterKinds.contains(kind),document.colorMode == .rgb,
@@ -186,12 +187,14 @@ extension EditorStore {
     if kind == .filterGallery { filter.artistic?.effects[0].foreground = brush.color;filter.artistic?.effects[0].background = backgroundColor }
     if kind == .addNoise { filter.seed = UInt32.random(in: .min ... .max) }
     filterDraft = FilterDraft(id: layer.id, filter: filter, channelTarget:editingChannel, modeComponents:modeComponentTargets)
+    if kind == .lightingEffects || kind == .relight{filterDraft?.preview=false}
     render()
   }
-  func cancelFilter() {shadowWorkspace?.close();shadowWorkspace=nil;classicDetailWorkspace?.close();classicDetailWorkspace=nil;otherVideoWorkspace?.close();otherVideoWorkspace=nil;renderWorkspace?.close();renderWorkspace=nil;stylizeWorkspace?.close();stylizeWorkspace=nil; pixelateWorkspace?.close();pixelateWorkspace=nil; distortionWorkspace?.close();distortionWorkspace=nil; lensBlurWorkspace?.close();lensBlurWorkspace=nil; photoDetailWorkspace?.close();photoDetailWorkspace=nil; artisticGalleryWorkspace?.close();artisticGalleryWorkspace=nil; wideAngleWorkspace?.close();wideAngleWorkspace=nil; lensCorrectionWorkspace?.close();lensCorrectionWorkspace=nil; blurGalleryWorkspace?.close();blurGalleryWorkspace=nil; perspectiveWorkspace?.close();perspectiveWorkspace=nil;puppetWorkspace?.close();puppetWorkspace=nil;filterDraft = nil; render() }
+  func cancelFilter() {lightingWorkspace?.close();lightingWorkspace=nil;relightWorkspace?.close();relightWorkspace=nil;shadowWorkspace?.close();shadowWorkspace=nil;classicDetailWorkspace?.close();classicDetailWorkspace=nil;otherVideoWorkspace?.close();otherVideoWorkspace=nil;renderWorkspace?.close();renderWorkspace=nil;stylizeWorkspace?.close();stylizeWorkspace=nil; pixelateWorkspace?.close();pixelateWorkspace=nil; distortionWorkspace?.close();distortionWorkspace=nil; lensBlurWorkspace?.close();lensBlurWorkspace=nil; photoDetailWorkspace?.close();photoDetailWorkspace=nil; artisticGalleryWorkspace?.close();artisticGalleryWorkspace=nil; wideAngleWorkspace?.close();wideAngleWorkspace=nil; lensCorrectionWorkspace?.close();lensCorrectionWorkspace=nil; blurGalleryWorkspace?.close();blurGalleryWorkspace=nil; perspectiveWorkspace?.close();perspectiveWorkspace=nil;puppetWorkspace?.close();puppetWorkspace=nil;filterDraft = nil; render() }
   func commitFilter() {
     guard let draft = filterDraft else { return }
     do { try draft.filter.validate(); try draft.rawDevelopment?.validate() } catch { self.error = error.localizedDescription; return }
+    lightingWorkspace?.close();lightingWorkspace=nil;relightWorkspace?.close();relightWorkspace=nil
     shadowWorkspace?.close();shadowWorkspace=nil
     classicDetailWorkspace?.close();classicDetailWorkspace=nil
     otherVideoWorkspace?.close();otherVideoWorkspace=nil
@@ -219,6 +222,8 @@ extension EditorStore {
     if let mode = BlurGallerySettings.Mode.allCases.first(where: { path == "Filter > Blur Gallery > " + $0.title + "…" }) { store?.filterDraft?.filter.gallery?.enabled = [mode];store?.render() }
   }
   static let filterMenus: [String: RasterFilter.Kind] = [
+    "Filter > Photato > Relight…":.relight,
+    "Filter > Photato > Lighting Effects…":.lightingEffects,
     "Filter > Blur > Blur": .blur,
     "Filter > Blur > Blur More": .blurMore,
     "Filter > Blur > Radial Blur…": .radialBlur,

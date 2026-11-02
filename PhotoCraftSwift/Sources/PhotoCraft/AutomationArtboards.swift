@@ -7,7 +7,7 @@ extension Artboard {
     ["edit": "artboard.edit", "export": "artboard.export", "nativeArchiveVersion": 27,
      "coordinates": "Bounds use logical document pixels; artboardOrigin maps physical canvas pixel0 to logical coordinates. Guides are local artboard offsets. Negative bounds expand and rebase the canvas without resampling layer pixels.",
      "behavior": "Top-level groups clip children and paint their background. Create, convert, configure, duplicate, clear guides and remove artboard metadata share native one-step Undo/Redo. Native files retain editable layers. Raster exports and multipage PDF use identical clipped rendering.",
-     "limits": "Shared documents:4,194,304 pixels and64 layers; exports128MiB. JSON/PNG/JPEG/TIFF Adobe create-artboard jobs are a bounded local subset. Editable PSD artboard interchange remains unavailable.",
+     "limits": "Shared documents:300,000 pixels per side and8,000 layers within128MiB owned heap; exports128MiB. JSON/PNG/JPEG/TIFF Adobe create-artboard jobs are a bounded local subset. Editable PSD artboard interchange remains unavailable.",
      "operations": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup"], "exportFormats": ArtboardExport.formats]
   }
 }
@@ -16,7 +16,7 @@ extension AutomationCommand {
     switch key {
     case "operation": return ["type": "string", "enum": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup"]]
     case "layerID": return ["type": "string", "format": "uuid"]
-    case "layerIDs": return ["type": "array", "maxItems": 64, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
+    case "layerIDs": return ["type": "array", "maxItems": LayerLimits.maximumLayers, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
     case "name": return ["type": "string", "minLength": 1, "maxLength": 256]
     case "format": return ["type": "string", "enum": ArtboardExport.formats]
     case "moveContents": return ["type": "boolean", "default": true]
@@ -27,7 +27,7 @@ extension AutomationCommand {
     }
   }
   func artboardIDs() throws -> [UUID] {
-    guard case .array(let values) = parameters["layerIDs"], values.count <= 64 else { throw AutomationFailure(status: 400, message: "layerIDs must be an array of up to64 distinct UUIDs.") }
+    guard case .array(let values) = parameters["layerIDs"], values.count <= LayerLimits.maximumLayers else { throw AutomationFailure(status: 400, message: "layerIDs must be an array of up to8,000 distinct UUIDs.") }
     let ids = try values.map { value -> UUID in guard case .string(let string) = value, let id = UUID(uuidString: string) else { throw AutomationFailure(status: 400, message: "Invalid artboard layer UUID.") }; return id }
     guard Set(ids).count == ids.count else { throw AutomationFailure(status: 400, message: "Duplicate layer IDs.") }; return ids
   }

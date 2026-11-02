@@ -1,0 +1,149 @@
+{
+  "step": "dev-step-349",
+  "recorded_at_utc": "2026-11-02T07:17:35.663406+00:00",
+  "run": "artifacts/runs/20261102T065046Z-349-background-pixel-transform",
+  "source_manifest": "artifacts/runs/20261102T065046Z-349-background-pixel-transform/source03.json",
+  "inputs": 6965,
+  "production_swift_files": 962,
+  "binary_sha256": "306dd60fcfc7a6ee3d9800d78d881c557672bb4169a6ff30696831c2253a1897",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 617,
+    "passed_cases": 616,
+    "failed_cases": 1,
+    "failed_assertions": 1,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 54.312,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 331.96
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testAnalyticalOutputsCapturedForIndependentBackgroundReader",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testHardTranslationUsesSwatchAndKeepsFullCanvasIdentityAtAllDepths",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testHistoryActionsAndOldRequestJSONArePreserved",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testIdentityPreservesHDRWordsAndEmptyHistory",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testInvalidColorsLocksStaleAndCancellationStayAtomic",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testProjectiveAndInterpolatedTransformsKeepOpaqueBackground",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testSoftCoverageFillsWithoutAlphaLossAndPreservesUntouchedHDRBits",
+    "PhotoCraftCoreTests.BackgroundPixelTransformTests/testSparseMaximumCanvasAndVirtualInterpolationSupportStayBounded",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testAll16CapturedModifierCursorsAndDirectSelectedFlip",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testBoundedBackgroundPreviewRetainsSourceAndCapturedFill",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testHTTPInvalidBusyStaleRevokeAndNativeCancellation",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testHTTPThreeDepthProfilesInterpolationsAndExplicitOrCapturedColor",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testLocksTargetsReadCloseAndPublishedBackgroundGuards",
+    "PhotoCraftAppTests.BackgroundPixelTransformWorkflowTests/testNativeCapturedSwatchPreviewCancelApplyUndoAndActions33"
+  ],
+  "independent_pixels": {
+    "passed": true,
+    "source_outputs": "349 Source03",
+    "file": "background-transform-analytical.json",
+    "sha256": "c6002d6a3b31b4dbff7736c404a99e4e03664f6913ae496a44f80c98dbc3e778",
+    "analytical_channels_compared": 3072,
+    "checks": [
+      {
+        "matrix": [
+          1,
+          0,
+          5,
+          0,
+          1,
+          3,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          1,
+          0,
+          -12,
+          0,
+          1,
+          -8,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          -1,
+          0,
+          11,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0.015,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      }
+    ],
+    "oracle": "Independent Python inverse projection, hard selected samples, background-color holes, opaque compositing and canvas clipping on owned16x12 samples. Not Photoshop output."
+  },
+  "references": {
+    "accessed_at_utc": "2026-11-02T06:50:47.851668+00:00",
+    "reference_standard": "Photoshop 2026",
+    "sources": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/move-selection-or-selection-border.html",
+        "role": "Move/transform selected image content; retain a distinction from boundary/layer moves."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/delete-or-cut-selected-pixels.html",
+        "updated": "2026-02-23",
+        "role": "Background cleared coverage uses the background swatch; ordinary layers use transparency."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+        "role": "Selected content and transform modes/controls. Exact sampling/overlap/defaults are unqualified."
+      }
+    ],
+    "live_attempt": {
+      "tool": "cua.getApp(\"Adobe Photoshop 2026\")",
+      "outcome": "The Mac is locked and automatic unlock could not unlock it. Ask the user to unlock the Mac manually before continuing.",
+      "acceptance": false
+    },
+    "fetch_note": "One web.find request for the move guide timed out after successful initial opens; no source or Photoshop equivalence inferred from missing content."
+  },
+  "api_commands_unchanged": 227,
+  "native_version_unchanged": 83,
+  "actions_version": 33,
+  "ordinary_actions_version": 31,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Selected component/mask/other modes/Smart Object/multi-layer/mesh/animation/video transform contexts",
+    "Move-tool selected pixels, copy/duplicate selection and remaining primary G01 behaviors",
+    "Exact Photoshop fill/interpolation/soft overlap/defaults/UI comparisons",
+    "Prior strict offscreen opacity-chevron comparison and11 historical strict rendering/interchange cases",
+    "Full104 workflow scopes/current suite/platform/dense capacity/physical performance acceptance"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

@@ -1,0 +1,69 @@
+{
+  "step": 313,
+  "recorded_at_utc": "2026-11-01T06:02:34.146794+00:00",
+  "recorded_at_local": "2026-10-31T23:02:34.146794-07:00",
+  "run": "artifacts/runs/20261101T060115Z-313-diary-refresh",
+  "scope": "Documentation synchronization only; current312 stays unfinished.",
+  "latest_engineering_checkpoint": 312,
+  "latest_engineering_status": "Source Smart Object import is connected as an experimental draft at312 Source02. Both optimized builds succeed. Source01 completes148 selected cases:142 pass, six fail with38 assertions. Source02 crashes with signal10 in the allowed-depth nested-source HTTP case; no complete selection or stable-build qualification is claimed. Cached source appearance matches1,167,360 original sample words across57 variants. Linked-source and broader filter support, exact uncached rendering, native acceptance and full current tests remain open.",
+  "last_completed_focused_selection": {
+    "checkpoint": 312,
+    "cases": 148,
+    "passed_cases": 142,
+    "failed_cases": 6,
+    "failed_assertions": 38,
+    "unexpected": 0,
+    "crashes": 0,
+    "source": "Source01"
+  },
+  "current_source_selection": {
+    "source": "Source02",
+    "build_succeeded": true,
+    "selection_completed": false,
+    "signal": 10,
+    "case": "PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically",
+    "current_cause": "Recursive source-decoder worker-stack boundary; repair pending.",
+    "expected_admitted_decode_levels": 8,
+    "expected_rejected_decode_levels": 9
+  },
+  "latest_complete_execution": {
+    "checkpoint": 311,
+    "source": "Source01",
+    "cases": 3105,
+    "passed_cases": 3098,
+    "failed_cases": 7,
+    "failed_assertions": 30,
+    "passed": false
+  },
+  "last_entirely_passing_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "application_inputs": 3174,
+  "application_inputs_before": "artifacts/runs/20261101T060115Z-313-diary-refresh/application-inputs-before.json",
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "command_statuses_changed": false,
+  "package_statuses_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T060115Z-313-diary-refresh/verification02.json",
+  "audit_receipt": "artifacts/development-history-audit/313-checkpoint01-receipt.json",
+  "first_verification": {
+    "checks": 33,
+    "passed": true,
+    "path": "artifacts/runs/20261101T060115Z-313-diary-refresh/verification01.json",
+    "application_inputs_unchanged": 3174,
+    "protected_assets_unchanged": 40,
+    "original_rust_files_unchanged": 1057,
+    "entries": 313,
+    "dashboard_journal_latest": 313,
+    "dashboard_completed_scope_latest": 283
+  },
+  "retained_editions": [
+    "edition01",
+    "final-edition02"
+  ]
+}

@@ -22,7 +22,7 @@ extension ContactSheetSettings {
   static var apiCapabilities: [String:Any] {
     ["command":"document.contactSheet","cancelCommand":"document.contactSheet.cancel","settingsSchema":apiSchema,"sourcesSchema":sourcesSchema,
      "result":"HTTP201: documents (shared document states), pages, images, placements (zero-based source/page/column/row and pixel x/y/width/height/rotated). All pages publish together; source documents/history stay unchanged.",
-     "limits":"Transfers enabled.1–7 shared sources including target. Leave one share slot per output page (8 total); each API page at most4MP/64layers/128MiB. Native pages8MP,32pages/64MP combined,256sources and512MiB source/output budgets. Still images only.",
+     "limits":"Transfers enabled.1–7 shared sources including target. Leave one share slot per output page (8 total); each API page at most4MP/8,000layers/128MiB. Native pages8MP,32pages/64MP combined,256sources and512MiB source/output budgets. Still images only.",
      "behavior":"Page units/resolution, RGB/Gray/CMYK/Lab and depth/profile, across/down ordering, spacing, best-fit rotation, editable filename captions and optional flattening. Native and API share one layout engine. API has no arbitrary filesystem source access.",
      "adobe":"The pinned public v2 contract has no dedicated Contact Sheet II endpoint. Execute-actions descriptors and exact Photoshop layout/resampling/defaults remain unqualified; no Adobe endpoint is invented."]
   }

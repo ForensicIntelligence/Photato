@@ -1,0 +1,276 @@
+{
+  "step": 330,
+  "recorded_at_utc": "2026-11-01T18:00:05.156171+00:00",
+  "status": "guide-workflow-tested",
+  "functional_subset_qualified": true,
+  "full_photoshop_parity": false,
+  "native_version": 78,
+  "actions_version": 30,
+  "photato_commands": 208,
+  "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
+  "source_inputs": 6857,
+  "production_swift_files": 911,
+  "reference_inputs": "Tests/PhotoCraftImagingTests/Fixtures/SourceGuides/provenance.json",
+  "original_projects": 3,
+  "original_guide_words": 30,
+  "independent_format_programs": 2,
+  "new_tests": 18,
+  "public_references": "artifacts/runs/20261101T165133Z-330-document-guides/public-guide-references01.json",
+  "public_format_specification": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/adobe-spec01.json",
+  "native_access": {
+    "app": "com.adobe.Photoshop",
+    "result": "Mac locked; automatic unlock failed.",
+    "manual_unlock_request_already_pending": true,
+    "live_visual_acceptance": false
+  },
+  "remaining": [
+    "Modern colored-guide PSD records",
+    "ruler units/origins/preferences",
+    "oblique guides",
+    "layout targets/presets",
+    "grid and Smart Guides",
+    "all target/tool snapping and fractional layer precision",
+    "guide Actions/Adobe descriptors",
+    "full current suite/live Photoshop/platform/large capacity/physical60fps"
+  ],
+  "snapping_reference": "artifacts/runs/20261101T165133Z-330-document-guides/adobe-guide-snap01.json",
+  "binary_sha256": "1b093fa25aba5da585c2a8c4821857a382a1d49c77345c92e5d54773aaef8096",
+  "tests": {
+    "step": 330,
+    "source": "Source07",
+    "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
+    "binary_sha256": "1b093fa25aba5da585c2a8c4821857a382a1d49c77345c92e5d54773aaef8096",
+    "build_succeeded": true,
+    "build_seconds": 365.86,
+    "cases": 297,
+    "passed_cases": 297,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 34.021,
+    "classes": {
+      "PhotoCraftAppTests.AdobeArtboardTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.AlphaChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AlphaChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ArtboardIntegrationTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ArtboardWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AutomationActionJobsTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.CanvasStartupTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ComponentEditingWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.CropGeometryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.CropWorkflowTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.DocumentGuideImportTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DocumentGuideTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentGuideWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeConversionTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DocumentModeTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.GeometryTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkChannelTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkChannelWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeControlsTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeDocumentTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeGeometryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.InkModeInputTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeRasterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.MetadataPreservationTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ModeComponentEditingTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSBTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDAuxiliaryChannelTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PSDAuxiliaryWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PSDChannelRetentionTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDCompressionOptionsTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDFileInputTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDFileOutputTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDStreamingTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PagedGeometryCompositionTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedGeometryTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PagedGeometryWorkflowTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftProjectTests": {
+        "passed": 14,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RestrictedGeometryTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ScanCropWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceChannelImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SpotChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SpotChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "new_cases": 18,
+    "new_cases_passed": 18,
+    "failed_case_names": [],
+    "source_unchanged": true
+  },
+  "original_words_exact": true,
+  "independent_export_verification": "artifacts/runs/20261101T165133Z-330-document-guides/independent-guides07.json",
+  "verification": "artifacts/runs/20261101T165133Z-330-document-guides/verification02.json",
+  "final_test_contract_binding": "artifacts/runs/20261101T165133Z-330-document-guides/final-test-contract-binding.json",
+  "remaining_cursor_context": "Holding Space during an active guide drag can bypass the guide-specific cursor branch while the guide gesture remains captured. This source path is outside the tested Control/Command/Option/Shift matrix; live Photoshop comparison is unavailable. Track it with the remaining U05 cursor/gesture contexts under the major-first schedule."
+}

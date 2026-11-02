@@ -1,0 +1,26 @@
+{
+  "generator": "generate.rs",
+  "source": "Original unchanged PhotoCraft Rust crates; owned harness. Resource1032 reference follows the original writer formula, not native Swift output.",
+  "generator_sha256": "706bf13040ee9a93bf9615850a1c3f9e1108a8adf8eaeec0a1895929c3a0ccdf",
+  "projects": 3,
+  "positions": 30,
+  "independent_format_programs": 2,
+  "photoshop2026_verified": false,
+  "files": {
+    "cases.json": "f0c6aa0a88531be03c04dcf2ca006e7b8dfed65465070b86b428693c57a2df0a",
+    "generate-format.py": "5a808bc512229f693c67e3e1679f5e603cca588284a36d4d4e3736dbc68de679",
+    "generate.rs": "706bf13040ee9a93bf9615850a1c3f9e1108a8adf8eaeec0a1895929c3a0ccdf",
+    "guides-f32.f32": "23fd67b3ed7134d84fedeab5573bce8cb0fa9eafeaad89bde5e62e3992db4372",
+    "guides-f32.pcraft": "b0beb94feb8b3bdfaf146e39ce2292d3021dd405e2036233030309d8e3a7536b",
+    "guides-f32.resource1032": "05cd9e86fbfca4b4fc3aa8b764bf7a44ca2ddce48a4be48d3b5e0baba68684fc",
+    "guides-u16.f32": "23fd67b3ed7134d84fedeab5573bce8cb0fa9eafeaad89bde5e62e3992db4372",
+    "guides-u16.pcraft": "3015c8faed689aa4c5069f2d2fae791eb5011478f1303e6dc9a9da3d5010ebe0",
+    "guides-u16.resource1032": "05cd9e86fbfca4b4fc3aa8b764bf7a44ca2ddce48a4be48d3b5e0baba68684fc",
+    "guides-u8.f32": "23fd67b3ed7134d84fedeab5573bce8cb0fa9eafeaad89bde5e62e3992db4372",
+    "guides-u8.pcraft": "c6e062d0b2cdd0a5e8f3f30bf069bbe3fb13ba0ec1161265917c60c4d74c93e7",
+    "guides-u8.resource1032": "05cd9e86fbfca4b4fc3aa8b764bf7a44ca2ddce48a4be48d3b5e0baba68684fc",
+    "independent-guides.psb": "c968040d9e8f3c62db51ceb4ec13e2b1b9e0a8d855a3b386f5c92086f1f78d88",
+    "independent-guides.psd": "5c4dd4024625400a523b05dcc268f256feeeb8c73b3d3c2f374e6029bfcbabf2"
+  },
+  "format_generator": "generate-format.py"
+}

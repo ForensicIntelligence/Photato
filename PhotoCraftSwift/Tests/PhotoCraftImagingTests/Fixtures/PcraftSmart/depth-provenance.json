@@ -1,0 +1,16 @@
+{
+  "created_at_utc": "2026-11-01T05:50:35.537369+00:00",
+  "origin": "Owned source-depth boundaries from unchanged original Rust engine/doc/format crates; no user artwork.",
+  "license": "MIT OR Apache-2.0",
+  "generator": "generate-depth-boundary.rs",
+  "generator_sha256": "45956bb2f1d8acde48495b77891c284527cd4a3126388561088209126d904afc",
+  "cases": {
+    "deep-7-u8.pcraft": "Outer source decode plus seven nested source decodes: eight admitted levels.",
+    "deep-8-u8.pcraft": "One level beyond the native eight-level bound; must reject atomically without a crash."
+  },
+  "files": {
+    "deep-7-u8.pcraft": "9d4ef6b91c08ef64606bdcb09a7c386064592f402f5d21add525f334ce8a756b",
+    "deep-8-u8.pcraft": "acb2b1b67eccee8bcd5c5ce4435bfefda0b11cac16482e92ff126d109e8387d1"
+  },
+  "original75_fixtures_changed": false
+}

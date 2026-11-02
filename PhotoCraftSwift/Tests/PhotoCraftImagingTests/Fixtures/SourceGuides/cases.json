@@ -1,0 +1,26 @@
+[
+  {
+    "depth": "u8",
+    "height": 11,
+    "positions": "guides-u8.f32",
+    "project": "guides-u8.pcraft",
+    "width": 17,
+    "wire": "guides-u8.resource1032"
+  },
+  {
+    "depth": "u16",
+    "height": 11,
+    "positions": "guides-u16.f32",
+    "project": "guides-u16.pcraft",
+    "width": 17,
+    "wire": "guides-u16.resource1032"
+  },
+  {
+    "depth": "f32",
+    "height": 11,
+    "positions": "guides-f32.f32",
+    "project": "guides-f32.pcraft",
+    "width": 17,
+    "wire": "guides-f32.resource1032"
+  }
+]

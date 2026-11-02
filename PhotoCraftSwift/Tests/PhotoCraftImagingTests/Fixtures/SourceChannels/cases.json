@@ -1,0 +1,41 @@
+[
+  {
+    "channels": [
+      "channels-u8-0.f32",
+      "channels-u8-1.f32",
+      "channels-u8-2.f32",
+      "channels-u8-3.f32"
+    ],
+    "depth": "u8",
+    "height": 11,
+    "overprint": "channels-u8-overprint.rgba32",
+    "project": "channels-u8.pcraft",
+    "width": 17
+  },
+  {
+    "channels": [
+      "channels-u16-0.f32",
+      "channels-u16-1.f32",
+      "channels-u16-2.f32",
+      "channels-u16-3.f32"
+    ],
+    "depth": "u16",
+    "height": 11,
+    "overprint": "channels-u16-overprint.rgba32",
+    "project": "channels-u16.pcraft",
+    "width": 17
+  },
+  {
+    "channels": [
+      "channels-f32-0.f32",
+      "channels-f32-1.f32",
+      "channels-f32-2.f32",
+      "channels-f32-3.f32"
+    ],
+    "depth": "f32",
+    "height": 11,
+    "overprint": "channels-f32-overprint.rgba32",
+    "project": "channels-f32.pcraft",
+    "width": 17
+  }
+]

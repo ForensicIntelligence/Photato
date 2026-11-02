@@ -1,5 +1,5 @@
 {
-  "step": "dev-step-056",
+  "step": 326,
   "date": "2026-10-08",
   "status": "Photoshop Defaults installed at launch; current menu preset verified live and all 102 mapped primary / 8 alternate bindings qualified against the unmodified factory preset",
   "source": "Installed Photoshop 2026 factory macOS shortcut preset and live Photoshop Defaults menu preset",
@@ -7,7 +7,7 @@
   "catalog": "Sources/PhotoCraft/PhotoshopMenuCatalog.swift",
   "bindings": "Sources/PhotoCraft/PhotoshopMenus.swift",
   "golden_inventory": "Tests/PhotoCraftAppTests/Fixtures/photoshop-menu-inventory.json",
-  "static_entries": 801,
+  "static_entries": 807,
   "primary_shortcuts": 102,
   "shortcut_set": "Photoshop Defaults (factory modified=0)",
   "adaptations": "artifacts/runs/20261008T230714Z-055-photoshop-menus/menu-adaptations.json",
@@ -1945,5 +1945,327 @@
     },
     "reference": "docs/CHANNEL_ARITHMETIC_REFERENCES.json",
     "native_visual_acceptance": false
+  },
+  "rich_source_text_step308": {
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+    "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
+    "functional_cases_passed": 16,
+    "new_tool_or_factory_binding": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Existing Photato text commands/state/schema/69 negotiation and published Adobe text_layer mappings; no new route. Original pcraft format remains outside Adobe input contract."
+  },
+  "relight_step318": {
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
+    "reference": "docs/RELIGHT_REFERENCES.json",
+    "functional_cases_passed": 13,
+    "factory_fixture_or_shortcuts_changed": false,
+    "new_tool_or_modifier_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Typed Relight settings/schema/state through existing shared commands, native71/Actions26, source mapping108; explicit Adobe boundary.",
+    "photato_additions": [
+      "Filter > Photato",
+      "Filter > Photato > Relight\u2026"
+    ],
+    "current_native_entries": 806,
+    "primary_shortcuts": 102,
+    "alternate_shortcuts": 8,
+    "native_report": "artifacts/runs/20261101T074443Z-318-relight-qualification/menu-report06.json"
+  },
+  "lighting_step321": {
+    "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02.json",
+    "reference": "docs/LIGHTING_EFFECTS_REFERENCES.json",
+    "functional_cases_passed": 14,
+    "factory_fixture_or_shortcuts_changed": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Shared Lighting controls/schema/state/presets, native72/Actions27 and original mapping109; unqualified Adobe descriptors explicitly reject.",
+    "menu": "Filter > Photato > Lighting Effects\u2026",
+    "report": "artifacts/runs/20261101T093255Z-321-lighting-qualification/menu-report02.json",
+    "bound_leaf_commands": 398
+  },
+  "source_displacement_step322": {
+    "step": 322,
+    "reference": "docs/SOURCE_DISPLACEMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+    "factory_fixture_or_shortcuts_changed": false,
+    "new_menu_shortcut_or_pointer_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Source Displace settings/state/schema, native73/Actions28 and Photato-only native resource input."
+  },
+  "source_adjustment_step323": {
+    "step": 323,
+    "reference": "docs/SOURCE_ADJUSTMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+    "new_menu_shortcut_or_pointer_action": false,
+    "factory_fixture_or_shortcuts_changed": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Typed source adjustment schema/state/capabilities and existing create/set/apply; native74/Actions29."
+  },
+  "source_effects_step326": {
+    "reference": "docs/SOURCE_LAYER_EFFECT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+    "existing_factory_global_light_path_registered": true,
+    "factory_entries_or_shortcuts_changed": false,
+    "new_custom_pointer_or_modifier_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false
+  },
+  "auxiliary_spot_channels328": {
+    "step": 328,
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
+    "scope": "Existing Channels panel New Spot entry enabled; standard native dialog and button controls. No main factory menu/shortcut inventory change or new canvas gesture. Existing painting/channel cursor policy retained; nine menu and nine all-modifier cursor regressions pass. Command-click New Channel uses the standard button pointer. Live Photoshop panel/appearance qualification remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "psd_auxiliary_channels329": {
+    "step": 329,
+    "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
+    "reference": "docs/PSD_AUXILIARY_CHANNEL_REFERENCES.json",
+    "scope": "Existing Open/Save/Save As and channel controls share the PSD/PSB serializer; no new main menu, shortcut or canvas gesture. Nine existing menu and nine modifier-cursor regressions pass. Factory807 entries/102 primary/8 alternate inventory unchanged; live visual acceptance remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "document_guides330": {
+    "step": 330,
+    "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
+    "reference": "docs/DOCUMENT_GUIDE_REFERENCES.json",
+    "scope": "Existing factory Guide/Show/Snap menu paths enabled; primary807-entry/102-primary/8-alternate inventory unchanged. Nine menu and nine cursor regressions pass. New native guide tests cover all16 captured orientation/Shift cursor combinations and all16 layer-snap modifiers, selection add/subtract hover and detach cleanup. Guide actions use live modifiers; other tool policies remain unchanged. Native Photoshop access is locked; full visual/context qualification remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "file_info334": {
+    "factory_path": "File > File Info\u2026",
+    "primary_shortcut": "Cmd+Option+Shift+I",
+    "native_action": "fileInfoDialog",
+    "reference": "docs/FILE_INFO_REFERENCES.json",
+    "tested": "Factory menu binding/shortcut and native draft/history/API checks pass in161 affected cases. Actual Photoshop2026 dialog layout and full File Info remain unqualified."
+  },
+  "layer_comps_336": {
+    "step": 336,
+    "guide": "docs/LAYER_COMPS.md",
+    "evidence": "docs/LAYER_COMPS_REFERENCES.json",
+    "bound_existing_paths": [
+      "Window > Layer Comps",
+      "File > Export > Layer Comps to Files\u2026",
+      "File > Export > Layer Comps to PDF\u2026"
+    ],
+    "shortcuts": "None assigned in retained factory catalogue; no new shortcut invented.",
+    "live_current": false
+  },
+  "export_workflow_341": {
+    "bindings": [
+      "File > Export > Export As\u2026",
+      "File > Export > Quick Export as PNG",
+      "File > Export > Export Preferences\u2026",
+      "Layer > Export As\u2026",
+      "Layer > Quick Export as PNG"
+    ],
+    "factory_shortcuts_changed": false,
+    "quick_title": "Reflects configured output format when menu validation runs.",
+    "reference": "docs/IMAGE_EXPORT.md",
+    "live_Photoshop_defaults_qualified": false,
+    "new_tool_or_modifier_action": false
+  },
+  "layer_files_342": {
+    "binding": "File > Export > Layers to Files\u2026",
+    "new_shortcut": false,
+    "factory_structure_changed": false,
+    "guide": "docs/LAYER_FILE_EXPORT.md",
+    "live_defaults_qualified": false
+  },
+  "color_range_343": {
+    "binding": "Select > Color Range\u2026",
+    "new_shortcut": false,
+    "factory_structure_changed": false,
+    "live_defaults_qualified": false,
+    "guide": "docs/COLOR_RANGE.md"
+  },
+  "magnetic_lasso_344": {
+    "binding": "Toolbar L group > Magnetic Lasso; factory Shift-L cycling",
+    "new_menu_command": false,
+    "factory_structure_changed": false,
+    "live_defaults_qualified": false,
+    "guide": "docs/MAGNETIC_LASSO.md"
+  },
+  "selection_modify_345": {
+    "bindings": [
+      "Select > Modify > Border\u2026",
+      "Select > Modify > Smooth\u2026",
+      "Select > Modify > Expand\u2026",
+      "Select > Modify > Contract\u2026",
+      "Select > Reselect"
+    ],
+    "factory_structure_changed": false,
+    "shortcut": "Shift-Command-D retained for Reselect",
+    "live_defaults_qualified": false,
+    "guide": "docs/SELECTION_MODIFY.md"
+  },
+  "selection_transform_346": {
+    "command_ids": [
+      "edit.transform.distort",
+      "edit.transform.flipHorizontal",
+      "edit.transform.flipVertical",
+      "edit.transform.perspective",
+      "edit.transform.rotate",
+      "edit.transform.rotate180",
+      "edit.transform.rotate90Ccw",
+      "edit.transform.rotate90Cw",
+      "edit.transform.scale",
+      "edit.transform.skew",
+      "select.transformSelection"
+    ],
+    "factory_structure_changed": false,
+    "scope": "Selection borders; Scale/Rotate retain existing layer fallback. Skew/Distort/Perspective require selection-transform context. Selection Warp unavailable.",
+    "live_defaults_qualified": false,
+    "guide": "docs/SELECTION_TRANSFORM.md"
+  },
+  "selected_pixel_transform_347": {
+    "command_ids": [
+      "edit.freeTransform",
+      "edit.transform.distort",
+      "edit.transform.flipHorizontal",
+      "edit.transform.flipVertical",
+      "edit.transform.perspective",
+      "edit.transform.rotate",
+      "edit.transform.rotate180",
+      "edit.transform.rotate90Ccw",
+      "edit.transform.rotate90Cw",
+      "edit.transform.scale",
+      "edit.transform.skew",
+      "select.transformSelection"
+    ],
+    "factory_structure_changed": false,
+    "shortcut": "Command-T retained",
+    "scope": "One ordinary RGB raster selection; six shared modes, native preview and direct selected flips/rotations. Other target contexts and Warp remain unavailable.",
+    "live_defaults_qualified": false,
+    "guide": "docs/SELECTED_PIXEL_TRANSFORM.md"
+  },
+  "background_layers_348": {
+    "command_ids": [
+      "layer.new.layerFromBackground"
+    ],
+    "factory_structure_changed": false,
+    "scope": "One dynamic Layer/New conversion binding, native name/options sheet and immediate lock conversion. Rich/mode/merge contexts and live defaults remain open.",
+    "live_defaults_qualified": false,
+    "guide": "docs/BACKGROUND_LAYERS.md"
+  },
+  "background_pixel_transform_349": {
+    "command_ids": [
+      "edit.freeTransform",
+      "edit.transform.distort",
+      "edit.transform.flipHorizontal",
+      "edit.transform.flipVertical",
+      "edit.transform.perspective",
+      "edit.transform.rotate",
+      "edit.transform.rotate180",
+      "edit.transform.rotate90Ccw",
+      "edit.transform.rotate90Cw",
+      "edit.transform.scale",
+      "edit.transform.skew"
+    ],
+    "factory_structure_or_shortcuts_changed": false,
+    "scope": "Enable shared selected-pixel Free Transform and fixed operations on editable RGB Background; layer role/position/opacity stay fixed.",
+    "live_defaults_qualified": false,
+    "guide": "docs/BACKGROUND_PIXEL_TRANSFORM.md"
+  },
+  "selected_pixel_move_350": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "tool": "Move/V",
+    "scope": "Inside-selection pointer move/copy, arrows1/10px and same-layer Option copies. No new menu entry or misbinding; Move is a tool, with no corresponding menu CSV row. Existing factory inventory/whole-layer commands remain.",
+    "live_defaults_qualified": false,
+    "guide": "docs/SELECTED_PIXEL_MOVE.md"
+  },
+  "pixel_mask_transform_351": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "scope": "Existing Command-T and Edit/Transform modes/fixed rotations/flips now target an eligible unlinked whole pixel mask. Unsupported selected/linked/filter contexts stay disabled.",
+    "live_defaults_qualified": false,
+    "guide": "docs/PIXEL_MASK_TRANSFORM.md"
+  },
+  "channel_transform_352": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "scope": "Existing Command-T and Edit/Transform modes/fixed rotations/flips now target an eligible whole/selected alpha, spot or Quick Mask. Color/ink components, multiple active channels and unsupported mask contexts stay disabled.",
+    "live_defaults_qualified": false,
+    "guide": "docs/CHANNEL_TRANSFORM.md"
+  },
+  "layer_collection_transform_353": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "scope": "Existing Command-T and Edit/Transform modes/fixed rotations/flips now target an eligible whole-layer/group collection. Projective collection modes remain explicitly unavailable.",
+    "live_defaults_qualified": false,
+    "guide": "docs/LAYER_COLLECTION_TRANSFORM.md"
+  },
+  "projective_layer_transform_354": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "scope": "Existing Command-T and Edit/Transform Distort/Perspective now serve supported single/multi RGB pixel and resolved Smart/group targets. Mixed unsupported types retain affine controls.",
+    "live_defaults_qualified": false,
+    "guide": "docs/PROJECTIVE_LAYER_TRANSFORM.md"
+  },
+  "layer_links_355": {
+    "factory_structure_shortcuts_and_catalogue_IDs_changed": false,
+    "scope": "Existing Layer Link/Unlink and Select Linked Layers become functional for eligible static documents. Context/footer/row chains and Shift temporary participation share native commands.",
+    "live_defaults_qualified": false,
+    "guide": "docs/LAYER_LINKS.md"
+  },
+  "pixel_fill_stroke_356": {
+    "factory_structure_shortcuts_catalogue_IDs_changed": false,
+    "scope": "Enable existing Edit > Stroke for eligible raster/mask/auxiliary targets and extend existing Fill through native color/mode/opacity/transparency controls. Older palette/Content-Aware paths retained; unsupported live content remains unavailable.",
+    "live_defaults_qualified": false,
+    "guide": "docs/PIXEL_FILL_STROKE.md"
+  },
+  "pattern_pixel_fill_357": {
+    "factory_structure_shortcuts_catalogue_IDs_changed": false,
+    "scope": "Existing Edit > Fill adds Pattern/Custom Pattern source with native preset choice while retaining palette/color/Content-Aware and Stroke controls.",
+    "factory_default_picker_layout_qualified": false,
+    "guide": "docs/PATTERN_PIXEL_FILL.md"
+  },
+  "large_crop_358": {
+    "factory_structure_shortcuts_catalogue_IDs_changed": false,
+    "scope": "Existing Crop tool, Image>Crop and width/height controls use the shared document extent.",
+    "factory_defaults_and_live_UI_qualified": false,
+    "guide": "docs/LARGE_CROP.md"
+  },
+  "layer_capacity_359": {
+    "guide": "docs/LAYER_CAPACITY.md",
+    "menu_titles_order_shortcuts_changed": false,
+    "native_panel_capacity_tested": 8000,
+    "live_UI_and_factory_parity_qualified": false
+  },
+  "flatten_image_360": {
+    "guide": "docs/FLATTEN_IMAGE.md",
+    "enabled_existing_factory_command": "Layer > Flatten Image",
+    "factory_structure_and_shortcuts_changed": false,
+    "hidden_layer_confirmation_added": true,
+    "live_UI_qualified": false
+  },
+  "document_duplicate_361": {
+    "guide": "docs/DOCUMENT_DUPLICATE.md",
+    "enabled_existing_factory_command": "Image > Duplicate\u2026",
+    "factory_structure_and_shortcuts_changed": false,
+    "live_UI_qualified": false
+  },
+  "canvas_edges_362": {
+    "guide": "docs/CANVAS_EDGES.md",
+    "enabled_existing_factory_commands": [
+      "Image > Trim\u2026",
+      "Image > Reveal All"
+    ],
+    "factory_structure_and_shortcuts_changed": false,
+    "live_UI_qualified": false
   }
 }

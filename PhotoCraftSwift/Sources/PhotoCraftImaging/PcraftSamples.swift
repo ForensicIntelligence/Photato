@@ -93,7 +93,7 @@ enum PcraftSamples {
     return try SelectionMask(width: width, height: height, bytes: values)
   }
   private static var invalidSamples: CraftError { .invalid("Invalid or non-finite PhotoCraft samples.") }
-  private static func pixel(_ data: UnsafeRawBufferPointer, at: Int, depth: PixelDepth,
+  static func pixel(_ data: UnsafeRawBufferPointer, at: Int, depth: PixelDepth,
     gray: Bool, alpha: Bool) throws -> Pixel {
     let stride = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
     func sample(_ index: Int) -> Float {

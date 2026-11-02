@@ -84,8 +84,8 @@ struct AdobeRemoveBackgroundRequest: Sendable {
     else { throw AdobeAPIError.unsupported("Request explicit PNG, JPEG or PSD output for TIFF/WebP input.") }
     // Import only the published image input, including EXIF orientation and profile handling.
     let decoded = try RasterIO.read(data, name: "Foreground")
-    guard decoded.layers.count <= 64, decoded.estimatedBytes <= 128 * 1_024 * 1_024 else {
-      throw AdobeAPIError.invalid("Decoded input exceeds the local 64-layer or 128 MiB document limit.")
+    guard decoded.layers.count <= LayerLimits.maximumLayers, decoded.estimatedBytes <= 128 * 1_024 * 1_024 else {
+      throw AdobeAPIError.invalid("Decoded input exceeds the local 8,000-layer or 128 MiB document limit.")
     }
     let original = try Renderer.composite(decoded)
     var document = try CraftDocument(width: decoded.width, height: decoded.height, depth: decoded.depth)

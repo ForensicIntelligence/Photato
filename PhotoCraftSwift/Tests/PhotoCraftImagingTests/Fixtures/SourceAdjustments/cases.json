@@ -1,0 +1,9314 @@
+[
+  {
+    "depth": "u8",
+    "expected": "brightness-False-0-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-0-u8-input.rgba32",
+    "merged": "brightness-False-0-u8-merged.rgba32",
+    "mergedStored": "brightness-False-0-u8-merged-stored.rgba32",
+    "name": "brightness-False-0",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-0-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-0-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "brightness-False-1-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-1-u8-input.rgba32",
+    "merged": "brightness-False-1-u8-merged.rgba32",
+    "mergedStored": "brightness-False-1-u8-merged-stored.rgba32",
+    "name": "brightness-False-1",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-1-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-1-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "brightness-False-2-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-2-u8-input.rgba32",
+    "merged": "brightness-False-2-u8-merged.rgba32",
+    "mergedStored": "brightness-False-2-u8-merged-stored.rgba32",
+    "name": "brightness-False-2",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-2-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-2-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "brightness-True-3-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-3-u8-input.rgba32",
+    "merged": "brightness-True-3-u8-merged.rgba32",
+    "mergedStored": "brightness-True-3-u8-merged-stored.rgba32",
+    "name": "brightness-True-3",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-3-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-3-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "brightness-True-4-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-4-u8-input.rgba32",
+    "merged": "brightness-True-4-u8-merged.rgba32",
+    "mergedStored": "brightness-True-4-u8-merged-stored.rgba32",
+    "name": "brightness-True-4",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-4-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-4-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "brightness-True-5-u8-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-5-u8-input.rgba32",
+    "merged": "brightness-True-5-u8-merged.rgba32",
+    "mergedStored": "brightness-True-5-u8-merged-stored.rgba32",
+    "name": "brightness-True-5",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-5-u8.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-5-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "levels-identity-u8-expected.rgba32",
+    "height": 11,
+    "input": "levels-identity-u8-input.rgba32",
+    "merged": "levels-identity-u8-merged.rgba32",
+    "mergedStored": "levels-identity-u8-merged-stored.rgba32",
+    "name": "levels-identity",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-identity-u8.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-identity-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "levels-fractional-u8-expected.rgba32",
+    "height": 11,
+    "input": "levels-fractional-u8-input.rgba32",
+    "merged": "levels-fractional-u8-merged.rgba32",
+    "mergedStored": "levels-fractional-u8-merged-stored.rgba32",
+    "name": "levels-fractional",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1.8125,
+          "in_black": 0.0713,
+          "in_white": 0.8527,
+          "out_black": 0.03125,
+          "out_white": 0.9731
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-fractional-u8.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0.0713,
+            0.8527,
+            1.8125,
+            0.03125,
+            0.9731
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-fractional-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "levels-component-u8-expected.rgba32",
+    "height": 11,
+    "input": "levels-component-u8-input.rgba32",
+    "merged": "levels-component-u8-merged.rgba32",
+    "mergedStored": "levels-component-u8-merged-stored.rgba32",
+    "name": "levels-component",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 0.8125,
+            "in_black": 0.05,
+            "in_white": 0.91,
+            "out_black": 0.02,
+            "out_white": 0.99
+          },
+          {
+            "gamma": 1.3125,
+            "in_black": 0.02,
+            "in_white": 0.95,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-component-u8.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0.05,
+            0.91,
+            0.8125,
+            0.02,
+            0.99
+          ],
+          [
+            0.02,
+            0.95,
+            1.3125,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-component-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "curves-identity-u8-expected.rgba32",
+    "height": 11,
+    "input": "curves-identity-u8-input.rgba32",
+    "merged": "curves-identity-u8-merged.rgba32",
+    "mergedStored": "curves-identity-u8-merged-stored.rgba32",
+    "name": "curves-identity",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-identity-u8.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-identity-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "curves-fractional-u8-expected.rgba32",
+    "height": 11,
+    "input": "curves-fractional-u8-input.rgba32",
+    "merged": "curves-fractional-u8-merged.rgba32",
+    "mergedStored": "curves-fractional-u8-merged-stored.rgba32",
+    "name": "curves-fractional",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 0.2875,
+            "output": 0.4213
+          },
+          {
+            "input": 0.7625,
+            "output": 0.8912
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [
+            {
+              "input": 0,
+              "output": 0
+            },
+            {
+              "input": 0.3137,
+              "output": 0.1725
+            },
+            {
+              "input": 1,
+              "output": 1
+            }
+          ],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-fractional-u8.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            0.2875,
+            0.4213
+          ],
+          [
+            0.7625,
+            0.8912
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": [
+          [
+            0,
+            0
+          ],
+          [
+            0.3137,
+            0.1725
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "curves-fractional-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "curves-empty-u8-expected.rgba32",
+    "height": 11,
+    "input": "curves-empty-u8-input.rgba32",
+    "merged": "curves-empty-u8-merged.rgba32",
+    "mergedStored": "curves-empty-u8-merged-stored.rgba32",
+    "name": "curves-empty",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-empty-u8.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-empty-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "exposure-12-u8-expected.rgba32",
+    "height": 11,
+    "input": "exposure-12-u8-input.rgba32",
+    "merged": "exposure-12-u8-merged.rgba32",
+    "mergedStored": "exposure-12-u8-merged-stored.rgba32",
+    "name": "exposure-12",
+    "original": {
+      "Exposure": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      }
+    },
+    "project": "exposure-12-u8.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-12-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "exposure-13-u8-expected.rgba32",
+    "height": 11,
+    "input": "exposure-13-u8-input.rgba32",
+    "merged": "exposure-13-u8-merged.rgba32",
+    "mergedStored": "exposure-13-u8-merged-stored.rgba32",
+    "name": "exposure-13",
+    "original": {
+      "Exposure": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      }
+    },
+    "project": "exposure-13-u8.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-13-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "exposure-14-u8-expected.rgba32",
+    "height": 11,
+    "input": "exposure-14-u8-input.rgba32",
+    "merged": "exposure-14-u8-merged.rgba32",
+    "mergedStored": "exposure-14-u8-merged-stored.rgba32",
+    "name": "exposure-14",
+    "original": {
+      "Exposure": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      }
+    },
+    "project": "exposure-14-u8.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-14-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "vibrance-15-u8-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-15-u8-input.rgba32",
+    "merged": "vibrance-15-u8-merged.rgba32",
+    "mergedStored": "vibrance-15-u8-merged-stored.rgba32",
+    "name": "vibrance-15",
+    "original": {
+      "Vibrance": {
+        "saturation": 0,
+        "vibrance": 0
+      }
+    },
+    "project": "vibrance-15-u8.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 0,
+        "vibrance": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-15-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "vibrance-16-u8-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-16-u8-input.rgba32",
+    "merged": "vibrance-16-u8-merged.rgba32",
+    "mergedStored": "vibrance-16-u8-merged-stored.rgba32",
+    "name": "vibrance-16",
+    "original": {
+      "Vibrance": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      }
+    },
+    "project": "vibrance-16-u8.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-16-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "vibrance-17-u8-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-17-u8-input.rgba32",
+    "merged": "vibrance-17-u8-merged.rgba32",
+    "mergedStored": "vibrance-17-u8-merged-stored.rgba32",
+    "name": "vibrance-17",
+    "original": {
+      "Vibrance": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      }
+    },
+    "project": "vibrance-17-u8.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-17-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "hue-master-u8-expected.rgba32",
+    "height": 11,
+    "input": "hue-master-u8-input.rgba32",
+    "merged": "hue-master-u8-merged.rgba32",
+    "mergedStored": "hue-master-u8-merged-stored.rgba32",
+    "name": "hue-master",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-master-u8.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-master-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "hue-ranges-u8-expected.rgba32",
+    "height": 11,
+    "input": "hue-ranges-u8-input.rgba32",
+    "merged": "hue-ranges-u8-merged.rgba32",
+    "mergedStored": "hue-ranges-u8-merged-stored.rgba32",
+    "name": "hue-ranges",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 31.625,
+            "lightness": 13.375,
+            "saturation": 27.25
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": -17.25,
+            "lightness": -3.125,
+            "saturation": -22.5
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-ranges-u8.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            31.625,
+            27.25,
+            13.375,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            -17.25,
+            -22.5,
+            -3.125,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-ranges-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "hue-colorize-u8-expected.rgba32",
+    "height": 11,
+    "input": "hue-colorize-u8-input.rgba32",
+    "merged": "hue-colorize-u8-merged.rgba32",
+    "mergedStored": "hue-colorize-u8-merged-stored.rgba32",
+    "name": "hue-colorize",
+    "original": {
+      "HueSaturation": {
+        "colorize": true,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-colorize-u8.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": true
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-colorize-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "balance-False-u8-expected.rgba32",
+    "height": 11,
+    "input": "balance-False-u8-input.rgba32",
+    "merged": "balance-False-u8-merged.rgba32",
+    "mergedStored": "balance-False-u8-merged-stored.rgba32",
+    "name": "balance-False",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": false,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-False-u8.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-False-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "balance-True-u8-expected.rgba32",
+    "height": 11,
+    "input": "balance-True-u8-input.rgba32",
+    "merged": "balance-True-u8-merged.rgba32",
+    "mergedStored": "balance-True-u8-merged-stored.rgba32",
+    "name": "balance-True",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": true,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-True-u8.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-True-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "black-white-23-u8-expected.rgba32",
+    "height": 11,
+    "input": "black-white-23-u8-input.rgba32",
+    "merged": "black-white-23-u8-merged.rgba32",
+    "mergedStored": "black-white-23-u8-merged-stored.rgba32",
+    "name": "black-white-23",
+    "original": {
+      "BlackWhite": {
+        "tint": null,
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-23-u8.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-23-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "black-white-24-u8-expected.rgba32",
+    "height": 11,
+    "input": "black-white-24-u8-input.rgba32",
+    "merged": "black-white-24-u8-merged.rgba32",
+    "mergedStored": "black-white-24-u8-merged-stored.rgba32",
+    "name": "black-white-24",
+    "original": {
+      "BlackWhite": {
+        "tint": [
+          0.91,
+          0.62,
+          0.34
+        ],
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-24-u8.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "tint": [
+          [
+            0.91,
+            0.62,
+            0.34
+          ]
+        ],
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-24-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "photo-filter-False-u8-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-False-u8-input.rgba32",
+    "merged": "photo-filter-False-u8-merged.rgba32",
+    "mergedStored": "photo-filter-False-u8-merged-stored.rgba32",
+    "name": "photo-filter-False",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": false
+      }
+    },
+    "project": "photo-filter-False-u8.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-False-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "photo-filter-True-u8-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-True-u8-input.rgba32",
+    "merged": "photo-filter-True-u8-merged.rgba32",
+    "mergedStored": "photo-filter-True-u8-merged-stored.rgba32",
+    "name": "photo-filter-True",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": true
+      }
+    },
+    "project": "photo-filter-True-u8.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-True-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "mixer-False-u8-expected.rgba32",
+    "height": 11,
+    "input": "mixer-False-u8-input.rgba32",
+    "merged": "mixer-False-u8-merged.rgba32",
+    "mergedStored": "mixer-False-u8-merged-stored.rgba32",
+    "name": "mixer-False",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": false
+      }
+    },
+    "project": "mixer-False-u8.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": false
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-False-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "mixer-True-u8-expected.rgba32",
+    "height": 11,
+    "input": "mixer-True-u8-input.rgba32",
+    "merged": "mixer-True-u8-merged.rgba32",
+    "mergedStored": "mixer-True-u8-merged-stored.rgba32",
+    "name": "mixer-True",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": true
+      }
+    },
+    "project": "mixer-True-u8.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": true
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-True-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "lookup-29-u8-expected.rgba32",
+    "height": 11,
+    "input": "lookup-29-u8-input.rgba32",
+    "merged": "lookup-29-u8-merged.rgba32",
+    "mergedStored": "lookup-29-u8-merged-stored.rgba32",
+    "name": "lookup-29",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-29-u8.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-29-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "lookup-30-u8-expected.rgba32",
+    "height": 11,
+    "input": "lookup-30-u8-input.rgba32",
+    "merged": "lookup-30-u8-merged.rgba32",
+    "mergedStored": "lookup-30-u8-merged-stored.rgba32",
+    "name": "lookup-30",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-30-u8.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-30-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "lookup-31-u8-expected.rgba32",
+    "height": 11,
+    "input": "lookup-31-u8-input.rgba32",
+    "merged": "lookup-31-u8-merged.rgba32",
+    "mergedStored": "lookup-31-u8-merged-stored.rgba32",
+    "name": "lookup-31",
+    "original": {
+      "ColorLookup": {
+        "dither": true,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-31-u8.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": true,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-31-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "lookup-icc-identity-u8-expected.rgba32",
+    "height": 11,
+    "input": "lookup-icc-identity-u8-input.rgba32",
+    "merged": "lookup-icc-identity-u8-merged.rgba32",
+    "mergedStored": "lookup-icc-identity-u8-merged-stored.rgba32",
+    "name": "lookup-icc-identity",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": null,
+        "name": "Owned unresolved profile",
+        "size": 0,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-icc-identity-u8.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned unresolved profile",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "lookup-icc-identity-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "invert-u8-expected.rgba32",
+    "height": 11,
+    "input": "invert-u8-input.rgba32",
+    "merged": "invert-u8-merged.rgba32",
+    "mergedStored": "invert-u8-merged-stored.rgba32",
+    "name": "invert",
+    "original": "Invert",
+    "project": "invert-u8.pcraft",
+    "settings": {
+      "kind": "invert",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "invert-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "posterize-3-u8-expected.rgba32",
+    "height": 11,
+    "input": "posterize-3-u8-input.rgba32",
+    "merged": "posterize-3-u8-merged.rgba32",
+    "mergedStored": "posterize-3-u8-merged-stored.rgba32",
+    "name": "posterize-3",
+    "original": {
+      "Posterize": {
+        "levels": 3
+      }
+    },
+    "project": "posterize-3-u8.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 3
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-3-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "posterize-13-u8-expected.rgba32",
+    "height": 11,
+    "input": "posterize-13-u8-input.rgba32",
+    "merged": "posterize-13-u8-merged.rgba32",
+    "mergedStored": "posterize-13-u8-merged-stored.rgba32",
+    "name": "posterize-13",
+    "original": {
+      "Posterize": {
+        "levels": 13
+      }
+    },
+    "project": "posterize-13-u8.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 13
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-13-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "threshold-fractional-u8-expected.rgba32",
+    "height": 11,
+    "input": "threshold-fractional-u8-input.rgba32",
+    "merged": "threshold-fractional-u8-merged.rgba32",
+    "mergedStored": "threshold-fractional-u8-merged-stored.rgba32",
+    "name": "threshold-fractional",
+    "original": {
+      "Threshold": {
+        "level": 0.45125
+      }
+    },
+    "project": "threshold-fractional-u8.pcraft",
+    "settings": {
+      "kind": "threshold",
+      "options": {},
+      "parameters": {
+        "level": 0.45125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "threshold-fractional-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "gradient-empty-u8-expected.rgba32",
+    "height": 11,
+    "input": "gradient-empty-u8-input.rgba32",
+    "merged": "gradient-empty-u8-merged.rgba32",
+    "mergedStored": "gradient-empty-u8-merged-stored.rgba32",
+    "name": "gradient-empty",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": []
+      }
+    },
+    "project": "gradient-empty-u8.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": []
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-empty-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "gradient-fractional-u8-expected.rgba32",
+    "height": 11,
+    "input": "gradient-fractional-u8-input.rgba32",
+    "merged": "gradient-fractional-u8-merged.rgba32",
+    "mergedStored": "gradient-fractional-u8-merged-stored.rgba32",
+    "name": "gradient-fractional",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-fractional-u8.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-fractional-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "gradient-reverse-dither-u8-expected.rgba32",
+    "height": 11,
+    "input": "gradient-reverse-dither-u8-input.rgba32",
+    "merged": "gradient-reverse-dither-u8-merged.rgba32",
+    "mergedStored": "gradient-reverse-dither-u8-merged-stored.rgba32",
+    "name": "gradient-reverse-dither",
+    "original": {
+      "GradientMap": {
+        "dither": true,
+        "reverse": true,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-reverse-dither-u8.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": true,
+        "reverse": true
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-reverse-dither-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "selective-False-u8-expected.rgba32",
+    "height": 11,
+    "input": "selective-False-u8-input.rgba32",
+    "merged": "selective-False-u8-merged.rgba32",
+    "mergedStored": "selective-False-u8-merged-stored.rgba32",
+    "name": "selective-False",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": false
+      }
+    },
+    "project": "selective-False-u8.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": false
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-False-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "selective-True-u8-expected.rgba32",
+    "height": 11,
+    "input": "selective-True-u8-input.rgba32",
+    "merged": "selective-True-u8-merged.rgba32",
+    "mergedStored": "selective-True-u8-merged-stored.rgba32",
+    "name": "selective-True",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": true
+      }
+    },
+    "project": "selective-True-u8.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": true
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-True-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u8",
+    "expected": "opaque-unsupported-u8-expected.rgba32",
+    "height": 11,
+    "input": "opaque-unsupported-u8-input.rgba32",
+    "merged": "opaque-unsupported-u8-merged.rgba32",
+    "mergedStored": "opaque-unsupported-u8-merged-stored.rgba32",
+    "name": "opaque-unsupported",
+    "original": {
+      "Unsupported": {
+        "psd_key": "test",
+        "raw": [
+          1,
+          7,
+          33,
+          255
+        ]
+      }
+    },
+    "project": "opaque-unsupported-u8.pcraft",
+    "settings": {
+      "kind": "unsupported",
+      "opaqueData": "AQch/w==",
+      "opaqueKey": "test",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "opaque-unsupported-u8-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-False-0-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-0-u16-input.rgba32",
+    "merged": "brightness-False-0-u16-merged.rgba32",
+    "mergedStored": "brightness-False-0-u16-merged-stored.rgba32",
+    "name": "brightness-False-0",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-0-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-0-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-False-1-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-1-u16-input.rgba32",
+    "merged": "brightness-False-1-u16-merged.rgba32",
+    "mergedStored": "brightness-False-1-u16-merged-stored.rgba32",
+    "name": "brightness-False-1",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-1-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-1-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-False-2-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-2-u16-input.rgba32",
+    "merged": "brightness-False-2-u16-merged.rgba32",
+    "mergedStored": "brightness-False-2-u16-merged-stored.rgba32",
+    "name": "brightness-False-2",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-2-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-2-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-True-3-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-3-u16-input.rgba32",
+    "merged": "brightness-True-3-u16-merged.rgba32",
+    "mergedStored": "brightness-True-3-u16-merged-stored.rgba32",
+    "name": "brightness-True-3",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-3-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-3-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-True-4-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-4-u16-input.rgba32",
+    "merged": "brightness-True-4-u16-merged.rgba32",
+    "mergedStored": "brightness-True-4-u16-merged-stored.rgba32",
+    "name": "brightness-True-4",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-4-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-4-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "brightness-True-5-u16-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-5-u16-input.rgba32",
+    "merged": "brightness-True-5-u16-merged.rgba32",
+    "mergedStored": "brightness-True-5-u16-merged-stored.rgba32",
+    "name": "brightness-True-5",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-5-u16.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-5-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "levels-identity-u16-expected.rgba32",
+    "height": 11,
+    "input": "levels-identity-u16-input.rgba32",
+    "merged": "levels-identity-u16-merged.rgba32",
+    "mergedStored": "levels-identity-u16-merged-stored.rgba32",
+    "name": "levels-identity",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-identity-u16.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-identity-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "levels-fractional-u16-expected.rgba32",
+    "height": 11,
+    "input": "levels-fractional-u16-input.rgba32",
+    "merged": "levels-fractional-u16-merged.rgba32",
+    "mergedStored": "levels-fractional-u16-merged-stored.rgba32",
+    "name": "levels-fractional",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1.8125,
+          "in_black": 0.0713,
+          "in_white": 0.8527,
+          "out_black": 0.03125,
+          "out_white": 0.9731
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-fractional-u16.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0.0713,
+            0.8527,
+            1.8125,
+            0.03125,
+            0.9731
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-fractional-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "levels-component-u16-expected.rgba32",
+    "height": 11,
+    "input": "levels-component-u16-input.rgba32",
+    "merged": "levels-component-u16-merged.rgba32",
+    "mergedStored": "levels-component-u16-merged-stored.rgba32",
+    "name": "levels-component",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 0.8125,
+            "in_black": 0.05,
+            "in_white": 0.91,
+            "out_black": 0.02,
+            "out_white": 0.99
+          },
+          {
+            "gamma": 1.3125,
+            "in_black": 0.02,
+            "in_white": 0.95,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-component-u16.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0.05,
+            0.91,
+            0.8125,
+            0.02,
+            0.99
+          ],
+          [
+            0.02,
+            0.95,
+            1.3125,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-component-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "curves-identity-u16-expected.rgba32",
+    "height": 11,
+    "input": "curves-identity-u16-input.rgba32",
+    "merged": "curves-identity-u16-merged.rgba32",
+    "mergedStored": "curves-identity-u16-merged-stored.rgba32",
+    "name": "curves-identity",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-identity-u16.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-identity-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "curves-fractional-u16-expected.rgba32",
+    "height": 11,
+    "input": "curves-fractional-u16-input.rgba32",
+    "merged": "curves-fractional-u16-merged.rgba32",
+    "mergedStored": "curves-fractional-u16-merged-stored.rgba32",
+    "name": "curves-fractional",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 0.2875,
+            "output": 0.4213
+          },
+          {
+            "input": 0.7625,
+            "output": 0.8912
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [
+            {
+              "input": 0,
+              "output": 0
+            },
+            {
+              "input": 0.3137,
+              "output": 0.1725
+            },
+            {
+              "input": 1,
+              "output": 1
+            }
+          ],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-fractional-u16.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            0.2875,
+            0.4213
+          ],
+          [
+            0.7625,
+            0.8912
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": [
+          [
+            0,
+            0
+          ],
+          [
+            0.3137,
+            0.1725
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "curves-fractional-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "curves-empty-u16-expected.rgba32",
+    "height": 11,
+    "input": "curves-empty-u16-input.rgba32",
+    "merged": "curves-empty-u16-merged.rgba32",
+    "mergedStored": "curves-empty-u16-merged-stored.rgba32",
+    "name": "curves-empty",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-empty-u16.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-empty-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "exposure-12-u16-expected.rgba32",
+    "height": 11,
+    "input": "exposure-12-u16-input.rgba32",
+    "merged": "exposure-12-u16-merged.rgba32",
+    "mergedStored": "exposure-12-u16-merged-stored.rgba32",
+    "name": "exposure-12",
+    "original": {
+      "Exposure": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      }
+    },
+    "project": "exposure-12-u16.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-12-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "exposure-13-u16-expected.rgba32",
+    "height": 11,
+    "input": "exposure-13-u16-input.rgba32",
+    "merged": "exposure-13-u16-merged.rgba32",
+    "mergedStored": "exposure-13-u16-merged-stored.rgba32",
+    "name": "exposure-13",
+    "original": {
+      "Exposure": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      }
+    },
+    "project": "exposure-13-u16.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-13-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "exposure-14-u16-expected.rgba32",
+    "height": 11,
+    "input": "exposure-14-u16-input.rgba32",
+    "merged": "exposure-14-u16-merged.rgba32",
+    "mergedStored": "exposure-14-u16-merged-stored.rgba32",
+    "name": "exposure-14",
+    "original": {
+      "Exposure": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      }
+    },
+    "project": "exposure-14-u16.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-14-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "vibrance-15-u16-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-15-u16-input.rgba32",
+    "merged": "vibrance-15-u16-merged.rgba32",
+    "mergedStored": "vibrance-15-u16-merged-stored.rgba32",
+    "name": "vibrance-15",
+    "original": {
+      "Vibrance": {
+        "saturation": 0,
+        "vibrance": 0
+      }
+    },
+    "project": "vibrance-15-u16.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 0,
+        "vibrance": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-15-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "vibrance-16-u16-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-16-u16-input.rgba32",
+    "merged": "vibrance-16-u16-merged.rgba32",
+    "mergedStored": "vibrance-16-u16-merged-stored.rgba32",
+    "name": "vibrance-16",
+    "original": {
+      "Vibrance": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      }
+    },
+    "project": "vibrance-16-u16.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-16-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "vibrance-17-u16-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-17-u16-input.rgba32",
+    "merged": "vibrance-17-u16-merged.rgba32",
+    "mergedStored": "vibrance-17-u16-merged-stored.rgba32",
+    "name": "vibrance-17",
+    "original": {
+      "Vibrance": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      }
+    },
+    "project": "vibrance-17-u16.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-17-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "hue-master-u16-expected.rgba32",
+    "height": 11,
+    "input": "hue-master-u16-input.rgba32",
+    "merged": "hue-master-u16-merged.rgba32",
+    "mergedStored": "hue-master-u16-merged-stored.rgba32",
+    "name": "hue-master",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-master-u16.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-master-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "hue-ranges-u16-expected.rgba32",
+    "height": 11,
+    "input": "hue-ranges-u16-input.rgba32",
+    "merged": "hue-ranges-u16-merged.rgba32",
+    "mergedStored": "hue-ranges-u16-merged-stored.rgba32",
+    "name": "hue-ranges",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 31.625,
+            "lightness": 13.375,
+            "saturation": 27.25
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": -17.25,
+            "lightness": -3.125,
+            "saturation": -22.5
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-ranges-u16.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            31.625,
+            27.25,
+            13.375,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            -17.25,
+            -22.5,
+            -3.125,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-ranges-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "hue-colorize-u16-expected.rgba32",
+    "height": 11,
+    "input": "hue-colorize-u16-input.rgba32",
+    "merged": "hue-colorize-u16-merged.rgba32",
+    "mergedStored": "hue-colorize-u16-merged-stored.rgba32",
+    "name": "hue-colorize",
+    "original": {
+      "HueSaturation": {
+        "colorize": true,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-colorize-u16.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": true
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-colorize-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "balance-False-u16-expected.rgba32",
+    "height": 11,
+    "input": "balance-False-u16-input.rgba32",
+    "merged": "balance-False-u16-merged.rgba32",
+    "mergedStored": "balance-False-u16-merged-stored.rgba32",
+    "name": "balance-False",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": false,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-False-u16.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-False-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "balance-True-u16-expected.rgba32",
+    "height": 11,
+    "input": "balance-True-u16-input.rgba32",
+    "merged": "balance-True-u16-merged.rgba32",
+    "mergedStored": "balance-True-u16-merged-stored.rgba32",
+    "name": "balance-True",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": true,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-True-u16.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-True-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "black-white-23-u16-expected.rgba32",
+    "height": 11,
+    "input": "black-white-23-u16-input.rgba32",
+    "merged": "black-white-23-u16-merged.rgba32",
+    "mergedStored": "black-white-23-u16-merged-stored.rgba32",
+    "name": "black-white-23",
+    "original": {
+      "BlackWhite": {
+        "tint": null,
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-23-u16.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-23-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "black-white-24-u16-expected.rgba32",
+    "height": 11,
+    "input": "black-white-24-u16-input.rgba32",
+    "merged": "black-white-24-u16-merged.rgba32",
+    "mergedStored": "black-white-24-u16-merged-stored.rgba32",
+    "name": "black-white-24",
+    "original": {
+      "BlackWhite": {
+        "tint": [
+          0.91,
+          0.62,
+          0.34
+        ],
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-24-u16.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "tint": [
+          [
+            0.91,
+            0.62,
+            0.34
+          ]
+        ],
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-24-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "photo-filter-False-u16-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-False-u16-input.rgba32",
+    "merged": "photo-filter-False-u16-merged.rgba32",
+    "mergedStored": "photo-filter-False-u16-merged-stored.rgba32",
+    "name": "photo-filter-False",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": false
+      }
+    },
+    "project": "photo-filter-False-u16.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-False-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "photo-filter-True-u16-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-True-u16-input.rgba32",
+    "merged": "photo-filter-True-u16-merged.rgba32",
+    "mergedStored": "photo-filter-True-u16-merged-stored.rgba32",
+    "name": "photo-filter-True",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": true
+      }
+    },
+    "project": "photo-filter-True-u16.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-True-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "mixer-False-u16-expected.rgba32",
+    "height": 11,
+    "input": "mixer-False-u16-input.rgba32",
+    "merged": "mixer-False-u16-merged.rgba32",
+    "mergedStored": "mixer-False-u16-merged-stored.rgba32",
+    "name": "mixer-False",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": false
+      }
+    },
+    "project": "mixer-False-u16.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": false
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-False-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "mixer-True-u16-expected.rgba32",
+    "height": 11,
+    "input": "mixer-True-u16-input.rgba32",
+    "merged": "mixer-True-u16-merged.rgba32",
+    "mergedStored": "mixer-True-u16-merged-stored.rgba32",
+    "name": "mixer-True",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": true
+      }
+    },
+    "project": "mixer-True-u16.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": true
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-True-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "lookup-29-u16-expected.rgba32",
+    "height": 11,
+    "input": "lookup-29-u16-input.rgba32",
+    "merged": "lookup-29-u16-merged.rgba32",
+    "mergedStored": "lookup-29-u16-merged-stored.rgba32",
+    "name": "lookup-29",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-29-u16.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-29-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "lookup-30-u16-expected.rgba32",
+    "height": 11,
+    "input": "lookup-30-u16-input.rgba32",
+    "merged": "lookup-30-u16-merged.rgba32",
+    "mergedStored": "lookup-30-u16-merged-stored.rgba32",
+    "name": "lookup-30",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-30-u16.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-30-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "lookup-31-u16-expected.rgba32",
+    "height": 11,
+    "input": "lookup-31-u16-input.rgba32",
+    "merged": "lookup-31-u16-merged.rgba32",
+    "mergedStored": "lookup-31-u16-merged-stored.rgba32",
+    "name": "lookup-31",
+    "original": {
+      "ColorLookup": {
+        "dither": true,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-31-u16.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": true,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-31-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "lookup-icc-identity-u16-expected.rgba32",
+    "height": 11,
+    "input": "lookup-icc-identity-u16-input.rgba32",
+    "merged": "lookup-icc-identity-u16-merged.rgba32",
+    "mergedStored": "lookup-icc-identity-u16-merged-stored.rgba32",
+    "name": "lookup-icc-identity",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": null,
+        "name": "Owned unresolved profile",
+        "size": 0,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-icc-identity-u16.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned unresolved profile",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "lookup-icc-identity-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "invert-u16-expected.rgba32",
+    "height": 11,
+    "input": "invert-u16-input.rgba32",
+    "merged": "invert-u16-merged.rgba32",
+    "mergedStored": "invert-u16-merged-stored.rgba32",
+    "name": "invert",
+    "original": "Invert",
+    "project": "invert-u16.pcraft",
+    "settings": {
+      "kind": "invert",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "invert-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "posterize-3-u16-expected.rgba32",
+    "height": 11,
+    "input": "posterize-3-u16-input.rgba32",
+    "merged": "posterize-3-u16-merged.rgba32",
+    "mergedStored": "posterize-3-u16-merged-stored.rgba32",
+    "name": "posterize-3",
+    "original": {
+      "Posterize": {
+        "levels": 3
+      }
+    },
+    "project": "posterize-3-u16.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 3
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-3-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "posterize-13-u16-expected.rgba32",
+    "height": 11,
+    "input": "posterize-13-u16-input.rgba32",
+    "merged": "posterize-13-u16-merged.rgba32",
+    "mergedStored": "posterize-13-u16-merged-stored.rgba32",
+    "name": "posterize-13",
+    "original": {
+      "Posterize": {
+        "levels": 13
+      }
+    },
+    "project": "posterize-13-u16.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 13
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-13-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "threshold-fractional-u16-expected.rgba32",
+    "height": 11,
+    "input": "threshold-fractional-u16-input.rgba32",
+    "merged": "threshold-fractional-u16-merged.rgba32",
+    "mergedStored": "threshold-fractional-u16-merged-stored.rgba32",
+    "name": "threshold-fractional",
+    "original": {
+      "Threshold": {
+        "level": 0.45125
+      }
+    },
+    "project": "threshold-fractional-u16.pcraft",
+    "settings": {
+      "kind": "threshold",
+      "options": {},
+      "parameters": {
+        "level": 0.45125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "threshold-fractional-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "gradient-empty-u16-expected.rgba32",
+    "height": 11,
+    "input": "gradient-empty-u16-input.rgba32",
+    "merged": "gradient-empty-u16-merged.rgba32",
+    "mergedStored": "gradient-empty-u16-merged-stored.rgba32",
+    "name": "gradient-empty",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": []
+      }
+    },
+    "project": "gradient-empty-u16.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": []
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-empty-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "gradient-fractional-u16-expected.rgba32",
+    "height": 11,
+    "input": "gradient-fractional-u16-input.rgba32",
+    "merged": "gradient-fractional-u16-merged.rgba32",
+    "mergedStored": "gradient-fractional-u16-merged-stored.rgba32",
+    "name": "gradient-fractional",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-fractional-u16.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-fractional-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "gradient-reverse-dither-u16-expected.rgba32",
+    "height": 11,
+    "input": "gradient-reverse-dither-u16-input.rgba32",
+    "merged": "gradient-reverse-dither-u16-merged.rgba32",
+    "mergedStored": "gradient-reverse-dither-u16-merged-stored.rgba32",
+    "name": "gradient-reverse-dither",
+    "original": {
+      "GradientMap": {
+        "dither": true,
+        "reverse": true,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-reverse-dither-u16.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": true,
+        "reverse": true
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-reverse-dither-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "selective-False-u16-expected.rgba32",
+    "height": 11,
+    "input": "selective-False-u16-input.rgba32",
+    "merged": "selective-False-u16-merged.rgba32",
+    "mergedStored": "selective-False-u16-merged-stored.rgba32",
+    "name": "selective-False",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": false
+      }
+    },
+    "project": "selective-False-u16.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": false
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-False-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "selective-True-u16-expected.rgba32",
+    "height": 11,
+    "input": "selective-True-u16-input.rgba32",
+    "merged": "selective-True-u16-merged.rgba32",
+    "mergedStored": "selective-True-u16-merged-stored.rgba32",
+    "name": "selective-True",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": true
+      }
+    },
+    "project": "selective-True-u16.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": true
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-True-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "u16",
+    "expected": "opaque-unsupported-u16-expected.rgba32",
+    "height": 11,
+    "input": "opaque-unsupported-u16-input.rgba32",
+    "merged": "opaque-unsupported-u16-merged.rgba32",
+    "mergedStored": "opaque-unsupported-u16-merged-stored.rgba32",
+    "name": "opaque-unsupported",
+    "original": {
+      "Unsupported": {
+        "psd_key": "test",
+        "raw": [
+          1,
+          7,
+          33,
+          255
+        ]
+      }
+    },
+    "project": "opaque-unsupported-u16.pcraft",
+    "settings": {
+      "kind": "unsupported",
+      "opaqueData": "AQch/w==",
+      "opaqueKey": "test",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "opaque-unsupported-u16-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-False-0-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-0-f32-input.rgba32",
+    "merged": "brightness-False-0-f32-merged.rgba32",
+    "mergedStored": "brightness-False-0-f32-merged-stored.rgba32",
+    "name": "brightness-False-0",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-0-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-0-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-False-1-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-1-f32-input.rgba32",
+    "merged": "brightness-False-1-f32-merged.rgba32",
+    "mergedStored": "brightness-False-1-f32-merged-stored.rgba32",
+    "name": "brightness-False-1",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-1-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-1-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-False-2-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-False-2-f32-input.rgba32",
+    "merged": "brightness-False-2-f32-merged.rgba32",
+    "mergedStored": "brightness-False-2-f32-merged-stored.rgba32",
+    "name": "brightness-False-2",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": false
+      }
+    },
+    "project": "brightness-False-2-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": false
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-False-2-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-True-3-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-3-f32-input.rgba32",
+    "merged": "brightness-True-3-f32-merged.rgba32",
+    "mergedStored": "brightness-True-3-f32-merged-stored.rgba32",
+    "name": "brightness-True-3",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-3-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-3-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-True-4-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-4-f32-input.rgba32",
+    "merged": "brightness-True-4-f32-merged.rgba32",
+    "mergedStored": "brightness-True-4-f32-merged-stored.rgba32",
+    "name": "brightness-True-4",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-4-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-4-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "brightness-True-5-f32-expected.rgba32",
+    "height": 11,
+    "input": "brightness-True-5-f32-input.rgba32",
+    "merged": "brightness-True-5-f32-merged.rgba32",
+    "mergedStored": "brightness-True-5-f32-merged-stored.rgba32",
+    "name": "brightness-True-5",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": true
+      }
+    },
+    "project": "brightness-True-5-f32.pcraft",
+    "settings": {
+      "kind": "brightnessContrast",
+      "options": {
+        "legacy": true
+      },
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "brightness-True-5-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "levels-identity-f32-expected.rgba32",
+    "height": 11,
+    "input": "levels-identity-f32-input.rgba32",
+    "merged": "levels-identity-f32-merged.rgba32",
+    "mergedStored": "levels-identity-f32-merged-stored.rgba32",
+    "name": "levels-identity",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-identity-f32.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-identity-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "levels-fractional-f32-expected.rgba32",
+    "height": 11,
+    "input": "levels-fractional-f32-input.rgba32",
+    "merged": "levels-fractional-f32-merged.rgba32",
+    "mergedStored": "levels-fractional-f32-merged-stored.rgba32",
+    "name": "levels-fractional",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1.8125,
+          "in_black": 0.0713,
+          "in_white": 0.8527,
+          "out_black": 0.03125,
+          "out_white": 0.9731
+        },
+        "per_channel": [
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-fractional-f32.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0.0713,
+            0.8527,
+            1.8125,
+            0.03125,
+            0.9731
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-fractional-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "levels-component-f32-expected.rgba32",
+    "height": 11,
+    "input": "levels-component-f32-input.rgba32",
+    "merged": "levels-component-f32-merged.rgba32",
+    "mergedStored": "levels-component-f32-merged-stored.rgba32",
+    "name": "levels-component",
+    "original": {
+      "Levels": {
+        "black": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "master": {
+          "gamma": 1,
+          "in_black": 0,
+          "in_white": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "gamma": 0.8125,
+            "in_black": 0.05,
+            "in_white": 0.91,
+            "out_black": 0.02,
+            "out_white": 0.99
+          },
+          {
+            "gamma": 1.3125,
+            "in_black": 0.02,
+            "in_white": 0.95,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "gamma": 1,
+            "in_black": 0,
+            "in_white": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "levels-component-f32.pcraft",
+    "settings": {
+      "kind": "levels",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0.05,
+            0.91,
+            0.8125,
+            0.02,
+            0.99
+          ],
+          [
+            0.02,
+            0.95,
+            1.3125,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "levels-component-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "curves-identity-f32-expected.rgba32",
+    "height": 11,
+    "input": "curves-identity-f32-input.rgba32",
+    "merged": "curves-identity-f32-merged.rgba32",
+    "mergedStored": "curves-identity-f32-merged-stored.rgba32",
+    "name": "curves-identity",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-identity-f32.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-identity-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "curves-fractional-f32-expected.rgba32",
+    "height": 11,
+    "input": "curves-fractional-f32-input.rgba32",
+    "merged": "curves-fractional-f32-merged.rgba32",
+    "mergedStored": "curves-fractional-f32-merged-stored.rgba32",
+    "name": "curves-fractional",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 0.2875,
+            "output": 0.4213
+          },
+          {
+            "input": 0.7625,
+            "output": 0.8912
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [
+            {
+              "input": 0,
+              "output": 0
+            },
+            {
+              "input": 0.3137,
+              "output": 0.1725
+            },
+            {
+              "input": 1,
+              "output": 1
+            }
+          ],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-fractional-f32.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            0.2875,
+            0.4213
+          ],
+          [
+            0.7625,
+            0.8912
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": [
+          [
+            0,
+            0
+          ],
+          [
+            0.3137,
+            0.1725
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "curves-fractional-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "curves-empty-f32-expected.rgba32",
+    "height": 11,
+    "input": "curves-empty-f32-input.rgba32",
+    "merged": "curves-empty-f32-merged.rgba32",
+    "mergedStored": "curves-empty-f32-merged-stored.rgba32",
+    "name": "curves-empty",
+    "original": {
+      "Curves": {
+        "black": [],
+        "master": [],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb"
+      }
+    },
+    "project": "curves-empty-f32.pcraft",
+    "settings": {
+      "kind": "curves",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "black": [],
+        "blue": [],
+        "green": [],
+        "master": [],
+        "red": []
+      },
+      "space": "rgb"
+    },
+    "source": "curves-empty-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "exposure-12-f32-expected.rgba32",
+    "height": 11,
+    "input": "exposure-12-f32-input.rgba32",
+    "merged": "exposure-12-f32-merged.rgba32",
+    "mergedStored": "exposure-12-f32-merged-stored.rgba32",
+    "name": "exposure-12",
+    "original": {
+      "Exposure": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      }
+    },
+    "project": "exposure-12-f32.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 0,
+        "gamma": 1,
+        "offset": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-12-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "exposure-13-f32-expected.rgba32",
+    "height": 11,
+    "input": "exposure-13-f32-input.rgba32",
+    "merged": "exposure-13-f32-merged.rgba32",
+    "mergedStored": "exposure-13-f32-merged-stored.rgba32",
+    "name": "exposure-13",
+    "original": {
+      "Exposure": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      }
+    },
+    "project": "exposure-13-f32.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": 1.375,
+        "gamma": 1.3125,
+        "offset": 0.03125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-13-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "exposure-14-f32-expected.rgba32",
+    "height": 11,
+    "input": "exposure-14-f32-input.rgba32",
+    "merged": "exposure-14-f32-merged.rgba32",
+    "mergedStored": "exposure-14-f32-merged-stored.rgba32",
+    "name": "exposure-14",
+    "original": {
+      "Exposure": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      }
+    },
+    "project": "exposure-14-f32.pcraft",
+    "settings": {
+      "kind": "exposure",
+      "options": {},
+      "parameters": {
+        "exposure": -2.125,
+        "gamma": 0.8125,
+        "offset": -0.04
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "exposure-14-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "vibrance-15-f32-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-15-f32-input.rgba32",
+    "merged": "vibrance-15-f32-merged.rgba32",
+    "mergedStored": "vibrance-15-f32-merged-stored.rgba32",
+    "name": "vibrance-15",
+    "original": {
+      "Vibrance": {
+        "saturation": 0,
+        "vibrance": 0
+      }
+    },
+    "project": "vibrance-15-f32.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 0,
+        "vibrance": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-15-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "vibrance-16-f32-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-16-f32-input.rgba32",
+    "merged": "vibrance-16-f32-merged.rgba32",
+    "mergedStored": "vibrance-16-f32-merged-stored.rgba32",
+    "name": "vibrance-16",
+    "original": {
+      "Vibrance": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      }
+    },
+    "project": "vibrance-16-f32.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": 21.375,
+        "vibrance": 38.125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-16-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "vibrance-17-f32-expected.rgba32",
+    "height": 11,
+    "input": "vibrance-17-f32-input.rgba32",
+    "merged": "vibrance-17-f32-merged.rgba32",
+    "mergedStored": "vibrance-17-f32-merged-stored.rgba32",
+    "name": "vibrance-17",
+    "original": {
+      "Vibrance": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      }
+    },
+    "project": "vibrance-17-f32.pcraft",
+    "settings": {
+      "kind": "vibrance",
+      "options": {},
+      "parameters": {
+        "saturation": -17.25,
+        "vibrance": -47.5
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "vibrance-17-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "hue-master-f32-expected.rgba32",
+    "height": 11,
+    "input": "hue-master-f32-input.rgba32",
+    "merged": "hue-master-f32-merged.rgba32",
+    "mergedStored": "hue-master-f32-merged-stored.rgba32",
+    "name": "hue-master",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-master-f32.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-master-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "hue-ranges-f32-expected.rgba32",
+    "height": 11,
+    "input": "hue-ranges-f32-input.rgba32",
+    "merged": "hue-ranges-f32-merged.rgba32",
+    "mergedStored": "hue-ranges-f32-merged-stored.rgba32",
+    "name": "hue-ranges",
+    "original": {
+      "HueSaturation": {
+        "colorize": false,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 31.625,
+            "lightness": 13.375,
+            "saturation": 27.25
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": -17.25,
+            "lightness": -3.125,
+            "saturation": -22.5
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-ranges-f32.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": false
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            31.625,
+            27.25,
+            13.375,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            -17.25,
+            -22.5,
+            -3.125,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-ranges-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "hue-colorize-f32-expected.rgba32",
+    "height": 11,
+    "input": "hue-colorize-f32-input.rgba32",
+    "merged": "hue-colorize-f32-merged.rgba32",
+    "mergedStored": "hue-colorize-f32-merged-stored.rgba32",
+    "name": "hue-colorize",
+    "original": {
+      "HueSaturation": {
+        "colorize": true,
+        "hue": 23.375,
+        "lightness": -9.25,
+        "ranges": [
+          {
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          },
+          {
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ],
+            "hue": 0,
+            "lightness": 0,
+            "saturation": 0
+          }
+        ],
+        "saturation": 17.125
+      }
+    },
+    "project": "hue-colorize-f32.pcraft",
+    "settings": {
+      "kind": "hueSaturation",
+      "options": {
+        "colorize": true
+      },
+      "parameters": {
+        "hue": 23.375,
+        "lightness": -9.25,
+        "saturation": 17.125
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "hue-colorize-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "balance-False-f32-expected.rgba32",
+    "height": 11,
+    "input": "balance-False-f32-input.rgba32",
+    "merged": "balance-False-f32-merged.rgba32",
+    "mergedStored": "balance-False-f32-merged-stored.rgba32",
+    "name": "balance-False",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": false,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-False-f32.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-False-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "balance-True-f32-expected.rgba32",
+    "height": 11,
+    "input": "balance-True-f32-input.rgba32",
+    "merged": "balance-True-f32-merged.rgba32",
+    "mergedStored": "balance-True-f32-merged-stored.rgba32",
+    "name": "balance-True",
+    "original": {
+      "ColorBalance": {
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "preserve_luminosity": true,
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ]
+      }
+    },
+    "project": "balance-True-f32.pcraft",
+    "settings": {
+      "kind": "colorBalance",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {},
+      "records": {
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "balance-True-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "black-white-23-f32-expected.rgba32",
+    "height": 11,
+    "input": "black-white-23-f32-input.rgba32",
+    "merged": "black-white-23-f32-merged.rgba32",
+    "mergedStored": "black-white-23-f32-merged-stored.rgba32",
+    "name": "black-white-23",
+    "original": {
+      "BlackWhite": {
+        "tint": null,
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-23-f32.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-23-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "black-white-24-f32-expected.rgba32",
+    "height": 11,
+    "input": "black-white-24-f32-input.rgba32",
+    "merged": "black-white-24-f32-merged.rgba32",
+    "mergedStored": "black-white-24-f32-merged-stored.rgba32",
+    "name": "black-white-24",
+    "original": {
+      "BlackWhite": {
+        "tint": [
+          0.91,
+          0.62,
+          0.34
+        ],
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ]
+      }
+    },
+    "project": "black-white-24-f32.pcraft",
+    "settings": {
+      "kind": "blackWhite",
+      "options": {},
+      "parameters": {},
+      "records": {
+        "tint": [
+          [
+            0.91,
+            0.62,
+            0.34
+          ]
+        ],
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "black-white-24-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "photo-filter-False-f32-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-False-f32-input.rgba32",
+    "merged": "photo-filter-False-f32-merged.rgba32",
+    "mergedStored": "photo-filter-False-f32-merged-stored.rgba32",
+    "name": "photo-filter-False",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": false
+      }
+    },
+    "project": "photo-filter-False-f32.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": false
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-False-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "photo-filter-True-f32-expected.rgba32",
+    "height": 11,
+    "input": "photo-filter-True-f32-input.rgba32",
+    "merged": "photo-filter-True-f32-merged.rgba32",
+    "mergedStored": "photo-filter-True-f32-merged-stored.rgba32",
+    "name": "photo-filter-True",
+    "original": {
+      "PhotoFilter": {
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "density": 0.37625,
+        "preserve_luminosity": true
+      }
+    },
+    "project": "photo-filter-True-f32.pcraft",
+    "settings": {
+      "kind": "photoFilter",
+      "options": {
+        "preserveLuminosity": true
+      },
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "photo-filter-True-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "mixer-False-f32-expected.rgba32",
+    "height": 11,
+    "input": "mixer-False-f32-input.rgba32",
+    "merged": "mixer-False-f32-merged.rgba32",
+    "mergedStored": "mixer-False-f32-merged-stored.rgba32",
+    "name": "mixer-False",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": false
+      }
+    },
+    "project": "mixer-False-f32.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": false
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-False-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "mixer-True-f32-expected.rgba32",
+    "height": 11,
+    "input": "mixer-True-f32-input.rgba32",
+    "merged": "mixer-True-f32-merged.rgba32",
+    "mergedStored": "mixer-True-f32-merged-stored.rgba32",
+    "name": "mixer-True",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": true
+      }
+    },
+    "project": "mixer-True-f32.pcraft",
+    "settings": {
+      "kind": "channelMixer",
+      "options": {
+        "monochrome": true
+      },
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "mixer-True-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "lookup-29-f32-expected.rgba32",
+    "height": 11,
+    "input": "lookup-29-f32-input.rgba32",
+    "merged": "lookup-29-f32-merged.rgba32",
+    "mergedStored": "lookup-29-f32-merged-stored.rgba32",
+    "name": "lookup-29",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-29-f32.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-29-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "lookup-30-f32-expected.rgba32",
+    "height": 11,
+    "input": "lookup-30-f32-input.rgba32",
+    "merged": "lookup-30-f32-merged.rgba32",
+    "mergedStored": "lookup-30-f32-merged-stored.rgba32",
+    "name": "lookup-30",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-30-f32.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": false,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-30-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "lookup-31-f32-expected.rgba32",
+    "height": 11,
+    "input": "lookup-31-f32-input.rgba32",
+    "merged": "lookup-31-f32-merged.rgba32",
+    "mergedStored": "lookup-31-f32-merged-stored.rgba32",
+    "name": "lookup-31",
+    "original": {
+      "ColorLookup": {
+        "dither": true,
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "name": "Owned procedural color cube",
+        "size": 3,
+        "tetrahedral": true
+      }
+    },
+    "project": "lookup-31-f32.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned procedural color cube",
+      "options": {
+        "dither": true,
+        "tetrahedral": true
+      },
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "lookup-31-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "lookup-icc-identity-f32-expected.rgba32",
+    "height": 11,
+    "input": "lookup-icc-identity-f32-input.rgba32",
+    "merged": "lookup-icc-identity-f32-merged.rgba32",
+    "mergedStored": "lookup-icc-identity-f32-merged-stored.rgba32",
+    "name": "lookup-icc-identity",
+    "original": {
+      "ColorLookup": {
+        "dither": false,
+        "lut": null,
+        "name": "Owned unresolved profile",
+        "size": 0,
+        "tetrahedral": false
+      }
+    },
+    "project": "lookup-icc-identity-f32.pcraft",
+    "settings": {
+      "kind": "colorLookup",
+      "name": "Owned unresolved profile",
+      "options": {
+        "dither": false,
+        "tetrahedral": false
+      },
+      "parameters": {
+        "size": 0
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "lookup-icc-identity-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "invert-f32-expected.rgba32",
+    "height": 11,
+    "input": "invert-f32-input.rgba32",
+    "merged": "invert-f32-merged.rgba32",
+    "mergedStored": "invert-f32-merged-stored.rgba32",
+    "name": "invert",
+    "original": "Invert",
+    "project": "invert-f32.pcraft",
+    "settings": {
+      "kind": "invert",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "invert-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "posterize-3-f32-expected.rgba32",
+    "height": 11,
+    "input": "posterize-3-f32-input.rgba32",
+    "merged": "posterize-3-f32-merged.rgba32",
+    "mergedStored": "posterize-3-f32-merged-stored.rgba32",
+    "name": "posterize-3",
+    "original": {
+      "Posterize": {
+        "levels": 3
+      }
+    },
+    "project": "posterize-3-f32.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 3
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-3-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "posterize-13-f32-expected.rgba32",
+    "height": 11,
+    "input": "posterize-13-f32-input.rgba32",
+    "merged": "posterize-13-f32-merged.rgba32",
+    "mergedStored": "posterize-13-f32-merged-stored.rgba32",
+    "name": "posterize-13",
+    "original": {
+      "Posterize": {
+        "levels": 13
+      }
+    },
+    "project": "posterize-13-f32.pcraft",
+    "settings": {
+      "kind": "posterize",
+      "options": {},
+      "parameters": {
+        "levels": 13
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "posterize-13-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "threshold-fractional-f32-expected.rgba32",
+    "height": 11,
+    "input": "threshold-fractional-f32-input.rgba32",
+    "merged": "threshold-fractional-f32-merged.rgba32",
+    "mergedStored": "threshold-fractional-f32-merged-stored.rgba32",
+    "name": "threshold-fractional",
+    "original": {
+      "Threshold": {
+        "level": 0.45125
+      }
+    },
+    "project": "threshold-fractional-f32.pcraft",
+    "settings": {
+      "kind": "threshold",
+      "options": {},
+      "parameters": {
+        "level": 0.45125
+      },
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "threshold-fractional-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "gradient-empty-f32-expected.rgba32",
+    "height": 11,
+    "input": "gradient-empty-f32-input.rgba32",
+    "merged": "gradient-empty-f32-merged.rgba32",
+    "mergedStored": "gradient-empty-f32-merged-stored.rgba32",
+    "name": "gradient-empty",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": []
+      }
+    },
+    "project": "gradient-empty-f32.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": []
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-empty-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "gradient-fractional-f32-expected.rgba32",
+    "height": 11,
+    "input": "gradient-fractional-f32-input.rgba32",
+    "merged": "gradient-fractional-f32-merged.rgba32",
+    "mergedStored": "gradient-fractional-f32-merged-stored.rgba32",
+    "name": "gradient-fractional",
+    "original": {
+      "GradientMap": {
+        "dither": false,
+        "reverse": false,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-fractional-f32.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": false,
+        "reverse": false
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-fractional-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "gradient-reverse-dither-f32-expected.rgba32",
+    "height": 11,
+    "input": "gradient-reverse-dither-f32-input.rgba32",
+    "merged": "gradient-reverse-dither-f32-merged.rgba32",
+    "mergedStored": "gradient-reverse-dither-f32-merged-stored.rgba32",
+    "name": "gradient-reverse-dither",
+    "original": {
+      "GradientMap": {
+        "dither": true,
+        "reverse": true,
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ]
+      }
+    },
+    "project": "gradient-reverse-dither-f32.pcraft",
+    "settings": {
+      "kind": "gradientMap",
+      "options": {
+        "dither": true,
+        "reverse": true
+      },
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "gradient-reverse-dither-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "selective-False-f32-expected.rgba32",
+    "height": 11,
+    "input": "selective-False-f32-input.rgba32",
+    "merged": "selective-False-f32-merged.rgba32",
+    "mergedStored": "selective-False-f32-merged-stored.rgba32",
+    "name": "selective-False",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": false
+      }
+    },
+    "project": "selective-False-f32.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": false
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-False-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "selective-True-f32-expected.rgba32",
+    "height": 11,
+    "input": "selective-True-f32-input.rgba32",
+    "merged": "selective-True-f32-merged.rgba32",
+    "mergedStored": "selective-True-f32-merged-stored.rgba32",
+    "name": "selective-True",
+    "original": {
+      "SelectiveColor": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ],
+        "relative": true
+      }
+    },
+    "project": "selective-True-f32.pcraft",
+    "settings": {
+      "kind": "selectiveColor",
+      "options": {
+        "relative": true
+      },
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "space": "rgb"
+    },
+    "source": "selective-True-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  },
+  {
+    "depth": "f32",
+    "expected": "opaque-unsupported-f32-expected.rgba32",
+    "height": 11,
+    "input": "opaque-unsupported-f32-input.rgba32",
+    "merged": "opaque-unsupported-f32-merged.rgba32",
+    "mergedStored": "opaque-unsupported-f32-merged-stored.rgba32",
+    "name": "opaque-unsupported",
+    "original": {
+      "Unsupported": {
+        "psd_key": "test",
+        "raw": [
+          1,
+          7,
+          33,
+          255
+        ]
+      }
+    },
+    "project": "opaque-unsupported-f32.pcraft",
+    "settings": {
+      "kind": "unsupported",
+      "opaqueData": "AQch/w==",
+      "opaqueKey": "test",
+      "options": {},
+      "parameters": {},
+      "records": {},
+      "space": "rgb"
+    },
+    "source": "opaque-unsupported-f32-source.pcraft",
+    "width": 19,
+    "x": -2,
+    "y": -3
+  }
+]

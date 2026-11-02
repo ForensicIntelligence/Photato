@@ -1,0 +1,243 @@
+{
+  "step": 326,
+  "status": "functional-subset-qualified-strict-output-and-context-gates-open",
+  "run": "artifacts/runs/20261101T123053Z-324-source-layer-effects",
+  "source01": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source01.json",
+  "source01_summary": "artifacts/runs/20261101T123053Z-324-source-layer-effects/focused01-summary.json",
+  "source01_word_metrics": "artifacts/runs/20261101T123053Z-324-source-layer-effects/effect-word-metrics01.json",
+  "current_integrations_tested": true,
+  "native_version": 75,
+  "actions_version": 30,
+  "photato_commands": 206,
+  "source_effect_kinds": 10,
+  "original_kernel_vectors": 138,
+  "source_project_vectors": 138,
+  "full_photoshop_parity": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_visual_acceptance": false,
+  "implementation_step": 324,
+  "recorded_at_utc": "2026-11-01T14:26:30.379838+00:00",
+  "increment_complete": true,
+  "functional_subset_qualified": true,
+  "full_parity": false,
+  "goal_complete": false,
+  "full_current_suite_passed": false,
+  "native_acceptance": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+  "source_inputs": 6685,
+  "production_swift_files": 902,
+  "binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+  "original_metrics": {
+    "direct": {
+      "vectors": 138,
+      "exact": 83,
+      "words": 393576,
+      "changed_words": 622,
+      "by_depth": {
+        "u8": {
+          "exact": 9,
+          "changed_words": 247
+        },
+        "u16": {
+          "exact": 29,
+          "changed_words": 194
+        },
+        "f32": {
+          "exact": 45,
+          "changed_words": 181
+        }
+      }
+    },
+    "project": {
+      "vectors": 138,
+      "exact": 75,
+      "words": 393576,
+      "changed_words": 575,
+      "by_depth": {
+        "u8": {
+          "exact": 12,
+          "changed_words": 209
+        },
+        "u16": {
+          "exact": 18,
+          "changed_words": 222
+        },
+        "f32": {
+          "exact": 45,
+          "changed_words": 144
+        }
+      }
+    }
+  },
+  "functional_cases_passed": 16,
+  "new_cases": 17,
+  "source_filter_mappings": 110,
+  "known_strict_cases_at_least": 11,
+  "native_visual_reason": "Fresh Photoshop lookup after Source04 returns cgWindowNotFound; no screenshot/live acceptance.",
+  "latest_complete_inventory_checkpoint": 321,
+  "last_entirely_passing_full_inventory_checkpoint": 298,
+  "normal_installed_preview": 283,
+  "last_private_source_backup": 298,
+  "documentation_verification": "artifacts/runs/20261101T123053Z-324-source-layer-effects/verification326-04.json",
+  "history_audit": "artifacts/development-history-audit/326-checkpoint01-receipt.json",
+  "reference_manifest": "Tests/PhotoCraftImagingTests/Fixtures/SourceEffects/provenance.json",
+  "native_access": "artifacts/runs/20261101T123053Z-324-source-layer-effects/native-access01.json",
+  "open": [
+    "Strict direct/project output and existing source failures",
+    "Source inactive fields and legacy-to-expanded appearance fidelity",
+    "Vector outline/text gamma/off-canvas/geometry/ICC/native-mode contexts",
+    "Editable PSD/global-light and complete published Adobe descriptor mapping",
+    "Passing current complete inventory",
+    "Native/Photoshop visual and universal/Intel/macOS14+ runtime, large capacity, physical60fps"
+  ],
+  "focused_source07": {
+    "step": 324,
+    "source": "Source07",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+    "binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+    "build_succeeded": true,
+    "build_seconds": 307.77,
+    "cases": 67,
+    "passed_cases": 64,
+    "failed_cases": 3,
+    "failed_assertions": 136,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.004,
+    "classes": {
+      "PhotoCraftCoreTests.AdvancedLayerEffectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AutomationActionJobsTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LayerStyleTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LayerStyleWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+    ]
+  },
+  "final_source": "Source07",
+  "last_executed_result": "artifacts/runs/20261101T123053Z-324-source-layer-effects/focused07-summary.json",
+  "focused_source05_historical": {
+    "step": 324,
+    "source": "Source05",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source05.json",
+    "binary_sha256": "219cc98ca49e79de0d638961049ae1bfe17e8b508fe22bd1f2d3dc6bf938ee0e",
+    "build_succeeded": true,
+    "build_seconds": 322.54,
+    "cases": 67,
+    "passed_cases": 64,
+    "failed_cases": 3,
+    "failed_assertions": 136,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.139,
+    "classes": {
+      "PhotoCraftCoreTests.AdvancedLayerEffectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AutomationActionJobsTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LayerStyleTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LayerStyleWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceLayerEffectTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+    ]
+  },
+  "preceding_documentation_verification": {
+    "path": "artifacts/runs/20261101T123053Z-324-source-layer-effects/verification326-02.json",
+    "checks": 54,
+    "passed": true
+  },
+  "PSD_global_light_followup_340": {
+    "guide": "docs/PSD_GLOBAL_LIGHT.md",
+    "evidence": "docs/PSD_GLOBAL_LIGHT_REFERENCES.json",
+    "all11new_passed": true,
+    "strict_source_effect_assertions": 118,
+    "strict_diagnostics_match_332": true,
+    "full_Photoshop_workflow_closed": false
+  }
+}

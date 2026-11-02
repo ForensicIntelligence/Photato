@@ -87,7 +87,7 @@ struct ChannelsPanel: View {
         Button { if store.document.inkMode != nil && store.editingChannel == nil { store.loadSelectedInkChannel() } else { store.beginChannelDialog(.load) } } label: { Image(systemName:"circle.dashed") }.help("Load channel as selection").disabled((store.document.alphaChannels ?? []).isEmpty && store.document.inkMode == nil)
         Button { store.beginChannelDialog(.save) } label: { Image(systemName:"square.and.arrow.down") }.help("Save selection as channel")
         Spacer()
-        Button { if store.document.colorMode == .multichannel { store.beginInkChannelOptions() } else { store.newAlphaChannel() } } label: { Image(systemName:"plus.square") }.help("New channel")
+        Button { if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else if NSApp.currentEvent?.modifierFlags.contains(.command)==true {store.beginChannelDialog(.newSpot)}else{store.newAlphaChannel()} } label: { Image(systemName:"plus.square") }.help("New channel (Command-click for New Spot Channel)")
         Button { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } else if store.effectiveInkTargets.count == 1, case .plate(let id) = store.effectiveInkTargets.first { store.performInkChannel(.delete(id)) } } label: { Image(systemName:"trash") }.help("Delete channel").disabled(store.alphaEditingID == nil && !(store.document.colorMode == .multichannel && store.effectiveInkTargets.count == 1 && store.document.inkChannelTargets.count > 1))
       }.buttonStyle(.plain).padding(8).disabled(!store.canEditChannels)
     }
@@ -176,6 +176,7 @@ struct AuxiliaryChannelRow: View {
             Group { if let thumbnail { Image(decorative:thumbnail,scale:1).resizable().scaledToFit() } else { Color.black } }
               .frame(width:32,height:32).border(.black)
           }
+          if channel.spot != nil {Image(systemName:"drop.fill").help("Spot ink channel")}
           Text(channel.name).lineLimit(1); Spacer()
         }.contentShape(Rectangle())
       }.accessibilityLabel("Select \(channel.name) channel")
@@ -184,7 +185,7 @@ struct AuxiliaryChannelRow: View {
       .disabled(!store.canEditChannels)
       .contextMenu {
         Button("Load Selection") { store.perform(.channel(.load(target,.replace,false))) }
-        Button("Channel Options…") { try? store.selectAlphaChannel(quick ? nil:channel.id); store.beginChannelDialog(quick ? .quickOptions:.options) }
+        Button(channel.spot == nil ? "Channel Options…":"Spot Channel Options…") { try? store.selectAlphaChannel(quick ? nil:channel.id); store.beginChannelDialog(quick ? .quickOptions:.options) }
         if !quick {
           Button("Rename…") { name = channel.name; renaming = true }
           Button("Duplicate Channel") { store.perform(.channel(.duplicate(channel.id,nil))) }

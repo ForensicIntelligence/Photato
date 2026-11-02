@@ -1,0 +1,15 @@
+{
+  "source": "Unmodified original PhotoCraft crates, owned procedural Rust oracle300 wrapper",
+  "license": "MIT OR Apache-2.0",
+  "fixtures": {
+    "expected-u16.json": "efb588c7dc97c32a52697cbeb2aeba09f59580c41e9959def87298d0210263c1",
+    "fills-u16.pcraft": "d46df2a24a89b33cfe4b80f1f5e51bacb083fe2226ec59fcd6989bdaa4a715e9",
+    "expected-f32.json": "efb588c7dc97c32a52697cbeb2aeba09f59580c41e9959def87298d0210263c1",
+    "fills-u8.pcraft": "53d1e0473b49957ed8c08a03a6dd4db35a84b9f0672eee7d67da3ebd1f66042a",
+    "fills-f32.pcraft": "64ea8338822287ab7119a0f6157f2645095a853fcb26d310470bf2dbc94907b0",
+    "expected-u8.json": "be831da9f57e0e18fb4f14bef5087d485f465b926b51f9d0d56aae524919d3ee",
+    "README.txt": "692c3925f15aed52f2b03ab372eeba36ccee637a962875a38f6491781fbfa967"
+  },
+  "source_revision": "Original source tree preserved; exact hashes retained in run provenance",
+  "runtime": "Native Swift importer; Rust only generated test fixtures"
+}

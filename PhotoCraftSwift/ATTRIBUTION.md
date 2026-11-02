@@ -157,3 +157,16 @@ The native Other/Video filters in `OtherVideoEngine.swift` translate PhotoCraft 
 ## Step219 classic tone workflows
 
 `ClassicToneEngine.swift` translates PhotoCraft `crates/algo/src/tone.rs`, Gaussian helpers from `fxutil.rs`, Lab conversion from `crates/color/src/convert.rs`, HSL helpers from `other2.rs`, and Equalize behavior from `crates/engine/src/extra_cmds.rs` (MIT OR Apache-2.0). The synthetic ClassicTone fixtures execute the original Rust functions with standalone scheduling/type adapters; they are not Photoshop output references. Native UI, integration and multi-sample controls are new Swift code.
+
+Rich PhotoCraft fill migration in PcraftFills/PcraftPatterns follows the licensed upstream doc Fill/Pattern, format manifest/convert and compose gradient_fill/pattern models (MIT OR Apache-2.0). Tests/PhotoCraftImagingTests/Fixtures/PcraftFills contains owned procedural source projects and oracle outputs generated from unmodified upstream crates under the same licenses; no proprietary artwork, fonts or Rust runtime is bundled.
+
+Exposure (step302): the full-control transfer and .pcraft control mapping reference the original PhotoCraft doc/compose/format sources under MIT OR Apache-2.0. Owned procedural source fixtures use unchanged original crates only in a test generator. The three Photoshop-authored Exposure PSD references come from storytold/photocraft-corpus at f5b1178cab15309e05b7b504545df3c701f6d8fd; original MIT and Apache notices accompany them in Tests/PhotoCraftImagingTests/Fixtures/Exposure. The expA binary layout follows Adobe’s public Photoshop File Formats Specification. No Photoshop executable or proprietary algorithm code is incorporated.
+
+
+## Layer Comp interchange fixture
+
+The test-only `Tests/PhotoCraftImagingTests/Fixtures/layer-comps/ag-psd-layer-comps.psd` comes from Agamnentzar/ag-psd commit a74425db6584cc07b1cc135e370916cb4eccfb32, under its MIT license (copyright2016 Agamnentzar). Its complete notice is beside the fixture. It is an independent saved-file reference, not a Photoshop2026 qualification fixture. Public ag-psd structure definitions inform the separately written native descriptor mapping; no runtime JavaScript dependency is included. Detailed provenance is recorded in `docs/PSD_LAYER_COMP_REFERENCES.json`.
+
+## Global Light interchange fixture
+
+The test-only `Tests/PhotoCraftImagingTests/Fixtures/GlobalLight/ag-psd-shadow.lfx2` is a byte-identical 628-byte layer-style payload extracted from `test/read-write/effects/src.psd` in Agamnentzar/ag-psd commit a74425db6584cc07b1cc135e370916cb4eccfb32. It is under the MIT license, copyright2016 Agamnentzar; the complete notice is alongside it. It independently records shared-light participation with a distinct inactive local angle. It is saved-file evidence, not a Photoshop2026 live or pixel-equivalence qualification. The extraction/reference hashes are retained in checkpoint340 evidence.

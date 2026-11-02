@@ -3,7 +3,7 @@ import Observation
 import SwiftUI
 
 /// Panels are presentation windows, never NSDocuments or additional image views.
-@MainActor final class FloatingPanelWindow: NSPanel {
+@MainActor final class FloatingPanelWindow: PhotatoPanel {
   static var titlebarHeight: Double {
     NSWindow.frameRect(
       forContentRect: .zero, styleMask: [.titled, .closable, .resizable, .utilityWindow]

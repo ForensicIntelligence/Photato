@@ -25,16 +25,17 @@ extension CraftDocument {
   mutating func createLayerGroup(
     _ options: NewLayerGroupOptions, children requested: [UUID], below: Bool
   ) throws {
-    guard layers.count < 512 else { throw CraftError.invalid("Layer limit reached.") }
+    guard layers.count < LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
     var group = try options.layer()
     let requestedIDs = Set(requested)
     guard requestedIDs.allSatisfy({ key in layers.contains { $0.id == key } }) else {
       throw CraftError.invalid("Selected layer no longer exists.")
     }
     var candidate = self
+    let hierarchy = LayerHierarchyIndex(self)
     let roots = layers.filter {
       requestedIDs.contains($0.id)
-        && !ancestors(of: $0.id).contains { requestedIDs.contains($0.id) }
+        && !hierarchy.ancestors(of: $0.id).contains { requestedIDs.contains($0.id) }
     }
     if roots.isEmpty {
       try candidate.insertNewLayer(group, below: below)
@@ -56,7 +57,7 @@ extension CraftDocument {
         throw CraftError.invalid(
           "Include the clipping base in the group selection, or release the clipping mask first.")
       }
-      let ids = roots.reduce(into: Set<UUID>()) { $0.formUnion(subtreeIDs($1.id)) }
+      let ids = hierarchy.subtreeIDs(Set(roots.map(\.id)))
       let last = layers.lastIndex { ids.contains($0.id) }!
       let insertion = layers[..<last].filter { !ids.contains($0.id) }.count
       var contents = layers.filter { ids.contains($0.id) }

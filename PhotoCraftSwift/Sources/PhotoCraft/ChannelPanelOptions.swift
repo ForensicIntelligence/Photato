@@ -134,7 +134,7 @@ struct ChannelsMenu: View {
     Button("Duplicate Channel…") { if let id = store.alphaEditingID { store.perform(.channel(.duplicate(id,nil))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
     Button("Delete Channels") { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
     Divider()
-    Button("New Spot Channel…") {}.disabled(true)
+    Button("New Spot Channel…") {if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else{store.beginChannelDialog(.newSpot)}}.disabled(!store.canEditChannels || store.document.colorMode.isRestricted || store.document.colorMode == .duotone)
     Button("Merge Spot Channel") {}.disabled(true)
     Divider()
     Button("Channel Options…") { store.beginChannelDialog(.options) }.disabled(!store.canEditChannels || store.editingChannel == nil)

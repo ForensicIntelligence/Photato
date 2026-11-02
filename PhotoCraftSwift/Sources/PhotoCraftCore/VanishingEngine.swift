@@ -88,7 +88,7 @@ public struct VanishingEdit:Sendable {
     if !program.operations.isEmpty {
       let overlay=try VanishingEngine.render(program,sample:sample)
       if program.newLayer {
-        guard d.layers.count<512 else { throw CraftError.invalid("Layer limit reached.") }
+        guard d.layers.count<LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
         var pixels=overlay
         for y in 0..<d.height { try Task.checkCancellation();for x in 0..<d.width { var p=VanishingEngine.read(pixels,x,y);p.a *= d.selectionCoverage(x:x,y:y);VanishingEngine.write(&pixels,x,y,p) } }
         var new=Layer(name:"Vanishing Point",content:.raster(pixels));new.parentID=layer.parentID

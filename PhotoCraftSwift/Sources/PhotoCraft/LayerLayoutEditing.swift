@@ -41,6 +41,7 @@ extension EditorStore {
     selectedLayerIDs = Set(document.layers.map(\.id))
     maskEditingLayerID = nil
     if case .vectorMask = pathTarget { selectPath(nil) }
+    if case .shape = pathTarget { selectPath(nil) }
   }
 }
 

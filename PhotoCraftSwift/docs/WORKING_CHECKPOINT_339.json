@@ -1,0 +1,63 @@
+{
+  "step": "dev-step-339",
+  "run": "artifacts/runs/20261101T230904Z-339-psd-layer-comps",
+  "status": "Supported PSD comp functionality qualified; rich interchange and strict output gates remain open",
+  "source_manifest": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/source03.json",
+  "source_inputs": 6905,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "api_commands": 213,
+  "new_archive": false,
+  "new_source_push": false,
+  "new_app_installed": false,
+  "apple_validation_succeeded": false,
+  "goal_complete": false,
+  "focused03": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "PSDLayerComp|LayerCompEmptyOptions|AdobeAction|AdobeOutputProfile|ParentLayerComp|SmartObjectLayerComp|SmartObjectTests|SmartObjectWorkflow|LinkedSmartObject|LinkedArtwork|LinkedSourceFile|SourceSmartModel|SourceSmartObjectImport|LayerComps|NativeArchive|NativeIndexed|NativeChunked|NativePaged|RecoveryArchiveContext|LayerProtection|FrameAnimation|VariablesTests|FileInfo|FileInformation|MetadataPreservation|Copyright|ImageProcessor|PcraftImportTests|PcraftWorkflowTests|PcraftProjectTests|DocumentGuideImport|SourceChannelImport|PhotoshopMenu|AutomationTests|ComponentTarget|ChannelWorkflow|DocumentSaveWorkflow|DocumentIOWorkflow|WindowPresentation|FrameAnimationTests|VideoTimelineTests"
+    ],
+    "source_manifest": "artifacts/runs/20261101T230904Z-339-psd-layer-comps/source03.json",
+    "inputs": 6905,
+    "started_at_utc": "2026-11-01T23:50:44.481813+00:00",
+    "exit_code": 1,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "706a954e14c5e716b51c9313e782d694cdee53128d59cfb4453bd568992c423e",
+    "finished_at_utc": "2026-11-01T23:59:40.107689+00:00",
+    "cases": 409,
+    "passed_cases": 408,
+    "failed_cases": 1,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 46.01
+  },
+  "recorded_at_utc": "2026-11-02T00:01:05.722546+00:00",
+  "increment_complete": true,
+  "production_swift_files": 927,
+  "binary_sha256": "706a954e14c5e716b51c9313e782d694cdee53128d59cfb4453bd568992c423e",
+  "new_cases": 13,
+  "all_new_cases_passed": true,
+  "affected_cases": 409,
+  "affected_passed": 408,
+  "all_affected_passed": false,
+  "native_archive_version": 82,
+  "actions_archive_version_unchanged": 30,
+  "failed_case_names": [
+    "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+  ],
+  "independent_output_files": 6,
+  "qualification_reference": "docs/PSD_LAYER_COMP_REFERENCES.json",
+  "full_current_suite_passed": false,
+  "source_or_Photoshop_full_parity": false,
+  "physical_ui_accepted": false,
+  "next": "Continue missing major Photoshop functionality; retain rich comp/legacy/link/geometry and full acceptance gates."
+}

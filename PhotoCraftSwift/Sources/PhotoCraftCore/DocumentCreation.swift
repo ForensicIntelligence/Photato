@@ -34,6 +34,7 @@ public enum DocumentCreation {
         document = try document.convertingMode(.init(mode: mode, depth: depth, profile: profile))
       }
     }
+    if document.colorMode == .rgb,background.a==1 {document.layers[0].background=true}
     try document.validate()
     return document
   }

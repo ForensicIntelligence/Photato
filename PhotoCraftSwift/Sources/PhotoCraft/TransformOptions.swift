@@ -4,9 +4,10 @@ import SwiftUI
 extension WorkspaceView {
   func transformBinding(_ key: WritableKeyPath<TransformDraft, Double>) -> Binding<Double> {
     Binding(
-      get: { store.transformDraft?[keyPath: key] ?? 0 },
+      get: {guard let draft=store.transformDraft else{return 0};if draft.selection && key == \TransformDraft.centerX{return draft.selectionReferencePoint.x};if draft.selection && key == \TransformDraft.centerY{return draft.selectionReferencePoint.y};return draft[keyPath:key]},
       set: { value in
         guard value.isFinite, var draft = store.transformDraft else { return }
+        if draft.selection {store.updateTransform(draft.selectionNumeric(key,value));return}
         let old = draft[keyPath: key]
         draft[keyPath: key] = value
         if draft.proportional && old != 0 {
@@ -19,7 +20,8 @@ extension WorkspaceView {
   var transformOptions: some View {
     Group {
       if store.transformDraft?.contentAware == true { contentAwareScaleOptions } else {
-      Text("Free Transform").fontWeight(.medium)
+      Text(store.transformDraft?.selection == true && store.transformDraft?.selectedPixels != true ? "Transform Selection":"Free Transform").fontWeight(.medium)
+      if store.transformDraft?.selection == true {selectionTransformModeOptions}
       numberField(
         "X", value: transformBinding(\.centerX), range: -1_000_000...1_000_000, suffix: "px")
       numberField(
@@ -48,7 +50,7 @@ extension WorkspaceView {
         .frame(width: 105).controlSize(.mini)
       Button("Cancel") { store.cancelTransform() }.controlSize(.small).keyboardShortcut(
         .cancelAction)
-      Button("Apply") { store.commitTransform() }.controlSize(.small).keyboardShortcut(
+      Button("Apply") { store.commitTransform() }.disabled(store.geometryBusy).controlSize(.small).keyboardShortcut(
         .defaultAction)
       }
     }

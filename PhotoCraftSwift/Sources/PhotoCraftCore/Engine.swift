@@ -1,6 +1,8 @@
 import Foundation
 
 public enum Command: Sendable {
+  case layerStyles(LayerStyleEdit)
+  case globalLight(GlobalLight)
   indirect case variables(VariableCommand)
   case video(VideoCommand)
   case animation(AnimationCommand)
@@ -8,6 +10,7 @@ public enum Command: Sendable {
   case preparedColorProfile(ColorProfileEdit)
   case preparedDocumentMode(DocumentModeEdit)
   case channelArithmetic(ChannelArithmeticEdit)
+  case linkedSmartObject(LinkedSmartObjectEdit)
   case modeChannel(ModeChannelEdit)
   case modeComponents(ModeComponentEdit)
   indirect case toneAdjustment(ClassicToneRequest)
@@ -17,10 +20,15 @@ public enum Command: Sendable {
   case skyReplacement(SkyReplacementEdit)
   indirect case adjustmentBrush(AdjustmentBrushRequest)
   indirect case painting(PaintingEdit)
+  case documentMetadata([String: Data]?)
+  case layerComp(LayerCompCommand)
+  case guides(GuideCommand)
   case artboard(ArtboardCommand)
   case frame(FrameCommand)
   indirect case shape(ShapeCommand)
   case action(RecordedAction, limits: ActionPlaybackLimits? = nil)
+  case canvasEdges(CanvasEdgesEdit)
+  case flattenImage(FlattenImageEdit)
   case preparedAction(PreparedActionEdit)
   case channel(ChannelCommand)
   case inkChannel(InkChannelCommand)
@@ -59,6 +67,7 @@ public enum Command: Sendable {
   case blendClippedAsGroup(UUID, Bool)
   case replaceContent(UUID, LayerContent)
   case editType(UUID, TextContent, originDelta: PathPoint)
+  case importedType(ImportedTypeTransition)
   case rasterize(UUID, Surface)
   case embedSmartObject(Set<UUID>, Layer)
   case replaceSmartObject(UUID, SmartObject, Surface, preserveSize: Bool, allInstances: Bool, instancePixels: [UUID: Surface] = [:])
@@ -76,6 +85,20 @@ public enum Command: Sendable {
   case selection(IntRect?)
   case selectShape(SelectionShape, SelectionMode, Bool, Double)
   case selectionCoverage(SelectionMask?, SelectionMode)
+  case colorRange(SelectionMask)
+  case magneticSelection(SelectionMask,SelectionMode)
+  case modifiedSelection(SelectionMask,SelectionModification.Kind)
+  case reselectedSelection(SelectionMask)
+  case transformedSelection(SelectionMask)
+  case pixelPaint(PixelPaintRequest)
+  case layerLinks(LayerLinkCommand)
+  case moveLayers(LayerMoveRequest)
+  case transformLayers(LayerCollectionTransformRequest)
+  case transformChannel(ChannelTransformRequest)
+  case transformPixelMask(PixelMaskTransformRequest)
+  case transformPixels(SelectedPixelTransformRequest)
+  case movePixels(SelectedPixelMoveRequest)
+  case backgroundLayer(BackgroundLayerEdit)
   case photoAlign(PhotoAlignEdit)
   case photoBlend(PhotoBlendEdit)
   case regionRetouch(RegionRetouchEdit)
@@ -121,6 +144,10 @@ public enum Command: Sendable {
   case rotateCanvas(CanvasTurn)
   public var label: String {
     switch self {
+    case .layerStyles:"Layer Style"
+    case .globalLight:"Global Light"
+    case .documentMetadata: "File Info"
+    case .layerComp(let command): command.label
     case .variables(let command): command.label
     case .video(let command): command.label
     case .animation(let command): command.label
@@ -129,6 +156,7 @@ public enum Command: Sendable {
     case .documentMode(let request):request.mode.title
     case .preparedColorProfile(let edit):edit.title
     case .preparedDocumentMode(let edit):edit.title
+    case .linkedSmartObject(let edit):edit.title
     case .channelArithmetic(let edit):edit.title
     case .modeChannel:"Edit Color Channel"
     case .modeComponents(let edit):edit.label
@@ -139,8 +167,11 @@ public enum Command: Sendable {
     case .painting(let edit): edit.label
     case .frame(let command): command.label
     case .shape(let command): command.label
+    case .guides(let command): command.label
     case .artboard(let command): command.label
     case .action(let action, _): "Play \(action.name)"
+    case .canvasEdges(let edit): edit.operation.label
+    case .flattenImage: "Flatten Image"
     case .preparedAction(let edit): edit.title
     case .channel(let value): value.label
     case .inkChannel(let value): value.label
@@ -185,7 +216,7 @@ public enum Command: Sendable {
     case .replaceContent(_, .adjustment(.classic(let value))): value.kind.title
     case .replaceContent(_, .adjustment(.colorBalance)): "Color Balance"
     case .replaceContent: "Edit Layer"
-    case .editType: "Edit Type"
+    case .editType,.importedType: "Edit Type"
     case .rasterize: "Rasterize Layer"
     case .embedSmartObject: "Convert to Smart Object"
     case .smartObjectStack(_, let mode, _): "Stack Mode: " + (mode?.title ?? "None")
@@ -202,6 +233,20 @@ public enum Command: Sendable {
     case .savePath: "Edit Path"
     case .deletePath: "Delete Path"
     case .selection, .selectShape, .selectionCoverage: "Selection"
+    case .colorRange: "Color Range"
+    case .magneticSelection: "Magnetic Lasso"
+    case .modifiedSelection(_,let kind): "\(kind.title) Selection"
+    case .reselectedSelection: "Reselect"
+    case .transformedSelection: "Transform Selection"
+    case .pixelPaint(let request):request.kind.title
+    case .layerLinks(let command):command.label
+    case .moveLayers:"Move"
+    case .transformLayers: "Free Transform"
+    case .transformChannel: "Free Transform"
+    case .transformPixelMask: "Free Transform"
+    case .transformPixels: "Free Transform"
+    case .movePixels: "Move"
+    case .backgroundLayer(let edit):edit.label
     case .photoAlign: "Auto-Align Layers"
     case .photoBlend: "Auto-Blend Layers"
     case .regionRetouch(let edit): edit.label
@@ -256,16 +301,19 @@ public enum Command: Sendable {
     }
   }
   public func apply(to d: inout CraftDocument) throws {
-    if d.restrictedMode != nil || d.inkMode != nil || d.animation != nil || d.videoTimeline != nil || d.variables != nil {
+    let linkEdit:Bool;switch self{case .pixelPaint,.layerLinks,.moveLayers:linkEdit=true;default:linkEdit=false}
+    if linkEdit || d.requiresLayerLinkArchive || d.restrictedMode != nil || d.inkMode != nil || d.animation != nil || d.videoTimeline != nil || d.variables != nil || d.layerComps != nil || d.requiresSmartObjectLayerCompArchive {
       // A layer/geometry operation may be rejected by restricted-mode invariants.
       // Keep direct Command callers just as atomic as EditorSession/PreparedEdit.
       var candidate = d; try applyValidated(to: &candidate); d = candidate
     } else { try applyValidated(to: &d) }
   }
   private func applyValidated(to d: inout CraftDocument) throws {
+    let originalLayerIDs=Set(d.layers.map(\.id))
     let variableSource = d.variables == nil ? nil : d
     let hadAnimation = d.animation != nil
     let hadVideo = d.videoTimeline != nil
+    let hadComps = d.layerComps != nil
     try validateVideoContext(in: d)
     try validateAnimationContext(in: d)
     try validateProtection(in:d)
@@ -275,19 +323,24 @@ public enum Command: Sendable {
     // Keep nested modular commands off the large primitive-switch stack frame.
     // Frame wrapping and live-shape creation can invoke another native command.
     switch self {
+    case .layerComp(let command): try command.apply(to: &d)
     case .variables(let command): try command.apply(to: &d)
     case .video(let command): try command.apply(to: &d)
     case .animation(let command):try command.apply(to: &d)
     case .documentMode(let request):d=try d.convertingMode(request)
     case .preparedColorProfile(let edit):d=try edit.applied(to:d)
     case .preparedDocumentMode(let edit):d=try edit.applied(to:d)
+    case .linkedSmartObject(let edit):d=try edit.applied(to:d)
     case .channelArithmetic(let edit):d=try edit.applied(to:d)
     case .modeChannel(let edit):try d.editModeChannel(edit)
     case .modeComponents(let edit):try edit.apply(to:&d)
     case .frame(let command):try command.apply(to:&d)
     case .shape(let command):try command.apply(to:&d)
+    case .guides(let command):try command.apply(to:&d)
     case .artboard(let command):try command.apply(to:&d)
     case .action(let action,let limits):try action.apply(to:&d,validate:{try limits?.validate($0)})
+    case .canvasEdges(let edit): d = try edit.applied(to:d)
+    case .flattenImage(let edit): d = try edit.applied(to: d)
     case .preparedAction(let edit): d = try edit.applied(to: d)
     case .channel(let command):try command.apply(to:&d)
     case .inkChannel(let command):try command.apply(to:&d)
@@ -297,6 +350,9 @@ public enum Command: Sendable {
     case .smartFilters(let id,let stack):try PixelCommandEngine.stack(id,stack,in:&d)
     case .mergeLayers,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate:try applyNestedPrimitive(to:&d)
     default:try applyPrimitive(to:&d)
+    }
+    if hadComps, d.layerComps == nil {
+      if case .layerComp(.clear) = self {} else { throw CraftError.unsupported("This operation would discard Layer Comps. Export a still copy or clear the comps explicitly first.") }
     }
     if hadAnimation, d.animation == nil {
       if case .animation(.remove) = self {} else if case .animation(.convertToVideo) = self {} else if case .animation(.restoreVideoSource)=self {} else {
@@ -310,703 +366,47 @@ public enum Command: Sendable {
     if let variableSource {
       if case .variables = self {} else { try d.reconcileVariables(after: self, before: variableSource) }
     }
+    let added=Set(d.layers.map(\.id)).subtracting(originalLayerIDs);if !added.isEmpty{if case .paste=self{LayerLinks.independentCopies(in:&d,layerIDs:added)}}
+    LayerLinks.prune(in:&d)
     try d.fitArtboardCanvas()
     if let modeBefore { try d.reconcileModeStorage(from:modeBefore) }
     try d.validate()
   }
+  // Bound command frames: nested validated edits run on cooperative worker stacks.
+  @inline(never)
   private func applyPrimitive(to d:inout CraftDocument)throws {
-    func index(_ id: UUID, editable: Bool = true) throws -> Int {
-      guard let i = d.layers.firstIndex(where: { $0.id == id }) else {
-        throw CraftError.invalid("Layer no longer exists.")
-      }
-      if editable && d.isLocked(id) {
-        throw CraftError.invalid("Unlock this layer and its parent groups before editing it.")
-      }
-      return i
-    }
-    func raster(_ i: Int, allowLarge: Bool = false) throws -> Surface {
-      guard case .raster(let s) = d.layers[i].content else {
-        throw CraftError.unsupported(
-          "Rasterize this layer before painting or applying pixel filters.")
-      }
-      guard allowLarge || s.width <= Surface.maximumDensePixels / s.height else {
-        throw CraftError.unsupported("This whole-raster operation is not yet tiled for large documents. No pixels were changed.")
-      }
-      return s
-    }
     switch self {
-    case .channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
+    case .backgroundLayer(let edit):try BackgroundLayer.apply(edit,to:&d)
+    case .pixelPaint(let request):try PixelFillStroke.apply(request,to:&d)
+    case .layerLinks(let command):guard d.animation==nil,d.videoTimeline==nil else{throw CraftError.unsupported("Layer-link editing in Timeline documents requires further qualification.")};try LayerLinks.apply(command,to:&d)
+    case .moveLayers(let request):_ = try LayerCollectionTransform.members(d,layerIDs:request.layerIDs);try LayerLinks.move(request,in:&d)
+    case .transformLayers(let request):try LayerCollectionTransform.apply(request,to:&d)
+    case .transformChannel(let request):try ChannelTransform.apply(request,to:&d)
+    case .transformPixelMask(let request):try PixelMaskTransform.apply(request,to:&d)
+    case .transformPixels(let request):try SelectedPixelTransform.apply(request,to:&d)
+    case .movePixels(let request):try SelectedPixelTransform.apply(request.transform(),to:&d)
+    case .layerStyles(let edit):try edit.apply(to:&d)
+    case .globalLight(let value):try value.validate();d.globalLight=value
+    case .documentMetadata(let value):
+      guard (value?.count ?? 0) <= 4096,
+        value?.keys.allSatisfy({ $0.utf8.count <= 4096 }) ?? true,
+        (value?.values.reduce(0, { $0 + $1.count }) ?? 0) <= NativeArchive.maximumBytes else {
+        throw CraftError.invalid("Document metadata exceeds the native limit.")
+      }
+      d.sourceMetadata = value
+    case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
-    case .variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
-    case .paste(let content, let placement, let center):
-      try content.paste(into: &d, placement: placement, center: center)
-    case .layerVia(let id, let operation):
-      try LayerVia.apply(operation, layerID: id, to: &d)
-    case .cut(let requested, let background):
-      let ids = Set(requested)
-      guard !ids.isEmpty, ids.allSatisfy({ id in d.layers.contains { $0.id == id } }) else {
-        throw CraftError.invalid("Select a layer to cut.")
-      }
-      guard background?.isFinite != false, background == nil || background!.a == 1 else { throw CraftError.invalid("Cut background must be an opaque finite color.") }
-      if d.selection != nil || d.restrictedMode != nil {
-        guard ids.count == 1, let id = ids.first else {
-          throw CraftError.unsupported("Cut a pixel selection from one layer at a time.")
-        }
-        let i = try index(id)
-        var pixels = try raster(i)
-        let transform = d.layers[i].coordinateTransform
-        let flatBackground: Pixel?
-        switch d.restrictedMode {
-        case .bitmap: flatBackground = background ?? .white
-        case .indexed(let raster): flatBackground = raster.transparentIndex == nil ? background ?? .white : nil
-        case nil: flatBackground = nil
-        }
-        for y in 0..<pixels.height {
-          try Task.checkCancellation()
-          for x in 0..<pixels.width {
-            let point = transform.point(Double(x) + 0.5, Double(y) + 0.5)
-            let coverage = d.selectionCoverage(x: Int(floor(point.x)), y: Int(floor(point.y)))
-            if coverage > 0 {
-              var value = pixels.pixel(x: x, y: y)
-              if let fill = flatBackground { value = Pixel(value.r * (1 - coverage) + fill.r * coverage, value.g * (1 - coverage) + fill.g * coverage, value.b * (1 - coverage) + fill.b * coverage, 1) }
-              else { value.a *= 1 - coverage }
-              pixels.setPixel(x: x, y: y, value)
-            }
-          }
-        }
-        d.layers[i].content = .raster(pixels)
-      } else {
-        let removed = ids.reduce(into: Set<UUID>()) { $0.formUnion(d.subtreeIDs($1)) }
-        guard removed.allSatisfy({ !d.isLocked($0) }) else {
-          throw CraftError.invalid("Unlock the selected layers and groups before cutting.")
-        }
-        d.layers.removeAll { removed.contains($0.id) }
-        d.activeLayerID = d.layers.last?.id
-      }
-    case .setGradientFill(let id, let fill):
-      let i = try index(id)
-      guard case .gradientFill = d.layers[i].content else {
-        throw CraftError.invalid("Select a gradient fill layer.")
-      }
-      try fill.validate()
-      d.layers[i].content = .gradientFill(fill)
-    case .setPatternFill(let id, var fill, let pattern):
-      let i = try index(id)
-      guard case .patternFill = d.layers[i].content else {
-        throw CraftError.invalid("Select a pattern fill layer.")
-      }
-      if let pattern { fill.patternID = try d.installPattern(pattern) }
-      d.layers[i].content = .patternFill(fill)
-    case .addLayer(let layer):
-      try d.insertNewLayer(layer)
-    case .newPixelLayer(let options, let below):
-      try d.insertNewLayer(options.layer(in: d), below: below)
-    case .deleteLayers(let ids):
-      try LayerDeletion.apply(to: &d, selected: ids)
-    case .deleteLayer(let id):
-      let i = try index(id)
-      let ids = d.subtreeIDs(id)
-      d.layers.removeAll { ids.contains($0.id) }
-      d.activeLayerID = d.layers.isEmpty ? nil : d.layers[min(i, d.layers.count - 1)].id
-    case .duplicateLayer(let id):
-      try LayerDuplication.duplicate(in: &d, selected: [id], name: nil)
-    case .duplicateLayers(let ids, let name):
-      try LayerDuplication.duplicate(in: &d, selected: ids, name: name)
-    case .duplicateLayersFrom(let source, let ids, let name):
-      try LayerDuplication.transfer(from: source, selected: ids, name: name, into: &d)
-    case .renameLayer(let id, let name):
-      guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-        name.utf16.count <= 65_535
-      else {
-        throw CraftError.invalid("A layer needs a name.")
-      }
-      let i = try index(id, editable: false)
-      d.layers[i].name = name
-    case .layerColor(let ids, let color):
-      try LayerOrganization.setColor(color, selected: ids, in: &d)
-    case .layerVisibility(let values):
-      try LayerOrganization.setVisibility(values, in: &d)
-    case .visibility(let id, let v):
-      let i = try index(id, editable: false)
-      d.layers[i].visible = v
-    case .lock(let id, let v):
-      let i = try index(id, editable: false)
-      d.layers[i].protection = v ? .fullyLocked : []
-    case .protection(let values):
-      let ids = Set(values.keys)
-      for value in values.values { try value.validate() }
-      guard !ids.isEmpty, ids.isSubset(of: Set(d.layers.map(\.id))) else {
-        throw CraftError.invalid("Select existing layers to protect.")
-      }
-      for i in d.layers.indices where ids.contains(d.layers[i].id) {
-        d.layers[i].protection = values[d.layers[i].id]!
-      }
-    case .opacity(let id, let v):
-      guard v.isFinite, (0...1).contains(v) else {
-        throw CraftError.invalid("Opacity must be between 0 and 1.")
-      }
-      let i = try index(id)
-      d.layers[i].opacity = v
-    case .blend(let id, let v):
-      let i = try index(id)
-      d.layers[i].blendMode = v
-      if case .group(var group) = d.layers[i].content {
-        group.passThrough = false
-        d.layers[i].content = .group(group)
-      }
-    case .layoutLayers(let moves, _):
-      try LayerLayout.apply(moves, to: &d)
-    case .move(let id, let x, let y):
-      guard abs(Double(x)) <= 1_000_000, abs(Double(y)) <= 1_000_000 else {
-        throw CraftError.invalid("Position is out of range.")
-      }
-      let i = try index(id)
-      let dx = x - d.layers[i].x
-      let dy = y - d.layers[i].y
-      let ids = d.subtreeIDs(id)
-      for j in d.layers.indices where ids.contains(d.layers[j].id) {
-        let old = d.layers[j]
-        d.layers[j].smartFilters?.transformPuppetPins(.translation(Double(dx), Double(dy)))
-        d.layers[j].smartFilters?.transformPerspectivePlanes(.translation(Double(dx), Double(dy)))
-        d.layers[j].x += dx
-        d.layers[j].y += dy
-        try d.layers[j].movePattern(x: dx, y: dy)
-        try d.layers[j].preserveUnlinkedMask(from: old)
-        if old.smartFilters?.maskProperties.linked == true {
-          d.layers[j].smartFilters?.maskProperties.transform = .translation(Double(dx), Double(dy)) * old.smartFilters!.maskProperties.transform
-        }
-        if old.vectorMask?.linked == true {
-          d.layers[j].vectorMask?.path = old.vectorMask!.path.transformed(
-            .translation(Double(dx), Double(dy)))
-        }
-      }
-    case .reorder(let id, let target):
-      let i = try index(id)
-      guard d.layers.indices.contains(target) else {
-        throw CraftError.invalid("Invalid layer position.")
-      }
-      let destination = d.layers[target]
-      guard destination.parentID == d.layers[i].parentID else {
-        throw CraftError.invalid("Use Move Into Group to change a layer's parent.")
-      }
-      let siblings = d.children(of: destination.parentID)
-      let position = siblings.firstIndex { $0.id == destination.id }!
-      try d.relocate(id, parent: destination.parentID, position: position)
-    case .relocate(let id, let parent, let position):
-      _ = try index(id)
-      try d.relocate(id, parent: parent, position: position)
-    case .groupLayers(let requested, let name):
-      try d.createLayerGroup(.init(name: name), children: requested, below: false)
-    case .newGroup(let options, let children, let below):
-      try d.createLayerGroup(options, children: children, below: below)
-    case .ungroup(let id):
-      let i = try index(id)
-      guard d.layers[i].isGroup else { throw CraftError.invalid("Select a group to ungroup.") }
-      let parent = d.layers[i].parentID
-      let children = d.children(of: id)
-      for j in d.layers.indices where d.layers[j].parentID == id { d.layers[j].parentID = parent }
-      d.layers.remove(at: i)
-      d.activeLayerID = children.last?.id ?? parent ?? d.layers.last?.id
-    case .groupProperties(let id, let properties):
-      let i = try index(id, editable: false)
-      if d.layers[i].group?.passThrough != properties.passThrough && d.isLocked(id) {
-        throw CraftError.invalid("Unlock the group before changing its blending.")
-      }
-      guard d.layers[i].isGroup else { throw CraftError.invalid("Select a group.") }
-      guard properties.frame == d.layers[i].frame else { throw CraftError.invalid("Use Frame Properties to edit frame metadata.") }
-      guard properties.artboard == d.layers[i].artboard else { throw CraftError.invalid("Use Artboard Properties to change artboard metadata.") }
-      d.layers[i].content = .group(properties)
-    case .clipping(let id, let value):
-      let i = try index(id)
-      if value && d.clippingBase(for: id) == nil {
-        throw CraftError.invalid("A clipping mask needs a base layer below it in the same group.")
-      }
-      d.layers[i].clipped = value
-    case .blendClippedAsGroup(let id, let value):
-      let i = try index(id)
-      d.layers[i].blendClippedAsGroup = value
-    case .editType(let id,let content,let delta):
-      let i=try index(id);guard case .text=d.layers[i].content,!d.isImageLocked(id),delta.x.isFinite,delta.y.isFinite,abs(delta.x)<=1_000_000,abs(delta.y)<=1_000_000 else{throw CraftError.invalid("Editable type and a finite origin are required.")}
-      try content.validate();let old=d.layers[i];d.layers[i].content = .text(content)
-      if delta.x != 0 || delta.y != 0 {
-        d.layers[i].x=0;d.layers[i].y=0;d.layers[i].affine=old.coordinateTransform * .translation(delta.x,delta.y)
-        if old.mask != nil{var properties=old.effectiveMaskProperties;properties.transform=try d.layers[i].coordinateTransform.inverted() * old.maskCoordinateTransform;d.layers[i].maskProperties=properties}
-      }
-    case .replaceContent(let id, let c):
-      let i = try index(id)
-      guard !d.layers[i].isGroup, !Layer(name: "", content: c).isGroup else {
-        throw CraftError.invalid("Use group commands to change the layer hierarchy.")
-      }
-      d.layers[i].content = c
-    case .rasterize(let id, let surface):
-      let i = try index(id)
-      var layer = d.layers[i]
-      if let object = layer.smartObject, object.pdfSource != nil,
-        surface.width != object.width || surface.height != object.height {
-        // The shared PDF renderer can supply a denser source-space surface.
-        // Preserve its document geometry and mask mapping when dropping source.
-        let sx = Double(surface.width)/Double(object.width)
-        let sy = Double(surface.height)/Double(object.height)
-        layer.affine = (layer.affine ?? .identity) * .scale(1/sx,1/sy)
-        if layer.mask != nil {
-          var properties = layer.effectiveMaskProperties
-          properties.transform = .scale(sx,sy) * properties.transform
-          layer.maskProperties = properties
-        }
-        layer.content = .raster(surface)
-      }
-      if layer.smartFilters != nil || layer.warp != nil {
-        layer = try SmartFilterEngine.renderedLayer(layer, in: d)
-        for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
-        d.layers[i] = layer
-        break
-      }
-      layer.video = nil
-      layer.smartObject = nil
-      for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
-      guard !layer.isGroup else {
-        throw CraftError.unsupported("Group rasterization is not available yet; ungroup first.")
-      }
-      if layer.isCanvasFill {
-        let old = layer
-        layer.x = 0
-        layer.y = 0
-        layer.affine = nil
-        if old.mask != nil {
-          layer.maskProperties = old.effectiveMaskProperties
-          layer.maskProperties?.transform = old.maskCoordinateTransform
-        }
-      }
-      layer.content = .raster(try surface.converted(to: d.depth))
-      d.layers[i] = try DocumentGeometry.transformLayer(
-        layer, by: .identity, in: d, method: .bicubic)
-    case .embedSmartObject(let ids, let layer):
-      try d.embedSmartObject(replacing: ids, with: layer)
-    case .smartObjectStack(let id, let mode, let pixels):
-      let i = try index(id)
-      guard d.layers[i].smartObject != nil, !d.isImageLocked(id) else { throw CraftError.invalid("Select an unlocked Smart Object.") }
-      d.layers[i].smartObject?.stackMode = mode; try d.layers[i].smartObject?.validate()
-      d.layers[i].content = .raster(pixels)
-      for key in ["SoLd", "SoLE", "PlLd"] { d.layers[i].sourceTags?.removeValue(forKey: key) }
-    case .replaceSmartObject(let id, let source, let pixels, let preserveSize, let allInstances, let instancePixels):
-      try d.replaceSmartObject(id, source: source, pixels: pixels, preserveSize: preserveSize, allInstances: allInstances, instancePixels: instancePixels)
-    case .resetSmartObjectTransform(let id):
-      let i = try index(id)
-      guard d.layers[i].smartObject != nil, !d.isPositionLocked(id) else {
-        throw CraftError.invalid("Select a position-unlocked Smart Object.")
-      }
-      let delta = Transform2D.translation(Double(d.layers[i].x), Double(d.layers[i].y)) * (try d.layers[i].coordinateTransform.inverted())
-      d.layers[i] = try DocumentGeometry.transformLayer(d.layers[i], by: delta, in: d)
-      d.layers[i].warp = nil
-    case .mask(let id, let s):
-      let i = try index(id)
-      if s == nil { try LensBlurEngine.validateMaskRemoval(d.layers[i]) }
-      d.layers[i].mask = s
-      d.layers[i].maskProperties = nil
-      if s != nil && d.layers[i].isGroup {
-        var properties = MaskProperties()
-        properties.outside = d.selection == nil ? 1 : 0
-        properties.transform = try d.layers[i].coordinateTransform.inverted()
-        d.layers[i].maskProperties = properties
-      }
-    case .createMask(let id, let kind):
-      let i = try index(id)
-      d.layers[i] = try d.layers[i].creatingPixelMask(kind, in: d)
-      if kind == .revealSelection || kind == .hideSelection { d.setCoverageSelection(nil) }
-    case .applyMask(let id):
-      let i = try index(id)
-      try LensBlurEngine.validateMaskRemoval(d.layers[i])
-      d.layers[i] = try d.layers[i].applyingPixelMask(in: d)
-    case .deleteMask(let id):
-      let i = try index(id)
-      try LensBlurEngine.validateMaskRemoval(d.layers[i])
-      guard d.layers[i].mask != nil else { throw CraftError.invalid("This layer has no mask.") }
-      d.layers[i].mask = nil
-      d.layers[i].maskProperties = nil
-    case .maskProperties(let id, let properties):
-      let i = try index(id)
-      guard d.layers[i].mask != nil else { throw CraftError.invalid("This layer has no mask.") }
-      try properties.validate()
-      d.layers[i].maskProperties = properties
-    case .vectorMask(let id, let mask):
-      let i = try index(id)
-      try mask?.validate()
-      d.layers[i].vectorMask = mask
-    case .savePath(let path):
-      try path.path.validate()
-      var paths = d.paths ?? []
-      if let i = paths.firstIndex(where: { $0.id == path.id }) {
-        paths[i] = path
-      } else {
-        paths.append(path)
-      }
-      d.paths = paths
-    case .deletePath(let id):
-      guard d.paths?.contains(where: { $0.id == id }) == true else {
-        throw CraftError.invalid("Path no longer exists.")
-      }
-      d.paths?.removeAll { $0.id == id }
-    case .selection(let s):
-      d.selection = s
-      d.selectionMask = nil
-    case .selectShape(let shape, let mode, let antiAlias, let feather):
-      let mask = try SelectionMask.make(
-        shape, width: d.width, height: d.height, antiAlias: antiAlias
-      )
-      .feathered(radius: feather)
-      d.setCoverageSelection(try mask.combined(with: d.coverageSelection(), mode: mode))
-    case .selectionCoverage(let mask, let mode):
-      guard mask == nil || (mask?.width == d.width && mask?.height == d.height) else {
-        throw CraftError.invalid("Selection canvas sizes differ.")
-      }
-      d.setCoverageSelection(try mask?.combined(with: d.coverageSelection(), mode: mode))
-    case .vanishingPoint(let edit): d = try edit.applied(to:d)
-    case .maskAllObjects(let edit): d = try edit.applied(to:d)
-    case .skyReplacement(let edit): d = try edit.applied(to:d)
-    case .warp(let edit):
-      d = try edit.applied(to:d)
-    case .contentAwareScale(let edit):
-      d = try edit.applied(to:d)
-    case .photoAlign(let edit):
-      d = try edit.applied(to:d)
-    case .photoBlend(let edit):
-      d = try edit.applied(to:d)
-    case .adjustmentBrush(let request): try request.apply(to:&d)
-    case .painting(let edit):
-      d = try edit.applied(to:d)
-    case .regionRetouch(let edit):
-      d = try edit.applied(to:d)
-    case .contentAwareFill(let edit):
-      d = try edit.applied(to:d)
-    case .selectionRefinement(let edit),.focusArea(let edit):
-      guard !edit.output.createsDocument else { throw CraftError.invalid("Create the refined document through the document controller.") }
-      d = try edit.applied(to:d)
-    case .selectSubject(let mask, let mode):
-      guard mask.width == d.width, mask.height == d.height, mask.bounds != nil else {
-        throw CraftError.invalid("No foreground subject was found, or the mask dimensions differ.")
-      }
-      d.setCoverageSelection(try mask.combined(with: d.coverageSelection(), mode: mode))
-    case .removeBackground(let id, let mask):
-      let i = try index(id)
-      _ = try raster(i)
-      guard mask.width == d.width, mask.height == d.height, mask.bounds != nil else {
-        throw CraftError.invalid("No foreground subject was found, or the mask dimensions differ.")
-      }
-      // Reuse canvas-to-layer mask coordinates without consuming the user's selection.
-      var selected = d
-      selected.setCoverageSelection(mask)
-      d.layers[i] = try d.layers[i].creatingPixelMask(.revealSelection, in: selected)
-    case .magicWand(let source, let seed, let options, let mode, let mask):
-      let region = try ColorRegion.selection(
-        source: source, width: d.width, height: d.height,
-        seed: seed, options: options, mask: mask)
-      let combined = try region.combined(with: d.coverageSelection(), mode: mode)
-      try Task.checkCancellation()
-      d.setCoverageSelection(combined)
-    case .paintBucket(let id, let fill):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try BucketPainter.paint(
-        fill, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .paintGradient(let id, let stroke):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try GradientPainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .invertSelection:
-      guard let mask = try d.coverageSelection() else {
-        throw CraftError.invalid("Make a selection first.")
-      }
-      d.setCoverageSelection(try mask.inverted())
-    case .featherSelection(let radius):
-      guard let mask = try d.coverageSelection() else {
-        throw CraftError.invalid("Make a selection first.")
-      }
-      d.setCoverageSelection(try mask.feathered(radius: radius))
-    case .maskStroke(let id, let points, var brush):
-      let i = try index(id)
-      try d.layers[i].expandMask(for: points, brush: brush, clipping: d.selection)
-      guard var mask = d.layers[i].mask else { throw CraftError.invalid("This layer has no mask.") }
-      let value =
-        brush.erase
-        ? Float(1) : unit(0.2126 * brush.color.r + 0.7152 * brush.color.g + 0.0722 * brush.color.b)
-      guard brush.color.isFinite else { throw CraftError.invalid("Invalid mask brush color.") }
-      brush.color = Pixel(value, value, value, brush.color.a)
-      brush.erase = false
-      try Painter.stroke(
-        surface: &mask, points: points, brush: brush, selection: d.selection,
-        selectionMask: d.selectionMask, transform: d.layers[i].maskCoordinateTransform,
-        grayscaleMask: true)
-      d.layers[i].mask = mask
-    case .maskFill(let id, let value):
-      guard value.isFinite, (0...1).contains(value) else {
-        throw CraftError.invalid("Invalid mask fill.")
-      }
-      let i = try index(id)
-      if let selection = d.selection { try d.layers[i].expandMask(toDocumentBounds: selection) }
-      guard var mask = d.layers[i].mask else { throw CraftError.invalid("This layer has no mask.") }
-      let before = d
-      let matrix = d.layers[i].maskCoordinateTransform
-      mask.mapPixels { x, y, p in
-        let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
-        let cov = before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
-        let v = unit(p.r) * (1 - cov) + value * cov
-        return Pixel(v, v, v)
-      }
-      d.layers[i].mask = mask
-      if d.selection == nil {
-        var p = d.layers[i].effectiveMaskProperties
-        p.outside = value
-        d.layers[i].maskProperties = p
-      }
-    case .invertMask(let id):
-      let i = try index(id)
-      guard var mask = d.layers[i].mask else { throw CraftError.invalid("This layer has no mask.") }
-      mask.mapPixels { _, _, p in
-        let v = 1 - unit(p.r)
-        return Pixel(v, v, v)
-      }
-      d.layers[i].mask = mask
-      var properties = d.layers[i].effectiveMaskProperties
-      properties.outside = 1 - properties.outside
-      d.layers[i].maskProperties = properties
-    case .focus(let id, let stroke):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try FocusPainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .toning(let id, let stroke):
-      let i = try index(id)
-      try ToningPainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask)
-    case .spotHealing(let id, let stroke):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try SpotHealingPainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .healingBrush(let id, let stroke):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try HealingPainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .cloneStamp(let id, let stroke):
-      let i = try index(id)
-      let preserve = d.isTransparencyLocked(id)
-      try ClonePainter.paint(
-        stroke, on: &d.layers[i], canvasWidth: d.width, canvasHeight: d.height,
-        selection: d.selection, selectionMask: d.selectionMask, preserveTransparency: preserve)
-    case .stroke(let id, let points, let brush):
-      let i = try index(id)
-      var s = try raster(i, allowLarge: true)
-      try Painter.stroke(
-        surface: &s, points: points, brush: brush, selection: d.selection,
-        selectionMask: d.selectionMask, offsetX: d.layers[i].x,
-        offsetY: d.layers[i].y, transform: d.layers[i].coordinateTransform,
-        preserveTransparency: d.isTransparencyLocked(id))
-      d.layers[i].content = .raster(s)
-    case .clear(let id):
-      let i = try index(id)
-      var s = try raster(i)
-      let matrix = d.layers[i].coordinateTransform
-      let before = d
-      s.mapPixels { x, y, p in
-        let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
-        return p.mixing(
-          .clear, coverage: before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y))))
-      }
-      d.layers[i].content = .raster(s)
-    case .fill(let id, let color):
-      guard color.isFinite else { throw CraftError.invalid("Invalid color.") }
-      let i = try index(id)
-      var s = try raster(i)
-      let matrix = d.layers[i].coordinateTransform
-      let before = d
-      let preserveTransparency = d.isTransparencyLocked(id)
-      let targetDepth = s.depth
-      let edit: (Int, Int, Pixel) -> Pixel = { x, y, p in
-        let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
-        let coverage = before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
-        if preserveTransparency {
-          guard p.a > 0, coverage > 0 else { return p }
-          var edited = ProtectedPixels.fill(p, color: color, coverage: coverage).quantized(targetDepth)
-          edited.a = p.a
-          return edited
-        }
-        return p.mixing(color, coverage: coverage)
-      }
-      if preserveTransparency { try s.mapStoredPixels(edit) } else { s.mapPixels(edit) }
-      d.layers[i].content = .raster(s)
-    case .fillComponents(let id, let fill):
-      try fill.validate()
-      let i = try index(id)
-      var s = try raster(i)
-      guard d.depth == .u8, s.depth == .u8 else {
-        throw CraftError.unsupported("Component Fill currently requires RGB/8 pixels.")
-      }
-      let matrix = d.layers[i].coordinateTransform
-      try matrix.validated()
-      let before = d
-      try s.mapStoredPixels { x, y, p in
-        let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
-        return fill.applying(
-          to: p, coverage: before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y))))
-      }
-      d.layers[i].content = .raster(s)
-    case .layerStyle(let ids, let style):
-      guard !ids.isEmpty else { throw CraftError.invalid("Select a layer for Layer Style.") }
-      try style?.validate(in: d)
-      if style != nil, d.width > 8_388_608 / d.height { throw CraftError.unsupported("Layer styles support canvases up to8,388,608 pixels.") }
-      let indices = try ids.map { try index($0) }
-      for i in indices {
-        if case .adjustment = d.layers[i].content { throw CraftError.unsupported("Layer styles on adjustment layers are not available yet.") }
-      }
-      for i in indices {
-        d.layers[i].style = style
-        for tag in ["lfx2", "lmfx", "lrFX", "iOpa"] { d.layers[i].sourceTags?.removeValue(forKey: tag) }
-      }
-    case .cropDocument(let edit):
-      d = try edit.applied(to:d)
-    case .crop(let r):
-      let original = d
-      guard r.x >= 0, r.y >= 0, r.width > 0, r.height > 0, r.x <= d.width - r.width,
-        r.y <= d.height - r.height
-      else { throw CraftError.invalid("Crop must lie within the canvas.") }
-      guard !d.layers.contains(where: { $0.locked }) else {
-        throw CraftError.invalid("Unlock all layers before cropping.")
-      }
-      for i in d.layers.indices {
-        d.layers[i].x -= r.x
-        d.layers[i].y -= r.y
-        if let stack = d.layers[i].smartFilters {
-          d.layers[i].smartFilters?.transformPuppetPins(.translation(-Double(r.x), -Double(r.y)))
-          d.layers[i].smartFilters?.transformPerspectivePlanes(.translation(-Double(r.x), -Double(r.y)))
-          d.layers[i].smartFilters?.maskProperties.transform = .translation(-Double(r.x), -Double(r.y)) * stack.maskProperties.transform
-        }
-        if case .patternFill(var fill) = d.layers[i].content {
-          try fill.transform(by: .translation(-Double(r.x), -Double(r.y)))
-          d.layers[i].content = .patternFill(fill)
-        }
-        if let mask = d.layers[i].vectorMask {
-          d.layers[i].vectorMask?.path = mask.path.transformed(
-            .translation(-Double(r.x), -Double(r.y)))
-        }
-      }
-      d.transformSavedPaths(by: .translation(-Double(r.x), -Double(r.y)))
-      if let origin = d.artboardOrigin { d.artboardOrigin = .init(x: origin.x + r.x, y: origin.y + r.y) }
-      d.width = r.width
-      d.height = r.height
-      d.selection = nil
-      d.selectionMask = nil
-      try d.transformChannels(from:original,by:.translation(-Double(r.x),-Double(r.y)))
-    case .flip(let id, let horizontal):
-      let i = try index(id)
-      let s = try raster(i,allowLarge:true)
-      let layer = d.layers[i]
-      let delta =
-        Transform2D.translation(Double(layer.x), Double(layer.y))
-        * (horizontal
-          ? Transform2D(a: -1, tx: Double(s.width)) : Transform2D(d: -1, ty: Double(s.height)))
-        * .translation(-Double(layer.x), -Double(layer.y))
-      d.layers[i] = try DocumentGeometry.transformLayer(layer, by: delta, in: d, method: .nearest)
-    case .transform(let id, let delta, let method):
-      let i = try index(id)
-      guard d.layers[i].canTransform else {
-        throw CraftError.unsupported("Select a pixel, type or shape layer to transform.")
-      }
-      let before = d
-      let ids = d.subtreeIDs(id)
-      for j in d.layers.indices where ids.contains(d.layers[j].id) {
-        d.layers[j] = try DocumentGeometry.transformLayer(
-          d.layers[j], by: delta, in: before, method: method)
-      }
-    case .resolution(let value):
-      guard value.isFinite, (1...100_000).contains(value) else {
-        throw CraftError.invalid("Invalid image resolution.")
-      }
-      d.resolution = value
-    case .canvasSize(let width, let height, let anchor, let extensionColor):
-      _ = try Surface(width: width, height: height, depth: d.depth)
-      guard extensionColor?.isFinite != false else {
-        throw CraftError.invalid("Invalid canvas extension color.")
-      }
-      let old = d
-      let fractions = anchor.fractions
-      let dx = Int((Double(width - d.width) * fractions.0).rounded(.down))
-      let dy = Int((Double(height - d.height) * fractions.1).rounded(.down))
-      for i in d.layers.indices {
-        DocumentGeometry.freezeTextLayout(&d.layers[i], document: old)
-        d.layers[i].x += dx
-        d.layers[i].y += dy
-        if let stack = d.layers[i].smartFilters {
-          d.layers[i].smartFilters?.transformPuppetPins(.translation(Double(dx), Double(dy)))
-          d.layers[i].smartFilters?.transformPerspectivePlanes(.translation(Double(dx), Double(dy)))
-          d.layers[i].smartFilters?.maskProperties.transform = .translation(Double(dx), Double(dy)) * stack.maskProperties.transform
-        }
-        if case .patternFill(var fill) = d.layers[i].content {
-          try fill.transform(by: .translation(Double(dx), Double(dy)))
-          d.layers[i].content = .patternFill(fill)
-        }
-        if let mask = d.layers[i].vectorMask {
-          d.layers[i].vectorMask?.path = mask.path.transformed(.translation(Double(dx), Double(dy)))
-        }
-      }
-      if let color = extensionColor, color.a > 0, width > old.width || height > old.height {
-        guard color.isFinite, d.layers.count < 512 else {
-          throw CraftError.invalid("Invalid canvas extension or layer limit.")
-        }
-        let pixels=try Surface.canvasExtension(width:width,height:height,depth:d.depth,color:color,
-          original:IntRect(x:dx,y:dy,width:old.width,height:old.height))
-        d.layers.insert(Layer(name: "Canvas Extension", content: .raster(pixels)), at: 0)
-      }
-      if let origin = d.artboardOrigin { d.artboardOrigin = .init(x: origin.x - dx, y: origin.y - dy) }
-      d.width = width
-      d.height = height
-      d.transformSavedPaths(by: .translation(Double(dx), Double(dy)))
-      try d.mapSelection(from: old, by: .translation(Double(dx), Double(dy)))
-      try d.transformChannels(from:old,by:.translation(Double(dx),Double(dy)))
-    case .imageSize(let width, let height, let resolution, let method):
-      _ = try Surface(width: width, height: height, depth: d.depth)
-      guard resolution.isFinite, (1...100_000).contains(resolution) else {
-        throw CraftError.invalid("Invalid image resolution.")
-      }
-      let old = d
-      let delta = Transform2D.scale(
-        Double(width) / Double(d.width), Double(height) / Double(d.height))
-      if width != old.width || height != old.height {
-        for i in d.layers.indices {
-          d.layers[i] = try DocumentGeometry.transformLayer(
-            d.layers[i], by: delta, in: old, method: method, includingUnlinkedMasks: true)
-        }
-      }
-      d.width = width
-      d.height = height
-      d.resolution = resolution
-      if let origin = old.artboardOrigin { d.artboardOrigin = .init(x: Int((Double(origin.x) * Double(width) / Double(old.width)).rounded()), y: Int((Double(origin.y) * Double(height) / Double(old.height)).rounded())) }
-      d.transformSavedPaths(by: delta)
-      try d.mapSelection(from: old, by: delta)
-      try d.transformChannels(from:old,by:delta,method:method)
-    case .rotateCanvas(let turn):
-      let old = d
-      let delta = turn.transform(width: d.width, height: d.height)
-      for i in d.layers.indices {
-        d.layers[i] = try DocumentGeometry.transformLayer(
-          d.layers[i], by: delta, in: old, method: .nearest, includingUnlinkedMasks: true)
-      }
-      if turn == .clockwise || turn == .counterclockwise {
-        d.width = old.height
-        d.height = old.width
-      }
-      d.transformSavedPaths(by: delta)
-      try d.mapSelection(from: old, by: delta)
-      try d.transformChannels(from:old,by:delta)
+    case .canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
+    case .paste,.layerVia,.cut,.setGradientFill,.setPatternFill: try applyClipboardPrimitive(to:&d)
+    case .addLayer,.newPixelLayer,.deleteLayers,.deleteLayer,.duplicateLayer,.duplicateLayers,.duplicateLayersFrom,.renameLayer,.layerColor,.layerVisibility,.visibility,.lock,.protection: try applyLayerStructurePrimitive(to:&d)
+    case .opacity,.blend,.layoutLayers,.move,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
+    case .importedType,.editType,.replaceContent,.rasterize,.embedSmartObject,.smartObjectStack,.replaceSmartObject,.resetSmartObjectTransform: try applyLayerContentPrimitive(to:&d)
+    case .mask,.createMask,.applyMask,.deleteMask,.maskProperties,.vectorMask,.savePath,.deletePath,.selection,.selectShape,.selectionCoverage,.colorRange,.magneticSelection,.modifiedSelection,.reselectedSelection,.transformedSelection: try applyMaskPathPrimitive(to:&d)
+    case .vanishingPoint,.maskAllObjects,.skyReplacement,.warp,.contentAwareScale,.photoAlign,.photoBlend,.adjustmentBrush,.painting,.regionRetouch,.contentAwareFill,.selectionRefinement,.focusArea,.selectSubject,.removeBackground: try applyPreparedRasterPrimitive(to:&d)
+    case .magicWand,.paintBucket,.paintGradient,.invertSelection,.featherSelection,.maskStroke,.maskFill,.invertMask,.focus,.toning,.spotHealing,.healingBrush,.cloneStamp,.stroke,.clear,.fill,.fillComponents: try applyPaintingPrimitive(to:&d)
+    case .layerStyle,.cropDocument,.crop,.flip,.transform,.resolution,.canvasSize,.imageSize,.rotateCanvas: try applyGeometryPrimitive(to:&d)
     }
   }
 }
@@ -1054,6 +454,8 @@ public struct HistoryEntry: Sendable {
   }
 }
 public struct PreparedEdit: Sendable {
+  public var isSelectionOnly:Bool {switch recordingCommand {case .modifiedSelection,.reselectedSelection,.transformedSelection:return true;default:return false}}
+  public var linkedSmartObjectEdit:LinkedSmartObjectEdit? {if case .linkedSmartObject(let edit)=recordingCommand{return edit};return nil}
   public var channelArithmeticEdit: ChannelArithmeticEdit? { if case .channelArithmetic(let edit) = recordingCommand { return edit }; return nil }
   public var modeComponentEdit: ModeComponentEdit? { if case .modeComponents(let edit) = recordingCommand { return edit }; return nil }
   public var adjustmentBrushTarget:UUID? {if case .adjustmentBrush(let request)=recordingCommand {return request.layerID ?? request.newLayerID};return nil}
@@ -1088,6 +490,16 @@ public struct PreparedEdit: Sendable {
   }
 }
 public struct EditorSession: Sendable {
+  /// Refill an authorized runtime cache without adding history or changing source revision.
+  public mutating func hydrateLinkedSmartObject(_ sourceID:UUID,bytes:Data)throws {
+    var candidate=document;var found=false
+    for i in candidate.layers.indices where candidate.layers[i].smartObject?.sourceID==sourceID {
+      guard let object=candidate.layers[i].smartObject,object.linkedSource != nil else{throw CraftError.invalid("Choose a linked source.")}
+      candidate.layers[i].smartObject=try object.hydrating(bytes);found=true
+    }
+    guard found else{throw CraftError.invalid("Linked source not found.")}
+    try candidate.validate();document=candidate
+  }
   public private(set) var actionRecording: ActionRecording?
   public mutating func startActionRecording(name: String, set: String = "My Actions") throws {
     guard actionRecording == nil else { throw CraftError.invalid("An action is already recording.") }

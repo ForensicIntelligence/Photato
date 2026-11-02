@@ -1,0 +1,128 @@
+{
+  "step": "dev-step-342",
+  "recorded_at_utc": "2026-11-02T02:17:29.944234+00:00",
+  "run": "artifacts/runs/20261102T013220Z-342-layer-files-export",
+  "source_manifest": "artifacts/runs/20261102T013220Z-342-layer-files-export/source04.json",
+  "inputs": 6924,
+  "production_swift_files": 936,
+  "binary_sha256": "b3797278e17bf20fe3fcbae9bc22c31be9331a111c9970a3423069893c9a153d",
+  "reference_standard": "Photoshop2026",
+  "qualification": {
+    "cases": 331,
+    "passed_cases": 331,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 33.245,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 399.64
+  },
+  "new_case_names": [
+    "PhotoCraftImagingTests.ImageAssetExportTests/testCanvasFillLayerExportsAtDocumentBoundsWithoutInvokingAlignmentRestrictions",
+    "PhotoCraftAppTests.LayerFileExportTests/testAllTenFormatsUseExpectedContainersAndNativeArchiveRemainsEditable",
+    "PhotoCraftAppTests.LayerFileExportTests/testAncestorOpacityAndDocumentBoundsAreSharedWithPublishedAdobeLayerOutputs",
+    "PhotoCraftAppTests.LayerFileExportTests/testInvalidSettingsZIPBudgetAndCancellationLeaveNoPublishedOrStagedFiles",
+    "PhotoCraftAppTests.LayerFileExportTests/testLayerSelectionUsesTopOrderAndEyeVisibilityThroughAncestorsIncludingZeroOpacity",
+    "PhotoCraftAppTests.LayerFileExportTests/testNativeBatchCanExceedAPIArchiveLimitWithoutAggregatingFileData",
+    "PhotoCraftAppTests.LayerFileExportTests/testPNGProfilePaletteTransparencyNamingAndZIPManifest",
+    "PhotoCraftAppTests.LayerFileExportTests/testPSDPSBNativeAndTIFFRetainHighDepthSamplesAndPNG24UsesEightBits",
+    "PhotoCraftAppTests.LayerFileExportTests/testPublicationPreflightsAllNamesAndRollsBackOnlyNewlyLinkedFilesOnFailure",
+    "PhotoCraftAppTests.LayerFileWorkflowTests/testCancellationAndRevocationDiscardPrivateStagingAndReturnNoZIP",
+    "PhotoCraftAppTests.LayerFileWorkflowTests/testChangedNativeSourceRejectsBeforePublicationAndPreservesNewDocument",
+    "PhotoCraftAppTests.LayerFileWorkflowTests/testNativeCancelAndFactoryMenuPreserveHistoryAndShortcuts",
+    "PhotoCraftAppTests.LayerFileWorkflowTests/testNativeRunAndAPIArchiveMatchFilesWithoutChangingSourceOrHistory",
+    "PhotoCraftAppTests.LayerFileWorkflowTests/testSettingsInvalidStaleBusyAndCodecOptionsAreValidated"
+  ],
+  "independent_png": {
+    "source_outputs": "342 Source04",
+    "files": 4,
+    "passed": 4,
+    "failed": 0,
+    "analytic_rgba_channels_compared": 384,
+    "results": [
+      {
+        "file": "assets_0000_Green.png",
+        "width": 6,
+        "height": 4,
+        "sha256": "109c53ed4e98d071f4b42c9096915d5705d2df04acb3ae56723236f79ca6465c",
+        "passed": true
+      },
+      {
+        "file": "assets_0001_Zero opacity.png",
+        "width": 6,
+        "height": 4,
+        "sha256": "5ca9c5763ff907ec13b3cd9d47f67894e59051b09e547e2d7b1b63abeefe310f",
+        "passed": true
+      },
+      {
+        "file": "assets_0002_Hidden _ blue.png",
+        "width": 6,
+        "height": 4,
+        "sha256": "c74fb10de45c88f7923e972b7a5d18033c373c2319e54a0565f4a52c73843acf",
+        "passed": true
+      },
+      {
+        "file": "assets_0003_Red.png",
+        "width": 6,
+        "height": 4,
+        "sha256": "7277dda2c23f976dfadf2d601843b3eca9a1415a7c5588111b8fc5029da06049",
+        "passed": true
+      }
+    ],
+    "scope": "Independent PNG transport/CRC and owned analytical pixels/ancestor alpha/visibility/profile omission. No Photoshop pixel/encoder equivalence."
+  },
+  "native_aggregate": {
+    "files": 260,
+    "bytes": 137216120,
+    "API_ZIP_limit": 134217728,
+    "native_publication_passed": true,
+    "API_ZIP_rejected": true,
+    "maximum_Photoshop_capacity_qualified": false
+  },
+  "references": {
+    "step": "dev-step-342",
+    "recorded_at_utc": "2026-11-02T01:48:37.081695+00:00",
+    "official_sources": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-layers-as-files.html",
+        "updated": "2026-02-23",
+        "scope": "Destination, filename prefix, eye-visible layers, file type/options, working ICC, Run. Does not prove every format/default/group/empty/name behavior."
+      },
+      {
+        "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/export-layers-migration",
+        "scope": "Existing published create-composite per-output selection/crop; no new batch route."
+      }
+    ],
+    "native_encoders_probe": {
+      "command": "xcrun swift -e 'import ImageIO; print(CGImageDestinationCopyTypeIdentifiers())'",
+      "observed_host": "macOS27.0.1/Xcode27",
+      "bmp": "com.microsoft.bmp",
+      "targa": "com.truevision.tga-image",
+      "also_observed": [
+        "public.jpeg",
+        "public.png",
+        "public.tiff",
+        "com.adobe.pdf"
+      ],
+      "scope": "Observed native destination identifiers, not macOS14/Intel codec behavior qualification."
+    },
+    "native_access": "Latest actual inspection341 reports Mac locked; not re-polled and no new UI acceptance claimed.",
+    "implementation": "Independent Swift coordination over native/previously implemented codecs and shared selection. No Photoshop scripts/decompilation/copied implementation."
+  },
+  "api_commands": 218,
+  "native_version_unchanged": 82,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Exact nested/clipped/adjustment/group/empty output semantics, filenames and defaults against Photoshop",
+    "Full PDF/ICC/Targa/BMP/PNG palette/encoding and supported-platform behavior",
+    "Remaining production export workflows including Save for Web and generated/sliced assets",
+    "Dense/maximum capacity, physical responsiveness and complete current suite"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

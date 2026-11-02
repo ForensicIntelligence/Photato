@@ -16,7 +16,7 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
   public var initial: Adjustment {
     switch self {
     case .brightnessContrast: .brightnessContrast(0.15,1)
-    case .levels: .levels(.init()); case .curves: .curves(.init()); case .exposure: .exposure(1)
+    case .levels: .levels(.init()); case .curves: .curves(.init()); case .exposure: .classic(.exposure(.init(exposure: 1)))
     case .vibrance: .classic(.init(.vibrance)); case .hueSaturation: .hueSaturation(.init())
     case .colorBalance: .colorBalance(.init()); case .blackWhite: .classic(.init(.blackWhite))
     case .photoFilter: .classic(.init(.photoFilter)); case .channelMixer: .classic(.init(.channelMixer))
@@ -30,7 +30,7 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
     case .brightnessContrast:self = .brightnessContrast;case .levels:self = .levels;case .curves:self = .curves
     case .exposure:self = .exposure;case .hueSaturation:self = .hueSaturation;case .colorBalance:self = .colorBalance
     case .classic(let v):
-      switch v.kind {case .vibrance:self = .vibrance;case .blackWhite:self = .blackWhite;case .photoFilter:self = .photoFilter;case .channelMixer:self = .channelMixer;case .selectiveColor:self = .selectiveColor}
+      switch v.kind {case .exposure:self = .exposure;case .vibrance:self = .vibrance;case .blackWhite:self = .blackWhite;case .photoFilter:self = .photoFilter;case .channelMixer:self = .channelMixer;case .selectiveColor:self = .selectiveColor}
     case .invert:self = .invert;case .tonalSteps(let v):self = v.kind == .threshold ? .threshold:.posterize
     case .gradientMap:self = .gradientMap
     default:return nil

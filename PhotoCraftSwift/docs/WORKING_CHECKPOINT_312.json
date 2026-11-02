@@ -1,0 +1,76 @@
+{
+  "step": 312,
+  "recorded_at_utc": "2026-11-01T05:02:38.461179+00:00",
+  "run": "artifacts/runs/20261101T050238Z-312-source-smart-import",
+  "phase": 1,
+  "package": "I03",
+  "status": "source02-nesting-boundary-crash-under-diagnosis",
+  "increment_complete": false,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "native_acceptance": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "source_import_activated": false,
+  "current_worker": null,
+  "draft_import_path_connected": true,
+  "application_build_executed": true,
+  "source_manifest": "artifacts/runs/20261101T050238Z-312-source-smart-import/source02.json",
+  "source_inputs": 3174,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T05:40:28.884718+00:00",
+    "source_manifest": "artifacts/runs/20261101T050238Z-312-source-smart-import/source01.json",
+    "inputs": 3170,
+    "current_binary_sha256": "228da5b2136e176007ca6e58dd314c1b9285ca2dc7eb2747ec2a246637c05a59",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T05:56:59.906520+00:00",
+    "source_manifest": "artifacts/runs/20261101T050238Z-312-source-smart-import/source02.json",
+    "inputs": 3174,
+    "current_binary_sha256": "9fbf05f70ba7694ca395bdc27003754303265c222339c49fbcb9cfeca576dccb",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "diary_refresh": "docs/DIARY_REFRESH_313.json",
+  "diary_reconciled_at_utc": "2026-11-01T06:02:34.146794+00:00",
+  "source_import_status": "draft-connected-unqualified",
+  "source_import_activated_meaning": "Qualified activation remains false; the experimental code branch is connected.",
+  "focused01_summary": {
+    "cases": 148,
+    "passed_cases": 142,
+    "failed_cases": 6,
+    "failed_assertions": 38,
+    "unexpected": 0,
+    "crashes": 0,
+    "source": "Source01"
+  },
+  "focused02_summary": {
+    "source": "Source02",
+    "build_succeeded": true,
+    "selection_completed": false,
+    "signal": 10,
+    "case": "PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically",
+    "current_cause": "Recursive source-decoder worker-stack boundary; repair pending.",
+    "expected_admitted_decode_levels": 8,
+    "expected_rejected_decode_levels": 9
+  },
+  "debugger": {
+    "result": "artifacts/runs/20261101T050238Z-312-source-smart-import/nested-debugger01-result.json",
+    "trace": "artifacts/runs/20261101T050238Z-312-source-smart-import/nested-debugger01.log",
+    "debugger_exit_code": 0,
+    "test_passed": false,
+    "fresh_trace": true,
+    "stop_reason": "EXC_BAD_ACCESS/code2 in utility cooperative worker; repeated nested source decoder frames"
+  },
+  "next_work": [
+    "Bound recursive source-decoder frames without increasing worker stack or lowering the eight-level limit.",
+    "Rerun isolated admitted-eighth/rejected-ninth HTTP boundary, then native/API no-op/projective/hit-testing and affected source workflows.",
+    "Continue unsupported linked/filter/adjustment major breadth, retaining exact output/full-current/native/platform/capacity/60fps gates."
+  ],
+  "nested_crash_repaired_at": 314,
+  "current_continuation": "docs/WORKING_CHECKPOINT_314.json",
+  "historical_failure_preserved": true
+}

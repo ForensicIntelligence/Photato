@@ -1,0 +1,69 @@
+{
+  "step": 319,
+  "recorded_at_utc": "2026-11-01T08:22:34.751980+00:00",
+  "run": "artifacts/runs/20261101T082234Z-319-lighting-effects",
+  "phase": 1,
+  "package": "I03",
+  "status": "source04-compile-failed-source03-tests-partially-passing",
+  "increment_complete": false,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_318.json",
+  "source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source04.json",
+  "source_inputs": 4837,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T09:09:38.903914+00:00",
+    "source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source01.json",
+    "inputs": 4837,
+    "current_binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T09:12:34.239280+00:00",
+    "source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source02.json",
+    "inputs": 4837,
+    "current_binary_sha256": "41eb46f1d84bd54fea1eda783b69c655cc8d9bae712e484f62d0337190156f17",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused03_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T09:20:26.051268+00:00",
+    "source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source03.json",
+    "inputs": 4837,
+    "current_binary_sha256": "46585623fddbbacc1ddf9753f785337b5677a831f149c74a38f2731a35a7d2de",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused04_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T09:26:19.420936+00:00",
+    "source_manifest": "artifacts/runs/20261101T082234Z-319-lighting-effects/source04.json",
+    "inputs": 4837,
+    "current_binary_sha256": "46585623fddbbacc1ddf9753f785337b5677a831f149c74a38f2731a35a7d2de",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "diary_reconciliation": {
+    "step": 320,
+    "record": "docs/DIARY_REFRESH_320.json",
+    "current_source": "Source04",
+    "latest_executed_source": "Source03",
+    "last_executed_summary": "artifacts/runs/20261101T082234Z-319-lighting-effects/focused03-summary.json",
+    "current_compile_error": "Optional PcraftNode member access in PcraftLightingFilter.swift",
+    "repairs_qualified": false,
+    "first_word_diagnostic_executed": false
+  }
+}

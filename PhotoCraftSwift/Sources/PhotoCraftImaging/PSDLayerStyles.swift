@@ -21,8 +21,9 @@ enum PSDLayerStyles {
         .init("Hrzn", .number(value)), .init("Vrtc", .number(value)), .init("Cnty", .boolean(false)),
       ])) }))]))
   }
-  static func write(_ style: LayerStyle) throws -> Data {
+  static func write(_ style: LayerStyle, sharedLight: GlobalLight? = nil) throws -> Data {
     try style.validate()
+    guard !style.requiresAdvancedArchive else {throw CraftError.unsupported("Advanced effect controls/reference data require Photato until their editable PSD mapping is qualified.")}
     var items: [PSDDescriptor.Item] = [.init("Scl ", unit(style.scale,"#Prc")), .init("masterFXSwitch", .boolean(style.enabled))]
     for (single,multi,kind) in kinds {
       let effects = style.effects.filter { $0.kind == kind }
@@ -34,8 +35,9 @@ enum PSDLayerStyles {
           .init("showInDialog", .boolean(true)), .init("Md  ", enumValue("BlnM",blends[BlendMode.allCases.firstIndex(of: effect.blendMode)!])),
           .init("Opct", unit(Double(effect.opacity)*100,"#Prc")), .init("Clr ", try color(effect.color))]
         if kind == .dropShadow || kind == .innerShadow {
-          // Resolve per-style native light into explicit local PSD light. Native light editing is layer-local.
-          fields += [.init("uglg", .boolean(false)), .init("lagl", unit(effect.useGlobalLight ? style.lightAngle : effect.angle,"#Ang")),
+          // Shared documents retain participation and the inactive local angle.
+          // Standalone style encoding keeps its historical explicit-local fallback.
+          fields += [.init("uglg", .boolean(sharedLight != nil && effect.useGlobalLight)), .init("lagl", unit(sharedLight != nil ? effect.angle : effect.useGlobalLight ? style.lightAngle : effect.angle,"#Ang")),
             .init("Dstn", unit(effect.distance,"#Pxl")), .init("Ckmt",unit(effect.spread,"#Pxl")),
             .init("blur",unit(effect.size,"#Pxl")), .init("Nose",unit(0,"#Prc")), .init("AntA",.boolean(false)), .init("TrnS",contour())]
           if kind == .dropShadow { fields.append(.init("layerConceals",.boolean(true))) }
@@ -58,7 +60,7 @@ enum PSDLayerStyles {
     }
     return Data(repeating:0,count:4) + (try PSDDescriptor("null",items:items).encoded())
   }
-  static func read(_ data: Data, globalAngle: Double = 120) throws -> LayerStyle {
+  static func read(_ data: Data, globalAngle: Double = 120, globalAltitude: Double = 30) throws -> LayerStyle {
     guard data.count > 4, data.prefix(4).allSatisfy({ $0 == 0 }) else { throw CraftError.invalid("Invalid PSD layer-style version.") }
     let descriptor = try PSDDescriptor.read(Data(data.dropFirst(4)),padding:true)
     let allowed = Set(["Scl ","masterFXSwitch","numModifyingFX"] + kinds.flatMap { [$0.0,$0.1] }.filter { !$0.isEmpty })
@@ -75,7 +77,7 @@ enum PSDLayerStyles {
       guard case .enumerated(_,let code)=value,code.text==expected else { throw CraftError.unsupported("Unrepresented layer-style \(key).") }
     }
     var style=LayerStyle();style.enabled=try flag(descriptor,"masterFXSwitch",true)
-    style.scale=try number(descriptor,"Scl ","#Prc",100);style.lightAngle=globalAngle
+    style.scale=try number(descriptor,"Scl ","#Prc",100);style.lightAngle=globalAngle;style.lightAltitude=globalAltitude
     for (single,multi,kind) in kinds {
       let values: [PSDValue]
       if !multi.isEmpty,let value=descriptor[multi] {

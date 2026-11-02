@@ -26,7 +26,7 @@ typealias ColorPolicyReviewer = @MainActor (ColorPolicyAssessment, DocumentColor
     return try await withTaskCancellationHandler {
       try await withCheckedThrowingContinuation { continuation in
         dialog.continuation = continuation
-        let window = NSWindow(contentRect: .init(x: 0, y: 0, width: 550, height: 330),
+        let window = PhotatoWindow(contentRect: .init(x: 0, y: 0, width: 550, height: 330),
           styleMask: [.titled, .closable], backing: .buffered, defer: false)
         window.title = assessment.kind == .missing ? "Missing Profile"
           : assessment.kind == .pasteMismatch ? "Paste Profile Mismatch" : "Embedded Profile Mismatch"

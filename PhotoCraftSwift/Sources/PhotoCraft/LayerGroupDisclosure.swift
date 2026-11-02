@@ -5,10 +5,11 @@ import SwiftUI
 extension EditorStore {
   func layersInPanel(search: String = "", kind: String = "All") -> [Layer] {
     let document = layerPanelDocument
+    let hierarchy = LayerHierarchyIndex(document)
     return document.layers.reversed().filter { layer in
       layer.id == layerNameDraft?.layerID
         || ((search.isEmpty && kind == "All"
-          ? !document.ancestors(of: layer.id).contains { $0.group?.expanded == false } : true)
+          ? !hierarchy.ancestors(of: layer.id).contains { $0.group?.expanded == false } : true)
           && (search.isEmpty || layer.name.localizedCaseInsensitiveContains(search))
           && (kind == "All" || layer.content.label == kind))
     }

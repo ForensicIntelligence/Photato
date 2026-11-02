@@ -82,12 +82,23 @@ public enum SmartFilterEngine {
   public static func set(_ stack: SmartFilterStack?, on id: UUID, in document: inout CraftDocument) throws {
     guard let i = document.layers.firstIndex(where: { $0.id == id }), document.layers[i].smartObject != nil,
       !document.isImageLocked(id) else { throw CraftError.invalid("Select an unlocked Smart Object for Smart Filters.") }
+    guard try document.layers[i].linkedSmartObjectPreview()==nil else{throw CraftError.unsupported("Resolve the linked source before changing Smart Filters.")}
     try stack?.validate()
-    for item in stack?.filters ?? [] { try item.filter.lensBlur?.validateSources(layer:document.layers[i],document:document) }
+    var layer = document.layers[i]; layer.smartFilters = stack
+    for item in stack?.filters ?? [] {
+      try item.filter.lighting?.validateReferences(in:document)
+      if let source=item.filter.distortion?.source,source.map==nil,stack != document.layers[i].smartFilters,stack?.enabled==true,item.enabled,item.opacity>0,layer.pristineSmartAppearance?.pixels==nil{throw CraftError.invalid("Bind the original displacement map before changing this active Smart Filter.")}
+
+      if let settings=item.filter.lensBlur {
+        if stack?.enabled==true && item.enabled && item.opacity>0 && layer.pristineSmartAppearance?.pixels==nil {
+          try settings.validateSources(layer:layer,document:document)
+        }else{try settings.validateStoredSources(layer:layer,document:document)}
+      }
+    }
     if stack?.filters.contains(where: { $0.filter.kind == .puppetWarp || $0.filter.kind == .perspectiveWarp }) == true {
       guard !document.isPositionLocked(id),!document.isTransparencyLocked(id),document.layers[i].vectorMask == nil else { throw CraftError.unsupported("Deformation filters require unlocked position/transparency and no vector mask.") }
     }
-    var layer = document.layers[i]; layer.smartFilters = stack
+
     // Admit the render before committing, including transformed size and numeric limits.
     if stack != nil { _ = try renderedLayer(layer, in: document) }
     document.layers[i] = layer
@@ -102,6 +113,7 @@ public enum SmartFilterEngine {
     guard target == id, let i = document.layers.firstIndex(where: { $0.id == id }),
       document.layers[i].smartObject != nil else { throw CraftError.invalid("Select a Smart Filter mask.") }
     let original = document.layers[i]
+    guard try original.linkedSmartObjectPreview()==nil else{throw CraftError.unsupported("Resolve the linked source before changing its Smart Filter mask.")}
     var projected = document
     projected.layers[i] = try original.filterMaskProjection()
     // The projected mask is a filter mask, not the layer-mask depth source.
@@ -121,8 +133,10 @@ public enum SmartFilterEngine {
   }
   static func renderedLayer(_ layer:Layer,in document:CraftDocument,paged forcePaged:Bool)throws->Layer {
     guard layer.smartObject != nil else { return layer }
+    if let original=try layer.originalSmartAppearanceLayer(){return original}
+    if try layer.linkedSmartObjectPreview() != nil {var cached=layer;cached.smartObject=nil;cached.smartFilters=nil;return cached}
     var layer = try WarpRaster.baked(layer, in: document)
-    guard let stack = layer.smartFilters else { layer.smartObject = nil; return layer }
+    guard let stack = layer.smartFilters else { layer.smartObject = nil; layer.importedSmartAppearance=nil; return layer }
     try stack.validate()
     guard case .raster(let source) = layer.content else { throw CraftError.invalid("Missing Smart Object pixels.") }
     var bounds = try renderBounds(layer, in: document)
@@ -144,6 +158,19 @@ public enum SmartFilterEngine {
           current=try PuppetEngine.reframe(current,from:bounds,to:expanded)
           filtered=try PuppetEngine.reframe(pixels,from:extent,to:expanded)
           bounds=expanded;x=bounds.x;y=bounds.y
+        } else if let settings=item.filter.distortion,settings.source != nil {
+          // Original Smart filters retain references, not a resolved map; their
+          // missing-map stage is identity. No external hint is read here.
+          if settings.source?.map==nil{filtered=current}
+          else{filtered=try DistortionEngine.render(current,kind:item.filter.kind,settings:settings,referenceBounds:IntRect(x:0,y:0,width:document.width,height:document.height),pixelToDocument:.translation(Double(x),Double(y)))}
+        } else if let settings=item.filter.lighting {
+          guard document.colorMode == .rgb,document.inkMode==nil,document.restrictedMode==nil else{throw CraftError.unsupported("Lighting Effects requires an RGB image target.")}
+          try settings.validateReferences(in:document)
+          let texture=settings.textureChannelID.flatMap{id in document.alphaChannels?.first{$0.id==id}?.pixels}
+          filtered=try LightingEngine.render(current,settings:settings,referenceBounds:IntRect(x:0,y:0,width:document.width,height:document.height),pixelToDocument:.translation(Double(x),Double(y)),texture:texture)
+        } else if let settings=item.filter.relight {
+          guard document.colorMode == .rgb,document.inkMode==nil,document.restrictedMode==nil else{throw CraftError.unsupported("Relight currently supports RGB editing.")}
+          filtered=try RelightEngine.render(current,settings:settings,canvasWidth:document.width,canvasHeight:document.height)
         } else if let settings=item.filter.tone {
           filtered=try ClassicToneEngine.render(current,settings:settings)
         } else if let settings=item.filter.classicDetail {
@@ -198,6 +225,7 @@ public enum SmartFilterEngine {
     var result = layer
     result.content = .raster(current); result.x = x; result.y = y; result.affine = nil
     result.smartObject = nil; result.smartFilters = nil
+    result.importedSmartAppearance = nil
     if layer.mask != nil {
       result.maskProperties = layer.effectiveMaskProperties
       let mapping = try result.coordinateTransform.inverted() * layer.maskCoordinateTransform
@@ -206,8 +234,9 @@ public enum SmartFilterEngine {
     return result
   }
   public static func renderBounds(_ layer: Layer, in document: CraftDocument) throws -> IntRect {
+    if let cached=try layer.originalSmartAppearanceLayer(),case .raster(let pixels)=cached.content{return try cached.coordinateTransform.bounds(width:pixels.width,height:pixels.height)}
     guard case .raster(let source) = layer.content else { throw CraftError.invalid("Missing Smart Object source pixels.") }
-    let placed = try layer.coordinateTransform.bounds(width: source.width, height: source.height)
+    let placed = try layer.sourceProjection.map{try $0.followed(by:layer.coordinateTransform).bounds(width:source.width,height:source.height)} ?? layer.coordinateTransform.bounds(width: source.width, height: source.height)
     let x = min(0, placed.x), y = min(0, placed.y)
     let bounds = IntRect(x: x, y: y, width: max(document.width, placed.x + placed.width) - x,
       height: max(document.height, placed.y + placed.height) - y)

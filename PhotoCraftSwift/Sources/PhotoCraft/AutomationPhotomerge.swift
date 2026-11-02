@@ -18,7 +18,7 @@ extension PhotomergeSettings {
      "permission":"Document transfers must be enabled. Every input is an explicitly shared document; include the command's target among the sources, with its current revision. No server-side local paths are accepted.",
      "result":"HTTP201 with a new shared document state; sources stay unchanged. The new panorama is unsaved and uses ordinary native history/persistence for subsequent edits. Source revisions and session/lifecycle grants are revalidated after the worker completes.",
      "behavior":"Flattens each photograph, converts to the first source's working profile/depth, aligns content, expands the canvas to union bounds, and optionally blends and fills transparent areas. Source snapshots are immutable.",
-     "limits":"Two to7 shared inputs leave capacity for the new eighth share. Desktop supports2–16 files/open documents. Alignment16MP/layer and32MP combined; blended output4MP and16MP combined grid; API additionally caps4MP canvas/64layers/128MiB.",
+     "limits":"Two to7 shared inputs leave capacity for the new eighth share. Desktop supports2–16 files/open documents. Alignment16MP/layer and32MP combined; blended output4MP and16MP combined grid; API additionally caps4MP canvas/8,000layers/128MiB.",
      "adobe":"The pinned published Photoshop v2 contract has no dedicated Photomerge endpoint. Existing create-composite and execute-actions alignment/blend subsets remain available; this new-document orchestration is Photato-specific. No Adobe route or proprietary equality is claimed."]
   }
 }
@@ -59,7 +59,8 @@ extension AutomationService {
     let operationID = UUID();photomergeOperationID = operationID;photomergeSourceIDs = Set(options.sources.map(\.0))
     documentTransferBusy = true
     for document in documents { document.store.geometryBusy = true;document.store.renderTask?.cancel() }
-    let worker = Task.detached(priority:.userInitiated) { try Photomerge.prepare(snapshots,settings:options.settings,name:options.name) }
+    let prepare = photomergePreparation
+    let worker = Task.detached(priority:.userInitiated) { try prepare(snapshots,options.settings,options.name) }
     photomergeTask = worker
     let observer = Task { await withTaskCancellationHandler { _ = try? await worker.value } onCancel: { worker.cancel() } }
     for document in documents { document.store.geometryTask = observer }

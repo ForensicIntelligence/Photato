@@ -1,0 +1,21 @@
+{
+  "generated_at_utc": "2026-11-01T20:43:31.289455+00:00",
+  "origin": "Owned harness against unmodified MIT/Apache original PhotoCraft crates; file.fileInfo executed through its Session. Not Photoshop evidence.",
+  "scope": "Three RGB depths, 24 original descriptive values, source XMP and raw EXIF/image-resource/global payload retention.",
+  "generator_sha256": "2536c6709c5a9d3f289024c0095d374e33075b53e0522a109fa283e98da7fce4",
+  "source_files": {
+    "photocraft-main/crates/engine/src/file_cmds.rs": "5b2b28300cf2324c45f91c3cac12ac1b515e6303d582ecec5a0d89d59bd5136b",
+    "photocraft-main/crates/format/src/manifest.rs": "e80e0ba70bce4b27c724da761cd58062397ad0acfc3f774eb519ad1cc799196e",
+    "photocraft-main/crates/format/src/convert.rs": "556f6a9976465304a41d8cf3dfff4428c652ace7d9cc211eb58c440ebd5d6450"
+  },
+  "files": {
+    "info-u8.pcraft": "5f608047cecb5d9723aaaf903cb44ca90bad49290f07d8c5abab383fbefa20ba",
+    "info-f32.xmp": "65f4ac217fadf49910779fab67e9e72ac1e4d730e39c35c91ec1af1f12648e7e",
+    "info-u8.xmp": "65f4ac217fadf49910779fab67e9e72ac1e4d730e39c35c91ec1af1f12648e7e",
+    "generate.rs": "2536c6709c5a9d3f289024c0095d374e33075b53e0522a109fa283e98da7fce4",
+    "info-u16.xmp": "65f4ac217fadf49910779fab67e9e72ac1e4d730e39c35c91ec1af1f12648e7e",
+    "info-u16.pcraft": "29d05623d82bf6054afa5b9fcf16d578b8c72975f578d474c2ba5d48744bbdd0",
+    "cases.json": "c15037610ec386c839ef4894e556cf6c22683f942664e15e2b8b3172f9e2d471",
+    "info-f32.pcraft": "18383a22bffd60d00c877e4cfc53f330e9c5d13a5a050287c144bf9c82ee8db5"
+  }
+}

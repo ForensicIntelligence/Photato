@@ -48,7 +48,7 @@ public struct SelectionRefinementEdit: Sendable {
       result.layers = [layer]
     } else if output == .layerMask { result.layers[index] = layer }
     else {
-      guard result.layers.count < 512 else { throw CraftError.invalid("Layer limit reached.") }
+      guard result.layers.count < LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
       result.layers[index].visible = false; result.layers.insert(layer,at:index+1)
     }
     result.activeLayerID = layer.id; result.setCoverageSelection(nil); try result.validate(); return result

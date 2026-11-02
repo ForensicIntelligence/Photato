@@ -89,7 +89,7 @@ public enum PhotoBlend {
       if merged { result.layers[i].visible = false }
     }
     if merged {
-      guard result.layers.count < 512,let top = result.layers.lastIndex(where:{layerIDs.contains($0.id)}) else { throw CraftError.unsupported("Cannot add a blended layer to this document.") }
+      guard result.layers.count < LayerLimits.maximumLayers,let top = result.layers.lastIndex(where:{layerIDs.contains($0.id)}) else { throw CraftError.unsupported("Cannot add a blended layer to this document.") }
       var pixels = try Surface(width:w,height:h,depth:d.depth,colorEncoding:d.depth == .f32 ? .linearRGB:.sRGB)
       for y in 0..<h { try Task.checkCancellation();for x in 0..<w {
         let i = (y*w+x)*4,p = Pixel(rgba[i],rgba[i+1],rgba[i+2],unit(rgba[i+3]))

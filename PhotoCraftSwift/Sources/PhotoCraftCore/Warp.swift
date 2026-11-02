@@ -64,7 +64,16 @@ public struct WarpMesh: Codable, Equatable, Sendable {
 }
 
 /// Warp coordinates are in the unwarped layer's pixel space. Affine placement follows warp.
+public final class WarpSourceBounds:Codable,Equatable,Sendable {
+  public let x:Double,y:Double,width:Double,height:Double
+  public init(x:Double,y:Double,width:Double,height:Double){self.x=x;self.y=y;self.width=width;self.height=height}
+  public static func ==(a:WarpSourceBounds,b:WarpSourceBounds)->Bool{a === b || (a.x==b.x && a.y==b.y && a.width==b.width && a.height==b.height)}
+  public func validate()throws {
+    guard [x,y,width,height].allSatisfy({$0.isFinite}),abs(x)<=1_000_000,abs(y)<=1_000_000,width>0,height>0,width<=1_000_000,height<=1_000_000 else{throw CraftError.invalid("Invalid source Warp frame.")}
+  }
+}
 public struct WarpDefinition: Codable, Equatable, Sendable {
+  public var sourceBounds:WarpSourceBounds?
   public var style: WarpStyle = .none
   public var bend: Double = 0, horizontalDistortion: Double = 0, verticalDistortion: Double = 0
   public var vertical = false
@@ -73,11 +82,17 @@ public struct WarpDefinition: Codable, Equatable, Sendable {
   public init() {}
   public func validate() throws {
     guard [bend,horizontalDistortion,verticalDistortion].allSatisfy({$0.isFinite && (-100...100).contains($0)}) else { throw CraftError.invalid("Warp amounts must be between−100 and100.") }
-    try mesh?.validate()
+    try mesh?.validate();try sourceBounds?.validate()
     guard (style == .custom) == (mesh != nil) else { throw CraftError.invalid("Custom Warp requires a mesh; presets cannot contain a mesh.") }
   }
   public var isIdentity: Bool { style == .none || (style != .custom && bend == 0 && horizontalDistortion == 0 && verticalDistortion == 0) }
   public func point(_ x:Double,_ y:Double,width:Double,height:Double) -> PathPoint {
+    if let frame=sourceBounds {
+      if style == .custom,let mesh{return mesh.point((x-frame.x)/frame.width,(y-frame.y)/frame.height)}
+      var local=self;local.sourceBounds=nil
+      let p=local.point(x-frame.x,y-frame.y,width:frame.width,height:frame.height)
+      return .init(p.x+frame.x,p.y+frame.y)
+    }
     if style == .custom,let mesh { return mesh.point(x/width,y/height) }
     if style == .none { return PathPoint(x,y) }
     let hu=(vertical ? height:width)/2,hv=(vertical ? width:height)/2,aspect=hu/hv

@@ -1,0 +1,88 @@
+{
+  "step": "dev-step-337",
+  "recorded_at_utc": "2026-11-01T22:29:44.071639+00:00",
+  "run": "artifacts/runs/20261101T215710Z-337-smart-object-comps",
+  "reference_standard": "Photoshop2026",
+  "guide": "docs/SMART_OBJECT_LAYER_COMPS.md",
+  "source_manifest": "artifacts/runs/20261101T215710Z-337-smart-object-comps/source04.json",
+  "inputs": 6893,
+  "production_swift_files": 924,
+  "binary_sha256": "f454a45faf860e3d90436c49027ce35cc852f3d56271862533999d437b950c29",
+  "qualification": {
+    "cases": 365,
+    "passed": 364,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "build_seconds": 116.97,
+    "test_seconds": 45.145,
+    "all_affected_passed": false
+  },
+  "new_case_names": [
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testChoiceAcrossDepthsChangesOnlyPresentationAndPreservesEveryParentProperty",
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testConvertingSelectedLayersDoesNotInheritParentDocumentCompLibrary",
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testDeletedSelectedCompAndImageLocksRejectWholeSourceUpdateAtomically",
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testLinkedNativeArchiveReopensWithCachedChoiceAndHydratesOnlyMatchingOriginalBytes",
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testSharedInstancesKeepIndependentChoicesAndSourceUpdatesRerenderEachChoice",
+    "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testStackModeRecalculationUsesSelectedCompAndNativeSelectionPersists",
+    "PhotoCraftCoreTests.SmartObjectLayerCompModelTests/testInvalidCataloguesAndSelectionsRejectWithoutChangingAnExistingChoice",
+    "PhotoCraftCoreTests.SmartObjectLayerCompModelTests/testMaximumSourceRevisionReadsAreStableAndSourceMutationInvalidatesTheCachedIdentity",
+    "PhotoCraftCoreTests.SmartObjectLayerCompModelTests/testNative80RoundTripAtAllDepthsAndOlderObjectsRetainTheirFeatureVersion",
+    "PhotoCraftCoreTests.SmartObjectLayerCompModelTests/testSelectionsChangePresentationIdentityWhileKeepingSharedSourceIdentity",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testCancellationAndShareRevocationRejectAConfirmedLivePreparedEdit",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testNativePropertiesSelectionAndHTTPUseIdenticalDocumentsAndHistory",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testReopenedLinkedChoiceRequiresExistingAPIFileAuthorizationAndUnchangedOriginal",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testSchemaInvalidBusyStaleAndNative80Negotiation"
+  ],
+  "known_failure": {
+    "name": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "prior_log": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/full04-17.log",
+    "same_two_diagnostic_vectors": true,
+    "comparison_evidence": "artifacts/runs/20261101T215710Z-337-smart-object-comps/prior-linked-cache-failure01.json",
+    "strict_assertions_retained": true
+  },
+  "revision_diagnostic": {
+    "source_bytes": 67108864,
+    "reads": 1000,
+    "seconds": 0.025893917,
+    "scope": "Ordinary embedded-source revision metadata only; artificial Core source bytes, not image decode, editing/display latency or physical60fps."
+  },
+  "native_version": 80,
+  "actions_version_unchanged": 30,
+  "api_commands": 213,
+  "reference": {
+    "reference_standard": "Photoshop 2026",
+    "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/create-and-manage-layer-comps.html",
+    "guide_updated": "2026-09-28",
+    "accessed_at_utc": "2026-11-01T21:57:10.079638+00:00",
+    "scope": "Properties Layer Comp menu selects a placed source variation while retaining transforms/effects",
+    "implementation": "Independent native Swift; no Rust oracle or Adobe script implementation used",
+    "live_UI_qualification": false
+  },
+  "live_UI": "Mac locked at337 Photoshop access attempt",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Parent Layer Comp recording of source comp choice",
+    "Editable Photoshop comp resources/descriptors",
+    "Full missing/converted comp and source replacement semantics",
+    "Unresolved imported linked preview and nested updates",
+    "Live UI/defaults, Actions/ATN, supported platform/capacity/performance/full-suite qualification"
+  ],
+  "preservation": "Store archive332, installed283 and private full-source298 unchanged; no new archive/install/push/upload/release",
+  "parent_comp_followup_338": {
+    "guide": "docs/PARENT_SMART_OBJECT_COMPS.md",
+    "evidence": "docs/PARENT_SMART_OBJECT_COMP_REFERENCES.json",
+    "all13new_passed": true,
+    "full_Photoshop_workflow_closed": false
+  },
+  "PSD_followup_339": {
+    "guide": "docs/PSD_LAYER_COMPS.md",
+    "evidence": "docs/PSD_LAYER_COMP_REFERENCES.json",
+    "all13new_passed": true,
+    "full_Photoshop_workflow_closed": false
+  }
+}

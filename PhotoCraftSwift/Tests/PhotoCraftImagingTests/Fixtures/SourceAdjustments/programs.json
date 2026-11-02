@@ -1,0 +1,2633 @@
+[
+  {
+    "name": "brightness-False-0",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": false
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "options": {
+        "legacy": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "brightness-False-1",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": false
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "options": {
+        "legacy": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "brightness-False-2",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": false
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "options": {
+        "legacy": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "brightness-True-3",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 0,
+        "contrast": 0,
+        "legacy": true
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": 0,
+        "contrast": 0
+      },
+      "records": {},
+      "options": {
+        "legacy": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "brightness-True-4",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": 32.375,
+        "contrast": 47.5,
+        "legacy": true
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": 32.375,
+        "contrast": 47.5
+      },
+      "records": {},
+      "options": {
+        "legacy": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "brightness-True-5",
+    "original": {
+      "BrightnessContrast": {
+        "brightness": -61.25,
+        "contrast": -31.75,
+        "legacy": true
+      }
+    },
+    "native": {
+      "kind": "brightnessContrast",
+      "parameters": {
+        "brightness": -61.25,
+        "contrast": -31.75
+      },
+      "records": {},
+      "options": {
+        "legacy": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "levels-identity",
+    "original": {
+      "Levels": {
+        "master": {
+          "in_black": 0,
+          "in_white": 1,
+          "gamma": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb",
+        "black": {
+          "in_black": 0,
+          "in_white": 1,
+          "gamma": 1,
+          "out_black": 0,
+          "out_white": 1
+        }
+      }
+    },
+    "native": {
+      "kind": "levels",
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "levels-fractional",
+    "original": {
+      "Levels": {
+        "master": {
+          "in_black": 0.0713,
+          "in_white": 0.8527,
+          "gamma": 1.8125,
+          "out_black": 0.03125,
+          "out_white": 0.9731
+        },
+        "per_channel": [
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb",
+        "black": {
+          "in_black": 0,
+          "in_white": 1,
+          "gamma": 1,
+          "out_black": 0,
+          "out_white": 1
+        }
+      }
+    },
+    "native": {
+      "kind": "levels",
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0.0713,
+            0.8527,
+            1.8125,
+            0.03125,
+            0.9731
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "levels-component",
+    "original": {
+      "Levels": {
+        "master": {
+          "in_black": 0,
+          "in_white": 1,
+          "gamma": 1,
+          "out_black": 0,
+          "out_white": 1
+        },
+        "per_channel": [
+          {
+            "in_black": 0.05,
+            "in_white": 0.91,
+            "gamma": 0.8125,
+            "out_black": 0.02,
+            "out_white": 0.99
+          },
+          {
+            "in_black": 0.02,
+            "in_white": 0.95,
+            "gamma": 1.3125,
+            "out_black": 0,
+            "out_white": 1
+          },
+          {
+            "in_black": 0,
+            "in_white": 1,
+            "gamma": 1,
+            "out_black": 0,
+            "out_white": 1
+          }
+        ],
+        "space": "Rgb",
+        "black": {
+          "in_black": 0,
+          "in_white": 1,
+          "gamma": 1,
+          "out_black": 0,
+          "out_white": 1
+        }
+      }
+    },
+    "native": {
+      "kind": "levels",
+      "parameters": {},
+      "records": {
+        "channels": [
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0.05,
+            0.91,
+            0.8125,
+            0.02,
+            0.99
+          ],
+          [
+            0.02,
+            0.95,
+            1.3125,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            1
+          ]
+        ]
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "curves-identity",
+    "original": {
+      "Curves": {
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb",
+        "black": []
+      }
+    },
+    "native": {
+      "kind": "curves",
+      "parameters": {},
+      "records": {
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": [],
+        "green": [],
+        "blue": [],
+        "black": []
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "curves-fractional",
+    "original": {
+      "Curves": {
+        "master": [
+          {
+            "input": 0,
+            "output": 0
+          },
+          {
+            "input": 0.2875,
+            "output": 0.4213
+          },
+          {
+            "input": 0.7625,
+            "output": 0.8912
+          },
+          {
+            "input": 1,
+            "output": 1
+          }
+        ],
+        "per_channel": [
+          [
+            {
+              "input": 0,
+              "output": 0
+            },
+            {
+              "input": 0.3137,
+              "output": 0.1725
+            },
+            {
+              "input": 1,
+              "output": 1
+            }
+          ],
+          [],
+          []
+        ],
+        "space": "Rgb",
+        "black": []
+      }
+    },
+    "native": {
+      "kind": "curves",
+      "parameters": {},
+      "records": {
+        "master": [
+          [
+            0,
+            0
+          ],
+          [
+            0.2875,
+            0.4213
+          ],
+          [
+            0.7625,
+            0.8912
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "red": [
+          [
+            0,
+            0
+          ],
+          [
+            0.3137,
+            0.1725
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "green": [],
+        "blue": [],
+        "black": []
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "curves-empty",
+    "original": {
+      "Curves": {
+        "master": [],
+        "per_channel": [
+          [],
+          [],
+          []
+        ],
+        "space": "Rgb",
+        "black": []
+      }
+    },
+    "native": {
+      "kind": "curves",
+      "parameters": {},
+      "records": {
+        "master": [],
+        "red": [],
+        "green": [],
+        "blue": [],
+        "black": []
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "exposure-12",
+    "original": {
+      "Exposure": {
+        "exposure": 0,
+        "offset": 0,
+        "gamma": 1
+      }
+    },
+    "native": {
+      "kind": "exposure",
+      "parameters": {
+        "exposure": 0,
+        "offset": 0,
+        "gamma": 1
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "exposure-13",
+    "original": {
+      "Exposure": {
+        "exposure": 1.375,
+        "offset": 0.03125,
+        "gamma": 1.3125
+      }
+    },
+    "native": {
+      "kind": "exposure",
+      "parameters": {
+        "exposure": 1.375,
+        "offset": 0.03125,
+        "gamma": 1.3125
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "exposure-14",
+    "original": {
+      "Exposure": {
+        "exposure": -2.125,
+        "offset": -0.04,
+        "gamma": 0.8125
+      }
+    },
+    "native": {
+      "kind": "exposure",
+      "parameters": {
+        "exposure": -2.125,
+        "offset": -0.04,
+        "gamma": 0.8125
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "vibrance-15",
+    "original": {
+      "Vibrance": {
+        "vibrance": 0,
+        "saturation": 0
+      }
+    },
+    "native": {
+      "kind": "vibrance",
+      "parameters": {
+        "vibrance": 0,
+        "saturation": 0
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "vibrance-16",
+    "original": {
+      "Vibrance": {
+        "vibrance": 38.125,
+        "saturation": 21.375
+      }
+    },
+    "native": {
+      "kind": "vibrance",
+      "parameters": {
+        "vibrance": 38.125,
+        "saturation": 21.375
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "vibrance-17",
+    "original": {
+      "Vibrance": {
+        "vibrance": -47.5,
+        "saturation": -17.25
+      }
+    },
+    "native": {
+      "kind": "vibrance",
+      "parameters": {
+        "vibrance": -47.5,
+        "saturation": -17.25
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "hue-master",
+    "original": {
+      "HueSaturation": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25,
+        "colorize": false,
+        "ranges": [
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ]
+          }
+        ]
+      }
+    },
+    "native": {
+      "kind": "hueSaturation",
+      "parameters": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "options": {
+        "colorize": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "hue-ranges",
+    "original": {
+      "HueSaturation": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25,
+        "colorize": false,
+        "ranges": [
+          {
+            "hue": 31.625,
+            "saturation": 27.25,
+            "lightness": 13.375,
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ]
+          },
+          {
+            "hue": -17.25,
+            "saturation": -22.5,
+            "lightness": -3.125,
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ]
+          }
+        ]
+      }
+    },
+    "native": {
+      "kind": "hueSaturation",
+      "parameters": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25
+      },
+      "records": {
+        "ranges": [
+          [
+            31.625,
+            27.25,
+            13.375,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            -17.25,
+            -22.5,
+            -3.125,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "options": {
+        "colorize": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "hue-colorize",
+    "original": {
+      "HueSaturation": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25,
+        "colorize": true,
+        "ranges": [
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              -45,
+              -15,
+              15,
+              45
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              15,
+              45,
+              75,
+              105
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              75,
+              105,
+              135,
+              165
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              135,
+              165,
+              195,
+              225
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              195,
+              225,
+              255,
+              285
+            ]
+          },
+          {
+            "hue": 0,
+            "saturation": 0,
+            "lightness": 0,
+            "bounds": [
+              255,
+              285,
+              315,
+              345
+            ]
+          }
+        ]
+      }
+    },
+    "native": {
+      "kind": "hueSaturation",
+      "parameters": {
+        "hue": 23.375,
+        "saturation": 17.125,
+        "lightness": -9.25
+      },
+      "records": {
+        "ranges": [
+          [
+            0,
+            0,
+            0,
+            -45,
+            -15,
+            15,
+            45
+          ],
+          [
+            0,
+            0,
+            0,
+            15,
+            45,
+            75,
+            105
+          ],
+          [
+            0,
+            0,
+            0,
+            75,
+            105,
+            135,
+            165
+          ],
+          [
+            0,
+            0,
+            0,
+            135,
+            165,
+            195,
+            225
+          ],
+          [
+            0,
+            0,
+            0,
+            195,
+            225,
+            255,
+            285
+          ],
+          [
+            0,
+            0,
+            0,
+            255,
+            285,
+            315,
+            345
+          ]
+        ]
+      },
+      "options": {
+        "colorize": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "balance-False",
+    "original": {
+      "ColorBalance": {
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "preserve_luminosity": false
+      }
+    },
+    "native": {
+      "kind": "colorBalance",
+      "parameters": {},
+      "records": {
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ]
+      },
+      "options": {
+        "preserveLuminosity": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "balance-True",
+    "original": {
+      "ColorBalance": {
+        "shadows": [
+          12.375,
+          -17.25,
+          23.125
+        ],
+        "midtones": [
+          -7.5,
+          11.125,
+          3.375
+        ],
+        "highlights": [
+          17.25,
+          -2.375,
+          -13.125
+        ],
+        "preserve_luminosity": true
+      }
+    },
+    "native": {
+      "kind": "colorBalance",
+      "parameters": {},
+      "records": {
+        "shadows": [
+          [
+            12.375,
+            -17.25,
+            23.125
+          ]
+        ],
+        "midtones": [
+          [
+            -7.5,
+            11.125,
+            3.375
+          ]
+        ],
+        "highlights": [
+          [
+            17.25,
+            -2.375,
+            -13.125
+          ]
+        ]
+      },
+      "options": {
+        "preserveLuminosity": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "black-white-23",
+    "original": {
+      "BlackWhite": {
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ],
+        "tint": null
+      }
+    },
+    "native": {
+      "kind": "blackWhite",
+      "parameters": {},
+      "records": {
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ]
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "black-white-24",
+    "original": {
+      "BlackWhite": {
+        "weights": [
+          41.375,
+          63.125,
+          37.25,
+          58.75,
+          23.125,
+          79.375
+        ],
+        "tint": [
+          0.91,
+          0.62,
+          0.34
+        ]
+      }
+    },
+    "native": {
+      "kind": "blackWhite",
+      "parameters": {},
+      "records": {
+        "weights": [
+          [
+            41.375,
+            63.125,
+            37.25,
+            58.75,
+            23.125,
+            79.375
+          ]
+        ],
+        "tint": [
+          [
+            0.91,
+            0.62,
+            0.34
+          ]
+        ]
+      },
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "photo-filter-False",
+    "original": {
+      "PhotoFilter": {
+        "density": 0.37625,
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "preserve_luminosity": false
+      }
+    },
+    "native": {
+      "kind": "photoFilter",
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "options": {
+        "preserveLuminosity": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "photo-filter-True",
+    "original": {
+      "PhotoFilter": {
+        "density": 0.37625,
+        "color": [
+          0.9125,
+          0.53125,
+          0.1375
+        ],
+        "preserve_luminosity": true
+      }
+    },
+    "native": {
+      "kind": "photoFilter",
+      "parameters": {
+        "density": 0.37625
+      },
+      "records": {
+        "color": [
+          [
+            0.9125,
+            0.53125,
+            0.1375
+          ]
+        ]
+      },
+      "options": {
+        "preserveLuminosity": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "mixer-False",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": false
+      }
+    },
+    "native": {
+      "kind": "channelMixer",
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "options": {
+        "monochrome": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "mixer-True",
+    "original": {
+      "ChannelMixer": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ],
+        "monochrome": true
+      }
+    },
+    "native": {
+      "kind": "channelMixer",
+      "parameters": {},
+      "records": {
+        "matrix": [
+          [
+            1.12375,
+            -0.153125,
+            0.075,
+            0.0175
+          ],
+          [
+            0.12375,
+            0.8125,
+            0.025,
+            -0.0175
+          ],
+          [
+            -0.01375,
+            0.1375,
+            0.8875,
+            0.02375
+          ]
+        ]
+      },
+      "options": {
+        "monochrome": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "lookup-29",
+    "original": {
+      "ColorLookup": {
+        "name": "Owned procedural color cube",
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "size": 3,
+        "tetrahedral": false,
+        "dither": false
+      }
+    },
+    "native": {
+      "kind": "colorLookup",
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "options": {
+        "tetrahedral": false,
+        "dither": false
+      },
+      "space": "rgb",
+      "name": "Owned procedural color cube"
+    }
+  },
+  {
+    "name": "lookup-30",
+    "original": {
+      "ColorLookup": {
+        "name": "Owned procedural color cube",
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "size": 3,
+        "tetrahedral": true,
+        "dither": false
+      }
+    },
+    "native": {
+      "kind": "colorLookup",
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "options": {
+        "tetrahedral": true,
+        "dither": false
+      },
+      "space": "rgb",
+      "name": "Owned procedural color cube"
+    }
+  },
+  {
+    "name": "lookup-31",
+    "original": {
+      "ColorLookup": {
+        "name": "Owned procedural color cube",
+        "lut": [
+          0.025,
+          0.075,
+          0.03125,
+          0.4625,
+          0.075,
+          0.03125,
+          0.9,
+          0.075,
+          0.03125,
+          0.025,
+          0.48125,
+          0.03125,
+          0.4625,
+          0.48125,
+          0.03125,
+          0.9,
+          0.48125,
+          0.03125,
+          0.025,
+          0.8875,
+          0.03125,
+          0.4625,
+          0.8875,
+          0.03125,
+          0.9,
+          0.8875,
+          0.03125,
+          0.025,
+          0.075,
+          0.5,
+          0.4625,
+          0.075,
+          0.5,
+          0.9,
+          0.075,
+          0.5,
+          0.025,
+          0.48125,
+          0.5,
+          0.4625,
+          0.48125,
+          0.5,
+          0.9,
+          0.48125,
+          0.5,
+          0.025,
+          0.8875,
+          0.5,
+          0.4625,
+          0.8875,
+          0.5,
+          0.9,
+          0.8875,
+          0.5,
+          0.025,
+          0.075,
+          0.96875,
+          0.4625,
+          0.075,
+          0.96875,
+          0.9,
+          0.075,
+          0.96875,
+          0.025,
+          0.48125,
+          0.96875,
+          0.4625,
+          0.48125,
+          0.96875,
+          0.9,
+          0.48125,
+          0.96875,
+          0.025,
+          0.8875,
+          0.96875,
+          0.4625,
+          0.8875,
+          0.96875,
+          0.9,
+          0.8875,
+          0.96875
+        ],
+        "size": 3,
+        "tetrahedral": true,
+        "dither": true
+      }
+    },
+    "native": {
+      "kind": "colorLookup",
+      "parameters": {
+        "size": 3
+      },
+      "records": {
+        "lut": [
+          [
+            0.025,
+            0.075,
+            0.03125,
+            0.4625,
+            0.075,
+            0.03125,
+            0.9,
+            0.075,
+            0.03125,
+            0.025,
+            0.48125,
+            0.03125,
+            0.4625,
+            0.48125,
+            0.03125,
+            0.9,
+            0.48125,
+            0.03125,
+            0.025,
+            0.8875,
+            0.03125,
+            0.4625,
+            0.8875,
+            0.03125,
+            0.9,
+            0.8875,
+            0.03125,
+            0.025,
+            0.075,
+            0.5,
+            0.4625,
+            0.075,
+            0.5,
+            0.9,
+            0.075,
+            0.5,
+            0.025,
+            0.48125,
+            0.5,
+            0.4625,
+            0.48125,
+            0.5,
+            0.9,
+            0.48125,
+            0.5,
+            0.025,
+            0.8875,
+            0.5,
+            0.4625,
+            0.8875,
+            0.5,
+            0.9,
+            0.8875,
+            0.5,
+            0.025,
+            0.075,
+            0.96875,
+            0.4625,
+            0.075,
+            0.96875,
+            0.9,
+            0.075,
+            0.96875,
+            0.025,
+            0.48125,
+            0.96875,
+            0.4625,
+            0.48125,
+            0.96875,
+            0.9,
+            0.48125,
+            0.96875,
+            0.025,
+            0.8875,
+            0.96875,
+            0.4625,
+            0.8875,
+            0.96875,
+            0.9,
+            0.8875,
+            0.96875
+          ]
+        ]
+      },
+      "options": {
+        "tetrahedral": true,
+        "dither": true
+      },
+      "space": "rgb",
+      "name": "Owned procedural color cube"
+    }
+  },
+  {
+    "name": "lookup-icc-identity",
+    "original": {
+      "ColorLookup": {
+        "name": "Owned unresolved profile",
+        "lut": null,
+        "size": 0,
+        "tetrahedral": false,
+        "dither": false
+      }
+    },
+    "native": {
+      "kind": "colorLookup",
+      "parameters": {
+        "size": 0
+      },
+      "records": {},
+      "options": {
+        "tetrahedral": false,
+        "dither": false
+      },
+      "space": "rgb",
+      "name": "Owned unresolved profile"
+    }
+  },
+  {
+    "name": "invert",
+    "original": "Invert",
+    "native": {
+      "kind": "invert",
+      "parameters": {},
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "posterize-3",
+    "original": {
+      "Posterize": {
+        "levels": 3
+      }
+    },
+    "native": {
+      "kind": "posterize",
+      "parameters": {
+        "levels": 3
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "posterize-13",
+    "original": {
+      "Posterize": {
+        "levels": 13
+      }
+    },
+    "native": {
+      "kind": "posterize",
+      "parameters": {
+        "levels": 13
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "threshold-fractional",
+    "original": {
+      "Threshold": {
+        "level": 0.45125
+      }
+    },
+    "native": {
+      "kind": "threshold",
+      "parameters": {
+        "level": 0.45125
+      },
+      "records": {},
+      "options": {},
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "gradient-empty",
+    "original": {
+      "GradientMap": {
+        "stops": [],
+        "reverse": false,
+        "dither": false
+      }
+    },
+    "native": {
+      "kind": "gradientMap",
+      "parameters": {},
+      "records": {
+        "stops": []
+      },
+      "options": {
+        "reverse": false,
+        "dither": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "gradient-fractional",
+    "original": {
+      "GradientMap": {
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ],
+        "reverse": false,
+        "dither": false
+      }
+    },
+    "native": {
+      "kind": "gradientMap",
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "options": {
+        "reverse": false,
+        "dither": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "gradient-reverse-dither",
+    "original": {
+      "GradientMap": {
+        "stops": [
+          [
+            0,
+            [
+              0.125,
+              0.05,
+              0.3
+            ]
+          ],
+          [
+            0.37125,
+            [
+              0.3,
+              0.75,
+              0.2
+            ]
+          ],
+          [
+            0.8125,
+            [
+              0.81,
+              0.21,
+              0.71
+            ]
+          ],
+          [
+            1,
+            [
+              0.95,
+              0.81,
+              0.51
+            ]
+          ]
+        ],
+        "reverse": true,
+        "dither": true
+      }
+    },
+    "native": {
+      "kind": "gradientMap",
+      "parameters": {},
+      "records": {
+        "stops": [
+          [
+            0,
+            0.125,
+            0.05,
+            0.3
+          ],
+          [
+            0.37125,
+            0.3,
+            0.75,
+            0.2
+          ],
+          [
+            0.8125,
+            0.81,
+            0.21,
+            0.71
+          ],
+          [
+            1,
+            0.95,
+            0.81,
+            0.51
+          ]
+        ]
+      },
+      "options": {
+        "reverse": true,
+        "dither": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "selective-False",
+    "original": {
+      "SelectiveColor": {
+        "relative": false,
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      }
+    },
+    "native": {
+      "kind": "selectiveColor",
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "options": {
+        "relative": false
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "selective-True",
+    "original": {
+      "SelectiveColor": {
+        "relative": true,
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      }
+    },
+    "native": {
+      "kind": "selectiveColor",
+      "parameters": {},
+      "records": {
+        "adjustments": [
+          [
+            12.375,
+            -17.25,
+            22.125,
+            -3.375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            3.125,
+            1.375,
+            -7.25,
+            2.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -2.125,
+            7.375,
+            1.25,
+            -3.125
+          ]
+        ]
+      },
+      "options": {
+        "relative": true
+      },
+      "space": "rgb"
+    }
+  },
+  {
+    "name": "opaque-unsupported",
+    "original": {
+      "Unsupported": {
+        "psd_key": "test",
+        "raw": [
+          1,
+          7,
+          33,
+          255
+        ]
+      }
+    },
+    "native": {
+      "kind": "unsupported",
+      "parameters": {},
+      "records": {},
+      "options": {},
+      "space": "rgb",
+      "opaqueKey": "test",
+      "opaqueData": "AQch/w=="
+    }
+  }
+]

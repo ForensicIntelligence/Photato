@@ -18,7 +18,7 @@ public struct ContentAwareEdit: Sendable {
     if output == .current && original.isImageLocked(layerID) { throw CraftError.invalid("Unlock image pixels before filling the current layer.") }
     var doc = original, layer = original.layers[index]
     if output != .current {
-      guard doc.layers.count < 512, !doc.ancestors(of:layerID).contains(where: { $0.protection.fullyLocks }) else { throw CraftError.invalid("Unlock the group or remove a layer before adding fill output.") }
+      guard doc.layers.count < LayerLimits.maximumLayers, !doc.ancestors(of:layerID).contains(where: { $0.protection.fullyLocks }) else { throw CraftError.invalid("Unlock the group or remove a layer before adding fill output.") }
       layer.id = UUID(); layer.locked = false; layer.protection = []; layer.visible = true
     }
     if output == .new {

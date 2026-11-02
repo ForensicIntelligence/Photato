@@ -66,7 +66,7 @@ extension EditorStore {
       switch command {
       case .modeComponents(let edit):
         guard !editingMask, editingChannel == nil, edit.layerID == document.activeLayerID, edit.components == modeComponentTargets else { throw CraftError.invalid("The edit must match the selected layer and color components.") }
-      case .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
+      case .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
         .renameLayer, .layerColor, .layerVisibility, .visibility, .lock, .opacity, .blend: break
       default: throw CraftError.unsupported("Select the composite color target for this operation.")
       }
@@ -78,7 +78,7 @@ extension EditorStore {
       guard !editingMask, id == document.activeLayerID, fill.components == target else {
         throw CraftError.invalid("Component Fill must match the active layer and channel target.")
       }
-    case .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
+    case .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
       .renameLayer, .layerColor, .layerVisibility, .visibility, .lock, .opacity, .blend:
       break
     default:
@@ -88,7 +88,12 @@ extension EditorStore {
     }
   }
 
-  func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false) throws {
+  func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false, allowLinkedSmartObject: Bool = false) throws {
+    if prepared.isSelectionOnly {try session.executePrepared(prepared);return}
+    if allowLinkedSmartObject {
+      guard let edit=prepared.linkedSmartObjectEdit,edit.source==document else {throw CraftError.invalid("Missing or stale linked artwork transaction.")}
+      try session.executePrepared(prepared);return
+    }
     if allowChannelArithmetic {
       guard let edit=prepared.channelArithmeticEdit,edit.source==document else {throw CraftError.invalid("Missing or stale channel transaction.")}
       try session.executePrepared(prepared);return
@@ -106,7 +111,7 @@ extension EditorStore {
   }
 
   var canUseComponentCanvasTool: Bool {
-    (!modeComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
+    (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!modeComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
       || [.marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
   }
 

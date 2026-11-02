@@ -1,0 +1,149 @@
+{
+  "step": 306,
+  "recorded_at_utc": "2026-11-01T02:09:36.543623+00:00",
+  "run": "artifacts/runs/20261101T020936Z-306-rich-source-text",
+  "status": "rich-source-type-functional-subset-tested-exact-and-native-gates-open",
+  "phase": 1,
+  "package": "I03",
+  "increment_complete": false,
+  "goal_complete": false,
+  "full_parity": false,
+  "compiler_test_workers_live": false,
+  "native_acceptance": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "next_work": [
+    "Continue major missing source Smart Object/adjustment/metadata workflows under157; retain all text/shape/numerical/full-native gates.",
+    "Finish source named styles, live font/caps/optical/caret behavior and editable format/capacity support as required major dependencies."
+  ],
+  "diary_reconciled_at_utc": "2026-11-01T02:48:39.480660+00:00",
+  "diary_refresh": "docs/DIARY_REFRESH_307.json",
+  "working_tree_inventory": "artifacts/runs/20261101T024732Z-307-diary-refresh/306-working-tree-inventory.json",
+  "authored_new_test_cases": 17,
+  "application_build_executed": true,
+  "application_tests_executed": true,
+  "syntax_only": {
+    "latest_attempt": "artifacts/runs/20261101T020936Z-306-rich-source-text/parse03-result.json",
+    "swift_files": 1420,
+    "exit_code": 0,
+    "qualifies_typechecking_or_workflows": false
+  },
+  "source_oracle": {
+    "attempt03_exit_code": 0,
+    "variants": 12,
+    "depths": 3,
+    "original_source_unchanged": true
+  },
+  "current_worker": null,
+  "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+  "source_inputs": 3007,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T02:53:56.647189+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source01.json",
+    "inputs": 3007,
+    "current_binary_sha256": "82e77643d4c8a32580f397fe95b52429069913ab4dcd8280ec8704ba096baa51",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T03:01:08.512364+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source02.json",
+    "inputs": 3007,
+    "current_binary_sha256": "a9e3bc2ad11422311d089d4a0dbef0bd017da6bf40604ff056f2a631fe57d70e",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused03_result": {
+    "exit_code": 130,
+    "finished_at_utc": "2026-11-01T03:04:25.240694+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source03.json",
+    "inputs": 3007,
+    "current_binary_sha256": "a9e3bc2ad11422311d089d4a0dbef0bd017da6bf40604ff056f2a631fe57d70e",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused04_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T03:11:36.996689+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source04.json",
+    "inputs": 3007,
+    "current_binary_sha256": "ca0fcdffcb2a2f5816c66c1ee06775c55046237854d6d588c54615287f825de7",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused05_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T03:18:52.868300+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source05.json",
+    "inputs": 3007,
+    "current_binary_sha256": "4ea4805d72a5fa1a39c2ae374d76d1ecb56c97f3f05f38978b37074a7ccc5542",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused06_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T03:21:48.271763+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+    "inputs": 3007,
+    "current_binary_sha256": "4ea4805d72a5fa1a39c2ae374d76d1ecb56c97f3f05f38978b37074a7ccc5542",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused06": {
+    "recorded_at_utc": "2026-11-01T03:21:52.518479+00:00",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+    "source_inputs": 3007,
+    "source_unchanged": true,
+    "source05_to_current_delta": [
+      "Tests/PhotoCraftAppTests/PcraftTextWorkflowTests.swift"
+    ],
+    "production_identical_to_source05": true,
+    "production_swift_files": 864,
+    "binary_sha256": "4ea4805d72a5fa1a39c2ae374d76d1ecb56c97f3f05f38978b37074a7ccc5542",
+    "cases": 144,
+    "parsed_cases": 144,
+    "passed_cases": 139,
+    "failed_cases": [
+      {
+        "class": "PhotoCraftImagingTests.ExposureInterchangeTests",
+        "name": "testIndependentPhotoshopMergedSampleEquality",
+        "status": "failed"
+      },
+      {
+        "class": "PhotoCraftImagingTests.PcraftFillImportTests",
+        "name": "testImportedFillContentMatchesIndependentRustRGBA8",
+        "status": "failed"
+      },
+      {
+        "class": "PhotoCraftImagingTests.PcraftFillImportTests",
+        "name": "testImportedGradientRampsMatchOriginalRustFloatBits",
+        "status": "failed"
+      },
+      {
+        "class": "PhotoCraftImagingTests.PcraftShapeImportTests",
+        "name": "testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+        "status": "failed"
+      },
+      {
+        "class": "PhotoCraftImagingTests.PcraftTextImportTests",
+        "name": "testUncachedSourceTextCompositeMatchesExactOriginalWords",
+        "status": "failed"
+      }
+    ],
+    "failed_assertions": 26,
+    "unexpected": 0,
+    "new_cases": 17,
+    "new_cases_passed": 16,
+    "new_failed_cases": [
+      {
+        "class": "PhotoCraftImagingTests.PcraftTextImportTests",
+        "name": "testUncachedSourceTextCompositeMatchesExactOriginalWords",
+        "status": "failed"
+      }
+    ],
+    "cached_original_rust_words": 3564000,
+    "cached_original_rust_changed_words": 0,
+    "full_inventory_qualified": false,
+    "native_visual_acceptance": false,
+    "full_parity": false
+  },
+  "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
+  "continuation_checkpoint": "docs/WORKING_CHECKPOINT_308.json",
+  "native_access": "artifacts/runs/20261101T032414Z-308-rich-type-workflows/native-ui01.json"
+}

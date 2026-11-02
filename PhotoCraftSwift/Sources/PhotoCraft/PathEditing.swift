@@ -5,6 +5,7 @@ import PhotoCraftImaging
 enum PathTarget: Equatable {
   case saved(UUID)
   case vectorMask(UUID)
+  case shape(UUID)
 }
 struct PathAnchorSelection: Equatable {
   var component: Int
@@ -25,11 +26,13 @@ extension EditorStore {
     switch pathTarget {
     case .saved(let id): document.paths?.first { $0.id == id }?.path
     case .vectorMask(let id): document.layers.first { $0.id == id }?.vectorMask?.path
+    case .shape(let id): try? document.layers.first{$0.id==id}?.shapePath()
     case nil: nil
     }
   }
   var displayedVectorPath: VectorPath? { freeformGesture?.preview ?? pathGesture?.preview ?? selectedVectorPath }
   var pathIsEditable: Bool {
+    if case .shape(let id)=pathTarget{return !document.isLocked(id) && !document.isImageLocked(id) && !document.isPositionLocked(id)}
     if case .vectorMask(let id) = pathTarget { return !document.isLocked(id) }
     return true
   }
@@ -38,6 +41,7 @@ extension EditorStore {
     pathTarget = target
     maskEditingLayerID = nil
     clearMaskView()
+    if case .shape(let id)=target {session.selectLayer(id);selectedLayerIDs=[id]}
     if case .vectorMask(let id) = target {
       session.selectLayer(id)
       selectedLayerIDs = [id]
@@ -61,6 +65,9 @@ extension EditorStore {
       return
     }
     switch pathTarget {
+    case .shape(let id):
+      guard let layer=document.layers.first(where:{$0.id==id})else{return}
+      do{perform(.shape(.configure(id,try layer.replacingShapePath(path,canvas:.init(x:0,y:0,width:document.width,height:document.height)))))}catch{self.error=error.localizedDescription}
     case .saved(let id):
       guard var saved = document.paths?.first(where: { $0.id == id }) else { return }
       saved.path = path
@@ -117,6 +124,7 @@ extension EditorStore {
     switch pathTarget {
     case .saved(let id): perform(.deletePath(id))
     case .vectorMask(let id): perform(.vectorMask(id, nil))
+    case .shape: commitPath(VectorPath())
     case nil: return
     }
     if selectedVectorPath == nil { selectPath(nil) }
@@ -322,7 +330,7 @@ extension EditorStore {
     if tool == .curvaturePen { do {path.components[a.component] = try PathConstruction.curvature(path.components[a.component])} catch {self.error=error.localizedDescription;return} }
     gesture.preview = path
     pathGesture = gesture
-    if case .vectorMask = pathTarget { render() } else { revision += 1 }
+    switch pathTarget{case .vectorMask,.shape:render();default:revision += 1}
   }
   func endPathGesture() {
     guard let gesture = pathGesture else { return }

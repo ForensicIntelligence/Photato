@@ -1,0 +1,194 @@
+{
+  "step": 329,
+  "recorded_at_utc": "2026-11-01T16:44:52.804155+00:00",
+  "status": "functional-subset-qualified",
+  "functional_subset_qualified": true,
+  "full_photoshop_parity": false,
+  "native_version": 77,
+  "actions_version": 30,
+  "photato_commands": 206,
+  "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
+  "source_inputs": 6833,
+  "production_swift_files": 905,
+  "reference_inputs": "Tests/PhotoCraftImagingTests/Fixtures/PSDAuxiliary/provenance.json",
+  "independent_cases": 81,
+  "owned_cases": 80,
+  "corpus_cases": 1,
+  "auxiliary_sample_comparisons": 1226640,
+  "new_tests": 14,
+  "public_specification": {
+    "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "final_url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "sha256": "2e953902770ebbb13f44b5ce498b7254867a0b85c949cf1d1a9267cfeb546c28",
+    "retrieved_at_utc": "2026-11-01T15:37:07.561693+00:00",
+    "scope": "Public file format; not full Photoshop behavior/output evidence."
+  },
+  "native_access": {
+    "app": "com.adobe.Photoshop",
+    "activation_command": "open -b com.adobe.Photoshop",
+    "activation_exit_code": 0,
+    "result": "Mac locked; automatic unlock failed.",
+    "user_unlock_requested": true,
+    "live_visual_acceptance": false
+  },
+  "remaining": [
+    "Live Photoshop2026 comparison",
+    "full current test inventory",
+    "private color-book records",
+    "multiple visible spots",
+    "Merge Spot",
+    "printing/composite export",
+    "semantic Actions",
+    "capacity/platform/60fps/full output equivalence"
+  ],
+  "binary_sha256": "e630a7042795b52bd8b64b5d00d1a33eb31f98835afad063e6438462371a051c",
+  "tests": {
+    "step": 329,
+    "source": "Source06",
+    "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
+    "binary_sha256": "e630a7042795b52bd8b64b5d00d1a33eb31f98835afad063e6438462371a051c",
+    "build_succeeded": true,
+    "build_seconds": 108.4,
+    "cases": 177,
+    "passed_cases": 177,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 20.932,
+    "classes": {
+      "PhotoCraftCoreTests.AlphaChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AlphaChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeConversionTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DocumentModeTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkChannelTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkChannelWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeControlsTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeDocumentTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeGeometryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.InkModeInputTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkModeRasterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSBTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDAuxiliaryChannelTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PSDAuxiliaryWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PSDChannelRetentionTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDCompressionOptionsTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDFileInputTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDFileOutputTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDStreamingTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceChannelImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SpotChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SpotChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "new_cases": 14,
+    "new_cases_passed": 14,
+    "failed_case_names": [],
+    "source_unchanged": true
+  },
+  "independent_export_verification": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/independent-output06.json",
+  "test_contract_repair_bindings": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/test-contract-repair-bindings.json",
+  "verification": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/verification01.json",
+  "unchanged_imported_sample_words_exact": true
+}

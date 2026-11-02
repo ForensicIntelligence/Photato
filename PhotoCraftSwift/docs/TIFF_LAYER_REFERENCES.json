@@ -169,5 +169,44 @@
     "independent": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-independent03.json",
     "imageio": "artifacts/runs/20261028T052601Z-220-document-modes/tiff-imageio03.json",
     "limits": "Native-mode tiled/JPEG-compressed TIFF, spot-ink/extra-channel variants and non-RGB editable rich PSD/TIFF records remain unsupported. Native Lab16 TIFF chroma is rounded to the public signed1/256 scale; layered planes retain exact bytes. Merged multi-layer mode caches still use RGB composition/reseparation; exact native blend/ink output remains open."
+  },
+  "regression332": {
+    "request_context": "Archive readiness exposed an existing per-format recovery failure.",
+    "source": "332 Source03",
+    "regression": "PSD auxiliary validation incorrectly applied its merged transparency-plane requirement to the TIFF metadata/layer adapter.",
+    "repair": "TIFF supplies its merged raster externally; use process-channel count for the adapter while retaining ordinary PSD and TIFF auxiliary-plane restrictions.",
+    "tests": "Tests/PhotoCraftImagingTests/TIFFLayerCompositeBoundaryTests.swift",
+    "new_sample_matrix": {
+      "depths": [
+        8,
+        16,
+        32
+      ],
+      "byte_orders": [
+        "big",
+        "little"
+      ],
+      "alphas": [
+        0.25,
+        1
+      ],
+      "combinations": 12,
+      "exact_layer_samples": true
+    },
+    "existing_reference_and_workflow_selection": {
+      "cases": 346,
+      "failed_assertions": 0,
+      "unexpected": 0,
+      "reference": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/focused03-summary.json"
+    },
+    "full_current_suite_passed": false,
+    "photoshop2026_live_verified": false
+  },
+  "qualification_332": {
+    "production_source": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/source04.json",
+    "focused_370_pass": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/focused04-summary.json",
+    "full_inventory": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/full04-summary.json",
+    "new_boundary_combinations": 12,
+    "native_and_photoshop_runtime_acceptance": false
   }
 }

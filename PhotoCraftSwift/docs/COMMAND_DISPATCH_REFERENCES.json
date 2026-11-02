@@ -1,0 +1,78 @@
+{
+  "step": 311,
+  "recorded_at_utc": "2026-11-01T04:55:58.352956+00:00",
+  "run": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair",
+  "source02": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source02.json",
+  "source01": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source01.json",
+  "binary_sha256": "2edf48c12e8cb3c2e959f25c5e3fc2e227c7ca49d0d48babc697e2e879a8c126",
+  "diagnosis": {
+    "trace": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/debugger02.log",
+    "observed": "Current cooperative-worker stack exhaustion in nested independent Smart Object copy through Command.applyPrimitive and validation.",
+    "debugger_exit_is_test_pass": false
+  },
+  "repair": {
+    "file": "Sources/PhotoCraftCore/CommandPrimitives.swift",
+    "router": "Sources/PhotoCraftCore/Engine.swift",
+    "families": 8,
+    "moved_case_patterns": 90,
+    "mechanical_audit": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/mechanical-case-integrity01.json",
+    "case_bodies_unchanged": true,
+    "stack_limits_changed": false
+  },
+  "focused_source01": {
+    "cases": 137,
+    "passed": 136,
+    "failed_cases": 1,
+    "assertions": 3,
+    "result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/focused01-summary.json"
+  },
+  "full_source01": {
+    "cases": 3105,
+    "passed": 3098,
+    "failed_cases": 7,
+    "assertions": 30,
+    "missing": 0,
+    "crashes": 0,
+    "all_passed": false,
+    "result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/full-inventory01-result.json"
+  },
+  "focused_source02": {
+    "cases": 24,
+    "failures": 0,
+    "result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/focused02-summary.json"
+  },
+  "source_binding": {
+    "comparison": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/source01-source02-comparison.json",
+    "production_swift": 868,
+    "production_identical": true,
+    "binary_identical": true,
+    "only_modified_input": "Tests/PhotoCraftAppTests/IndexedNativeWorkflowTests.swift",
+    "complete_source02_rerun": false
+  },
+  "retained_failures": [
+    "Source03 workflow crash and debugger reproductions",
+    "Source01 strict six-case output failures",
+    "Source01 stale two-assertion archive version case",
+    "Two evidence parser failures, original inventory/raw logs and unique replays"
+  ],
+  "api_impact": "Same desktop/Photato/Adobe native transactions; no new routes, parameters, result schemas, executable capabilities or descriptors. Source70 admission belongs to unactivated309 work.",
+  "menu_cursor_impact": "No new menu, shortcut, tool, modifier action or cursor policy.",
+  "native_access": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/native-access01.json",
+  "remaining_gates": [
+    "Full source Smart import/consumer/native/API/fixture integration",
+    "Six existing strict output cases/28 assertions",
+    "Fully green current inventory and long-session AppKit qualification",
+    "Native/Photoshop visual acceptance",
+    "Intel/universal/macOS14+/capacity/physical60fps and full parity"
+  ],
+  "new_app_installed": false,
+  "new_source_pushed": false,
+  "goal_complete": false,
+  "documentation_verification": {
+    "first_checks": 33,
+    "first_passed": true,
+    "first_result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/verification01.json",
+    "final_result": "artifacts/runs/20261101T042623Z-311-smart-workflow-repair/verification02.json",
+    "audit_receipt": "artifacts/development-history-audit/311-checkpoint01-receipt.json"
+  }
+}

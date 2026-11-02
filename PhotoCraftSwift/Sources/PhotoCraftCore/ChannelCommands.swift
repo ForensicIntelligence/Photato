@@ -13,7 +13,7 @@ extension ChannelCommand {
       guard d.alphaChannels?.contains(where:{ $0.id == id }) == true else { throw CraftError.invalid("Channel not found.") }
       d.alphaChannels?.removeAll(where:{ $0.id == id }); if d.alphaChannels?.isEmpty == true { d.alphaChannels = nil }
     case .duplicate(let id,let name):
-      var value = try d.channel(.alpha(id)); value.id = UUID(); value.name = name ?? value.name+" copy"
+      var value = try d.channel(.alpha(id)); value.id = UUID(); value.psdIdentifier=nil; value.name = name ?? value.name+" copy"
       try ChannelCommand.create(value).apply(to:&d)
     case .rename(let id,let name):
       var value = try d.channel(.alpha(id)); value.name = name; try d.setChannel(value,at:.alpha(id))
@@ -22,6 +22,21 @@ extension ChannelCommand {
       let value = d.alphaChannels!.remove(at:old); d.alphaChannels!.insert(value,at:index)
     case .options(let target,let options):
       try options.validate(); var value = try d.channel(target); value.options = options; try d.setChannel(value,at:target)
+    case .configure(let id,let name,let options,let spot):
+      try options.validate();try spot?.validate()
+      var channel=try d.channel(.alpha(id));let old=channel
+      guard spot == nil || (!d.colorMode.isRestricted && d.inkMode == nil)else{throw CraftError.unsupported("Use the ink-plate workflow for this document mode.")}
+      channel.name=name;channel.options=options;channel.spot=spot
+      if spot == nil {channel.psdSpotGray=nil}
+      // Preserve the displayed gray during alpha/spot conversion. The retained
+      // source model stores ink density, opposite to the spot's editing gray.
+      if (old.spot == nil) != (spot == nil) {
+        let configured=channel,depth=d.depth
+        channel.pixels=try old.pixels.mappedStoredSamples {p in
+          let v=configured.display(old.display(p.r));return Pixel(v,v,v).quantized(depth)
+        }.retaggedCoverageStorage(depth:depth)
+      }
+      try d.setChannel(channel,at:.alpha(id))
     case .saveSelection(let id,let name,let mode):
       let pixels = try AlphaChannel.coverage(d.coverageSelection(),width:d.width,height:d.height,depth:d.depth)
       try ChannelCommand.storeSelection(pixels,id,name,mode).apply(to:&d)
@@ -64,14 +79,14 @@ extension ChannelCommand {
     case .stroke(let target,let points,let brush):
       var value = try d.channel(target), brush = brush
       let ink = brush.erase ? brush.backgroundColor ?? .white : brush.color
-      let gray = value.options.display(unit(0.2126*ink.r+0.7152*ink.g+0.0722*ink.b))
+      let gray = value.display(unit(0.2126*ink.r+0.7152*ink.g+0.0722*ink.b))
       brush.color = Pixel(gray,gray,gray,ink.a); brush.erase = false
       try Painter.stroke(surface:&value.pixels,points:points,brush:brush,selection:d.selection,selectionMask:d.selectionMask,grayscaleMask:true)
       try d.setChannel(value,at:target)
     case .fill(let target,let amount,let opacity):
       guard amount.isFinite, opacity.isFinite, (0...1).contains(amount), (0...1).contains(opacity) else { throw CraftError.invalid("Invalid channel fill.") }
       var value = try d.channel(target); let before = d
-      let ink = value.options.display(amount)
+      let ink = value.display(amount)
       try value.pixels.mapPixels(in:d.selection ?? IntRect(x:0,y:0,width:d.width,height:d.height)) { x,y,p in
         let k = before.selectionCoverage(x:x,y:y)*opacity, v = unit(p.r*(1-k)+ink*k)
         return Pixel(v,v,v)
@@ -85,7 +100,7 @@ extension ChannelCommand {
       try d.setChannel(value,at:target)
     case .filter(let target,let filter):
       guard d.width<=RasterFilterEngine.maximumPixels/d.height else {throw CraftError.unsupported("Channel filter preparation retains its 8,388,608-pixel limit.")}
-      guard filter.kind != .shadowsHighlights && !filter.kind.isClassicDetail && !filter.kind.isOtherVideo && !filter.kind.isRender && !filter.kind.isStylize && !filter.kind.isPixelate && !filter.kind.isDistortion && filter.kind != .lensBlur && filter.kind != .smartSharpen && filter.kind != .reduceNoise && filter.kind != .filterGallery && filter.kind != .adaptiveWideAngle && filter.kind != .lensCorrection && filter.kind != .blurGallery && filter.kind != .cameraRaw && filter.kind != .puppetWarp && filter.kind != .perspectiveWarp else { throw CraftError.unsupported("This filter requires an RGB image target.") }
+      guard filter.kind != .lightingEffects && filter.kind != .relight && filter.kind != .shadowsHighlights && !filter.kind.isClassicDetail && !filter.kind.isOtherVideo && !filter.kind.isRender && !filter.kind.isStylize && !filter.kind.isPixelate && !filter.kind.isDistortion && filter.kind != .lensBlur && filter.kind != .smartSharpen && filter.kind != .reduceNoise && filter.kind != .filterGallery && filter.kind != .adaptiveWideAngle && filter.kind != .lensCorrection && filter.kind != .blurGallery && filter.kind != .cameraRaw && filter.kind != .puppetWarp && filter.kind != .perspectiveWarp else { throw CraftError.unsupported("This filter requires an RGB image target.") }
       var value = try d.channel(target)
       var proxy = try CraftDocument(width:d.width,height:d.height,depth:d.depth)
       var numeric = try Surface(width:d.width,height:d.height,depth:d.depth,fill:.black,colorEncoding:d.depth == .f32 ? .linearRGB:.sRGB)

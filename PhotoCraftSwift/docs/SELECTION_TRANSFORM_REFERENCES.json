@@ -1,0 +1,142 @@
+{
+  "step": "dev-step-346",
+  "recorded_at_utc": "2026-11-02T04:40:31.202987+00:00",
+  "run": "artifacts/runs/20261102T041005Z-346-transform-selection",
+  "source_manifest": "artifacts/runs/20261102T041005Z-346-transform-selection/source03.json",
+  "inputs": 6951,
+  "production_swift_files": 955,
+  "binary_sha256": "af424a319284d826d4c45ee74ea173f97252031cd0ad946fcb7f7520e5ffb467",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 356,
+    "passed_cases": 356,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 39.088,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 328.82
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.SelectionTransformTests/testAllInterpolationModesCapturedForIndependentReader",
+    "PhotoCraftCoreTests.SelectionTransformTests/testBilinearHalfPixelUsesNumericGrayAndZeroExterior",
+    "PhotoCraftCoreTests.SelectionTransformTests/testFullCanvasAndOutOfCanvasClipping",
+    "PhotoCraftCoreTests.SelectionTransformTests/testGridTranslationFlipsAndQuarterTurnsPreserveCoverage",
+    "PhotoCraftCoreTests.SelectionTransformTests/testHistoryActionsArchivesAndLayerPreservation",
+    "PhotoCraftCoreTests.SelectionTransformTests/testInvalidQuadHorizonAndCancellation",
+    "PhotoCraftCoreTests.SelectionTransformTests/testQuadProjectionMapsCornersAndRetainsNonAffineGeometry",
+    "PhotoCraftCoreTests.SelectionTransformTests/testSparseMaximumDimensionsUseTiledProjectiveSupport",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testAll16ModifiersCapturedGesturesReferenceAndNumericControls",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testAllDepthsProfilesLocksAndNumericFlips",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testHTTPMatricesMatchNativeAndPreserveMaskTarget",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testInvalidBusyStaleRevokeAndNativeCancelBarrier",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testNativeCommitUndoActionsStaleAndReadClose",
+    "PhotoCraftAppTests.SelectionTransformWorkflowTests/testPreviewCancelAndFactoryMenusWithoutPixelTransform"
+  ],
+  "independent_mask": {
+    "passed": true,
+    "source_outputs": "346 Source03",
+    "file": "selection-transform-analytical.json",
+    "sha256": "b92f6a49142ae5c3921610620b45acd4ae585ad34d62440def2353f09a248b0f",
+    "analytical_bytes_compared": 320,
+    "checks": [
+      {
+        "matrix": [
+          1,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "interpolation": "Nearest Neighbor",
+        "passed": true,
+        "bytes_compared": 80
+      },
+      {
+        "matrix": [
+          -1,
+          0,
+          10,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "interpolation": "Nearest Neighbor",
+        "passed": true,
+        "bytes_compared": 80
+      },
+      {
+        "matrix": [
+          1,
+          0,
+          0.5,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "interpolation": "Bilinear",
+        "passed": true,
+        "bytes_compared": 80
+      },
+      {
+        "matrix": [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0.01,
+          0,
+          1
+        ],
+        "interpolation": "Nearest Neighbor",
+        "passed": true,
+        "bytes_compared": 80
+      }
+    ],
+    "oracle": "Independent Python inverse matrix and raw GRAY8 nearest/bilinear sampling of owned10x8 inputs. Not Photoshop output."
+  },
+  "references": {
+    "standard": "Photoshop2026",
+    "previous_turn": "progress;6943 frozen345 inputs and binary revalidated unchanged;323 affected pass",
+    "references": [
+      "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+      "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/transformation-options-in-adobe-photoshop.html",
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/move-selection-or-selection-border.html"
+    ],
+    "documented": "Continuous scale/rotate/skew/distort/perspective, proportional toggle,15-degree rotation constrain, Command-Shift side skew, Command distort, Command-Option-Shift corner perspective and reference locator. Selection border is distinct from selected pixels.",
+    "native_access": "Last actual344 locked-Mac result; not retried unchanged; no live UI/reference acceptance claimed.",
+    "remaining": [
+      "Selection Warp",
+      "Exact Photoshop resampling/gesture/default behavior",
+      "Full S01/G01 and native/platform/capacity/physical60fps acceptance"
+    ]
+  },
+  "api_commands": 224,
+  "native_version_unchanged": 82,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Selection Warp, Grow/Similar, row/column marquees and full S01 acceptance",
+    "Selected-pixel/mask Free Transform and full G01",
+    "Photoshop exact gray resampling, gesture semantics, reference movement and persisted defaults",
+    "Full current suite, supported Macs, physical interaction/capacity/performance gates"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

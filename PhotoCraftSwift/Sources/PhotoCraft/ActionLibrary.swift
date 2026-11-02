@@ -5,8 +5,56 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
+  static let maximumVersion = 44
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where:{$0.steps.contains{if case .canvasEdges=$0.operation{return true};return false}}){return 44}
+    if actions.contains(where:{$0.steps.contains{if case .flattenImage=$0.operation{return true};return false}}){return 43}
+    if actions.contains(where:{$0.steps.contains{if case .patternPixelPaint=$0.operation{return true};return false}}){return 42}
+    if actions.contains(where:{$0.steps.contains{if case .pixelPaint=$0.operation{return true};return false}}){return 41}
+    if actions.contains(where:{$0.steps.contains{if case .moveLayers=$0.operation{return true};return false}}){return 40}
+    if actions.contains(where:{$0.steps.contains{if case .layerLinks=$0.operation{return true};return false}}){return 39}
+    if actions.contains(where:{$0.steps.contains{if case .projectLayers=$0.operation{return true};return false}}){return 38}
+    if actions.contains(where:{$0.steps.contains{if case .transformLayers=$0.operation{return true};return false}}){return 37}
+    if actions.contains(where:{$0.steps.contains{if case .transformChannel=$0.operation{return true};return false}}){return 36}
+    if actions.contains(where:{$0.steps.contains{if case .transformPixelMask=$0.operation{return true};return false}}){return 35}
+    if actions.contains(where:{$0.steps.contains{switch $0.operation{case .movePixels,.transformCopyPixels:return true;default:return false}}}){return 34}
+    if actions.contains(where:{$0.steps.contains{if case .transformBackgroundPixels=$0.operation{return true};return false}}){return 33}
+    if actions.contains(where:{$0.steps.contains{if case .backgroundLayer=$0.operation{return true};return false}}){return 32}
+    if actions.contains(where:{$0.steps.contains{if case .transformPixels=$0.operation{return true};return false}}){return 31}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {case .globalLight,.layerStyles:return true;case .style(_,let style):return style?.requiresAdvancedArchive==true;default:return false}
+    }}) {return 30}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {case .adjustment(_, .source),.replaceAdjustment(_, .source),.addContent(_, .adjustment(.source)):return true;default:return false}
+    }}) {return 29}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation{case .filter(_,let f):return f.distortion?.requiresSourceDisplacementArchive == true;case .filters(_,let stack):return stack?.filters.contains(where:{$0.filter.distortion?.requiresSourceDisplacementArchive == true}) == true;default:return false}
+    }}){return 28}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation{case .filter(_,let f):return f.lighting != nil;case .filters(_,let stack):return stack?.filters.contains(where:{$0.filter.lighting != nil}) == true;default:return false}
+    }}){return 27}
+    if actions.contains(where:{$0.steps.contains {step in
+      switch step.operation {case .filter(_,let f):return f.relight != nil;case .filters(_,let stack):return stack?.filters.contains(where:{$0.filter.relight != nil}) == true;default:return false}
+    }}){return 26}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {case .editType:return true;case .addContent(_, .text(let text)):return text.requiresRichTypeArchive;default:return false}
+    }}){return 25}
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {
+      case .createShape(_,let definition,_,_),.setShape(_,let definition,_):return definition.requiresExtendedShapeArchive
+      case .appendShape(_,let component):return component.requiresExtendedShapeArchive
+      case .addContent(_, .shape(let shape)):return shape.importedAppearance != nil || shape.definition?.requiresExtendedShapeArchive == true
+      default:return false
+      }
+    }}){return 24}
+    if actions.contains(where:{$0.steps.contains { step in
+      switch step.operation {
+      case .adjustment(_, .classic(let value)), .replaceAdjustment(_, .classic(let value)), .addContent(_, .adjustment(.classic(let value))): return value.kind == .exposure
+      case .adjustmentBrush(let value): if case .classic(let settings)=value.request.adjustment {return settings.kind == .exposure};return false
+      default:return false
+      }
+    }}) {return 23}
     if actions.contains(where:{$0.steps.contains {step in
       switch step.operation {
       case .adjustment(_, .modern), .replaceAdjustment(_, .modern), .addContent(_, .adjustment(.modern)):return true
@@ -38,8 +86,8 @@ struct ActionLibraryFile: Codable {
     } } ? 2:1
   }
   func encoded() throws -> Data {
-    guard (1...22).contains(version), actions.count <= 128, Set(actions.map(\.id)).count == actions.count else {
-      throw CraftError.invalid("Invalid action library (versions 1–22, maximum 128 actions).")
+    guard (1...Self.maximumVersion).contains(version), actions.count <= 128, Set(actions.map(\.id)).count == actions.count else {
+      throw CraftError.invalid("Invalid action library (versions 1–43, maximum 128 actions).")
     }
     for action in actions { try action.validate() }
     let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
@@ -122,7 +170,7 @@ struct ActionLibraryFile: Codable {
     playPreparedAction(action)
   }
   var actionState: [String: Any] {
-    ["format": "photatoactions", "version": actions.file.version, "supportedVersions": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22], "libraryRevision": actions.revision,
+    ["format": "photatoactions", "version": actions.file.version, "supportedVersions": Array(1...ActionLibraryFile.maximumVersion), "libraryRevision": actions.revision,
      "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "adobeATN": false],
      "canRecord": canUseActions && session.actionRecording == nil && actions.loadError == nil,
      "canPlay": canUseActions && session.actionRecording == nil,

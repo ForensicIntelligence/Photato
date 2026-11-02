@@ -7,6 +7,9 @@ import PhotoCraftCore
 public enum PcraftImport {
   public static let contentTypeIdentifier = "org.photocraft.project"
   public static let mediaType = "application/vnd.photocraft.project"
+  public static var sourceSmartFilterCommands:[String]{PcraftSmartFilters.commands}
+  public static let unsupportedSourceSmartFilterCommands:[String]=[]
+  public static let sourceSmartFilterLimitations=["Source Lens Blur layer-mask depth context", "Native processing-depth restrictions; RGB32 Lens Blur requires a pristine saved cache or inactive stage","Unresolved source Displace references require explicit rebinding for edits","Fractional or out-of-range source controls outside native admission","Unknown source stages/fields, source limits and unqualified exact rerender kernels"]
 
   public static func read(_ data: Data, rasterByteLimit: Int = 1_073_741_824) throws -> CraftDocument {
     try convert(PcraftProject.read(data, limits: limits(rasterByteLimit)), rasterByteLimit: rasterByteLimit)
@@ -19,8 +22,8 @@ public enum PcraftImport {
       throw CraftError.invalid("Invalid PhotoCraft raster budget.")
     }
     var result = PcraftProject.Limits()
-    result.layers = 512; result.surfaces = 1025
-    result.blobBytes = ICCProfile.maximumBytes
+    result.layers = LayerLimits.maximumLayers; result.surfaces = LayerLimits.maximumLayers * 2 + 1
+    result.blobBytes = SmartObject.maximumSourceBytes
     result.totalBytes = min(result.totalBytes, rasterBytes + result.manifestBytes + result.blobBytes)
     return result
   }
@@ -55,7 +58,15 @@ public enum PcraftImport {
     return value["format_version"]?.uint != nil && value["document"]?["layers"]?.array != nil
       && value["generator"]?.string != nil
   }
-  static func convert(_ project: PcraftProject, rasterByteLimit: Int) throws -> CraftDocument {
+  // Keep preparation and final document assembly off the recursive decode stack.
+  // The mapper owns the parent value on the heap while originals are opened.
+  @inline(never) static func convert(_ project: PcraftProject, rasterByteLimit: Int) throws -> CraftDocument {
+    let mapper = try prepare(project, rasterByteLimit: rasterByteLimit)
+    let source = try PcraftNode(project.manifest, path: "").field("document")
+    let layers = try mapper.layers(source.field("layers"), parent: nil)
+    return try finish(mapper, layers: layers)
+  }
+  @inline(never) private static func prepare(_ project: PcraftProject, rasterByteLimit: Int) throws -> PcraftLayerMapper {
     guard (0...1_073_741_824).contains(rasterByteLimit) else {
       throw CraftError.invalid("Invalid PhotoCraft raster budget.")
     }
@@ -74,24 +85,33 @@ public enum PcraftImport {
     let namespace = Data(SHA256.hash(data: project.rawManifest))
     document.id = identity(namespace, role: "document", id: try source.field("id").unsigned())
     document.resolution = Double(try source.field("resolution_dpi").float())
-    try source.defaultValue("channels", "[]")
-    try source.defaultValue("guides", "{\"horizontal\":[],\"vertical\":[]}")
-    try source.defaultValue("global_light", "{\"angle\":120,\"altitude\":30}")
-    for field in ["patterns", "layer_comps", "notes"] { try source.defaultValue(field, "[]") }
-    for field in ["clipping_path", "quick_mask", "color_table", "duotone", "last_applied_comp",
+    document.guides = try PcraftGuides.read(source.field("guides"),namespace:namespace)
+    let light=try source.field("global_light");try light.keys("angle altitude")
+    let sourceLight=GlobalLight(angle:Double(try light.field("angle").float()),altitude:Double(try light.field("altitude").float()));try sourceLight.validate()
+    if sourceLight != GlobalLight(){document.globalLight=sourceLight}
+    for field in ["layer_comps", "notes"] { try source.defaultValue(field, "[]") }
+    for field in ["clipping_path", "color_table", "duotone", "last_applied_comp",
       "last_document_state", "timeline", "slices"] { try source.defaultValue(field, "null") }
     try source.defaultValue("variables", "{\"defs\":[],\"data_sets\":[],\"active\":null}")
     try source.defaultValue("measurement", "{\"scale\":{\"pixel_length\":1,\"logical_length\":1,\"units\":\"pixels\"},\"count_groups\":[],\"active_count_group\":0,\"ruler\":null}")
     try source.defaultValue("text_styles", "{\"character\":[],\"paragraph\":[],\"basic\":{\"id\":0,\"name\":\"Basic Paragraph\",\"para_attrs\":{},\"char_attrs\":{}},\"psd_raw\":null}")
-    try source.defaultValue("metadata", "{\"xmp\":null,\"exif\":null,\"psd_resources\":[],\"psd_global_blocks\":[]}")
+    document.sourceMetadata = try PcraftMetadata.read(source.field("metadata"), project: project)
     if let profile = try source.optional("icc_profile")?.string() {
       guard let bytes = project.blobs[profile] else { throw source.invalid }
       document.sourceICC = bytes
       document.workingICC = try ColorManagement.importedProfile(bytes, depth: depth)
     }
-    var mapper = PcraftLayerMapper(project: project, namespace: namespace, depth: depth,
-      remainingBytes: rasterByteLimit)
-    document.layers = try mapper.layers(source.field("layers"), parent: nil)
+    var remaining = rasterByteLimit
+    let patterns = try PcraftPatterns.read(source, project: project, budget: &remaining)
+    document.patterns = patterns.isEmpty ? nil : patterns
+    return PcraftLayerMapper(project: project, document:document, namespace: namespace, depth: depth,
+      remainingBytes: remaining, patterns: patterns, dpi:document.pixelsPerInch, canvas:.init(x:0,y:0,width:document.width,height:document.height))
+  }
+  @inline(never) private static func finish(_ mapper: PcraftLayerMapper, layers: [Layer]) throws -> CraftDocument {
+    let project = mapper.project, namespace = mapper.namespace
+    let source = try PcraftNode(project.manifest, path: "").field("document")
+    var document = mapper.document
+    document.layers = layers
     document.activeLayerID = document.layers.last?.id
     document.paths = try PcraftPaths.named(source, namespace: namespace)
     if let selection = project.surfaces["/document/selection"] {
@@ -104,8 +124,9 @@ public enum PcraftImport {
       document.selection = mask.bounds
       document.selectionMask = mask
     }
+    try PcraftChannels.read(source,project:project,document:&document,namespace:namespace,budget:&mapper.remainingBytes)
     // Import provenance is immutable source evidence, never an editing cache.
-    document.sourceMetadata = ["pcraft.manifest": project.rawManifest]
+    document.sourceMetadata = (document.sourceMetadata ?? [:]).merging(["pcraft.manifest": project.rawManifest]) { _, new in new }
     try document.validate()
     _ = try ColorManagement.space(for: document)
     try Task.checkCancellation()

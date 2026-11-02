@@ -92,5 +92,10 @@
     "unavailable_leaf_commands": 459,
     "primary_shortcuts": 102,
     "alternative_shortcuts": 8
+  },
+  "source_migration_step305": {
+    "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
+    "status": "Source04 functional source-shape/native/API/Actions24 workflows pass;162/166 current focused cases pass with four strict cases/23 assertions. Existing52x16/nine cursor cases pass. New target reuses existing tools; no new shortcuts/cursor actions. Physical/full/Photoshop/source/capacity/platform gates remain open.",
+    "full_parity": false
   }
 }

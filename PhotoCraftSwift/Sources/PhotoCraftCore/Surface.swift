@@ -31,6 +31,11 @@ public enum SurfaceColorEncoding: String, Codable, Sendable {
   case sRGB
   case linearRGB
 }
+private final class SurfaceOpaqueProof:@unchecked Sendable {
+  private let lock=NSLock();private var valid=false
+  var proven:Bool {lock.lock();defer{lock.unlock()};return valid}
+  func establish(){lock.lock();valid=true;lock.unlock()}
+}
 public struct Surface: Codable, Equatable, Sendable {
   public static let tileSide = 64
   public static let pagedIndexMinimumTiles = 1024
@@ -60,10 +65,21 @@ public struct Surface: Codable, Equatable, Sendable {
   // untrusted and earns proof only after a full scan, including tile padding.
   // This value travels with COW storage; it is neither serialized nor semantic.
   private var tilesAreKnownFinite = false
+  private var opaqueProof=SurfaceOpaqueProof()
   public static func == (lhs: Surface, rhs: Surface) -> Bool {
     lhs.width == rhs.width && lhs.height == rhs.height && lhs.depth == rhs.depth
       && lhs.storedDefaultPixel == rhs.storedDefaultPixel
       && lhs.colorEncoding == rhs.colorEncoding && lhs.tiles == rhs.tiles
+  }
+  /// Scan allocated samples once; proof survives writes whose alpha remains one.
+  /// Virtual padding is not a document pixel, and implicit planes need no dense allocation.
+  public func isOpaque()throws->Bool {
+    if opaqueProof.proven{return true}
+    if storedDefaultPixel.a != 1,tiles.count < columns*((height+Self.tileSide-1)/Self.tileSide){return false}
+    for (key,tile) in tiles {try Task.checkCancellation();guard key>=0,key<columns*((height+Self.tileSide-1)/Self.tileSide) else{throw CraftError.invalid("Invalid opacity tile index.")};let left=key%columns*Self.tileSide,top=key/columns*Self.tileSide
+      for y in 0..<min(Self.tileSide,height-top){for x in 0..<min(Self.tileSide,width-left){if tile[y*Self.tileSide+x].a != 1{return false}}}
+    }
+    opaqueProof.establish();return true
   }
   public var tileCount: Int { tiles.count }
   /// Ordered allocated tile keys, including paged bases and COW edits. A caller can
@@ -80,13 +96,15 @@ public struct Surface: Codable, Equatable, Sendable {
   public var residentTileIndexEstimate: Int { tiles.residentIndexBytes }
   func accountHistoryTiles(_ seen: inout Set<UInt>) -> Int { tiles.accountHistory(&seen) }
   /// Nonzero-alpha extent, independent of hidden RGB and unused tile padding.
-  public func contentBounds() throws -> IntRect? {
+  public func contentBounds() throws -> IntRect? { try matchingBounds { $0.a > 0 } }
+  /// Bounds of matching stored samples, including implicit defaults and paged tiles.
+  public func matchingBounds(_ matches: (Pixel) -> Bool) throws -> IntRect? {
     var x0 = width
     var y0 = height
     var x1 = 0
     var y1 = 0
     let keys = tiles.keys
-    if storedDefaultPixel.a > 0 {
+    if matches(storedDefaultPixel) {
       // Missing tiles are implicit opaque pixels. Count occupied rows/columns,
       // rather than enumerate up to22 million missing tiles on a300k canvas.
       let rows = (height + Self.tileSide - 1) / Self.tileSide
@@ -110,14 +128,14 @@ public struct Surface: Codable, Equatable, Sendable {
       let bottom = min(height, top + Self.tileSide)
       if let tile = tiles[key] {
         for y in top..<bottom {
-          for x in left..<right where tile[(y - top) * Self.tileSide + x - left].a > 0 {
+          for x in left..<right where matches(tile[(y - top) * Self.tileSide + x - left]) {
             x0 = min(x0, x)
             y0 = min(y0, y)
             x1 = max(x1, x + 1)
             y1 = max(y1, y + 1)
           }
         }
-      } else if storedDefaultPixel.a > 0 {
+      } else if matches(storedDefaultPixel) {
         x0 = min(x0, left)
         y0 = min(y0, top)
         x1 = max(x1, right)
@@ -139,6 +157,21 @@ public struct Surface: Codable, Equatable, Sendable {
       colorEncoding: colorEncoding)
     output.storedDefaultPixel = storedDefaultPixel
     output.tilesAreKnownFinite = tilesAreKnownFinite && storedDefaultPixel.isFinite
+    if bounds.width*bounds.height > Self.maximumDensePixels || (mappedBytes > 0 && bounds.width*bounds.height > RasterGeometry.maximumPatchPixels) {
+      let builder=try PagedBuilder(template:output)
+      let local=IntRect(x:0,y:0,width:bounds.width,height:bounds.height)
+      let support=tileCount<=RasterGeometry.sparseGridSourceTileLimit
+        ? try projectedGeometrySupport(.translation(-Double(bounds.x),-Double(bounds.y)),bounds:local,halo:0):[local]
+      for region in GeometryPatchRegions(width:bounds.width,height:bounds.height,rectangles:support) {
+        var patch=try output.reframedImplicitValue(width:region.width,height:region.height)
+        for y in 0..<region.height {try Task.checkCancellation();for x in 0..<region.width {
+          let value=storedPixel(x:bounds.x+region.x+x,y:bounds.y+region.y+y)
+          if !value.hasSameBits(as:storedDefaultPixel) {patch.setStoredPixel(x:x,y:y,value)}
+        }}
+        try builder.append(patch,atX:region.x,atY:region.y)
+      }
+      return try builder.finish()
+    }
     for (key, tile) in tilesIntersecting(bounds) {
       try Task.checkCancellation()
       let left = key % columns * Self.tileSide
@@ -183,6 +216,11 @@ public struct Surface: Codable, Equatable, Sendable {
     let key = (y / Self.tileSide) * columns + x / Self.tileSide
     return tiles.pixel(key:key,offset:(y % Self.tileSide) * Self.tileSide + x % Self.tileSide,
       default:storedDefaultPixel)
+  }
+  /// Same-encoding grid edits can retain exact stored samples without a color conversion.
+  mutating func copyStoredSample(from source:Surface,x:Int,y:Int,toX:Int,toY:Int) {
+    precondition(depth==source.depth && colorEncoding==source.colorEncoding)
+    setStoredPixel(x:toX,y:toY,source.storedPixel(x:x,y:y))
   }
   public func pixel(x: Int, y: Int) -> Pixel { encodedSample(storedPixel(x: x, y: y)) }
   public func linearPixel(x: Int, y: Int) -> Pixel {
@@ -232,6 +270,7 @@ public struct Surface: Codable, Equatable, Sendable {
   // RasterTileMap isolates paged ownership; the ordinary bounded Dictionary
   // path stays visible to optimization in pixel loops.
   private mutating func setStoredPixel(x: Int, y: Int, _ p: Pixel) {
+    if p.a != 1{opaqueProof=SurfaceOpaqueProof()}
     let key = (y / Self.tileSide) * columns + x / Self.tileSide
     // The default subscript yields the stored Array directly. Optional chaining
     // here creates an allocating read/modify/write coroutine for every pixel.
@@ -911,7 +950,7 @@ extension Surface {
       patch.height % Self.tileSide == 0 || atY + patch.height == height else {
       throw CraftError.invalid("Decoded patch must match the destination sample grid.")
     }
-    try patch.validated(); var result = self
+    try patch.validated(); var result = self;result.opaqueProof=SurfaceOpaqueProof()
     let rows = (patch.height + Self.tileSide - 1) / Self.tileSide
     for row in 0..<rows { for column in 0..<patch.columns {
       try Task.checkCancellation()
@@ -973,7 +1012,7 @@ extension Surface {
     public func finish() throws -> Surface {
       do {
         try Task.checkCancellation();guard !finished,!failed else {throw CraftError.invalid("Paged import builder is no longer usable.")}
-        let base=try index.finish();var result=template
+        let base=try index.finish();var result=template;result.opaqueProof=SurfaceOpaqueProof()
         if base.count>=Surface.pagedIndexMinimumTiles {result.tiles=RasterTileMap(base:base)}
         else {for i in 0..<base.count {result.tiles[base.key(at:i)]=base.tile(at:i)}}
         result.tilesAreKnownFinite=true;try result.validated();finished=true;return result
@@ -985,6 +1024,7 @@ extension Surface {
 extension Surface {
   /// Grid-aligned owned patches share their Array COW values; no pixel re-encoding.
   mutating func importOwnedPatch(_ patch:Surface,atX:Int,atY:Int) throws {
+    opaqueProof=SurfaceOpaqueProof()
     guard patch.depth==depth,patch.colorEncoding==colorEncoding,
       patch.storedDefaultPixel.hasSameBits(as:storedDefaultPixel),atX%64==0,atY%64==0,
       atX>=0,atY>=0,atX+patch.width<=width,atY+patch.height<=height else {throw CraftError.invalid("Invalid owned geometry patch.")}
@@ -1135,7 +1175,8 @@ extension Surface {
 extension Surface {
   /// Quantize existing stored components without changing their sample encoding.
   /// Paged/implicit storage stays bounded; this is not a color-space conversion.
-  func quantizedStoredDepth(_ depth: PixelDepth) throws -> Surface {
+  public func quantizedStoredDepth(_ depth: PixelDepth) throws -> Surface {
+    if depth == self.depth { return self }
     let mapped = try mappedStoredSamples { $0.quantized(depth) }
     var output = try Surface(width: width, height: height, depth: depth,
       colorEncoding: colorEncoding)
@@ -1202,5 +1243,45 @@ extension Surface {
     }
     if let index {out.tiles=RasterTileMap(base:try index.finish())}
     return out
+  }
+}
+
+public extension Surface {
+  /// Exact integer canvas reframing. Pick the larger uniform region as the
+  /// implicit default, so a one-pixel border need not materialize a huge interior.
+  func reframedExactly(bounds:IntRect,fill:Pixel)throws->Surface {
+    guard (-1_000_000...1_000_000).contains(bounds.x),(-1_000_000...1_000_000).contains(bounds.y),fill.isFinite,(0...1).contains(fill.a) else{throw CraftError.invalid("Invalid canvas frame or fill.")}
+    _ = try Surface(width:bounds.width,height:bounds.height,depth:depth)
+    if bounds == IntRect(x:0,y:0,width:width,height:height){return self}
+    let padding=(colorEncoding == .linearRGB ? SRGBTransfer.linear(fill):fill).quantized(depth)
+    let x0=max(0,min(bounds.width,-bounds.x)),y0=max(0,min(bounds.height,-bounds.y))
+    let x1=max(x0,min(bounds.width,width-bounds.x)),y1=max(y0,min(bounds.height,height-bounds.y))
+    let inside=IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0)
+    let rawDefault=inside.width*inside.height > bounds.width*bounds.height/2 ? storedDefaultPixel:padding
+    var template=try Surface(width:bounds.width,height:bounds.height,depth:depth,fill:rawDefault).interpretingSamples(as:colorEncoding)
+    template.storedDefaultPixel=rawDefault
+    var regions:[IntRect]=[]
+    if !rawDefault.hasSameBits(as:storedDefaultPixel),inside.width>0,inside.height>0 {regions.append(inside)}
+    if !rawDefault.hasSameBits(as:padding) {
+      regions += [IntRect(x:0,y:0,width:bounds.width,height:y0),IntRect(x:0,y:y1,width:bounds.width,height:bounds.height-y1),IntRect(x:0,y:y0,width:x0,height:y1-y0),IntRect(x:x1,y:y0,width:bounds.width-x1,height:y1-y0)]
+    }
+    for key in tiles.keys {
+      try Task.checkCancellation()
+      let rect=IntRect(x:key%columns*Self.tileSide-bounds.x,y:key/columns*Self.tileSide-bounds.y,width:Self.tileSide,height:Self.tileSide).clipped(toWidth:bounds.width,height:bounds.height)
+      if rect.width>0,rect.height>0{regions.append(rect)}
+    }
+    let builder=try PagedBuilder(template:template)
+    for region in GeometryPatchRegions(width:bounds.width,height:bounds.height,rectangles:regions) {
+      var patch=try Surface(width:region.width,height:region.height,depth:depth,fill:rawDefault).interpretingSamples(as:colorEncoding)
+      patch.storedDefaultPixel=rawDefault
+      for y in 0..<region.height {try Task.checkCancellation();for x in 0..<region.width {
+        let sx=bounds.x+region.x+x,sy=bounds.y+region.y+y
+        if sx>=0,sy>=0,sx<width,sy<height {patch.copyStoredSample(from:self,x:sx,y:sy,toX:x,toY:y)}
+        else if colorEncoding == .linearRGB {patch.setLinearPixel(x:x,y:y,padding)}
+        else {patch.setPixel(x:x,y:y,padding)}
+      }}
+      try builder.append(patch,atX:region.x,atY:region.y)
+    }
+    return try builder.finish()
   }
 }

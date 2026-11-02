@@ -57,6 +57,8 @@ struct AutomationView: View {
         )
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
+        LinkedSourcePermissionsView(service:service)
+        Divider()
         Toggle("Allow printing", isOn: Binding(get: { service.printingEnabled }, set: { service.setPrintingEnabled($0) })).disabled(!service.isRunning)
         Text("Allows clients to open print controls or submit jobs for shared documents. Turning this off cancels preparation; submitted jobs remain in the macOS print queue. PDF output does not require this permission.")
           .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
@@ -163,7 +165,7 @@ struct AutomationView: View {
             "API status: \(service.message)")
         Divider()
         Text(
-          "Local access only • Off on every launch\nClosing this window keeps the API running. Stopping revokes all shares and tokens. Treat the copied token as a password. The document API supports \(AutomationCommand.definitions.count) commands and documents up to 4 megapixels, 64 layers and 128 MiB."
+          "Local access only • Off on every launch\nClosing this window keeps the API running. Stopping revokes all shares and tokens. Treat the copied token as a password. The document API supports \(AutomationCommand.definitions.count) commands and documents up to 4 megapixels, 8,000 layers and 128 MiB."
         )
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
       }.padding(24).frame(width: 570)

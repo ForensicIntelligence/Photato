@@ -176,7 +176,7 @@ public enum Renderer {
     for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {
       d.layers[i] = try PDFSmartObjectIO.renderedLayer(d.layers[i],in:d)
     }
-    for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil {
+    for i in d.layers.indices where d.layers[i].smartFilters != nil || d.layers[i].warp != nil || d.layers[i].sourceProjection != nil || d.layers[i].importedSmartAppearance != nil {
       d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
     }
     return (d,videoTransitions)
@@ -196,7 +196,8 @@ public enum Renderer {
       // Recursive CPU composition retains parent backdrops, which are not bounded by the
       // document's storage budget. Count whole touched tiles,
       // including both boundary tiles for a region that straddles a tile edge.
-      let nesting = d.layers.map { d.ancestors(of: $0.id).count }.max() ?? 0
+      let hierarchy = LayerHierarchyIndex(d)
+      let nesting = d.layers.map { hierarchy.ancestors(of: $0.id).count }.max() ?? 0
       let buffers = max(5, nesting * 2 + 5) + (videoTransitions == nil ? 0:6)
       let side = Surface.tileSide
       let canvasBytes =
@@ -232,7 +233,7 @@ public enum Renderer {
     let region = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
       .clipped(toWidth: d.width, height: d.height)
     var output = backdrop
-    for layer in layers where layer.visible && layer.opacity > 0 {
+    for layer in layers where layer.visible && (layer.opacity > 0 || {if case .adjustment(.source)=layer.content{return true};return false}()) {
       try Task.checkCancellation()
       if layer.id == inputTarget { throw AdjustmentInputReached(surface: output) }
       if layer.style != nil {
@@ -240,6 +241,10 @@ public enum Renderer {
         continue
       }
       let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
+      if case .adjustment(.source(let settings))=layer.content {
+        output=try SourceAdjustmentComposition.composite(settings,layer:layer,document:d,over:output,region:region,mask:mask)
+        continue
+      }
       if case .adjustment(let adjustment) = layer.content {
         let evaluate: @Sendable (Pixel,Int,Int)->Pixel
         if case .modern(let settings)=adjustment,settings.needsNeighborhood {

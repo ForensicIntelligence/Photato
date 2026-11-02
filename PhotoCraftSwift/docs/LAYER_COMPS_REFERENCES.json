@@ -1,0 +1,91 @@
+{
+  "step": "dev-step-336",
+  "recorded_at_utc": "2026-11-01T21:43:21.814964+00:00",
+  "target": "Photoshop 2026",
+  "guide": "docs/LAYER_COMPS.md",
+  "run": "artifacts/runs/20261101T211921Z-336-layer-comps",
+  "source_manifest": "artifacts/runs/20261101T211921Z-336-layer-comps/source04.json",
+  "source_inputs": 6887,
+  "production_swift_files": 921,
+  "binary_sha256": "7b14977a0092972f371a8bff980e37fda282bf7cc1b4c631a5fe45ce5a4b5fd8",
+  "affected_qualification": {
+    "cases": 260,
+    "passed": 260,
+    "new_cases": 17,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "build_seconds": 111.52,
+    "test_seconds": 37.479
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.LayerCompsTests/testApplyLastStateAndHistoryAreAtomicAndIdempotent",
+    "PhotoCraftCoreTests.LayerCompsTests/testEveryPropertyCombinationAcrossDepthsLeavesUnrecordedPropertiesAlone",
+    "PhotoCraftCoreTests.LayerCompsTests/testMalformedAndExcessiveMetadataRejectsWithoutChangingDocument",
+    "PhotoCraftCoreTests.LayerCompsTests/testManageCompIdentitiesAndInvalidEditsRollback",
+    "PhotoCraftCoreTests.LayerCompsTests/testMissingLayersRemainWarnedAndNewLayersStayUntouched",
+    "PhotoCraftCoreTests.LayerCompsTests/testNative79OrdinaryChunkedAndPagedRoundTripAndOldDocumentsStayOld",
+    "PhotoCraftCoreTests.LayerCompsTests/testPositionDoesNotRestoreRotationScaleOrPixelContent",
+    "PhotoCraftCoreTests.LayerCompsTests/testStyleAndNilStyleRestoreWithoutRestoringMasks",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testAPIExportCancellationAndRevocationReturnNoArchiveOrHistoryChange",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testAPIExportsTransferPermissionsNative79AdmissionAndObservableState",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testCancelledExportDoesNotYieldOutput",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testIndependentVariationsInAllSixFormatsPreserveSourceAndNativeComps",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testNativeAPIHistoryEquivalenceAndInvalidBusyStaleRequests",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testNativeExportPublishesCompleteNewFolderAndPreservesExistingDestination",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testPDFPageCountOrderDimensionsAndSubsetUseIndependentCoreGraphicsReader",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testPhotoshopFactoryMenuBindingsDoNotInventShortcuts",
+    "PhotoCraftAppTests.LayerCompsWorkflowTests/testSelectionBudgetsUnsafeNamesAndMissingLayersRejectBeforeAnyFilePublication"
+  ],
+  "independent_check": "CoreGraphics parses PDF page count/media boxes and renders analytic red/blue page samples. Native/API ZIP equality, six format results, cancellation/revocation and atomic folder checks pass. No Photoshop-generated comp fixture is used.",
+  "references": {
+    "step": 336,
+    "authoritative_reference": "Photoshop 2026",
+    "source_role": "No Rust model used for this feature",
+    "urls": [
+      "https://www.adobe.com/products/photoshop/features/all.html",
+      "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/create-and-manage-layer-comps.html"
+    ],
+    "native_observation": "Mac locked; no Photoshop UI inspected or changed",
+    "live_and_exact_parity": false
+  },
+  "adobe_guide_updated": "2026-09-28",
+  "native_ui": "Mac locked; no live Photoshop or Photato UI qualification",
+  "photoshop_parity": false,
+  "new_native_version": 79,
+  "actions_archive_version_unchanged": 30,
+  "photato_commands": 212,
+  "prior_failures_retained": [
+    "source01",
+    "source02",
+    "source03"
+  ],
+  "full_current_suite_passed": false,
+  "remaining": [
+    "Photoshop PSD comp resources",
+    "Smart Object comp selection and nested propagation",
+    "Full warning, geometry/mode/timeline semantics",
+    "Docked panel, dialogs, thumbnails, selected-comp cycling and persistent Photoshop defaults",
+    "Actions/ATN/Adobe descriptors",
+    "Full current suite, live Photoshop and supported-platform/capacity/performance qualification"
+  ],
+  "smart_object_choice_followup_337": {
+    "guide": "docs/SMART_OBJECT_LAYER_COMPS.md",
+    "evidence": "docs/SMART_OBJECT_LAYER_COMP_REFERENCES.json",
+    "all14new_cases_passed": true,
+    "all_affected_passed": false,
+    "parent_comp_recording_and_PSD_interchange_open": true
+  },
+  "parent_comp_followup_338": {
+    "guide": "docs/PARENT_SMART_OBJECT_COMPS.md",
+    "evidence": "docs/PARENT_SMART_OBJECT_COMP_REFERENCES.json",
+    "all13new_passed": true,
+    "full_Photoshop_workflow_closed": false
+  },
+  "PSD_followup_339": {
+    "guide": "docs/PSD_LAYER_COMPS.md",
+    "evidence": "docs/PSD_LAYER_COMP_REFERENCES.json",
+    "all13new_passed": true,
+    "full_Photoshop_workflow_closed": false
+  }
+}

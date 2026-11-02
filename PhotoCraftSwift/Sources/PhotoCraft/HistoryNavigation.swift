@@ -61,6 +61,16 @@ extension EditorStore {
   }
 
   func cancelActiveOperation() {
+    if trimDraft != nil { cancelTrim() }
+    if documentDuplicateDraft != nil { cancelDocumentDuplicate() }
+    if flattenImageConfirmationID != nil {
+      flattenImageConfirmationID = nil; geometryBusy = false
+      if let alert = flattenImageAlert {
+        if NSApp.modalWindow === alert.window { NSApp.abortModal() }
+        alert.window.orderOut(nil); flattenImageAlert = nil
+      }
+      status = "Flatten Image cancelled"
+    }
     if embeddedPlacement != nil {cancelTransform();return}
     stopObjectFinder(); stopPeopleDetection()
     geometryTask?.cancel()
@@ -91,6 +101,7 @@ extension EditorStore {
     try Task.checkCancellation()
     guard !(redo ? session.redoStack : session.undoStack).isEmpty else { return false }
     let original = session
+    let retainedLayerSelection=selectedLayerIDs
     let expectedSession = sessionGeneration
     let expectedLifecycle = layerPanelGeneration
     let expectedRevision = revision
@@ -129,7 +140,9 @@ extension EditorStore {
     session = candidate
     published = true
     resetPathGesture()
-    selectedLayerIDs = Set(document.activeLayerID.map { [$0] } ?? [])
+    if original.document.activeLayerID==document.activeLayerID {
+      selectedLayerIDs=retainedLayerSelection.intersection(Set(document.layers.map(\.id)))
+    }else{selectedLayerIDs=Set(document.activeLayerID.map{[$0]} ?? [])}
     onChange?(redo ? .changeRedone : .changeUndone)
     render()
     status = redo ? "Redo" : "Undo"

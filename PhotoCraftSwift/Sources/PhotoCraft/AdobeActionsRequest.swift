@@ -41,6 +41,7 @@ struct AdobeActionsRequest: Sendable {
     let shouldOverwrite: Bool?
     var encodingOptions = RasterEncodingOptions()
     var colorProfile: AdobeOutputProfile?
+    var layerExport: AdobeLayerOutput?
   }
   let input: URL?
   let creation: AdobeDocumentCreation?
@@ -116,7 +117,7 @@ struct AdobeActionsRequest: Sendable {
         allowed: Set([
           "mediaType", "destination", "shouldOverwrite", "cropMode", "scriptOutputPattern",
           "compression", "quality", "iccProfile",
-        ] + (allowPhotatoOptions ? ["encodingOptions"] : [])))
+        ] + (createComposite && !artboardOutputs ? ["layers"] : []) + (allowPhotatoOptions ? ["encodingOptions"] : [])))
       guard let mediaType = MediaType(rawValue: try output.string("mediaType")), mediaType != .json || artboardOutputs else {
         throw AdobeAPIError.unsupported("Only PNG, JPEG, TIFF and PSD output are implemented by this adapter.")
       }
@@ -150,9 +151,8 @@ struct AdobeActionsRequest: Sendable {
         // Local scale mapping; Adobe's proprietary quantization is not reproduced.
         encoding.jpegQuality = level * 2
       }
-      if output.fields["cropMode"] != nil, try output.string("cropMode") != "document_bounds" {
-        throw AdobeAPIError.unsupported("Only document_bounds export is implemented.")
-      }
+      if output.fields["cropMode"] != nil { _ = try output.string("cropMode") }
+      let layerOutput = try AdobeLayerOutput(output.fields, createComposite: createComposite && !artboardOutputs, mediaType: mediaType)
       if let pattern = output.fields["scriptOutputPattern"], !(pattern is NSNull) {
         throw AdobeAPIError.unsupported(
           "Script output patterns require an unimplemented UXP runtime.")
@@ -185,7 +185,8 @@ struct AdobeActionsRequest: Sendable {
       return Output(
         mediaType: mediaType, destination: target,
         shouldOverwrite: try output.optionalBool("shouldOverwrite"), encodingOptions: encoding,
-        colorProfile: try output.fields["iccProfile"].map { try AdobeOutputProfile($0) })
+        colorProfile: try output.fields["iccProfile"].map { try AdobeOutputProfile($0) },
+        layerExport: output.fields["layers"] != nil || layerOutput.crop != .documentBounds ? layerOutput : nil)
     }
   }
 
@@ -202,11 +203,11 @@ struct AdobeActionsRequest: Sendable {
     let converter: PhotoshopActionProgram.ModeConverter = {
       try DocumentModeInput.command(.init($1, mergeVisible: $2), in: $0)
     }
-    var result = try actions[0].applying(to: document, stackRenderer: renderer, modeConverter: converter)
+    var result = try actions[0].applying(to: document, stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command)
     for action in actions.dropFirst() {
       result = try action.applying(
         to: result.session, components: result.components, selectedLayerIDs: result.selectedLayerIDs, modeComponents: result.modeComponents,
-        stackRenderer: renderer, modeConverter: converter
+        stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command
       )
     }
     return result

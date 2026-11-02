@@ -6,6 +6,7 @@ public struct TextContent: Codable, Equatable, Sendable {
   public var size: Double
   public var color: Pixel
   public var typography: TextTypography?
+  public var importedAppearance: ImportedTextAppearance?
   public var layoutWidth: Int?
   public var layoutHeight: Int?
   public init(
@@ -18,6 +19,7 @@ public struct TextContent: Codable, Equatable, Sendable {
   }
 }
 public struct ShapeContent: Codable, Equatable, Sendable {
+  public var importedAppearance: ImportedShapeAppearance?
   public var definition: ShapeDefinition?
   public enum Kind: String, Codable, CaseIterable, Sendable { case rectangle, ellipse }
   public var kind: Kind
@@ -32,6 +34,7 @@ public struct ShapeContent: Codable, Equatable, Sendable {
   }
 }
 public enum Adjustment: Codable, Equatable, Sendable {
+  case source(SourceAdjustment)
   case levels(LevelsAdjustment)
   case curves(CurvesAdjustment)
   case hueSaturation(HueSaturationAdjustment)
@@ -47,6 +50,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
   case invert, grayscale
   public func apply(_ p: Pixel) -> Pixel {
     switch self {
+    case .source(let value):return (try? SourceAdjustmentTransfer(value,depth:.f32))?.apply(p) ?? p
     case .levels(let levels): return LevelsTransfer(levels, depth: .f32).apply(p)
     case .curves(let curves): return CurvesTransfer(curves, depth: .f32).apply(p)
     case .hueSaturation(let settings): return HueSaturationTransfer(settings, depth: .f32).apply(p)
@@ -81,6 +85,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
       let transfer = TonalStepsTransfer(settings, depth: depth)
       return { transfer.apply($0) }
     }
+    if case .source(let settings)=self {let transfer=try? SourceAdjustmentTransfer(settings,depth:depth);return {transfer?.apply($0) ?? $0}}
     if case .levels(let levels) = self {
       let transfer = LevelsTransfer(levels, depth: depth)
       return { transfer.apply($0) }
@@ -109,6 +114,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
   }
   /// Document-space coordinates keep ordered dither stable across tiles and cropped layers.
   public func spatialEvaluator(depth: PixelDepth) throws -> @Sendable (Pixel, Int, Int) -> Pixel {
+    if case .source(let settings)=self {let transfer=try SourceAdjustmentTransfer(settings,depth:depth);return {transfer.apply($0,x:$1,y:$2)}}
     if case .modern(let settings) = self {
       guard !settings.needsNeighborhood else {throw CraftError.unsupported("This adjustment needs its complete layer input.")}
       let transfer=ModernAdjustmentTransfer(settings)
@@ -127,13 +133,14 @@ public enum Adjustment: Codable, Equatable, Sendable {
   }
   public var usesDocumentToneSpace: Bool {
     switch self {
-    case .levels, .curves, .hueSaturation, .colorBalance, .classic, .modern, .colorLookup, .tonalSteps, .gradientMap: true
+    case .source, .levels, .curves, .hueSaturation, .colorBalance, .classic, .modern, .colorLookup, .tonalSteps, .gradientMap: true
     default: false
     }
   }
   public func validate() throws {
     let valid: Bool
     switch self {
+    case .source(let value):try value.validate();valid=true
     case .levels(let levels):
       try levels.validate()
       valid = true
@@ -216,6 +223,9 @@ public struct Layer: Codable, Equatable, Identifiable, Sendable {
   public var id: UUID
   public var name: String
   public var content: LayerContent
+  public var linkID:UUID?
+  public var linkDisabled:Bool?
+  public var background:Bool?
   public var nativeMode: NativeModeRaster?
   public var visible = true
   public var locked = false
@@ -234,6 +244,8 @@ public struct Layer: Codable, Equatable, Identifiable, Sendable {
   public var video: VideoClip?
   public var videoKeyframes: [VideoKeyframe]?
   public var smartObject: SmartObject?
+  public var sourceProjection:ProjectiveTransform?
+  public var importedSmartAppearance:ImportedSmartAppearance?
   public var smartFilters: SmartFilterStack?
   public var warp: WarpDefinition?
   public var sourceTags: [String: Data]?
@@ -271,6 +283,9 @@ public struct CraftDocument: Codable, Equatable, Sendable {
   public var videoTimeline: VideoTimeline?
   public var animation: FrameAnimation?
   public var variables: DataDrivenGraphics?
+  public var layerComps: LayerComps?
+  public var guides: [DocumentGuide]?
+  public var globalLight:GlobalLight?
   public var resolution: Double?
   public var pixelsPerInch: Double { resolution ?? 72 }
   // Bottom to top, with each group's descendants immediately before its folder.
@@ -308,19 +323,19 @@ public struct CraftDocument: Codable, Equatable, Sendable {
       let lookup: Int
       if case .adjustment(.colorLookup(let a)) = layer.content { lookup = a.lut?.estimatedBytes ?? 0 } else { lookup = 0 }
       return total + (layer.video?.estimatedBytes ?? 0) + layer.keyframeBytes + lookup + raster + (layer.nativeMode?.estimatedBytes ?? 0) + (layer.mask?.allocatedBytes ?? 0)
-        + (layer.smartObject?.data.count ?? 0)
+        + (layer.smartObject?.data.count ?? 0) + (layer.smartObject?.layerComps?.estimatedBytes ?? 0)
         + (layer.smartFilters?.mask?.allocatedBytes ?? 0) + (layer.smartFilters?.programBytes ?? 0)
-        + (layer.style?.estimatedBytes ?? 0) + (layer.shape?.definition?.estimatedBytes ?? 0)
+        + (layer.importedSmartAppearance?.estimatedBytes ?? 0) + layer.importedTypeAppearanceBytes + (layer.style?.estimatedBytes ?? 0) + (layer.shape?.definition?.estimatedBytes ?? 0) + (layer.shape?.importedAppearance?.estimatedBytes ?? 0)
         + ((layer.vectorMask?.path.knotCount ?? 0) + (layer.frame?.customPath?.knotCount ?? 0)) * 64
         + (layer.sourceTags?.values.reduce(0) { $0 + $1.count } ?? 0)
     } + (paths?.reduce(0) { $0 + $1.path.knotCount * 64 } ?? 0) + (selectionMask?.allocatedBytes ?? 0)
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
-      + (alphaChannels?.reduce(0) { $0 + $1.pixels.allocatedBytes + $1.name.utf8.count + 128 } ?? 0)
-      + (quickMask?.pixels.allocatedBytes ?? 0)
+      + (alphaChannels?.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) + $1.name.utf8.count + 128 } ?? 0)
+      + (quickMask?.pixels.allocatedBytes ?? 0) + (quickMask?.psdSpotGray?.allocatedBytes ?? 0)
       + (vanishingPoint?.estimatedBytes ?? 0) + (animation?.estimatedBytes ?? 0) + timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes
       + (sourceICC?.count ?? 0) + (workingICC?.count ?? 0) + (modeDescriptor?.profile.count ?? 0) + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
       + (sourceMetadata?.values.reduce(0) { $0 + $1.count } ?? 0)
-      + (variables?.estimatedBytes ?? 0)
+      + (variables?.estimatedBytes ?? 0) + (layerComps?.estimatedBytes ?? 0) + (guides?.count ?? 0) * 96
   }
   /// Tile payloads share native Array storage across snapshots; count each live
   /// allocation once. Other document payloads remain conservatively estimated.
@@ -339,27 +354,31 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     }
     for image in variables?.images ?? [] { account(image.pixels) }
     for pattern in patterns ?? [] { account(pattern.surface) }
-    for channel in alphaChannels ?? [] { account(channel.pixels) }
-    if let quickMask { account(quickMask.pixels) }
+    for channel in alphaChannels ?? [] { account(channel.pixels);if let gray=channel.psdSpotGray {account(gray)} }
+    if let quickMask { account(quickMask.pixels);if let gray=quickMask.psdSpotGray {account(gray)} }
     return unique + (includeMetadata ? max(0, estimatedBytes - logical) + 1024 : 0)
   }
   public var activeIndex: Int? { layers.firstIndex { $0.id == activeLayerID } }
   public func validate() throws {
+    try globalLight?.validate()
     _ = try Surface(width: width, height: height, depth: depth)
     guard pixelsPerInch.isFinite, (1...100_000).contains(pixelsPerInch) else {
       throw CraftError.invalid("Resolution must be between 1 and 100,000 pixels per inch.")
     }
-    guard colorSpace == "sRGB", layers.count <= 512, Set(layers.map(\.id)).count == layers.count,
+    guard colorSpace == "sRGB", layers.count <= LayerLimits.maximumLayers, Set(layers.map(\.id)).count == layers.count,
       activeLayerID == nil || layers.contains(where: { $0.id == activeLayerID })
     else { throw CraftError.invalid("Invalid document metadata or unsupported color space.") }
     if let workingICC { try ICCProfile.validate(workingICC, linear: depth == .f32) }
+    if let guides { try Self.validateGuides(guides) }
     try validateModeStorage()
     try animation?.validate(in: self)
     try validateVideo()
     try variables?.validate(in: self)
+    try layerComps?.validate()
     try vanishingPoint?.validate()
     if let vanishingPoint { _ = try VanishingScene(vanishingPoint,width:width,height:height) }
     try validateHierarchy()
+    try validateBackground()
     try validateArtboards()
     try validateFrames()
     if let patterns { try PatternArchive.validate(patterns) }
@@ -385,15 +404,18 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         throw CraftError.invalid("Invalid selection mask or bounds.")
       }
     }
+    guard quickMask?.spot == nil else { throw CraftError.invalid("Quick Mask cannot contain a spot ink.") }
     let channels = (alphaChannels ?? []) + (quickMask.map { [$0] } ?? [])
     guard (alphaChannels?.count ?? 0) <= Self.maximumAlphaChannels, Set(channels.map(\.id)).count == channels.count else { throw CraftError.invalid("Channel limit or duplicate identifier.") }
+    let identifiers=channels.compactMap(\.psdIdentifier);guard Set(identifiers).count==identifiers.count else{throw CraftError.invalid("Duplicate PSD channel identifier.")}
     for channel in channels { try channel.validate(width:width,height:height,depth:depth) }
-    var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
+    var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
       + (selectionMask?.allocatedBytes ?? 0) + knots * 64
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
     guard bytes <= 1_073_741_824 else {
       throw CraftError.invalid("This document exceeds the current 1 GiB raster budget.")
     }
+    try LayerLinks.validate(self)
     var smartSources: [UUID: SmartObject] = [:]
     for l in layers {
       bytes += (l.video?.estimatedBytes ?? 0) + l.keyframeBytes
@@ -404,9 +426,22 @@ public struct CraftDocument: Codable, Equatable, Sendable {
           throw CraftError.invalid("Shared Smart Object instances must contain the same source.")
         }
         smartSources[smart.sourceID] = smart
-        guard case .raster(let cache) = l.content, cache.width == smart.width, cache.height == smart.height,
-          cache.depth == depth else { throw CraftError.invalid("Smart Object source/cache dimensions or depth differ.") }
-        bytes += smart.data.count
+        guard case .raster(let cache)=l.content,cache.depth==depth else{throw CraftError.invalid("Invalid Smart Object cache.")}
+        if let preview=try l.linkedSmartObjectPreview() {
+          guard smart.linkedSource != nil,preview.sourceWidth==smart.width,preview.sourceHeight==smart.height,
+            preview.cacheWidth==cache.width,preview.cacheHeight==cache.height else{throw CraftError.invalid("Linked source/cache geometry differs.")}
+        }else if cache.width != smart.width || cache.height != smart.height {throw CraftError.invalid("Smart Object source/cache dimensions differ.")}
+        bytes += smart.data.count + (smart.layerComps?.estimatedBytes ?? 0)
+      }
+      if let projection=l.sourceProjection {
+        guard let smart=l.smartObject else{throw CraftError.invalid("Projective source placement requires a Smart Object.")}
+        _ = try projection.followed(by:l.coordinateTransform).bounds(width:smart.width,height:smart.height)
+        // Pixel masks have independent affine document placement, including linked masks.
+        // Projective layer edits resample that mask storage in the same transaction.
+      }
+      if let appearance=l.importedSmartAppearance {
+        guard l.smartObject != nil else{throw CraftError.invalid("Imported Smart Object appearance requires an editable source.")}
+        try appearance.validate(depth:depth);bytes+=appearance.estimatedBytes
       }
       if let warp = l.warp {
         guard l.smartObject != nil, l.vectorMask == nil else { throw CraftError.invalid("Editable Warp requires a Smart Object without a vector mask.") }
@@ -415,7 +450,14 @@ public struct CraftDocument: Codable, Equatable, Sendable {
       if let stack = l.smartFilters {
         guard l.smartObject != nil else { throw CraftError.invalid("Smart Filters require an embedded source.") }
         try stack.validate(); _ = try SmartFilterEngine.renderBounds(l, in: self)
-        for item in stack.filters { try item.filter.lensBlur?.validateSources(layer:l,document:self) }
+        for item in stack.filters {
+          try item.filter.lighting?.validateReferences(in:self)
+          if let settings=item.filter.lensBlur {
+            if stack.enabled && item.enabled && item.opacity>0 && l.pristineSmartAppearance?.pixels==nil {
+              try settings.validateSources(layer:l,document:self)
+            }else{try settings.validateStoredSources(layer:l,document:self)}
+          }
+        }
         bytes += (stack.mask?.allocatedBytes ?? 0) + stack.programBytes
       }
       try l.style?.validate(in: self)
@@ -455,11 +497,12 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         }
       case .gradientFill(let fill): try fill.validate()
       case .text(let t):
-        try t.validate()
+        try t.validate();try t.importedAppearance?.validate(depth:depth)
       case .shape(let s):
         try s.validate(in: self)
       case .adjustment(let a):
         try a.validate()
+        if case .source(let value)=a { _ = try SourceAdjustmentTransfer(value,depth:depth);bytes+=value.estimatedBytes }
         if case .modern(let value)=a {try value.validate(in:self)}
         if case .colorLookup(let lookup) = a { bytes += lookup.lut?.estimatedBytes ?? 0 }
       case .group: break

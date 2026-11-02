@@ -59,7 +59,7 @@ extension Renderer {
   private static func renderDamage(from old: CraftDocument, to d: CraftDocument) throws
     -> RenderSnapshot.Update
   {
-    guard old.id == d.id, old.width == d.width, old.height == d.height,
+    guard old.id == d.id, old.width == d.width, old.height == d.height, old.globalLight==d.globalLight,
       old.depth == d.depth, old.colorSpace == d.colorSpace, old.sourceICC == d.sourceICC,
       old.workingICC == d.workingICC,
       old.layers.count == d.layers.count
@@ -93,7 +93,7 @@ extension Renderer {
         switch a {
         case .modern(let modern):
           if modern.needsNeighborhood, old != d { return .full }
-        case .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup, .tonalSteps, .gradientMap, .exposure,
+        case .source, .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup, .tonalSteps, .gradientMap, .exposure,
           .brightnessContrast, .saturation, .invert, .grayscale:
           break
         }

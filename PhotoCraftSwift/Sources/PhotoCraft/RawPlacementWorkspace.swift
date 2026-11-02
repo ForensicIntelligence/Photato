@@ -35,7 +35,7 @@ import PhotoCraftCore
   let model: RawPlacementWorkspace
   init(model: RawPlacementWorkspace) {
     self.model = model
-    let window = NSWindow(contentRect:NSRect(x:0,y:0,width:1100,height:720),styleMask:[.titled,.closable],backing:.buffered,defer:false)
+    let window = PhotatoWindow(contentRect:NSRect(x:0,y:0,width:1100,height:720),styleMask:[.titled,.closable],backing:.buffered,defer:false)
     window.title = "Camera Raw — Place Embedded";window.isReleasedWhenClosed = false
     window.contentView = NSHostingView(rootView:CameraRawSheet(store:model.store,workspace:model.model,placement:model));window.center()
     super.init(window:window);window.delegate = self

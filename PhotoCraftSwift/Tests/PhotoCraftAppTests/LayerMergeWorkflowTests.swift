@@ -62,7 +62,7 @@ final class LayerMergeWorkflowTests: XCTestCase {
       XCTAssertEqual(visible.action, #selector(AppDelegate.mergeVisible))
       XCTAssertEqual(visible.keyEquivalent, "e")
       XCTAssertEqual(visible.keyEquivalentModifierMask, [.command, .shift])
-      XCTAssertNil(layer.item(withTitle: "Flatten Image")?.action)
+      XCTAssertEqual(layer.item(withTitle: "Flatten Image")?.action, #selector(AppDelegate.flattenImage))
     }
   }
 }

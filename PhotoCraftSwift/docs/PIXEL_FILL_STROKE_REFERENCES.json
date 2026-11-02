@@ -1,0 +1,131 @@
+{
+  "step": "dev-step-356",
+  "recorded_at_utc": "2026-11-02T13:15:50.888585+00:00",
+  "run": "artifacts/runs/20261102T123225Z-356-color-fill-stroke",
+  "source_manifest": "artifacts/runs/20261102T123225Z-356-color-fill-stroke/source04.json",
+  "inputs": 7002,
+  "production_swift_files": 983,
+  "binary_sha256": "183b294cf1c045898725ca0efc89a2723f53e38778a14d06a17ea0c20ca92593",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 1178,
+    "passed_cases": 1175,
+    "failed_cases": 3,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftAppTests.PanelTearOffTests/testNativeContainerDoesNotChangeHostedWorkspacePixels",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+    ],
+    "failed_assertions": 12,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 235.072,
+    "new_cases": 17,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 46.81
+  },
+  "independent": {
+    "passed": true,
+    "source_outputs": "356 Source04",
+    "file": "pixel-stroke-analytical.json",
+    "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+    "analytical_alpha_samples_compared": 1080,
+    "vectors": 9,
+    "mismatches": [],
+    "method": "Independent exhaustive integer-disc extrema and rectangular coverage, with half-width interpolation and explicit byte rounding. No native selection/paint/reader routines used. Owned analytical reference, not Photoshop execution or a Photoshop edge/kernel/default oracle."
+  },
+  "independent_summary": "artifacts/runs/20261102T123225Z-356-color-fill-stroke/independent04-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/stroke-selection-layer-color.html",
+      "retrieved": "2026-11-02",
+      "updated": "2026-02-23",
+      "claims": [
+        "Edit > Stroke outlines a selection or raster-layer edge.",
+        "Width/color, Inside/Center/Outside, mode/opacity and Preserve Transparency.",
+        "Shape/type/Smart content requires explicit rasterization; outside canvas paint is invisible."
+      ],
+      "limits": "No current Photoshop width maximum or exact kernel/default proof is provided."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-selection-layer-color.html",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "Solid-color fill supplies mode/opacity and Preserve Transparency."
+      ],
+      "limits": "Pattern/History/content-aware fills and full target/default/kernel qualification remain separate."
+    },
+    {
+      "url": "https://www.adobe.com/products/photoshop/features/all.html",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "Photoshop feature catalogue used for workflow review, not a complete command/parameter specification."
+      ]
+    }
+  ],
+  "pinned_adobe_contract": "docs/contracts/adobe-photoshop-v2.json",
+  "api_commands": 235,
+  "native_archive_version_unchanged": 84,
+  "actions_version": 41,
+  "old_link_actions_version": 39,
+  "old_move_actions_version": 40,
+  "generic_actions_discovery_versions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41
+  ],
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Full Pattern/History/scripted Fill, Behind/Clear and remaining multi-layer/color/ink/temporal/filter-mask target semantics",
+    "Photoshop Stroke range/defaults/kernel/corners/antialias/gray/blend/HDR/profile and full preferences",
+    "Physical native dialogs/color panel/accessibility/platform interactions and 60fps",
+    "Prior11 historical strict cases and opacity snapshot gate; full current suite/dense capacity/platform acceptance"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release",
+  "strict_failures_reviewed": true,
+  "strict_comparison": "artifacts/runs/20261102T123225Z-356-color-fill-stroke/strict-regression-comparison04.json",
+  "strict_comparison_limits": "Smart diagnostics compare per-fixture differing-word counts; linked diagnostics compare only first16 printed differing-byte records, not all failed output bytes. They do not prove Photoshop/full parity or all current bytes unchanged.",
+  "static_verification": "artifacts/runs/20261102T123225Z-356-color-fill-stroke/static-verification02.json",
+  "static_checks": 27
+}

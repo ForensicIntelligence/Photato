@@ -37,7 +37,7 @@ extension EditorStore {
   var canBeginLayerCreation: Bool {
     !geometryBusy && !hasToneDraft && transformDraft == nil && geometrySheet == nil
       && !showAI && !showGaps && !showFeatherSelection && patternNameDraft == nil
-      && gradientNameDraft == nil && layerProtectionDraft == nil && error == nil
+      && gradientNameDraft == nil && layerProtectionDraft == nil && backgroundLayerDraft==nil && error == nil
   }
   func canCreatePixelLayer(below: Bool = false) -> Bool {
     guard !editingComponent, canBeginLayerCreation else { return false }
@@ -191,7 +191,7 @@ extension AppDelegate {
         rootView: NewLayerSheet(store: store, draft: draft)
           .background(StudioTheme.panel).preferredColorScheme(.dark))
       host.frame = .init(x: 0, y: 0, width: 560, height: 260)
-      let window = NSWindow(
+      let window = PhotatoWindow(
         contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
       window.contentView = host
       window.appearance = NSAppearance(named: .darkAqua)

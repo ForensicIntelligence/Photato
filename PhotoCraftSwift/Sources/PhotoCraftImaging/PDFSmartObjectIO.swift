@@ -105,6 +105,7 @@ public enum PDFSmartObjectIO {
   /// undo history retain their original coordinates and original PDF bytes.
   public static func renderedLayer(_ layer: Layer, in parent: CraftDocument) throws -> Layer {
     guard let object = layer.smartObject, object.pdfSource != nil else { return layer }
+    if object.linkedSource != nil,object.data.isEmpty {return layer}
     // Warp mesh points remain in source coordinates. Ordinary Smart Filters
     // transform their input first, so their document-pixel radii remain valid.
     guard layer.warp == nil else { return layer }

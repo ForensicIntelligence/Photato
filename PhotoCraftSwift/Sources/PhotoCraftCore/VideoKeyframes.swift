@@ -89,7 +89,7 @@ public struct VideoKeyframe:Codable,Equatable,Identifiable,Sendable {
     if !a.enabled{a=faded(a);a.enabled=true};if !b.enabled{b=faded(b);b.enabled=true}
     // Different effect topology and categorical/gradient/pattern choices hold
     // until the next key. Numeric controls/colors of matching effects interpolate.
-    guard a.effects.map(\.kind)==b.effects.map(\.kind) else{return start}
+    guard a.effects.map(\.kind)==b.effects.map(\.kind),a.effects.map(\.advanced)==b.effects.map(\.advanced),a.referenceOffset==b.referenceOffset,a.sourcePSDData==b.sourcePSDData else{return start}
     func mix(_ x:Double,_ y:Double)->Double{x+(y-x)*t}
     func f(_ x:Float,_ y:Float)->Float{x+(y-x)*Float(t)}
     func color(_ x:Pixel,_ y:Pixel)->Pixel{Pixel(f(x.r,y.r),f(x.g,y.g),f(x.b,y.b),f(x.a,y.a))}

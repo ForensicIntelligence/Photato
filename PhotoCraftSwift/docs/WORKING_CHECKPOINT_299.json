@@ -1,0 +1,405 @@
+{
+  "step": 299,
+  "run": "artifacts/runs/20261031T184605Z-299-linked-smart-objects",
+  "status": "in-progress-source23-approved-original-editing-targeted-subset-qualified-strict-preview-open",
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_298.json",
+  "previous_goal_turn": "progress",
+  "references": "docs/LINKED_SMART_OBJECT_REFERENCES.json",
+  "baseline_inputs": 2911,
+  "protected_assets": 40,
+  "package": "L05",
+  "phase": 1,
+  "full_parity": false,
+  "native_acceptance": false,
+  "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+  "source_inputs": 2937,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "drafts_active": false,
+  "native_ui_api_integration_complete": false,
+  "focused": {
+    "exit_code": 1,
+    "tests": 13,
+    "passed_cases": 12,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "failed": 2,
+    "seconds": 1.159,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused05.log",
+    "sha256": "535cc908c04e7e466309847210c732dab511af69d21f089d6b624471110e3f84",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source05.json",
+    "passing_scope": [
+      "Core linked metadata/native66/cache omission/hydration/history4cases",
+      "Direct published-v2 linked add/replace/manifest/state3cases",
+      "Other linked Imaging preparation/history/lock/geometry3cases",
+      "Existing contract guards2cases"
+    ],
+    "failed_case": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "failure_scope": "One masked source-versus-PSD preview comparison fails separately for PSD and PSB. Exact imported cached pixels/native round trip/re-export checks execute thereafter. No oracle relaxation or broad parity claim."
+  },
+  "full": null,
+  "native_access_evidence": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/native-access23.json",
+  "increment_complete": false,
+  "goal_complete": false,
+  "new_source_push": false,
+  "next_work": [
+    "Complete nested linked dependencies and media/XMP sidecar collection in Package; preserve explicit source approval, no-follow paths and unrelated destination data. Existing merge/new-folder subsets remain open for complete Photoshop acceptance.",
+    "Complete new-file Convert to Linked API output and linked Edit Contents/relink/replacement lifecycle/options. Existing approved-original GET/conditional same-format POST/cancel now passes focused tests; full source/editor/format/capacity and live acceptance remain open.",
+    "Preserve both exact masked PSD/PSB preview assertions; resolve with independent Photoshop evidence or a justified repair while prioritizing missing phase1 major workflows.",
+    "Reconcile the rechecked published-v2 linked-to-embedded replacement limitation with the earlier adapter; qualify complete Adobe endpoint/schema/job/error/output behavior. Local placement/file-permission extensions remain Photato-only without invented Adobe fields/routes.",
+    "Broaden full-suite/long-session, large-original and RAW/format/mode/all-operation capacity, universal/Intel/macOS14/macOS26 and physical60fps checks. Native/Photoshop access23 still reports the Mac locked; the offscreen permission PNG is blank and proves no visual acceptance. Keep normal283, candidate298, private source298 and original artwork intact."
+  ],
+  "recorded_at_utc": "2026-10-31T23:10:03.930811+00:00",
+  "focused07": {
+    "exit_code": 1,
+    "tests": 49,
+    "passed_cases": 40,
+    "failed_cases": 9,
+    "failed_assertions": 22,
+    "unexpected": 4,
+    "source_manifest": "source07.json",
+    "log_sha256": "c5c4867a23d4aa2633c6a368eef51bbd0c1990b2e541d5367c6f386984607aeb",
+    "summary": "Executed 49 tests, with 22 failures (4 unexpected) in 2.818 (2.824) seconds"
+  },
+  "focused08": {
+    "exit_code": 1,
+    "tests": 49,
+    "passed_cases": 48,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 2.909,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused08.log",
+    "sha256": "7de19f33b34d5b201847f05df1b351ce12008ba990761b48e53b5bbeda33bd67",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source08.json",
+    "passing_scope": [
+      "7 native/API artwork workflows",
+      "4 published linked contract cases including HTTP job",
+      "4 Core linked archive/cache/history cases",
+      "Other linked Imaging, existing API/menu/retouch guards"
+    ],
+    "failed_case": "PhotoCraftImagingTests.LinkedSmartObjectIOTests testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "failure_scope": "Existing exact masked source-versus-PSD/PSB preview comparisons; no assertion relaxation."
+  },
+  "integrated_app_sources": true,
+  "targeted_qualification": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "source_inputs": 2937,
+    "unique_cases": 199,
+    "passed_cases": 198,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused23.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-AutomationLayerMergeTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-LayerMergeWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-InteractiveRetouchWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFSmartObjectTests.log"
+    ]
+  },
+  "historical_app_drafts": {
+    "/private/tmp/photato-299-draft/LinkedSourceController.swift": "4d896804683e14e1cf5635a9dcb87d56a348762c73f11230c045344838a68b01",
+    "/private/tmp/photato-299-draft/LinkedSourceEditing.swift": "493310f1d02538245800c6d4200fcfe0afbff4fda65b7ab11d4bff7b6949addf",
+    "/private/tmp/photato-299-draft/LinkedSourceRegistry.swift": "510f35cd0904f8710c8c80635a1ba7d38e8881cd01facc22237d3401e648a0fb"
+  },
+  "focused12": {
+    "tests": 58,
+    "failures": 5,
+    "unexpected": 2,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused12.log"
+  },
+  "focused13": {
+    "exit_code": 1,
+    "tests": 58,
+    "passed_cases": 57,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused13.log",
+    "sha256": "c934fa798b2e0747703711046877333055f8ce31264a28a9951b963161bc515a",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source13.json"
+  },
+  "focused14": {
+    "tests": 68,
+    "failures": 3,
+    "unexpected": 1,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused14.log"
+  },
+  "focused16": {
+    "tests": 70,
+    "passed_cases": 68,
+    "failed_cases": 2,
+    "failed_assertions": 3,
+    "unexpected": 1,
+    "exit_code": 1,
+    "log": "focused16.log",
+    "source_manifest": "source16.json",
+    "log_sha256": "0b5615b8aed668d8d7d293e6821828daba5005718d63c866bf46ffc45ef28c24",
+    "remaining": [
+      "Existing two exact masked PSD/PSB preview assertions",
+      "Opaque linked file type PhFT leaked as an unsupported PSD layer tag; repair in Source17"
+    ],
+    "affected_regression_cases": 96,
+    "affected_regression_failed": 0,
+    "cursor_tests": 9,
+    "cursor_matrix_rows": 832
+  },
+  "focused17": {
+    "exit_code": 1,
+    "tests": 79,
+    "passed_cases": 78,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 4.154,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused17.log",
+    "sha256": "5bd11736ab238c2536f7cf578c29d0ee795c991c078e9beb93f3491e49c02ecb",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json"
+  },
+  "current_binary_sha256": "e2a05589b67078b61346c5546f20737b51200886473ecc75905037c9333010c4",
+  "previous_targeted_qualification_17": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+    "source_inputs": 2931,
+    "unique_cases": 165,
+    "passed_cases": 164,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused17.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectTests.log"
+    ]
+  },
+  "focused20": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "exit_code": 1,
+    "tests": 86,
+    "passed_cases": 85,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 5.987,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused20.log",
+    "sha256": "535906a9ac35e0c5ae83ea9158483020f577f821ccaccd3058661184751c9f2b"
+  },
+  "focused21": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source21.json",
+    "source_inputs": 2937,
+    "exit_code": 1,
+    "status": "build-failed-before-tests",
+    "build_complete": false,
+    "tests_executed": 0,
+    "compiler_error_diagnostics": 13,
+    "errors": [
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 35,
+        "column": 19,
+        "message": "method must be declared fileprivate because its parameter uses a private type"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 103,
+        "column": 102,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 103,
+        "column": 110,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 103,
+        "column": 110,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 112,
+        "column": 40,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 112,
+        "column": 32,
+        "message": "non-Sendable type 'Task<(HTTPURLResponse, [String : Any]), any Error>' cannot exit main actor-isolated context in call to nonisolated property 'value' [#NonSendableExitingActor]"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 112,
+        "column": 40,
+        "message": "non-Sendable type '(HTTPURLResponse, [String : Any])' of nonisolated property 'value' cannot be sent to main actor-isolated context"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 122,
+        "column": 100,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 122,
+        "column": 108,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 122,
+        "column": 108,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 124,
+        "column": 38,
+        "message": "type 'Any' does not conform to the 'Sendable' protocol"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 124,
+        "column": 30,
+        "message": "non-Sendable type 'Task<(HTTPURLResponse, [String : Any]), any Error>' cannot exit main actor-isolated context in call to nonisolated property 'value' [#NonSendableExitingActor]"
+      },
+      {
+        "file": "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+        "line": 124,
+        "column": 38,
+        "message": "non-Sendable type '(HTTPURLResponse, [String : Any])' of nonisolated property 'value' cannot be sent to main actor-isolated context"
+      }
+    ],
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused21.log",
+    "sha256": "61ee8cad920fb5744e4b0d045a20b252904431d1d49e765bb35c7db4ac04ac43",
+    "qualified_binary_sha256": null,
+    "new_test_cases_authored": 13,
+    "full_suite": false,
+    "native_live_acceptance": false
+  },
+  "diary_sync": {
+    "request": "Keep the diary at parity as development progresses",
+    "evidence_run": "artifacts/runs/20261031T184605Z-299-linked-smart-objects",
+    "current_source": 23,
+    "validation": "199-targeted-cases-198-pass-1-known-failure",
+    "completed_milestones": 299,
+    "implementation_inputs_edited_this_turn": [
+      "Tests/PhotoCraftAppTests/LinkedSourceFileEditingTests.swift",
+      "Tests/PhotoCraftCoreTests/StrictAtomicFileWriterTests.swift"
+    ],
+    "native_visual_acceptance": false
+  },
+  "focused22": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source22.json",
+    "source_inputs": 2937,
+    "exit_code": 1,
+    "tests": 102,
+    "passed_cases": 99,
+    "failed_cases": 3,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftCoreTests.StrictAtomicFileWriterTests/testStrictWriterPublishesRegularFileAndRejectsFinalOrAncestorSymlinks",
+      "PhotoCraftCoreTests.StrictAtomicFileWriterTests/testStrictWriterRejectsChangedParentAndKeepsUnrelatedData"
+    ],
+    "failed_assertions": 4,
+    "unexpected": 2,
+    "seconds": 7.818,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused22.log",
+    "sha256": "a79e19202faf0f674c3ab2995139ffba5581d9e0d8cac17d913706f39b8b5e4f",
+    "new_original_editing_cases_passed": 11,
+    "build_seconds": 108.11,
+    "app_binary_sha256": "e2a05589b67078b61346c5546f20737b51200886473ecc75905037c9333010c4"
+  },
+  "previous_targeted_qualification_20": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "source_inputs": 2933,
+    "unique_cases": 183,
+    "passed_cases": 182,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused20.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-AutomationLayerMergeTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-LayerMergeWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-InteractiveRetouchWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFSmartObjectTests.log"
+    ]
+  },
+  "focused23": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "source_inputs": 2937,
+    "exit_code": 1,
+    "tests": 102,
+    "passed_cases": 101,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 7.75,
+    "build_seconds": 36.99,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused23.log",
+    "sha256": "e152511106706aeb1f9bd033ca3c8a90dde305703b9ea2263f37dbc880dc0a75"
+  },
+  "source21_harness_repaired_in": 22,
+  "source22_fixture_repaired_in": 23,
+  "previous_diary_sync_21": {
+    "request": "Bring the dev diary to parity",
+    "evidence_run": "artifacts/runs/20261031T225740Z-299-diary-parity-current",
+    "current_source": 21,
+    "validation": "build-failed-before-tests",
+    "completed_milestones": 299,
+    "implementation_inputs_edited": false
+  }
+}

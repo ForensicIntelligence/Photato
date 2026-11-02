@@ -1,4 +1,5 @@
 import Foundation
+import PhotoCraftCore
 
 extension AutomationService {
   var documentOpeningState: [String: Any] {
@@ -49,8 +50,12 @@ extension AutomationService {
       "selection": "Verifies actual container before the shared decoder; mismatches fail422 and unknown selections400. Automatic detects native chunked/plist containers independently of filenames. Full decoder validation is still required; a signature is not proof of a valid file.",
       "pcraft": ["mode": "editable-import-subset", "mediaType": "application/vnd.photocraft.project",
         "input": "Original PhotoCraft v1 ZIP projects through upload/action jobs; ZIP and directory projects through native Open. Select PhotoCraft Project in Open to select a directory.",
-        "supported": "RGB8/16/32 raster layers, nested groups, visibility/opacity/blending/clipping, protection, grayscale masks, vector masks, saved/work paths, canvas GRAY8 selection and RGB working profiles.",
-        "unsupported": "Nonzero unbounded raster defaults, non-RGB documents, fill opacity, rich content, effects, artboards, auxiliary channels, guides, patterns, comps, timeline and other unrepresented editing data reject the whole import. No preview flattening.",
+        "supported": "RGB8/16/32 raster layers, nested groups, visibility/opacity/blending/clipping, protection, grayscale masks, vector masks, saved/work paths, canvas GRAY8 selection and RGB working profiles. Solid/gradient/pattern fill layers, fill opacity document-owned RGB/grayscale patterns full-control Exposure adjustments and editable shape/live-path/stroke data and rich text (Unicode runs, character/paragraph formatting, fractional frames, orientation/AA/warp and pristine source appearance) are retained as editable native data. Embedded Smart Object originals, nested supported projects, source placement/Warp, stack modes, mapped filter stages/masks and pristine appearance are retained with native70. All16 executable source adjustment kinds plus opaque records, all ten source effect kinds, contours, glow/bevel/texture/paint controls, inert pattern/PSD references and shared document light are retained within their admitted bounds; advanced styles require native75. Original auxiliary alpha/spot channels and Quick Mask import at document depth; spots require native76.",
+        "documentGuides":"Original horizontal/vertical Float32 positions retain editable native guide records, desktop/API controls, native78 persistence and PSD/PSB fixed-point interchange.",
+        "unsupported": "Nonzero unbounded raster defaults, non-RGB documents, nondefault document text-style libraries, linked Smart source projects without original extents, unmapped/unknown Smart Filter and adjustment programs, other rich layer types/artboards/comps/timeline, dual-alpha gradients, linked pattern masks, out-of-frame nondefault pattern samples and unsupported color/parameter budgets reject the whole import. No preview flattening.",
+        "sourceAdjustmentExecutableKinds":SourceAdjustment.Kind.allCases.filter{$0 != .unsupported}.map(\.rawValue),
+        "sourceLayerEffectKinds":LayerEffect.Kind.allCases.map(\.rawValue),"sourceStyleArchiveVersion":75,"sourceChannelArchiveVersion":76,
+        "sourceStyleLimitations":"Source inactive switches remain retained/inactive. Direct and full-project exact words, vector/text/off-canvas/geometry/ICC contexts and full Photoshop fidelity remain unqualified. Bound pattern references use only document-owned artwork; source hints never open files.",
         "save": "Imports have no writable source association. Save As creates a native Photato document; original project files remain unchanged.",
         "adobe": "Photato-only input format; Adobe v2 input contract is unchanged."],
       "statePath": "/v1/document-opening", "readMethod": "GET",

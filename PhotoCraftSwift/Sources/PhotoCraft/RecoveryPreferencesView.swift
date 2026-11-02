@@ -82,7 +82,7 @@ struct RecoveryPreferencesView: View {
 
 @MainActor final class RecoveryPreferencesWindowController: NSWindowController {
   init(controller: CraftDocumentController) {
-    let window = NSWindow(
+    let window = PhotatoWindow(
       contentRect: NSRect(x: 0, y: 0, width: 640, height: 230),
       styleMask: [.titled, .closable], backing: .buffered, defer: false)
     window.title = "Settings — File Handling"

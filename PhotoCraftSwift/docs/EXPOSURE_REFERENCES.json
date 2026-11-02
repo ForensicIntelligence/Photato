@@ -1,0 +1,217 @@
+{
+  "step": 302,
+  "package": "I03",
+  "phase": 1,
+  "status": "source03-functional-workflows-tested-exact-photoshop-gates-open",
+  "full_parity": false,
+  "software_qualified": false,
+  "source_manifest": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source03.json",
+  "source_inputs": 2968,
+  "native_archive_version": 67,
+  "action_library_version": 23,
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/adjust-hdr-exposure-and-toning.html",
+      "read_with_web_tool": true,
+      "fetched_at_utc": "2026-11-01T00:22:40.436624+00:00",
+      "snapshot_error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-adjustments",
+      "read_with_web_tool": true,
+      "fetched_at_utc": "2026-11-01T00:22:40.478033+00:00",
+      "file": "artifacts/runs/20261101T000927Z-302-exposure-workflow/references/adobe-v2-adjustments.html",
+      "bytes": 31611,
+      "sha256": "2d724b1a5acbce5f20079f20551bff556cddd1fd0171888b18063733a5c496de"
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "read_with_web_tool": true,
+      "fetched_at_utc": "2026-11-01T00:22:40.990866+00:00",
+      "snapshot_error": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "licensed_source": [
+    "PhotoCraft crates/doc/src/adjust.rs",
+    "PhotoCraft crates/compose/src/adjust.rs",
+    "PhotoCraft crates/io/src/adjust_map.rs",
+    "PhotoCraft crates/format/src/manifest.rs"
+  ],
+  "fixture_manifest": "Tests/PhotoCraftImagingTests/Fixtures/Exposure/manifest.json",
+  "source_oracle": "artifacts/runs/20261101T000927Z-302-exposure-workflow/rust-oracle02-result.json",
+  "independent_corpus": "artifacts/runs/20261101T000927Z-302-exposure-workflow/independent-corpus-provenance01.json",
+  "native_reference_attempt": "CUA Photoshop cgWindowNotFound (-10005); no UI acceptance",
+  "api": {
+    "typed_commands": [
+      "adjustment.create",
+      "adjustment.set",
+      "adjustment.apply",
+      "adjustmentBrush.stroke",
+      "adjustmentBrush.edit",
+      "adjustmentBrush.object"
+    ],
+    "published_adobe": "POST /v2/create-composite edits.layers adjustments.type exposure, exposure.exposureValue/offset/gammaCorrection",
+    "capabilities": [
+      "classicAdjustments",
+      "exposureAdjustments",
+      "documentOpening.pcraft",
+      "nativeArchives.exposureAdjustmentVersion"
+    ],
+    "new_routes": false,
+    "typed_command_count": 204,
+    "legacy_brush_compatibility": "HTTP verifies gain-only old requests and explicit full-control requests, with one-Undo and preserved document state. Native full-control recordings use Actions23; explicit legacy Actions3 replay remains tested."
+  },
+  "remaining": [
+    "Full independent Photoshop stored sample/ICC/default/preset/eyedropper/native-mode proof; source HDR clamp difference and the whole I03 migration remain open.",
+    "Source300 exact gradient endpoint and299 PSD/PSB mismatches stay open; no exact assertions relaxed.",
+    "Physical native UI/platform/Intel/macOS14+/universal/60fps/capacity/full-inventory/long-session gates remain open."
+  ],
+  "focused01": {
+    "source": "source01.json",
+    "inputs": 2968,
+    "build_seconds": 477.49,
+    "tests": 146,
+    "assertion_failures": 26,
+    "unexpected": 4,
+    "seconds": 19.14,
+    "passed_cases": 137,
+    "failed_cases": [
+      "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedLocalAdjustmentReplaysWithSemanticTargets",
+      "PhotoCraftAppTests.DocumentIOWorkflowTests/testChunkedNativeHTTPAndDesktopFileBytesAgreeAndCorruptionIsAtomic",
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testBakedEditableSelectionAndMaximumRegionalPreview",
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality",
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testSpecBinaryAndEditablePSDPSBAllDepths",
+      "PhotoCraftAppTests.ExposureWorkflowTests/testAdobeCompositeHTTPJobReturnsEditableExposureAndSameNativePixels",
+      "PhotoCraftImagingTests.PSDClassicAdjustmentTests/testEditablePSDAndPSBRoundTripsAtAllDepths",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+    ],
+    "log_sha256": "43d3316182763f76669e255f37ad9c30fea9c3cefbe7e91c69e6f34b269d8b8c",
+    "binary_sha256": "a2e2630b609ba85ed1c6bd3fe0ba7a212f2efd8ee8bbd16e4654e7907ea8e81d",
+    "new_cases_passed": 8
+  },
+  "focused02": {
+    "source_manifest": "source02.json",
+    "source_inputs": 2968,
+    "exit_code": 1,
+    "build_seconds": 359.26,
+    "tests": 389,
+    "passed_cases": 383,
+    "failed_cases": [
+      "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedLocalAdjustmentReplaysWithSemanticTargets",
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality",
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests/testBudgetsCorruptionInvalidVersionsAndPageShapesReject",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+    ],
+    "failed_assertions": 24,
+    "unexpected": 0,
+    "seconds": 274.632,
+    "new_cases": 12,
+    "new_cases_passed": 11,
+    "independent_photoshop_metrics": [
+      {
+        "mode": "rgb8",
+        "changed_bytes": 0,
+        "total_bytes": 27648
+      },
+      {
+        "mode": "rgb16",
+        "changed_bytes": 6660,
+        "total_bytes": 55296
+      },
+      {
+        "mode": "rgb32",
+        "changed_bytes": 40102,
+        "total_bytes": 110592
+      }
+    ],
+    "log_sha256": "4aa57c734ce08d0619678e0c8ce2a3e7c0300df2be5a90f6336b5c5ef39e33a7",
+    "binary_sha256": "1eef7e769aa68fc6c688f4e3852c5627013e9a995213b86b76830d86a6b0818b",
+    "full_inventory_qualified": false,
+    "physical_native_acceptance": false,
+    "recorded_at_utc": "2026-11-01T00:42:15.504983+00:00"
+  },
+  "focused03": {
+    "source_manifest": "source03.json",
+    "source_inputs": 2968,
+    "exit_code": 1,
+    "build_seconds": 102.44,
+    "tests": 45,
+    "passed_cases": 44,
+    "failed_cases": [
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 2.185,
+    "new_cases": 12,
+    "new_cases_passed": 11,
+    "independent_photoshop_metrics": [
+      {
+        "mode": "rgb8",
+        "changed_bytes": 0,
+        "total_bytes": 27648
+      },
+      {
+        "mode": "rgb16",
+        "changed_bytes": 6660,
+        "total_bytes": 55296
+      },
+      {
+        "mode": "rgb32",
+        "changed_bytes": 40102,
+        "total_bytes": 110592
+      }
+    ],
+    "log_sha256": "5a14d03725eb138a6a6459e68594ae67b38179a70430ac2c824cccdb81fe5567",
+    "binary_sha256": "1eef7e769aa68fc6c688f4e3852c5627013e9a995213b86b76830d86a6b0818b",
+    "full_inventory_qualified": false,
+    "physical_native_acceptance": false,
+    "recorded_at_utc": "2026-11-01T00:45:21.579688+00:00"
+  },
+  "targeted_qualification": {
+    "current_source": "source03.json",
+    "source_inputs": 2968,
+    "unique_cases": 389,
+    "passed_cases": 385,
+    "failed_cases": [
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality",
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+    ],
+    "failed_assertions": 22,
+    "unexpected": 0,
+    "current_source_executed_cases": 45,
+    "current_source_executed_passes": 44,
+    "earlier_source02_cases": 344,
+    "production_identical": "source03-equivalence.json",
+    "all_cases_executed_on_current_source": false,
+    "full_inventory": false,
+    "native_acceptance": false,
+    "new_cases": 12,
+    "new_cases_passed": 11,
+    "independent_photoshop_metrics": [
+      {
+        "mode": "rgb8",
+        "changed_bytes": 0,
+        "total_bytes": 27648
+      },
+      {
+        "mode": "rgb16",
+        "changed_bytes": 6660,
+        "total_bytes": 55296
+      },
+      {
+        "mode": "rgb32",
+        "changed_bytes": 40102,
+        "total_bytes": 110592
+      }
+    ]
+  },
+  "current_binary_sha256": "1eef7e769aa68fc6c688f4e3852c5627013e9a995213b86b76830d86a6b0818b",
+  "native_access": "artifacts/runs/20261101T000927Z-302-exposure-workflow/native-access03.json",
+  "upstream_integrity": "artifacts/runs/20261101T000927Z-302-exposure-workflow/upstream-integrity02.json"
+}

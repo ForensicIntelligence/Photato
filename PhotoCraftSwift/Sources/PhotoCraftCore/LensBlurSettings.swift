@@ -20,6 +20,11 @@ public struct LensBlurSettings:Codable,Equatable,Sendable {
   public func validateSources(layer:Layer,document:CraftDocument)throws {
     try validate()
     guard document.depth != .f32 else { throw CraftError.unsupported("Lens Blur supports 8-bit and 16-bit RGB documents.") }
+    try validateStoredSources(layer:layer,document:document)
+  }
+  /// Validate retained settings and references without claiming this depth can render.
+  public func validateStoredSources(layer:Layer,document:CraftDocument)throws {
+    try validate()
     if depthSource == .layerMask,layer.mask == nil { throw CraftError.invalid("Lens Blur depth source layer mask is missing.") }
     if depthSource == .alphaChannel,!(document.alphaChannels ?? []).contains(where:{$0.id==depthChannelID}) { throw CraftError.invalid("Lens Blur depth source alpha channel is missing.") }
   }

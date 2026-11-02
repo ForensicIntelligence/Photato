@@ -20,7 +20,7 @@ final class SmartFilterTests: XCTestCase {
       XCTAssertEqual(layer.content, original.layers[0].content)
       XCTAssertEqual(layer.smartObject, original.layers[0].smartObject)
       XCTAssertEqual(layer.smartFilters?.filters.first?.filter.kind, kind)
-      XCTAssertEqual(result.minimumArchiveVersion, kind == .shadowsHighlights ? 45 : kind.isClassicDetail ? 44 : kind.isOtherVideo ? 43 : kind.isRender ? 42 : kind.isStylize ? 41 : kind.isPixelate ? 40 : kind.isDistortion ? 39 : kind == .lensBlur ? 38 : (kind == .smartSharpen || kind == .reduceNoise) ? 37 : kind == .filterGallery ? 36 : kind == .adaptiveWideAngle ? 31 : kind == .lensCorrection ? 30 : kind == .blurGallery ? 29 : kind == .perspectiveWarp ? 26 : kind == .puppetWarp ? 25 : kind == .cameraRaw ? 21 : kind == .liquify ? 19 : 15)
+      XCTAssertEqual(result.minimumArchiveVersion, kind == .lightingEffects ? 72 : kind == .relight ? 71 : kind == .shadowsHighlights ? 45 : kind.isClassicDetail ? 44 : kind.isOtherVideo ? 43 : kind.isRender ? 42 : kind.isStylize ? 41 : kind.isPixelate ? 40 : kind.isDistortion ? 39 : kind == .lensBlur ? 38 : (kind == .smartSharpen || kind == .reduceNoise) ? 37 : kind == .filterGallery ? 36 : kind == .adaptiveWideAngle ? 31 : kind == .lensCorrection ? 30 : kind == .blurGallery ? 29 : kind == .perspectiveWarp ? 26 : kind == .puppetWarp ? 25 : kind == .cameraRaw ? 21 : kind == .liquify ? 19 : 15)
       for data in [try NativeArchive.encode(result), try NativeArchive.encodeChunked(result)] {
         XCTAssertEqual(try NativeArchive.decode(data), result)
       }
@@ -99,7 +99,7 @@ final class SmartFilterTests: XCTestCase {
   }
   func testSupportedPSDPSBFiltersMasksAndCacheAtEveryDepth() throws {
     for depth in PixelDepth.allCases { for format in PSDFileFormat.allCases {
-      for kind in RasterFilter.Kind.allCases where kind != .shadowsHighlights && !kind.isClassicDetail && !kind.isOtherVideo && !kind.isRender && (!kind.isStylize || kind == .emboss) && !kind.isPixelate && !kind.isDistortion && kind != .average && kind != .liquify && kind != .cameraRaw && kind != .puppetWarp && kind != .perspectiveWarp && kind != .blurGallery && kind != .lensCorrection && kind != .adaptiveWideAngle && kind != .filterGallery && kind != .smartSharpen && kind != .reduceNoise && kind != .lensBlur {
+      for kind in RasterFilter.Kind.allCases where kind != .lightingEffects && kind != .relight && kind != .shadowsHighlights && !kind.isClassicDetail && !kind.isOtherVideo && !kind.isRender && (!kind.isStylize || kind == .emboss) && !kind.isPixelate && !kind.isDistortion && kind != .average && kind != .liquify && kind != .cameraRaw && kind != .puppetWarp && kind != .perspectiveWarp && kind != .blurGallery && kind != .lensCorrection && kind != .adaptiveWideAngle && kind != .filterGallery && kind != .smartSharpen && kind != .reduceNoise && kind != .lensBlur {
         var d = try SmartObjectTests().converted(depth); let id = d.layers[0].id
         var f = RasterFilter(kind); if kind == .addNoise { f.seed = .max }
         try Command.applyFilter(id, f).apply(to: &d)

@@ -19,8 +19,10 @@ final class AsyncHistoryWorkflowTests: XCTestCase {
     // Initialize the application's controller before standalone NSDocument.close can
     // implicitly create an AppKit base-class singleton.
     _ = CraftDocumentController()
-    let document = CraftNSDocument(
-      model: try CraftNSDocument.blankModel(width: 16, height: 8), prepareHistory: preparer(gate))
+    var model=try CraftNSDocument.blankModel(width:16,height:8)
+    // This history/opacity fixture needs an ordinary layer, not an opaque Background.
+    try Command.backgroundLayer(.toLayer(model.activeLayerID!,NewPixelLayerOptions(name:"History layer"))).apply(to:&model)
+    let document=CraftNSDocument(model:model,prepareHistory:preparer(gate))
     document.store.session = EditorSession(document: document.store.document, historyByteLimit: 0)
     try document.store.executeEditorCommand(.opacity(document.store.document.activeLayerID!, 0.5))
     return document

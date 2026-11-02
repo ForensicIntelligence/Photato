@@ -32,7 +32,7 @@ public enum ScanCrop {
     let region = (document.selection ?? IntRect(x:0,y:0,width:document.width,height:document.height)).clipped(toWidth:document.width,height:document.height)
     guard region.width >= 8,region.height >= 8 else {throw CraftError.invalid("The selected scan area must be at least8 by8 pixels.")}
     var isolated = document
-    let ids = Set(document.subtreeIDs(id));isolated.layers = document.layers.filter{ids.contains($0.id)}
+    let ids = Set(document.subtreeIDs(id));isolated.layers = document.layers.filter{ids.contains($0.id)};LayerLinks.prune(in:&isolated)
     guard let index = isolated.layers.firstIndex(where:{$0.id == id}) else {throw CraftError.invalid("The selected layer is unavailable.")}
     isolated.layers[index].parentID = nil;isolated.layers[index].visible = true;isolated.layers[index].clipped = false
     isolated.activeLayerID = id;isolated.variables = nil;isolated.selection = nil;isolated.selectionMask = nil

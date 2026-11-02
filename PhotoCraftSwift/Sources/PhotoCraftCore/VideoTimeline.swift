@@ -109,7 +109,7 @@ public enum VideoCommand: Sendable {
       timeline.durationFrames=frames;timeline.currentFrame=min(timeline.currentFrame,frames-1);timeline.workArea=timeline.workArea?.clamped(to:frames);try timeline.validate();document.videoTimeline=timeline;try document.selectVideoFrame(timeline.currentFrame);return
     }
     if case .insert(let layer)=self {
-      guard let clip=layer.video,document.animation==nil,!document.hasArtboards,!document.hasAuthoritativeModeStorage,document.layers.count<512,!document.layers.contains(where:{$0.id==layer.id}) else{throw CraftError.unsupported("Cannot add a video layer to this document.")}
+      guard let clip=layer.video,document.animation==nil,!document.hasArtboards,!document.hasAuthoritativeModeStorage,document.layers.count<LayerLimits.maximumLayers,!document.layers.contains(where:{$0.id==layer.id}) else{throw CraftError.unsupported("Cannot add a video layer to this document.")}
       try clip.validate(depth:document.depth)
       var timeline=document.videoTimeline ?? VideoTimeline(frameRate:clip.frameRate,durationFrames:1)
       timeline.durationFrames=max(timeline.durationFrames,Int(ceil((clip.startTime+clip.duration)*timeline.frameRate-1e-9)))

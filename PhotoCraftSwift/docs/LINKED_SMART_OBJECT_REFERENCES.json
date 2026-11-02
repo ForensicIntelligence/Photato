@@ -1,0 +1,413 @@
+{
+  "step": 299,
+  "date": "2026-10-31",
+  "status": "in-progress-approved-original-editing-targeted-subset-qualified-strict-preview-open",
+  "previous_goal_turn": "progress",
+  "baseline_inputs_verified": 2911,
+  "protected_assets": 40,
+  "package": "L05",
+  "phase": 1,
+  "primary_sources": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/update-linked-smart-objects.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/convert-embedded-smart-objects-to-linked.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-smart-objects",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/package-linked-smart-objects.html"
+  ],
+  "licensed_rust": {
+    "path": "../photocraft-main/crates/io/src/linked.rs",
+    "sha256": "bb3a2f2e07b4446e60fe811c4191b5545726e79a7cc0ecc9b6bfd5d769f09a67",
+    "license": "MIT OR Apache-2.0",
+    "limitation": "Existing Rust parser/writer handles embedded liFD; external liFE must use the primary published format rather than pretending existing Rust already supports it.",
+    "file_type_translation": "Byte-signature classifier translated from licensed linked.rs lines96\u2013110; PDF/MIME fallback and opaque raw-type preservation independently extended. Original Rust remains unchanged."
+  },
+  "full_parity": false,
+  "native_acceptance": false,
+  "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+  "focused": {
+    "exit_code": 1,
+    "tests": 49,
+    "passed_cases": 48,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 2.909,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused08.log",
+    "sha256": "7de19f33b34d5b201847f05df1b351ce12008ba990761b48e53b5bbeda33bd67",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source08.json",
+    "passing_scope": [
+      "7 native/API artwork workflows",
+      "4 published linked contract cases including HTTP job",
+      "4 Core linked archive/cache/history cases",
+      "Other linked Imaging, existing API/menu/retouch guards"
+    ],
+    "failed_case": "PhotoCraftImagingTests.LinkedSmartObjectIOTests testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "failure_scope": "Existing exact masked source-versus-PSD/PSB preview comparisons; no assertion relaxation."
+  },
+  "app_native_api_complete": false,
+  "native_access": {
+    "recorded_at_utc": "2026-10-31T21:05:30.307455+00:00",
+    "target": "com.adobe.Photoshop",
+    "workers_live": false,
+    "direct_result": "The Mac is locked and automatic unlock could not unlock it.",
+    "native_acceptance": false,
+    "reference_created": false,
+    "user_documents_modified": false,
+    "existing_manual_unlock_request_pending": true
+  },
+  "native_archive_version": 66,
+  "psd_external_transport_qualified": false,
+  "firefly_http_conformance_qualified": false,
+  "semantic_actions_recording": false,
+  "remaining": [
+    "Complete nested linked dependencies and media/XMP sidecar collection in Package; preserve explicit source approval, no-follow paths and unrelated destination data. Existing merge/new-folder subsets remain open for complete Photoshop acceptance.",
+    "Complete new-file Convert to Linked API output and linked Edit Contents/relink/replacement lifecycle/options. Existing approved-original GET/conditional same-format POST/cancel now passes focused tests; full source/editor/format/capacity and live acceptance remain open.",
+    "Preserve both exact masked PSD/PSB preview assertions; resolve with independent Photoshop evidence or a justified repair while prioritizing missing phase1 major workflows.",
+    "Reconcile the rechecked published-v2 linked-to-embedded replacement limitation with the earlier adapter; qualify complete Adobe endpoint/schema/job/error/output behavior. Local placement/file-permission extensions remain Photato-only without invented Adobe fields/routes.",
+    "Broaden full-suite/long-session, large-original and RAW/format/mode/all-operation capacity, universal/Intel/macOS14/macOS26 and physical60fps checks. Native/Photoshop access23 still reports the Mac locked; the offscreen permission PNG is blank and proves no visual acceptance. Keep normal283, candidate298, private source298 and original artwork intact."
+  ],
+  "focused05": {
+    "exit_code": 1,
+    "tests": 13,
+    "passed_cases": 12,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "failed": 2,
+    "seconds": 1.159,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused05.log",
+    "sha256": "535cc908c04e7e466309847210c732dab511af69d21f089d6b624471110e3f84",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source05.json",
+    "passing_scope": [
+      "Core linked metadata/native66/cache omission/hydration/history4cases",
+      "Direct published-v2 linked add/replace/manifest/state3cases",
+      "Other linked Imaging preparation/history/lock/geometry3cases",
+      "Existing contract guards2cases"
+    ],
+    "failed_case": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "failure_scope": "One masked source-versus-PSD preview comparison fails separately for PSD and PSB. Exact imported cached pixels/native round trip/re-export checks execute thereafter. No oracle relaxation or broad parity claim."
+  },
+  "app_integration": {
+    "source": "Sources/PhotoCraft/LinkedSourceRegistry.swift; LinkedSourceController.swift; LinkedSourceEditing.swift; LinkedArtworkPreparation.swift; LinkedArtworkAPI.swift",
+    "native_controls": [
+      "Place Linked",
+      "Relink",
+      "Update selected/all",
+      "Embed Linked",
+      "Convert to Linked",
+      "Reveal/Edit source handoff"
+    ],
+    "local_commands": 7,
+    "total_local_commands": 204,
+    "functional_tests_passed": 7,
+    "contract_tests_passed": 4,
+    "native_live_acceptance": false,
+    "source_monitoring": "Direct authorized files only; first reopen flags modifications and Undo retains observed versions."
+  },
+  "prior_private_authorization_drafts": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/drafts-checkpoint01.json",
+  "targeted_qualification": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "source_inputs": 2937,
+    "unique_cases": 199,
+    "passed_cases": 198,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused23.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-AutomationLayerMergeTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-LayerMergeWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-InteractiveRetouchWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-PDFSmartObjectTests.log"
+    ]
+  },
+  "package_extension": {
+    "status": "targeted-new-folder-native-local-api-subset-passed",
+    "new_local_commands": [
+      "smartObject.linked.embedAll",
+      "smartObject.linked.package"
+    ],
+    "total_local_commands": 204,
+    "new_sources": [
+      "Sources/PhotoCraft/LinkedArtworkPackaging.swift",
+      "Sources/PhotoCraft/LinkedArtworkPackageWorkflow.swift"
+    ],
+    "native_bindings": [
+      "File > Package\u2026",
+      "Layer > Smart Objects > Embed All Linked"
+    ],
+    "source_authorization": "App-private package records match a document identity or filename and the exact physical source pathname beside the opened document. Relative metadata alone never authorizes reads.",
+    "output": "Native/PSD/PSB document plus original Links files and relative-path manifest; new named folder only. Streamed output with bounded writes; source originals retain their existing64MiB budget.",
+    "primary_package_html": {
+      "path": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/package-adobe-reference01.html",
+      "sha256": "c02201e57e7bb8be4df27201e071ffa98258c59c8c785596768521903ddafd52"
+    },
+    "open": [
+      "Existing package-folder merge/replacement",
+      "Nested dependencies and media sidecars",
+      "Direct API original-source writes and richer linked placement choices",
+      "Full Photoshop/native/physical platform and exact-output acceptance"
+    ],
+    "package_cases_passed": 6,
+    "bulk_cases_passed": 3,
+    "regression_cases_passed": 87,
+    "independent_photoshop_live_acceptance": false
+  },
+  "focused13": {
+    "exit_code": 1,
+    "tests": 58,
+    "passed_cases": 57,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused13.log",
+    "sha256": "c934fa798b2e0747703711046877333055f8ce31264a28a9951b963161bc515a",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source13.json"
+  },
+  "source_inputs": 2937,
+  "focused17": {
+    "exit_code": 1,
+    "tests": 79,
+    "passed_cases": 78,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 4.154,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused17.log",
+    "sha256": "5bd11736ab238c2536f7cf578c29d0ee795c991c078e9beb93f3491e49c02ecb",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json"
+  },
+  "existing_folder_extension": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+    "merge_cases_passed": 8,
+    "file_type_cases_passed": 4,
+    "in_place": true,
+    "whole_folder_replacement": false,
+    "same_byte_file_reuse": true,
+    "unrelated_files_preserved": true,
+    "explicit_replace_required": true,
+    "rollback_user_edit_recovery": true,
+    "qualification": {
+      "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+      "source_inputs": 2931,
+      "unique_cases": 165,
+      "passed_cases": 164,
+      "failed_cases": 1,
+      "failed_case_ids": [
+        "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+      ],
+      "failed_assertions": 2,
+      "full_suite": false,
+      "native_live_acceptance": false,
+      "logs": [
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused17.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFPlacementWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-EmbeddedPlacementWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-FrameWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentSaveWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentIOWorkflowTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PSDPDFSmartObjectTests.log",
+        "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectTests.log"
+      ]
+    },
+    "native_live_acceptance": false,
+    "api_commands": 204
+  },
+  "previous_targeted_qualification_17": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+    "source_inputs": 2931,
+    "unique_cases": 165,
+    "passed_cases": 164,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused17.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-PDFSmartObjectTests.log"
+    ]
+  },
+  "focused20": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "exit_code": 1,
+    "tests": 86,
+    "passed_cases": 85,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 5.987,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused20.log",
+    "sha256": "535906a9ac35e0c5ae83ea9158483020f577f821ccaccd3058661184751c9f2b"
+  },
+  "rich_linked_placement": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "cases_passed": 7,
+    "native_api_engine_shared": true,
+    "pdf": [
+      "page",
+      "image",
+      "crop",
+      "resolution",
+      "antialias"
+    ],
+    "raw": "Original bytes and saved development/decoder retained through native/API refresh",
+    "geometry": [
+      "initialTransform",
+      "frameID",
+      "frameFit"
+    ],
+    "precommit": "Source signatures/grants/token/revision/lifecycle plus original document snapshot; stale maps409",
+    "commands": 204,
+    "primary_references": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/placement18-primary-references.json",
+    "native_live_acceptance": false
+  },
+  "historical_unqualified_source21": {
+    "source": 21,
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source21.json",
+    "source_inputs": 2937,
+    "status": "build-failed-before-tests",
+    "result": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused21-result.json",
+    "scope": "Approved original GET/conditional same-format POST/cancel, native per-file writes, strict publication/shared-instance history/monitor acknowledgement. Implemented but not execution-qualified.",
+    "native_api_complete": false,
+    "tests_executed": 0,
+    "remaining_before_qualification": [
+      "Repair test helper visibility and Sendable response-task result types on new frozen source",
+      "Run focused and affected regressions",
+      "Complete feature-specific API/reference documentation and native acceptance"
+    ],
+    "prior_targeted_source": 20
+  },
+  "previous_targeted_qualification_20": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "source_inputs": 2933,
+    "unique_cases": 183,
+    "passed_cases": 182,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "logs": [
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused20.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFSmartObjectWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-EmbeddedPlacementWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartFilterWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-FrameWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-DocumentSaveWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-DocumentIOWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-ToolCursorTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-AutomationLayerMergeTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-LayerMergeWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-InteractiveRetouchWorkflowTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-SmartFilterTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PSDPDFSmartObjectTests.log",
+      "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-PDFSmartObjectTests.log"
+    ]
+  },
+  "focused23": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "source_inputs": 2937,
+    "exit_code": 1,
+    "tests": 102,
+    "passed_cases": 101,
+    "failed_cases": 1,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "seconds": 7.75,
+    "build_seconds": 36.99,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused23.log",
+    "sha256": "e152511106706aeb1f9bd033ca3c8a90dde305703b9ea2263f37dbc880dc0a75"
+  },
+  "original_file_editing": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "app_cases_passed": 11,
+    "core_strict_writer_cases_passed": 2,
+    "native_ui": "Per-file write switches in native API window; default off; stop/clear resets; no remote permission grants. Live UI unqualified.",
+    "binary_routes": [
+      "GET/POST /v1/documents/{id}/smart-objects/{layerID}/linked-source",
+      "POST /v1/documents/{id}/smart-objects/{layerID}/linked-source/cancel"
+    ],
+    "preconditions": [
+      "individually approved original",
+      "native per-file write switch",
+      "current parent revision",
+      "strong quoted SHA256 If-Match",
+      "same-format validated1..64MiB replacement"
+    ],
+    "preparation": "Shared source IDs/retained PDF and RAW settings/transforms/masks; prepared parent validation before strict file publication; signature/fingerprint readback before parent commit.",
+    "history": "One parent Undo transaction; external original is not rolled back by Undo; monitor acknowledges saved file version.",
+    "concurrency": "429 per in-flight private approval, held until actual worker ends; pre-publication cancellation/revocation/stale checks preserve parent/file.",
+    "late_failure": "409 fileWritten:true/documentUpdated:false/sourceFingerprint after publication; preserve saved file rather than claim rollback.",
+    "formats_tested": [
+      "PNG",
+      "JPEG",
+      "TIFF",
+      "Photato native",
+      "PSD",
+      "PSB",
+      "PDF",
+      "RAW/DNG"
+    ],
+    "logical_native_source_test": "Sparse300000x300000 implicit original successfully saved/refreshed; not all-format/dense operation capacity.",
+    "api_commands": 204,
+    "adobe": "Photato binary/file-permission extension, no invented Adobe original-file-write endpoint. Existing resource jobs remain separate.",
+    "failed_attempts": [
+      "focused21-result.json",
+      "focused22-result.json"
+    ],
+    "capture": {
+      "path": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/focused23-captures/linked-source-permissions.png",
+      "usable_visual_evidence": false,
+      "reason": "Blank bitmap on inspection; test demonstrates construction/PNG/permission reset only."
+    },
+    "native_access": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/native-access23.json",
+    "app_binary_sha256": "e2a05589b67078b61346c5546f20737b51200886473ecc75905037c9333010c4",
+    "full_parity": false,
+    "primary_references": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/original-editing23-primary-references.json"
+  }
+}

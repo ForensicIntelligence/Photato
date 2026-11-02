@@ -114,6 +114,9 @@ extension AutomationCommand {
       if mask["feather"] != nil { stack.maskProperties.feather = try number(mask, "feather", 0...100) }
     }
     do { try stack.validate() } catch { throw fail(error.localizedDescription) }
+    // Imported originals may retain an empty stack and its enable/mask state.
+    // Resubmitting that exact state must not discard the original appearance.
+    if stack == layer.smartFilters {return .smartFilters(id,stack)}
     return .smartFilters(id, stack.filters.isEmpty ? nil : stack)
   }
 }

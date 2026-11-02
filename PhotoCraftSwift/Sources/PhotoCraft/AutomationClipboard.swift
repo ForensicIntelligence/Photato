@@ -10,7 +10,7 @@ enum ClipboardAPI {
     switch key {
     case "colorDecision": return BrushAPI.enumeration(["convertAppearance", "preserveNumbers"])
     case "payloadBase64": return ["type": "string", "contentEncoding": "base64", "maxLength": maximumBase64]
-    case "layerIDs": return ["type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
+    case "layerIDs": return ["type": "array", "minItems": 1, "maxItems": LayerLimits.maximumLayers, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
     case "merged": return ["type": "boolean", "default": false]
     case "placement": return ["type": "string", "enum": ["centered", "inPlace", "into", "outside"], "default": "centered"]
     case "backgroundColor": return ["type": "array", "minItems": 3, "maxItems": 3, "items": ["type": "number", "minimum": 0, "maximum": 1]]
@@ -57,7 +57,7 @@ extension AutomationCommand {
   }
   func clipboardIDs(default ids: Set<UUID>) throws -> Set<UUID> {
     guard let raw = parameters["layerIDs"] else { return ids }
-    guard case .array(let values) = raw, !values.isEmpty, values.count <= 64 else { throw AutomationFailure(status: 400, message: "Provide1–64 layer IDs.") }
+    guard case .array(let values) = raw, !values.isEmpty, values.count <= LayerLimits.maximumLayers else { throw AutomationFailure(status: 400, message: "Provide1–8,000 layer IDs.") }
     let parsed = try values.map { value -> UUID in
       guard case .string(let text) = value, let id = UUID(uuidString: text) else { throw AutomationFailure(status: 400, message: "Invalid clipboard layer ID.") }
       return id

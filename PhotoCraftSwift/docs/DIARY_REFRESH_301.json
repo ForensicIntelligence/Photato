@@ -1,0 +1,37 @@
+{
+  "step": 301,
+  "recorded_at_utc": "2026-11-01T00:05:18.808886+00:00",
+  "recorded_at_local": "2026-10-31T17:05:18.808886-07:00",
+  "run": "artifacts/runs/20261101T000412Z-301-diary-refresh",
+  "scope": "documentation-only diary synchronization",
+  "latest_engineering_checkpoint": 300,
+  "latest_engineering_source": "Source03",
+  "latest_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "current_source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+  "current_focus": {
+    "cases": 168,
+    "passed": 166,
+    "failed_cases": 2,
+    "failed_assertions": 18
+  },
+  "prior_unchanged_production_checks": {
+    "source": "Source02",
+    "passed_cases": 21,
+    "rerun_on_Source03": false
+  },
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "planned_not_implemented": "Complete Exposure controls/workflow/API as a prerequisite to rich-source adjustment migration.",
+  "verification": "artifacts/runs/20261101T000412Z-301-diary-refresh/verification.json",
+  "index_rows_corrected": [
+    221,
+    222
+  ]
+}

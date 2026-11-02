@@ -18,7 +18,7 @@ public enum ClipboardRenderer {
       }
       let ids = layerIDs.reduce(into: Set<UUID>()) { $0.formUnion(document.subtreeIDs($1)) }
       var copied = document
-      copied.layers = document.layers.filter { ids.contains($0.id) }
+      copied.layers = document.layers.filter { ids.contains($0.id) };LayerLinks.prune(in:&copied)
       copied.selection = nil
       copied.selectionMask = nil
       copied.paths = nil

@@ -253,7 +253,7 @@ struct PreparedLocalDocument: Sendable {
   weak var opening: DocumentOpening?
   init(opening: DocumentOpening) {
     self.opening = opening
-    let window = NSWindow(contentRect: .init(x: 0, y: 0, width: 350, height: 110),
+    let window = PhotatoWindow(contentRect: .init(x: 0, y: 0, width: 350, height: 110),
       styleMask: [.titled], backing: .buffered, defer: false)
     window.title = "Opening Documents"; window.isReleasedWhenClosed = false
     super.init(window: window)

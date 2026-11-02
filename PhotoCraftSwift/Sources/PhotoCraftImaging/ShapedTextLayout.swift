@@ -156,14 +156,18 @@ public enum ShapedTextLayout {
     let layout=try layout(text,dpi:document.pixelsPerInch),width=Int(layout.bounds.width),height=Int(layout.bounds.height),floating=document.depth != .u8
     let info=CGImageAlphaInfo.premultipliedLast.rawValue | (floating ? CGBitmapInfo.floatComponents.rawValue | CGBitmapInfo.byteOrder32Little.rawValue:0)
     guard let context=CGContext(data:nil,width:width,height:height,bitsPerComponent:floating ? 32:8,bytesPerRow:width*(floating ? 16:4),space:try ColorManagement.space(for:document),bitmapInfo:info) else{throw CraftError.invalid("Could not allocate shaped type renderer.")}
-    context.setShouldAntialias(text.typography?.antialias ?? true);context.translateBy(x:0,y:Double(height));context.scaleBy(x:1,y:-1);context.translateBy(x:-layout.bounds.minX,y:-layout.bounds.minY)
+    context.setShouldAntialias(text.typography?.antialiasMode.map{$0 != .none} ?? text.typography?.antialias ?? true);context.translateBy(x:0,y:Double(height));context.scaleBy(x:1,y:-1);context.translateBy(x:-layout.bounds.minX,y:-layout.bounds.minY)
     for mark in layout.marks{try Task.checkCancellation();context.setFillColor(mark.color.cgColor);context.addPath(mark.path);context.fillPath()}
     guard let image=context.makeImage() else{throw CraftError.invalid("Could not render shaped type.")}
     return try RasterIO.surface(image,depth:document.depth,space:ColorManagement.space(for:document),colorEncoding:document.depth == .f32 ? .linearRGB:.sRGB)
   }
   public static func replacement(_ layer:Layer,content:TextContent,document:CraftDocument)throws->Command {
     guard case .text(let old)=layer.content else{throw CraftError.invalid("Select editable type.")}
-    let a=try NativeTextLayout.metrics(old,dpi:document.pixelsPerInch).origin,b=try NativeTextLayout.metrics(content,dpi:document.pixelsPerInch).origin
-    return .editType(layer.id,content,originDelta:.init(b.x-a.x,b.y-a.y))
+    if let appearance=old.pristineSourceAppearance,appearance.isPristine(content){var same=content;same.importedAppearance=old.importedAppearance;return .editType(layer.id,same,originDelta:.init(0,0))}
+    var edited=content;edited.importedAppearance=nil
+    let b=try NativeTextLayout.metrics(edited,dpi:document.pixelsPerInch).origin
+    if try layer.sourceTypeTransform() != nil{return .importedType(.init(layerID:layer.id,content:edited,origin:b))}
+    let a=try NativeTextLayout.metrics(old,dpi:document.pixelsPerInch).origin
+    return .editType(layer.id,edited,originDelta:.init(b.x-a.x,b.y-a.y))
   }
 }

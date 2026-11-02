@@ -17,7 +17,8 @@ final class DistortionTests:XCTestCase {
         s.edge=edge;let output=try DistortionEngine.render(source,kind:.displace,settings:s)
         for y in 0..<4 {for x in 0..<5 {
           let sx=edge == .wrapAround ? (x+1)%5:min(4,x+1),sy=edge == .wrapAround ? (y+3)%4:max(0,y-1)
-          XCTAssertEqual(output.pixel(x:x,y:y),source.pixel(x:sx,y:sy),"\(depth) \(edge) \(x),\(y)")
+          let expected:Pixel=edge == .transparent && (x+1>=5 || y-1<0) ? .clear:source.pixel(x:sx,y:sy)
+          XCTAssertEqual(output.pixel(x:x,y:y),expected,"\(depth) \(edge) \(x),\(y)")
         }}
       }
       s.map = .init(width:1,height:1,channels:1,samples:Data([128]))

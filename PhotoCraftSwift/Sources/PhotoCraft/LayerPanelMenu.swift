@@ -31,7 +31,7 @@ extension EditorStore {
     case .delete:
       return ids.count > 1
         ? "Delete Layers" : (layer?.isGroup == true ? "Delete Group" : "Delete Layer")
-    case .rename: return layer?.isGroup == true ? "Rename Group…" : "Rename Layer…"
+    case .rename: return layer?.isBackground == true ? "Layer from Background…":layer?.isGroup == true ? "Rename Group…" : "Rename Layer…"
     case .ungroup: return "Ungroup Layers"
     case .maskAllObjects: return "Mask All Objects"
     case .rasterize: return "Rasterize Layer"
@@ -80,7 +80,7 @@ extension EditorStore {
       return editable
         && (layer?.isClipped == true
           || layer.map { document.clippingBase(for: $0.id) != nil } == true)
-    case .addMask: return editable && layer?.mask == nil
+    case .addMask: return editable && layer?.isBackground != true && layer?.mask == nil
     case .toggleMask, .deleteMask: return editable && layer?.mask != nil
     case .applyMask: return editable && layer.map(canApplyMask) == true
     case .merge:
@@ -160,8 +160,8 @@ struct LayerEditingMenu: View {
     layerPanelButton(.maskAllObjects, context: contextLayer)
     layerPanelButton(.clipping, context: contextLayer)
     Divider()
-    Button("Link Layers") {}.disabled(true)
-    Button("Select Linked Layers") {}.disabled(true)
+    Button(store.linkMenuUnlinks(store.linkTargets(contextLayer)) ? "Unlink Layers":"Link Layers"){store.toggleLayerLinks(context:contextLayer,temporary:NSEvent.modifierFlags.contains(.shift))}.disabled(!store.canToggleLayerLinks(context:contextLayer))
+    Button("Select Linked Layers"){store.selectLinkedLayers(context:contextLayer)}.disabled(!store.canSelectLinkedLayers(context:contextLayer))
     Divider()
     Button("Copy Layer Style") { store.copyLayerStyle() }.disabled(!store.canCopyLayerStyle)
     Button("Paste Layer Style") { store.pasteLayerStyle() }.disabled(!store.canPasteLayerStyle)
@@ -169,7 +169,7 @@ struct LayerEditingMenu: View {
     Divider()
     layerPanelButton(.merge, context: contextLayer)
     layerPanelButton(.mergeVisible, context: contextLayer)
-    Button("Flatten Image") {}.disabled(true)
+    Button("Flatten Image") {store.requestFlattenImage()}.disabled(!store.canFlattenImage)
     if let contextLayer, let layer = store.document.layers.first(where: { $0.id == contextLayer }) {
       Divider()
       LayerColorChoices(store: store, context: contextLayer)

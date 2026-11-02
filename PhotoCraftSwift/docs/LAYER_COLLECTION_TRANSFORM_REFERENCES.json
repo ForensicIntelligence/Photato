@@ -1,0 +1,74 @@
+{
+  "step": "dev-step-353",
+  "recorded_at_utc": "2026-11-02T10:15:49.333876+00:00",
+  "run": "artifacts/runs/20261102T092947Z-353-layer-collection-transform",
+  "source_manifest": "artifacts/runs/20261102T092947Z-353-layer-collection-transform/source05.json",
+  "inputs": 6986,
+  "production_swift_files": 975,
+  "binary_sha256": "2c526acc0a4198ae3ec80144ca9e8062df2204f4d990824c47d7100a268f7257",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 851,
+    "passed_cases": 850,
+    "failed_cases": 1,
+    "failed_assertions": 1,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 211.098,
+    "new_cases": 16,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 124.78
+  },
+  "independent_summary": "artifacts/runs/20261102T092947Z-353-layer-collection-transform/independent05-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/transform-manipulate-layers/select-layers.html",
+      "claim": "Moving/alignment/transforms can involve multiple selected layers.",
+      "reference_date": "2026-02-23"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/transform-manipulate-layers/scale-layers-in-photoshop.html",
+      "claim": "All layer types use Free Transform, proportional default/Shift toggle,15-degree rotation,modifier modes and reference points; styles do not scale automatically.",
+      "reference_date": "2026-10-06"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+      "claim": "Common transform controls, numeric fields/reference positions/Return/Escape; Smart Objects preserve original data.",
+      "reference_date": "2026-09-28"
+    }
+  ],
+  "pinned_adobe_contract": "docs/contracts/adobe-photoshop-v2.json",
+  "api_commands": 231,
+  "native_version_unchanged": 83,
+  "actions_version": 37,
+  "old_actions_versions_retained": [
+    31,
+    32,
+    33,
+    34,
+    35,
+    36
+  ],
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Projective collection/type/shape transforms, Warp/repeat, linked-layer relationships and remaining target contexts",
+    "Remaining G01 multi-layer/group, Warp/repeat and other major workflows",
+    "Exact Photoshop collection bounds/edge/default/kernel/pixel/live/platform/capacity/physical60fps comparison",
+    "Prior strict opacity snapshot and11 historical strict rendering/interchange cases"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release",
+  "independent_RGBA_samples": {
+    "passed": true,
+    "source_outputs": "353 Source05",
+    "file": "layer-collection-transform-analytical.json",
+    "sha256": "de62ef4d1172efef016c660331268fd77934c59f540c519991bb14834cf9f63b",
+    "analytical_RGBA_channels_compared": 5120,
+    "vectors": 4,
+    "mismatches": [],
+    "method": "Independent affine inverse and owned red/blue rectangle composition; no native reader or raster transform used. Owned reference, not Photoshop execution."
+  },
+  "shared_history_selection": "Native and Photato Undo/Redo preserve captured still-existing selected IDs when active identity is unchanged; otherwise retain active-only fallback. Shared state already exposes IDs, with no new schema field."
+}

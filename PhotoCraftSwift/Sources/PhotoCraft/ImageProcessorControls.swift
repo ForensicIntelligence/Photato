@@ -66,7 +66,7 @@ struct ImageProcessorView: View {
   let model: ImageProcessorWorkspace
   init(model: ImageProcessorWorkspace) {
     self.model = model
-    let window = NSWindow(contentRect:NSRect(x:160,y:120,width:740,height:850),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
+    let window = PhotatoWindow(contentRect:NSRect(x:160,y:120,width:740,height:850),styleMask:[.titled,.closable,.resizable],backing:.buffered,defer:false)
     window.title = "Image Processor";window.isReleasedWhenClosed = false;window.contentView = NSHostingView(rootView:ImageProcessorView(model:model));window.center()
     super.init(window:window);window.delegate = self
   }

@@ -69,7 +69,7 @@ public enum ArtboardCommand: Sendable {
       let rect = try physical(bounds)
       guard children.count == Set(children).count, children.allSatisfy({ id in d.layers.contains { $0.id == id && $0.parentID == nil && $0.artboard == nil } }) else { throw CraftError.invalid("Select top-level layers outside existing artboards.") }
       if children.isEmpty {
-        guard d.layers.count < 512 else { throw CraftError.invalid("Layer limit reached.") }
+        guard d.layers.count < LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
         let layer = try NewLayerGroupOptions(name: name).layer(); d.layers.append(layer); d.activeLayerID = layer.id
       } else { try d.createLayerGroup(.init(name: name), children: children, below: false) }
       try install(d.activeIndex!, bounds: rect, background: background)
@@ -151,6 +151,7 @@ extension CraftDocument {
         if let mask = old.layers[i].vectorMask { layers[i].vectorMask?.path = mask.path.transformed(delta) }
       }
       transformSavedPaths(by: delta)
+      try mapGuides( delta)
     }
     width = w; height = h
     try mapSelection(from: old, by: delta); try transformChannels(from: old, by: delta)
@@ -165,7 +166,7 @@ extension CraftDocument {
     guard let board = artboards.first(where: { $0.id == id }), let bounds = board.artboardBounds else { throw CraftError.invalid("Choose an existing artboard.") }
     let ids = subtreeIDs(id), delta = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
     var result = self; result.id = UUID(); result.name = board.name
-    result.layers = layers.filter { ids.contains($0.id) }
+    result.layers = layers.filter { ids.contains($0.id) };LayerLinks.prune(in:&result)
     for i in result.layers.indices {
       let old = result.layers[i]
       DocumentGeometry.freezeTextLayout(&result.layers[i], document: self)
@@ -178,6 +179,7 @@ extension CraftDocument {
     result.width = bounds.width; result.height = bounds.height; result.artboardOrigin = .init()
     result.activeLayerID = ids.contains(activeLayerID ?? UUID()) ? activeLayerID : id
     result.transformSavedPaths(by: delta)
+    try result.mapGuides( delta)
     result.selection = nil; result.selectionMask = nil
     try result.transformChannels(from: self, by: delta, method: .nearest)
     try result.validate(); return result

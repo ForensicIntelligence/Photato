@@ -1,0 +1,2022 @@
+[
+  {
+    "file": "m3-d8-v1-c0.psd",
+    "mode": 3,
+    "depth": 8,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v1-c1.psd",
+    "mode": 3,
+    "depth": 8,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v1-c2.psd",
+    "mode": 3,
+    "depth": 8,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v1-c3.psd",
+    "mode": 3,
+    "depth": 8,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v2-c0.psb",
+    "mode": 3,
+    "depth": 8,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v2-c1.psb",
+    "mode": 3,
+    "depth": 8,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v2-c2.psb",
+    "mode": 3,
+    "depth": 8,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d8-v2-c3.psb",
+    "mode": 3,
+    "depth": 8,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d8-channel0.bin",
+      "m3-d8-channel1.bin",
+      "m3-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v1-c0.psd",
+    "mode": 3,
+    "depth": 16,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v1-c1.psd",
+    "mode": 3,
+    "depth": 16,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v1-c2.psd",
+    "mode": 3,
+    "depth": 16,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v1-c3.psd",
+    "mode": 3,
+    "depth": 16,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v2-c0.psb",
+    "mode": 3,
+    "depth": 16,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v2-c1.psb",
+    "mode": 3,
+    "depth": 16,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v2-c2.psb",
+    "mode": 3,
+    "depth": 16,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d16-v2-c3.psb",
+    "mode": 3,
+    "depth": 16,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d16-channel0.bin",
+      "m3-d16-channel1.bin",
+      "m3-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v1-c0.psd",
+    "mode": 3,
+    "depth": 32,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v1-c1.psd",
+    "mode": 3,
+    "depth": 32,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v1-c2.psd",
+    "mode": 3,
+    "depth": 32,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v1-c3.psd",
+    "mode": 3,
+    "depth": 32,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v2-c0.psb",
+    "mode": 3,
+    "depth": 32,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v2-c1.psb",
+    "mode": 3,
+    "depth": 32,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v2-c2.psb",
+    "mode": 3,
+    "depth": 32,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m3-d32-v2-c3.psb",
+    "mode": 3,
+    "depth": 32,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m3-d32-channel0.bin",
+      "m3-d32-channel1.bin",
+      "m3-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v1-c0.psd",
+    "mode": 1,
+    "depth": 8,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v1-c1.psd",
+    "mode": 1,
+    "depth": 8,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v1-c2.psd",
+    "mode": 1,
+    "depth": 8,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v1-c3.psd",
+    "mode": 1,
+    "depth": 8,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v2-c0.psb",
+    "mode": 1,
+    "depth": 8,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v2-c1.psb",
+    "mode": 1,
+    "depth": 8,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v2-c2.psb",
+    "mode": 1,
+    "depth": 8,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d8-v2-c3.psb",
+    "mode": 1,
+    "depth": 8,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d8-channel0.bin",
+      "m1-d8-channel1.bin",
+      "m1-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v1-c0.psd",
+    "mode": 1,
+    "depth": 16,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v1-c1.psd",
+    "mode": 1,
+    "depth": 16,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v1-c2.psd",
+    "mode": 1,
+    "depth": 16,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v1-c3.psd",
+    "mode": 1,
+    "depth": 16,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v2-c0.psb",
+    "mode": 1,
+    "depth": 16,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v2-c1.psb",
+    "mode": 1,
+    "depth": 16,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v2-c2.psb",
+    "mode": 1,
+    "depth": 16,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d16-v2-c3.psb",
+    "mode": 1,
+    "depth": 16,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d16-channel0.bin",
+      "m1-d16-channel1.bin",
+      "m1-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v1-c0.psd",
+    "mode": 1,
+    "depth": 32,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v1-c1.psd",
+    "mode": 1,
+    "depth": 32,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v1-c2.psd",
+    "mode": 1,
+    "depth": 32,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v1-c3.psd",
+    "mode": 1,
+    "depth": 32,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v2-c0.psb",
+    "mode": 1,
+    "depth": 32,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v2-c1.psb",
+    "mode": 1,
+    "depth": 32,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v2-c2.psb",
+    "mode": 1,
+    "depth": 32,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m1-d32-v2-c3.psb",
+    "mode": 1,
+    "depth": 32,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m1-d32-channel0.bin",
+      "m1-d32-channel1.bin",
+      "m1-d32-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v1-c0.psd",
+    "mode": 4,
+    "depth": 8,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v1-c1.psd",
+    "mode": 4,
+    "depth": 8,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v1-c2.psd",
+    "mode": 4,
+    "depth": 8,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v1-c3.psd",
+    "mode": 4,
+    "depth": 8,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v2-c0.psb",
+    "mode": 4,
+    "depth": 8,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v2-c1.psb",
+    "mode": 4,
+    "depth": 8,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v2-c2.psb",
+    "mode": 4,
+    "depth": 8,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d8-v2-c3.psb",
+    "mode": 4,
+    "depth": 8,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d8-channel0.bin",
+      "m4-d8-channel1.bin",
+      "m4-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v1-c0.psd",
+    "mode": 4,
+    "depth": 16,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v1-c1.psd",
+    "mode": 4,
+    "depth": 16,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v1-c2.psd",
+    "mode": 4,
+    "depth": 16,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v1-c3.psd",
+    "mode": 4,
+    "depth": 16,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v2-c0.psb",
+    "mode": 4,
+    "depth": 16,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v2-c1.psb",
+    "mode": 4,
+    "depth": 16,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v2-c2.psb",
+    "mode": 4,
+    "depth": 16,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m4-d16-v2-c3.psb",
+    "mode": 4,
+    "depth": 16,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m4-d16-channel0.bin",
+      "m4-d16-channel1.bin",
+      "m4-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v1-c0.psd",
+    "mode": 9,
+    "depth": 8,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v1-c1.psd",
+    "mode": 9,
+    "depth": 8,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v1-c2.psd",
+    "mode": 9,
+    "depth": 8,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v1-c3.psd",
+    "mode": 9,
+    "depth": 8,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v2-c0.psb",
+    "mode": 9,
+    "depth": 8,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v2-c1.psb",
+    "mode": 9,
+    "depth": 8,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v2-c2.psb",
+    "mode": 9,
+    "depth": 8,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d8-v2-c3.psb",
+    "mode": 9,
+    "depth": 8,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d8-channel0.bin",
+      "m9-d8-channel1.bin",
+      "m9-d8-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v1-c0.psd",
+    "mode": 9,
+    "depth": 16,
+    "version": 1,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v1-c1.psd",
+    "mode": 9,
+    "depth": 16,
+    "version": 1,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v1-c2.psd",
+    "mode": 9,
+    "depth": 16,
+    "version": 1,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v1-c3.psd",
+    "mode": 9,
+    "depth": 16,
+    "version": 1,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v2-c0.psb",
+    "mode": 9,
+    "depth": 16,
+    "version": 2,
+    "compression": 0,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v2-c1.psb",
+    "mode": 9,
+    "depth": 16,
+    "version": 2,
+    "compression": 1,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v2-c2.psb",
+    "mode": 9,
+    "depth": 16,
+    "version": 2,
+    "compression": 2,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "m9-d16-v2-c3.psb",
+    "mode": 9,
+    "depth": 16,
+    "version": 2,
+    "compression": 3,
+    "width": 5,
+    "height": 3,
+    "names": [
+      "Mask \u03b1",
+      "Ink \u03a9",
+      "Quick Mask"
+    ],
+    "planes": [
+      "m9-d16-channel0.bin",
+      "m9-d16-channel1.bin",
+      "m9-d16-channel2.bin"
+    ],
+    "identifiers": [
+      41,
+      73,
+      99
+    ],
+    "quickInitiallyEmpty": true
+  },
+  {
+    "file": "independent-cmyk-spot.psd",
+    "mode": 4,
+    "depth": 8,
+    "version": 1,
+    "compression": 1,
+    "width": 640,
+    "height": 637,
+    "names": [
+      "blue",
+      "fluorescent pink",
+      "yellow"
+    ],
+    "planes": [
+      "independent-cmyk-spot-channel0.bin",
+      "independent-cmyk-spot-channel1.bin",
+      "independent-cmyk-spot-channel2.bin"
+    ],
+    "independentCorpus": true
+  }
+]

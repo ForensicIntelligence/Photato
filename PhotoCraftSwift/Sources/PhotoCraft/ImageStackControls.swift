@@ -47,7 +47,7 @@ struct ImageStackView: View {
   weak var documentController: CraftDocumentController?
   init(model: ImageStackWorkspace,owner: CraftDocumentController) {
     documentController = owner
-    let window = NSWindow(contentRect:NSRect(x:0,y:0,width:830,height:630),styleMask:[.titled,.closable],backing:.buffered,defer:false)
+    let window = PhotatoWindow(contentRect:NSRect(x:0,y:0,width:830,height:630),styleMask:[.titled,.closable],backing:.buffered,defer:false)
     window.title = model.statistics ? "Image Statistics":"Load Layers";window.contentView = NSHostingView(rootView:ImageStackView(model:model));window.isReleasedWhenClosed = false;window.center()
     super.init(window:window);window.delegate = self
   }

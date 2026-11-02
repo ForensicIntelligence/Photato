@@ -1,0 +1,50 @@
+{
+  "step": 307,
+  "recorded_at_utc": "2026-11-01T02:48:39.480660+00:00",
+  "recorded_at_local": "2026-10-31T19:48:39.480660-07:00",
+  "run": "artifacts/runs/20261101T024732Z-307-diary-refresh",
+  "scope": "documentation-only synchronization with unbuilt306 and tested305",
+  "latest_engineering_checkpoint": 306,
+  "latest_engineering_status": "unbuilt/untested in progress; syntax-only checks passed",
+  "latest_tested_checkpoint": 305,
+  "latest_tested_source": "Source04",
+  "latest_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "current_focus": {
+    "checkpoint": 305,
+    "cases": 166,
+    "passed_cases": 162,
+    "failed_cases": 4,
+    "failed_assertions": 23
+  },
+  "engineering_inventory": "artifacts/runs/20261101T024732Z-307-diary-refresh/306-working-tree-inventory.json",
+  "application_inputs_before": "artifacts/runs/20261101T024732Z-307-diary-refresh/application-inputs-before.json",
+  "application_inputs": 3007,
+  "authored_306_test_cases": 12,
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T024732Z-307-diary-refresh/verification03.json",
+  "audit_receipt": "artifacts/development-history-audit/307-checkpoint01-receipt.json",
+  "first_verification": {
+    "checks": 24,
+    "passed": true,
+    "path": "artifacts/runs/20261101T024732Z-307-diary-refresh/verification01.json",
+    "application_inputs_unchanged": 3007,
+    "protected_assets_unchanged": 40,
+    "original_rust_files_unchanged": 1057,
+    "entries": 307,
+    "dashboard_journal_latest": 307,
+    "dashboard_completed_scope_latest": 283
+  },
+  "retained_editions": [
+    "edition01",
+    "edition02",
+    "edition03"
+  ]
+}

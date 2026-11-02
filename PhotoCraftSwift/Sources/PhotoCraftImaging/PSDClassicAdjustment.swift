@@ -4,9 +4,9 @@ import PhotoCraftCore
 /// PhotoCraft io/src/adjust_map.rs layouts, with strict bounded validation.
 /// RGB Photo Filter v2 is supported; other color encodings fail explicitly.
 enum PSDClassicAdjustment {
-  static let keys = ["vibA", "blwh", "phfl", "mixr", "selc"]
+  static let keys = ["vibA", "blwh", "phfl", "mixr", "selc", "expA"]
   static func key(_ kind: ClassicAdjustment.Kind) -> String {
-    switch kind { case .vibrance: "vibA"; case .blackWhite: "blwh"; case .photoFilter: "phfl"; case .channelMixer: "mixr"; case .selectiveColor: "selc" }
+    switch kind { case .vibrance: "vibA"; case .blackWhite: "blwh"; case .photoFilter: "phfl"; case .channelMixer: "mixr"; case .selectiveColor: "selc"; case .exposure: "expA" }
   }
   static func read(_ data: Data, key: String) throws -> ClassicAdjustment {
     guard let index = keys.firstIndex(of:key) else { throw CraftError.unsupported("Unknown classic adjustment block.") }
@@ -29,6 +29,11 @@ enum PSDClassicAdjustment {
       return Pixel(numbers[0],numbers[1],numbers[2])
     }
     switch value.kind {
+    case .exposure:
+      guard [14,16].contains(data.count), try r.u16() == 1 else { throw CraftError.invalid("Invalid Exposure record.") }
+      let values = try (0..<3).map { _ in Float(bitPattern: UInt32(try r.u32())) }
+      guard try r.bytes(data.count-14).allSatisfy({$0 == 0}) else { throw CraftError.unsupported("Unknown Exposure padding.") }
+      value.exposureSettings = .init(exposure:values[0],offset:values[1],gammaCorrection:values[2])
     case .vibrance:
       let d = try PSDDescriptor.read(data,padding:true)
       value.vibrance = try integer(d,"vibrance",0); value.saturation = try integer(d,"Strt",0)
@@ -68,6 +73,10 @@ enum PSDClassicAdjustment {
     var w = PSDWriter()
     func rgb(_ p: Pixel) -> PSDDescriptor { .init("RGBC",items:[.init("Rd  ",.number(Double(p.r)*255)),.init("Grn ",.number(Double(p.g)*255)),.init("Bl  ",.number(Double(p.b)*255))]) }
     switch value.kind {
+    case .exposure:
+      guard let e = value.exposureSettings else { throw CraftError.invalid("Missing Exposure settings.") }
+      w.n(1,2)
+      for v in [e.exposure,e.offset,e.gammaCorrection] { w.n(Int(v.bitPattern),4) }
     case .vibrance:
       return try PSDDescriptor("null",items:[.init("vibrance",.integer(Int32(value.vibrance))),.init("Strt",.integer(Int32(value.saturation)))]).encoded()
     case .blackWhite:

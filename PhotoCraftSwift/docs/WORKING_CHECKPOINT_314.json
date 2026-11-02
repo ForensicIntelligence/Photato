@@ -1,0 +1,181 @@
+{
+  "step": 314,
+  "recorded_at_utc": "2026-11-01T06:06:19.069728+00:00",
+  "run": "artifacts/runs/20261101T060619Z-314-nested-source-decoder",
+  "phase": 1,
+  "package": "I03",
+  "status": "nested-source-worker-repaired-focused-strict-gates-open",
+  "increment_complete": true,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_312.json",
+  "source_manifest": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/source01.json",
+  "source_inputs": 3174,
+  "boundary01_result": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-11-01T06:13:57.258712+00:00",
+    "source_manifest": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/source01.json",
+    "inputs": 3174,
+    "current_binary_sha256": "3b6213fa8c255380f24ab4ce5b263cb1dd4c07279e6aecd25a81ed3e163ace0c",
+    "source_unchanged": true,
+    "changed_inputs": []
+  },
+  "affected02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T06:14:33.444438+00:00",
+    "source_manifest": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/source01.json",
+    "inputs": 3174,
+    "current_binary_sha256": "3b6213fa8c255380f24ab4ce5b263cb1dd4c07279e6aecd25a81ed3e163ace0c",
+    "source_unchanged": true,
+    "changed_inputs": []
+  },
+  "increment_scope": "Nested-source crash repair only; full source Smart import and Photoshop parity remain open.",
+  "focused_selection": {
+    "step": 314,
+    "source": "Source01",
+    "cases": 150,
+    "passed_cases": 145,
+    "failed_cases": 5,
+    "failed_assertions": 33,
+    "unexpected": 0,
+    "crashes": 0,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.PcraftFillImportTests testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftShapeImportTests testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+      "PhotoCraftImagingTests.PcraftSmartImportTests testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftTextImportTests testUncachedSourceTextCompositeMatchesExactOriginalWords"
+    ],
+    "classes": {
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LargeSmartObjectTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LinkedSmartObjectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFImageSmartObjectTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFSmartObjectTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PDFSmartObjectWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDLinkedFileTypeTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDPDFSmartObjectTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedSmartFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftShapeImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftImagingTests.PcraftSmartImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftTextImportTests": {
+        "passed": 5,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartFilterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartObjectTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartObjectWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceSmartModelTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.WarpWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "source_inputs": 3174,
+    "production_swift_files": 871,
+    "binary_sha256": "3b6213fa8c255380f24ab4ce5b263cb1dd4c07279e6aecd25a81ed3e163ace0c",
+    "no_tolerance_or_expected_sample_change": true
+  },
+  "full_current_suite_passed": false,
+  "functional_source_smart_subset_qualified": true,
+  "source_import_activated": false,
+  "source_import_status": "connected-functional-subset-full-migration-unfinished",
+  "binary_sha256": "3b6213fa8c255380f24ab4ce5b263cb1dd4c07279e6aecd25a81ed3e163ace0c",
+  "source_filter_breadth": {
+    "declared_ids": 62,
+    "mapped_ids": 9,
+    "remaining_declared_ids": 53,
+    "audit": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/source-filter-breadth-audit01.json"
+  },
+  "next_work": [
+    "Map remaining source filter parameter/default/enum structures to existing native typed filters with original-engine fixtures, native controls/history/API coverage.",
+    "Continue unknown-extent linked originals and source adjustment/metadata breadth.",
+    "Retain all strict exact/full-current/native/platform/capacity/60fps gates; do not promote the working subset to a release."
+  ],
+  "documentation_verification": {
+    "checks": 34,
+    "passed": true,
+    "first": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/verification01.json",
+    "final": "artifacts/runs/20261101T060619Z-314-nested-source-decoder/verification02.json",
+    "audit_receipt": "artifacts/development-history-audit/314-checkpoint01-receipt.json"
+  },
+  "audit_receipt": "artifacts/development-history-audit/314-checkpoint01-receipt.json"
+}

@@ -9,7 +9,7 @@ public enum LayerViaOperation: String, Sendable, CaseIterable {
 /// This is deliberately separate from clipboard Copy/Cut, whose pixel semantics differ.
 public enum LayerVia {
   public static func canApply(to layer: Layer, in document: CraftDocument) -> Bool {
-    guard document.selection != nil, document.layers.count < 512,
+    guard document.selection != nil, document.layers.count < LayerLimits.maximumLayers,
       !document.isLocked(layer.id), layer.affine == nil, !layer.isClipped,
       layer.vectorMask == nil, case .raster = layer.content
     else { return false }

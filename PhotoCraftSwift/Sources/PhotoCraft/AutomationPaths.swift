@@ -28,10 +28,10 @@ enum PathAPI {
   }}
   static var stateSchema:[String:Any]{
     let named=BrushAPI.object(["id":schema("pathID"),"name":schema("name"),"isWorkPath":BrushAPI.flag,"path":path],required:["id","name","isWorkPath","path"])
-    let fields:[String:Any]=["paths":ShapeAPI.array(named,256),"selectedID":["anyOf":[["type":"null"],schema("pathID")]],"target":BrushAPI.enumeration(["none","saved","vectorMask"]),"selectedPath":["anyOf":[["type":"null"],path]],"tolerance":schema("tolerance"),"operation":schema("combine"),"gestureActive":BrushAPI.flag,"editable":BrushAPI.flag,"tool":["type":"string"]]
+    let fields:[String:Any]=["paths":ShapeAPI.array(named,256),"selectedID":["anyOf":[["type":"null"],schema("pathID")]],"target":BrushAPI.enumeration(["none","saved","vectorMask","shape"]),"selectedPath":["anyOf":[["type":"null"],path]],"tolerance":schema("tolerance"),"operation":schema("combine"),"gestureActive":BrushAPI.flag,"editable":BrushAPI.flag,"tool":["type":"string"]]
     return BrushAPI.object(fields,required:Array(fields.keys))
   }
-  static var capabilities:[String:Any]{["commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, advanced Fill Path dialog options and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
+  static var capabilities:[String:Any]{["commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, advanced Fill Path dialog options and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
 }
 extension AutomationCommand {
   func pathFlag(_ key:String,_ fallback:Bool)throws->Bool{guard let value=parameters[key] else{return fallback};guard case .bool(let flag)=value else{throw AutomationFailure(status:400,message:"\(key) must be boolean.")};return flag}
@@ -87,17 +87,20 @@ extension AutomationCommand {
 extension EditorStore {
   var pathState:[String:Any]{
     let target:String,id:UUID?
-    switch pathTarget{case .saved(let value):target="saved";id=value;case .vectorMask(let value):target="vectorMask";id=value;case nil:target="none";id=nil}
+    switch pathTarget{case .saved(let value):target="saved";id=value;case .vectorMask(let value):target="vectorMask";id=value;case .shape(let value):target="shape";id=value;case nil:target="none";id=nil}
     return ["paths":(document.paths ?? []).map{BrushAPI.json($0)},"selectedID":id?.uuidString as Any? ?? NSNull(),"target":target,"selectedPath":selectedVectorPath.map{BrushAPI.json($0)} ?? NSNull(),"tolerance":pathCurveFit,"operation":pathOperation.rawValue,"gestureActive":freeformGesture != nil || pathGesture != nil,"editable":pathIsEditable,"tool":selectedTool.id]
   }
   func configurePath(_ command:AutomationCommand)throws{
-    try command.pathFields([], ["tool","tolerance","combine","pathID"])
+    try command.pathFields([], ["tool","tolerance","combine","pathID","layerID"])
+    guard command.parameters["pathID"]==nil || command.parameters["layerID"]==nil else{throw AutomationFailure(status:400,message:"Choose a saved path or shape layer, not both.")}
     let tolerance=try command.parameters["tolerance"].map{_ in try command.number("tolerance",range:0.5...10)} ?? pathCurveFit
     let operation=try ShapeAPI.decode(PathOperation.self,command.parameters["combine"],schema:PathAPI.schema("combine"),base:pathOperation)
     var selected:WorkspaceTool?
     if command.parameters["tool"] != nil{let name=try command.string("tool");guard ["pen","freeformPen","curvaturePen","pathSelection","directSelection"].contains(name) else{throw AutomationFailure(status:400,message:"Unknown path tool.")};selected=WorkspaceCatalog.tool(name)}
     let id=try command.parameters["pathID"].map{_ in try command.actionUUID("pathID")}
     if let id,!((document.paths ?? []).contains{$0.id==id}){throw AutomationFailure(status:404,message:"Path not found.")}
-    pathCurveFit=tolerance;pathOperation=operation;if let selected{tool=selected.native!};if let id{selectPath(.saved(id))};revision += 1
+    let shapeID=try command.parameters["layerID"].map{_ in try command.actionUUID("layerID")}
+    if let shapeID,!document.layers.contains(where:{$0.id==shapeID && $0.shape != nil}){throw AutomationFailure(status:404,message:"Shape layer not found.")}
+    pathCurveFit=tolerance;pathOperation=operation;if let shapeID{selectPath(.shape(shapeID))};if let selected{tool=selected.native!};if let id{selectPath(.saved(id))};revision += 1
   }
 }

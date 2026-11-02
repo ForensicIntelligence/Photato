@@ -706,5 +706,317 @@
     "new_tools": false,
     "policy_unchanged": true,
     "reference": "docs/CHANNEL_ARITHMETIC_REFERENCES.json"
+  },
+  "reverification_299": {
+    "recorded_at_utc": "2026-10-31T21:52:16.000456+00:00",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+    "tests": 9,
+    "failed": 0,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
+    "sha256": "16b23363219e5a1ec6ace6137d91339064509a7e1b26f59984955c6725ca6817",
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-modifier-matrix.json",
+    "rows": 832,
+    "tools": 52,
+    "modifiers": 16,
+    "artwork": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-cursors.png",
+    "visual_check": "Generated cursor sheet inspected from Source16; identical SHA256 in17. Offscreen artwork, not physical input acceptance.",
+    "production_cursor_changes": false,
+    "future_requirement": "Existing AGENTS.md/CONTRIBUTING.md requirement retained for every new tool/action.",
+    "live_native_acceptance": false,
+    "native_app_preserved": 283
+  },
+  "reverification_299_source20": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "tests_passed": 9,
+    "matrix_rows": 832,
+    "tools": 52,
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor20-captures/tool-modifier-matrix.json",
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-ToolCursorTests.log",
+    "sha256": "28cc0ed377fb485c00e45b4c5a361c31c03573a62fe70c1b5afd08f5cb48fd9c",
+    "new_tool_or_modifier_actions": false,
+    "physical_acceptance": false
+  },
+  "reverification_299_source23": {
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "tests_passed": 9,
+    "matrix_rows": 832,
+    "tools": 52,
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor23-captures/tool-modifier-matrix.json",
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-ToolCursorTests.log",
+    "sha256": "70503db8d39a72b7ff2fde0a855d04368d57e2bdccb410bea733fc68ab271069",
+    "new_tool_or_modifier_actions": false,
+    "physical_acceptance": false
+  },
+  "reverification_300": {
+    "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+    "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+    "tests_passed": 9,
+    "matrix_rows_asserted": 832,
+    "tools": 52,
+    "new_tool_or_modifier_actions": false,
+    "policy_inputs_unchanged_from_299_source23": true,
+    "physical_acceptance": false
+  },
+  "exposure_step302_recheck": {
+    "source": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source02.json",
+    "cases": 9,
+    "passed": 9,
+    "tools": 52,
+    "modifier_combinations": 832,
+    "source03_equivalence": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source03-equivalence.json",
+    "new_cursor_or_modifier_action": false,
+    "physical_acceptance": false
+  },
+  "source_shape_context_step305": {
+    "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
+    "status": "Source04 functional source-shape/native/API/Actions24 workflows pass;162/166 current focused cases pass with four strict cases/23 assertions. Existing52x16/nine cursor cases pass. New target reuses existing tools; no new shortcuts/cursor actions. Physical/full/Photoshop/source/capacity/platform gates remain open.",
+    "full_parity": false
+  },
+  "rich_source_text_step308": {
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+    "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
+    "functional_cases_passed": 16,
+    "new_tool_or_factory_binding": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Existing Photato text commands/state/schema/69 negotiation and published Adobe text_layer mappings; no new route. Original pcraft format remains outside Adobe input contract."
+  },
+  "relight_step318": {
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
+    "reference": "docs/RELIGHT_REFERENCES.json",
+    "functional_cases_passed": 13,
+    "factory_fixture_or_shortcuts_changed": false,
+    "new_tool_or_modifier_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Typed Relight settings/schema/state through existing shared commands, native71/Actions26, source mapping108; explicit Adobe boundary."
+  },
+  "lighting_step321": {
+    "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02.json",
+    "reference": "docs/LIGHTING_EFFECTS_REFERENCES.json",
+    "functional_cases_passed": 14,
+    "factory_fixture_or_shortcuts_changed": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Shared Lighting controls/schema/state/presets, native72/Actions27 and original mapping109; unqualified Adobe descriptors explicitly reject.",
+    "modifier_combinations": 16,
+    "actual_preview_mouse_events": true,
+    "capture_focus_capacity_test_passed": true,
+    "matrix": "artifacts/runs/20261101T093255Z-321-lighting-qualification/capture01/lighting-modifier-matrix.json",
+    "physical_acceptance": false
+  },
+  "source_displacement_step322": {
+    "step": 322,
+    "reference": "docs/SOURCE_DISPLACEMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+    "factory_fixture_or_shortcuts_changed": false,
+    "new_menu_shortcut_or_pointer_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Source Displace settings/state/schema, native73/Actions28 and Photato-only native resource input."
+  },
+  "source_adjustment_step323": {
+    "step": 323,
+    "reference": "docs/SOURCE_ADJUSTMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+    "new_menu_shortcut_or_pointer_action": false,
+    "factory_fixture_or_shortcuts_changed": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Typed source adjustment schema/state/capabilities and existing create/set/apply; native74/Actions29."
+  },
+  "source_effects_step326": {
+    "reference": "docs/SOURCE_LAYER_EFFECT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+    "existing_factory_global_light_path_registered": true,
+    "factory_entries_or_shortcuts_changed": false,
+    "new_custom_pointer_or_modifier_action": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false
+  },
+  "auxiliary_spot_channels328": {
+    "step": 328,
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
+    "scope": "Existing Channels panel New Spot entry enabled; standard native dialog and button controls. No main factory menu/shortcut inventory change or new canvas gesture. Existing painting/channel cursor policy retained; nine menu and nine all-modifier cursor regressions pass. Command-click New Channel uses the standard button pointer. Live Photoshop panel/appearance qualification remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "psd_auxiliary_channels329": {
+    "step": 329,
+    "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
+    "reference": "docs/PSD_AUXILIARY_CHANNEL_REFERENCES.json",
+    "scope": "Existing Open/Save/Save As and channel controls share the PSD/PSB serializer; no new main menu, shortcut or canvas gesture. Nine existing menu and nine modifier-cursor regressions pass. Factory807 entries/102 primary/8 alternate inventory unchanged; live visual acceptance remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "document_guides330": {
+    "step": 330,
+    "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
+    "reference": "docs/DOCUMENT_GUIDE_REFERENCES.json",
+    "scope": "Existing factory Guide/Show/Snap menu paths enabled; primary807-entry/102-primary/8-alternate inventory unchanged. Nine menu and nine cursor regressions pass. New native guide tests cover all16 captured orientation/Shift cursor combinations and all16 layer-snap modifiers, selection add/subtract hover and detach cleanup. Guide actions use live modifiers; other tool policies remain unchanged. Native Photoshop access is locked; full visual/context qualification remains open.",
+    "main_factory_inventory_changed": false,
+    "full_photoshop_parity": false
+  },
+  "color_range_343": {
+    "policy": "ToolCursor.colorRangeSampler and ToolCursor.colorRange in ToolCursorPolicies.swift; ColorRangeCanvasView uses ModifierCursorView.",
+    "modifiers": "Shift add, Option subtract wins together, Control/Command retain sampler. Command preview toggle; captured sampler until release; focus/detach restore.",
+    "tested_combinations": 16,
+    "samplers": 3,
+    "live_Photoshop_qualified": false,
+    "evidence": "docs/COLOR_RANGE_REFERENCES.json"
+  },
+  "magnetic_lasso_344": {
+    "policy": "ToolCursor.magnetic in ToolCursorPolicies.swift; main CraftCanvas ModifierCursorView dispatches captured modes and temporary tracing alternatives.",
+    "modifiers": "Captured initial selection mode; active Command/near-start closes, Option after release gives straight/freehand. No Control action invented. Caps Lock before trace; Space pan.",
+    "tested_combinations": 16,
+    "live_Photoshop_qualified": false,
+    "evidence": "docs/MAGNETIC_LASSO_REFERENCES.json"
+  },
+  "selection_modify_345": {
+    "new_canvas_tool": false,
+    "new_modifier_action": false,
+    "cursor_changes": false,
+    "API_impact": "Two document-selection commands; modal controls retain native text/control cursors.",
+    "evidence": "docs/SELECTION_MODIFY_REFERENCES.json"
+  },
+  "selection_transform_346": {
+    "all16_modifier_combinations_tested": true,
+    "captured_mode_and_restoration_tested": true,
+    "policy": "ToolCursor.selectionTransform; native canvas cursor refresh; native controls retain their own text/control cursors.",
+    "live_UI_qualified": false,
+    "API_impact": "selection.transform and workspace selectionTransform state; no injected pointer API.",
+    "evidence": "docs/SELECTION_TRANSFORM_REFERENCES.json"
+  },
+  "selected_pixel_transform_347": {
+    "all 16_modifier_combinations_tested": true,
+    "shared_captured_mode_and_link_state_policy": true,
+    "policy": "Existing ToolCursor.selectionTransform and shared canvas captured-mode refresh; controls retain their own text/control cursors.",
+    "live_UI_qualified": false,
+    "API_impact": "pixels.transform and selectedPixelTransform/target state; no injected pointer API.",
+    "evidence": "docs/SELECTED_PIXEL_TRANSFORM_REFERENCES.json"
+  },
+  "background_layers_348": {
+    "policy": "No new modifier action. Existing Brush/Eraser cursor and captured gesture modifiers remain; Background Eraser/Magic Eraser promote before removing alpha. Normal Eraser uses captured background color. Existing all16 ToolCursor cohort is rerun.",
+    "live_UI_qualified": false,
+    "API_impact": "layer.background/pixels.clear and backgroundLayer state/capabilities; no injected pointer route.",
+    "evidence": "docs/BACKGROUND_LAYER_REFERENCES.json"
+  },
+  "background_pixel_transform_349": {
+    "all16_background_modifier_combinations_tested": true,
+    "new_modifier_actions": false,
+    "policy": "Existing captured SelectionTransform mode/handle/link-state resolver and native refresh. Background color is captured alongside the draft; controls retain text/control cursors.",
+    "live_UI_qualified": false,
+    "API_impact": "pixels.transform adds backgroundColor; selectedPixelTransform state/schema exposes Background/captured color. No pointer injection or Adobe cursor route.",
+    "evidence": "docs/BACKGROUND_PIXEL_TRANSFORM_REFERENCES.json"
+  },
+  "selected_pixel_move_350": {
+    "all16_modifier_combinations_tested": true,
+    "new_effective_policy": "ToolCursor.selectedPixels captures Option-copy, retains live Shift constraints and indicates effective guide-snap suppression. Stationary flags update geometry/cursor; focus/tool/read/close restore state.",
+    "new_badges": [
+      "copy",
+      "constrainCopy"
+    ],
+    "live_UI_qualified": false,
+    "API_impact": "pixels.move and copy on pixels.transform with state/schema/capabilities; no injected pointer/keyboard or Adobe cursor route.",
+    "evidence": "docs/SELECTED_PIXEL_MOVE_REFERENCES.json"
+  },
+  "pixel_mask_transform_351": {
+    "all16_modifier_combinations_tested": true,
+    "policy": "Whole pixel-mask Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
+    "API_impact": "mask.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "evidence": "docs/PIXEL_MASK_TRANSFORM_REFERENCES.json"
+  },
+  "channel_transform_352": {
+    "all16_modifier_combinations_tested": true,
+    "policy": "Whole auxiliary-channel Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
+    "API_impact": "channel.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "evidence": "docs/CHANNEL_TRANSFORM_REFERENCES.json"
+  },
+  "layer_collection_transform_353": {
+    "all16_modifier_combinations_tested": true,
+    "policy": "Whole layer collection Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
+    "API_impact": "layers.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "evidence": "docs/LAYER_COLLECTION_TRANSFORM_REFERENCES.json",
+    "unsupported_modes_feedback": "Collection Distort/Perspective cursor is unavailable and dispatch is skipped. Idle selected-pixel cursor routing now requires an actual selection and no active draft, preserving active transform handle feedback."
+  },
+  "projective_layer_transform_354": {
+    "all16_modifier_combinations_tested": true,
+    "policy": "Captured shared selectionTransform effective-mode/handle cursor matches native Command/Command-Option-Shift action; changing modifiers mid-drag does not silently change its captured mode. Unsupported targets remain unavailable.",
+    "API_impact": "layers.transform expands to projective matrices; layerCollectionTransform modes/affineOnly/reference/preview/schema/capabilities updated; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "evidence": "docs/PROJECTIVE_LAYER_TRANSFORM_REFERENCES.json"
+  },
+  "layer_links_355": {
+    "all16_modifier_combinations_tested": true,
+    "policy": "Whole Move idle and captured Option-copy cursor follows dispatched action; Shift angle and Command guide-snap suppression refresh dynamically. Per-row/footer link cursors show link/unlink or Shift enable/disable. Unsupported targets unavailable.",
+    "API_impact": "layer.links/layers.move; layerLinks graph/targets/availability/state/schema/capabilities; shared history/Actions39/40; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "evidence": "docs/LAYER_LINK_REFERENCES.json"
+  },
+  "pixel_fill_stroke_356": {
+    "all16_unchanged_modifier_combinations_tested": true,
+    "policy": "Native dialog/slider/text/color controls create no new canvas tool or modifier action. Existing effective cursor policy retained.",
+    "API_impact": "pixels.fill/pixels.stroke, pixelPaint state/schemas/capabilities and shared history/Actions41; no pointer injection or invented Adobe cursor route.",
+    "live_UI_qualified": false,
+    "guide": "docs/PIXEL_FILL_STROKE.md"
+  },
+  "pattern_pixel_fill_357": {
+    "all16_unchanged_modifier_combinations_tested": true,
+    "policy": "New native source/preset controls add no canvas tool or alternate modifier action; existing effective tool cursors remain unchanged.",
+    "API_impact": "pixels.fill patternID/placement, inventory/source/busy/state/schemas, immutable captured asset and shared history/Actions42. No pointer injection or invented Adobe route.",
+    "live_UI_qualified": false,
+    "guide": "docs/PATTERN_PIXEL_FILL.md"
+  },
+  "large_crop_358": {
+    "all16_unchanged_modifier_combinations_tested": true,
+    "policy": "No new canvas tool/modifier action; Crop range/preview implementation retains existing effective cursor dispatch.",
+    "API_impact": "document.crop range/state/schema/capability and shared prepared edit extended. No pointer injection or invented Adobe route.",
+    "live_UI_qualified": false,
+    "guide": "docs/LARGE_CROP.md"
+  },
+  "layer_capacity_359": {
+    "guide": "docs/LAYER_CAPACITY.md",
+    "new_tool_or_modifier_action": false,
+    "cursor_policy_changed": false,
+    "API_limit_and_state_extended": true,
+    "physical60fps_qualified": false
+  },
+  "flatten_image_360": {
+    "guide": "docs/FLATTEN_IMAGE.md",
+    "new_tool_or_modifier_action": false,
+    "cursor_policy_changed": false,
+    "API_operation_state_schemas_added": true,
+    "physical60fps_qualified": false
+  },
+  "document_duplicate_361": {
+    "guide": "docs/DOCUMENT_DUPLICATE.md",
+    "new_tool_or_modifier_action": false,
+    "cursor_policy_changed": false,
+    "API_operation_state_schemas_added": true,
+    "physical 60fps_qualified": false
+  },
+  "canvas_edges_362": {
+    "guide": "docs/CANVAS_EDGES.md",
+    "new_tool_or_modifier_action": false,
+    "cursor_policy_changed": false,
+    "API_operation_state_schemas_added": true,
+    "physical60fps_qualified": false
   }
 }

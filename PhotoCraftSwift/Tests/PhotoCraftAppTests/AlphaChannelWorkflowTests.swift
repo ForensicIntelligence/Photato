@@ -29,8 +29,8 @@ final class AlphaChannelWorkflowTests: XCTestCase {
     store.toggleQuickMask(); XCTAssertNil(store.document.quickMask); XCTAssertNotNil(store.document.selection)
     await store.undo(); XCTAssertNotNil(store.document.quickMask)
     let saved = try NativeArchive.encodeChunked(store.document); XCTAssertEqual(try NativeArchive.decode(saved),store.document)
-    XCTAssertNotNil(DocumentIO.persistenceIssue(store.document,format:.psd))
-    XCTAssertThrowsError(try DocumentIO.encode(store.document,format:.psd))
+    XCTAssertNil(DocumentIO.persistenceIssue(store.document,format:.psd))
+    XCTAssertNotNil(try PSDCodec.read(DocumentIO.encode(store.document,format:.psd)).quickMask)
   }
   @MainActor func testSavedSelectionDialogCancelAndTargetSwitch() async throws {
     let d = try fixture(), store = EditorStore(document:d); defer { store.renderTask?.cancel() }

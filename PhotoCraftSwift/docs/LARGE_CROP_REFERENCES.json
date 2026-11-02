@@ -1,0 +1,238 @@
+{
+  "step": "dev-step-358",
+  "recorded_at_utc": "2026-11-02T15:14:28.424121+00:00",
+  "run": "artifacts/runs/20261102T140832Z-358-large-crop",
+  "source_manifest": "artifacts/runs/20261102T140832Z-358-large-crop/source05.json",
+  "inputs": 7008,
+  "production_swift_files": 983,
+  "binary_sha256": "a18ed777cef4180ebfdd89fe1460d7cca6ff978aa950272a667ceb3610033593",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 1268,
+    "passed_cases": 1264,
+    "failed_cases": 4,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LargeCropIOTests/testLargePSBCropRetainsEditedWordsAllDepthsAndPSDRejectsOversize",
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+      "PhotoCraftAppTests.PanelTearOffTests/testNativeContainerDoesNotChangeHostedWorkspacePixels",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+    ],
+    "failed_assertions": 13,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 245.778,
+    "new_cases": 19,
+    "all_new_passed": false,
+    "new_passed_cases": 18,
+    "new_failed_cases": 1,
+    "all_affected_passed": false,
+    "build_seconds": 120.94
+  },
+  "independent": {
+    "passed": true,
+    "source_outputs": "358 Source05",
+    "file": "large-crop-integer-analytical.json",
+    "sha256": "1ff97369573eb067c7f9a6e3c4039c8a9a1ba8a88c8f8112cc24bd6cdabcc9e6",
+    "analytical_RGBA_channels_compared": 384,
+    "vectors": 8,
+    "PNG_file": "large-crop-background-owned.png",
+    "PNG_sha256": "f7407c1cd49b83cd8f92e71d61c43c24e31984435c5e764ce0d6de858713693d",
+    "PNG_RGBA_channels_compared": 48,
+    "total_RGBA_channels_compared": 432,
+    "mismatches": [],
+    "method": "Independent integer source-coordinate/coverage maps and Pillow PNG decoding. No native crop/render/codec calls. Owned references, not a Photoshop interpolation/profile/default oracle or dense-capacity/frame-rate acceptance."
+  },
+  "independent_summary": "artifacts/runs/20261102T140832Z-358-large-crop/independent05-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/crop-straighten/crop-tool-options.html",
+      "retrieved": "2026-11-02",
+      "updated": "2026-02-23",
+      "claims": [
+        "Delete Cropped Pixels controls retained versus removed outside pixels.",
+        "Crop tools expose ratios, dimensions/resolution and preview options."
+      ],
+      "limits": "Does not prove numerical interpolation, default preferences or dense working capacity."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html",
+      "retrieved": "2026-11-02",
+      "updated": "2026-03-27",
+      "claims": [
+        "PSB supports documents up to300000pixels in width or height and32bit HDR."
+      ],
+      "limits": "A document/format extent, not evidence that this native implementation has qualified every tool or dense maximum-size workflow."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/crop-straighten/crop-photos.html",
+      "retrieved": "2026-11-02",
+      "claims": [
+        "Current primary Crop guidance."
+      ],
+      "limits": "Searching extracted page for Delete Cropped Pixels finds no match; use the separate options guide for that contract."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/non-destructive-editing-techniques.html",
+      "retrieved": "2026-11-02",
+      "updated": "2026-09-28",
+      "claims": [
+        "Non-destructive crop is unavailable for a document containing only Background; convert it to a regular layer first."
+      ],
+      "limits": "Multi-layer Background conversion/retention behavior is not specified. Photato currently requires explicit conversion for all Background-retain requests and tracks the broader context gap."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "retrieved": "2026-11-02",
+      "revision": "November2019",
+      "claims": [
+        "PSB section/channel lengths, Lr32 tagged layer data, layer records and raw channel layout define the independent owned-file parser."
+      ],
+      "limits": "This structure specification does not establish Photoshop numerical transfer curves or ICC/default behavior."
+    }
+  ],
+  "api_commands": 235,
+  "native_archive_version_unchanged": 84,
+  "actions_version": 42,
+  "old_solid_paint_actions_version": 41,
+  "generic_actions_discovery_versions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42
+  ],
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "strict_failures_reviewed": true,
+  "PSB_Float32_diagnosis": "artifacts/runs/20261102T140832Z-358-large-crop/psb-float32-diagnosis05.json",
+  "strict_comparison": "artifacts/runs/20261102T140832Z-358-large-crop/strict-regression-comparison05-reviewed01.json",
+  "strict_comparison_limits": "Smart diagnostics compare per-fixture differing-word counts; linked diagnostics compare only first16 printed differing-byte records, not all failed output bytes. They do not prove Photoshop/full parity or all current bytes unchanged.",
+  "remaining": [
+    "Dense maximum-size speed/storage and complete supported-platform/runtime qualification",
+    "Native/ink/indexed mode and Content-Aware capacity limits",
+    "Complete crop Actions/controls/preferences; projective/temporal/live contexts",
+    "Exact Photoshop samples/defaults/live UI/current suite/11historical strict cases/opacity snapshot gate"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged. No install/push/archive/upload/release.",
+  "strict_comparison_baseline": "357 Source01",
+  "PSB_word_diagnosis": {
+    "source": "358 Source05",
+    "cases": {
+      "crop": {
+        "PSB": {
+          "width": 80000,
+          "height": 1,
+          "header_channels": 4,
+          "channel_ids": [
+            0,
+            1,
+            2,
+            -1
+          ],
+          "raw_sha256": "0683c8540c819e596f262eb84d7a1eac98d16e192bd1dc1003900ee0139a7f76"
+        },
+        "linear_words_compared": 320000,
+        "raw_PSBlayer_equals_expected_linear_words": true,
+        "encoded_words_compared": 320000,
+        "encoded_different_words": [
+          {
+            "word": 4,
+            "channel": 0,
+            "expected_bits": "3e4ccccd",
+            "actual_bits": "3e4ccccc",
+            "expected_value": 0.20000000298023224,
+            "actual_value": 0.19999998807907104
+          }
+        ],
+        "expected_encoded_sha256": "8ca93d0d07165ba2142caa6bd1faedda764bd1e779025cb02e77d66df1772922",
+        "actual_encoded_sha256": "d21c14ea3941a0b127c96a0429c890b718538d456e69a14e756b9a5a99d761f5"
+      },
+      "control": {
+        "PSB": {
+          "width": 2,
+          "height": 1,
+          "header_channels": 4,
+          "channel_ids": [
+            0,
+            1,
+            2,
+            -1
+          ],
+          "raw_sha256": "5b68fc837a6eaa2db0d67a56e0ddca1d30805d16fdb902ae06ee6ad4c3dc7cbc"
+        },
+        "linear_words_compared": 8,
+        "raw_PSBlayer_equals_expected_linear_words": true,
+        "encoded_words_compared": 8,
+        "encoded_different_words": [
+          {
+            "word": 0,
+            "channel": 0,
+            "expected_bits": "3e4ccccd",
+            "actual_bits": "3e4ccccc",
+            "expected_value": 0.20000000298023224,
+            "actual_value": 0.19999998807907104
+          }
+        ],
+        "expected_encoded_sha256": "ad71c757306bad5cd0af8d3752e4e6fc64ab81edb0354cb81abeea2d1aa4f6a4",
+        "actual_encoded_sha256": "deda8919cbb4ff69ab0f56849098cbfdaa97bc3b3bc524895bedbcf7b03073e6"
+      }
+    },
+    "encodings": {
+      "controlActualEncoding": "linearRGB",
+      "controlExpectedEncoding": "sRGB",
+      "cropActualEncoding": "linearRGB",
+      "cropExpectedEncoding": "sRGB"
+    },
+    "native_linear_roundtrip_words_equal": true,
+    "same_encoded_word_changes_without_any_crop": true,
+    "encoded_source_word_equality": false,
+    "linear_file_word_equality": true,
+    "scope": "Independent PSB header/Lr32/record/channel reader and full Float32 word arrays for two owned one-layer raw files. The encoded-sRGB residual also occurs without crop. This isolates the measured representation conversion, not Photoshop kernels/ICC equivalence, all PSB inputs, or the complete application.",
+    "diagnostic_scope_confirmed": true
+  },
+  "static_verification": "artifacts/runs/20261102T140832Z-358-large-crop/static-verification02.json",
+  "static_checks": 33,
+  "diary_step": 358,
+  "history_refresh_log": "artifacts/development-history-audit/358-refresh01.log",
+  "history_check_log": "artifacts/development-history-audit/358-check01.log",
+  "fixed_screenshot_preservation": "Final05and pre-increment files preserved. Intermediate02/03/04Actions/Batch fixed-only screenshots were overwritten; their absence is recorded in DEVLOG.",
+  "production_identical_to_source04": true
+}

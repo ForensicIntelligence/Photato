@@ -1,0 +1,148 @@
+{
+  "step": "dev-step-347",
+  "recorded_at_utc": "2026-11-02T05:33:43.393412+00:00",
+  "run": "artifacts/runs/20261102T044726Z-347-selected-pixel-transform",
+  "source_manifest": "artifacts/runs/20261102T044726Z-347-selected-pixel-transform/source06.json",
+  "inputs": 6956,
+  "production_swift_files": 958,
+  "binary_sha256": "67c04b9566fe86d240ff031ff246ef63d2f5a56f849725b93ba72fd97afa14a3",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 424,
+    "passed_cases": 424,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 43.708,
+    "new_cases": 16,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 519.42
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testAnalyticalOutputsCapturedForIndependentReader",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testHardTranslationCutsSourceAndOverlaysDestination",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testHistorySemanticActionsNativeArchiveAndCancellation",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testIdentityRetainsAllStoredWordsAndHistory",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testInterpolationProjectiveAndTransformedSourceFrame",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testInvalidLocksAndStalePreparedEditAreAtomic",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testOffCanvasPixelsAndMaskCoordinatesSurvive",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testSoftCoverageCutsAndMovesPremultipliedAlpha",
+    "PhotoCraftCoreTests.SelectedPixelTransformTests/testSparseMaximumDimensionsRemainBounded",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testAll16ModifierModesAndFactoryBindingsRemainShared",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testBoundedPreviewProxyDoesNotChangeOriginal",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testCommitUndoActions31AndImmediateSelectedFlip",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testHTTPDepthProfileAndInterpolationMatchNative",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testInvalidBusyStaleRevokeAndNativeCancelBarrier",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testNativeFreeTransformImagePreviewCancelAndSchemas",
+    "PhotoCraftAppTests.SelectedPixelTransformWorkflowTests/testTargetLocksStaleReadAndCloseLifecycle"
+  ],
+  "independent_pixels": {
+    "passed": true,
+    "source_outputs": "347 Source06",
+    "file": "selected-pixel-transform-analytical.json",
+    "sha256": "4e370d287c5f93f636de40fd4b238efea4261c6c351c172f05a52ab573d26a0e",
+    "analytical_channels_compared": 3072,
+    "checks": [
+      {
+        "matrix": [
+          1,
+          0,
+          5,
+          0,
+          1,
+          3,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          -1,
+          0,
+          11,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          0,
+          -1,
+          12,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      },
+      {
+        "matrix": [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0.015,
+          0,
+          1
+        ],
+        "passed": true,
+        "channels_compared": 768
+      }
+    ],
+    "oracle": "Independent Python inverse matrix, hard selection lifting/cut and opaque source-over of owned16x12 RGB samples. Not Photoshop output."
+  },
+  "references": {
+    "standard": "Photoshop2026",
+    "previous_turn": "progress;6951 frozen346 inputs and binary unchanged;356 affected pass",
+    "references": [
+      "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/move-selection-or-selection-border.html",
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/delete-or-cut-selected-pixels.html"
+    ],
+    "documented": "Command-T transforms selected pixel content; continuous scale/rotation/skew/distort/perspective and reference/modifier controls. Standard layers expose transparency when cleared; Background fill semantics need explicit native Background identity.",
+    "native_access": "Last actual344 locked-Mac observation; no unchanged GUI retry or fresh live acceptance.",
+    "remaining": [
+      "Exact Photoshop resampling/soft-overlap/selection clipping/gesture/defaults",
+      "Background identity/fill, masks/components/Smart Objects/multi-layer selection and Warp",
+      "Full G01/S01/platform/capacity/physical60fps/current-suite acceptance"
+    ]
+  },
+  "api_commands": 225,
+  "native_version_unchanged": 82,
+  "actions_version": 31,
+  "old_actions_keep_required_versions": true,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Background identity/fill, mask/component/mode/Smart Object/multi-layer/mesh selected-pixel contexts",
+    "Full G01/S01 and other major workflow acceptance",
+    "Photoshop exact raw/interpolated/soft overlap/gray/selection clipping/gesture/default behavior",
+    "Full current suite, supported Macs, physical interaction/capacity/performance gates"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release",
+  "native_download_admission": {
+    "legacyBody": "{\"error\":\"Advanced styles and shared light require X-Photato-Archive-Version: 75.\"}",
+    "legacyStatus": 422,
+    "requiredVersion": 75
+  },
+  "native_noop_and_preview_error_preservation": "Exact untouched native quad, retained corner coordinates, canceled preparation/preview cannot restart or overwrite a commit error; strict regressions pass.",
+  "virtual_support_admission": "300004x300004 virtual interpolation support projects to150002x150002 storage without dense allocation; sparse300000x300000 runtime case passes. Physical maximum dense qualification remains open."
+}

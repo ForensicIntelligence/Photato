@@ -122,7 +122,7 @@ extension WorkspaceView {
           enabled: store.canChangeLayerProtection && store.activeLayer?.locked != true,
           selected: store.activeLayer?.protection.contains(.autoNest) == true
         ) { store.toggleLayerProtection(.autoNest) }
-        iconButton(store.activeLayer?.locked == true ? "lock.fill" : "lock", "Lock or unlock layer",
+        iconButton((store.activeLayer?.locked == true || store.activeLayer?.isBackground == true) ? "lock.fill" : "lock", "Lock or unlock layer",
           enabled: store.canChangeLayerProtection,
           selected: store.activeLayer?.protection.fullyLocks == true
         ) { store.toggleFullLayerProtection() }
@@ -212,15 +212,16 @@ extension WorkspaceView {
             .frame(minWidth: 24, maxWidth: .infinity, minHeight: 16, maxHeight: 18)
             .id(draft.id)
         } else {
-          Text(layer.name).font(.system(size: 10)).underline(
+          Text(layer.name).font(layer.isBackground ? .system(size:10).italic():.system(size:10)).underline(
             store.document.isClippingBase(layer.id)
           )
           .lineLimit(1).highPriorityGesture(
             TapGesture(count: 2).onEnded { store.beginLayerName(layer.id) })
         }
         Spacer(minLength: 2)
+        if layer.linkID != nil,LayerLinks.related(in:store.document,layerIDs:[layer.id]).count>1{LayerLinkBadge(store:store,layer:layer)}
         if !layer.protection.isEmpty {
-          Image(systemName: layer.locked ? "lock.fill" : "lock").font(.system(size: 10)).padding(.trailing, 8)
+          Image(systemName: layer.locked || layer.isBackground ? "lock.fill" : "lock").font(.system(size: 10)).padding(.trailing, 8)
         }
       }
       .contentShape(Rectangle())
@@ -272,7 +273,8 @@ extension WorkspaceView {
   var layerFooter: some View {
     HStack(spacing: 9) {
       Spacer(minLength: 0)
-      iconButton("link", "Link layers — not available yet", enabled: false) {}
+      iconButton("link",store.linkMenuUnlinks(store.linkTargets()) ? "Unlink layers (Shift-click toggles participation)":"Link layers",enabled:store.canToggleLayerLinks(),selected:store.linkMenuUnlinks(store.linkTargets())){store.toggleLayerLinks(temporary:NSEvent.modifierFlags.contains(.shift))}
+        .toolCursor{flags in ToolCursor.layerLink(modifiers:flags,linked:store.linkedSelection(store.linkTargets()),disabled:store.document.layers.filter{store.groupSelectionIDs.contains($0.id)}.allSatisfy{$0.linkDisabled == true},available:store.canToggleLayerLinks(),unlink:store.linkMenuUnlinks(store.linkTargets()))}
       iconButton("fx", "Layer Style", enabled: store.canBeginLayerStyle) { store.beginLayerStyle() }
       iconButton(
         "rectangle.inset.filled", "Add layer mask (Option-click to hide)",
@@ -286,7 +288,7 @@ extension WorkspaceView {
         Button("Brightness / Contrast") {
           store.adjustment(.brightnessContrast(0, 1), name: "Brightness / Contrast")
         }
-        Button("Exposure") { store.adjustment(.exposure(0), name: "Exposure") }
+        Button("Exposure") { store.adjustment(.classic(.init(.exposure)), name: "Exposure") }
         Button("Saturation") { store.adjustment(.saturation(1), name: "Saturation") }
         Button("Black & White") { store.adjustment(.grayscale, name: "Black & White") }
         Button("Invert") { store.adjustment(.invert, name: "Invert") }
@@ -317,6 +319,7 @@ extension WorkspaceView {
     ) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
   }
   func layerIcon(_ layer: Layer) -> String {
+    if layer.smartObject?.linkedSource != nil {return "link"}
     if layer.smartObject != nil { return "doc.on.doc" }
     return switch layer.content {
     case .raster: "photo"
@@ -415,7 +418,7 @@ struct LayerThumbnail: View {
 }
 
 /// Disabled masks retain their editing preview under a full-size cross.
-private struct DisabledMaskMark: View {
+struct DisabledMaskMark: View {
   var body: some View {
     Canvas { context, size in
       let inset: CGFloat = 1

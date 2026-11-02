@@ -1,0 +1,59 @@
+{
+  "step": 302,
+  "corpus_commit": "f5b1178cab15309e05b7b504545df3c701f6d8fd",
+  "license": "MIT OR Apache-2.0",
+  "files": {
+    "photoshop-rgb8-exposure.psd": {
+      "sha256": "4b3a9d86d8ebe5bfac9b9accbfdf1ab6a29aac6063bf2c0acec11f301baf9376",
+      "bytes": 39408
+    },
+    "expected-u16.json": {
+      "sha256": "3b9c951ad46476dad68a9a438ff02c9728f4151d0c9da2c785508d2ebbcca0a3",
+      "bytes": 3164
+    },
+    "CORPUS-LICENSE-APACHE.txt": {
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    "exposure-f32.pcraft": {
+      "sha256": "743cb74b5af90b60f4685dafe3732f0ed2eeef0cefd84ba810f2c1d9dcf4c9f0",
+      "bytes": 4382
+    },
+    "expected-f32.json": {
+      "sha256": "d00ce69ad32ae09e7fb7e40679025de747737b7110e3073540bbeded16261ea9",
+      "bytes": 3167
+    },
+    "exposure-u16.pcraft": {
+      "sha256": "a26eb92940985030093732a28b9bdab2ace51d218588dbb689f2f343b51577ca",
+      "bytes": 4377
+    },
+    "exposure-u8.pcraft": {
+      "sha256": "bf32d70980ba5493b062d6ce5e4912797b78c10193bf0e25ca282f5d33e2ad3e",
+      "bytes": 4607
+    },
+    "CORPUS-LICENSE-MIT.txt": {
+      "sha256": "1a8f66d8a86b146f5336fa0d4b1186576c8aa98e60823080c85c7811cfd810af",
+      "bytes": 1102
+    },
+    "expected-u8.json": {
+      "sha256": "913ab8ab422f70aafedce594ce50241409e5eb6b7e4057fff443b6be36c7e2c8",
+      "bytes": 3164
+    },
+    "README.txt": {
+      "sha256": "1d9315a7ecd91e46a43d581955c7927e7a0d29ac0385952aa28b2948ec6295ae",
+      "bytes": 816
+    },
+    "photoshop-rgb32-exposure.psd": {
+      "sha256": "b07baeda9a7b7dff31e986d07c70f05a089383573a5a27e2390495ddfe4b00a1",
+      "bytes": 137576
+    },
+    "photoshop-rgb16-exposure.psd": {
+      "sha256": "fa336dda24690d69d559e65c3e13e70aaaf1108c5c423b57a432e584f66a8922",
+      "bytes": 78592
+    },
+    "expA-controls.bin": {
+      "sha256": "307406f9de9fdea01302399124104bb6178f1c11f711838d23f5001f94836a96",
+      "bytes": 14
+    }
+  }
+}

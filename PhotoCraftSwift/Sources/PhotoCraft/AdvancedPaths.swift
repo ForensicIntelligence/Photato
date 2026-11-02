@@ -25,6 +25,9 @@ extension EditorStore {
       guard pathIsEditable else{throw CraftError.invalid("Unlock the vector mask before editing its path.")}
       switch pathTarget {
       case .saved(let id):var saved=document.paths!.first{$0.id==id}!;saved.path=path;try executeEditorCommand(.savePath(saved))
+      case .shape(let id):
+        guard let layer=document.layers.first(where:{$0.id==id})else{throw CraftError.invalid("Shape not found.")}
+        try executeEditorCommand(.shape(.configure(id,try layer.replacingShapePath(path,canvas:.init(x:0,y:0,width:document.width,height:document.height)))))
       case .vectorMask(let id):var mask=document.layers.first{$0.id==id}!.vectorMask!;mask.path=path;try executeEditorCommand(.vectorMask(id,mask))
       case nil:break
       }

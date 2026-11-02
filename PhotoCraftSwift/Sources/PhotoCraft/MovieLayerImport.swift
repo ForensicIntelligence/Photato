@@ -6,7 +6,7 @@ import PhotoCraftImaging
   @objc func newVideoLayer(){store?.presentMovieLayerImport()}
 }
 extension EditorStore {
-  var canImportMovieLayer:Bool {canUseTimeline && timelineTask==nil && document.animation==nil && !document.hasArtboards && !document.hasAuthoritativeModeStorage && document.layers.count<512 && isCompositeColorTarget}
+  var canImportMovieLayer:Bool {canUseTimeline && timelineTask==nil && document.animation==nil && !document.hasArtboards && !document.hasAuthoritativeModeStorage && document.layers.count<LayerLimits.maximumLayers && isCompositeColorTarget}
   func importMovieLayer(_ url:URL) async throws {
     guard canImportMovieLayer else{throw CraftError.invalid("Finish the current edit and select an RGB target before importing video.")}
     let source=document,generation=layerPanelGeneration,operation=UUID()

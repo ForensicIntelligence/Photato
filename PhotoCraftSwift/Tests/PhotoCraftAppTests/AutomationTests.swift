@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 197
+  static let expectedCommandCount = 239
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -155,7 +155,7 @@ final class AutomationTests: XCTestCase {
       let catalogue = try XCTUnwrap(
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 804)
+      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 807)
       XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
@@ -315,7 +315,7 @@ final class AutomationTests: XCTestCase {
     _ = NSApplication.shared
     var oversized = try CraftNSDocument.blankModel(width: 2049, height: 2048, background: .clear)
     XCTAssertNoThrow(try AutomationService.checkLimits(oversized), "Logical area no longer determines API resident-data admission")
-    for i in 0..<64 { oversized.layers.append(Layer(name: "Limit \(i)", content: .raster(try Surface(width: 1, height: 1)))) }
+    for i in 0..<LayerLimits.maximumLayers { oversized.layers.append(Layer(name: "Limit \(i)", content: .raster(try Surface(width: 1, height: 1)))) }
     XCTAssertThrowsError(try AutomationService.checkLimits(oversized))
     let app = AppDelegate()
     XCTAssertFalse(app.automation.isRunning)
@@ -328,7 +328,7 @@ final class AutomationTests: XCTestCase {
       PhotoshopMenuCatalog.menus.last?.children?.last?.title, "Photato Automation API…")
     XCTAssertEqual(PhotoshopMenuCatalog.menus.last?.children?.last?.key, "")
   }
-  @MainActor func testHistoryCannotRestoreDocumentsAboveAPILimits() async throws {
+  @MainActor func testHistoryRestoresDocumentsAboveFormerAPILayerLimit() async throws {
     try await withService { service, document in
       var history = EditorSession(document: document.store.document)
       for index in 0..<64 {
@@ -340,16 +340,16 @@ final class AutomationTests: XCTestCase {
       try service.share(document)
       let before = document.store.document
       let undo = try await edit(service, document, "history.undo")
-      XCTAssertEqual(undo, 413)
-      XCTAssertEqual(document.store.document, before)
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document.layers.count, before.layers.count + 1)
       document.store.session = history
       try document.store.session.undo()
       try document.store.session.undo()
       document.store.render()
       let beforeRedo = document.store.document
       let redo = try await edit(service, document, "history.redo")
-      XCTAssertEqual(redo, 413)
-      XCTAssertEqual(document.store.document, beforeRedo)
+      XCTAssertEqual(redo, 200)
+      XCTAssertEqual(document.store.document.layers.count, beforeRedo.layers.count + 1)
     }
   }
   @MainActor func testCompetingClientsCannotBothCommitTheSameRevision() async throws {

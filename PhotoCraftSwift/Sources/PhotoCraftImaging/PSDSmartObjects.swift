@@ -2,9 +2,9 @@ import Foundation
 import PhotoCraftCore
 
 // Native translation of PhotoCraft io/linked.rs and smart_map.rs (MIT OR Apache-2.0),
-// bounded to embedded files and affine placement. Never resolve filesystem links.
+// affine placement. External references remain declarative; never resolve filesystem links.
 enum PSDSmartObjects {
-  struct File { var name: String; var data: Data }
+  struct File { var name: String; var data: Data;var link:LinkedSmartObjectSource?=nil;var fileType:String="";var fileTypeBytes:Data?=nil }
   static func files(_ document: CraftDocument) throws -> [String: File] {
     var files: [String: File] = [:]
     for key in ["lnk2", "lnk3", "lnkD", "lnkE"] {
@@ -27,7 +27,7 @@ enum PSDSmartObjects {
         var units: [UInt16] = []
         for _ in 0..<count { units.append(UInt16(try item.u16())) }
         let name = String(decoding: units.prefix { $0 != 0 }, as: UTF16.self)
-        _ = try item.bytes(8)
+        let typeBytes=try item.bytes(4),type=String(decoding:typeBytes,as:UTF8.self);_ = try item.bytes(4)
         let length = try item.length(8)
         guard length <= SmartObject.maximumSourceBytes else { throw CraftError.unsupported("Embedded file exceeds 64 MiB.") }
         if try item.u8() != 0 {
@@ -35,9 +35,9 @@ enum PSDSmartObjects {
           let (_, consumed) = try PSDDescriptor.readPrefix(Data(bytes))
           _ = try item.bytes(consumed)
         }
-        if kind == "liFD" {
-          guard files[id] == nil else { throw CraftError.invalid("Duplicate embedded source identifier.") }
-          files[id] = File(name: name, data: try item.bytes(length))
+        if kind == "liFD" || kind == "liFE" {
+          guard files[id]==nil else{throw CraftError.invalid("Duplicate linked source identifier.")}
+          files[id]=kind=="liFE" ? try PSDLinkedSmartObjects.read(&item,version:version,length:length,name:name,type:type,typeBytes:typeBytes):File(name:name,data:try item.bytes(length),fileType:type,fileTypeBytes:typeBytes)
         }
         _ = try r.bytes((4 - size % 4) % 4)
       }
@@ -54,7 +54,6 @@ enum PSDSmartObjects {
       throw CraftError.unsupported("Quilt warps are not yet editable.")
     }
     if let value = descriptor["frameCount"]?.number, value != 1 { throw CraftError.unsupported("Animated placed objects are not yet editable.") }
-    if let value = descriptor["comp"]?.number, value != -1 { throw CraftError.unsupported("Smart Object layer comps are not yet editable.") }
     if case .object(let warp) = descriptor["warp"], case .enumerated(_, let kind) = warp["warpStyle"], kind.text != "warpNone" {
       throw CraftError.unsupported("Warped Smart Objects are not yet editable.")
     }
@@ -72,18 +71,31 @@ enum PSDSmartObjects {
     guard let sourceID = UUID(uuidString: id), let file = files[id] else {
       throw CraftError.unsupported("Missing embedded Smart Object source; external links are not followed.")
     }
+    let selectedComp = try d["comp"].map { try PSDLayerComps.integer($0) } ?? -1
+    if file.link != nil,file.data.isEmpty {
+      guard selectedComp == -1 else { throw CraftError.unsupported("Locate the linked original before importing its selected child comp. Cached-only PSD comp descriptors remain unqualified.") }
+      try PSDLinkedSmartObjects.restore(&layer,descriptor:d,file:file,sourceID:sourceID,document:document,filterMasks:filterMasks);return
+    }
     var object: SmartObject
     let pixels: Surface
     if PDFImport.recognizes(file.data) {
+      guard selectedComp == -1 else { throw CraftError.unsupported("PDF Smart Objects do not expose layered comp selections.") }
       (object,pixels) = try PSDPDFSmartObjects.restore(file.data,fileName:file.name,descriptor:d,in:document)
     } else {
       for key in ["PgNm","totalPages"] {
         if let value = d[key]?.number,value != 1 {throw CraftError.unsupported("Multipage non-PDF placed objects are not yet editable.")}
       }
       let source = try SmartObjectIO.decode(file.data, fileName: file.name)
-      (object,pixels) = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
+      var placed = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
+      if selectedComp != -1 {
+        guard var choices = placed.0.layerComps else { throw CraftError.invalid("Selected source comp is missing.") }
+        choices.selectedID = PSDLayerComps.uuid(selectedComp); try choices.validate(); placed.0.layerComps = choices
+        placed.1 = try SmartObjectLayerCompIO.pixels(source, compID: choices.selectedID, stackMode: nil, in: document)
+      }
+      (object,pixels) = placed
     }
     object.sourceID = sourceID
+    if let link=file.link {object=try object.linked(to:link)}
     let q = values.map { $0.number! }, w = Double(object.width), h = Double(object.height)
     let t = Transform2D(a: (q[2]-q[0])/w, b: (q[3]-q[1])/w,
       c: (q[6]-q[0])/h, d: (q[7]-q[1])/h, tx: q[0], ty: q[1])
@@ -113,11 +125,17 @@ enum PSDSmartObjects {
   }
   static func placedDescriptor(_ layer: Layer) throws -> Data {
     guard let source = layer.smartObject else { throw CraftError.invalid("Missing embedded source.") }
+    guard layer.sourceProjection==nil,layer.importedSmartAppearance==nil,source.mediaType != "application/vnd.photocraft.project" else{throw CraftError.unsupported("Save source Smart Object placement/appearance as Photato until editable PSD/PSB mapping is qualified.")}
+    if let descriptor=try PSDLinkedSmartObjects.unresolvedDescriptor(layer,source:source){return descriptor}
+    let selectedComp: Int32
+    if let selected = source.layerComps?.selectedID {
+      selectedComp = try PSDLayerComps.identifiers(source.layerComps!.entries.map(\.id))[selected]!
+    } else { selectedComp = -1 }
     let pdf = try PSDPDFSmartObjects.exportSettings(source)
     guard layer.warp == nil else { throw CraftError.unsupported("Save editable Warp as Photato, or rasterize before PSD/PSB export. Warp descriptor interchange is not yet supported.") }
     guard source.stackMode == nil else { throw CraftError.unsupported("Save image stacks as Photato to preserve editable stack modes. PSD stack-mode interchange is not implemented.") }
     guard source.rawDevelopment == nil else { throw CraftError.unsupported("Save RAW Smart Objects as Photato to preserve their source and sensor settings. PSD RAW interchange is not implemented.") }
-    let w = Double(source.width), h = Double(source.height), t = layer.coordinateTransform
+    let w = Double(source.width), h = Double(source.height), t = try layer.smartObjectSourceTransform()
     let points = [t.point(0, 0), t.point(w, 0), t.point(w, h), t.point(0, h)]
     let quad = PSDValue.list(points.flatMap { [.number($0.x), .number($0.y)] })
     func text(_ value: String) -> PSDValue { .text(Array((value + "\0").utf16)) }
@@ -132,8 +150,8 @@ enum PSDSmartObjects {
       .init("frameStep", ratio()), .init("duration", ratio()), .init("frameCount", .integer(1)), .init("Annt", .integer(16)), .init("Type", .integer(pdf == nil ? 2:1)),
       .init("Trnf", quad), .init("nonAffineTransform", quad), .init("warp", .object(warp)),
       .init("Sz  ", .object(PSDDescriptor("Pnt ", items: [.init("Wdth", .number(w)), .init("Hght", .number(h))]))),
-      .init("Rslt", .unit(Data("#Rsl".utf8), source.resolution.bitPattern)), .init("comp", .integer(-1)),
-      .init("compInfo", .object(PSDDescriptor("null", items: [.init("compID", .integer(-1)), .init("originalCompID", .integer(-1))])))])
+      .init("Rslt", .unit(Data("#Rsl".utf8), source.resolution.bitPattern)), .init("comp", .integer(selectedComp)),
+      .init("compInfo", .object(PSDDescriptor("null", items: [.init("compID", .integer(selectedComp)), .init("originalCompID", .integer(-1))])))])
     if let stack = layer.smartFilters { descriptor.items.append(.init("filterFX", try PSDSmartFilters.write(stack))) }
     var out = PSDWriter(); out.text("soLD"); out.n(4, 4); out.data.append(try descriptor.encoded())
     while out.data.count % 4 != 0 { out.n(0, 1) }
@@ -145,21 +163,30 @@ enum PSDSmartObjects {
     if layer.smartFilters != nil { preview = try SmartFilterEngine.renderedLayer(layer, in: document) }
     else {
       preview = try PDFSmartObjectIO.renderedLayer(layer,in:document); preview.smartObject = nil
-      preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document)
+      preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document, method:layer.smartObject?.linkedSource == nil ? .bicubic:.bilinear)
     }
     preview.smartObject = layer.smartObject
+    preview.sourceTags?.removeValue(forKey:"PhLC")
+    // Native-only file-type hint is emitted in liFE, never as a PSD layer tag.
+    preview.sourceTags?.removeValue(forKey:"PhFT")
     if preview.sourceTags == nil { preview.sourceTags = [:] }
     preview.sourceTags?["SoLd"] = tag
     preview.sourceTags?.removeValue(forKey: "SoLE"); preview.sourceTags?.removeValue(forKey: "PlLd")
     return preview
   }
   static func linkedData(_ document: CraftDocument) throws -> Data {
-    var out = PSDWriter(), seen: [UUID: SmartObject] = [:]
-    for object in document.layers.compactMap(\.smartObject) {
+    var out = PSDWriter(), seen: [UUID: SmartObject] = [:],opaqueTypes:[UUID:Data]=[:]
+    for layer in document.layers {
+      guard let object=layer.smartObject else{continue}
+      if object.linkedSource != nil,object.mediaType=="application/octet-stream",object.data.isEmpty {
+        let hint=layer.sourceTags?["PhFT"] ?? Data(repeating:32,count:4)
+        guard hint.count==4,opaqueTypes[object.sourceID]==nil || opaqueTypes[object.sourceID]==hint else{throw CraftError.invalid("Conflicting opaque linked file types.")};opaqueTypes[object.sourceID]=hint
+      }
       if let previous = seen[object.sourceID] {
-        guard previous == object else { throw CraftError.invalid("Conflicting shared Smart Object sources.") }; continue
+        guard previous.sharesSource(with: object) else { throw CraftError.invalid("Conflicting shared Smart Object sources.") }; continue
       }
       seen[object.sourceID] = object
+      if object.linkedSource != nil {try PSDLinkedSmartObjects.append(object,typeHint:layer.sourceTags?["PhFT"],to:&out);continue}
       var bytes = object.data, name = object.fileName
       if !["application/pdf", "image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType) {
         bytes = try SmartObjectIO.withNesting { try PSDCodec.writeRasterLayers(SmartObjectIO.sourceDocument(object), format: .psb) }

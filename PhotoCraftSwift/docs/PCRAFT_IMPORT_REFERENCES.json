@@ -141,5 +141,12 @@
     "Full Photoshop byte output,menus/factory shortcuts/preferences,colour/profile/format/lifecycle semantics and physical Intel/macOS14 runtime qualification remain open. Rosetta is not a physical-machine test.",
     "Minor functions and final cosmetic details remain deferred behind all major gates."
   ],
-  "no_photoshop_parity_claim": true
+  "no_photoshop_parity_claim": true,
+  "document_metadata334": {
+    "reference": "docs/FILE_INFO_REFERENCES.json",
+    "source_projects": 3,
+    "expected_file_info_values": 24,
+    "native_retention": "XMP, EXIF, named image resources, opaque global payloads and manifest",
+    "full_source_or_export_fidelity": false
+  }
 }

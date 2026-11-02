@@ -106,7 +106,7 @@ info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
 for key in ['CFBundleDisplayName', 'CFBundleName', 'CFBundleExecutable']:
     assert info[key] == 'Photato'
 assert info['CFBundleIconFile'] in ['Photato', 'Photato.icns']
-assert info['CFBundleIdentifier'] == 'local.photocraft.swift'
+assert info['CFBundleIdentifier'] == 'ca.forensicintelligence.photato'
 assert info['LSMinimumSystemVersion'] == '14.0'
 archs = subprocess.check_output(['lipo', '-archs', str(binary)], text=True).strip().split()
 assert set(archs) == {'arm64', 'x86_64'}

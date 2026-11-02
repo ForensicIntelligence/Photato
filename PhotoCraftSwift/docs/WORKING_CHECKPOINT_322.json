@@ -1,0 +1,348 @@
+{
+  "step": 322,
+  "recorded_at_utc": "2026-11-01T10:11:34.007533+00:00",
+  "run": "artifacts/runs/20261101T101134Z-322-source-displacement",
+  "phase": 1,
+  "package": "I03",
+  "status": "functional-subset-qualified-seven-focused-strict-failures-open",
+  "increment_complete": true,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "native_acceptance": false,
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_321.json",
+  "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+  "source_inputs": 5188,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T10:31:23.037655+00:00",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source01.json",
+    "inputs": 5188,
+    "current_binary_sha256": "c24497658068c64291508452c0ee3420ac9cbf9617c8888b8f0dd7a8d47a7164",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T10:36:58.314705+00:00",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source02.json",
+    "inputs": 5188,
+    "current_binary_sha256": "c24497658068c64291508452c0ee3420ac9cbf9617c8888b8f0dd7a8d47a7164",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused03_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T10:47:58.079288+00:00",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source03.json",
+    "inputs": 5188,
+    "current_binary_sha256": "833e9c60341fca9439ed95422ddc8bfcd94ca0ce9bfa4f9e6eab3e2a99f9ff35",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused04_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T11:08:56.783669+00:00",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source04.json",
+    "inputs": 5188,
+    "current_binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused05_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T11:14:43.826368+00:00",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+    "inputs": 5188,
+    "current_binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "functional_subset_qualified": true,
+  "full_current_suite_passed": false,
+  "production_swift_files": 885,
+  "binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+  "focused_source05": {
+    "step": 322,
+    "source": "Source05",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+    "binary_sha256": "0de75c6dbad6a1ede08962b3cb651655528a41d18178940a5bb1f58432c49ab3",
+    "build_succeeded": true,
+    "build_seconds": 107.53,
+    "cases": 322,
+    "passed_cases": 315,
+    "failed_cases": 7,
+    "failed_assertions": 220,
+    "unexpected": 0,
+    "crashes": 0,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LightingImportTests/testUncachedProgramsMatchIndependentOriginalWordsExactly",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftFilterImportTests/testUncachedProgramsMatchStrictOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftShapeImportTests/testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftImagingTests.PcraftTextImportTests/testUncachedSourceTextCompositeMatchesExactOriginalWords"
+    ],
+    "classes": {
+      "PhotoCraftAppTests.ActionsWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AdobeActionsRequestTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ArtisticGalleryTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AutomationTests": {
+        "passed": 14,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.ClassicDetailTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.DistortionTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DistortionWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentIOWorkflowTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.DocumentModeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.IndexedNativeWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkModeArchiveWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeSmartFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LargeSmartObjectTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LensBlurTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LensBlurWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.LightingImportTests": {
+        "passed": 2,
+        "failed": 1
+      },
+      "PhotoCraftCoreTests.LightingTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LightingWorkflowTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.LinkedSmartObjectTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.OtherVideoTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFImageSmartObjectTests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PDFSmartObjectTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PDFSmartObjectWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDLinkedFileTypeTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PSDPDFSmartObjectTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedRasterFilterTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PagedSmartFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftFillImportTests": {
+        "passed": 6,
+        "failed": 2
+      },
+      "PhotoCraftImagingTests.PcraftFilterImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftFilterWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftShapeImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftImagingTests.PcraftSmartImportTests": {
+        "passed": 4,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftTextImportTests": {
+        "passed": 5,
+        "failed": 1
+      },
+      "PhotoCraftAppTests.PcraftWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PhotoDetailTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoDetailWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PixelateTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RasterFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RelightImportTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RelightTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RelightWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.RenderFilterTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RestrictedFormatWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.RetouchAutomationTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartFilterTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartFilterWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SmartObjectTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SmartObjectWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceDisplacementImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceDisplacementTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SourceDisplacementWorkflowTests": {
+        "passed": 5,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SourceSmartModelTests": {
+        "passed": 11,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.StylizeTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.WarpWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      }
+    },
+    "test_seconds": 114.382
+  },
+  "source05_equivalence": "artifacts/runs/20261101T101134Z-322-source-displacement/source05-equivalence.json",
+  "original_word_metrics": "artifacts/runs/20261101T101134Z-322-source-displacement/word-metrics05.json",
+  "functional_cases_passed": 13,
+  "native_version": 73,
+  "actions_version": 28,
+  "source_filter_mappings": 110,
+  "known_strict_cases_overall": 9,
+  "known_strict_assertions_overall": 224,
+  "latest_complete_inventory": "artifacts/runs/20261101T093255Z-321-lighting-qualification/full02-summary.json",
+  "full_inventory_at322_executed": false,
+  "native_visual_reason": "Photoshop lookup returned cgWindowNotFound; inventory output truncated. No visible UI, screenshot or live visual acceptance established.",
+  "documentation_verification": "artifacts/runs/20261101T101134Z-322-source-displacement/verification02.json",
+  "history_audit": "artifacts/development-history-audit/322-checkpoint01-receipt.json"
+}

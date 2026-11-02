@@ -1,0 +1,70 @@
+{
+  "step": 309,
+  "recorded_at_utc": "2026-11-01T03:33:32.219938+00:00",
+  "run": "artifacts/runs/20261101T033332Z-309-source-smart-objects",
+  "status": "in-progress-source03-builds-model-subset-passes-workflow-crashes",
+  "phase": 1,
+  "package": "I03",
+  "increment_complete": false,
+  "full_parity": false,
+  "goal_complete": false,
+  "compiler_test_workers_live": false,
+  "native_acceptance": false,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "latest_tested_checkpoint": 308,
+  "next_work": [
+    "Obtain the current Smart Object workflow crash trace and repair the failing command/worker path without weakening assertions or enlarging stack limits.",
+    "Rerun the isolated Smart workflow, Adobe text case,10 model tests and affected selection against frozen repaired inputs.",
+    "Complete source/filter/stack/warp/unknown-linked-extent mapping, native consumers/both APIs and independent owned fixtures before activating source Smart import."
+  ],
+  "current_worker": null,
+  "application_build_executed": true,
+  "source_manifest": "artifacts/runs/20261101T033332Z-309-source-smart-objects/source03.json",
+  "source_inputs": 3011,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T03:58:42.318225+00:00",
+    "source_manifest": "artifacts/runs/20261101T033332Z-309-source-smart-objects/source01.json",
+    "inputs": 3011,
+    "current_binary_sha256": "2cff21ef99a0363557e7c5777f623d212cea95e9c1d929eec432150a2a603121",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T04:06:46.852068+00:00",
+    "source_manifest": "artifacts/runs/20261101T033332Z-309-source-smart-objects/source02.json",
+    "inputs": 3011,
+    "current_binary_sha256": "2cff21ef99a0363557e7c5777f623d212cea95e9c1d929eec432150a2a603121",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "focused03_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T04:16:05.037137+00:00",
+    "source_manifest": "artifacts/runs/20261101T033332Z-309-source-smart-objects/source03.json",
+    "inputs": 3011,
+    "current_binary_sha256": "a39b173f2b57570c74cc663073f7f1b5c298fb9b295cd00d09e0cb99165ce241",
+    "binary_qualification": "Only valid if this attempt built/linked and tested successfully; prior binary may remain after a failed build."
+  },
+  "application_tests_executed": true,
+  "source_import_activated": false,
+  "latest_execution_checkpoint": 309,
+  "last_completed_focused_selection_checkpoint": 308,
+  "model_subset": {
+    "source": "Source03",
+    "cases": 10,
+    "failures": 0,
+    "result": "artifacts/runs/20261101T033332Z-309-source-smart-objects/model-isolated01-result.json",
+    "scope": "isolated Core model subset only"
+  },
+  "current_workflow_failure": {
+    "source": "Source03",
+    "signal": 10,
+    "isolated_exit_code": 1,
+    "result": "artifacts/runs/20261101T033332Z-309-source-smart-objects/smart-reproduce03-result.json",
+    "current_cause_confirmed": false,
+    "older_copied_crash_report_is_not_current_trace": true
+  },
+  "diary_reconciled_at_utc": "2026-11-01T04:24:03.747307+00:00",
+  "diary_refresh": "docs/DIARY_REFRESH_310.json"
+}

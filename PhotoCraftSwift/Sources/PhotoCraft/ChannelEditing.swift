@@ -41,15 +41,20 @@ extension EditorStore {
   func commitChannelDialog(_ draft: ChannelDialog) {
     guard channelDialog === draft else { return }
     do {
+      guard document==draft.source else{throw CraftError.invalid("The document changed. Cancel and reopen Channel Options.")}
       let command = try draft.command(document:document)
       if draft.kind == .quickOptions { quickMaskOptions = draft.options }
       channelDialog = nil
-      if let command { try executeEditorCommand(command) }
+      if let command {
+        try executeEditorCommand(command)
+        if case .channel(.create(let channel))=command {try selectAlphaChannel(channel.id,overlay:channel.spot != nil)}
+      }
     } catch { draft.error = error.localizedDescription; channelDialog = draft }
   }
   nonisolated static func routeChannel(_ command: Command, target: ChannelPlaneTarget?) throws -> Command {
     guard let target else { return command }
     switch command {
+    case .transformChannel(let request):guard request.target==target else{throw CraftError.invalid("Transform must match the selected channel.")};return command
     case .stroke(_,let points,let brush), .maskStroke(_,let points,let brush): return .channel(.stroke(target,points,brush))
     case .fill(_,let color): return .channel(.fill(target,unit(0.2126*color.r+0.7152*color.g+0.0722*color.b),color.a))
     case .maskFill(_,let amount): return .channel(.fill(target,amount,1))
@@ -57,7 +62,7 @@ extension EditorStore {
     case .invertMask: return .channel(.invert(target))
     case .applyAdjustment(_, .invert): return .channel(.invert(target))
     case .applyFilter(_,let filter): return .channel(.filter(target,filter))
-    case .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: return command
+    case .layerComp, .documentMetadata, .guides, .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: return command
     default: throw CraftError.unsupported("Select RGB to use \(command.label) on layer content.")
     }
   }
@@ -73,30 +78,28 @@ enum ChannelPresentation {
     if let request {
       let plane = try channel.pixels.reducedPreview(in: request.region, width: request.width,
         height: request.height, encoding: .sRGB, projectingStoredSamples: { p in
-          let v = overlay ? p.r : channel.options.display(p.r)
+          let v = overlay ? p.r : channel.display(p.r)
           let numeric = Pixel(v,v,v)
           return overlay ? numeric : numeric.quantized(.u8)
         })
       if !overlay { return try RasterIO.displayImage(plane) }
       var display = try RasterIO.surface(ColorManagement.displayImage(request.reducing(composite),in:document))
       try display.mapPixels(in: .init(x: 0, y: 0, width: request.width, height: request.height)) { x,y,p in
-        let k = channel.options.overlay(plane.pixel(x:x,y:y).r), c = channel.options.color
-        return Pixel(p.r*(1-k)+c.r*k,p.g*(1-k)+c.g*k,p.b*(1-k)+c.b*k,max(p.a,k))
+        return channel.preview(plane.pixel(x:x,y:y).r,over:p)
       }
       return try RasterIO.displayImage(display)
     }
     if !overlay {
       var plane = try Surface(width:document.width,height:document.height,depth:.u8,fill:.black)
       try plane.mapPixels(in:.init(x:0,y:0,width:document.width,height:document.height)) { x,y,_ in
-        let v = channel.options.display(channel.pixels.pixel(x:x,y:y).r); return Pixel(v,v,v)
+        let v = channel.display(channel.pixels.pixel(x:x,y:y).r); return Pixel(v,v,v)
       }
       return try RasterIO.displayImage(plane)
     }
     // Convert composite to display sRGB first, then apply the view-only colored mask.
     var display = try RasterIO.surface(ColorManagement.displayImage(composite,in:document))
     try display.mapPixels(in:.init(x:0,y:0,width:document.width,height:document.height)) { x,y,p in
-      let k = channel.options.overlay(channel.pixels.pixel(x:x,y:y).r), c = channel.options.color
-      return Pixel(p.r*(1-k)+c.r*k,p.g*(1-k)+c.g*k,p.b*(1-k)+c.b*k,max(p.a,k))
+      return channel.preview(channel.pixels.pixel(x:x,y:y).r,over:p)
     }
     return try RasterIO.displayImage(display)
   }

@@ -331,10 +331,13 @@ final class DocumentIOWorkflowTests: XCTestCase {
       let desktop = CraftNSDocument(model: before)
       defer { desktop.store.renderTask?.cancel() }
       try desktop.store.executeEditorCommand(.renameLayer(layerID, "Preserved HDR"))
+      XCTAssertEqual(before.minimumArchiveVersion, 75)
+      let oldClient = try await self.request(service, path: "/v1/documents/\(id)/file.pcswift", headers: ["X-Photato-Archive-Version": "74"])
+      XCTAssertEqual(oldClient.0.statusCode, 422)
       for format in [DocumentIO.Format.native, .psd] {
         let response = try await self.request(
           service, path: "/v1/documents/\(id)/file.\(format.rawValue)",
-          headers: format == .native ? ["X-Photato-Archive-Version": "11"] : [:])
+          headers: format == .native ? ["X-Photato-Archive-Version": "75"] : [:])
         XCTAssertEqual(response.0.statusCode, 200)
         XCTAssertEqual(response.1, try DocumentIO.encode(desktop.store.document, format: format))
         let restored = try DocumentIO.decodeUpload(
@@ -419,7 +422,8 @@ final class DocumentIOWorkflowTests: XCTestCase {
         XCTAssertEqual(
           try Renderer.composite(opened.store.document).rgbaData(depth: expected.depth),
           try Renderer.composite(expected).rgbaData(depth: expected.depth))
-        let native = try await self.request(service, path: "/v1/documents/\(id)/file.pcswift")
+        XCTAssertEqual(opened.store.document.minimumArchiveVersion, 75)
+        let native = try await self.request(service, path: "/v1/documents/\(id)/file.pcswift", headers: ["X-Photato-Archive-Version": "75"])
         XCTAssertEqual(native.0.statusCode, 200)
         XCTAssertEqual(try NativeArchive.decode(native.1), opened.store.document)
       }
@@ -508,7 +512,7 @@ extension DocumentIOWorkflowTests {
         XCTAssertEqual(currentOutput.0.statusCode, 200)
         XCTAssertEqual(currentOutput.1, bytes)
       }
-      for version in ["9", "66", "invalid"] {
+      for version in ["9", "85", "invalid"] {
         let rejected = try await self.request(
           service, path: "/v1/documents/\(id)/file.photato",
           headers: ["X-Photato-Archive-Version": version])
@@ -536,7 +540,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...65))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...84))
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),
         type: "application/vnd.photato.document")

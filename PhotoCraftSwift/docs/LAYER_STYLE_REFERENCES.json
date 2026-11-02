@@ -91,5 +91,22 @@
     "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-advanced",
     "https://www.adobe.com/products/photoshop/features/all.html"
   ],
-  "checkpoint": "docs/ACTIVE_CHECKPOINT_158.json"
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_158.json",
+  "source_effects_step326": {
+    "reference": "docs/SOURCE_LAYER_EFFECT_REFERENCES.json",
+    "checkpoint": "docs/WORKING_CHECKPOINT_326.json",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+    "source_inputs": 6685,
+    "production_swift_files": 902,
+    "binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+    "functional_cases_passed": 16,
+    "new_cases": 17,
+    "direct_vectors_exact": 83,
+    "source_project_vectors_exact": 75,
+    "vectors_per_scope": 138,
+    "full_photoshop_parity": false,
+    "source_filter_mappings_unchanged": 110,
+    "new_app_installed": false,
+    "new_source_push": false
+  }
 }

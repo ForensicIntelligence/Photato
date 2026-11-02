@@ -48,9 +48,9 @@ public enum VideoArrangementCommand: Sendable {
           throw CraftError.invalid("Position the playhead inside every selected clip.")
         }
         let ids = document.subtreeIDs(root.id)
-        guard document.layers.count + ids.count <= 512,
+        guard document.layers.count + ids.count <= LayerLimits.maximumLayers,
           !document.layers.contains(where: { ids.contains($0.id) && $0.group?.videoStartTime != nil }) else {
-          throw CraftError.invalid("Split individual clips within video groups and keep fewer than 512 layers.")
+          throw CraftError.invalid("Split individual clips within video groups and stay within \(LayerLimits.maximumLayers) layers.")
         }
         let mapping = Dictionary(uniqueKeysWithValues: ids.map { ($0, UUID()) })
         var copies = document.layers.filter { ids.contains($0.id) }

@@ -63,10 +63,10 @@ final class PhotoshopMenuTests: XCTestCase {
       let items = allItems(menu).filter {
         !$0.isSeparatorItem && !$0.isHidden && $0.identifier != nil
       }
-      // Keep every independently captured27.2 entry and shortcut intact. These three
-      // released additions are separately documented; their current native order is unqualified.
-      let additions = ["Light…","Clarity and dehaze…","Grain…"].map {"Layer > New Adjustment Layer > " + $0}
-      XCTAssertEqual(items.count, 804)
+      // Keep every independently captured27.2 entry and shortcut intact.
+      // Separate later adjustment commands and the Photato-only Relight extension.
+      let additions = ["Light…","Clarity and dehaze…","Grain…"].map {"Layer > New Adjustment Layer > " + $0} + ["Filter > Photato","Filter > Photato > Relight…","Filter > Photato > Lighting Effects…"]
+      XCTAssertEqual(items.count, 807)
       XCTAssertEqual(items.filter { !additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue },
         expected.map { $0.path.joined(separator: " > ") })
       XCTAssertEqual(items.filter { additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue }, additions)

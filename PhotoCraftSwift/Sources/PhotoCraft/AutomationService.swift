@@ -26,9 +26,32 @@ import UniformTypeIdentifiers
   var videoSequenceSourceIDs = Set<UUID>()
   @ObservationIgnored var videoRenderShares = Set<UUID>()
   @ObservationIgnored var variableExportShares = Set<UUID>()
+  @ObservationIgnored var layerFileExportShares = Set<UUID>()
+  @ObservationIgnored var imageExportShares = Set<UUID>()
+  @ObservationIgnored var layerCompExportShares = Set<UUID>()
+  @ObservationIgnored var layerCompEditShares = Set<UUID>()
+  @ObservationIgnored var layerCompFileShares = Set<UUID>()
+  @ObservationIgnored var parentLayerCompPreparation: @Sendable (LayerCompCommand, CraftDocument, [UUID: Data]) async throws -> Command = { operation, original, data in try LayerCompIO.command(operation, in: original, sourceData: data) }
+  @ObservationIgnored var smartObjectCompShares = Set<UUID>()
+  @ObservationIgnored var smartObjectCompFileShares = Set<UUID>()
+  @ObservationIgnored var smartObjectCompPreparation: @Sendable (CraftDocument, UUID, UUID?, Data?) async throws -> Command = { original, layerID, compID, data in
+    try SmartObjectLayerCompIO.selection(in: original, layerID: layerID, compID: compID, sourceData: data)
+  }
   @ObservationIgnored var sequenceExportShares = Set<UUID>()
   private(set) var documentTransfersEnabled = false
   private(set) var documentSavesEnabled = false
+  @ObservationIgnored var linkedArtworkRegistries:[UUID:LinkedSourceRegistry]=[:]
+  var linkedArtworkAssets:[UUID:LinkedArtworkGrant]=[:]
+  var linkedArtworkWritableAssets=Set<UUID>()
+  @ObservationIgnored var linkedSourceWriteGeneration=UUID()
+  @ObservationIgnored var linkedSourceWriteLeases:[UUID:UUID]=[:]
+  var linkedSourceWriteOperations:[UUID:LinkedSourceWriteOperation]=[:]
+  @ObservationIgnored var linkedSourceWriteTasks:[UUID:Task<Void,Never>]=[:]
+  @ObservationIgnored var linkedSourceWritePreparation: @Sendable (Data,CraftDocument,[UUID:LinkedArtworkGrant],LinkedArtworkGrant,String) async throws -> PreparedLinkedSourceWrite = {
+    try PreparedLinkedSourceWrite.prepare($0,in:$1,grants:$2,target:$3,expectedFingerprint:$4)
+  }
+  @ObservationIgnored var linkedSourceWriteAfterPublication: @Sendable () async throws -> Void = {}
+
   var printingEnabled = false
   @ObservationIgnored var printingGeneration = UUID()
   @ObservationIgnored var ownedPrints: [UUID: UUID] = [:]
@@ -60,6 +83,9 @@ import UniformTypeIdentifiers
   @ObservationIgnored var pdfSmartObjectOperations: [UUID:UUID] = [:]
   @ObservationIgnored var embeddedSourcePreparation: @Sendable (Data,String,CraftDocument,EmbeddedSourceOptions) async throws -> Command = {data,name,document,options in
     try EmbeddedSourceAPI.prepare(data,name,document,options)
+  }
+  @ObservationIgnored var linkedArtworkPlacementPreparation: @Sendable (LinkedArtworkRead,CraftDocument,LinkedArtworkPlacementOptions) async throws -> Command = {file,document,options in
+    try LinkedArtworkPlacementAPI.prepare(file,in:document,options:options)
   }
   @ObservationIgnored var pdfSourceUpdatePreparation: @Sendable (Data,CraftDocument,UUID,String) async throws -> Command = {
     try PDFSmartObjectIO.sourceUpdate($0,in:$1,layerID:$2,expectedRevision:$3)
@@ -93,6 +119,9 @@ import UniformTypeIdentifiers
   @ObservationIgnored var hdrMergeTask: Task<HDRMerge.Result,Error>?
   @ObservationIgnored var hdrMergeOperationID: UUID?
   @ObservationIgnored var hdrMergeSourceIDs = Set<UUID>()
+  @ObservationIgnored var photomergePreparation: @Sendable ([CraftDocument], PhotomergeSettings, String) throws -> Photomerge.Result = {
+    try Photomerge.prepare($0, settings: $1, name: $2)
+  }
   @ObservationIgnored var photomergeTask: Task<Photomerge.Result,Error>?
   @ObservationIgnored var photomergeOperationID: UUID?
   @ObservationIgnored var photomergeSourceIDs = Set<UUID>()
@@ -162,7 +191,8 @@ import UniformTypeIdentifiers
     }
   }
   func stop() {
-    for share in shares { cancelSharedHistory(share); cancelSharedPrint(share) }
+    clearLinkedArtwork()
+    for share in shares { cancelSharedHistory(share); cancelSharedPrint(share); cancelSharedSmartObjectComp(share); cancelSharedLayerCompEdit(share) }
     setDocumentTransfersEnabled(false)
     setDocumentSavesEnabled(false)
     setPrintingEnabled(false)
@@ -198,7 +228,7 @@ import UniformTypeIdentifiers
   func setDocumentTransfersEnabled(_ enabled: Bool) {
     documentTransferGeneration = UUID()
     documentTransfersEnabled = enabled && isRunning
-    if !documentTransfersEnabled { pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
+    if !documentTransfersEnabled { pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
   }
   func setDocumentSavesEnabled(_ enabled: Bool) {
     documentSaveGeneration = UUID()
@@ -267,10 +297,11 @@ import UniformTypeIdentifiers
     store.cancelHistory()
   }
   func revoke(_ id: UUID) {
+    linkedSourceWriteTasks[id]?.cancel()
     if imageProcessorSourceIDs.contains(id) {imageProcessorTask?.cancel()}
     if scanCropSourceID == id {scanCropTask?.cancel()}
     if contactSheetSourceIDs.contains(id) {contactSheetTask?.cancel()}
-    for share in shares where share.id == id { cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedAudio(share) }
+    for share in shares where share.id == id { cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
     shares.removeAll { $0.id == id }
   }
   func prune() {
@@ -279,19 +310,19 @@ import UniformTypeIdentifiers
       let expired =
         !controller.documents.contains(where: { $0 === document })
         || document.store.layerPanelGeneration != share.generation
-      if expired { cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedAudio(share) }
+      if expired { linkedSourceWriteTasks[share.id]?.cancel();cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
       return expired
     }
   }
   nonisolated static func checkLimits(_ document: CraftDocument) throws {
     guard document.width > 0, document.height > 0,
-      document.width <= Surface.maxDimension, document.height <= Surface.maxDimension, document.layers.count <= 64,
+      document.width <= Surface.maxDimension, document.height <= Surface.maxDimension, document.layers.count <= LayerLimits.maximumLayers,
       document.estimatedBytes <= 128 * 1024 * 1024
     else {
       throw AutomationFailure(
         status: 413,
         message:
-          "API v1 supports canvases up to300,000 pixels per side,64 layers and128MiB of estimated owned heap data. Mapped-page residency, decoder and transfer budgets are separate."
+          "API v1 supports canvases up to300,000 pixels per side,8,000 layers and128MiB of estimated owned heap data. Mapped-page residency, decoder and transfer budgets are separate."
       )
     }
   }
@@ -303,14 +334,21 @@ import UniformTypeIdentifiers
   func state(_ share: Share, document: CraftNSDocument) -> [String: Any] {
     let store = document.store
     let saveFormats = document.saveFormats
+    let hierarchy = LayerHierarchyIndex(store.document)
     return [
       "id": share.id.uuidString, "name": document.displayName ?? "Untitled",
       "windowTitle": document.photatoWindowTitle,
       "rasterStorage": RasterStorageAPI.state(store.document),
+      "canvasEdges":store.canvasEdgesState,
+      "documentDuplicate":store.documentDuplicateState,
+      "flattenImage":store.flattenImageState,
       "video": store.videoState,
       "audio": TimelineAudioAPI.state(store),
       "videoSequenceCreation": videoSequenceCreationState,
       "videoRender": ["operationID":store.videoRenderID?.uuidString as Any? ?? NSNull()],
+      "layerFiles": LayerFilesAPI.state(store),
+      "imageExport": ImageExportAPI.state(store),
+      "layerComps": LayerCompsAPI.state(store.document, operationID: store.layerCompExportID),
       "variables": VariablesAPI.state(store.document, exportID: store.variableExportID),
       "sequenceExport": ["operationID":store.sequenceExportID?.uuidString as Any? ?? NSNull()],
       "animation": store.animationState,
@@ -326,6 +364,18 @@ import UniformTypeIdentifiers
       "objectFinder":store.objectFinderState,
       "maskAllObjects":store.maskAllObjectsState,
       "channelArithmetic":store.channelArithmeticState,
+      "selectionTransform":store.selectionTransformState,
+      "pixelPaint":store.pixelPaintState,
+      "layerLinks":store.layerLinkState,
+      "layerCollectionTransform":store.layerCollectionTransformState,
+      "channelTransform":store.channelTransformState,
+      "pixelMaskTransform":store.pixelMaskTransformState,
+      "selectedPixelMove":store.selectedPixelMoveState,
+      "selectedPixelTransform":store.selectedPixelTransformState,
+      "backgroundLayer":store.backgroundLayerState,
+      "selectionModify":store.selectionModifyState,
+      "magneticLasso":store.magneticLassoState,
+      "colorRange":store.colorRangeState,
       "focusArea":store.focusAreaState,
       "actions": store.actionState, "batch": actionBatchState,
       "width": store.document.width, "height": store.document.height,
@@ -380,8 +430,10 @@ import UniformTypeIdentifiers
       "shapes":store.shapeState,
       "paths":store.pathState,
       "frames": ["available": store.canEditFrames, "target": store.frameTarget.rawValue, "shape": store.frameShape.rawValue, "sides": store.frameSides],
+      "fileInfo": FileInfoAPI.state(store),
+      "guides": ["items":BrushAPI.json(store.document.guides ?? []),"selectedIDs":store.selectedGuides.map{$0.id.uuidString},"visible":store.showCanvasGuides,"locked":store.guidesLocked,"snap":store.snapToGuides,"enabled":store.snappingEnabled,"editable":store.canEditGuides],
       "artboards": ["available": store.canEditArtboards, "originX": store.document.artboardOrigin?.x ?? 0, "originY": store.document.artboardOrigin?.y ?? 0, "showNames": store.showArtboardNames, "showGuides": store.showArtboardGuides],
-      "crop": ["available":store.canBeginCrop,"workspaceOpen":store.cropDraft != nil,"previewBusy":store.cropBusy,"previewError":store.cropError as Any? ?? NSNull()],
+      "crop":store.cropState,
       "photomerge": ["operationID":photomergeOperationID?.uuidString as Any? ?? NSNull(),"source":photomergeSourceIDs.contains(share.id)],
       "imageProcessor": ["operationID":imageProcessorOperationID?.uuidString as Any? ?? NSNull(),"source":imageProcessorSourceIDs.contains(share.id)],
       "cropStraighten": ["operationID":scanCropOperationID?.uuidString as Any? ?? NSNull(),"source":scanCropSourceID == share.id],
@@ -403,6 +455,8 @@ import UniformTypeIdentifiers
       "pixelate": ["available":store.canBeginFilterKind(.crystallize),"workspaceOpen":store.pixelateWorkspace != nil,"previewBusy":store.pixelateWorkspace?.rendering ?? false,"workspace":store.pixelateWorkspace?.apiState as Any? ?? NSNull()],
       "distortion": ["available":store.canBeginFilterKind(.wave),"workspaceOpen":store.distortionWorkspace != nil,"previewBusy":store.distortionWorkspace?.rendering ?? false,"workspace":store.distortionWorkspace?.apiState as Any? ?? NSNull()],
       "lensBlur": ["available":store.canBeginFilterKind(.lensBlur),"workspaceOpen":store.lensBlurWorkspace != nil,"previewBusy":store.lensBlurWorkspace?.rendering ?? false,"workspace":store.lensBlurWorkspace?.apiState as Any? ?? NSNull()],
+      "lightingEffects":["available":store.canBeginFilterKind(.lightingEffects),"workspaceOpen":store.lightingWorkspace != nil,"previewBusy":store.lightingWorkspace?.rendering ?? false,"workspace":store.lightingWorkspace?.apiState as Any? ?? NSNull()],
+      "relight":["available":store.canBeginFilterKind(.relight),"workspaceOpen":store.relightWorkspace != nil,"previewBusy":store.relightWorkspace?.rendering ?? false,"workspace":store.relightWorkspace?.apiState as Any? ?? NSNull()],
       "photoDetail": ["available":store.canBeginFilterKind(.smartSharpen),"workspaceOpen":store.photoDetailWorkspace != nil,"previewBusy":store.photoDetailWorkspace?.rendering ?? false,"workspace":store.photoDetailWorkspace?.apiState as Any? ?? NSNull()],
       "filterGallery": ["available":store.canBeginFilterKind(.filterGallery),"workspaceOpen":store.filterDraft?.filter.kind == .filterGallery,"previewBusy":store.artisticGalleryWorkspace?.rendering ?? false,"workspace":store.artisticGalleryWorkspace?.apiState as Any? ?? NSNull()],
       "blurGallery": ["available":store.canBeginFilterKind(.blurGallery),"workspaceOpen":store.filterDraft?.filter.kind == .blurGallery,"previewBusy":store.blurGalleryWorkspace?.rendering ?? false],
@@ -427,7 +481,7 @@ import UniformTypeIdentifiers
       "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeComponentTargets.isEmpty ? store.document.colorMode.title : store.modeComponentTargets.sorted().map { store.document.colorMode.componentNames[$0] }.joined(separator: ", ")) : store.componentTarget.title,
       "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.document.quickMask == nil ? "RGB":"quickMask"),
       "alphaChannelOverlay": store.alphaOverlay,
-      "channels": (store.document.alphaChannels ?? []).map { ["id":$0.id.uuidString,"name":$0.name,"opacity":$0.options.opacity,"indicates":$0.options.indicates.rawValue,"color":[$0.options.color.r,$0.options.color.g,$0.options.color.b]] as [String:Any] },
+      "channels": (store.document.alphaChannels ?? []).map(ChannelAPI.state),
       "quickMask": store.document.quickMask.map { ["id":$0.id.uuidString,"opacity":$0.options.opacity,"indicates":$0.options.indicates.rawValue,"color":[$0.options.color.r,$0.options.color.g,$0.options.color.b]] as [String:Any] } ?? NSNull(),
       "channelView": [
         "preview": store.document.inkMode != nil ? store.document.inkChannelTargets.filter { store.visibleInkTargets.contains($0) }.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeVisibleComponents.count == 1 ? store.document.colorMode.componentNames[store.modeVisibleComponents.first!] : store.document.colorMode.title) : store.channelView.preview.title,
@@ -436,20 +490,32 @@ import UniformTypeIdentifiers
         }.map(\.title),
         "componentEditing": store.editingComponent,
       ],
+      "linkedArtwork": ["hasLinks":store.hasLinkedArtwork,"canUpdateSelected":store.canUpdateLinkedArtwork,"canUpdateAll":store.canUpdateAllLinkedArtwork,"canEmbedAll":store.canEmbedAllLinkedArtwork,"canPackage":store.canPackageLinkedArtwork,"hasRelativePackageLinks":store.hasRelativePackageLinks,
+        "sources":store.document.layers.compactMap {layer -> [String:Any]? in
+          guard let source=layer.smartObject,source.linkedSource != nil else{return nil}
+          let state=store.linkedArtworkState(source)
+          return ["layerID":layer.id.uuidString,"sourceID":source.sourceID.uuidString,"status":state.status.rawValue,"originalAvailable":!source.data.isEmpty]
+        }],
+      "globalLight": ["angle":store.document.globalLight?.angle ?? 120,"altitude":store.document.globalLight?.altitude ?? 30,"explicit":store.document.globalLight != nil,"workspaceOpen":store.layerStyleDraft?.globalLightOnly == true],
       "layers": store.document.layers.map { layer in
-        [
-          "id": layer.id.uuidString, "name": layer.name, "opacity": layer.opacity,
+        let protection = hierarchy.effectiveProtection(layer.id)
+        return [
+          "id": layer.id.uuidString, "name": layer.name, "opacity": layer.opacity, "isBackground":layer.isBackground,
           "visible": layer.visible, "x": layer.x, "y": layer.y,
           "transform": ["a": layer.coordinateTransform.a, "b": layer.coordinateTransform.b,
             "c": layer.coordinateTransform.c, "d": layer.coordinateTransform.d,
             "tx": layer.coordinateTransform.tx, "ty": layer.coordinateTransform.ty],
           "kind": layer.kindLabel, "smartObject": layer.smartObject?.apiState ?? NSNull(),
+          "sourceSmartObject":layer.sourceSmartAPIState ?? NSNull(),
           "style": layer.style?.apiObject ?? NSNull(),
           "colorLookup": { () -> Any in if case .adjustment(.colorLookup(let a)) = layer.content { return a.apiObject }; return NSNull() }(),
           "modernAdjustment": { () -> Any in if case .adjustment(.modern(let a)) = layer.content { return a.apiObject }; return NSNull() }(),
+          "sourceAdjustment": { () -> Any in if case .adjustment(.source(let a))=layer.content {return a.apiObject};return NSNull() }(),
           "classicAdjustment": { () -> Any in if case .adjustment(.classic(let a)) = layer.content { return a.apiObject }; return NSNull() }(),
           "smartFilters": layer.smartFilters?.apiState ?? NSNull(),
           "shape":layer.shapeAPIState,
+          "shapeSource":layer.shapeSourceAPIState,
+          "textSource":layer.textSourceAPIState ?? NSNull(),
           "shapeTransform":layer.shapeTransformAPIState,
           "frame": layer.frame?.apiState ?? NSNull(),
           "artboard": layer.artboard?.apiState ?? NSNull(),
@@ -460,10 +526,10 @@ import UniformTypeIdentifiers
           "maskDensity": layer.effectiveMaskProperties.density,
           "maskFeather": layer.effectiveMaskProperties.feather,
           "protection": layer.protection.apiNames,
-          "effectiveProtection": store.document.effectiveProtection(layer.id).apiNames,
-          "imageLocked": store.document.isImageLocked(layer.id),
-          "positionLocked": store.document.isPositionLocked(layer.id),
-          "transparencyLocked": store.document.isTransparencyLocked(layer.id),
+          "effectiveProtection": protection.apiNames,
+          "imageLocked": protection.locksImage,
+          "positionLocked": protection.locksPosition,
+          "transparencyLocked": protection.locksTransparency,
         ] as [String: Any]
       },
     ]
@@ -506,6 +572,8 @@ import UniformTypeIdentifiers
         throw AutomationFailure(status: 503, message: "Request cancelled.")
       }
       prune()
+      if let response = try await handleLinkedArtwork(request) {return response}
+      if let response = try await handleLinkedSourceFile(request) {return response}
       if let response = try handleRecoveryPreferences(request) { return response }
       if let response = try handlePhotoshopFilePreferences(request) { return response }
       if let response = try handleColorSettings(request) { return response }
@@ -531,6 +599,7 @@ import UniformTypeIdentifiers
         result["movieFramesImportState"] = ["open":controller.movieFramesWorkspace != nil,"loading":controller.movieFramesWorkspace?.loading ?? false,"importing":controller.movieFramesWorkspace?.busy ?? false,"uploadOperationID":movieFramesImportOperationID?.uuidString as Any? ?? NSNull()]
         result["pdfImportState"] = pdfImportState
         result["pdfSmartObjectOperations"] = Dictionary(uniqueKeysWithValues:pdfSmartObjectOperations.map {($0.key.uuidString,$0.value.uuidString)})
+        result["linkedSourceWriteOperations"]=Dictionary(uniqueKeysWithValues:linkedSourceWriteOperations.map{($0.key.uuidString,["operationID":$0.value.id.uuidString,"layerID":$0.value.layerID.uuidString,"stage":$0.value.stage])})
         result["pdfSourceUpdateOperations"] = Dictionary(uniqueKeysWithValues:pdfSourceUpdateOperations.map {($0.key.uuidString,["operationID":$0.value.id.uuidString,"layerID":$0.value.layerID.uuidString])})
         result["embeddedSourceOperations"] = Dictionary(uniqueKeysWithValues:embeddedSourceOperations.map {($0.key.uuidString,$0.value.uuidString)})
         result["imageProcessorState"] = ["exportingFromAPI":imageProcessorOperationID != nil]
@@ -573,8 +642,9 @@ import UniformTypeIdentifiers
       if request.method == "GET", parts.count == 7, parts[4] == "smart-objects", parts[6] == "source" {
         guard let layerID = UUID(uuidString: String(parts[5])),
           let source = store.document.layers.first(where: { $0.id == layerID })?.smartObject else {
-          throw AutomationFailure(status: 404, message: "Embedded Smart Object not found.")
+          throw AutomationFailure(status: 404, message: "Smart Object not found.")
         }
+        guard !source.data.isEmpty else{throw AutomationFailure(status:422,message:"The original linked source is unavailable. Authorize and update or relink it first.")}
         return .init(status: 200, contentType: source.mediaType, body: source.data)
       }
       if request.method == "GET", parts.count == 5, parts[4] == "print.pdf" { return try await printPDF(share, document: document) }
@@ -714,7 +784,41 @@ import UniformTypeIdentifiers
         return .json(["operationID":operation.uuidString,"cancellationRequested":true])
       }
       if command.name == "print.cancel" { return try executePrint(command, share: share, document: document) }
+      if command.name == "layers.export.cancel" {
+        let operation = try command.actionUUID("operationID")
+        guard store.layerFilesID == operation else { throw AutomationFailure(status:409,message:"No matching layer-file export is active.") }
+        store.layerFilesWorker?.cancel(); return .json(["operationID":operation.uuidString,"cancellationRequested":true])
+      }
+      if command.name == "image.export.cancel" {
+        let operation = try command.actionUUID("operationID")
+        guard store.imageExportID == operation else { throw AutomationFailure(status: 409, message: "No matching image export is active.") }
+        store.imageExportWorker?.cancel(); return .json(["operationID": operation.uuidString, "cancellationRequested": true])
+      }
+      if command.name == "layerComps.export.cancel" {
+        let operation = try command.actionUUID("operationID")
+        guard store.layerCompExportID == operation else { throw AutomationFailure(status:409,message:"No matching comp export is active.") }
+        store.layerCompExportWorker?.cancel(); return .json(["operationID":operation.uuidString,"cancellationRequested":true])
+      }
       try preflight(document)
+      if command.name == SmartObjectLayerCompAPI.name {
+        try await executeSmartObjectComp(command, document: document, shareID: id)
+        return .json(state(share, document: document))
+      }
+      if command.name == "layers.export" { return try await exportLayerFiles(command,document:document,shareID:id) }
+      if command.name == "image.export" { return try await exportImages(command, document: document, shareID: id) }
+      if command.name == "export.preferences" {
+        if command.parameters["settings"] != nil {
+          guard preferenceChangesEnabled else { throw AutomationFailure(status: 403, message: "Enable preference changes in the native API window before updating Export Preferences.") }
+          try ImageExportPreferences.save(command.imageExportSettings(defaults: ImageExportPreferences.load()))
+        }
+        return .json(state(share, document: document))
+      }
+      if command.name == "layerComps.export" { return try await exportLayerComps(command, document: document, shareID: id) }
+      if command.name == "layerComps.edit" {
+        guard store.canEditLayerComps else { throw AutomationFailure(status:409,message:"Finish the current edit before using Layer Comps.") }
+        try await executeLayerComp(command, document: document, shareID: id)
+        return .json(state(share, document: document))
+      }
       if command.name == "video.view" { try command.applyVideoView(to:store);return .json(state(share,document:document)) }
       if command.name == "animation.view" { try command.applyAnimationView(to: store); return .json(state(share, document: document)) }
       guard store.timelineTask == nil else { throw AutomationFailure(status:409,message:"Stop animation playback before editing through the API.") }
@@ -847,7 +951,14 @@ import UniformTypeIdentifiers
         guard store.document.layers.contains(where: { $0.id == layerID }) else { throw AutomationFailure(status:404,message:"Layer not found.") }
         let existing = Set(store.document.layers.map(\.id))
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in
-          try await MaskAllObjectsInput.command(document:original,layerID:layerID,detector:detector)
+          let native = try await MaskAllObjectsInput.command(document:original,layerID:layerID,detector:detector)
+          if case .maskAllObjects(let edit) = native {
+            try MaskAllObjectsEdit.checkBudget(width:original.width,height:original.height,count:edit.objects.count)
+            guard edit.objects.count <= LayerLimits.maximumLayers-original.layers.count else {
+              throw AutomationFailure(status:413,message:"Object masks would exceed shared document layer capacity.")
+            }
+          }
+          return native
         }
         var result = state(share,document:document)
         result["createdGroupIDs"] = store.document.layers.filter { !existing.contains($0.id) }.map { $0.id.uuidString }
@@ -870,7 +981,8 @@ import UniformTypeIdentifiers
       if command.name == "shape.library" {return .json(try manageShapes(command,store:store))}
       if command.name == "shape.edit" {
         let patterns=store.patterns.items
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){original in try command.shapeCommand(original,patterns:patterns)}
+        let shapePathSelected:Bool;if case .shape=store.pathTarget{shapePathSelected=true}else{shapePathSelected=false}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:shapePathSelected){original in try command.shapeCommand(original,patterns:patterns)}
         return .json(state(share,document:document))
       }
       if command.name == "frame.place" {
@@ -882,6 +994,26 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       if command.name == "artboard.export" { return try await exportArtboard(command, document: document, shareID: id) }
+      if command.name == "guides.view" {
+        guard store.canSelectComponentTarget else{throw AutomationFailure(status:409,message:"Finish the current guide interaction.")}
+        try command.applyGuideView(store);return .json(state(share,document:document))
+      }
+      if command.name == "file.info" {
+        if !command.parameters.isEmpty {
+          let (info, fields) = try command.fileInfo(store.document)
+          let candidate = try FileInfoMetadata.applying(info, fields: fields, to: store.document)
+          try Self.checkLimits(candidate)
+          try store.executeEditorCommand(.documentMetadata(candidate.sourceMetadata))
+        }
+        return .json(["fileInfo": FileInfoAPI.state(store), "revision": revision(store)])
+      }
+      if command.name == "guides.edit" {
+        guard store.canEditGuides else{throw AutomationFailure(status:409,message:"Guides are locked or the document is busy.")}
+        let native=try command.guideCommand(in:store.document)
+        var candidate=store.document;try native.apply(to:&candidate);try Self.checkLimits(candidate)
+        try store.executeEditorCommand(native)
+        return .json(state(share,document:document))
+      }
       if command.name == "artboard.edit" {
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in try command.artboardCommand(original) }
         return .json(state(share, document: document))
@@ -953,7 +1085,7 @@ import UniformTypeIdentifiers
         } else {
           guard extra.isSubset(of:["kind","settings"]) else{throw AutomationFailure(status:400,message:"Replace takes only adjustment values.")}
           let kind=try command.adjustmentBrushKind(AdjustmentBrushKind(adjustment:old) ?? .brightnessContrast)
-          let base=AdjustmentBrushKind(adjustment:old)==kind ? old:kind.initial
+          let base=AdjustmentBrushKind(adjustment:old)==kind ? old:(kind == .exposure ? .exposure(1):kind.initial)
           edit = .replaceContent(target,.adjustment(try AdjustmentBrushAPI.decode(command.parameters["settings"],kind:kind,base:base)))
         }
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision){_ in edit}
@@ -1039,13 +1171,34 @@ import UniformTypeIdentifiers
       if try command.applyViewCommand(to: store) {
         return .json(state(share, document: document))
       }
+      if CanvasEdgesAPI.commands.contains(command.name) {
+        let operation=try command.canvasEdgeOperation()
+        guard store.isCompositeColorTarget,!store.editingMask,!store.smartFilterMaskEditing else{throw AutomationFailure(status:422,message:"Choose the composite document target for canvas edges.")}
+        let background=try command.clipboardBackground(default:store.backgroundColor),prepare=store.canvasEdgePreparation
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true){try prepare($0,operation,background)}
+        return .json(state(share,document:document))
+      }
+      if command.name == DocumentDuplicateAPI.name { return try await duplicateDocument(command,document:document,share:share) }
+      if command.name == FlattenImageAPI.name {
+        guard store.isCompositeColorTarget, !store.editingMask, !store.smartFilterMaskEditing else {throw AutomationFailure(status:422,message:"Choose the composite document target for Flatten Image.")}
+        let discard = try command.pathFlag("discardHiddenLayers",false)
+        guard discard || FlattenImageEdit.hiddenLayerIDs(in:store.document).isEmpty else {throw AutomationFailure(status:422,message:"Hidden layers require discardHiddenLayers:true.")}
+        let prepare = store.flattenImagePreparation
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true) {source in try prepare(source)}
+        store.selectedLayerIDs = Set(store.document.activeLayerID.map{[$0]} ?? [])
+        return .json(state(share,document:document))
+      }
       if command.name == "layer.new" {
-        guard store.document.layers.count < 64,
-          store.document.estimatedBytes + store.document.width * store.document.height * 16 <= 128
-            * 1024 * 1024
-        else {
-          throw AutomationFailure(status: 413, message: "Adding a layer would exceed API limits.")
+        guard store.document.layers.count < LayerLimits.maximumLayers else {
+          throw AutomationFailure(status: 413, message: "Adding a layer would exceed API layer capacity.")
         }
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
+          guard let native = try command.nativeCommand(document: original) else {
+            throw AutomationFailure(status: 422, message: "Unsupported layer creation command.")
+          }
+          return native
+        }
+        return .json(state(share, document: document))
       }
       if RegionRetouchAPI.commands.contains(command.name) {
         let options = try command.regionRetouchOptions()
@@ -1059,8 +1212,8 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       if command.name == "document.crop" {
-        let request = try command.cropOptions()
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .cropDocument(try CropPreparation.prepare(request,document:original)) }
+        let request = try command.cropOptions(),prepare=document.store.cropPreparation
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .cropDocument(try prepare(request,original)) }
         return .json(state(share,document:document))
       }
       if command.name == "filter.vanishingPoint" {
@@ -1104,8 +1257,105 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if ChannelArithmeticAPI.commands.contains(command.name) {return try await executeChannelArithmetic(command,document:document,share:share)}
+      if BackgroundLayerAPI.commands.contains(command.name) {
+        let color=store.backgroundColor
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){original in try command.backgroundCommand(in:original,defaultColor:color)}
+        return .json(state(share,document:document))
+      }
+      if PixelPaintAPI.commands.contains(command.name){
+        if command.parameters["patternID"] != nil,store.patterns.busy{throw AutomationFailure(status:409,message:"Wait for the pattern library to finish loading.")}
+        let request=try command.pixelPaintRequest(patterns:store.pixelFillPatterns),prepare=store.pixelPaintPreparation
+        guard store.nativePixelPaintTarget==request.target,store.canUsePixelPaint else{throw AutomationFailure(status:422,message:"Choose the matching native raster, pixel-mask or channel target.")}
+        let auxiliary:Bool;if case .channel=request.target{auxiliary=true}else{auxiliary=false}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPixelPaint:true,allowAuxiliary:auxiliary,validateCommit:{guard store.nativePixelPaintTarget==request.target else{throw AutomationFailure(status:409,message:"The paint target changed.")}}){source in try prepare(source,request)}
+        if request.kind == .stroke{store.lastPixelStroke=request.settings}else{store.lastPixelFill=request.settings;if let pattern=request.pattern{store.lastPixelFillPatternID=pattern.id;store.lastPixelFillContents="Pattern"}}
+        return .json(state(share,document:document))
+      }
+      if command.name == LayerLinksAPI.linkCommand {
+        let ids=try command.linkLayerIDs();guard Set(ids).isSubset(of:Set(store.document.layers.map(\.id))) else{throw AutomationFailure(status:404,message:"Layer not found.")}
+        if try command.string("operation")=="select"{guard store.canChangeLayerLinks else{throw AutomationFailure(status:409,message:"Finish the current native edit.")};try store.selectLinkedLayers(ids)}
+        else{let native=try command.layerLinkCommand();try await executePreparedOperation(document:document,shareID:id,revision:command.revision){_ in .layerLinks(native)}}
+        return .json(state(share,document:document))
+      }
+      if command.name == LayerLinksAPI.moveCommand {
+        let request=try command.wholeLayerMoveOptions(),prepare=store.wholeLayerMovePreparation,before=Set(store.document.layers.map(\.id)),moved=LayerLinks.expanded(in:store.document,layerIDs:Set(request.layerIDs))
+        guard Set(request.layerIDs).isSubset(of:before) else{throw AutomationFailure(status:404,message:"Layer not found.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){source in try prepare(source,request)}
+        let added=Set(store.document.layers.map(\.id)).subtracting(before);if request.copy == true{store.selectMovedCopies(from:before)}
+        var result=state(share,document:document);result["createdLayerIDs"]=store.document.layers.filter{added.contains($0.id)}.map{$0.id.uuidString};result["movedLayerIDs"]=store.document.layers.filter{(request.copy == true ? added:moved).contains($0.id)}.map{$0.id.uuidString};return .json(result)
+      }
+      if command.name == LayerCollectionTransformAPI.name {
+        let request=try command.layerCollectionTransformOptions(),prepare=store.layerCollectionTransformPreparation
+        guard LayerCollectionTransform.available(store.document,layerIDs:request.layerIDs),request.projection==nil || ProjectiveLayerTransform.available(store.document,layerIDs:request.layerIDs) else{throw AutomationFailure(status:422,message:"Choose unlocked whole layer subtrees without a selection and a supported affine/projective target context.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){source in try prepare(source,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == ChannelTransformAPI.name {
+        let request=try command.channelTransformOptions(defaultBackground:store.channelTransformBackgroundValue),prepare=store.channelTransformPreparation
+        guard store.canBeginChannelTransform,store.editingChannel==request.target else{throw AutomationFailure(status:422,message:"Select the requested auxiliary channel through channel.view before transforming it.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true,validateCommit:{guard store.editingChannel==request.target,store.isCompositeColorTarget,!store.editingMask else{throw AutomationFailure(status:409,message:"The channel target changed.")}}){source in try prepare(source,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == PixelMaskTransformAPI.name {
+        let request=try command.pixelMaskTransformOptions(),prepare=store.pixelMaskTransformPreparation
+        guard store.canBeginPixelMaskTransform,store.maskEditingLayerID==request.layerID else{throw AutomationFailure(status:422,message:"Select the requested unlocked unlinked whole pixel mask with no pixel selection.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPixelMaskTransform:true){source in try prepare(source,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == SelectedPixelMoveAPI.name {
+        var options=try command.selectedPixelMoveOptions()
+        if options.backgroundColor==nil,store.document.layers.first(where:{$0.id==options.layerID})?.isBackground == true{options.backgroundColor=store.backgroundColor}
+        let request=options,prepare=store.selectedPixelMovePreparation
+        guard SelectedPixelTransform.available(store.document,layerID:request.layerID) else{throw AutomationFailure(status:422,message:"Choose an editable RGB raster/Background layer and a pixel selection.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){source in try prepare(source,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == SelectedPixelTransformAPI.name {
+        var options=try command.selectedPixelTransformOptions()
+        if options.backgroundColor==nil,store.document.layers.first(where:{$0.id==options.layerID})?.isBackground == true {options.backgroundColor=store.backgroundColor}
+        let request=options,prepare=store.selectedPixelTransformPreparation
+        guard SelectedPixelTransform.available(store.document,layerID:request.layerID) else{throw AutomationFailure(status:422,message:"Choose an editable RGB raster or Background layer and a pixel selection.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){original in try prepare(original,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.transform" {
+        let (matrix,interpolation)=try command.selectionTransformOptions(),prepare=store.selectionTransformPreparation
+        guard store.document.selection != nil else {throw AutomationFailure(status:422,message:"Make a pixel selection first.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowSelection:true) {original in try prepare(original,matrix,interpolation)}
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.modify" {
+        let request=try command.selectionModification(),preparation=store.selectionModificationPreparation
+        guard store.document.selection != nil else {throw AutomationFailure(status:422,message:"Make a pixel selection first.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowSelection:true) {original in try preparation(original,request)}
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.reselect" {
+        guard store.canReselect,let recall=store.selectionRecall else {throw AutomationFailure(status:422,message:"No deselected selection is available.")}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowSelection:true) {original in try recall.command(in:original)}
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.magnetic.configure" {
+        let settings=try command.magneticOptions(base:store.nativeMagneticSettings)
+        store.magneticSettings=settings;store.selectionAntiAlias=settings.antiAlias;store.selectionFeather=settings.feather
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.magneticLasso" {
+        let settings=try command.magneticOptions(),events=try command.magneticEvents(),mode=try command.selectionMode(.replace),straight=try command.adjustmentBrushFlag("straightClose",false),preparation=store.magneticPreparation
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) {original in try preparation(original).command(events:events,settings:settings,mode:mode,straight:straight)}
+        return .json(state(share,document:document))
+      }
+      if command.name == "selection.colorRange" {
+        let settings=try command.colorRangeOptions(),preparation=store.colorRangePreparation
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) {original in try preparation(original).command(settings)}
+        store.colorRangeSettings=settings
+        return .json(state(share,document:document))
+      }
       if command.name == "selection.refine" || command.name == "selection.focus" { return try await refineSelection(command,document:document,share:share) }
-      if command.name == "raw.develop" {
+      if command.name=="smartObject.linked.package" {return try await packageLinkedArtwork(command,document:document,shareID:id)}
+      if LinkedArtworkAPI.commands.contains(command.name) {
+        try await executeLinkedArtwork(command,document:document,shareID:id)
+      } else if command.name == "raw.develop" {
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in try command.rawCommand(original) }
       } else if command.name.hasPrefix("smartObject.") || ["layer.rasterize", "layer.transform"].contains(command.name) {
         try await executeSmartObject(command, document: document, shareID: id)
@@ -1222,6 +1472,9 @@ import UniformTypeIdentifiers
       "colorProfiles": ColorProfileAPI.capabilities,
       "timelineWorkspace": TimelineWorkspaceAPI.capabilities,
       "videoRender": VideoRenderAPI.capabilities,
+      "layerFiles": LayerFilesAPI.capabilities,
+      "imageExport": ImageExportAPI.capabilities,
+      "layerComps": LayerCompsAPI.capabilities,
       "variables": VariablesAPI.capabilities,
       "imageSequenceExport": ImageSequenceAPI.capabilities,
       "video": VideoAPI.capabilities,
@@ -1257,12 +1510,13 @@ import UniformTypeIdentifiers
       "actionJobs": [
         "blankDocumentCreation": AdobeDocumentCreation.capabilities,
         "colorModeActions": PhotoshopActionProgram.modeCapabilities,
+        "photatoNativeInput": ["containers":["native chunked/indexed","binary-plist"],"decoder":"Shared paged native reader","archiveVersions":Array(1...83),"adobeAccepted":false,"limits":"Existing64MiB resource,64layer and128MiB resident document budgets; logical300000-side admission. Operations retain their own processing limits."],
         "photatoAdditionalInput": "Original PhotoCraft v1 .pcraft ZIP (editable subset described in documentOpening.pcraft). Not accepted by Adobe v2. Its nonpaged decoder retains4,194,304 pixels;64MiB resource,64layer and128MiB resident document budgets apply independently.",
         "largeDocuments": ["maximumCanvasDimension": Surface.maxDimension,
           "maximumCanvasPixels": AdobeActionAssets.maximumCanvasPixels,
           "maximumResidentDocumentBytes": AdobeActionAssets.maximumDocumentBytes,
           "residentBudgetScope": "Model heap/index admission; mapped sample residency, temporary codec/scratch buffers and OS memory are separate. This is not a process RSS cap.",
-          "maximumLayers": 64, "maximumResourceBytes": AdobeActionAssets.maximumResourceBytes,
+          "maximumLayers": LayerLimits.maximumLayers, "maximumResourceBytes": AdobeActionAssets.maximumResourceBytes,
           "maximumAggregateOutputBytes": AdobeActionAssets.maximumOutputBytes,
           "pagedInputFormats": ["psd", "psb"], "pagedInputDepths": [8,16,32],
           "maximumUnpagedInputPixels": AdobeActionAssets.maximumUnpagedInputPixels,
@@ -1272,6 +1526,7 @@ import UniformTypeIdentifiers
         "encodingOptions": DocumentEncodingOptions.capabilities,
         "outputs": ["image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop"],
         "pngCompression": DocumentEncodingOptions.pngLevels,
+        "layerOutputs": ["route": "POST /v2/create-composite", "field": "outputs[].layers", "references": "Exactly one id or name per reference; identifiers match the local document manifest. Names must resolve uniquely.", "cropModes": ["layer_bounds", "document_bounds", "trim_to_transparency"], "singleLayerDefault": "layer_bounds", "documentAndMultipleDefault": "document_bounds", "singleFormats": ["image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop"], "multipleFormats": ["image/png", "image/jpeg", "image/tiff"], "engine": "Shared native ImageAssetSelection; single group/artboard PSD retains supported editable descendants.", "limits": "Local resource/layer budgets still apply. Temporal layer selection, full rich/group/clip/effect crop geometry, Photoshop pixels and remote service equivalence remain unqualified."],
         "outputICC": ["field": "outputs[].iccProfile", "standardNames": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Gray Gamma 2.2"], "customModes": ["rgb", "grayscale", "cmyk"], "customMaximumBytes": ICCProfile.maximumBytes, "engine": "Apple ColorSync", "schema": AdobeOutputProfile.schema, "limitations": "URL resources only; non-RGB output ICC requires PSD/TIFF; other named profiles and proprietary ACE defaults/output equality remain open. Custom 32-bit profiles must be linear. Each output converts independently; PSD retains supported editable layers."],
         "encodingLimitations": "PNG action outputs retain RGB8/16 and flat Indexed8/Bitmap1. TIFF retains RGB/Gray8/16/32, CMYK/Lab8/16 and flat Indexed8/Bitmap1 with supported transparency and profiles. RGB32 PNG output requires PSD or TIFF instead. Photato encodingOptions includes TIFF byte order, channel layout and32-bit LZW/ZIP prediction, distinct from the Adobe output contract. Photato jobs can preserve supported TIFF layers with encodingOptions.tiffLayers=true and rle/zip tiffLayerCompression; Adobe TIFF output defaults remain flattened without new fields. JPEG output accepts the published quality enum and converts to opaque8-bit. Photato encodingOptions additionally selects baseline/optimized/progressive, matte and profile embedding; see documentTransfers.encodingOptions. Execute-actions rejects scan. Pyramids, Duotone/Multichannel and Photoshop JPEG quantization/scan parity remain unimplemented. See documentTransfers.restrictedFormats for exact restricted-mode storage limits. Supported layered TIFF inputs retain editable layers; see documentTransfers.layeredTIFF.",
         "photatoSubmit": "/v1/action-jobs", "photatoStatus": "/v1/action-jobs/{jobId}",
@@ -1280,13 +1535,15 @@ import UniformTypeIdentifiers
         "adobeArtboardScope": "One to25 URL image sources, optional names and horizontal spacing0–32768 (default50); each source composite becomes an editable raster inside a native artboard. PNG/JPEG/TIFF/JSON outputs, hosted or HTTPS PUT. PSD/PSDC, cloud/embedded storage, scan/resizing and exact Adobe manifest/pixel equivalence remain unsupported.",
         "adobeColorEditSubmit": "/v2/edit",
         "adobeRemoveBackgroundSubmit": "/v2/remove-background",
-        "adobeProtectionScope": "Existing input layers: operation.type edit with protection and supported dropShadow effects, exact unique name or PSD id. Group edits replace descendant flags. Blank images use the documented blankDocumentCreation subset. Other layer properties and unimplemented add/delete/move variants remain unsupported.",
+        "adobeProtectionScope": "Existing input layers: operation.type edit with protection and supported dropShadow effects, exact unique name or PSD id. Group edits replace descendant flags. Blank images use the documented blankDocumentCreation subset. Exposure adjustment layers support add/edit with exposureValue, offset and gammaCorrection, using native transfer and all five placement modes. Other layer properties and unimplemented variants remain unsupported.",
         "adobeSubmit": "/v2/execute-actions", "adobeStatus": "/v2/status/{jobId}",
         "notice":
-          "Optional isolated resource jobs. Requires native enablement each session. Inline actionJSON supports the documented colorModeActions creation-independent conversion/component subset. Legacy RGB8 neutral Fill remains qualified; RGB/Gray8/16/32 and CMYK/Lab8/16 PSD/PSB/TIFF input supports applicable root raster merges ($Mrg2/$MrgV), selectAllLayers, composite RGB selection and PSD preservation. The eight native raster filters are available through actionJSON on the active RGB pixel layer; Smart Filters and exact Photoshop output parity are unqualified. Five classic color adjustments and inline base64 Color Lookup LUT descriptors are supported through actionJSON (51,200-character program limit); /v2/edit supports light, color vibrance/saturation, effects, sharpening and noise reduction with PNG/JPEG output through the native Camera Raw engine. The installed applyImageStackPluginRenderer class descriptor supports eleven statistical modes on an embedded Smart Object; use flattened PNG/TIFF output because editable PSD stack transport is not implemented. Multichannel8/16 PSD/PSB file transport retains ink/alpha planes and spot metadata; ink editing descriptors remain unsupported. Other Adobe operations are unsupported.",
+          "Optional isolated resource jobs. Requires native enablement each session. Inline actionJSON supports the documented colorModeActions creation-independent conversion/component subset. Legacy RGB8 neutral Fill remains qualified; RGB/Gray8/16/32 and CMYK/Lab8/16 PSD/PSB/TIFF input supports applicable root raster merges ($Mrg2/$MrgV), selectAllLayers, composite RGB selection and PSD preservation. The eight native raster filters are available through actionJSON on the active RGB pixel layer; Smart Filters and exact Photoshop output parity are unqualified. Five classic color adjustments and inline base64 Color Lookup LUT descriptors are supported through actionJSON (51,200-character program limit); /v2/edit supports light, color vibrance/saturation, effects, sharpening and noise reduction with PNG/JPEG output through the native Camera Raw engine. The installed applyImageStackPluginRenderer class descriptor supports eleven statistical modes on an embedded Smart Object; use flattened PNG/TIFF output because editable PSD stack transport is not implemented. Multichannel8/16 PSD/PSB file transport retains ink/alpha planes and spot metadata; ink editing descriptors remain unsupported. The documented flattenImage actionJSON event uses the native flatten compositor; its disclosed context limits apply. Other Adobe operations are unsupported.",
       ],
       "documentTransfers": documentTransferCapabilities,
+      "sourceAdjustments":SourceAdjustment.apiCapabilities,
       "classicAdjustments": ClassicAdjustment.apiCapabilities,
+      "exposureAdjustments": AdobeExposureEdit.capabilities,
       "modernAdjustments": ModernAdjustment.apiCapabilities,
       "colorLookup": colorLookupCapabilities,
       "filters": RasterFilter.apiCapabilities,
@@ -1294,6 +1551,7 @@ import UniformTypeIdentifiers
       "brushes":BrushAPI.capabilities,
       "rawDevelopment": RawDevelopment.apiCapabilities,
       "layerStyles": LayerStyle.apiCapabilities,
+      "linkedArtwork": LinkedArtworkAPI.capabilities,
       "smartObjects": SmartObject.apiCapabilities,
       "text": TextContent.apiTypeCapabilities,
       "smartFilters": SmartFilterStack.apiCapabilities,
@@ -1317,6 +1575,8 @@ import UniformTypeIdentifiers
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
+      "fileInfo": FileInfoAPI.capabilities,
+      "guides": GuideAPI.capabilities,
       "artboards": Artboard.apiCapabilities,
       "warp": WarpDefinition.apiCapabilities,
       "photoAlign": PhotoAlignSettings.apiCapabilities,
@@ -1326,6 +1586,21 @@ import UniformTypeIdentifiers
       "objectFinder":ObjectFinderAPI.capabilities,
       "maskAllObjects":MaskAllObjectsAPI.capabilities,
       "channelArithmetic":ChannelArithmeticAPI.capabilities,
+      "selectionTransform":SelectionTransformAPI.capabilities,
+      "pixelPaint":PixelPaintAPI.capabilities,
+      "canvasEdges":CanvasEdgesAPI.capabilities,
+      "documentDuplicate":DocumentDuplicateAPI.capabilities,
+      "flattenImage":FlattenImageAPI.capabilities,
+      "layerLinks":LayerLinksAPI.capabilities,
+      "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
+      "channelTransform":ChannelTransformAPI.capabilities,
+      "pixelMaskTransform":PixelMaskTransformAPI.capabilities,
+      "selectedPixelMove":SelectedPixelMoveAPI.capabilities,
+      "selectedPixelTransform":SelectedPixelTransformAPI.capabilities,
+      "backgroundLayer":BackgroundLayerAPI.capabilities,
+      "selectionModify":SelectionModifyAPI.capabilities,
+      "magneticLasso":MagneticLassoAPI.capabilities,
+      "colorRange":ColorRangeAPI.capabilities,
       "focusArea":FocusAreaAPI.capabilities,
       "selectionTools":SelectionToolAPI.capabilities,
       "adjustmentBrush":AdjustmentBrushAPI.capabilities,
@@ -1345,6 +1620,9 @@ import UniformTypeIdentifiers
         "documentMode": DocumentModeAPI.stateSchema,
         "colorProfile": ColorProfileAPI.stateSchema,
         "videoRender": VideoRenderAPI.stateSchema,
+        "layerFiles": LayerFilesAPI.stateSchema,
+        "imageExport": ImageExportAPI.stateSchema,
+        "layerComps": LayerCompsAPI.stateSchema,
         "variables": VariablesAPI.stateSchema,
         "sequenceExport": ImageSequenceAPI.stateSchema,
         "video": VideoAPI.stateSchema,
@@ -1360,7 +1638,24 @@ import UniformTypeIdentifiers
         "peopleSelection":PeopleAPI.stateSchema,
         "objectFinder":ObjectFinderAPI.stateSchema,
         "maskAllObjects":MaskAllObjectsAPI.stateSchema,
+        "fileInfo": FileInfoAPI.stateSchema,
         "channelArithmetic":ChannelArithmeticAPI.stateSchema,
+        "selectionTransform":SelectionTransformAPI.stateSchema,
+        "pixelPaint":PixelPaintAPI.stateSchema,
+        "crop":CropRequest.stateSchema,
+        "canvasEdges":CanvasEdgesAPI.stateSchema,
+        "documentDuplicate":DocumentDuplicateAPI.stateSchema,
+        "flattenImage":FlattenImageAPI.stateSchema,
+        "layerLinks":LayerLinksAPI.stateSchema,
+        "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,
+        "channelTransform":ChannelTransformAPI.stateSchema,
+        "pixelMaskTransform":PixelMaskTransformAPI.stateSchema,
+        "selectedPixelMove":SelectedPixelMoveAPI.stateSchema,
+        "selectedPixelTransform":SelectedPixelTransformAPI.stateSchema,
+        "backgroundLayer":BackgroundLayerAPI.stateSchema,
+        "selectionModify":SelectionModifyAPI.stateSchema,
+        "magneticLasso":MagneticLassoAPI.stateSchema,
+        "colorRange":ColorRangeAPI.stateSchema,
         "focusArea":FocusAreaAPI.stateSchema,
         "selectionTools":SelectionToolAPI.stateSchema,
         "layerProtection": protectionStateSchema,
@@ -1459,7 +1754,7 @@ import UniformTypeIdentifiers
       ],
       "limits": [
         "maxCanvasPixels": Surface.maxPixels, "maxCanvasDimension": Surface.maxDimension,
-        "maxPreviewPixels": 4_194_304, "maxLayers": 64, "maxDocumentBytes": 134_217_728,
+        "maxPreviewPixels": 4_194_304, "maxLayers": LayerLimits.maximumLayers, "maxDocumentBytes": 134_217_728,
         "maxSharedDocuments": 8, "maxRequestBytes": 65_536, "maxCommandRequestBytes": LiquifyMeshFile.maximumBytes,
       ],
       "commandEnvelope": [

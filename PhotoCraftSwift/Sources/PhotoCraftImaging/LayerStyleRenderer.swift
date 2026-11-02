@@ -65,6 +65,7 @@ enum LayerStyleRenderer {
     over backdrop: Surface, region: IntRect, cache:GroupRenderCache = GroupRenderCache()) throws -> Surface {
     guard let style = layer.style else { return backdrop }
     try style.validate(in: document)
+    if style.requiresAdvancedArchive { return try SourceLayerStyleRenderer.composite(layer,clips:clips,in:document,over:backdrop,region:region,cache:cache) }
     let w=document.width, h=document.height
     guard w <= maximumPixels / h else { throw CraftError.unsupported("Layer styles support canvases up to 8,388,608 pixels.") }
     var plain = layer; plain.style = nil; plain.opacity = 1; plain.blendMode = .normal
@@ -99,7 +100,7 @@ enum LayerStyleRenderer {
     // Exterior effects blend directly against the backdrop using their own modes.
     for effect in effects.reversed() where effect.kind == .dropShadow || effect.kind == .outerGlow {
       let map = try shadowMap(effect,inner:false)
-      let angle=(effect.useGlobalLight ? style.lightAngle : effect.angle) * .pi/180
+      let angle=(effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle) * .pi/180
       let distance=effect.kind == .dropShadow ? effect.distance*scale : 0
       let dx = -cos(angle)*distance, dy=sin(angle)*distance
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
@@ -119,7 +120,7 @@ enum LayerStyleRenderer {
       let bevel = kind == .bevelEmboss ? try alpha.blurred(effect.size*scale+effect.soften) : nil
       let gradient = try effect.gradient.map { try GradientFillSampler($0,layer:layer,document:document) }
       let pattern = try effect.pattern.map { try PatternFillSampler($0,in:document) }
-      let angle = (effect.useGlobalLight ? style.lightAngle : effect.angle)*Double.pi/180
+      let angle = (effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle)*Double.pi/180
       let dx = -cos(angle)*effect.distance*scale, dy = sin(angle)*effect.distance*scale
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
         let a=alpha.v[y*w+x];if a <= 0 { continue }
@@ -136,7 +137,7 @@ enum LayerStyleRenderer {
         case .bevelEmboss:
           let gx=bevel!.sample(Double(x+1),Double(y))-bevel!.sample(Double(x-1),Double(y))
           let gy=bevel!.sample(Double(x),Double(y+1))-bevel!.sample(Double(x),Double(y-1))
-          let shade=(gx*Float(cos(angle))-gy*Float(sin(angle)))*Float(effect.depth/100)*max(1,size)*Float(cos(style.lightAltitude*Double.pi/180))
+          let shade=(gx*Float(cos(angle))-gy*Float(sin(angle)))*Float(effect.depth/100)*max(1,size)*Float(cos((effect.useGlobalLight ? (document.globalLight?.altitude ?? style.lightAltitude) : style.lightAltitude)*Double.pi/180))
           p=color(shade >= 0 ? effect.highlightColor : effect.shadowColor)
           coverage=unit(abs(shade))*(shade >= 0 ? effect.highlightOpacity : effect.shadowOpacity)
         default: break

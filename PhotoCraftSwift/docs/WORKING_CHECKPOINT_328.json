@@ -1,0 +1,173 @@
+{
+  "step": 328,
+  "recorded_at_utc": "2026-11-01T15:30:47.563087+00:00",
+  "run": "artifacts/runs/20261101T150700Z-328-source-channels",
+  "status": "functional-subset-qualified-prepress-interchange-and-parity-gates-open",
+  "increment_complete": true,
+  "baseline_source": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
+  "latest_tested_source_checkpoint": 326,
+  "new_app_installed": false,
+  "new_source_push": false,
+  "full_parity": false,
+  "compiler_test_workers_live": false,
+  "current_worker": null,
+  "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+  "source_inputs": 6711,
+  "focused01_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T15:20:26.088258+00:00",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source01.json",
+    "inputs": 6711,
+    "current_binary_sha256": "051b2406b8a4c97dfcf01dbd4228ad1bf203b6ed98823290b50b3ccda16a3e54",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused02_result": {
+    "exit_code": 1,
+    "finished_at_utc": "2026-11-01T15:26:33.347892+00:00",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source02.json",
+    "inputs": 6711,
+    "current_binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "focused03_result": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-11-01T15:28:12.372251+00:00",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "inputs": 6711,
+    "current_binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_qualification": "After a compiler failure this may be the prior binary; inspect compile/link/test logs."
+  },
+  "functional_subset_qualified": true,
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "production_swift_files": 904,
+  "binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+  "focused_source03": {
+    "step": 328,
+    "source": "Source03",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "binary_sha256": "26e14de05334be99d5d0bc34a6de3abd66f18756550974eab6d314f8ba3e4f78",
+    "build_succeeded": true,
+    "build_seconds": 39.41,
+    "cases": 102,
+    "passed_cases": 102,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.229,
+    "classes": {
+      "PhotoCraftAppTests.AdvancedLayerStyleWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.AlphaChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.AlphaChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ChannelPanelTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ChannelViewWorkflowTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.InkChannelTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InkChannelWorkflowTests": {
+        "passed": 7,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.InteractivePaintingWorkflowTests": {
+        "passed": 1,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.LargeChannelPresentationWorkflowTests": {
+        "passed": 3,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.NativeIndexedArchiveTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.PaintToolTests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.PcraftImportTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.PhotoshopMenuTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.RGBChannelViewTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftImagingTests.SourceChannelImportTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftCoreTests.SpotChannelTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.SpotChannelWorkflowTests": {
+        "passed": 4,
+        "failed": 0
+      },
+      "PhotoCraftAppTests.ToolCursorTests": {
+        "passed": 9,
+        "failed": 0
+      }
+    },
+    "new_cases": 12,
+    "new_cases_passed": 12,
+    "failed_case_names": [],
+    "source_unchanged": true
+  },
+  "native_version": 76,
+  "actions_version": 30,
+  "photato_commands": 206,
+  "new_cases": 12,
+  "new_cases_passed": 12,
+  "independent_reference_words": {
+    "channel_planes": 12,
+    "channel_words": 2244,
+    "channel_mismatches": 0,
+    "overprint_vectors": 3,
+    "overprint_words": 2244,
+    "overprint_mismatches": 0,
+    "photoshop_generated": false
+  },
+  "latest_complete_inventory_checkpoint": 321,
+  "last_entirely_passing_full_inventory_checkpoint": 298,
+  "normal_installed_preview": 283,
+  "last_private_source_backup": 298,
+  "known_strict_cases_at_least": 11,
+  "native_visual_acceptance": false,
+  "native_visual_reason": "Fresh lookup returns cgWindowNotFound; no live Photoshop/native visual acceptance.",
+  "documentation_verification": "artifacts/runs/20261101T150700Z-328-source-channels/verification01.json",
+  "history_audit": "artifacts/development-history-audit/328-checkpoint01-receipt.json",
+  "documentation_verification_result": {
+    "passed": true,
+    "checks": 49,
+    "issues": [],
+    "path": "artifacts/runs/20261101T150700Z-328-source-channels/verification01.json"
+  }
+}

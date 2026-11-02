@@ -20,6 +20,10 @@ public enum SmartObjectIO {
         let document = try NativeArchive.decodePaged(data, heapByteLimit: 256 * 1_024 * 1_024)
         try check(document); return document
       }
+      if PcraftImport.recognizes(data) {
+        let document=try PcraftImport.read(data,rasterByteLimit:256*1024*1024)
+        try check(document);return document
+      }
       if RawSourceIO.recognizes(data) { return try RawSourceIO.open(data,fileName:fileName) }
       let width: Int, height: Int
       if data.starts(with: Data("8BPS".utf8)), data.count >= 26 {
@@ -65,6 +69,8 @@ public enum SmartObjectIO {
     let type: String
     if originalData == nil || data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
       type = "application/vnd.photato.document"
+    } else if PcraftImport.recognizes(data) {
+      type="application/vnd.photocraft.project"
     } else if data.starts(with: Data("8BPS".utf8)) {
       type = data.count > 5 && data[5] == 2 ? "application/x-photoshop" : "image/vnd.adobe.photoshop"
     } else if let source = CGImageSourceCreateWithData(data as CFData, nil),
@@ -72,12 +78,13 @@ public enum SmartObjectIO {
       type = mime
     } else { throw CraftError.unsupported("Unsupported embedded source format.") }
     let name = fileName ?? "Contents.photato"
-    let object = try SmartObject(fileName: name, mediaType: type, data: data,
+    var object = try SmartObject(fileName: name, mediaType: type, data: data,
       width: document.width, height: document.height, resolution: document.pixelsPerInch)
+    object.layerComps = try SmartObjectLayerCompIO.catalog(in: document)
     let pixels = try ColorManagement.converted(sourceComposite(document), from: document, to: parent)
     return (object, pixels)
   }
-  private static func sourceComposite(_ document:CraftDocument)throws->Surface {
+  static func sourceComposite(_ document:CraftDocument)throws->Surface {
     if document.colorMode == .rgb,document.width>maximumCanvasPixels/document.height {return try Renderer.compositePaged(document)}
     return try Renderer.composite(document)
   }
@@ -118,9 +125,11 @@ public enum SmartObjectIO {
     }) else { throw CraftError.invalid("Include the clipping base when converting clipped layers.") }
     var source = document
     source.id = UUID(); source.name = roots.count == 1 ? first.name : "Smart Object Contents"
-    source.layers = document.layers.filter { ids.contains($0.id) }
+    source.layers = document.layers.filter { ids.contains($0.id) };LayerLinks.prune(in:&source)
     source.activeLayerID = source.layers.last?.id
     source.selection = nil; source.selectionMask = nil; source.paths = nil; source.sourceMetadata = nil
+    // Parent-document comps do not describe this new cropped/subset source.
+    source.layerComps = nil
     for i in source.layers.indices where roots.contains(where: { $0.id == source.layers[i].id }) { source.layers[i].parentID = nil }
     if roots.count == 1, let i = source.layers.firstIndex(where: { $0.id == first.id }), !first.isGroup {
       source.layers[i].blendMode = .normal
@@ -151,12 +160,15 @@ public enum SmartObjectIO {
     data: Data? = nil, fileName: String? = nil, preserveSize: Bool = true, allInstances: Bool = true) throws -> Command {
     let (object, pixels) = try embedded(document: source, in: parent, originalData: data, fileName: fileName)
     guard let old = parent.layers.first(where: { $0.id == layerID })?.smartObject else { throw CraftError.invalid("Select a Smart Object.") }
-    var caches: [UUID: Surface] = [:], modes: [ImageStackMode: Surface] = [:]
+    var caches: [UUID: Surface] = [:], rendered: [String: Surface] = [:]
     for layer in parent.layers where layer.id == layerID || allInstances && layer.smartObject?.sourceID == old.sourceID {
-      if let mode = layer.smartObject?.stackMode {
-        guard object.rawDevelopment == nil else { throw CraftError.invalid("Remove stack modes before replacing a stack with a camera RAW source.") }
-        let cache = try modes[mode] ?? ImageStack.render(source, mode: mode, in: parent)
-        modes[mode] = cache; caches[layer.id] = cache
+      let selection = layer.smartObject?.layerComps?.selectedID, mode = layer.smartObject?.stackMode
+      if selection != nil || mode != nil {
+        guard object.rawDevelopment == nil else { throw CraftError.invalid("Choose Last Document State and remove stack modes before replacing with a RAW source.") }
+        if let selection { guard object.layerComps?.entries.contains(where: { $0.id == selection }) == true else { throw CraftError.invalid("A selected source Layer Comp no longer exists. Choose Last Document State before replacing its source.") } }
+        let key = (selection?.uuidString ?? "last") + ":" + (mode?.rawValue ?? "none")
+        let pixels = try rendered[key] ?? SmartObjectLayerCompIO.pixels(source, compID: selection, stackMode: mode, in: parent)
+        rendered[key] = pixels; caches[layer.id] = pixels
       }
     }
     return .replaceSmartObject(layerID, object, pixels, preserveSize: preserveSize, allInstances: allInstances, instancePixels: caches)

@@ -1,0 +1,52 @@
+{
+  "step": 304,
+  "recorded_at_utc": "2026-11-01T01:21:26.504401+00:00",
+  "recorded_at_local": "2026-10-31T18:21:26.504401-07:00",
+  "run": "artifacts/runs/20261101T012013Z-304-diary-refresh",
+  "scope": "documentation-only synchronization with unbuilt303 and tested302",
+  "latest_engineering_checkpoint": 303,
+  "latest_engineering_status": "unbuilt/untested in progress",
+  "latest_tested_checkpoint": 302,
+  "latest_tested_source": "Source03",
+  "latest_full_inventory_checkpoint": 298,
+  "installed_preview_checkpoint": 283,
+  "latest_private_source_backup_checkpoint": 298,
+  "current_focus": {
+    "checkpoint": 302,
+    "cases": 45,
+    "passed_cases": 44,
+    "failed_cases": 1,
+    "failed_assertions": 2
+  },
+  "wider_targeted_latest_per_case": {
+    "checkpoint": 302,
+    "unique_cases": 389,
+    "passed_cases": 385,
+    "failed_cases": 4,
+    "failed_assertions": 22,
+    "current_source_executed_cases": 45,
+    "remaining_evidence": "Source02 on identical production; not all rerun on Source03"
+  },
+  "engineering_inventory": "artifacts/runs/20261101T012013Z-304-diary-refresh/303-working-tree-inventory.json",
+  "application_inputs_before": "artifacts/runs/20261101T012013Z-304-diary-refresh/application-inputs-before.json",
+  "new_application_build": false,
+  "application_tests_rerun": false,
+  "api_behavior_changed": false,
+  "new_installation": false,
+  "new_source_publication": false,
+  "full_photoshop_parity": false,
+  "goal_status": "active",
+  "verification": "artifacts/runs/20261101T012013Z-304-diary-refresh/verification02.json",
+  "first_verification": {
+    "checks": 18,
+    "passed": true,
+    "path": "artifacts/runs/20261101T012013Z-304-diary-refresh/verification01.json",
+    "application_inputs_unchanged": 2970,
+    "protected_assets_unchanged": 40,
+    "original_rust_files_unchanged": 1057,
+    "entries": 304,
+    "dashboard_journal_latest": 304,
+    "dashboard_completed_scope_latest": 283
+  },
+  "audit_receipt": "artifacts/development-history-audit/304-checkpoint01-receipt.json"
+}

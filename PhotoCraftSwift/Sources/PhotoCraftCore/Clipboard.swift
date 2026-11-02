@@ -179,7 +179,7 @@ public struct ClipboardContent: Equatable, Sendable {
     if let parent, target.isLocked(parent) {
       throw CraftError.invalid("Unlock the destination group before pasting.")
     }
-    guard target.layers.count + document.layers.count <= 512 else {
+    guard target.layers.count + document.layers.count <= LayerLimits.maximumLayers else {
       throw CraftError.invalid("Layer limit reached.")
     }
     let mapping = Dictionary(uniqueKeysWithValues: document.layers.map { ($0.id, UUID()) })

@@ -1,0 +1,4940 @@
+[
+  {
+    "cached": "filter-blur-blur-u8-cached.pcraft",
+    "command": "filter.blur.blur",
+    "depth": "u8",
+    "expected": "filter-blur-blur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-blur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-blurMore-u8-cached.pcraft",
+    "command": "filter.blur.blurMore",
+    "depth": "u8",
+    "expected": "filter-blur-blurMore-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-blurMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blurMore-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-u8-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "u8",
+    "expected": "filter-blur-gaussianBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-gaussianBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-boxBlur-u8-cached.pcraft",
+    "command": "filter.blur.boxBlur",
+    "depth": "u8",
+    "expected": "filter-blur-boxBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-boxBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-boxBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-motionBlur-u8-cached.pcraft",
+    "command": "filter.blur.motionBlur",
+    "depth": "u8",
+    "expected": "filter-blur-motionBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-motionBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-motionBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-u8-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "u8",
+    "expected": "filter-blur-radialBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-surfaceBlur-u8-cached.pcraft",
+    "command": "filter.blur.surfaceBlur",
+    "depth": "u8",
+    "expected": "filter-blur-surfaceBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-surfaceBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-surfaceBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-smartBlur-u8-cached.pcraft",
+    "command": "filter.blur.smartBlur",
+    "depth": "u8",
+    "expected": "filter-blur-smartBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-smartBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-smartBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-shapeBlur-u8-cached.pcraft",
+    "command": "filter.blur.shapeBlur",
+    "depth": "u8",
+    "expected": "filter-blur-shapeBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-shapeBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-shapeBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-u8-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "u8",
+    "expected": "filter-blur-lensBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-lensBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpen-u8-cached.pcraft",
+    "command": "filter.sharpen.sharpen",
+    "depth": "u8",
+    "expected": "filter-sharpen-sharpen-u8.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpen-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenMore-u8-cached.pcraft",
+    "command": "filter.sharpen.sharpenMore",
+    "depth": "u8",
+    "expected": "filter-sharpen-sharpenMore-u8.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenMore-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenEdges-u8-cached.pcraft",
+    "command": "filter.sharpen.sharpenEdges",
+    "depth": "u8",
+    "expected": "filter-sharpen-sharpenEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-unsharpMask-u8-cached.pcraft",
+    "command": "filter.sharpen.unsharpMask",
+    "depth": "u8",
+    "expected": "filter-sharpen-unsharpMask-u8.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-unsharpMask",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-unsharpMask-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-smartSharpen-u8-cached.pcraft",
+    "command": "filter.sharpen.smartSharpen",
+    "depth": "u8",
+    "expected": "filter-sharpen-smartSharpen-u8.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-smartSharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-smartSharpen-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-despeckle-u8-cached.pcraft",
+    "command": "filter.noise.despeckle",
+    "depth": "u8",
+    "expected": "filter-noise-despeckle-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-despeckle",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-despeckle-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-u8-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "u8",
+    "expected": "filter-noise-addNoise-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-addNoise-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-u8-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "u8",
+    "expected": "filter-noise-median-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-median",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-median-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-dustAndScratches-u8-cached.pcraft",
+    "command": "filter.noise.dustAndScratches",
+    "depth": "u8",
+    "expected": "filter-noise-dustAndScratches-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-dustAndScratches",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-dustAndScratches-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-reduceNoise-u8-cached.pcraft",
+    "command": "filter.noise.reduceNoise",
+    "depth": "u8",
+    "expected": "filter-noise-reduceNoise-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-reduceNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-reduceNoise-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-highPass-u8-cached.pcraft",
+    "command": "filter.other.highPass",
+    "depth": "u8",
+    "expected": "filter-other-highPass-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-highPass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-highPass-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-u8-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "u8",
+    "expected": "filter-other-minimum-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-minimum-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-maximum-u8-cached.pcraft",
+    "command": "filter.other.maximum",
+    "depth": "u8",
+    "expected": "filter-other-maximum-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-maximum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-maximum-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-offset-u8-cached.pcraft",
+    "command": "filter.other.offset",
+    "depth": "u8",
+    "expected": "filter-other-offset-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-offset",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-offset-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-custom-u8-cached.pcraft",
+    "command": "filter.other.custom",
+    "depth": "u8",
+    "expected": "filter-other-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-custom",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-u8-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "u8",
+    "expected": "filter-other-hsbHsl-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mosaic-u8-cached.pcraft",
+    "command": "filter.pixelate.mosaic",
+    "depth": "u8",
+    "expected": "filter-pixelate-mosaic-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mosaic",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mosaic-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-u8-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "u8",
+    "expected": "filter-pixelate-colorHalftone-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-crystallize-u8-cached.pcraft",
+    "command": "filter.pixelate.crystallize",
+    "depth": "u8",
+    "expected": "filter-pixelate-crystallize-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-crystallize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-crystallize-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-facet-u8-cached.pcraft",
+    "command": "filter.pixelate.facet",
+    "depth": "u8",
+    "expected": "filter-pixelate-facet-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-facet",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-facet-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-fragment-u8-cached.pcraft",
+    "command": "filter.pixelate.fragment",
+    "depth": "u8",
+    "expected": "filter-pixelate-fragment-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-fragment",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-fragment-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mezzotint-u8-cached.pcraft",
+    "command": "filter.pixelate.mezzotint",
+    "depth": "u8",
+    "expected": "filter-pixelate-mezzotint-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mezzotint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mezzotint-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-u8-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "u8",
+    "expected": "filter-pixelate-pointillize-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-emboss-u8-cached.pcraft",
+    "command": "filter.stylize.emboss",
+    "depth": "u8",
+    "expected": "filter-stylize-emboss-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-emboss",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-emboss-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-findEdges-u8-cached.pcraft",
+    "command": "filter.stylize.findEdges",
+    "depth": "u8",
+    "expected": "filter-stylize-findEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-findEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-findEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-solarize-u8-cached.pcraft",
+    "command": "filter.stylize.solarize",
+    "depth": "u8",
+    "expected": "filter-stylize-solarize-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-solarize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-solarize-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-diffuse-u8-cached.pcraft",
+    "command": "filter.stylize.diffuse",
+    "depth": "u8",
+    "expected": "filter-stylize-diffuse-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-diffuse",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-diffuse-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-extrude-u8-cached.pcraft",
+    "command": "filter.stylize.extrude",
+    "depth": "u8",
+    "expected": "filter-stylize-extrude-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-extrude",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-extrude-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-oilPaint-u8-cached.pcraft",
+    "command": "filter.stylize.oilPaint",
+    "depth": "u8",
+    "expected": "filter-stylize-oilPaint-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-oilPaint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-oilPaint-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-u8-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "u8",
+    "expected": "filter-stylize-tiles-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-tiles-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-traceContour-u8-cached.pcraft",
+    "command": "filter.stylize.traceContour",
+    "depth": "u8",
+    "expected": "filter-stylize-traceContour-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-traceContour",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-traceContour-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-wind-u8-cached.pcraft",
+    "command": "filter.stylize.wind",
+    "depth": "u8",
+    "expected": "filter-stylize-wind-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-wind",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-wind-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-twirl-u8-cached.pcraft",
+    "command": "filter.distort.twirl",
+    "depth": "u8",
+    "expected": "filter-distort-twirl-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-twirl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-twirl-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-pinch-u8-cached.pcraft",
+    "command": "filter.distort.pinch",
+    "depth": "u8",
+    "expected": "filter-distort-pinch-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-pinch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-pinch-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-spherize-u8-cached.pcraft",
+    "command": "filter.distort.spherize",
+    "depth": "u8",
+    "expected": "filter-distort-spherize-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-spherize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-spherize-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-u8-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "u8",
+    "expected": "filter-distort-wave-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-wave-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-ripple-u8-cached.pcraft",
+    "command": "filter.distort.ripple",
+    "depth": "u8",
+    "expected": "filter-distort-ripple-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-ripple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-ripple-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-polarCoordinates-u8-cached.pcraft",
+    "command": "filter.distort.polarCoordinates",
+    "depth": "u8",
+    "expected": "filter-distort-polarCoordinates-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-polarCoordinates",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-polarCoordinates-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-u8-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "u8",
+    "expected": "filter-distort-shear-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-shear-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-zigZag-u8-cached.pcraft",
+    "command": "filter.distort.zigZag",
+    "depth": "u8",
+    "expected": "filter-distort-zigZag-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-zigZag",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-zigZag-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-fibers-u8-cached.pcraft",
+    "command": "filter.render.fibers",
+    "depth": "u8",
+    "expected": "filter-render-fibers-u8.rgba32",
+    "height": 12,
+    "name": "filter-render-fibers",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-fibers-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lensFlare-u8-cached.pcraft",
+    "command": "filter.render.lensFlare",
+    "depth": "u8",
+    "expected": "filter-render-lensFlare-u8.rgba32",
+    "height": 12,
+    "name": "filter-render-lensFlare",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-lensFlare-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-deInterlace-u8-cached.pcraft",
+    "command": "filter.video.deInterlace",
+    "depth": "u8",
+    "expected": "filter-video-deInterlace-u8.rgba32",
+    "height": 12,
+    "name": "filter-video-deInterlace",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-deInterlace-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-ntscColors-u8-cached.pcraft",
+    "command": "filter.video.ntscColors",
+    "depth": "u8",
+    "expected": "filter-video-ntscColors-u8.rgba32",
+    "height": 12,
+    "name": "filter-video-ntscColors",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-ntscColors-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-u8-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-fieldBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-u8-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-irisBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-tiltShift-u8-cached.pcraft",
+    "command": "filter.blurGallery.tiltShift",
+    "depth": "u8",
+    "expected": "filter-blurGallery-tiltShift-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-tiltShift",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-tiltShift-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-u8-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-pathBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-spinBlur-u8-cached.pcraft",
+    "command": "filter.blurGallery.spinBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-spinBlur-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-spinBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-spinBlur-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-coloredPencil-u8-cached.pcraft",
+    "command": "filter.gallery.coloredPencil",
+    "depth": "u8",
+    "expected": "filter-gallery-coloredPencil-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-coloredPencil",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-coloredPencil-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-cutout-u8-cached.pcraft",
+    "command": "filter.gallery.cutout",
+    "depth": "u8",
+    "expected": "filter-gallery-cutout-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-cutout",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-cutout-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-dryBrush-u8-cached.pcraft",
+    "command": "filter.gallery.dryBrush",
+    "depth": "u8",
+    "expected": "filter-gallery-dryBrush-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-dryBrush",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-dryBrush-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-filmGrain-u8-cached.pcraft",
+    "command": "filter.gallery.filmGrain",
+    "depth": "u8",
+    "expected": "filter-gallery-filmGrain-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-filmGrain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-filmGrain-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-fresco-u8-cached.pcraft",
+    "command": "filter.gallery.fresco",
+    "depth": "u8",
+    "expected": "filter-gallery-fresco-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-fresco",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-fresco-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-neonGlow-u8-cached.pcraft",
+    "command": "filter.gallery.neonGlow",
+    "depth": "u8",
+    "expected": "filter-gallery-neonGlow-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-neonGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-neonGlow-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paintDaubs-u8-cached.pcraft",
+    "command": "filter.gallery.paintDaubs",
+    "depth": "u8",
+    "expected": "filter-gallery-paintDaubs-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paintDaubs",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paintDaubs-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paletteKnife-u8-cached.pcraft",
+    "command": "filter.gallery.paletteKnife",
+    "depth": "u8",
+    "expected": "filter-gallery-paletteKnife-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paletteKnife",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paletteKnife-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plasticWrap-u8-cached.pcraft",
+    "command": "filter.gallery.plasticWrap",
+    "depth": "u8",
+    "expected": "filter-gallery-plasticWrap-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plasticWrap",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plasticWrap-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-posterEdges-u8-cached.pcraft",
+    "command": "filter.gallery.posterEdges",
+    "depth": "u8",
+    "expected": "filter-gallery-posterEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-posterEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-posterEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-roughPastels-u8-cached.pcraft",
+    "command": "filter.gallery.roughPastels",
+    "depth": "u8",
+    "expected": "filter-gallery-roughPastels-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-roughPastels",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-roughPastels-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-smudgeStick-u8-cached.pcraft",
+    "command": "filter.gallery.smudgeStick",
+    "depth": "u8",
+    "expected": "filter-gallery-smudgeStick-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-smudgeStick",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-smudgeStick-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sponge-u8-cached.pcraft",
+    "command": "filter.gallery.sponge",
+    "depth": "u8",
+    "expected": "filter-gallery-sponge-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sponge",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sponge-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-underpainting-u8-cached.pcraft",
+    "command": "filter.gallery.underpainting",
+    "depth": "u8",
+    "expected": "filter-gallery-underpainting-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-underpainting",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-underpainting-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-watercolor-u8-cached.pcraft",
+    "command": "filter.gallery.watercolor",
+    "depth": "u8",
+    "expected": "filter-gallery-watercolor-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-watercolor",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-watercolor-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-accentedEdges-u8-cached.pcraft",
+    "command": "filter.gallery.accentedEdges",
+    "depth": "u8",
+    "expected": "filter-gallery-accentedEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-accentedEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-accentedEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-angledStrokes-u8-cached.pcraft",
+    "command": "filter.gallery.angledStrokes",
+    "depth": "u8",
+    "expected": "filter-gallery-angledStrokes-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-angledStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-angledStrokes-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-crosshatch-u8-cached.pcraft",
+    "command": "filter.gallery.crosshatch",
+    "depth": "u8",
+    "expected": "filter-gallery-crosshatch-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-crosshatch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-crosshatch-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-darkStrokes-u8-cached.pcraft",
+    "command": "filter.gallery.darkStrokes",
+    "depth": "u8",
+    "expected": "filter-gallery-darkStrokes-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-darkStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-darkStrokes-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-inkOutlines-u8-cached.pcraft",
+    "command": "filter.gallery.inkOutlines",
+    "depth": "u8",
+    "expected": "filter-gallery-inkOutlines-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-inkOutlines",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-inkOutlines-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-spatter-u8-cached.pcraft",
+    "command": "filter.gallery.spatter",
+    "depth": "u8",
+    "expected": "filter-gallery-spatter-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-spatter",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-spatter-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sprayedStrokes-u8-cached.pcraft",
+    "command": "filter.gallery.sprayedStrokes",
+    "depth": "u8",
+    "expected": "filter-gallery-sprayedStrokes-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sprayedStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sprayedStrokes-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sumiE-u8-cached.pcraft",
+    "command": "filter.gallery.sumiE",
+    "depth": "u8",
+    "expected": "filter-gallery-sumiE-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sumiE",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sumiE-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-diffuseGlow-u8-cached.pcraft",
+    "command": "filter.gallery.diffuseGlow",
+    "depth": "u8",
+    "expected": "filter-gallery-diffuseGlow-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-diffuseGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-diffuseGlow-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-u8-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "u8",
+    "expected": "filter-gallery-glass-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glass-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-oceanRipple-u8-cached.pcraft",
+    "command": "filter.gallery.oceanRipple",
+    "depth": "u8",
+    "expected": "filter-gallery-oceanRipple-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-oceanRipple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-oceanRipple-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-basRelief-u8-cached.pcraft",
+    "command": "filter.gallery.basRelief",
+    "depth": "u8",
+    "expected": "filter-gallery-basRelief-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-basRelief",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-basRelief-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chalkCharcoal-u8-cached.pcraft",
+    "command": "filter.gallery.chalkCharcoal",
+    "depth": "u8",
+    "expected": "filter-gallery-chalkCharcoal-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chalkCharcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chalkCharcoal-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-charcoal-u8-cached.pcraft",
+    "command": "filter.gallery.charcoal",
+    "depth": "u8",
+    "expected": "filter-gallery-charcoal-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-charcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-charcoal-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chrome-u8-cached.pcraft",
+    "command": "filter.gallery.chrome",
+    "depth": "u8",
+    "expected": "filter-gallery-chrome-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chrome",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chrome-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-conteCrayon-u8-cached.pcraft",
+    "command": "filter.gallery.conteCrayon",
+    "depth": "u8",
+    "expected": "filter-gallery-conteCrayon-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-conteCrayon",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-conteCrayon-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-graphicPen-u8-cached.pcraft",
+    "command": "filter.gallery.graphicPen",
+    "depth": "u8",
+    "expected": "filter-gallery-graphicPen-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-graphicPen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-graphicPen-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-halftonePattern-u8-cached.pcraft",
+    "command": "filter.gallery.halftonePattern",
+    "depth": "u8",
+    "expected": "filter-gallery-halftonePattern-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-halftonePattern",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-halftonePattern-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-notePaper-u8-cached.pcraft",
+    "command": "filter.gallery.notePaper",
+    "depth": "u8",
+    "expected": "filter-gallery-notePaper-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-notePaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-notePaper-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-photocopy-u8-cached.pcraft",
+    "command": "filter.gallery.photocopy",
+    "depth": "u8",
+    "expected": "filter-gallery-photocopy-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-photocopy",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-photocopy-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plaster-u8-cached.pcraft",
+    "command": "filter.gallery.plaster",
+    "depth": "u8",
+    "expected": "filter-gallery-plaster-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plaster",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plaster-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-reticulation-u8-cached.pcraft",
+    "command": "filter.gallery.reticulation",
+    "depth": "u8",
+    "expected": "filter-gallery-reticulation-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-reticulation",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-reticulation-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stamp-u8-cached.pcraft",
+    "command": "filter.gallery.stamp",
+    "depth": "u8",
+    "expected": "filter-gallery-stamp-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stamp",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stamp-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-tornEdges-u8-cached.pcraft",
+    "command": "filter.gallery.tornEdges",
+    "depth": "u8",
+    "expected": "filter-gallery-tornEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-tornEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-tornEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-waterPaper-u8-cached.pcraft",
+    "command": "filter.gallery.waterPaper",
+    "depth": "u8",
+    "expected": "filter-gallery-waterPaper-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-waterPaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-waterPaper-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glowingEdges-u8-cached.pcraft",
+    "command": "filter.gallery.glowingEdges",
+    "depth": "u8",
+    "expected": "filter-gallery-glowingEdges-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glowingEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glowingEdges-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-craquelure-u8-cached.pcraft",
+    "command": "filter.gallery.craquelure",
+    "depth": "u8",
+    "expected": "filter-gallery-craquelure-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-craquelure",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-craquelure-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-grain-u8-cached.pcraft",
+    "command": "filter.gallery.grain",
+    "depth": "u8",
+    "expected": "filter-gallery-grain-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-grain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-grain-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-mosaicTiles-u8-cached.pcraft",
+    "command": "filter.gallery.mosaicTiles",
+    "depth": "u8",
+    "expected": "filter-gallery-mosaicTiles-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-mosaicTiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-mosaicTiles-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-patchwork-u8-cached.pcraft",
+    "command": "filter.gallery.patchwork",
+    "depth": "u8",
+    "expected": "filter-gallery-patchwork-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-patchwork",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-patchwork-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stainedGlass-u8-cached.pcraft",
+    "command": "filter.gallery.stainedGlass",
+    "depth": "u8",
+    "expected": "filter-gallery-stainedGlass-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stainedGlass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stainedGlass-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-texturizer-u8-cached.pcraft",
+    "command": "filter.gallery.texturizer",
+    "depth": "u8",
+    "expected": "filter-gallery-texturizer-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-texturizer",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-texturizer-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "gallery-stack-u8-cached.pcraft",
+    "command": "filter.filterGallery",
+    "depth": "u8",
+    "expected": "gallery-stack-u8.rgba32",
+    "height": 12,
+    "name": "gallery-stack",
+    "params": {
+      "background": [
+        0.9,
+        0.8,
+        0.7,
+        1.0
+      ],
+      "effects": [
+        {
+          "filter": "cutout",
+          "params": {
+            "numberOfLevels": 5
+          }
+        },
+        {
+          "filter": "crosshatch",
+          "params": {},
+          "visible": false
+        }
+      ],
+      "foreground": "#183858"
+    },
+    "supported": true,
+    "uncached": "gallery-stack-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-custom-u8-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "u8",
+    "expected": "filter-blur-radialBlur-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur-custom",
+    "params": {
+      "amount": 13,
+      "centerX": 0.25,
+      "centerY": 0.75,
+      "method": "zoom"
+    },
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-custom-u8-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "u8",
+    "expected": "filter-other-hsbHsl-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl-custom",
+    "params": {
+      "inputMode": "hsb",
+      "rowOrder": "rgb"
+    },
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-custom-u8-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "u8",
+    "expected": "filter-other-minimum-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum-custom",
+    "params": {
+      "preserve": "roundness",
+      "radius": 1.5
+    },
+    "supported": true,
+    "uncached": "filter-other-minimum-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-custom-u8-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "u8",
+    "expected": "filter-pixelate-colorHalftone-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone-custom",
+    "params": {
+      "channel1": -45,
+      "channel2": 75,
+      "channel3": 90,
+      "channel4": 180,
+      "maxRadius": 5
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-custom-u8-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "u8",
+    "expected": "filter-pixelate-pointillize-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize-custom",
+    "params": {
+      "background": "#204060",
+      "cellSize": 4,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-custom-u8-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "u8",
+    "expected": "filter-noise-addNoise-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise-custom",
+    "params": {
+      "amount": 24.25,
+      "distribution": "gaussian",
+      "monochromatic": true,
+      "seed": 18446744073709551615
+    },
+    "supported": true,
+    "uncached": "filter-noise-addNoise-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-custom-u8-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "u8",
+    "expected": "filter-stylize-tiles-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles-custom",
+    "params": {
+      "count": 3,
+      "fill": "foreground",
+      "foreground": [
+        0.2,
+        0.4,
+        0.6
+      ],
+      "maxOffset": 15,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-stylize-tiles-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-custom-u8-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "u8",
+    "expected": "filter-distort-shear-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear-custom",
+    "params": {
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.3
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "undefinedAreas": "repeat"
+    },
+    "supported": true,
+    "uncached": "filter-distort-shear-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-custom-u8-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-fieldBlur-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "blur": 3.0,
+          "x": 0.2,
+          "y": 0.3
+        },
+        {
+          "blur": 7.0,
+          "x": 0.8,
+          "y": 0.7
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-custom-u8-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-irisBlur-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "angle": 25.0,
+          "blur": 4.0,
+          "feather": 0.4,
+          "radius_x": 0.3,
+          "radius_y": 0.2,
+          "roundness": 15.0,
+          "x": 0.4,
+          "y": 0.6
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-custom-u8-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "u8",
+    "expected": "filter-blurGallery-pathBlur-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur-custom",
+    "params": {
+      "paths": [
+        {
+          "points": [
+            [
+              0.1,
+              0.2
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.9,
+              0.4
+            ]
+          ],
+          "speed": 12.0,
+          "taper": 30.0
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-custom-u8-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "u8",
+    "expected": "filter-gallery-glass-custom-u8.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass-custom",
+    "params": {
+      "distortion": 6,
+      "invert": true,
+      "scaling": 100,
+      "smoothness": 4,
+      "texture": "Canvas"
+    },
+    "supported": true,
+    "uncached": "filter-gallery-glass-custom-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-relight-rejected-u8-cached.pcraft",
+    "command": "filter.render.relight",
+    "depth": "u8",
+    "expected": "filter-render-relight-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-render-relight-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-relight-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lightingEffects-rejected-u8-cached.pcraft",
+    "command": "filter.render.lightingEffects",
+    "depth": "u8",
+    "expected": "filter-render-lightingEffects-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-render-lightingEffects-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-lightingEffects-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-displace-rejected-u8-cached.pcraft",
+    "command": "filter.distort.displace",
+    "depth": "u8",
+    "expected": "filter-distort-displace-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-displace-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-distort-displace-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-rejected-u8-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "u8",
+    "expected": "filter-blur-lensBlur-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur-rejected",
+    "params": {
+      "depthMap": "layerMask"
+    },
+    "supported": false,
+    "uncached": "filter-blur-lensBlur-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-rejected-u8-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "u8",
+    "expected": "filter-distort-wave-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave-rejected",
+    "params": {
+      "undefinedAreas": "transparent"
+    },
+    "supported": false,
+    "uncached": "filter-distort-wave-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-rejected-u8-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "u8",
+    "expected": "filter-noise-median-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-noise-median-rejected",
+    "params": {
+      "radius": 1.25
+    },
+    "supported": false,
+    "uncached": "filter-noise-median-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-rejected-u8-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "u8",
+    "expected": "filter-blur-gaussianBlur-rejected-u8.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur-rejected",
+    "params": {
+      "futureField": true
+    },
+    "supported": false,
+    "uncached": "filter-blur-gaussianBlur-rejected-u8-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-blur-u16-cached.pcraft",
+    "command": "filter.blur.blur",
+    "depth": "u16",
+    "expected": "filter-blur-blur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-blur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-blurMore-u16-cached.pcraft",
+    "command": "filter.blur.blurMore",
+    "depth": "u16",
+    "expected": "filter-blur-blurMore-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-blurMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blurMore-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-u16-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "u16",
+    "expected": "filter-blur-gaussianBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-gaussianBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-boxBlur-u16-cached.pcraft",
+    "command": "filter.blur.boxBlur",
+    "depth": "u16",
+    "expected": "filter-blur-boxBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-boxBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-boxBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-motionBlur-u16-cached.pcraft",
+    "command": "filter.blur.motionBlur",
+    "depth": "u16",
+    "expected": "filter-blur-motionBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-motionBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-motionBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-u16-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "u16",
+    "expected": "filter-blur-radialBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-surfaceBlur-u16-cached.pcraft",
+    "command": "filter.blur.surfaceBlur",
+    "depth": "u16",
+    "expected": "filter-blur-surfaceBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-surfaceBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-surfaceBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-smartBlur-u16-cached.pcraft",
+    "command": "filter.blur.smartBlur",
+    "depth": "u16",
+    "expected": "filter-blur-smartBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-smartBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-smartBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-shapeBlur-u16-cached.pcraft",
+    "command": "filter.blur.shapeBlur",
+    "depth": "u16",
+    "expected": "filter-blur-shapeBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-shapeBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-shapeBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-u16-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "u16",
+    "expected": "filter-blur-lensBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-lensBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpen-u16-cached.pcraft",
+    "command": "filter.sharpen.sharpen",
+    "depth": "u16",
+    "expected": "filter-sharpen-sharpen-u16.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpen-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenMore-u16-cached.pcraft",
+    "command": "filter.sharpen.sharpenMore",
+    "depth": "u16",
+    "expected": "filter-sharpen-sharpenMore-u16.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenMore-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenEdges-u16-cached.pcraft",
+    "command": "filter.sharpen.sharpenEdges",
+    "depth": "u16",
+    "expected": "filter-sharpen-sharpenEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-unsharpMask-u16-cached.pcraft",
+    "command": "filter.sharpen.unsharpMask",
+    "depth": "u16",
+    "expected": "filter-sharpen-unsharpMask-u16.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-unsharpMask",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-unsharpMask-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-smartSharpen-u16-cached.pcraft",
+    "command": "filter.sharpen.smartSharpen",
+    "depth": "u16",
+    "expected": "filter-sharpen-smartSharpen-u16.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-smartSharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-smartSharpen-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-despeckle-u16-cached.pcraft",
+    "command": "filter.noise.despeckle",
+    "depth": "u16",
+    "expected": "filter-noise-despeckle-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-despeckle",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-despeckle-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-u16-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "u16",
+    "expected": "filter-noise-addNoise-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-addNoise-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-u16-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "u16",
+    "expected": "filter-noise-median-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-median",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-median-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-dustAndScratches-u16-cached.pcraft",
+    "command": "filter.noise.dustAndScratches",
+    "depth": "u16",
+    "expected": "filter-noise-dustAndScratches-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-dustAndScratches",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-dustAndScratches-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-reduceNoise-u16-cached.pcraft",
+    "command": "filter.noise.reduceNoise",
+    "depth": "u16",
+    "expected": "filter-noise-reduceNoise-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-reduceNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-reduceNoise-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-highPass-u16-cached.pcraft",
+    "command": "filter.other.highPass",
+    "depth": "u16",
+    "expected": "filter-other-highPass-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-highPass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-highPass-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-u16-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "u16",
+    "expected": "filter-other-minimum-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-minimum-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-maximum-u16-cached.pcraft",
+    "command": "filter.other.maximum",
+    "depth": "u16",
+    "expected": "filter-other-maximum-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-maximum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-maximum-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-offset-u16-cached.pcraft",
+    "command": "filter.other.offset",
+    "depth": "u16",
+    "expected": "filter-other-offset-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-offset",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-offset-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-custom-u16-cached.pcraft",
+    "command": "filter.other.custom",
+    "depth": "u16",
+    "expected": "filter-other-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-custom",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-u16-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "u16",
+    "expected": "filter-other-hsbHsl-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mosaic-u16-cached.pcraft",
+    "command": "filter.pixelate.mosaic",
+    "depth": "u16",
+    "expected": "filter-pixelate-mosaic-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mosaic",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mosaic-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-u16-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "u16",
+    "expected": "filter-pixelate-colorHalftone-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-crystallize-u16-cached.pcraft",
+    "command": "filter.pixelate.crystallize",
+    "depth": "u16",
+    "expected": "filter-pixelate-crystallize-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-crystallize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-crystallize-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-facet-u16-cached.pcraft",
+    "command": "filter.pixelate.facet",
+    "depth": "u16",
+    "expected": "filter-pixelate-facet-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-facet",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-facet-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-fragment-u16-cached.pcraft",
+    "command": "filter.pixelate.fragment",
+    "depth": "u16",
+    "expected": "filter-pixelate-fragment-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-fragment",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-fragment-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mezzotint-u16-cached.pcraft",
+    "command": "filter.pixelate.mezzotint",
+    "depth": "u16",
+    "expected": "filter-pixelate-mezzotint-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mezzotint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mezzotint-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-u16-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "u16",
+    "expected": "filter-pixelate-pointillize-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-emboss-u16-cached.pcraft",
+    "command": "filter.stylize.emboss",
+    "depth": "u16",
+    "expected": "filter-stylize-emboss-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-emboss",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-emboss-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-findEdges-u16-cached.pcraft",
+    "command": "filter.stylize.findEdges",
+    "depth": "u16",
+    "expected": "filter-stylize-findEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-findEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-findEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-solarize-u16-cached.pcraft",
+    "command": "filter.stylize.solarize",
+    "depth": "u16",
+    "expected": "filter-stylize-solarize-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-solarize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-solarize-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-diffuse-u16-cached.pcraft",
+    "command": "filter.stylize.diffuse",
+    "depth": "u16",
+    "expected": "filter-stylize-diffuse-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-diffuse",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-diffuse-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-extrude-u16-cached.pcraft",
+    "command": "filter.stylize.extrude",
+    "depth": "u16",
+    "expected": "filter-stylize-extrude-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-extrude",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-extrude-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-oilPaint-u16-cached.pcraft",
+    "command": "filter.stylize.oilPaint",
+    "depth": "u16",
+    "expected": "filter-stylize-oilPaint-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-oilPaint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-oilPaint-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-u16-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "u16",
+    "expected": "filter-stylize-tiles-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-tiles-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-traceContour-u16-cached.pcraft",
+    "command": "filter.stylize.traceContour",
+    "depth": "u16",
+    "expected": "filter-stylize-traceContour-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-traceContour",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-traceContour-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-wind-u16-cached.pcraft",
+    "command": "filter.stylize.wind",
+    "depth": "u16",
+    "expected": "filter-stylize-wind-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-wind",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-wind-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-twirl-u16-cached.pcraft",
+    "command": "filter.distort.twirl",
+    "depth": "u16",
+    "expected": "filter-distort-twirl-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-twirl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-twirl-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-pinch-u16-cached.pcraft",
+    "command": "filter.distort.pinch",
+    "depth": "u16",
+    "expected": "filter-distort-pinch-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-pinch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-pinch-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-spherize-u16-cached.pcraft",
+    "command": "filter.distort.spherize",
+    "depth": "u16",
+    "expected": "filter-distort-spherize-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-spherize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-spherize-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-u16-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "u16",
+    "expected": "filter-distort-wave-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-wave-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-ripple-u16-cached.pcraft",
+    "command": "filter.distort.ripple",
+    "depth": "u16",
+    "expected": "filter-distort-ripple-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-ripple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-ripple-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-polarCoordinates-u16-cached.pcraft",
+    "command": "filter.distort.polarCoordinates",
+    "depth": "u16",
+    "expected": "filter-distort-polarCoordinates-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-polarCoordinates",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-polarCoordinates-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-u16-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "u16",
+    "expected": "filter-distort-shear-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-shear-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-zigZag-u16-cached.pcraft",
+    "command": "filter.distort.zigZag",
+    "depth": "u16",
+    "expected": "filter-distort-zigZag-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-zigZag",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-zigZag-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-fibers-u16-cached.pcraft",
+    "command": "filter.render.fibers",
+    "depth": "u16",
+    "expected": "filter-render-fibers-u16.rgba32",
+    "height": 12,
+    "name": "filter-render-fibers",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-fibers-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lensFlare-u16-cached.pcraft",
+    "command": "filter.render.lensFlare",
+    "depth": "u16",
+    "expected": "filter-render-lensFlare-u16.rgba32",
+    "height": 12,
+    "name": "filter-render-lensFlare",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-lensFlare-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-deInterlace-u16-cached.pcraft",
+    "command": "filter.video.deInterlace",
+    "depth": "u16",
+    "expected": "filter-video-deInterlace-u16.rgba32",
+    "height": 12,
+    "name": "filter-video-deInterlace",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-deInterlace-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-ntscColors-u16-cached.pcraft",
+    "command": "filter.video.ntscColors",
+    "depth": "u16",
+    "expected": "filter-video-ntscColors-u16.rgba32",
+    "height": 12,
+    "name": "filter-video-ntscColors",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-ntscColors-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-u16-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-fieldBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-u16-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-irisBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-tiltShift-u16-cached.pcraft",
+    "command": "filter.blurGallery.tiltShift",
+    "depth": "u16",
+    "expected": "filter-blurGallery-tiltShift-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-tiltShift",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-tiltShift-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-u16-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-pathBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-spinBlur-u16-cached.pcraft",
+    "command": "filter.blurGallery.spinBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-spinBlur-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-spinBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-spinBlur-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-coloredPencil-u16-cached.pcraft",
+    "command": "filter.gallery.coloredPencil",
+    "depth": "u16",
+    "expected": "filter-gallery-coloredPencil-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-coloredPencil",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-coloredPencil-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-cutout-u16-cached.pcraft",
+    "command": "filter.gallery.cutout",
+    "depth": "u16",
+    "expected": "filter-gallery-cutout-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-cutout",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-cutout-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-dryBrush-u16-cached.pcraft",
+    "command": "filter.gallery.dryBrush",
+    "depth": "u16",
+    "expected": "filter-gallery-dryBrush-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-dryBrush",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-dryBrush-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-filmGrain-u16-cached.pcraft",
+    "command": "filter.gallery.filmGrain",
+    "depth": "u16",
+    "expected": "filter-gallery-filmGrain-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-filmGrain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-filmGrain-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-fresco-u16-cached.pcraft",
+    "command": "filter.gallery.fresco",
+    "depth": "u16",
+    "expected": "filter-gallery-fresco-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-fresco",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-fresco-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-neonGlow-u16-cached.pcraft",
+    "command": "filter.gallery.neonGlow",
+    "depth": "u16",
+    "expected": "filter-gallery-neonGlow-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-neonGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-neonGlow-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paintDaubs-u16-cached.pcraft",
+    "command": "filter.gallery.paintDaubs",
+    "depth": "u16",
+    "expected": "filter-gallery-paintDaubs-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paintDaubs",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paintDaubs-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paletteKnife-u16-cached.pcraft",
+    "command": "filter.gallery.paletteKnife",
+    "depth": "u16",
+    "expected": "filter-gallery-paletteKnife-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paletteKnife",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paletteKnife-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plasticWrap-u16-cached.pcraft",
+    "command": "filter.gallery.plasticWrap",
+    "depth": "u16",
+    "expected": "filter-gallery-plasticWrap-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plasticWrap",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plasticWrap-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-posterEdges-u16-cached.pcraft",
+    "command": "filter.gallery.posterEdges",
+    "depth": "u16",
+    "expected": "filter-gallery-posterEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-posterEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-posterEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-roughPastels-u16-cached.pcraft",
+    "command": "filter.gallery.roughPastels",
+    "depth": "u16",
+    "expected": "filter-gallery-roughPastels-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-roughPastels",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-roughPastels-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-smudgeStick-u16-cached.pcraft",
+    "command": "filter.gallery.smudgeStick",
+    "depth": "u16",
+    "expected": "filter-gallery-smudgeStick-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-smudgeStick",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-smudgeStick-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sponge-u16-cached.pcraft",
+    "command": "filter.gallery.sponge",
+    "depth": "u16",
+    "expected": "filter-gallery-sponge-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sponge",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sponge-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-underpainting-u16-cached.pcraft",
+    "command": "filter.gallery.underpainting",
+    "depth": "u16",
+    "expected": "filter-gallery-underpainting-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-underpainting",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-underpainting-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-watercolor-u16-cached.pcraft",
+    "command": "filter.gallery.watercolor",
+    "depth": "u16",
+    "expected": "filter-gallery-watercolor-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-watercolor",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-watercolor-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-accentedEdges-u16-cached.pcraft",
+    "command": "filter.gallery.accentedEdges",
+    "depth": "u16",
+    "expected": "filter-gallery-accentedEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-accentedEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-accentedEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-angledStrokes-u16-cached.pcraft",
+    "command": "filter.gallery.angledStrokes",
+    "depth": "u16",
+    "expected": "filter-gallery-angledStrokes-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-angledStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-angledStrokes-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-crosshatch-u16-cached.pcraft",
+    "command": "filter.gallery.crosshatch",
+    "depth": "u16",
+    "expected": "filter-gallery-crosshatch-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-crosshatch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-crosshatch-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-darkStrokes-u16-cached.pcraft",
+    "command": "filter.gallery.darkStrokes",
+    "depth": "u16",
+    "expected": "filter-gallery-darkStrokes-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-darkStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-darkStrokes-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-inkOutlines-u16-cached.pcraft",
+    "command": "filter.gallery.inkOutlines",
+    "depth": "u16",
+    "expected": "filter-gallery-inkOutlines-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-inkOutlines",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-inkOutlines-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-spatter-u16-cached.pcraft",
+    "command": "filter.gallery.spatter",
+    "depth": "u16",
+    "expected": "filter-gallery-spatter-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-spatter",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-spatter-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sprayedStrokes-u16-cached.pcraft",
+    "command": "filter.gallery.sprayedStrokes",
+    "depth": "u16",
+    "expected": "filter-gallery-sprayedStrokes-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sprayedStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sprayedStrokes-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sumiE-u16-cached.pcraft",
+    "command": "filter.gallery.sumiE",
+    "depth": "u16",
+    "expected": "filter-gallery-sumiE-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sumiE",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sumiE-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-diffuseGlow-u16-cached.pcraft",
+    "command": "filter.gallery.diffuseGlow",
+    "depth": "u16",
+    "expected": "filter-gallery-diffuseGlow-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-diffuseGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-diffuseGlow-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-u16-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "u16",
+    "expected": "filter-gallery-glass-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glass-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-oceanRipple-u16-cached.pcraft",
+    "command": "filter.gallery.oceanRipple",
+    "depth": "u16",
+    "expected": "filter-gallery-oceanRipple-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-oceanRipple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-oceanRipple-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-basRelief-u16-cached.pcraft",
+    "command": "filter.gallery.basRelief",
+    "depth": "u16",
+    "expected": "filter-gallery-basRelief-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-basRelief",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-basRelief-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chalkCharcoal-u16-cached.pcraft",
+    "command": "filter.gallery.chalkCharcoal",
+    "depth": "u16",
+    "expected": "filter-gallery-chalkCharcoal-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chalkCharcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chalkCharcoal-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-charcoal-u16-cached.pcraft",
+    "command": "filter.gallery.charcoal",
+    "depth": "u16",
+    "expected": "filter-gallery-charcoal-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-charcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-charcoal-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chrome-u16-cached.pcraft",
+    "command": "filter.gallery.chrome",
+    "depth": "u16",
+    "expected": "filter-gallery-chrome-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chrome",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chrome-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-conteCrayon-u16-cached.pcraft",
+    "command": "filter.gallery.conteCrayon",
+    "depth": "u16",
+    "expected": "filter-gallery-conteCrayon-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-conteCrayon",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-conteCrayon-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-graphicPen-u16-cached.pcraft",
+    "command": "filter.gallery.graphicPen",
+    "depth": "u16",
+    "expected": "filter-gallery-graphicPen-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-graphicPen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-graphicPen-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-halftonePattern-u16-cached.pcraft",
+    "command": "filter.gallery.halftonePattern",
+    "depth": "u16",
+    "expected": "filter-gallery-halftonePattern-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-halftonePattern",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-halftonePattern-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-notePaper-u16-cached.pcraft",
+    "command": "filter.gallery.notePaper",
+    "depth": "u16",
+    "expected": "filter-gallery-notePaper-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-notePaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-notePaper-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-photocopy-u16-cached.pcraft",
+    "command": "filter.gallery.photocopy",
+    "depth": "u16",
+    "expected": "filter-gallery-photocopy-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-photocopy",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-photocopy-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plaster-u16-cached.pcraft",
+    "command": "filter.gallery.plaster",
+    "depth": "u16",
+    "expected": "filter-gallery-plaster-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plaster",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plaster-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-reticulation-u16-cached.pcraft",
+    "command": "filter.gallery.reticulation",
+    "depth": "u16",
+    "expected": "filter-gallery-reticulation-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-reticulation",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-reticulation-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stamp-u16-cached.pcraft",
+    "command": "filter.gallery.stamp",
+    "depth": "u16",
+    "expected": "filter-gallery-stamp-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stamp",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stamp-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-tornEdges-u16-cached.pcraft",
+    "command": "filter.gallery.tornEdges",
+    "depth": "u16",
+    "expected": "filter-gallery-tornEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-tornEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-tornEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-waterPaper-u16-cached.pcraft",
+    "command": "filter.gallery.waterPaper",
+    "depth": "u16",
+    "expected": "filter-gallery-waterPaper-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-waterPaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-waterPaper-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glowingEdges-u16-cached.pcraft",
+    "command": "filter.gallery.glowingEdges",
+    "depth": "u16",
+    "expected": "filter-gallery-glowingEdges-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glowingEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glowingEdges-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-craquelure-u16-cached.pcraft",
+    "command": "filter.gallery.craquelure",
+    "depth": "u16",
+    "expected": "filter-gallery-craquelure-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-craquelure",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-craquelure-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-grain-u16-cached.pcraft",
+    "command": "filter.gallery.grain",
+    "depth": "u16",
+    "expected": "filter-gallery-grain-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-grain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-grain-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-mosaicTiles-u16-cached.pcraft",
+    "command": "filter.gallery.mosaicTiles",
+    "depth": "u16",
+    "expected": "filter-gallery-mosaicTiles-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-mosaicTiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-mosaicTiles-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-patchwork-u16-cached.pcraft",
+    "command": "filter.gallery.patchwork",
+    "depth": "u16",
+    "expected": "filter-gallery-patchwork-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-patchwork",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-patchwork-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stainedGlass-u16-cached.pcraft",
+    "command": "filter.gallery.stainedGlass",
+    "depth": "u16",
+    "expected": "filter-gallery-stainedGlass-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stainedGlass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stainedGlass-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-texturizer-u16-cached.pcraft",
+    "command": "filter.gallery.texturizer",
+    "depth": "u16",
+    "expected": "filter-gallery-texturizer-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-texturizer",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-texturizer-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "gallery-stack-u16-cached.pcraft",
+    "command": "filter.filterGallery",
+    "depth": "u16",
+    "expected": "gallery-stack-u16.rgba32",
+    "height": 12,
+    "name": "gallery-stack",
+    "params": {
+      "background": [
+        0.9,
+        0.8,
+        0.7,
+        1.0
+      ],
+      "effects": [
+        {
+          "filter": "cutout",
+          "params": {
+            "numberOfLevels": 5
+          }
+        },
+        {
+          "filter": "crosshatch",
+          "params": {},
+          "visible": false
+        }
+      ],
+      "foreground": "#183858"
+    },
+    "supported": true,
+    "uncached": "gallery-stack-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-custom-u16-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "u16",
+    "expected": "filter-blur-radialBlur-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur-custom",
+    "params": {
+      "amount": 13,
+      "centerX": 0.25,
+      "centerY": 0.75,
+      "method": "zoom"
+    },
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-custom-u16-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "u16",
+    "expected": "filter-other-hsbHsl-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl-custom",
+    "params": {
+      "inputMode": "hsb",
+      "rowOrder": "rgb"
+    },
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-custom-u16-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "u16",
+    "expected": "filter-other-minimum-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum-custom",
+    "params": {
+      "preserve": "roundness",
+      "radius": 1.5
+    },
+    "supported": true,
+    "uncached": "filter-other-minimum-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-custom-u16-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "u16",
+    "expected": "filter-pixelate-colorHalftone-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone-custom",
+    "params": {
+      "channel1": -45,
+      "channel2": 75,
+      "channel3": 90,
+      "channel4": 180,
+      "maxRadius": 5
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-custom-u16-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "u16",
+    "expected": "filter-pixelate-pointillize-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize-custom",
+    "params": {
+      "background": "#204060",
+      "cellSize": 4,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-custom-u16-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "u16",
+    "expected": "filter-noise-addNoise-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise-custom",
+    "params": {
+      "amount": 24.25,
+      "distribution": "gaussian",
+      "monochromatic": true,
+      "seed": 18446744073709551615
+    },
+    "supported": true,
+    "uncached": "filter-noise-addNoise-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-custom-u16-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "u16",
+    "expected": "filter-stylize-tiles-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles-custom",
+    "params": {
+      "count": 3,
+      "fill": "foreground",
+      "foreground": [
+        0.2,
+        0.4,
+        0.6
+      ],
+      "maxOffset": 15,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-stylize-tiles-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-custom-u16-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "u16",
+    "expected": "filter-distort-shear-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear-custom",
+    "params": {
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.3
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "undefinedAreas": "repeat"
+    },
+    "supported": true,
+    "uncached": "filter-distort-shear-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-custom-u16-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-fieldBlur-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "blur": 3.0,
+          "x": 0.2,
+          "y": 0.3
+        },
+        {
+          "blur": 7.0,
+          "x": 0.8,
+          "y": 0.7
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-custom-u16-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-irisBlur-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "angle": 25.0,
+          "blur": 4.0,
+          "feather": 0.4,
+          "radius_x": 0.3,
+          "radius_y": 0.2,
+          "roundness": 15.0,
+          "x": 0.4,
+          "y": 0.6
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-custom-u16-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "u16",
+    "expected": "filter-blurGallery-pathBlur-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur-custom",
+    "params": {
+      "paths": [
+        {
+          "points": [
+            [
+              0.1,
+              0.2
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.9,
+              0.4
+            ]
+          ],
+          "speed": 12.0,
+          "taper": 30.0
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-custom-u16-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "u16",
+    "expected": "filter-gallery-glass-custom-u16.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass-custom",
+    "params": {
+      "distortion": 6,
+      "invert": true,
+      "scaling": 100,
+      "smoothness": 4,
+      "texture": "Canvas"
+    },
+    "supported": true,
+    "uncached": "filter-gallery-glass-custom-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-relight-rejected-u16-cached.pcraft",
+    "command": "filter.render.relight",
+    "depth": "u16",
+    "expected": "filter-render-relight-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-render-relight-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-relight-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lightingEffects-rejected-u16-cached.pcraft",
+    "command": "filter.render.lightingEffects",
+    "depth": "u16",
+    "expected": "filter-render-lightingEffects-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-render-lightingEffects-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-lightingEffects-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-displace-rejected-u16-cached.pcraft",
+    "command": "filter.distort.displace",
+    "depth": "u16",
+    "expected": "filter-distort-displace-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-displace-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-distort-displace-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-rejected-u16-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "u16",
+    "expected": "filter-blur-lensBlur-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur-rejected",
+    "params": {
+      "depthMap": "layerMask"
+    },
+    "supported": false,
+    "uncached": "filter-blur-lensBlur-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-rejected-u16-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "u16",
+    "expected": "filter-distort-wave-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave-rejected",
+    "params": {
+      "undefinedAreas": "transparent"
+    },
+    "supported": false,
+    "uncached": "filter-distort-wave-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-rejected-u16-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "u16",
+    "expected": "filter-noise-median-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-noise-median-rejected",
+    "params": {
+      "radius": 1.25
+    },
+    "supported": false,
+    "uncached": "filter-noise-median-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-rejected-u16-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "u16",
+    "expected": "filter-blur-gaussianBlur-rejected-u16.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur-rejected",
+    "params": {
+      "futureField": true
+    },
+    "supported": false,
+    "uncached": "filter-blur-gaussianBlur-rejected-u16-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-blur-f32-cached.pcraft",
+    "command": "filter.blur.blur",
+    "depth": "f32",
+    "expected": "filter-blur-blur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-blur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-blurMore-f32-cached.pcraft",
+    "command": "filter.blur.blurMore",
+    "depth": "f32",
+    "expected": "filter-blur-blurMore-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-blurMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-blurMore-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-f32-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "f32",
+    "expected": "filter-blur-gaussianBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-gaussianBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-boxBlur-f32-cached.pcraft",
+    "command": "filter.blur.boxBlur",
+    "depth": "f32",
+    "expected": "filter-blur-boxBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-boxBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-boxBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-motionBlur-f32-cached.pcraft",
+    "command": "filter.blur.motionBlur",
+    "depth": "f32",
+    "expected": "filter-blur-motionBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-motionBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-motionBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-f32-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "f32",
+    "expected": "filter-blur-radialBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-surfaceBlur-f32-cached.pcraft",
+    "command": "filter.blur.surfaceBlur",
+    "depth": "f32",
+    "expected": "filter-blur-surfaceBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-surfaceBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-surfaceBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-smartBlur-f32-cached.pcraft",
+    "command": "filter.blur.smartBlur",
+    "depth": "f32",
+    "expected": "filter-blur-smartBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-smartBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-smartBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-shapeBlur-f32-cached.pcraft",
+    "command": "filter.blur.shapeBlur",
+    "depth": "f32",
+    "expected": "filter-blur-shapeBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-shapeBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-shapeBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-f32-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "f32",
+    "expected": "filter-blur-lensBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blur-lensBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpen-f32-cached.pcraft",
+    "command": "filter.sharpen.sharpen",
+    "depth": "f32",
+    "expected": "filter-sharpen-sharpen-f32.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpen-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenMore-f32-cached.pcraft",
+    "command": "filter.sharpen.sharpenMore",
+    "depth": "f32",
+    "expected": "filter-sharpen-sharpenMore-f32.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenMore",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenMore-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-sharpenEdges-f32-cached.pcraft",
+    "command": "filter.sharpen.sharpenEdges",
+    "depth": "f32",
+    "expected": "filter-sharpen-sharpenEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-sharpenEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-sharpenEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-unsharpMask-f32-cached.pcraft",
+    "command": "filter.sharpen.unsharpMask",
+    "depth": "f32",
+    "expected": "filter-sharpen-unsharpMask-f32.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-unsharpMask",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-unsharpMask-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-sharpen-smartSharpen-f32-cached.pcraft",
+    "command": "filter.sharpen.smartSharpen",
+    "depth": "f32",
+    "expected": "filter-sharpen-smartSharpen-f32.rgba32",
+    "height": 12,
+    "name": "filter-sharpen-smartSharpen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-sharpen-smartSharpen-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-despeckle-f32-cached.pcraft",
+    "command": "filter.noise.despeckle",
+    "depth": "f32",
+    "expected": "filter-noise-despeckle-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-despeckle",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-despeckle-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-f32-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "f32",
+    "expected": "filter-noise-addNoise-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-addNoise-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-f32-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "f32",
+    "expected": "filter-noise-median-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-median",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-median-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-dustAndScratches-f32-cached.pcraft",
+    "command": "filter.noise.dustAndScratches",
+    "depth": "f32",
+    "expected": "filter-noise-dustAndScratches-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-dustAndScratches",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-dustAndScratches-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-reduceNoise-f32-cached.pcraft",
+    "command": "filter.noise.reduceNoise",
+    "depth": "f32",
+    "expected": "filter-noise-reduceNoise-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-reduceNoise",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-noise-reduceNoise-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-highPass-f32-cached.pcraft",
+    "command": "filter.other.highPass",
+    "depth": "f32",
+    "expected": "filter-other-highPass-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-highPass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-highPass-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-f32-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "f32",
+    "expected": "filter-other-minimum-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-minimum-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-maximum-f32-cached.pcraft",
+    "command": "filter.other.maximum",
+    "depth": "f32",
+    "expected": "filter-other-maximum-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-maximum",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-maximum-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-offset-f32-cached.pcraft",
+    "command": "filter.other.offset",
+    "depth": "f32",
+    "expected": "filter-other-offset-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-offset",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-offset-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-custom-f32-cached.pcraft",
+    "command": "filter.other.custom",
+    "depth": "f32",
+    "expected": "filter-other-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-custom",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-f32-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "f32",
+    "expected": "filter-other-hsbHsl-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mosaic-f32-cached.pcraft",
+    "command": "filter.pixelate.mosaic",
+    "depth": "f32",
+    "expected": "filter-pixelate-mosaic-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mosaic",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mosaic-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-f32-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "f32",
+    "expected": "filter-pixelate-colorHalftone-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-crystallize-f32-cached.pcraft",
+    "command": "filter.pixelate.crystallize",
+    "depth": "f32",
+    "expected": "filter-pixelate-crystallize-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-crystallize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-crystallize-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-facet-f32-cached.pcraft",
+    "command": "filter.pixelate.facet",
+    "depth": "f32",
+    "expected": "filter-pixelate-facet-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-facet",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-facet-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-fragment-f32-cached.pcraft",
+    "command": "filter.pixelate.fragment",
+    "depth": "f32",
+    "expected": "filter-pixelate-fragment-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-fragment",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-fragment-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-mezzotint-f32-cached.pcraft",
+    "command": "filter.pixelate.mezzotint",
+    "depth": "f32",
+    "expected": "filter-pixelate-mezzotint-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-mezzotint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-mezzotint-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-f32-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "f32",
+    "expected": "filter-pixelate-pointillize-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-emboss-f32-cached.pcraft",
+    "command": "filter.stylize.emboss",
+    "depth": "f32",
+    "expected": "filter-stylize-emboss-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-emboss",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-emboss-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-findEdges-f32-cached.pcraft",
+    "command": "filter.stylize.findEdges",
+    "depth": "f32",
+    "expected": "filter-stylize-findEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-findEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-findEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-solarize-f32-cached.pcraft",
+    "command": "filter.stylize.solarize",
+    "depth": "f32",
+    "expected": "filter-stylize-solarize-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-solarize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-solarize-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-diffuse-f32-cached.pcraft",
+    "command": "filter.stylize.diffuse",
+    "depth": "f32",
+    "expected": "filter-stylize-diffuse-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-diffuse",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-diffuse-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-extrude-f32-cached.pcraft",
+    "command": "filter.stylize.extrude",
+    "depth": "f32",
+    "expected": "filter-stylize-extrude-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-extrude",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-extrude-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-oilPaint-f32-cached.pcraft",
+    "command": "filter.stylize.oilPaint",
+    "depth": "f32",
+    "expected": "filter-stylize-oilPaint-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-oilPaint",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-oilPaint-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-f32-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "f32",
+    "expected": "filter-stylize-tiles-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-tiles-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-traceContour-f32-cached.pcraft",
+    "command": "filter.stylize.traceContour",
+    "depth": "f32",
+    "expected": "filter-stylize-traceContour-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-traceContour",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-traceContour-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-wind-f32-cached.pcraft",
+    "command": "filter.stylize.wind",
+    "depth": "f32",
+    "expected": "filter-stylize-wind-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-wind",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-stylize-wind-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-twirl-f32-cached.pcraft",
+    "command": "filter.distort.twirl",
+    "depth": "f32",
+    "expected": "filter-distort-twirl-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-twirl",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-twirl-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-pinch-f32-cached.pcraft",
+    "command": "filter.distort.pinch",
+    "depth": "f32",
+    "expected": "filter-distort-pinch-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-pinch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-pinch-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-spherize-f32-cached.pcraft",
+    "command": "filter.distort.spherize",
+    "depth": "f32",
+    "expected": "filter-distort-spherize-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-spherize",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-spherize-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-f32-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "f32",
+    "expected": "filter-distort-wave-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-wave-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-ripple-f32-cached.pcraft",
+    "command": "filter.distort.ripple",
+    "depth": "f32",
+    "expected": "filter-distort-ripple-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-ripple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-ripple-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-polarCoordinates-f32-cached.pcraft",
+    "command": "filter.distort.polarCoordinates",
+    "depth": "f32",
+    "expected": "filter-distort-polarCoordinates-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-polarCoordinates",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-polarCoordinates-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-f32-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "f32",
+    "expected": "filter-distort-shear-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-shear-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-zigZag-f32-cached.pcraft",
+    "command": "filter.distort.zigZag",
+    "depth": "f32",
+    "expected": "filter-distort-zigZag-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-zigZag",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-distort-zigZag-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-fibers-f32-cached.pcraft",
+    "command": "filter.render.fibers",
+    "depth": "f32",
+    "expected": "filter-render-fibers-f32.rgba32",
+    "height": 12,
+    "name": "filter-render-fibers",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-fibers-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lensFlare-f32-cached.pcraft",
+    "command": "filter.render.lensFlare",
+    "depth": "f32",
+    "expected": "filter-render-lensFlare-f32.rgba32",
+    "height": 12,
+    "name": "filter-render-lensFlare",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-render-lensFlare-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-deInterlace-f32-cached.pcraft",
+    "command": "filter.video.deInterlace",
+    "depth": "f32",
+    "expected": "filter-video-deInterlace-f32.rgba32",
+    "height": 12,
+    "name": "filter-video-deInterlace",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-deInterlace-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-video-ntscColors-f32-cached.pcraft",
+    "command": "filter.video.ntscColors",
+    "depth": "f32",
+    "expected": "filter-video-ntscColors-f32.rgba32",
+    "height": 12,
+    "name": "filter-video-ntscColors",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-video-ntscColors-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-f32-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-fieldBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-f32-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-irisBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-tiltShift-f32-cached.pcraft",
+    "command": "filter.blurGallery.tiltShift",
+    "depth": "f32",
+    "expected": "filter-blurGallery-tiltShift-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-tiltShift",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-tiltShift-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-f32-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-pathBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-spinBlur-f32-cached.pcraft",
+    "command": "filter.blurGallery.spinBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-spinBlur-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-spinBlur",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-blurGallery-spinBlur-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-coloredPencil-f32-cached.pcraft",
+    "command": "filter.gallery.coloredPencil",
+    "depth": "f32",
+    "expected": "filter-gallery-coloredPencil-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-coloredPencil",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-coloredPencil-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-cutout-f32-cached.pcraft",
+    "command": "filter.gallery.cutout",
+    "depth": "f32",
+    "expected": "filter-gallery-cutout-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-cutout",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-cutout-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-dryBrush-f32-cached.pcraft",
+    "command": "filter.gallery.dryBrush",
+    "depth": "f32",
+    "expected": "filter-gallery-dryBrush-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-dryBrush",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-dryBrush-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-filmGrain-f32-cached.pcraft",
+    "command": "filter.gallery.filmGrain",
+    "depth": "f32",
+    "expected": "filter-gallery-filmGrain-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-filmGrain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-filmGrain-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-fresco-f32-cached.pcraft",
+    "command": "filter.gallery.fresco",
+    "depth": "f32",
+    "expected": "filter-gallery-fresco-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-fresco",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-fresco-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-neonGlow-f32-cached.pcraft",
+    "command": "filter.gallery.neonGlow",
+    "depth": "f32",
+    "expected": "filter-gallery-neonGlow-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-neonGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-neonGlow-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paintDaubs-f32-cached.pcraft",
+    "command": "filter.gallery.paintDaubs",
+    "depth": "f32",
+    "expected": "filter-gallery-paintDaubs-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paintDaubs",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paintDaubs-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-paletteKnife-f32-cached.pcraft",
+    "command": "filter.gallery.paletteKnife",
+    "depth": "f32",
+    "expected": "filter-gallery-paletteKnife-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-paletteKnife",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-paletteKnife-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plasticWrap-f32-cached.pcraft",
+    "command": "filter.gallery.plasticWrap",
+    "depth": "f32",
+    "expected": "filter-gallery-plasticWrap-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plasticWrap",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plasticWrap-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-posterEdges-f32-cached.pcraft",
+    "command": "filter.gallery.posterEdges",
+    "depth": "f32",
+    "expected": "filter-gallery-posterEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-posterEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-posterEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-roughPastels-f32-cached.pcraft",
+    "command": "filter.gallery.roughPastels",
+    "depth": "f32",
+    "expected": "filter-gallery-roughPastels-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-roughPastels",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-roughPastels-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-smudgeStick-f32-cached.pcraft",
+    "command": "filter.gallery.smudgeStick",
+    "depth": "f32",
+    "expected": "filter-gallery-smudgeStick-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-smudgeStick",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-smudgeStick-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sponge-f32-cached.pcraft",
+    "command": "filter.gallery.sponge",
+    "depth": "f32",
+    "expected": "filter-gallery-sponge-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sponge",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sponge-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-underpainting-f32-cached.pcraft",
+    "command": "filter.gallery.underpainting",
+    "depth": "f32",
+    "expected": "filter-gallery-underpainting-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-underpainting",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-underpainting-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-watercolor-f32-cached.pcraft",
+    "command": "filter.gallery.watercolor",
+    "depth": "f32",
+    "expected": "filter-gallery-watercolor-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-watercolor",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-watercolor-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-accentedEdges-f32-cached.pcraft",
+    "command": "filter.gallery.accentedEdges",
+    "depth": "f32",
+    "expected": "filter-gallery-accentedEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-accentedEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-accentedEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-angledStrokes-f32-cached.pcraft",
+    "command": "filter.gallery.angledStrokes",
+    "depth": "f32",
+    "expected": "filter-gallery-angledStrokes-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-angledStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-angledStrokes-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-crosshatch-f32-cached.pcraft",
+    "command": "filter.gallery.crosshatch",
+    "depth": "f32",
+    "expected": "filter-gallery-crosshatch-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-crosshatch",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-crosshatch-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-darkStrokes-f32-cached.pcraft",
+    "command": "filter.gallery.darkStrokes",
+    "depth": "f32",
+    "expected": "filter-gallery-darkStrokes-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-darkStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-darkStrokes-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-inkOutlines-f32-cached.pcraft",
+    "command": "filter.gallery.inkOutlines",
+    "depth": "f32",
+    "expected": "filter-gallery-inkOutlines-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-inkOutlines",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-inkOutlines-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-spatter-f32-cached.pcraft",
+    "command": "filter.gallery.spatter",
+    "depth": "f32",
+    "expected": "filter-gallery-spatter-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-spatter",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-spatter-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sprayedStrokes-f32-cached.pcraft",
+    "command": "filter.gallery.sprayedStrokes",
+    "depth": "f32",
+    "expected": "filter-gallery-sprayedStrokes-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sprayedStrokes",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sprayedStrokes-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-sumiE-f32-cached.pcraft",
+    "command": "filter.gallery.sumiE",
+    "depth": "f32",
+    "expected": "filter-gallery-sumiE-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-sumiE",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-sumiE-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-diffuseGlow-f32-cached.pcraft",
+    "command": "filter.gallery.diffuseGlow",
+    "depth": "f32",
+    "expected": "filter-gallery-diffuseGlow-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-diffuseGlow",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-diffuseGlow-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-f32-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "f32",
+    "expected": "filter-gallery-glass-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glass-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-oceanRipple-f32-cached.pcraft",
+    "command": "filter.gallery.oceanRipple",
+    "depth": "f32",
+    "expected": "filter-gallery-oceanRipple-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-oceanRipple",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-oceanRipple-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-basRelief-f32-cached.pcraft",
+    "command": "filter.gallery.basRelief",
+    "depth": "f32",
+    "expected": "filter-gallery-basRelief-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-basRelief",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-basRelief-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chalkCharcoal-f32-cached.pcraft",
+    "command": "filter.gallery.chalkCharcoal",
+    "depth": "f32",
+    "expected": "filter-gallery-chalkCharcoal-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chalkCharcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chalkCharcoal-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-charcoal-f32-cached.pcraft",
+    "command": "filter.gallery.charcoal",
+    "depth": "f32",
+    "expected": "filter-gallery-charcoal-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-charcoal",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-charcoal-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-chrome-f32-cached.pcraft",
+    "command": "filter.gallery.chrome",
+    "depth": "f32",
+    "expected": "filter-gallery-chrome-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-chrome",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-chrome-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-conteCrayon-f32-cached.pcraft",
+    "command": "filter.gallery.conteCrayon",
+    "depth": "f32",
+    "expected": "filter-gallery-conteCrayon-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-conteCrayon",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-conteCrayon-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-graphicPen-f32-cached.pcraft",
+    "command": "filter.gallery.graphicPen",
+    "depth": "f32",
+    "expected": "filter-gallery-graphicPen-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-graphicPen",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-graphicPen-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-halftonePattern-f32-cached.pcraft",
+    "command": "filter.gallery.halftonePattern",
+    "depth": "f32",
+    "expected": "filter-gallery-halftonePattern-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-halftonePattern",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-halftonePattern-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-notePaper-f32-cached.pcraft",
+    "command": "filter.gallery.notePaper",
+    "depth": "f32",
+    "expected": "filter-gallery-notePaper-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-notePaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-notePaper-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-photocopy-f32-cached.pcraft",
+    "command": "filter.gallery.photocopy",
+    "depth": "f32",
+    "expected": "filter-gallery-photocopy-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-photocopy",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-photocopy-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-plaster-f32-cached.pcraft",
+    "command": "filter.gallery.plaster",
+    "depth": "f32",
+    "expected": "filter-gallery-plaster-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-plaster",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-plaster-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-reticulation-f32-cached.pcraft",
+    "command": "filter.gallery.reticulation",
+    "depth": "f32",
+    "expected": "filter-gallery-reticulation-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-reticulation",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-reticulation-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stamp-f32-cached.pcraft",
+    "command": "filter.gallery.stamp",
+    "depth": "f32",
+    "expected": "filter-gallery-stamp-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stamp",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stamp-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-tornEdges-f32-cached.pcraft",
+    "command": "filter.gallery.tornEdges",
+    "depth": "f32",
+    "expected": "filter-gallery-tornEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-tornEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-tornEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-waterPaper-f32-cached.pcraft",
+    "command": "filter.gallery.waterPaper",
+    "depth": "f32",
+    "expected": "filter-gallery-waterPaper-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-waterPaper",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-waterPaper-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glowingEdges-f32-cached.pcraft",
+    "command": "filter.gallery.glowingEdges",
+    "depth": "f32",
+    "expected": "filter-gallery-glowingEdges-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glowingEdges",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-glowingEdges-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-craquelure-f32-cached.pcraft",
+    "command": "filter.gallery.craquelure",
+    "depth": "f32",
+    "expected": "filter-gallery-craquelure-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-craquelure",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-craquelure-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-grain-f32-cached.pcraft",
+    "command": "filter.gallery.grain",
+    "depth": "f32",
+    "expected": "filter-gallery-grain-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-grain",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-grain-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-mosaicTiles-f32-cached.pcraft",
+    "command": "filter.gallery.mosaicTiles",
+    "depth": "f32",
+    "expected": "filter-gallery-mosaicTiles-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-mosaicTiles",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-mosaicTiles-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-patchwork-f32-cached.pcraft",
+    "command": "filter.gallery.patchwork",
+    "depth": "f32",
+    "expected": "filter-gallery-patchwork-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-patchwork",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-patchwork-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-stainedGlass-f32-cached.pcraft",
+    "command": "filter.gallery.stainedGlass",
+    "depth": "f32",
+    "expected": "filter-gallery-stainedGlass-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-stainedGlass",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-stainedGlass-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-texturizer-f32-cached.pcraft",
+    "command": "filter.gallery.texturizer",
+    "depth": "f32",
+    "expected": "filter-gallery-texturizer-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-texturizer",
+    "params": {},
+    "supported": true,
+    "uncached": "filter-gallery-texturizer-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "gallery-stack-f32-cached.pcraft",
+    "command": "filter.filterGallery",
+    "depth": "f32",
+    "expected": "gallery-stack-f32.rgba32",
+    "height": 12,
+    "name": "gallery-stack",
+    "params": {
+      "background": [
+        0.9,
+        0.8,
+        0.7,
+        1.0
+      ],
+      "effects": [
+        {
+          "filter": "cutout",
+          "params": {
+            "numberOfLevels": 5
+          }
+        },
+        {
+          "filter": "crosshatch",
+          "params": {},
+          "visible": false
+        }
+      ],
+      "foreground": "#183858"
+    },
+    "supported": true,
+    "uncached": "gallery-stack-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-radialBlur-custom-f32-cached.pcraft",
+    "command": "filter.blur.radialBlur",
+    "depth": "f32",
+    "expected": "filter-blur-radialBlur-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-radialBlur-custom",
+    "params": {
+      "amount": 13,
+      "centerX": 0.25,
+      "centerY": 0.75,
+      "method": "zoom"
+    },
+    "supported": true,
+    "uncached": "filter-blur-radialBlur-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-hsbHsl-custom-f32-cached.pcraft",
+    "command": "filter.other.hsbHsl",
+    "depth": "f32",
+    "expected": "filter-other-hsbHsl-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-hsbHsl-custom",
+    "params": {
+      "inputMode": "hsb",
+      "rowOrder": "rgb"
+    },
+    "supported": true,
+    "uncached": "filter-other-hsbHsl-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-other-minimum-custom-f32-cached.pcraft",
+    "command": "filter.other.minimum",
+    "depth": "f32",
+    "expected": "filter-other-minimum-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-other-minimum-custom",
+    "params": {
+      "preserve": "roundness",
+      "radius": 1.5
+    },
+    "supported": true,
+    "uncached": "filter-other-minimum-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-colorHalftone-custom-f32-cached.pcraft",
+    "command": "filter.pixelate.colorHalftone",
+    "depth": "f32",
+    "expected": "filter-pixelate-colorHalftone-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-colorHalftone-custom",
+    "params": {
+      "channel1": -45,
+      "channel2": 75,
+      "channel3": 90,
+      "channel4": 180,
+      "maxRadius": 5
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-colorHalftone-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-pixelate-pointillize-custom-f32-cached.pcraft",
+    "command": "filter.pixelate.pointillize",
+    "depth": "f32",
+    "expected": "filter-pixelate-pointillize-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-pixelate-pointillize-custom",
+    "params": {
+      "background": "#204060",
+      "cellSize": 4,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-pixelate-pointillize-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-addNoise-custom-f32-cached.pcraft",
+    "command": "filter.noise.addNoise",
+    "depth": "f32",
+    "expected": "filter-noise-addNoise-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-addNoise-custom",
+    "params": {
+      "amount": 24.25,
+      "distribution": "gaussian",
+      "monochromatic": true,
+      "seed": 18446744073709551615
+    },
+    "supported": true,
+    "uncached": "filter-noise-addNoise-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-stylize-tiles-custom-f32-cached.pcraft",
+    "command": "filter.stylize.tiles",
+    "depth": "f32",
+    "expected": "filter-stylize-tiles-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-stylize-tiles-custom",
+    "params": {
+      "count": 3,
+      "fill": "foreground",
+      "foreground": [
+        0.2,
+        0.4,
+        0.6
+      ],
+      "maxOffset": 15,
+      "seed": -4
+    },
+    "supported": true,
+    "uncached": "filter-stylize-tiles-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-shear-custom-f32-cached.pcraft",
+    "command": "filter.distort.shear",
+    "depth": "f32",
+    "expected": "filter-distort-shear-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-shear-custom",
+    "params": {
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.3
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "undefinedAreas": "repeat"
+    },
+    "supported": true,
+    "uncached": "filter-distort-shear-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-fieldBlur-custom-f32-cached.pcraft",
+    "command": "filter.blurGallery.fieldBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-fieldBlur-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-fieldBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "blur": 3.0,
+          "x": 0.2,
+          "y": 0.3
+        },
+        {
+          "blur": 7.0,
+          "x": 0.8,
+          "y": 0.7
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-fieldBlur-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-irisBlur-custom-f32-cached.pcraft",
+    "command": "filter.blurGallery.irisBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-irisBlur-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-irisBlur-custom",
+    "params": {
+      "pins": [
+        {
+          "angle": 25.0,
+          "blur": 4.0,
+          "feather": 0.4,
+          "radius_x": 0.3,
+          "radius_y": 0.2,
+          "roundness": 15.0,
+          "x": 0.4,
+          "y": 0.6
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-irisBlur-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blurGallery-pathBlur-custom-f32-cached.pcraft",
+    "command": "filter.blurGallery.pathBlur",
+    "depth": "f32",
+    "expected": "filter-blurGallery-pathBlur-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-blurGallery-pathBlur-custom",
+    "params": {
+      "paths": [
+        {
+          "points": [
+            [
+              0.1,
+              0.2
+            ],
+            [
+              0.4,
+              0.8
+            ],
+            [
+              0.9,
+              0.4
+            ]
+          ],
+          "speed": 12.0,
+          "taper": 30.0
+        }
+      ]
+    },
+    "supported": true,
+    "uncached": "filter-blurGallery-pathBlur-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-gallery-glass-custom-f32-cached.pcraft",
+    "command": "filter.gallery.glass",
+    "depth": "f32",
+    "expected": "filter-gallery-glass-custom-f32.rgba32",
+    "height": 12,
+    "name": "filter-gallery-glass-custom",
+    "params": {
+      "distortion": 6,
+      "invert": true,
+      "scaling": 100,
+      "smoothness": 4,
+      "texture": "Canvas"
+    },
+    "supported": true,
+    "uncached": "filter-gallery-glass-custom-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-relight-rejected-f32-cached.pcraft",
+    "command": "filter.render.relight",
+    "depth": "f32",
+    "expected": "filter-render-relight-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-render-relight-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-relight-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-render-lightingEffects-rejected-f32-cached.pcraft",
+    "command": "filter.render.lightingEffects",
+    "depth": "f32",
+    "expected": "filter-render-lightingEffects-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-render-lightingEffects-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-render-lightingEffects-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-displace-rejected-f32-cached.pcraft",
+    "command": "filter.distort.displace",
+    "depth": "f32",
+    "expected": "filter-distort-displace-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-displace-rejected",
+    "params": {},
+    "supported": false,
+    "uncached": "filter-distort-displace-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-lensBlur-rejected-f32-cached.pcraft",
+    "command": "filter.blur.lensBlur",
+    "depth": "f32",
+    "expected": "filter-blur-lensBlur-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-lensBlur-rejected",
+    "params": {
+      "depthMap": "layerMask"
+    },
+    "supported": false,
+    "uncached": "filter-blur-lensBlur-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-distort-wave-rejected-f32-cached.pcraft",
+    "command": "filter.distort.wave",
+    "depth": "f32",
+    "expected": "filter-distort-wave-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-distort-wave-rejected",
+    "params": {
+      "undefinedAreas": "transparent"
+    },
+    "supported": false,
+    "uncached": "filter-distort-wave-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-noise-median-rejected-f32-cached.pcraft",
+    "command": "filter.noise.median",
+    "depth": "f32",
+    "expected": "filter-noise-median-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-noise-median-rejected",
+    "params": {
+      "radius": 1.25
+    },
+    "supported": false,
+    "uncached": "filter-noise-median-rejected-f32-uncached.pcraft",
+    "width": 16
+  },
+  {
+    "cached": "filter-blur-gaussianBlur-rejected-f32-cached.pcraft",
+    "command": "filter.blur.gaussianBlur",
+    "depth": "f32",
+    "expected": "filter-blur-gaussianBlur-rejected-f32.rgba32",
+    "height": 12,
+    "name": "filter-blur-gaussianBlur-rejected",
+    "params": {
+      "futureField": true
+    },
+    "supported": false,
+    "uncached": "filter-blur-gaussianBlur-rejected-f32-uncached.pcraft",
+    "width": 16
+  }
+]

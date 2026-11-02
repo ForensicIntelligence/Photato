@@ -1,0 +1,95 @@
+{
+  "step": "dev-step-345",
+  "recorded_at_utc": "2026-11-02T03:56:03.529907+00:00",
+  "run": "artifacts/runs/20261102T033236Z-345-selection-modify",
+  "source_manifest": "artifacts/runs/20261102T033236Z-345-selection-modify/source02.json",
+  "inputs": 6943,
+  "production_swift_files": 949,
+  "binary_sha256": "a195af846cbe97e66d870a5e6baa3f4e8f8f9e08279b27353c94247170be9af3",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 323,
+    "passed_cases": 323,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 38.514,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 327.72
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.SelectionModificationTests/testAllOperationsGrayRanksAndBoundsAgainstIndependentDiscReference",
+    "PhotoCraftCoreTests.SelectionModificationTests/testCanvasBoundsOptionIsExplicit",
+    "PhotoCraftCoreTests.SelectionModificationTests/testCenteredOddEvenBordersAndCapturedAnalyticalOutputs",
+    "PhotoCraftCoreTests.SelectionModificationTests/testExpandContractBoundsAndLayerIndependentGeometry",
+    "PhotoCraftCoreTests.SelectionModificationTests/testSmoothRemovesStrayPixelsAndFillsSmallHoles",
+    "PhotoCraftCoreTests.SelectionModificationTests/testSparseMaximumCanvasAndConstantPlaneAdmission",
+    "PhotoCraftCoreTests.SelectionModificationTests/testTileSeamsMatchDenseReference",
+    "PhotoCraftCoreTests.SelectionModificationTests/testValidationCancellationHistoryActionsAndArchives",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testAllDepthsComponentContextAndSourcePixelPreservation",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testFactoryBindingsStaleAndReadCloseCancellation",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testHTTPMatchesNativeModifyAndReselectWithSchemas",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testInvalidBusyStaleRevocationAndSelectionOnlyAdmission",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testNativeDialogsCancelCommitAndHistoryAllOperations",
+    "PhotoCraftAppTests.SelectionModifyWorkflowTests/testReselectRectSoftCoverageHistoryAndInvalidation"
+  ],
+  "independent_mask": {
+    "passed": true,
+    "source_outputs": "345 Source02",
+    "file": "selection-modify-analytical.json",
+    "sha256": "fbd7e3c708ef8e93c1faab97d46d9916013ba7bbf4a3f731d99d72b361fa6d2e",
+    "analytical_bytes_compared": 1920,
+    "checks": [
+      {
+        "amount": 1,
+        "passed": true,
+        "bytes_compared": 480
+      },
+      {
+        "amount": 2,
+        "passed": true,
+        "bytes_compared": 480
+      },
+      {
+        "amount": 3,
+        "passed": true,
+        "bytes_compared": 480
+      },
+      {
+        "amount": 4,
+        "passed": true,
+        "bytes_compared": 480
+      }
+    ],
+    "oracle": "Independent Python brute disc max/min on owned24\u00d720 rectangle; centered odd/even bands. Not Photoshop output."
+  },
+  "references": {
+    "standard": "Photoshop2026",
+    "previous_turn": "Progress;6938 frozen344 inputs/binary revalidated unchanged;235 affected pass",
+    "references": [
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/expand-or-contract-selection.html",
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/clean-up-stray-pixels-in-color-based-selection.html",
+      "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/create-selection-around-selection-border.html",
+      "https://helpx.adobe.com/uk/photoshop/using/making-selections.html"
+    ],
+    "documented": "Expand/Contract/Smooth1\u2013100px; Border1\u2013200 centered on prior edge; Smooth majority cleanup; Reselect most recent selection. Factory Shift-Command-D from retained menu evidence.",
+    "native_access": "Last actual344 app inventory reports Mac locked; no repeat unchanged access/Apple validation or live UI claim.",
+    "algorithm": "Independent disc grayscale extrema/median and centered morphological border, tiled halos and optional canvas-edge effect. Photoshop exact kernels/gray coverage/defaults unqualified."
+  },
+  "api_commands": 223,
+  "native_version_unchanged": 82,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Transform Selection, Grow/Similar, row/column marquees and full S01 acceptance",
+    "Photoshop exact disc/gray/antialias/canvas-boundary behavior and defaults",
+    "Full supported color-mode/context/recall lifecycle coverage",
+    "Full current suite, native physical interaction and runtime/capacity/performance gates"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

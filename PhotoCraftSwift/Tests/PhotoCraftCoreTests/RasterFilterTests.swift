@@ -122,7 +122,7 @@ final class RasterFilterTests: XCTestCase {
     XCTAssertEqual(document, original)
   }
   func testActionDescriptorsShareNativeEngineAndRejectUnknownOptions() throws {
-    for kind in RasterFilter.Kind.allCases where kind != .shadowsHighlights && !kind.isClassicDetail && !kind.isOtherVideo && !kind.isRender && !kind.isStylize && !kind.isPixelate && !kind.isDistortion && kind != .liquify && kind != .cameraRaw && kind != .puppetWarp && kind != .perspectiveWarp && kind != .blurGallery && kind != .lensCorrection && kind != .adaptiveWideAngle && kind != .filterGallery && kind != .smartSharpen && kind != .reduceNoise && kind != .lensBlur {
+    for kind in RasterFilter.Kind.allCases where kind != .shadowsHighlights && !kind.isClassicDetail && !kind.isOtherVideo && !kind.isRender && !kind.isStylize && !kind.isPixelate && !kind.isDistortion && kind != .liquify && kind != .cameraRaw && kind != .puppetWarp && kind != .perspectiveWarp && kind != .blurGallery && kind != .lensCorrection && kind != .adaptiveWideAngle && kind != .filterGallery && kind != .smartSharpen && kind != .reduceNoise && kind != .lensBlur && kind != .relight && kind != .lightingEffects {
       var descriptor: [String: Any] = ["_obj": kind == .average ? "$Avrg" : kind == .boxBlur ? "boxblur" : kind.rawValue]
       let filter = RasterFilter(kind)
       func unit(_ value: Double, _ unit: String) -> [String: Any] { ["_unit": unit, "_value": value] }
@@ -138,6 +138,11 @@ final class RasterFilterTests: XCTestCase {
       XCTAssertEqual(try PhotoshopActionProgram(actionJSON: text).applying(to: original).session.document, expected)
       descriptor["unsupported"] = true
       XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON: String(decoding: JSONSerialization.data(withJSONObject: [descriptor]), as: UTF8.self)))
+    }
+    // These native filters have no qualified Adobe descriptor; reject explicitly.
+    for kind in [RasterFilter.Kind.relight, .lightingEffects] {
+      let json = String(decoding: try JSONSerialization.data(withJSONObject: [["_obj": kind.rawValue]]), as: UTF8.self)
+      XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON: json).applying(to: fixture()))
     }
   }
 }

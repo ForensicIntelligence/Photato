@@ -70,6 +70,8 @@ enum PSDMultichannelStorage {
     }
     let paths = try PSDRestrictedStorage.paths(blocks, width: width, height: height)
     document.paths = paths.isEmpty ? nil : paths
+    document.globalLight = try PSDGlobalLight.read(blocks)
+    try PSDGuides.read(into:&document)
     try r.validateUnchanged(); try document.validate(); return document
   }
 
@@ -85,7 +87,7 @@ enum PSDMultichannelStorage {
     try output.text("8BPS"); try output.n(format.rawValue, 2); try output.append(Data(repeating: 0, count: 6))
     try output.n(count, 2); try output.n(document.height, 4); try output.n(document.width, 4)
     try output.n(document.bitsPerChannel, 2); try output.n(7, 2)
-    try output.section(Data()); try output.section(PSDInkChannels.resources(document, plates: raster.plates))
+    try output.section(Data()); try output.section(PSDGuides.applying(try PSDGlobalLight.applying(PSDInkChannels.resources(document, plates: raster.plates), document: document),document:document))
     try output.section(Data(), lengthBytes: format.sectionLengthBytes)
     try PSDChannelWriter.write(width: document.width, height: document.height, depth: document.bitsPerChannel,
       compression: compression, channels: count, format: format, to: output) { row in

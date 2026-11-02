@@ -85,10 +85,10 @@ extension CraftDocument {
       if let mask = source.smartFilters?.mask { result.layers[i].smartFilters?.mask = try mask.converted(to: request.depth) }
     }
     if var channels = alphaChannels {
-      for i in channels.indices { channels[i].pixels = try channels[i].pixels.converted(to: request.depth) }
+      for i in channels.indices { channels[i] = try channels[i].convertedCoverage(to:request.depth) }
       result.alphaChannels = channels
     }
-    if var channel = quickMask { channel.pixels = try channel.pixels.converted(to: request.depth); result.quickMask = channel }
+    if let channel = quickMask { result.quickMask = try channel.convertedCoverage(to:request.depth) }
     result.depth = request.depth; result.modeDescriptor = descriptor
     // The existing rendering/editing cache is always in standard RGB coordinates.
     // Source profile provenance is retained independently.

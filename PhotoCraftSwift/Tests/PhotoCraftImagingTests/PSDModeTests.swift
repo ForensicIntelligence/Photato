@@ -129,7 +129,13 @@ final class PSDModeTests: XCTestCase {
   func testModeInputRejectsInvalidDepthMissingExtraAndNonFiniteSamples() throws {
     XCTAssertThrowsError(try PSDCodec.read(flattened(mode: 4, depth: 32, planes: Array(repeating: Array(repeating: 0, count: 8), count: 4))))
     XCTAssertThrowsError(try PSDCodec.read(flattened(mode: 4, depth: 8, planes: [[0, 0], [0, 0], [0, 0]])))
-    XCTAssertThrowsError(try PSDCodec.read(flattened(mode: 9, depth: 8, planes: Array(repeating: [0, 0], count: 5))))
+    // Two Lab auxiliary planes are supported since checkpoint329. Preserve the
+    // missing-plane rejection with an actual truncated channel declaration.
+    let extra = flattened(mode: 9, depth: 8, planes: Array(repeating: [0, 0], count: 5))
+    let auxiliary = try PSDCodec.read(extra)
+    XCTAssertEqual(auxiliary.alphaChannels?.count, 2)
+    var missingExtra = extra; missingExtra[12] = 0; missingExtra[13] = 6
+    XCTAssertThrowsError(try PSDCodec.read(missingExtra))
     XCTAssertThrowsError(try PSDCodec.read(flattened(mode: 1, depth: 32, planes: [[0x7f, 0xc0, 0, 0, 0, 0, 0, 0]])))
     XCTAssertThrowsError(try PSDCodec.read(flattened(mode: 4, depth: 8, planes: Array(repeating: [0, 0], count: 4), profile: NativeModeProfile.standard(.rgb, depth: .u8))))
     let valid = try PSDCodec.writeRasterLayers(fixture(.cmyk, .u16))

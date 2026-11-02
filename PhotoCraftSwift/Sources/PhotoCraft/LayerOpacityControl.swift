@@ -19,7 +19,7 @@ import SwiftUI
 
   func matches(_ store: EditorStore) -> Bool {
     lifecycle == store.layerPanelGeneration && session == store.sessionGeneration
-      && layerID == store.document.activeLayerID && !store.document.isLocked(layerID)
+      && layerID == store.document.activeLayerID && !store.document.isLocked(layerID) && store.activeLayer?.isBackground != true
   }
 }
 
@@ -27,7 +27,7 @@ extension EditorStore {
   var canBeginLayerOpacity: Bool {
     !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges
       && historyOperation == nil && transformDraft == nil
-      && activeLayer.map { !document.isLocked($0.id) } == true
+      && activeLayer.map { !document.isLocked($0.id) && !$0.isBackground } == true
   }
 
   func beginLayerOpacity() {
@@ -93,6 +93,7 @@ struct LayerOpacityPopup: NSViewRepresentable {
     let button = NSButton()
     button.image = NSImage(systemSymbolName: "chevron.down", accessibilityDescription: nil)
     button.imageScaling = .scaleProportionallyDown
+    button.isEnabled = context.environment.isEnabled && (store.canBeginLayerOpacity || store.layerOpacityDraft != nil)
     button.isBordered = false
     button.toolTip = "Show layer opacity slider"
     button.setAccessibilityLabel("Layer opacity slider")
@@ -108,6 +109,7 @@ struct LayerOpacityPopup: NSViewRepresentable {
     }
     button.isEnabled = context.environment.isEnabled
       && (store.canBeginLayerOpacity || store.layerOpacityDraft != nil)
+    button.needsDisplay = true
     if let draft = store.layerOpacityDraft, draft.id == coordinator.draftID {
       coordinator.slider?.doubleValue = Double(draft.value * 100)
     } else if coordinator.popover.isShown { coordinator.close(cancel: true) }

@@ -1,0 +1,185 @@
+{
+  "step": "dev-step-360",
+  "recorded_at_utc": "2026-11-02T17:24:26.779370+00:00",
+  "reference_standard": "Photoshop2026; Rust supplies inspiration and supporting diagnostics",
+  "run": "artifacts/runs/20261102T162802Z-360-flatten-image",
+  "source_manifest": "artifacts/runs/20261102T162802Z-360-flatten-image/source03.json",
+  "source_inputs": 7019,
+  "production_swift_files": 988,
+  "binary_sha256": "235f8dd398de84f1d558672195e93ba013ffbf253f01b00abfb4ca33bf4189de",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "FlattenImage|BackgroundLayer|LayerMerge|NewLayer|GroupCreation|LayerProtection|LayerLinks|LayerOpacity|PSDBackground|PSDTests|PSBTests|NativeArchive|DocumentIOWorkflow|GeometryWorkflow|HistoryNavigation|AutomationTests|PhotoshopActionProgram|ModeAction|AdobeActionsRequest|AdobeActionJobs|AutomationActionJobs|ActionsWorkflow|ActionBatch|RecordedAction|ActionRecording|PhotoshopMenu|ToolCursor|LayerCapacity"
+    ],
+    "source_manifest": "artifacts/runs/20261102T162802Z-360-flatten-image/source03.json",
+    "inputs": 7019,
+    "production_swift_files": 988,
+    "started_at_utc": "2026-11-02T17:16:25.815295+00:00",
+    "exit_code": 0,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "235f8dd398de84f1d558672195e93ba013ffbf253f01b00abfb4ca33bf4189de",
+    "finished_at_utc": "2026-11-02T17:23:08.938625+00:00",
+    "cases": 312,
+    "passed_cases": 312,
+    "failed_cases": 0,
+    "failed_case_names": [],
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 30.857
+  },
+  "new_cases": 19,
+  "all_new_passed": true,
+  "independent": {
+    "passed": true,
+    "source": "360 Source03",
+    "vectors": [
+      {
+        "depth": "8 bit",
+        "expected_RGBA8": [
+          255,
+          127,
+          127,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "file": "flatten-owned-8 bit.png",
+        "sha256": "4e60133fdc4f99d6e43d968d34d208bf7faf894b46c19bff9b265053201d2a05",
+        "JSON_bytes": 8,
+        "PNG_bytes": 8
+      },
+      {
+        "depth": "16 bit",
+        "expected_RGBA8": [
+          255,
+          127,
+          127,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "file": "flatten-owned-16 bit.png",
+        "sha256": "4fa1c39910acc944eb0b444ad8bc035eb11c3bcd1c412a1bfc95b3960eae7161",
+        "JSON_bytes": 8,
+        "PNG_bytes": 8
+      },
+      {
+        "depth": "32 bit",
+        "expected_RGBA8": [
+          255,
+          188,
+          188,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "file": "flatten-owned-32 bit.png",
+        "sha256": "abf485df3af3c382f4937d68534dc9287560a3f66b735b20749a7c0801b0361d",
+        "JSON_bytes": 8,
+        "PNG_bytes": 8
+      }
+    ],
+    "independent_JSON_RGBA_bytes": 24,
+    "independent_PNG_RGBA_bytes": 24,
+    "total_RGBA_bytes": 48,
+    "PSD_PSB_headers": [
+      {
+        "file": "flatten-background-16 bit.psb",
+        "sha256": "a9ba36c1e2b38cc6b3ec0e855cefd52bd30b4bb0c4068ef5c2be7e598a844a80",
+        "format_version": 2,
+        "width": 2,
+        "height": 1,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "flatten-background-16 bit.psd",
+        "sha256": "2d19fc6071a670395b2ea51a7e75f790e4262f76af609a7d5465ceba0500555b",
+        "format_version": 1,
+        "width": 2,
+        "height": 1,
+        "depth": 16,
+        "mode": 3
+      },
+      {
+        "file": "flatten-background-32 bit.psb",
+        "sha256": "166d5f9dfe375f23da2e600fc476fca5f9cd922f62e9cd30bf719fde9bd53058",
+        "format_version": 2,
+        "width": 2,
+        "height": 1,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "flatten-background-32 bit.psd",
+        "sha256": "40ef7aa1136faab0308e3a978377050d1755185ce40662bc9698d059eb607553",
+        "format_version": 1,
+        "width": 2,
+        "height": 1,
+        "depth": 32,
+        "mode": 3
+      },
+      {
+        "file": "flatten-background-8 bit.psb",
+        "sha256": "92036ff13732360d4bfbcd64d38acb87865e66c9d17417f1c47b70e4da75fb36",
+        "format_version": 2,
+        "width": 2,
+        "height": 1,
+        "depth": 8,
+        "mode": 3
+      },
+      {
+        "file": "flatten-background-8 bit.psd",
+        "sha256": "cc8c1918655733515181447423da3bc89111655596eb2f77f59e36dccfaa1e54",
+        "format_version": 1,
+        "width": 2,
+        "height": 1,
+        "depth": 8,
+        "mode": 3
+      }
+    ],
+    "Photoshop_generated": false,
+    "limits": "Owned analytical white-matte/hidden-color samples and PNG decoding; PSD/PSB headers only here. Native format tests separately compare layer data. No full Photoshop numerical/UI/runtime qualification."
+  },
+  "independent_summary": "artifacts/runs/20261102T162802Z-360-flatten-image/independent03-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/flatten-layers-in-an-image.html",
+      "retrieved": "2026-11-02",
+      "scope": "Visible layers merge into Background; white transparency and hidden-layer disposal. Later tool fetches timed out after initial open; current source-reference text and UI exactness remain separately qualified."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/media/eventcodes",
+      "retrieved": "2026-11-02",
+      "scope": "Official Flatten Image event: FltI / flattenImage."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/side-by-side",
+      "retrieved": "2026-11-02",
+      "scope": "Adobe published v2 execute-actions example contains {_obj:flattenImage}. Only that documented descriptor is adopted, not the complete convenience recipe."
+    }
+  ],
+  "api_commands": 236,
+  "native_archive_version": 84,
+  "actions_version": 43,
+  "old_pattern_actions_version": 42,
+  "old_pixel_paint_actions_version": 41,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": "This is a working Flatten Image increment. Layered/transparent native components, palette/ink and temporal flattening still need their numerical/plate/frame compositors. Full Photoshop output/defaults/live UI, complete L02 merge/rasterization, supported platforms, dense capacity and physical60fps remain open. All104complete scopes are preserved.",
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/release."
+}

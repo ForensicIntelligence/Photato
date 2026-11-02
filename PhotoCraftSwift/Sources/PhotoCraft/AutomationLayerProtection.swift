@@ -3,7 +3,7 @@ import PhotoCraftCore
 
 extension AutomationCommand {
   func protectionCommand(document: CraftDocument) throws -> Command {
-    guard case .array(let rawIDs) = parameters["layerIDs"], (1...64).contains(rawIDs.count),
+    guard case .array(let rawIDs) = parameters["layerIDs"], (1...LayerLimits.maximumLayers).contains(rawIDs.count),
       case .array(let rawNames) = parameters["protection"], (1...6).contains(rawNames.count) else {
       throw AutomationFailure(status: 400, message: "Nonempty layerIDs and protection arrays are required.")
     }
@@ -41,9 +41,7 @@ extension AutomationCommand {
     } catch let error as AdobeAPIError {
       throw AutomationFailure(status: error.status, message: error.message)
     }
-    let targets = descendants ? ids.reduce(into: Set<UUID>()) {
-      $0.formUnion(document.subtreeIDs($1))
-    } : Set(ids)
+    let targets = descendants ? LayerHierarchyIndex(document).subtreeIDs(Set(ids)) : Set(ids)
     return .protection(Dictionary(uniqueKeysWithValues: targets.map { ($0, value) }))
   }
 }

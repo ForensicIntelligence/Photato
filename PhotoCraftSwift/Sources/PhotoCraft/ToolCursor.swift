@@ -4,9 +4,10 @@ import SwiftUI
 
 /// Cursor semantics follow the operation actually dispatched, including the mode captured at stroke start.
 enum ToolCursor: Hashable {
-  enum Badge: String { case add, subtract, intersect, constrain, center, constrainCenter }
+  enum Badge: String { case add, subtract, intersect, constrain, center, constrainCenter, copy, constrainCopy }
   case arrow, text, crosshair, openHand, closedHand, unavailable
   case symbol(String, Badge? = nil)
+  case selectedPixels(copy:Bool,constrained:Bool,unsnapped:Bool)
 
   static func selection(_ symbol: String, _ mode: SelectionMode) -> Self {
     .symbol(symbol, mode == .add ? .add : mode == .subtract ? .subtract : mode == .intersect ? .intersect : nil)
@@ -23,6 +24,16 @@ enum ToolCursor: Hashable {
     case .openHand: return .openHand
     case .closedHand: return .closedHand
     case .unavailable: return .operationNotAllowed
+    case .selectedPixels(let copy,let constrained,let unsnapped):
+      let badge:Badge?=copy ? (constrained ? .constrainCopy:.copy):constrained ? .constrain:nil
+      let base=ToolCursor.symbol("arrow.up.and.down.and.arrow.left.and.right",badge).native
+      guard unsnapped else{return base};if let cached=Self.cache[self]{return cached}
+      let image=base.image.copy() as! NSImage;image.lockFocus()
+      let grid=NSBezierPath();grid.lineWidth=1
+      for i in [3.0,6.0,9.0]{grid.move(to:.init(x:i,y:1));grid.line(to:.init(x:i,y:10));grid.move(to:.init(x:1,y:i));grid.line(to:.init(x:10,y:i))}
+      NSColor.black.setStroke();grid.lineWidth=3;grid.stroke();NSColor.white.setStroke();grid.lineWidth=1;grid.stroke()
+      let slash=NSBezierPath();slash.move(to:.init(x:1,y:1));slash.line(to:.init(x:10,y:10));NSColor.black.setStroke();slash.lineWidth=3;slash.stroke();NSColor.white.setStroke();slash.lineWidth=1;slash.stroke();image.unlockFocus()
+      let value=NSCursor(image:image,hotSpot:base.hotSpot);if Self.cache.count>=128{Self.cache.removeAll(keepingCapacity:true)};Self.cache[self]=value;return value
     case .symbol(let name, let badge):
       if let cached = Self.cache[self] { return cached }
       let image = NSImage(size: NSSize(width: 32, height: 32), flipped: false) { _ in
@@ -45,6 +56,9 @@ enum ToolCursor: Hashable {
           case .add, .subtract:
             path.move(to: .init(x:20,y:7.5)); path.line(to: .init(x:29,y:7.5))
             if badge == .add { path.move(to: .init(x:24.5,y:3)); path.line(to: .init(x:24.5,y:12)) }
+          case .copy,.constrainCopy:
+            path.appendRect(.init(x:20,y:6,width:6,height:6));path.appendRect(.init(x:23,y:3,width:6,height:6))
+            if badge == .constrainCopy{path.move(to:.init(x:20,y:2));path.line(to:.init(x:29,y:2))}
           case .intersect:
             path.appendRect(.init(x:20,y:6,width:6,height:6)); path.appendRect(.init(x:23,y:3,width:6,height:6))
           case .constrain, .constrainCenter:
@@ -80,6 +94,7 @@ extension EditorTool {
     case .text, .verticalText: return .text
     case .marquee: return .selection("rectangle.dashed", selection)
     case .ellipticalMarquee: return .selection("circle.dashed", selection)
+    case .magneticLasso:return ToolCursor.magnetic(modifiers:flags,mode:selection,active:false)
     case .lasso, .polygonLasso: return .selection("lasso", selection)
     case .objectSelection: return .selection("viewfinder", selection)
     case .quickSelection, .selectionBrush: return .selection("paintbrush.pointed", selection)

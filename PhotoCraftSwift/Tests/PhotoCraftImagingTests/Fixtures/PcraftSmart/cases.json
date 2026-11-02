@@ -1,0 +1,752 @@
+[
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "affine-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-cached-u8.pcraft",
+    "height": 64,
+    "name": "affine-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u8",
+    "expected": "affine-uncached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-uncached-u8.pcraft",
+    "height": 64,
+    "name": "affine-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "projective-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-cached-u8.pcraft",
+    "height": 64,
+    "name": "projective-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u8",
+    "expected": "projective-uncached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-uncached-u8.pcraft",
+    "height": 64,
+    "name": "projective-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "warp-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-cached-u8.pcraft",
+    "height": 64,
+    "name": "warp-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u8",
+    "expected": "warp-uncached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-uncached-u8.pcraft",
+    "height": 64,
+    "name": "warp-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "filter-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-cached-u8.pcraft",
+    "height": 64,
+    "name": "filter-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u8",
+    "expected": "filter-uncached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-uncached-u8.pcraft",
+    "height": 64,
+    "name": "filter-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "filtermask-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filtermask-cached-u8.pcraft",
+    "height": 64,
+    "name": "filtermask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "mask-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "mask-cached-u8.pcraft",
+    "height": 64,
+    "name": "mask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "shared-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "shared-u8.pcraft",
+    "height": 64,
+    "name": "shared",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "linked-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "linked-cached-u8.pcraft",
+    "height": 64,
+    "name": "linked-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "unsupported-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "unsupported-cached-u8.pcraft",
+    "height": 64,
+    "name": "unsupported-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "nested-cached-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "nested-cached-u8.pcraft",
+    "height": 64,
+    "name": "nested-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-entropy-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-entropy-u8.pcraft",
+    "height": 64,
+    "name": "stack-entropy",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-kurtosis-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-kurtosis-u8.pcraft",
+    "height": 64,
+    "name": "stack-kurtosis",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-maximum-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-maximum-u8.pcraft",
+    "height": 64,
+    "name": "stack-maximum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-mean-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-mean-u8.pcraft",
+    "height": 64,
+    "name": "stack-mean",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-median-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-median-u8.pcraft",
+    "height": 64,
+    "name": "stack-median",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-minimum-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-minimum-u8.pcraft",
+    "height": 64,
+    "name": "stack-minimum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-range-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-range-u8.pcraft",
+    "height": 64,
+    "name": "stack-range",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-skewness-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-skewness-u8.pcraft",
+    "height": 64,
+    "name": "stack-skewness",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-standardDeviation-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-standardDeviation-u8.pcraft",
+    "height": 64,
+    "name": "stack-standardDeviation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-summation-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-summation-u8.pcraft",
+    "height": 64,
+    "name": "stack-summation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u8",
+    "expected": "stack-variance-u8.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-variance-u8.pcraft",
+    "height": 64,
+    "name": "stack-variance",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "affine-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-cached-u16.pcraft",
+    "height": 64,
+    "name": "affine-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u16",
+    "expected": "affine-uncached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-uncached-u16.pcraft",
+    "height": 64,
+    "name": "affine-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "projective-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-cached-u16.pcraft",
+    "height": 64,
+    "name": "projective-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u16",
+    "expected": "projective-uncached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-uncached-u16.pcraft",
+    "height": 64,
+    "name": "projective-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "warp-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-cached-u16.pcraft",
+    "height": 64,
+    "name": "warp-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u16",
+    "expected": "warp-uncached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-uncached-u16.pcraft",
+    "height": 64,
+    "name": "warp-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "filter-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-cached-u16.pcraft",
+    "height": 64,
+    "name": "filter-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "u16",
+    "expected": "filter-uncached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-uncached-u16.pcraft",
+    "height": 64,
+    "name": "filter-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "filtermask-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filtermask-cached-u16.pcraft",
+    "height": 64,
+    "name": "filtermask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "mask-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "mask-cached-u16.pcraft",
+    "height": 64,
+    "name": "mask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "shared-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "shared-u16.pcraft",
+    "height": 64,
+    "name": "shared",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "linked-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "linked-cached-u16.pcraft",
+    "height": 64,
+    "name": "linked-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "unsupported-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "unsupported-cached-u16.pcraft",
+    "height": 64,
+    "name": "unsupported-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "nested-cached-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "nested-cached-u16.pcraft",
+    "height": 64,
+    "name": "nested-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-entropy-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-entropy-u16.pcraft",
+    "height": 64,
+    "name": "stack-entropy",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-kurtosis-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-kurtosis-u16.pcraft",
+    "height": 64,
+    "name": "stack-kurtosis",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-maximum-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-maximum-u16.pcraft",
+    "height": 64,
+    "name": "stack-maximum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-mean-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-mean-u16.pcraft",
+    "height": 64,
+    "name": "stack-mean",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-median-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-median-u16.pcraft",
+    "height": 64,
+    "name": "stack-median",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-minimum-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-minimum-u16.pcraft",
+    "height": 64,
+    "name": "stack-minimum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-range-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-range-u16.pcraft",
+    "height": 64,
+    "name": "stack-range",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-skewness-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-skewness-u16.pcraft",
+    "height": 64,
+    "name": "stack-skewness",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-standardDeviation-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-standardDeviation-u16.pcraft",
+    "height": 64,
+    "name": "stack-standardDeviation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-summation-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-summation-u16.pcraft",
+    "height": 64,
+    "name": "stack-summation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "u16",
+    "expected": "stack-variance-u16.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-variance-u16.pcraft",
+    "height": 64,
+    "name": "stack-variance",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "affine-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-cached-f32.pcraft",
+    "height": 64,
+    "name": "affine-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "f32",
+    "expected": "affine-uncached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "affine-uncached-f32.pcraft",
+    "height": 64,
+    "name": "affine-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "projective-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-cached-f32.pcraft",
+    "height": 64,
+    "name": "projective-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "f32",
+    "expected": "projective-uncached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "projective-uncached-f32.pcraft",
+    "height": 64,
+    "name": "projective-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "warp-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-cached-f32.pcraft",
+    "height": 64,
+    "name": "warp-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "f32",
+    "expected": "warp-uncached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "warp-uncached-f32.pcraft",
+    "height": 64,
+    "name": "warp-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "filter-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-cached-f32.pcraft",
+    "height": 64,
+    "name": "filter-cached",
+    "width": 80
+  },
+  {
+    "cached": false,
+    "depth": "f32",
+    "expected": "filter-uncached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filter-uncached-f32.pcraft",
+    "height": 64,
+    "name": "filter-uncached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "filtermask-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "filtermask-cached-f32.pcraft",
+    "height": 64,
+    "name": "filtermask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "mask-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "mask-cached-f32.pcraft",
+    "height": 64,
+    "name": "mask-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "shared-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "shared-f32.pcraft",
+    "height": 64,
+    "name": "shared",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "linked-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "linked-cached-f32.pcraft",
+    "height": 64,
+    "name": "linked-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "unsupported-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "unsupported-cached-f32.pcraft",
+    "height": 64,
+    "name": "unsupported-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "nested-cached-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "nested-cached-f32.pcraft",
+    "height": 64,
+    "name": "nested-cached",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-entropy-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-entropy-f32.pcraft",
+    "height": 64,
+    "name": "stack-entropy",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-kurtosis-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-kurtosis-f32.pcraft",
+    "height": 64,
+    "name": "stack-kurtosis",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-maximum-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-maximum-f32.pcraft",
+    "height": 64,
+    "name": "stack-maximum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-mean-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-mean-f32.pcraft",
+    "height": 64,
+    "name": "stack-mean",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-median-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-median-f32.pcraft",
+    "height": 64,
+    "name": "stack-median",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-minimum-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-minimum-f32.pcraft",
+    "height": 64,
+    "name": "stack-minimum",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-range-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-range-f32.pcraft",
+    "height": 64,
+    "name": "stack-range",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-skewness-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-skewness-f32.pcraft",
+    "height": 64,
+    "name": "stack-skewness",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-standardDeviation-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-standardDeviation-f32.pcraft",
+    "height": 64,
+    "name": "stack-standardDeviation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-summation-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-summation-f32.pcraft",
+    "height": 64,
+    "name": "stack-summation",
+    "width": 80
+  },
+  {
+    "cached": true,
+    "depth": "f32",
+    "expected": "stack-variance-f32.rgba32",
+    "expected_source": "Original smart_cmds::render before optional cache removal; linked fixture cache rendered while embedded, then locator becomes declarative.",
+    "file": "stack-variance-f32.pcraft",
+    "height": 64,
+    "name": "stack-variance",
+    "width": 80
+  }
+]

@@ -7,6 +7,10 @@ options:
     macOS: "14.0"
   createIntermediateGroups: true
   defaultConfig: Debug
+configs:
+  Debug: debug
+  Release: release
+  AppStore: release
 settings:
   base:
     SWIFT_VERSION: "6.0"
@@ -18,6 +22,9 @@ settings:
     Debug:
       ONLY_ACTIVE_ARCH: YES
     Release:
+      ARCHS: "arm64 x86_64"
+      ONLY_ACTIVE_ARCH: NO
+    AppStore:
       ARCHS: "arm64 x86_64"
       ONLY_ACTIVE_ARCH: NO
 fileGroups:
@@ -79,6 +86,8 @@ targets:
         buildPhase: resources
       - path: ATTRIBUTION.md
         buildPhase: resources
+      - path: scripts/PrivacyInfo.xcprivacy
+        buildPhase: resources
       - path: scripts/ProjectLinks.json
         buildPhase: resources
       - path: Assets/PhotatoIcon.png
@@ -95,12 +104,23 @@ targets:
         PRODUCT_NAME: Photato
         PRODUCT_MODULE_NAME: PhotoCraft
         USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES: YES
-        PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift
+        PRODUCT_BUNDLE_IDENTIFIER: ca.forensicintelligence.photato
         INFOPLIST_FILE: scripts/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         SKIP_INSTALL: NO
         ENABLE_HARDENED_RUNTIME: YES
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
+      configs:
+        AppStore:
+          CODE_SIGN_STYLE: Automatic
+          CODE_SIGN_IDENTITY: Apple Development
+          DEVELOPMENT_TEAM: PATM9DNCLA
+          CODE_SIGN_ENTITLEMENTS: scripts/Photato-AppStore.entitlements
+          ENABLE_APP_SANDBOX: YES
+          ENABLE_USER_SELECTED_FILES: readwrite
+          ENABLE_INCOMING_NETWORK_CONNECTIONS: YES
+          ENABLE_OUTGOING_NETWORK_CONNECTIONS: YES
+          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
     postBuildScripts:
       - name: Build Photato icon
         script: '"$SRCROOT/scripts/build-xcode-icon.sh"'
@@ -132,4 +152,4 @@ schemes:
     analyze:
       config: Debug
     archive:
-      config: Release
+      config: AppStore

@@ -137,7 +137,7 @@ extension WorkspaceView {
       .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
   }
   @ViewBuilder var toolOptions: some View {
-    if store.transformDraft != nil {
+    if store.transformDraft != nil,store.transformDraft?.movingPixels != true {
       transformOptions
     } else if store.unavailableToolID != nil {
       Text(store.selectedTool.title).fontWeight(.medium)
@@ -223,14 +223,20 @@ extension WorkspaceView {
         Toggle("Pressure Opacity",isOn:$store.brushOptions.pressureOpacity)
         Button("Brush Settings"){NSApp.sendAction(#selector(AppDelegate.showBrushSettings),to:nil,from:nil)}
         Menu("Presets"){ForEach(store.brushes.file.presets){p in Button(p.name){do{try store.selectBrush(p.id)}catch{store.error=error.localizedDescription}}};Divider();Button("Brushes…"){NSApp.sendAction(#selector(AppDelegate.showBrushes),to:nil,from:nil)}}
-      case .marquee, .ellipticalMarquee, .lasso, .polygonLasso:
+      case .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .magneticLasso:
         Picker("Selection mode", selection: $store.selectionMode) {
           ForEach(SelectionMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-        }.labelsHidden().frame(width: 105).controlSize(.small)
-        numberField("Feather:", value: $store.selectionFeather, range: 0...100, suffix: "px")
-        Toggle("Anti-alias", isOn: $store.selectionAntiAlias).disabled(store.tool == .marquee)
+        }.labelsHidden().frame(width: 105).controlSize(.small).disabled(store.tool == .magneticLasso && store.magneticDraft != nil)
+        numberField("Feather:", value: $store.selectionFeather, range: 0...100, suffix: "px").disabled(store.tool == .magneticLasso && store.magneticDraft != nil)
+        Toggle("Anti-alias", isOn: $store.selectionAntiAlias).disabled(store.tool == .marquee || (store.tool == .magneticLasso && store.magneticDraft != nil))
         Button("Select and Mask…") { store.beginSelectMask() }.disabled(!store.canBeginSelectMask).controlSize(.small)
-        if store.tool == .polygonLasso {
+        if store.tool == .magneticLasso {
+          numberField("Width:",value:$store.magneticSettings.width,range:1...256,suffix:"px").disabled(store.magneticDraft != nil)
+          numberField("Contrast:",value:$store.magneticSettings.contrast,range:1...100,suffix:"%").disabled(store.magneticDraft != nil)
+          numberField("Frequency:",value:$store.magneticSettings.frequency,range:0...100,suffix:"").disabled(store.magneticDraft != nil)
+          Toggle("Tablet Pressure",isOn:$store.magneticSettings.stylusPressure).disabled(store.magneticDraft != nil)
+          if store.magneticDraft != nil {Button("Close"){store.finishMagneticLasso()};Button("Cancel"){store.cancelMagneticLasso()}}
+        } else if store.tool == .polygonLasso {
           Text("Click vertices · Double-click or Return to close · Esc cancels").foregroundStyle(
             .secondary)
         } else {

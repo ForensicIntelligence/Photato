@@ -21,12 +21,12 @@ extension WorkspaceView {
         Picker("Ratio",selection:Binding(get:{ store.cropDraft?.ratio ?? "Free" },set:{ value in guard var d = store.cropDraft else { return };d.setRatio(value,document:store.document);store.updateCrop(d) })) {
           ForEach(["Free","Original","1 : 1","4 : 5","5 : 7","2 : 3","16 : 9"],id:\.self) { Text($0).tag($0) }
         }.labelsHidden().frame(width:100).controlSize(.small)
-        numberField("W",value:cropDimension(horizontal:true),range:1...60000,suffix:"px")
+        numberField("W",value:cropDimension(horizontal:true),range:1...Double(Surface.maxDimension),suffix:"px")
         Button { guard var d = store.cropDraft else { return };let w = d.width,h = d.height;d.frame.scaleX = h/Double(d.frame.bounds.width)*100;d.frame.scaleY = w/Double(d.frame.bounds.height)*100;store.updateCrop(d) } label: { Image(systemName:"arrow.left.arrow.right") }.buttonStyle(.plain).help("Swap crop width and height")
-        numberField("H",value:cropDimension(horizontal:false),range:1...60000,suffix:"px")
+        numberField("H",value:cropDimension(horizontal:false),range:1...Double(Surface.maxDimension),suffix:"px")
         numberField("Angle",value:cropOption(\.frame.angle,default:0),range:-45...45,suffix:"°")
         Toggle("Straighten",isOn:$store.cropStraighten).toggleStyle(.button).help("Draw along a horizontal or vertical feature")
-        Toggle("Delete Cropped Pixels",isOn:cropOption(\.deletePixels,default:true))
+        Toggle("Delete Cropped Pixels",isOn:cropOption(\.deletePixels,default:true)).disabled(!store.canRetainCroppedPixels).help("Convert Background, indexed or ink content to regular component layers to retain cropped pixels.")
         Picker("Fill",selection:cropOption(\.fill,default:.transparent)) {
           Text("Transparent").tag(CropRequest.Fill.transparent);Text("Background Color").tag(CropRequest.Fill.background);Text("Content-Aware Fill").tag(CropRequest.Fill.contentAware)
         }.frame(width:190).controlSize(.small)

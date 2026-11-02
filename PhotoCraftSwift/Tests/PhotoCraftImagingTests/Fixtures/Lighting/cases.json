@@ -1,0 +1,6586 @@
+[
+  {
+    "cached": "default-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "default-u8-expected.rgba32",
+    "height": 19,
+    "input": "default-u8-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "default-u8-smart.rgba32",
+    "source": "default-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "default-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "point-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "point-u8-expected.rgba32",
+    "height": 19,
+    "input": "point-u8-input.rgba32",
+    "name": "point",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "point-u8-smart.rgba32",
+    "source": "point-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "point-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "infinite-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "infinite-u8-expected.rgba32",
+    "height": 19,
+    "input": "infinite-u8-input.rgba32",
+    "name": "infinite",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "infinite-u8-smart.rgba32",
+    "source": "infinite-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "infinite-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "three-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "three-u8-expected.rgba32",
+    "height": 19,
+    "input": "three-u8-input.rgba32",
+    "name": "three",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "three-u8-smart.rgba32",
+    "source": "three-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "three-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "negative-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "negative-u8-expected.rgba32",
+    "height": 19,
+    "input": "negative-u8-input.rgba32",
+    "name": "negative",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "negative-u8-smart.rgba32",
+    "source": "negative-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "negative-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-red-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "texture-red-u8-expected.rgba32",
+    "height": 19,
+    "input": "texture-red-u8-input.rgba32",
+    "name": "texture-red",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-red-u8-smart.rgba32",
+    "source": "texture-red-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-red-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-green-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "texture-green-u8-expected.rgba32",
+    "height": 19,
+    "input": "texture-green-u8-input.rgba32",
+    "name": "texture-green",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-green-u8-smart.rgba32",
+    "source": "texture-green-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-green-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-blue-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "texture-blue-u8-expected.rgba32",
+    "height": 19,
+    "input": "texture-blue-u8-input.rgba32",
+    "name": "texture-blue",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-blue-u8-smart.rgba32",
+    "source": "texture-blue-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-blue-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-alpha-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "texture-alpha-u8-expected.rgba32",
+    "height": 19,
+    "input": "texture-alpha-u8-input.rgba32",
+    "name": "texture-alpha",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-alpha-u8-smart.rgba32",
+    "source": "texture-alpha-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-alpha-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-luminance-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "texture-luminance-u8-expected.rgba32",
+    "height": 19,
+    "input": "texture-luminance-u8-input.rgba32",
+    "name": "texture-luminance",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-luminance-u8-smart.rgba32",
+    "source": "texture-luminance-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-luminance-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "white-low-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "white-low-u8-expected.rgba32",
+    "height": 19,
+    "input": "white-low-u8-input.rgba32",
+    "name": "white-low",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "smartExpected": "white-low-u8-smart.rgba32",
+    "source": "white-low-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "translated": false,
+    "uncached": "white-low-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "matte-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "matte-u8-expected.rgba32",
+    "height": 19,
+    "input": "matte-u8-input.rgba32",
+    "name": "matte",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "matte-u8-smart.rgba32",
+    "source": "matte-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "matte-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "metal-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "metal-u8-expected.rgba32",
+    "height": 19,
+    "input": "metal-u8-input.rgba32",
+    "name": "metal",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "metal-u8-smart.rgba32",
+    "source": "metal-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "metal-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "exposure-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "exposure-u8-expected.rgba32",
+    "height": 19,
+    "input": "exposure-u8-input.rgba32",
+    "name": "exposure",
+    "params": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "exposure-u8-smart.rgba32",
+    "source": "exposure-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "exposure-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-only-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "ambient-only-u8-expected.rgba32",
+    "height": 19,
+    "input": "ambient-only-u8-input.rgba32",
+    "name": "ambient-only",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ambient-only-u8-smart.rgba32",
+    "source": "ambient-only-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ambient-only-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "transparent-u8-expected.rgba32",
+    "height": 19,
+    "input": "transparent-u8-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "transparent-u8-smart.rgba32",
+    "source": "transparent-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "transparent-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "off-canvas-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "off-canvas-u8-expected.rgba32",
+    "height": 19,
+    "input": "off-canvas-u8-input.rgba32",
+    "name": "off-canvas",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "off-canvas-u8-smart.rgba32",
+    "source": "off-canvas-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "off-canvas-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "sixteen-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "sixteen-u8-expected.rgba32",
+    "height": 19,
+    "input": "sixteen-u8-input.rgba32",
+    "name": "sixteen",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "sixteen-u8-smart.rgba32",
+    "source": "sixteen-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "sixteen-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "root-fallback-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "root-fallback-u8-expected.rgba32",
+    "height": 19,
+    "input": "root-fallback-u8-input.rgba32",
+    "name": "root-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.4000000059604645,
+            0.20000000298023224,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6499999761581421,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "root-fallback-u8-smart.rgba32",
+    "source": "root-fallback-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "angle": 135.0,
+      "color": "#6633FF",
+      "cone": 45.0,
+      "elevation": 45.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "hotspot": 50.0,
+      "intensity": 75.0,
+      "lightType": "point",
+      "lightX": 0.699999988079071,
+      "lightY": 0.6499999761581421,
+      "lightZ": 0.6000000238418579,
+      "metallic": 0.0,
+      "radius": 0.800000011920929,
+      "targetX": 0.5,
+      "targetY": 0.550000011920929,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "root-fallback-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ignored-fallback-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "ignored-fallback-u8-expected.rgba32",
+    "height": 19,
+    "input": "ignored-fallback-u8-input.rgba32",
+    "name": "ignored-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ignored-fallback-u8-smart.rgba32",
+    "source": "ignored-fallback-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "color": false,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lightX": "unused fallback",
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ignored-fallback-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "translated-u8-cached.pcraft",
+    "depth": "u8",
+    "expected": "translated-u8-expected.rgba32",
+    "height": 19,
+    "input": "translated-u8-input.rgba32",
+    "name": "translated",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "translated-u8-smart.rgba32",
+    "source": "translated-u8-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": true,
+    "uncached": "translated-u8-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "default-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "default-u16-expected.rgba32",
+    "height": 19,
+    "input": "default-u16-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "default-u16-smart.rgba32",
+    "source": "default-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "default-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "point-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "point-u16-expected.rgba32",
+    "height": 19,
+    "input": "point-u16-input.rgba32",
+    "name": "point",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "point-u16-smart.rgba32",
+    "source": "point-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "point-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "infinite-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "infinite-u16-expected.rgba32",
+    "height": 19,
+    "input": "infinite-u16-input.rgba32",
+    "name": "infinite",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "infinite-u16-smart.rgba32",
+    "source": "infinite-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "infinite-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "three-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "three-u16-expected.rgba32",
+    "height": 19,
+    "input": "three-u16-input.rgba32",
+    "name": "three",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "three-u16-smart.rgba32",
+    "source": "three-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "three-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "negative-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "negative-u16-expected.rgba32",
+    "height": 19,
+    "input": "negative-u16-input.rgba32",
+    "name": "negative",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "negative-u16-smart.rgba32",
+    "source": "negative-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "negative-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-red-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "texture-red-u16-expected.rgba32",
+    "height": 19,
+    "input": "texture-red-u16-input.rgba32",
+    "name": "texture-red",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-red-u16-smart.rgba32",
+    "source": "texture-red-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-red-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-green-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "texture-green-u16-expected.rgba32",
+    "height": 19,
+    "input": "texture-green-u16-input.rgba32",
+    "name": "texture-green",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-green-u16-smart.rgba32",
+    "source": "texture-green-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-green-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-blue-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "texture-blue-u16-expected.rgba32",
+    "height": 19,
+    "input": "texture-blue-u16-input.rgba32",
+    "name": "texture-blue",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-blue-u16-smart.rgba32",
+    "source": "texture-blue-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-blue-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-alpha-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "texture-alpha-u16-expected.rgba32",
+    "height": 19,
+    "input": "texture-alpha-u16-input.rgba32",
+    "name": "texture-alpha",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-alpha-u16-smart.rgba32",
+    "source": "texture-alpha-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-alpha-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-luminance-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "texture-luminance-u16-expected.rgba32",
+    "height": 19,
+    "input": "texture-luminance-u16-input.rgba32",
+    "name": "texture-luminance",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-luminance-u16-smart.rgba32",
+    "source": "texture-luminance-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-luminance-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "white-low-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "white-low-u16-expected.rgba32",
+    "height": 19,
+    "input": "white-low-u16-input.rgba32",
+    "name": "white-low",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "smartExpected": "white-low-u16-smart.rgba32",
+    "source": "white-low-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "translated": false,
+    "uncached": "white-low-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "matte-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "matte-u16-expected.rgba32",
+    "height": 19,
+    "input": "matte-u16-input.rgba32",
+    "name": "matte",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "matte-u16-smart.rgba32",
+    "source": "matte-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "matte-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "metal-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "metal-u16-expected.rgba32",
+    "height": 19,
+    "input": "metal-u16-input.rgba32",
+    "name": "metal",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "metal-u16-smart.rgba32",
+    "source": "metal-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "metal-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "exposure-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "exposure-u16-expected.rgba32",
+    "height": 19,
+    "input": "exposure-u16-input.rgba32",
+    "name": "exposure",
+    "params": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "exposure-u16-smart.rgba32",
+    "source": "exposure-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "exposure-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-only-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "ambient-only-u16-expected.rgba32",
+    "height": 19,
+    "input": "ambient-only-u16-input.rgba32",
+    "name": "ambient-only",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ambient-only-u16-smart.rgba32",
+    "source": "ambient-only-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ambient-only-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "transparent-u16-expected.rgba32",
+    "height": 19,
+    "input": "transparent-u16-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "transparent-u16-smart.rgba32",
+    "source": "transparent-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "transparent-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "off-canvas-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "off-canvas-u16-expected.rgba32",
+    "height": 19,
+    "input": "off-canvas-u16-input.rgba32",
+    "name": "off-canvas",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "off-canvas-u16-smart.rgba32",
+    "source": "off-canvas-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "off-canvas-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "sixteen-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "sixteen-u16-expected.rgba32",
+    "height": 19,
+    "input": "sixteen-u16-input.rgba32",
+    "name": "sixteen",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "sixteen-u16-smart.rgba32",
+    "source": "sixteen-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "sixteen-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "root-fallback-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "root-fallback-u16-expected.rgba32",
+    "height": 19,
+    "input": "root-fallback-u16-input.rgba32",
+    "name": "root-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.4000000059604645,
+            0.20000000298023224,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6499999761581421,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "root-fallback-u16-smart.rgba32",
+    "source": "root-fallback-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "angle": 135.0,
+      "color": "#6633FF",
+      "cone": 45.0,
+      "elevation": 45.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "hotspot": 50.0,
+      "intensity": 75.0,
+      "lightType": "point",
+      "lightX": 0.699999988079071,
+      "lightY": 0.6499999761581421,
+      "lightZ": 0.6000000238418579,
+      "metallic": 0.0,
+      "radius": 0.800000011920929,
+      "targetX": 0.5,
+      "targetY": 0.550000011920929,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "root-fallback-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ignored-fallback-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "ignored-fallback-u16-expected.rgba32",
+    "height": 19,
+    "input": "ignored-fallback-u16-input.rgba32",
+    "name": "ignored-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ignored-fallback-u16-smart.rgba32",
+    "source": "ignored-fallback-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "color": false,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lightX": "unused fallback",
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ignored-fallback-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "translated-u16-cached.pcraft",
+    "depth": "u16",
+    "expected": "translated-u16-expected.rgba32",
+    "height": 19,
+    "input": "translated-u16-input.rgba32",
+    "name": "translated",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "translated-u16-smart.rgba32",
+    "source": "translated-u16-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": true,
+    "uncached": "translated-u16-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "default-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "default-f32-expected.rgba32",
+    "height": 19,
+    "input": "default-f32-input.rgba32",
+    "name": "default",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "default-f32-smart.rgba32",
+    "source": "default-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "default-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "point-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "point-f32-expected.rgba32",
+    "height": 19,
+    "input": "point-f32-input.rgba32",
+    "name": "point",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "point-f32-smart.rgba32",
+    "source": "point-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2999999523162842,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "point-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "infinite-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "infinite-f32-expected.rgba32",
+    "height": 19,
+    "input": "infinite-f32-input.rgba32",
+    "name": "infinite",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "infinite-f32-smart.rgba32",
+    "source": "infinite-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": -35.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 60.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "infinite-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "three-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "three-f32-expected.rgba32",
+    "height": 19,
+    "input": "three-f32-input.rgba32",
+    "name": "three",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "three-f32-smart.rgba32",
+    "source": "three-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.30000001192092896,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 40.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.800000011920929,
+          "y": 0.6000000238418579,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": -40.0,
+          "color": [
+            1.0,
+            0.30000001192092896,
+            0.10000000149011612
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 20.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "three-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "negative-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "negative-f32-expected.rgba32",
+    "height": 19,
+    "input": "negative-f32-input.rgba32",
+    "name": "negative",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "negative-f32-smart.rgba32",
+    "source": "negative-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": -50.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "negative-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-red-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "texture-red-f32-expected.rgba32",
+    "height": 19,
+    "input": "texture-red-f32-input.rgba32",
+    "name": "texture-red",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-red-f32-smart.rgba32",
+    "source": "texture-red-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-red-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-green-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "texture-green-f32-expected.rgba32",
+    "height": 19,
+    "input": "texture-green-f32-input.rgba32",
+    "name": "texture-green",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-green-f32-smart.rgba32",
+    "source": "texture-green-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "green",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-green-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-blue-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "texture-blue-f32-expected.rgba32",
+    "height": 19,
+    "input": "texture-blue-f32-input.rgba32",
+    "name": "texture-blue",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-blue-f32-smart.rgba32",
+    "source": "texture-blue-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "blue",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-blue-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-alpha-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "texture-alpha-f32-expected.rgba32",
+    "height": 19,
+    "input": "texture-alpha-f32-input.rgba32",
+    "name": "texture-alpha",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-alpha-f32-smart.rgba32",
+    "source": "texture-alpha-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-alpha-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "texture-luminance-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "texture-luminance-f32-expected.rgba32",
+    "height": 19,
+    "input": "texture-luminance-f32-input.rgba32",
+    "name": "texture-luminance",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "texture-luminance-f32-smart.rgba32",
+    "source": "texture-luminance-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "texture-luminance-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "white-low-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "white-low-f32-expected.rgba32",
+    "height": 19,
+    "input": "white-low-f32-input.rgba32",
+    "name": "white-low",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "smartExpected": "white-low-f32-smart.rgba32",
+    "source": "white-low-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 90.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": false
+    },
+    "translated": false,
+    "uncached": "white-low-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "matte-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "matte-f32-expected.rgba32",
+    "height": 19,
+    "input": "matte-f32-input.rgba32",
+    "name": "matte",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "matte-f32-smart.rgba32",
+    "source": "matte-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": -100.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "matte-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "metal-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "metal-f32-expected.rgba32",
+    "height": 19,
+    "input": "metal-f32-input.rgba32",
+    "name": "metal",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "metal-f32-smart.rgba32",
+    "source": "metal-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 80.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 100.0,
+      "texture": "red",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "metal-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "exposure-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "exposure-f32-expected.rgba32",
+    "height": 19,
+    "input": "exposure-f32-input.rgba32",
+    "name": "exposure",
+    "params": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "exposure-f32-smart.rgba32",
+    "source": "exposure-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 60.0,
+      "exposure": 75.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "exposure-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ambient-only-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "ambient-only-f32-expected.rgba32",
+    "height": 19,
+    "input": "ambient-only-f32-input.rgba32",
+    "name": "ambient-only",
+    "params": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ambient-only-f32-smart.rgba32",
+    "source": "ambient-only-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 100.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ambient-only-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "transparent-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "transparent-f32-expected.rgba32",
+    "height": 19,
+    "input": "transparent-f32-input.rgba32",
+    "name": "transparent",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "transparent-f32-smart.rgba32",
+    "source": "transparent-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.20000000298023224,
+            0.6000000238418579,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "alpha",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "transparent-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "off-canvas-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "off-canvas-f32-expected.rgba32",
+    "height": 19,
+    "input": "off-canvas-f32-input.rgba32",
+    "name": "off-canvas",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "off-canvas-f32-smart.rgba32",
+    "source": "off-canvas-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 20.0,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": -0.25,
+          "y": 1.2000000476837158,
+          "z": 12.0
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "off-canvas-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "sixteen-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "sixteen-f32-expected.rgba32",
+    "height": 19,
+    "input": "sixteen-f32-input.rgba32",
+    "name": "sixteen",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "sixteen-f32-smart.rgba32",
+    "source": "sixteen-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 0.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 22.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 45.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 67.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 90.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 112.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 135.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 157.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.3333333432674408,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 180.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 202.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 225.0,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 247.5,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 0.6666666865348816,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 270.0,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 292.5,
+          "color": [
+            0.6666666865348816,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.3333333432674408,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 315.0,
+          "color": [
+            1.0,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "infinite",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.6666666865348816,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        },
+        {
+          "angle": 337.5,
+          "color": [
+            0.3333333432674408,
+            0.5,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 10.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 1.0,
+          "y": 1.0,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "sixteen-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "root-fallback-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "root-fallback-f32-expected.rgba32",
+    "height": 19,
+    "input": "root-fallback-f32-input.rgba32",
+    "name": "root-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            0.4000000059604645,
+            0.20000000298023224,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.699999988079071,
+          "y": 0.6499999761581421,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "root-fallback-f32-smart.rgba32",
+    "source": "root-fallback-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "angle": 135.0,
+      "color": "#6633FF",
+      "cone": 45.0,
+      "elevation": 45.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "hotspot": 50.0,
+      "intensity": 75.0,
+      "lightType": "point",
+      "lightX": 0.699999988079071,
+      "lightY": 0.6499999761581421,
+      "lightZ": 0.6000000238418579,
+      "metallic": 0.0,
+      "radius": 0.800000011920929,
+      "targetX": 0.5,
+      "targetY": 0.550000011920929,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "root-fallback-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "ignored-fallback-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "ignored-fallback-f32-expected.rgba32",
+    "height": 19,
+    "input": "ignored-fallback-f32-input.rgba32",
+    "name": "ignored-fallback",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "ignored-fallback-f32-smart.rgba32",
+    "source": "ignored-fallback-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "color": false,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lightX": "unused fallback",
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "ignored-fallback-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "translated-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "translated-f32-expected.rgba32",
+    "height": 19,
+    "input": "translated-f32-input.rgba32",
+    "name": "translated",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "translated-f32-smart.rgba32",
+    "source": "translated-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "spot",
+          "radius": 0.800000011920929,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "none",
+      "whiteIsHigh": true
+    },
+    "translated": true,
+    "uncached": "translated-f32-uncached.pcraft",
+    "width": 23
+  },
+  {
+    "cached": "tile-boundary-f32-cached.pcraft",
+    "depth": "f32",
+    "expected": "tile-boundary-f32-expected.rgba32",
+    "height": 129,
+    "input": "tile-boundary-f32-input.rgba32",
+    "name": "tile-boundary",
+    "params": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "enabled": true,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2000000476837158,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "smartExpected": "tile-boundary-f32-smart.rgba32",
+    "source": "tile-boundary-f32-source.pcraft",
+    "sourceParams": {
+      "ambience": 8.0,
+      "exposure": 0.0,
+      "gloss": 0.0,
+      "height": 50.0,
+      "lights": [
+        {
+          "angle": 135.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "cone": 45.0,
+          "elevation": 45.0,
+          "hotspot": 50.0,
+          "intensity": 75.0,
+          "kind": "point",
+          "radius": 1.2000000476837158,
+          "targetX": 0.5,
+          "targetY": 0.550000011920929,
+          "x": 0.25,
+          "y": 0.20000000298023224,
+          "z": 0.6000000238418579
+        }
+      ],
+      "metallic": 0.0,
+      "texture": "luminance",
+      "whiteIsHigh": true
+    },
+    "translated": false,
+    "uncached": "tile-boundary-f32-uncached.pcraft",
+    "width": 257
+  }
+]

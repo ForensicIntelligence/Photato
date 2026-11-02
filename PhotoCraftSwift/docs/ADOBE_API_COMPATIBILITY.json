@@ -2356,5 +2356,280 @@
       "sha256": "535ebc596a84403bdde5a6b5cb7094d04cde407a95a6dd614c14dc81d5e82648",
       "source_manifest": "artifacts/runs/20261031T152631Z-297-modern-adjustment-layers/source05.json"
     }
+  },
+  "exposure_step302": {
+    "reference": "docs/EXPOSURE_REFERENCES.json",
+    "status": "Source03 native/published composite jobs and editable PSD controls pass; independent RGB8 merged bytes match, RGB16/RGB32 exact comparisons remain open.",
+    "route": "POST /v2/create-composite",
+    "fields": "adjustments.type=exposure; exposure.exposureValue/offset/gammaCorrection",
+    "operations": [
+      "add",
+      "edit"
+    ],
+    "placements": [
+      "top",
+      "bottom",
+      "above",
+      "below",
+      "into"
+    ],
+    "full_service_or_pixel_parity": false
+  },
+  "rich_source_text_step308": {
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
+    "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
+    "functional_cases_passed": 16,
+    "new_tool_or_factory_binding": false,
+    "menu_cases_passed": 9,
+    "cursor_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "full_parity": false,
+    "api_impact": "Existing Photato text commands/state/schema/69 negotiation and published Adobe text_layer mappings; no new route. Original pcraft format remains outside Adobe input contract."
+  },
+  "command_worker_repair_311": {
+    "scope": "Shared native dispatch only; no published endpoint/schema expansion.",
+    "reference": "docs/COMMAND_DISPATCH_REFERENCES.json",
+    "verified": "Existing published text/composite job and Smart Object workflow regressions pass within24 Source02 cases.",
+    "qualification": "Complete Source01 inventory retains known strict output failures; native/Photoshop/platform and full endpoint coverage remain open."
+  },
+  "layer_outputs_341": {
+    "route": "POST /v2/create-composite",
+    "supported": "Per-output id/name selection with default/specified document/layer/trim bounds; raster multi-selection and editable single group/artboard PSD. Existing jobs/ICC/encoding serializer shared.",
+    "guide": "docs/IMAGE_EXPORT.md",
+    "evidence": "docs/IMAGE_EXPORT_REFERENCES.json",
+    "qualified_new_cases": 4,
+    "full_contract_equivalence": false
+  },
+  "layer_files_342": {
+    "route": "POST /v2/create-composite",
+    "change": "Shared ancestor-aware isolation and canvas-fill bounds for existing per-output layers; native batch remains separate.",
+    "guide": "docs/LAYER_FILE_EXPORT.md",
+    "evidence": "docs/LAYER_FILE_EXPORT_REFERENCES.json",
+    "full_contract_equivalence": false
+  },
+  "color_range_343": {
+    "route": null,
+    "native_command": "selection.colorRange",
+    "semantic_actionJSON_supported": false,
+    "reason": "No dedicated published route; unverified semantic descriptors remain unsupported. Native coverage Actions is a distinct interface.",
+    "evidence": "docs/COLOR_RANGE_REFERENCES.json"
+  },
+  "magnetic_lasso_344": {
+    "route": null,
+    "native_commands": [
+      "selection.magnetic.configure",
+      "selection.magneticLasso"
+    ],
+    "semantic_actionJSON_supported": false,
+    "reason": "No dedicated published route; unverified semantic descriptors remain unsupported.",
+    "evidence": "docs/MAGNETIC_LASSO_REFERENCES.json"
+  },
+  "selection_modify_345": {
+    "route": null,
+    "native_commands": [
+      "selection.modify",
+      "selection.reselect"
+    ],
+    "semantic_actionJSON_supported": false,
+    "evidence": "docs/SELECTION_MODIFY_REFERENCES.json"
+  },
+  "selection_transform_346": {
+    "route": null,
+    "native_commands": [
+      "selection.transform"
+    ],
+    "semantic_actionJSON_supported": false,
+    "evidence": "docs/SELECTION_TRANSFORM_REFERENCES.json"
+  },
+  "selected_pixel_transform_347": {
+    "route": null,
+    "native_commands": [
+      "pixels.transform"
+    ],
+    "semantic_actionJSON_supported": false,
+    "existing_layer_transform_semantics_preserved": true,
+    "evidence": "docs/SELECTED_PIXEL_TRANSFORM_REFERENCES.json"
+  },
+  "background_layers_348": {
+    "route": "POST /v2/create-composite",
+    "type": "background_layer",
+    "operations": [
+      "add",
+      "edit",
+      "delete"
+    ],
+    "fields": [
+      "image.source.url",
+      "isVisible",
+      "convertToLayer",
+      "convertedLayerName"
+    ],
+    "json_manifest": [
+      "background_layer",
+      "sole background id0",
+      "background.canConvertToLayer"
+    ],
+    "placement_or_move_supported": false,
+    "native_commands": [
+      "layer.background",
+      "pixels.clear"
+    ],
+    "full_compatibility_qualified": false,
+    "evidence": "docs/BACKGROUND_LAYER_REFERENCES.json"
+  },
+  "background_pixel_transform_349": {
+    "published_route_added": false,
+    "native_commands_expanded": [
+      "pixels.transform"
+    ],
+    "new_fields": [
+      "backgroundColor"
+    ],
+    "new_state": [
+      "background",
+      "backgroundColor"
+    ],
+    "published_direct_background_transform_still_rejects": true,
+    "unverified_actionJSON_supported": false,
+    "evidence": "docs/BACKGROUND_PIXEL_TRANSFORM_REFERENCES.json"
+  },
+  "selected_pixel_move_350": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "pixels.move"
+    ],
+    "native_commands_expanded": [
+      "pixels.transform"
+    ],
+    "new_fields": [
+      "copy",
+      "constrain",
+      "dx",
+      "dy"
+    ],
+    "new_state": "selectedPixelMove",
+    "unverified_move_selection_actionJSON_supported": false,
+    "evidence": "docs/SELECTED_PIXEL_MOVE_REFERENCES.json"
+  },
+  "pixel_mask_transform_351": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "mask.transform"
+    ],
+    "new_state": "pixelMaskTransform",
+    "published_PixelMask_fields": [
+      "source",
+      "offset",
+      "isEnabled",
+      "isLinked"
+    ],
+    "projective_mask_matrix_defined_in_pinned_contract": false,
+    "unverified_actionJSON_supported": false,
+    "existing_contract_gaps_preserved": true,
+    "evidence": "docs/PIXEL_MASK_TRANSFORM_REFERENCES.json"
+  },
+  "channel_transform_352": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "channel.transform"
+    ],
+    "new_state": "channelTransform",
+    "dedicated_auxiliary_channel_transform_route_in_pinned_contract": false,
+    "unverified_actionJSON_supported": false,
+    "existing_contract_gaps_preserved": true,
+    "evidence": "docs/CHANNEL_TRANSFORM_REFERENCES.json"
+  },
+  "layer_collection_transform_353": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "layers.transform"
+    ],
+    "new_state": "layerCollectionTransform",
+    "dedicated_joint_affine_matrix_route_in_pinned_contract": false,
+    "unverified_actionJSON_supported": false,
+    "existing_contract_gaps_preserved": true,
+    "evidence": "docs/LAYER_COLLECTION_TRANSFORM_REFERENCES.json"
+  },
+  "projective_layer_transform_354": {
+    "published_route_added": false,
+    "native_command_expanded": "layers.transform",
+    "new_state": "layerCollectionTransform supportedModes/affineOnly target availability",
+    "dedicated_joint_projective_matrix_route_in_pinned_contract": false,
+    "unverified_actionJSON_supported": false,
+    "existing_contract_gaps_preserved": true,
+    "evidence": "docs/PROJECTIVE_LAYER_TRANSFORM_REFERENCES.json"
+  },
+  "layer_links_355": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "layer.links",
+      "layers.move"
+    ],
+    "native_state_added": "layerLinks",
+    "dedicated_link_operation_qualified_in_pinned_contract": false,
+    "invented_actionJSON_supported": false,
+    "resource_serializer": "PSD/PSB1026/1072 supported subset; full Adobe job conformance remains open",
+    "existing_contract_gaps_preserved": true,
+    "evidence": "docs/LAYER_LINK_REFERENCES.json"
+  },
+  "pixel_fill_stroke_356": {
+    "published_route_added": false,
+    "native_commands_added": [
+      "pixels.fill",
+      "pixels.stroke"
+    ],
+    "native_state_added": "pixelPaint",
+    "dedicated_destructive_selection_fill_stroke_qualified_in_pinned_contract": false,
+    "unverified_actionJSON_supported": false,
+    "existing_style_fills_strokes_resource_jobs_preserved": true,
+    "guide": "docs/PIXEL_FILL_STROKE.md"
+  },
+  "pattern_pixel_fill_357": {
+    "published_route_added": false,
+    "native_command_expanded": "pixels.fill",
+    "state_expanded": "pixelPaint patterns/source/busy/availability",
+    "new_pattern_import_management_endpoint_claimed": false,
+    "unverified_actionJSON_supported": false,
+    "existing_v2_style_resource_job_contracts_preserved": true,
+    "guide": "docs/PATTERN_PIXEL_FILL.md"
+  },
+  "large_crop_358": {
+    "native_command_expanded": "document.crop",
+    "published_route_added": false,
+    "unverified_actionJSON_supported": false,
+    "native_state_schema_updated": true,
+    "guide": "docs/LARGE_CROP.md"
+  },
+  "layer_capacity_359": {
+    "guide": "docs/LAYER_CAPACITY.md",
+    "resource_document_limit": 8000,
+    "published_output_selection_maxItems": 100,
+    "published_route_added": false,
+    "full_contract_qualified": false
+  },
+  "flatten_image_360": {
+    "guide": "docs/FLATTEN_IMAGE.md",
+    "event": "flattenImage",
+    "charID": "FltI",
+    "published_route_added": false,
+    "existing_routes": [
+      "/v1/action-jobs",
+      "/v2/execute-actions"
+    ],
+    "full_contract_qualified": false
+  },
+  "document_duplicate_361": {
+    "guide": "docs/DOCUMENT_DUPLICATE.md",
+    "published_route_added": false,
+    "desktop_UXP_not_Firefly_endpoint": true,
+    "multi_document_actions_qualified": false,
+    "full_contract_qualified": false
+  },
+  "canvas_edges_362": {
+    "guide": "docs/CANVAS_EDGES.md",
+    "dedicated_route_added": false,
+    "desktop_UXP_not_Firefly_endpoint": true,
+    "generic_actionJSON_qualified": false,
+    "full_contract_qualified": false
   }
 }

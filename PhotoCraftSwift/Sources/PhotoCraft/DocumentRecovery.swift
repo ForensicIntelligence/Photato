@@ -51,6 +51,7 @@ extension AutomationService {
         "File commands and API edits reject while writing. Direct document replacement rejects, close waits for the current backup to finish, and automatic backups defer during other file operations.",
       "reopen":
         "AppKit recovery restores committed content, modified state and original format association. Verified unchanged/moved originals can resume Save; other associated recoveries require Save As. See recoverySource.",
+      "windowPresentation": "App-owned windows and panels present without transition animations, avoiding animation-worker starvation during repeated background opening on a suspended WindowServer. Editing and recovery share the existing native transactions; physical frame-rate qualification remains separate.",
       "limitations":
         "Complete crash/relaunch and interruption qualification, large-document responsiveness and full Photoshop recovery presentation/preferences remain under qualification.",
       "adobe": "No equivalent live-desktop recovery operation in the pinned Adobe v2 contract.",

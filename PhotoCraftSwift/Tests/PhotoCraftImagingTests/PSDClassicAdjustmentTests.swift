@@ -14,6 +14,7 @@ final class PSDClassicAdjustmentTests: XCTestCase {
         // Canonical defaults for unused fields, since PSD stores only the selected kind.
         var canonical = ClassicAdjustment(kind)
         switch kind {
+        case .exposure: canonical.exposureSettings = .init(exposure:0.75,offset:0.01,gammaCorrection:1.2)
         case .vibrance: canonical.vibrance = value.vibrance; canonical.saturation = value.saturation
         case .blackWhite: canonical.weights = value.weights; canonical.tint = value.tint
         case .photoFilter: canonical.color = value.color

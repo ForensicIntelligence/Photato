@@ -1,184 +1,97 @@
 {
-  "step": "dev-step-208",
-  "date": "2026-10-27",
-  "status": "Requested window title and canvas containment implemented, regression-tested and live-checked. Full Photoshop parity remains open.",
-  "scope": [
-    "Document window title is Photato - <current doc name>, refreshed after display-name/file changes and active tab changes",
-    "Canvas view/layer and entire CGContext drawing pass clip to viewport bounds, including shadows and overlays",
-    "Native document API state exposes the same windowTitle; document name and all editing semantics remain unchanged"
-  ],
-  "origin": "User requested literal title format and supplied overflow screenshot; no third-party screenshot instructions were followed.",
-  "source_delta": "artifacts/runs/20261027T225327Z-208-window-title-canvas/changes01.json",
-  "api": {
-    "native_commands": 107,
-    "state_field": "documents[].windowTitle",
-    "new_editing_commands": 0,
-    "adobe": "Presentation-only change; no Adobe v2 contract or route change."
-  },
-  "evidence": {
-    "user_screenshot": "artifacts/runs/20261027T225327Z-208-window-title-canvas/user-canvas-overflow.png",
-    "reproduction": "artifacts/runs/20261027T225327Z-208-window-title-canvas/reproduction01.log",
-    "fixture_coordinate_failure": "artifacts/runs/20261027T225327Z-208-window-title-canvas/focused01.log",
-    "focused": "artifacts/runs/20261027T225327Z-208-window-title-canvas/focused02.log",
-    "full": "artifacts/runs/20261027T225327Z-208-window-title-canvas/release-full01.log",
-    "source_manifest": "artifacts/runs/20261027T225327Z-208-window-title-canvas/source01.json",
-    "package_verification": "artifacts/runs/20261027T225327Z-208-window-title-canvas/verification01.json",
-    "live": "artifacts/runs/20261027T225327Z-208-window-title-canvas/live-validation01.json",
-    "qualification": "All 59 focused Debug and 1,991 full optimized tests pass. The universal macOS 14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance."
-  },
-  "live_scope": "Separate current Debug app; title, 200% zoom, repeated scrolling and native window-zoom resize inspected. Validation app exited; original user app/document retained. No live Lens Blur claim.",
-  "remaining": [
-    "Physical Intel/macOS14/macOS26 runtime matrix",
-    "Full Photoshop parity and other document/workspace workflows outside this correction"
-  ],
-  "package": {
-    "utc": "2026-10-27T23:13:00.184941+00:00",
-    "tests": {
-      "focused02": 59,
-      "release-full01": 1991
+  "step": 332,
+  "frozen_source": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/source03.json",
+  "focused": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/focused03-summary.json",
+  "probes": [
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe01-build-result.json",
+      "sha256": "a3890da71db163cdf8f3036e985e08cff4804d670f4921950a5e775d96b00623"
     },
-    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261027T225327Z-208-window-title-canvas/Photato208-final01.zip",
-    "zip_sha256": "fb4e205366606dd7a7b16b2e437962547c3c71f73939029683783da2040994f2",
-    "app": "/private/tmp/photato208-verified-96djfh_r/Photato.app",
-    "executable_sha256": "78296393db3a3c5923ae952b17b5098f8e6de37d5fdfc9fd919ed0a987c2af50",
-    "architectures": [
-      "x86_64",
-      "arm64"
-    ],
-    "build_metadata": {
-      "x86_64": "/private/tmp/photato208-verified-96djfh_r/Photato.app/Contents/MacOS/Photato (architecture x86_64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
-      "arm64": "/private/tmp/photato208-verified-96djfh_r/Photato.app/Contents/MacOS/Photato (architecture arm64):\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform MACOS\n    minos 14.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n"
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe01-nonthread-result.json",
+      "sha256": "662661860b211e004d6e2fc923201e233d4a53f66f4577c778afe1e0d9cef90c"
     },
-    "version": "0.2.0 build2",
-    "signature": "verified ad-hoc",
-    "source_inputs": 1601,
-    "source_manifest_sha256": "fa089d208e58e477f418a97815de3f628abde50decd6430786cb6ebeeea065de",
-    "original_rust_hashes": 754,
-    "protected_hashes_unchanged": 4,
-    "menus": {
-      "entries": 802,
-      "bound_leaf_commands": 285,
-      "unavailable_leaf_commands": 440,
-      "primary_shortcuts": 102,
-      "alternative_shortcuts": 8
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe01-original-result.json",
+      "sha256": "53167e8657f18742b890202eeee04649cb5b8b621335805e38a78fc62b4b1c85"
     },
-    "current_source": true,
-    "limits": "Full optimized suite and universal package on this host. Live isolated Debug title/zoom/scroll/window-resize checks passed on this host; full optimized pixel containment passed. This does not qualify physical Intel/macOS14/macOS26 runtime behavior or Lens Blur live interaction. Xcode project unchanged; new files use existing synchronized groups."
-  },
-  "recurrence_212": {
-    "screenshot": "artifacts/runs/20261027T234451Z-212-distortion-workflows/user-recurring-overlap.png",
-    "diagnosis": "Live AX and executable inventory identify the screenshot window as the old step159 SubjectProbe, running since October26; it predates208/209 clipping/title corrections.",
-    "installed_corrected_build": "artifacts/runs/20261027T234451Z-212-distortion-workflows/overlap-user-build01.json",
-    "user_app": "/Users/johnczlonka/Applications/Photato Verified.app",
-    "document_preserved": true,
-    "live_status": "Correct title observed on launch. Same-document zoom/scroll/resize check and closing old159 probe await Mac unlock; no current live pass claimed.",
-    "tests": {
-      "focused": "artifacts/runs/20261027T234451Z-212-distortion-workflows/integration04.log",
-      "passed": 45,
-      "canvas_containment_included": true,
-      "full_optimized": {
-        "tests": 2003,
-        "failures": 0,
-        "log": "artifacts/runs/20261027T234451Z-212-distortion-workflows/release-full02.log"
-      }
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe01-stopped-nonthread-result.json",
+      "sha256": "a9f55a357d008384d594e32edf4d780d1fa9da9c320d1b1fbbcb8c260ae38f89"
     },
-    "api_impact": "App delivery only; existing windowTitle and clipping behavior unchanged.",
-    "new_local_package": "artifacts/runs/20261027T234451Z-212-distortion-workflows/verification02.json",
-    "note": "Local212 package verifies; the user-facing installed copy is209. Do not confuse either with the still-open159 probe.",
-    "follow_up_213": {
-      "evidence": "artifacts/runs/20261028T003911Z-213-pixelate-workflows/window-handoff-status01.json",
-      "status": "Still awaiting Mac unlock; installed209 and retained document hashes unchanged; old159 probe remains running. Focused213 containment passes; no same-document live handoff claimed."
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe01-stopped-result.json",
+      "sha256": "54fc0b6a31bd335cca1c67bdced318f21b03e2ff95bf64c9e59273b83c61b14c"
     },
-    "follow_up_214": {
-      "evidence": "artifacts/runs/20261028T011000Z-214-stylize-workflows/window-handoff-status01.json",
-      "status": "Installed209 and retained document hashes unchanged; old159 probe still running. Fresh CUA selection reports Mac locked. Focused and full optimized214 include containment; no same-document live handoff claimed."
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe02-build-result.json",
+      "sha256": "a48a83e2d822faf767a517a27614bbafadbbac0f81e7d72b4ce54644d109dbd6"
     },
-    "follow_up_215": {
-      "evidence": "artifacts/runs/20261028T014514Z-215-render-workflows/window-handoff-status01.json",
-      "status": "Installed209 and retained document hashes unchanged; old159 probe still running. App selection returned missing window; fresh app inventory explicitly reported Mac locked. Focused/full optimized215 include containment; no same-document live handoff claimed."
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe02-detached-result.json",
+      "sha256": "3c2c9ed3ae53564ab28f7d312b95eef95891753a397246d8e5a56c6e5cb26c7d"
     },
-    "follow_up_216": {
-      "evidence": "artifacts/runs/20261028T022329Z-216-procedural-render/window-handoff-status01.json",
-      "tests": "artifacts/runs/20261028T022329Z-216-procedural-render/window-followup01.json",
-      "passed": 23,
-      "failures": 0,
-      "status": "Installed209 executable, retained document hashes and strict signature verified. Old159 process remains running. CUA app selection explicitly reports Mac locked; no UI input or new live handoff. Current canvas/document-window regressions pass."
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe02-original-result.json",
+      "sha256": "ada22e3765ea9ce6e076a5d72244225a5852f607a0bde4e51c7bf1ec2f786a45"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe03-build-result.json",
+      "sha256": "0324b11babc4e38e9267cc7dc50f59c1ee4336d380292afc177c383f307021a3"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe03-native-result.json",
+      "sha256": "e0ea9a8a17bfc6bd8c908e6e8d6fe7c90c94a6b099b2b90af632db5f6ea9d42c"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe04-build-result.json",
+      "sha256": "40b170096dd6fcdd064a55ca294e8281a49c4635dd7d84232ce3b9a18b64be6d"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe04-native-default-result.json",
+      "sha256": "7c8bb702f1619d8aeab6ed044a923dfe09941bd9be794390ba3d8e884ee2583b"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe04-native-noanimation-result.json",
+      "sha256": "c39a80740d8a9ec85b11994795b45a328e30f338533a4a1c696e8f7cae7ec37e"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe04-swiftui-default-result.json",
+      "sha256": "c59ef0e18d6d2275f6f6ea95e18b087b11e56e03a25fa80489d89bf94bc8e12a"
+    },
+    {
+      "path": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/probe04-swiftui-noanimation-result.json",
+      "sha256": "04721139cf9214a2852b5d234cc74ece9dd02cf6bc58f2f4dc974524327e66f6"
     }
+  ],
+  "new_tests": [
+    "Tests/PhotoCraftAppTests/WindowPresentationTests.swift",
+    "Tests/PhotoCraftImagingTests/TIFFLayerCompositeBoundaryTests.swift"
+  ],
+  "failed_hypotheses_retained": true,
+  "new_typed_commands": 0,
+  "archive_version_unchanged": 78,
+  "actions_version_unchanged": 30,
+  "native_visual_acceptance": false,
+  "photoshop_acceptance": false,
+  "latest_frozen_source": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/source05.json",
+  "latest_focused": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/focused05-summary.json",
+  "startup_crash": {
+    "failed_inventory": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/full01-summary.json",
+    "lldb_stack": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/viewport-debug03.log",
+    "actual_default_controller_class": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/viewport-debug04.log",
+    "fresh_repair_result": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/viewport-fresh04-result.json",
+    "official_header": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/apple-controller-bootstrap-reference01.json"
   },
-  "latest_handoff_followup": {
-    "step": 277,
-    "evidence": "artifacts/runs/20261030T195857Z-277-retouch-automation/handoff-final01.json",
-    "status": "Preserved clean artwork reopened in Preview277; Preview275 closed. Original document and older packages unchanged.",
-    "live_acceptance": true
+  "photomerge_test_repair": "Internal preparation barrier controls an active worker; production still calls the same Photomerge.prepare function.",
+  "current_focused_cases": 370,
+  "full_current_suite_passed": false,
+  "production_qualification_source": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/source04.json",
+  "complete_inventory": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/full04-summary.json",
+  "archive": {
+    "build": 332,
+    "reference": "artifacts/runs/20261101T185209Z-332-progress-lifecycle/archive01-local-verification01.json",
+    "apple_validation": false
   },
-  "latest_offscreen_regression": {
-    "step": 222,
-    "log": "artifacts/runs/20261028T154212Z-222-window-handoff/containment01.log",
-    "tests": 34,
-    "failures": 0,
-    "exit_code": 0,
-    "live_acceptance": false,
-    "qualified_221_existing_inputs_unchanged": 2175
-  },
-  "latest_full_regression": {
-    "step": 222,
-    "log": "artifacts/runs/20261028T152212Z-222-ink-modes/release13.log",
-    "tests": 2293,
-    "failures": 0,
-    "exit_code": 0,
-    "source_manifest": "artifacts/runs/20261028T152212Z-222-ink-modes/source12.json",
-    "live_acceptance": false
-  },
-  "handoff_history": {
-    "step222": {
-      "evidence": "artifacts/runs/20261028T154212Z-222-window-handoff/installation01.json",
-      "status": "Qualified221 installed unmodified in user Applications/Photato.app; old159, old PhotoCraft and installed209 untouched. Desktop explicitly locked; manual unlock requested. Same-document live handoff pending.",
-      "live_acceptance": false
-    },
-    "step271": {
-      "step": 271,
-      "evidence": "artifacts/runs/20261030T165926Z-271-active-preview/handoff-final01.json",
-      "status": "Actual159 document saved byte-identically, opened in qualified Preview271; old probe retired, correct title and fit/150%/scroll containment verified. Protected originals and installed221 unchanged.",
-      "live_acceptance": true
-    },
-    "step272": {
-      "step": 272,
-      "evidence": "artifacts/runs/20261030T173813Z-272-layer-opacity/handoff-final01.json",
-      "status": "Preserved clean artwork reopened in Preview272 with layer opacity slider available; Preview271 closed. Originals and older packages unchanged.",
-      "live_acceptance": true
-    },
-    "step273": {
-      "step": 273,
-      "evidence": "artifacts/runs/20261030T181050Z-273-brush-catch-up/handoff-final01.json",
-      "status": "Preserved clean artwork reopened in Preview273; Preview272 closed. Originals and older packages unchanged.",
-      "live_acceptance": true
-    },
-    "step274": {
-      "step": 274,
-      "evidence": "artifacts/runs/20261030T183758Z-274-brush-release/handoff-final01.json",
-      "status": "Preserved clean artwork reopened in Preview274; Preview273 closed. Originals and older packages unchanged.",
-      "live_acceptance": true
-    },
-    "step275": {
-      "step": 275,
-      "evidence": "artifacts/runs/20261030T190609Z-275-retouch-release/handoff-final01.json",
-      "status": "Preserved clean artwork reopened in Preview275; Preview274 closed. Originals and older packages unchanged.",
-      "live_acceptance": true
-    },
-    "278": {
-      "summary": "Native RGB canvases now accept 300,000 pixels per side (90 GP logical area), with sparse raster composition, bounded viewport display and native/API brush, history and file workflows. All 102 focused and 2,810 full optimized tests pass on 2,488 frozen inputs; native maximum-size create/paint/save/reopen and Preview 278 are verified. Dense disk-backed images, streamed large PSB/native files and full operation, mode and platform capacity parity remain open.",
-      "handoff": "artifacts/runs/20261030T204800Z-278-large-documents/handoff-final01.json",
-      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 278.app"
-    },
-    "279": {
-      "summary": "Large RGB image import now converts bounded patches into immutable disk-backed tiles; painting promotes only edited tiles and history shares existing samples. An owned40MP PNG passes native Open/paint/Undo/Redo/save/reopen and authenticated API import/edit/history. All48 focused and2820 full optimized tests pass; separate Preview279 is verified. Full dense90GP/large PSB/native streaming and operation/platform capacity parity remain open.",
-      "handoff": "artifacts/runs/20261030T214215Z-279-paged-raster/handoff-final01.json",
-      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 279.app"
-    },
-    "280": {
-      "summary": "Native file Open/Save now stream past the former512MiB file boundary, and checked chunked tile input stays mapped on reopen/API upload. Tests cover an owned >512MiB file, real40MP native editing and134MP/2GiB repeated tile references across all depths. All71 focused and2829 full optimized tests pass; separate Preview280 is verified. Hierarchical indexes, large PSB/all-operation/platform capacity parity remain open.",
-      "handoff": "artifacts/runs/20261030T223835Z-280-native-paging/handoff-final01.json",
-      "preview": "/Users/johnczlonka/Applications/Photato Editing Preview 280.app"
-    }
-  }
+  "physical_60fps_qualified": false
 }

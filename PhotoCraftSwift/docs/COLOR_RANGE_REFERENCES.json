@@ -1,0 +1,113 @@
+{
+  "step": "dev-step-343",
+  "recorded_at_utc": "2026-11-02T02:52:39.114977+00:00",
+  "run": "artifacts/runs/20261102T022620Z-343-color-range",
+  "source_manifest": "artifacts/runs/20261102T022620Z-343-color-range/source04.json",
+  "inputs": 6931,
+  "production_swift_files": 941,
+  "binary_sha256": "71621222ec276b66c1c0c6b5252e479995b5072adc7e6e9a8a11837e08b7074e",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 127,
+    "passed_cases": 127,
+    "failed_cases": 0,
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 11.138,
+    "new_cases": 14,
+    "all_new_passed": true,
+    "all_affected_passed": true,
+    "build_seconds": 323.55
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.ColorRangeTests/testExactSamplesAddSubtractAndAlpha",
+    "PhotoCraftCoreTests.ColorRangeTests/testFuzzinessBroadensSoftCoverageWithoutEditingSource",
+    "PhotoCraftCoreTests.ColorRangeTests/testHistoryAndCoverageActionsPreserveLayerPixels",
+    "PhotoCraftCoreTests.ColorRangeTests/testHuePresetsChooseCorrespondingColorsAndIgnoreGray",
+    "PhotoCraftCoreTests.ColorRangeTests/testLocalizedClustersUsePositionsAndInvertOutside",
+    "PhotoCraftCoreTests.ColorRangeTests/testPresetsValidationAndUnknownVersion",
+    "PhotoCraftCoreTests.ColorRangeTests/testSparseMaximumCanvasAndCancellation",
+    "PhotoCraftCoreTests.ColorRangeTests/testTonalWindowsAndInversion",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testAll16CursorModesCapturedGestureAndRestoration",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testAPIEqualsNativeSettingsAndPresetsWithHistory",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testAPIInvalidBusyStaleAndDeterministicRevocation",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testCompositeProfilesDepthsPriorSelectionAndNoRasterDependency",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testNativePreviewSamplingCancelCommitAndUndo",
+    "PhotoCraftAppTests.ColorRangeWorkflowTests/testNativeStaleSourceAndDocumentReadCloseCancel"
+  ],
+  "independent_mask": {
+    "passed": true,
+    "source_outputs": "343 Source04",
+    "file": "color-range-analytical.json",
+    "sha256": "b801a5fafd7bbfd651969b4f0b819998d9990f791451387ab462d3985ce803fb",
+    "analytical_bytes_compared": 10,
+    "checks": [
+      {
+        "invert": false,
+        "expected": [
+          255,
+          0,
+          0,
+          128,
+          0
+        ],
+        "actual": [
+          255,
+          0,
+          0,
+          128,
+          0
+        ],
+        "passed": true
+      },
+      {
+        "invert": true,
+        "expected": [
+          0,
+          255,
+          255,
+          0,
+          0
+        ],
+        "actual": [
+          0,
+          255,
+          255,
+          0,
+          0
+        ],
+        "passed": true
+      }
+    ],
+    "oracle": "Owned red/green/blue, half-alpha-red, transparent-red strip; exact-color and inverse membership, independently specified, not Photoshop output."
+  },
+  "references": {
+    "reference": "https://helpx.adobe.com/photoshop/desktop/make-selections/freehand-selections/select-a-color-range-in-photoshop.html",
+    "updated": "2026-02-23",
+    "consulted": "2026-11-02",
+    "method": "Public behavior documentation only; no proprietary sources or reverse engineering.",
+    "live_access": "Not retried; last341 Mac locked.",
+    "unqualified": [
+      "Exact Photoshop numerical masks/defaults/visuals",
+      "Skin Tones and face detection",
+      "Out of Gamut and Adobe preset format",
+      "Published semantic actionJSON Color Range descriptors"
+    ]
+  },
+  "api_commands": 219,
+  "native_version_unchanged": 82,
+  "actions_version_unchanged": 30,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Skin Tones and Detect Faces",
+    "Out of Gamut/proof CMYK behavior",
+    "Adobe preset interoperability",
+    "Exact masks, defaults, gestures and UI against Photoshop 2026",
+    "Complete S02 including Magnetic Lasso and average Magic Wand sampling",
+    "Current full suite, supported platforms and physical capacity/performance"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

@@ -70,7 +70,7 @@ import SwiftUI
     fileType = Self.nativeType
     hasUndoManager = false
     displayName = model.name
-    store.onChange = { [weak self] kind in self?.updateChangeCount(kind) }
+    store.onChange = { [weak self] kind in self?.updateChangeCount(kind); self?.store.synchronizeLinkedArtwork() }
   }
   // Recovery must not replace the last explicit Save used by File > Revert.
   override class var autosavesInPlace: Bool { false }
@@ -401,8 +401,9 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
+    store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
@@ -410,6 +411,9 @@ import SwiftUI
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
+    store.cancelSelectionModify();store.selectionRecall=nil
+    store.cancelMagneticLasso()
+    store.colorRangeDraft?.close(); store.colorRangeDraft = nil
     store.selectMaskDraft?.close(); store.selectMaskDraft = nil
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
@@ -445,8 +449,9 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
+        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
+    store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
@@ -454,6 +459,9 @@ import SwiftUI
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
+    store.cancelSelectionModify();store.selectionRecall=nil
+    store.cancelMagneticLasso()
+    store.colorRangeDraft?.close(); store.colorRangeDraft = nil
     store.selectMaskDraft?.close(); store.selectMaskDraft = nil
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
@@ -481,8 +489,9 @@ import SwiftUI
     store.invalidateHistory()
     fileOperationTask?.cancel()
     copyPanel?.cancel(nil)
-    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.transformDraft = nil
+    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
+    store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
     store.inkChannelOptions = nil
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
@@ -490,6 +499,9 @@ import SwiftUI
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
+    store.cancelSelectionModify();store.selectionRecall=nil
+    store.cancelMagneticLasso()
+    store.colorRangeDraft?.close(); store.colorRangeDraft = nil
     store.selectMaskDraft?.close(); store.selectMaskDraft = nil
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
@@ -598,10 +610,13 @@ import SwiftUI
     (document as? CraftNSDocument)?.ownerController = self
     (document as? CraftNSDocument)?.store.documentController = self
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces
+    (document as? CraftNSDocument)?.store.synchronizeLinkedArtwork()
   }
   override func removeDocument(_ document: NSDocument) {
     if let document = document as? CraftNSDocument {
       documentWindows.remove(document)
+      document.store.linkedSourceController?.stop()
+      document.store.linkedSourceController = nil
       document.ownerController = nil
       document.store.documentController = nil
     }

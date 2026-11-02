@@ -33,13 +33,14 @@ extension EditorStore {
     })
   }
   func placeEmbedded(replacing: Bool = false) {
+    if replacing,selectedLinkedArtwork != nil {placeLinked(replacing:true);return}
     guard clipboardTargetAvailable, !replacing || canEditSmartObject else { return }
     let lifecycle = layerPanelGeneration,sessionID = sessionGeneration
     let layerID = replacing ? activeLayer?.id : nil
     let frameID = replacing ? nil : selectedFrame?.id
     let panel = NSOpenPanel()
     panel.title = replacing ? "Replace Contents" : "Place Embedded"
-    panel.allowedContentTypes = [.pdf, RawSourceIO.contentType, .png, .jpeg, .tiff, .heic, .bmp, .gif, UTType(filenameExtension: "psd") ?? .data,
+    panel.allowedContentTypes = [UTType(PcraftImport.contentTypeIdentifier) ?? .data, .pdf, RawSourceIO.contentType, .png, .jpeg, .tiff, .heic, .bmp, .gif, UTType(filenameExtension: "psd") ?? .data,
       UTType(filenameExtension: "psb") ?? .data, UTType(filenameExtension: "photato") ?? .data]
     panel.canChooseDirectories = false
     panel.begin { [weak self] response in
@@ -49,6 +50,7 @@ extension EditorStore {
     }
   }
   func editSmartObjectContents() {
+    if selectedLinkedArtwork != nil {editLinkedArtwork();return}
     if activeLayer?.smartObject?.pdfSource != nil { beginPDFSourceEditing(); return }
     if activeLayer?.smartObject?.rawDevelopment != nil { beginRawDevelopment(); return }
     guard canEditSmartObjectContents, let layer = activeLayer, let source = layer.smartObject,
@@ -78,6 +80,7 @@ extension EditorStore {
   }
   func exportSmartObjectContents() {
     guard clipboardTargetAvailable, let source = activeLayer?.smartObject else { return }
+    guard !source.data.isEmpty else {error = "The original artwork is unavailable. Relink or update the source before exporting contents.";return}
     let panel = NSSavePanel(); panel.title = "Export Contents"; panel.nameFieldStringValue = source.fileName
     panel.begin { [weak self] response in
       guard response == .OK, let url = panel.url else { return }

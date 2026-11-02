@@ -81,7 +81,7 @@ final class MaskAllObjectsWorkflowTests: XCTestCase {
     XCTAssertThrowsError(try MaskAllObjectsEdit.checkBudget(width:Int.max,height:1,count:1))
     XCTAssertThrowsError(try MaskAllObjectsEdit.checkBudget(width:1,height:1,count:65))
     XCTAssertThrowsError(try MaskAllObjectsEdit.checkBudget(width:6000,height:1,count:64))
-    var full = original; full.layers += (1..<511).map { Layer(name:"\($0)",content:.group(.init())) }
+    var full = original; full.layers += (1..<(LayerLimits.maximumLayers - 1)).map { Layer(name:"\($0)",content:.group(.init())) }
     XCTAssertThrowsError(try MaskAllObjectsEdit(layerID:id,objects:[.init(instanceID:1,mask:mask),.init(instanceID:2,mask:mask)]).applied(to:full))
   }
   @MainActor func testDesktopContextMenuHistoryCancellationAndReload() async throws {
@@ -155,7 +155,7 @@ final class MaskAllObjectsWorkflowTests: XCTestCase {
   @MainActor func testAPILayerBudgetAndRecordingAreExplicit() async throws {
     let h = AutomationTests()
     try await h.withService(actions:ActionLibrary(),skies:SkyLibrary(),pressedMouseButtons:{0}) { service,document in
-      var original = try self.fixture(); original.layers += (1..<63).map { Layer(name:"\($0)",content:.group(.init())) }
+      var original = try self.fixture(); original.layers += (1..<(LayerLimits.maximumLayers - 1)).map { Layer(name:"\($0)",content:.group(.init())) }
       let s = document.store; s.session = EditorSession(document:original); s.allObjectsDetector = FixedObjects(); try service.share(document)
       let status = try await h.edit(service,document,"layer.maskAllObjects",["layerID":original.layers[0].id.uuidString])
       XCTAssertEqual(status,413); XCTAssertEqual(s.document,original); XCTAssertTrue(s.session.undoStack.isEmpty)

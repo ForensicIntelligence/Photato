@@ -19,6 +19,7 @@ import SwiftUI
   var imageProcessorWindow: ImageProcessorWindow?
   var batchWindow: BatchWindow?
   var actionsWindow: NSWindowController?
+  var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
   var brushesWindow: NSWindowController?
   var shapesWindow: NSWindowController?
@@ -121,6 +122,22 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(exportLayersToFiles) { return store?.canExportLayerFiles == true }
+    if [#selector(export), #selector(exportLayerAssets), #selector(quickExportAssets), #selector(quickExportLayerAssets), #selector(exportPreferences)].contains(item.action) {
+      if [#selector(quickExportAssets), #selector(quickExportLayerAssets)].contains(item.action) {
+        let format = ImageExportPreferences.load().format; item.title = "Quick Export as " + (format == .jpeg ? "JPG" : format.rawValue.uppercased())
+      }
+      return store?.canExportImages == true
+    }
+    if item.action == #selector(packageLinkedSmartObjects){return store?.canPackageLinkedArtwork==true}
+    if item.action == #selector(embedAllLinkedSmartObjects){return store?.canEmbedAllLinkedArtwork==true}
+    if item.action == #selector(placeLinked) {return store?.clipboardTargetAvailable==true}
+    if item.action == #selector(relinkSmartObject) {return store?.canUpdateLinkedArtwork==true}
+    if item.action == #selector(updateLinkedSmartObject) {return store?.canUpdateLinkedArtwork==true}
+    if item.action == #selector(updateAllLinkedSmartObjects) {return store?.canUpdateAllLinkedArtwork==true}
+    if item.action == #selector(embedLinkedSmartObject) {return store?.canEmbedLinkedArtwork==true}
+    if item.action == #selector(convertLinkedSmartObject) {return store?.canConvertToLinked==true}
+    if item.action == #selector(revealLinkedSmartObject) {return store?.selectedLinkedArtwork != nil}
     if item.action == #selector(applyImageDialog) {return store?.canBeginChannelArithmetic(.applyImage)==true}
     if item.action == #selector(calculationsDialog) {return store?.canBeginChannelArithmetic(.calculations)==true}
     let modern:[Selector:ModernAdjustment.Kind]=[#selector(newColorVibrance):.colorVibrance,#selector(newLight):.light,#selector(newClarityDehaze):.clarityDehaze,#selector(newGrain):.grain]
@@ -130,6 +147,8 @@ import SwiftUI
     if item.action == #selector(renderVideo) { return store?.canRenderVideo == true }
     if [#selector(printDocument), #selector(printOneCopy)].contains(item.action) { return (controller.currentDocument as? CraftNSDocument)?.canBeginPrint == true }
     if let result = validateFrameMenu(item) { return result }
+    if item.action == #selector(fileInfoDialog) { return store?.canEditFileInfo == true && (controller.currentDocument as? CraftNSDocument)?.canRunFileCommand == true }
+    if let result = validateGuidesMenu(item) { return result }
     if let result = validateArtboardMenu(item) { return result }
     if let result = validateRecentMenu(item) { return result }
     if let result = validateDocumentClosingMenu(item) { return result }
@@ -166,6 +185,8 @@ import SwiftUI
     if item.action == #selector(showBatch) { return true }
     if item.action == #selector(newVideoLayer) { return store?.canImportMovieLayer == true }
     if item.action == #selector(showTimeline) { item.state = store?.timelineVisible == true ? .on : .off; return store != nil }
+    if item.action == #selector(showLayerComps) { return true }
+    if item.action == #selector(exportLayerCompFiles) || item.action == #selector(exportLayerCompPDF) { return store?.canEditLayerComps == true && !(store?.document.layerComps?.comps.isEmpty ?? true) }
     if item.action == #selector(showActions) || item.action == #selector(showBrushSettings) || item.action == #selector(showBrushes) { return true }
     if item.action == #selector(warpType){return store?.canEditType==true && store?.editableType != nil}
     if item.action == #selector(showGlyphs){return true}
@@ -182,6 +203,7 @@ import SwiftUI
     if item.action == #selector(autoAlignLayers) { return store?.canBeginPhotoAlign == true }
     if item.action == #selector(autoBlendLayers) { return store?.canBeginPhotoBlend == true }
     if item.action == #selector(contentAwareFill) { return store?.canBeginContentAwareFill == true }
+    if item.action == #selector(colorRange){return store?.canBeginColorRange == true}
     if item.action == #selector(focusArea){return store?.canBeginSelectMask == true}
     if item.action == #selector(selectAndMask) { return store?.canBeginSelectMask == true }
     if item.action == #selector(selectSky) { return store?.canSelectSky == true }
@@ -219,6 +241,10 @@ import SwiftUI
       item.title = operation.rawValue
       return store?.canMerge(operation) == true
     }
+    if item.action == #selector(trimImage) {return store?.canUseCanvasEdges(.trim(.init())) == true}
+    if item.action == #selector(revealAll) {return store?.canUseCanvasEdges(.revealAll) == true}
+    if item.action == #selector(duplicateDocument) { return store?.canDuplicateDocument == true }
+    if item.action == #selector(flattenImage) { return store?.canFlattenImage == true }
     if item.action == #selector(mergeVisible) { return store?.canMerge(.visible) == true }
     if item.action == #selector(layerViaCopy) { return store?.canLayerVia(.copy) == true }
     if item.action == #selector(layerViaCut) { return store?.canLayerVia(.cut) == true }
@@ -229,7 +255,8 @@ import SwiftUI
     if [#selector(replaceSmartObjectContents),
       #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
       #selector(resetSmartObjectTransform)].contains(item.action) { return store?.canEditSmartObject == true }
-    if item.action == #selector(fillDialog) { return store?.canUseMenuFill == true }
+    if item.action == #selector(fillDialog) { return store?.canUsePixelPaint == true || store?.canUseMenuFill == true }
+    if item.action == #selector(strokeSelectionDialog) { return store?.canUsePixelPaint == true }
     if item.action == #selector(layerStyleMenu(_:)) {
       return store?.validateLayerStyleMenu(item.identifier?.rawValue ?? "") == true
     }
@@ -294,7 +321,7 @@ import SwiftUI
       return store.canEditPatternFill(layer.id) || store.canEditGradientFill(layer.id)
     }
     if [
-      #selector(vibrance), #selector(blackWhite), #selector(photoFilter), #selector(channelMixer), #selector(selectiveColor), #selector(colorLookup),
+      #selector(exposureAdjustment), #selector(vibrance), #selector(blackWhite), #selector(photoFilter), #selector(channelMixer), #selector(selectiveColor), #selector(colorLookup),
       #selector(levels), #selector(curves), #selector(hueSaturation), #selector(colorBalance),
       #selector(desaturate), #selector(threshold), #selector(posterize),
       #selector(autoTone), #selector(autoContrast),
@@ -304,7 +331,7 @@ import SwiftUI
       return store?.canBeginLevels == true
     }
     if [
-      #selector(newBlackWhite), #selector(newPhotoFilter), #selector(newChannelMixer), #selector(newSelectiveColor), #selector(newColorLookup),
+      #selector(newExposureAdjustment), #selector(newBlackWhite), #selector(newPhotoFilter), #selector(newChannelMixer), #selector(newSelectiveColor), #selector(newColorLookup),
       #selector(newLevels), #selector(newCurves), #selector(newHueSaturation),
       #selector(newColorBalance), #selector(newThreshold), #selector(newPosterize),
     ].contains(
@@ -373,6 +400,16 @@ import SwiftUI
         !$0.geometryBusy && !$0.hasToneDraft && $0.transformDraft == nil && !$0.patterns.busy
       } ?? false
     }
+    if item.action == #selector(linkSelectedLayers){item.title=store.map{$0.linkMenuUnlinks($0.linkTargets()) ? "Unlink Layers":"Link Layers"} ?? "Link Layers";return store?.canToggleLayerLinks() == true}
+    if item.action == #selector(selectLinkedLayers){return store?.canSelectLinkedLayers() == true}
+    if item.action == #selector(transformSelection){return store?.canBeginSelectionTransform == true}
+    if [#selector(transformScaleMode),#selector(transformRotateMode)].contains(item.action){return store?.transformDraft?.selection == true ? store?.geometryBusy == false:store?.canTransformActiveLayer == true}
+    if [#selector(transformDistortMode),#selector(transformPerspectiveMode)].contains(item.action),let store{if let draft=store.transformDraft,draft.collectionLayerIDs != nil{return !store.geometryBusy && draft.collectionProjective};if store.transformDraft==nil && !store.editingMask && !store.editingComponent && store.document.selection==nil && store.wantsLayerCollectionTransform{return store.canBeginProjectiveLayerTransform}}
+    if item.action == #selector(transformSkewMode),store?.canBeginLayerCollectionTransform == true{return true}
+    if [#selector(transformSkewMode),#selector(transformDistortMode),#selector(transformPerspectiveMode)].contains(item.action){return (store?.transformDraft?.selection == true && store?.geometryBusy == false) || store?.canBeginSelectedPixelTransform == true || store?.canBeginPixelMaskTransform == true || store?.canBeginChannelTransform == true}
+    if item.action == #selector(backgroundLayerConversion){item.title=store?.activeLayer?.isBackground == true ? "Layer from Background…":"Background from Layer";return store?.canConvertBackground == true}
+    if item.action == #selector(reselectPixels){return store?.canReselect == true}
+    if [#selector(borderSelection),#selector(smoothSelection),#selector(expandSelection),#selector(contractSelection)].contains(item.action){return store?.canModifySelection == true}
     if [#selector(invertSelection), #selector(featherSelection)].contains(item.action) {
       return store?.document.selection != nil && store?.geometryBusy == false
         && store?.transformDraft == nil
@@ -381,6 +418,7 @@ import SwiftUI
       #selector(freeTransform), #selector(rotateLayer180), #selector(rotateLayerCW),
       #selector(rotateLayerCCW), #selector(flipH), #selector(flipV),
     ].contains(item.action) {
+      if store?.transformDraft?.selection == true,item.action != #selector(freeTransform){return store?.geometryBusy == false}
       return store?.canTransformActiveLayer == true
     }
     if item.action == #selector(rulers) { item.state = store?.showRulers == true ? .on : .off }
@@ -599,7 +637,7 @@ import SwiftUI
     if projectInfoWindow == nil {
       let host = NSHostingController(
         rootView: ProjectInfoView(links: projectLinks))
-      let window = NSWindow(contentViewController: host)
+      let window = PhotatoWindow(contentViewController: host)
       window.title = "About Photato"
       window.styleMask = [.titled, .closable]
       window.isReleasedWhenClosed = false
@@ -611,7 +649,7 @@ import SwiftUI
   }
   @objc func showAutomation() {
     if automationWindow == nil {
-      let window = NSWindow(
+      let window = PhotatoWindow(
         contentViewController: NSHostingController(rootView: AutomationView(service: automation)))
       window.title = "Photato Automation API"
       window.styleMask = [.titled, .closable]
@@ -1037,7 +1075,7 @@ import SwiftUI
         )
         host.frame = NSRect(x: 0, y: 0, width: 360, height: sizing.naturalHeight)
       }
-      let w = NSWindow(
+      let w = PhotatoWindow(
         contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
       let captureView: NSView =
         CommandLine.arguments.contains("--snapshot-native-container")
@@ -1293,8 +1331,8 @@ import SwiftUI
       }
       return
     }
-    let app = NSApplication.shared
-    app.setActivationPolicy(.regular)
+    // Install the custom document controller before AppKit can create its default
+    // singleton while initializing application UI.
     // Owned UI qualification bundles can launch normally without reading or
     // writing the user's workspace, recovery index or color preferences.
     let isolatedSession = CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
@@ -1308,6 +1346,8 @@ import SwiftUI
         ? RecoveryIndexStore() : .shared,
       colorSettings: isolatedSession
         ? ColorSettingsStore() : .shared)
+    let app = NSApplication.shared
+    app.setActivationPolicy(.regular)
     app.delegate = delegate
     withExtendedLifetime(delegate) { app.run() }
   }

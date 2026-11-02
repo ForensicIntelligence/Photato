@@ -1,0 +1,109 @@
+{
+  "step": 305,
+  "date": "2026-10-31",
+  "phase": 1,
+  "packages": [
+    "I03",
+    "G03"
+  ],
+  "status": "functional-source-shape-workflows-tested-strict-raster/native/full-workflow-gates-open",
+  "source_manifest": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/source04.json",
+  "source_inputs": 2983,
+  "binary_sha256": "82e77643d4c8a32580f397fe95b52429069913ab4dcd8280ec8704ba096baa51",
+  "scope": "Editable original PhotoCraft vector shape migration with exact path/live controls, open contours, stroke opacity/dash units, original cached appearance/vector data, native/API editing/history/persistence and existing resource outputs. This is a subset of full Photoshop/source parity.",
+  "primary_sources": [
+    "Unchanged original PhotoCraft crates/doc/src/vector.rs",
+    "Unchanged original PhotoCraft crates/vector/src/{shapes,lib,raster,stroke}.rs",
+    "Unchanged original PhotoCraft crates/format/src/manifest.rs"
+  ],
+  "provenance": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/upstream-integrity01.json",
+  "original_rust_files": 1057,
+  "original_rust_modified": false,
+  "fixtures": "Tests/PhotoCraftImagingTests/Fixtures/PcraftShapes/manifest.json",
+  "fixture_ownership": "Original Photato test artwork; MIT OR Apache-2.0. Rust-only oracle is test infrastructure, not part of the app.",
+  "variants": {
+    "per_depth": 13,
+    "depths": [
+      "u8",
+      "u16",
+      "f32"
+    ],
+    "cached_per_depth": 11,
+    "uncached_per_depth": 2,
+    "cached_sample_words_matched": 811008,
+    "uncached_rectangle_sample_words_matched": 73728,
+    "uncached_curve_changed_words": [
+      107,
+      167,
+      357
+    ],
+    "uncached_curve_changed_rgba8_bytes": [
+      107,
+      107,
+      107
+    ]
+  },
+  "qualification": {
+    "recorded_at_utc": "2026-11-01T01:58:12.571580+00:00",
+    "source_manifest": "source04.json",
+    "source_inputs": 2983,
+    "binary_sha256": "82e77643d4c8a32580f397fe95b52429069913ab4dcd8280ec8704ba096baa51",
+    "build_seconds": 103.18,
+    "cases": 166,
+    "passed_cases": 162,
+    "failed_cases": [
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftShapeImportTests/testUncachedOriginalRustCurvedStrokeSamplesMatchExactly"
+    ],
+    "failed_assertions": 23,
+    "unexpected": 0,
+    "new_cases": 14,
+    "new_cases_passed": 13,
+    "all_cases_executed_on_current_source": true,
+    "full_inventory_qualified": false,
+    "native_acceptance": false,
+    "cached_original_rust_sample_words_verified": 811008,
+    "uncached_rectangle_sample_words_verified": 73728
+  },
+  "source03_to04": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/source04-equivalence.json",
+  "api": {
+    "commands": 204,
+    "new_command_ids": false,
+    "import": "POST /v1/documents/import; existing .pcraft source decoder shared with native Open and Photato action jobs.",
+    "shape_edit": "shape.edit operation:path takes layerID and a complete document-space path; configure/append/create retain existing routes and shared history.",
+    "path_selection": "path.configure layerID selects a shape path; pathID and layerID are mutually exclusive. Existing path tools operate on this target.",
+    "state": "paths.target=shape; selectedID is layer UUID. Layer shapeSource reports cache presence/pristine/frame and retained vector-record byte count, or null.",
+    "schema": "Shape definitions/components retain exact paths and reference transforms, optional inversion/paint frames and independent stroke controls.",
+    "native_version": 68,
+    "actions_version": 24,
+    "legacy_versions": "Traditional shapes retain native33/Actions5; Exposure remains native67/Actions23. No unrelated version downgrade.",
+    "unchanged_definition": "Native/API configure preserves pristine cache and avoids history when definition is unchanged.",
+    "resource_jobs": "Photato PNG/TIFF bytes match native encoding; unsupported editable PSD/Adobe output boundaries fail explicitly.",
+    "adobe": "Pinned public v2 contract has no dedicated source-shape route; no route or proprietary actionJSON shape descriptor is invented."
+  },
+  "native_access": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/native-access03.json",
+  "new_tools_or_factory_shortcuts": false,
+  "cursor": "Existing 52 tools x16 modifiers and nine policy/lifecycle cases pass on Source04; physical/native Photoshop acceptance remains open.",
+  "platform": {
+    "tested": "arm64/macOS27.0.1",
+    "compiled_minimum_macos": "14.0",
+    "new_universal_or_intel_qualification": false
+  },
+  "limits": [
+    "Existing 8,388,608-pixel/32768-dimension shape rasterization budget remains; complete Photoshop-sized shape editing is open.",
+    "Full .pcraft types/adjustments/Smart Objects/common metadata, transforms and rich-source combinations remain open.",
+    "Uncached curve/stroke and gradient/mode/ICC/native Photoshop numerical equivalence remain strict/open.",
+    "Original source patterns render transparently in the Rust oracle; original cache is preserved, and native pattern rendering is used after an actual shape edit.",
+    "Complete editable PSD/PSB/.csh shape interchange and professional workflow variants remain open.",
+    "Full test inventory, current native visual/held-key/60fps acceptance, Intel/macOS14 runtime and existing source299/300/302/large-capacity/platform gates remain open."
+  ],
+  "full_photoshop_parity": false,
+  "increment_complete": false,
+  "new_installation": false,
+  "new_source_push": false,
+  "preserved_installed_preview": 283,
+  "latest_full_inventory_and_private_source": 298,
+  "remaining_bookkeeping": "Pre-existing duplicate edit.keyboardShortcuts command-ledger row:649 rows/648 IDs before and after this increment; no command scope/status changes."
+}

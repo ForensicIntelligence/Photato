@@ -1,0 +1,66 @@
+{
+  "step": "dev-step-351",
+  "recorded_at_utc": "2026-11-02T08:33:57.276221+00:00",
+  "run": "artifacts/runs/20261102T081125Z-351-pixel-mask-transform",
+  "source_manifest": "artifacts/runs/20261102T081125Z-351-pixel-mask-transform/source01.json",
+  "inputs": 6975,
+  "production_swift_files": 968,
+  "binary_sha256": "52bb6e5089fc803f0a1ac1eae7ec7b32be4f126d8c206ee2574871415f6606db",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 711,
+    "passed_cases": 710,
+    "failed_cases": 1,
+    "failed_assertions": 1,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 191.141,
+    "new_cases": 16,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 562.26
+  },
+  "independent_scalar_samples": {
+    "passed": true,
+    "source_outputs": "351 Source01",
+    "file": "mask-transform-analytical.json",
+    "sha256": "cc5f8aa00d80a1473a95fd04d7ed3ce2883fe47b5874d2b9444d4ef602d9d376",
+    "analytical_scalar_samples_compared": 186,
+    "vectors": 4,
+    "mismatches": [],
+    "method": "Independent Python60-digit Decimal adjugate inverse and scalar nearest sampling from analytic original; no native decoder or engine used. These owned outputs are not Photoshop reference files."
+  },
+  "independent_summary": "artifacts/runs/20261102T081125Z-351-pixel-mask-transform/independent01-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/unlink-layers-and-masks.html",
+      "claim": "Linked layer/mask move together; unlink to move independently.",
+      "reference_date": "2026-02-23"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/transformation-options-in-adobe-photoshop.html",
+      "claim": "Transform includes scale/rotate/skew/distort/perspective and fixed rotations/flips on masks.",
+      "reference_date": "2026-02-23"
+    }
+  ],
+  "pinned_adobe_schema": "docs/contracts/adobe-photoshop-v2.json#/components/schemas/PixelMask",
+  "api_commands": 229,
+  "native_version_unchanged": 83,
+  "actions_version": 35,
+  "old_actions_versions_retained": [
+    31,
+    32,
+    33,
+    34
+  ],
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Selected-mask regions, linked-mask combined transforms, filter/vector masks and channels/components",
+    "Remaining G01 multi-layer/group, Warp/repeat and other major workflows",
+    "Exact Photoshop mask bounds/edge/default/kernel/pixel/live/platform/capacity/physical60fps comparison",
+    "Prior strict opacity snapshot and11 historical strict rendering/interchange cases"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

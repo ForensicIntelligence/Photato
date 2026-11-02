@@ -117,6 +117,9 @@ public struct PaintingEdit: Sendable {
     brush.settings=brush.settings ?? .init();brush.erase=false
     if request.tool == .pencil { brush.settings!.aliased=true;brush.hardness=1;brush.settings!.flow=1;brush.settings!.buildUp=false }
     let target=request.target
+    if case .pixels(let id)=target,[PaintTool.backgroundEraser,.magicEraser].contains(request.tool),d.layers.first(where:{$0.id==id})?.isBackground == true {
+      try BackgroundLayer.apply(.toLayer(id,.init(name:"Layer 0")),to:&d)
+    }
     // Sampled Mixer loads and pattern resources remain immutable during preview.
     func paint(_ surface:inout Surface,_ transform:Transform2D,_ gray:Bool,_ preserve:Bool) throws {
       if gray {brush.color=PaintToolPainter.gray(brush.color);brush.backgroundColor=PaintToolPainter.gray(brush.backgroundColor ?? .white)}
@@ -134,7 +137,7 @@ public struct PaintingEdit: Sendable {
     switch target {
     case .channel(let target):
       var channel=try d.channel(target)
-      let inverted=channel.options.display(0) != 0
+      let inverted=channel.display(0) != 0
       func invert(_ surface:inout Surface) {surface.mapPixels{_,_,p in Pixel(1-unit(p.r),1-unit(p.r),1-unit(p.r))}}
       if inverted {invert(&channel.pixels)}
       try paint(&channel.pixels,.identity,true,false)

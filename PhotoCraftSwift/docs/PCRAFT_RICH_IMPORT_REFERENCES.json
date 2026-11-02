@@ -1,0 +1,126 @@
+{
+  "step": 300,
+  "date": "2026-10-31",
+  "package": "I03",
+  "phase": 1,
+  "status": "in-progress-source03-functional-workflows-tested-exact-source-endpoints-open",
+  "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+  "source_inputs": 2949,
+  "scope": "Editable original PhotoCraft solid/gradient/pattern fill migration and document-owned patterns/fill opacity, through the existing shared native and Photato import pipeline. Full source graph port remains open.",
+  "primary_source": "Unmodified licensed original PhotoCraft crates/doc, format and compose; no proprietary implementation/assets.",
+  "source_provenance": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/rust-source-provenance01.json",
+  "fixture_generator": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/rust-oracle02-result.json",
+  "fixture_manifest": "Tests/PhotoCraftImagingTests/Fixtures/PcraftFills/manifest.json",
+  "api": {
+    "typed_commands": 204,
+    "import": "POST /v1/documents/import, Content-Type application/vnd.photocraft.project or X-Photato-Open-Format:pcraft for an octet-stream ZIP. Native Open also supports source directories.",
+    "jobs": "Existing Photato /v1/action-jobs decoder expanded; Adobe format contract remains unchanged.",
+    "state": "documentOpening.pcraft reports supported/rejected migration scope; native files retain editable fill controls and document pattern pixels. Existing layer.style/opacity/history apply.",
+    "existing_control_gap": "Dedicated direct gradient/pattern fill-control commands remain an existing API coverage gap; source import does not claim to close it."
+  },
+  "native_archive_version": 66,
+  "new_tools_or_shortcuts": false,
+  "native_live_acceptance": false,
+  "full_parity": false,
+  "software_qualified": false,
+  "new_test_cases_authored": 11,
+  "remaining": [
+    "Continue complete .pcraft type, shape, adjustment and Smart Object migration, effects/artboards and remaining common/document metadata. I03 remains a major open workflow.",
+    "Preserve both exact source gradient endpoint cases (18 repeated assertions across depths/styles). Probe isolates two last-stop Float32 words and one Linear RGBA8 blue byte; obtain independent Photoshop/source endpoint evidence before choosing a representation/kernel change.",
+    "Represent dual-alpha gradient curves, linked pattern-mask anchors, nondefault off-frame pattern samples and other source color/ICC/HDR/parameter/capacity domains without data loss.",
+    "Close pre-existing dedicated fill-control API gaps and transparent-solid PSD/32-bit output limitations. Existing job rejects unsupported PSD/PNG, float TIFF and native archives preserve tested data.",
+    "Keep earlier299 strict PSD/PSB preview mismatch, complete linked dependencies/media/new-file output and all full-inventory/long-session/universal/Intel/macOS14/physical60fps/native/Photoshop gates open. No new installed app/source push; preserve normal283, candidate298, private source298 and artwork."
+  ],
+  "focused03": {
+    "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "source_inputs": 2949,
+    "exit_code": 1,
+    "tests": 168,
+    "passed_cases": 166,
+    "failed_cases": 2,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+    ],
+    "failed_assertions": 18,
+    "unexpected": 0,
+    "seconds": 19.45,
+    "build_seconds": 101.42,
+    "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+    "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+    "new_cases": 11,
+    "new_cases_passed": 9,
+    "native_api_workflow_cases_passed": 3
+  },
+  "targeted_qualification": {
+    "current_source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "source_inputs": 2949,
+    "focused": {
+      "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+      "source_inputs": 2949,
+      "exit_code": 1,
+      "tests": 168,
+      "passed_cases": 166,
+      "failed_cases": 2,
+      "failed_case_ids": [
+        "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+        "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+      ],
+      "failed_assertions": 18,
+      "unexpected": 0,
+      "seconds": 19.45,
+      "build_seconds": 101.42,
+      "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+      "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+      "new_cases": 11,
+      "new_cases_passed": 9,
+      "native_api_workflow_cases_passed": 3
+    },
+    "affected_regressions": {
+      "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source02.json",
+      "cases": 21,
+      "passed": 21,
+      "equivalence_proof": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/regression03-equivalence.json"
+    },
+    "unique_cases": 189,
+    "passed_cases": 187,
+    "failed_cases": 2,
+    "failed_assertions": 18,
+    "all_cases_executed_on_current_source": false,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "claim_scope": "Source03 focus plus21 Source02 checks on identical production/unaffected test sources; preserve exact source endpoint failures and all prior gates."
+  },
+  "source03_equivalence_proof": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/regression03-equivalence.json",
+  "source01_failure": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused01-result.json",
+  "source02_failure": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused02-result.json",
+  "endpoint_diagnosis": {
+    "probe": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source01-probe-result.json",
+    "difference": "Rust interpolates the last segment at equality; native returns its exact last stop. Two Float32 words at t=1, one Linear blue byte26vs25 in this fixture, repeated across depths/styles.",
+    "assertions_unchanged": true,
+    "generic_native_kernel_changed": false,
+    "independent_photoshop_contract": "Unqualified; no native byte equality inferred from source-only oracle."
+  },
+  "format_tests": {
+    "same_source": "F32 original eight-fill .pcraft, unchanged across requests",
+    "photato_native_import_and_archives": "Pass with editable controls, source preservation, history and native/API equality",
+    "float_tiff_job": "Pass and byte-identical to native TIFF output",
+    "psd_job": "Fails explicitly for translucent solid fill; message asserted, limitation retained",
+    "png32_job": "Fails explicitly instead of discarding32-bit output precision; message asserted",
+    "adobe_pcraft_input": "Unchanged explicit rejection; no invented route/input"
+  },
+  "app_binary_sha256": "4045ffe5c284d484065d99f491b7f125263d1ac5b83739a74274b2844a0d08b0",
+  "upstream_integrity": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/upstream-integrity01.json",
+  "exposure_step302": {
+    "reference": "docs/EXPOSURE_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source03.json",
+    "controls": "Exposure/Offset/Gamma editable native67, shared native/API import; all three owned original-Rust depth vectors pass exact RGBA8 comparisons.",
+    "major_gate_closed": false,
+    "full_photoshop_parity": false
+  },
+  "shape_followthrough_step305": {
+    "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
+    "status": "Source04 functional source-shape/native/API/Actions24 workflows pass;162/166 current focused cases pass with four strict cases/23 assertions. Existing52x16/nine cursor cases pass. New target reuses existing tools; no new shortcuts/cursor actions. Physical/full/Photoshop/source/capacity/platform gates remain open.",
+    "full_parity": false
+  }
+}

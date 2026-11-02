@@ -78,7 +78,7 @@ public enum LayerLayout {
   public static func plan(
     _ items: [LayerLayoutItem], operation: LayerLayoutOperation, target: IntRect? = nil
   ) throws -> [LayerTranslation] {
-    guard !items.isEmpty, items.count <= 512, Set(items.map(\.id)).count == items.count else {
+    guard !items.isEmpty, items.count <= LayerLimits.maximumLayers, Set(items.map(\.id)).count == items.count else {
       throw CraftError.invalid("Select distinct layers with content to align or distribute.")
     }
     for item in items { try validate(item.bounds) }
@@ -199,7 +199,7 @@ public enum LayerLayout {
   static func apply(_ moves: [LayerTranslation], to document: inout CraftDocument) throws {
     try document.validate()
     let ids = Set(moves.map(\.id))
-    guard moves.count <= 512, ids.count == moves.count,
+    guard moves.count <= LayerLimits.maximumLayers, ids.count == moves.count,
       try roots(ids, in: document).count == moves.count
     else {
       throw CraftError.invalid("Layer layout contains duplicate or nested translations.")

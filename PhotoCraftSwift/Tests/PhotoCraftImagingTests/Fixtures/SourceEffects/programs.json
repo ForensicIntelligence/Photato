@@ -1,0 +1,5567 @@
+[
+  {
+    "name": "dropShadow-linear",
+    "effects": [
+      {
+        "DropShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "dropShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "dropShadow-curve",
+    "effects": [
+      {
+        "DropShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": {
+            "Custom": {
+              "name": "Owned curve",
+              "points": [
+                {
+                  "input": 0,
+                  "output": 0
+                },
+                {
+                  "input": 0.3125,
+                  "output": 0.6875
+                },
+                {
+                  "input": 1,
+                  "output": 1
+                }
+              ]
+            }
+          },
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "dropShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Owned curve",
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.3125,
+                  0.6875
+                ],
+                [
+                  1,
+                  1
+                ]
+              ]
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "dropShadow-zero-size",
+    "effects": [
+      {
+        "DropShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 0,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "dropShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 0,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": false,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "dropShadow-global",
+    "effects": [
+      {
+        "DropShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": true,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "dropShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": true,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerShadow-linear",
+    "effects": [
+      {
+        "InnerShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerShadow-curve",
+    "effects": [
+      {
+        "InnerShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": {
+            "Custom": {
+              "name": "Owned curve",
+              "points": [
+                {
+                  "input": 0,
+                  "output": 0
+                },
+                {
+                  "input": 0.3125,
+                  "output": 0.6875
+                },
+                {
+                  "input": 1,
+                  "output": 1
+                }
+              ]
+            }
+          },
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Owned curve",
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.3125,
+                  0.6875
+                ],
+                [
+                  1,
+                  1
+                ]
+              ]
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerShadow-zero-size",
+    "effects": [
+      {
+        "InnerShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 0,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 0,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": false,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerShadow-global",
+    "effects": [
+      {
+        "InnerShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": true,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": true,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "outerGlow-Softer-Edge",
+    "effects": [
+      {
+        "OuterGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Softer",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Edge"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "outerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "outerGlow-Softer-Center",
+    "effects": [
+      {
+        "OuterGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Softer",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Center"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "outerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "center",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "outerGlow-Precise-Edge",
+    "effects": [
+      {
+        "OuterGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Precise",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Edge"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "outerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "precise",
+            "glowSource": "edge",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "outerGlow-Precise-Center",
+    "effects": [
+      {
+        "OuterGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Precise",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Center"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "outerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "precise",
+            "glowSource": "center",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerGlow-Softer-Edge",
+    "effects": [
+      {
+        "InnerGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Softer",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Edge"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerGlow-Softer-Center",
+    "effects": [
+      {
+        "InnerGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Softer",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Center"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "center",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerGlow-Precise-Edge",
+    "effects": [
+      {
+        "InnerGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Precise",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Edge"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "precise",
+            "glowSource": "edge",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "innerGlow-Precise-Center",
+    "effects": [
+      {
+        "InnerGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Precise",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Center"
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "innerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "precise",
+            "glowSource": "center",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "stroke-Outside",
+    "effects": [
+      {
+        "Stroke": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "size": 4.25,
+          "position": "Outside",
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "stroke",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "color"
+            }
+          },
+          "position": "outside"
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "stroke-Inside",
+    "effects": [
+      {
+        "Stroke": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "size": 4.25,
+          "position": "Inside",
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "stroke",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "color"
+            }
+          },
+          "position": "inside"
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "stroke-Center",
+    "effects": [
+      {
+        "Stroke": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "size": 4.25,
+          "position": "Center",
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "stroke",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "color"
+            }
+          },
+          "position": "center"
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "overlay",
+    "effects": [
+      {
+        "ColorOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 0.25
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "colorOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "gradient-Linear",
+    "effects": [
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Linear",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Linear",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "gradient-Radial",
+    "effects": [
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Radial",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Radial",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "gradient-Reflected",
+    "effects": [
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Reflected",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Reflected",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "gradient-Angle",
+    "effects": [
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Angle",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Angle",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "gradient-Diamond",
+    "effects": [
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Diamond",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Diamond",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "pattern-rotated",
+    "effects": [
+      {
+        "PatternOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "name": "Owned FX",
+          "id": "owned-fx",
+          "scale": 1.375,
+          "angle": 17.5,
+          "link": true,
+          "phase": [
+            0.375,
+            -0.625
+          ]
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "patternOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "pattern",
+              "pattern": {
+                "patternID": "owned-fx",
+                "sourceName": "Owned FX",
+                "sourceID": "owned-fx",
+                "scale": 1.375,
+                "angle": 17.5,
+                "linked": true,
+                "phase": {
+                  "x": 0.375,
+                  "y": -0.625
+                }
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625,
+      "referenceOffset": {
+        "x": 2.375,
+        "y": -1.625
+      }
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": true
+  },
+  {
+    "name": "pattern-unresolved",
+    "effects": [
+      {
+        "PatternOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "name": "Missing",
+          "id": "unresolved",
+          "scale": 1.375,
+          "angle": 17.5,
+          "link": true,
+          "phase": [
+            0.375,
+            -0.625
+          ]
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "patternOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "pattern",
+              "pattern": {
+                "patternID": null,
+                "sourceName": "Owned FX",
+                "sourceID": "unresolved",
+                "scale": 1.375,
+                "angle": 17.5,
+                "linked": true,
+                "phase": {
+                  "x": 0.375,
+                  "y": -0.625
+                }
+              }
+            }
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "satin-False",
+    "effects": [
+      {
+        "Satin": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "distance": 3.375,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "invert": false
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "satin",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "satin-True",
+    "effects": [
+      {
+        "Satin": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "distance": 3.375,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "invert": true
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "satin",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": true,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          }
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-OuterBevel-Smooth",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "OuterBevel",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "outerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-OuterBevel-ChiselHard",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "OuterBevel",
+          "technique": "ChiselHard",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "outerBevel",
+            "bevelTechnique": "chiselHard",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-OuterBevel-ChiselSoft",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "OuterBevel",
+          "technique": "ChiselSoft",
+          "depth": 1.375,
+          "up": false,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "outerBevel",
+            "bevelTechnique": "chiselSoft",
+            "directionUp": false,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-InnerBevel-Smooth",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "InnerBevel",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-InnerBevel-ChiselHard",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "InnerBevel",
+          "technique": "ChiselHard",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "chiselHard",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-InnerBevel-ChiselSoft",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "InnerBevel",
+          "technique": "ChiselSoft",
+          "depth": 1.375,
+          "up": false,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "chiselSoft",
+            "directionUp": false,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-Emboss-Smooth",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "Emboss",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "emboss",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-Emboss-ChiselHard",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "Emboss",
+          "technique": "ChiselHard",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "emboss",
+            "bevelTechnique": "chiselHard",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-Emboss-ChiselSoft",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "Emboss",
+          "technique": "ChiselSoft",
+          "depth": 1.375,
+          "up": false,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "emboss",
+            "bevelTechnique": "chiselSoft",
+            "directionUp": false,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-PillowEmboss-Smooth",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "PillowEmboss",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "pillowEmboss",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-PillowEmboss-ChiselHard",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "PillowEmboss",
+          "technique": "ChiselHard",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "pillowEmboss",
+            "bevelTechnique": "chiselHard",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-PillowEmboss-ChiselSoft",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "PillowEmboss",
+          "technique": "ChiselSoft",
+          "depth": 1.375,
+          "up": false,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "pillowEmboss",
+            "bevelTechnique": "chiselSoft",
+            "directionUp": false,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-StrokeEmboss-Smooth",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "StrokeEmboss",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "strokeEmboss",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-StrokeEmboss-ChiselHard",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "StrokeEmboss",
+          "technique": "ChiselHard",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "strokeEmboss",
+            "bevelTechnique": "chiselHard",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-StrokeEmboss-ChiselSoft",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "StrokeEmboss",
+          "technique": "ChiselSoft",
+          "depth": 1.375,
+          "up": false,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "strokeEmboss",
+            "bevelTechnique": "chiselSoft",
+            "directionUp": false,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  },
+  {
+    "name": "bevel-texture-contour",
+    "effects": [
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "Emboss",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": {
+            "contour": {
+              "Custom": {
+                "name": "Owned curve",
+                "points": [
+                  {
+                    "input": 0,
+                    "output": 0
+                  },
+                  {
+                    "input": 0.3125,
+                    "output": 0.6875
+                  },
+                  {
+                    "input": 1,
+                    "output": 1
+                  }
+                ]
+              }
+            },
+            "range": 0.625,
+            "anti_alias": false
+          },
+          "texture": {
+            "name": "Owned FX",
+            "id": "owned-fx",
+            "scale": 1.375,
+            "depth": -0.8125,
+            "invert": true,
+            "link": true,
+            "phase": [
+              0.375,
+              -0.625
+            ]
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "emboss",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "bevelContour": {
+              "contour": {
+                "name": "Owned curve",
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    0.3125,
+                    0.6875
+                  ],
+                  [
+                    1,
+                    1
+                  ]
+                ]
+              },
+              "range": 0.625,
+              "antiAlias": false
+            },
+            "texture": {
+              "pattern": {
+                "patternID": "owned-fx",
+                "sourceName": "Owned FX",
+                "sourceID": "owned-fx",
+                "scale": 1.375,
+                "angle": 0,
+                "linked": true,
+                "phase": {
+                  "x": 0.375,
+                  "y": -0.625
+                }
+              },
+              "depth": -0.8125,
+              "inverted": true
+            }
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        }
+      ],
+      "fillOpacity": 0.625,
+      "referenceOffset": {
+        "x": 2.375,
+        "y": -1.625
+      }
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": true
+  },
+  {
+    "name": "multiple-stacks",
+    "effects": [
+      {
+        "Stroke": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "size": 4.25,
+          "position": "Inside",
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          }
+        }
+      },
+      {
+        "DropShadow": {
+          "common": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.6875
+          },
+          "color": {
+            "mode": "Rgb",
+            "c": [
+              0.75,
+              0.125,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "angle": 137.5,
+          "use_global_light": false,
+          "distance": 3.375,
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "noise": 0,
+          "knocks_out": true
+        }
+      },
+      {
+        "GradientOverlay": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "gradient": {
+            "stops": [
+              [
+                0,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.125,
+                    0.25,
+                    0.75,
+                    0
+                  ],
+                  "alpha": 0.375
+                }
+              ],
+              [
+                0.375,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.8,
+                    0.2,
+                    0.1,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ],
+              [
+                1,
+                {
+                  "mode": "Rgb",
+                  "c": [
+                    0.2,
+                    0.9,
+                    0.6,
+                    0
+                  ],
+                  "alpha": 1
+                }
+              ]
+            ],
+            "opacity_stops": [
+              [
+                0,
+                0.25
+              ],
+              [
+                0.625,
+                0.9375
+              ],
+              [
+                1,
+                0.5
+              ]
+            ],
+            "style": "Radial",
+            "angle": 73.375,
+            "scale": 0.8125,
+            "reverse": false,
+            "align": true,
+            "offset": [
+              0.125,
+              -0.0625
+            ]
+          },
+          "dither": false
+        }
+      },
+      {
+        "BevelEmboss": {
+          "enabled": true,
+          "style": "StrokeEmboss",
+          "technique": "Smooth",
+          "depth": 1.375,
+          "up": true,
+          "size": 4.25,
+          "soften": 1.25,
+          "angle": 137.5,
+          "altitude": 37.5,
+          "use_global_light": false,
+          "gloss_contour": "Linear",
+          "highlight": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.75
+          },
+          "highlight_color": {
+            "mode": "Rgb",
+            "c": [
+              0.875,
+              0.75,
+              0.5,
+              0
+            ],
+            "alpha": 1
+          },
+          "shadow": {
+            "enabled": true,
+            "blend": "Multiply",
+            "opacity": 0.625
+          },
+          "shadow_color": {
+            "mode": "Rgb",
+            "c": [
+              0.125,
+              0.25,
+              0.375,
+              0
+            ],
+            "alpha": 1
+          },
+          "contour": null,
+          "texture": null
+        }
+      },
+      {
+        "OuterGlow": {
+          "common": {
+            "enabled": true,
+            "blend": "Screen",
+            "opacity": 0.6875
+          },
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          },
+          "technique": "Softer",
+          "spread": 0.3125,
+          "size": 4.25,
+          "contour": "Linear",
+          "anti_alias": false,
+          "range": 0.8125,
+          "jitter": 0,
+          "noise": 0,
+          "source": "Edge"
+        }
+      },
+      {
+        "Stroke": {
+          "common": {
+            "enabled": true,
+            "blend": "Normal",
+            "opacity": 0.6875
+          },
+          "size": 4.25,
+          "position": "Outside",
+          "paint": {
+            "Color": {
+              "mode": "Rgb",
+              "c": [
+                0.75,
+                0.125,
+                0.375,
+                0
+              ],
+              "alpha": 1
+            }
+          }
+        }
+      }
+    ],
+    "native": {
+      "effects": [
+        {
+          "kind": "stroke",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "color"
+            }
+          },
+          "position": "inside"
+        },
+        {
+          "kind": "dropShadow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Multiply",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        },
+        {
+          "kind": "gradientOverlay",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "gradient",
+              "gradient": {
+                "stops": [
+                  {
+                    "location": 0,
+                    "color": {
+                      "r": 0.125,
+                      "g": 0.25,
+                      "b": 0.75,
+                      "a": 0.375
+                    }
+                  },
+                  {
+                    "location": 0.375,
+                    "color": {
+                      "r": 0.8,
+                      "g": 0.2,
+                      "b": 0.1,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "location": 1,
+                    "color": {
+                      "r": 0.2,
+                      "g": 0.9,
+                      "b": 0.6,
+                      "a": 1
+                    }
+                  }
+                ],
+                "opacityStops": [
+                  [
+                    0,
+                    0.25
+                  ],
+                  [
+                    0.625,
+                    0.9375
+                  ],
+                  [
+                    1,
+                    0.5
+                  ]
+                ],
+                "placement": {
+                  "style": "Radial",
+                  "angle": 73.375,
+                  "scale": 0.8125,
+                  "reverse": false,
+                  "offsetX": 0.125,
+                  "offsetY": -0.0625
+                },
+                "aligned": true,
+                "dither": false
+              }
+            }
+          }
+        },
+        {
+          "kind": "bevelEmboss",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "strokeEmboss",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 37.5,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "depth": 137.5,
+          "soften": 1.25,
+          "highlightColor": {
+            "r": 0.875,
+            "g": 0.75,
+            "b": 0.5,
+            "a": 1
+          },
+          "highlightOpacity": 0.75,
+          "shadowColor": {
+            "r": 0.125,
+            "g": 0.25,
+            "b": 0.375,
+            "a": 1
+          },
+          "shadowOpacity": 0.625
+        },
+        {
+          "kind": "outerGlow",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Screen",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 0.8125,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true
+          },
+          "spread": 31.25
+        },
+        {
+          "kind": "stroke",
+          "enabled": true,
+          "opacity": 0.6875,
+          "blendMode": "Normal",
+          "color": {
+            "r": 0.75,
+            "g": 0.125,
+            "b": 0.375,
+            "a": 1
+          },
+          "size": 4.25,
+          "distance": 3.375,
+          "angle": 137.5,
+          "useGlobalLight": false,
+          "advanced": {
+            "contour": {
+              "name": "Linear",
+              "points": []
+            },
+            "antiAlias": false,
+            "noise": 0,
+            "knocksOut": true,
+            "glowTechnique": "softer",
+            "glowSource": "edge",
+            "range": 1,
+            "jitter": 0,
+            "satinInverted": false,
+            "bevelStyle": "innerBevel",
+            "bevelTechnique": "smooth",
+            "directionUp": true,
+            "altitude": 30,
+            "glossContour": {
+              "name": "Linear",
+              "points": []
+            },
+            "highlightBlendMode": "Screen",
+            "shadowBlendMode": "Multiply",
+            "highlightEnabled": true,
+            "shadowEnabled": true,
+            "paint": {
+              "kind": "color"
+            }
+          },
+          "position": "outside"
+        }
+      ],
+      "fillOpacity": 0.625
+    },
+    "fill": 0.625,
+    "opacity": 0.8125,
+    "reference": false
+  }
+]

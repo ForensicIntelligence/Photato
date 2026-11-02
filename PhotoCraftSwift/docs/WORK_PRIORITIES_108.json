@@ -43,5 +43,14 @@
     "execution": "Active work resumed. Finish usable feature breadth with focused functional tests/API/undo, then return to minor functions and exact numerical/cosmetic details. Preserve the original full parity objective and open gates.",
     "deferred": "step156 general feather kernel research",
     "first_new_batch": "Eight native raster filters"
+  },
+  "reference_standard_clarification_335": {
+    "step": "dev-step-335",
+    "recorded_at_utc": "2026-11-01T21:15:11.466757+00:00",
+    "target": "Photoshop 2026",
+    "role_of_rust": "Inspiration and optional licensed implementation/reference material; differential checks are supporting evidence only.",
+    "scheduling": "Missing Photoshop major workflows set priorities. Rust migration is not a prerequisite for implementing missing Photoshop features. Retain the major, minor, final-detail order.",
+    "acceptance": "Photoshop workflow/behavior/output evidence is required for Photoshop parity claims. Passing Rust comparisons does not close those gates.",
+    "implementation": "Fully native Swift; preserve required source attribution."
   }
 }

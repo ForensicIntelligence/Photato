@@ -12,6 +12,19 @@ struct ClassicAdjustmentControls: View {
   var coalesce: (Bool) -> Void = { _ in }
   @State private var channel = 0
   @State private var range = 0
+  private func exposureNumber(_ title: String, _ key: WritableKeyPath<ExposureAdjustment, Float>, _ limits: ClosedRange<Double>, digits: Int) -> some View {
+    let value = Binding<Double>(get: { Double((adjustment.exposureSettings ?? .init())[keyPath:key]) }, set: {
+      guard $0.isFinite else { return }
+      var settings = adjustment.exposureSettings ?? .init()
+      settings[keyPath:key] = Float(min(limits.upperBound,max(limits.lowerBound,$0)))
+      adjustment.exposureSettings = settings
+    })
+    return VStack(spacing:3) {
+      HStack { Text(title); Spacer(); TextField(title,value:value,format:.number.precision(.fractionLength(digits)))
+        .textFieldStyle(.roundedBorder).monospacedDigit().frame(width:80) }
+      Slider(value:value,in:limits,onEditingChanged:coalesce).accessibilityLabel(title)
+    }
+  }
   private func number(_ title: String, _ binding: Binding<Int>, _ limits: ClosedRange<Double>) -> some View {
     let value = Binding<Double>(get: { Double(binding.wrappedValue) }, set: {
       if $0.isFinite { binding.wrappedValue = Int(min(limits.upperBound,max(limits.lowerBound,$0)).rounded()) }
@@ -33,6 +46,10 @@ struct ClassicAdjustmentControls: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       switch adjustment.kind {
+      case .exposure:
+        exposureNumber("Exposure", \.exposure, -20...20, digits:2)
+        exposureNumber("Offset", \.offset, -0.5...0.5, digits:4)
+        exposureNumber("Gamma Correction", \.gammaCorrection, 0.01...9.99, digits:2)
       case .vibrance:
         number("Vibrance", $adjustment.vibrance, -100...100)
         number("Saturation", $adjustment.saturation, -100...100)
@@ -126,6 +143,8 @@ extension EditorStore {
   }
 }
 extension AppDelegate {
+  @objc func exposureAdjustment() { store?.beginClassicAdjustment(.exposure) }
+  @objc func newExposureAdjustment() { store?.addClassicAdjustment(.exposure) }
   @objc func vibrance() { store?.beginClassicAdjustment(.vibrance) }
   @objc func blackWhite() { store?.beginClassicAdjustment(.blackWhite) }
   @objc func photoFilter() { store?.beginClassicAdjustment(.photoFilter) }

@@ -119,7 +119,7 @@ import Observation
   }
 }
 
-@MainActor final class PanelTearOffBackdrop: NSWindow {
+@MainActor final class PanelTearOffBackdrop: PhotatoWindow {
   override var canBecomeKey: Bool { false }
   override var canBecomeMain: Bool { false }
 }

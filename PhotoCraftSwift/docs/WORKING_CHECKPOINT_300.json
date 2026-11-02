@@ -1,0 +1,136 @@
+{
+  "step": 300,
+  "run": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration",
+  "status": "in-progress-source03-rich-fill-functional-workflows-tested-exact-source-endpoints-open",
+  "previous_goal_turn": "progress",
+  "previous_checkpoint": "docs/WORKING_CHECKPOINT_299.json",
+  "baseline_inputs": 2937,
+  "protected_assets": 40,
+  "phase": 1,
+  "package": "I03",
+  "compiler_test_workers_live": false,
+  "increment_complete": false,
+  "goal_complete": false,
+  "full_parity": false,
+  "native_acceptance": false,
+  "new_source_push": false,
+  "next_work": [
+    "Continue complete .pcraft type, shape, adjustment and Smart Object migration, effects/artboards and remaining common/document metadata. I03 remains a major open workflow.",
+    "Preserve both exact source gradient endpoint cases (18 repeated assertions across depths/styles). Probe isolates two last-stop Float32 words and one Linear RGBA8 blue byte; obtain independent Photoshop/source endpoint evidence before choosing a representation/kernel change.",
+    "Represent dual-alpha gradient curves, linked pattern-mask anchors, nondefault off-frame pattern samples and other source color/ICC/HDR/parameter/capacity domains without data loss.",
+    "Close pre-existing dedicated fill-control API gaps and transparent-solid PSD/32-bit output limitations. Existing job rejects unsupported PSD/PNG, float TIFF and native archives preserve tested data.",
+    "Keep earlier299 strict PSD/PSB preview mismatch, complete linked dependencies/media/new-file output and all full-inventory/long-session/universal/Intel/macOS14/physical60fps/native/Photoshop gates open. No new installed app/source push; preserve normal283, candidate298, private source298 and artwork."
+  ],
+  "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+  "source_inputs": 2949,
+  "current_worker": null,
+  "focused01": {
+    "source_manifest": "source01.json",
+    "inputs": 2949,
+    "exit_code": 1,
+    "tests": 168,
+    "passed_cases": 164,
+    "failed_cases": 4,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftAppTests.PcraftFillWorkflowTests/testHTTPRichImportStyleEditNativeEquivalenceDownloadAndStaleGuard",
+      "PhotoCraftAppTests.PcraftFillWorkflowTests/testRichFillPhotatoResourceJobAndPublishedAdobeFormatBoundary"
+    ],
+    "failed_assertions": 21,
+    "unexpected": 0,
+    "seconds": 19.497,
+    "log_sha256": "f49911c55311c7f6fd8b36c2b2a50007c06e57b3fca48cf7d6ce4fae1821253b",
+    "build_seconds": 343.42,
+    "failure_details": "Three content RGBA8 assertions for Linear across depths;15 ramp-word assertions (five styles x three depths); stale test400vs409; resource PSD output rejects transparent solid fill, then unwrap fails. Native/history/save and pattern sample cases pass."
+  },
+  "focused02": {
+    "source_manifest": "source02.json",
+    "inputs": 2949,
+    "exit_code": 1,
+    "tests": 168,
+    "passed_cases": 165,
+    "failed_cases": 3,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftAppTests.PcraftFillWorkflowTests/testRichFillPhotatoResourceJobAndPublishedAdobeFormatBoundary"
+    ],
+    "failed_assertions": 20,
+    "unexpected": 0,
+    "seconds": 19.737,
+    "build_seconds": 102.45,
+    "log_sha256": "0849c8d3eaa78b3014735979b2ccf546b00d7a4df7cb1290b732f0a42fbd2a2d",
+    "remaining": "Two exact source endpoint cases plus resource PNG32 policy rejection; stale409 repaired. Four isolated baseline groups21 cases pass."
+  },
+  "recorded_at_utc": "2026-10-31T23:49:53.983061+00:00",
+  "focused03": {
+    "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "source_inputs": 2949,
+    "exit_code": 1,
+    "tests": 168,
+    "passed_cases": 166,
+    "failed_cases": 2,
+    "failed_case_ids": [
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+    ],
+    "failed_assertions": 18,
+    "unexpected": 0,
+    "seconds": 19.45,
+    "build_seconds": 101.42,
+    "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+    "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+    "new_cases": 11,
+    "new_cases_passed": 9,
+    "native_api_workflow_cases_passed": 3
+  },
+  "targeted_qualification": {
+    "current_source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "source_inputs": 2949,
+    "focused": {
+      "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+      "source_inputs": 2949,
+      "exit_code": 1,
+      "tests": 168,
+      "passed_cases": 166,
+      "failed_cases": 2,
+      "failed_case_ids": [
+        "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+        "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits"
+      ],
+      "failed_assertions": 18,
+      "unexpected": 0,
+      "seconds": 19.45,
+      "build_seconds": 101.42,
+      "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+      "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+      "new_cases": 11,
+      "new_cases_passed": 9,
+      "native_api_workflow_cases_passed": 3
+    },
+    "affected_regressions": {
+      "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source02.json",
+      "cases": 21,
+      "passed": 21,
+      "equivalence_proof": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/regression03-equivalence.json"
+    },
+    "unique_cases": 189,
+    "passed_cases": 187,
+    "failed_cases": 2,
+    "failed_assertions": 18,
+    "all_cases_executed_on_current_source": false,
+    "full_suite": false,
+    "native_live_acceptance": false,
+    "claim_scope": "Source03 focus plus21 Source02 checks on identical production/unaffected test sources; preserve exact source endpoint failures and all prior gates."
+  },
+  "current_binary_sha256": "4045ffe5c284d484065d99f491b7f125263d1ac5b83739a74274b2844a0d08b0",
+  "full": null,
+  "software_qualified": false,
+  "functional_native_api_workflows_tested": true,
+  "native_access": {
+    "last_confirmed": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/native-access23.json",
+    "fresh_live_ui_attempt_this_increment": false,
+    "reason": "Native/Photoshop access previously reported locked; in-process native document workflows are not physical UI acceptance."
+  }
+}

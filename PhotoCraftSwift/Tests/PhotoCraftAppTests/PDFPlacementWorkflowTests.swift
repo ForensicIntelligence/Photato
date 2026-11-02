@@ -46,6 +46,9 @@ final class PDFPlacementWorkflowTests: XCTestCase {
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(placed)),placed)
   }
   @MainActor func testChooserCancelStaleCommitAndClosePublishNothing() async throws {
+    _ = NSApplication.shared
+    let bootstrap=CraftDocumentController(workspaces:WorkspaceLibrary())
+    defer{withExtendedLifetime(bootstrap){}}
     let original = try CraftDocument(width:432,height:324),doc = CraftNSDocument(model:original),store = doc.store
     defer {store.renderTask?.cancel()}
     select(store,cancel:true);store.placePDF(fixture());await store.geometryTask?.value

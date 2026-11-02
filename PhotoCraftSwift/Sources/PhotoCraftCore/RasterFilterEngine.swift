@@ -12,6 +12,7 @@ public enum RasterFilterEngine {
       !document.isLocked(layerID), !document.isImageLocked(layerID),
       case .raster(let source) = document.layers[index].content
     else { throw CraftError.invalid("Filters require an unlocked pixel layer.") }
+    if filter.relight?.isIdentity==true{return}
     if source.width > maximumPixels/source.height {
       guard pagedFilterKinds.contains(filter.kind),document.colorMode == .rgb,
         document.inkMode==nil,document.restrictedMode==nil else {
@@ -19,6 +20,8 @@ public enum RasterFilterEngine {
       }
       try PagedRasterFilters.apply(filter,to:layerID,in:&document);return
     }
+    if let settings=filter.lighting {try LightingEngine.apply(settings,source:source,layerID:layerID,index:index,document:&document);return}
+    if let settings=filter.relight {try RelightEngine.apply(settings,source:source,layerID:layerID,index:index,document:&document);return}
     if let settings=filter.tone {try ClassicToneEngine.apply(.init(settings,layerID:layerID),to:&document);return}
     if let settings=filter.classicDetail {try ClassicDetailEngine.apply(settings,kind:filter.kind,source:source,layerID:layerID,index:index,document:&document);return}
     if let settings=filter.otherVideo {try OtherVideoEngine.apply(settings,kind:filter.kind,source:source,layerID:layerID,index:index,document:&document);return}
@@ -96,7 +99,7 @@ public enum RasterFilterEngine {
           for y in y0..<y1 { for x in x0..<x1 { output[y * w + x] = average } }
         }
       }
-    case .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .emboss, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind, .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize, .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag, .addNoise, .cameraRaw, .puppetWarp, .perspectiveWarp, .adaptiveWideAngle, .filterGallery, .smartSharpen, .reduceNoise, .lensBlur: output = input
+    case .lightingEffects, .relight, .shadowsHighlights, .blur, .blurMore, .radialBlur, .shapeBlur, .smartBlur, .surfaceBlur, .despeckle, .dustAndScratches, .median, .sharpen, .sharpenEdges, .sharpenMore, .customFilter, .hsbHsl, .maximum, .minimum, .offset, .deInterlace, .ntscColors, .clouds, .differenceClouds, .fibers, .lensFlare, .diffuse, .emboss, .extrude, .findEdges, .oilPaint, .solarize, .tiles, .traceContour, .wind, .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize, .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag, .addNoise, .cameraRaw, .puppetWarp, .perspectiveWarp, .adaptiveWideAngle, .filterGallery, .smartSharpen, .reduceNoise, .lensBlur: output = input
     }
     let layer = document.layers[index]
     let matrix = layer.coordinateTransform

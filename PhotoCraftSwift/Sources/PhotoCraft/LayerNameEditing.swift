@@ -25,6 +25,7 @@ extension EditorStore {
       return
     }
     select(id)
+    if layer.isBackground {beginBackgroundConversion();return}
     layerNameDraft = LayerNameDraft(layer)
     workspaceLibrary.selectPanel(.layers, reveal: true)
   }

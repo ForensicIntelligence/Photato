@@ -65,12 +65,24 @@ struct AdobeArtboardRequest: Sendable {
   /// Document/layer fields follow Adobe's published manifest examples. Artboard
   /// identifiers/bounds form a local subset; rich Adobe descriptor parity is open.
   static func manifest(_ document: CraftDocument) throws -> Data {
-    let ids = Dictionary(uniqueKeysWithValues: document.layers.enumerated().map { ($0.element.id, $0.offset + 1) })
+    let ids = Dictionary(uniqueKeysWithValues: document.layers.enumerated().map { ($0.element.id, document.layers.count==1 && $0.element.isBackground ? 0:$0.offset+1) })
     func bounds(_ r: IntRect) -> [String: Int] { ["left": r.x, "top": r.y, "right": r.x + r.width, "bottom": r.y + r.height] }
     func layer(_ value: Layer) throws -> [String: Any] {
       let rect = try value.artboardBounds ?? Renderer.layoutBounds(value, in: document, stored: true)
       var result: [String: Any] = ["id": ids[value.id]!, "name": value.name, "type": value.isGroup ? "group_layer" : "pixel_layer", "visible": value.visible, "protection": document.isLocked(value.id) ? ["all"] : ["none"]]
+      if value.isBackground {result["type"]="background_layer";result["background"]=["canConvertToLayer":BackgroundLayer.canConvert(document,layerID:value.id)]}
       if let rect { result["bounds"] = bounds(rect) }
+      if let object=value.smartObject {
+        result["type"]="smart_object_layer"
+        let t=try value.smartObjectSourceTransform(),w=Double(object.width),h=Double(object.height)
+        let quad=[t.point(0,0),t.point(w,0),t.point(w,h),t.point(0,h)].flatMap{[$0.x,$0.y]}
+        var fields:[String:Any]=["type":"smartObject","transform":quad]
+        if let link=object.linkedSource {
+          let path=URL(string:link.reference).flatMap{$0.isFileURL ? $0.path:nil} ?? link.reference
+          fields["fileInfo"]=["relative":object.fileName,"name":object.fileName,"path":path,"fileType":(object.fileName as NSString).pathExtension,"linked":true]
+        }
+        result["smartObject"]=["isSmartObject":true,"isLinked":object.linkedSource != nil,"isValid":true,"smartObjectData":fields]
+      }
       if value.isGroup { result["children"] = try document.layers.filter { $0.parentID == value.id }.map(layer) }
       return result
     }

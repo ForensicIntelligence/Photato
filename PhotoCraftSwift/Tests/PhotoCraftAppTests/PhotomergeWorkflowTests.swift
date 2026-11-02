@@ -136,13 +136,21 @@ final class PhotomergeWorkflowTests: XCTestCase {
       for revoke in [false,true] {
         var current = params;current["sources"] = service.shares.map{["id":$0.id.uuidString,"revision":service.revision($0.document!.store)]}
         let command = try AutomationCommand(data:JSONSerialization.data(withJSONObject:["command":"document.photomerge","revision":service.revision(original.store),"parameters":current])),id = service.shares[0].id
+        let gate = DocumentPersistenceTests.Gate()
+        service.photomergePreparation = { sources, settings, name in
+          gate.wait()
+          try Task.checkCancellation()
+          return try Photomerge.prepare(sources, settings: settings, name: name)
+        }
         let task = Task { try await service.executePhotomerge(command,anchorID:id) }
-        for _ in 0..<100 where service.photomergeOperationID == nil { try await Task.sleep(for:.milliseconds(5)) }
+        defer { gate.release(); task.cancel() }
+        try await DocumentPersistenceTests().waitFor(gate)
         XCTAssertNotNil(service.photomergeOperationID)
         if revoke { service.setDocumentTransfersEnabled(false) }
         else {
           let operation = try XCTUnwrap(service.photomergeOperationID),status = try await helper.edit(service,original,"document.photomerge.cancel",["operationID":operation.uuidString]);XCTAssertEqual(status,200)
         }
+        gate.release()
         do { _ = try await task.value;XCTFail("Cancelled operation published a panorama") } catch is CancellationError {} catch { XCTAssertTrue(error is AutomationFailure) }
         XCTAssertEqual(service.controller.documents.count,2);XCTAssertNil(service.photomergeOperationID);XCTAssertFalse(original.store.geometryBusy);XCTAssertFalse(service.documentTransferBusy)
       }

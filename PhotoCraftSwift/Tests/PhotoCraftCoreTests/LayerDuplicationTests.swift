@@ -163,7 +163,7 @@ final class LayerDuplicationTests: XCTestCase {
       try Command.duplicateLayersFrom(original, [original.layers[0].id]).apply(to: &target))
     XCTAssertEqual(target, profile)
     target = original
-    target.layers = (0..<512).map { Layer(name: "L\($0)", content: .fill(.white)) }
+    target.layers = (0..<LayerLimits.maximumLayers).map { Layer(name: "L\($0)", content: .fill(.white)) }
     target.activeLayerID = target.layers[0].id
     let full = target
     XCTAssertThrowsError(

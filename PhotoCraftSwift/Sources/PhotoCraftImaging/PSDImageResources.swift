@@ -37,10 +37,10 @@ enum PSDImageResources {
     }
     return result
   }
-  static func preserved(_ data: Data) throws -> Data {
+  static func preserved(_ data: Data, preservingLayerLinks:Bool=false) throws -> Data {
     var output = Data()
     for block in try blocks(data)
-    where !replacedIDs.contains(block.id) && !staleIDs.contains(block.id)
+    where !replacedIDs.contains(block.id) && (!staleIDs.contains(block.id) || (preservingLayerLinks && [1026,1072].contains(block.id)))
       && !(2000...2997).contains(block.id)
     {
       output.append(block.raw)

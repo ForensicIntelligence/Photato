@@ -290,3 +290,41 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     else{try c.encode(planes,forKey:.planes)}
   }
 }
+
+public extension NativeModeRaster {
+  func reframedExactly(bounds:IntRect,background:Pixel? = nil)throws->Self {
+    guard (-1_000_000...1_000_000).contains(bounds.x),(-1_000_000...1_000_000).contains(bounds.y) else{throw CraftError.invalid("Invalid component frame origin.")}
+    var result=try Self(width:bounds.width,height:bounds.height,mode:mode,depth:depth,profile:profile,intent:intent)
+    if let background {
+      let fill=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent).components(depth == .f32 ? SRGBTransfer.linear(background):background)
+      for c in result.planes.indices {
+        let value=fill[c];let bits:UInt32
+        switch depth {case .u8:bits=UInt32((max(0,min(1,value))*255).rounded());case .u16:bits=UInt32((max(0,min(1,value))*65535).rounded());case .f32:bits=value.bitPattern}
+        let sample=Data((0..<bytesPerSample).map{UInt8(truncatingIfNeeded:bits>>($0*8))})
+        var repeated=sample;let count=bounds.width*bounds.height*bytesPerSample
+        while repeated.count<count {let chunk=Data(repeated.prefix(min(repeated.count,count-repeated.count)));repeated.append(chunk)}
+        result.planes[c]=repeated
+      }
+    }
+    let x0=max(0,bounds.x),y0=max(0,bounds.y),x1=min(width,bounds.x+bounds.width),y1=min(height,bounds.y+bounds.height)
+    if x1>x0,y1>y0 {
+      for c in planes.indices {for y in y0..<y1 {
+        try Task.checkCancellation();let from=(y*width+x0)*bytesPerSample,to=((y-bounds.y)*bounds.width+x0-bounds.x)*bytesPerSample,count=(x1-x0)*bytesPerSample
+        result.planes[c].replaceSubrange(to..<to+count,with:planes[c][from..<from+count])
+      }}
+    }
+    try result.validate();return result
+  }
+  func trimBounds(_ options:TrimOptions)throws->IntRect {
+    if !options.hasEdges{return .init(x:0,y:0,width:width,height:height)}
+    let reference=components(index:options.basis == .bottomRight ? width*height-1:0)
+    var x0=width,y0=height,x1=0,y1=0
+    for y in 0..<height {try Task.checkCancellation();for x in 0..<width {
+      let index=y*width+x
+      let keep=options.basis == .transparent ? value(component:mode.componentCount,index:index)>0 : components(index:index) != reference
+      if keep {x0=min(x0,x);y0=min(y0,y);x1=max(x1,x+1);y1=max(y1,y+1)}
+    }}
+    guard x1>x0,y1>y0 else{throw CraftError.invalid("No image content would remain after trimming.")}
+    return options.bounds(content:.init(x:x0,y:y0,width:x1-x0,height:y1-y0),width:width,height:height)
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "step": "dev-step-338",
+  "recorded_at_utc": "2026-11-01T23:04:20.710542+00:00",
+  "run": "artifacts/runs/20261101T223848Z-338-parent-smart-comps",
+  "reference_standard": "Photoshop 2026",
+  "source_manifest": "artifacts/runs/20261101T223848Z-338-parent-smart-comps/source02.json",
+  "inputs": 6898,
+  "production_swift_files": 926,
+  "binary_sha256": "649950d41289972bb00fb7bb30f2aece32cbb5bb43d351304c63865e5f35ebb8",
+  "qualification": {
+    "cases": 378,
+    "passed_cases": 377,
+    "failed_cases": 1,
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 45.115,
+    "new_cases": 13,
+    "all_new_passed": true,
+    "all_affected_passed": false
+  },
+  "new_case_names": [
+    "PhotoCraftImagingTests.ParentLayerCompIOTests/testLinkedReopenedParentCompRequiresMatchingExplicitBytes",
+    "PhotoCraftImagingTests.ParentLayerCompIOTests/testNestedEmbeddedParentCompPropagatesAndNestingBudgetRemainsEnforced",
+    "PhotoCraftImagingTests.ParentLayerCompIOTests/testParentRecordsUseUpdatedSourceArtworkAndRejectDeletedChoiceWithoutMutation",
+    "PhotoCraftImagingTests.ParentLayerCompIOTests/testPreparedApplyHistoryLastStateAndRepeatedApplyPreserveOriginalChoicesAtEveryDepth",
+    "PhotoCraftImagingTests.ParentLayerCompIOTests/testSharedInstancesDecodeOncePerSourceAndRenderOncePerDistinctChoice",
+    "PhotoCraftCoreTests.ParentLayerCompModelTests/testOlderOptionsDecodeWithoutFourthPropertyAndOrdinaryCaptureDoesNotRecordChoice",
+    "PhotoCraftCoreTests.ParentLayerCompModelTests/testSmartOnlyCaptureStoresIdentifiersAndNative81RetainsBothEncodings",
+    "PhotoCraftCoreTests.ParentLayerCompModelTests/testUnpreparedChoiceChangedOrConvertedSourceRejectsAtomicallyAndWarns",
+    "PhotoCraftAppTests.ParentLayerCompWorkflowTests/testConfirmedLiveParentPreparationCancelsForTaskShareAndFileRevocation",
+    "PhotoCraftAppTests.ParentLayerCompWorkflowTests/testNativeAndHTTPParentApplyRestoreAndHistoryAreIdentical",
+    "PhotoCraftAppTests.ParentLayerCompWorkflowTests/testRasterNativeAndPDFExportsRenderChildChoicesFromIndependentSourceSnapshots",
+    "PhotoCraftAppTests.ParentLayerCompWorkflowTests/testReopenedLinkedParentApplyAndExportRequireSessionApprovedFiles",
+    "PhotoCraftAppTests.ParentLayerCompWorkflowTests/testSmartOnlyAPIFlagSchemaInvalidBusyStaleAndNative81Negotiation"
+  ],
+  "known_failure": {
+    "name": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+    "same_two_diagnostic_vectors_as_332": true,
+    "strict_assertions_retained": true,
+    "prior_evidence": "artifacts/runs/20261101T223848Z-338-parent-smart-comps/prior-linked-cache-failure01.json"
+  },
+  "native_version": 81,
+  "actions_version_unchanged": 30,
+  "api_commands": 213,
+  "reference": {
+    "target": "Photoshop2026",
+    "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/create-and-manage-layer-comps.html",
+    "updated": "2026-09-28",
+    "accessed_at_utc": "2026-11-01T22:38:48.647623+00:00",
+    "scope": "Fourth parent-comp capture option, source comp properties and exported variations",
+    "implementation": "Independent native Swift, no Rust oracle or Adobe script code",
+    "live_UI_qualification": false
+  },
+  "live_UI": "Mac locked at338 Photoshop access attempt",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Photoshop comp resources and Smart Object descriptors",
+    "Nested linked-original resolution with explicit authorization",
+    "Complete missing/converted source warnings, geometry/mode/timeline behavior",
+    "Live Photoshop/Photato controls and factory defaults, Actions/ATN",
+    "Full current suite, supported-platform/max-capacity/physical60fps qualification"
+  ],
+  "preservation": "Store archive332, installed283 and private full-source298 unchanged; no new archive/install/push/upload/review/release",
+  "PSD_followup_339": {
+    "guide": "docs/PSD_LAYER_COMPS.md",
+    "evidence": "docs/PSD_LAYER_COMP_REFERENCES.json",
+    "all13new_passed": true,
+    "full_Photoshop_workflow_closed": false
+  }
+}

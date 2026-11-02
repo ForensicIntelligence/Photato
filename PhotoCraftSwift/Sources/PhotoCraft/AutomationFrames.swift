@@ -19,7 +19,7 @@ extension FrameDefinition {
      "operations":["create","fromLayers","convert","configure","transform","contents.transform","fit","clear"],
      "coordinates":"Physical document pixels; custom paths are normalized to the frame dimensions. Transform is a delta in document coordinates. Content transforms retain embedded source bytes.",
      "placement":"frame.place replaces children with an embedded snapshot from an explicitly shared sourceDocumentID/sourceRevision. fill covers the frame, fit contains the image, original uses source pixels. Each operation is one native Undo.",
-     "limits":"4,194,304 pixels/64 layers/128MiB per shared document, 64MiB/8MP per Smart Object. Editable PSD frames, linked contents and generative frame fill are not supported. No dedicated frame route in the pinned Adobe v2 contract."]
+     "limits":"4,194,304 pixels/8,000 layers/128MiB per shared document, 64MiB/8MP per Smart Object. Editable PSD frames, linked contents and generative frame fill are not supported. No dedicated frame route in the pinned Adobe v2 contract."]
   }
 }
 extension AutomationCommand {

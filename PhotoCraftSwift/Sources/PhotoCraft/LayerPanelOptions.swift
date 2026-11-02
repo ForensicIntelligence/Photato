@@ -43,7 +43,7 @@ struct LayerRowMetrics {
     // Reserve native eye/disclosure/link controls, row gaps and a readable name.
     let fixed: CGFloat =
       112 + (layer.mask == nil ? 0 : 25)
-      + (layer.vectorMask == nil ? 0 : 10) + (layer.protection.isEmpty ? 0 : 24)
+      + (layer.linkID == nil ? 0:22) + (layer.vectorMask == nil ? 0 : 10) + (layer.protection.isEmpty ? 0 : 24)
       + (layer.isGroup ? 20 : 0) + (layer.isClipped ? 18 : 0)
     indentation = min(
       CGFloat(min(8, max(0, depth))) * 10,
@@ -177,7 +177,7 @@ extension AppDelegate {
         rootView: LayerPanelOptionsSheet(store: store, draft: draft)
           .background(StudioTheme.panel).preferredColorScheme(.dark))
       host.frame = NSRect(origin: .zero, size: host.fittingSize)
-      let window = NSWindow(
+      let window = PhotatoWindow(
         contentRect: host.frame, styleMask: [.borderless], backing: .buffered, defer: false)
       window.contentView = host
       window.appearance = NSAppearance(named: .darkAqua)

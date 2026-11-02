@@ -111,6 +111,7 @@ enum PSDText {
   }
   static func write(_ layer: Layer, in document: CraftDocument) throws -> Data {
     guard case .text(let original) = layer.content else { throw CraftError.invalid("Expected type layer.") }
+    guard !original.requiresRichTypeArchive else{throw CraftError.unsupported("Extended type formatting and original source appearance require native saving until their editable PSD mappings are qualified.")}
     try checkColorSpace(document)
     let text = original.promoted(dpi: document.pixelsPerInch), type = text.typography!
     try text.validate()

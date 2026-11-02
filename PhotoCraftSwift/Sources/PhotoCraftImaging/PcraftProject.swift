@@ -9,13 +9,13 @@ struct PcraftProject: Sendable {
     var blobBytes = 256 * 1024 * 1024
     var totalBytes = 512 * 1024 * 1024
     var nodes = 250_000
-    var layers = 4096
+    var layers = LayerLimits.maximumLayers
     var surfaces = 16_384
     func validate() throws {
       guard (1...16 * 1024 * 1024).contains(manifestBytes),
         (0...256 * 1024 * 1024).contains(blobBytes),
         (0...512 * 1024 * 1024).contains(totalBytes), (1...250_000).contains(nodes),
-        (1...4096).contains(layers), (1...16_384).contains(surfaces) else {
+        (1...LayerLimits.maximumLayers).contains(layers), (1...16_384).contains(surfaces) else {
         throw CraftError.invalid("Invalid PhotoCraft project limits.")
       }
     }

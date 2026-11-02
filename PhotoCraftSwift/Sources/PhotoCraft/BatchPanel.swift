@@ -100,7 +100,7 @@ struct BatchPanel: View {
   let model: BatchWorkspace
   init(model: BatchWorkspace) {
     self.model = model
-    let window = NSWindow(contentRect: NSRect(x: 170, y: 170, width: 680, height: 620), styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
+    let window = PhotatoWindow(contentRect: NSRect(x: 170, y: 170, width: 680, height: 620), styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
     window.title = "Batch"; window.isReleasedWhenClosed = false; window.contentView = NSHostingView(rootView: BatchPanel(model: model)); window.appearance = NSAppearance(named: .darkAqua)
     super.init(window: window); window.delegate = self
   }

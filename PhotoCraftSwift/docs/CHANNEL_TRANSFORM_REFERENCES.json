@@ -1,0 +1,72 @@
+{
+  "step": "dev-step-352",
+  "recorded_at_utc": "2026-11-02T09:19:36.488511+00:00",
+  "run": "artifacts/runs/20261102T084348Z-352-channel-transform",
+  "source_manifest": "artifacts/runs/20261102T084348Z-352-channel-transform/source02.json",
+  "inputs": 6981,
+  "production_swift_files": 972,
+  "binary_sha256": "79bc22f3eface202c6092aaf19761e4e6c99551d7e0f11224b1740e33061cadc",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 744,
+    "passed_cases": 743,
+    "failed_cases": 1,
+    "failed_assertions": 1,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 196.705,
+    "new_cases": 16,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 233.09
+  },
+  "independent_scalar_samples": {
+    "passed": true,
+    "source_outputs": "352 Source02",
+    "file": "channel-transform-analytical.json",
+    "sha256": "b8f3893b1cc7245d780545ac6f5dbbd6ded37806ac0d24233be0acdc29e8680a",
+    "analytical_scalar_samples_compared": 768,
+    "vectors": 4,
+    "mismatches": [],
+    "method": "Independent Python60-digit Decimal inverse plus analytical original/scalar cut-fill/copy; no native reader or compositor. Owned output evidence, not Photoshop reference capture."
+  },
+  "independent_summary": "artifacts/runs/20261102T084348Z-352-channel-transform/independent02-summary.json",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/manage-channels-in-the-channels-panel.html",
+      "claim": "Choose a channel for editing; any painting/editing tool can operate on a single channel; active/editable and visible channels are distinct.",
+      "reference_date": "2026-10-06"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/alpha-channels-and-masks-in-photoshop.html",
+      "claim": "Alpha, Quick Mask and layer masks use grayscale coverage.",
+      "reference_date": "2026-09-29"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/apply-transformations.html",
+      "claim": "Transform modes include scale/rotate/skew/distort/perspective; Return confirms.",
+      "reference_date": "2026-02-23"
+    }
+  ],
+  "pinned_adobe_contract": "docs/contracts/adobe-photoshop-v2.json",
+  "api_commands": 230,
+  "native_version_unchanged": 83,
+  "actions_version": 36,
+  "old_actions_versions_retained": [
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Individual color/ink components, multiple channel targets, channel Move, linked/selected/filter/vector masks",
+    "Remaining G01 multi-layer/group, Warp/repeat and other major workflows",
+    "Exact Photoshop channel bounds/edge/default/kernel/pixel/live/platform/capacity/physical60fps comparison",
+    "Prior strict opacity snapshot and11 historical strict rendering/interchange cases"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

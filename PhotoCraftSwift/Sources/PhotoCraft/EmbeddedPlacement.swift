@@ -45,7 +45,7 @@ extension EditorStore {
       }
     } onCancel:{Task {@MainActor in model.cancel()}}
   }
-  func placeEmbeddedSource(_ url: URL,replacing layerID: UUID? = nil,frame frameID: UUID? = nil) {
+  func placeEmbeddedSource(_ url: URL,replacing layerID: UUID? = nil,frame frameID: UUID? = nil,linkedGrant: LinkedArtworkGrant? = nil) {
     guard clipboardTargetAvailable else {return}
     let original = document,lifecycle = layerPanelGeneration,sessionID = sessionGeneration,operation = UUID()
     geometryBusy = true;embeddedPlacementOperationID = operation;embeddedPlacementSourceName = url.lastPathComponent
@@ -59,8 +59,15 @@ extension EditorStore {
         }
       }
       do {
-        let reader = Task.detached(priority:.userInitiated) {try PreparedEmbeddedSource.read(url)}
-        let source = try await withTaskCancellationHandler {try await reader.value} onCancel:{reader.cancel()}
+        let reader = Task.detached(priority:.userInitiated) {()throws->(PreparedEmbeddedSource,LinkedArtworkRead?) in
+          if let linkedGrant {
+            let file=try LinkedArtworkRead.read(linkedGrant)
+            let decoded=PDFImport.recognizes(file.data) ? nil:try SmartObjectIO.decode(file.data,fileName:file.fileName)
+            return (.init(data:file.data,fileName:file.fileName,document:decoded),file)
+          }
+          return (try PreparedEmbeddedSource.read(url),nil)
+        }
+        let (source,linkedFile) = try await withTaskCancellationHandler {try await reader.value} onCancel:{reader.cancel()}
         try Task.checkCancellation()
         guard self.embeddedPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
           self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed while reading artwork.")}
@@ -77,19 +84,21 @@ extension EditorStore {
         let selection = options,pdfSelection = pdf
         let worker = Task.detached(priority:.userInitiated) {
           try Task.checkCancellation()
-          if let pdfSelection {
-            if let frameID {
-              return try Command.frame(.replace(frameID,PDFSmartObjectIO.placed(source.data,fileName:source.fileName,in:original,
-                settings:pdfSelection.settings,image:pdfSelection.image),fit:.fill))
-            }
-            return try PDFSmartObjectAPI.prepare(source.data,source.fileName,original,pdfSelection)
-          }
-          return try EmbeddedSourceAPI.prepare(source.data,source.fileName,original,selection,decoded:source.document)
+          return try ArtworkPlacementPreparation.prepare(source.data,fileName:source.fileName,in:original,
+            embedded:selection,pdf:pdfSelection,decoded:source.document)
         }
-        let command = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
+        var command = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
         try Task.checkCancellation()
         guard self.embeddedPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
           self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed while preparing artwork.")}
+        if let file=linkedFile {
+          guard self.linkedSourceRegistry.stillAuthorizes(file.grant) else{throw CraftError.invalid("Artwork authorization was revoked.")}
+          let signature=Task.detached {try LinkedArtworkRead.signature(file.grant)}
+          guard try await signature.value==file.signature else{throw DocumentPersistenceConflict.changed}
+          try Task.checkCancellation()
+          guard self.embeddedPlacementOperationID==operation,self.layerPanelGeneration==lifecycle,self.sessionGeneration==sessionID,self.document==original else{throw CraftError.invalid("The document changed before placement completed.")}
+          command=try LinkedArtworkPreparation.linking(command,file:file,in:original)
+        }
         if case .addLayer(let layer) = command {
           self.geometryBusy = false;try self.beginEmbeddedPlacement(layer)
         } else {
@@ -98,7 +107,7 @@ extension EditorStore {
           try Task.checkCancellation()
           guard self.embeddedPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
             self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed before placement completed.")}
-          try self.executeCompositePreparedEdit(edit)
+          try self.executeCompositePreparedEdit(edit,allowLinkedSmartObject:linkedFile != nil)
           self.selectedLayerIDs = Set(self.document.activeLayerID.map{[$0]} ?? [])
           if self.document != original {self.onChange?(.changeDone)}
           self.status = "Artwork placed"

@@ -4,7 +4,7 @@ import Foundation
 /// Gaussian uses three running-box passes and Motion Blur uses bounded line sampling.
 public struct RasterFilter: Codable, Equatable, Sendable {
   public enum Kind: String, Codable, CaseIterable, Sendable {
-    case shadowsHighlights, blur, blurMore, radialBlur, shapeBlur, smartBlur, surfaceBlur, despeckle, dustAndScratches, median, sharpen, sharpenEdges, sharpenMore, customFilter, hsbHsl, maximum, minimum, offset, deInterlace, ntscColors, clouds, differenceClouds, fibers, lensFlare, diffuse, emboss, extrude, findEdges, oilPaint, solarize, tiles, traceContour, wind, colorHalftone, crystallize, facet, fragment, mezzotint, pointillize, displace, shear, wave, pinch, spherize, twirl, ripple, polarCoordinates, zigzag, gaussianBlur, boxBlur, motionBlur, unsharpMask, highPass, addNoise, mosaic, average, liquify, cameraRaw, puppetWarp, perspectiveWarp, blurGallery, lensCorrection, adaptiveWideAngle, filterGallery, smartSharpen, reduceNoise, lensBlur
+    case shadowsHighlights, blur, blurMore, radialBlur, shapeBlur, smartBlur, surfaceBlur, despeckle, dustAndScratches, median, sharpen, sharpenEdges, sharpenMore, customFilter, hsbHsl, maximum, minimum, offset, deInterlace, ntscColors, clouds, differenceClouds, fibers, lensFlare, diffuse, emboss, extrude, findEdges, oilPaint, solarize, tiles, traceContour, wind, colorHalftone, crystallize, facet, fragment, mezzotint, pointillize, displace, shear, wave, pinch, spherize, twirl, ripple, polarCoordinates, zigzag, gaussianBlur, boxBlur, motionBlur, unsharpMask, highPass, addNoise, mosaic, average, liquify, cameraRaw, puppetWarp, perspectiveWarp, blurGallery, lensCorrection, adaptiveWideAngle, filterGallery, smartSharpen, reduceNoise, lensBlur, relight, lightingEffects
     public var title: String {
       switch self {
       case .shadowsHighlights:"Shadows/Highlights"
@@ -68,6 +68,8 @@ case .pointillize: "Pointillize"
       case .average: "Average"
       case .cameraRaw: "Camera Raw Filter"
       case .puppetWarp: "Puppet Warp"
+      case .lightingEffects: "Lighting Effects"
+      case .relight: "Relight"
       case .lensBlur: "Lens Blur"
       case .smartSharpen: "Smart Sharpen"
       case .reduceNoise: "Reduce Noise"
@@ -98,6 +100,8 @@ case .pointillize: "Pointillize"
       case .average: []
       case .cameraRaw: ["cameraRaw"]
       case .puppetWarp: ["puppet"]
+      case .lightingEffects: ["lighting"]
+      case .relight: ["relight"]
       case .lensBlur: ["lensBlur"]
       case .smartSharpen: ["sharpen"]
       case .reduceNoise: ["denoise"]
@@ -118,6 +122,8 @@ case .pointillize: "Pointillize"
   public var stylize: StylizeSettings?
   public var pixelate: PixelateSettings?
   public var distortion: DistortionSettings?
+  public var lighting:LightingSettings?
+  public var relight:RelightSettings?
   public var lensBlur: LensBlurSettings?
   public var sharpen: SmartSharpenSettings?
   public var denoise: ReduceNoiseSettings?
@@ -148,6 +154,8 @@ case .pointillize: "Pointillize"
     if kind.isStylize {stylize=StylizeSettings(kind:kind)}
     if kind.isPixelate { pixelate = PixelateSettings(kind:kind) }
     if kind.isDistortion { distortion = DistortionSettings(kind:kind) }
+    if kind == .lightingEffects {lighting=LightingSettings()}
+    if kind == .relight {relight=RelightSettings()}
     if kind == .lensBlur { lensBlur = LensBlurSettings() }
     if kind == .smartSharpen { sharpen = SmartSharpenSettings() }
     if kind == .reduceNoise { denoise = ReduceNoiseSettings() }
@@ -175,6 +183,8 @@ case .pointillize: "Pointillize"
     guard kind.isStylize || stylize == nil else {throw CraftError.invalid("Stylize settings require a Stylize filter.")}
     guard kind.isPixelate || pixelate == nil else { throw CraftError.invalid("Pixelate settings require a Pixelate filter.") }
     guard kind.isDistortion || distortion == nil else { throw CraftError.invalid("Distortion settings require a distortion filter.") }
+    guard kind == .lightingEffects || lighting==nil else{throw CraftError.invalid("Lighting settings require Lighting Effects.")}
+    guard kind == .relight || relight==nil else{throw CraftError.invalid("Relight settings require Relight.")}
     guard kind == .lensBlur || lensBlur == nil else { throw CraftError.invalid("Lens Blur settings require Lens Blur.") }
     guard kind == .smartSharpen || sharpen == nil else { throw CraftError.invalid("Sharpen settings require Smart Sharpen.") }
     guard kind == .reduceNoise || denoise == nil else { throw CraftError.invalid("Denoise settings require Reduce Noise.") }
@@ -199,7 +209,9 @@ case .pointillize: "Pointillize"
     case .colorHalftone, .crystallize, .facet, .fragment, .mezzotint, .pointillize:
       guard let pixelate else {throw CraftError.invalid("Missing Pixelate settings.")};try pixelate.validate(kind:kind)
     case .displace, .shear, .wave, .pinch, .spherize, .twirl, .ripple, .polarCoordinates, .zigzag:
-      guard let distortion else { throw CraftError.invalid("Missing distortion settings.") };try distortion.validate(kind:kind)
+      guard let distortion else { throw CraftError.invalid("Missing distortion settings.") };try distortion.validate(kind:kind,requireMap:distortion.source==nil)
+    case .lightingEffects:guard let lighting else{throw CraftError.invalid("Missing Lighting Effects settings.")};try lighting.validate()
+    case .relight:guard let relight else{throw CraftError.invalid("Missing Relight settings.")};try relight.validate()
     case .lensBlur:
       guard let lensBlur else { throw CraftError.invalid("Missing Lens Blur settings.") };try lensBlur.validate()
     case .smartSharpen:
@@ -248,6 +260,10 @@ case .pointillize: "Pointillize"
         result.pixelate = try PixelateSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed),kind:kind)
       } else if name == "distortion" {
         result.distortion = try DistortionSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed),kind:kind)
+      } else if name == "lighting" {
+        result.lighting=try LightingSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed))
+      } else if name == "relight" {
+        result.relight=try RelightSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed))
       } else if name == "lensBlur" {
         result.lensBlur = try LensBlurSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed))
       } else if name == "sharpen" {

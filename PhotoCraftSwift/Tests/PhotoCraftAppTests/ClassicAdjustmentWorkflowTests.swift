@@ -20,6 +20,7 @@ final class ClassicAdjustmentWorkflowTests: XCTestCase {
       defer { store.renderTask?.cancel() }
       store.beginClassicAdjustment(kind); XCTAssertTrue(store.hasToneDraft); XCTAssertFalse(store.canBeginLevels)
       store.classicAdjustmentDraft?.adjustment.vibrance = 80
+      if kind == .exposure {store.classicAdjustmentDraft?.adjustment.exposureSettings = .init(exposure:0.75,offset:0.01,gammaCorrection:1.2)}
       store.classicAdjustmentDraft?.adjustment.matrix[0] = [0,100,0,0]
       store.classicAdjustmentDraft?.adjustment.adjustments[0][0] = 30
       store.render(); await store.renderTask?.value
@@ -30,6 +31,7 @@ final class ClassicAdjustmentWorkflowTests: XCTestCase {
       store.cancelClassicAdjustment(); XCTAssertEqual(store.document,d)
       store.beginClassicAdjustment(kind)
       store.classicAdjustmentDraft?.adjustment.vibrance = 80
+      if kind == .exposure {store.classicAdjustmentDraft?.adjustment.exposureSettings = .init(exposure:0.75,offset:0.01,gammaCorrection:1.2)}
       store.classicAdjustmentDraft?.adjustment.matrix[0] = [0,100,0,0]
       store.classicAdjustmentDraft?.adjustment.adjustments[0][0] = 30
       store.commitClassicAdjustment(); await store.geometryTask?.value
@@ -68,7 +70,7 @@ final class ClassicAdjustmentWorkflowTests: XCTestCase {
         XCTAssertEqual(layer.content,.adjustment(.classic(try ClassicAdjustment.decodeAPI(v.apiObject))))
         let state = service.state(share,document:shared)
         XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:state))
-        let native = try await helper.request(service,path:"/v1/documents/\(share.id)/file.photato",headers:["X-Photato-Archive-Version":"17"])
+        let native = try await helper.request(service,path:"/v1/documents/\(share.id)/file.photato",headers:["X-Photato-Archive-Version":kind == .exposure ? "67":"17"])
         XCTAssertEqual(native.0.statusCode,200); XCTAssertEqual(try NativeArchive.decode(native.1),shared.store.document)
         let old = try await helper.request(service,path:"/v1/documents/\(share.id)/file.photato",headers:["X-Photato-Archive-Version":"16"]); XCTAssertEqual(old.0.statusCode,422)
         let set = try await helper.edit(service,shared,"adjustment.set",["layerID":layer.id.uuidString,"adjustment":ClassicAdjustment(kind).apiObject]); XCTAssertEqual(set,200)

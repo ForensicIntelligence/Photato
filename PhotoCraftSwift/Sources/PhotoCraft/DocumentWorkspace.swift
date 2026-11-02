@@ -29,7 +29,7 @@ import SwiftUI
   }
 }
 
-@MainActor final class DocumentWorkspaceWindow: NSWindow {
+@MainActor final class DocumentWorkspaceWindow: PhotatoWindow {
   override func sendEvent(_ event: NSEvent) {
     let modifiers = event.modifierFlags.intersection([.command, .control, .option, .shift])
     if event.type == .keyDown, event.keyCode == 48,
@@ -160,6 +160,8 @@ private struct DocumentWorkspaceRoot: View {
     activeDocument.flatMap { group(for: $0) } ?? applicationFrame ?? lastActive
   }
 
+  private var deferredPresentations: [CraftNSDocument] = []
+
   var canChangeDocument: Bool {
     // AppKit's attachedSheet is not observable. In particular, SwiftUI can clear a draft
     // before its native sheet detaches; panel/menu/drag validation must refresh afterward.
@@ -175,6 +177,10 @@ private struct DocumentWorkspaceRoot: View {
   func sheetStateDidChange(in controller: DocumentWorkspaceController) {
     guard groups.contains(where: { $0 === controller }) else { return }
     sheetStateRevision &+= 1
+    guard canChangeDocument else { return }
+    let pending = deferredPresentations
+    deferredPresentations.removeAll()
+    for document in pending where group(for: document) != nil { present(document) }
   }
 
   @discardableResult func activate(_ document: CraftNSDocument) -> Bool {
@@ -248,6 +254,15 @@ private struct DocumentWorkspaceRoot: View {
     groups.first { $0.workspace.documents.contains { $0 === document } }
   }
 
+  /// Newly created copies may finish before SwiftUI detaches their source sheet.
+  func presentAfterCurrentSheet(_ document: CraftNSDocument) {
+    present(document)
+    if activeDocument !== document, groups.contains(where: { $0.window?.attachedSheet != nil }),
+      !deferredPresentations.contains(where: { $0 === document }) {
+      deferredPresentations.append(document)
+    }
+  }
+
   func present(_ document: CraftNSDocument) {
     if let group = group(for: document) {
       group.workspace.select(document)
@@ -268,6 +283,7 @@ private struct DocumentWorkspaceRoot: View {
   }
 
   func remove(_ document: CraftNSDocument) {
+    deferredPresentations.removeAll { $0 === document }
     guard let group = group(for: document),
       let index = group.workspace.documents.firstIndex(where: { $0 === document })
     else { return }

@@ -1,0 +1,88 @@
+{
+  "step": 305,
+  "recorded_at_utc": "2026-11-01T01:58:12.571580+00:00",
+  "run": "artifacts/runs/20261101T012428Z-305-source-shape-workflows",
+  "status": "source04-functional-source-shape-workflows-tested-strict-gates-open",
+  "phase": 1,
+  "package": "I03",
+  "increment_complete": false,
+  "goal_complete": false,
+  "full_parity": false,
+  "native_acceptance": false,
+  "compiler_test_workers_live": false,
+  "new_source_push": false,
+  "new_app_installed": false,
+  "next_work": [
+    "Continue major rich-source type, remaining adjustment/Smart Object and document/common metadata migration with native/API workflows.",
+    "Preserve exact source-shape curve/gradient/Exposure/linked PSD failures; numerical refinement remains scheduled after missing major breadth under priority157.",
+    "Finish large shape/complete PSD/ICC/cross-feature/physical native/universal/Intel/macOS14/full-inventory acceptance; all major packages and full goal remain open."
+  ],
+  "current_worker": null,
+  "source_manifest": "artifacts/runs/20261101T012428Z-305-source-shape-workflows/source04.json",
+  "source_inputs": 2983,
+  "focused02": {
+    "cases": 83,
+    "passed_cases": 80,
+    "failed_cases": [
+      "PhotoCraftCoreTests.ExtendedShapeModelTests.testRetainedShapeContentRequires68AndCountsAppearanceMemory",
+      "PhotoCraftImagingTests.PcraftShapeImportTests.testUncachedOriginalRustCurvedStrokeSamplesMatchExactly",
+      "PhotoCraftAppTests.SourceShapeWorkflowTests.testHTTPSourceImportPathEditStatePersistenceAndDesktopEquality"
+    ],
+    "failed_assertions": 8,
+    "unexpected": 0,
+    "build_seconds": 476.32
+  },
+  "focused03": {
+    "source_manifest": "source03.json",
+    "source_inputs": 2983,
+    "build_seconds": 409.52,
+    "cases": 84,
+    "passed_cases": 83,
+    "failed_cases": [
+      "PhotoCraftImagingTests.PcraftShapeImportTests.testUncachedOriginalRustCurvedStrokeSamplesMatchExactly"
+    ],
+    "failed_assertions": 3,
+    "unexpected": 0,
+    "new_cases": 14,
+    "new_cases_passed": 13,
+    "full_inventory": false
+  },
+  "native_access": {
+    "recorded_at_utc": "2026-11-01T01:51:01.653584+00:00",
+    "workers_live_during_ui": false,
+    "first_direct_app": "getApp(com.adobe.Photoshop):cgWindowNotFound(-10005)",
+    "inventory_followup": "getState: Native apps unavailable; Mac locked and automatic unlock unsuccessful.",
+    "native_acceptance": false,
+    "manual_unlock_request_already_pending": true,
+    "screenshots_claimed": false
+  },
+  "current_binary_sha256": "82e77643d4c8a32580f397fe95b52429069913ab4dcd8280ec8704ba096baa51",
+  "focused04": {
+    "recorded_at_utc": "2026-11-01T01:58:12.571580+00:00",
+    "source_manifest": "source04.json",
+    "source_inputs": 2983,
+    "binary_sha256": "82e77643d4c8a32580f397fe95b52429069913ab4dcd8280ec8704ba096baa51",
+    "build_seconds": 103.18,
+    "cases": 166,
+    "passed_cases": 162,
+    "failed_cases": [
+      "PhotoCraftImagingTests.ExposureInterchangeTests/testIndependentPhotoshopMergedSampleEquality",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedFillContentMatchesIndependentRustRGBA8",
+      "PhotoCraftImagingTests.PcraftFillImportTests/testImportedGradientRampsMatchOriginalRustFloatBits",
+      "PhotoCraftImagingTests.PcraftShapeImportTests/testUncachedOriginalRustCurvedStrokeSamplesMatchExactly"
+    ],
+    "failed_assertions": 23,
+    "unexpected": 0,
+    "new_cases": 14,
+    "new_cases_passed": 13,
+    "all_cases_executed_on_current_source": true,
+    "full_inventory_qualified": false,
+    "native_acceptance": false,
+    "cached_original_rust_sample_words_verified": 811008,
+    "uncached_rectangle_sample_words_verified": 73728
+  },
+  "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
+  "software_qualified": false,
+  "functional_native_api_workflows_tested": true,
+  "full_inventory": null
+}

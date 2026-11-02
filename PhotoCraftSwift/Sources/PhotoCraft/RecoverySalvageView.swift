@@ -84,7 +84,7 @@ struct RecoverySalvageView: View {
   private var panel: NSSavePanel?
   init(controller: CraftDocumentController) {
     salvage = controller.recoveryMaintenance.salvage
-    let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 760, height: 500),
+    let window = PhotatoWindow(contentRect: NSRect(x: 0, y: 0, width: 760, height: 500),
       styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
     window.title = "Photato — Find Recovery Copies"
     window.isReleasedWhenClosed = false

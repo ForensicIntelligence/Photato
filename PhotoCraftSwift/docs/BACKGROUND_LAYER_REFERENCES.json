@@ -1,0 +1,229 @@
+{
+  "step": "dev-step-348",
+  "recorded_at_utc": "2026-11-02T06:44:41.032020+00:00",
+  "run": "artifacts/runs/20261102T054941Z-348-background-layers",
+  "source_manifest": "artifacts/runs/20261102T054941Z-348-background-layers/source04.json",
+  "inputs": 6963,
+  "production_swift_files": 962,
+  "binary_sha256": "01e5fea6cebb4ee5c9fc793296fc18f3b1ab318ed2210fd06c4ca672ad439147",
+  "reference_standard": "Photoshop 2026",
+  "qualification": {
+    "cases": 603,
+    "passed_cases": 602,
+    "failed_cases": 1,
+    "failed_assertions": 1,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 53.99,
+    "new_cases": 20,
+    "all_new_passed": true,
+    "all_affected_passed": false,
+    "build_seconds": 330.83
+  },
+  "new_case_names": [
+    "PhotoCraftCoreTests.BackgroundLayerTests/testCanvasGeometryRetainsFullCanvasOpaqueBackground",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testClearCutAndEraserUseBackgroundSwatchAtEveryDepth",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testConversionOptionsUndoAndRecordedSemanticReplay",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testDuplicationAndNewBelowKeepExactlyOneBottomBackground",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testExplicitIdentityCreationAndLegacyNameDoNotConflate",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testFromLayerFillsTransparencyPadsCanvasMovesToBottomAndKeepsID",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testMagicEraserPromotesBackgroundBeforeRemovingPixels",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testNative83RetainsIdentityAndRejectsForgedBackgrounds",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testOpacityProofIsCOWAndPartialPaddingIsNotContent",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testSoftClearRetainsHDRAndUntouchedStoredWords",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testSparseMaximumCanvasDoesNotMaterializeAnOpaquePlane",
+    "PhotoCraftCoreTests.BackgroundLayerTests/testUnsupportedMutationsAreAtomicAndConversionIsRequired",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testHTTPConversionsClearHistoryAndNative83AtEveryDepth",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testHTTPInvalidBusyStaleAndRevokedShareAreAtomic",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testNativeSheetCancelCommitGuardHistoryAndActions32",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testNativeStaleReadCloseAndFactoryMenuLifecycle",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testPublishedBackgroundAddReplaceConvertOrderedEditDeleteAndManifest",
+    "PhotoCraftAppTests.BackgroundLayerWorkflowTests/testPublishedHTTPBackgroundConversionUsesSharedEngineAndStrictBytes",
+    "PhotoCraftImagingTests.PSDBackgroundLayerTests/testOrdinaryNamedBackgroundKeepsAlphaAndNeverGainsIdentity",
+    "PhotoCraftImagingTests.PSDBackgroundLayerTests/testThreeDepthPSDPSBExplicitBackgroundIdentityPixelsAndStoredID"
+  ],
+  "independent_format_records": {
+    "passed": true,
+    "files": 6,
+    "source_outputs": "348 Source04",
+    "checks": [
+      {
+        "version": 2,
+        "depth": 16,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "79c6aa0ccc8d28654dc19ff01500f7fdfda742cf2ade02c6b66ff5301540d13a",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-16 bit.psb"
+      },
+      {
+        "version": 1,
+        "depth": 16,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "66b6b2f272a7fc9f387a136d896253b93f0bd39dbca4bff2303bad5eed357947",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-16 bit.psd"
+      },
+      {
+        "version": 2,
+        "depth": 32,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "ef10014fe6bfa5aa5c2c20c6745bf0cb3d562084699a2fb55c7101bad10f21ed",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-32 bit.psb"
+      },
+      {
+        "version": 1,
+        "depth": 32,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "eea99bb292f9d52079be98aa1ac4b57afface74cb403b77b5deaf8033fd872ff",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-32 bit.psd"
+      },
+      {
+        "version": 2,
+        "depth": 8,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "0342c9cdd8dbfcd2cc1098cd9e535419511e42ef3ad8fd88b095274eb739101c",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-8 bit.psb"
+      },
+      {
+        "version": 1,
+        "depth": 8,
+        "width": 9,
+        "height": 7,
+        "layer_count": 1,
+        "channel_ids": [
+          0,
+          1,
+          2
+        ],
+        "opacity": 255,
+        "blend": "norm",
+        "flags": 1,
+        "protection": 5,
+        "layer_id": 0,
+        "compression": [
+          3,
+          3,
+          3
+        ],
+        "sha256": "170fa22830ff09b2a63075549cf1fd106fc01923078f5f86811d2875158084c4",
+        "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261102T054941Z-348-background-layers/focused04-captures/background-8 bit.psd"
+      }
+    ],
+    "scope": "Independent Python PSD/PSB record parser verifies owned three-depth Background channel absence of alpha, bounds, Normal/100%, protection and id0. Native pixel tests remain separate; no Photoshop execution/output-equivalence claim."
+  },
+  "references": {
+    "standard": "Photoshop2026",
+    "previous_turn": "progress;6956 frozen347 inputs and binary unchanged;424 affected pass",
+    "references": [
+      "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/convert-background-and-regular-layers.html",
+      "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/layer-operations-background",
+      "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+    ],
+    "additional_historical_reference": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+    "scope": "Explicit Background identity; fixed bottom/opaque/position and property rules, conversion controls, pixel clearing/eraser semantics, native persistence, PSD/PSB representation and shared Photato/published v2 operations. Never infer identity from a layer name.",
+    "native_access": "Last actual344 locked-Mac observation; no unchanged GUI retry or fresh live qualification.",
+    "remaining": [
+      "Complete supported mode/target/tool/merge/format/live defaults and Photoshop output acceptance",
+      "Full L01/G01/D01/platform/capacity/physical60fps/current-suite gates"
+    ]
+  },
+  "api_commands": 227,
+  "native_version": 83,
+  "actions_version": 32,
+  "old_actions_keep_required_versions": true,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_UI_qualified": false,
+  "remaining": [
+    "Full conversion contexts, masks/styles/Smart Objects/modes/merge and Background selected-pixel transforms",
+    "Exact Photoshop fill/interpolation/record interpretation/dialog/default behavior",
+    "Strict offscreen disabled-opacity chevron rendering comparison (current603-case cohort)",
+    "Full L01 and other104 workflow scope acceptance",
+    "Full current suite, supported Macs, physical interaction/capacity/performance gates"
+  ],
+  "preservation": "Installed283/private full298/store332 unchanged; no install/push/archive/upload/review/release"
+}

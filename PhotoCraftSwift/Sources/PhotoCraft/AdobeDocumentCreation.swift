@@ -167,7 +167,7 @@ struct AdobeDocumentCreation: Sendable {
       ],
       "allOf": [["if": ["required": ["mode"], "properties": ["mode": ["enum": ["cmyk", "lab"]]]],
         "then": ["properties": ["depth": ["enum": [8, 16]]]]]],
-      "description": "Runtime constraints: at most 64 layers and 128 MiB resident document data; native mode, codec, source and output budgets apply independently. RGB blank canvases retain implicit samples. ICC mode/name/bytes must agree. Named profiles are linearized at 32 bits; custom 32-bit ICC must already be linear.",
+      "description": "Runtime constraints: at most 8,000 layers and 128 MiB resident document data; native mode, codec, source and output budgets apply independently. RGB blank canvases retain implicit samples. ICC mode/name/bytes must agree. Named profiles are linearized at 32 bits; custom 32-bit ICC must already be linear.",
     ]
   }
 }

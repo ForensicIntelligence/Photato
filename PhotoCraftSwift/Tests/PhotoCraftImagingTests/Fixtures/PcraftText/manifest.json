@@ -1,0 +1,30 @@
+{
+  "step": 306,
+  "ownership": "Original test artwork; MIT OR Apache-2.0. Inter fonts retain their SIL OFL terms.",
+  "generator": "artifacts/runs/20261101T020936Z-306-rich-source-text/rust-oracle03",
+  "cargo_lock_sha256": "5614654a0ee03239533e2c5932f82826241d345288141c8b4df468d64ca81f5d",
+  "variants_per_depth": 12,
+  "cached_variants_per_depth": 11,
+  "sampling_frame": [
+    0,
+    0,
+    180,
+    150
+  ],
+  "files": {
+    "README.txt": "25e06e3b4d2c4f1946a1081c9d27449a28cd87aa1d48113523282bbca70a394e",
+    "expected-f32.json": "213101ecb6e47e773b571b3aed4cbbdbe2241f461d4ccb4b1344f54ec8e3abf7",
+    "expected-u16.json": "fffdbbad3625659750e702e13c3c2c4751577cfac99a389acc95695baa99dd94",
+    "expected-u8.json": "091b5a7980c152b28897ef1bc4b49a9259e2290fac7d7c5d698d3a4843dfd839",
+    "fonts/Inter-Medium.ttf": "97ad806f526e41546d46365bb3a393145f75b7b1568913db74549ad8b8dba872",
+    "fonts/Inter-Regular.ttf": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+    "fonts/Inter-SemiBold.ttf": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+    "fonts/OFL-Inter.txt": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+    "optical.json": "e6ab78565fe8bf7e610635951f6d53e391b472f4c6cad621fb1791703954808c",
+    "text-f32.pcraft": "2ad01ac0907e87513896c1623444971aa1df3a7b9dacbb3acc5735ab35e2377e",
+    "text-u16.pcraft": "09f1b21e9c02fd603412fd356eec27db619246cd1e9d9bb543a49ba00bc6e09b",
+    "text-u8.pcraft": "b555bbf13512cdacf9790cd8727c28a590d3376a4e65cd2448bf51526f056681"
+  },
+  "native_generated": false,
+  "photoshop_generated": false
+}

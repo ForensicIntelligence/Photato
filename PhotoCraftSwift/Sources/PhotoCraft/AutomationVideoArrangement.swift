@@ -5,7 +5,7 @@ enum VideoArrangementAPI {
   static var stateSchema:[String:Any] {
     let clip=BrushAPI.object(["layerID":VideoAPI.schema("layerID"),"startTime":TimelineWorkspaceAPI.timeSchema,"duration":VideoAPI.schema("duration")],required:["layerID","startTime","duration"])
     let group=BrushAPI.object(["layerID":VideoAPI.schema("layerID"),"startTime":TimelineWorkspaceAPI.timeSchema,"clips":VideoAPI.schema("layerIDs")],required:["layerID","startTime","clips"])
-    return BrushAPI.object(["stills":["type":"array","maxItems":512,"items":clip],"groups":["type":"array","maxItems":512,"items":group]],required:["stills","groups"])
+    return BrushAPI.object(["stills":["type":"array","maxItems":LayerLimits.maximumLayers,"items":clip],"groups":["type":"array","maxItems":LayerLimits.maximumLayers,"items":group]],required:["stills","groups"])
   }
   static func state(_ document:CraftDocument)->[String:Any] {
     ["stills":document.layers.compactMap{layer -> [String:Any]? in guard let timing=layer.videoTiming else{return nil};return ["layerID":layer.id.uuidString,"startTime":timing.startTime,"duration":timing.duration]},
