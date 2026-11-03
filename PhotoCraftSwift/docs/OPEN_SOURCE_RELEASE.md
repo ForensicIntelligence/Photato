@@ -1,5 +1,7 @@
 # Free and open-source release
 
+**Private full-source backup (step370,3 November2026):** [Native source369](https://github.com/ForensicIntelligence/Photato/commit/9dc8d7c4494911f00e9605f5d7c11bf4b4ca1586) is delivered to private main. All7051 included qualified inputs match369Source02, with34 explicit exclusions. All454 affected tests/five new cases pass on each of ARM and translatedIntel; the full current suite and complete Photoshop/platform/performance gates remain open. No binary upload, install, App Store action or software/public release. [Manifest](SOURCE_SNAPSHOT_370.json) · [Receipt](SOURCE_PUBLICATION_370.json).
+
 **Latest private preview (step243,2026-10-28):** [Universal Timeline/FOSS build](https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7bc5c587b82133536302) packages the recent Timeline work and removes purchases. All four uploaded assets were downloaded and hash-verified. The installed app remains221. The build uses frozen local source, not remote main; this upload does not push source or change visibility. It is ad-hoc signed and not notarized. [Qualification](UNIVERSAL_TIMELINE_PREVIEW_REFERENCES.json).
 
 **Release decision (2026-10-27):** Keep [ForensicIntelligence/Photato](https://github.com/ForensicIntelligence/Photato) private during development. The repository will become public on the same day the software is released.

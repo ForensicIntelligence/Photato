@@ -18,18 +18,20 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:369 -->
+<!-- current-status-step:370 -->
 ## Current status — 3 November2026 UTC
 
-The diary contains **369 development steps**. Latest tested source is **369 Source02**. S05, Quick Mask and saved selections, remains in qualification. **C01, Component visibility and edit targeting, is queued next.**
+The diary contains **370 development steps**. Latest tested source is **369 Source02**, now backed up in the private GitHub repository. **C01, Component visibility and edit targeting, is next after S05 completes and is tested.** S05, Quick Mask and saved selections, remains in progress.
 
-The Mac became accessible and the blocked native checks passed. Reviewing the Channels panel then found a defect: the Quick Mask eye exited the mode. It now only shows or hides the overlay. Photoshop also rejects brush strokes on a hidden Quick Mask; Photato now does the same, including through its API.
+The next feature covers independent channel eyes and editing targets, component and mask display, actual brush/filter targets, Photoshop factory shortcuts, Undo/redo, persistence and API support. It builds on the Quick Mask work already tested. Its full scope remains in the plan.
 
-All 454 affected optimized tests pass on Apple Silicon and translated Intel, including all five new Quick Mask visibility cases on each architecture. There are0 failed assertions,0 unexpected errors and0 crashes. All7,085 frozen inputs and1,010 production Swift files remained unchanged.
+All454 affected optimized tests pass on Apple Silicon and translated Intel, including five new Quick Mask visibility cases on each architecture. The current native visibility, hidden-brush, painting and Undo checks passed. These are checkpoint369 results; the source backup changed no application code or tested binaries and did not rerun native tests.
 
-S05 remains in progress against its full acceptance criteria; C01 stays queued. Other hidden-target Fill/filter/tool contexts, general profile/CMM fidelity, full current suite, physical supported-platform coverage, dense maximum capacity and sustained60fps remain open. Installed preview283, private source backup363 and store archive332 are unchanged.
+The backup includes7051 qualified inputs. Its34 exclusions cover optional generated model/provenance files, Python caches and one externally restricted PSD. The Xcode project, code, tests, redistributable fixtures, build scripts, licenses and developer records are included. Original Rust files and existing history are preserved. The repository stays private until release day.
 
-[Visibility changes](QUICK_MASK_VISIBILITY.md) · [Next major function](NEXT_MAJOR_C01.md) · [Development record](DEVLOG.md#dev-step-369)
+Remaining S05 contexts and full Photoshop output, the full current suite, physical supported-platform coverage, dense maximum capacity and sustained60fps remain open. Installed preview283 and store archive332 are unchanged. No new binary was uploaded or installed, and no software release was made.
+
+[Source delivery](SOURCE_PUBLICATION_370.json) · [Next major function](NEXT_MAJOR_C01.md) · [Development record](DEVLOG.md#dev-step-370)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -2508,3 +2510,11 @@ All 454 affected optimized tests pass on Apple Silicon and translated Intel, inc
 The first test attempt read the schema at the wrong level. The first Intel build also omitted testability support. Both failures and repairs remain in the record. One unqualified raw executable was overwritten before it was copied; its source snapshot, hash and failed logs survive. The qualified Source02 executables, resources and universal app are preserved separately. The current native eye, warning, show, paint and Undo checks pass.
 
 S05 remains in progress against its full acceptance criteria; C01 stays queued. Other hidden-target Fill/filter/tool contexts, general profile/CMM fidelity, full current suite, physical supported-platform coverage, dense maximum capacity and sustained60fps remain open. Installed preview283, private source backup363 and store archive332 are unchanged. [Record](DEVLOG.md#dev-step-369).
+
+## 2026-11-03 — Step370: Private source backup and next major function
+
+The tested369 source is now backed up in the existing private repository. Every7051 included qualified input matches its frozen SHA256;34 model/cache/external-image inputs are excluded with reasons. All original1057Rust files remain unchanged. The source includes the app, tests and redistributable fixtures, Xcode project, scripts, assets, licenses and developer records. This was a source delivery; it did not upload or install a new app.
+
+The maintainer asked again which major feature follows S05. We confirmed C01: Component visibility and edit targeting. The plan covers independent viewing and editing, channel/mask rows, real painting/filter targets, factory shortcuts, history and API support. C01 starts after S05 is complete and tested; neither package is marked closed by this decision.
+
+The source retains checkpoint369's454 affected passing tests per architecture and its native Quick Mask check. No native tests were rerun for documentation and source-copy changes. The full current suite, complete Photoshop behaviour and supported-platform/performance gates remain open. GitHub's main ref and source tree were verified, and repository visibility remains private. [Record](DEVLOG.md#dev-step-370).

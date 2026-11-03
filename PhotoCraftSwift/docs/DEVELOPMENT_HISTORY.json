@@ -8074,6 +8074,13 @@
       "link": "DEVLOG.md#dev-step-369",
       "section_sha256": "b6639dc2d3212d342e985d82e9e88bb70ba4f619fd4169516f4ee6ca22fe5de3",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-370",
+      "title": "2026-11-03 \u2014 Private full-source backup",
+      "link": "DEVLOG.md#dev-step-370",
+      "section_sha256": "5a76f542397821467116aca9e5b6b61a751f8d43c105db238c157878a69885fc",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [],
@@ -8092,8 +8099,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "9a9fdc0d6b2a9284017f5ce362da57a747219436d73acfdd5d4928828e88b33e",
-      "bytes": 57975,
+      "sha256": "6d64808904d9aa7ad5e468d8a8a50a40a60f415f890bf2c1d1df4ce4b071803c",
+      "bytes": 58063,
       "rolling_current_snapshot": false
     },
     {
@@ -605551,6 +605558,300 @@
       }
     },
     {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/baseline-protected.json",
+      "sha256": "742a6baec38122d4e9ade3e9fce11eeb54ff4f59d256bbddfcb57528684928ec",
+      "bytes": 7705,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/baseline-root-and-rust.json",
+      "sha256": "190de27db899bec05ce026893502da039b0f0b4f8eb4abeea36d64309acf78cb",
+      "bytes": 126898,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/baseline-source02.json",
+      "sha256": "4367036dca599750e87dc373c6ff56d2ee91f178e6c20a4500b947ebf5b2aa4a",
+      "bytes": 1400925,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/baseline.json",
+      "sha256": "a3d378c86b2029e19485aca90e422bf83df47a7c27ca184f9e0187af9cbf1f66",
+      "bytes": 266,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/before-diary01/forensicintelligence-site/photato/assets/diary-provenance.json",
+      "sha256": "86681a8853e10a41c5042c39ad62ad0a305c795274f3ca64e87cf5a23732e4b8",
+      "bytes": 1220,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/before-diary01/nusite/assets/diary-provenance.json",
+      "sha256": "86681a8853e10a41c5042c39ad62ad0a305c795274f3ca64e87cf5a23732e4b8",
+      "bytes": 1220,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/before-diary02/forensicintelligence-site/photato/assets/diary-provenance.json",
+      "sha256": "7dd62baff81596fcfb1ed1dceb54ab3056e01cef967ee5c8b92328f97c082ca9",
+      "bytes": 1220,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/before-diary02/nusite/assets/diary-provenance.json",
+      "sha256": "7dd62baff81596fcfb1ed1dceb54ab3056e01cef967ee5c8b92328f97c082ca9",
+      "bytes": 1220,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/before-docs01/docs/WORKING_CHECKPOINT_370.json",
+      "sha256": "8290fb7a6cbfc70e09be95f294227f8674d4b9f10a0a3857ab6d4cdabd621f39",
+      "bytes": 776,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/curation01.json",
+      "sha256": "d69aa9d89812ee1a421a18177635053bd3b1a80d8208a875214302f69278cc3c",
+      "bytes": 2217671,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/curation02.json",
+      "sha256": "fd35788e733f6a7e83e7277344afd6026f919afe857cd3d120148f7486abac89",
+      "bytes": 2217972,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/curation03.json",
+      "sha256": "05c335df87c81fab1c3b66a5dda60943ce10a1232313fc79d4209a8c97fef0bf",
+      "bytes": 2218155,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary-script01-1-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary-script01-2-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary-script02-1-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary-script02-2-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary01-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary01.log",
+      "sha256": "7c14829d1694db9f81027a0bd4198c4275b7ac535164f01bb5d9e9a85d5e7087",
+      "bytes": 89,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary02-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/diary02.log",
+      "sha256": "7c14829d1694db9f81027a0bd4198c4275b7ac535164f01bb5d9e9a85d5e7087",
+      "bytes": 89,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-commit01-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-commit01.log",
+      "sha256": "0a6557ffd009582aa6c3e55883388d7bf584289e4083849aeb7f18dfd12a2e8e",
+      "bytes": 6804,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-fetch01-stderr.log",
+      "sha256": "f8af59350ca8474a1f3fe19e64d81a7afdff57d9e639b7c5b8fbaf202932d0b9",
+      "bytes": 99,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-fetch01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-local-commit01.json",
+      "sha256": "e501d2f85bc96598c027812e2bd7a2b36cb7eb971b6400a97f84b2dd471e5260",
+      "bytes": 319,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-message01.txt",
+      "sha256": "8893fa12d17de2725400f1e2c5023f062c4f73efe4a164d83122a039f387adc6",
+      "bytes": 578,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-privacy-before01.json",
+      "sha256": "870ae3e01db0cb866ee32defa2f3d76c7f36574cab119d8e8d21d8297fb7c159",
+      "bytes": 135,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-push01-stderr.log",
+      "sha256": "6b0945fbaff60b762cb87e596eb5bbde3925e18c0e48ec23e929fc0eb858b3d8",
+      "bytes": 89,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-push01.json",
+      "sha256": "0ca386d4eaa7783d8d24643777b462408fcd728c2cd90bc47ac05e8165e7e051",
+      "bytes": 454,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/source-push01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/stage01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/staged-verification01.json",
+      "sha256": "6b7c1a15f38c077ebece13240d6f68dfff61daea63341f1082c2da84615555ae",
+      "bytes": 330,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/static-verification01.json",
+      "sha256": "198edd9cd4a27fb0db1ea4a029d35fa941b0954f11ff0c07270f37834513aed5",
+      "bytes": 1222,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/runs/20261103T183950Z-370-private-source-backup/static-verification02.json",
+      "sha256": "198edd9cd4a27fb0db1ea4a029d35fa941b0954f11ff0c07270f37834513aed5",
+      "bytes": 1222,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/selection-development-tests.log",
       "sha256": "5d065fca855deba6c24aa955d6c86ee0dccbce7da91e75f0387da3f1883c0fcc",
       "bytes": 23595,
@@ -608420,14 +608721,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "7e6ac9b35da62aaed502e07bdaa9b309e6468530753de3602b7249cb375d9591",
-      "bytes": 477372,
+      "sha256": "6d28a4aa2a20eb5a01ed5c401d2c7d712845cdaa7949ba1fb75ecc18e372e79b",
+      "bytes": 479098,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "1896e59ac235f67d72b5d913638be161a7ca189a44f5e417de36b57dff32720d",
-      "bytes": 3128518,
+      "sha256": "1d0644c9b17bec7627a90a3f34516dacce353e9ef06c986368bdb957c32a829c",
+      "bytes": 3133126,
       "rolling_current_snapshot": false
     },
     {
@@ -609385,6 +609686,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/FUNCTION_PHASES_370.json",
+      "sha256": "7514b73662db8bf2a73149b40ab381b2cb85466e50542a9a8a1d646b10ae7dee",
+      "bytes": 324137,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/GRADIENT_FILL_REFERENCES.json",
       "sha256": "312f23e0191d8c14898e71afe11d6c6d49d65540c54f07e075b59c05b3194530",
       "bytes": 5005,
@@ -609956,8 +610263,8 @@
     },
     {
       "path": "docs/NEXT_MAJOR_C01.md",
-      "sha256": "30117de669fda1ce1fc161ac4111127bcfabeabd2628cdca4bddd8deb01eb007",
-      "bytes": 3341,
+      "sha256": "73f5df89e0339deeeb03cd334f4580abfc484d96f10980e99c4bc11ea4cdc440",
+      "bytes": 3884,
       "rolling_current_snapshot": false
     },
     {
@@ -609974,8 +610281,8 @@
     },
     {
       "path": "docs/OPEN_SOURCE_RELEASE.md",
-      "sha256": "f7a2c384a5fbaf2364c8f61f9dbb07447c6a05021db617091107de91444098bd",
-      "bytes": 6333,
+      "sha256": "dbb328b6d5bae6420b0dc1c420f9ff9eb344ac65af780d5915b0d6a421715292",
+      "bytes": 6933,
       "rolling_current_snapshot": false
     },
     {
@@ -610340,8 +610647,8 @@
     },
     {
       "path": "docs/PORTING_PLAN.md",
-      "sha256": "b100566d3ce6d6038b1505456b1ce664e6e3a8672d1ab4b719d305d9150a4afd",
-      "bytes": 222195,
+      "sha256": "a167a84fcbfc703dc60596155cf10fa17dcba2902dda9e4cce6cfd0dc8424312",
+      "bytes": 223243,
       "rolling_current_snapshot": false
     },
     {
@@ -610903,6 +611210,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_370.json",
+      "sha256": "b7c407c957d577b7bef943d91b5e6e2a4bf41c701dc97f461f39886c3029da6e",
+      "bytes": 1703,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -610969,6 +611282,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_370.json",
+      "sha256": "baf8ff880967e2099d73d48f2b1ebc5a8b4a756cb803f0b9f077c0a53d2a471d",
+      "bytes": 1058881,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -610982,8 +611301,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "33152b961517cdd1ef998e2e723adbbcfedb49851dc9204189c2fb0ddb4cf3a3",
-      "bytes": 306248,
+      "sha256": "87b20805741902dc02f4a3d2986278da129b7acc5a979ce3548444c77170bc03",
+      "bytes": 307296,
       "rolling_current_snapshot": false
     },
     {
@@ -611983,6 +612302,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORKING_CHECKPOINT_370.json",
+      "sha256": "1a82688d5a8018f6662d2e621874821acfd2b27fab54175dc8a3e10cee8b7e9b",
+      "bytes": 1667,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/WORKING_PROFILE_REFERENCES.json",
       "sha256": "1ed46825cf11c1dafb0df9c858db0207a6726719abe90f478e4c7a56bed7860c",
       "bytes": 11599,
@@ -612026,9 +612351,9 @@
     }
   ],
   "counts": {
-    "milestones": 369,
-    "evidence_files": 65302,
-    "logs": 29620,
+    "milestones": 370,
+    "evidence_files": 65340,
+    "logs": 29635,
     "missing_explicit_references": 0
   }
 }
