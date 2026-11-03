@@ -142,11 +142,14 @@ enum PSDLayerComps {
     let active = document.layerComps != nil || old.contains { $0.id == 1065 }
     guard active else {var result=Export();for layer in document.layers where layer.isBackground{result.layerIDs[layer.id]=0};return result}
     var output = Export(), usedLayers = Set<Int32>([0, -1])
+    let retainedOpaque=document.layerComps==nil && !document.clearedSourceLayerComps
     for layer in document.layers {
-      if layer.isBackground{output.layerIDs[layer.id]=0;continue}
+      // Retained opaque cmls records reference their original LyrI. Renumbering
+      // only the Background's lyid would make those preserved records invalid.
+      if layer.isBackground && (!retainedOpaque || layer.sourceTags?["lyid"]?.count != 4){output.layerIDs[layer.id]=0;continue}
       if let raw = layer.sourceTags?["lyid"], raw.count == 4 {
         var r = PSDReader(data: raw); let id = Int32(try r.i32())
-        guard usedLayers.insert(id).inserted else { throw CraftError.invalid("Conflicting Photoshop layer IDs.") }; output.layerIDs[layer.id] = id
+        guard (id==0 && layer.isBackground) || usedLayers.insert(id).inserted else { throw CraftError.invalid("Conflicting Photoshop layer IDs.") }; output.layerIDs[layer.id] = id
       }
     }
     var next: Int32 = 1

@@ -12,6 +12,9 @@ import UniformTypeIdentifiers
   @ObservationIgnored var channelArithmeticPrepare: @Sendable (ChannelArithmeticRequest,ChannelArithmeticTarget?,CraftDocument,[CraftDocument]) async throws -> PreparedChannelArithmetic = {request,target,document,sources in
     try ChannelArithmeticPreparation.prepare(request,target:target,document:document,sources:sources)
   }
+  @ObservationIgnored var selectionChannelPrepare:@Sendable (AutomationCommand,CraftDocument,ChannelDisplayOptions,CraftDocument?,ColorSettings) async throws->Command = {command,target,defaults,source,settings in
+    try SelectionChannelPreparation.prepare(command,target:target,defaults:defaults,source:source,colorSettings:settings)
+  }
   struct Share: Identifiable {
     let id = UUID()
     weak var document: CraftNSDocument?
@@ -342,6 +345,7 @@ import UniformTypeIdentifiers
       "canvasEdges":store.canvasEdgesState,
       "documentDuplicate":store.documentDuplicateState,
       "flattenImage":store.flattenImageState,
+      "layerMerge":store.layerMergeState,
       "video": store.videoState,
       "audio": TimelineAudioAPI.state(store),
       "videoSequenceCreation": videoSequenceCreationState,
@@ -481,7 +485,11 @@ import UniformTypeIdentifiers
       "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeComponentTargets.isEmpty ? store.document.colorMode.title : store.modeComponentTargets.sorted().map { store.document.colorMode.componentNames[$0] }.joined(separator: ", ")) : store.componentTarget.title,
       "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.document.quickMask == nil ? "RGB":"quickMask"),
       "alphaChannelOverlay": store.alphaOverlay,
+      "quickMaskVisible": store.isQuickMaskVisible,
       "channels": (store.document.alphaChannels ?? []).map(ChannelAPI.state),
+      "channelOnly":store.document.isChannelOnly,
+      "selectionChannels":store.selectionChannelState,
+      "quickMaskOptions": ChannelAPI.optionsState(store.quickMaskOptions),
       "quickMask": store.document.quickMask.map { ["id":$0.id.uuidString,"opacity":$0.options.opacity,"indicates":$0.options.indicates.rawValue,"color":[$0.options.color.r,$0.options.color.g,$0.options.color.b]] as [String:Any] } ?? NSNull(),
       "channelView": [
         "preview": store.document.inkMode != nil ? store.document.inkChannelTargets.filter { store.visibleInkTargets.contains($0) }.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeVisibleComponents.count == 1 ? store.document.colorMode.componentNames[store.modeVisibleComponents.first!] : store.document.colorMode.title) : store.channelView.preview.title,
@@ -670,7 +678,7 @@ import UniformTypeIdentifiers
         let channelView = parts[4] == "channel-preview.png" ? store.channelView : RGBChannelView()
         let modeVisibility = parts[4] == "channel-preview.png" && store.usesModeChannels ? store.modeComponentVisibility : nil
         let inkVisibility = parts[4] == "channel-preview.png" && store.document.inkMode != nil ? store.effectiveInkVisibility : nil
-        let auxiliary = parts[4] == "channel-preview.png" ? store.editingChannel:nil
+        let auxiliary = parts[4] == "channel-preview.png" ? store.displayedAuxiliaryChannel:nil
         let overlay = auxiliary == .quickMask || store.alphaOverlay
         let onion = parts[4] == "onion-preview.png"
         let proof = parts[4] == "proof-preview.png" ? store.proofSettings : nil
@@ -1253,7 +1261,8 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if command.name == "channel.edit" {
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in try command.channelEdit(document:original) }
+        if try command.pathFlag("newDocument",false) {return try await newSelectionDocument(command,document:document,share:share)}
+        try await executeSelectionChannel(command,document:document,share:share)
         return .json(state(share,document:document))
       }
       if ChannelArithmeticAPI.commands.contains(command.name) {return try await executeChannelArithmetic(command,document:document,share:share)}
@@ -1538,7 +1547,7 @@ import UniformTypeIdentifiers
         "adobeProtectionScope": "Existing input layers: operation.type edit with protection and supported dropShadow effects, exact unique name or PSD id. Group edits replace descendant flags. Blank images use the documented blankDocumentCreation subset. Exposure adjustment layers support add/edit with exposureValue, offset and gammaCorrection, using native transfer and all five placement modes. Other layer properties and unimplemented variants remain unsupported.",
         "adobeSubmit": "/v2/execute-actions", "adobeStatus": "/v2/status/{jobId}",
         "notice":
-          "Optional isolated resource jobs. Requires native enablement each session. Inline actionJSON supports the documented colorModeActions creation-independent conversion/component subset. Legacy RGB8 neutral Fill remains qualified; RGB/Gray8/16/32 and CMYK/Lab8/16 PSD/PSB/TIFF input supports applicable root raster merges ($Mrg2/$MrgV), selectAllLayers, composite RGB selection and PSD preservation. The eight native raster filters are available through actionJSON on the active RGB pixel layer; Smart Filters and exact Photoshop output parity are unqualified. Five classic color adjustments and inline base64 Color Lookup LUT descriptors are supported through actionJSON (51,200-character program limit); /v2/edit supports light, color vibrance/saturation, effects, sharpening and noise reduction with PNG/JPEG output through the native Camera Raw engine. The installed applyImageStackPluginRenderer class descriptor supports eleven statistical modes on an embedded Smart Object; use flattened PNG/TIFF output because editable PSD stack transport is not implemented. Multichannel8/16 PSD/PSB file transport retains ink/alpha planes and spot metadata; ink editing descriptors remain unsupported. The documented flattenImage actionJSON event uses the native flatten compositor; its disclosed context limits apply. Other Adobe operations are unsupported.",
+          "Optional isolated resource jobs. Requires native enablement each session. Inline actionJSON supports the documented colorModeActions creation-independent conversion/component subset. Legacy RGB8 neutral Fill remains qualified; RGB/Gray8/16/32 and CMYK/Lab8/16 PSD/PSB/TIFF input supports supported static RGB rich merges (mergeLayersNew/$Mrg2 and mergeVisible/$MrgV), with separate numerical/temporal and group-retention gaps, selectAllLayers, composite RGB selection and PSD preservation. The eight native raster filters are available through actionJSON on the active RGB pixel layer; Smart Filters and exact Photoshop output parity are unqualified. Five classic color adjustments and inline base64 Color Lookup LUT descriptors are supported through actionJSON (51,200-character program limit); /v2/edit supports light, color vibrance/saturation, effects, sharpening and noise reduction with PNG/JPEG output through the native Camera Raw engine. The installed applyImageStackPluginRenderer class descriptor supports eleven statistical modes on an embedded Smart Object; use flattened PNG/TIFF output because editable PSD stack transport is not implemented. Multichannel8/16 PSD/PSB file transport retains ink/alpha planes and spot metadata; ink editing descriptors remain unsupported. The documented flattenImage actionJSON event uses the native flatten compositor; its disclosed context limits apply. Other Adobe operations are unsupported.",
       ],
       "documentTransfers": documentTransferCapabilities,
       "sourceAdjustments":SourceAdjustment.apiCapabilities,
@@ -1591,6 +1600,7 @@ import UniformTypeIdentifiers
       "canvasEdges":CanvasEdgesAPI.capabilities,
       "documentDuplicate":DocumentDuplicateAPI.capabilities,
       "flattenImage":FlattenImageAPI.capabilities,
+      "layerMerge":LayerMergeAPI.capabilities,
       "layerLinks":LayerLinksAPI.capabilities,
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
       "channelTransform":ChannelTransformAPI.capabilities,
@@ -1646,6 +1656,7 @@ import UniformTypeIdentifiers
         "canvasEdges":CanvasEdgesAPI.stateSchema,
         "documentDuplicate":DocumentDuplicateAPI.stateSchema,
         "flattenImage":FlattenImageAPI.stateSchema,
+        "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
         "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,
         "channelTransform":ChannelTransformAPI.stateSchema,
@@ -1736,7 +1747,11 @@ import UniformTypeIdentifiers
         "sourceSaveNeedsReview": ["type": "boolean"],
         "alphaChannelTarget": ["type":"string","description":"RGB, quickMask, or alpha UUID"],
       "alphaChannelOverlay": ["type":"boolean"],
+      "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; hiding it retains Quick Mask editing and coverage."],
       "channels": ["type":"array","items":["type":"object","required":["id","name","opacity","indicates","color"],"properties":["id":["type":"string","format":"uuid"],"name":["type":"string"],"opacity":["type":"number"],"indicates":["type":"string"],"color":["type":"array","items":["type":"number"]]]]],
+      "channelOnly":["type":"boolean","description":"Auxiliary channels only, without image layers or printing plates; requires native85."],
+      "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha"],"properties":["workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],
+      "quickMaskOptions": ["type":"object","description":"Persistent Quick Mask display defaults; selection coverage is unchanged by display options."],
       "quickMask": ["type":["object","null"]],
       "channelTarget": ["type": "string", "description": "Composite color mode or selected component names; numerical indices are in documentMode.editingComponents."],
         "channelView": [

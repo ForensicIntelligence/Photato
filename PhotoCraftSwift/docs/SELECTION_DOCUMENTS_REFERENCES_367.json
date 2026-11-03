@@ -1,0 +1,76 @@
+{
+  "step": "dev-step-367",
+  "recorded_at_utc": "2026-11-02T23:31:26.990202+00:00",
+  "run": "artifacts/runs/20261102T222801Z-367-selection-documents",
+  "reference_standard": "Photoshop2026",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "ChannelOnlyDocument|SelectionChannelDocument|ChannelSelectionCompletion|QuickMaskSelection|AlphaChannel|PSDAuxiliary|PSDMultichannel|InkMode|SpotChannel|ChannelTransform|ChannelArithmetic|ChannelWorkflow|ModeChannel|InkChannel|ChannelPresentation|SelectionPaging|PagedSelection|SelectionMask|SelectionTool|Component|AutomationTests|AutomationActionJobs|NativeArchive|ToolCursor|DocumentPersistence|DocumentDuplicate|MaskInteraction|LayerLinks|BackgroundLayer"
+    ],
+    "source_manifest": "artifacts/runs/20261102T222801Z-367-selection-documents/source03.json",
+    "inputs": 7074,
+    "production_swift_files": 1007,
+    "started_at_utc": "2026-11-02T23:20:51.285736+00:00",
+    "exit_code": 0,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "b96797e10d6372d4a702aa43755e7bafbfaf6d16ecac9504ec4db27f9a41626f",
+    "finished_at_utc": "2026-11-02T23:28:25.893809+00:00",
+    "cases": 388,
+    "passed_cases": 388,
+    "failed_cases": 0,
+    "failed_case_names": [],
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 40.744
+  },
+  "new_cases": 17,
+  "new_cases_by_module": {
+    "Core": 5,
+    "Imaging": 5,
+    "App": 7
+  },
+  "prior_failed_attempts": [
+    "artifacts/runs/20261102T222801Z-367-selection-documents/focused01-summary.json",
+    "artifacts/runs/20261102T222801Z-367-selection-documents/focused02-summary.json"
+  ],
+  "source_manifest": "artifacts/runs/20261102T222801Z-367-selection-documents/source03.json",
+  "binary_sha256": "b96797e10d6372d4a702aa43755e7bafbfaf6d16ecac9504ec4db27f9a41626f",
+  "api_commands": 239,
+  "native_archive_version": 85,
+  "actions_version": 44,
+  "independent_reference": "artifacts/runs/20261102T222801Z-367-selection-documents/photoshop-oracle/reference01.json",
+  "independent_native": "artifacts/runs/20261102T222801Z-367-selection-documents/independent-native03.json",
+  "independent_samples": 1024,
+  "independent_bytes": 1536,
+  "live_Photoshop_reference": true,
+  "live_native_UI_qualified": false,
+  "S05_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "next_major_package": "C01 after S05 completes and is tested",
+  "limits": [
+    "S05 remains in progress pending native live UI and remaining qualification; C01 is preselected and starts after S05 completes and is tested. The full current suite, all-input Photoshop output, full supported-platform coverage, dense maximum capacity and60fps remain open. Installed preview283, private source backup363 and store archive332 are unchanged. No installation, source push, archive, binary upload or release.",
+    "Multichannel PSD/PSB reader retains its8,388,608-pixel limit; standalone32-bit/activeQuickMask Photoshop output is unsupported. Native85 retains all-depth channel-only documents, including sparse maximum canvases.",
+    "Adobe channel actionJSON descriptors remain unsupported; no dedicated Adobe channel route is invented."
+  ],
+  "changes": [
+    "Native85 auxiliary-only Multichannel selection documents with no dummy color layer/printing plate",
+    "Photoshop8/16 standalone PSD/PSB reader/writer and retained document metadata",
+    "Native/API Save Selection > New with source/lifecycle guards and transfer permission",
+    "Load Selection source descriptors, component shortcuts, availability state and channel-capacity validation",
+    "Reopened channel-only editing targets and actual brush/fill/filter/history paths"
+  ],
+  "protected_identities_unchanged": 40,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_release": false
+}

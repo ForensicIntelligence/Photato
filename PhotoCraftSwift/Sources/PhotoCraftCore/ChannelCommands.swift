@@ -38,17 +38,19 @@ extension ChannelCommand {
       }
       try d.setChannel(channel,at:.alpha(id))
     case .saveSelection(let id,let name,let mode):
+      guard d.quickMask == nil,d.selection != nil || d.selectionMask != nil else{throw CraftError.invalid("Make a selection outside Quick Mask before saving it.")}
       let pixels = try AlphaChannel.coverage(d.coverageSelection(),width:d.width,height:d.height,depth:d.depth)
       try ChannelCommand.storeSelection(pixels,id,name,mode).apply(to:&d)
     case .storeSelection(let pixels,let id,let name,let mode):
       guard pixels.width == d.width, pixels.height == d.height else { throw CraftError.invalid("Selection/channel canvas sizes differ.") }
       var value = try id.map { try d.channel(.alpha($0)) } ?? AlphaChannel(name:name ?? d.suggestedChannelName,pixels:Surface(width:d.width,height:d.height,depth:d.depth,fill:.black))
+      guard value.spot == nil else{throw CraftError.invalid("Save Selection requires an alpha channel, not a spot ink.")}
       if let name { value.name = name }
       if d.width>Surface.maximumDensePixels/d.height {
         let encoded=pixels.colorEncoding == .linearRGB ? try pixels.mappedStoredSamples(encoding:.sRGB) {SRGBTransfer.encoded($0)}:pixels
+        let depth=d.depth
         let out=try value.pixels.combiningStoredSamples(with:encoded) {old,new in
-          let v:Float,n=unit(new.r)
-          switch mode {case .replace:v=n;case .add:v=max(old.r,n);case .subtract:v=max(0,old.r-n);case .intersect:v=min(old.r,n)}
+          let v = ChannelSelectionMath.coverage(old.r,new.r,mode:mode,depth:depth)
           return Pixel(v,v,v).quantized(d.depth)
         }
         value.pixels=try out.retaggedCoverageStorage(depth:d.depth)
@@ -58,15 +60,18 @@ extension ChannelCommand {
       var out = value.pixels
       for y in 0..<d.height { try Task.checkCancellation(); for x in 0..<d.width {
         let old = value.pixels.pixel(x:x,y:y).r, new = unit(pixels.pixel(x:x,y:y).r)
-        let v: Float
-        switch mode { case .replace: v = new; case .add: v = max(old,new); case .subtract: v = max(0,old-new); case .intersect: v = min(old,new) }
+        let v = ChannelSelectionMath.coverage(old,new,mode:mode,depth:d.depth)
         out.setPixel(x:x,y:y,Pixel(v,v,v))
       } }
       value.pixels = out
       if let id { try d.setChannel(value,at:.alpha(id)) } else { try ChannelCommand.create(value).apply(to:&d) }
+    case .loadCoverage(let mask,let mode):
+      guard mask.width==d.width,mask.height==d.height else{throw CraftError.invalid("Selection/channel canvas sizes differ.")}
+      d.setCoverageSelection(try ChannelSelectionMath.selection(mask,combining:d.coverageSelection(),mode:mode))
     case .load(let target,let mode,let invert):
-      let mask = try d.channel(target).selection(invert:invert)
-      d.setCoverageSelection(try mask.combined(with:d.coverageSelection(),mode:mode))
+      let channel=try d.channel(target)
+      let mask=try channel.selection(invert:(channel.spot != nil) != invert)
+      d.setCoverageSelection(try ChannelSelectionMath.selection(mask,combining:d.coverageSelection(),mode:mode))
     case .quickMask(let on,let options):
       try options.validate(); guard on != (d.quickMask != nil) else { return }
       if on {

@@ -133,7 +133,7 @@ struct AutomationCommand: Sendable {
           if key == "samplingChannelID" { properties[key] = ["type":"string","format":"uuid"]; continue }
         }
         if name == "channel.edit", let schema = ChannelAPI.parameterSchema(key) { properties[key] = schema; continue }
-        if name == "channel.view" { properties[key] = key == "overlay" ? ["type":"boolean"]:["type":"string","description":"RGB, quickMask, or alpha channel UUID"]; continue }
+        if name == "channel.view" { properties[key] = ["overlay","visible"].contains(key) ? ["type":"boolean"]:["type":"string","description":"RGB, quickMask, or alpha channel UUID"]; continue }
         if name == "layer.transform", key != "layerID" {
           properties[key] = ["type": "number", "minimum": -1_000_000, "maximum": 1_000_000]
           continue
@@ -281,7 +281,7 @@ struct AutomationCommand: Sendable {
     .init(name:"contentAware.scale",parameters:["layerID":"Ordinary raster layer UUID","width":"Output width in pixels","height":"Output height in pixels","x":"Output document x","y":"Output document y","amount":"Content-aware percentage","protectChannelID":"Saved alpha channel UUID","protectSkinTones":"Protect skin-tone regions"],description:"Scale the layer or selected pixels using native seam carving with preview-equivalent output and one undo transaction.",optionalParameters:["x","y","amount","protectChannelID","protectSkinTones"]),
     .init(name:"contentAware.fill",parameters:["layerID":"Raster layer UUID","settings":"Fill settings","output":"current, new or duplicate","strokes":"Sampling and selection edits","samplingChannelID":"Saved alpha sampling source"],description:"Fill the selected area through the native Content-Aware Fill engine, one prepared undo transaction.",optionalParameters:["settings","output","strokes","samplingChannelID"]),
     .init(name:"channel.edit",parameters:ChannelAPI.fields,description:"Manage alpha channels, save/load selections, edit Quick Mask, paint and filter through native history. Action-specific parameters are strict.",optionalParameters:Set(ChannelAPI.fields.keys).subtracting(["action"])),
-    .init(name:"channel.view",parameters:["target":"RGB, quickMask or auxiliary UUID","overlay":"View alpha/spot over image"],description:"Select the shared desktop channel target and view.",optionalParameters:["overlay"]),
+    .init(name:"channel.view",parameters:["target":"RGB, quickMask or auxiliary UUID","overlay":"View alpha/spot over image","visible":"Quick Mask overlay visibility; requires target quickMask and retains its editing mode"],description:"Select the shared desktop channel target and view.",optionalParameters:["overlay","visible"]),
     .init(name:"layer.background",parameters:["layerID":"Layer UUID","operation":"toLayer or fromLayer","name":"Converted regular layer name","mode":"Converted regular blend mode","opacity":"Converted opacity0–1","color":"Layer color label","backgroundColor":"Opaque RGBA canvas/transparency fill"],description:"Convert explicit Background identity through the native engine and one Undo transaction.",optionalParameters:["name","mode","opacity","color","backgroundColor"]),
     .init(name:"pixels.clear",parameters:["layerID":"Raster layer UUID","backgroundColor":"Opaque RGBA fill for Background"],description:"Clear selected pixels; Background uses its background color and remains opaque.",optionalParameters:["backgroundColor"]),
     .init(name:"pixels.fill",parameters:["layerID":"Raster layer or mask owner UUID","mask":"Edit its pixel mask","target":"Auxiliary channel UUID or quickMask instead of layerID","color":"RGBA0–1 instead of patternID","patternID":"Saved document/native-library pattern ID instead of color","placement":"Optional native pattern scale/angle/phase override","opacity":"Paint opacity0–1","mode":"Paint blend mode","preserveTransparency":"Retain raster alpha"],description:"Fill current selection or canvas with color or a saved pattern using the shared native paint engine and one Undo.",optionalParameters:["layerID","mask","target","color","patternID","placement","opacity","mode","preserveTransparency"]),
@@ -377,10 +377,10 @@ struct AutomationCommand: Sendable {
       name: "layer.merge",
       parameters: [
         "operation": "down, selected or visible",
-        "layerIDs": "unique UUID array; one for down, two or more for selected, empty for visible",
+        "layerIDs": "unique UUID array; one for down, two or more or one group for selected, empty for visible",
       ],
       description:
-        "Merge unlocked root Normal pixel layers without masks, transforms or clipping. Uses native history and linear RGB32 storage. Visible uses the active layer and clips to the canvas; the other operations retain off-canvas bounds. Merged allocation is limited to 4,194,304 pixels."
+        "Merge supported static RGB layers through the shared native compositor, including groups, complete clipping bases, type, shapes, masks, transforms, effects and resolved Smart artwork. One Undo; preserves untouched layers and document state. Visible clips to canvas; selected/down retain supported off-canvas geometry. Numerical/temporal and unresolved hierarchy cases reject explicitly; renderer resource budgets apply."
     ),
     .init(
       name: "document.save", parameters: ["options": "optional format-specific encoding options"],
@@ -590,7 +590,7 @@ struct AutomationCommand: Sendable {
         return id
       }
       guard Set(ids).count == ids.count,
-        operation == .visible ? ids.isEmpty : operation == .down ? ids.count == 1 : ids.count >= 2
+        operation == .visible ? ids.isEmpty : operation == .down ? ids.count == 1 : (ids.count >= 2 || (ids.count == 1 && document.layers.first(where:{$0.id==ids[0]})?.isGroup == true))
       else {
         throw AutomationFailure(
           status: 400, message: "Invalid layer selection for merge operation.")
@@ -598,10 +598,7 @@ struct AutomationCommand: Sendable {
       guard Set(ids).isSubset(of: Set(document.layers.map(\.id))) else {
         throw AutomationFailure(status: 404, message: "Layer not found.")
       }
-      let bounds = try LayerMerge.outputBounds(operation, layerIDs: Set(ids), in: document)
-      guard bounds.width <= 4_194_304 / bounds.height else {
-        throw AutomationFailure(status: 413, message: "Merged allocation exceeds 4,194,304 pixels.")
-      }
+      _ = try LayerMergePlan(operation,layerIDs:Set(ids),in:document)
       return .mergeLayers(Set(ids), operation)
     case "layer.style": return try layerStyleCommand(document: document)
     case "layer.style.patch", "document.globalLight": return try advancedStyleCommand(document:document)
@@ -669,6 +666,17 @@ struct AutomationCommand: Sendable {
       let target = try string("target")
       var overlay = false
       if let raw = parameters["overlay"] { guard case .bool(let v) = raw else { throw AutomationFailure(status:400,message:"overlay must be boolean.") }; overlay = v }
+      if let raw = parameters["visible"] {
+        guard target == "quickMask", case .bool(let visible) = raw else {
+          throw AutomationFailure(status:400,message:"visible must be boolean and applies only to target quickMask.")
+        }
+        guard store.document.quickMask != nil else {
+          throw AutomationFailure(status:422,message:"Enter Quick Mask before changing its overlay visibility.")
+        }
+        if store.editingChannel != .quickMask { try store.selectAlphaChannel(nil) }
+        try store.setQuickMaskVisibility(visible)
+        return true
+      }
       if target == "RGB" { try store.selectEditingChannel(.composite) }
       else { let t = try channelTarget(); _ = try store.document.channel(t); if case .alpha(let id) = t { try store.selectAlphaChannel(id,overlay:overlay) } else { try store.selectAlphaChannel(nil) } }
       return true

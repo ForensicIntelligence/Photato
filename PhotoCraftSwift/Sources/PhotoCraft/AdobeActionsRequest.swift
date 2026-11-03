@@ -203,11 +203,11 @@ struct AdobeActionsRequest: Sendable {
     let converter: PhotoshopActionProgram.ModeConverter = {
       try DocumentModeInput.command(.init($1, mergeVisible: $2), in: $0)
     }
-    var result = try actions[0].applying(to: document, stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command)
+    var result = try actions[0].applying(to: document, stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command, mergeRenderer: LayerMergeIntent.adobeCommand)
     for action in actions.dropFirst() {
       result = try action.applying(
         to: result.session, components: result.components, selectedLayerIDs: result.selectedLayerIDs, modeComponents: result.modeComponents,
-        stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command
+        stackRenderer: renderer, modeConverter: converter, flattenRenderer: FlattenPreparation.command, mergeRenderer: LayerMergeIntent.adobeCommand
       )
     }
     return result

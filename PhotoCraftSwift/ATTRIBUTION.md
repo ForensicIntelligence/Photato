@@ -170,3 +170,7 @@ The test-only `Tests/PhotoCraftImagingTests/Fixtures/layer-comps/ag-psd-layer-co
 ## Global Light interchange fixture
 
 The test-only `Tests/PhotoCraftImagingTests/Fixtures/GlobalLight/ag-psd-shadow.lfx2` is a byte-identical 628-byte layer-style payload extracted from `test/read-write/effects/src.psd` in Agamnentzar/ag-psd commit a74425db6584cc07b1cc135e370916cb4eccfb32. It is under the MIT license, copyright2016 Agamnentzar; the complete notice is alongside it. It independently records shared-light participation with a distinct inactive local angle. It is saved-file evidence, not a Photoshop2026 live or pixel-equivalence qualification. The extraction/reference hashes are retained in checkpoint340 evidence.
+
+## Standard selection-transfer calibration
+
+Photato's generated standard RGB8-to-gray selection table is numerical calibration data from owned, programmatically generated reference images processed through the ordinary Photoshop2026 UI. Every RGB8 value was measured, and embedded/untagged and repeated-color checks are retained locally. Only scalar coverage data is included, without vendor artwork, ICC binary/text tags or executable code. The independently framed gray working profile uses recorded numerical tone-response metadata from an owned standard-format output. The Swift implementation and generated calibration artifact are distributed under this project's MIT OR Apache-2.0 terms; Photoshop itself is not distributed or required at runtime. See [the provenance and qualification record](docs/SELECTION_LUMINOSITY.md).

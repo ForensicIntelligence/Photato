@@ -162,8 +162,14 @@ enum PSDSmartObjects {
     var preview: Layer
     if layer.smartFilters != nil { preview = try SmartFilterEngine.renderedLayer(layer, in: document) }
     else {
-      preview = try PDFSmartObjectIO.renderedLayer(layer,in:document); preview.smartObject = nil
-      preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document, method:layer.smartObject?.linkedSource == nil ? .bicubic:.bilinear)
+      let linked=layer.smartObject?.linkedSource != nil
+      preview = try PDFSmartObjectIO.renderedLayer(layer,in:document)
+      // Preserve numerical mask coverage in document coordinates before changing
+      // the raster's local frame. RGBA resampling would ignore gray outside values.
+      if linked {preview=try PSDMaskExport.prepared(preview)}
+      preview.smartObject = nil
+      preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document,
+        method:linked ? .bilinear:.bicubic,clampRasterEdges:!linked)
     }
     preview.smartObject = layer.smartObject
     preview.sourceTags?.removeValue(forKey:"PhLC")

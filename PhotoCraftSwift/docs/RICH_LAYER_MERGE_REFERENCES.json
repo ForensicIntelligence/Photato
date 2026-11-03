@@ -1,0 +1,192 @@
+{
+  "step": "dev-step-364",
+  "recorded_at_utc": "2026-11-02T20:30:30.085345+00:00",
+  "reference_standard": "Photoshop 2026; Rust inspiration only",
+  "run": "artifacts/runs/20261102T195407Z-364-rich-merge",
+  "source_manifest": "artifacts/runs/20261102T195407Z-364-rich-merge/source04.json",
+  "source_inputs": 7043,
+  "production_swift_files": 999,
+  "binary_sha256": "b1d2f2b5cbbcfec755f8dc2bb9cf569514a9cd8d6268b538fd8bb425cb58a750",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "PreparedLayerMerge|RichLayerMerge|RichMergeWorkflow|LayerMerge|AutomationLayerMerge|FlattenImage|CanvasEdge|LayerCapacity|LayerGroup|GroupTests|Clipping|LayerStyle|SmartObject|RecordedAction|ActionRecording|ActionsWorkflow|PhotoshopAction|AutomationActions|AutomationActionJobs|PhotoshopMenu|ToolCursor|NativeArchive"
+    ],
+    "source_manifest": "artifacts/runs/20261102T195407Z-364-rich-merge/source04.json",
+    "inputs": 7043,
+    "production_swift_files": 999,
+    "started_at_utc": "2026-11-02T20:23:31.157909+00:00",
+    "exit_code": 1,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "b1d2f2b5cbbcfec755f8dc2bb9cf569514a9cd8d6268b538fd8bb425cb58a750",
+    "finished_at_utc": "2026-11-02T20:30:14.082674+00:00",
+    "cases": 298,
+    "passed_cases": 297,
+    "failed_cases": 1,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 26.647
+  },
+  "new_cases": 18,
+  "all_new_passed": true,
+  "independent": {
+    "passed": true,
+    "vectors": 3,
+    "analytical_RGBA_bytes": 144,
+    "PNG": [
+      {
+        "file": "rich-merge-16 bit.png",
+        "sha256": "983643ce7ebe3aaeeccecf8750111c56db80c0e921358f46cf032510ecef15ae",
+        "RGBA_bytes": 48
+      },
+      {
+        "file": "rich-merge-32 bit.png",
+        "sha256": "983643ce7ebe3aaeeccecf8750111c56db80c0e921358f46cf032510ecef15ae",
+        "RGBA_bytes": 48
+      },
+      {
+        "file": "rich-merge-8 bit.png",
+        "sha256": "cc2fc61cc6bc30d340d08b949f1c49e80b890752423540f2f92476226fd50f84",
+        "RGBA_bytes": 48
+      }
+    ],
+    "PSD_PSB_raw_composites": [
+      {
+        "file": "rich-merge-16 bit.psb",
+        "sha256": "2bba818f4719c7905f881a02b848294ae0d1d3264c57b6e18f34b486499274a7",
+        "version": 2,
+        "depth": 16,
+        "channels": 4,
+        "raw_composite_component_bytes": 96
+      },
+      {
+        "file": "rich-merge-16 bit.psd",
+        "sha256": "bc15ee5340661c9640e365b058298482579d1c0ed121034cf8824730af1b85ab",
+        "version": 1,
+        "depth": 16,
+        "channels": 4,
+        "raw_composite_component_bytes": 96
+      },
+      {
+        "file": "rich-merge-32 bit.psb",
+        "sha256": "1125e20ca417a756a4b2dffa2ff91f4737d2e5bd919b998c4ff4df029da1002b",
+        "version": 2,
+        "depth": 32,
+        "channels": 4,
+        "raw_composite_component_bytes": 192
+      },
+      {
+        "file": "rich-merge-32 bit.psd",
+        "sha256": "53766d9dd10eaf70965bf0ac9e91924613b83b1162407ba8052eba1ea6d28442",
+        "version": 1,
+        "depth": 32,
+        "channels": 4,
+        "raw_composite_component_bytes": 192
+      },
+      {
+        "file": "rich-merge-8 bit.psb",
+        "sha256": "564f8af2221a032649f4e0d1b62621e369c5f9ca49d6b48205a1108032fb4327",
+        "version": 2,
+        "depth": 8,
+        "channels": 4,
+        "raw_composite_component_bytes": 48
+      },
+      {
+        "file": "rich-merge-8 bit.psd",
+        "sha256": "727ea91f63f41da91bddd380fc3fb5e2cd9a49896875a94c1425e6733098b5de",
+        "version": 1,
+        "depth": 8,
+        "channels": 4,
+        "raw_composite_component_bytes": 48
+      }
+    ],
+    "independent_RGBA_bytes": 288,
+    "independent_PSD_component_bytes": 672,
+    "method": "Fixed owned red/blue analytical pixels; Pillow PNG decode; standalone struct parser independently reads every raw PSD/PSB merged component sample. No native reader/compositor imported. Editable layer records are covered separately by native round trips, not this parser."
+  },
+  "Photoshop_parity": false,
+  "full_current_suite_passed": false,
+  "live_UI_qualified": false,
+  "api_commands": 239,
+  "native_archive_version": 84,
+  "actions_version": 44,
+  "limitations": "Complete L02 merge/rasterization, numerical/palette/ink/temporal composition, cross-parent selections, clipped artwork without its selected base, hidden descendants inside visible merged groups, stamp/merge-clipping variants and exact Photoshop backdrop/effects/geometry/defaults/live UI remain open. Supported-platform, full-current-suite, dense maximum capacity and physical60fps qualification remain open. All 104 work packages remain open against their full acceptance criteria.",
+  "references": [
+    {
+      "url": "https://business.adobe.com/assets/pdfs/resources/webinars/boost-content-production/boosting-content-production.pdf",
+      "read_on": "2026-11-02",
+      "supports": "Adobe training workflow and context-menu illustration identify Merge Group; live Photoshop2026 details remain unqualified."
+    },
+    {
+      "url": "https://github.com/AdobeDocs/uxp-photoshop/blob/main/src/pages/ps-reference/media/eventcodes.md",
+      "read_on": "2026-11-02",
+      "supports": "Official Mrg2=mergeLayersNew and MrgV=mergeVisible event names; character and string aliases share strict parsing."
+    },
+    {
+      "url": "https://helpx.adobe.com/my_ms/photoshop/using/layers.html",
+      "read_on": "2026-11-02",
+      "supports": "Merge Down pixel target, selected vector/pixel merge, visible merge, transparency; does not independently qualify new output."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "read_on": "2026-11-02",
+      "supports": "Layer.merge single/multiple selections and active result; desktop API not an HTTP route."
+    }
+  ],
+  "native_app_installed": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "binary_uploaded": false,
+  "goal_complete": false,
+  "cursor_cases_passed": 9,
+  "cursor_matrix_rows": 832,
+  "attempts": [
+    "artifacts/runs/20261102T195407Z-364-rich-merge/focused01-summary.json",
+    "artifacts/runs/20261102T195407Z-364-rich-merge/focused02-summary.json",
+    "artifacts/runs/20261102T195407Z-364-rich-merge/focused03-summary.json",
+    "artifacts/runs/20261102T195407Z-364-rich-merge/focused04-summary.json"
+  ],
+  "older_not_rerun_PSD_comp_failures": [
+    "PhotoCraftImagingTests.PSDLayerCompTests/testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState",
+    "PhotoCraftImagingTests.PSDLayerCompTests/testLegacyNativeOpaqueCompMetadataIsPreservedRatherThanMistakenForClear"
+  ],
+  "current_remaining_failure_analysis": "Linked preview transformed source/mask export clamps edge pixels whereas ordinary canvas sampling uses outside transparency; observed alpha81/143 becomes255. Cause hypothesis recorded; no fix/Photoshop-equivalence claim.",
+  "source_test_differences_from_362_Source03": [
+    "Sources/PhotoCraft/AdobeActionsRequest.swift",
+    "Sources/PhotoCraft/Application.swift",
+    "Sources/PhotoCraft/AutomationCommands.swift",
+    "Sources/PhotoCraft/AutomationLayerMerge.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/LayerMergeAPI.swift",
+    "Sources/PhotoCraft/LayerMergeEditing.swift",
+    "Sources/PhotoCraft/LayerPanelMenu.swift",
+    "Sources/PhotoCraft/ToolCursor.swift",
+    "Sources/PhotoCraft/ToolCursorAPI.swift",
+    "Sources/PhotoCraftCore/Engine.swift",
+    "Sources/PhotoCraftCore/FrameAnimation.swift",
+    "Sources/PhotoCraftCore/LayerMerge.swift",
+    "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+    "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+    "Sources/PhotoCraftCore/RecordedActions.swift",
+    "Sources/PhotoCraftCore/VideoTimeline.swift",
+    "Sources/PhotoCraftImaging/LayerMergePreparation.swift",
+    "Sources/PhotoCraftImaging/RecordedActionRenderer.swift",
+    "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+    "Tests/PhotoCraftAppTests/RichMergeWorkflowTests.swift",
+    "Tests/PhotoCraftAppTests/ToolCursorTests.swift",
+    "Tests/PhotoCraftCoreTests/PreparedLayerMergeTests.swift",
+    "Tests/PhotoCraftImagingTests/Fixtures/layer-comps/.gitignore",
+    "Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md",
+    "Tests/PhotoCraftImagingTests/RichLayerMergeTests.swift"
+  ]
+}

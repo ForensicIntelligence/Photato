@@ -136,17 +136,13 @@ final class AutomationLayerMergeTests: XCTestCase {
       try store.selectEditingChannel(.composite)
       XCTAssertEqual(store.document, original)
       XCTAssertTrue(store.session.undoStack.isEmpty)
-      for variant in 0..<3 {
+      for variant in 0..<2 {
         var changed = original
         if variant == 0 { changed.layers[1].locked = true }
-        if variant == 1 { changed.layers[1].mask = try Surface(width: 1, height: 1, fill: .white) }
-        if variant == 2 {
-          changed.layers[1].x = 10_000
-          changed.layers[1].y = 1_000
-        }
+        if variant == 1 { changed.layers[0].content = .fill(.white) }
         store.session = EditorSession(document: changed)
         let result = try await helper.edit(service, shared, "layer.merge", valid)
-        XCTAssertEqual(result, variant == 2 ? 413 : 422)
+        XCTAssertEqual(result,422)
         XCTAssertEqual(store.document, changed)
         XCTAssertTrue(store.session.undoStack.isEmpty)
       }

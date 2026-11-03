@@ -185,7 +185,8 @@ extension EditorTool {
     cursorPointerDown = false; cursorGestureModifiers = nil; updateCursorModifiers(event.modifierFlags)
   }
   func observeCursorModifiers(_ event: NSEvent) {
-    guard let window, window.isKeyWindow, event.window == nil || event.window === window else { return }
+    guard let window,window.isKeyWindow else {updateCursorModifiers([]);return}
+    guard event.window == nil || event.window === window else{return}
     if event.type == .keyUp {
       if event.keyCode == 49 { spaceHeld = false }
       return

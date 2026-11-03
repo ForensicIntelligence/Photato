@@ -16,6 +16,7 @@ cp LICENSE-MIT LICENSE-APACHE LICENSE-psd-tools NOTICE ATTRIBUTION.md "$app/Cont
 cp scripts/ProjectLinks.json "$app/Contents/Resources/ProjectLinks.json"
 cp scripts/PrivacyInfo.xcprivacy "$app/Contents/Resources/PrivacyInfo.xcprivacy"
 ./scripts/copy-people-model.sh "$PWD" "$app/Contents/Resources"
+./scripts/copy-imaging-resources.sh /private/tmp/photocraft-swift-build/release "$app/Contents/Resources"
 # Package the maintainer's original artwork at each macOS icon resolution.
 iconset="$stage_root/Photato.iconset"
 mkdir -p "$iconset"

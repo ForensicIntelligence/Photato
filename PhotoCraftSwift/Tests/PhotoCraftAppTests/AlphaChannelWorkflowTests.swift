@@ -35,7 +35,7 @@ final class AlphaChannelWorkflowTests: XCTestCase {
   @MainActor func testSavedSelectionDialogCancelAndTargetSwitch() async throws {
     let d = try fixture(), store = EditorStore(document:d); defer { store.renderTask?.cancel() }
     store.beginChannelDialog(.save); let draft = try XCTUnwrap(store.channelDialog)
-    draft.name = "Subject"; store.commitChannelDialog(draft)
+    draft.name = "Subject"; store.commitChannelDialog(draft); await draft.task?.value
     let channel = try XCTUnwrap(store.document.alphaChannels?.first); XCTAssertEqual(channel.name,"Subject")
     try store.selectAlphaChannel(channel.id); XCTAssertTrue(store.editingComponent)
     store.fill(color:.white,opacity:0.5); XCTAssertEqual(store.document.layers,d.layers)
@@ -48,7 +48,7 @@ final class AlphaChannelWorkflowTests: XCTestCase {
     await store.renderTask?.value
     try store.selectAlphaChannel(channel.id); let alphaRevision = store.revision
     store.select(d.layers[0].id); XCTAssertNil(store.editingChannel); XCTAssertGreaterThan(store.revision,alphaRevision)
-    store.perform(.selection(nil)); store.beginChannelDialog(.load); let load = try XCTUnwrap(store.channelDialog); store.commitChannelDialog(load)
+    store.perform(.selection(nil)); store.beginChannelDialog(.load); let load = try XCTUnwrap(store.channelDialog); store.commitChannelDialog(load); await load.task?.value
     XCTAssertEqual(store.document.selection,d.selection)
     try store.selectAlphaChannel(channel.id,overlay:true); await store.renderTask?.value; XCTAssertNotNil(store.image)
     store.perform(.channel(.delete(channel.id))); XCTAssertNil(store.alphaEditingID)

@@ -1,0 +1,27 @@
+{
+  "step": "dev-step-370",
+  "status": "Native source369 curated; awaiting staged verification and private push",
+  "run": "artifacts/runs/20261103T183950Z-370-private-source-backup",
+  "previous_goal_turn": "progress:369 source/454-per-architecture/native qualification",
+  "compiler_test_workers_live": false,
+  "source_manifest": "artifacts/runs/20261103T172125Z-369-S05-live-completion/source02.json",
+  "source_inputs": 7085,
+  "source_unchanged": true,
+  "goal_status": "active",
+  "goal_complete": false,
+  "S05_closed": false,
+  "new_source_push": false,
+  "new_binary_upload": false,
+  "new_install": false,
+  "new_archive": false,
+  "public_release": false,
+  "next_work": [
+    "Finish authorised private-source delivery",
+    "Verify remaining S05 hidden-target contexts; C01 remains queued"
+  ],
+  "source_snapshot": "docs/SOURCE_SNAPSHOT_370.json",
+  "included_qualified_inputs": 7051,
+  "excluded_qualified_inputs": 34,
+  "next_major_workflow": "C01: Component visibility and edit targeting; after S05 complete and tested",
+  "phase_ledger": "docs/FUNCTION_PHASES_370.json"
+}

@@ -164,6 +164,7 @@ public enum ActionOperation: Codable, Sendable {
     case .duplicateLayer(let id): self = .duplicate([target(id)], name: nil)
     case .duplicateLayers(let ids, let name): self = .duplicate(targets(ids), name: name)
     case .mergeLayers(let ids, let op): self = .merge(targets(ids), op)
+    case .preparedLayerMerge(let edit): self = .merge(targets(edit.layerIDs),edit.operation)
     case .renameLayer(let id, let v): self = .rename(target(id), v)
     case .visibility(let id, let v): self = .visibility(target(id), v)
     case .lock(let id, let v): self = .lock(target(id), v)

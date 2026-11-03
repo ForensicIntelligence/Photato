@@ -35,6 +35,12 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
+    if document.isChannelOnly {
+      if format == .psd || format == .psb {
+        return document.depth == .f32 || document.quickMask != nil ? "Save this standalone32-bit or Quick Mask document as Photato to retain its channels.":nil
+      }
+      return "Save this channel-only document as Photato, PSD or PSB. Load the mask into an image for ordinary image export."
+    }
     if (format == .psd || format == .psb),let issue=DocumentGuideInput.photoshopPersistenceIssue(document){return issue}
     if document.width * document.height > Surface.maximumDensePixels, format != .psd, format != .psb {
       return "Save this large canvas as Photato. Streamed full-size raster and PSD/PSB output is not yet available."
@@ -108,12 +114,19 @@ extension DocumentIO {
         default:
           return "This live or transformed layer is not yet editable in PSD. Save as Photato."
         }
-        if layer.mask != nil || layer.vectorMask != nil {
-          let t = layer.maskCoordinateTransform
-          let p = layer.effectiveMaskProperties
-          guard t.a == 1, t.b == 0, t.c == 0, t.d == 1,
-            t.tx == t.tx.rounded(), t.ty == t.ty.rounded(), p.outside == 0 || p.outside == 1
-          else { return "This transformed mask is not yet editable in PSD. Save as Photato." }
+        if let mask=layer.mask {
+          let t=layer.maskCoordinateTransform,p=layer.effectiveMaskProperties
+          guard p.outside==0 || p.outside==1 else{return "PSD mask outside coverage must be black or white. Save as Photato."}
+          let aligned=t.a==1 && t.b==0 && t.c==0 && t.d==1 && t.tx==t.tx.rounded() && t.ty==t.ty.rounded()
+          if !aligned {
+            guard p.feather==0 else{return "Transformed feathered masks require Photato format until PSD feather-space interchange is qualified."}
+            // Match PSDMaskExport's metadata-only admission, without rendering on
+            // menu validation or silently flattening native masks.
+            guard (try? (t * .translation(-1,-1)).bounds(width:mask.width+2,height:mask.height+2)) != nil else{return "The projected PSD mask exceeds supported bounds. Save as Photato."}
+          }
+        } else if layer.vectorMask != nil {
+          let t=layer.maskCoordinateTransform,p=layer.effectiveMaskProperties
+          guard t.a==1 && t.b==0 && t.c==0 && t.d==1 && t.tx==t.tx.rounded() && t.ty==t.ty.rounded() && (p.outside==0 || p.outside==1) else{return "This transformed vector-only mask still requires Photato format."}
         }
       }
       return nil

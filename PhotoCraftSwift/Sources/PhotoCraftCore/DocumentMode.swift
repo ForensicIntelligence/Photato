@@ -51,13 +51,14 @@ public struct DocumentModeEdit: Sendable {
 }
 
 extension CraftDocument {
-  public var colorMode: DocumentColorMode { inkMode?.mode ?? restrictedMode?.mode ?? modeDescriptor?.mode ?? .rgb }
+  public var colorMode: DocumentColorMode { isChannelOnly ? .multichannel:(inkMode?.mode ?? restrictedMode?.mode ?? modeDescriptor?.mode ?? .rgb) }
   public var hasNativeModeStorage: Bool { modeDescriptor != nil }
 
   /// The retained planes define document colors. Existing RGB algorithms operate
   /// on an sRGB cache; mode-specific compositing remains a separate parity gate.
   public func convertingMode(_ request: DocumentModeConversion) throws -> CraftDocument {
     try validate(); try Task.checkCancellation()
+    guard !isChannelOnly else{throw CraftError.unsupported("Load this mask into an image document before changing its color mode.")}
     if inkMode != nil { return try convertingInkMode(request) }
     let descriptor = try DocumentModeDescriptor(mode: request.mode, depth: request.depth,
       profile: request.profile, intent: request.intent)
@@ -145,6 +146,7 @@ extension CraftDocument {
   }
 
   func validateModeStorage() throws {
+    if isChannelOnly {try validateChannelOnly();return}
     if inkMode != nil { try validateInkModeStorage(); return }
     if restrictedMode != nil { try validateRestrictedModeStorage(); return }
     guard let descriptor = modeDescriptor else {

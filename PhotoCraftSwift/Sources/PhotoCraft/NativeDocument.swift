@@ -424,7 +424,7 @@ import SwiftUI
         store.clearMaskView()
         store.maskEditingLayerID = nil
         store.layerPanelOptionsDraft = nil
-        store.channelDialog = nil
+        store.cancelChannelDialog()
         store.channelPanelOptionsDraft = nil
         store.render()
       }
@@ -472,7 +472,7 @@ import SwiftUI
         store.clearMaskView()
         store.maskEditingLayerID = nil
         store.layerPanelOptionsDraft = nil
-        store.channelDialog = nil
+        store.cancelChannelDialog()
         store.channelPanelOptionsDraft = nil
         store.render()
       }
@@ -509,7 +509,7 @@ import SwiftUI
     store.clearMaskView()
     store.maskEditingLayerID = nil
     store.layerPanelOptionsDraft = nil
-    store.channelDialog = nil
+    store.cancelChannelDialog()
         store.channelPanelOptionsDraft = nil
     store.layerOpacityDraft = nil
         store.finishNumericField(cancel: true)

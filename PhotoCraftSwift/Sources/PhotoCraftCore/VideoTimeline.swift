@@ -190,7 +190,7 @@ extension Command {
     if case .animation(.convertFromVideo)=self {return}
     if case .animation(.restoreVideoSource)=self {return}
     switch self {
-    case .crop, .cropDocument, .canvasSize, .imageSize, .rotateCanvas, .mergeLayers, .documentMode, .preparedDocumentMode, .preparedColorProfile, .artboard, .animation:
+    case .crop, .cropDocument, .canvasSize, .imageSize, .rotateCanvas, .mergeLayers, .preparedLayerMerge, .documentMode, .preparedDocumentMode, .preparedColorProfile, .artboard, .animation:
       throw CraftError.unsupported("This operation needs an all-frame video implementation. Keep the video original and use a still copy for this operation.")
     default: break
     }

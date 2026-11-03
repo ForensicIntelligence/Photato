@@ -67,8 +67,7 @@ extension WorkspaceView {
           .overlay(Rectangle().stroke(.white.opacity(0.8))).offset(x: 5, y: 4)
         CompactColorWell(color: colorBinding).frame(width: 23, height: 23).offset(x: -4, y: -4)
       }.frame(height: 30)
-      iconButton("rectangle.inset.filled", "Edit in Quick Mask Mode (Q)", enabled: store.canEditChannels) { store.toggleQuickMask() }
-        .background(store.document.quickMask != nil ? Color.red.opacity(0.4):.clear)
+      QuickMaskModeButton(store:store).frame(width:32,height:22)
         .contextMenu { Button("Quick Mask Options…") { store.beginChannelDialog(.quickOptions) } }
       iconButton("rectangle.on.rectangle", "Fit canvas to workspace") { store.fit() }
     }.padding(.vertical, 6)

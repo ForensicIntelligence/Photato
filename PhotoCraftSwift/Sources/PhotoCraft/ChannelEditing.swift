@@ -3,9 +3,27 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 extension EditorStore {
+  static let hiddenQuickMaskBrushMessage = "Could not use the brush tool because the target channel is hidden."
+  var hasHiddenQuickMaskEditingTarget: Bool { editingChannel == .quickMask && !isQuickMaskVisible }
   var editingChannel: ChannelPlaneTarget? {
     if let id = alphaEditingID, document.alphaChannels?.contains(where: { $0.id == id }) == true { return .alpha(id) }
     return document.quickMask == nil ? nil : .quickMask
+  }
+  var isQuickMaskVisible: Bool {
+    guard let mask = document.quickMask else { return false }
+    return hiddenQuickMaskDocumentID != document.id || hiddenQuickMaskID != mask.id
+  }
+  var displayedAuxiliaryChannel: ChannelPlaneTarget? {
+    editingChannel == .quickMask && !isQuickMaskVisible ? nil : editingChannel
+  }
+  func setQuickMaskVisibility(_ visible: Bool) throws {
+    guard canEditChannels, let mask = document.quickMask else {
+      throw CraftError.invalid("Select an available Quick Mask after finishing the current interaction.")
+    }
+    guard isQuickMaskVisible != visible else { return }
+    hiddenQuickMaskDocumentID = visible ? nil : document.id
+    hiddenQuickMaskID = visible ? nil : mask.id
+    render()
   }
   var canEditChannels: Bool { !document.colorMode.isRestricted && canSelectComponentTarget && historyOperation == nil }
   func selectAlphaChannel(_ id: UUID?, overlay: Bool = false) throws {
@@ -17,8 +35,36 @@ extension EditorStore {
   }
   func toggleQuickMask() {
     guard canEditChannels else { return }
-    alphaEditingID = nil; componentTarget = .composite; modeComponentTargets = []; modeComponentVisibility = nil; maskEditingLayerID = nil; clearMaskView()
-    perform(.channel(.quickMask(document.quickMask == nil,quickMaskOptions)))
+    do {
+      try executeEditorCommand(.channel(.quickMask(document.quickMask == nil,quickMaskOptions)))
+      resetQuickMaskEditingContext();render()
+    } catch {self.error=error.localizedDescription}
+  }
+  func resetQuickMaskEditingContext() {
+    alphaEditingID=document.isChannelOnly && document.quickMask == nil ? document.alphaChannels?.first?.id:nil;componentTarget = .composite;modeComponentTargets=[];modeComponentVisibility=nil
+    maskEditingLayerID=nil;smartFilterMaskEditing=false;clearMaskView();channelView=RGBChannelView()
+  }
+  func reverseQuickMaskIndication() {
+    guard canEditChannels else{return}
+    var options=document.quickMask?.options ?? quickMaskOptions
+    options.indicates=options.indicates == .maskedAreas ? .selectedAreas:.maskedAreas
+    do {
+      if document.quickMask != nil {try executeEditorCommand(.channel(.options(.quickMask,options)))}
+      try quickMaskPreferences.set(options);render()
+    } catch {self.error=error.localizedDescription}
+  }
+  var canSaveSelectionChannel:Bool {canEditChannels && document.quickMask == nil && (document.selection != nil || document.selectionMask != nil)}
+  var canLoadSelectionChannel:Bool {canEditChannels && selectionChannelDocuments.contains {!SelectionChannelSource.choices(in:$0).isEmpty}}
+  var selectionChannelDocuments:[CraftDocument] {
+    let others=documentController?.documents.compactMap {($0 as? CraftNSDocument)?.store.document} ?? []
+    return [document]+others.filter {$0.id != document.id && $0.width==document.width && $0.height==document.height && !$0.colorMode.isRestricted}
+  }
+  var selectionChannelDocumentNames:[UUID:String] {
+    var names:[UUID:String]=[:]
+    for case let file as CraftNSDocument in documentController?.documents ?? [] {
+      names[file.store.document.id]=file.displayName ?? file.store.document.name
+    }
+    return names
   }
   func newAlphaChannel() {
     guard canEditChannels else { return }
@@ -36,10 +82,13 @@ extension EditorStore {
   }
   func beginChannelDialog(_ kind: ChannelDialog.Kind) {
     guard canEditChannels else { return }
-    channelDialog = ChannelDialog(kind:kind,document:document,target:editingChannel,defaults:quickMaskOptions)
+    if kind == .save && !canSaveSelectionChannel {return}
+    if kind == .load && !canLoadSelectionChannel {return}
+    channelDialog = ChannelDialog(kind:kind,document:document,target:editingChannel,defaults:quickMaskOptions,sources:selectionChannelDocuments,documentNames:selectionChannelDocumentNames,colorSettings:workingColorSettings)
   }
   func commitChannelDialog(_ draft: ChannelDialog) {
-    guard channelDialog === draft else { return }
+    guard channelDialog === draft,!draft.committing else { return }
+    if draft.kind == .save || draft.kind == .load {commitSelectionChannelDialog(draft);return}
     do {
       guard document==draft.source else{throw CraftError.invalid("The document changed. Cancel and reopen Channel Options.")}
       let command = try draft.command(document:document)

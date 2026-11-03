@@ -54,6 +54,7 @@ public struct ColorSettings: Codable, Equatable, Sendable {
   }
   public func profile(_ mode: DocumentColorMode, depth: PixelDepth) throws -> Data {
     if let data = storedProfile(mode) { return try NativeModeProfile.atDepth(data, mode: mode, depth: depth) }
+    if mode == .grayscale,depth != .f32 {return WorkingGrayProfiles.dotGain20}
     return try NativeModeProfile.standard(mode, depth: depth)
   }
   public func conversionProfile(from document: CraftDocument, to mode: DocumentColorMode, depth: PixelDepth) throws -> Data {

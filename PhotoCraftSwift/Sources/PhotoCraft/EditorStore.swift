@@ -74,6 +74,7 @@ import UniformTypeIdentifiers
   var channelPanelOptionsDraft: ChannelPanelOptionsDraft?
   var layerVisibilityDraft: LayerVisibilityDraft?
   @ObservationIgnored var layerVisibilityIsolation: LayerVisibilityIsolation?
+  @ObservationIgnored var layerMergePreparation: @Sendable (CraftDocument,Set<UUID>,LayerMergeOperation) throws -> Command = {try LayerMergePreparation.command($0,layerIDs:$1,operation:$2)}
   var flattenImageConfirmationID: UUID?
   @ObservationIgnored var flattenImageAlert: NSAlert?
   @ObservationIgnored var flattenImageConfirmation: (@MainActor (FlattenImageRequest) -> Bool)?
@@ -360,7 +361,14 @@ import UniformTypeIdentifiers
   var inkChannelOptions: InkChannelOptionsDraft?
   var alphaEditingID: UUID?
   var alphaOverlay = false
-  var quickMaskOptions = ChannelDisplayOptions()
+  // Visibility belongs to this temporary mask, independently of its edit target.
+  var hiddenQuickMaskDocumentID: UUID?
+  var hiddenQuickMaskID: UUID?
+  @ObservationIgnored let quickMaskPreferences:QuickMaskPreferences
+  var quickMaskOptions:ChannelDisplayOptions {
+    get {quickMaskPreferences.value}
+    set {try? quickMaskPreferences.set(newValue)}
+  }
   var channelDialog: ChannelDialog?
   var modeComponentTargets: Set<Int> = []
   var modeComponentVisibility: Set<Int>?
@@ -440,8 +448,10 @@ import UniformTypeIdentifiers
     document: CraftDocument, clipboard: (any ClipboardAccess)? = nil,
     cloneState: CloneSources? = nil, patterns: PatternLibrary? = nil,
     gradients: GradientLibrary? = nil, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
+    quickMaskPreferences:QuickMaskPreferences? = nil,
     prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
+    self.quickMaskPreferences=quickMaskPreferences ?? .shared
     self.shapes = shapes ?? .shared
     self.actions = actions ?? .shared
     self.brushes = brushes ?? .shared
@@ -452,6 +462,7 @@ import UniformTypeIdentifiers
     self.gradients = gradients ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
+    if document.isChannelOnly {alphaEditingID=document.alphaChannels?.first?.id}
     timelineVisible = document.animation != nil || document.videoTimeline != nil
     brush.color = .black
     brush.settings = .init()
@@ -488,6 +499,9 @@ import UniformTypeIdentifiers
     stopTimelinePlayback(render: false)
     guard historyOperation == nil else { throw HistoryNavigationConflict.busy }
     let command = try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))
+    if case .channel(.stroke(.quickMask, _, _)) = command, !isQuickMaskVisible {
+      throw CraftError.invalid(Self.hiddenQuickMaskBrushMessage)
+    }
     try validateComponentContext(command)
     let before = session.document
     try session.execute(routedMaskCommand(command))
@@ -588,6 +602,7 @@ import UniformTypeIdentifiers
     invalidatePeopleIfNeeded()
     refreshObjectFinderIfNeeded()
     if let id = alphaEditingID, document.alphaChannels?.contains(where: { $0.id == id }) != true { alphaEditingID = nil }
+    if document.isChannelOnly,document.quickMask == nil,alphaEditingID == nil {alphaEditingID=document.alphaChannels?.first?.id}
     if let draft = layerVisibilityDraft, draft.baseline != document { layerVisibilityDraft = nil }
     validateVisibilityIsolation()
     if let id = maskEditingLayerID,
@@ -631,7 +646,7 @@ import UniformTypeIdentifiers
     let gradientGesture = gradientGesture?.command
     let gradientStopColor = gradientStopColorDraft?.command
     let patternFill = patternFillDraft.flatMap { $0.preview ? $0.command : nil }
-    let auxiliaryTarget = editingChannel
+    let auxiliaryTarget = displayedAuxiliaryChannel
     let auxiliaryOverlay = auxiliaryTarget == .quickMask || alphaOverlay
     let channelView = channelView
     let modeVisibility = usesModeChannels ? modeComponentVisibility : nil
@@ -874,16 +889,21 @@ import UniformTypeIdentifiers
     }
   }
   func stroke(_ points: [StrokePoint], brush: Brush) {
+    if let channel=editingChannel {perform(.channel(.stroke(channel,points,brush)));return}
     if document.inkMode != nil, editingChannel == nil, !editingMask { perform(.inkChannel(.edit(effectiveInkTargets, .stroke(points, brush)))); return }
     guard let layer = activeLayer else { return }
     perform(editingMask ? .maskStroke(layer.id, points, brush) : .stroke(layer.id, points, brush))
   }
   func clear() {
+    if let channel=editingChannel {perform(.channel(.fill(channel,1,1)));return}
     if document.inkMode != nil, editingChannel == nil, !editingMask { fill(color: .white); return }
     if let layer = activeLayer { perform(editingMask ? .maskFill(layer.id, 0) : layer.isBackground && !editingComponent ? .backgroundLayer(.clear(layer.id,backgroundColor)):.clear(layer.id)) }
   }
   func fill(color: Pixel? = nil, opacity: Float = 1) {
     let color = color ?? brush.color
+    if let target=editingChannel {
+      perform(.channel(.fill(target,unit(0.2126*color.r+0.7152*color.g+0.0722*color.b),unit(color.a*opacity))));return
+    }
     if document.inkMode != nil, editingChannel == nil, !editingMask {
       guard canEditInkChannels else { return }
       perform(.inkChannel(.edit(effectiveInkTargets, .fill(unit(color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722), opacity * color.a))))

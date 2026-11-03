@@ -8,6 +8,7 @@ import PhotoCraftImaging
 final class LargeChannelPresentationWorkflowTests: XCTestCase {
   @MainActor func fixture(_ side: Int = 8192) throws -> CraftDocument {
     var doc = try CraftNSDocument.blankModel(width:side,height:side,background:Pixel(0.2,0.4,0.8))
+    doc.layers[0].background=nil
     doc.layers[0].mask = try Surface(width:side,height:side,depth:.f32,fill:Pixel(0.25,1,0,0))
     var properties=MaskProperties();properties.enabled=false;properties.density=0;properties.feather=20
     doc.layers[0].maskProperties=properties

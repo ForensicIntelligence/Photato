@@ -1,0 +1,145 @@
+{
+  "step": "dev-step-365",
+  "recorded_at_utc": "2026-11-02T21:26:18.702567+00:00",
+  "run": "artifacts/runs/20261102T204151Z-365-linked-preview",
+  "reference_standard": "Photoshop 2026; Rust inspiration only",
+  "source_manifest": "artifacts/runs/20261102T204151Z-365-linked-preview/source03.json",
+  "source_inputs": 7046,
+  "production_swift_files": 999,
+  "binary_sha256": "d0d8bee04d22d50ce05bb863643a59f004b8b8a87b94af29a7b66cbcf3d54c50",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "LinkedPreview|LinkedSmartObject|LinkedArtwork|LinkedSource|LinkedPackage|LinkedBulk|SmartObject|GeometryTests|PagedGeometry|PixelMaskTransform|MaskBoundary|MaskCommand|MaskPresentation|PSDMask|PSDCompression|PSDMergedSample|PSDLayerComp|RichLayerMerge|RichMergeWorkflow|LayerMerge|AutomationEncodingOptions|AutomationActionJobs|DocumentIOWorkflow|DocumentPersistence|DocumentSaveWorkflow|NativeTypeWorkflow|PSDAuxiliaryWorkflow|DocumentGuideWorkflow|ToolCursor|NativeArchive"
+    ],
+    "source_manifest": "artifacts/runs/20261102T204151Z-365-linked-preview/source03.json",
+    "inputs": 7046,
+    "production_swift_files": 999,
+    "started_at_utc": "2026-11-02T21:06:42.294598+00:00",
+    "exit_code": 1,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "d0d8bee04d22d50ce05bb863643a59f004b8b8a87b94af29a7b66cbcf3d54c50",
+    "finished_at_utc": "2026-11-02T21:14:05.550562+00:00",
+    "cases": 359,
+    "passed_cases": 358,
+    "failed_cases": 1,
+    "failed_case_names": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "failed_assertions": 2,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 32.078
+  },
+  "new_cases": 12,
+  "all_new_passed": true,
+  "independent": {
+    "passed": true,
+    "files": [
+      {
+        "file": "linked-preview-8 bit.psd",
+        "sha256": "09cb23c7d2cd609045e2cee95047087b5d367828dff0d68ecf08346359331a2d",
+        "depth": 8,
+        "version": 1,
+        "layer_alpha_corner": 143,
+        "mask_gray_corner": 143,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      },
+      {
+        "file": "linked-preview-8 bit.psb",
+        "sha256": "c53c406ae6b662359bb705609d6ec9534d33ccde387b41b24c1a33e0df98d061",
+        "depth": 8,
+        "version": 2,
+        "layer_alpha_corner": 143,
+        "mask_gray_corner": 143,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      },
+      {
+        "file": "linked-preview-16 bit.psd",
+        "sha256": "a18191e78fa316d3084c4dd11f0f7437f104336196006fb795802767942c291d",
+        "depth": 16,
+        "version": 1,
+        "layer_alpha_corner": 36863,
+        "mask_gray_corner": 36863,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      },
+      {
+        "file": "linked-preview-16 bit.psb",
+        "sha256": "33cc0cd9c6362f9ad8b820dbb19c15516ca055c21259bb67bb581b626b4b43b9",
+        "depth": 16,
+        "version": 2,
+        "layer_alpha_corner": 36863,
+        "mask_gray_corner": 36863,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      },
+      {
+        "file": "linked-preview-32 bit.psd",
+        "sha256": "93bde09d86f1056a7d738e039ec1247aa98d861e13f32fd4960f66ab28926b14",
+        "depth": 32,
+        "version": 1,
+        "layer_alpha_corner": 0.5625,
+        "mask_gray_corner": 0.5625,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      },
+      {
+        "file": "linked-preview-32 bit.psb",
+        "sha256": "79174ba81655cc74c4f22dc7f2dc747984764de4f0ad4b1e8064bd35c1ebe398",
+        "depth": 32,
+        "version": 2,
+        "layer_alpha_corner": 0.5625,
+        "mask_gray_corner": 0.5625,
+        "independent_layer_and_mask_samples": 312,
+        "merged_samples": 576
+      }
+    ],
+    "raw_RGBA_bytes": 5184,
+    "independent_PSD_PSB_component_bytes": 12432,
+    "method": "Standalone struct parser of all owned raw RGB/alpha/mask layer planes and merged samples, plus independent fixed bilinear numerical mask and source coverage math. Source/external link descriptors and full Photoshop equivalence are not independently qualified.",
+    "integer_reopened_corner_alpha8": 80,
+    "continuous_canvas_corner_alpha8": 81,
+    "Photoshop_oracle": false
+  },
+  "api_commands": 239,
+  "native_archive_version": 84,
+  "actions_version": 44,
+  "Photoshop_parity": false,
+  "full_current_suite_passed": false,
+  "live_UI_qualified": false,
+  "native_live_UI_qualified": false,
+  "live_Photoshop_owned_cached_file_observed": true,
+  "photoshop_cached_oracle": "artifacts/runs/20261102T204151Z-365-linked-preview/owned-oracle/photoshop-cached-reference01.json",
+  "limitations": "Integer preview/mask quantization still needs independent Photoshop qualification: the retained strict RGB8 round-trip comparison is not waived. Other current affected failures are recorded by case below. Full L05/I01 functionality, general Photoshop interpolation/ICC/filters/projective/effect/mask defaults, complete live UI, full current suite, supported Macs, dense capacity and physical 60 fps remain open. All 104 work packages retain their full acceptance criteria.",
+  "integer_before_after_equality_waived": false,
+  "references": [
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "read_on": "2026-11-02",
+      "scope": "Public structure/workflow provenance, not an independent interpolation/rounding oracle"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/update-linked-smart-objects.html",
+      "read_on": "2026-11-02",
+      "scope": "Public structure/workflow provenance, not an independent interpolation/rounding oracle"
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow",
+      "read_on": "2026-11-02",
+      "scope": "Public structure/workflow provenance, not an independent interpolation/rounding oracle"
+    }
+  ],
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_release": false,
+  "goal_complete": false
+}

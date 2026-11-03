@@ -19,7 +19,7 @@ public enum LayerMerge {
   public static func canApply(
     _ operation: LayerMergeOperation, layerIDs: Set<UUID>, in document: CraftDocument
   ) -> Bool {
-    (try? plan(operation, layerIDs: layerIDs, in: document)) != nil
+    (try? LayerMergePlan(operation, layerIDs: layerIDs, in: document)) != nil
   }
 
   /// Validate the operation and expose its allocation bounds before starting work.

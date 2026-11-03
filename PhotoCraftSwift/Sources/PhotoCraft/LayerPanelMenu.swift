@@ -44,8 +44,7 @@ extension EditorStore {
     case .applyMask: return "Apply Layer Mask"
     case .deleteMask: return "Delete Layer Mask"
     case .merge:
-      return ids.count == 1 && LayerMerge.canApply(.down, layerIDs: ids, in: document)
-        ? "Merge Down" : "Merge Layers"
+      return LayerMergeIntent.singleGroup(ids,in:document) ? "Merge Group":LayerMergeIntent.operation(ids,in:document).rawValue
     case .mergeVisible: return "Merge Visible"
     }
   }
@@ -84,7 +83,7 @@ extension EditorStore {
     case .toggleMask, .deleteMask: return editable && layer?.mask != nil
     case .applyMask: return editable && layer.map(canApplyMask) == true
     case .merge:
-      return LayerMerge.canApply(ids.count == 1 ? .down : .selected, layerIDs: ids, in: document)
+      return LayerMerge.canApply(LayerMergeIntent.operation(ids,in:document),layerIDs:ids,in:document)
     case .mergeVisible: return LayerMerge.canApply(.visible, layerIDs: ids, in: document)
     }
   }

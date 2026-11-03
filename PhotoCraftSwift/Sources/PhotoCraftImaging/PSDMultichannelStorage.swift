@@ -18,6 +18,7 @@ enum PSDMultichannelStorage {
     }
     guard !blocks.contains(where: { $0.id == 1022 }) else { throw CraftError.unsupported("Multichannel Quick Mask import is not implemented yet.") }
     let names = try PSDInkChannels.names(blocks, count: channels), displays = try PSDInkChannels.displays(blocks, count: channels)
+    var retained:[String:Data]=[:]
     var section = try r.section(lengthBytes: format.sectionLengthBytes)
     if section.remaining > 0 {
       var info = try section.section(lengthBytes: format.sectionLengthBytes)
@@ -27,12 +28,21 @@ enum PSDMultichannelStorage {
         }
       }
       if section.remaining > 0 { guard try section.section().remaining == 0 else { throw CraftError.unsupported("Multichannel global masks are not implemented.") } }
-      guard section.remaining <= 3, try section.consumePadding(0) else { throw CraftError.unsupported("Additional Multichannel layer metadata is not implemented.") }
+      while section.remaining >= 12 {
+        guard ["8BIM","8B64"].contains(try section.string(4)) else {throw CraftError.invalid("Invalid Multichannel global tag.")}
+        let tag=try section.string(4),length=try section.length(format.tagLengthBytes(tag))
+        guard ["CAI ","OCIO","GenI","FMsk","cinf"].contains(tag) else {throw CraftError.unsupported("Unrepresented Multichannel global metadata: \(tag).")}
+        guard retained["psdGlobal_"+tag] == nil else {throw CraftError.invalid("Duplicate Multichannel global tag.")}
+        let content=try section.bytes(length);_ = try section.bytes((4-length%4)%4)
+        if tag == "OCIO",try !["icc","none"].contains(PSDColorMetadata.managementKind(content) ?? "") {throw CraftError.unsupported("OpenColorIO-managed Multichannel documents are unavailable.")}
+        retained["psdGlobal_"+tag]=Data(content)
+      }
+      guard section.remaining <= 3, try section.consumePadding(0) else { throw CraftError.invalid("Invalid Multichannel global padding.") }
     }
     let pixelDepth: PixelDepth = depth == 8 ? .u8 : .u16
     let reader = try PSDChannelReader(r, width: width, height: height, depth: depth, channels: channels, format: format)
     var plates: [InkPlate] = [], alphas: [AlphaChannel] = []
-    var metadata = ["psdResources": resources]
+    var metadata = retained;metadata["psdResources"]=resources
     for channel in 0..<channels {
       try Task.checkCancellation()
       let info = displays[channel], id = UUID()
@@ -54,9 +64,11 @@ enum PSDMultichannelStorage {
       }
       if !info.raw.isEmpty { metadata[PSDInkChannels.key(id)] = info.raw }
     }
-    guard !plates.isEmpty else { throw CraftError.unsupported("A Multichannel document requires at least one printing ink.") }
     var document = try CraftDocument(width: width, height: height, depth: pixelDepth, name: name)
-      .replacingInkMode(.multichannel(MultichannelRaster(plates: plates)))
+    if plates.isEmpty {
+      guard !alphas.isEmpty else{throw CraftError.invalid("Multichannel document has no channels.")}
+      document.channelOnly=true;document.layers=[];document.activeLayerID=nil
+    } else {document=try document.replacingInkMode(.multichannel(MultichannelRaster(plates:plates)))}
     document.alphaChannels = alphas.isEmpty ? nil : alphas
     document.sourceMetadata = metadata; document.sourceICC = blocks.first { $0.id == 1039 }?.data
     if let block = blocks.first(where: { $0.id == 1005 }) {
@@ -77,29 +89,44 @@ enum PSDMultichannelStorage {
 
   static func write(_ document: CraftDocument, format: PSDFileFormat, compression: PSDCompression, to output: PSDOutput) throws {
     try document.validate()
-    guard case .multichannel(let raster) = document.inkMode, document.quickMask == nil,
+    let plates:[InkPlate]
+    if case .multichannel(let raster)=document.inkMode {plates=raster.plates}
+    else if document.isChannelOnly {plates=[]}
+    else{throw CraftError.invalid("Expected a Multichannel document.")}
+    guard document.depth != .f32,document.quickMask == nil,
       document.vanishingPoint == nil, document.width <= format.maximumDimension,
       document.height <= format.maximumDimension, document.pixelsPerInch < 65536 else {
       throw CraftError.unsupported("Multichannel PSD/PSB cannot retain active Quick Mask or unsupported geometry/plane metadata. Save as Photato.")
     }
-    let alphas = document.alphaChannels ?? [], count = raster.plates.count + alphas.count
+    let alphas = document.alphaChannels ?? [], count = plates.count + alphas.count
     guard count <= 56 else { throw CraftError.invalid("Photoshop files support at most56 channels.") }
     try output.text("8BPS"); try output.n(format.rawValue, 2); try output.append(Data(repeating: 0, count: 6))
     try output.n(count, 2); try output.n(document.height, 4); try output.n(document.width, 4)
     try output.n(document.bitsPerChannel, 2); try output.n(7, 2)
-    try output.section(Data()); try output.section(PSDGuides.applying(try PSDGlobalLight.applying(PSDInkChannels.resources(document, plates: raster.plates), document: document),document:document))
-    try output.section(Data(), lengthBytes: format.sectionLengthBytes)
+    try output.section(Data()); try output.section(PSDGuides.applying(try PSDGlobalLight.applying(PSDInkChannels.resources(document, plates: plates), document: document),document:document))
+    let globalKeys=["CAI ","OCIO","GenI","FMsk","cinf"].filter{document.sourceMetadata?["psdGlobal_"+$0] != nil}
+    if globalKeys.isEmpty {try output.section(Data(),lengthBytes:format.sectionLengthBytes)}
+    else {
+      let mark=try output.reserveLength(format.sectionLengthBytes)
+      try output.section(Data(),lengthBytes:format.sectionLengthBytes);try output.section(Data())
+      for key in globalKeys {
+        let data=document.sourceMetadata!["psdGlobal_"+key]!
+        try output.text("8BIM");try output.text(key);try output.section(data,lengthBytes:format.tagLengthBytes(key))
+        for _ in 0..<((4-data.count%4)%4) {try output.n(0,1)}
+      }
+      try output.finishLength(mark,width:format.sectionLengthBytes)
+    }
     try PSDChannelWriter.write(width: document.width, height: document.height, depth: document.bitsPerChannel,
       compression: compression, channels: count, format: format, to: output) { row in
       let channel = row / document.height, y = row % document.height
       var bytes: [UInt8] = []; bytes.reserveCapacity(document.width * (document.bitsPerChannel / 8))
       for x in 0..<document.width {
         let value: Int
-        if channel < raster.plates.count {
-          let plane = raster.plates[channel].samples, i = y * document.width + x
+        if channel < plates.count {
+          let plane = plates[channel].samples, i = y * document.width + x
           value = document.depth == .u8 ? 255 - Int(plane.bytes[i]) : 65535 - (Int(plane.bytes[2*i]) | Int(plane.bytes[2*i+1]) << 8)
         } else {
-          let sample = alphas[channel - raster.plates.count].pixels.pixel(x: x, y: y).r
+          let sample = alphas[channel - plates.count].pixels.pixel(x: x, y: y).r
           value = Int((sample * (document.depth == .u8 ? 255 : 65535)).rounded())
         }
         if document.depth == .u16 { bytes.append(UInt8(value >> 8)) }

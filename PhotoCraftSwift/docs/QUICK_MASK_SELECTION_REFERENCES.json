@@ -1,0 +1,79 @@
+{
+  "step": "dev-step-366",
+  "recorded_at_utc": "2026-11-02T22:21:03.558596+00:00",
+  "run": "artifacts/runs/20261102T213133Z-366-quick-mask-completion",
+  "reference_standard": "Photoshop2026; Rust inspiration does not determine acceptance",
+  "source_manifest": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/source02.json",
+  "source_inputs": 7065,
+  "production_swift_files": 1003,
+  "binary_sha256": "8993eb195d44501a684d221da1c51dde705a8b352ce89c8c5d5d1c5f66c9ec96",
+  "qualification": {
+    "command": [
+      "./scripts/test.sh",
+      "-c",
+      "release",
+      "--disable-build-manifest-caching",
+      "--filter",
+      "ChannelSelectionCompletion|QuickMaskSelection|AlphaChannel|PSDAuxiliary|ChannelTransform|ChannelArithmetic|ChannelWorkflow|ModeChannel|InkChannel|ChannelPresentation|SelectionPaging|PagedSelection|SelectionMask|SelectionTool|Component|AutomationTests|AutomationActionJobs|NativeArchive|ToolCursor|DocumentPersistence"
+    ],
+    "source_manifest": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/source02.json",
+    "inputs": 7065,
+    "production_swift_files": 1003,
+    "started_at_utc": "2026-11-02T22:09:24.273099+00:00",
+    "exit_code": 0,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "binary_sha256": "8993eb195d44501a684d221da1c51dde705a8b352ce89c8c5d5d1c5f66c9ec96",
+    "finished_at_utc": "2026-11-02T22:18:13.765485+00:00",
+    "cases": 266,
+    "passed_cases": 266,
+    "failed_cases": 0,
+    "failed_case_names": [],
+    "failed_assertions": 0,
+    "unexpected": 0,
+    "crashes": 0,
+    "test_seconds": 34.724
+  },
+  "new_cases": 15,
+  "all_new_passed": true,
+  "new_cases_by_module": {
+    "Core": 5,
+    "Imaging": 3,
+    "App": 7
+  },
+  "prior_failed_attempt": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/focused01-summary.json",
+  "independent_photoshop": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/independent-photoshop01.json",
+  "independent_native": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/independent-native02-summary.json",
+  "independent_samples": {
+    "photoshop_gray": 640,
+    "photoshop_total": 1024,
+    "native_changed_plane_samples": 384,
+    "native_changed_plane_bytes": 1152
+  },
+  "checker_correction": "artifacts/runs/20261102T213133Z-366-quick-mask-completion/independent-native02-failure01.json",
+  "precision": "RGB8 fixed coverage vectors;16-bit15-bit working arithmetic andFloat32 reciprocal expansion/screen Add match actual Photoshop channel words in the controlled corpus. No all-input equivalence claim.",
+  "native_archive_version": 84,
+  "actions_version": 44,
+  "api_commands": 239,
+  "official_references": [
+    "https://helpx.adobe.com/photoshop/using/create-temporary-quick-mask.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/save-and-load-selections.html",
+    "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/selection/"
+  ],
+  "live_Photoshop_reference": true,
+  "live_native_UI_qualified": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "S05_closed": false,
+  "next_major_package": "C01 after S05 completes and is tested",
+  "goal_complete": false,
+  "limitations": [
+    "S05 is still in progress: finish the remaining Save/Load source/destination cases and live UI qualification before closure. C01 is preselected next. The full current suite, all-input Photoshop output, supported physical Macs and60fps qualification remain open. Installed preview283, private source backup363 and store archive332 are unchanged; no installation, source push, archive, binary upload or release.",
+    "Photoshop Save Selection > New created an auxiliary Multichannel32 document, then PSD Save As reported disk error(-1); this was not a successful file reference. The owned document was discarded and the saved source closed.",
+    "Initial independent native checker used a fixed three-color-plane offset; retained failing report is an inspector assumption, corrected by deriving named-plane start from channel count minus alpha names. All384 intended target samples then match."
+  ],
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_release": false
+}

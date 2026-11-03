@@ -40,7 +40,9 @@ final class DocumentPersistenceTests: XCTestCase {
     XCTAssertTrue(gate.entered)
   }
   @MainActor func model() throws -> CraftDocument {
-    try CraftNSDocument.blankModel(width: 5, height: 3, background: Pixel(0.2, 0.4, 0.8, 1))
+    var document=try CraftNSDocument.blankModel(width:5,height:3,background:Pixel(0.2,0.4,0.8,1))
+    document.layers[0].background=nil
+    return document
   }
   @MainActor func testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory()
     async throws

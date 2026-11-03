@@ -1,12 +1,18 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 
 extension AutomationService {
   /// Same prepared native transaction as the desktop, with API revocation guards.
   func executeMerge(
     _ command: Command, document: CraftNSDocument, shareID: UUID, revision expected: String
   ) async throws {
-    try await executePreparedOperation(document: document, shareID: shareID, revision: expected) { _ in command }
+    if case .mergeLayers=command,document.store.smartFilterMaskEditing {throw AutomationFailure(status:422,message:"Merge requires the composite layer target.")}
+    let prepare=document.store.layerMergePreparation
+    try await executePreparedOperation(document: document, shareID: shareID, revision: expected) { source in
+      if case .mergeLayers(let ids,let operation)=command {return try prepare(source,ids,operation)}
+      return command
+    }
   }
   func executePreparedOperation(document: CraftNSDocument, shareID: UUID, revision expected: String,
     allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false,
@@ -24,7 +30,7 @@ extension AutomationService {
     prepare: @escaping @Sendable (CraftDocument) async throws -> (Command, Output)) async throws -> Output {
     let store = document.store
     let pathContext = allowPathTarget && !store.editingComponent && !store.editingMask && !store.smartFilterMaskEditing && !store.geometryBusy && !store.hasToneDraft && store.transformDraft == nil
-    guard (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels && store.isCompositeColorTarget) else {
+    guard (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels) else {
       throw AutomationFailure(status: 422, message: "This operation requires the RGB layer target.")
     }
     let paintTarget=allowPixelPaint ? store.nativePixelPaintTarget:nil
@@ -74,7 +80,7 @@ extension AutomationService {
     switch command {
     case .photoAlign(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
     case .photoBlend(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
-    case .preparedAction, .preparedDocumentMode, .toneAdjustment, .hdrToning, .proceduralRender, .maskAllObjects, .focusArea, .skyReplacement, .frame, .artboard, .contentAwareFill, .selectionRefinement, .mergeLayers, .embedSmartObject, .independentSmartObjectCopy, .addLayer:
+    case .preparedAction, .preparedDocumentMode, .toneAdjustment, .hdrToning, .proceduralRender, .maskAllObjects, .focusArea, .skyReplacement, .frame, .artboard, .contentAwareFill, .selectionRefinement, .mergeLayers, .preparedLayerMerge, .embedSmartObject, .independentSmartObjectCopy, .addLayer:
       store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? [])
     default: break
     }

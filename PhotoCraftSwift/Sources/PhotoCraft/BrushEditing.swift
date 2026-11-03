@@ -43,8 +43,9 @@ final class BrushGesture {
 }
 @MainActor extension EditorStore {
   func beginBrush(_ point:StrokePoint,zoom:Double,alternate:Bool=false,selectionMode:SelectionMode?=nil,eventTimestamp:TimeInterval?=nil) {
+    if hasHiddenQuickMaskEditingTarget { error = Self.hiddenQuickMaskBrushMessage; return }
     guard canUseBrush else { return }; let layer = activeLayer
-    guard let layerID = layer?.id ?? (document.inkMode != nil ? document.id : nil) else { return }
+    guard let layerID = layer?.id ?? (document.inkMode != nil || editingChannel != nil ? document.id : nil) else { return }
     var value=brush;value.settings=value.settings ?? .init();value.settings!.seed=UInt64.random(in:1...9_007_199_254_740_991);value.settings!.zoom=min(64,max(0.01,zoom))
     value.erase=tool == .eraser;value.backgroundColor=backgroundColor
     if editingMask && value.erase { value.color=backgroundColor;value.erase=false }

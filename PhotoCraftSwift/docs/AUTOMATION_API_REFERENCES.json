@@ -1666,5 +1666,24 @@
     },
     "desktop_shared_engine": true,
     "adobe_descriptor_qualified": false
+  },
+  "rich_merge_364": {
+    "reference": "docs/RICH_LAYER_MERGE_REFERENCES.json",
+    "scope": "Shared native RGB rich merge preparation, desktop/API/Actions and existing documented Adobe merge events;239commands/native84/Actions44 unchanged",
+    "limits": "Complete L02 merge/rasterization, numerical/palette/ink/temporal composition, cross-parent selections, clipped artwork without its selected base, hidden descendants inside visible merged groups, stamp/merge-clipping variants and exact Photoshop backdrop/effects/geometry/defaults/live UI remain open. Supported-platform, full-current-suite, dense maximum capacity and physical60fps qualification remain open. All 104 work packages remain open against their full acceptance criteria.",
+    "new_tool_or_modifier": false,
+    "inactive_hover_modifier_clear": true,
+    "single_group_default_dispatch": true,
+    "factory_menu_hierarchy_shortcuts_changed": false,
+    "contextual_merge_group_title_added": true,
+    "new_route": false
+  },
+  "linked_preview_365": {
+    "reference": "docs/LINKED_PREVIEW_EXPORT_REFERENCES.json",
+    "scope": "Shared PSD/PSB preview export correction;239commands/native84/Actions44 unchanged",
+    "limits": "Integer preview/mask quantization still needs independent Photoshop qualification: the retained strict RGB8 round-trip comparison is not waived. Other current affected failures are recorded by case below. Full L05/I01 functionality, general Photoshop interpolation/ICC/filters/projective/effect/mask defaults, complete live UI, full current suite, supported Macs, dense capacity and physical 60 fps remain open. All 104 work packages retain their full acceptance criteria.",
+    "new_tool_or_modifier": false,
+    "factory_menus_shortcuts_changed": false,
+    "new_route_or_request_schema": false
   }
 }

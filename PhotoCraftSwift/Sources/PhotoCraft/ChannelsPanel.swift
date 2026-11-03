@@ -72,7 +72,7 @@ struct ChannelsPanel: View {
               .accessibilityLabel(store.document.colorMode == .indexed ? "Index channel" : "Bitmap channel")
           } else if store.usesModeChannels {
             ModeChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size)
-          } else {
+          } else if !store.document.isChannelOnly {
             ForEach(RGBChannelPreview.allCases, id: \.self) { channel in row(channel) }
           }
           ForEach(store.document.alphaChannels ?? []) { channel in AuxiliaryChannelRow(store:store,channel:channel) }
@@ -162,11 +162,17 @@ struct AuxiliaryChannelRow: View {
   var body: some View {
     HStack(spacing:6) {
       Button {
-        if quick { store.toggleQuickMask() } else {
+        if quick {
+          do { try store.setQuickMaskVisibility(!store.isQuickMaskVisible) }
+          catch { store.error = error.localizedDescription }
+        } else {
           do { try store.selectAlphaChannel(channel.id,overlay:!store.alphaOverlay) } catch { store.error = error.localizedDescription }
         }
-      } label: { Image(systemName:store.editingChannel == target ? "eye":"eye.slash").frame(width:24) }
-        .help(quick ? "Exit Quick Mask":"View channel over image")
+      } label: { Image(systemName:(quick ? store.isQuickMaskVisible : store.editingChannel == target) ? "eye":"eye.slash").frame(width:24) }
+        .accessibilityLabel(quick ? "Quick Mask visibility" : "Visibility of \(channel.name) channel")
+        .accessibilityValue((quick ? store.isQuickMaskVisible : store.editingChannel == target) ? "Visible":"Hidden")
+        .accessibilityIdentifier(quick ? "channels.visibility.quickMask":"channels.visibility.\(channel.id.uuidString)")
+        .help(quick ? "Show or hide Quick Mask overlay":"View channel over image")
       Button {
         if quick { try? store.selectAlphaChannel(nil) }
         else { store.channelThumbnail(channel.id,modifiers:NSApp.currentEvent?.modifierFlags ?? []) }

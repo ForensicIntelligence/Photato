@@ -171,7 +171,12 @@ extension EditorStore {
       filterDraft = FilterDraft(id: document.id, filter: filter, inkTargets: effectiveInkTargets)
       render(); return
     }
-    guard let layer = activeLayer else { return }
+    if let target=editingChannel {
+      var filter=RasterFilter(kind)
+      if kind == .addNoise {filter.seed=UInt32.random(in:.min ... .max)}
+      filterDraft=FilterDraft(id:document.id,filter:filter,channelTarget:target);render();return
+    }
+    guard let layer=activeLayer else{return}
     if editingChannel != nil && (kind == .liquify || kind == .cameraRaw) { error = "Select RGB for this filter workspace."; return }
     var filter = RasterFilter(kind)
     if kind.isRender && kind != .lensFlare {filter.renderSettings?.foreground=brush.color;filter.renderSettings?.background=backgroundColor;filter.renderSettings?.seed=UInt32.random(in:.min ... .max)}

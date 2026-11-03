@@ -54,7 +54,7 @@ import PhotoCraftImaging
     get { brush.settings ?? .init() }
     set { brush.settings=newValue }
   }
-  var canUseBrush:Bool { !geometryBusy && !hasToneDraft && transformDraft == nil && (isCompositeColorTarget || (!modeComponentTargets.isEmpty && canEditModeComponents && [.brush, .eraser].contains(tool))) && (activeLayer != nil || document.inkMode != nil) && (document.colorMode != .multichannel || [.brush, .eraser].contains(tool)) }
+  var canUseBrush:Bool { !geometryBusy && !hasToneDraft && transformDraft == nil && (isCompositeColorTarget || (!modeComponentTargets.isEmpty && canEditModeComponents && [.brush, .eraser].contains(tool))) && (activeLayer != nil || document.inkMode != nil || editingChannel != nil) && (document.colorMode != .multichannel || [.brush, .eraser].contains(tool)) }
   func selectBrush(_ id:UUID)throws {
     guard canUseBrush else { throw CraftError.invalid("Finish the current edit before choosing a brush.") }
     brush=try brushes.preset(id).applying(to:brush);selectedBrushID=id

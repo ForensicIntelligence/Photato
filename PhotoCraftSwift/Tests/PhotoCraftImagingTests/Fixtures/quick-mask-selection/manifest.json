@@ -1,0 +1,24 @@
+{
+  "application": "Adobe Photoshop2026",
+  "version": "27.2.0",
+  "captured": "2026-11-02",
+  "files": {
+    "save-combine-results.psd": "19fd159c8206a031c3cbc40b50c59c9964d577224175fb040b32cf27e7c4b36d",
+    "standalone-selection-16.psd": "e5dfbe1443c298a680ca2e7e1387683d8cb990b86690d0c3cf2b3eca536611e6",
+    "save-combine-16-input.psd": "e9b22fe32f14835555b4369ca0c04a9e0da868f456555f797e9909cf1707cde2",
+    "photoshop-32-input.psd": "ff8d2526f2787cde6d4ab870fc14a8686d841b0ba80436985163898533bf3887",
+    "selection-input.psd": "8e0fc078e35a2ef5499b4fb2c39f2d29e24167ae50b94fc6ca203a19a9823bf2",
+    "save-combine-16-results.psd": "7601ba8e2ff11321c644faee9c0e9b74a8c02acc2922b6d450a2d150a204814a",
+    "reference.json": "f53ee69bd09ab8bae02e7b95ec8d8ae988d8352d4afe09f606f15579d74d58e9",
+    "input-values.json": "628a4c9b9957744c7a93a64bf83a71f400cecbed562fabfde479f8d62e3df561",
+    "standalone-selection-8.psd": "1ccc0dae1533a0b9c575e069d3606f5b9a5da22febb545ab0e8a4f5e4d9aed5d",
+    "photoshop-32-results.psd": "cc5c72862a2c841e6128d57dfa00cadd33aa8d5b2c4e579dcfee8d7737547592",
+    "selection-results.psd": "f4f25063ea9fdd40b1739bf23aaa78898353dea12b8da6283870c8cb4c7147ce",
+    "save-combine-input.psd": "1dccd557d6938ba577d6ce2c41ae2c8401292d77cb5abe3d0fa5a08d9d08d5c5",
+    "README.txt": "f453e53e48fc3e088a569e06271829e1635bd51142c4be7de10563d8503bab69",
+    "composite-rgb8-input.psd": "a500e1d70abbb639dca6c8f6883ea20c98e6f11814ab2de0d9d25d8c708f399c",
+    "composite-rgb8-reference.json": "6ff80b7bc5f4a56629fd671a9591874ec897fef48595163c69128f9b690cd9c3"
+  },
+  "scope": "Owned RGB8 grayscale selection combination samples; global platform and all-input parity remain separate.",
+  "standalone_reference": "Photoshop27.2.0 Save Selection > Document New; mode7 auxiliary-only8/16-bit output, with no printing plates or image layers."
+}

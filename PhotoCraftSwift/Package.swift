@@ -10,7 +10,7 @@ let package = Package(
   ],
   targets: [
     .target(name: "PhotoCraftCore"),
-    .target(name: "PhotoCraftImaging", dependencies: ["PhotoCraftCore"]),
+    .target(name: "PhotoCraftImaging", dependencies: ["PhotoCraftCore"], resources: [.copy("Resources/FactoryRGB8Gray20.zlib")]),
     .target(name: "PhotoCraftAI"),
     .executableTarget(
       name: "PhotoCraft", dependencies: ["PhotoCraftCore", "PhotoCraftImaging", "PhotoCraftAI"]),

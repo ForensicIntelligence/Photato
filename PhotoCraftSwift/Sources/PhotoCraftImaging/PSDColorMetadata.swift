@@ -37,7 +37,8 @@ enum PSDColorMetadata {
   }
   /// Read the leading kind entry in Photoshop's color-management descriptor.
   /// Unrecognized layouts fail explicitly until the general action-descriptor port is complete.
-  static func usesICC(_ data: Data) throws -> Bool {
+  static func usesICC(_ data:Data)throws->Bool {try managementKind(data)=="icc"}
+  static func managementKind(_ data: Data) throws -> String? {
     var r = PSDReader(data: data)
     func text(_ r: inout PSDReader) throws -> String {
       let count = try r.u32()
@@ -51,11 +52,11 @@ enum PSDColorMetadata {
       guard count <= 10_000 else { throw CraftError.invalid("PSD descriptor key is too long.") }
       return try r.string(count == 0 ? 4 : count)
     }
-    guard try r.u32() == 16 else { return false }
+    guard try r.u32() == 16 else { return nil }
     _ = try text(&r)
     guard try key(&r) == "documentColorManagementInfo", try r.u32() > 0,
       try key(&r) == "Knd ", try r.string(4) == "TEXT"
-    else { return false }
-    return try text(&r) == "icc"
+    else { return nil }
+    return try text(&r)
   }
 }

@@ -277,6 +277,8 @@ public struct CraftDocument: Codable, Equatable, Sendable {
   public var modeDescriptor: DocumentModeDescriptor?
   public var restrictedMode: RestrictedModeRaster?
   public var inkMode: InkModeRaster?
+  /// Native85: a standalone saved selection, with no image/printing channels.
+  public var channelOnly:Bool?
   public var sourceMetadata: [String: Data]?
   public var artboardOrigin: ArtboardOrigin?
   public var vanishingPoint: VanishingSettings?

@@ -166,8 +166,8 @@ import SwiftUI
     }
     if item.action == #selector(lockLayers) { return store?.canChangeLayerProtection == true }
     if item.action == #selector(toggleQuickMask) { item.state = store?.document.quickMask != nil ? .on:.off; return store?.canEditChannels == true }
-    if item.action == #selector(saveSelectionChannel) { return store?.canEditChannels == true }
-    if item.action == #selector(loadSelectionChannel) { return store?.canEditChannels == true && !(store?.document.alphaChannels ?? []).isEmpty }
+    if item.action == #selector(saveSelectionChannel) { return store?.canSaveSelectionChannel == true }
+    if item.action == #selector(loadSelectionChannel) { return store?.canLoadSelectionChannel == true }
     if item.action == #selector(crop) {
       guard let store else { return false }
       if let draft = store.cropDraft { return store.cropReadyDraft == draft && store.cropPrepared != nil }
@@ -238,7 +238,7 @@ import SwiftUI
     if let result = validateDocumentWindowMenuItem(item) { return result }
     if item.action == #selector(mergeLayers) {
       let operation = store?.menuMergeOperation ?? .selected
-      item.title = operation.rawValue
+      item.title = store?.menuMergeTitle ?? operation.rawValue
       return store?.canMerge(operation) == true
     }
     if item.action == #selector(trimImage) {return store?.canUseCanvasEdges(.trim(.init())) == true}

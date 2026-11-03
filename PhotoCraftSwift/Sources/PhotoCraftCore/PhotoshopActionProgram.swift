@@ -43,6 +43,7 @@ public struct PhotoshopActionProgram: Sendable {
     public init(mode: DocumentColorMode, components: Set<Int>) { self.mode = mode; self.components = components }
   }
 
+  public typealias MergeRenderer = @Sendable (CraftDocument,Set<UUID>,LayerMergeOperation) throws -> Command
   public typealias FlattenRenderer = @Sendable (CraftDocument) throws -> Command
   public typealias StackRenderer = @Sendable (CraftDocument, UUID, ImageStackMode) throws -> Command
   public typealias ModeConverter = @Sendable (CraftDocument, DocumentModeConversion, Bool) throws -> Command
@@ -103,18 +104,18 @@ public struct PhotoshopActionProgram: Sendable {
   /// Work on an isolated session. Validation, unsupported contexts, cancellation
   /// and later-step errors never partially replace the caller's document.
   public func applying(to document: CraftDocument, components initial: RGBComponents? = nil,
-    modeComponents: ModeComponentTarget? = nil, stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil)
+    modeComponents: ModeComponentTarget? = nil, stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil, mergeRenderer: MergeRenderer? = nil)
     throws -> Result
   {
     try applying(to: EditorSession(document: document), components: initial,
-      modeComponents: modeComponents, stackRenderer: stackRenderer, modeConverter: modeConverter, flattenRenderer: flattenRenderer)
+      modeComponents: modeComponents, stackRenderer: stackRenderer, modeConverter: modeConverter, flattenRenderer: flattenRenderer, mergeRenderer: mergeRenderer)
   }
 
   /// Continue another action resource without losing its history or target.
   public func applying(
     to original: EditorSession, components initial: RGBComponents? = nil,
     selectedLayerIDs initialLayers: Set<UUID>? = nil, modeComponents initialMode: ModeComponentTarget? = nil,
-    stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil
+    stackRenderer: StackRenderer? = nil, modeConverter: ModeConverter? = nil, flattenRenderer: FlattenRenderer? = nil, mergeRenderer: MergeRenderer? = nil
   )
     throws -> Result
   {
@@ -202,13 +203,8 @@ public struct PhotoshopActionProgram: Sendable {
         }
         let operation: LayerMergeOperation =
           step == .mergeVisible ? .visible : selectedLayers.count == 1 ? .down : .selected
-        let bounds = try LayerMerge.outputBounds(
-          operation, layerIDs: selectedLayers, in: session.document)
-        guard bounds.width <= 4_194_304 / bounds.height else {
-          throw CraftError.unsupported(
-            "Action merge exceeds the local 4,194,304 pixel allocation limit.")
-        }
-        try session.execute(.mergeLayers(selectedLayers, operation))
+        if let mergeRenderer {try session.execute(mergeRenderer(session.document,selectedLayers,operation))}
+        else {try session.execute(.mergeLayers(selectedLayers,operation))}
         selectedLayers = Set(session.document.activeLayerID.map { [$0] } ?? [])
       case .selectComponents(let selected):
         guard session.document.colorMode == .rgb else {
@@ -464,10 +460,10 @@ public struct PhotoshopActionProgram: Sendable {
     case "flattenImage", "$FltI":
       try known(fields, keys: metadata)
       return .flattenImage
-    case "$Mrg2":
+    case "mergeLayersNew", "$Mrg2":
       try known(fields, keys: metadata)
       return .mergeSelected
-    case "$MrgV":
+    case "mergeVisible", "$MrgV":
       try known(fields, keys: metadata)
       return .mergeVisible
     case "selectAllLayers":

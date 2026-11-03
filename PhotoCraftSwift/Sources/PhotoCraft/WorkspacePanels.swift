@@ -269,7 +269,7 @@ extension WorkspaceView {
       } else {
         Label("Document", systemImage: "doc")
         Text(
-          "\(store.document.width) × \(store.document.height) px · RGB/\(depthNumber(store.document.depth))"
+          "\(store.document.width) × \(store.document.height) px · \(store.document.colorMode.rawValue.uppercased())/\(depthNumber(store.document.depth))"
         )
       }
     }.padding(12).frame(maxWidth: .infinity, alignment: .leading)

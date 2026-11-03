@@ -15,8 +15,9 @@ extension RGBChannelPreview {
 
 extension EditorStore {
   var editingComponent: Bool { !isCompositeColorTarget || editingChannel != nil }
-  var canSelectComponentTarget: Bool {
-    !geometryBusy && !aiBusy && !hasToneDraft && transformDraft == nil
+  var canSelectComponentTarget: Bool {canSelectComponentTarget(excludingChannelDialog:false)}
+  func canSelectComponentTarget(excludingChannelDialog:Bool)->Bool {
+    !geometryBusy && !aiBusy && !(excludingChannelDialog ? hasToneDraftExceptChannelDialog:hasToneDraft) && transformDraft == nil
       && !coalescingChanges && pathGesture == nil && brushGesture == nil && historyOperation == nil && geometrySheet == nil
       && !showAI && !showImagePlayground && !showFeatherSelection
       && patternNameDraft == nil && gradientNameDraft == nil
@@ -66,7 +67,7 @@ extension EditorStore {
       switch command {
       case .modeComponents(let edit):
         guard !editingMask, editingChannel == nil, edit.layerID == document.activeLayerID, edit.components == modeComponentTargets else { throw CraftError.invalid("The edit must match the selected layer and color components.") }
-      case .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
+      case .channel, .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
         .renameLayer, .layerColor, .layerVisibility, .visibility, .lock, .opacity, .blend: break
       default: throw CraftError.unsupported("Select the composite color target for this operation.")
       }
@@ -78,7 +79,7 @@ extension EditorStore {
       guard !editingMask, id == document.activeLayerID, fill.components == target else {
         throw CraftError.invalid("Component Fill must match the active layer and channel target.")
       }
-    case .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
+    case .channel, .layerComp, .documentMetadata, .guides, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection,
       .renameLayer, .layerColor, .layerVisibility, .visibility, .lock, .opacity, .blend:
       break
     default:
@@ -89,7 +90,7 @@ extension EditorStore {
   }
 
   func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false, allowLinkedSmartObject: Bool = false) throws {
-    if prepared.isSelectionOnly {try session.executePrepared(prepared);return}
+    if prepared.isSelectionOnly || (allowAuxiliary && prepared.isChannelOnlyEdit) {try session.executePrepared(prepared);return}
     if allowLinkedSmartObject {
       guard let edit=prepared.linkedSmartObjectEdit,edit.source==document else {throw CraftError.invalid("Missing or stale linked artwork transaction.")}
       try session.executePrepared(prepared);return
@@ -116,6 +117,21 @@ extension EditorStore {
   }
 
   @discardableResult func handleComponentShortcut(_ event: NSEvent) -> Bool {
+    if event.type == .keyDown,event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command,.option],
+      let number=Int(event.charactersIgnoringModifiers ?? ""),canEditChannels {
+      let start=3+document.colorMode.componentCount
+      if document.colorMode.componentCount>0,number==2 {loadSelectionSource(.composite);return true}
+      if number>=3,number<start {loadSelectionSource(.component(number-3));return true}
+      if let channels=document.alphaChannels,channels.indices.contains(number-start),canEditChannels {
+        perform(.channel(.load(.alpha(channels[number-start].id),.replace,false)));return true
+      }
+    }
+    if document.isChannelOnly,event.type == .keyDown,
+      event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command],
+      let number=Int(event.charactersIgnoringModifiers ?? ""),let channels=document.alphaChannels,channels.indices.contains(number-3) {
+      do{try selectAlphaChannel(channels[number-3].id)}catch{self.error=error.localizedDescription};return true
+    }
+    if document.isChannelOnly,event.modifierFlags.contains(.command),["2","3","4","5"].contains(event.charactersIgnoringModifiers ?? "") {return false}
     if usesModeChannels, event.type == .keyDown,
       event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command],
       let number = Int(event.charactersIgnoringModifiers ?? ""), (2...9).contains(number) {

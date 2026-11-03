@@ -226,7 +226,7 @@ extension Command {
   func validateAnimationContext(in document: CraftDocument) throws {
     guard document.animation != nil else { return }
     switch self {
-    case .crop, .cropDocument, .canvasSize, .imageSize, .rotateCanvas, .mergeLayers,
+    case .crop, .cropDocument, .canvasSize, .imageSize, .rotateCanvas, .mergeLayers, .preparedLayerMerge,
       .documentMode, .preparedDocumentMode, .preparedColorProfile, .artboard:
       throw CraftError.unsupported("This operation does not yet transform all animation frames. Keep the animated original and prepare a still copy first.")
     default: break

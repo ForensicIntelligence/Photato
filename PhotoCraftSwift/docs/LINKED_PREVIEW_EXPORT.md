@@ -1,0 +1,27 @@
+# Linked Smart Object PSD/PSB previews
+
+Linked Smart Object export now samples transparent raster boundaries when preparing the derived unfiltered affine preview. Before changing that raster's local frame, it projects a transformed pixel mask into PSD's numerical-gray document-space representation. General geometry transforms keep their previous clamped-raster default; embedded previews retain their existing policy. The native document, retained original bytes, placements, mask editing/link/density/enabled state and history are not replaced by a derived export copy.
+
+Native/API Save As admission now follows the supported zero-feather pixel-mask projection instead of rejecting every transformed mask. Vector-only restrictions remain separate. Legacy opaque Layer Comp metadata now retains the original Background identifier, avoiding a mismatch between lyid and preserved cmls LyrI records. Typed/new comp ID rules and Background format minimum83are retained.
+
+The earlier export could turn a transformed source/mask edge fully opaque: alpha 255 instead of the native fixture's 81/143. This increment removes that clamping and incorrect RGBA-mask projection. It does not invent compensating alpha or change the renderer to conceal integer storage loss. In the owned 2×fixture, continuous source coverage and gray coverage are 0.5625 each. Separate8-bit planes encode 143/255 each, whose product rounds to 80; the continuous product rounds to 81. The exact Photoshop choice requires an independent saved/reopened reference. The original strict equality test remains unchanged and any failure stays visible.
+
+Float32 and exact encoded-plane behavior are tested separately. An unresolved imported link uses its retained cache; repeated export does not open its referenced path, restore original bytes or authorize access. The link, original placement and editable mask metadata remain available for the existing explicit locate/relink workflow. Transformed feathered masks still use the existing explicit unsupported-context rule instead of silently changing feather space.
+
+## API and UI
+
+The desktop encoder, existing Photato binary downloads, approved local Save As and both resource-job interfaces use the shared PSD codec. LinkedArtworkAPI exposes previewExport capability metadata describing the sampling and remaining precision limits. No new visible setting, document state field, input/result schema, command, format version, factory shortcut, tool/modifier behavior or Adobe route is introduced.The API retains 239 typed commands, native file format 84 and Actions format 44.
+
+GET /v1/documents/{id}/file.psd and file.psb and document.saveAs retain existing permission/revision/output-folder/error rules. Published /v2/execute-actions and Photato /v1/action-jobs retain their contract and isolated-document lifecycle. The job tests verify unresolved-cache serialization; they do not claim that Adobe linked-source replacement or proprietary rendering is equivalent. Desktop/API results are compared through identical source snapshots and encoding settings; exports do not add editing history.
+
+## Evidence and open work
+
+All 12 new cases pass. Of 359 affected optimized cases, 358 pass and 1 fail, with 2 failed assertions, 0 unexpected errors and 0 crashes. Independent math checks cover 5184 raw RGBA bytes; a standalone PSD/PSB parser checks 12432 bytes across all owned layer, alpha, mask and merged-image planes.
+
+Integer preview/mask quantization still needs independent Photoshop qualification: the retained strict RGB8 round-trip comparison is not waived. Other current affected failures are recorded by case below. Full L05/I01 functionality, general Photoshop interpolation/ICC/filters/projective/effect/mask defaults, complete live UI, full current suite, supported Macs, dense capacity and physical 60 fps remain open. All 104 work packages retain their full acceptance criteria.
+
+Current failed cases: PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths.
+
+Independent checks use fixed bilinear coverage equations and standard raw PSD/PSB structures, not the native decoder to generate expected pixels. They qualify the owned fixtures; full Photoshop file/descriptors are not independently proven. Photoshop 27.2.0 now accepts input. The owned12×12 cached RGB8 file was opened, its missing-link cache retained, the Smart Object rasterized, and a separate PNG saved. Independent PNG decoding matches all144alpha bytes and144visibleRGBbytes against native reopened output. There are288hiddenRGB differences under zero alpha (Photoshop white, native raw composite black); full RGBA equality is not established. The native continuous-before corner remains81versus80in both reopened results. The input was closed without saving and its hash verified; no user document was edited. See the separate observed workflow record. Private source backup 363, installed preview 283 and store archive 332 are unchanged. No install, push, archive, binary upload or software release.
+
+[Adobe file specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/) · [Adobe linked-object update guide](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/update-linked-smart-objects.html) · [Adobe API Smart Object workflow](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow) · [Evidence](LINKED_PREVIEW_EXPORT_REFERENCES.json)

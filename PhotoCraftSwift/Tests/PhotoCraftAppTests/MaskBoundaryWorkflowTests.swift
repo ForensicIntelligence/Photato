@@ -27,7 +27,7 @@ final class MaskBoundaryWorkflowTests: XCTestCase {
       let preview = try await helper.request(service, path: "/v1/documents/\(share.id)/preview.png")
       XCTAssertEqual(preview.0.statusCode, 200)
       XCTAssertEqual(preview.1, try AutomationService.png(model))
-      let saved = try await helper.request(service, path: "/v1/documents/\(share.id)/file.photato")
+      let saved = try await helper.request(service, path: "/v1/documents/\(share.id)/file.photato",headers:["X-Photato-Archive-Version":"84"])
       XCTAssertEqual(saved.0.statusCode, 200)
       XCTAssertEqual(try Renderer.composite(NativeArchive.decode(saved.1)), native)
       XCTAssertTrue(document.store.session.undoStack.isEmpty)

@@ -998,6 +998,10 @@ public enum PSDCodec {
     guard doc.variables == nil else { throw CraftError.unsupported("Save the editable variables and data sets in Photato format. Export a data-set variation to create a PSD without template definitions.") }
     guard doc.videoTimeline == nil else { throw CraftError.unsupported("Editable video requires Photato format; PSD video interchange remains unavailable.") }
     guard doc.animation == nil else { throw CraftError.unsupported("Editable animation requires Photato format; PSD animation interchange remains unavailable.") }
+    if doc.isChannelOnly {
+      guard includeComposite else{throw CraftError.unsupported("A channel-only document requires its saved mask planes.")}
+      try PSDMultichannelStorage.write(doc,format:format,compression:compositeCompression,to:output);return
+    }
     if case .multichannel = doc.inkMode {
       guard includeComposite else { throw CraftError.unsupported("Multichannel Photoshop files require their ink planes.") }
       try PSDMultichannelStorage.write(doc, format: format, compression: compositeCompression, to: output); return

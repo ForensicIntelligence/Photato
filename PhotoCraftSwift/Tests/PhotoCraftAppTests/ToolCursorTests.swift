@@ -147,6 +147,7 @@ final class ToolCursorTests: XCTestCase {
     let release = try XCTUnwrap(NSEvent.keyEvent(with:.keyUp,location:.zero,modifierFlags:[],timestamp:1,windowNumber:window.windowNumber,context:nil,characters:" ",charactersIgnoringModifiers:" ",isARepeat:false,keyCode:49))
     canvas.observeCursorModifiers(release);XCTAssertFalse(canvas.spaceHeld)
     let admission = try XCTUnwrap(window as? CursorAdmissionWindow)
+    canvas.observeCursorModifiers(try flags(.option,window:window));XCTAssertEqual(canvas.cursorModifiers,.option)
     admission.cursorKeyState = false
     canvas.observeCursorModifiers(try flags(.option,window:window));XCTAssertTrue(canvas.cursorModifiers.isEmpty)
     admission.cursorKeyState = true

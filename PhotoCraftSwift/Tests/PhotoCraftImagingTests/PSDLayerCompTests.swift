@@ -19,7 +19,7 @@ final class PSDLayerCompTests: XCTestCase {
   }
   func testIndependentSavedFileNamesFlagsCommentsInheritanceOffsetsAndPriorState() throws {
     let d = try PSDCodec.read(Data(contentsOf: fixtureURL)), library = try XCTUnwrap(d.layerComps)
-    XCTAssertEqual(library.comps.count, 5); XCTAssertEqual(d.minimumArchiveVersion, 82)
+    XCTAssertEqual(library.comps.count,5);XCTAssertTrue(d.layers.contains(where: \.isBackground));XCTAssertEqual(d.minimumArchiveVersion,83)
     XCTAssertEqual(library.comps.map(\.name), (1...5).map { "Layer Comp \($0)" })
     XCTAssertEqual(library.comps[0].options, .init(visibility: false, position: false, appearance: false))
     XCTAssertEqual(library.comps[3].comment, "some comments"); XCTAssertEqual(library.appliedID, PSDLayerComps.uuid(510999610))
@@ -154,6 +154,7 @@ final class PSDLayerCompTests: XCTestCase {
       let block = try XCTUnwrap(PSDImageResources.blocks(read.sourceMetadata!["psdResources"]!).first { $0.id == 1065 })
       XCTAssertEqual(block.raw, sourceBlock.raw); XCTAssertEqual(read.layerComps?.comps.map(\.id), original.layerComps?.comps.map(\.id))
       XCTAssertEqual(read.layers.map { $0.sourceTags?["shmd"] }, original.layers.map { $0.sourceTags?["shmd"] })
+      XCTAssertEqual(read.layers.map{$0.sourceTags?["lyid"]},original.layers.map{$0.sourceTags?["lyid"]})
     }
     XCTAssertEqual(legacy.layerComps, nil)
   }

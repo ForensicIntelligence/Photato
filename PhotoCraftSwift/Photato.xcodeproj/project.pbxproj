@@ -17,6 +17,7 @@
 		C1BBE9E9B18FA1A0B99CBE17 /* ATTRIBUTION.md in Resources */ = {isa = PBXBuildFile; fileRef = 33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */; };
 		C60942F1804246644CBCB153 /* LICENSE-APACHE in Resources */ = {isa = PBXBuildFile; fileRef = 0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */; };
 		E7ECCCB917FBF8351388B93B /* ProjectLinks.json in Resources */ = {isa = PBXBuildFile; fileRef = C4A78ACF4208028644F39007 /* ProjectLinks.json */; };
+		F36800000000000000000002 /* FactoryRGB8Gray20.zlib in Resources */ = {isa = PBXBuildFile; fileRef = F36800000000000000000001 /* FactoryRGB8Gray20.zlib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,7 +160,16 @@
 		F3DF3170481F20EE48A10CCC /* fetch-pattern-fixtures.cpython-314.pyc */ = {isa = PBXFileReference; path = "fetch-pattern-fixtures.cpython-314.pyc"; sourceTree = "<group>"; };
 		F8196FFE6233909937893D42 /* build-app.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-app.sh"; sourceTree = "<group>"; };
 		FA199405C53DF623B10604F9 /* copy-people-model.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-people-model.sh"; sourceTree = "<group>"; };
+		F36800000000000000000001 /* FactoryRGB8Gray20.zlib */ = {isa = PBXFileReference; lastKnownFileType = file; name = FactoryRGB8Gray20.zlib; path = Sources/PhotoCraftImaging/Resources/FactoryRGB8Gray20.zlib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F36800000000000000000003 /* Imaging resource copied by app */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (Resources/FactoryRGB8Gray20.zlib,);
+			target = 5D5F548C88B20B560E9378DA /* PhotoCraftImaging */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		26A7649588CD3229AB5699A4 /* PhotoCraftAI */ = {
@@ -174,6 +184,7 @@
 		};
 		8888B5271DEE31D456EED780 /* PhotoCraftImaging */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (F36800000000000000000003 /* Imaging resource copied by app */,);
 			explicitFileTypes = {
 			};
 			explicitFolders = (
@@ -354,6 +365,7 @@
 		AA1116B5C4D90447A2DF0EE4 = {
 			isa = PBXGroup;
 			children = (
+				F36800000000000000000001 /* FactoryRGB8Gray20.zlib */,
 				33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */,
 				8D833FE991B9F0F1174B65D9 /* CONTRIBUTING.md */,
 				0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */,
@@ -533,6 +545,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F36800000000000000000002 /* FactoryRGB8Gray20.zlib in Resources */,
 				C1BBE9E9B18FA1A0B99CBE17 /* ATTRIBUTION.md in Resources */,
 				C60942F1804246644CBCB153 /* LICENSE-APACHE in Resources */,
 				9AE57AFDD0D731A9FF85E27F /* LICENSE-MIT in Resources */,

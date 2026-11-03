@@ -300,7 +300,7 @@ extension EditorStore {
     prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit, validateCommit: @escaping @MainActor () throws -> Void = {}, onSuccess: (() -> Void)? = nil
   ) {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
-    guard allowLinkedSmartObject || !editingComponent || (allowAuxiliary && isCompositeColorTarget) || (allowModeComponents && canEditModeComponents) else {
+    guard allowLinkedSmartObject || !editingComponent || allowAuxiliary || (allowModeComponents && canEditModeComponents) else {
       error = "This operation requires the RGB editing target."
       return
     }

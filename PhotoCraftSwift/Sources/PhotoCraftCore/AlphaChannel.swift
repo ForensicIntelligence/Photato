@@ -60,13 +60,16 @@ public struct AlphaChannel: Codable, Equatable, Identifiable, Sendable {
   public static func coverage(_ selection: SelectionMask?,width: Int,height: Int,depth: PixelDepth) throws -> Surface {
     if let selection { guard selection.width == width, selection.height == height else { throw CraftError.invalid("Selection/channel canvas sizes differ.") } }
     if let selection,selection.isPaged {
-      let mapped=try selection.coverageSurface().mappedStoredSamples {p in Pixel(p.r,p.r,p.r).quantized(depth)}
+      let mapped=try selection.coverageSurface().mappedStoredSamples {p in
+        let v=depth == .f32 ? Float((unit(p.r)*255).rounded())*(Float(1)/255):p.r
+        return Pixel(v,v,v).quantized(depth)
+      }
       return try mapped.retaggedCoverageStorage(depth:depth)
     }
     var surface = try Surface(width:width,height:height,depth:depth,fill:selection == nil ? .white:.black)
     if let selection {
       for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
-        let value = Float(selection.byte(at:y*width+x))/255
+        let value = depth == .f32 ? Float(selection.byte(at:y*width+x))*(Float(1)/255):Float(selection.byte(at:y*width+x))/255
         if value > 0 { surface.setPixel(x:x,y:y,Pixel(value,value,value)) }
       } }
     }
@@ -87,6 +90,7 @@ public enum ChannelCommand: Sendable {
   case saveSelection(UUID?,String?,SelectionMode)
   case storeSelection(Surface,UUID?,String?,SelectionMode)
   case load(ChannelPlaneTarget,SelectionMode,Bool)
+  case loadCoverage(SelectionMask,SelectionMode)
   case quickMask(Bool,ChannelDisplayOptions)
   case stroke(ChannelPlaneTarget,[StrokePoint],Brush)
   case fill(ChannelPlaneTarget,Float,Float)
@@ -96,7 +100,7 @@ public enum ChannelCommand: Sendable {
     switch self {
     case .create: "New Channel"; case .delete: "Delete Channel"; case .duplicate: "Duplicate Channel"
     case .rename: "Rename Channel"; case .move: "Channel Order"; case .options, .configure: "Channel Options"
-    case .saveSelection, .storeSelection: "Save Selection"; case .load: "Load Selection"
+    case .saveSelection, .storeSelection: "Save Selection"; case .load, .loadCoverage: "Load Selection"
     case .quickMask(let on,_): on ? "Edit in Quick Mask":"Exit Quick Mask"
     case .stroke: "Brush on Channel"; case .fill: "Fill Channel"; case .invert: "Invert Channel"
     case .filter(_,let filter): filter.kind.title

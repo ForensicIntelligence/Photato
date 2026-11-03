@@ -86,5 +86,16 @@
   "follow_up_227": {
     "reference": "docs/COLOR_POLICY_REFERENCES.json",
     "status": "Subsequent working source adds open/paste policies and actual working-CMYK proof capture; earlier checkpoint results remain historical."
+  },
+  "checkpoint368_change": {
+    "status": "432affected cases pass on ARM and translatedIntel; general profile/full COL01 gates open",
+    "source_manifest": "artifacts/runs/20261102T233413Z-368-S05-acceptance/source02.json",
+    "factory_gray_8_16": "Independently framed Dot Gain20% profile with numerical public-ICC kTRC calibration from an owned Photoshop reference",
+    "factory_gray_32": "Existing linear profile unchanged",
+    "custom_profiles": "Preserved",
+    "selection_behavior": "Native/API composite selection captures ColorSettings and rejects changed settings before commit",
+    "fidelity_scope": "Standard RGB8 profile pair has complete-domain reference; general ICC/ColorSync and full COL01 remain open",
+    "guide": "docs/SELECTION_LUMINOSITY.md",
+    "evidence": "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json"
   }
 }

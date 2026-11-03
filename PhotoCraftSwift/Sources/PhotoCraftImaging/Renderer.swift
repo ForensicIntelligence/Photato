@@ -146,6 +146,14 @@ public enum Renderer {
     _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil,preferPaged:Bool = false
   ) throws -> Surface {
     try Task.checkCancellation()
+    if d.isChannelOnly,let channel=d.alphaChannels?.first {
+      let gray=try channel.pixels.mappedStoredSamples {p in let v=p.r;return Pixel(v,v,v)}
+      guard let region,region != IntRect(x:0,y:0,width:d.width,height:d.height) else{return gray}
+      let area=region.clipped(toWidth:d.width,height:d.height)
+      let builder=try Surface.PagedBuilder(width:d.width,height:d.height,depth:d.depth,fill:.clear,colorEncoding:gray.colorEncoding)
+      if area.width>0,area.height>0 {try builder.append(gray.cropped(to:area),atX:area.x,atY:area.y)}
+      return try builder.finish()
+    }
     let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
     if d.layers.contains(where:{if case .adjustment(.modern(let value))=$0.content {return value.needsNeighborhood};return false}),
       requested != IntRect(x:0,y:0,width:d.width,height:d.height) {

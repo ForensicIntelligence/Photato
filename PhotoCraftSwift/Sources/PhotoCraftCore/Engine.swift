@@ -43,6 +43,7 @@ public enum Command: Sendable {
   case cut([UUID], background: Pixel? = nil)
   case layerVia(UUID, LayerViaOperation)
   case mergeLayers(Set<UUID>, LayerMergeOperation)
+  case preparedLayerMerge(PreparedLayerMerge)
   case deleteLayer(UUID)
   case deleteLayers(Set<UUID>)
   case duplicateLayer(UUID)
@@ -189,6 +190,7 @@ public enum Command: Sendable {
     case .cut: "Cut"
     case .layerVia(_, let operation): operation.rawValue
     case .mergeLayers(_, let operation): operation.rawValue
+    case .preparedLayerMerge(let edit): edit.operation.rawValue
     case .deleteLayer: "Delete Layer"
     case .deleteLayers(let ids): ids.count == 1 ? "Delete Layer" : "Delete Layers"
     case .duplicateLayer: "Duplicate Layer"
@@ -341,6 +343,7 @@ public enum Command: Sendable {
     case .action(let action,let limits):try action.apply(to:&d,validate:{try limits?.validate($0)})
     case .canvasEdges(let edit): d = try edit.applied(to:d)
     case .flattenImage(let edit): d = try edit.applied(to: d)
+    case .preparedLayerMerge(let edit): d = try edit.applied(to:d)
     case .preparedAction(let edit): d = try edit.applied(to: d)
     case .channel(let command):try command.apply(to:&d)
     case .inkChannel(let command):try command.apply(to:&d)
@@ -398,7 +401,7 @@ public enum Command: Sendable {
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
-    case .canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
+    case .preparedLayerMerge,.canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
     case .paste,.layerVia,.cut,.setGradientFill,.setPatternFill: try applyClipboardPrimitive(to:&d)
     case .addLayer,.newPixelLayer,.deleteLayers,.deleteLayer,.duplicateLayer,.duplicateLayers,.duplicateLayersFrom,.renameLayer,.layerColor,.layerVisibility,.visibility,.lock,.protection: try applyLayerStructurePrimitive(to:&d)
     case .opacity,.blend,.layoutLayers,.move,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
@@ -454,7 +457,8 @@ public struct HistoryEntry: Sendable {
   }
 }
 public struct PreparedEdit: Sendable {
-  public var isSelectionOnly:Bool {switch recordingCommand {case .modifiedSelection,.reselectedSelection,.transformedSelection:return true;default:return false}}
+  public var isChannelOnlyEdit:Bool {if case .channel=recordingCommand{return true};return false}
+  public var isSelectionOnly:Bool {switch recordingCommand {case .modifiedSelection,.reselectedSelection,.transformedSelection,.channel(.load(_,_,_)),.channel(.loadCoverage(_,_)):return true;default:return false}}
   public var linkedSmartObjectEdit:LinkedSmartObjectEdit? {if case .linkedSmartObject(let edit)=recordingCommand{return edit};return nil}
   public var channelArithmeticEdit: ChannelArithmeticEdit? { if case .channelArithmetic(let edit) = recordingCommand { return edit }; return nil }
   public var modeComponentEdit: ModeComponentEdit? { if case .modeComponents(let edit) = recordingCommand { return edit }; return nil }

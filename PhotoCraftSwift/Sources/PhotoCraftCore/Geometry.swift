@@ -249,10 +249,14 @@ public enum DocumentGeometry {
       layer.content = .text(t)
     }
   }
+  /// Derived file previews may sample transparent source boundaries. Ordinary
+  /// document transforms retain their historical clamped-raster default. Pixel
+  /// mask projection is a separate numerical-gray operation, not RGBA filtering.
   public static func transformLayer(
     _ layer: Layer, by delta: Transform2D, in document: CraftDocument,
     method: Resampling = .bicubic,
-    includingUnlinkedMasks: Bool = false
+    includingUnlinkedMasks: Bool = false,
+    clampRasterEdges: Bool = true
   ) throws -> Layer {
     try delta.validated()
     var result = layer
@@ -291,9 +295,9 @@ public enum DocumentGeometry {
       let bounds = try full.bounds(width: surface.width, height: surface.height)
       result.content = .raster(
         try RasterGeometry.render(
-          surface, transform: full, bounds: bounds, method: method, clampEdges: true))
+          surface, transform: full, bounds: bounds, method: method, clampEdges: clampRasterEdges))
       if let native = layer.nativeMode {
-        let transformed = try native.transformed(by: full, bounds: bounds, method: method, clampEdges: true)
+        let transformed = try native.transformed(by: full, bounds: bounds, method: method, clampEdges: clampRasterEdges)
         result.nativeMode = transformed; result.content = .raster(try transformed.surface())
       }
       if let mask = layer.mask, layer.maskProperties == nil {

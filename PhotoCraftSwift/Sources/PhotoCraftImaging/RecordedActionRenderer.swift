@@ -23,6 +23,9 @@ public enum RecordedActionRenderer {
       switch operation {
       case .canvasEdges(let operation,let background):
         try CanvasEdgePreparation.command(document,operation:operation,background:background).apply(to:&document)
+      case .merge(let targets,let operation):
+        let ids=try Set(targets.map{try $0.resolve(in:document)})
+        try LayerMergePreparation.command(document,layerIDs:ids,operation:operation).apply(to:&document)
       case .flattenImage:
         try FlattenPreparation.command(document).apply(to:&document)
       case .retouch(let request):
