@@ -157,7 +157,7 @@ final class QuickMaskTargetTransitionWorkflowTests: XCTestCase {
       let missing = try await helper.edit(service, file, "channel.view", ["target":UUID().uuidString])
       XCTAssertEqual(missing, 422)
       XCTAssertEqual(store.document, original)
-      XCTAssertEqual(AutomationCommand.definitions.count, 239)
+      XCTAssertEqual(AutomationCommand.definitions.count, 242)
     }
   }
 

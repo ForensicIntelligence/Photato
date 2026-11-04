@@ -62,7 +62,7 @@ final class CanvasEdgeIOTests:XCTestCase {
       let result=try CanvasEdgePreparation.prepare(source,operation:.trim(.init())).result
       XCTAssertEqual(result.width,1);XCTAssertEqual(result.height,1)
       let retained=try XCTUnwrap(result.layers[0].nativeMode)
-      for c in native.planes.indices {XCTAssertEqual(retained.planes[c],Data(native.planes[c][10..<12]))}
+      for c in try native.planes.indices {XCTAssertEqual(try retained.planes[c],Data(try native.planes[c][10..<12]))}
       XCTAssertEqual(retained.profile,native.profile)
     }
   }
@@ -75,7 +75,7 @@ final class CanvasEdgeIOTests:XCTestCase {
       if source.modeDescriptor == nil {source.layers.append(outside)} else {
         let result=try CanvasFrameGeometry.reframed(source,bounds:.init(x:-1,y:-1,width:5,height:4),background:.white)
         let retained=try XCTUnwrap(result.layers[0].nativeMode),old=try XCTUnwrap(background.nativeMode)
-        for c in old.planes.indices {XCTAssertEqual(Data(retained.planes[c][12..<18]),Data(old.planes[c][0..<6]))}
+        for c in try old.planes.indices {XCTAssertEqual(Data(try retained.planes[c][12..<18]),Data(try old.planes[c][0..<6]))}
         XCTAssertTrue(try Renderer.composite(result).isOpaque());continue
       }
       let result=try CanvasEdgePreparation.prepare(source,operation:.revealAll).result

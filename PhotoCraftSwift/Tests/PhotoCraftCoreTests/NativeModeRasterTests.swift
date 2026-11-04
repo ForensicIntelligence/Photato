@@ -26,8 +26,8 @@ final class NativeModeRasterTests: XCTestCase {
       let source = try fixture(depth), result = try NativeModeRaster.converting(source, to: mode)
       let native = try XCTUnwrap(mode == .lab ? CGColorSpace(name: CGColorSpace.genericLab) : CGColorSpace(iccData: result.profile as CFData))
       let rgb = try XCTUnwrap(CGColorSpace(name: CGColorSpace.sRGB))
-      XCTAssertEqual(result.planes.count, mode.componentCount + 1)
-      XCTAssertEqual(result.planes.map(\.count), Array(repeating: 6 * result.bytesPerSample, count: mode.componentCount + 1))
+      XCTAssertEqual(try result.planes.count, mode.componentCount + 1)
+      XCTAssertEqual(try result.planes.map(\.count), Array(repeating: 6 * result.bytesPerSample, count: mode.componentCount + 1))
       for y in 0..<2 { for x in 0..<3 {
         let p = source.pixel(x: x, y: y), i = y * 3 + x
         let color = try XCTUnwrap(CGColor(colorSpace: rgb, components: [CGFloat(p.r), CGFloat(p.g), CGFloat(p.b), CGFloat(p.a)]))
@@ -59,7 +59,7 @@ final class NativeModeRasterTests: XCTestCase {
       XCTAssertTrue(display.linearPixel(x: i, y: 0).hasSameBits(as: source.linearPixel(x: i, y: 0)))
     }
     let restored = try PropertyListDecoder().decode(NativeModeRaster.self, from: PropertyListEncoder().encode(raster))
-    XCTAssertEqual(restored.planes, raster.planes)
+    XCTAssertEqual(try restored.planes, try raster.planes)
   }
 
   func testGray32UsesExtendedColorSyncAndPreservesNumericChannels() throws {
@@ -91,14 +91,14 @@ final class NativeModeRasterTests: XCTestCase {
     let old = previous.pixel(x: 1, y: 0)
     edited.setPixel(x: 1, y: 0, Pixel(old.r, old.g, old.b, 0.75))
     let alphaEdit = try native.reconciled(with: edited, previous: previous)
-    for c in 0..<4 { XCTAssertEqual(alphaEdit.planes[c], native.planes[c]) }
+    for c in 0..<4 { XCTAssertEqual(try alphaEdit.planes[c], try native.planes[c]) }
     XCTAssertEqual(alphaEdit.value(component: 4, index: 1), PixelDepth.u16.quantize(0.75))
     var black = try native.channel(3)
     black.setPixel(x: 2, y: 1, Pixel(0.9, 0.9, 0.9))
     native = try native.replacingChannel(3, with: black)
-    for c in [0, 1, 2, 4] { XCTAssertEqual(native.planes[c], original.planes[c]) }
+    for c in [0, 1, 2, 4] { XCTAssertEqual(try native.planes[c], try original.planes[c]) }
     XCTAssertEqual(native.value(component: 3, index: 5), PixelDepth.u16.quantize(0.9))
-    XCTAssertNotEqual(native.planes[3], original.planes[3])
+    XCTAssertNotEqual(try native.planes[3], try original.planes[3])
     let crop = try native.cropped(to: IntRect(x: 1, y: 0, width: 2, height: 2))
     for (i, sourceIndex) in [1, 2, 4, 5].enumerated() { XCTAssertEqual(crop.components(index: i), native.components(index: sourceIndex)) }
     XCTAssertThrowsError(try native.cropped(to: IntRect(x: -1, y: 0, width: 2, height: 2)))
@@ -129,7 +129,7 @@ final class NativeModeRasterTests: XCTestCase {
     XCTAssertThrowsError(try NativeModeProfile.validate(NativeModeProfile.standard(.grayscale, depth: .u8), mode: .grayscale, depth: .f32))
     XCTAssertThrowsError(try NativeModeRaster(width: Int.max, height: 1, mode: .rgb, depth: .u8))
     XCTAssertThrowsError(try NativeModeRaster(width: 1, height: 0, mode: .rgb, depth: .u8))
-    XCTAssertThrowsError(try NativeModeRaster(width: 32768, height: 32768, mode: .rgb, depth: .u8))
+    XCTAssertNoThrow(try NativeModeRaster(width: 32768, height: 32768, mode: .rgb, depth: .u8))
     XCTAssertThrowsError(try NativeModeRaster(width: 1, height: 1, mode: .cmyk, depth: .f32))
     var raster = try NativeModeRaster(width: 1, height: 1, mode: .rgb, depth: .f32)
     XCTAssertThrowsError(try raster.set(.infinity, component: 0, index: 0))

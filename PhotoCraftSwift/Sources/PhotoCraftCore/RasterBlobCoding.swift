@@ -22,3 +22,26 @@ protocol IndexedRasterBlobEncoding: RasterBlobEncoding {
   func storeOrdinal(_ data: Data) throws -> UInt64
 }
 protocol IndexedRasterBlobDecoding: MappedRasterBlobDecoding {}
+
+/// Raw component pages are distinct from RGBA Pixel tile payloads. Older archive
+/// versions keep their original whole-plane layout and cannot opt into this key.
+protocol ComponentBlobEncoding: RasterBlobEncoding {
+  var supportsComponentPages: Bool { get }
+}
+protocol ComponentBlobDecoding: RasterBlobDecoding {
+  var supportsComponentPages: Bool { get }
+  var usesMappedComponents: Bool { get }
+  func reserveComponentScratch(bytes: Int) throws
+}
+
+final class ComponentScratchBudget {
+  private let limit: Int
+  private var used = 0
+  init(limit: Int = RasterTileStore.defaultMaximumBytes) { self.limit = limit }
+  func reserve(_ bytes: Int) throws {
+    guard bytes >= 0, bytes <= limit - used else {
+      throw RasterScratchFailure.capacity(requiredBytes: used.addingReportingOverflow(bytes).overflow ? Int.max : used + bytes, limitBytes: limit)
+    }
+    used += bytes
+  }
+}

@@ -167,8 +167,9 @@ extension CodingUserInfoKey {
 
 // Each context belongs exclusively to one synchronous encode/decode. It is never
 // shared with another task; @unchecked meets Foundation's userInfo value constraint.
-final class HistoryTileEncoder: RasterBlobEncoding, @unchecked Sendable {
+final class HistoryTileEncoder: ComponentBlobEncoding, @unchecked Sendable {
   let store: HistoryScratchStore
+  let supportsComponentPages = true
   var references: [String: HistoryScratchBlob] = [:]
   init(_ store: HistoryScratchStore) { self.store = store }
   func storeBytes(_ data: Data) throws -> String {
@@ -184,8 +185,12 @@ struct HistoryDecodedTiles: Sendable {
   var bytes: Int { tiles.values.reduce(0) { $0 + $1.count * MemoryLayout<Pixel>.stride } }
 }
 
-final class HistoryTileDecoder: RasterBlobDecoding, @unchecked Sendable {
+final class HistoryTileDecoder: ComponentBlobDecoding, @unchecked Sendable {
   let references: [String: HistoryScratchBlob]
+  let supportsComponentPages = true
+  let usesMappedComponents = true
+  private let componentBudget = ComponentScratchBudget()
+  func reserveComponentScratch(bytes: Int) throws { try componentBudget.reserve(bytes) }
   private var tiles: [String: [Pixel]] = [:]
   private var reusableTiles: [String: [Pixel]]
   private let tileDecoder = TileArchive.Decoder()

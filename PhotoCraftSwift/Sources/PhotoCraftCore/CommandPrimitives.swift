@@ -660,9 +660,16 @@ extension Command {
     case .fillComponents(let id, let fill):
       try fill.validate()
       let i = try index(id)
-      var s = try raster(i)
+      // The ordinary RGB8 large path below owns bounded component preparation.
+      var s = try raster(i, allowLarge: d.colorMode == .rgb && !d.hasNativeModeStorage)
       guard d.depth == .u8, s.depth == .u8 else {
         throw CraftError.unsupported("Component Fill currently requires RGB/8 pixels.")
+      }
+      if d.colorMode == .rgb, !d.hasNativeModeStorage,
+        s.width > NativeModeRaster.maximumPixels / s.height {
+        let components=Set([RGBComponents.red,.green,.blue].enumerated().compactMap { fill.components.contains($0.element) ? $0.offset:nil })
+        try ModeComponentEdit(layerID:id,components:components,operation:.fill(fill.value,fill.opacity)).apply(to:&d)
+        return
       }
       let matrix = d.layers[i].coordinateTransform
       try matrix.validated()

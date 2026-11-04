@@ -1116,8 +1116,22 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       if command.name == "paint.stroke" {
-        let current=store.brush,library=store.brushes.file
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in try command.brushStroke(document:original,current:current,library:library) }
+        let current=store.brush,library=store.brushes.file,components=store.effectiveComponentTargets
+        if !components.isEmpty {
+          let target=try command.parameters["target"].map{_ in try command.string("target")} ?? "pixels"
+          guard target == "pixels",let layerID=store.document.activeLayerID else {
+            throw AutomationFailure(status:422,message:"Choose the selected pixel components for this stroke.")
+          }
+          try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowModeComponents:true,
+            validateCommit:{guard store.effectiveComponentTargets==components else{throw AutomationFailure(status:409,message:"The component target changed.")}}) { original in
+            guard case .stroke(let id,let points,let brush)=try command.brushStroke(document:original,current:current,library:library),id==layerID else {
+              throw AutomationFailure(status:422,message:"The stroke must match the selected pixel layer and components.")
+            }
+            return .modeComponents(.init(layerID:id,components:components,operation:.stroke(points,brush)))
+          }
+        } else {
+          try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in try command.brushStroke(document:original,current:current,library:library) }
+        }
         return .json(state(share,document:document))
       }
       if command.name == "actions.manage" { return .json(try manageActions(command, store: store)) }
@@ -1520,10 +1534,10 @@ import UniformTypeIdentifiers
       ],
       "componentEditing": [
         "targets": Array(Set(RGBChannelPreview.allCases.map(\.title) + DocumentColorMode.componentModes.flatMap { [$0.title] + $0.componentNames })).sorted(),
-        "depth": "RGB/Gray8/16/32 and CMYK/Lab8/16", "operations": ["Legacy RGB8 Normal neutral Fill", "Native component fill, brush/erase, invert and eight filters"],
+        "depth": "RGB/Gray8/16/32 and CMYK/Lab8/16", "operations": ["Selected RGB8 and native component fill, brush/erase, invert and eight filters"],
         "nativeModeCapabilities": "documentModes",
         "unimplemented": [
-          "Other legacy RGB8 component tools", "Full native component tool/Action coverage", "Spot channels",
+          "Other component tools and full clipboard/transform/Action coverage", "Complete multi-component visibility/editing contexts", "Spot channels",
         ],
       ],
       "actionJobs": [

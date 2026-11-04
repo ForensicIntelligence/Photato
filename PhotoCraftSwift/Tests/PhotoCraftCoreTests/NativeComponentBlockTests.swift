@@ -14,7 +14,7 @@ final class NativeComponentBlockTests: XCTestCase {
       XCTAssertLessThan(changed.residentComponentEditBytes, 20000)
       XCTAssertEqual(source.residentComponentEditBytes, 0)
       XCTAssertEqual(changed.rawWord(component: 1, index: 4096 * 2048 - 1), source.rawWord(component: 1, index: 4096 * 2048 - 1))
-      XCTAssertThrowsError(try NativeModeRaster(width: 4096, height: 2049, mode: mode, depth: depth))
+      XCTAssertNoThrow(try NativeModeRaster(width: 4096, height: 2049, mode: mode, depth: depth))
     } }
   }
   func testSparseFloatDefaultsAndBlockBoundaryKeepExactWords() throws {

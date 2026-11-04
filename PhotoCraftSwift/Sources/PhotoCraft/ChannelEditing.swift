@@ -32,7 +32,7 @@ extension EditorStore {
   var canInvertPixels: Bool {
     if let target = editingChannel { return canEditChannels && (target != .quickMask || isQuickMaskVisible) }
     guard document.inkMode == nil, !editingMask, !smartFilterMaskEditing else { return false }
-    if !modeComponentTargets.isEmpty { return canEditModeComponents }
+    if !effectiveComponentTargets.isEmpty { return canEditModeComponents }
     return !editingComponent && canUseMenuPixelEdit
   }
   func invertPixels() {

@@ -76,6 +76,11 @@ extension EditorStore {
     }
     guard let target = componentTarget.editComponents else { return }
     switch command {
+    case .modeComponents(let edit):
+      guard !editingMask, editingChannel == nil, edit.layerID == document.activeLayerID,
+        edit.components == effectiveComponentTargets else {
+        throw CraftError.invalid("The edit must match the selected layer and color components.")
+      }
     case .fillComponents(let id, let fill):
       guard !editingMask, id == document.activeLayerID, fill.components == target else {
         throw CraftError.invalid("Component Fill must match the active layer and channel target.")
@@ -119,7 +124,7 @@ extension EditorStore {
   }
 
   var canUseComponentCanvasTool: Bool {
-    (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!modeComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
+    (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!effectiveComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
       || [.marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
   }
 

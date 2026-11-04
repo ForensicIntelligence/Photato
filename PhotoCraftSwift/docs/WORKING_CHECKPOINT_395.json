@@ -1,0 +1,52 @@
+{
+  "step": 395,
+  "status": "Native394Source02 curated; exact staging/private push pending",
+  "goal_status": "active",
+  "previous_goal_turn": 394,
+  "run": "artifacts/runs/20261104T135548Z-395-private-source-backup",
+  "previous_qualified_source": "394Source02",
+  "software_build": 394,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/source02-source.json",
+  "source_inputs": 7164,
+  "production_swift_files": 1023,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/SOURCE_SNAPSHOT_395.json",
+  "diary_step": 395,
+  "next_work": [
+    "Complete authorized private source delivery and verify remote tree/privacy; then resume remaining major workflow dependencies.",
+    "Retain all original S05/C01/full Photoshop/platform/performance acceptance gates."
+  ],
+  "history_receipt": "artifacts/development-history-audit/395-final-receipt01.json",
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  },
+  "staticEvidence": {
+    "pending": true
+  },
+  "phase_ledger": "docs/FUNCTION_PHASES_395.json",
+  "prior_private_source_backup": "388Source03 (checkpoint389);394source not pushed",
+  "previous_source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "previous_source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
+  "previous_source_publication": "docs/SOURCE_PUBLICATION_389.json",
+  "repairsRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source03-repair-classification01.json",
+  "cursorCoverageRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source04-cursor-coverage01.json",
+  "neutralFillPreservationRecord": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/neutral-fill-preservation01.json",
+  "source_snapshot": "docs/SOURCE_SNAPSHOT_395.json",
+  "included_qualified_inputs": 7130,
+  "excluded_qualified_inputs": 34
+}

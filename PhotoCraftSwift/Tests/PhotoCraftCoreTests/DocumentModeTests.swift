@@ -18,7 +18,7 @@ final class DocumentModeTests: XCTestCase {
       try session.execute(.documentMode(.init(mode: mode, depth: .u16)))
       let converted = session.document
       XCTAssertEqual(converted.colorMode, mode); XCTAssertEqual(converted.minimumArchiveVersion, 46)
-      XCTAssertEqual(converted.layers[0].nativeMode?.planes.count, mode.componentCount + 1)
+      XCTAssertEqual(try converted.layers[0].nativeMode?.planes.count, mode.componentCount + 1)
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(converted)), converted)
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(converted)), converted)
       try session.undo(); XCTAssertEqual(session.document, original)
@@ -97,7 +97,7 @@ final class DocumentModeTests: XCTestCase {
     let hdr = try fixture().convertingMode(.init(mode: .rgb, depth: .f32))
     XCTAssertEqual(hdr.depth, .f32)
     let lowered = try hdr.convertingMode(.init(mode: .grayscale, depth: .u8))
-    XCTAssertEqual(lowered.layers[0].nativeMode?.planes.count, 2)
+    XCTAssertEqual(try lowered.layers[0].nativeMode?.planes.count, 2)
     XCTAssertEqual(lowered.depth, .u8)
   }
   func testInvalidModeOrChannelRequestIsAtomicAndProtectedLayersStayUnchanged() throws {

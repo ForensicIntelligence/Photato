@@ -15,6 +15,10 @@ public struct ComponentPlane: Equatable, Sendable {
   public var sampleBytes: Int { depth == .u8 ? 1 : depth == .u16 ? 2 : 4 }
   public var logicalBytes: Int { count * sampleBytes }
   public var residentEditBytes: Int { edits.residentBytes }
+  /// Conservative owned metadata/sample estimate, independent of logical size.
+  public var estimatedResidentBytes: Int { 256 + edits.residentBytes + (base == nil ? 0 : 256) }
+  public var mappedSampleBytes: Int { base.map { $0.storedBytes - $0.sampleOffset } ?? 0 }
+  public var mappedIndexBytes: Int { base?.sampleOffset ?? 0 }
   public var storedBlockCount: Int { blockKeys.reduce(0) { n, _ in n + 1 } }
   /// Referenced file content; neither physical disk allocation nor process RSS.
   public var referencedScratchBytes: Int { base?.storedBytes ?? 0 }
@@ -107,6 +111,13 @@ public struct ComponentPlane: Equatable, Sendable {
       }
     }
   }
+  /// The archive visits one bounded raw block at a time, in logical key order.
+  func forEachStoredBlock(_ body: (Int, ComponentBlock) throws -> Void) throws {
+    for key in blockKeys { try Task.checkCancellation(); try body(key, block(key)!) }
+  }
+  func retaining(_ mapping: ComponentPlaneMapping) -> Self {
+    var result = self; result.base = mapping; result.edits = ComponentBlockMap(); return result
+  }
   /// Ordered ranges of retained raw blocks; default-only samples need no visit.
   var storedSampleRanges: AnySequence<Range<Int>> {
     let count = count
@@ -163,6 +174,8 @@ struct ComponentBlock: @unchecked Sendable {
   private let mapping: ComponentPlaneMapping?
   private let key: Int
   var residentBytes: Int { owned?.count ?? 0 }
+  /// Only the checked archive decoder constructs blocks from portable bytes.
+  init(validatedBytes: Data) { owned = validatedBytes; mapping = nil; key = 0 }
   init(fill: UInt32, stride: Int) {
     var bytes = Data(count: ComponentPlane.blockSamples * stride)
     for i in 0..<ComponentPlane.blockSamples { ComponentPlane.store(fill, in: &bytes, offset: i * stride, stride: stride) }

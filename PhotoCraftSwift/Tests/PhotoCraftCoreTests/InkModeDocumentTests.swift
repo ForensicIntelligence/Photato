@@ -104,11 +104,11 @@ final class InkModeDocumentTests: XCTestCase {
   }
   func testConvertingInkModesRecoversGrayOrMatchingComponents() throws {
     let duo = try duotone(), gray = try duo.convertingMode(.init(mode: .grayscale, depth: .u8))
-    XCTAssertEqual(gray.layers[0].nativeMode?.planes[0], Data([0, 128, 255])); XCTAssertNil(gray.inkMode)
+    XCTAssertEqual(try gray.layers[0].nativeMode?.planes[0], Data([0, 128, 255])); XCTAssertNil(gray.inkMode)
     let multi = try multichannel(), rgb = try multi.convertingMode(.init(mode: .rgb, depth: .u16))
-    XCTAssertEqual(rgb.layers[0].nativeMode?.planes[0], Data([255, 255, 255, 127, 0, 0]))
-    XCTAssertEqual(rgb.layers[0].nativeMode?.planes[1], Data([0, 0, 0, 128, 255, 255]))
-    XCTAssertEqual(rgb.layers[0].nativeMode?.planes[3], Data(repeating: 255, count: 6))
+    XCTAssertEqual(try rgb.layers[0].nativeMode?.planes[0], Data([255, 255, 255, 127, 0, 0]))
+    XCTAssertEqual(try rgb.layers[0].nativeMode?.planes[1], Data([0, 0, 0, 128, 255, 255]))
+    XCTAssertEqual(try rgb.layers[0].nativeMode?.planes[3], Data(repeating: 255, count: 6))
     let linear = try multi.convertingMode(.init(mode: .rgb, depth: .f32))
     let half = try XCTUnwrap(linear.layers[0].nativeMode?.value(component: 0, index: 1))
     XCTAssertEqual(half, 0.214, accuracy: 0.002, "Integer RGB samples must be linearized for32-bit storage")

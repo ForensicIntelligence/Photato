@@ -23,7 +23,7 @@ final class ModeActionProgramTests: XCTestCase {
       for (component, name) in names[mode]!.enumerated() {
         var result = try program([select(name), fill()]).applying(to: source)
         let actual = try XCTUnwrap(result.session.document.layers[0].nativeMode)
-        for c in original.planes.indices where c != component { XCTAssertEqual(actual.planes[c], original.planes[c]) }
+        for c in try original.planes.indices where c != component { XCTAssertEqual(try actual.planes[c], try original.planes[c]) }
         for i in 0..<12 { XCTAssertEqual(actual.value(component: component, index: i), mode == .cmyk ? 1 : 0) }
         var expected = EditorSession(document: source)
         try expected.execute(.modeComponents(.init(layerID: id, components: [component], operation: .fill(0, 1))))
@@ -42,7 +42,7 @@ final class ModeActionProgramTests: XCTestCase {
     let before = try XCTUnwrap(source.layers[0].nativeMode), id = try XCTUnwrap(source.activeLayerID)
     let result = try program([select("black"), fill("white", 50)]).applying(to: source)
     let after = try XCTUnwrap(result.session.document.layers[0].nativeMode)
-    for c in before.planes.indices { for i in 0..<12 {
+    for c in try before.planes.indices { for i in 0..<12 {
       let expected = c == 3 && i == 5 ? PixelDepth.u16.quantize(before.value(component: c, index: i) / 2) : before.value(component: c, index: i)
       XCTAssertEqual(after.value(component: c, index: i), expected, accuracy: 1.0 / 65535)
     } }
@@ -97,8 +97,8 @@ final class ModeActionProgramTests: XCTestCase {
     let before = try XCTUnwrap(source.layers[0].nativeMode)
     let result = try program([select("green"), fill()]).applying(to: source)
     let after = try XCTUnwrap(result.session.document.layers[0].nativeMode)
-    for c in [0, 2, 3] { XCTAssertEqual(after.planes[c], before.planes[c]) }
-    XCTAssertEqual(after.planes[1], Data(repeating: 0, count: 12))
+    for c in [0, 2, 3] { XCTAssertEqual(try after.planes[c], try before.planes[c]) }
+    XCTAssertEqual(try after.planes[1], Data(repeating: 0, count: 12))
     var layers = source, second = source.layers[0]; second.id = UUID(); second.name = "Second"
     layers.layers.append(second)
     let all: [String: Any] = ["_obj": "selectAllLayers", "_target": [["_ref": "layer", "_enum": "ordinal", "_value": "targetEnum"]]]

@@ -53,7 +53,7 @@ final class ComponentEditingWorkflowTests: XCTestCase {
     let prepared = try PreparedEdit(command: .fill(id, .white), document: original)
     try store.selectEditingChannel(.red)
     for command: Command in [
-      .fill(id, .white), .clear(id), .move(id, 2, 1), .stroke(id, [], Brush()),
+      .move(id, 2, 1),
       .desaturate(id), .applyAdjustment(id, .levels(.init())),
       .fillComponents(id, .init(components: .green, value: 1)),
       .maskFill(id, 1), .newPixelLayer(.init(name: "Unsafe")),
@@ -69,7 +69,7 @@ final class ComponentEditingWorkflowTests: XCTestCase {
     XCTAssertFalse(store.canUseMenuPixelEdit)
     XCTAssertTrue(store.canUseMenuFill)
     store.tool = .brush
-    XCTAssertFalse(store.canUseComponentCanvasTool)
+    XCTAssertTrue(store.canUseComponentCanvasTool)
     store.tool = .marquee
     XCTAssertTrue(store.canUseComponentCanvasTool)
     store.fill(color: Pixel(1, 0, 0))

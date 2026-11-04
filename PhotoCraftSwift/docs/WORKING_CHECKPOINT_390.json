@@ -1,0 +1,49 @@
+{
+  "step": 390,
+  "status": "All18 new component archive/history/API cases pass on Apple Silicon and translated Intel. The broadened run executes1217identical ordered cases per architecture, passing1215ARM and1208translatedIntel; remaining failures reproduce on preserved388. Independent Python verifies57,351logical sample bytes and86,016raw block bytes per architecture. This is a focused affected run, not a passing current full suite.",
+  "goal_status": "active",
+  "previous_goal_turn": 389,
+  "run": "artifacts/runs/20261104T084625Z-390-component-streaming",
+  "previous_qualified_source": "388Source03",
+  "software_build": 390,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T084625Z-390-component-streaming/source03-source.json",
+  "source_inputs": 7151,
+  "production_swift_files": 1021,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/COMPONENT_STREAMING_390.json",
+  "diary_step": 390,
+  "next_work": [
+    "The application component limit remains8,388,608pixels. Complete large-operation/default-changing conversion/cache/resampling/reframe/trim, creation/admission, native/PSD/PSB/TIFF streaming, history/recovery metadata and printing remain open. Full dense physical capacity, sustained60fps, supported physical Macs/macOS14 and exact Photoshop output/defaults/shortcuts are unqualified. Current native live acceptance awaits the existing unlock request. S05 remains open; full C01 follows completion/testing. Three older missing temporary candidate binaries remain a historical preservation gap.",
+    "Integrate component creation/cache/admission and mapped accounting, then full large-operation/history/recovery and file codecs. Do not repeat the completed389backup."
+  ],
+  "history_receipt": "artifacts/development-history-audit/390-final-receipt01.json",
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  },
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T084625Z-390-component-streaming/verification03.json",
+    "checks": 40,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "phase_ledger": "docs/FUNCTION_PHASES_390.json",
+  "prior_private_source_backup": "388Source03 (checkpoint389); current390source not pushed",
+  "previous_source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "previous_source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
+  "previous_source_publication": "docs/SOURCE_PUBLICATION_389.json"
+}

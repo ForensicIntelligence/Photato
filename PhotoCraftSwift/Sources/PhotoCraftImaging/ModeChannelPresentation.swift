@@ -27,31 +27,12 @@ public enum ModeChannelPresentation {
     }
     var proxy = document
     proxy.modeDescriptor = nil; proxy.workingICC = nil
-    let single = visible.count == 1 ? visible.first : nil
     for i in document.layers.indices {
       try Task.checkCancellation()
       let layer = document.layers[i]
       if case .group = layer.content { continue }
-      var native = try ModeComponentEdit.raster(layer, in: document)
-      let pixels: Surface
-      if let single {
-        var plane = try Surface(width: native.width, height: native.height, depth: native.depth)
-        for y in 0..<native.height { try Task.checkCancellation(); for x in 0..<native.width {
-          let index = y * native.width + x, sample = native.value(component: single, index: index)
-          let gray = native.mode == .cmyk ? 1 - sample : sample
-          plane.setPixel(x: x, y: y, Pixel(gray, gray, gray, native.value(component: native.mode.componentCount, index: index)))
-        } }
-        pixels = plane
-      } else {
-        for c in all.subtracting(visible) {
-          let neutral: Float = native.mode == .lab && c != 0 ? 128 / 255 : 0
-          for index in 0..<native.width * native.height {
-            if index % 4096 == 0 { try Task.checkCancellation() }
-            try native.set(neutral, component: c, index: index)
-          }
-        }
-        pixels = try native.surface()
-      }
+      let native = try ModeComponentEdit.raster(layer, in: document)
+      let pixels = try native.presentingComponents(visible)
       proxy.layers[i].nativeMode = nil; proxy.layers[i].content = .raster(pixels)
     }
     return try Renderer.composite(proxy)

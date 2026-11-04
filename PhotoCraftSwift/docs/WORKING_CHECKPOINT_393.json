@@ -1,0 +1,51 @@
+{
+  "step": 393,
+  "status": "All 12 new cases pass on Apple Silicon and translated Intel. The affected run executes 195 identical ordered cases per architecture, passing 194 on Apple Silicon and 194 on translated Intel. Remaining failed IDs and assertion counts reproduce on preserved build392. The full current suite has not been rerun.",
+  "goal_status": "active",
+  "previous_goal_turn": 392,
+  "run": "artifacts/runs/20261104T120052Z-393-component-tools",
+  "previous_qualified_source": "392Source03",
+  "software_build": 393,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T120052Z-393-component-tools/source04-source.json",
+  "source_inputs": 7163,
+  "production_swift_files": 1023,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/LARGE_COMPONENT_TOOLS_393.json",
+  "diary_step": 393,
+  "next_work": [
+    "Full channel arithmetic, large PSD/PSB/TIFF/profile/printing and metadata/recovery integration, physical dense maximum capacity, current full-suite success, supported physical Macs/macOS14 and sustained60fps remain open. Current live UI and exact Photoshop behaviour/output/default/settings/shortcuts are unqualified. The391Gray32one-ULP cross-architecture default difference and retained strict failures remain open. S05 remains open; full C01 follows completion/testing. Three older temporary candidate binaries remain missing with their original hash records retained.",
+    "Continue full large channel arithmetic and interchange/printing/history-metadata integration. Preserve157deferred numerical gates. Keep outside-Desktop staging with retained ZIP/extraction proof."
+  ],
+  "history_receipt": "artifacts/development-history-audit/393-final-receipt01.json",
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  },
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T120052Z-393-component-tools/verification01.json",
+    "checks": 48,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "phase_ledger": "docs/FUNCTION_PHASES_393.json",
+  "prior_private_source_backup": "388Source03 (checkpoint389);393source not pushed",
+  "previous_source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "previous_source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
+  "previous_source_publication": "docs/SOURCE_PUBLICATION_389.json",
+  "repairsRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source03-repair-classification01.json",
+  "cursorCoverageRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source04-cursor-coverage01.json"
+}

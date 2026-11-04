@@ -72,9 +72,9 @@ final class CanvasEdgesTests:XCTestCase {
     for i in 0..<6 {try source.set(Float(i)+0.25,component:0,index:i);try source.set(1,component:1,index:i)}
     try source.set(-0.0,component:0,index:4)
     let result=try source.reframedExactly(bounds:.init(x:1,y:0,width:2,height:2))
-    for c in source.planes.indices {
-      let expected=Data(source.planes[c][4..<12])+Data(source.planes[c][16..<24])
-      XCTAssertEqual(result.planes[c],expected)
+    for c in try source.planes.indices {
+      let expected=Data(try source.planes[c][4..<12])+Data(try source.planes[c][16..<24])
+      XCTAssertEqual(try result.planes[c],expected)
     }
     XCTAssertEqual(result.value(component:0,index:2).bitPattern,Float(-0.0).bitPattern)
   }

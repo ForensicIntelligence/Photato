@@ -108,7 +108,7 @@ final class ChannelArithmeticTests: XCTestCase {
     var options=ChannelArithmeticOptions();options.blending="normal"
     try ChannelArithmeticEngine.apply(.init(samples:Surface(width:4,height:3,depth:.f32,fill:Pixel(0.75,0.75,0.75))),options:options,target:.pixels(cmyk.layers[0].id,[1]),to:&cmyk)
     let result=try XCTUnwrap(cmyk.layers[0].nativeMode)
-    for c in [0,2,3,4] {XCTAssertEqual(result.planes[c],native.planes[c])}
+    for c in [0,2,3,4] {XCTAssertEqual(try result.planes[c],try native.planes[c])}
     XCTAssertEqual(result.value(component:1,index:0),Float((0.25*65535).rounded())/65535)
   }
 }

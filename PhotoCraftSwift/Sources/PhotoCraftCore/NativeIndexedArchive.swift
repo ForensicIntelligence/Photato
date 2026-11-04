@@ -8,7 +8,7 @@ enum NativeIndexedArchive {
   static let footer = Data("PHTEND63".utf8)
   static func containerHeader(_ version:Int)->Data {NativeChunkedArchive.magic+NativeChunkedArchive.integer(UInt64(version),width:4)+NativeChunkedArchive.integer(0,width:4)}
   static func containerFooter(_ version:Int)->Data {Data("PHTEND\(version)".utf8)}
-  static func supportsHeader(_ bytes:Data)->Bool {bytes==header || bytes==containerHeader(64) || bytes==containerHeader(65) || bytes==containerHeader(66) || bytes==containerHeader(67) || bytes==containerHeader(68) || bytes==containerHeader(69) || bytes==containerHeader(70) || bytes==containerHeader(71) || bytes==containerHeader(72) || bytes==containerHeader(73) || bytes==containerHeader(74) || bytes==containerHeader(75) || bytes==containerHeader(76) || bytes==containerHeader(77) || bytes==containerHeader(78) || bytes==containerHeader(79) || bytes==containerHeader(80) || bytes==containerHeader(81) || bytes==containerHeader(82) || bytes==containerHeader(83) || bytes==containerHeader(84) || bytes==containerHeader(85)}
+  static func supportsHeader(_ bytes:Data)->Bool {bytes==header || bytes==containerHeader(64) || bytes==containerHeader(65) || bytes==containerHeader(66) || bytes==containerHeader(67) || bytes==containerHeader(68) || bytes==containerHeader(69) || bytes==containerHeader(70) || bytes==containerHeader(71) || bytes==containerHeader(72) || bytes==containerHeader(73) || bytes==containerHeader(74) || bytes==containerHeader(75) || bytes==containerHeader(76) || bytes==containerHeader(77) || bytes==containerHeader(78) || bytes==containerHeader(79) || bytes==containerHeader(80) || bytes==containerHeader(81) || bytes==containerHeader(82) || bytes==containerHeader(83) || bytes==containerHeader(84) || bytes==containerHeader(85) || bytes==containerHeader(86)}
   static func identifier(_ ordinal:UInt64)->String { "b\(ordinal)" }
   private enum Keys:String,CodingKey {case magic,version,document,index,recoveryContext}
   private struct Envelope:Encodable {
@@ -32,12 +32,14 @@ enum NativeIndexedArchive {
       else {context=nil;invalid=true}
     }
   }
-  final class Output:IndexedRasterBlobEncoding,@unchecked Sendable {
+  final class Output:IndexedRasterBlobEncoding,ComponentBlobEncoding,@unchecked Sendable {
     let sink:NativeChunkedArchive.Output
     private let scratch:NativeIndexScratch
     private let index:NativeBlobIndex.Writer
     private var cache:[Data:UInt64]=[:],order:[Data]=[]
-    init(sink:NativeChunkedArchive.Output)throws {
+    let supportsComponentPages: Bool
+    init(sink:NativeChunkedArchive.Output, version: Int = 63)throws {
+      supportsComponentPages = version >= 86
       self.sink=sink;let scratch=try NativeIndexScratch();self.scratch=scratch
       index=NativeBlobIndex.Writer(appendNode:scratch.append)
     }
@@ -57,7 +59,7 @@ enum NativeIndexedArchive {
       return catalog
     }
   }
-  final class Input:IndexedRasterBlobDecoding,@unchecked Sendable {
+  final class Input:IndexedRasterBlobDecoding,ComponentBlobDecoding,@unchecked Sendable {
     private let index:NativeBlobIndex.Reader
     private let read:(Int,Int)throws->Data
     private let backing:RasterTileStore?
@@ -66,8 +68,15 @@ enum NativeIndexedArchive {
     private let mappedCache:NativeMappedTileCache?
     private var cache:[UInt64:RasterTile]=[:],order:[UInt64]=[]
     var usesMappedTiles:Bool {backing != nil}
-    init(index:NativeBlobIndex.Reader,backing:RasterTileStore?,budget:RasterDecodeBudget,read:@escaping(Int,Int)throws->Data)throws {
-      self.index=index;self.backing=backing;self.read=read
+    var usesMappedComponents: Bool { backing != nil }
+    let supportsComponentPages: Bool
+    private let componentBudget = ComponentScratchBudget()
+    func reserveComponentScratch(bytes: Int) throws {
+      if let backing { try backing.reserveComponentScratch(bytes: bytes) }
+      else { try componentBudget.reserve(bytes) }
+    }
+    init(index:NativeBlobIndex.Reader,backing:RasterTileStore?,budget:RasterDecodeBudget,version:Int = 63,read:@escaping(Int,Int)throws->Data)throws {
+      self.index=index;self.backing=backing;self.read=read;supportsComponentPages = version >= 86
       let n=index.catalog.records/8 + (index.catalog.records%8 == 0 ? 0:1)
       guard n<=UInt64(Int.max) else {throw CraftError.invalid("Native index use map size.")}
       try budget.reserve(bytes:Int(n));used=Data(count:Int(n))
@@ -104,11 +113,11 @@ enum NativeIndexedArchive {
   static func write(_ document:CraftDocument,output:NativeChunkedArchive.Output,recoveryContext:Data?=nil,minimumVersion:Int=63)throws {
     try Task.checkCancellation();try document.validate()
     guard (recoveryContext?.count ?? 0)<=NativeArchive.maximumRecoveryContextBytes else {throw CraftError.invalid("Recovery context exceeds its limit.")}
-    guard [63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85].contains(minimumVersion) else {throw CraftError.invalid("Invalid indexed native output version.")}
+    guard [63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86].contains(minimumVersion) else {throw CraftError.invalid("Invalid indexed native output version.")}
     let version=max(minimumVersion,document.minimumArchiveVersion)
-    guard [63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85].contains(version) else {throw CraftError.invalid("Unsupported indexed document features.")}
+    guard [63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86].contains(version) else {throw CraftError.invalid("Unsupported indexed document features.")}
     try output.append(containerHeader(version))
-    let context=try Output(sink:output),encoder=PropertyListEncoder();encoder.outputFormat = .binary
+    let context=try Output(sink:output,version:version),encoder=PropertyListEncoder();encoder.outputFormat = .binary
     encoder.userInfo[.historyTileEncoder]=context
     let metadata=try encoder.encode(Envelope(document:document,output:context,context:recoveryContext,version:version))
     guard metadata.count<=NativeArchive.maximumBytes else {throw NativeArchiveMemoryLimit.metadata(requiredBytes:metadata.count,limitBytes:NativeArchive.maximumBytes)}
@@ -141,7 +150,7 @@ enum NativeIndexedArchive {
     }
     try index.validate()
     let budget=RasterDecodeBudget(bytes:rasterByteLimit)
-    let context=try Input(index:index,backing:backing,budget:budget,read:read)
+    let context=try Input(index:index,backing:backing,budget:budget,version:table.version,read:read)
     decoder.userInfo[.historyTileDecoder]=context;decoder.userInfo[.rasterDecodeBudget]=budget
     var document=try decoder.decode(DocumentEnvelope.self,from:bytes).document
     guard context.allReferenced else {throw CraftError.invalid("Unreferenced indexed native blobs.")}

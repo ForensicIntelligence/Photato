@@ -12,8 +12,8 @@ public enum DocumentCreation {
       throw CraftError.invalid("Choose a finite background and resolution between 1 and 100,000 pixels/inch.")
     }
     if let mode, mode != .rgb {
-      guard width > 0, height > 0, width <= NativeModeRaster.maximumPixels / height else {
-        throw CraftError.invalid("Native color-mode documents support up to 8,388,608 pixels.")
+      guard width > 0, height > 0, width <= NativeModeRaster.maximumDocumentPixels / height else {
+        throw CraftError.invalid("Native color-mode documents support up to300,000pixels per dimension.")
       }
       _ = try DocumentModeDescriptor(mode: mode, depth: depth, profile: profile)
     } else if mode == nil, profile != nil {

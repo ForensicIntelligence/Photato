@@ -74,7 +74,7 @@ final class ColorPolicyTests: XCTestCase {
     var settings = ColorSettings(); settings.cmykPolicy = .off
     var session = EditorSession(document: target)
     try session.execute(ColorPolicyInput.pasteCommand(content, into: target, settings: settings))
-    XCTAssertEqual(session.document.layers.last?.nativeMode?.planes, source.layers[0].nativeMode?.planes)
+    XCTAssertEqual(try session.document.layers.last?.nativeMode?.planes, try source.layers[0].nativeMode?.planes)
     XCTAssertEqual(session.document.layers.last?.nativeMode?.profile, target.modeDescriptor?.profile)
   }
   func testNativeRGBClipboardToCustomOrdinaryRGBRetainsConvertedCoordinates() throws {

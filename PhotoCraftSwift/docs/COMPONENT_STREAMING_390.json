@@ -1,0 +1,140 @@
+{
+  "step": 390,
+  "softwareBuild": 390,
+  "source": "390Source03",
+  "status": "Bounded raw component archive/history codec integrated; full application capacity remains open",
+  "qualification": "All18 new component archive/history/API cases pass on Apple Silicon and translated Intel. The broadened run executes1217identical ordered cases per architecture, passing1215ARM and1208translatedIntel; remaining failures reproduce on preserved388. Independent Python verifies57,351logical sample bytes and86,016raw block bytes per architecture. This is a focused affected run, not a passing current full suite.",
+  "sourceManifest": "artifacts/runs/20261104T084625Z-390-component-streaming/source03-source.json",
+  "sourceInputs": 7151,
+  "productionSwift": 1021,
+  "testSwiftFiles": 700,
+  "currentInventoryEachArchitecture": 3919,
+  "newCasesEachArchitecture": 18,
+  "affectedCasesEachArchitecture": 1217,
+  "passedEachArchitecture": [
+    1215,
+    1208
+  ],
+  "failedEachArchitecture": [
+    2,
+    9
+  ],
+  "failedAssertionCounts": [
+    2,
+    334
+  ],
+  "unexpectedEachArchitecture": [
+    2,
+    2
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "failedCasesEachArchitecture": [
+    [
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ],
+    [
+      "PhotoCraftCoreTests.CloneStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels",
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftCoreTests.FocusStrokeSessionTests/testCompleteAndIncrementalPrefixesMatchPreOptimizationPixels",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+      "PhotoCraftCoreTests.GradientOracleTests/testExecutedRustGeometryInterpolationAndDither",
+      "PhotoCraftCoreTests.LightingTests/testIndependentOriginalFloat32LightingWordsExactly",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources",
+      "PhotoCraftCoreTests.SourceAdjustmentTests/testAllIndependentOriginalSourceAdjustmentWordsExactly",
+      "PhotoCraftCoreTests.ToningStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels"
+    ]
+  ],
+  "allRemainingFailuresReproducedOn388": true,
+  "affectedSuitePassed": false,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "nativeComponentPageVersion": 86,
+    "semanticActionsMaximum": 46,
+    "newRoute": false,
+    "parameters": "Existing X-Photato-Archive-Version header adds86; old explicit exports retain layout. Schema/read-version/storage capabilities and future-version rejection tests updated.",
+    "results": "Same document/raw values and transactions; file/history decoding can retain validated immutable raw components.",
+    "errors": "Malformed/unsupported/mixed/oversized blocks, scratch/heap limits, cancellation and I/O reject before publication. Existing stale/revoked/busy/session guards remain.",
+    "Adobe": "Shared native resource/job codec only within separately pinned existing contracts/budgets. No invented endpoint or proprietary format option.",
+    "cursor": "No new tool or modifier action."
+  },
+  "sourceDelta": {
+    "added": [
+      "Sources/PhotoCraftCore/ComponentPlaneArchive.swift",
+      "Tests/PhotoCraftAppTests/ComponentArchiveWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ComponentPlaneArchiveTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeComponentArchiveTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "Sources/PhotoCraftCore/ComponentPlane.swift",
+      "Sources/PhotoCraftCore/HistoryScratch.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift",
+      "Sources/PhotoCraftCore/RasterBlobCoding.swift",
+      "Sources/PhotoCraftCore/RasterTileStorage.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/IndexedNativeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/InkModeArchiveWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/RestrictedFormatWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeIndexedArchiveTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "attempts": {
+    "Source01": "Both compilers stopped on a new cancellation test missing try for throwing Task.value. Zero tests executed; stale388executable copies are diagnostic only.",
+    "Source02": "Both builds and18new cases pass; a retained HTTP test incorrectly rejects newly supported86. Other remaining failures reproduce on the previous build.",
+    "Source03": "Only the stale HTTP future-version rejection changes86to87; production source/binary slices remain identical to Source02. The same1217affected cases rerun on both architectures."
+  },
+  "independent": "artifacts/runs/20261104T084625Z-390-component-streaming/source03-independent01.json",
+  "caseEquivalence": "artifacts/runs/20261104T084625Z-390-component-streaming/case-equivalence01.json",
+  "qualificationFile": "artifacts/runs/20261104T084625Z-390-component-streaming/source03-qualification.json",
+  "regressionClassification": "artifacts/runs/20261104T084625Z-390-component-streaming/regression-classification01.json",
+  "universalPackage": "artifacts/runs/20261104T084625Z-390-component-streaming/universal/staging02.json",
+  "remaining": "The application component limit remains8,388,608pixels. Complete large-operation/default-changing conversion/cache/resampling/reframe/trim, creation/admission, native/PSD/PSB/TIFF streaming, history/recovery metadata and printing remain open. Full dense physical capacity, sustained60fps, supported physical Macs/macOS14 and exact Photoshop output/defaults/shortcuts are unqualified. Current native live acceptance awaits the existing unlock request. S05 remains open; full C01 follows completion/testing. Three older missing temporary candidate binaries remain a historical preservation gap.",
+  "limitations": [
+    "Foundation sparse maximum geometry does not lift application8MPlimit.",
+    "File save selects86 for top-level retained native modes; nested components use pages when the container is86. Complete automatic nested-version policy remains open.",
+    "History retains its existing resident owned-blob index/quota; codec hierarchy alone does not prove full dense metadata admission.",
+    "NativeModeRaster estimatedBytes remains conservative logical component accounting. Complete mapped-component runtime metrics/admission remain part of the large-operation integration.",
+    "No current native live check; latest386observation was a locked Mac and the unlock request remains pending.",
+    "Three missing older temporary284\u2013286candidate binaries remain unrecovered;37surviving protected files match."
+  ],
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T084625Z-390-component-streaming/verification03.json",
+    "checks": 40,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "stagingSigning": "Ad-hoc local validation package; no distribution archive or installation",
+  "documentationCorrections": [
+    "Moved390attempt notes from the DEVLOG tail into the390entry; retained previous arrangement.",
+    "Fixed the new heading to the existing dated/blank-line format after diary export01 rejected it; export02 succeeded.",
+    "README386claim corrected from211passes to210/211with the retained imported-text comparison failure; previous README retained.",
+    "Current390checkpoint keeps Git backup388metadata explicitly as previous-source fields;390has not been pushed."
+  ],
+  "localValidationZIPCreated": true,
+  "newXcodeArchive": false,
+  "packagingFollowup": {
+    "initial": "staging01 initially passed, later failed strict verification with FinderInfo/FileProvider attributes; original retained and executable hash unchanged.",
+    "repair": "Outside-Desktop clone strips only metadata, preserves every file byte, and verifies both directly and after ZIP extraction. No re-signing or source/test change.",
+    "evidence": "artifacts/runs/20261104T084625Z-390-component-streaming/universal/staging02.json"
+  }
+}

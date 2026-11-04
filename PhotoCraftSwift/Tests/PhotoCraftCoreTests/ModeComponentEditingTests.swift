@@ -6,7 +6,7 @@ final class ModeComponentEditingTests: XCTestCase {
     var document = try CraftDocument(width: 4, height: 3, depth: depth)
     document = try document.convertingMode(.init(mode: mode, depth: depth))
     var native = try XCTUnwrap(document.layers[0].nativeMode)
-    for c in native.planes.indices { for i in 0..<12 {
+    for c in try native.planes.indices { for i in 0..<12 {
       try native.set(Float((i + c * 2) % 11) / 10, component: c, index: i)
     } }
     document.layers[0].nativeMode = native
@@ -20,7 +20,7 @@ final class ModeComponentEditingTests: XCTestCase {
       var session = EditorSession(document: before)
       try session.execute(.modeComponents(.init(layerID: id, components: [0], operation: .fill(0.25, 1))))
       let after = try XCTUnwrap(session.document.layers[0].nativeMode)
-      for c in 1..<source.planes.count { XCTAssertEqual(after.planes[c], source.planes[c]) }
+      for c in 1..<(try source.planes.count) { XCTAssertEqual(try after.planes[c], try source.planes[c]) }
       for i in 0..<12 { XCTAssertEqual(after.value(component: 0, index: i), depth.quantize(mode == .cmyk ? 0.75 : 0.25)) }
       XCTAssertEqual(session.undoStack.count, 1)
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(session.document)), session.document)
@@ -36,7 +36,7 @@ final class ModeComponentEditingTests: XCTestCase {
     var session = EditorSession(document: before)
     try session.execute(.modeComponents(.init(layerID: id, components: [0, 3], operation: .fill(0, 1))))
     let result = try XCTUnwrap(session.document.layers[0].nativeMode)
-    for c in source.planes.indices { for i in 0..<12 {
+    for c in try source.planes.indices { for i in 0..<12 {
       XCTAssertEqual(result.value(component: c, index: i), (c == 0 || c == 3) && i == 5 ? 1 : source.value(component: c, index: i))
     } }
     XCTAssertEqual(session.undoStack.count, 1)
@@ -52,7 +52,7 @@ final class ModeComponentEditingTests: XCTestCase {
       try session.execute(.modeComponents(.init(layerID: id, components: [0], operation: .stroke([.init(x: 1.5, y: 1.5)], brush))))
       let result = try XCTUnwrap(session.document.layers[0].nativeMode)
       XCTAssertEqual(result.value(component: 0, index: 5), erase ? 0 : 1)
-      for c in 1..<5 { XCTAssertEqual(result.planes[c], source.planes[c]) }
+      for c in 1..<5 { XCTAssertEqual(try result.planes[c], try source.planes[c]) }
       try session.undo(); XCTAssertEqual(session.document, before)
     }
   }
@@ -68,7 +68,7 @@ final class ModeComponentEditingTests: XCTestCase {
         var session = EditorSession(document: before)
         try session.execute(.modeComponents(.init(layerID: id, components: [0], operation: operation)))
         let result = try XCTUnwrap(session.document.layers[0].nativeMode)
-        for c in 1..<source.planes.count { XCTAssertEqual(result.planes[c], source.planes[c]) }
+        for c in 1..<(try source.planes.count) { XCTAssertEqual(try result.planes[c], try source.planes[c]) }
         if case .invert = operation {
           XCTAssertEqual(result.value(component: 0, index: 0), depth.quantize(1 - source.value(component: 0, index: 0)))
         }

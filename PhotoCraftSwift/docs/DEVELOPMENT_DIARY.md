@@ -18,18 +18,20 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:389 -->
+<!-- current-status-step:394 -->
 ## Current status — 4 November 2026 UTC
 
-The diary contains **389 development steps**. The application remains **build 388**.
+The diary contains **394 development steps**. The application is **build 394**.
 
-The complete native source is backed up in the private GitHub repository. All 7,113 included qualified inputs match build 388's tested snapshot. Another 34 generated model, cache and restricted-image inputs are excluded explicitly. The original Rust files and repository history are preserved.
+Ordinary RGB8 Red, Green and Blue editing targets now route Brush/Eraser, Invert and eight filter drafts through the same component engine as native and high-depth documents. Legacy target, preview and visibility state stay independent. The existing neutral Fill command and history label remain; large fills use bounded preparation. Pixel API strokes capture the selected components and reject stale or mismatched targets.
 
-Fourteen new component/equality tests pass on Apple Silicon and translated Intel. The broader 1,184-case run passes 1,182 on Apple Silicon and 1,175 on Intel. Every remaining failed case and assertion count reproduces on the preserved previous build. This is not a passing full suite or complete Photoshop, platform, capacity or 60 fps qualification.
+All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun.
 
-The next capacity work is streaming component files and integrating admission before lifting the application limit. S05 stays open; C01 follows complete/testing. Current native live acceptance still awaits the existing unlock request. Three missing older temporary candidate binaries remain documented. This source backup changes no installed app or App Store record, and it keeps the repository private. No software release is made.
+The first run found a whole-raster guard ahead of the new large-Fill branch and an API/UI disagreement over nonneutral Fill. The repaired run keeps the desktop's neutral scope and moves admission to the bounded path. Three stale command-count assertions were corrected after reproducing them on the prior build. Held previews, release/cancel, target/colour capture, all16modifiers, Quick Mask transitions and maximum RGB8 operations are tested. Independent Python verifies eight owned sample bytes per architecture; broader numerical Photoshop matching remains separate.
 
-[Source commit](https://github.com/ForensicIntelligence/Photato/commit/16968a2485246f49c19789ab7a6c64c344abcffc) · [Source manifest](SOURCE_SNAPSHOT_389.json) · [Delivery receipt](SOURCE_PUBLICATION_389.json) · [Build 388 evidence](NATIVE_COMPONENT_BLOCKS_388.json)
+Full S05/C01 and other component tools, multi-selection/visibility/clipboard/transforms/Actions, nonneutral Fill and profile/custom-gray fidelity, channel arithmetic, large interchange/printing/history/recovery integration, physical dense maximum capacity, supported physical Macs/macOS14, current full-suite success and sustained60fps remain open. Current live UI and complete Photoshop output/default/settings/shortcut equivalence are unqualified. The391Gray32one-ULP cross-architecture difference, retained strict failures and3missing older temporary binaries remain recorded. Full C01 follows complete/tested S05.
+
+[Results](RGB8_COMPONENT_TOOLS_394.json) · [Guide](RGB8_COMPONENT_TOOLS.md) · [Full baseline](CURRENT_TEST_INVENTORY_382.json) · [S05 audit](S05_ACCEPTANCE_394.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -624,6 +626,11 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 387 | [Numeric component-plane storage](DEVLOG.md#dev-step-387) |
 | 2026-11-04 | 388 | [Native component blocks](DEVLOG.md#dev-step-388) |
 | 2026-11-04 | 389 | [Private source backup](DEVLOG.md#dev-step-389) |
+| 2026-11-04 | 390 | [Component archive streaming](DEVLOG.md#dev-step-390) |
+| 2026-11-04 | 391 | [Large native component documents](DEVLOG.md#dev-step-391) |
+| 2026-11-04 | 392 | [Large component geometry](DEVLOG.md#dev-step-392) |
+| 2026-11-04 | 393 | [Large component tools](DEVLOG.md#dev-step-393) |
+| 2026-11-04 | 394 | [RGB8 component routing](DEVLOG.md#dev-step-394) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -2718,3 +2725,38 @@ All 14 new native-component and Surface-equality cases pass on Apple Silicon and
 We backed up native build 388 before changing component file storage. Every included tested input matches the frozen source. Generated models, caches, machine/signing/runtime files and an externally restricted PSD remain excluded. The original Rust source and existing Git history are preserved.
 
 The commit includes current native source, tests, Xcode project, assets, scripts and records. Its notes retain the actual test results: all 14 new cases pass; the broader run has two remaining ARM failures and nine Intel failures, all reproduced by the prior baseline. No new native test run is needed for this delivery because the tested code and configuration are unchanged. The repository remains private and no application binary is uploaded or released. Component streaming remains next; S05/C01 and full parity gates stay open. [Receipt](SOURCE_PUBLICATION_389.json).
+
+
+## 2026-11-04 — Step390: Component archive streaming
+
+Native86 and history now use a bounded raw-component tree, with4096sample blocks,1024-entry leaves and256-reference branches. The decoder validates exact words, geometry, alpha, padding, tree order/counts, budgets and failures before publication. Existing APIs advertise/accept86; older requested versions retain their previous layouts. No tools or shortcuts change.
+
+All18 new component archive/history/API cases pass on Apple Silicon and translated Intel. The broadened run executes1217identical ordered cases per architecture, passing1215ARM and1208translatedIntel; remaining failures reproduce on preserved388. Independent Python verifies57,351logical sample bytes and86,016raw block bytes per architecture. This is a focused affected run, not a passing current full suite. The first compiler failure and its repair remain recorded. Application admission remains8MP; complete operation/metadata/codec integration and original Photoshop/platform/performance gates stay open. The Desktop package later failed signature checking after Finder metadata appeared. A copy outside Desktop and a ZIP extraction preserve every file byte and pass signature checks; the original failed candidate is retained. No installed preview, repository push, Xcode archive, App Store change, upload or release. [Record](DEVLOG.md#dev-step-390).
+
+
+## 2026-11-04 — Step391: Large native component documents
+
+Logical native component geometry is now separate from dense-operation limits. Owned/mapped accounting reaches document, history/recovery and API admission; implicit fills and local blocks let sparse300,000²documents pass creation, conversion, channel/brush edits, native86save/reopen, viewport rendering and Undo/Redo tests. Dense exports/tools still report their unfinished limits. Public Swift planes access now throws instead of allocating a large logical plane. Existing byte assertions add try without being weakened.
+
+All 13 new cases pass on Apple Silicon and translated Intel. The broadened run executes 1,481 identical ordered cases per architecture, passing 1,478 on Apple Silicon and 1,470 on translated Intel. Remaining failed IDs and assertion counts reproduce on preserved build 390. This is an affected run, not full-suite success. A viewport failure exposed native buffers in a scalar render comparison; they are stripped only after exact equality. An independent maximum-file reader validates stored words but its cross-architecture Gray32default comparison fails by one ULP. That remains a colour-fidelity gate. All original Photoshop/S05/platform/dense/60fps requirements stay open. No installation, source push, Xcode archive, App Store action, upload or release. [Record](DEVLOG.md#dev-step-391).
+
+
+## 2026-11-04 — Step392: Large component geometry
+
+Component resampling, expanded canvas framing and Trim now work through bounded native storage. Shared checked scratch, direct numerical sampling and bounded derived caches keep the source intact on cancellation, I/O or admission failure. Existing native/API history transactions use the same implementation.
+
+All 19 new cases pass on Apple Silicon and translated Intel. The affected run executes 1,547 identical ordered cases per architecture, passing 1,543 on Apple Silicon and 1,535 on translated Intel. Every remaining failed ID and assertion count reproduces on preserved build391. This affected run retains failures; the full current suite has not been rerun. The failed compile typo and downscale cutoff are preserved with their repaired reruns. Independent owned kernel checks pass; Photoshop, physical dense/platform/60fps and the prior Gray32comparison remain open. S05 is not closed. No install, push, Xcode archive or App Store release action. [Record](DEVLOG.md#dev-step-392).
+
+
+## 2026-11-04 — Step393: Large component tools
+
+Individual colour-channel Fill, Invert, Brush/Eraser and eight basic filters now use bounded storage beyond the former eight-megapixel guard. The small implementation remains unchanged for regression comparisons. Forward selection samples, native untargeted planes and alpha, history and API availability are checked.
+
+All 12 new cases pass on Apple Silicon and translated Intel. The affected run executes 195 identical ordered cases per architecture, passing 194 on Apple Silicon and 194 on translated Intel. Remaining failed IDs and assertion counts reproduce on preserved build392. The full current suite has not been rerun. The stopped maximum Motion Blur attempt, exact binary shortcut, fixture compilation error and repaired run remain documented. Independent owned sample checks pass. Full Photoshop, dense capacity, current live/platform/60fps, prior Gray32comparison and full S05 requirements remain open. No install, push, Xcode archive or App Store release action. [Record](DEVLOG.md#dev-step-393).
+
+
+## 2026-11-04 — Step394: RGB8 component routing
+
+Ordinary RGB8 selected-channel tools now share the native component engine. The legacy target/view/API state and neutral Fill label remain. Held brush previews, captured release, filters, Undo, cancellation, maximum RGB8 edits and temporary Quick Mask/image transitions are covered.
+
+All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun. The maximum guard-order bug, nonneutral API/UI mismatch and stale count assertions remain recorded with the repaired rerun. No test identity or source is removed. Full Photoshop/S05/C01/platform/dense/60fps requirements and prior strict/Gray32failures stay open. No install, push, Xcode archive, upload or release. [Record](DEVLOG.md#dev-step-394).

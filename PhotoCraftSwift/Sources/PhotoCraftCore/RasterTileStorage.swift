@@ -23,7 +23,18 @@ public final class RasterTileStore: @unchecked Sendable {
   private let lock = NSLock()
   private var segments: [RasterScratchSegment] = []
   private var count = 0
+  private var componentBytes = 0
   public var storedBytes: Int { lock.lock(); defer { lock.unlock() }; return count }
+  /// One decode shares its disk allowance across RGBA tiles and raw components.
+  func reserveComponentScratch(bytes: Int) throws {
+    lock.lock(); defer { lock.unlock() }
+    guard bytes >= 0 else { throw CraftError.invalid("Invalid component scratch reservation.") }
+    guard bytes <= maximumBytes - count - componentBytes else {
+      let required = (count + componentBytes).addingReportingOverflow(bytes)
+      throw RasterScratchFailure.capacity(requiredBytes: required.overflow ? Int.max : required.partialValue, limitBytes: maximumBytes)
+    }
+    componentBytes += bytes
+  }
   public init(maximumBytes: Int = defaultMaximumBytes, directory: URL? = nil) throws {
     guard maximumBytes >= 0, maximumBytes <= Self.defaultMaximumBytes,
       MemoryLayout<Pixel>.size == 16, MemoryLayout<Pixel>.stride == 16 else {
@@ -45,8 +56,8 @@ public final class RasterTileStore: @unchecked Sendable {
     try Task.checkCancellation()
     guard tile.count == TileArchive.pixelCount, tile.allSatisfy(\.isFinite) else { throw CraftError.invalid("Invalid scratch tile samples.") }
     lock.lock(); defer { lock.unlock() }
-    guard TileArchive.byteCount <= maximumBytes - count else {
-      throw RasterScratchFailure.capacity(requiredBytes: count + TileArchive.byteCount, limitBytes: maximumBytes)
+    guard TileArchive.byteCount <= maximumBytes - count - componentBytes else {
+      throw RasterScratchFailure.capacity(requiredBytes: count + componentBytes + TileArchive.byteCount, limitBytes: maximumBytes)
     }
     let index = count / Self.segmentBytes, offset = count % Self.segmentBytes
     if index == segments.count {
@@ -145,12 +156,15 @@ struct RasterTile: RandomAccessCollection, MutableCollection, Equatable, @unchec
 
 
 extension CraftDocument {
+  public var nativeComponentLogicalBytes: Int { layers.reduce(0) { $0 + ($1.nativeMode?.logicalSampleBytes ?? 0) } }
+  public var mappedNativeComponentVirtualBytes: Int { layers.reduce(0) { $0 + ($1.nativeMode?.mappedComponentVirtualBytes ?? 0) } }
   /// Conservative sum of referenced mapped tile samples, not physical disk usage
   /// or resident pages; repeated shared surfaces can count the same backing twice.
   public var mappedRasterBytes: Int {
     var bytes = 0
     func account(_ s: Surface) { bytes += s.mappedBytes }
     for layer in layers {
+      bytes += layer.nativeMode?.mappedComponentSampleBytes ?? 0
       if case .raster(let s) = layer.content { account(s) }
       if let s = layer.mask { account(s) }
       if let s = layer.smartFilters?.mask { account(s) }
@@ -171,6 +185,7 @@ extension CraftDocument {
     var bytes=0
     func account(_ s:Surface){bytes+=s.mappedTileIndexBytes}
     for layer in layers {
+      bytes += layer.nativeMode?.mappedComponentIndexBytes ?? 0
       if case .raster(let s)=layer.content {account(s)}
       if let s=layer.mask {account(s)};if let s=layer.smartFilters?.mask {account(s)}
       for s in layer.video?.frames ?? [] {account(s)}

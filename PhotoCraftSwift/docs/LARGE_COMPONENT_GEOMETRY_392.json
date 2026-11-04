@@ -1,0 +1,159 @@
+{
+  "step": 392,
+  "softwareBuild": 392,
+  "source": "392Source03",
+  "status": "Large component geometry implemented for tested paths; full capacity and Photoshop parity remain open",
+  "qualification": "All 19 new cases pass on Apple Silicon and translated Intel. The affected run executes 1,547 identical ordered cases per architecture, passing 1,543 on Apple Silicon and 1,535 on translated Intel. Every remaining failed ID and assertion count reproduces on preserved build391. This affected run retains failures; the full current suite has not been rerun.",
+  "sourceManifest": "artifacts/runs/20261104T104552Z-392-component-geometry/source03-source.json",
+  "sourceInputs": 7159,
+  "productionSwift": 1022,
+  "testSwiftFiles": 707,
+  "currentInventoryEachArchitecture": 3951,
+  "newCasesEachArchitecture": 19,
+  "affectedCasesEachArchitecture": 1547,
+  "passedEachArchitecture": [
+    1543,
+    1535
+  ],
+  "failedEachArchitecture": [
+    4,
+    12
+  ],
+  "failedAssertionCounts": [
+    14,
+    355
+  ],
+  "unexpectedEachArchitecture": [
+    2,
+    2
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "failedCasesEachArchitecture": [
+    [
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftAppTests.GroupWorkflowTests/testGroupBoundsAndTransformPreviewMatchesCommittedGeometry",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ],
+    [
+      "PhotoCraftCoreTests.CloneStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels",
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftCoreTests.FocusStrokeSessionTests/testCompleteAndIncrementalPrefixesMatchPreOptimizationPixels",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+      "PhotoCraftCoreTests.GradientOracleTests/testExecutedRustGeometryInterpolationAndDither",
+      "PhotoCraftAppTests.GroupWorkflowTests/testGroupBoundsAndTransformPreviewMatchesCommittedGeometry",
+      "PhotoCraftCoreTests.LightingTests/testIndependentOriginalFloat32LightingWordsExactly",
+      "PhotoCraftImagingTests.PagedCanvasRendererTests/testAll24PriorNativeStacksRemainBitExactThroughPagedComposition",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources",
+      "PhotoCraftCoreTests.SourceAdjustmentTests/testAllIndependentOriginalSourceAdjustmentWordsExactly",
+      "PhotoCraftCoreTests.ToningStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels"
+    ]
+  ],
+  "allRemainingFailuresReproducedOn391": true,
+  "affectedSuitePassed": false,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "liveUI": {
+    "observedAtUTC": "2026-11-04T11:50:37.063288+00:00",
+    "method": "CUA after current and preserved-baseline compiler/test workers were terminal",
+    "calls": [
+      {
+        "call": "cua.getApp(com.apple.finder)",
+        "result": "Computer Use server error -10005: cgWindowNotFound"
+      },
+      {
+        "call": "cua.getState({emit:false})",
+        "apps": [],
+        "errors": [
+          "Native apps: Error: The Mac is locked and automatic unlock could not unlock it. Ask the user to unlock the Mac manually before continuing."
+        ]
+      }
+    ],
+    "qualified": false,
+    "summary": "A fresh CUA check finds the Mac locked. No392native live workflow or Photoshop comparison was performed; automated and packaging checks are separate. The existing unlock request is not repeated.",
+    "newUserQuestion": false,
+    "newInstall": false
+  },
+  "logicalGeometry": {
+    "maximumDimension": 300000,
+    "maximumPixels": 90000000000,
+    "minimumAffineDeterminant": 5.5555555555555555e-12,
+    "maximumCacheBlocksPerPlane": 64,
+    "scratchMaximumBytes": 2199023255552,
+    "sparseNearestSupportMaximumBlocks": 256,
+    "physicalDenseCapacityQualified": false,
+    "notAllOperationsAtMaximum": true,
+    "testedWorkflows": [
+      "Bounded raw component write-back cache, shared scratch admission and immutable failure/cancellation-safe publication",
+      "Direct numerical native nearest/bilinear/bicubic sampling through the preserved premultiplied kernel; no full RGBA channel source planes",
+      "Sparse maximum grid turns and nearest resize; maximum uniform source to small output including1\u00d71",
+      "Raw expanded reframe with implicit region choice; numerical Trim through allocated blocks and analytic uniform gaps",
+      "Bounded derived RGB/numerical/channel projections and channel replacement; native-first layer transform",
+      "Existing desktop Image Size/Fit Image/turns/Trim and native API/Actions/history share the same engine and transaction path"
+    ]
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "newRoute": false,
+    "coverage": "Existing geometry commands and shared desktop/API prepared transactions, stale state, Undo and native86persistence are tested. largeNativeComponents metadata reports bounds/methods/storage/time/cancellation/fidelity; command/state/error paths remain shared.",
+    "Adobe": "No new Adobe route/descriptor is invented. Published Adobe contract coverage and job/resource budgets remain separately qualified.",
+    "cursor": "No new tool or modifier action. Existing shared dispatch/cursor policy remains; current physical/live equivalence is unqualified."
+  },
+  "attempts": {
+    "Source01": "Production Core compiles; new sparse-resize test typo fails test compilation on both. Zero executed cases; stale391executables are diagnostic only. Source02 fixes only that test assertion.",
+    "Source02": "Both builds succeed;1547ordered cases pass1541ARM/1533Intel,6/14failed cases,16/357assertions including4unexpected per architecture,0crashes.17of19new cases pass. The two new failures reveal old1e-8affine determinant rejection of a legal maximum-to-small resize.",
+    "Source03": "Lower determinant floor to0.5/Surface.maxPixels; retain finite/magnitude/singular/tiny guards. Add1\u00d71all-method and invalid-transform checks to the same new case. Expose metadata bound. Exact sampling arithmetic unchanged; actual current results above."
+  },
+  "sourceDelta": {
+    "added": [
+      "Sources/PhotoCraftCore/ComponentPlaneBuilder.swift",
+      "Tests/PhotoCraftAppTests/LargeNativeGeometryWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ComponentPlaneBuilderTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeComponentGeometryTests.swift",
+      "Tests/PhotoCraftImagingTests/NativeGeometryWorkflowTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationDocumentMode.swift",
+      "Sources/PhotoCraft/AutomationGeometry.swift",
+      "Sources/PhotoCraftCore/ComponentPlaneScratch.swift",
+      "Sources/PhotoCraftCore/Geometry.swift",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift",
+      "Tests/PhotoCraftCoreTests/ComponentDocumentAdmissionTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "independent": {
+    "currentOwnedKernelAndLiteralWordsPassed": true,
+    "reference": "artifacts/runs/20261104T104552Z-392-component-geometry/source03-independent01.json",
+    "bytesComparedEachArchitecture": 4384,
+    "PhotoshopComparison": false,
+    "priorGray32GeneratedDefaultPassed": false,
+    "priorGray32Reference": "docs/COMPONENT_DOCUMENT_ADMISSION_391.json",
+    "allHistoricalIndependentComparisonsPassed": false
+  },
+  "regressionClassification": "artifacts/runs/20261104T104552Z-392-component-geometry/regression-classification01.json",
+  "qualificationFile": "artifacts/runs/20261104T104552Z-392-component-geometry/source03-qualification.json",
+  "universalPackage": "artifacts/runs/20261104T104552Z-392-component-geometry/universal/staging01.json",
+  "stagingSigning": "Ad-hoc outside Desktop; retained ZIP/extraction matches and verifies. No distribution/Xcode archive.",
+  "remaining": "Physical dense maximum capacity, remaining component tools/channel blending, large PSD/PSB/TIFF/profile/printing and metadata/recovery integration, current full-suite success, supported physical Macs/macOS14 and sustained60fps remain open. Current live UI/Photoshop behavior is unqualified. The391Gray32generated-default one-ULP difference and other exact Photoshop/cross-architecture colour/kernel/default/settings/shortcut gates remain open. S05 remains open; full C01 follows completion/testing. Three older temporary candidate binaries remain missing with preserved original hash records.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T104552Z-392-component-geometry/verification01.json",
+    "checks": 47,
+    "passed": true,
+    "historicalProtectionComplete": false
+  }
+}

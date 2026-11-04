@@ -49,15 +49,17 @@ final class ComponentPlaneWriter {
   private var presence: Data
   private var samples = 0
   private var failed = false
-  init(plane: ComponentPlane, maximumBytes: Int, directory: URL?) throws {
+  private let reserve: ((Int) throws -> Void)?
+  init(plane: ComponentPlane, maximumBytes: Int, directory: URL?, reserve: ((Int) throws -> Void)? = nil) throws {
     guard maximumBytes >= 0, maximumBytes <= RasterTileStore.defaultMaximumBytes else { throw CraftError.invalid("Invalid component scratch budget.") }
-    self.maximumBytes = maximumBytes; stride = plane.sampleBytes
+    self.maximumBytes = maximumBytes; stride = plane.sampleBytes; self.reserve = reserve
     blockBytes = ComponentPlane.blockSamples * stride
     blockCount = (plane.count + ComponentPlane.blockSamples - 1) / ComponentPlane.blockSamples
     let indexBytes = (blockCount + 7) / 8, page = Int(getpagesize())
     sampleOffset = ((indexBytes + page - 1) / page) * page
     length = sampleOffset + blockCount * blockBytes
     guard sampleOffset <= maximumBytes else { throw RasterScratchFailure.capacity(requiredBytes: sampleOffset, limitBytes: maximumBytes) }
+    try reserve?(sampleOffset)
     presence = Data(count: indexBytes)
     let folder = directory ?? FileManager.default.temporaryDirectory
     guard folder.isFileURL else { throw CraftError.invalid("Component scratch requires a local directory.") }
@@ -77,8 +79,30 @@ final class ComponentPlaneWriter {
       let present = presence[key / 8] & (1 << (key % 8)) != 0
       let required = sampleOffset + (samples + (present ? 0 : 1)) * blockBytes
       guard required <= maximumBytes else { throw RasterScratchFailure.capacity(requiredBytes: required, limitBytes: maximumBytes) }
+      if !present { try reserve?(blockBytes) }
       try block.withBytes(stride: stride) { try writeBytes($0, offset: sampleOffset + key * blockBytes) }
       if !present { presence[key / 8] |= 1 << (key % 8); samples += 1 }
+    } catch { failed = true; throw error }
+  }
+  func contains(_ key: Int) -> Bool {
+    key >= 0 && key < blockCount && presence[key / 8] & (1 << (key % 8)) != 0
+  }
+  func read(key: Int) throws -> ComponentBlock? {
+    guard !failed, fd >= 0 else { throw CraftError.invalid("Component scratch writer is unavailable.") }
+    guard contains(key) else { return nil }
+    do {
+      try Task.checkCancellation()
+      var data = Data(count:blockBytes)
+      try data.withUnsafeMutableBytes { bytes in
+        var done = 0
+        while done < bytes.count {
+          let n = pread(fd,bytes.baseAddress!.advanced(by:done),bytes.count-done,off_t(sampleOffset+key*blockBytes+done))
+          if n < 0 && errno == EINTR { continue }
+          guard n > 0 else { throw RasterScratchFailure.io(operation:"component read",code:n < 0 ? errno:EIO) }
+          done += n
+        }
+      }
+      return ComponentBlock(validatedBytes:data)
     } catch { failed = true; throw error }
   }
   func finish() throws -> ComponentPlaneMapping {

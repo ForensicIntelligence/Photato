@@ -38,9 +38,11 @@ public struct Transform2D: Codable, Equatable, Sendable {
   public func point(_ x: Double, _ y: Double) -> (x: Double, y: Double) {
     (a * x + c * y + tx, b * x + d * y + ty)
   }
+  /// Admits a one-pixel result from the maximum document, with rounding headroom.
+  public static let minimumDeterminant = 0.5 / Double(Surface.maxPixels)
   public func validated() throws {
     guard [a, b, c, d, tx, ty].allSatisfy({ $0.isFinite && abs($0) <= 1_000_000 }),
-      abs(a * d - b * c) >= 1e-8
+      abs(a * d - b * c) >= Self.minimumDeterminant
     else { throw CraftError.invalid("Transform is invalid or too small.") }
   }
   public func inverted() throws -> Self {
@@ -119,10 +121,18 @@ public enum RasterGeometry {
   }
   private static func sample(_ s:Surface,x:Double,y:Double,method:Resampling,
     clampEdges:Bool,encoding:SurfaceColorEncoding) -> Pixel {
+    sampleValues(width:s.width,height:s.height,x:x,y:y,method:method,clampEdges:clampEdges) { x,y in
+      encoding == .linearRGB ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)
+    }
+  }
+  /// The same premultiplied kernel also samples authoritative numerical planes.
+  /// Callers supply checked logical pixels, including transparent outside samples.
+  static func sampleValues(width:Int,height:Int,x:Double,y:Double,method:Resampling,
+    clampEdges:Bool,pixelAt:(Int,Int)->Pixel)->Pixel {
     guard x.isFinite, y.isFinite, abs(x) < 10_000_000, abs(y) < 10_000_000 else { return .clear }
-    func pixel(_ ix: Int, _ iy: Int) -> Pixel {
-      let x=clampEdges ? min(s.width-1,max(0,ix)):ix,y=clampEdges ? min(s.height-1,max(0,iy)):iy
-      return encoding == .linearRGB ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)
+    func pixel(_ ix:Int,_ iy:Int)->Pixel {
+      let px=clampEdges ? min(width-1,max(0,ix)):ix,py=clampEdges ? min(height-1,max(0,iy)):iy
+      return pixelAt(px,py)
     }
     if method == .nearest { return pixel(Int(floor(x)), Int(floor(y))) }
     let sx = x - 0.5
@@ -293,12 +303,11 @@ public enum DocumentGeometry {
       result.x = bounds.x; result.y = bounds.y; result.affine = nil
     } else if case .raster(let surface) = layer.content, layer.smartObject == nil, layer.video == nil, !layer.hasGeometryKeyframes {
       let bounds = try full.bounds(width: surface.width, height: surface.height)
-      result.content = .raster(
-        try RasterGeometry.render(
-          surface, transform: full, bounds: bounds, method: method, clampEdges: clampRasterEdges))
       if let native = layer.nativeMode {
         let transformed = try native.transformed(by: full, bounds: bounds, method: method, clampEdges: clampRasterEdges)
         result.nativeMode = transformed; result.content = .raster(try transformed.surface())
+      } else {
+        result.content = .raster(try RasterGeometry.render(surface,transform:full,bounds:bounds,method:method,clampEdges:clampRasterEdges))
       }
       if let mask = layer.mask, layer.maskProperties == nil {
         result.mask = try RasterGeometry.render(

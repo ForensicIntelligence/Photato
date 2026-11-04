@@ -129,7 +129,7 @@ struct FilterSheet: View {
 extension EditorStore {
   var canBeginFilter: Bool {
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels }
-    if !modeComponentTargets.isEmpty { return canEditModeComponents }
+    if !effectiveComponentTargets.isEmpty { return canEditModeComponents }
     if editingChannel != nil { return canEditChannels && document.width <= RasterFilterEngine.maximumPixels/document.height }
     guard !editingComponent, !geometryBusy, transformDraft == nil, !hasToneDraft, !editingMask,
       let layer = activeLayer, !document.isImageLocked(layer.id),
@@ -137,9 +137,9 @@ extension EditorStore {
     return pixels.width <= RasterFilterEngine.maximumPixels / pixels.height
   }
   func canBeginFilterKind(_ kind: RasterFilter.Kind) -> Bool {
-    if kind == .lightingEffects || kind == .relight{return document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil && editingChannel==nil && modeComponentTargets.isEmpty && canBeginFilter}
+    if kind == .lightingEffects || kind == .relight{return document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil && editingChannel==nil && effectiveComponentTargets.isEmpty && canBeginFilter}
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels && InkChannelCommand.filters.contains(kind) }
-    if !modeComponentTargets.isEmpty { return canEditModeComponents && ModeComponentEdit.filters.contains(kind) }
+    if !effectiveComponentTargets.isEmpty { return canEditModeComponents && ModeComponentEdit.filters.contains(kind) }
     if RasterFilterEngine.pagedFilterKinds.contains(kind),document.colorMode == .rgb,
       editingChannel==nil,!editingComponent,!geometryBusy,transformDraft==nil,!hasToneDraft,!editingMask,
       let layer=activeLayer,!document.isImageLocked(layer.id),
@@ -191,7 +191,7 @@ extension EditorStore {
     }
     if kind == .filterGallery { filter.artistic?.effects[0].foreground = brush.color;filter.artistic?.effects[0].background = backgroundColor }
     if kind == .addNoise { filter.seed = UInt32.random(in: .min ... .max) }
-    filterDraft = FilterDraft(id: layer.id, filter: filter, channelTarget:editingChannel, modeComponents:modeComponentTargets)
+    filterDraft = FilterDraft(id: layer.id, filter: filter, channelTarget:editingChannel, modeComponents:effectiveComponentTargets)
     if kind == .lightingEffects || kind == .relight{filterDraft?.preview=false}
     render()
   }

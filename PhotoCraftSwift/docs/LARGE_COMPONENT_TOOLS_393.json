@@ -1,0 +1,144 @@
+{
+  "step": 393,
+  "softwareBuild": 393,
+  "source": "393Source04",
+  "status": "Large component tools implemented for tested paths; full Photoshop acceptance remains open",
+  "qualification": "All 12 new cases pass on Apple Silicon and translated Intel. The affected run executes 195 identical ordered cases per architecture, passing 194 on Apple Silicon and 194 on translated Intel. Remaining failed IDs and assertion counts reproduce on preserved build392. The full current suite has not been rerun.",
+  "sourceManifest": "artifacts/runs/20261104T120052Z-393-component-tools/source04-source.json",
+  "sourceInputs": 7163,
+  "productionSwift": 1023,
+  "testSwiftFiles": 710,
+  "currentInventoryEachArchitecture": 3963,
+  "newCasesEachArchitecture": 12,
+  "affectedCasesEachArchitecture": 195,
+  "passedEachArchitecture": [
+    194,
+    194
+  ],
+  "failedEachArchitecture": [
+    1,
+    1
+  ],
+  "failedAssertionCounts": [
+    1,
+    1
+  ],
+  "unexpectedEachArchitecture": [
+    1,
+    1
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "failedCasesEachArchitecture": [
+    [
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ],
+    [
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ]
+  ],
+  "allRemainingFailuresReproducedOn392": true,
+  "affectedSuitePassed": false,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "liveUI": {
+    "observedAtUTC": "2026-11-04T12:35:16.130285+00:00",
+    "afterAllOwnCompilerAndTestWorkersTerminal": true,
+    "calls": [
+      {
+        "call": "cua.getState({emit:false})",
+        "nativeAppCount": 81,
+        "errors": []
+      },
+      {
+        "call": "cua.getApp(validation393Path)",
+        "result": "The Mac is locked and automatic unlock could not unlock it. Ask the user to unlock the Mac manually before continuing."
+      }
+    ],
+    "qualified": false,
+    "summary": "Inventory lists81apps without an error, but focused control of the separate393validation candidate explicitly reports the Mac locked. No live component workflow or Photoshop comparison was performed. Candidate launch was attempted but not confirmed. The existing unlock request is not repeated.",
+    "candidateLaunchAttempted": true,
+    "candidateLaunchConfirmed": false,
+    "newUserQuestion": false,
+    "newInstall": false
+  },
+  "logicalGeometry": {
+    "maximumDimension": 300000,
+    "maximumPixels": 90000000000,
+    "maximumPatchPixels": 131072,
+    "maximumSparseSelectionSupportTiles": 1024,
+    "physicalDenseCapacityQualified": false,
+    "notAllOperationsAtMaximum": true,
+    "testedWorkflows": [
+      "Large native component Fill/Invert and existing Brush/Eraser/configured brush",
+      "Eight component filters with unchanged shared arithmetic; seven maximum uniform fixtures and8,390,656-pixel seeded noise",
+      "Exact forward selection coverage/affine placement; raw native untargeted components/alpha",
+      "Retained dense-vs-paged all-mode/depth/operation/context and RGB cache comparisons",
+      "Shared native/API availability, state, prepared commit, native86, Undo/Redo, busy/stale/target rejection"
+    ]
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "newRoute": false,
+    "coverage": "Existing mode.channel.edit and selected-target UI availability extend to logical300,000\u00b2. largeComponentTools capabilities report actions, eight filters, patch/support policy, native86 and resource/time/fidelity limits. Shared native transaction/history/state/error paths are tested.",
+    "Adobe": "Existing published-contract coverage remains separately qualified. No new Adobe route or unsupported action descriptor is invented.",
+    "cursor": "No new tool or modifier action; existing selected-component routing and cursor policy remain. Current physical/live qualification remains open."
+  },
+  "attempts": {
+    "Source01": "Intentionally stopped before tests after source inspection identified the maximum uniform Motion Blur fixture would enter a90billion-pixel scratch loop. Confirmed own children signalledSIGTERM; runner preserved terminal logs/bundles/stale392binaries. Zero executed cases.",
+    "Source02": "Exact binary-constant Motion Blur shortcut and dense comparisons added without reducing maximum fixtures. Both test builds fail on2private setDefaults calls in the new fixture. Zero cases; production access control unchanged.",
+    "Source03": "Both builds succeed;186cases pass181per architecture,5failed cases/5assertions including3unexpected,0crashes.10of12new cases pass. Two new fixtures have inconsistent mask/bounds and2retained tests have obsolete size/availability expectations. One retained master-palette cancellation remains. Production unchanged from Source02.",
+    "Source04": "Fixtures use setCoverageSelection to keep mask and bounds consistent. Retained invert expectation uses its actual source colour; UI availability expectation accepts the expanded feature. No production changes. Broadened cursor/region regression selection. Actual results above."
+  },
+  "sourceDelta": {
+    "added": [
+      "Sources/PhotoCraftCore/PagedModeComponentEditing.swift",
+      "Tests/PhotoCraftAppTests/LargeComponentToolsWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/PagedModeComponentTests.swift",
+      "Tests/PhotoCraftImagingTests/ComponentToolPersistenceTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationDocumentMode.swift",
+      "Sources/PhotoCraft/ModeChannelEditing.swift",
+      "Sources/PhotoCraftCore/ModeComponentEditing.swift",
+      "Sources/PhotoCraftCore/PagedRasterFilters.swift",
+      "Tests/PhotoCraftAppTests/LargeComponentWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ComponentDocumentAdmissionTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "independent": {
+    "currentOwnedWordsPassed": true,
+    "reference": "artifacts/runs/20261104T120052Z-393-component-tools/source04-independent01.json",
+    "bytesComparedEachArchitecture": 48,
+    "PhotoshopComparison": false,
+    "priorGray32GeneratedDefaultPassed": false,
+    "priorGray32Reference": "docs/COMPONENT_DOCUMENT_ADMISSION_391.json",
+    "allHistoricalIndependentComparisonsPassed": false
+  },
+  "regressionClassification": "artifacts/runs/20261104T120052Z-393-component-tools/regression-classification01.json",
+  "qualificationFile": "artifacts/runs/20261104T120052Z-393-component-tools/source04-qualification.json",
+  "universalPackage": "artifacts/runs/20261104T120052Z-393-component-tools/universal/staging01.json",
+  "stagingSigning": "Ad-hoc outside Desktop; retained ZIP/extraction matches and verifies. No distribution/Xcode archive.",
+  "remaining": "Full channel arithmetic, large PSD/PSB/TIFF/profile/printing and metadata/recovery integration, physical dense maximum capacity, current full-suite success, supported physical Macs/macOS14 and sustained60fps remain open. Current live UI and exact Photoshop behaviour/output/default/settings/shortcuts are unqualified. The391Gray32one-ULP cross-architecture default difference and retained strict failures remain open. S05 remains open; full C01 follows completion/testing. Three older temporary candidate binaries remain missing with their original hash records retained.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T120052Z-393-component-tools/verification01.json",
+    "checks": 48,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "repairsRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source03-repair-classification01.json",
+  "cursorCoverageRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source04-cursor-coverage01.json"
+}

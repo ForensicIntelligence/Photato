@@ -35,6 +35,8 @@ enum PSDModeStorage {
   }
   static func validateExport(_ document: CraftDocument) throws {
     guard document.hasNativeModeStorage else { return }
+    guard document.width <= NativeModeRaster.maximumPixels / document.height,
+      !document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) else { throw CraftError.unsupported("PSD/PSB component output currently supports up to8,388,608canvas/layer pixels; save as native86 to retain this document.") }
     for layer in document.layers {
       guard layer.smartObject == nil, layer.smartFilters == nil else {
         throw CraftError.unsupported("Rasterize or merge Smart Objects/Filters before exporting native color-mode PSD/PSB.")

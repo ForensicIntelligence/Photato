@@ -60,7 +60,7 @@ final class TIFFModeWorkflowTests: XCTestCase {
         let adobe = try await helper.outputs(service, route: "/v2/execute-actions", payload: payload([helper.output("image/tiff")]))
         let expected = try RasterIO.read(RasterIO.encoded(source, type: .tiff))
         let actual = try RasterIO.read(XCTUnwrap(adobe.first))
-        XCTAssertEqual(actual.colorMode, mode); XCTAssertEqual(actual.layers[0].nativeMode?.planes, expected.layers[0].nativeMode?.planes)
+        XCTAssertEqual(actual.colorMode, mode); XCTAssertEqual(try actual.layers[0].nativeMode?.planes, try expected.layers[0].nativeMode?.planes)
         XCTAssertEqual(shared.store.document, before)
       }
     }

@@ -5,6 +5,14 @@ import PhotoCraftImaging
 extension EditorStore {
   var usesModeChannels: Bool { DocumentColorMode.componentModes.contains(document.colorMode) && (document.hasNativeModeStorage || document.depth != .u8) }
   var isCompositeColorTarget: Bool { componentTarget == .composite && modeComponentTargets.isEmpty }
+  /// Editing intent spans the legacy RGB8 selector and retained/native selectors.
+  /// Preview/visibility state keeps its existing independent representation.
+  var effectiveComponentTargets: Set<Int> {
+    if !modeComponentTargets.isEmpty { return modeComponentTargets }
+    guard document.colorMode == .rgb, document.depth == .u8,
+      let legacy = componentTarget.editComponents else { return [] }
+    return Set([RGBComponents.red,.green,.blue].enumerated().compactMap { legacy.contains($0.element) ? $0.offset:nil })
+  }
   var modeVisibleComponents: Set<Int> { modeComponentVisibility ?? Set(0..<document.colorMode.componentCount) }
   var canEditModeComponents: Bool {
     guard canSelectComponentTarget, historyOperation == nil, !editingMask, editingChannel == nil,
@@ -35,17 +43,22 @@ extension EditorStore {
     render()
   }
   func routeModeComponents(_ command: Command) throws -> Command {
-    guard !modeComponentTargets.isEmpty else { return command }
+    let targets = effectiveComponentTargets
+    guard !targets.isEmpty else { return command }
     let id: UUID, operation: ModeComponentEdit.Operation
     switch command {
     case .stroke(let layer, let points, let brush): id = layer; operation = .stroke(points, brush)
     case .fill(let layer, let color):
-      id = layer; operation = .fill(unit(color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722), color.a)
+      // Keep generic/API Fill aligned with the desktop's explicit neutral scope.
+      guard color.r == color.g, color.g == color.b, color.a == 1 else {
+        throw CraftError.unsupported("Component Fill currently supports opaque neutral colors. Choose Black, 50% Gray or White.")
+      }
+      id = layer; operation = .fill(color.r, 1)
     case .clear(let layer): id = layer; operation = .fill(1, 1)
     case .applyAdjustment(let layer, .invert): id = layer; operation = .invert
     case .applyFilter(let layer, let filter): id = layer; operation = .filter(filter)
     default: return command
     }
-    return .modeComponents(.init(layerID: id, components: modeComponentTargets, operation: operation))
+    return .modeComponents(.init(layerID: id, components: targets, operation: operation))
   }
 }

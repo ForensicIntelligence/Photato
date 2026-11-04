@@ -10,8 +10,8 @@ public enum DocumentModeInput {
   }
   public static func command(_ request: DocumentModeRequest, in document: CraftDocument) throws -> Command {
     try document.validate(); try Task.checkCancellation()
-    guard document.width <= NativeModeRaster.maximumPixels / document.height else {
-      throw CraftError.unsupported("Color conversion supports up to 8,388,608 canvas pixels.")
+    guard document.width <= NativeModeRaster.maximumDocumentPixels / document.height else {
+      throw CraftError.unsupported("Color conversion exceeds the native canvas dimension limits.")
     }
     guard !document.layers.isEmpty || document.inkMode != nil else { throw CraftError.invalid("Open a document with layers first.") }
     if document.depth == .f32, request.conversion.depth != .f32, !request.clipHDR {

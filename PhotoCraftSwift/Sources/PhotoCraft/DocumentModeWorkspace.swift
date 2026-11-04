@@ -92,7 +92,7 @@ extension EditorStore {
   var canBeginDocumentMode: Bool {
     !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges && historyOperation == nil
       && transformDraft == nil && !editingComponent && !editingMask && !smartFilterMaskEditing
-      && (!document.layers.isEmpty || document.inkMode != nil) && document.width <= NativeModeRaster.maximumPixels / document.height
+      && (!document.layers.isEmpty || document.inkMode != nil) && document.width <= NativeModeRaster.maximumDocumentPixels / document.height
   }
   func beginDocumentMode(_ mode: DocumentColorMode, depth: PixelDepth? = nil) {
     guard canBeginDocumentMode, DocumentColorMode.componentModes.contains(mode) else { return }

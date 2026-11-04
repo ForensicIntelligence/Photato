@@ -31,7 +31,7 @@ final class ModeChannelWorkflowTests: XCTestCase {
     var document = try CraftDocument(width: 4, height: 3, depth: depth)
     document = try document.convertingMode(.init(mode: mode, depth: depth))
     var native = try XCTUnwrap(document.layers[0].nativeMode)
-    for c in native.planes.indices { for i in 0..<12 {
+    for c in try native.planes.indices { for i in 0..<12 {
       try native.set(c == mode.componentCount ? 1 : Float((i + c) % 4) / 4, component: c, index: i)
     } }
     document.layers[0].nativeMode = native; document.layers[0].content = .raster(try native.surface())
@@ -84,7 +84,7 @@ final class ModeChannelWorkflowTests: XCTestCase {
     XCTAssertEqual(store.document, before)
     store.finishBrush(); await store.geometryTask?.value
     XCTAssertNil(store.error); XCTAssertNotEqual(store.document, before)
-    for c in [0, 1, 2, 4] { XCTAssertEqual(store.document.layers[0].nativeMode?.planes[c], before.layers[0].nativeMode?.planes[c]) }
+    for c in [0, 1, 2, 4] { XCTAssertEqual(try store.document.layers[0].nativeMode?.planes[c], try before.layers[0].nativeMode?.planes[c]) }
     await store.undo(); XCTAssertEqual(store.document, before)
     XCTAssertTrue(store.canBeginFilterKind(.average)); XCTAssertFalse(store.canBeginFilterKind(.cameraRaw))
     store.beginFilter(.average); await store.renderTask?.value

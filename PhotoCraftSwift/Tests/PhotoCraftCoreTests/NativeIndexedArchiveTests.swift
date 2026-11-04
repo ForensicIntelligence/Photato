@@ -113,7 +113,7 @@ final class NativeIndexedArchiveTests:XCTestCase {
   func testBudgetsCorruptionInvalidVersionsAndPageShapesReject()throws {
     let bytes=try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:63)
     XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,heapByteLimit:0));XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,scratchByteLimit:0));XCTAssertThrowsError(try NativeArchive.decodePaged(bytes,maximumMetadataBytes:0))
-    XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),maximumBytes:16,minimumVersion:63));XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:86))
+    XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),maximumBytes:16,minimumVersion:63));XCTAssertThrowsError(try NativeArchive.encodeChunked(fixture(.u8),minimumVersion:87))
     let model64=try fixture(.u8),version64=try NativeArchive.encodeChunked(model64,minimumVersion:64)
     XCTAssertEqual(try NativeArchive.decodePaged(version64),model64)
     XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(model64,minimumVersion:65)),model64)

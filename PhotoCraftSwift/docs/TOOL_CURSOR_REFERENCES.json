@@ -1083,5 +1083,12 @@
     "reference": "docs/SHARED_PAINT_PALETTES_376.json",
     "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
     "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route."
+  },
+  "legacyRGB8Routing394": {
+    "step": 394,
+    "status": "Automated selected-RGB8 Brush/Eraser admission/cursor/dispatch coverage passes all16modifier combinations on both architectures; full live/Photoshop/platform gates open",
+    "scope": "Existing Brush/Eraser cursor policy and captured gesture semantics now apply to ordinary RGB8 selected-channel routing. No new modifier action or artwork. Add all16modifier regression coverage for the selected-channel context.",
+    "remaining": "Live cursor/Photoshop art and all-input/platform/performance qualification remain open.",
+    "evidence": "docs/RGB8_COMPONENT_TOOLS_394.json"
   }
 }

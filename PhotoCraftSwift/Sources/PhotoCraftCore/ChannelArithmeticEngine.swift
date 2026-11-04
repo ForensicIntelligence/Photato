@@ -186,6 +186,7 @@ public enum ChannelArithmeticEngine {
     in document: inout CraftDocument, transfer: ChannelArithmeticTransfer) throws {
     var layer=document.layers[index]
     let original=try ModeComponentEdit.raster(layer,in:document)
+    guard !original.requiresPagedArchive else { throw CraftError.unsupported("Native component channel blending currently supports up to8,388,608layer pixels.") }
     let selected=Set(components.isEmpty ? Array(0..<original.mode.componentCount):components)
     let preserve=options.preserveTransparency || !components.isEmpty || layer.protection.locksTransparency
     let oldTransform=layer.coordinateTransform

@@ -26,7 +26,7 @@ final class TIFFModeTests: XCTestCase {
         let bytes = try RasterIO.encoded(document, type: .tiff,
           options: .init(tiffCompression: .lzw, tiffByteOrder: order, tiffPixelOrder: layout, tiffPredictor: true))
         XCTAssertLessThan(try TIFFContainer(bytes, metadata: false).scalar(278), 73)
-        XCTAssertEqual(try RasterIO.read(bytes).layers[0].nativeMode?.planes, n.planes)
+        XCTAssertEqual(try RasterIO.read(bytes).layers[0].nativeMode?.planes, try n.planes)
       }
     }
   }
@@ -50,7 +50,7 @@ final class TIFFModeTests: XCTestCase {
               for c in 0...3 { for i in 0..<12 {
                 XCTAssertEqual(actual.value(component: c, index: i), original.value(component: c, index: i), accuracy: 1.01 / 65535)
               } }
-            } else { XCTAssertEqual(actual.planes, original.planes) }
+            } else { XCTAssertEqual(try actual.planes, try original.planes) }
           }
         }
       }
@@ -101,12 +101,12 @@ final class TIFFModeTests: XCTestCase {
   }
   func testLiteralInkGrayAndLabEncodingsAndOrientation() throws {
     let cmyk = try RasterIO.read(literal(photo: 5, channels: 5, samples: [0, 255, 128, 64, 0, 255, 0, 64, 128, 255], extra: 2))
-    XCTAssertEqual(cmyk.layers[0].nativeMode?.planes, [Data([0, 255]), Data([255, 0]), Data([128, 64]), Data([64, 128]), Data([0, 255])])
+    XCTAssertEqual(try cmyk.layers[0].nativeMode?.planes, [Data([0, 255]), Data([255, 0]), Data([128, 64]), Data([64, 128]), Data([0, 255])])
     let white = try RasterIO.read(literal(photo: 0, channels: 1, samples: [0, 255], orientation: 6))
     XCTAssertEqual(white.width, 1); XCTAssertEqual(white.height, 2)
-    XCTAssertEqual(white.layers[0].nativeMode?.planes, [Data([255, 0]), Data([255, 255])])
+    XCTAssertEqual(try white.layers[0].nativeMode?.planes, [Data([255, 0]), Data([255, 255])])
     let lab8 = try RasterIO.read(literal(photo: 8, channels: 3, samples: [64, 128, 127, 192, 0, 255]))
-    XCTAssertEqual(lab8.layers[0].nativeMode?.planes, [Data([64, 192]), Data([0, 128]), Data([255, 127]), Data([255, 255])])
+    XCTAssertEqual(try lab8.layers[0].nativeMode?.planes, [Data([64, 192]), Data([0, 128]), Data([255, 127]), Data([255, 255])])
     let lab16 = try RasterIO.read(literal(photo: 8, bits: 16, channels: 3,
       samples: [0, 0, 0, 128, 0, 127, 255, 255, 0, 0, 0, 255]))
     let n = try XCTUnwrap(lab16.layers[0].nativeMode)
@@ -122,7 +122,7 @@ final class TIFFModeTests: XCTestCase {
   }
   func testAssociatedAlphaAndFloatHDR() throws {
     let gray = try RasterIO.read(literal(photo: 1, channels: 2, samples: [64, 128, 17, 0], extra: 1))
-    XCTAssertEqual(gray.layers[0].nativeMode?.planes, [Data([128, 0]), Data([128, 0])])
+    XCTAssertEqual(try gray.layers[0].nativeMode?.planes, [Data([128, 0]), Data([128, 0])])
     let hdr = try RasterIO.read(literal(photo: 1, bits: 32, channels: 1,
       samples: [0, 0, 32, 64, 0, 0, 128, 190], format: 3))
     XCTAssertEqual(hdr.layers[0].nativeMode?.value(component: 0, index: 0), 2.5)
@@ -146,7 +146,7 @@ final class TIFFModeTests: XCTestCase {
     XCTAssertEqual((properties[kCGImagePropertyExifDictionary] as? [CFString: Any])?[kCGImagePropertyExifFNumber] as? Double, 2.8)
     let empty = try Surface(width: 4, height: 3, depth: .u16)
     let rendered = try RasterIO.read(RasterIO.encoded(empty, type: .tiff, workingDocument: document))
-    XCTAssertNotEqual(rendered.layers[0].nativeMode?.planes, document.layers[0].nativeMode?.planes)
+    XCTAssertNotEqual(try rendered.layers[0].nativeMode?.planes, try document.layers[0].nativeMode?.planes)
     XCTAssertEqual(rendered.layers[0].nativeMode?.value(component: 4, index: 0), 0)
   }
   func testEmitNativeTIFFsForIndependentReaders() throws {
@@ -163,7 +163,7 @@ final class TIFFModeTests: XCTestCase {
         try bytes.write(to: folder.appendingPathComponent(name))
         cases.append(["file": name, "mode": mode.rawValue, "depth": native.bytesPerSample * 8,
           "width": native.width, "height": native.height, "layered": layered,
-          "nativePlanesBase64": native.planes.map { $0.base64EncodedString() }])
+          "nativePlanesBase64": try native.planes.map { $0.base64EncodedString() }])
       }
     } }
     try JSONSerialization.data(withJSONObject: cases, options: [.prettyPrinted, .sortedKeys]).write(to: folder.appendingPathComponent("expected.json"))

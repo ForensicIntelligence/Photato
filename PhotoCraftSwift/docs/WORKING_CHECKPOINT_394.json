@@ -1,0 +1,52 @@
+{
+  "step": 394,
+  "status": "All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun.",
+  "goal_status": "active",
+  "previous_goal_turn": 393,
+  "run": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing",
+  "previous_qualified_source": "393Source04",
+  "software_build": 394,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/source02-source.json",
+  "source_inputs": 7164,
+  "production_swift_files": 1023,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/RGB8_COMPONENT_TOOLS_394.json",
+  "diary_step": 394,
+  "next_work": [
+    "Full S05/C01 and other component tools, multi-selection/visibility/clipboard/transforms/Actions, nonneutral Fill and profile/custom-gray fidelity, channel arithmetic, large interchange/printing/history/recovery integration, physical dense maximum capacity, supported physical Macs/macOS14, current full-suite success and sustained60fps remain open. Current live UI and complete Photoshop output/default/settings/shortcut equivalence are unqualified. The391Gray32one-ULP cross-architecture difference, retained strict failures and3missing older temporary binaries remain recorded. Full C01 follows complete/tested S05.",
+    "Continue full mask/image/source/profile and large interchange/channel arithmetic/printing/history integration. Preserve157deferred numerical gates and full S05/C01 sequencing. Keep outside-Desktop staging with ZIP/extraction evidence."
+  ],
+  "history_receipt": "artifacts/development-history-audit/394-final-receipt01.json",
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  },
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/verification01.json",
+    "checks": 49,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "phase_ledger": "docs/FUNCTION_PHASES_394.json",
+  "prior_private_source_backup": "388Source03 (checkpoint389);394source not pushed",
+  "previous_source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "previous_source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
+  "previous_source_publication": "docs/SOURCE_PUBLICATION_389.json",
+  "repairsRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source03-repair-classification01.json",
+  "cursorCoverageRecord": "artifacts/runs/20261104T120052Z-393-component-tools/source04-cursor-coverage01.json",
+  "neutralFillPreservationRecord": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/neutral-fill-preservation01.json"
+}

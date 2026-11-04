@@ -155,6 +155,12 @@ enum PagedRasterFilters {
   }
   private static func motion(_ source:FilterSamplePlane,filter:RasterFilter,budget:Int)throws->FilterSamplePlane {
     if filter.distance==1 {return source}
+    // Bilinear interpolation of exact zero/one samples remains zero/one;
+    // summing at most257 such samples and dividing by that count is exact.
+    // Preserve the existing loop for other constants, whose rounding may differ.
+    if let value=source.constant,(0..<4).allSatisfy({value[$0]==0 || value[$0]==1}) {
+      return FilterSamplePlane(width:source.width,height:source.height,constant:normalizedSumZero(value))
+    }
     let w=source.width,h=source.height,radians=filter.angle * .pi/180,dx=cos(radians),dy = -sin(radians)
     let count=min(257,Int(filter.distance)+1),writer=try FilterSamplePlane.Writer(width:w,height:h,maximumBytes:budget)
     for y in 0..<h {

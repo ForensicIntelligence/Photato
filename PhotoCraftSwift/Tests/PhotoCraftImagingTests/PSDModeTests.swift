@@ -26,7 +26,7 @@ final class PSDModeTests: XCTestCase {
     XCTAssertEqual(restored.depth, source.depth, file: file, line: line)
     let original = try XCTUnwrap(source.layers[0].nativeMode)
     if source.colorMode != .rgb {
-      XCTAssertEqual(restored.layers[0].nativeMode?.planes, original.planes, file: file, line: line)
+      XCTAssertEqual(try restored.layers[0].nativeMode?.planes, try original.planes, file: file, line: line)
       XCTAssertEqual(restored.modeDescriptor?.profile, original.profile, file: file, line: line)
     } else {
       guard case .raster(let pixels) = restored.layers[0].content else { return XCTFail("Expected raster") }
@@ -67,11 +67,11 @@ final class PSDModeTests: XCTestCase {
   func testLiteralFlattenedSamplesUseActualModeChannelsAndCMYKInversion() throws {
     let cmyk = try PSDCodec.read(flattened(mode: 4, depth: 8, planes: [[0, 255], [255, 0], [128, 64], [13, 240], [128, 64]], alpha: true))
     let inks = try XCTUnwrap(cmyk.layers[0].nativeMode)
-    XCTAssertEqual(inks.planes, [Data([255, 0]), Data([0, 255]), Data([127, 191]), Data([242, 15]), Data([128, 64])])
+    XCTAssertEqual(try inks.planes, [Data([255, 0]), Data([0, 255]), Data([127, 191]), Data([242, 15]), Data([128, 64])])
     let lab = try PSDCodec.read(flattened(mode: 9, depth: 8, planes: [[17, 241], [128, 64], [128, 192]]))
-    XCTAssertEqual(lab.layers[0].nativeMode?.planes, [Data([17, 241]), Data([128, 64]), Data([128, 192]), Data([255, 255])])
+    XCTAssertEqual(try lab.layers[0].nativeMode?.planes, [Data([17, 241]), Data([128, 64]), Data([128, 192]), Data([255, 255])])
     let gray = try PSDCodec.read(flattened(mode: 1, depth: 16, planes: [[0, 1, 128, 0]]))
-    XCTAssertEqual(gray.layers[0].nativeMode?.planes, [Data([1, 0, 0, 128]), Data([255, 255, 255, 255])])
+    XCTAssertEqual(try gray.layers[0].nativeMode?.planes, [Data([1, 0, 0, 128]), Data([255, 255, 255, 255])])
     let whiteMatted = try PSDCodec.read(flattened(mode: 1, depth: 8, planes: [[191, 255], [128, 0]], alpha: true))
     XCTAssertEqual(try XCTUnwrap(whiteMatted.layers[0].nativeMode).value(component: 0, index: 0), PixelDepth.u8.quantize(0.5), accuracy: 1 / 255)
     XCTAssertEqual(whiteMatted.layers[0].nativeMode?.value(component: 1, index: 1), 0)
@@ -101,7 +101,7 @@ final class PSDModeTests: XCTestCase {
     for (c, entry) in entries.enumerated() {
       var data = try records.view(entry.1); XCTAssertEqual(try data.u16(), 0)
       let bytes = try data.bytes(data.remaining)
-      XCTAssertEqual(bytes, c < 4 ? Data(source.planes[c].map { 255 - $0 }) : source.planes[c])
+      XCTAssertEqual(bytes, c < 4 ? Data(try source.planes[c].map { 255 - $0 }) : (try source.planes[c]))
     }
   }
   func testGroupsMasksAndFileBackedRoundTripKeepSeparationBytes() throws {
@@ -119,7 +119,7 @@ final class PSDModeTests: XCTestCase {
       try PSDCodec.writeRasterLayers(document, to: url, compression: .rle, format: format)
       let read = try PSDCodec.read(url)
       let raster = try XCTUnwrap(read.layers.first { $0.nativeMode != nil })
-      XCTAssertEqual(raster.nativeMode?.planes, document.layers[0].nativeMode?.planes)
+      XCTAssertEqual(try raster.nativeMode?.planes, try document.layers[0].nativeMode?.planes)
       let mask = try XCTUnwrap(raster.mask), expected = try XCTUnwrap(document.layers[0].mask)
       XCTAssertEqual(mask.width, expected.width); XCTAssertEqual(mask.height, expected.height)
       for y in 0..<3 { for x in 0..<4 { XCTAssertEqual(mask.pixel(x: x, y: y), expected.pixel(x: x, y: y)) } }
@@ -158,7 +158,7 @@ final class PSDModeTests: XCTestCase {
       try PSDCodec.writeRasterLayers(document, to: folder.appendingPathComponent(name), compression: .zipPrediction)
       cases.append(["file": name, "mode": mode.rawValue, "width": native.width, "height": native.height,
         "depth": depth == .u8 ? 8 : depth == .u16 ? 16 : 32, "components": native.mode.componentCount,
-        "littleEndianNativePlanesBase64": native.planes.map { $0.base64EncodedString() }])
+        "littleEndianNativePlanesBase64": try native.planes.map { $0.base64EncodedString() }])
     } }
     try JSONSerialization.data(withJSONObject: cases, options: [.prettyPrinted, .sortedKeys]).write(to: folder.appendingPathComponent("expected.json"))
   }

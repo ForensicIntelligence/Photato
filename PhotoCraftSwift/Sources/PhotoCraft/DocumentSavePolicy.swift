@@ -35,6 +35,9 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
+    if document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
+      return "Save this large component document as Photato. Streamed PSD/PSB/TIFF component output is still being implemented."
+    }
     if document.isChannelOnly {
       if format == .psd || format == .psb {
         return document.depth == .f32 ? "Save this standalone32-bit document as Photato to retain its channels.":nil

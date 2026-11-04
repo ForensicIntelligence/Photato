@@ -121,6 +121,10 @@ extension Renderer {
       // non-rendering source tags need not be serialized. Sorted keys make this deterministic.
       lhs.sourceTags = nil
       rhs.sourceTags = nil
+      // NativeModeRaster equality already compares exact logical sample words,
+      // profiles and intent. Never serialize its raw buffers for scalar checks.
+      lhs.nativeMode = nil
+      rhs.nativeMode = nil
       let encoder = JSONEncoder()
       encoder.outputFormatting = .sortedKeys
       guard try encoder.encode(lhs) == encoder.encode(rhs) else { return .full }

@@ -29,14 +29,7 @@ public struct ModeComponentEdit: Sendable {
     guard case .raster(let pixels) = layer.content else { throw CraftError.invalid("Choose a pixel layer for color-component editing.") }
     if let native = layer.nativeMode { return native }
     guard document.colorMode == .rgb else { throw CraftError.invalid("Missing native component planes.") }
-    var native = try NativeModeRaster(width: pixels.width, height: pixels.height, mode: .rgb,
-      depth: pixels.depth, profile: document.workingICC)
-    for y in 0..<pixels.height { try Task.checkCancellation(); for x in 0..<pixels.width {
-      let p = pixels.depth == .f32 ? pixels.linearPixel(x: x, y: y) : pixels.pixel(x: x, y: y)
-      let values = [p.r, p.g, p.b, p.a]
-      for c in 0..<4 { try native.set(values[c], component: c, index: y * pixels.width + x) }
-    } }
-    return native
+    return try NativeModeRaster.retainingRGBSamples(pixels, profile: document.workingICC)
   }
   public func apply(to document: inout CraftDocument) throws {
     guard !components.isEmpty, components.isSubset(of: Set(0..<document.colorMode.componentCount)),
@@ -44,6 +37,10 @@ public struct ModeComponentEdit: Sendable {
       !document.isImageLocked(layerID), document.layers[index].smartObject == nil,
       document.layers[index].smartFilters == nil else {
       throw CraftError.invalid("Choose valid color components on an unlocked ordinary pixel layer.")
+    }
+    guard case .raster(let target) = document.layers[index].content else { throw CraftError.invalid("Choose a pixel layer for color-component editing.") }
+    if target.width > NativeModeRaster.maximumPixels / target.height {
+      try applyPaged(to: &document); return
     }
     let layer = document.layers[index], before = document
     let native = try Self.raster(layer, in: document), transform = layer.coordinateTransform

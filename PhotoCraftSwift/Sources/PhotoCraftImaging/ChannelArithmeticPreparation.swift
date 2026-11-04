@@ -183,6 +183,7 @@ public enum ChannelArithmeticPreparation {
         let mask=try AlphaChannel(name:"Calculations",pixels:output).selection()
         try Command.selectionCoverage(mask,.replace).apply(to:&result)
       case .newDocument:
+        guard document.width <= NativeModeRaster.maximumPixels / document.height else { throw CraftError.unsupported("Calculations to a new Gray document currently support up to8,388,608pixels.") }
         var created=try CraftDocument(width:document.width,height:document.height,depth:document.depth)
         created.name=request.name ?? "Untitled"
         created.resolution=document.resolution

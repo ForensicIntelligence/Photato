@@ -24,11 +24,11 @@ final class InkModeInputTests: XCTestCase {
       guard case .multichannel(let converted) = session.document.inkMode else { return XCTFail() }
       XCTAssertTrue(session.document.layers.isEmpty); XCTAssertEqual(converted.plates.count, mode.componentCount)
       for (c, plate) in converted.plates.enumerated() {
-        let raw = try InkPlane(width: 3, height: 1, depth: depth, bytes: before.planes[c])
+        let raw = try InkPlane(width: 3, height: 1, depth: depth, bytes: try before.planes[c])
         XCTAssertEqual(plate.samples.bytes, try raw.converted(to: depth, inverted: mode != .cmyk).bytes)
       }
       let restored = try session.document.convertingMode(.init(mode: mode, depth: depth))
-      XCTAssertEqual(restored.layers[0].nativeMode?.planes, before.planes, "Round-trip component bytes must stay exact")
+      XCTAssertEqual(try restored.layers[0].nativeMode?.planes, try before.planes, "Round-trip component bytes must stay exact")
       try session.undo(); XCTAssertTrue(session.document == original)
     } }
   }
@@ -41,7 +41,7 @@ final class InkModeInputTests: XCTestCase {
     try session.execute(InkModeInput.duotone(settings, in: original))
     let duo = session.document
     guard case .duotone(let raster) = duo.inkMode else { return XCTFail() }
-    XCTAssertEqual(raster.gray.bytes, native.planes[0])
+    XCTAssertEqual(raster.gray.bytes, try native.planes[0])
     XCTAssertEqual(try Renderer.composite(duo).pixel(x: 0, y: 0), try duo.inkMode?.surface().pixel(x: 0, y: 0))
     try session.execute(InkModeInput.multichannel(in: duo))
     guard case .multichannel(let plates) = session.document.inkMode else { return XCTFail() }

@@ -28,6 +28,7 @@ enum TIFFModeStorage {
         throw CraftError.unsupported("TIFF spot-ink separations are not supported yet.")
       }
     }
+    guard g.width <= NativeModeRaster.maximumPixels / g.height else { throw CraftError.unsupported("TIFF component decoding currently supports up to8,388,608pixels.") }
     let depth: PixelDepth = g.bits == 8 ? .u8 : g.bits == 16 ? .u16 : .f32
     guard mode.depths.contains(depth) else { throw CraftError.unsupported("Unsupported TIFF mode/depth combination.") }
     if let field = file.root.fields[34675], ![1, 7].contains(field.type) {
@@ -137,6 +138,7 @@ enum TIFFModeStorage {
       resolution.isFinite, (1...100_000).contains(resolution) else {
       throw CraftError.invalid("Native TIFF export requires the document depth and a valid resolution.")
     }
+    guard document.width <= NativeModeRaster.maximumPixels / document.height else { throw CraftError.unsupported("TIFF component output currently supports up to8,388,608pixels; use native86 to retain this document.") }
     let native: NativeModeRaster
     if preserveSingleLayer, document.layers.count == 1, let layer = document.layers.first,
       let stored = layer.nativeMode, layer.visible, layer.opacity == 1,

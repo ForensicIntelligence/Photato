@@ -39,7 +39,7 @@ final class ColorProfileWorkflowTests: XCTestCase {
       let source = try fixture().convertingMode(.init(mode: mode, depth: .u16))
       let profile = mode == .grayscale ? try self.profile(CGColorSpace.genericGrayGamma2_2) : try NativeModeProfile.standard(mode, depth: .u16)
       let result = try apply(.init(.assign, profile: profile), source)
-      XCTAssertEqual(result.layers[0].nativeMode?.planes, source.layers[0].nativeMode?.planes)
+      XCTAssertEqual(try result.layers[0].nativeMode?.planes, try source.layers[0].nativeMode?.planes)
       XCTAssertEqual(result.modeDescriptor?.profile, profile)
     }
   }
@@ -94,11 +94,11 @@ final class ColorProfileWorkflowTests: XCTestCase {
     let source=try fixture().convertingMode(.init(mode:.cmyk,depth:.u16))
     for mode in [DocumentColorMode.rgb,.grayscale,.lab] {
       let result=try apply(.init(.convert,profile:NativeModeProfile.standard(mode,depth:.u16)),source)
-      XCTAssertEqual(result.layers[0].nativeMode?.planes.last,source.layers[0].nativeMode?.planes.last)
+      XCTAssertEqual(try result.layers[0].nativeMode?.planes.last,try source.layers[0].nativeMode?.planes.last)
       for format in [DocumentIO.Format.psd,.tiff] {
         let bytes=try DocumentIO.encode(result,format:format),read=try RasterIO.read(bytes)
         let restored = try mode == .rgb ? read.convertingMode(.init(mode: .rgb, depth: .u16, profile: result.modeDescriptor?.profile)) : read
-        XCTAssertEqual(restored.layers[0].nativeMode?.planes,result.layers[0].nativeMode?.planes)
+        XCTAssertEqual(try restored.layers[0].nativeMode?.planes,try result.layers[0].nativeMode?.planes)
       }
     }
   }

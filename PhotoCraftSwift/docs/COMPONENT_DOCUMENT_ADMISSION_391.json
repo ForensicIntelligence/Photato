@@ -1,0 +1,171 @@
+{
+  "step": 391,
+  "softwareBuild": 391,
+  "source": "391Source02",
+  "status": "Large native component document admission and sparse workflows; full capacity/fidelity remain open",
+  "qualification": "All 13 new cases pass on Apple Silicon and translated Intel. The broadened run executes 1,481 identical ordered cases per architecture, passing 1,478 on Apple Silicon and 1,470 on translated Intel. Remaining failed IDs and assertion counts reproduce on preserved build 390. This is an affected run, not full-suite success.",
+  "sourceManifest": "artifacts/runs/20261104T094018Z-391-component-document-admission/source02-source.json",
+  "sourceInputs": 7154,
+  "productionSwift": 1021,
+  "testSwiftFiles": 703,
+  "currentInventoryEachArchitecture": 3932,
+  "newCasesEachArchitecture": 13,
+  "affectedCasesEachArchitecture": 1481,
+  "passedEachArchitecture": [
+    1478,
+    1470
+  ],
+  "failedEachArchitecture": [
+    3,
+    11
+  ],
+  "failedAssertionCounts": [
+    11,
+    352
+  ],
+  "unexpectedEachArchitecture": [
+    2,
+    2
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "failedCasesEachArchitecture": [
+    [
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ],
+    [
+      "PhotoCraftCoreTests.CloneStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels",
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftCoreTests.FocusStrokeSessionTests/testCompleteAndIncrementalPrefixesMatchPreOptimizationPixels",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+      "PhotoCraftCoreTests.GradientOracleTests/testExecutedRustGeometryInterpolationAndDither",
+      "PhotoCraftCoreTests.LightingTests/testIndependentOriginalFloat32LightingWordsExactly",
+      "PhotoCraftImagingTests.PagedCanvasRendererTests/testAll24PriorNativeStacksRemainBitExactThroughPagedComposition",
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources",
+      "PhotoCraftCoreTests.SourceAdjustmentTests/testAllIndependentOriginalSourceAdjustmentWordsExactly",
+      "PhotoCraftCoreTests.ToningStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels"
+    ]
+  ],
+  "allRemainingFailuresReproducedOn390": true,
+  "affectedSuitePassed": false,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "logicalGeometry": {
+    "maximumDimension": 300000,
+    "maximumPixels": 90000000000,
+    "sparseWorkflowsTested": [
+      "Native Gray/CMYK/Lab creation at all supported depths; existing large RGB path and retained RGB conversion",
+      "Exact raw numeric channel writes and composite brush/Undo over HTTP",
+      "Native86 file/Data/paged reopen and ephemeral history/Undo/Redo",
+      "Viewport and channel visibility, conversion, crop/identity reframe and default-changing reconciliation"
+    ],
+    "physicalDenseCapacityQualified": false,
+    "notAllOperationsAtMaximum": true
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "newRoute": false,
+    "parameters": "Existing mode channel read/write offsets extend to89999999999; logical/dense limits and native86requirement are exposed. Large component native downloads reject older headers before encoding.",
+    "state": "Conservative owned component metadata/samples now drive document/history/recovery admission. Mapped samples/index include native components; nativeComponentLogicalBytes and mappedNativeComponentVirtualBytes are separate non-RSS metrics.",
+    "availability": "Individual component tools and unfinished dense codecs/operations keep explicit limits. UI save availability, mode state and API errors follow shared guards.",
+    "SwiftSourceCompatibility": "NativeModeRaster.planes is now a checked throwing getter; callers add try. Dense exports remain8MP. Native86/raw sample access serves large documents. Existing small sample assertions remain.",
+    "Adobe": "Shared native engine only; published routes/contracts and separate resource/job budgets retain independently reported coverage. No proprietary Adobe endpoint or new unsupported format option.",
+    "cursor": "No new tool or modifier action; size availability uses existing shared dispatch guards. Full live/cursor/platform qualification remains open."
+  },
+  "attempts": {
+    "Source01": "Both builds succeed;1276cases pass1272ARM/1265Intel. Twelve of13new cases pass. New viewport visibility exposes native-plane JSON serialization during render damage checks; one old dimension rejection is obsolete under the expanded limit. Other failures retained.",
+    "Source02": "After exact Layer/native-word equality, strip native buffers from scalar JSON comparison. Retain viewport assertion, accept valid32768\u00b2geometry, add maximum native file capture and composite brush/Undo coverage. Broaden shared render/snapshot/incremental selection; actual1481case results above."
+  },
+  "sourceDelta": {
+    "added": [
+      "Tests/PhotoCraftAppTests/LargeComponentWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ComponentDocumentAdmissionTests.swift",
+      "Tests/PhotoCraftImagingTests/SparseModePresentationTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationDocumentMode.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/DocumentModeWorkspace.swift",
+      "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "Sources/PhotoCraft/ModeChannelEditing.swift",
+      "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "Sources/PhotoCraftCore/ChannelArithmeticEngine.swift",
+      "Sources/PhotoCraftCore/ComponentPlane.swift",
+      "Sources/PhotoCraftCore/DocumentCreation.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/ModeComponentEditing.swift",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift",
+      "Sources/PhotoCraftCore/RasterTileStorage.swift",
+      "Sources/PhotoCraftImaging/ChannelArithmeticPreparation.swift",
+      "Sources/PhotoCraftImaging/DocumentModeInput.swift",
+      "Sources/PhotoCraftImaging/ModeChannelPresentation.swift",
+      "Sources/PhotoCraftImaging/PSDModeStorage.swift",
+      "Sources/PhotoCraftImaging/RenderSnapshot.swift",
+      "Sources/PhotoCraftImaging/TIFFModeStorage.swift",
+      "Tests/PhotoCraftAppTests/ColorPolicyTests.swift",
+      "Tests/PhotoCraftAppTests/ColorProfileWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ComponentArchiveWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ModeChannelWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/TIFFModeWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/CanvasEdgesTests.swift",
+      "Tests/PhotoCraftCoreTests/ChannelArithmeticTests.swift",
+      "Tests/PhotoCraftCoreTests/DocumentModeTests.swift",
+      "Tests/PhotoCraftCoreTests/InkModeDocumentTests.swift",
+      "Tests/PhotoCraftCoreTests/ModeActionProgramTests.swift",
+      "Tests/PhotoCraftCoreTests/ModeComponentEditingTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeComponentArchiveTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeComponentBlockTests.swift",
+      "Tests/PhotoCraftCoreTests/NativeModeRasterTests.swift",
+      "Tests/PhotoCraftImagingTests/CanvasEdgeIOTests.swift",
+      "Tests/PhotoCraftImagingTests/InkModeInputTests.swift",
+      "Tests/PhotoCraftImagingTests/PSDModeTests.swift",
+      "Tests/PhotoCraftImagingTests/TIFFModeTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "independent": {
+    "literalAndStoragePackingPassed": true,
+    "packing": "artifacts/runs/20261104T094018Z-391-component-document-admission/source02-independent01.json",
+    "logicalRowBytesEachArchitecture": 57351,
+    "rawBlockBytesEachArchitecture": 86016,
+    "maximumGeometryLiteralAlphaBytesEachArchitecture": 16,
+    "maximumNativeAuthenticationAndRawTransferPassed": true,
+    "maximumNativeReader": "artifacts/runs/20261104T094018Z-391-component-document-admission/source02-native-reader02.json",
+    "maximumNativeRawBytesComparedEachArchitecture": 16384,
+    "crossArchitectureGeneratedGray32DefaultPassed": false,
+    "armDefaultWord": 1041141419,
+    "intelDefaultWord": 1041141418,
+    "sharedConversionSourceUnchangedFrom390": true,
+    "prior390EquivalentRuntimeFixtureExecuted": false,
+    "classification": "artifacts/runs/20261104T094018Z-391-component-document-admission/gray32-default-classification01.json",
+    "allIndependentComparisonsPassed": false,
+    "PhotoshopColourEquivalent": false
+  },
+  "regressionClassification": "artifacts/runs/20261104T094018Z-391-component-document-admission/regression-classification01.json",
+  "qualificationFile": "artifacts/runs/20261104T094018Z-391-component-document-admission/source02-qualification.json",
+  "universalPackage": "artifacts/runs/20261104T094018Z-391-component-document-admission/universal/staging01.json",
+  "stagingSigning": "Ad-hoc outside Desktop; byte-matched ZIP extraction signature verified. No distribution/Xcode archive.",
+  "remaining": "Full dense physical capacity, large PSD/PSB/TIFF interchange, resampling/trim/expanded reframe/component tools/channel blending/profile/printing integration, full current-suite success, current live UI, supported physical Macs/macOS14 and sustained60fps remain open. Newly observed Gray32 generated defaults differ by one ULP across architectures; full Photoshop/cross-architecture colour/default/output/settings/shortcut equivalence is unqualified. S05 remains open; full C01 follows complete/testing. Three older missing temporary candidate binaries remain unrecovered.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T094018Z-391-component-document-admission/verification01.json",
+    "checks": 46,
+    "passed": true,
+    "historicalProtectionComplete": false
+  }
+}
