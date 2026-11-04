@@ -1,0 +1,77 @@
+{
+  "step": "dev-step-405",
+  "goal_status": "active",
+  "status": "Global adjustment-stack CUBE export native/API baseline implemented and qualified; full I05 open",
+  "software_build": 405,
+  "tested_source": "405Source03",
+  "run": "artifacts/runs/20261104T211109Z-405-transform-again",
+  "source_manifest": "artifacts/runs/20261104T211109Z-405-transform-again/release02-source.json",
+  "source_inputs": 7184,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "major_workflow": "I05 CUBE quick win delivered; C01 next",
+  "major_workflow_closed": false,
+  "previous_turn_classification": "Progress:404 adds native/API single-row/column marquee;87focused development tests and actual native UI/Undo/Redo pass,23finalchecks/history404pass. D01/L07candidates already working; G01next. All full scope/acceptance retained.",
+  "next_work": [
+    "C01: audit RGB8Shift-selection against current targeting code and implement one bounded missing path or advance with evidence.",
+    "AUT01follows C01; G01Again and A03modern/legacy Brightness/Contrast remain under major stillneeded.",
+    "Complete authorized private source backup after normal optimized scoped checks, preserving private visibility and original Rust history.",
+    "Keep all full package, Photoshop/numerical, physical platform/dense/60fps and historical gates."
+  ],
+  "full_current_suite_passed": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "production_swift_files": 1031,
+  "evidence": "docs/COLOR_LOOKUP_EXPORT_405.json",
+  "phase_ledger": "docs/FUNCTION_PHASES_405.json",
+  "priority_rule": "docs/WORK_PRIORITIES_405.json",
+  "current_major_workflow": "C01",
+  "completed_this_increment": [
+    "Added native global adjustment-stack CUBE export and shared API/resource/state with no document/history mutation.",
+    "Qualified80normal Release cases per architecture/12new, native file Save/independent8corners/clean Undo/Quit and universal package.",
+    "Moved G01/A03candidates to stillneeded; verified B05controls already working; C01next."
+  ],
+  "tests": {
+    "normal_release_arm64": {
+      "tests": 80,
+      "new_cases": 12,
+      "failures": 0,
+      "path": "artifacts/runs/20261104T211109Z-405-transform-again/release02-arm.log"
+    },
+    "normal_release_translated_intel": {
+      "tests": 80,
+      "new_cases": 12,
+      "failures": 0,
+      "path": "artifacts/runs/20261104T211109Z-405-transform-again/release02-intel.log"
+    },
+    "debug_arm64": {
+      "tests": 46,
+      "new_cases": 12,
+      "failures": 0
+    },
+    "B05_debug": {
+      "tests": 13,
+      "functional_methods": 12,
+      "optional_capture_requested": false,
+      "failures": 0
+    }
+  },
+  "native_workflow_qualified": true,
+  "increment_complete": true,
+  "qualified_scope": "Global CUBE native/API baseline only; full I05/Photoshop/runtime acceptance open",
+  "full_workflow_complete": false,
+  "goal_complete": false,
+  "recorded_at_utc": "2026-11-04T22:06:42.643279+00:00",
+  "native_workflow_evidence": "artifacts/runs/20261104T211109Z-405-transform-again/universal/native-file-independent-check01.json",
+  "native_candidate_terminated": true,
+  "package": {
+    "version": "0.3.0",
+    "build": 405,
+    "manifest": "artifacts/runs/20261104T211109Z-405-transform-again/universal/staging01.json"
+  },
+  "history_receipt": "artifacts/development-history-audit/405-final-receipt01.json"
+}

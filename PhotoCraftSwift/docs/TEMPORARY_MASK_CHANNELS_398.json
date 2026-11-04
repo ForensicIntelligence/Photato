@@ -1,0 +1,201 @@
+{
+  "step": 398,
+  "softwareBuild": 398,
+  "source": "398Source04",
+  "status": "Temporary layer/Smart Filter mask channels implemented; focused native/API qualification passed; full original S05/C01 remain open",
+  "qualification": "All404targeted optimized cases pass on Apple Silicon and translated Intel, including16new cases, with identical ordered IDs and no failed assertions, unexpected errors or crashes. This is not a full current-suite or physical Intel/macOS14run.",
+  "sourceManifest": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source04-source.json",
+  "sourceInputs": 7173,
+  "productionSwift": 1026,
+  "testSwiftFiles": 717,
+  "newCasesEachArchitecture": 16,
+  "affectedCasesEachArchitecture": 404,
+  "passedEachArchitecture": [
+    404,
+    404
+  ],
+  "failedEachArchitecture": [
+    0,
+    0
+  ],
+  "failedAssertionCounts": [
+    0,
+    0
+  ],
+  "unexpectedEachArchitecture": [
+    0,
+    0
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "affectedSuitePassed": true,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "C01Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "focusedNativeInteractionPassed": true,
+  "reference": "docs/MASK_CHANNEL_ROWS_398.json",
+  "liveUI": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/current-ui-qualification01.json",
+  "qualificationFile": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source04-qualification.json",
+  "independent": {
+    "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/independent-literal01.json",
+    "literalCurrentBytesEachArchitecture": 560,
+    "passed": true,
+    "displayUndo": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/native-paint-display02.json",
+    "initialDisplayDiagnosticFailed": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/native-paint-display01.json",
+    "allHistoricalIndependentComparisonsPassed": false
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "viewCommand": "channel.view",
+    "visibleMaskTargets": [
+      "layerMask",
+      "smartFilterMask"
+    ],
+    "owner": "layerID; visible requires active owner and does not select it",
+    "state": "auxiliaryVisibility.temporaryMaskChannels {kind,layerID,visible,selected}",
+    "preview": "Same native bounded raw-mask composition in Canvas/channel-preview; ordinary export/preview unaffected",
+    "selectedFilterMaskRepair": "Typed smartFilter.maskFill/Stroke now use the existing prepared transaction when their owner matches the selected Filter Mask. Capture/restore and commit revalidation retain the target; unrelated operations retain prior admission.",
+    "adobe": "No dedicated published mask-channel route invented; existing Adobe-compatible scope remains separate."
+  },
+  "implementation": [
+    "TemporaryMaskChannels.swift derives rows from stored active owner, independently of target selection; vector masks stay in Paths",
+    "Shared native eye/sweep/restore state and numeric bounded mask presentation; no document/dirty/history/archive mutation from view changes",
+    "Legacy Option-click isolated views convert to independent eyes on real eye changes; cancellation restores captured view",
+    "Unmodified backslash toggles available raster-mask overlay without redirecting image edits; existing native focus policy retains text/control shortcuts",
+    "Correct effective Quick Mask visibility under isolated gray mask display",
+    "RGB/component row selection clears temporary mask eyes; mode/ink controls share visibility conversion",
+    "Native/API mask target palette, actual Fill/Stroke/history/lifecycle/state/schema validation",
+    "No PhotoCraftCore/PhotoCraftImaging source or archive86/Actions46algorithm changes"
+  ],
+  "attempts": [
+    {
+      "source": "source01",
+      "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source01-qualification.json",
+      "casesEachArchitecture": [
+        332,
+        332
+      ],
+      "passedEachArchitecture": [
+        331,
+        331
+      ],
+      "assertions": [
+        1,
+        1
+      ],
+      "unexpected": [
+        0,
+        0
+      ],
+      "crashes": [
+        0,
+        0
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "source": "source02",
+      "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source02-qualification.json",
+      "casesEachArchitecture": [
+        402,
+        402
+      ],
+      "passedEachArchitecture": [
+        401,
+        401
+      ],
+      "assertions": [
+        3,
+        3
+      ],
+      "unexpected": [
+        0,
+        0
+      ],
+      "crashes": [
+        0,
+        0
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "source": "source03",
+      "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source03-qualification.json",
+      "casesEachArchitecture": [
+        403,
+        403
+      ],
+      "passedEachArchitecture": [
+        403,
+        403
+      ],
+      "assertions": [
+        0,
+        0
+      ],
+      "unexpected": [
+        0,
+        0
+      ],
+      "crashes": [
+        0,
+        0
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "source": "source04",
+      "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source04-qualification.json",
+      "casesEachArchitecture": [
+        404,
+        404
+      ],
+      "passedEachArchitecture": [
+        404,
+        404
+      ],
+      "assertions": [
+        0,
+        0
+      ],
+      "unexpected": [
+        0,
+        0
+      ],
+      "crashes": [
+        0,
+        0
+      ],
+      "sourceUnchanged": true
+    }
+  ],
+  "universalPackage": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/universal/staging03.json",
+  "sourceDelta": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/source04-delta.json",
+  "remaining": [
+    "Temporary-mask footer Load/Delete, mask display options and alternate row gestures",
+    "All factory mask shortcuts and exact creation-dependent names/order",
+    "New-mask recreation view memory and wider lifecycle contexts",
+    "Properties labels the selected Filter Mask as Layer Mask; tracked UI detail",
+    "Full original S05/C01, full current suite, numerical/default/physical platform/dense/60fps gates remain open",
+    "Existing full382/source381 execution failures are not superseded by these focused cases",
+    "Gray32generated default one-ULP architecture difference and prior strict numerical comparisons remain open",
+    "Three older temporary candidate binaries remain missing, cause unknown;37available protected files unchanged; no preservation gate waived"
+  ],
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "passed": true,
+    "checks": 50,
+    "reference": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/final-verification01.json",
+    "scope": "Current7173inputs, both404-case runs, retained failures,560literal bytes, native UI evidence, universal package/extraction, full scope/open gates, Xcode/schema, offline diary and dashboard"
+  }
+}

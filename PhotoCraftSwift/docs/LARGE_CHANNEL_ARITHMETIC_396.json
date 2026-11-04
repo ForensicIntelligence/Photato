@@ -1,0 +1,140 @@
+{
+  "step": 396,
+  "softwareBuild": 396,
+  "source": "396Source02",
+  "status": "Implemented; affected tests pass; full major scopes remain open",
+  "qualification": "All13new cases and all103affected optimized cases pass on Apple Silicon and translated Intel, with0assertions/unexpected errors/crashes. The current3989-case discovery is not a full execution. Full Photoshop output/UI/settings, physical supported platforms/dense maximum capacity and sustained60fps remain open.",
+  "sourceManifest": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/source02-source.json",
+  "sourceInputs": 7167,
+  "productionSwift": 1023,
+  "testSwiftFiles": 714,
+  "currentInventoryEachArchitecture": 3989,
+  "newCasesEachArchitecture": 13,
+  "affectedCasesEachArchitecture": 103,
+  "passedEachArchitecture": [
+    103,
+    103
+  ],
+  "failedEachArchitecture": [
+    0,
+    0
+  ],
+  "failedAssertionCounts": [
+    0,
+    0
+  ],
+  "unexpectedEachArchitecture": [
+    0,
+    0
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "affectedSuitePassed": true,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "liveUI": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/current-ui-qualification01.json",
+  "logicalGeometry": {
+    "maximumDimension": 300000,
+    "maximumPixels": 90000000000,
+    "physicalDenseCapacityQualified": false,
+    "nativeArchiveVersion": 86
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "newCommand": false,
+    "newRoute": false,
+    "behavior": "Existing image.applyImage and image.calculations share the bounded native preparation/transaction, schema and source leases. New-document transfer403/201, selected targets, history, busy/stale/invalid cases and native86download tested. Capability reports logical maximum and independent printing/dense budgets. Published Adobe channel descriptors remain unqualified; no invented endpoint."
+  },
+  "implementation": [
+    "Bounded numeric opacity projection/replacement independent from color components and profiles",
+    "Large native Apply Image streams selected component output with Float32 weights, preserving original native alpha/CMYK/HDR formula and unselected planes; original small dense loop exact",
+    "Large integer storage expansion uses existing raw reframing, preserving hidden samples rather than scanning the full logical output",
+    "Large Calculations new Gray document replaces numeric output and opaque alpha; small initializer retained",
+    "Existing native sheets and Photato APIs use one shared preparation/history path; no tool/modifier/menu/shortcut/archive change"
+  ],
+  "attempts": {
+    "source01": {
+      "buildSeconds": [
+        559.72,
+        557.45
+      ],
+      "affectedEach": 102,
+      "passedEach": [
+        101,
+        101
+      ],
+      "failedEach": [
+        1,
+        1
+      ],
+      "newPassedEach": 11,
+      "newCasesEach": 12,
+      "assertionsEach": 1,
+      "unexpectedEach": 0,
+      "crashesEach": 0,
+      "finding": "New HDR expectation5ignored existing partially transparent mixing; correct scalar result4. Max expansion passes but took88s; Intel sample traced full-canvas identity resampling.",
+      "fullRetained": true
+    },
+    "source02": {
+      "buildSeconds": [
+        543.26,
+        543.16
+      ],
+      "affectedEach": 103,
+      "passedEach": [
+        103,
+        103
+      ],
+      "newPassedEach": 13,
+      "testSeconds": [
+        5.579,
+        8.223
+      ],
+      "fullRetained": true
+    }
+  },
+  "independent": {
+    "reference": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/independent-literal-words01.json",
+    "currentRawBytesEachArchitecture": 72,
+    "previousAttemptRawBytesEachArchitecture": 72,
+    "allCurrentVectorsPassed": true,
+    "allHistoricalIndependentComparisonsPassed": false,
+    "method": "Independent Python literal UInt32 words at3positions/depth in maximum Gray output. Raw channel/opacity values, not display/CMM/Photoshop equivalence."
+  },
+  "performance": [
+    {
+      "architecture": "arm",
+      "source01ExpansionSeconds": 88.182,
+      "source02ExpansionSeconds": 0.013
+    },
+    {
+      "architecture": "intel",
+      "source01ExpansionSeconds": 88.622,
+      "source02ExpansionSeconds": 0.019
+    }
+  ],
+  "performanceScope": "Single implicit/sparse integer expansion case on current host. This is not dense capacity, sustained editing or60fps qualification.",
+  "denseReferencePreservation": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/dense-reference-preservation01.json",
+  "source02CaseRecord": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/case-and-performance01.json",
+  "qualificationFile": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/source02-qualification.json",
+  "universalPackage": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/universal/staging01.json",
+  "remaining": "Full S05 and C01 remain open. Independent alpha visibility, general profile/custom-gray/Photoshop defaults/output, numerical strict comparisons, semantic Actions and Adobe actionJSON channel descriptors, printing plate capacity, large PSD/PSB/TIFF/profile/export integration, physical dense capacity, supported Macs/macOS14+, current full-suite success and sustained60fps remain open. Prior391Gray32one-ULP difference, retained strict failures and3missing older temporary binaries remain recorded. Full C01 follows complete and tested S05;157deferred numerical refinement remains deferred.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/verification01.json",
+    "checks": 54,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "sourceDelta": "artifacts/runs/20261104T141125Z-396-large-channel-arithmetic/source02-delta.json"
+}

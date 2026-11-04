@@ -183,15 +183,20 @@ public enum ChannelArithmeticPreparation {
         let mask=try AlphaChannel(name:"Calculations",pixels:output).selection()
         try Command.selectionCoverage(mask,.replace).apply(to:&result)
       case .newDocument:
-        guard document.width <= NativeModeRaster.maximumPixels / document.height else { throw CraftError.unsupported("Calculations to a new Gray document currently support up to8,388,608pixels.") }
         var created=try CraftDocument(width:document.width,height:document.height,depth:document.depth)
         created.name=request.name ?? "Untitled"
         created.resolution=document.resolution
         var native=try NativeModeRaster(width:document.width,height:document.height,mode:.grayscale,depth:document.depth)
-        for y in 0..<document.height {try Task.checkCancellation();for x in 0..<document.width {
-          let i=y*document.width+x;try native.set(output.pixel(x:x,y:y).r,component:0,index:i)
-          try native.set(1,component:1,index:i)
-        }}
+        if native.requiresPagedArchive {
+          native=try native.replacingChannel(0,with:output)
+          native=try native.replacingOpacity(with:Surface(width:document.width,height:document.height,depth:document.depth,fill:.white))
+        } else {
+          // Keep the established small-document initialization unchanged.
+          for y in 0..<document.height {try Task.checkCancellation();for x in 0..<document.width {
+            let i=y*document.width+x;try native.set(output.pixel(x:x,y:y).r,component:0,index:i)
+            try native.set(1,component:1,index:i)
+          }}
+        }
         created.modeDescriptor=try .init(mode:.grayscale,depth:document.depth,profile:native.profile)
         created.layers[0].nativeMode=native;created.layers[0].content = .raster(try native.surface())
         created.layers[0].name="Background";created.layers[0].protection = .transparency

@@ -63,5 +63,15 @@
     "bound_menus": 211,
     "unavailable_menus": 514,
     "note": "Native shared transactions and native20 saving. Published Adobe channel action descriptors remain unsupported; no new Adobe endpoint is invented. Full parity remains open."
+  },
+  "independent_channel_visibility_397": {
+    "source": "397Source04",
+    "reference": "docs/CHANNEL_VISIBILITY_397.json",
+    "guide": "docs/CHANNEL_VISIBILITY.md",
+    "affectedPassedEach": 370,
+    "newPassedEach": 27,
+    "cursor": "Native eye NSButton uses standard arrow cursor; no new canvas tool. All16modifier click tests, sweep/cancel/focus lifecycle and existing shared ToolCursor regressions pass. Photoshop alternative eye gestures not advertised.",
+    "API": "Existing242command catalogue, session auxiliaryVisibility schema and channel-preview; no new Adobe route.",
+    "remaining": "Full temporary rows/multi-edit/alternate gestures/hidden-policy/output/defaults/shortcuts/platform/dense/60fps scope remains open."
   }
 }

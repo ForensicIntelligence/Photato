@@ -94,6 +94,8 @@ extension EditorTool {
     case .text, .verticalText: return .text
     case .marquee: return .selection("rectangle.dashed", selection)
     case .ellipticalMarquee: return .selection("circle.dashed", selection)
+    case .rowMarquee: return .selection("rectangle", selection)
+    case .columnMarquee: return .selection("rectangle.portrait", selection)
     case .magneticLasso:return ToolCursor.magnetic(modifiers:flags,mode:selection,active:false)
     case .lasso, .polygonLasso: return .selection("lasso", selection)
     case .objectSelection: return .selection("viewfinder", selection)

@@ -283,7 +283,7 @@ struct AutomationCommand: Sendable {
     .init(name:"contentAware.scale",parameters:["layerID":"Ordinary raster layer UUID","width":"Output width in pixels","height":"Output height in pixels","x":"Output document x","y":"Output document y","amount":"Content-aware percentage","protectChannelID":"Saved alpha channel UUID","protectSkinTones":"Protect skin-tone regions"],description:"Scale the layer or selected pixels using native seam carving with preview-equivalent output and one undo transaction.",optionalParameters:["x","y","amount","protectChannelID","protectSkinTones"]),
     .init(name:"contentAware.fill",parameters:["layerID":"Raster layer UUID","settings":"Fill settings","output":"current, new or duplicate","strokes":"Sampling and selection edits","samplingChannelID":"Saved alpha sampling source"],description:"Fill the selected area through the native Content-Aware Fill engine, one prepared undo transaction.",optionalParameters:["settings","output","strokes","samplingChannelID"]),
     .init(name:"channel.edit",parameters:ChannelAPI.fields,description:"Manage alpha channels, save/load selections, edit Quick Mask, paint and filter through native history. Action-specific parameters are strict.",optionalParameters:Set(ChannelAPI.fields.keys).subtracting(["action"])),
-    .init(name:"channel.view",parameters:["target":"RGB, quickMask, auxiliary UUID, layerMask or smartFilterMask","layerID":"Mask owner UUID; required only for layerMask/smartFilterMask","overlay":"View alpha/spot over image","visible":"Quick Mask overlay visibility; requires target quickMask and retains the current editing target"],description:"Select the shared desktop channel/mask target and colour context; supplying visible changes only the Quick Mask eye.",optionalParameters:["layerID","overlay","visible"]),
+    .init(name:"channel.view",parameters:["target":"RGB, quickMask, auxiliary UUID, layerMask or smartFilterMask","layerID":"Mask owner UUID; required only for layerMask/smartFilterMask","overlay":"View alpha/spot over image","visible":"Independent eye for RGB, Quick Mask, auxiliary UUID or active layerMask/smartFilterMask with layerID; retains editing target, pixels and history"],description:"Select the shared desktop channel/mask target and colour context; supplying visible changes only its image/auxiliary eye. Multiple saved masks can remain visible independently.",optionalParameters:["layerID","overlay","visible"]),
     .init(name:"layer.background",parameters:["layerID":"Layer UUID","operation":"toLayer or fromLayer","name":"Converted regular layer name","mode":"Converted regular blend mode","opacity":"Converted opacity0–1","color":"Layer color label","backgroundColor":"Opaque RGBA canvas/transparency fill"],description:"Convert explicit Background identity through the native engine and one Undo transaction.",optionalParameters:["name","mode","opacity","color","backgroundColor"]),
     .init(name:"pixels.clear",parameters:["layerID":"Raster layer UUID","backgroundColor":"Opaque RGBA fill for Background"],description:"Clear selected pixels; Background uses its background color and remains opaque.",optionalParameters:["backgroundColor"]),
     .init(name:"pixels.fill",parameters:["layerID":"Raster layer or mask owner UUID","mask":"Edit its pixel mask","target":"Auxiliary channel UUID or quickMask instead of layerID","color":"RGBA0–1 instead of patternID","patternID":"Saved document/native-library pattern ID instead of color","placement":"Optional native pattern scale/angle/phase override","opacity":"Paint opacity0–1","mode":"Paint blend mode","preserveTransparency":"Retain raster alpha"],description:"Fill current selection or canvas with color or a saved pattern using the shared native paint engine and one Undo.",optionalParameters:["layerID","mask","target","color","patternID","placement","opacity","mode","preserveTransparency"]),
@@ -386,6 +386,8 @@ struct AutomationCommand: Sendable {
       description:
         "Merge supported static RGB layers through the shared native compositor, including groups, complete clipping bases, type, shapes, masks, transforms, effects and resolved Smart artwork. One Undo; preserves untouched layers and document state. Visible clips to canvas; selected/down retain supported off-canvas geometry. Numerical/temporal and unresolved hierarchy cases reject explicitly; renderer resource budgets apply."
     ),
+    .init(name: EmptyLayerDeletionAPI.name, parameters: [:],
+      description: "Delete supported empty raster layers and plain groups through the native transaction. Retains nonempty, locked and extended editable content, one editable layer and surviving selection. No-op adds no Undo. Discover limitations in emptyLayerDeletion."),
     .init(
       name: "document.save", parameters: ["options": "optional format-specific encoding options"],
       description:
@@ -460,7 +462,7 @@ struct AutomationCommand: Sendable {
         "x": "integer, >=0", "y": "integer, >=0", "width": "integer, >=1", "height": "integer, >=1",
       ], description: "Replace selection with a rectangle contained in the canvas."),
     .init(name: "selection.clear", parameters: [:], description: "Deselect."),
-    .init(name:"selection.shape",parameters:["shape":"One rectangle, ellipse or polygon","mode":"replace/add/subtract/intersect","antiAlias":"Subpixel coverage","feather":"Native feather radius0–100"],description:"Create or combine canvas-space coverage through native prepared selection history.",optionalParameters:["mode","antiAlias","feather"]),
+    .init(name:"selection.shape",parameters:["shape":"One rectangle, ellipse, polygon, row index or column index","mode":"replace/add/subtract/intersect","antiAlias":"Subpixel coverage","feather":"Native feather radius0–100"],description:"Create or combine canvas-space coverage through native prepared selection history.",optionalParameters:["mode","antiAlias","feather"]),
     .init(name:"selection.inverse",parameters:[:],description:"Invert the current selection through native history."),
     .init(name:"selection.feather",parameters:["radius":"Native feather radius0–100"],description:"Feather current coverage through native prepared history."),
     .init(
@@ -663,31 +665,30 @@ struct AutomationCommand: Sendable {
 
   @MainActor func applyViewCommand(to store: EditorStore) throws -> Bool {
     if name == "ink.channel.select" { try store.selectInkChannels(Set(inkTargets(in: store.document, allowEmpty: true))); return true }
-    if name == "ink.channel.visibility" { try store.setInkVisibility(Set(inkTargets(in: store.document))); return true }
+    if name == "ink.channel.visibility" { try store.setInkVisibility(Set(inkTargets(in: store.document,allowEmpty:store.hasAuxiliaryChannelRows))); return true }
     if name == "mode.channel.select" { try store.selectModeComponents(modeComponents(in: store.document, allowEmpty: true)); return true }
-    if name == "mode.channel.visibility" { try store.setModeComponentVisibility(modeComponents(in: store.document)); return true }
+    if name == "mode.channel.visibility" { try store.setModeComponentVisibility(modeComponents(in: store.document,allowEmpty:store.hasAuxiliaryChannelRows)); return true }
     if name == "channel.view" {
       let target = try string("target")
       if target=="layerMask" || target=="smartFilterMask" {
-        guard parameters["overlay"]==nil,parameters["visible"]==nil else{throw AutomationFailure(status:400,message:"Mask editing targets do not accept overlay or visible.")}
+        guard parameters["overlay"]==nil else{throw AutomationFailure(status:400,message:"Mask targets do not accept overlay; use visible for their independent eye.")}
+        if let raw=parameters["visible"],case .bool=raw {}else if parameters["visible"] != nil {throw AutomationFailure(status:400,message:"visible must be boolean.")}
         let id=try actionUUID("layerID")
         guard store.canSelectComponentTarget,store.canBeginLayerCreation else{throw AutomationFailure(status:409,message:"Finish the current interaction before selecting a mask.")}
         guard let layer=store.document.layers.first(where:{$0.id==id}) else{throw AutomationFailure(status:404,message:"Mask owner not found.")}
         guard target=="layerMask" ? layer.mask != nil:layer.smartFilters?.mask != nil else{throw AutomationFailure(status:422,message:"The requested mask is unavailable.")}
-        if target=="layerMask" {store.selectMask(id)}else{store.selectSmartFilterMask(id)}
+        if case .bool(let visible)=parameters["visible"] {try store.setChannelEye(.mask(.init(layerID:id,smartFilter:target=="smartFilterMask")),visible:visible)}
+        else {try store.selectTemporaryMaskChannel(.init(layerID:id,smartFilter:target=="smartFilterMask"))}
         return true
       }
       guard parameters["layerID"]==nil else{throw AutomationFailure(status:400,message:"layerID applies only to a layerMask or smartFilterMask target.")}
       var overlay = false
       if let raw = parameters["overlay"] { guard case .bool(let v) = raw else { throw AutomationFailure(status:400,message:"overlay must be boolean.") }; overlay = v }
       if let raw = parameters["visible"] {
-        guard target == "quickMask", case .bool(let visible) = raw else {
-          throw AutomationFailure(status:400,message:"visible must be boolean and applies only to target quickMask.")
-        }
-        guard store.document.quickMask != nil else {
-          throw AutomationFailure(status:422,message:"Enter Quick Mask before changing its overlay visibility.")
-        }
-        try store.setQuickMaskVisibility(visible)
+        guard case .bool(let visible)=raw else{throw AutomationFailure(status:400,message:"visible must be boolean.")}
+        if target=="quickMask" {try store.setQuickMaskVisibility(visible)}
+        else if target=="RGB" {try store.setColorChannelsVisibility(visible)}
+        else {guard let id=UUID(uuidString:target) else{throw AutomationFailure(status:400,message:"Expected RGB, quickMask or an auxiliary channel UUID.")};try store.setAlphaVisibility(id,visible)}
         return true
       }
       if target == "RGB" { try store.selectEditingChannel(.composite) }
@@ -719,7 +720,7 @@ struct AutomationCommand: Sendable {
       }
       guard store.setChannelVisibility(channel, visible: visible) else {
         throw AutomationFailure(
-          status: 422, message: "Exit mask viewing/editing before changing channel visibility.")
+          status: 422, message: "Finish the current interaction before changing channel visibility.")
       }
     }
     return true

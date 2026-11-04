@@ -16,10 +16,11 @@ extension RGBChannelPreview {
 extension EditorStore {
   var editingComponent: Bool { !isCompositeColorTarget || editingChannel != nil }
   var canSelectComponentTarget: Bool {canSelectComponentTarget(excludingChannelDialog:false)}
-  func canSelectComponentTarget(excludingChannelDialog:Bool)->Bool {
+  func canSelectComponentTarget(excludingChannelDialog:Bool,excludingChannelVisibilitySweep:Bool=false)->Bool {
     !geometryBusy && !aiBusy && !(excludingChannelDialog ? hasToneDraftExceptChannelDialog:hasToneDraft) && transformDraft == nil
       && !coalescingChanges && pathGesture == nil && brushGesture == nil && historyOperation == nil && geometrySheet == nil
       && !showAI && !showImagePlayground && !showFeatherSelection
+      && (excludingChannelVisibilitySweep || channelVisibilitySweep == nil)
       && patternNameDraft == nil && gradientNameDraft == nil
   }
 
@@ -41,6 +42,8 @@ extension EditorStore {
     }
     let oldRevision = revision
     let changed = editingChannel != nil || componentTarget != channel || editingMask || currentMaskView != nil
+      || !visibleAlphaIDs.isEmpty || !visibleTemporaryMaskChannels.isEmpty || !colorChannelsVisible
+    selectColorChannelVisibility()
     deselectQuickMaskTarget()
     alphaEditingID = nil
     modeComponentTargets = []; modeComponentVisibility = nil
@@ -124,11 +127,12 @@ extension EditorStore {
   }
 
   var canUseComponentCanvasTool: Bool {
-    (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!effectiveComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
-      || [.marquee, .ellipticalMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
+    (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!effectiveComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
+      || [.marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
   }
 
   @discardableResult func handleComponentShortcut(_ event: NSEvent) -> Bool {
+    if handleMaskOverlayShortcut(event) {return true}
     if document.quickMask != nil, event.type == .keyDown,
       event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command],
       let number = Int(event.charactersIgnoringModifiers ?? ""), (2...9).contains(number) {

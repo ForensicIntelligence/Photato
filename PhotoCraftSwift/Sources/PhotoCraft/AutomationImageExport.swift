@@ -6,7 +6,7 @@ enum ImageExportAPI {
   static let commands: Set<String> = ["image.export", "image.export.cancel", "export.preferences"]
   static let definitions: [AutomationCommand.Definition] = [
     .init(name: "image.export", parameters: ["settings": "Export target, assets, format, dimensions, scales, color and metadata options"], description: "Download PNG/JPEG/GIF assets plus a manifest as ZIP using native Export As. Requires transfers; source/history unchanged.", optionalParameters: ["settings"]),
-    .init(name: "image.export.cancel", parameters: ["operationID": "Active image export UUID"], description: "Cancel the matching asset export."),
+    .init(name: "image.export.cancel", parameters: ["operationID": "Active image or color lookup export UUID"], description: "Cancel the matching asset or global color lookup export without revoking document access."),
     .init(name: "export.preferences", parameters: ["settings": "Quick Export format, quality, transparency, color and metadata preferences"], description: "Read or update native Quick Export preferences without changing document history.", optionalParameters: ["settings"])
   ]
   static let preferenceKeys: Set<String> = ["format", "quality", "transparency", "convertToSRGB", "embedProfile", "metadata"]
@@ -83,5 +83,6 @@ enum ImageExportPreparation {
   }
   func cancelSharedImageExport(_ share: Share) {
     if imageExportShares.contains(share.id) { share.document?.store.imageExportWorker?.cancel() }
+    if colorLookupExportShares.contains(share.id) { share.document?.store.colorLookupExportWorker?.cancel() }
   }
 }

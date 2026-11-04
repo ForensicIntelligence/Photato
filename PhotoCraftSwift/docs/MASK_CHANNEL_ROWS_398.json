@@ -1,0 +1,107 @@
+{
+  "step": 398,
+  "status": "Reference investigation; implementation not yet changed",
+  "latestTestedSource": "397Source04",
+  "baselineInputsUnchanged": 7171,
+  "newSoftwareBuild": false,
+  "applicationBuild": 397,
+  "newNativeTestsExecuted": false,
+  "fullS05Closed": false,
+  "fullC01Closed": false,
+  "fullGoalComplete": false,
+  "officialSources": [
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/mask-smart-filter-effects.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/add-layer-masks.html",
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/manage-channels-in-the-channels-panel.html"
+  ],
+  "referenceMethod": "Photoshop2026normal interface; owned disposable256x256RGB8document, existing selected custom profile retained; no Adobe implementation code copied.",
+  "documentName": "Photato398 owned mask channels",
+  "actions": [
+    "Create owned transparent document and fill its layer using existing foreground",
+    "Create pixel mask; select mask/RGB rows, toggle eyes, inspect grayscale and overlay",
+    "Add vector mask and inspect Paths",
+    "Enter Quick Mask, create saved alpha, exit Quick Mask",
+    "Convert owned layer to Smart Object, apply Gaussian Blur through ordinary dialog, inspect Filter Mask row",
+    "Add pixel mask beside Filter Mask, select/invert Filter Mask, returnRGB, check backslash and both eyes",
+    "Close and discard owned document; pre-existing Photoshop document not edited"
+  ],
+  "findings": [
+    "Active-layer pixel and Smart Filter masks appear as temporary channel rows even when RGB is the editing target; both can coexist.",
+    "Clicking a mask row selects its existing mask edit target without automatically isolating the display. Mask-eye changes retain the current editing target.",
+    "Hiding image components with the mask eye visible displays grayscale. Selecting RGB returns to image view and hides mask eyes.",
+    "A vector mask is shown in Paths; it is not an additional raster channel row in the tested document.",
+    "Backslash toggles a raster-mask overlay while retaining RGB editing. With both masks and RGB active, the observed shortcut chose the layer mask after prior Filter Mask editing.",
+    "Quick Mask and saved alpha coexist with the temporary mask rows. Exact row ordering/name changes across creation contexts require further qualification."
+  ],
+  "screenshots": [
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps01-layer-mask-default.png",
+      "sha256": "cf82cf301a7dafb3505be729649e3c33491aa4f107945b29338e0e9381bc0e9f"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps02-layer-mask-eye-overlay.png",
+      "sha256": "28b56f57d39d8c0847909057d3bd5c8ee9682466bc4b4aaa6b1b29052066615b"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps03-layer-mask-gray.png",
+      "sha256": "29c715fc73cf4695a475543473f9ee2c79cfbfe54ceee4b2adab03ef73ec33bc"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps04-rgb-with-temporary-mask-row.png",
+      "sha256": "e3eda6a415afc33ac8ff979cf8a65207764d5b8097f3cfe44e8e3560d1a98ab8"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps05-vector-mask-channel.png",
+      "sha256": "95ddbc71e774f61ca16271f838aa23f3112171a2c03f84de451b1ac30fc61a4b"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps06-vector-mask-path-row.png",
+      "sha256": "5722a98ac4a6da5cd89ce1a29ef33ba5fd37e398d8ec08a5cbfebba0e18aa1e7"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps07-quick-mask-with-layer-row.png",
+      "sha256": "ba2c46d116a8dddeb1a587de0767cba1fcb97a17b31755414b2b85cd187b35c2"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps08-saved-alpha-mask-order.png",
+      "sha256": "478800f067127c042b2284606382f9cea063c99778507529736d8d57cd7586a5"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps09-backslash-layer-mask-overlay.png",
+      "sha256": "ed9051ef6926cb4232e4ab9b0d99093c787c76a5f92024ba9377018d8b66808d"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps10-smart-filter-channel.png",
+      "sha256": "e7aed73330187f03471ff0518085a6305929398af99da0dc20e61c5510ef5db9"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps11-layer-and-filter-mask-rows.png",
+      "sha256": "e572049c1e80cfddcb7f8d47b8ae1af9e9089333d279e7afd94ace169e0430cb"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps12-filter-mask-shortcut-rgb-target.png",
+      "sha256": "9ef2b7d8e8dd19c47dd8285cd461f06ee401d0fad7b862445f240412786a549f"
+    },
+    {
+      "path": "artifacts/runs/20261104T163456Z-398-mask-channel-rows/live-ui/ps13-two-mask-eyes-rgb-target.png",
+      "sha256": "0fe7a938d71463cf9368a109cf87313b8e8e21a8c37b70ccaebc8815a0d0d563"
+    }
+  ],
+  "APIReview": "Existing channel.view selects layerMask/smartFilterMask but rejects visible on them. Planned expansion must share native eye/view state and keep target selection distinct; no new published Adobe route inferred.",
+  "sourceInspection": [
+    "Sources/PhotoCraft/ChannelsPanel.swift",
+    "Sources/PhotoCraft/MaskInteractions.swift",
+    "Sources/PhotoCraft/SmartFilterEditing.swift",
+    "Sources/PhotoCraft/AuxiliaryPaintColors.swift",
+    "Sources/PhotoCraft/ChannelVisibility.swift",
+    "Sources/PhotoCraft/AutomationCommands.swift",
+    "Sources/PhotoCraftImaging/MaskPresentation.swift"
+  ],
+  "nextImplementation": "Connect active-layer mask rows, independent eye/view presentation, target controls, applicable factory shortcut, schemas/state/API and native/API/lifecycle tests. Preserve full original S05/C01scope; vector path placement follows observed Photoshop behavior rather than inventing a raster channel.",
+  "limits": "Reference is one owned RGB8context on current host. General modes/defaults/ICC/alternate gestures/row ordering, native implementation, full suite/platform/dense/60fps and exact Photoshop output remain unqualified.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newAppStoreActionOrRelease": false
+}

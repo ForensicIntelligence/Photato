@@ -122,6 +122,7 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(deleteEmptyLayers) { return store?.canDeleteEmptyLayers == true }
     if item.action == #selector(exportLayersToFiles) { return store?.canExportLayerFiles == true }
     if [#selector(export), #selector(exportLayerAssets), #selector(quickExportAssets), #selector(quickExportLayerAssets), #selector(exportPreferences)].contains(item.action) {
       if [#selector(quickExportAssets), #selector(quickExportLayerAssets)].contains(item.action) {
@@ -242,6 +243,7 @@ import SwiftUI
       return store?.canMerge(operation) == true
     }
     if item.action == #selector(trimImage) {return store?.canUseCanvasEdges(.trim(.init())) == true}
+    if item.action == #selector(exportColorLookupTables) { return store?.canExportColorLookup == true }
     if item.action == #selector(revealAll) {return store?.canUseCanvasEdges(.revealAll) == true}
     if item.action == #selector(duplicateDocument) { return store?.canDuplicateDocument == true }
     if item.action == #selector(flattenImage) { return store?.canFlattenImage == true }

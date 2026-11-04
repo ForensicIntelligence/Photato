@@ -30,7 +30,7 @@ extension EditorStore {
     let retained = inkVisibility.intersection(document.inkChannelTargets)
     return retained.isEmpty ? nil : retained
   }
-  var visibleInkTargets: Set<InkChannelTarget> { effectiveInkVisibility ?? Set(document.inkChannelTargets) }
+  var visibleInkTargets: Set<InkChannelTarget> { colorChannelsVisible ? (effectiveInkVisibility ?? Set(document.inkChannelTargets)):[] }
   var canEditInkChannels: Bool {
     document.inkMode != nil && canSelectComponentTarget && historyOperation == nil
       && (document.colorMode == .multichannel || activeLayer.map { !document.isImageLocked($0.id) } == true)
@@ -48,15 +48,21 @@ extension EditorStore {
     guard document.inkMode != nil, canSelectComponentTarget, document.quickMask == nil,
       targets.isSubset(of: Set(document.inkChannelTargets)) else { throw CraftError.invalid("Finish the current interaction and choose valid ink channels.") }
     finishNumericField(); finishLayerName()
+    selectColorChannelVisibility()
     alphaEditingID = nil; alphaOverlay = false; componentTarget = .composite
     modeComponentTargets = []; modeComponentVisibility = nil; maskEditingLayerID = nil; smartFilterMaskEditing = false; clearMaskView()
     inkTargets = targets; inkVisibility = targets.isEmpty ? nil : targets
     render()
   }
-  func setInkVisibility(_ targets: Set<InkChannelTarget>) throws {
-    guard document.inkMode != nil, canChangeChannelVisibility, !targets.isEmpty,
-      targets.isSubset(of: Set(document.inkChannelTargets)) else { throw CraftError.invalid("Choose at least one valid visible ink channel.") }
-    inkVisibility = targets; render()
+  func setInkVisibility(_ targets:Set<InkChannelTarget>)throws {
+    guard document.inkMode != nil,canSelectComponentTarget,historyOperation==nil,targets.isSubset(of:Set(document.inkChannelTargets)) else{throw CraftError.invalid("Choose valid visible ink channels after finishing the current interaction.")}
+    guard !targets.isEmpty || hasAuxiliaryChannelRows else{throw CraftError.invalid("Retain a visible printing plate when there are no auxiliary channels.")}
+    let before=channelVisibilitySnapshot
+    materializeTemporaryMaskView()
+    if !targets.isEmpty {inkVisibility=targets}
+    var value=savedChannelView;value.imageVisible = !targets.isEmpty;savedChannelVisibility=value
+    if alphaEditingID != nil {alphaOverlay=value.imageVisible}
+    if before != channelVisibilitySnapshot {render()}
   }
   func routeInkChannels(_ command: Command) throws -> Command {
     guard document.inkMode != nil, editingChannel == nil, !editingMask else { return command }

@@ -1,0 +1,223 @@
+{
+  "step": 399,
+  "status": "Consolidated functional validation pass complete; full original S05 acceptance remains open",
+  "software": "398Source04",
+  "S05_closed": false,
+  "full_goal_complete": false,
+  "originalScope": "Editable Quick Mask color/opacity semantics, alpha selection storage, load/save/combine and channel shortcuts.",
+  "sourceUnchanged": false,
+  "sourceInputs": 7173,
+  "referenceAcceptance": "docs/S05_ACCEPTANCE_398.json",
+  "originalRequirements": [
+    {
+      "requirement": "Quick Mask entry/exit, numeric coverage and saved-alpha combinations",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json"
+      ],
+      "assessment": "Functional references and automated cases retained; general profile/HDR/output scope remains unqualified."
+    },
+    {
+      "requirement": "Color Indicates, overlay color/opacity, options cancellation and retained defaults",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json"
+      ],
+      "assessment": "Native/API/default/preferences subset tested; complete custom-color/profile/default equality remains open."
+    },
+    {
+      "requirement": "Painting with mask colors and restoring image colors",
+      "evidence": [
+        "artifacts/runs/20261103T203758Z-373-S05-workflow-closure/photoshop-paint-colors01.json",
+        "docs/AUXILIARY_PAINT_COLORS_373.json",
+        "docs/SHARED_PAINT_PALETTES_376.json",
+        "docs/MASK_PAINT_PALETTES_380.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json"
+      ],
+      "assessment": "Three controller-wide remembered pairs now include shared layer/Smart Filter masks. D/X, valid-target fallback, v1/v2 preferences/detach, captured strokes, history and native/API target/painting/state equivalence pass focused checks. Actual Photoshop RGB8 verifies pair separation, shared layer/Smart Filter memory, mask D white/black and conditional Qexit. Current compiled live UI is blocked by the locked Mac; profile/custom-gray/component and restart-default qualification remain open. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock."
+    },
+    {
+      "requirement": "Visible mask, independent active target and numbered alpha/temporary shortcuts",
+      "evidence": [
+        "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json",
+        "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "Recorded native/API core transitions, hidden command policy and focused tests pass; complete independent visibility/mask rows/filter targets stay with full C01 scope."
+    },
+    {
+      "requirement": "Save/Load source, destination and operation choices including New Document",
+      "evidence": [
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json",
+        "docs/MULTICHANNEL_QUICK_MASK_379.json"
+      ],
+      "assessment": "8/16-bit standalone and printing Multichannel PSD/PSB retains active Quick Mask alongside saved selections/inks. Native/API open, paint, history, SaveAs and reopen are tested; actual Photoshop opens the live8-bit PSB and captured16-bit RLE PSB. Full interoperable compression/metadata/output and32-bit mode7 qualification remain open. Prior ZIP rejection remains retained."
+    },
+    {
+      "requirement": "History, cancellation, saving/reopen and lifecycle validation",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json",
+        "docs/MULTICHANNEL_QUICK_MASK_379.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json",
+        "docs/LIFECYCLE_REGRESSION_REPAIRS_383.json"
+      ],
+      "assessment": "Per-increment native/API/owned files supply scoped evidence. Global full-suite/platform/output/performance acceptance remains open. Checkpoint375 qualifies the current owned8-bit large-PSB native open/paint/Undo/save and actual Photoshop reopen after repairing wide tagged-block signatures. General contexts remain open. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock. Checkpoint383 repairs invalid generic Background-edit fixtures and stale protocol checks without weakening native guards;740affected tests and actual indexed Background recovery pass both architectures. Full baseline/UI requirements remain open."
+    },
+    {
+      "requirement": "Both API interfaces follow their contracts",
+      "evidence": [
+        "docs/AUTOMATION_API.md",
+        "docs/ADOBE_API_COMPATIBILITY.json",
+        "docs/MASK_PAINT_PALETTES_380.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json",
+        "docs/LIFECYCLE_REGRESSION_REPAIRS_383.json"
+      ],
+      "assessment": "Photato native channel operations/state/schema use shared engine; published Adobe jobs preserve supported auxiliary data. No dedicated mask endpoint invented; unqualified actionJSON descriptors remain unsupported. Existing channel.view now accepts layerMask/smartFilterMask with layerID and reports maskEditingTarget. Brush state/schema expose the third pair, preserving old image/auxiliary keys and shared history. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock. Checkpoint383 repairs invalid generic Background-edit fixtures and stale protocol checks without weakening native guards;740affected tests and actual indexed Background recovery pass both architectures. Full baseline/UI requirements remain open."
+    },
+    {
+      "requirement": "Universal macOS14+ functionality, Photoshop output/shortcuts/settings and sustained interaction",
+      "evidence": [
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "AppleSilicon and translatedIntel focused tests and minimum14 universal packaging are scoped proof. Full supported physical platforms, current full suite, exact all-input behavior and60fps are not proven."
+    }
+  ],
+  "boundary": "This pass reconciles S05evidence and exercises its workflow. C01temporary-mask footer/display-option extensions are not added to S05unless specific reference evidence establishes a dependency. Original acceptance and global Photoshop/platform/output requirements are not waived.",
+  "previousTurnClassification": "The ETA-only turn made no implementation or validation progress. Revalidate398inputs and take the consolidated test/native acceptance action now.",
+  "historicalAssessmentCorrection": "The inherited S05record repeated381locked-screen wording despite later successful live checks. Preserve earlier records; update current assessments rather than copy stale blockers.",
+  "testExecution": {
+    "reference": "artifacts/runs/20261104T175804Z-399-S05-acceptance/source01-qualification.json",
+    "inventoryEachArchitecture": 4032,
+    "inventoryOnly": true,
+    "executedCasesEachArchitecture": 195,
+    "passedEachArchitecture": [
+      195,
+      195
+    ],
+    "sameOrderedActualCases": true,
+    "failedAssertionsEachArchitecture": [
+      0,
+      0
+    ],
+    "unexpectedEachArchitecture": [
+      0,
+      0
+    ],
+    "crashesEachArchitecture": [
+      0,
+      0
+    ],
+    "testSeconds": [
+      37.431,
+      52.094
+    ],
+    "buildSeconds": [
+      [
+        "134.96"
+      ],
+      [
+        "135.45"
+      ],
+      null
+    ],
+    "fullCurrentSuitePassed": false,
+    "initialFailure": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-qualification01.json",
+    "repair": "Only stale hardcoded catalog count239 replaced by existing AutomationTests.expectedCommandCount (242). No product/API/pixel/tolerance/build-number change."
+  },
+  "nativeExecution": {
+    "reference": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json",
+    "focusedNativeInteractionPassed": true,
+    "fullNativeUIQualified": false,
+    "evidenceFiles": 36,
+    "newNativePSBExportVerified": false,
+    "customOptionsRestartVerified": false
+  },
+  "requirementsAssessment": [
+    {
+      "requirement": "Quick Mask entry/exit, numeric coverage and saved-alpha combinations",
+      "currentAssessment": "Implemented and consolidated regression pass; native RGB8 Q/paint/exit observed.",
+      "remaining": "Full depth/profile/HDR numerical equality and all-input independent Photoshop output remain open.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Color Indicates, overlay color/opacity, options cancellation and retained defaults",
+      "currentAssessment": "Automated defaults/options/cancellation/persistence cases pass. Native Cancel and in-process OK/reopen pass; observed starting defaults restored.",
+      "remaining": "This pass does not independently qualify custom color/profile equality or native custom-option retention across process restart.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Painting with mask colors and restoring image colors",
+      "currentAssessment": "Automated three-palette/mask lifecycle tests pass. Native D/X, black/white mask paint and image-color return are observed. Current Mac is accessible.",
+      "remaining": "All custom gray/profile/component modes and complete independent palette/default behavior remain unqualified. The prior locked-screen wording is historical.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Visible mask, independent active target and numbered alpha/temporary shortcuts",
+      "currentAssessment": "Consolidated visibility/hidden-command/target-transition and factory menu/numbered-shortcut cases pass. Native Q leaves/removes the temporary channel as expected.",
+      "remaining": "All alternate gestures/shortcuts and full independent behavior remain unqualified; adjacent C01 mask-row extensions are not added during this pass.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Save/Load source, destination and operation choices including New Document",
+      "currentAssessment": "Automated source/destination/combine/luminosity/large selection/PSD/PSB/Multichannel cases pass. Native Save/Load/Cancel/Subtract/New Document/cross-document source and native reopen pass.",
+      "remaining": "All interoperability modes/compressions/metadata remain unqualified; attempted native PSB popup navigation did not select PSB and is not reported as successful.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "History, cancellation, saving/reopen and lifecycle validation",
+      "currentAssessment": "Consolidated native/API history/cancel/stale/busy/transfer/lifecycle cases pass. Native Load Undo/Redo, palette return and active-mask/alpha file reopen are observed.",
+      "remaining": "Full current suite, process-restart custom options and complete lifecycle/platform coverage remain open; current live UI is not blocked by a locked Mac.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Both API interfaces follow their contracts",
+      "currentAssessment": "Photato operations/state/schema and published Adobe shared composite preservation cases pass through the existing native engine. No product/API change in this increment.",
+      "remaining": "No new Adobe endpoint is invented, no unsupported descriptors are enabled and this does not establish full Adobe API conformance.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    },
+    {
+      "requirement": "Universal macOS14+ functionality, Photoshop output/shortcuts/settings and sustained interaction",
+      "currentAssessment": "Both optimized architecture bundles execute the same195cases successfully; candidate retains both macOS14 minimum slices. Native subset runs on this Apple Silicon host.",
+      "remaining": "Translated Intel is not physical Intel. Full supported hardware/OS, all-input output/settings/shortcuts, full current suite, dense maximum size and sustained60fps remain open.",
+      "testSelection": "artifacts/runs/20261104T175804Z-399-S05-acceptance/S05-test-selection01.json",
+      "nativeEvidence": "artifacts/runs/20261104T175804Z-399-S05-acceptance/native-S05-qualification01.json"
+    }
+  ],
+  "unqualified": [
+    "All-input byte-identical Photoshop output, settings and shortcuts",
+    "Physical supported AppleSilicon/Intel Macs and macOS14+",
+    "Dense maximum capacity and sustained60fps",
+    "Full current suite and prior numerical/Gray32ULP/historical evidence gaps"
+  ],
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "productionSourceUnchanged": true,
+  "testOnlyChangedInput": "Tests/PhotoCraftAppTests/PSBTaggedBlockWorkflowTests.swift",
+  "testedSource": "399Source01",
+  "sourceManifest": "artifacts/runs/20261104T175804Z-399-S05-acceptance/source01-source.json",
+  "coreWorkflowImplementedAndTested": true,
+  "fullFunctionalScopeIndependentlyQualified": false,
+  "staticEvidence": {
+    "passed": true,
+    "checks": 46,
+    "reference": "artifacts/runs/20261104T175804Z-399-S05-acceptance/final-verification02.json",
+    "scope": "Frozen source/test outcomes, native evidence, retained package/signature, original scopes/commands/gates, standalone exports, dashboard and free/manual policy. Final bookkeeping/provenance and consecutive history audit follow in final receipt."
+  }
+}

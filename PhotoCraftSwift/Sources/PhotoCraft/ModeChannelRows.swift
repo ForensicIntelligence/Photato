@@ -6,6 +6,7 @@ struct ModeChannelRows: View {
   @Bindable var store: EditorStore
   let images: [CGImage]
   let size: ChannelThumbnailSize
+  let eyeTracking:ChannelEyeTracking
   private var all: Set<Int> { Set(0..<store.document.colorMode.componentCount) }
   var body: some View {
     if store.document.colorMode != .grayscale {
@@ -16,21 +17,10 @@ struct ModeChannelRows: View {
     }
   }
   private func row(_ component: Int?, title: String) -> some View {
-    let targets = component.map { Set([$0]) } ?? all
-    let visible = targets.isSubset(of: store.modeVisibleComponents)
-    let selected = store.editingChannel == nil && (store.modeComponentTargets.isEmpty || component.map { store.modeComponentTargets.contains($0) } == true)
+    let selected = !store.editingMask && store.editingChannel == nil && (store.modeComponentTargets.isEmpty || component.map { store.modeComponentTargets.contains($0) } == true)
     let imageIndex = component.map { $0 + 1 } ?? 0
     return HStack(spacing: 0) {
-      Button {
-        let next = visible ? store.modeVisibleComponents.subtracting(targets) : store.modeVisibleComponents.union(targets)
-        if !next.isEmpty { do { try store.setModeComponentVisibility(next) } catch { store.error = error.localizedDescription } }
-      } label: {
-        Image(systemName: "eye").font(.system(size: 11)).opacity(visible ? 1 : 0)
-          .frame(width: 26, height: size.rowHeight).contentShape(Rectangle())
-      }.buttonStyle(.plain).disabled(!store.canChangeChannelVisibility)
-        .accessibilityLabel("Visibility of \(title) channel")
-        .accessibilityValue(visible ? "Visible" : "Hidden")
-        .accessibilityIdentifier("channels.mode.visibility.\(imageIndex)")
+      ChannelEyeControl(store:store,channel:.mode(component),tracking:eyeTracking,label:"Visibility of \(title) channel",identifier:"channels.mode.visibility.\(imageIndex)",height:size.rowHeight).frame(width:26,height:size.rowHeight)
       Rectangle().fill(StudioTheme.line).frame(width: 1)
       Button {
         var selection = component.map { Set([$0]) } ?? []

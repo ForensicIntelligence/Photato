@@ -1,0 +1,43 @@
+{
+  "step": 400,
+  "status": "Custom colour UI and process-restart repair qualified; selected-area/no-selection behavior conflict remains open",
+  "goal_status": "active",
+  "previous_goal_turn": 399,
+  "software_build": 400,
+  "previous_qualified_source": "398Source04",
+  "run": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures",
+  "source_manifest": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/source01-source.json",
+  "source_inputs": 7174,
+  "production_swift_files": 1026,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "full_current_suite_passed": false,
+  "native_live_qualified": false,
+  "evidence": "docs/S05_OPTIONS_GESTURES_400.json",
+  "phase_ledger": "docs/FUNCTION_PHASES_400.json",
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next_work": [
+    "Capture explicit partial selection versus no selection for both indications, before/after indication switch and Qexit.",
+    "Capture black/white changes and saved/load selection results; inspect actual PSD plane/display records independently.",
+    "Correct only the behavior established by those references through shared core/native/API paths, with history, native/PSD/PSB persistence, busy/stale guards and all-depth tests.",
+    "Do not fix only initial presentation or substitute zero coverage without proving file and selection semantics; do not waive original acceptance.",
+    "C01 remains next after complete and tested S05; retain original numerical/full-suite/platform/dense/60fps/historical gates."
+  ],
+  "tested_source": "400Source01",
+  "focused_native_interaction_passed": true,
+  "core_workflow_implemented_and_tested": false,
+  "history_receipt": "artifacts/development-history-audit/400-final-receipt01.json",
+  "actual_custom_options_restart_passed": true,
+  "staticEvidence": {
+    "passed": true,
+    "checks": 50,
+    "reference": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/final-verification01.json",
+    "scope": "Frozen source/test cases, package/slices/signatures/extraction, native colour/cancel/restart, retained independent PS counterexample, original package/command scopes, standalone diaries, dashboard and free/manual policy. Final bookkeeping/provenance and history refresh/check follow in the excluded final receipt."
+  }
+}

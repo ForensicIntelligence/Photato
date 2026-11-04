@@ -28,7 +28,9 @@ enum ChannelArithmeticAPI {
     "opacityUnit":"percent,0–100","defaults":["blending":"multiply","opacity":100,"scale":1,"offset":0,"preserveTransparency":false,"result":"newChannel"],
     "sources":"Current document or explicitly shared matching-size/depth document. External documentID is a share UUID and requires its current revision. Merged is default; layerID selects a retained layer snapshot.",
     "history":"Apply Image and Calculations channel/selection results commit one shared native Undo. newDocument requires document transfers and returns201 with a new shared grayscale document; source history remains unchanged.",
-    "limits":"Existing shared document/layer/resident limits apply. Native mode/ink and grayscale new-document storage retains its8MP bound; paged RGB and coverage math accepts the native300000-side limit.",
+    "maximumNativePixels":NativeModeRaster.maximumDocumentPixels,"maximumDimension":Surface.maxDimension,
+    "largeNativeArithmetic":["applyImage":true,"calculationsNewDocument":true,"nativeArchiveVersion":86,"storage":"Bounded numeric source/opacity projections and immutable component output; preserves unselected raw planes and uses captured source snapshots.","limitations":"Logical sparse maximum geometry is separate from dense disk/RSS/time capacity. Printing plates retain their own dense limit. Full Photoshop kernels/ICC/live UI/platform and sustained60fps remain unqualified."],
+    "limits":"Existing shared document/layer/resident/scratch limits apply. Native component Apply Image and grayscale Calculations output accept300000pixels per dimension; paged RGB/coverage math shares the logical limit. Printing ink retains its separate dense bound. Legacy dense export/profile/interchange budgets are unchanged.",
     "qualification":"Licensed PhotoCraft-derived native arithmetic. Photoshop exact kernels/ICC, Actions semantic recording, larger mode storage and published Adobe actionJSON descriptors remain unqualified. No invented Adobe endpoint or descriptor."]}
 }
 @MainActor extension EditorStore {

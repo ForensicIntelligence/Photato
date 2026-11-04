@@ -162,7 +162,7 @@ final class ChannelViewWorkflowTests: XCTestCase {
     }
   }
 
-  @MainActor func testMaskTargetRejectsVisibilityAndPreviewExitsItWithoutEditing() async throws {
+  @MainActor func testMaskTargetNoopVisibilityAndPreviewExitsItWithoutEditing() async throws {
     let helper = AutomationTests()
     try await helper.withService { service, doc in
       let fixture = try MaskInteractionTests().fixture()
@@ -172,9 +172,9 @@ final class ChannelViewWorkflowTests: XCTestCase {
       doc.store.toggleMaskView(id, mode: .gray)
       XCTAssertNotNil(doc.store.currentMaskView)
       let before = try doc.data(ofType: CraftNSDocument.nativeType)
-      let rejected = try await helper.edit(
+      let unchanged = try await helper.edit(
         service, doc, "view.channelVisibility", ["channel": "Blue", "visible": false])
-      XCTAssertEqual(rejected, 422)
+      XCTAssertEqual(unchanged, 200)
       XCTAssertEqual(doc.store.channelView, RGBChannelView())
       let preview = try await helper.edit(service, doc, "view.channelPreview", ["channel": "Red"])
       XCTAssertEqual(preview, 200)

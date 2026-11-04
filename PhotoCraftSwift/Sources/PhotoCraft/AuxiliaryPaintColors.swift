@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import PhotoCraftCore
 
-struct MaskPaintTarget:Equatable,Sendable {let layerID:UUID;let smartFilter:Bool}
+struct MaskPaintTarget:Hashable,Sendable {let layerID:UUID;let smartFilter:Bool}
 
 enum PaintColorContext:String,Codable,CaseIterable {
   case image,auxiliary,mask

@@ -8,8 +8,18 @@ extension AutomationService {
     _ command: Command, document: CraftNSDocument, shareID: UUID, revision expected: String
   ) async throws {
     if case .mergeLayers=command,document.store.smartFilterMaskEditing {throw AutomationFailure(status:422,message:"Merge requires the composite layer target.")}
-    let prepare=document.store.layerMergePreparation
-    try await executePreparedOperation(document: document, shareID: shareID, revision: expected) { source in
+    let store=document.store,prepare=store.layerMergePreparation
+    let maskTarget=store.selectedMaskPaintTarget
+    let selectedFilterMaskEdit:Bool
+    if case .smartFilterMask(let owner,_)=command {
+      selectedFilterMaskEdit=maskTarget == MaskPaintTarget(layerID:owner,smartFilter:true)
+    } else {selectedFilterMaskEdit=false}
+    try await executePreparedOperation(document: document, shareID: shareID, revision: expected,
+      allowAuxiliary:selectedFilterMaskEdit,validateCommit:{
+        if selectedFilterMaskEdit,store.selectedMaskPaintTarget != maskTarget {
+          throw AutomationFailure(status:409,message:"The Filter Mask editing target changed.")
+        }
+      }) { source in
       if case .mergeLayers(let ids,let operation)=command {return try prepare(source,ids,operation)}
       return command
     }

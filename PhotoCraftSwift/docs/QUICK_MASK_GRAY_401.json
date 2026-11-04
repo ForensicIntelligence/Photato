@@ -1,0 +1,27 @@
+{
+  "step": 401,
+  "status": "Reference matrix complete; implementation parked at maintainer scheduling change",
+  "previousTurnClassification": "Progress:400 repaired native custom colour/panel lifecycle, passed227cases per architecture and actual custom-option process restart; captured independent Photoshop selected/no-selection conflict;50static checks and400history audit passed.",
+  "sourceManifest": "artifacts/runs/20261104T191355Z-401-quick-mask-gray-convention/baseline-source.json",
+  "source": "400Source01 baseline",
+  "sourceInputs": 7174,
+  "S05Closed": false,
+  "C01Closed": false,
+  "fullGoalComplete": false,
+  "plan": [
+    "Use owned8x8white input, capture explicit partial selection versus no selection at each indication in normal Photoshop UI.",
+    "Open options through the Quick Mask channel where needed to distinguish active-plane indication changes from toolbar double-click mode changes.",
+    "Capture actual raw PSD channel/display/initially-empty records and selection-exit/save results. Compare normalized selection coverage, display gray and persisted sample conventions.",
+    "Implement the established behavior through shared native/core/API and codecs, preserving all-depth/high-capacity/history/invalid/busy/stale/native-file behavior. Do not patch only screen appearance or one initializer.",
+    "Test required regression cases on both architectures with frozen inputs and retain failures before repairs; validate exact packaged native workflow and update all current records."
+  ],
+  "qualification": "Reference evidence only; no software repair or new tests",
+  "reference": "artifacts/runs/20261104T191355Z-401-quick-mask-gray-convention/reference-matrix01.json",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "softwareChanged": false,
+  "parkedBy": "docs/WORK_PRIORITIES_402.json"
+}

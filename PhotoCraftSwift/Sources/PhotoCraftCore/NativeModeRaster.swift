@@ -492,15 +492,28 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   }
   /// Numeric channels retain raw floating values without an RGB transfer.
   public func channel(_ component:Int)throws->Surface {
-    try Task.checkCancellation()
     guard (0..<mode.componentCount).contains(component) else{throw CraftError.invalid("Mode component not found.")}
+    return try numericPlane(component)
+  }
+  /// Numeric opacity is independent of all color components and their profiles.
+  public func opacityChannel() throws -> Surface { try numericPlane(mode.componentCount) }
+  private func numericPlane(_ component:Int) throws -> Surface {
+    try Task.checkCancellation()
     let value=defaultComponents()[component],fill=Pixel(value,value,value)
     return try projectedSurface(fill:fill,encoding:.sRGB,components:[component]) {i in
       let v=self.value(component:component,index:i);return Pixel(v,v,v)
     }
   }
   public func replacingChannel(_ component:Int,with pixels:Surface)throws->Self {
-    guard (0..<mode.componentCount).contains(component),pixels.width==width,pixels.height==height,pixels.depth==depth else{throw CraftError.invalid("Mode channel layout differs.")}
+    guard (0..<mode.componentCount).contains(component) else { throw CraftError.invalid("Mode component not found.") }
+    return try replacingNumericPlane(component,with:pixels)
+  }
+  public func replacingOpacity(with pixels:Surface) throws -> Self {
+    let result = try replacingNumericPlane(mode.componentCount,with:pixels)
+    try result.validate(); return result
+  }
+  private func replacingNumericPlane(_ component:Int,with pixels:Surface)throws->Self {
+    guard pixels.width==width,pixels.height==height,pixels.depth==depth else{throw CraftError.invalid("Mode channel layout differs.")}
     var result=self
     let plane=try ComponentPlane(width:width,height:height,depth:depth,defaultWord:Self.word(pixels.defaultPixel.r,depth:depth))
     let builder=try ComponentPlaneBuilder(plane:plane)

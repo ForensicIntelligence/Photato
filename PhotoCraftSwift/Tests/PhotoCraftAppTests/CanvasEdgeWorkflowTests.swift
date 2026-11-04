@@ -89,7 +89,7 @@ final class CanvasEdgeWorkflowTests:XCTestCase {
     func all(_ nodes:[EditorMenuNode])->[EditorMenuNode]{nodes.flatMap{[$0]+all($0.children ?? [])}}
     let items=all(PhotoshopMenuCatalog.menus)
     for title in ["Trim…","Reveal All"] {XCTAssertEqual(try XCTUnwrap(items.first{$0.title==title}).key,"")}
-    XCTAssertEqual(AutomationTests.expectedCommandCount,242);XCTAssertEqual(ActionLibraryFile.maximumVersion,46)
+    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,46)
     let canvas=CraftCanvas(store:s),flags:[NSEvent.ModifierFlags]=[.control,.command,.option,.shift]
     for bits in 0..<16{let f=flags.enumerated().reduce(NSEvent.ModifierFlags()){r,p in bits&(1<<p.offset) != 0 ? r.union(p.element):r};canvas.updateCursorModifiers(f);let cursor=canvas.toolCursor;_=s.canvasEdgesState;canvas.updateCursorModifiers(f);XCTAssertEqual(canvas.toolCursor,cursor)}
   }

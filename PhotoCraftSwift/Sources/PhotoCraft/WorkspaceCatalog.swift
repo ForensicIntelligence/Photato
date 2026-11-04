@@ -7,6 +7,8 @@ public enum EditorTool: String, CaseIterable, Identifiable, Sendable {
   case artboard = "Artboard"
   case marquee = "Rectangular Marquee"
   case ellipticalMarquee = "Elliptical Marquee"
+  case rowMarquee = "Single Row Marquee"
+  case columnMarquee = "Single Column Marquee"
   case lasso = "Lasso"
   case polygonLasso = "Polygonal Lasso"
   case magneticLasso = "Magnetic Lasso"
@@ -106,8 +108,8 @@ enum WorkspaceCatalog {
     [
       .init("marquee", "Rectangular Marquee", "rectangle.dashed", "M", .marquee),
       .init("ellipticalMarquee", "Elliptical Marquee", "circle.dashed", "M", .ellipticalMarquee),
-      .init("rowMarquee", "Single Row Marquee", "rectangle", ""),
-      .init("columnMarquee", "Single Column Marquee", "rectangle.portrait", ""),
+      .init("rowMarquee", "Single Row Marquee", "rectangle", "", .rowMarquee),
+      .init("columnMarquee", "Single Column Marquee", "rectangle.portrait", "", .columnMarquee),
     ],
     [
       .init("lasso", "Lasso", "lasso", "L", .lasso),

@@ -107,6 +107,7 @@ struct WorkspaceView: View {
     .sheet(item: $store.frameDraft) { FrameSheet(store: store, draft: $0) }
     .sheet(item: $store.layerFileDraft) { LayerFileSheet(store: store, draft: $0) }
     .sheet(item: $store.imageExportDraft) { ImageExportSheet(store: store, draft: $0) }
+    .sheet(item: $store.colorLookupExportDraft) { ColorLookupExportSheet(store: store, draft: $0) }
     .sheet(item:$store.selectionModifyDraft){SelectionModifySheet(store:store,draft:$0)}
     .sheet(item: $store.colorRangeDraft) { ColorRangeSheet(store: store, model: $0) }
     .sheet(item:$store.textFindWorkspace,onDismiss:{store.closeTextFind()}) {workspace in TextFindSheet(store:store,workspace:workspace)}

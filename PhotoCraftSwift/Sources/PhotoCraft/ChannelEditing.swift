@@ -47,12 +47,12 @@ extension EditorStore {
     return nonQuickMaskDocumentID == document.id && nonQuickMaskID == mask.id ? nil : .quickMask
   }
   var isQuickMaskVisible: Bool {
-    guard let mask = document.quickMask else { return false }
+    guard currentMaskView?.mode != .gray,let mask = document.quickMask else { return false }
     return hiddenQuickMaskDocumentID != document.id || hiddenQuickMaskID != mask.id
   }
   var displayedAuxiliaryChannel: ChannelPlaneTarget? {
-    if let target = editingChannel, target != .quickMask { return target }
-    return isQuickMaskVisible ? .quickMask : nil
+    if case .alpha(let id)?=editingChannel,isAlphaVisible(id) {return .alpha(id)}
+    return auxiliaryChannelView.targets.first
   }
   /// Scope the override to this temporary plane, so a newly entered mask selects itself.
   func deselectQuickMaskTarget() {
@@ -64,19 +64,14 @@ extension EditorStore {
     try selectAlphaChannel(nil)
   }
   func setQuickMaskVisibility(_ visible: Bool) throws {
-    guard canEditChannels, let mask = document.quickMask else {
-      throw CraftError.invalid("Select an available Quick Mask after finishing the current interaction.")
-    }
-    guard isQuickMaskVisible != visible else { return }
-    hiddenQuickMaskDocumentID = visible ? nil : document.id
-    hiddenQuickMaskID = visible ? nil : mask.id
-    render()
+    try setChannelEye(.quickMask,visible:visible)
   }
   var canEditChannels: Bool { !document.colorMode.isRestricted && canSelectComponentTarget && historyOperation == nil }
   func selectAlphaChannel(_ id: UUID?, overlay: Bool = false) throws {
     guard canEditChannels else { throw CraftError.invalid("Finish the current interaction first.") }
     if let id { _ = try document.channel(.alpha(id)) }
     if id == nil { nonQuickMaskDocumentID = nil; nonQuickMaskID = nil } else { deselectQuickMaskTarget() }
+    selectAlphaVisibility(id,overlay:overlay)
     alphaEditingID = id; alphaOverlay = overlay; componentTarget = .composite; modeComponentTargets = []; modeComponentVisibility = nil
     maskEditingLayerID = nil; smartFilterMaskEditing = false; clearMaskView()
     channelView = RGBChannelView(); render()
@@ -90,6 +85,7 @@ extension EditorStore {
     } catch {self.error=error.localizedDescription}
   }
   func resetQuickMaskEditingContext(preserving maskTarget:MaskPaintTarget? = nil) {
+    savedChannelVisibility=nil
     nonQuickMaskDocumentID = nil; nonQuickMaskID = nil
     alphaEditingID=document.isChannelOnly && document.quickMask == nil ? document.alphaChannels?.first?.id:nil;componentTarget = .composite;modeComponentTargets=[];modeComponentVisibility=nil
     maskEditingLayerID=nil;smartFilterMaskEditing=false;clearMaskView();channelView=RGBChannelView()

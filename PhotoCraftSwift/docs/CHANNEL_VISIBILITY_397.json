@@ -1,0 +1,164 @@
+{
+  "step": 397,
+  "softwareBuild": 397,
+  "source": "397Source04",
+  "status": "Implemented and focused native workflow checked; full major scopes remain open",
+  "qualification": "All 370 affected optimized cases pass on Apple Silicon and translated Intel, including 27 new cases. Both architectures run the same ordered cases, with no failed assertions, unexpected errors or crashes. The 4,016-case discovery is not a full test run.",
+  "sourceManifest": "artifacts/runs/20261104T150846Z-397-channel-visibility/source04-source.json",
+  "sourceInputs": 7171,
+  "productionSwift": 1025,
+  "testSwiftFiles": 716,
+  "currentInventoryEachArchitecture": 4016,
+  "newCasesEachArchitecture": 27,
+  "affectedCasesEachArchitecture": 370,
+  "passedEachArchitecture": [
+    370,
+    370
+  ],
+  "failedEachArchitecture": [
+    0,
+    0
+  ],
+  "failedAssertionCounts": [
+    0,
+    0
+  ],
+  "unexpectedEachArchitecture": [
+    0,
+    0
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "affectedSuitePassed": true,
+  "fullCurrentSuitePassed": false,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "focusedNativeInteractionPassed": true,
+  "liveUI": "artifacts/runs/20261104T150846Z-397-channel-visibility/current-ui-qualification01.json",
+  "logicalGeometry": {
+    "maximumDimension": 300000,
+    "maximumPixels": 90000000000,
+    "physicalDenseCapacityQualified": false,
+    "nativeArchiveVersion": 86
+  },
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "newCommand": false,
+    "newRoute": false,
+    "behavior": "Existing channel.view visible flag supports RGB, saved alpha/spot UUID and Quick Mask eyes without retargeting; process visibility operations permit no image components when auxiliary rows exist. Existing target selection clears saved eyes when selecting image rows. auxiliaryVisibility state/schema and capabilities describe display order and session behavior. Canvas/channel-preview share bounded presentation; ordinary preview and exports ignore view. Actual HTTP guards/Undo/state/native equivalence tested. No published Adobe endpoint or channel action descriptor invented."
+  },
+  "implementation": [
+    "Document-local saved alpha/spot/image visibility independent from editing target; Quick Mask retains separate temporary visibility",
+    "Ordered numeric masks reduced one at a time; single auxiliary alone is gray, several without image overlay on white; zero-visible auxiliary view is transparent",
+    "Native AppKit eye click and sweep, autoscroll, one visit per row, Escape/focus/window cancellation, accessible value refresh and standard arrow cursor",
+    "RGB/component/printing row selection clears saved eyes; process eye changes retain target and saved eyes",
+    "Deletion preserves visibility memory for Undo, last auxiliary deletion restores image; reopen/replacement reset session flags",
+    "Neutral component Fill now respects partial alpha and explicit desktop opacity via the shared primitive; nonneutral conversion remains rejected"
+  ],
+  "attempts": {
+    "source01": {
+      "affectedEach": 312,
+      "passedEach": [
+        306,
+        306
+      ],
+      "failedCasesEach": 6,
+      "assertionsEach": 7,
+      "unexpectedEach": 1,
+      "crashesEach": 0,
+      "newPassedEach": 22,
+      "fresh396BaselineEach": 290,
+      "fresh396PassedEach": 285,
+      "fresh396FailedCasesEach": 5,
+      "finding": "One new isolated-mask visibility regression; three stale count assertions and two workflow issues reproduced on396. Full retained baseline and repair classification preserved."
+    },
+    "source02": {
+      "affectedEach": 316,
+      "passedEach": [
+        316,
+        316
+      ],
+      "newPassedEach": 26,
+      "buildSeconds": [
+        375.71,
+        374.81
+      ],
+      "testSeconds": [
+        43.64,
+        62.883
+      ],
+      "extraPassedEach": 39,
+      "extraTestSeconds": [
+        7.655,
+        12.562
+      ],
+      "reportingAndInitialTermination": "artifacts/runs/20261104T150846Z-397-channel-visibility/source02-extra-adjudication03.json",
+      "nativePackage": "artifacts/runs/20261104T150846Z-397-channel-visibility/universal/staging01.json",
+      "live": "artifacts/runs/20261104T150846Z-397-channel-visibility/source02-live-qualification01.json",
+      "supersededBy": "Source03 corrects image-row selection using fresh Photoshop normal-UI evidence; no prior evidence overwritten."
+    },
+    "source03": {
+      "affectedEach": 370,
+      "passedEach": [
+        370,
+        370
+      ],
+      "newPassedEach": 27,
+      "buildSeconds": [
+        361.26,
+        362.34
+      ],
+      "testSeconds": [
+        49.613,
+        74.163
+      ],
+      "liveRegression": "artifacts/runs/20261104T150846Z-397-channel-visibility/source03-live-regression01.json",
+      "supersededBy": "Source04 same-RGB row re-selection must invalidate canvas/revision"
+    },
+    "source04": {
+      "affectedEach": 370,
+      "passedEach": [
+        370,
+        370
+      ],
+      "newPassedEach": 27,
+      "buildSeconds": [
+        361.62,
+        361.82
+      ],
+      "testSeconds": [
+        49.351,
+        74.574
+      ],
+      "fullRetained": true
+    }
+  },
+  "independent": {
+    "reference": "artifacts/runs/20261104T150846Z-397-channel-visibility/independent-literal-words02.json",
+    "currentRawBytesEachArchitecture": 64,
+    "allCurrentVectorsPassed": true,
+    "allHistoricalIndependentComparisonsPassed": false,
+    "method": "Independent Python compares emitted 2x2 RGBA bytes against four literal vectors covering image/white base, channel order and Quick Mask. This does not establish all-input Photoshop/CMM output."
+  },
+  "source04CaseRecord": "artifacts/runs/20261104T150846Z-397-channel-visibility/case-equivalence03.json",
+  "qualificationFile": "artifacts/runs/20261104T150846Z-397-channel-visibility/source04-qualification.json",
+  "universalPackage": "artifacts/runs/20261104T150846Z-397-channel-visibility/universal/staging03.json",
+  "remaining": "Full S05 and C01 stay open. Temporary layer/vector/filter-mask rows, multi-edit channel selection, alternate eye gestures, exact Photoshop overlay/default/profile/hidden-target behavior, full channel interoperability and semantic Actions/Adobe channel descriptors remain open. Large printing plates, PSD/PSB/TIFF/export integration, full current-suite success, physical supported Macs/macOS 14+, dense capacity and sustained 60 fps remain open. The earlier Gray32 one-ULP architecture difference, strict numerical failures and three missing older temporary candidate binaries remain recorded. C01 follows complete and tested S05; numerical refinement deferred at step157 remains deferred.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "staticEvidence": {
+    "reference": "artifacts/runs/20261104T150846Z-397-channel-visibility/verification01.json",
+    "checks": 63,
+    "passed": true,
+    "historicalProtectionComplete": false
+  },
+  "sourceDelta": "artifacts/runs/20261104T150846Z-397-channel-visibility/source04-delta.json"
+}

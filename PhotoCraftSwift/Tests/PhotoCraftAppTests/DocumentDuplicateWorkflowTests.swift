@@ -116,7 +116,7 @@ final class DocumentDuplicateWorkflowTests: XCTestCase {
       func all(_ nodes:[EditorMenuNode])->[EditorMenuNode]{nodes.flatMap{[$0]+all($0.children ?? [])}}
       let menu=try XCTUnwrap(all(PhotoshopMenuCatalog.menus).first{$0.title=="Image"}),item=try XCTUnwrap(menu.children?.first{$0.title=="Duplicate…"})
       XCTAssertEqual(item.key,"");XCTAssertEqual(NSStringFromSelector(#selector(AppDelegate.duplicateDocument)),"duplicateDocument:")
-      XCTAssertEqual(AutomationTests.expectedCommandCount,242)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }
 }

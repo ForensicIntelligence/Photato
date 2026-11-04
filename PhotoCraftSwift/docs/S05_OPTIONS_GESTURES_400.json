@@ -1,0 +1,97 @@
+{
+  "step": 400,
+  "status": "Custom colour UI and process-restart repair qualified; selected-area/no-selection behavior conflict remains open",
+  "previousTurnClassification": "Progress:399 corrected one stale test assertion, passed195consolidated S05cases per architecture, exercised native owned workflow, and completed46static checks/history audit. Full S05 remained open.",
+  "sourceManifest": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/source01-source.json",
+  "productionSource": "398Source04 unchanged; current test source399Source01",
+  "softwareBuild": 398,
+  "S05Closed": false,
+  "C01Closed": false,
+  "fullGoalComplete": false,
+  "nativeEvidence": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/native-color-options01.json",
+  "plan": [
+    "Compare custom Quick Mask indication/color/opacity and options Cancel against normal Photoshop2026UI on owned disposable artwork.",
+    "Commit custom options in native candidate, Quit and relaunch it, verify options retained, and restore observed entered defaults.",
+    "Verify factory numbered-channel and selection-combination shortcuts, Q/D/X and text-focus guards against native/reference evidence. No adjacent C01 extension.",
+    "If a product defect is observed, preserve failure and repair through shared native/API paths with appropriate frozen-source tests. Otherwise retain existing195pass evidence without unrelated rebuilds."
+  ],
+  "unqualified": [
+    "All-input exact Photoshop math/profiles/HDR/output/settings and shortcuts",
+    "Full current suite and physical supported hardware/OS",
+    "Maximum dense capacity and sustained60fps",
+    "Prior numerical/Gray32ULP and three missing older temporary binaries"
+  ],
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "source": "400Source01",
+  "sourceInputs": 7174,
+  "productionSwiftFiles": 1026,
+  "testSwiftFiles": 718,
+  "newCasesEachArchitecture": 4,
+  "affectedCasesEachArchitecture": 227,
+  "passedEachArchitecture": [
+    227,
+    227
+  ],
+  "failedAssertionsEachArchitecture": [
+    0,
+    0
+  ],
+  "unexpectedEachArchitecture": [
+    0,
+    0
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "sameOrderedActualCases": true,
+  "qualification": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/source01-qualification.json",
+  "newCases": [
+    "PhotoCraftAppTests.QuickMaskColorControlTests/testHostedColorButtonOpensPanelAndCancelDiscardsCustomDraft",
+    "PhotoCraftAppTests.QuickMaskColorControlTests/testHostedCustomColorCommitPersistsAllOptionsAndEntersMask",
+    "PhotoCraftAppTests.QuickMaskColorControlTests/testHTTPCustomOptionsMatchNativeCommitAndInvalidColorIsAtomic",
+    "PhotoCraftAppTests.QuickMaskColorControlTests/testRemovingDialogDoesNotCloseAColorPanelClaimedByAnotherControl"
+  ],
+  "customColorCancelPassed": true,
+  "actualProcessRestartPassed": true,
+  "focusedNativePassed": true,
+  "fullNativeUIQualified": false,
+  "fullCurrentSuitePassed": false,
+  "coreWorkflowImplementedAndTested": false,
+  "newKnownFunctionalConflict": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/selected-area-entry-conflict01.json",
+  "currentInventory": {
+    "reference": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/inventory01-summary.json",
+    "casesEachArchitecture": 4036,
+    "discoveryOnly": true
+  },
+  "sourceDelta": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/source01-delta.json",
+  "universalPackage": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/universal/staging01.json",
+  "API": {
+    "commands": 242,
+    "nativeReadMaximum": 86,
+    "semanticActionsMaximum": 46,
+    "impact": "UI activation and draft-panel lifecycle repair. Existing channel.edit quickMaskOptions color/opacity/indicates, schemas, observable state and native transactions unchanged; added real HTTP/native custom-colour equality and invalid-colour atomicity test.",
+    "adobe": "No dedicated published channel-options endpoint invented; existing shared Adobe scope unchanged."
+  },
+  "implementation": [
+    "Replace only ChannelDialogSheet SwiftUI ColorPicker with existing native CompactColorWell using same sRGB binding for Quick Mask/alpha/spot options.",
+    "Opt-in panel removal cleanup tracks native control ownership. It disconnects only the current owner and rejects stale callbacks; ordinary controls retain prior panel lifetime.",
+    "No Core/Imaging algorithms, file codecs, resource/archive versions, menu bindings or tool/cursor actions change. Info.plist build advances398to400; generated Xcode project and specification unchanged."
+  ],
+  "currentNextWork": [
+    "Capture explicit partial selection versus no selection for both indications, before/after indication switch and Qexit.",
+    "Capture black/white changes and saved/load selection results; inspect actual PSD plane/display records independently.",
+    "Correct only the behavior established by those references through shared core/native/API paths, with history, native/PSD/PSB persistence, busy/stale guards and all-depth tests.",
+    "Do not fix only initial presentation or substitute zero coverage without proving file and selection semantics; do not waive original acceptance."
+  ],
+  "staticEvidence": {
+    "passed": true,
+    "checks": 50,
+    "reference": "artifacts/runs/20261104T182709Z-400-S05-options-and-gestures/final-verification01.json",
+    "scope": "Frozen source/test cases, package/slices/signatures/extraction, native colour/cancel/restart, retained independent PS counterexample, original package/command scopes, standalone diaries, dashboard and free/manual policy. Final bookkeeping/provenance and history refresh/check follow in the excluded final receipt."
+  }
+}

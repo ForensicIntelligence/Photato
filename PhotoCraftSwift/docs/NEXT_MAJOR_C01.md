@@ -1,3 +1,5 @@
+**Scheduling update402:** C01 is included in the major quick-win sweep, followed by its remaining implementation during major stillneeded and fidelity/qualification during major cleanup. It no longer waits for full S05 closure. The historical sequencing statements below are superseded; all C01 scope and acceptance remain. First overall quick win is L01/AUT02 Delete All Empty Layers. [Current order](CURRENT_WORK_ORDER.md).
+
 # Next major function: C01 — Component visibility and edit targeting
 
 Confirmed again by the maintainer on 3 November2026. Start after S05 is complete and tested. S05 is still the active major function; C01 is queued.

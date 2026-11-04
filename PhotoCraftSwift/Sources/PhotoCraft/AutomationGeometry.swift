@@ -63,7 +63,7 @@ enum GeometryAPI {
 extension AutomationCommand {
   func geometryCommand(in document: CraftDocument) throws -> Command {
     switch name {
-    case "selection.shape","selection.inverse","selection.feather":return try selectionGeometryCommand()
+    case "selection.shape","selection.inverse","selection.feather":return try selectionGeometryCommand(in: document)
     case "document.resize", "document.fitImage":
       let method: Resampling
       if parameters["method"] != nil {

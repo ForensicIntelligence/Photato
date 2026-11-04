@@ -181,12 +181,54 @@ public enum ChannelArithmeticEngine {
     }.quantizedStoredDepth(before.depth)
   }
 
+  /// Projects numeric input and weights once, then streams each retained plane.
+  /// Intermediate weights stay Float32, including for integer destinations.
+  static func applyingNativePlanes(_ original:NativeModeRaster,input:ChannelArithmeticInput,
+    mask:Surface?,selection:Surface,options:ChannelArithmeticOptions,components:[Int],
+    preserve:Bool,transform:Transform2D) throws -> NativeModeRaster {
+    try options.validate(); try Task.checkCancellation()
+    let transfer=ChannelArithmeticTransfer(options)
+    let selected=Set(components.isEmpty ? Array(0..<original.mode.componentCount):components)
+    let alpha=try original.opacityChannel().quantizedStoredDepth(.f32)
+    // Match opacity * selection * mask, before the local nearest projection.
+    var weights=try selection.mappedStoredSamples {p in let w=options.opacity*p.r;return Pixel(w,w,w)}
+    if let mask {weights=try weights.combiningStoredSamples(with:mask) {p,m in let w=p.r*unit(m.r);return Pixel(w,w,w)}}
+    weights=try project(weights,transform:transform,width:original.width,height:original.height)
+      .combiningStoredSamples(with:alpha) {p,a in
+        let ab=a.r,w=preserve ? p.r*ab:p.r,ao=preserve ? ab:w+ab*(1-w)
+        return Pixel(w,ao,ab)
+      }
+    let top=try project(input.samples,transform:transform,width:original.width,height:original.height)
+    var result=original
+    for c in selected.sorted() {
+      try Task.checkCancellation()
+      let pairs=try original.channel(c).quantizedStoredDepth(.f32)
+        .combiningStoredSamples(with:top) {b,t in Pixel(b.r,color(t,input.components==1 ? 0:c),0)}
+      let output=try pairs.combiningStoredSamples(with:weights) {pair,k in
+        let stored=pair.r,w=k.r,ao=k.g,ab=k.b
+        if w<=0 {return Pixel(stored,stored,stored)}
+        let base=original.mode == .cmyk ? 1-stored:stored,source=pair.g
+        let blended=transfer.blend(base,source,extended:original.depth == .f32)
+        let mixed=ab==1 ? blended:ab==0 ? source:source+(blended-source)*ab
+        let value=preserve || ab==1 ? base+(mixed-base)*w:(w*mixed+ab*(1-w)*base)/ao
+        let out=original.mode == .cmyk ? 1-value:value
+        return Pixel(out,out,out)
+      }.quantizedStoredDepth(original.depth)
+      result=try result.replacingChannel(c,with:output)
+    }
+    // Retain original opacity words where no edit occurs, including signed zero.
+    let opacity=try alpha.combiningStoredSamples(with:weights) {p,k in
+      let value=k.r<=0 ? p.r:k.g;return Pixel(value,value,value)
+    }.quantizedStoredDepth(original.depth)
+    if !preserve {result=try result.replacingOpacity(with:opacity)}
+    try result.validate();try Task.checkCancellation();return result
+  }
+
   private static func applyNative(_ input: ChannelArithmeticInput, mask: Surface?, selection: Surface,
     options: ChannelArithmeticOptions, components: [Int], index: Int,
     in document: inout CraftDocument, transfer: ChannelArithmeticTransfer) throws {
     var layer=document.layers[index]
     let original=try ModeComponentEdit.raster(layer,in:document)
-    guard !original.requiresPagedArchive else { throw CraftError.unsupported("Native component channel blending currently supports up to8,388,608layer pixels.") }
     let selected=Set(components.isEmpty ? Array(0..<original.mode.componentCount):components)
     let preserve=options.preserveTransparency || !components.isEmpty || layer.protection.locksTransparency
     let oldTransform=layer.coordinateTransform
@@ -197,12 +239,23 @@ public enum ChannelArithmeticEngine {
     guard case .raster(let expanded)=layer.content else {throw CraftError.invalid("Missing expanded mode cache.")}
     let offset=try oldTransform.inverted()*layer.coordinateTransform
     let ox=Int(offset.tx.rounded()),oy=Int(offset.ty.rounded())
-    let baseNative = ox==0 && oy==0 && expanded.width==original.width && expanded.height==original.height
-      ? original : try original.transformed(by:.identity,
-        bounds:.init(x:ox,y:oy,width:expanded.width,height:expanded.height),method:.nearest)
+    let frame=IntRect(x:ox,y:oy,width:expanded.width,height:expanded.height)
+    let baseNative:NativeModeRaster
+    if ox==0 && oy==0 && expanded.width==original.width && expanded.height==original.height {baseNative=original}
+    else if expanded.width*expanded.height>NativeModeRaster.maximumPixels {
+      // Storage expansion is an integer reframe, not resampling. Preserve raw
+      // hidden samples and visit source/support rather than the logical canvas.
+      baseNative=try original.reframedExactly(bounds:frame)
+    } else {baseNative=try original.transformed(by:.identity,bounds:frame,method:.nearest)}
     let transform=layer.coordinateTransform
+    if baseNative.requiresPagedArchive {
+      let native=try applyingNativePlanes(baseNative,input:input,mask:mask,selection:selection,
+        options:options,components:components,preserve:preserve,transform:transform)
+      layer.nativeMode=native;layer.content = .raster(try native.surface())
+      document.layers[index]=layer;return
+    }
     var native=baseNative
-    // Existing native component storage is bounded independently of RGB paged surfaces.
+    // Preserve the original small-document formula and evaluation order.
     for y in 0..<native.height {try Task.checkCancellation();for x in 0..<native.width {
       let q=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(q.x)),dy=Int(floor(q.y))
       guard (0..<document.width).contains(dx),(0..<document.height).contains(dy) else{continue}

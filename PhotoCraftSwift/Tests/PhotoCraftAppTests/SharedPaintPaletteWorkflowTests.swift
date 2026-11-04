@@ -201,7 +201,7 @@ final class SharedPaintPaletteWorkflowTests: XCTestCase {
       let state = try JSONDecoder().decode(AutomationValue.self, from: JSONSerialization.data(withJSONObject: b.store.paintColorState))
       XCTAssertNoThrow(try BrushAPI.merge(state, schema: PaintColorPair.stateSchema))
       XCTAssertNotNil(BrushAPI.capabilities["sharedPaintColors"])
-      XCTAssertEqual(AutomationCommand.definitions.count, 239)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
       try await self.captureHTTPColors(service, a, b, "image")
       a.store.toggleQuickMask(); b.store.toggleQuickMask(); a.store.swapColors()
       self.pair(b.store, .white, .black)
@@ -211,14 +211,22 @@ final class SharedPaintPaletteWorkflowTests: XCTestCase {
 
   @MainActor func testHTTPPaintUsesSharedImageAndMaskColorsWithNativeResultsAndOneUndo() async throws {
     try await AutomationTests().withService(pressedMouseButtons: {0}) { service, a in
-      a.store.session = EditorSession(document: try self.model()); try service.share(a)
-      let b = CraftNSDocument(model: try self.model()); service.controller.addDocument(b); try service.share(b)
+      var first=try self.model(),second=try self.model()
+      first.layers[0].content = .raster(try Surface(width:first.width,height:first.height,fill:.black))
+      second.layers[0].content = .raster(try Surface(width:second.width,height:second.height,fill:.black))
+      a.store.session = EditorSession(document:first);try service.share(a)
+      let b = CraftNSDocument(model:second);service.controller.addDocument(b);try service.share(b)
       defer { b.close() }
       b.store.brush.size = 4; b.store.brush.hardness = 1
       let configured = try await self.request(service, a, "brush.configure", ["brush":["color":BrushAPI.json(Pixel.white)]])
       XCTAssertEqual(configured, 200)
       for mask in [false,true] {
-        if mask { a.store.toggleQuickMask(); b.store.toggleQuickMask() }
+        if mask {
+          a.store.toggleQuickMask(); b.store.toggleQuickMask()
+          // Establish the shared auxiliary color rather than inherit another test's remembered white ink.
+          let configured = try await self.request(service, a, "brush.configure", ["brush":["color":BrushAPI.json(Pixel.black)]])
+          XCTAssertEqual(configured, 200);XCTAssertEqual(b.store.brush.color,.black)
+        }
         let original = b.store.document, history = b.store.session.undoStack.count
         let native = EditorStore(document: original)
         defer { native.renderTask?.cancel() }

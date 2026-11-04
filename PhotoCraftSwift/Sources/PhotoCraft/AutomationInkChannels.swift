@@ -9,7 +9,7 @@ enum InkChannelAPI {
   static func schema(_ key: String, command: String) -> [String: Any] {
     switch key {
     case "target": return target
-    case "targets": var value = targets; if command != "ink.channel.select" { value["minItems"] = 1 }; return value
+    case "targets": var value = targets; if command != "ink.channel.select" && command != "ink.channel.visibility" { value["minItems"] = 1 }; return value
     case "action": return BrushAPI.enumeration(command == "ink.channel.manage" ? ["create", "delete", "duplicate", "move", "options"] : ["fill", "stroke", "invert", "filter", "selection"])
     case "offset": return BrushAPI.number(0, Double(InkPlane.maximumPixels - 1), integer: true)
     case "count": return BrushAPI.number(1, 4096, integer: true)
@@ -35,7 +35,7 @@ enum InkChannelAPI {
       "width": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true), "height": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true),
       "depth": ["type": "integer", "enum": [8, 16]], "revision": ["type": "string"]], required: ["target", "offset", "values", "width", "height", "depth", "revision"]),
     "samples": "Read/write use retained normalized gray for Duotone and density for Multichannel (zero means no ink). At most4096 samples per page. Writes ignore selection and replace the requested numeric range. Fill/stroke/filter/invert use channel-view gray (zero is black/full ink), respect selection and preserve unedited plane bytes. Selection loading accepts exactly one target.",
-    "targeting": "Explicit editing targets are independent of desktop selection. Empty select means all ink channels; visibility requires at least one. View changes do not add history. One visible Multichannel plate displays gray; multiple plates display their retained ink colors. No RGB layer is synthesized.",
+    "targeting": "Explicit editing targets are independent of desktop selection. Empty select means all ink channels; empty visibility hides image plates without selecting another target. View changes do not add history. One visible Multichannel plate displays gray; multiple plates display their retained ink colors. No RGB layer is synthesized.",
     "management": "Create/delete/duplicate/move/options require Multichannel. Keep at least one plate and at most56 total ink/alpha channels. Create defaults to zero density, black and zero solidity. Optional newID makes create/duplicate identities deterministic. Options require name/color/solidity. Solidity affects preview only.",
     "filters": InkChannelCommand.filters.map(\.rawValue).sorted(),
     "limits": "Desktop supports Brush/Eraser and the listed channel filters. Other Multichannel paint tools, complete semantic ink-channel Actions, full Adobe ink descriptors, separation printing, Duotone PSD and ink TIFF interchange remain open. Multichannel PSD/PSB preserves ink and alpha planes through the shared file routes. No Adobe endpoint is invented. Busy/stale/revoked requests cannot commit."] }

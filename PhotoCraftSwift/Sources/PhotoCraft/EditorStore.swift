@@ -37,6 +37,10 @@ import UniformTypeIdentifiers
   @ObservationIgnored var layerFilesWorker: Task<LayerFileExportResult, Error>?
   @ObservationIgnored var layerFilePreparation: @Sendable (CraftDocument,LayerFileExportSettings,URL,@Sendable (LayerFileProgress)->Void) throws -> PreparedLayerFiles = { try LayerFileExport.prepare($0,options:$1,directory:$2,progress:$3) }
   var imageExportDraft: ImageExportDraft?
+  var colorLookupExportDraft: ColorLookupExportDraft?
+  var colorLookupExportID: UUID?
+  @ObservationIgnored var colorLookupExportWorker: Task<Data, Error>?
+  @ObservationIgnored var colorLookupExportPreparation: @Sendable (CraftDocument, Int, String) throws -> Data = { try ColorLookupExport.cube($0, size: $1, title: $2) }
   var imageExportID: UUID?
   @ObservationIgnored var imageExportWorker: Task<ImageExportOutput, Error>?
   @ObservationIgnored var imageExportPreparation: @Sendable (CraftDocument, ImageExportSettings) throws -> ImageExportOutput = ImageExportPreparation.render
@@ -132,7 +136,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var brushPreviewRenderMS = 0.0
   let actions: ActionLibrary
   var actionRevision = 0
-  var session: EditorSession { didSet { rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
+  var session: EditorSession { didSet { rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { savedChannelVisibility=nil; temporaryMaskChannelVisibility=nil; channelVisibilitySweep=nil; inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
   @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
@@ -374,6 +378,9 @@ import UniformTypeIdentifiers
   var inkChannelOptions: InkChannelOptionsDraft?
   var alphaEditingID: UUID?
   var alphaOverlay = false
+  var savedChannelVisibility:SavedChannelVisibility?
+  var temporaryMaskChannelVisibility:TemporaryMaskChannelVisibility?
+  var channelVisibilitySweep:ChannelVisibilitySweep?
   // A retained Quick Mask can be visible while a different channel receives edits.
   var nonQuickMaskDocumentID: UUID?
   var nonQuickMaskID: UUID?
@@ -579,6 +586,9 @@ import UniformTypeIdentifiers
       selectedLayerIDs = [id]
     }
     let wasAlpha = alphaEditingID != nil
+    let changedMaskOwner = document.activeLayerID != id && !visibleTemporaryMaskChannels.isEmpty
+    if document.activeLayerID != id {temporaryMaskChannelVisibility=nil}
+    showColorChannelsKeepingAlphas()
     alphaEditingID = nil
     session.selectLayer(id)
     if case .vectorMask = pathTarget { selectPath(nil) }
@@ -586,7 +596,7 @@ import UniformTypeIdentifiers
     maskEditingLayerID = nil
     smartFilterMaskEditing = false
     clearMaskView()
-    if wasAlpha { render() }
+    if wasAlpha || changedMaskOwner { render() }
     invalidatePeopleIfNeeded()
     refreshObjectFinderIfNeeded()
   }
@@ -681,20 +691,20 @@ import UniformTypeIdentifiers
     let gradientGesture = gradientGesture?.command
     let gradientStopColor = gradientStopColorDraft?.command
     let patternFill = patternFillDraft.flatMap { $0.preview ? $0.command : nil }
-    let auxiliaryTarget = displayedAuxiliaryChannel
-    let auxiliaryOverlay = auxiliaryTarget == .quickMask || alphaOverlay
+    let auxiliaryView = auxiliaryChannelView
+    let auxiliaryPresentation = auxiliaryView.needsPresentation
     let channelView = channelView
     let modeVisibility = usesModeChannels ? modeComponentVisibility : nil
     let inkVisibility = document.inkMode != nil ? effectiveInkVisibility : nil
     let proof = effectiveProof
-    let proofComposite = auxiliaryTarget == nil && maskView == nil && channelView.visible.count == 3
+    let proofComposite = !auxiliaryPresentation && maskView == nil && channelView.visible.count == 3
       && (modeVisibility == nil || modeVisibility?.count == doc.colorMode.componentCount)
       && (inkVisibility == nil || inkVisibility?.count == doc.inkChannelTargets.count)
     let previous = renderSnapshot
     let interactiveBrush: InteractiveBrushPreview?
     if case .stroke? = painting { interactiveBrush = interactiveBrushPreview } else { interactiveBrush = nil }
     let brushPoints = brushGesture?.points ?? []
-    let ordinaryDisplay = auxiliaryTarget == nil && maskView == nil && modeVisibility == nil && inkVisibility == nil
+    let ordinaryDisplay = !auxiliaryPresentation && maskView == nil && modeVisibility == nil && inkVisibility == nil
       && channelView.visible.count == 3 && !proof.active && onionSource == nil
     // The previous image must have the same presentation semantics as its snapshot.
     let previousDisplay = ordinaryDisplay && ordinaryCanvasImage && previous != nil
@@ -770,9 +780,9 @@ import UniformTypeIdentifiers
         if proofComposite, let onionSource { displayComposite = try OnionSkinRenderer.render(onionSource, base: snapshot.surface) }
         else { displayComposite = snapshot.surface }
         let preview = try doc.inkMode != nil ? InkChannelPresentation.surface(doc, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(doc, visible: $0) } ?? channelView.applying(to: displayComposite)
-        let boundedPreview = try auxiliaryTarget == nil ? presentation.map { try $0.reducing(preview) } : nil
+        let boundedPreview = try !auxiliaryPresentation ? presentation.map { try $0.reducing(preview) } : nil
         var canvasPreview = try largeCanvas == nil ? previousDisplay?.updating(snapshot, scale: displayScale) : nil
-        var image = try canvasPreview?.base ?? (auxiliaryTarget != nil ? ChannelPresentation.image(snapshot.surface,document:doc,target:auxiliaryTarget,overlay:auxiliaryOverlay,request:presentation) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+        var image = try canvasPreview?.base ?? (auxiliaryPresentation ? AuxiliaryChannelPresentation.image(preview,document:doc,view:auxiliaryView,colorManaged:!(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),request:presentation) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
           ? RasterIO.displayImage(boundedPreview ?? preview) : ColorManagement.displayImage(boundedPreview ?? preview, in: doc))
         if let largeCanvas { canvasPreview = CanvasRasterPreview(base: image, documentRegion: largeCanvas.region) }
         else if ordinaryDisplay, canvasPreview == nil {
@@ -948,12 +958,12 @@ import UniformTypeIdentifiers
     if let target = editingChannel { perform(.channel(.fill(target,unit(0.2126*color.r+0.7152*color.g+0.0722*color.b),opacity))); return }
     if editingComponent {
       do {
-        guard color.r == color.g, color.g == color.b, color.a == 1 else {
+        guard color.r == color.g, color.g == color.b, color.a.isFinite, (0...1).contains(color.a) else {
           throw CraftError.unsupported(
-            "Component Fill currently supports opaque neutral colors. Choose Black, 50% Gray or White."
+            "Component Fill currently supports neutral colors. Choose Black, 50% Gray or White."
           )
         }
-        perform(try componentFillCommand(value: color.r, opacity: opacity))
+        perform(try componentFillCommand(value: color.r, opacity: opacity*color.a))
       } catch { self.error = error.localizedDescription }
       return
     }
@@ -1147,8 +1157,9 @@ import UniformTypeIdentifiers
         $0.contains { !$0.shortcut.isEmpty && $0.shortcut.lowercased() == key }
       })
     else { return false }
-    if cycle, let index = group.firstIndex(of: selectedTool) {
-      chooseTool(group[(index + 1) % group.count])
+    let shortcutTools = group.filter { $0.shortcut.lowercased() == key }
+    if cycle, let index = shortcutTools.firstIndex(of: selectedTool) {
+      chooseTool(shortcutTools[(index + 1) % shortcutTools.count])
     } else {
       chooseTool(group.first { $0.id == rememberedTools[group[0].id] } ?? group[0])
     }

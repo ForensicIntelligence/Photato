@@ -65,29 +65,22 @@ extension EditorStore {
     finishLayerName()
     guard !geometryBusy, !hasToneDraft, transformDraft == nil else { return }
     clearMaskView()
+    temporaryMaskChannelVisibility=nil
     maskEditingLayerID = nil
     if document.inkMode != nil { if channel == .composite { try? selectInkChannels([]) }; return }
+    showColorChannelsKeepingAlphas()
     if usesModeChannels { modeComponentVisibility = channel == .composite ? nil : [channel.rawValue - 1]; render() } else { channelView.selectPreview(channel) }
   }
 
   var canChangeChannelVisibility: Bool {
-    !geometryBusy && !hasToneDraft && transformDraft == nil
-      && !editingMask && currentMaskView == nil
+    canSelectComponentTarget(excludingChannelDialog:false,excludingChannelVisibilitySweep:true) && historyOperation==nil
+  }
+  @discardableResult func setChannelVisibility(_ channel:RGBChannelPreview,visible:Bool)->Bool {
+    guard canChangeChannelVisibility else{return false}
+    do {try setChannelEye(.rgb(channel),visible:visible);return true}
+    catch {return false}
   }
 
-  @discardableResult func setChannelVisibility(_ channel: RGBChannelPreview, visible: Bool) -> Bool
-  {
-    finishNumericField()
-    finishLayerName()
-    guard canChangeChannelVisibility, document.inkMode == nil else { return false }
-    if usesModeChannels {
-      guard document.colorMode == .rgb else { return false }
-      let targets = channel == .composite ? Set(0..<3) : [channel.rawValue - 1]
-      let proposed = visible ? modeVisibleComponents.union(targets) : modeVisibleComponents.subtracting(targets)
-      if !proposed.isEmpty { try? setModeComponentVisibility(proposed) }
-    } else { channelView.setVisible(channel, visible) }
-    return true
-  }
 }
 
 struct ChannelPanelOptionsSheet: View {

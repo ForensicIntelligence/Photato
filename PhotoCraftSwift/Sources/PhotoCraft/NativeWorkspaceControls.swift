@@ -5,6 +5,7 @@ struct CompactColorWell: NSViewRepresentable {
   @Binding var color: Color
   var label = "Foreground color"
   var supportsOpacity = true
+  var closesPanelOnRemoval = false
   func makeCoordinator() -> Coordinator { Coordinator(self) }
   func makeNSView(context: Context) -> ColorSwatchButton {
     let button = ColorSwatchButton(frame: NSRect(x: 0, y: 0, width: 22, height: 22))
@@ -19,11 +20,21 @@ struct CompactColorWell: NSViewRepresentable {
     view.swatchColor = NSColor(color)
     view.needsDisplay = true
   }
+  static func dismantleNSView(_ view: ColorSwatchButton, coordinator: Coordinator) {
+    guard coordinator.parent.closesPanelOnRemoval, Coordinator.panelOwner === coordinator else { return }
+    Coordinator.panelOwner = nil
+    let panel = NSColorPanel.shared
+    panel.setTarget(nil)
+    panel.setAction(nil)
+    panel.orderOut(nil)
+  }
   @MainActor final class Coordinator: NSObject {
+    static weak var panelOwner: Coordinator?
     var parent: CompactColorWell
     init(_ parent: CompactColorWell) { self.parent = parent }
     @objc func showPanel(_ sender: NSButton) {
       let panel = NSColorPanel.shared
+      Self.panelOwner = self
       panel.setTarget(self)
       panel.setAction(#selector(changed(_:)))
       panel.isContinuous = true
@@ -32,7 +43,10 @@ struct CompactColorWell: NSViewRepresentable {
       NSApp.activate()
       panel.makeKeyAndOrderFront(nil)
     }
-    @objc func changed(_ sender: NSColorPanel) { parent.color = Color(nsColor: sender.color) }
+    @objc func changed(_ sender: NSColorPanel) {
+      guard Self.panelOwner === self else { return }
+      parent.color = Color(nsColor: sender.color)
+    }
   }
 }
 @MainActor final class ColorSwatchButton: NSButton {

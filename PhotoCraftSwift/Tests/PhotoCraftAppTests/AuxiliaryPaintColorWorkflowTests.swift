@@ -172,7 +172,7 @@ final class AuxiliaryPaintColorWorkflowTests: XCTestCase {
       XCTAssertEqual(store.document, mask)
       XCTAssertEqual(store.document.layers, original.layers)
       XCTAssertEqual(store.session.undoStack.count, history)
-      XCTAssertEqual(AutomationCommand.definitions.count, 239)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }
 

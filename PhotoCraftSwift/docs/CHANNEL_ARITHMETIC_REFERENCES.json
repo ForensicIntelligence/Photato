@@ -59,7 +59,7 @@
     "Native visual acceptance; manual Mac unlock remains pending",
     "Semantic Actions source recording",
     "Published Firefly actionJSON source descriptors",
-    "Native mode/ink/new grayscale document storage above8MP",
+    "Printing ink storage above8MP and full physical native dense capacity",
     "Intel and supported macOS/platform qualification"
   ],
   "tool_cursor_impact": "No new tools or modifier actions; shared policy remains mandatory.",
@@ -304,5 +304,15 @@
     "commit": "e91e5ef92c6fa973dee38488640d5023be199150",
     "receipt": "docs/SOURCE_PUBLICATION_298.json",
     "private": true
+  },
+  "large_native_increment_396": {
+    "source": "396Source02",
+    "reference": "docs/LARGE_CHANNEL_ARITHMETIC_396.json",
+    "affectedPassedEach": 103,
+    "newPassedEach": 13,
+    "maximumLogicalPixels": 90000000000,
+    "physicalDenseCapacityQualified": false,
+    "smallDenseMathUnchanged": true,
+    "limitsSuperseded": "Native component Apply Image and New Gray Document logical8MPguard are replaced; printing inks and physical capacity remain separate open gates."
   }
 }

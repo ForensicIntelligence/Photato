@@ -111,9 +111,13 @@ struct ChannelDialogSheet: View {
             if draft.kind == .options {Text("Spot Color").tag("spot")}
           }.pickerStyle(.radioGroup)
         }
-        ColorPicker("Color",selection:Binding(get:{ let p=draft.spotEnabled ? draft.spotColor:draft.options.color;return Color(red:Double(p.r),green:Double(p.g),blue:Double(p.b)) },set:{color in
-          if let c=NSColor(color).usingColorSpace(.sRGB){let p=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent));if draft.spotEnabled {draft.spotColor=p}else{draft.options.color=p}}
-        }),supportsOpacity:false)
+        HStack {
+          Text("Color")
+          CompactColorWell(color:Binding(get:{ let p=draft.spotEnabled ? draft.spotColor:draft.options.color;return Color(red:Double(p.r),green:Double(p.g),blue:Double(p.b)) },set:{color in
+            if let c=NSColor(color).usingColorSpace(.sRGB){let p=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent));if draft.spotEnabled {draft.spotColor=p}else{draft.options.color=p}}
+          }),label:draft.kind == .quickOptions ? "Quick Mask overlay color":"Channel color",supportsOpacity:false,closesPanelOnRemoval:true)
+            .frame(width:26,height:26)
+        }
         if draft.spotEnabled {
           HStack {Text("Solidity");Slider(value:$draft.solidity,in:0...1);Text("\(Int(draft.solidity*100))%")}
           Text("Solidity changes the preview; it does not change ink separation values.").font(.caption).foregroundStyle(.secondary)

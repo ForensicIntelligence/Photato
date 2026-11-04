@@ -48,6 +48,10 @@ struct CanvasHost: NSViewRepresentable {
   }
 }
 @MainActor final class CraftCanvas: ModifierCursorView {
+  override func clearCursorInput() {
+    if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
+    super.clearCursorInput()
+  }
   var magneticPrecision=false
   override func updateCursorModifiers(_ flags:NSEvent.ModifierFlags) {
     if store.magneticDraft == nil {magneticPrecision=flags.contains(.capsLock)}
@@ -167,6 +171,7 @@ struct CanvasHost: NSViewRepresentable {
   var polygonPoints: [SelectionPoint] = []
   var selectionDragMode = SelectionMode.replace
   var selectionStartModifiers: NSEvent.ModifierFlags = []
+  var singlePixelMarqueeFeather = 0.0
   var gestureToolID: String
   init(store: EditorStore) {
     self.store = store
@@ -472,6 +477,17 @@ struct CanvasHost: NSViewRepresentable {
         CGRect(
           x: r.minX + CGFloat(s.x) * scale, y: r.minY + CGFloat(s.y) * scale,
           width: CGFloat(s.width) * scale, height: CGFloat(s.height) * scale), in: c)
+    }
+    if start != nil, let b = end, !panningGesture,
+       let axis = store.tool.singlePixelMarquee,
+       let rect = axis.rectangle(at: axis == .row ? b.y : b.x,
+         width: store.document.width, height: store.document.height) {
+      c.saveGState()
+      c.clip(to: imageRect)
+      outline(CGRect(x: r.minX + CGFloat(rect.x) * scale,
+        y: r.minY + CGFloat(rect.y) * scale,
+        width: CGFloat(rect.width) * scale, height: CGFloat(rect.height) * scale), in: c)
+      c.restoreGState()
     }
     if let a = start, let b = end,
       ([.marquee, .ellipticalMarquee].contains(store.tool) || (store.tool == .objectSelection && store.objectSelectionMode == .rectangle)),
@@ -782,6 +798,7 @@ struct CanvasHost: NSViewRepresentable {
     dragPanOrigin = store.pan
     if let l = store.activeLayer { dragLayerOrigin = CGPoint(x: l.x, y: l.y) }
     if panningGesture { return }
+    if store.tool.singlePixelMarquee != nil { singlePixelMarqueeFeather = store.selectionFeather }
     if store.tool == .move,!store.editingMask,!store.editingComponent,store.document.selection==nil,store.beginWholeLayerMove(modifiers:event.modifierFlags){transformStart=store.transformDraft;transformHandle = -1;needsDisplay=true;return}
     if store.tool.usesPaintingStroke {
       brushStartTime=event.timestamp
@@ -996,6 +1013,12 @@ struct CanvasHost: NSViewRepresentable {
       if lassoPoints.count >= 3 {
         store.selectShape(.polygon(lassoPoints), mode: selectionDragMode)
       }
+    case .rowMarquee, .columnMarquee:
+      if let axis = store.tool.singlePixelMarquee,
+         let rect = axis.rectangle(at: axis == .row ? b.y : b.x,
+           width: store.document.width, height: store.document.height) {
+        store.performGeometry(.selectShape(.rectangle(rect), selectionDragMode, false, singlePixelMarqueeFeather))
+      }
     case .marquee, .ellipticalMarquee:
       if let rect = Self.dragRect(
         from: a, to: b,
@@ -1134,7 +1157,7 @@ struct CanvasHost: NSViewRepresentable {
       }
     }
     if event.keyCode == 53, start != nil,
-      [.lasso, .marquee, .ellipticalMarquee, .crop].contains(store.tool)
+      [.lasso, .marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .crop].contains(store.tool)
     {
       lassoPoints = []
       start = nil

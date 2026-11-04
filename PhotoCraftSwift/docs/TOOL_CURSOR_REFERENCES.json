@@ -337,6 +337,18 @@
       "name": "Direct Selection",
       "existing_modifier_behavior": "Option independently moves selected handles; Control/Command alternate tools are not currently implemented.",
       "covered_by_shared_policy": true
+    },
+    {
+      "id": "rowMarquee",
+      "name": "Single Row Marquee",
+      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
+      "covered_by_shared_policy": true
+    },
+    {
+      "id": "columnMarquee",
+      "name": "Single Column Marquee",
+      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
+      "covered_by_shared_policy": true
     }
   ],
   "workspaces": [
@@ -1090,5 +1102,49 @@
     "scope": "Existing Brush/Eraser cursor policy and captured gesture semantics now apply to ordinary RGB8 selected-channel routing. No new modifier action or artwork. Add all16modifier regression coverage for the selected-channel context.",
     "remaining": "Live cursor/Photoshop art and all-input/platform/performance qualification remain open.",
     "evidence": "docs/RGB8_COMPONENT_TOOLS_394.json"
+  },
+  "independent_channel_visibility_397": {
+    "source": "397Source04",
+    "reference": "docs/CHANNEL_VISIBILITY_397.json",
+    "guide": "docs/CHANNEL_VISIBILITY.md",
+    "affectedPassedEach": 370,
+    "newPassedEach": 27,
+    "cursor": "Native eye NSButton uses standard arrow cursor; no new canvas tool. All16modifier click tests, sweep/cancel/focus lifecycle and existing shared ToolCursor regressions pass. Photoshop alternative eye gestures not advertised.",
+    "API": "Existing242command catalogue, session auxiliaryVisibility schema and channel-preview; no new Adobe route.",
+    "remaining": "Full temporary rows/multi-edit/alternate gestures/hidden-policy/output/defaults/shortcuts/platform/dense/60fps scope remains open."
+  },
+  "temporary_mask_channel_increment_398": {
+    "status": "16new temporary-mask cases pass on both architectures within404affected; native focus/shortcut/eye workflow checked",
+    "new_canvas_tool": false,
+    "new_modifier_cursor_action": false,
+    "control": "Existing ChannelEyeControl/ChannelEyeButton; standard arrow, independent mask eyes and native sweep cancellation",
+    "modifier_policy": "Control/Command/Option/Shift combinations retain the ordinary eye action;16-combination native input tests added. No unobserved alternate eye action advertised.",
+    "shortcut": "Unmodified backslash display toggle; native DocumentWorkspace first-responder guard keeps text/control input. Exact other factory mask shortcuts remain open.",
+    "reference": "docs/TEMPORARY_MASK_CHANNELS_398.json"
+  },
+  "single_pixel_marquee_404": {
+    "step": 404,
+    "status": "Focused arm64 Debug matrix passed; full Photoshop/platform qualification open",
+    "tools": [
+      "rowMarquee",
+      "columnMarquee"
+    ],
+    "tools_total": 55,
+    "tool_modifier_combinations": 880,
+    "reference": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
+    "semantics": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
+    "api": "Tool discovery includes both tools; selection.shape row/column shares geometry/history. No new Adobe route.",
+    "open": "Exact Photoshop pointer artwork/preferences, defaults/feather/snapping and physical held-key/platform qualification.",
+    "cases": 87,
+    "source": "404Source03",
+    "evidence": "docs/SINGLE_PIXEL_MARQUEE_404.json"
+  },
+  "color_lookup_export_405": {
+    "step": 405,
+    "tool_modifier_action_changed": false,
+    "existing_tools": 55,
+    "matrix_rows_each_architecture": 880,
+    "qualification": "Existing shared matrix passes in80normal Release cases per architecture; native dialog text/control cursors remain AppKit-owned.",
+    "reference": "docs/COLOR_LOOKUP_EXPORT_405.json"
   }
 }

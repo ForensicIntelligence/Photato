@@ -89,7 +89,7 @@ final class LayerCapacityWorkflowTests: XCTestCase {
     let command = try AutomationCommand(data: parsed.body)
     var changed = d; try command.protectionCommand(document: d).apply(to: &changed)
     XCTAssertTrue(changed.layers.allSatisfy { $0.protection.locksPosition })
-    XCTAssertEqual(AutomationTests.expectedCommandCount, 242); XCTAssertEqual(ActionLibraryFile.maximumVersion, 46)
+    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount); XCTAssertEqual(ActionLibraryFile.maximumVersion, 46)
   }
   func testAdobeResourceAdmissionUsesSame8000TargetAndRetainsHeapBudget() throws {
     let d = try fixture(); XCTAssertNoThrow(try AdobeActionAssets.check(d))

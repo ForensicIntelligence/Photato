@@ -49,7 +49,7 @@ final class PSBTaggedBlockWorkflowTests: XCTestCase {
       XCTAssertTrue(file.store.session.undoStack.isEmpty)
       let caps = try XCTUnwrap(DocumentEncodingOptions.capabilities["photoshopTaggedBlocks"] as? [String:Any])
       XCTAssertEqual(caps["psbWideSignature"] as? String, "8B64"); XCTAssertEqual(caps["psbWideLengthBytes"] as? Int, 8)
-      XCTAssertEqual(AutomationCommand.definitions.count, 239)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }
   func testPublishedCompositePreservesPSBInputAndKeepsPSDOutputAtFourByteFraming() throws {

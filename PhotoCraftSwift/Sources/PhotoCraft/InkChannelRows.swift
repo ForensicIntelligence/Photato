@@ -6,19 +6,12 @@ struct InkChannelRows: View {
   @Bindable var store: EditorStore
   let images: [CGImage]
   let size: ChannelThumbnailSize
+  let eyeTracking:ChannelEyeTracking
   var body: some View {
     ForEach(Array(store.document.inkChannelTargets.enumerated()), id: \.element) { index, target in
       let name = store.inkChannelName(target), selected = store.editingChannel == nil && store.effectiveInkTargets.contains(target)
       HStack(spacing: 0) {
-        Button {
-          var next = store.visibleInkTargets
-          if next.contains(target) { next.remove(target) } else { next.insert(target) }
-          do { try store.setInkVisibility(next) } catch { store.error = error.localizedDescription }
-        } label: {
-          Image(systemName: "eye").opacity(store.visibleInkTargets.contains(target) ? 1 : 0)
-            .frame(width: 26, height: size.rowHeight).contentShape(Rectangle())
-        }.buttonStyle(.plain).disabled(!store.canChangeChannelVisibility || store.document.inkChannelTargets.count == 1)
-          .accessibilityLabel("Visibility of \(name) ink channel")
+        ChannelEyeControl(store:store,channel:.ink(target),tracking:eyeTracking,label:"Visibility of \(name) ink channel",identifier:"channels.ink.visibility.\(target.key)",height:size.rowHeight).frame(width:26,height:size.rowHeight)
         Rectangle().fill(StudioTheme.line).frame(width: 1)
         Button {
           let modifiers = NSApp.currentEvent?.modifierFlags ?? []

@@ -1,0 +1,61 @@
+{
+  "step": 404,
+  "goal_status": "active",
+  "status": "Single-pixel marquee native/API quick win development-qualified; full S01 remains open",
+  "software_build": 404,
+  "tested_source": "404Source03",
+  "run": "artifacts/runs/20261104T203920Z-404-D01-closing",
+  "source_manifest": "artifacts/runs/20261104T203920Z-404-D01-closing/source03-source.json",
+  "source_inputs": 7180,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "major_workflow": "S01row/column baseline delivered; G01 next",
+  "major_workflow_closed": false,
+  "previous_turn_classification": "Progress:403 implements native/API empty-layer baseline, passes83targeted/14new cases each architecture and actual native menu/Undo/Redo/quit;28checks/history403pass. Full command/package remains open; current quick-win queue advances to D01.",
+  "next_work": [
+    "G01: retain and repeat a bounded transform through native Again menu/shortcut and API. Audit before implementation.",
+    "Preserve Grow/Similar and full D01/L07/S01acceptance under later tracks.",
+    "Batch normal optimized universal packaging at a stable milestone; preserve compiler Source01failure and all historical gates."
+  ],
+  "full_current_suite_passed": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "production_swift_files": 1029,
+  "evidence": "docs/SINGLE_PIXEL_MARQUEE_404.json",
+  "phase_ledger": "docs/FUNCTION_PHASES_404.json",
+  "priority_rule": "docs/WORK_PRIORITIES_404.json",
+  "current_major_workflow": "G01",
+  "completed_this_increment": [
+    "Verified existing D01closing25cases and L07artboard15cases each architecture without source edits.",
+    "Added/tested Single Row and Single Column Marquee native/API/history/cursor path.",
+    "Reclassified Grow/Similar as stillneeded; advance to G01 quick-win audit."
+  ],
+  "tests": {
+    "focused_arm64_debug": {
+      "tests": 87,
+      "failures": 0,
+      "path": "artifacts/runs/20261104T203920Z-404-D01-closing/source03.log",
+      "configuration": "arm64 Debug; installed Swift compiler predictable-deadalloc-elim pass disabled only for this development build after Source01 compiler crash. Normal optimized universal qualification is deferred to a stable milestone."
+    },
+    "unchanged_403_D01_each_architecture": {
+      "tests": 25,
+      "failures": 0
+    },
+    "unchanged_403_L07_each_architecture": {
+      "tests": 15,
+      "failures": 0
+    }
+  },
+  "native_workflow_qualified": true,
+  "increment_complete": true,
+  "qualified_scope": "Focused development baseline only; full S01 and normal optimized universal/platform qualification open",
+  "full_workflow_complete": false,
+  "goal_complete": false,
+  "recorded_at_utc": "2026-11-04T21:01:22.215293+00:00",
+  "native_workflow_evidence": "artifacts/runs/20261104T203920Z-404-D01-closing/native-workflow01.json",
+  "native_candidate_terminated": true
+}

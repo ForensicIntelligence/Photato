@@ -72,7 +72,7 @@ final class SelectionChannelDocumentWorkflowTests:XCTestCase {
       for source:[String:Any] in [["kind":"component","component":4],["kind":"component","id":UUID().uuidString],["kind":"transparency"],["kind":"unknown"]] {
         let before=document.store.document,bad=try await helper.edit(service,document,"channel.edit",["action":"loadSelection","source":source]);XCTAssertEqual(bad,400);XCTAssertEqual(document.store.document,before)
       }
-      XCTAssertEqual(AutomationCommand.definitions.count,242)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }
   @MainActor func testReplacedStandaloneSessionAndComponentSelectionPreparation()async throws {

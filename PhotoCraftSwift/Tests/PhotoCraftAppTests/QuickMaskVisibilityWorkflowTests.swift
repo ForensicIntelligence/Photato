@@ -147,7 +147,7 @@ final class QuickMaskVisibilityWorkflowTests: XCTestCase {
       XCTAssertEqual(missing, 422)
       file.store.toggleQuickMask()
       let before = file.store.document
-      for parameters: [String:Any] in [["target":"quickMask","visible":"no"], ["target":"RGB","visible":false], ["target":UUID().uuidString,"visible":true]] {
+      for parameters: [String:Any] in [["target":"quickMask","visible":"no"], ["target":"RGB","visible":"no"], ["target":UUID().uuidString,"visible":"no"]] {
         let invalid = try await helper.edit(service, file, "channel.view", parameters)
         XCTAssertEqual(invalid, 400)
       }

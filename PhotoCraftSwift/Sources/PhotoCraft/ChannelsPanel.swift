@@ -46,6 +46,7 @@ struct ChannelsPanel: View {
   @Bindable var store: EditorStore
   @Environment(\.displayScale) private var displayScale
   @State private var thumbnails = ChannelThumbnailCache()
+  @State private var eyeTracking = ChannelEyeTracking()
   private var size: ChannelThumbnailSize {
     store.workspaceLibrary.channelPanelOptions.thumbnailSize
   }
@@ -60,7 +61,7 @@ struct ChannelsPanel: View {
       ScrollView {
         VStack(spacing: 0) {
           if store.document.inkMode != nil {
-            InkChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size)
+            InkChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size,eyeTracking:eyeTracking)
           } else if store.document.colorMode.isRestricted {
             HStack(spacing: 10) {
               Image(systemName: "eye")
@@ -71,12 +72,13 @@ struct ChannelsPanel: View {
             }.font(.system(size: 11)).padding(8).background(Color.accentColor.opacity(0.18))
               .accessibilityLabel(store.document.colorMode == .indexed ? "Index channel" : "Bitmap channel")
           } else if store.usesModeChannels {
-            ModeChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size)
+            ModeChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size,eyeTracking:eyeTracking)
           } else if !store.document.isChannelOnly {
             ForEach(RGBChannelPreview.allCases, id: \.self) { channel in row(channel) }
           }
-          ForEach(store.document.alphaChannels ?? []) { channel in AuxiliaryChannelRow(store:store,channel:channel) }
-          if let channel = store.document.quickMask { AuxiliaryChannelRow(store:store,channel:channel,quick:true) }
+          ForEach(store.temporaryMaskChannels,id: \.self) { target in TemporaryMaskChannelRow(store:store,target:target,eyeTracking:eyeTracking) }
+          ForEach(store.document.alphaChannels ?? []) { channel in AuxiliaryChannelRow(store:store,channel:channel,eyeTracking:eyeTracking) }
+          if let channel = store.document.quickMask { AuxiliaryChannelRow(store:store,channel:channel,quick:true,eyeTracking:eyeTracking) }
         }
       }
       if let error = thumbnails.error {
@@ -91,6 +93,7 @@ struct ChannelsPanel: View {
         Button { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } else if store.effectiveInkTargets.count == 1, case .plate(let id) = store.effectiveInkTargets.first { store.performInkChannel(.delete(id)) } } label: { Image(systemName:"trash") }.help("Delete channel").disabled(store.alphaEditingID == nil && !(store.document.colorMode == .multichannel && store.effectiveInkTargets.count == 1 && store.document.inkChannelTargets.count > 1))
       }.buttonStyle(.plain).padding(8).disabled(!store.canEditChannels)
     }
+    .onDisappear {eyeTracking.cancel()}
     .task(id: request) {
       let document = store.document
       await thumbnails.update(request, source: store.surface) { surface, size in
@@ -104,20 +107,10 @@ struct ChannelsPanel: View {
   }
 
   private func row(_ channel: RGBChannelPreview) -> some View {
-    let visible = store.channelView.isVisible(channel)
-    let selected = store.editingChannel == nil && (store.componentTarget == .composite || store.componentTarget == channel)
+    let selected = !store.editingMask && store.editingChannel == nil && (store.componentTarget == .composite || store.componentTarget == channel)
     return HStack(spacing: 0) {
-      Button {
-        store.setChannelVisibility(channel, visible: !visible)
-      } label: {
-        Image(systemName: "eye").font(.system(size: 11)).opacity(visible ? 1 : 0)
-          .frame(width: 26, height: size.rowHeight).contentShape(Rectangle())
-      }.buttonStyle(.plain)
-        .accessibilityLabel("Visibility of \(channel.title) channel")
-        .accessibilityValue(visible ? "Visible" : "Hidden")
-        .accessibilityIdentifier("channels.visibility.\(channel.rawValue)")
-        .help("Show or hide \(channel.title) channel")
-        .disabled(!store.canChangeChannelVisibility)
+      ChannelEyeControl(store:store,channel:.rgb(channel),tracking:eyeTracking,label:"Visibility of \(channel.title) channel",identifier:"channels.visibility.\(channel.rawValue)",height:size.rowHeight)
+        .frame(width:26,height:size.rowHeight)
       Rectangle().fill(StudioTheme.line).frame(width: 1)
       Button {
         do { try store.selectEditingChannel(channel) } catch {
@@ -155,24 +148,16 @@ struct AuxiliaryChannelRow: View {
   @Bindable var store: EditorStore
   let channel: AlphaChannel
   var quick = false
+  let eyeTracking:ChannelEyeTracking
   @State private var thumbnail: CGImage?
   @State private var renaming = false
   @State private var name = ""
   private var target: ChannelPlaneTarget { quick ? .quickMask:.alpha(channel.id) }
   var body: some View {
     HStack(spacing:6) {
-      Button {
-        if quick {
-          do { try store.setQuickMaskVisibility(!store.isQuickMaskVisible) }
-          catch { store.error = error.localizedDescription }
-        } else {
-          do { try store.selectAlphaChannel(channel.id,overlay:!store.alphaOverlay) } catch { store.error = error.localizedDescription }
-        }
-      } label: { Image(systemName:(quick ? store.isQuickMaskVisible : store.editingChannel == target) ? "eye":"eye.slash").frame(width:24) }
-        .accessibilityLabel(quick ? "Quick Mask visibility" : "Visibility of \(channel.name) channel")
-        .accessibilityValue((quick ? store.isQuickMaskVisible : store.editingChannel == target) ? "Visible":"Hidden")
-        .accessibilityIdentifier(quick ? "channels.visibility.quickMask":"channels.visibility.\(channel.id.uuidString)")
-        .help(quick ? "Show or hide Quick Mask overlay":"View channel over image")
+      ChannelEyeControl(store:store,channel:quick ? .quickMask:.alpha(channel.id),tracking:eyeTracking,
+        label:quick ? "Quick Mask visibility":"Visibility of \(channel.name) channel",
+        identifier:quick ? "channels.visibility.quickMask":"channels.visibility.\(channel.id.uuidString)",height:40).frame(width:26,height:40)
       Button {
         if quick { try? store.selectQuickMaskChannel() }
         else { store.channelThumbnail(channel.id,modifiers:NSApp.currentEvent?.modifierFlags ?? []) }

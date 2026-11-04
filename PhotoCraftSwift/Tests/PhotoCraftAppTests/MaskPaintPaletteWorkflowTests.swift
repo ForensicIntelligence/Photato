@@ -100,7 +100,7 @@ final class MaskPaintPaletteWorkflowTests:XCTestCase {
       let target:[String:Any]=["target":"layerMask","layerID":id.uuidString]
       try await expectEdit(helper,service,file,"channel.view",target,409,revision:"old")
       file.store.geometryBusy=true;try await expectEdit(helper,service,file,"channel.view",target,409);file.store.geometryBusy=false
-      XCTAssertTrue(file.store.session.undoStack.isEmpty);XCTAssertEqual(file.store.document,original);XCTAssertEqual(file.store.paintColorContext,.image);XCTAssertEqual(AutomationCommand.definitions.count,239)
+      XCTAssertTrue(file.store.session.undoStack.isEmpty);XCTAssertEqual(file.store.document,original);XCTAssertEqual(file.store.paintColorContext,.image);XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }
 }

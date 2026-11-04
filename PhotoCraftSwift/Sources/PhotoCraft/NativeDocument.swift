@@ -398,6 +398,8 @@ import SwiftUI
         store.alphaEditingID = nil
         store.nonQuickMaskDocumentID = nil; store.nonQuickMaskID = nil
         store.alphaOverlay = false
+        store.savedChannelVisibility=nil;store.temporaryMaskChannelVisibility=nil;store.channelVisibilitySweep=nil
+        store.hiddenQuickMaskDocumentID=nil;store.hiddenQuickMaskID=nil
         store.componentTarget = .composite; store.modeComponentTargets = []; store.modeComponentVisibility = nil
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
@@ -447,6 +449,8 @@ import SwiftUI
         store.alphaEditingID = nil
         store.nonQuickMaskDocumentID = nil; store.nonQuickMaskID = nil
         store.alphaOverlay = false
+        store.savedChannelVisibility=nil;store.temporaryMaskChannelVisibility=nil;store.channelVisibilitySweep=nil
+        store.hiddenQuickMaskDocumentID=nil;store.hiddenQuickMaskID=nil
         store.componentTarget = .composite; store.modeComponentTargets = []; store.modeComponentVisibility = nil
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)

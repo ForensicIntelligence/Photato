@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forensicintelligence.ca/photato/schemas/mask-target.json",
   "title": "Photato mask editing target and channel.view parameters",
-  "description": "Documentation schema for checkpoint380. ID is an identifier; hosting is not claimed. Runtime command guards remain authoritative.",
+  "description": "Documentation schema for checkpoint398. ID is an identifier; hosting is not claimed. Runtime command guards remain authoritative.",
   "$ref": "#/$defs/maskEditingTarget",
   "$defs": {
     "maskEditingTarget": {
@@ -48,6 +48,9 @@
             },
             "overlay": {
               "type": "boolean"
+            },
+            "visible": {
+              "type": "boolean"
             }
           }
         },
@@ -83,6 +86,9 @@
             },
             "overlay": {
               "type": "boolean"
+            },
+            "visible": {
+              "type": "boolean"
             }
           }
         },
@@ -104,6 +110,9 @@
               "type": "string",
               "format": "uuid",
               "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            },
+            "visible": {
+              "type": "boolean"
             }
           }
         }

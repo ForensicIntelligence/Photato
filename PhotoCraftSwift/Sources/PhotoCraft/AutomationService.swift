@@ -31,6 +31,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var variableExportShares = Set<UUID>()
   @ObservationIgnored var layerFileExportShares = Set<UUID>()
   @ObservationIgnored var imageExportShares = Set<UUID>()
+  @ObservationIgnored var colorLookupExportShares = Set<UUID>()
   @ObservationIgnored var layerCompExportShares = Set<UUID>()
   @ObservationIgnored var layerCompEditShares = Set<UUID>()
   @ObservationIgnored var layerCompFileShares = Set<UUID>()
@@ -352,6 +353,7 @@ import UniformTypeIdentifiers
       "videoRender": ["operationID":store.videoRenderID?.uuidString as Any? ?? NSNull()],
       "layerFiles": LayerFilesAPI.state(store),
       "imageExport": ImageExportAPI.state(store),
+      "colorLookupExport": colorLookupExportState(store),
       "layerComps": LayerCompsAPI.state(store.document, operationID: store.layerCompExportID),
       "variables": VariablesAPI.state(store.document, exportID: store.variableExportID),
       "sequenceExport": ["operationID":store.sequenceExportID?.uuidString as Any? ?? NSNull()],
@@ -487,17 +489,19 @@ import UniformTypeIdentifiers
       "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeComponentTargets.isEmpty ? store.document.colorMode.title : store.modeComponentTargets.sorted().map { store.document.colorMode.componentNames[$0] }.joined(separator: ", ")) : store.componentTarget.title,
       "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.editingChannel == .quickMask ? "quickMask":"RGB"),
       "alphaChannelOverlay": store.alphaOverlay,
+      "auxiliaryVisibility":store.channelVisibilityState,
       "maskEditingTarget":store.maskEditingTargetState,
       "quickMaskVisible": store.isQuickMaskVisible,
       "channels": (store.document.alphaChannels ?? []).map(ChannelAPI.state),
       "channelOnly":store.document.isChannelOnly,
       "selectionChannels":store.selectionChannelState,
+      "emptyLayerDeletion":["canRun":store.canDeleteEmptyLayers],
       "quickMaskOptions": ChannelAPI.optionsState(store.quickMaskOptions),
       "quickMask": store.document.quickMask.map { ["id":$0.id.uuidString,"opacity":$0.options.opacity,"indicates":$0.options.indicates.rawValue,"color":[$0.options.color.r,$0.options.color.g,$0.options.color.b]] as [String:Any] } ?? NSNull(),
       "channelView": [
         "preview": store.document.inkMode != nil ? store.document.inkChannelTargets.filter { store.visibleInkTargets.contains($0) }.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeVisibleComponents.count == 1 ? store.document.colorMode.componentNames[store.modeVisibleComponents.first!] : store.document.colorMode.title) : store.channelView.preview.title,
         "visible": store.document.inkMode != nil ? store.document.inkChannelTargets.filter { store.visibleInkTargets.contains($0) }.map { store.inkChannelName($0) } : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames : store.usesModeChannels ? store.modeVisibleComponents.sorted().map { store.document.colorMode.componentNames[$0] } : RGBChannelPreview.allCases.filter {
-          $0 != .composite && store.channelView.isVisible($0)
+          $0 != .composite && store.colorChannelsVisible && store.channelView.isVisible($0)
         }.map(\.title),
         "componentEditing": store.editingComponent,
       ],
@@ -555,7 +559,7 @@ import UniformTypeIdentifiers
       && document.windowForSheet?.isKeyWindow == true
     guard document.closeWorkflowID == nil, document.recoverySourceStatus != .checking,
       !document.fileOperationBusy, !document.recoveryWriteBusy, document.copyPanel == nil,
-      !store.geometryBusy, !store.aiBusy, !store.hasToneDraft, store.transformDraft == nil,
+      !store.geometryBusy, !store.aiBusy, !store.hasToneDraft, store.channelVisibilitySweep == nil, store.transformDraft == nil,
       store.numericEditor == nil, store.layerNameDraft == nil, store.layerProtectionDraft == nil, !store.coalescingChanges,
       store.pathGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
       store.patternNameDraft == nil, store.gradientNameDraft == nil, !store.showAI,
@@ -681,14 +685,13 @@ import UniformTypeIdentifiers
         let channelView = parts[4] == "channel-preview.png" ? store.channelView : RGBChannelView()
         let modeVisibility = parts[4] == "channel-preview.png" && store.usesModeChannels ? store.modeComponentVisibility : nil
         let inkVisibility = parts[4] == "channel-preview.png" && store.document.inkMode != nil ? store.effectiveInkVisibility : nil
-        let auxiliary = parts[4] == "channel-preview.png" ? store.displayedAuxiliaryChannel:nil
-        let overlay = auxiliary == .quickMask || store.alphaOverlay
+        let auxiliaryView = parts[4] == "channel-preview.png" ? store.channelPreviewView:nil
         let onion = parts[4] == "onion-preview.png"
         let proof = parts[4] == "proof-preview.png" ? store.proofSettings : nil
         let expectedRevision = revision(store)
         let expectedGeneration = generation
         let worker = Task.detached(priority: .utility) {
-          try Self.png(snapshot, onionSkin:onion, proof: proof, channelView: channelView,auxiliary:auxiliary,overlay:overlay,modeVisibility:modeVisibility,inkVisibility:inkVisibility)
+          try Self.png(snapshot, onionSkin:onion, proof: proof, channelView: channelView,modeVisibility:modeVisibility,inkVisibility:inkVisibility,auxiliaryView:auxiliaryView)
         }
         let bytes = try await withTaskCancellationHandler(
           operation: { try await worker.value }, onCancel: { worker.cancel() })
@@ -802,8 +805,12 @@ import UniformTypeIdentifiers
       }
       if command.name == "image.export.cancel" {
         let operation = try command.actionUUID("operationID")
-        guard store.imageExportID == operation else { throw AutomationFailure(status: 409, message: "No matching image export is active.") }
-        store.imageExportWorker?.cancel(); return .json(["operationID": operation.uuidString, "cancellationRequested": true])
+        if store.colorLookupExportID == operation { store.colorLookupExportWorker?.cancel() }
+        else {
+          guard store.imageExportID == operation else { throw AutomationFailure(status: 409, message: "No matching image or color lookup export is active.") }
+          store.imageExportWorker?.cancel()
+        }
+        return .json(["operationID": operation.uuidString, "cancellationRequested": true])
       }
       if command.name == "layerComps.export.cancel" {
         let operation = try command.actionUUID("operationID")
@@ -825,6 +832,15 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       if command.name == "layerComps.export" { return try await exportLayerComps(command, document: document, shareID: id) }
+      if command.name == EmptyLayerDeletionAPI.name {
+        guard store.canDeleteEmptyLayers else { throw AutomationFailure(status: 422, message: "Choose an available whole-layer image document.") }
+        let selected = store.selectedLayerIDs
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { source in
+          try EmptyLayerDeletion.prepare(source)
+        }
+        store.restoreEmptyDeletionSelection(selected)
+        return .json(state(share, document: document))
+      }
       if command.name == "layerComps.edit" {
         guard store.canEditLayerComps else { throw AutomationFailure(status:409,message:"Finish the current edit before using Layer Comps.") }
         try await executeLayerComp(command, document: document, shareID: id)
@@ -1441,20 +1457,20 @@ import UniformTypeIdentifiers
     }
   }
   nonisolated static func png(
-    _ document: CraftDocument, onionSkin: Bool = false, proof: ProofSettings? = nil, channelView: RGBChannelView = RGBChannelView(),auxiliary: ChannelPlaneTarget? = nil,overlay: Bool = false,modeVisibility: Set<Int>? = nil, inkVisibility: Set<InkChannelTarget>? = nil
+    _ document: CraftDocument, onionSkin: Bool = false, proof: ProofSettings? = nil, channelView: RGBChannelView = RGBChannelView(),auxiliary: ChannelPlaneTarget? = nil,overlay: Bool = false,modeVisibility: Set<Int>? = nil, inkVisibility: Set<InkChannelTarget>? = nil,auxiliaryView:AuxiliaryChannelView?=nil
   ) throws -> Data {
     try Task.checkCancellation()
     let composite = try onionSkin ? OnionSkinRenderer.render(document):Renderer.composite(document)
     try Task.checkCancellation()
     let large = document.width * document.height > Surface.maximumDensePixels
-    if large && (onionSkin || proof?.active == true || modeVisibility != nil || inkVisibility != nil) {
+    if large && (onionSkin || proof?.active == true) {
       throw AutomationFailure(status: 413, message: "This large-document presentation mode is not yet tiled. Ordinary preview.png is bounded to2048 pixels per side.")
     }
     let request = try large ? RasterPreviewRequest.overview(width: document.width, height: document.height) : nil
     let source = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: composite)
-    let preview = try auxiliary == nil ? request.map { try $0.reducing(source) } ?? source : source
+    let preview = try auxiliary == nil && auxiliaryView?.needsPresentation != true ? request.map { try $0.reducing(source) } ?? source : source
     let image =
-      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliaryView?.needsPresentation == true ? AuxiliaryChannelPresentation.image(source,document:document,view:auxiliaryView!,colorManaged:!(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),request:request) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
       ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: document)
     return try png(image)
   }
@@ -1522,7 +1538,7 @@ import UniformTypeIdentifiers
         "proof-preview.png": "Committed composite with committed proof/gamut display settings. Excludes drafts and preserves original exports.",
         "preview.png": "Committed document composite, independent of channel visibility. Above36MP, a bounded overview (maximum2048 pixels per side); working pixels and export dimensions are unchanged.",
         "channel-preview.png":
-          "Committed native channel view, including selected alpha/Quick Mask gray or overlay. Large RGB/component/alpha/Quick Mask views use bounded2048-side overviews. Excludes uncommitted drafts; other large mode/proof/onion restrictions remain.",
+          "Committed independent component/layer-mask/Filter-Mask/alpha/Quick Mask view, including multiple ordered masks and grayscale when one auxiliary plane is visible alone. Large channel views use bounded2048-side overviews. Ordinary preview.png and exports ignore this view state. Excludes uncommitted drafts; large proof/onion restrictions remain.",
         "layers/{layerID}/mask-gray.png": "Raw editable pixel-mask gray, independent of enablement/density/feather/layer opacity. Large documents return a bounded2048-side document-coordinate overview.",
         "layers/{layerID}/mask-overlay.png": "Raw red half-opacity mask overlay RGBA only; composite over the corresponding image preview. Same geometry, budgets and state checks as mask-gray.png.",
       ],
@@ -1626,6 +1642,7 @@ import UniformTypeIdentifiers
       "documentDuplicate":DocumentDuplicateAPI.capabilities,
       "flattenImage":FlattenImageAPI.capabilities,
       "layerMerge":LayerMergeAPI.capabilities,
+      "emptyLayerDeletion":EmptyLayerDeletionAPI.capabilities,
       "layerLinks":LayerLinksAPI.capabilities,
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
       "channelTransform":ChannelTransformAPI.capabilities,
@@ -1659,7 +1676,9 @@ import UniformTypeIdentifiers
         "videoRender": VideoRenderAPI.stateSchema,
         "layerFiles": LayerFilesAPI.stateSchema,
         "imageExport": ImageExportAPI.stateSchema,
+        "colorLookupExport": colorLookupExportStateSchema,
         "layerComps": LayerCompsAPI.stateSchema,
+        "emptyLayerDeletion": BrushAPI.object(["canRun":BrushAPI.flag],required:["canRun"]),
         "variables": VariablesAPI.stateSchema,
         "sequenceExport": ImageSequenceAPI.stateSchema,
         "video": VideoAPI.stateSchema,
@@ -1774,6 +1793,7 @@ import UniformTypeIdentifiers
         "sourceSaveNeedsReview": ["type": "boolean"],
         "alphaChannelTarget": ["type":"string","description":"RGB, quickMask, or alpha UUID"],
       "alphaChannelOverlay": ["type":"boolean"],
+      "auxiliaryVisibility":ChannelVisibilityAPI.stateSchema,
       "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; changing it retains the current editing target and mask coverage."],
       "channels": ["type":"array","items":["type":"object","required":["id","name","opacity","indicates","color"],"properties":["id":["type":"string","format":"uuid"],"name":["type":"string"],"opacity":["type":"number"],"indicates":["type":"string"],"color":["type":"array","items":["type":"number"]]]]],
       "channelOnly":["type":"boolean","description":"Auxiliary channels only, without image layers or printing plates; requires native85."],
