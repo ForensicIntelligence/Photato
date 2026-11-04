@@ -142,6 +142,32 @@ struct ActionLibraryFile: Codable {
   func action(_ id: UUID) throws -> RecordedAction {
     guard let action = file.actions.first(where: { $0.id == id }) else { throw CraftError.invalid("Action no longer exists.") }; return action
   }
+  @discardableResult func duplicate(_ id: UUID, name: String? = nil, set: String? = nil) throws -> RecordedAction {
+    let source = try action(id)
+    var copy = source
+    copy.id = UUID()
+    copy.set = set ?? source.set
+    copy.name = name ?? duplicateName(source.name, set: copy.set)
+    copy.steps = source.steps.map { step in
+      var copy = step; copy.id = UUID(); return copy
+    }
+    try update { file in
+      guard let index = file.actions.firstIndex(where: { $0.id == id }) else { throw CraftError.invalid("Action no longer exists.") }
+      file.actions.insert(copy, at: index + 1)
+    }
+    return copy
+  }
+  private func duplicateName(_ source: String, set: String) -> String {
+    var number = 1
+    while true {
+      let suffix = number == 1 ? " copy" : " copy \(number)"
+      var stem = source
+      while (stem + suffix).utf8.count > 256 { stem.removeLast() }
+      let name = stem + suffix
+      if !file.actions.contains(where: { $0.set == set && $0.name == name }) { return name }
+      number += 1
+    }
+  }
   func remove(_ id: UUID) throws { _ = try action(id); try update { $0.actions.removeAll { $0.id == id } } }
   func importFile(_ data: Data) throws {
     let imported = try ActionLibraryFile.decode(data)
@@ -156,6 +182,15 @@ struct ActionLibraryFile: Codable {
 }
 
 @MainActor extension EditorStore {
+  var canDuplicateAction: Bool {
+    canSelectComponentTarget && session.actionRecording == nil && actions.loadError == nil && actions.file.actions.count < 128
+  }
+  @discardableResult func duplicateAction(_ id: UUID, name: String? = nil, set: String? = nil) throws -> RecordedAction {
+    guard canSelectComponentTarget, session.actionRecording == nil else {
+      throw CraftError.invalid("Stop recording and finish the current interaction before duplicating an action.")
+    }
+    return try actions.duplicate(id, name: name, set: set)
+  }
   var canUseActions: Bool { !geometryBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && numericEditor == nil && layerNameDraft == nil && clipboardTargetAvailable }
   func startRecordingAction(name: String, set: String) throws {
     guard canUseActions else { throw CraftError.invalid("Finish the current edit and choose the composite image before recording.") }
@@ -176,6 +211,7 @@ struct ActionLibraryFile: Codable {
      "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "adobeATN": false],
      "canRecord": canUseActions && session.actionRecording == nil && actions.loadError == nil,
      "canPlay": canUseActions && session.actionRecording == nil,
+     "canDuplicate": canDuplicateAction, "duplication": ActionDuplicationAPI.capabilities,
      "recording": session.actionRecording.map { Self.actionInfo($0.snapshot) } as Any? ?? NSNull(),
      "library": actions.file.actions.map(Self.actionInfo),
      "loadError": actions.loadError as Any? ?? NSNull()]

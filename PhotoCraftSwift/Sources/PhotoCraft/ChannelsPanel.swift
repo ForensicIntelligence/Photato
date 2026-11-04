@@ -107,13 +107,13 @@ struct ChannelsPanel: View {
   }
 
   private func row(_ channel: RGBChannelPreview) -> some View {
-    let selected = !store.editingMask && store.editingChannel == nil && (store.componentTarget == .composite || store.componentTarget == channel)
+    let selected = store.isColorComponentSelected(channel == .composite ? nil : channel.rawValue - 1)
     return HStack(spacing: 0) {
       ChannelEyeControl(store:store,channel:.rgb(channel),tracking:eyeTracking,label:"Visibility of \(channel.title) channel",identifier:"channels.visibility.\(channel.rawValue)",height:size.rowHeight)
         .frame(width:26,height:size.rowHeight)
       Rectangle().fill(StudioTheme.line).frame(width: 1)
       Button {
-        do { try store.selectEditingChannel(channel) } catch {
+        do { try store.selectColorComponentRow(channel == .composite ? nil : channel.rawValue - 1, modifiers: NSApp.currentEvent?.modifierFlags ?? []) } catch {
           store.error = error.localizedDescription
         }
       } label: {
@@ -133,7 +133,7 @@ struct ChannelsPanel: View {
           Spacer(minLength: 5)
         }.frame(maxWidth: .infinity).frame(height: size.rowHeight)
           .contentShape(Rectangle())
-      }.buttonStyle(.plain).help("Select \(channel.title) editing target")
+      }.buttonStyle(.plain).help("Select \(channel.title) editing target; Shift-click to select multiple components")
         .accessibilityLabel("Select \(channel.title) channel")
         .accessibilityValue(selected ? "Selected editing target" : "")
         .accessibilityIdentifier("channels.preview.\(channel.rawValue)")

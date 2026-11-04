@@ -13,7 +13,37 @@ extension EditorStore {
       let legacy = componentTarget.editComponents else { return [] }
     return Set([RGBComponents.red,.green,.blue].enumerated().compactMap { legacy.contains($0.element) ? $0.offset:nil })
   }
-  var modeVisibleComponents: Set<Int> { colorChannelsVisible ? (modeComponentVisibility ?? Set(0..<document.colorMode.componentCount)):[] }
+  var modeVisibleComponents: Set<Int> {
+    guard colorChannelsVisible else { return [] }
+    if !usesModeChannels, document.colorMode == .rgb {
+      return Set(channelView.visible.map { $0.rawValue - 1 })
+    }
+    return modeComponentVisibility ?? Set(0..<document.colorMode.componentCount)
+  }
+  var colorComponentTargetTitle: String {
+    if !modeComponentTargets.isEmpty {
+      return modeComponentTargets.sorted().map { document.colorMode.componentNames[$0] }.joined(separator: ", ")
+    }
+    return usesModeChannels ? document.colorMode.title : componentTarget.title
+  }
+  func isColorComponentSelected(_ component: Int?) -> Bool {
+    guard !editingMask, editingChannel == nil else { return false }
+    return component.map { effectiveComponentTargets.isEmpty || effectiveComponentTargets.contains($0) }
+      ?? isCompositeColorTarget
+  }
+  /// Both channel panels dispatch the effective set, independently of the eyes.
+  func selectColorComponentRow(_ component: Int?, modifiers: NSEvent.ModifierFlags) throws {
+    var selection = component.map { Set([$0]) } ?? []
+    if let component, modifiers.contains(.shift) {
+      selection = effectiveComponentTargets.isEmpty ? Set(0..<document.colorMode.componentCount) : effectiveComponentTargets
+      if selection.contains(component) {
+        // An empty API set means composite, not "no editing target".
+        // Keep the final individual target until that context is qualified.
+        if selection.count > 1 { selection.remove(component) }
+      } else { selection.insert(component) }
+    }
+    try selectModeComponents(selection)
+  }
   var canEditModeComponents: Bool {
     guard canSelectComponentTarget, historyOperation == nil, !editingMask, editingChannel == nil,
       let layer = activeLayer, !document.isImageLocked(layer.id), layer.smartObject == nil,
@@ -22,9 +52,28 @@ extension EditorStore {
   }
   func selectModeComponents(_ components: Set<Int>) throws {
     finishNumericField(); finishLayerName()
-    guard usesModeChannels, canSelectComponentTarget, historyOperation == nil,
+    let legacyRGB8 = document.colorMode == .rgb && document.depth == .u8 && !document.hasNativeModeStorage && !document.isChannelOnly
+    guard usesModeChannels || legacyRGB8, canSelectComponentTarget, historyOperation == nil,
       components.isSubset(of: Set(0..<document.colorMode.componentCount)) else {
       throw CraftError.invalid("Finish the current interaction and choose valid color components.")
+    }
+    if legacyRGB8 {
+      if components.isEmpty || components.count == 3 {
+        try selectEditingChannel(.composite); return
+      }
+      if components.count == 1, let index = components.first, let channel = RGBChannelPreview(rawValue: index + 1) {
+        try selectEditingChannel(channel); return
+      }
+      selectColorChannelVisibility(); deselectQuickMaskTarget()
+      alphaEditingID = nil; componentTarget = .composite
+      maskEditingLayerID = nil; smartFilterMaskEditing = false; clearMaskView()
+      modeComponentTargets = components; modeComponentVisibility = nil
+      var view = channelView
+      view.selectPreview(.composite)
+      for channel in RGBChannelView.components where !components.contains(channel.rawValue - 1) { view.setVisible(channel, false) }
+      channelView = view
+      render()
+      return
     }
     selectColorChannelVisibility()
     deselectQuickMaskTarget()

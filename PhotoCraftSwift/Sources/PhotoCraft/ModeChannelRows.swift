@@ -17,18 +17,13 @@ struct ModeChannelRows: View {
     }
   }
   private func row(_ component: Int?, title: String) -> some View {
-    let selected = !store.editingMask && store.editingChannel == nil && (store.modeComponentTargets.isEmpty || component.map { store.modeComponentTargets.contains($0) } == true)
+    let selected = store.isColorComponentSelected(component)
     let imageIndex = component.map { $0 + 1 } ?? 0
     return HStack(spacing: 0) {
       ChannelEyeControl(store:store,channel:.mode(component),tracking:eyeTracking,label:"Visibility of \(title) channel",identifier:"channels.mode.visibility.\(imageIndex)",height:size.rowHeight).frame(width:26,height:size.rowHeight)
       Rectangle().fill(StudioTheme.line).frame(width: 1)
       Button {
-        var selection = component.map { Set([$0]) } ?? []
-        if let component, NSApp.currentEvent?.modifierFlags.contains(.shift) == true {
-          selection = store.modeComponentTargets
-          if selection.contains(component) { selection.remove(component) } else { selection.insert(component) }
-        }
-        do { try store.selectModeComponents(selection) } catch { store.error = error.localizedDescription }
+        do { try store.selectColorComponentRow(component, modifiers: NSApp.currentEvent?.modifierFlags ?? []) } catch { store.error = error.localizedDescription }
       } label: {
         HStack(spacing: 0) {
           if size != .none {

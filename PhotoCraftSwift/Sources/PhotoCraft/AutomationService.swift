@@ -486,7 +486,7 @@ import UniformTypeIdentifiers
       "subjectDetection": ["canSelectSubject": store.canDetectSubject(),
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
         "sampleAllLayers": store.subjectSampleAllLayers],
-      "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeComponentTargets.isEmpty ? store.document.colorMode.title : store.modeComponentTargets.sorted().map { store.document.colorMode.componentNames[$0] }.joined(separator: ", ")) : store.componentTarget.title,
+      "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.colorComponentTargetTitle,
       "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.editingChannel == .quickMask ? "quickMask":"RGB"),
       "alphaChannelOverlay": store.alphaOverlay,
       "auxiliaryVisibility":store.channelVisibilityState,

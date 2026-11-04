@@ -1,0 +1,56 @@
+{
+  "step": 408,
+  "goal_status": "active",
+  "status": "Native/API stroke preset implementation and focused normal optimized qualification complete; live UI pending Mac unlock; full G03 open",
+  "software_build": 408,
+  "tested_source": "408Source01",
+  "run": "artifacts/runs/20261104T232107Z-408-shape-stroke-presets",
+  "source_inputs": 7187,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "G04",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_408.json",
+  "priority_rule": "docs/WORK_PRIORITIES_408.json",
+  "previous_turn_classification": "Progress: whole saved-action duplication implemented;34focused/8new tests and native sandbox copy/payload/persistence/playback/Undo/Quit pass.18consistency checks and407history pass. Full AUT01/production qualification remain open.",
+  "next_work": [
+    "G04: source-audit Pen/Paths native controls/API; implement one confirmed missing bounded quick win or advance with evidence.",
+    "After Mac unlock resume408native picker/drawing/preview/Cancel/Undo/Redo and normal Quit on retained isolated candidate.",
+    "T01 follows G04. Keep all104original scopes/acceptance,651commands and prior failures."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T232107Z-408-shape-stroke-presets/release01-source.json",
+  "production_swift_files": 1031,
+  "native_workflow_qualified": false,
+  "native_candidate_terminated": false,
+  "evidence": "docs/SHAPE_STROKE_PRESETS_408.json",
+  "tests": {
+    "normal_optimized": {
+      "cases_each": 156,
+      "passed_each": [
+        156,
+        156
+      ],
+      "new_preset_cases_each": 8,
+      "new_cases_across406_408_each": 24,
+      "failed_assertions": 0,
+      "unexpected_errors": 0,
+      "crashes": 0,
+      "identical_order": true
+    }
+  },
+  "native_workflow_evidence": "artifacts/runs/20261104T232107Z-408-shape-stroke-presets/native-pending01.json",
+  "increment_complete": false,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "Preset implementation/API and normal optimized regression baseline; live native acceptance pending unlock",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "408Source01; native UI pending",
+  "latest_private_source": "405Source03"
+}

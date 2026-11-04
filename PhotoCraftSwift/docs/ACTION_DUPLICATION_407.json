@@ -1,0 +1,164 @@
+{
+  "step": 407,
+  "recorded_at_utc": "2026-11-04T23:08:05.900588+00:00",
+  "status": "Saved-action duplication native/API baseline delivered and focused development-tested; full AUT01 open",
+  "source": "407Source01",
+  "source_manifest": "artifacts/runs/20261104T224957Z-407-action-duplication/source01-source.json",
+  "source_inputs": 7186,
+  "run": "artifacts/runs/20261104T224957Z-407-action-duplication",
+  "build": 407,
+  "delta": {
+    "added": [
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/Tests/PhotoCraftAppTests/ActionDuplicationTests.swift"
+    ],
+    "changed": [
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/Sources/PhotoCraft/ActionLibrary.swift",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/Sources/PhotoCraft/ActionsPanel.swift",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/Sources/PhotoCraft/AutomationActions.swift",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/Sources/PhotoCraft/AutomationCommands.swift",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "debug": {
+    "configuration": "arm64 Debug, documented development compiler workaround",
+    "cases": 34,
+    "passed": 34,
+    "new_cases": 8,
+    "new_case_ids": [
+      "PhotoCraftAppTests.ActionDuplicationTests/testCopiesIDsPayloadOrderAndIndependentEditsWithoutChangingSource",
+      "PhotoCraftAppTests.ActionDuplicationTests/testCurrentVersionPersistenceReopenExportImportPreserveBothActions",
+      "PhotoCraftAppTests.ActionDuplicationTests/testDefaultNamingCollisionsUnicodeAndExplicitOverridesAreBounded",
+      "PhotoCraftAppTests.ActionDuplicationTests/testDesktopGuardsAndComponentContextDoNotEditPixelsDirtyHistoryOrRecording",
+      "PhotoCraftAppTests.ActionDuplicationTests/testDuplicateAndSourcePlaybackProduceIdenticalNativeBytesAndOneUndo",
+      "PhotoCraftAppTests.ActionDuplicationTests/testFullCorruptAndFailedWriteKeepPriorMemoryRevisionAndDisk",
+      "PhotoCraftAppTests.ActionDuplicationTests/testHTTPDuplicateResultSchemaIndependentEditsAndNativeEquivalentPayloads",
+      "PhotoCraftAppTests.ActionDuplicationTests/testHTTPInvalidMissingBusyStaleAndRecordingRequestsAreAtomic"
+    ],
+    "failed_assertions": 0,
+    "unexpected_errors": 0,
+    "test_process_crashes": 0,
+    "build_seconds": 109.83,
+    "test_seconds": 1.302,
+    "summary": "artifacts/runs/20261104T224957Z-407-action-duplication/source01-summary.json"
+  },
+  "native_stage": {
+    "app": "/private/tmp/photato-development-407-stage01-bd5d72f6/Photato Development 407.app",
+    "bundle": "ca.forensicintelligence.photato.development407",
+    "build": 407,
+    "source": "407Source01",
+    "configuration": "arm64 Debug; documented development compiler workaround; normal optimized universal qualification deferred to next stable batch",
+    "tested_binary_sha256": "b61b1c1e910c6eb64d9e6d634c638b8e12ecd49ca9b3ea9d682fe5b01879d467",
+    "staged_binary_sha256": "3e087bf9b8baa05386fca10e0a915a9da8174b7d4e5055a9b72e8446f03811f7",
+    "signature_normalized_binary_equal": true,
+    "signature_normalized_sha256": "0150180eee1ecd79998ae274616c954ad0b69d6566625085d396008709804fce",
+    "strict_signature": true,
+    "architectures": "arm64",
+    "minimum_macos": "14.0",
+    "resources": "Unchanged405development staging resources; all resource/source inputs identical apart from selected code/tests/Info delta",
+    "isolated_app_sandbox": true,
+    "sandbox_bundle_data": "/Users/johnczlonka/Library/Containers/ca.forensicintelligence.photato.development407/Data",
+    "not_installed": true,
+    "new_archive_upload_release": false
+  },
+  "native": {
+    "step": 407,
+    "source": "407Source01 arm64 Debug",
+    "candidate": "/private/tmp/photato-development-407-stage01-bd5d72f6/Photato Development 407.app/Contents/MacOS/Photato",
+    "sandboxed": true,
+    "normal_quit": true,
+    "exact_process_absent": true,
+    "owned_document_and_library_only": true,
+    "shared_library_original_SHA256_unchanged": true,
+    "saved_sandbox_library_unchanged_after_playback_and_Quit": true,
+    "duplicate_disabled_without_selection": true,
+    "duplicate_disabled_for_step_selection": true,
+    "whole_action_duplicate_created_and_selected": true,
+    "independent_saved_ID_and_payload_check": "native-library-independent-check01.json",
+    "playback_white_after_original_recorded_invert_black": true,
+    "one_undo_returns_black": true,
+    "second_undo_returns_original_clean_white": true,
+    "duplication_added_no_image_history": true,
+    "native_workflow_qualified": true,
+    "full_AUT01_or_Photoshop_qualified": false,
+    "recorded_at_utc": "2026-11-04T23:05:19.132626+00:00"
+  },
+  "native_saved_library": {
+    "saved_in_isolated_sandbox": true,
+    "actions": 2,
+    "source_unchanged": true,
+    "fresh_action_and_step_IDs": true,
+    "operation_payloads_equal": true,
+    "source_id": "58493E9F-198F-4FE9-A55F-45A19C5DEF94",
+    "copy_id": "E3BE689E-CE4D-4E75-8156-75B9C5DFA4EA",
+    "copy_name": "Owned invert407 copy"
+  },
+  "api": {
+    "command": "actions.manage",
+    "operation": "duplicate",
+    "required": [
+      "actionID"
+    ],
+    "optional": [
+      "name",
+      "set"
+    ],
+    "result": [
+      "state",
+      "revision",
+      "sourceActionID",
+      "action"
+    ],
+    "availability": "actions.canDuplicate",
+    "discovery": "actions.duplication",
+    "result_schema": "ActionDuplicationAPI.resultSchema",
+    "typed_commands": 243,
+    "new_route": false,
+    "Adobe": "No new published route or unqualified actionJSON descriptor. Native photatoactions files are not Adobe ATN."
+  },
+  "behavior": {
+    "identity": "Fresh action and step UUIDs; source unchanged",
+    "payload": "Same ordered command names, enabled flags and operation payloads",
+    "position": "Immediately after source; destination set defaults to source",
+    "default_name": "Bounded source name plus copy/number suffix in destination set; exact Photoshop naming/order unqualified",
+    "history": "Library revision/persistence only; no pixels/dirty/Undo/clipboard/recording edit",
+    "failure": "Existing atomic candidate/save path and rollback checks",
+    "limits": {
+      "actions": 128,
+      "steps": 512,
+      "library_bytes": 16777216
+    },
+    "native_context": "Whole saved action selected. Duplicate disabled without action, while recording/busy or when a command is selected."
+  },
+  "reference": {
+    "url": "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/manage-actions-and-action-sets.html",
+    "updated": "2026-10-10",
+    "scope": "Public Actions panel Duplicate workflow; no Adobe implementation/assets copied.",
+    "feature_catalogue": "https://www.adobe.com/products/photoshop/features/all.html",
+    "live_Photoshop": "Prior blank-window probe remains unqualified; no new live comparison or exact naming/output claim."
+  },
+  "cursor": {
+    "new_canvas_tool_or_modifier": false,
+    "existing_tools": 55,
+    "existing_modifier_matrix": 880,
+    "standard_panel_menu_arrow": true
+  },
+  "full_current_suite_passed": false,
+  "full_AUT01_closed": false,
+  "Photoshop_parity": false,
+  "new_normal_optimized_universal": false,
+  "latest_normal_qualified_universal": "405Source03",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "open": [
+    "Command/set duplication, Option-drag, complete Actions hierarchy/default naming/order/shortcut behavior and original AUT01 scope.",
+    "Conditions/dialogs/ATN/droplets/batch/Image Processor completeness and all original Photoshop acceptance.",
+    "Normal optimized universal and physical supported-platform/performance qualification remain batched/open.",
+    "Prior406Debug maximum-CMYK timeout and clipboard signal10 reproductions remain unresolved; full suite/Gray32/dense/60fps/historical gates retained.",
+    "Native panel-menu AX label sometimes appears as Drag; full accessibility/focus behavior remains to qualify."
+  ],
+  "next": "G03 live-shape property quick-win audit, then G04."
+}

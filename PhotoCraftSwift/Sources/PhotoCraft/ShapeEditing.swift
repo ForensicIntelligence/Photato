@@ -6,12 +6,41 @@ import PhotoCraftImaging
 extension EditorTool {
   var shapeKind:ShapeGeometry.Kind? {switch self{case .rectangle:.rectangle;case .ellipse:.ellipse;case .triangle:.triangle;case .polygon:.polygon;case .star:.star;case .line:.line;case .customShape:.custom;default:nil}}
 }
+enum ShapeStrokePreset: String, CaseIterable, Sendable {
+  case solid, dashed, dotted, custom
+  static let selectable: [Self] = [.solid, .dashed, .dotted]
+  var title: String { rawValue.capitalized }
+  static func matching(_ stroke: ShapeStroke) -> Self {
+    if stroke.dash.isEmpty { return .solid }
+    if stroke.phase == 0, stroke.widthRelativeDashes == true {
+      if stroke.dash == [3,3], stroke.cap == .butt { return .dashed }
+      if stroke.dash == [0,2], stroke.cap == .round { return .dotted }
+    }
+    return .custom
+  }
+  func applied(to original: ShapeStroke) -> ShapeStroke {
+    var stroke = original
+    switch self {
+    case .solid: stroke.dash = []; stroke.phase = 0
+    case .dashed:
+      stroke.dash = [3,3]; stroke.phase = 0; stroke.cap = .butt; stroke.widthRelativeDashes = true
+    case .dotted:
+      stroke.dash = [0,2]; stroke.phase = 0; stroke.cap = .round; stroke.widthRelativeDashes = true
+    case .custom: break
+    }
+    return stroke
+  }
+}
 @MainActor @Observable final class ShapeDraft:Identifiable {
   let id=UUID(),original:CraftDocument,layerID:UUID?
   var definition:ShapeDefinition
   var component=0
   var error:String?
   var preview=true
+  var strokePreset: ShapeStrokePreset {
+    get { .matching(definition.stroke) }
+    set { definition.stroke = newValue.applied(to: definition.stroke) }
+  }
   init(document:CraftDocument,layer:Layer?,definition:ShapeDefinition){original=document;layerID=layer?.id;self.definition=definition}
 }
 struct ShapeGesture:Sendable {

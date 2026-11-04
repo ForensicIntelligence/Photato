@@ -1146,5 +1146,33 @@
     "matrix_rows_each_architecture": 880,
     "qualification": "Existing shared matrix passes in80normal Release cases per architecture; native dialog text/control cursors remain AppKit-owned.",
     "reference": "docs/COLOR_LOOKUP_EXPORT_405.json"
+  },
+  "component_selection_406": {
+    "new_tool_or_canvas_modifier_action": false,
+    "existing_tools": 55,
+    "existing_matrix_combinations": 880,
+    "row_dispatch_modifiers": 64,
+    "row_dispatch_note": "16 combinations across RGB8/16/32 and CMYK; primary-dispatch helper, not physical Control-click context or held Shift pointer qualification.",
+    "step": 406,
+    "qualification": "Existing55-tool/880modifier matrix passes in current focused Debug run. No new canvas tool/action. Native row dispatch adds tested Shift selection; physical held-pointer/context behavior remains open.",
+    "reference": "docs/C01_RGB8_SELECTION_406.json"
+  },
+  "action_duplication_407": {
+    "new_canvas_tool_or_modifier": false,
+    "existing_tools": 55,
+    "existing_modifier_matrix": 880,
+    "standard_panel_menu_arrow": true,
+    "step": 407,
+    "qualification": "Existing55-tool/880modifier matrix passes in current34case Debug run. Native panel menu uses standard pointer; no new canvas gesture or Option-drag behavior advertised.",
+    "reference": "docs/ACTION_DUPLICATION_407.json"
+  },
+  "shape_stroke_presets_408": {
+    "new_tool_or_modifier": false,
+    "tools": 55,
+    "combinations": 880,
+    "existing_picker_pointer": true,
+    "step": 408,
+    "qualification": "Existing55tools/880modifier matrix passes in current normal optimized156case batch each architecture; no new canvas modifier/action. Picker uses standard pointer. Actual408UI awaits unlock.",
+    "reference": "docs/SHAPE_STROKE_PRESETS_408.json"
   }
 }

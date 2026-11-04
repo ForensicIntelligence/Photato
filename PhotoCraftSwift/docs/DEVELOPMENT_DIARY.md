@@ -18,16 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:405 -->
+<!-- current-status-step:408 -->
 ## Current status — 4 November 2026 UTC
 
-File > Export > Color Lookup Tables now creates a CUBE file from eligible global RGB adjustments. The optional API uses the same native compositor and cancellation rules. Export leaves the image, selection, dirty state and Undo history unchanged. All 80 focused normal Release tests pass on Apple Silicon and translated Intel, including 12 new cases. The final universal app saved the expected 181-byte inversion table; one Undo then removed the original adjustment and restored the clean source. Signing, minimum macOS 14 and ZIP extraction checks pass.
+Shape Properties and Tool Settings now offer Solid, Dashed and Dotted stroke presets through the existing renderer. The API applies the same presets and reports the current style. Manual/custom values are retained. Exact Photoshop stroke spacing and defaults remain unqualified.
 
-The selected I05 quick win is delivered. The full export package remains open, including other formats, broader contexts and exact Photoshop defaults, color management and output. Loading the table in Photoshop remains unverified because its New Document command did not produce a visible document in this session. The first test-parser failure and subsequent repairs are retained. No installation, App Store action or software release was performed.
+All 156 selected normal optimized tests pass on Apple Silicon and translated Intel with identical ordered IDs. These include24 new cases across RGB8 component selection, action duplication and stroke presets. The earlier maximum-CMYK HTTP timeout and clipboard crash cases pass in this build. Their Debug failures, plus a separate curved-stroke Rust mismatch, remain in the record. This is not a full-suite pass.
 
-Transform Again needs retained operation and target state. Brightness/Contrast needs independent modern/legacy behavior rather than exposing the existing approximation. Both candidates move to major stillneeded. Red Eye controls already work. **C01 is next, then AUT01.** All 104 original package scopes and acceptance criteria remain. Work follows major quickwins → major stillneeded → minor quickwins → minor stillneeded → major cleanup → minor cleanup → final settings/checks. [Step 405](DEVLOG.md#dev-step-405).
-
-The full native source is backed up in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/9421bbc320dcbaad28e53eba926d042386eeefe9). Its commit and tree are verified. The repository becomes public on software release day.
+The universal package passes signing, both macOS 14 targets and ZIP extraction checks. The Mac is locked, so the408 native control/drawing/history/Quit check is pending. The user has been asked to unlock it; no live pass is claimed. G04 source audit follows, then T01, while that check remains recorded. All original feature requirements stay open. The repository stays private until release day. [Step 408](DEVLOG.md#dev-step-408).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -638,6 +636,9 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 403 | [Delete All Empty Layers native baseline](DEVLOG.md#dev-step-403) |
 | 2026-11-04 | 404 | [Single-pixel marquee and quick-win audits](DEVLOG.md#dev-step-404) |
 | 2026-11-04 | 405 | [Color Lookup export and quick-win audits](DEVLOG.md#dev-step-405) |
+| 2026-11-04 | 406 | [RGB8 component selection](DEVLOG.md#dev-step-406) |
+| 2026-11-04 | 407 | [Duplicate saved actions](DEVLOG.md#dev-step-407) |
+| 2026-11-04 | 408 | [Shape stroke presets](DEVLOG.md#dev-step-408) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -761,7 +762,7 @@ Adjustment Brush creates a masked adjustment on its first stroke and paints furt
 
 Four Photato commands share the native engine, strict schemas, session state and transaction/history behavior. Native/API mask refinements are equivalent. Recorded Actions version3 preserves brush requests, semantic layer references, explicit object coverage and replacement operations; older action files remain readable. The captured factory Frame/K binding is retained despite conflicting newer Adobe prose; Adjustment Brush has no invented shortcut. No dedicated Adobe masked-paint endpoint is claimed.
 
-Validation found and fixed a missing shared const-schema rule, outdated command-count assertions and an out-of-canvas test fixture. Final API review corrected an assumed mask endpoint by adding density/feather operations and updated action-library version descriptions. Failed attempts remain saved. All156 focused Debug and156 focused optimized checks pass. Full regression and universal packaging are batched with the next major selection increment; the last verified package190 does not contain191. All1444 frozen inputs,754 original Rust files and four protected files verify. Photato.xcodeproj remains present/unchanged. The desktop remains locked; no live UI comparison or physical platform qualification is claimed. Full presets, newer adjustment types, exact pixels/models and richer Adobe compatibility remain open. Major feature work continues with Object Selection, Quick Selection and Selection Brush; fine numeric/cosmetic work waits.
+Validation found and fixed a missing shared const-schema rule, outdated command-count assertions and an out-of-canvas test fixture. Final API review corrected an assumed mask endpoint by adding density/feather operations and updated action-library version descriptions. Failed attempts remain saved. All 156 focused Debug and156 focused optimized checks pass. Full regression and universal packaging are batched with the next major selection increment; the last verified package190 does not contain191. All1444 frozen inputs,754 original Rust files and four protected files verify. Photato.xcodeproj remains present/unchanged. The desktop remains locked; no live UI comparison or physical platform qualification is claimed. Full presets, newer adjustment types, exact pixels/models and richer Adobe compatibility remain open. Major feature work continues with Object Selection, Quick Selection and Selection Brush; fine numeric/cosmetic work waits.
 
 [Development details](DEVLOG.md#dev-step-191), [checkpoint191](ACTIVE_CHECKPOINT_191.json), [Adjustment Brush evidence](ADJUSTMENT_BRUSH_REFERENCES.json).
 
@@ -2236,7 +2237,7 @@ The first expanded run passes362/364 cases. A new test looks for compID at the s
 
 A review also finds selected revisions rehashing the full source during state reads. They now use the cached base revision. The added64MiB Core regression first exposes an overlapping-access error in its fixture; that failed compile is preserved and the fixture is repaired. Source04 passes all14 new cases and364 of365 affected cases, with no unexpected errors or crashes. One thousand revision reads take25.894ms. This does not establish physical60fps or Photoshop pixel parity.
 
-The Mac remains locked, so no live Photoshop or Photato controls are verified. Parent comp recording of Smart Object choices, Photoshop resource descriptors, full warning/nested/source-change behavior, Actions, complete suite and platform/performance gates stay open. All104 packages remain open. Store332, installed283 and private full-source298 are preserved. The diary's335/336 index cells are aligned with their existing date/milestone columns; dates and records are retained. Both offline copies are regenerated. [Record](DEVLOG.md#dev-step-337).
+The Mac remains locked, so no live Photoshop or Photato controls are verified. Parent comp recording of Smart Object choices, Photoshop resource descriptors, full warning/nested/source-change behavior, Actions, complete suite and platform/performance gates stay open. All 104 packages remain open. Store332, installed283 and private full-source298 are preserved. The diary's335/336 index cells are aligned with their existing date/milestone columns; dates and records are retained. Both offline copies are regenerated. [Record](DEVLOG.md#dev-step-337).
 
 
 ### Parent Layer Comp Smart Object choices — step338
@@ -2262,7 +2263,7 @@ Review finds that a nil typed library in an older native file can still hold opa
 
 All 13 new cases pass. Source03 passes 408 of 409 affected optimized cases; one existing linked PSD/PSB cache case retains two strict failed assertions. Both diagnostic vectors match332. There are no unexpected errors or crashes. The separate reader verifies six output files across8/16/32-bit PSD/PSB metadata. These are native/independent-format checks, not Photoshop2026 execution or full-current-suite acceptance.
 
-The six Source01/02/final output sets overlap; they are not independent new fixtures. Native/API/Adobe output checks and the separate metadata reader do not prove Photoshop rendering or universal platform acceptance. Rich interchange, full legacy migration and all other parity gates remain open. All104 scopes stay open. Store332, installed283 and private full-source298 are unchanged. Both offline diaries are refreshed. [Record](DEVLOG.md#dev-step-339).
+The six Source01/02/final output sets overlap; they are not independent new fixtures. Native/API/Adobe output checks and the separate metadata reader do not prove Photoshop rendering or universal platform acceptance. Rich interchange, full legacy migration and all other parity gates remain open. All 104 scopes stay open. Store332, installed283 and private full-source298 are unchanged. Both offline diaries are refreshed. [Record](DEVLOG.md#dev-step-339).
 
 
 ### Editable PSD/PSB Global Light — step340
@@ -2273,7 +2274,7 @@ The first optimized run builds and completes484 cases:478 pass,6 fail,136 assert
 
 All 11 new cases pass. Source02 passes 482 of 484 affected optimized cases, retaining two existing strict comparison failures (120 assertions): linked PSD/PSB cached pixels and source-effect words. Their diagnostic vectors match332. There are no unexpected errors or crashes. A separate reader verifies resources and style flags in six 8/16/32-bit PSD/PSB outputs. Native round trips and independent metadata checks do not establish Photoshop2026 pixel/UI equivalence or full-current-suite acceptance.
 
-The11 new cases cover dialog/API/history/Cancel, native adoption, Adobe output, malformed resources, all depths, independent format metadata and failure atomicity. The private source-effect and linked-cache diagnostics match332; their strict checks remain. There is no live Photoshop acceptance while the Mac is locked. All104 scopes remain open; no release or installation occurs. Both offline diary copies are refreshed. [Record](DEVLOG.md#dev-step-340).
+The11 new cases cover dialog/API/history/Cancel, native adoption, Adobe output, malformed resources, all depths, independent format metadata and failure atomicity. The private source-effect and linked-cache diagnostics match332; their strict checks remain. There is no live Photoshop acceptance while the Mac is locked. All 104 scopes remain open; no release or installation occurs. Both offline diary copies are refreshed. [Record](DEVLOG.md#dev-step-340).
 
 
 ### Production Export As workflow — step341
@@ -2297,7 +2298,7 @@ Native PSD/PSB/Photato streams files independently of the API aggregate budget. 
 
 All 14 new and 331 affected optimized cases pass, with zero failures, unexpected errors or crashes. The independent reader verifies four PNGs and384 analytical RGBA channels. A260-file native batch totals137216120bytes and publishes successfully while the128MiB API ZIP correctly rejects it. These owned/native checks do not establish full Photoshop2026/default/UI/codec/platform/capacity or current-full-suite acceptance.
 
-The260-file boundary uses tiny owned images and metadata, not maximum-size real artwork. Complete Photoshop/UI/default/codec/platform/current-suite acceptance remains open. All104 packages stay open, and installed283/private full298/store332 remain unchanged. Both offline diary editions are refreshed. [Record](DEVLOG.md#dev-step-342).
+The260-file boundary uses tiny owned images and metadata, not maximum-size real artwork. Complete Photoshop/UI/default/codec/platform/current-suite acceptance remains open. All 104 packages stay open, and installed283/private full298/store332 remain unchanged. Both offline diary editions are refreshed. [Record](DEVLOG.md#dev-step-342).
 
 
 ### Color Range selection — step343
@@ -2360,7 +2361,7 @@ Background selections now use the existing Free Transform modes, numeric control
 
 All14 new cases pass. Of617 affected optimized cases,616 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies3,072 analytical RGBA channels across four Background transforms. Sparse300,000 ×300,000 editing and clipped virtual support are tested. Exact Photoshop pixels/soft overlap/interpolation/defaults/UI, full-current-suite, supported Macs, maximum dense capacity and physical60fps remain unqualified.
 
-The14 new cases include captured palette/preview/commit, native planes/HDR/three depths, all16 modifiers, API/profile/PSD/history equality, cancellation/stale/revoked work, lifecycle and bounded previews/storage. Both standalone diary copies are refreshed. All104 scopes remain unclosed. No new installation, archive, push or release. [Record](DEVLOG.md#dev-step-349).
+The14 new cases include captured palette/preview/commit, native planes/HDR/three depths, all16 modifiers, API/profile/PSD/history equality, cancellation/stale/revoked work, lifecycle and bounded previews/storage. Both standalone diary copies are refreshed. All 104 scopes remain unclosed. No new installation, archive, push or release. [Record](DEVLOG.md#dev-step-349).
 
 
 ### Move and copy selected pixels — step350
@@ -2369,7 +2370,7 @@ Move/V now handles selected image content before Auto-Select. A captured source 
 
 All16 new cases pass. Of633 affected optimized cases,632 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies3,072 analytical RGBA channels for ordinary/Background move/copy. Sparse300,000 ×300,000 copies are tested. Exact Photoshop pixels/soft overlap/defaults/gestures/cursor art/live UI, key-repeat scheduling, full-current-suite, supported Macs, maximum dense capacity and physical60fps remain unqualified.
 
-Both standalone diaries are refreshed. All104 scopes remain unclosed. No new install/archive/push/release. [Record](DEVLOG.md#dev-step-350).
+Both standalone diaries are refreshed. All 104 scopes remain unclosed. No new install/archive/push/release. [Record](DEVLOG.md#dev-step-350).
 
 
 ## 2026-11-02 — Step 351: Pixel-mask Free Transform
@@ -2378,7 +2379,7 @@ Whole unlinked pixel masks now use the shared Free Transform controls, six modes
 
 All 16 new cases pass. Of 711 affected optimized cases, 710 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 186 analytical grayscale samples across four transforms. Sparse 300,000 × 300,000 masks are tested. Exact Photoshop samples, mask bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified.
 
-All104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-351).
+All 104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-351).
 
 
 ## 2026-11-02 — Step 352: Auxiliary-channel Free Transform
@@ -2387,7 +2388,7 @@ Whole and selected auxiliary channels now use the shared Free Transform controls
 
 All 16 new cases pass. Of 744 affected optimized cases, 743 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 768 analytical grayscale samples across four transforms. Sparse 300,000 × 300,000 channel planes are tested. Exact Photoshop samples, channel bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified.
 
-All104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-352).
+All 104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-352).
 
 
 ## 2026-11-02 — Step 353: Multi-layer and group transforms
@@ -2396,7 +2397,7 @@ Multiple layers and groups now share affine scale, rotation, skew and fixed tran
 
 All 16 new cases pass. Of 851 affected optimized cases, 850 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 5120 analytical RGBA channels across four transforms. Sparse 300,000 × 300,000 layers are tested. Exact Photoshop samples, collection bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified.
 
-All104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-353).
+All 104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-353).
 
 
 ## 2026-11-02 — Step 354: Projective layer transforms
@@ -2405,7 +2406,7 @@ Distort and Perspective now work on supported whole RGB pixel layers, resolved S
 
 All 16 new cases pass. Of 963 affected optimized cases, 960 pass; 3 cases retain 12 failed assertions. There are zero unexpected errors and no crashes. An independent Python checker verifies 10240 analytical RGBA channels across eight ordinary/Smart-mask outputs. Sparse 300,000 × 300,000 projective layers are tested. Exact Photoshop samples, bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified.
 
-All104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-354).
+All 104scopes remain unclosed. No install/archive/push/release. Both standalone diary editions are refreshed. [Record](DEVLOG.md#dev-step-354).
 
 
 ## 2026-11-02 — Step 355: Layer links and whole-layer Move
@@ -2423,7 +2424,7 @@ The missing raster Stroke workflow now has native width/color/Inside-Center-Outs
 
 All 17 new cases pass: 7 model, 8 application and 2 imaging cases. Of 1178 affected optimized cases, 1175 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. An independent reader verifies 1080 alpha bytes across nine owned Stroke outputs. Sparse 300,000 × 300,000 Stroke and implicit full-canvas Fill are tested. Exact Photoshop edges/blends/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical 60fps remain unqualified.
 
-All104 scopes remain open. No installation, push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-356).
+All 104 scopes remain open. No installation, push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-356).
 
 
 ## 2026-11-02 — Step357: Pattern Fill
@@ -2432,7 +2433,7 @@ Pattern is now a Fill source with a native Custom Pattern choice. Document asset
 
 All 13 new cases pass: 6 model, 5 application and 2 imaging cases. Of 1204 affected optimized cases, 1201 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. Independent modulo/pixel and PNG readers verify 4320 RGBA bytes across eight owned raw outputs and one PNG. Sparse 300,000 × 300,000 localized and implicit-uniform pattern fills are tested. Exact Photoshop phase/kernel/profile/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical60fps remain unqualified.
 
-All104complete scopes remain open. No installation, source push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-357).
+All 104complete scopes remain open. No installation, source push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-357).
 
 
 ## 2026-11-02 — Step358: Large-document Crop
@@ -2441,7 +2442,7 @@ Remove the16MP canvas and64MP aggregate RGB delete guards. Exact copies and rota
 
 18 of 19 new cases pass: all 8 model and 7 application cases, and 3 of 4 imaging cases. One strict encoded-sRGB Float32 PSB sample comparison remains open. Of 1268 affected optimized cases, 1264 pass; 4 retain 13 failed assertions. No unexpected errors or crashes. Independent readers verify 432 RGBA bytes in eight owned integer crop vectors and one PNG. Maximum 300,000 × 300,000 sparse delete/retain/rotation, implicit saved channels,40.5MP Background output and80000wide PSB are tested. Dense maximum capacity, exact Photoshop interpolation/defaults/UI, full current suite, supported platforms and physical60fps remain unqualified.
 
-All104complete scopes remain open. No installation, source push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-358).
+All 104complete scopes remain open. No installation, source push, archive or release. Both standalone diary editions refreshed. [Record](DEVLOG.md#dev-step-358).
 
 ## 2026-11-02 — Step359: layer capacity
 
@@ -2457,7 +2458,7 @@ Add the missing Layer > Flatten Image workflow, native hidden-layer confirmation
 
 All 19 new cases pass. Of 312 affected optimized cases, 312 pass; 0 fail with 0 assertions and 0 unexpected errors. There are 0 crashes. Independent checks verify 48 RGBA bytes across three analytical vectors and three PNGs, plus six PSD/PSB headers.
 
-This is a working Flatten Image increment. Layered/transparent native components, palette/ink and temporal flattening still need their numerical/plate/frame compositors. Full Photoshop output/defaults/live UI, complete L02 merge/rasterization, supported platforms, dense capacity and physical60fps remain open. All104complete scopes are preserved. No installation, source push, archive, upload or release. [Record](DEVLOG.md#dev-step-360).
+This is a working Flatten Image increment. Layered/transparent native components, palette/ink and temporal flattening still need their numerical/plate/frame compositors. Full Photoshop output/defaults/live UI, complete L02 merge/rasterization, supported platforms, dense capacity and physical60fps remain open. All 104complete scopes are preserved. No installation, source push, archive, upload or release. [Record](DEVLOG.md#dev-step-360).
 
 ## 2026-11-02 — Step361: Duplicate Image
 
@@ -2475,7 +2476,7 @@ Add Trim controls, retained-content Reveal All, exact sparse/paged canvas framin
 
 All 24 new cases pass. Of 304 affected optimized cases, 302 pass; 2 fail with 2 assertions and 1 unexpected errors. There are 0 crashes. Independent analytical/PNG readers verify336RGBAbytes; 12 PSD/PSB headers are checked separately.
 
-Temporal and ink-mode canvas rebasing, layered native component Trim, advanced mask/effect bounds, authoritative Adobe actionJSON descriptors, exact Photoshop defaults/output/live UI, supported Macs, full current suite, dense maximum capacity and physical60fps remain open. All104complete package scopes remain open. [Record](DEVLOG.md#dev-step-362).
+Temporal and ink-mode canvas rebasing, layered native component Trim, advanced mask/effect bounds, authoritative Adobe actionJSON descriptors, exact Photoshop defaults/output/live UI, supported Macs, full current suite, dense maximum capacity and physical60fps remain open. All 104complete package scopes remain open. [Record](DEVLOG.md#dev-step-362).
 
 ## 2026-11-02 — Step363: Private full-source backup
 
@@ -3032,3 +3033,29 @@ All 80 focused normal Release tests pass on each architecture, including 12 new 
 Transform Again has no retained operation state to wire up, and the existing Brightness/Contrast model is an acknowledged approximation. Those larger candidates move to stillneeded. Red Eye's Pupil Size and Darken controls already work and pass their current checks. C01 is next, then AUT01. The checkpoint 404 source-label typo was corrected against preserved commands and hashes. [Detailed record](DEVLOG.md#dev-step-405).
 
 The complete native source backup is saved in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/9421bbc320dcbaad28e53eba926d042386eeefe9), with all 7,150 included qualified inputs matching the tested source. The 34 excluded inputs are listed with reasons in the portable source manifest. All 1,061 non-native root/Rust files remain unchanged. The repository becomes public on release day; no app binary or software release was uploaded.
+
+## 2026-11-04 — Step 406: RGB8 component selection
+
+Ordinary RGB8 channel rows ignored Shift, despite the shared engine already supporting component sets. The rows and existing `mode.channel.select` API now select pairs. Single-channel compatibility is preserved. The selected set feeds existing Fill, Invert, Brush/Eraser and filter commands; visible channels remain independent. The API reports both sets accurately. Selection itself adds no pixel edit or Undo entry.
+
+Eight new focused development tests pass. They cover row dispatch, modifier combinations, literal unselected/alpha values, native/API results and previews, captured targets, cancellation/history, errors and a maximum sparse canvas. The first affected run is 103/104 with an existing maximum-CMYK HTTP timeout, which also fails on preserved 405. Additional component/view and painting tests pass; separate broader clipboard processes terminate by signal 10, also reproduced on preserved 405. The failures are retained without changing their limits or fixtures. The union of 121 passing current IDs is not a single passing test suite.
+
+The actual native app passes a singleton row/shortcut/Invert/Undo/Redo/Quit check on an owned document. Physical held Shift-click pair selection was not verified; the attempted focused Shift-Space made no accessibility change. Exact Photoshop last-target/composite behavior and full channel acceptance stay open. This is the selected development baseline, followed by AUT01 and G03 in the major quick-win sweep. Normal optimized packaging waits for a stable breadth batch. [Detailed record](DEVLOG.md#dev-step-406).
+
+## 2026-11-04 — Step 407: Duplicate saved actions
+
+Step reordering already existed in the Actions panel and API. A dedicated Duplicate operation was missing. The panel menu and existing `actions.manage` API now copy one saved action through the same atomic library transaction. New action and step IDs keep the copy independently editable; ordered commands, names and enabled flags are retained. Copying changes no document pixels or Undo history.
+
+All 34 focused arm64 Debug tests pass, including eight new cases. They check payload/identity independence, Unicode and naming bounds, persistence/reopen/import/export, limits and write/corrupt-library rollback, availability and API guards, and source/copy playback producing identical native document bytes with one Undo. The fixed older offscreen capture was preserved; the new capture is saved separately.
+
+A separate native sandbox provided an isolated test library. The app recorded Invert on owned artwork, created and selected the copy, then played it. Independent reading of the saved library confirms fresh IDs and an unchanged source/payload. Undo reverses playback in one step, then returns to the original clean image; duplication added no image-history entry. The app quit normally, and the existing shared library hash remains unchanged. Full AUT01 and exact Photoshop naming/order/hierarchy/drag behavior remain open. G03 is next, then G04. [Detailed record](DEVLOG.md#dev-step-407).
+
+## 2026-11-04 — Step 408: Shape stroke presets
+
+The shape editor already had geometry, corners, arrows, paints and detailed stroke controls. The small missing control was a Solid/Dashed/Dotted selector. It now uses the existing dash/cap renderer and native preview/history path. Custom patterns remain editable and retain their values. Tool Settings and the existing shape API commands share the same transformation; no file-format change was needed.
+
+Eight new cases cover rendering at RGB8/16/32, native/API document-byte equality, preview/Cancel/Undo, captured settings, persistence/playback and invalid/busy/stale requests. They pass in Debug. The wider Debug run retains a curved-stroke Rust mismatch and signal10 in an existing shape API test. In a separate standard optimized batch, all 156 selected cases pass on each architecture, including24 new cases across406–408. The two earlier timeout/crash IDs pass there. No cause or full-suite repair is claimed.
+
+Packaging first encountered a PATH conflict with a Python xattr utility. That failed attempt was preserved; using the macOS system command allowed strict signature, both minimum macOS 14 targets and fresh ZIP extraction checks to pass. All37 available protected baseline hashes remain unchanged; three historical missing files remain unresolved.
+
+The Mac locked before the live native check. The isolated candidate is retained, and its control/drawing/history/Quit validation awaits human unlock. This gate stays open while G04 source audit proceeds, followed by T01. Exact Photoshop defaults/output and all original G03 scope remain open. [Detailed record](DEVLOG.md#dev-step-408).

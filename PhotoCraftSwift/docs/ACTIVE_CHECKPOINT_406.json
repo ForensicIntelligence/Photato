@@ -1,0 +1,59 @@
+{
+  "step": "dev-step-406",
+  "goal_status": "active",
+  "status": "RGB8 multi-component native/API selection baseline implemented and focused development-tested; full C01 open",
+  "software_build": 406,
+  "tested_source": "406Source01",
+  "previous_turn_classification": "Progress: delivered global CUBE export native/API,80normal Release cases/12new pass each architecture, final universal native file/Undo/Quit and405history/private source delivery verified.",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "AUT01",
+  "major_workflow_closed": false,
+  "run": "artifacts/runs/20261104T222754Z-406-rgb8-multi-components",
+  "phase_ledger": "docs/FUNCTION_PHASES_406.json",
+  "priority_rule": "docs/WORK_PRIORITIES_406.json",
+  "next_work": [
+    "AUT01: audit existing Actions reorder/duplicate core/API/native controls; implement one real missing bounded path or advance with already-working evidence.",
+    "G03 follows AUT01. Preserve all original104scopes/acceptance and remaining C01 work.",
+    "Batch normal optimized universal qualification at a stable breadth milestone; retain current and reproduced baseline Debug failures."
+  ],
+  "full_current_suite_passed": false,
+  "full_workflow_complete": false,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261104T222754Z-406-rgb8-multi-components/source01-source.json",
+  "source_inputs": 7185,
+  "production_swift_files": 1031,
+  "evidence": "docs/C01_RGB8_SELECTION_406.json",
+  "tests": {
+    "initial_debug": {
+      "cases": 104,
+      "passed": 103,
+      "new_cases_passed": 8,
+      "unexpected_timeout": 1,
+      "process_crashes": 0
+    },
+    "distinct_passing_ID_union": 121,
+    "broader_partial_process_failures": 2,
+    "prechange_debug_timeout_reproduced": true,
+    "prechange_debug_clipboard_signal10_reproduced": true
+  },
+  "native_workflow_evidence": "artifacts/runs/20261104T222754Z-406-rgb8-multi-components/native-workflow01.json",
+  "native_singleton_regression_qualified": true,
+  "native_pair_shift_gesture_qualified": false,
+  "native_candidate_terminated": true,
+  "increment_complete": true,
+  "qualified_scope": "Selected component-pair implementation and eight new focused tests; full C01/Photoshop/normal universal acceptance open",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "latest_normal_qualified_universal": "405Source03",
+  "history_receipt": "artifacts/development-history-audit/406-final-receipt01.json",
+  "final_verification": {
+    "path": "artifacts/runs/20261104T222754Z-406-rgb8-multi-components/final-verification01.json",
+    "passed": 17,
+    "failed": 0
+  }
+}

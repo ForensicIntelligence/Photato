@@ -1,0 +1,55 @@
+{
+  "step": 407,
+  "goal_status": "active",
+  "status": "Saved-action duplication native/API baseline delivered and focused development-tested; full AUT01 open",
+  "software_build": 407,
+  "tested_source": "407Source01",
+  "source_inputs": 7186,
+  "run": "artifacts/runs/20261104T224957Z-407-action-duplication",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "G03",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_407.json",
+  "priority_rule": "docs/WORK_PRIORITIES_407.json",
+  "previous_turn_classification": "Progress: implemented/tested RGB8 pair selection;8new tests pass,121distinct IDs pass across attempts; known timeout and clipboard process failures reproduced on preserved405. Native singleton/Undo/Redo/Quit,17consistency checks and406history pass. Full C01/normal universal/held gesture remain open.",
+  "next_work": [
+    "G03: audit live shape properties/native controls and implement one confirmed missing bounded control; advance with evidence if already working.",
+    "G04 follows G03. Keep original full AUT01 scope and all104package acceptance.",
+    "Batch normal optimized universal qualification at a stable breadth milestone; preserve406Debug timeout/clipboard failures and all broader gates."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T224957Z-407-action-duplication/source01-source.json",
+  "production_swift_files": 1031,
+  "evidence": "docs/ACTION_DUPLICATION_407.json",
+  "tests": {
+    "focused_arm64_debug": {
+      "cases": 34,
+      "passed": 34,
+      "new_cases_passed": 8,
+      "failed_assertions": 0,
+      "unexpected_errors": 0,
+      "crashes": 0
+    }
+  },
+  "native_workflow_evidence": "artifacts/runs/20261104T224957Z-407-action-duplication/native-workflow01.json",
+  "native_workflow_qualified": true,
+  "native_candidate_terminated": true,
+  "increment_complete": true,
+  "qualified_scope": "Whole saved-action native/API duplication baseline; full AUT01/Photoshop/normal universal acceptance open",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "405Source03",
+  "final_verification": {
+    "path": "artifacts/runs/20261104T224957Z-407-action-duplication/final-verification01.json",
+    "passed": 18,
+    "failed": 0
+  },
+  "history_receipt": "artifacts/development-history-audit/407-final-receipt01.json"
+}

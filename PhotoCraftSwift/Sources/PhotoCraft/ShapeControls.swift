@@ -84,7 +84,12 @@ struct ShapeSheet:View {
           Toggle("Scale Dashes with Stroke Width",isOn:Binding(get:{draft.definition.stroke.widthRelativeDashes ?? false},set:{draft.definition.stroke.widthRelativeDashes=$0}))
           HStack{Text("Width");TextField("Pixels",value:$draft.definition.stroke.width,format:.number);Picker("Align",selection:$draft.definition.stroke.alignment){ForEach(ShapeStroke.Alignment.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}}
           HStack{Picker("Caps",selection:$draft.definition.stroke.cap){ForEach(ShapeStroke.Cap.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}};Picker("Join",selection:$draft.definition.stroke.join){ForEach(ShapeStroke.Join.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}};TextField("Miter limit",value:$draft.definition.stroke.miterLimit,format:.number)}
-          HStack{Toggle("Dashed",isOn:Binding(get:{!draft.definition.stroke.dash.isEmpty},set:{draft.definition.stroke.dash=$0 ? [8,4]:[]}));if !draft.definition.stroke.dash.isEmpty{ForEach(draft.definition.stroke.dash.indices,id:\.self){i in TextField("Dash/gap px",value:Binding(get:{draft.definition.stroke.dash[i]},set:{draft.definition.stroke.dash[i]=$0}),format:.number)};TextField("Phase",value:$draft.definition.stroke.phase,format:.number)}}
+          Picker("Stroke Preset", selection: $draft.strokePreset) {
+            ForEach(ShapeStrokePreset.allCases, id: \.self) { preset in
+              Text(preset.title).tag(preset).disabled(preset == .custom)
+            }
+          }.accessibilityIdentifier("shape.strokePreset")
+          if !draft.definition.stroke.dash.isEmpty{HStack{ForEach(draft.definition.stroke.dash.indices,id:\.self){i in TextField("Dash/gap",value:Binding(get:{draft.definition.stroke.dash[i]},set:{draft.definition.stroke.dash[i]=$0}),format:.number)};TextField("Phase",value:$draft.definition.stroke.phase,format:.number)}}
         }}
       }.padding(4)}.frame(maxHeight:550)
       if let error=draft.error{Text(error).foregroundStyle(.red).fixedSize(horizontal:false,vertical:true)}

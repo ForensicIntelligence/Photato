@@ -14,7 +14,17 @@ struct ActionsPanel: View {
   var action: RecordedAction? { recording ?? store.actions.file.actions.first { $0.id == selected } }
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Text(store.document.name).font(.caption).foregroundStyle(.secondary)
+      HStack {
+        Text(store.document.name).font(.caption).foregroundStyle(.secondary)
+        Spacer()
+        Menu {
+          Button("Duplicate") { duplicateSelectedAction() }
+            .disabled(action == nil || stepID != nil || !store.canDuplicateAction)
+            .help("Duplicate the selected saved action. Command and set duplication are not available yet.")
+        } label: { Image(systemName: "line.3.horizontal") }
+          .menuStyle(.borderlessButton).fixedSize()
+          .accessibilityLabel("Actions panel menu")
+      }
       if let error = store.actions.loadError { Text(error).foregroundStyle(.red) }
       if recording == nil {
         Picker("Action", selection: $selected) {
@@ -62,9 +72,13 @@ struct ActionsPanel: View {
       if let message { Text(message).font(.caption).foregroundStyle(.red) }
       Text("Pixel coordinates and dimensions are absolute. Layer references follow the active layer or a recorded layer name.").font(.caption).foregroundStyle(.secondary)
     }.padding(12).frame(minWidth: 340, minHeight: 380)
-    .onChange(of: selected) { _, _ in if let action { name = action.name; set = action.set } }
+    .onChange(of: selected) { _, _ in stepID = nil; if let action { name = action.name; set = action.set } }
   }
   func attempt(_ operation: () throws -> Void) { do { try operation(); message = nil } catch { message = error.localizedDescription } }
+  func duplicateSelectedAction() {
+    guard recording == nil, stepID == nil, let selected else { return }
+    attempt { self.selected = try store.duplicateAction(selected).id }
+  }
   func editStep(_ id: UUID, _ edit: (inout RecordedActionStep) -> Void) { attempt { if var action, let index = action.steps.firstIndex(where: { $0.id == id }) { edit(&action.steps[index]); try store.actions.save(action) } } }
   func moveStep(_ delta: Int) { attempt { if var action, let index = action.steps.firstIndex(where: { $0.id == stepID }), action.steps.indices.contains(index + delta) { action.steps.swapAt(index, index + delta); try store.actions.save(action) } } }
   func importActions() {
