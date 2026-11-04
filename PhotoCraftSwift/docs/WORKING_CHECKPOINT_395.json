@@ -1,6 +1,6 @@
 {
   "step": 395,
-  "status": "Native394Source02 curated; exact staging/private push pending",
+  "status": "Complete native394Source02is backed up to private main. All7130included qualified inputs match the tested snapshot;34generated/model/cache/restricted-image inputs are explicitly excluded. All335affected cases per architecture, including13new cases, pass. Current3976-case discovery is not full execution; complete Photoshop/UI/platform/dense/60fps gates remain open.",
   "goal_status": "active",
   "previous_goal_turn": 394,
   "run": "artifacts/runs/20261104T135548Z-395-private-source-backup",
@@ -11,7 +11,7 @@
   "S05_closed": false,
   "next_major": "C01 after complete and tested S05",
   "new_install": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
@@ -20,11 +20,11 @@
   "production_swift_files": 1023,
   "native_live_qualified": false,
   "full_current_suite_passed": false,
-  "evidence": "docs/SOURCE_SNAPSHOT_395.json",
+  "evidence": "docs/SOURCE_PUBLICATION_395.json",
   "diary_step": 395,
   "next_work": [
-    "Complete authorized private source delivery and verify remote tree/privacy; then resume remaining major workflow dependencies.",
-    "Retain all original S05/C01/full Photoshop/platform/performance acceptance gates."
+    "Source394backup complete. Continue full S05/channel/mask/source/profile and large interchange/history/recovery integration. Preserve original full scope; full C01 follows complete and tested S05.",
+    "Retain the391Gray32ULP/strict numeric failures; physical dense capacity/macOS14+/Intel/liveUI/60fps/fullcurrent suite/Photoshop gates remain open. Keep157numerical refinements deferred while major functions missing."
   ],
   "history_receipt": "artifacts/development-history-audit/395-final-receipt01.json",
   "historicalEvidenceGap": {
@@ -36,10 +36,13 @@
     "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
   },
   "staticEvidence": {
-    "pending": true
+    "reference": "artifacts/runs/20261104T135548Z-395-private-source-backup/static-verification02.json",
+    "checks": 40,
+    "passed": true,
+    "historicalProtectionComplete": false
   },
   "phase_ledger": "docs/FUNCTION_PHASES_395.json",
-  "prior_private_source_backup": "388Source03 (checkpoint389);394source not pushed",
+  "prior_private_source_backup": "394Source02 (checkpoint395); source and remote tree/private verified",
   "previous_source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
   "previous_source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
   "previous_source_publication": "docs/SOURCE_PUBLICATION_389.json",
@@ -48,5 +51,8 @@
   "neutralFillPreservationRecord": "artifacts/runs/20261104T125224Z-394-rgb8-component-routing/neutral-fill-preservation01.json",
   "source_snapshot": "docs/SOURCE_SNAPSHOT_395.json",
   "included_qualified_inputs": 7130,
-  "excluded_qualified_inputs": 34
+  "excluded_qualified_inputs": 34,
+  "source_publication": "docs/SOURCE_PUBLICATION_395.json",
+  "source_commit": "8054252f1b0d1a5af99f6333ceddf0c6ce2f62f3",
+  "source_tree": "ec6e08ab605b3aabe4cae386cd90948f1c8ca969"
 }

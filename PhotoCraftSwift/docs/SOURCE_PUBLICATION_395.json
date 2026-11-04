@@ -1,0 +1,56 @@
+{
+  "step": 395,
+  "source_step": 394,
+  "commit": "8054252f1b0d1a5af99f6333ceddf0c6ce2f62f3",
+  "tree": "ec6e08ab605b3aabe4cae386cd90948f1c8ca969",
+  "parent": "bddddff8e756d274b0983fbbe99488c33170dd30",
+  "repository_private_before": true,
+  "recorded_at_utc": "2026-11-04T13:57:43.680770+00:00",
+  "pushed": true,
+  "remote_commit_and_tree_verified": true,
+  "repository_private_after": true,
+  "verified_at_utc": "2026-11-04T13:57:49.241220+00:00",
+  "repository": "https://github.com/ForensicIntelligence/Photato",
+  "branch": "main",
+  "visibility": "private",
+  "source_manifest": "docs/SOURCE_SNAPSHOT_395.json",
+  "qualified_source": "394Source02",
+  "qualified_inputs": 7164,
+  "included_qualified_inputs": 7130,
+  "excluded_qualified_inputs": 34,
+  "all_included_inputs_matched": true,
+  "original_Rust_files_preserved": 1057,
+  "root_and_Rust_files_preserved": 1059,
+  "affected_tests_per_architecture": 335,
+  "passed_tests_per_architecture": [
+    335,
+    335
+  ],
+  "new_feature_tests_per_architecture": 13,
+  "failed_assertions_per_architecture": [
+    0,
+    0
+  ],
+  "unexpected_errors_per_architecture": [
+    0,
+    0
+  ],
+  "crashes_per_architecture": [
+    0,
+    0
+  ],
+  "current_discovery_per_architecture": 3976,
+  "affected_suite_passed": true,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "S05_closed": false,
+  "historical_preservation_complete": false,
+  "next_work": "Remaining full mask/channel and major workflow integration; full C01 follows complete and tested S05.",
+  "new_application_binary_upload": false,
+  "new_installation": false,
+  "App_Store_action": false,
+  "public_or_software_release": false,
+  "goal_complete": false,
+  "qualification_scope": "Included tested inputs exact. Intel translated through Rosetta on Apple Silicon host. Physical supported Macs/macOS14+, current live UI, full current suite, all-input Photoshop equivalence, dense capacity and sustained60fps remain open. Recorded391Gray32ULP and3missing older temporary binaries284\u2013286remain open. No native test rerun needed for documentation/source delivery.",
+  "public_listing_wording": "Existing saved378generic professional-image-editor wording retained. No named public comparison or competing keyword. Apple search guidance re-read395; current portal at login, no new save/readback."
+}

@@ -412,7 +412,7 @@ For a readable account of the project from the beginning, see [Photato developme
 
 <a id="dev-step-395"></a>
 
-## 2026-11-04 — Step 395: Private source backup (in progress)
+## 2026-11-04 — Step 395: Private source backup and listing wording check
 
 The maintainer requested another full source commit at a stable point. Build394Source02 passes335 affected cases on each architecture, including all13new cases; full current-suite, live UI, supported physical platforms, dense capacity, sustained60fps and Photoshop equivalence remain unqualified. This checkpoint backs up the tested native source and licensed upstream snapshot without changing application behavior or declaring a software release.
 
@@ -427,6 +427,24 @@ Curate complete native Sources/Tests/assets/project/scripts/docs/distribution al
 Curation01selects8084native source/document/asset files,334409530bytes,including7130frozen qualified inputs. Exactly34frozen inputs are explicitly excluded. There are no changed fixtures and no stale native files to remove relative to389. Bounded secret scan finds no matching keys/tokens. Largest asset is the existing owned App Store preview movie, below50MB; preserving source media is not an application binary release. Root/upstream1059hashes remain unchanged.
 
 Create SOURCE_SNAPSHOT_395.json, FUNCTION_PHASES_395.json and S05_ACCEPTANCE_395.json with unchanged full104package scopes/651mappings/S05requirements. Update native/root README and REPOSITORY.md for actual394Source02qualification:335/335pass perarchitecture,13newpass,3976discovered but no fullcurrentexecution. Native86/Actions46/242APIcommands unchanged. Preserve391Gray32ULP/fullsuite/liveUI/platform/dense/60fps/missingbinary gates. Public generic listing files/lastsaved378record remain unchanged; no login bypass, new portal save or keyword addition. No remote mutation yet.
+
+###395 staged verification and completed private source push
+
+Curation02selects8087native source/document/asset files,335839832bytes. Stage verification hashes8089actual Git index blobs (native selection plus two root docs);117paths change. All7130included frozen inputs and1059root/upstream hashes match; restricted PSD/cache/signing/runtime inputs are absent. Fetch checks unchanged prior main rather than overwrite concurrent work.
+
+Private source commit 8054252f1b0d1a5af99f6333ceddf0c6ce2f62f3 has tree ec6e08ab605b3aabe4cae386cd90948f1c8ca969 and parent bddddff8e756d274b0983fbbe99488c33170dd30. Push succeeds; live GitHub ref/commit/tree and private visibility are verified. No force push, history rewrite, application binary upload, install, Xcode archive, App Store field change or software/public release. Source/local commit/remote verification logs are retained in this unique run.
+
+Create SOURCE_PUBLICATION_395.json with actual commit/tree, exact7130/7164input scope,34exclusions and335/335/13new-pass qualification. Update source ledger/checkpoint, native/root records, release/status/plan and readable diary395. Both offline diary editions are regenerated; prior editions preserved before each refresh. Actual delivery metadata is committed separately after the source commit. Full104scopes/651identities/242API/native86/Actions46and fullS05requirements remain unchanged. The public listing generic-copy/keyword recheck is documentation only, no API behavior change. Fullcurrent suite and all recorded parity/platform/performance/history gates remain open.
+
+###395 post-push curation guard and repair
+
+First post-push curation03call failed its unchanged-HEAD assertion before copying: the caller omitted the helper's explicit expected HEAD argument after the source commit advanced main. The caller also mistakenly started dependent verification01, which failed because curation03.json was absent. Neither attempt produced a passing report, changed application source, mutated remote state or ran native tests. Preserve post-push-curation03-failure.json; no completed test failure is inferred. Repair invocation by supplying the verified actual source commit, and keep curation/dependent checks sequential. Use new attempt04/verification02 rather than overwrite missing/failed attempt evidence.
+
+###395 delivery verification and final record
+
+With explicit source HEAD, curation04succeeds:8088selected native files,335848996bytes,7130included qualified inputs,34explicit exclusions,1059root/upstream hashes unchanged, no new/changed fixtures or stale removal. Verification02passes40checks: frozen source/configuration, all copied/index source bytes and commit tree, live private visibility, protected available37files/recorded3missing, staged394candidate/extraction signatures and ZIP/binary hashes, full104scopes/651mappings/S05requirements, standalone diary395syntax/hash/mirror equality and dashboard395. The latest software remains394Source02and its focused335/335test pass; no new native test run or full-suite/Photoshop qualification is claimed. Existing free/manual/generic public store policy and no-new-portal-write record pass. Preserve failed curation03/dependent verification01separately from successful repair.
+
+Finish by refreshing both diary editions, verifying final documentation/staging, then running evidence-index refresh followed immediately by --check. Record actual metadata commit/tree and remote privacy in the excluded final receipt. All source/runtime/signing/test artifacts remain retained; no release is authorized by this source backup. Full goal stays active; next implementation continues the remaining full major workflow dependencies. Existing App Store private contact/rights/privacy/build gates are unchanged.
 
 <a id="dev-step-394"></a>
 

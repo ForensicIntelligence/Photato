@@ -18,20 +18,20 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:394 -->
+<!-- current-status-step:395 -->
 ## Current status — 4 November 2026 UTC
 
-The diary contains **394 development steps**. The application is **build 394**.
+The diary contains **395 development steps**. The application remains **build 394**.
 
-Ordinary RGB8 Red, Green and Blue editing targets now route Brush/Eraser, Invert and eight filter drafts through the same component engine as native and high-depth documents. Legacy target, preview and visibility state stay independent. The existing neutral Fill command and history label remain; large fills use bounded preparation. Pixel API strokes capture the selected components and reject stale or mismatched targets.
+The current native source is backed up in the private GitHub repository. All 7,130 included qualified inputs match build 394's tested snapshot. Another 34 generated model, cache and restricted-image inputs are excluded explicitly. Original Rust files and existing Git history are preserved.
 
-All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun.
+All 335 affected tests pass on Apple Silicon and translated Intel, including the 13 new RGB8 component cases. The current 3,976-case discovery is not a full test run. Full Photoshop, platform, dense capacity and sustained 60 fps qualification remain open. The Gray32 one-ULP architecture difference and three missing older temporary candidate binaries remain recorded.
 
-The first run found a whole-raster guard ahead of the new large-Fill branch and an API/UI disagreement over nonneutral Fill. The repaired run keeps the desktop's neutral scope and moves admission to the bounded path. Three stale command-count assertions were corrected after reproducing them on the prior build. Held previews, release/cancel, target/colour capture, all16modifiers, Quick Mask transitions and maximum RGB8 operations are tested. Independent Python verifies eight owned sample bytes per architecture; broader numerical Photoshop matching remains separate.
+The App Store copy continues to say “If you know your way around a professional image editor, Photato will feel familiar.” Public text was last saved and verified in step 378. Today's browser session is at sign-in; no new portal save is claimed. Feature and file-format keywords remain, following Apple's guidance excluding competing app names. Photato remains completely free, with manual release.
 
-Full S05/C01 and other component tools, multi-selection/visibility/clipboard/transforms/Actions, nonneutral Fill and profile/custom-gray fidelity, channel arithmetic, large interchange/printing/history/recovery integration, physical dense maximum capacity, supported physical Macs/macOS14, current full-suite success and sustained60fps remain open. Current live UI and complete Photoshop output/default/settings/shortcut equivalence are unqualified. The391Gray32one-ULP cross-architecture difference, retained strict failures and3missing older temporary binaries remain recorded. Full C01 follows complete/tested S05.
+Full S05 stays open; C01 follows completion and testing. The source backup changes no installed app or App Store field and keeps the repository private. No software release is made.
 
-[Results](RGB8_COMPONENT_TOOLS_394.json) · [Guide](RGB8_COMPONENT_TOOLS.md) · [Full baseline](CURRENT_TEST_INVENTORY_382.json) · [S05 audit](S05_ACCEPTANCE_394.json)
+[Source commit](https://github.com/ForensicIntelligence/Photato/commit/8054252f1b0d1a5af99f6333ceddf0c6ce2f62f3) · [Source manifest](SOURCE_SNAPSHOT_395.json) · [Delivery receipt](SOURCE_PUBLICATION_395.json) · [Build 394 evidence](RGB8_COMPONENT_TOOLS_394.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -631,6 +631,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 392 | [Large component geometry](DEVLOG.md#dev-step-392) |
 | 2026-11-04 | 393 | [Large component tools](DEVLOG.md#dev-step-393) |
 | 2026-11-04 | 394 | [RGB8 component routing](DEVLOG.md#dev-step-394) |
+| 2026-11-04 | 395 | [Private source backup and listing wording](DEVLOG.md#dev-step-395) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -2760,3 +2761,12 @@ All 12 new cases pass on Apple Silicon and translated Intel. The affected run ex
 Ordinary RGB8 selected-channel tools now share the native component engine. The legacy target/view/API state and neutral Fill label remain. Held brush previews, captured release, filters, Undo, cancellation, maximum RGB8 edits and temporary Quick Mask/image transitions are covered.
 
 All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun. The maximum guard-order bug, nonneutral API/UI mismatch and stale count assertions remain recorded with the repaired rerun. No test identity or source is removed. Full Photoshop/S05/C01/platform/dense/60fps requirements and prior strict/Gray32failures stay open. No install, push, Xcode archive, upload or release. [Record](DEVLOG.md#dev-step-394).
+
+
+## 2026-11-04 — Step395: Private source backup and listing wording
+
+We backed up native build 394 after its 335 affected tests passed on each architecture. All 13 new RGB8 component tests pass. Every included tested input matches the frozen source; generated models, caches, machine/signing/runtime files and an externally restricted PSD remain excluded. The original Rust source and existing Git history are preserved.
+
+The commit includes native source, tests, the Xcode project, assets, scripts and developer records. We verified the staged file bytes, source commit/tree on GitHub and continued private visibility. No new native test run was needed because tested application code and configuration are unchanged. Current full-suite, live UI, physical supported platforms, dense capacity, 60 fps and exact Photoshop qualification remain open. Full S05 stays open and full C01 follows it.
+
+The maintainer asked that App Store blurbs avoid named Photoshop comparisons. The current files and step378saved record already use familiarity with a professional image editor. Rechecking Apple's search guidance confirms it excludes competing app names from keywords, so functional and file-format terms remain. The browser is at sign-in; no new App Store write or fresh field verification is claimed. The private review-note edit remains pending contact details. Free pricing and manual release stay unchanged. [Delivery receipt](SOURCE_PUBLICATION_395.json).
