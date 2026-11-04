@@ -16,12 +16,11 @@
   "next_work": [
     "C01: audit RGB8Shift-selection against current targeting code and implement one bounded missing path or advance with evidence.",
     "AUT01follows C01; G01Again and A03modern/legacy Brightness/Contrast remain under major stillneeded.",
-    "Complete authorized private source backup after normal optimized scoped checks, preserving private visibility and original Rust history.",
     "Keep all full package, Photoshop/numerical, physical platform/dense/60fps and historical gates."
   ],
   "full_current_suite_passed": false,
   "new_install": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
@@ -73,5 +72,13 @@
     "build": 405,
     "manifest": "artifacts/runs/20261104T211109Z-405-transform-again/universal/staging01.json"
   },
-  "history_receipt": "artifacts/development-history-audit/405-final-receipt01.json"
+  "history_receipt": "artifacts/development-history-audit/405-final-receipt01.json",
+  "source_backup": "docs/SOURCE_PUBLICATION_405.json",
+  "private_source_commit": "9421bbc320dcbaad28e53eba926d042386eeefe9",
+  "repository_private": true,
+  "final_verification": {
+    "path": "artifacts/runs/20261104T211109Z-405-transform-again/final-verification01.json",
+    "passed": 31,
+    "failed": 0
+  }
 }

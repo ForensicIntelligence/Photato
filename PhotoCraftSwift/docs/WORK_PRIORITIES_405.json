@@ -766,9 +766,10 @@
       "AUT02"
     ],
     "title": "Delete All Empty Layers",
-    "status": "selected; implementation not started",
+    "status": "Selected ordinary raster/plain-group quick win delivered403Source02; full L01/AUT02 remains open",
     "command": "file.scripts.deleteAllEmptyLayers",
-    "next": "Normal Photoshop behavior check, then shared native transaction/menu/API and focused tests."
+    "next": "Current C01, then AUT01; see current_deliverable",
+    "reference": "docs/EMPTY_LAYER_DELETION_403.json"
   },
   "parked": [
     {

@@ -881,7 +881,7 @@
       "phase": 1,
       "role": "function",
       "status": "in_progress",
-      "scope": "Background↔layer, separate pixel/position/transparency locks, links, linked selection, complete arrange/reverse and filtering/isolation commands; empty-layer cleanup and remaining contextual operations.",
+      "scope": "Background\u2194layer, separate pixel/position/transparency locks, links, linked selection, complete arrange/reverse and filtering/isolation commands; empty-layer cleanup and remaining contextual operations.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
@@ -1291,7 +1291,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Step346 adds Transform Selection controls/modes/captured cursors with selection-only preview/history/Actions/API. All 14 new and 356 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate Python checker verifies 320 analytical GRAY8 bytes across four transforms. Sparse 300,000 × 300,000 projective admission is tested. Exact Photoshop sampling/gestures/defaults/live UI, full-current-suite, supported platforms, maximum dense capacity and physical 60fps remain open. Full S01 remains open.",
+      "evidence_status": "Step346 adds Transform Selection controls/modes/captured cursors with selection-only preview/history/Actions/API. All 14 new and 356 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate Python checker verifies 320 analytical GRAY8 bytes across four transforms. Sparse 300,000 \u00d7 300,000 projective admission is tested. Exact Photoshop sampling/gestures/defaults/live UI, full-current-suite, supported platforms, maximum dense capacity and physical 60fps remain open. Full S01 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
       "latest_functional_progress": "404Source03 activates row/column marquee tools with shared geometry/API/history/cursor and focused development tests.",
       "work_tracks": {
@@ -1331,9 +1331,9 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Step343 adds Color Range subset;344 adds Magnetic Lasso with native options/trace/history/cursors/shared API. All 14 new and 235 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate checker verifies all 768 analytical mask bytes. Sparse 300000×300000 output is tested; physical maximum dense capacity,60fps, the complete current suite and exact Photoshop paths/pixels/defaults/UI/platform behavior remain unqualified. Full S02 remains open.",
+      "evidence_status": "Step343 adds Color Range subset;344 adds Magnetic Lasso with native options/trace/history/cursors/shared API. All 14 new and 235 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate checker verifies all 768 analytical mask bytes. Sparse 300000\u00d7300000 output is tested; physical maximum dense capacity,60fps, the complete current suite and exact Photoshop paths/pixels/defaults/UI/platform behavior remain unqualified. Full S02 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
-      "latest_functional_progress": "Step343 adds Color Range subset;344 adds Magnetic Lasso with native options/trace/history/cursors/shared API. All 14 new and 235 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate checker verifies all 768 analytical mask bytes. Sparse 300000×300000 output is tested; physical maximum dense capacity,60fps, the complete current suite and exact Photoshop paths/pixels/defaults/UI/platform behavior remain unqualified. Full S02 remains open.",
+      "latest_functional_progress": "Step343 adds Color Range subset;344 adds Magnetic Lasso with native options/trace/history/cursors/shared API. All 14 new and 235 affected optimized cases pass, with zero failures, unexpected errors or crashes. A separate checker verifies all 768 analytical mask bytes. Sparse 300000\u00d7300000 output is tested; physical maximum dense capacity,60fps, the complete current suite and exact Photoshop paths/pixels/defaults/UI/platform behavior remain unqualified. Full S02 remains open.",
       "work_tracks": {
         "quickwins": {
           "pass": 1,
@@ -1571,7 +1571,7 @@
       "phase": 1,
       "role": "function",
       "status": "open",
-      "scope": "Separate active editing channels from visible channels; grayscale/color display, temporary pixel/vector-mask rows, real paint/filter targets, eye gestures and Command2–5/other factory shortcuts.",
+      "scope": "Separate active editing channels from visible channels; grayscale/color display, temporary pixel/vector-mask rows, real paint/filter targets, eye gestures and Command2\u20135/other factory shortcuts.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
@@ -1614,11 +1614,11 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Step352 adds whole and selected auxiliary-channel Free Transform, preview/controls/cursors/history/Actions36/API. All 16 new cases pass. Of 744 affected optimized cases, 743 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 768 analytical grayscale samples across four transforms. Sparse 300,000 × 300,000 channel planes are tested. Exact Photoshop samples, channel bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified. Full C02 remains open.",
+      "evidence_status": "Step352 adds whole and selected auxiliary-channel Free Transform, preview/controls/cursors/history/Actions36/API. All 16 new cases pass. Of 744 affected optimized cases, 743 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 768 analytical grayscale samples across four transforms. Sparse 300,000 \u00d7 300,000 channel planes are tested. Exact Photoshop samples, channel bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified. Full C02 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
       "source_channels_step328": {
         "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
-        "status": "Original alpha/spot/Quick Mask migration and ordinary-document auxiliary spot workflow are functionally qualified at328 Source03. All102 affected cases and all12 new Core/Imaging/App cases pass, zero failures/unexpected errors/crashes. Twelve imported coverage planes match2,244 original Float words and three ordered two-ink previews match2,244 RGBA words. Native controls, black-as-ink painting, gray-preserving conversion, preview-only Solidity, shared API/state/schema/history and native76 saving/download negotiation work within disclosed bounds. Production/binary match Source02; Source03 repairs one stale unsupported-version test and positively covers73–76.6,711 inputs/904 production Swift files,206 typed commands/Actions30. PSD/PSB separations, multiple spot visibility, Merge Spot, ink libraries/printing/Actions and full Photoshop/current-suite/platform/capacity/60fps gates stay open. At least eleven older strict cases remain outside this selection. Installed283 and full/private298 are preserved; no install or push.",
+        "status": "Original alpha/spot/Quick Mask migration and ordinary-document auxiliary spot workflow are functionally qualified at328 Source03. All102 affected cases and all12 new Core/Imaging/App cases pass, zero failures/unexpected errors/crashes. Twelve imported coverage planes match2,244 original Float words and three ordered two-ink previews match2,244 RGBA words. Native controls, black-as-ink painting, gray-preserving conversion, preview-only Solidity, shared API/state/schema/history and native76 saving/download negotiation work within disclosed bounds. Production/binary match Source02; Source03 repairs one stale unsupported-version test and positively covers73\u201376.6,711 inputs/904 production Swift files,206 typed commands/Actions30. PSD/PSB separations, multiple spot visibility, Merge Spot, ink libraries/printing/Actions and full Photoshop/current-suite/platform/capacity/60fps gates stay open. At least eleven older strict cases remain outside this selection. Installed283 and full/private298 are preserved; no install or push.",
         "major_gate_closed": false
       },
       "psd_auxiliary_step329": {
@@ -1626,7 +1626,7 @@
         "status": "Ordinary RGB/Gray/CMYK/Lab PSD/PSB alpha/spot/Quick Mask interchange is functionally qualified at329 Source06. All177 affected cases and14 new Core/Imaging/App cases pass, zero failed assertions/unexpected errors/crashes. All81 independent input and captured output programs match1,226,640 auxiliary sample words in each overlapping scope, plus names/display records/IDs/Quick Mask metadata. Native77 retains original Float32 editing gray and source metadata; desktop/API/history share the serializer. All four codecs and56-plane boundary handling are covered. Large PSD/PSB format admission is enabled, but physical maximum-capacity operation is unqualified.6,833 inputs/905 production Swift files,206 typed commands/Actions30. Full prepress/color-book/Merge/printing/Actions, full-current/Photoshop/platform/capacity/60fps gates and at least eleven older strict cases remain open. Photoshop visual access is blocked by the locked Mac. Installed283 and full/private298 remain preserved; no install or push.",
         "major_gate_closed": false
       },
-      "latest_functional_progress": "Step352 adds whole and selected auxiliary-channel Free Transform, preview/controls/cursors/history/Actions36/API. All 16 new cases pass. Of 744 affected optimized cases, 743 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 768 analytical grayscale samples across four transforms. Sparse 300,000 × 300,000 channel planes are tested. Exact Photoshop samples, channel bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified. Full C02 remains open.",
+      "latest_functional_progress": "Step352 adds whole and selected auxiliary-channel Free Transform, preview/controls/cursors/history/Actions36/API. All 16 new cases pass. Of 744 affected optimized cases, 743 pass; one strict offscreen opacity-chevron comparison retains one failed assertion. There are zero unexpected errors and no crashes. An independent Python checker verifies 768 analytical grayscale samples across four transforms. Sparse 300,000 \u00d7 300,000 channel planes are tested. Exact Photoshop samples, channel bounds, kernels, defaults and live UI, the full current suite, supported platforms, maximum dense capacity and physical 60fps remain unqualified. Full C02 remains open.",
       "work_tracks": {
         "quickwins": {
           "pass": 1,
@@ -1741,7 +1741,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Steps262–268 qualify selected brush/retouch cadence, startup, validation and pointer redraw improvements. Physical60fps, jagged curves and full brush scope remain open.",
+      "evidence_status": "Steps262\u2013268 qualify selected brush/retouch cadence, startup, validation and pointer redraw improvements. Physical60fps, jagged curves and full brush scope remain open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
       "work_tracks": {
         "quickwins": {
@@ -2001,7 +2001,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Step358 expands RGB Crop capacity with paged samples, bounded previews/background and shared API. 18 of 19 new cases pass: all 8 model and 7 application cases, and 3 of 4 imaging cases. One strict encoded-sRGB Float32 PSB sample comparison remains open. Of 1268 affected optimized cases, 1264 pass; 4 retain 13 failed assertions. No unexpected errors or crashes. Independent readers verify 432 RGBA bytes in eight owned integer crop vectors and one PNG. Maximum 300,000 × 300,000 sparse delete/retain/rotation, implicit saved channels,40.5MP Background output and80000wide PSB are tested. Dense maximum capacity, exact Photoshop interpolation/defaults/UI, full current suite, supported platforms and physical60fps remain unqualified. Full G01 remains open.",
+      "evidence_status": "Step358 expands RGB Crop capacity with paged samples, bounded previews/background and shared API. 18 of 19 new cases pass: all 8 model and 7 application cases, and 3 of 4 imaging cases. One strict encoded-sRGB Float32 PSB sample comparison remains open. Of 1268 affected optimized cases, 1264 pass; 4 retain 13 failed assertions. No unexpected errors or crashes. Independent readers verify 432 RGBA bytes in eight owned integer crop vectors and one PNG. Maximum 300,000 \u00d7 300,000 sparse delete/retain/rotation, implicit saved channels,40.5MP Background output and80000wide PSB are tested. Dense maximum capacity, exact Photoshop interpolation/defaults/UI, full current suite, supported platforms and physical60fps remain unqualified. Full G01 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
       "latest_functional_progress": "Step362: All 24 new cases pass. Of 304 affected optimized cases, 302 pass; 2 fail with 2 assertions and 1 unexpected errors. There are 0 crashes. Independent analytical/PNG readers verify336RGBAbytes; 12 PSD/PSB headers are checked separately. Temporal and ink-mode canvas rebasing, layered native component Trim, advanced mask/effect bounds, authoritative Adobe actionJSON descriptors, exact Photoshop defaults/output/live UI, supported Macs, full current suite, dense maximum capacity and physical60fps remain open. All104complete package scopes remain open.",
       "work_tracks": {
@@ -2149,7 +2149,7 @@
       "phase": 1,
       "role": "function",
       "status": "open",
-      "scope": "Resolve measured 9/255–36/255 alpha differences, sample grids, winding rules, feathering and rejected PSD path forms; establish wider independent oracles.",
+      "scope": "Resolve measured 9/255\u201336/255 alpha differences, sample grids, winding rules, feathering and rejected PSD path forms; establish wider independent oracles.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
@@ -2613,9 +2613,9 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Step357 adds Pattern/Custom Pattern Fill, immutable native asset lookup, document priority, self-contained Actions42 and expanded pixels.fill/state/schema/API. All 13 new cases pass: 6 model, 5 application and 2 imaging cases. Of 1204 affected optimized cases, 1201 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. Independent modulo/pixel and PNG readers verify 4320 RGBA bytes across eight owned raw outputs and one PNG. Sparse 300,000 × 300,000 localized and implicit-uniform pattern fills are tested. Exact Photoshop phase/kernel/profile/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical60fps remain unqualified. Full A07 remains open.",
+      "evidence_status": "Step357 adds Pattern/Custom Pattern Fill, immutable native asset lookup, document priority, self-contained Actions42 and expanded pixels.fill/state/schema/API. All 13 new cases pass: 6 model, 5 application and 2 imaging cases. Of 1204 affected optimized cases, 1201 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. Independent modulo/pixel and PNG readers verify 4320 RGBA bytes across eight owned raw outputs and one PNG. Sparse 300,000 \u00d7 300,000 localized and implicit-uniform pattern fills are tested. Exact Photoshop phase/kernel/profile/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical60fps remain unqualified. Full A07 remains open.",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
-      "latest_functional_progress": "Step357 adds Pattern/Custom Pattern Fill, immutable native asset lookup, document priority, self-contained Actions42 and expanded pixels.fill/state/schema/API. All 13 new cases pass: 6 model, 5 application and 2 imaging cases. Of 1204 affected optimized cases, 1201 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. Independent modulo/pixel and PNG readers verify 4320 RGBA bytes across eight owned raw outputs and one PNG. Sparse 300,000 × 300,000 localized and implicit-uniform pattern fills are tested. Exact Photoshop phase/kernel/profile/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical60fps remain unqualified. Full A07 remains open.",
+      "latest_functional_progress": "Step357 adds Pattern/Custom Pattern Fill, immutable native asset lookup, document priority, self-contained Actions42 and expanded pixels.fill/state/schema/API. All 13 new cases pass: 6 model, 5 application and 2 imaging cases. Of 1204 affected optimized cases, 1201 pass; 3 retain 12 failed assertions. Zero unexpected errors or crashes. Independent modulo/pixel and PNG readers verify 4320 RGBA bytes across eight owned raw outputs and one PNG. Sparse 300,000 \u00d7 300,000 localized and implicit-uniform pattern fills are tested. Exact Photoshop phase/kernel/profile/defaults, live UI, full current suite, supported platforms, dense maximum capacity and physical60fps remain unqualified. Full A07 remains open.",
       "work_tracks": {
         "quickwins": {
           "pass": 1,
@@ -2917,7 +2917,7 @@
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
         "Pass independent output/behavior references and relevant supported-platform checks; unresolved or unqualified requirements remain open."
       ],
-      "evidence_status": "Steps220–222 provide native component/restricted/ink modes, editable Channels and shared APIs; Multichannel PSD/PSB included in2316 passing optimized tests. Duotone/ink TIFF, ADO, print, remaining contexts and exact/live/platform gates stay open. docs/INK_MODE_REFERENCES.json",
+      "evidence_status": "Steps220\u2013222 provide native component/restricted/ink modes, editable Channels and shared APIs; Multichannel PSD/PSB included in2316 passing optimized tests. Duotone/ink TIFF, ADO, print, remaining contexts and exact/live/platform gates stay open. docs/INK_MODE_REFERENCES.json",
       "dependency_note": "Any part required to finish a phase1 major workflow is implemented with that workflow before optional phase2/3 scope.",
       "latest_functional_progress": "Step362: All 24 new cases pass. Of 304 affected optimized cases, 302 pass; 2 fail with 2 assertions and 1 unexpected errors. There are 0 crashes. Independent analytical/PNG readers verify336RGBAbytes; 12 PSD/PSB headers are checked separately. Temporal and ink-mode canvas rebasing, layered native component Trim, advanced mask/effect bounds, authoritative Adobe actionJSON descriptors, exact Photoshop defaults/output/live UI, supported Macs, full current suite, dense maximum capacity and physical60fps remain open. All104complete package scopes remain open.",
       "work_tracks": {
@@ -3335,7 +3335,7 @@
       },
       "source_channels_step328": {
         "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
-        "status": "Original alpha/spot/Quick Mask migration and ordinary-document auxiliary spot workflow are functionally qualified at328 Source03. All102 affected cases and all12 new Core/Imaging/App cases pass, zero failures/unexpected errors/crashes. Twelve imported coverage planes match2,244 original Float words and three ordered two-ink previews match2,244 RGBA words. Native controls, black-as-ink painting, gray-preserving conversion, preview-only Solidity, shared API/state/schema/history and native76 saving/download negotiation work within disclosed bounds. Production/binary match Source02; Source03 repairs one stale unsupported-version test and positively covers73–76.6,711 inputs/904 production Swift files,206 typed commands/Actions30. PSD/PSB separations, multiple spot visibility, Merge Spot, ink libraries/printing/Actions and full Photoshop/current-suite/platform/capacity/60fps gates stay open. At least eleven older strict cases remain outside this selection. Installed283 and full/private298 are preserved; no install or push.",
+        "status": "Original alpha/spot/Quick Mask migration and ordinary-document auxiliary spot workflow are functionally qualified at328 Source03. All102 affected cases and all12 new Core/Imaging/App cases pass, zero failures/unexpected errors/crashes. Twelve imported coverage planes match2,244 original Float words and three ordered two-ink previews match2,244 RGBA words. Native controls, black-as-ink painting, gray-preserving conversion, preview-only Solidity, shared API/state/schema/history and native76 saving/download negotiation work within disclosed bounds. Production/binary match Source02; Source03 repairs one stale unsupported-version test and positively covers73\u201376.6,711 inputs/904 production Swift files,206 typed commands/Actions30. PSD/PSB separations, multiple spot visibility, Merge Spot, ink libraries/printing/Actions and full Photoshop/current-suite/platform/capacity/60fps gates stay open. At least eleven older strict cases remain outside this selection. Installed283 and full/private298 are preserved; no install or push.",
         "major_gate_closed": false
       },
       "psd_auxiliary_step329": {
@@ -4156,7 +4156,7 @@
       "phase": 1,
       "role": "function",
       "status": "open",
-      "scope": "Remove remaining heavy main-thread work; progressive previews; cancellation/low-memory behavior; measure p50/p95 stroke, move, adjustment and save latencies at24–36MP and large multilayer sizes.",
+      "scope": "Remove remaining heavy main-thread work; progressive previews; cancellation/low-memory behavior; measure p50/p95 stroke, move, adjustment and save latencies at24\u201336MP and large multilayer sizes.",
       "acceptance": [
         "Complete the entire stated scope through native workflows; record any discovered additional Photoshop behavior.",
         "Demonstrate required menu/shortcut/UI, history/cancel/persistence and both API interfaces where applicable.",
@@ -9385,17 +9385,18 @@
     "id": "C01",
     "package": "C01",
     "title": "Component visibility and edit targeting",
-    "reason": "G01/A03need substantial work, I05CUBE baseline delivered and B05controls already working. Continue major quick-win sweep.",
+    "reason": "G01/A03 need substantial work; I05 CUBE quick win delivered; B05 controls already work. Continue the major quick-win sweep.",
     "reference": "docs/WORKING_CHECKPOINT_405.json"
   },
   "latest_verified_increment": {
-    "step": 394,
-    "kind": "RGB8 component routing",
-    "reference": "docs/RGB8_COMPONENT_TOOLS_394.json",
-    "qualification": "All 13 new cases pass on Apple Silicon and translated Intel. The affected run executes 335 identical ordered cases per architecture, passing 335 on Apple Silicon and 335 on translated Intel. Three stale command-count assertions reproduce on preserved393 and are corrected to the unchanged242-command catalog. The full current suite has not been rerun."
+    "step": 405,
+    "kind": "Global CUBE native/API export quick win",
+    "source": "405Source03",
+    "reference": "docs/COLOR_LOOKUP_EXPORT_405.json",
+    "qualification": "80 identical ordered normal Release cases per architecture, including12new, plus final universal native saved file/cleanUndo/Quit. Full current suite and Photoshop/platform acceptance remain open."
   },
   "scheduling_correction_157": "Maintain major-first functional breadth. Do not revisit numerical feather/filter refinement while missing major workflows can be implemented.",
-  "next_major_workflow": "C01quick-win audit, followed by AUT01.",
+  "next_major_workflow": "C01 quick-win audit, followed by AUT01.",
   "previous_ledger": "docs/FUNCTION_PHASES_404.json",
   "withdrawn_work_packages": [
     {
@@ -9443,14 +9444,14 @@
     "reference": "docs/INTERACTIVE_RETOUCHING_REFERENCES.json"
   },
   "maintainer_performance_priority_264": {
-    "summary": "Dodge, Burn and Sponge retain unquantized working tiles between previews. On the measured 24MP image, each publishes 119 previews during 1.99 seconds of input, with p95 render work of 9.39–11.60ms instead of 41.99–45.10ms. All 432 pre-change native pixel prefixes, 137 focused tests and 2737 full optimized tests pass on 2454 frozen inputs. Owned native strokes and Undo/Redo pass. First preview remains about 94ms; large-image Blur/Sharpen/Smudge, visible dab texture and physical 60fps qualification remain open.",
+    "summary": "Dodge, Burn and Sponge retain unquantized working tiles between previews. On the measured 24MP image, each publishes 119 previews during 1.99 seconds of input, with p95 render work of 9.39\u201311.60ms instead of 41.99\u201345.10ms. All 432 pre-change native pixel prefixes, 137 focused tests and 2737 full optimized tests pass on 2454 frozen inputs. Owned native strokes and Undo/Redo pass. First preview remains about 94ms; large-image Blur/Sharpen/Smudge, visible dab texture and physical 60fps qualification remain open.",
     "remaining": [
       "Blur/Sharpen/Smudge still replay complete prefixes: measured 24MP candidate publishes 36/37/42 previews in about 2s, with p95 render work of 73.03/68.98/53.47ms and final drains of 147.65/124.20/75.81ms. Optimize retained neighborhood/pickup work next.",
-      "Dodge/Burn/Sponge first source and preview remains 93.61–94.60ms; initial validation/setup and perceived input latency need improvement.",
+      "Dodge/Burn/Sponge first source and preview remains 93.61\u201394.60ms; initial validation/setup and perceived input latency need improvement.",
       "Physical display-presented frame timing, sustained hand/tablet curves, large/long brushes, heavy layers, special modes, expanding masks, proof and expensive effects remain unqualified.",
       "Visible repeated dab texture and Photoshop kernel/spacing/default fidelity remain unresolved; preserved native output is not proof of Photoshop pixel parity.",
       "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state and capability metadata do not imply those executable operations exist.",
-      "Full Photoshop parity and physical Intel/macOS14/macOS26 acceptance remain open. Preserve linked-source261 and resume after the maintainer’s current feedback priority."
+      "Full Photoshop parity and physical Intel/macOS14/macOS26 acceptance remain open. Preserve linked-source261 and resume after the maintainer\u2019s current feedback priority."
     ],
     "reference": "docs/LARGE_RETOUCHING_REFERENCES.json"
   },
@@ -9461,14 +9462,14 @@
       "Boundary and expanding-storage Focus paths, Healing, special modes/proof, large or prolonged brushes and complex layers retain unqualified performance. The normal 64px interior benchmark is not a worst-case guarantee.",
       "Physical display presentation and input-to-photon latency, sustained mouse/tablet curves, repeated dab texture and Photoshop kernel/spacing/default fidelity remain open.",
       "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Preview state/capabilities do not imply those executable commands exist; no Adobe route is invented.",
-      "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 stays preserved until the maintainer’s current performance priority is resolved."
+      "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 stays preserved until the maintainer\u2019s current performance priority is resolved."
     ],
     "reference": "docs/FOCUS_FEEDBACK_REFERENCES.json"
   },
   "maintainer_performance_priority_266": {
-    "summary": "Native pixel storage now retains finite-sample validation across safe edits, avoiding redundant whole-image scans at stroke startup. Dense24MP validation falls from about11ms to0.04ms; Blur/Sharpen/Smudge startup falls from113–125ms to59–71ms while retaining119 previews during1.99s, all240 samples and exact native output. Ordinary painting publishes121 previews over the two-second input stream, with6.57ms p95 render work at24MP. All74 focused and2748 full optimized tests pass on2461 frozen inputs. Native painting/Undo/Redo and a separate signed preview are verified. Startup, jagged/dab texture, heavy cases and physical60fps remain open.",
+    "summary": "Native pixel storage now retains finite-sample validation across safe edits, avoiding redundant whole-image scans at stroke startup. Dense24MP validation falls from about11ms to0.04ms; Blur/Sharpen/Smudge startup falls from113\u2013125ms to59\u201371ms while retaining119 previews during1.99s, all240 samples and exact native output. Ordinary painting publishes121 previews over the two-second input stream, with6.57ms p95 render work at24MP. All74 focused and2748 full optimized tests pass on2461 frozen inputs. Native painting/Undo/Redo and a separate signed preview are verified. Startup, jagged/dab texture, heavy cases and physical60fps remain open.",
     "remaining": [
-      "Large24MP retouch startup still takes59–71ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
+      "Large24MP retouch startup still takes59\u201371ms. Profile remaining setup/render work and reduce first-visible-stroke latency without changing command admission or pixel results.",
       "Jagged curves, repeated dab texture, native mouse/tablet sampling, display presentation/input-to-photon latency and heavy/boundary/expanded/Healing paths remain unqualified. CPU snapshot cadence is not physical60fps.",
       "General Clone/Healing/Toning/Focus stroke submission remains an existing Photato API gap. Current capability/state metadata does not imply new commands or Adobe endpoints.",
       "Physical Intel/macOS14/macOS26 qualification and full Photoshop parity remain open. Linked-source261 remains preserved until the current editing-performance priority is resolved."
@@ -9476,10 +9477,10 @@
     "reference": "docs/STROKE_START_REFERENCES.json"
   },
   "maintainer_performance_priority_267": {
-    "summary": "Initial layout, zoom during loading and Artboard fit now prepare the canvas at the requested presentation scale. The24MP moving-stroke benchmark improves Dodge/Blur/Smudge startup from71–73ms to9–11ms while initial canvas setup remains about2.6s. All six large-image retouch cases retain119 previews during1.99s,240 samples and exact native output. Four stale-viewport regressions are reproduced before repair; all54 focused and2753 full optimized tests pass on2462 frozen inputs. Native loading/zoom/painting/history and a separate signed preview are verified. Physical60fps, jagged input curves and heavy-path qualification remain open.",
+    "summary": "Initial layout, zoom during loading and Artboard fit now prepare the canvas at the requested presentation scale. The24MP moving-stroke benchmark improves Dodge/Blur/Smudge startup from71\u201373ms to9\u201311ms while initial canvas setup remains about2.6s. All six large-image retouch cases retain119 previews during1.99s,240 samples and exact native output. Four stale-viewport regressions are reproduced before repair; all54 focused and2753 full optimized tests pass on2462 frozen inputs. Native loading/zoom/painting/history and a separate signed preview are verified. Physical60fps, jagged input curves and heavy-path qualification remain open.",
     "remaining": [
       "Investigate native mouse/tablet input density and event coalescing for jagged curves, with prior-state restoration on finish/cancel/window lifecycle. Apple reference and current-source findings are preserved in input-research01.json; no coalescing change is implemented or qualified here.",
-      "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9–11ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee.",
+      "Physical display presentation/input-to-photon timing, tablet sampling, repeated dab texture and heavy/boundary/expanded/Healing paths remain unqualified. The9\u201311ms result measures two-point CPU publication after viewport preparation on this24MP fixture, not a universal guarantee.",
       "Initial24MP document composition still takes about2.6s in the fixture. Current work removes an avoidable cold rescale during the first stroke, not all loading costs.",
       "General Clone/Healing/Toning/Focus stroke API submission remains an existing gap. Native191 typed commands and Adobe contracts are unchanged.",
       "Full Photoshop pixel/default/menu/settings fidelity, physical Intel/macOS14/macOS26 and universal release qualification remain open. Linked-source261 stays parked until the editing-performance priority is resolved."
@@ -9498,17 +9499,17 @@
     "reference": "docs/CANVAS_FEEDBACK_REFERENCES.json"
   },
   "maintainer_performance_priority_269": {
-    "summary": "Optional per-stroke timing now correlates input, preparation, accepted previews and native AppKit draws. The real-workspace benchmark retains all240 samples and exact native pixels for Brush, Blur, Dodge and Smudge, while recording104–111 distinct preview draws during each roughly2-second stroke and about two canvas draws per accepted preview. Median newest-input-to-draw delay is20.7–22.6ms. All36 focused and2760 full optimized tests pass on2467 frozen inputs. Owned native painting/Undo/Redo and a separate signed preview are verified. This is scheduling/CPU evidence, not physical60fps; no kernel or pacing change is claimed in269.",
+    "summary": "Optional per-stroke timing now correlates input, preparation, accepted previews and native AppKit draws. The real-workspace benchmark retains all240 samples and exact native pixels for Brush, Blur, Dodge and Smudge, while recording104\u2013111 distinct preview draws during each roughly2-second stroke and about two canvas draws per accepted preview. Median newest-input-to-draw delay is20.7\u201322.6ms. All36 focused and2760 full optimized tests pass on2467 frozen inputs. Owned native painting/Undo/Redo and a separate signed preview are verified. This is scheduling/CPU evidence, not physical60fps; no kernel or pacing change is claimed in269.",
     "remaining": [
       "Remove demonstrated redundant prepublication workspace/canvas updates, after tracing revision and rendering observation. Compare dedicated hosted120Hz-input traces against the269 baseline; do not equate display callbacks or draw completion with physical presentation.",
-      "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3–4 samples and no sustained accepted preview stream.",
+      "Physical tablet/native-event curves, input-to-photon latency, sustained60fps, larger documents/tips and masks/modes/proofs/boundaries/special tools remain unqualified. Short CUA drags delivered only3\u20134 samples and no sustained accepted preview stream.",
       "Photoshop smoothing/default/kernel exactness, general Clone/Healing/Toning/Focus stroke API submission, physical Intel/macOS14/macOS26 and universal release qualification remain open.",
       "Linked-source261 remains parked while editing responsiveness is the priority. Complete Photoshop parity remains the active master goal."
     ],
     "reference": "docs/NATIVE_FRAME_TIMING_REFERENCES.json"
   },
   "maintainer_performance_priority_270": {
-    "summary": "Canvas and thumbnail updates now follow accepted preview publication, while live strokes avoid the per-preview busy indicator. The native-window Brush/Blur/Dodge/Smudge fixture retains all240 samples and exact native command pixels with 119–120 distinct preview draws over about2 seconds, each accepted preview drawn once instead of nearly twice. Median distinct-draw intervals are 16.57–16.80ms. All105 focused and2762 full optimized tests pass on2468 frozen inputs. Native painting/history checks and a separate signed preview are verified. Latency remains tool/run dependent; this is AppKit scheduling evidence, not physical60fps.",
+    "summary": "Canvas and thumbnail updates now follow accepted preview publication, while live strokes avoid the per-preview busy indicator. The native-window Brush/Blur/Dodge/Smudge fixture retains all240 samples and exact native command pixels with 119\u2013120 distinct preview draws over about2 seconds, each accepted preview drawn once instead of nearly twice. Median distinct-draw intervals are 16.57\u201316.80ms. All105 focused and2762 full optimized tests pass on2468 frozen inputs. Native painting/history checks and a separate signed preview are verified. Latency remains tool/run dependent; this is AppKit scheduling evidence, not physical60fps.",
     "remaining": [
       "Investigate preview timing relative to native display opportunities and input arrival. Retain both270 attempts: cadence improves but input-to-draw latency remains variable, including the first-attempt Dodge regression. Physical input-to-photon and sustained60fps remain unqualified.",
       "Investigate jagged curves and visible dab texture with owned high-rate native/tablet input and independent Photoshop comparisons. Preserve all input samples and explicit smoothing defaults rather than hiding latency with extra smoothing.",
@@ -9520,7 +9521,7 @@
   "maintainer_performance_priority_271": {
     "summary": "Native zoom Return now releases keyboard focus for tool shortcuts, and external zoom/Fit changes supersede stale percentage drafts while unrelated updates preserve typing. The obsolete159 probe was retired after a byte-identical retained copy of its open document was verified; that document is now open in normal Preview271. All71 focused and2764 full optimized tests pass on2468 frozen inputs. Native zoom/shortcut/history checks and signed packaging pass. No new frame-rate or Photoshop pixel-equivalence claim is made; sustained60fps and stroke continuity remain open.",
     "remaining": [
-      "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe’s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
+      "Reproduce and implement pause-with-button-held Stroke Catch-up from Adobe\u2019s published smoothing behavior. Current smoothing advances on pushed points; stationary timer samples are currently scheduled only for airbrush. Preserve explicit settings and shared command/history semantics.",
       "Continue native frame timing work from270: display/input phase, high-rate curves/tablet input, larger documents/tips, masks/modes/proofs and special tools. Physical input-to-photon and sustained60fps remain unqualified.",
       "Photoshop tool-selection attempts through CUA fail in271; reference screenshots remain unchanged. Published behavior is not numerical/default/kernel proof. Physical Intel/macOS14/macOS26 and universal release qualification remain open.",
       "Linked-source261 remains parked while editing responsiveness is the priority; the full native Photoshop goal remains active."
@@ -9546,7 +9547,7 @@
     "reference": "docs/BRUSH_CATCH_UP_REFERENCES.json"
   },
   "maintainer_performance_priority_274": {
-    "summary": "Ordinary raster brush strokes now retain preview work through release, processing only unseen samples and the release tail. The owned 24 MP fixture improves release commitment from about 290 ms to 1.0–6.0 ms with exact native command pixels and one history entry. All 69 focused and 2783 full optimized tests pass on 2474 frozen inputs. Native painting/history and separate Preview 274 packaging are verified. Physical 60 fps, special-tool release work and full Photoshop/platform parity remain open.",
+    "summary": "Ordinary raster brush strokes now retain preview work through release, processing only unseen samples and the release tail. The owned 24 MP fixture improves release commitment from about 290 ms to 1.0\u20136.0 ms with exact native command pixels and one history entry. All 69 focused and 2783 full optimized tests pass on 2474 frozen inputs. Native painting/history and separate Preview 274 packaging are verified. Physical 60 fps, special-tool release work and full Photoshop/platform parity remain open.",
     "remaining": [
       "Continue editing responsiveness: inspect release work for retouch and fallback tools; retain the user60fps target and exact native output/history.",
       "Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark disables preview pacing and measures native service cost, not physical display output.",
@@ -9555,7 +9556,7 @@
     "reference": "docs/BRUSH_RELEASE_REFERENCES.json"
   },
   "maintainer_performance_priority_275": {
-    "summary": "Clone Stamp, Dodge/Burn/Sponge and Blur/Sharpen/Smudge now retain validated preview work through release, appending only unseen samples. On the owned 24 MP fixture, eligible release commitment improves from 12–40 ms to 0.8–1.0 ms with exact native command pixels and one history entry. All 50 focused and 2791 full optimized tests pass on 2478 frozen inputs. Native painting/history and separate Preview 275 packaging are verified. Healing final processing, retouch Actions/direct APIs, physical 60 fps and full Photoshop/platform parity remain open.",
+    "summary": "Clone Stamp, Dodge/Burn/Sponge and Blur/Sharpen/Smudge now retain validated preview work through release, appending only unseen samples. On the owned 24 MP fixture, eligible release commitment improves from 12\u201340 ms to 0.8\u20131.0 ms with exact native command pixels and one history entry. All 50 focused and 2791 full optimized tests pass on 2478 frozen inputs. Native painting/history and separate Preview 275 packaging are verified. Healing final processing, retouch Actions/direct APIs, physical 60 fps and full Photoshop/platform parity remain open.",
     "remaining": [
       "Close the existing semantic retouch Action recording and general retouch stroke API gaps with shared native operations, schemas, history and relevant conformance coverage. Continue measuring healing/fallback responsiveness.",
       "Healing Brush and Spot Healing still require complete final processing; the marker is not healed output. Physical sustained60fps, input-to-photon latency, long/high-rate tablet curves and broad heavy-tool pacing remain unqualified. The benchmark measures native service cost with preview pacing disabled.",
@@ -9609,9 +9610,9 @@
   },
   "latest_software_qualified_increment": {
     "step": 405,
-    "source": "Source02",
+    "source": "405Source03",
     "reference": "docs/COLOR_LOOKUP_EXPORT_405.json",
-    "qualification": "80identical ordered normal Release cases/12new pass each architecture; native source-matched Debug export and literal file/no-history checks pass; universal package verified. Full Photoshop/runtime/physical gates remain open.",
+    "qualification": "80 identical ordered normal Release cases per architecture, including12new. Final optimized universal native file/cleanUndo/Quit, signature/minimum14/extraction checks pass. Full Photoshop/runtime/physical gates remain open.",
     "full_current_suite_passed": false,
     "Photoshop_parity": false
   },
@@ -9887,7 +9888,7 @@
     "qualification": "260 affected and17 new optimized cases pass. No package closure; full Photoshop and supported-platform gates remain open."
   },
   "inventory_reconciliation_336": "Added the existing PDF export command; removed identical duplicate Keyboard Shortcuts rows from CSV and phase ledger; mapped the existing layer.smartObjects.embedAllLinked command to L05.651 distinct commands now match651 distinct phase records. Existing command implementation states and104 package scopes are preserved.",
-  "source_publication": "docs/SOURCE_SNAPSHOT_395.json",
+  "source_publication": "docs/SOURCE_SNAPSHOT_405.json",
   "inventory_reconciliation_364": "Refresh stale copied command mapping from authoritative current CSV:439partial/212pending,651identities unchanged. No command promoted or complete package closed.",
   "linked_preview_precision_followup_365": {
     "strict_before_after_test_retained": true,
@@ -10714,9 +10715,10 @@
         "AUT02"
       ],
       "title": "Delete All Empty Layers",
-      "status": "selected; implementation not started",
+      "status": "Selected ordinary raster/plain-group quick win delivered403Source02; full L01/AUT02 remains open",
       "command": "file.scripts.deleteAllEmptyLayers",
-      "next": "Normal Photoshop behavior check, then shared native transaction/menu/API and focused tests."
+      "next": "Current C01, then AUT01; see current_deliverable",
+      "reference": "docs/EMPTY_LAYER_DELETION_403.json"
     },
     "parked": [
       {
@@ -10808,5 +10810,15 @@
     "acceptance_change": false,
     "active_scope_preserved": true,
     "withdrawn_scope": "REL02 remains withdrawn at maintainer237; no purchase system reintroduced."
+  },
+  "source_delivery_405": {
+    "source": "405Source03",
+    "status": "Pushed and remote commit/tree/private visibility verified",
+    "commit": "9421bbc320dcbaad28e53eba926d042386eeefe9",
+    "tree": "01d5a74ea00af978744b3b05e068a8ef6dc8158f",
+    "reference": "docs/SOURCE_PUBLICATION_405.json",
+    "included_qualified_inputs": 7150,
+    "excluded_qualified_inputs": 34,
+    "root_Rust_unchanged": 1061
   }
 }
