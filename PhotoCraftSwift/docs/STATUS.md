@@ -1,4 +1,6 @@
-**Checkpoint408 — Shape stroke presets:** Solid, Dashed and Dotted native controls/shared API are implemented. All 156focused normal optimized cases pass per architecture, including24 new across406–408 and eight new preset cases. The universal package passes macOS 14/signature/ZIP checks. **Actual408 native control/history/Quit awaits Mac unlock**; no live pass claimed. Full G03/Photoshop/current-suite qualification remains open. **G04 is next, then T01.** [Guide](SHAPE_STROKE_PRESETS.md) · [Evidence](SHAPE_STROKE_PRESETS_408.json).
+# Photato development status
+
+**Checkpoint 408 — Shape stroke presets:** Solid, Dashed and Dotted native controls/shared API are implemented. All 156focused normal optimized cases pass per architecture, including24 new across406–408 and eight new preset cases. The universal package passes macOS 14/signature/ZIP checks. **Actual408 native control/history/Quit awaits Mac unlock**; no live pass claimed. Full G03/Photoshop/current-suite qualification remains open. **G04 is next, then T01.** [Guide](SHAPE_STROKE_PRESETS.md) · [Evidence](SHAPE_STROKE_PRESETS_408.json).
 
 **Checkpoint 407 — Duplicate saved actions:** The native Actions panel menu and existing `actions.manage` API now make independent saved-action copies through the shared library transaction. All 34 focused Debug tests pass, including eight new cases. Actual sandbox duplication, saved IDs/payloads, playback/Undo and normal Quit pass; the existing shared library hash is unchanged. Full AUT01/Photoshop/normal universal qualification remains open. **G03 is next, then G04.** [Guide](ACTION_DUPLICATION.md) · [Evidence](ACTION_DUPLICATION_407.json).
 
@@ -15,8 +17,6 @@
 **Checkpoint 400 — Quick Mask custom colours:** The native options colour control now opens a usable macOS panel. Custom-colour cancellation and actual quit/relaunch persistence pass. All 227 targeted tests pass on each architecture, including four new cases. The tested universal build is 400, Source01. A new independent Selected Areas/no-selection mask-convention conflict remains; full S05 acceptance is still open. [Evidence](S05_OPTIONS_GESTURES_400.json).
 
 **Checkpoint 399 — S05 validation:** The consolidated 195-case set passes on Apple Silicon and translated Intel with identical ordered IDs and no failed assertions, unexpected errors or crashes. Native RGB8 options, painting, history, Save/Load/New Document, cross-document loading and native file reopen pass a scoped check. One stale test-count assertion was repaired; application binaries remain build 398. Full S05 acceptance remains open for independent settings/gesture/output and platform qualification. [Evidence](S05_VALIDATION_399.json).
-
-# Photato development status
 
 **Checkpoint 398 — Temporary mask channels:** Layer and Filter Mask rows stay available with RGB editing. Their eyes, raw gray/overlay display, target selection and optional API share native state. All404targeted cases pass on each architecture, including16new cases; actual packaged mask painting/Undo, RGB/backslash transitions and Filter-Mask-only rows pass focused checks. Full S05/C01and broader parity gates remain open. [Evidence](TEMPORARY_MASK_CHANNELS_398.json).
 

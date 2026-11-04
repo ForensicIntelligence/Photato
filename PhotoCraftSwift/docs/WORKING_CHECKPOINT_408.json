@@ -22,7 +22,7 @@
   "full_current_suite_passed": false,
   "goal_complete": false,
   "new_install": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
@@ -52,5 +52,7 @@
   "qualified_scope": "Preset implementation/API and normal optimized regression baseline; live native acceptance pending unlock",
   "full_workflow_complete": false,
   "latest_normal_qualified_universal": "408Source01; native UI pending",
-  "latest_private_source": "405Source03"
+  "latest_private_source": "408Source01",
+  "source_publication": "docs/SOURCE_PUBLICATION_408.json",
+  "source_commit": "004b0f4625d99008f2bc3ae2e76a0d34f1074e50"
 }

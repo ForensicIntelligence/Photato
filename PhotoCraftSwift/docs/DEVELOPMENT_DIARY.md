@@ -26,6 +26,8 @@ Shape Properties and Tool Settings now offer Solid, Dashed and Dotted stroke pre
 All 156 selected normal optimized tests pass on Apple Silicon and translated Intel with identical ordered IDs. These include24 new cases across RGB8 component selection, action duplication and stroke presets. The earlier maximum-CMYK HTTP timeout and clipboard crash cases pass in this build. Their Debug failures, plus a separate curved-stroke Rust mismatch, remain in the record. This is not a full-suite pass.
 
 The universal package passes signing, both macOS 14 targets and ZIP extraction checks. The Mac is locked, so the408 native control/drawing/history/Quit check is pending. The user has been asked to unlock it; no live pass is claimed. G04 source audit follows, then T01, while that check remains recorded. All original feature requirements stay open. The repository stays private until release day. [Step 408](DEVLOG.md#dev-step-408).
+
+The complete native source is saved in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/004b0f4625d99008f2bc3ae2e76a0d34f1074e50). All 7,153 included tested inputs match, with 34 generated/model/cache/restricted inputs excluded. The 1,061 original root/Rust files are unchanged. This is a source backup; the app has not been released.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3059,3 +3061,5 @@ Eight new cases cover rendering at RGB8/16/32, native/API document-byte equality
 Packaging first encountered a PATH conflict with a Python xattr utility. That failed attempt was preserved; using the macOS system command allowed strict signature, both minimum macOS 14 targets and fresh ZIP extraction checks to pass. All37 available protected baseline hashes remain unchanged; three historical missing files remain unresolved.
 
 The Mac locked before the live native check. The isolated candidate is retained, and its control/drawing/history/Quit validation awaits human unlock. This gate stays open while G04 source audit proceeds, followed by T01. Exact Photoshop defaults/output and all original G03 scope remain open. [Detailed record](DEVLOG.md#dev-step-408).
+
+The source backup is verified on [private main](https://github.com/ForensicIntelligence/Photato/commit/004b0f4625d99008f2bc3ae2e76a0d34f1074e50). All 7,153 included qualified inputs match the tested snapshot; the exclusions and pending live check are documented. Original root/Rust files and Git history are retained. No binary, App Store change or software release was uploaded.

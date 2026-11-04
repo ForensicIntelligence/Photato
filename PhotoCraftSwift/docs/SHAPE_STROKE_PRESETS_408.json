@@ -571,7 +571,7 @@
   "full_G03_closed": false,
   "Photoshop_parity": false,
   "new_install": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
@@ -642,5 +642,7 @@
     "PhotoCraftAppTests.ShapeStrokePresetTests/testNativeDraftPreviewCancelCommitUndoAndOriginPreservation",
     "PhotoCraftAppTests.ShapeStrokePresetTests/testOpeningCustomStrokeAndGenericDefinitionClientsKeepTheirValues",
     "PhotoCraftAppTests.ShapeStrokePresetTests/testToolSettingsAndCapturedGestureRetainPresetWithoutPrematureHistory"
-  ]
+  ],
+  "source_publication": "docs/SOURCE_PUBLICATION_408.json",
+  "source_commit": "004b0f4625d99008f2bc3ae2e76a0d34f1074e50"
 }
