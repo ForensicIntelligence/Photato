@@ -97,7 +97,7 @@ final class RelightWorkflowTests:XCTestCase {
       XCTAssertTrue(try NativeArchive.decode(NativeArchive.encode(smart))==smart);XCTAssertTrue(try NativeArchive.decode(NativeArchive.encodeChunked(smart))==smart)
       let stack=try XCTUnwrap(smart.layers[0].smartFilters),stackAction=RecordedAction(name:"Relight stack",steps:[.init(name:"Relight stack",operation:.filters(.active,stack))]);XCTAssertEqual(try ActionLibraryFile.decode(ActionLibraryFile(actions:[stackAction]).encoded()).version,26)
       XCTAssertThrowsError(try DocumentIO.encode(smart,format:.psd));XCTAssertThrowsError(try DocumentIO.encode(smart,format:.psb));XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON:"[{\"_obj\":\"relight\"}]"))
-      let store=EditorStore(document:d,actions:ActionLibrary());defer{store.renderTask?.cancel()};XCTAssertTrue(store.canBeginFilterKind(.relight));XCTAssertEqual(store.actionState["supportedVersions"] as? [Int],Array(1...29))
+      let store=EditorStore(document:d,actions:ActionLibrary());defer{store.renderTask?.cancel()};XCTAssertTrue(store.canBeginFilterKind(.relight));XCTAssertEqual(store.actionState["supportedVersions"] as? [Int],Array(1...46))
     }
   }
   @MainActor func testOriginalCachedImportHTTPNoOpReeditAndSourceRetention()async throws {

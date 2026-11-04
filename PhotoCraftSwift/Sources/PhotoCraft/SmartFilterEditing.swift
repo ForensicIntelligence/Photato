@@ -13,6 +13,7 @@ extension EditorStore {
     guard canBeginLayerCreation, document.layers.first(where: { $0.id == id })?.smartFilters?.mask != nil else { return }
     select(id)
     smartFilterMaskEditing = true; maskEditingLayerID = id; componentTarget = .composite; modeComponentTargets = []; modeComponentVisibility = nil
+    deselectQuickMaskTarget()
     render()
   }
   func routedMaskCommand(_ command: Command) -> Command {

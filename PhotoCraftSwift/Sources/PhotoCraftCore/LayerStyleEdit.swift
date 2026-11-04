@@ -10,6 +10,10 @@ public struct LayerStyleEdit:Sendable {
   public func apply(to document:inout CraftDocument)throws {
     guard (1...LayerLimits.maximumLayers).contains(styles.count) else {throw CraftError.invalid("Choose one to8,000 layer style targets.")}
     try globalLight?.validate()
+    // Capture assumes a valid source composition; do not heal stale keys or
+    // index a malformed selected frame while preparing an otherwise valid edit.
+    if let animation = document.animation { try animation.validate(in: document) }
+    if document.videoTimeline != nil { try document.validateVideoKeyframes() }
     let hierarchy = LayerHierarchyIndex(document)
     let indices = Dictionary(uniqueKeysWithValues: document.layers.enumerated().map { ($0.element.id, $0.offset) })
     var candidate = document
@@ -30,6 +34,10 @@ public struct LayerStyleEdit:Sendable {
       for tag in ["lfx2", "lmfx", "lrFX", "iOpa"] { candidate.layers[index].sourceTags?.removeValue(forKey: tag) }
     }
     if let globalLight {candidate.globalLight=globalLight}
+    // Styles belong to the current temporal composition. Capture that change
+    // before validating its agreement with the enabled keys/selected frame.
+    try candidate.captureVideoKeyframeChanges()
+    try candidate.captureAnimationChanges()
     try candidate.validate();document=candidate
   }
 }

@@ -1,0 +1,113 @@
+{
+  "step": 378,
+  "recordedAtUTC": "2026-11-04T00:03:11.669416+00:00",
+  "appID": "6820338369",
+  "bundleID": "ca.forensicintelligence.photato",
+  "teamID": "PATM9DNCLA",
+  "providerObserved": "FI Forensic Intelligence, Ltd.",
+  "version": "0.3.0",
+  "localeSaved": "en-US",
+  "portalState": "Prepare for Submission",
+  "nativeSourceUnchanged": "376Source03",
+  "priorLocalAppStoreArchiveUnchanged": "332",
+  "buildSelected": false,
+  "copySavedAndReadBack": {
+    "Promotional Text": true,
+    "Description": true,
+    "Keywords": true,
+    "Notes": false
+  },
+  "subtitle": "Native image editing for Mac",
+  "categories": [
+    "Graphics & Design",
+    "Photo & Video"
+  ],
+  "pricing": {
+    "free": true,
+    "price": 0,
+    "baseCountry": "United States",
+    "storefronts": 175,
+    "zeroPriceAndProceedsValuesRead": 350,
+    "availability": "Available on App Release"
+  },
+  "releaseType": "MANUAL",
+  "automaticRelease": false,
+  "preOrder": false,
+  "inAppPurchaseProductsObserved": 0,
+  "subscriptionGroupsObserved": 0,
+  "ageRating": "4+ with regional exceptions; calculated by Apple",
+  "madeForKids": false,
+  "media": {
+    "screenshotsUploaded": 4,
+    "previewsUploaded": 1,
+    "previewSeconds": 27.478,
+    "previewProcessing": true,
+    "source": "376Source03",
+    "syntheticUI": false,
+    "provenance": "distribution/app-store/media/build376/provenance.json"
+  },
+  "privacy": {
+    "policyURLSaved": "https://www.forensicintelligence.ca/privacy/",
+    "dataCollectionDraft": "Data Not Collected",
+    "published": false,
+    "approvalPending": true,
+    "basis": [
+      "scripts/PrivacyInfo.xcprivacy",
+      "Sources/PhotoCraftAI/LocalAI.swift",
+      "Apple app-privacy guidance: Apple-collected framework data is not the developer disclosure"
+    ]
+  },
+  "contentRights": {
+    "saved": false,
+    "approvalPending": true,
+    "proposed": "Yes, it contains, shows, or accesses third-party content, and I have the necessary rights"
+  },
+  "reviewContact": {
+    "complete": false,
+    "requestedFromMaintainer": true,
+    "valuesStoredInRepository": false
+  },
+  "appIcon": "Supplied in a future selected build; no build uploaded in this step",
+  "newArchive": false,
+  "newBinaryUpload": false,
+  "submittedForReview": false,
+  "released": false,
+  "repositoryVisibility": "private",
+  "repositoryVisibilityChanged": false,
+  "S05Closed": false,
+  "nextMajor": "C01 after S05 complete and tested; scope unchanged",
+  "remaining": [
+    "Apple preview processing",
+    "Maintainer approval of privacy agreement and content-rights declaration",
+    "Private App Review contact details",
+    "Final selected/qualified binary and its app icon",
+    "Update public privacy policy network examples for Photato/PCC/API before release",
+    "App Store submission readiness and all software parity/qualification gates remain open"
+  ],
+  "evidenceRoot": "artifacts/runs/20261103T232632Z-377-app-store-listing",
+  "officialReferencesConsulted": [
+    "https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/",
+    "https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications/",
+    "https://developer.apple.com/help/app-store-connect/manage-your-apps-availability/select-an-app-store-version-release-option/",
+    "https://developer.apple.com/app-store/app-privacy-details/",
+    "https://developer.apple.com/app-store/review/guidelines/"
+  ],
+  "previousRecord": "docs/APP_STORE_RECORD_377.json",
+  "manualReleaseVerifiedAtStep": 378,
+  "inheritedOtherPortalSettingsLastVerifiedAtStep": 377,
+  "publicWording": "If you know your way around a professional image editor, Photato will feel familiar. Completely free, native to Mac, and still in early alpha.",
+  "keywords": "layers,masks,paint,retouch,colour,selections,psd,psb,brush,open source",
+  "competitorKeywordAdded": false,
+  "keywordDecision": "Apple explicitly excludes competing app/company names. The maintainer permitted Photoshop as a keyword, but did not require its addition. Use accurate functional and file-format terms instead.",
+  "namedCompetitorComparisonInPublicCopy": false,
+  "reviewerNotesNamedComparisonRemoved": false,
+  "wordingReferences": [
+    "https://developer.apple.com/app-store/search/",
+    "https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information/",
+    "https://developer.apple.com/app-store/review/guidelines/"
+  ],
+  "publicFieldsSavedAndVerified": true,
+  "reviewerNotesUpdatePendingContact": true,
+  "lastSavedReviewerNotesStep": 377,
+  "saveResult": "Public localization fields saved. Review-note update rejected because first name, last name, email and phone are required. Fresh untouched tab confirms the three public strings, original377 private notes and MANUAL. Initial same-tab all-four readback did not establish private-note persistence."
+}

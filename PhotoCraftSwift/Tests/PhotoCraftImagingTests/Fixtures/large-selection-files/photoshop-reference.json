@@ -1,0 +1,262 @@
+{
+  "provenance": "Independent Python parser of owned files opened and saved in Photoshop2026 27.2.0; generated numeric selection, no vendor artwork/code. Raw saved documents remain local evidence; this public fixture contains numeric/whitelisted resource facts only.",
+  "samples_each": 8392704,
+  "total_samples": 16785408,
+  "reference_planeSHA256": "87dee8bcbe13ead89f0207afd614864de51d1e75311cc1cf4a2f63a29855418e",
+  "results": [
+    {
+      "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261103T210312Z-374-large-selection-files/photoshop-large-selection8.psd",
+      "fileSHA256": "941fa850927f588661c11811636881af7e00e298e8d30fa4a335499ab404888d",
+      "version": 1,
+      "channels": 1,
+      "width": 4096,
+      "height": 2049,
+      "depth": 8,
+      "mode": 7,
+      "compression": 1,
+      "planeBytes": 8392704,
+      "planeSHA256": "87dee8bcbe13ead89f0207afd614864de51d1e75311cc1cf4a2f63a29855418e",
+      "resources": [
+        {
+          "id": 1061,
+          "bytes": 16
+        },
+        {
+          "id": 1060,
+          "bytes": 14335
+        },
+        {
+          "id": 1082,
+          "bytes": 229
+        },
+        {
+          "id": 1083,
+          "bytes": 557
+        },
+        {
+          "id": 1005,
+          "bytes": 16
+        },
+        {
+          "id": 1062,
+          "bytes": 14
+        },
+        {
+          "id": 1006,
+          "data": "154f776e6564206c617267652073656c656374696f6e"
+        },
+        {
+          "id": 1045,
+          "data": "00000016004f0077006e006500640020006c0061007200670065002000730065006c0065006300740069006f006e0000"
+        },
+        {
+          "id": 1077,
+          "data": "000000010000ffff000000000000003201"
+        },
+        {
+          "id": 1053,
+          "data": "00000002"
+        },
+        {
+          "id": 1037,
+          "bytes": 4
+        },
+        {
+          "id": 1049,
+          "bytes": 4
+        },
+        {
+          "id": 1011,
+          "bytes": 9
+        },
+        {
+          "id": 10000,
+          "bytes": 10
+        },
+        {
+          "id": 1012,
+          "bytes": 18
+        },
+        {
+          "id": 1015,
+          "bytes": 28
+        },
+        {
+          "id": 1032,
+          "bytes": 16
+        },
+        {
+          "id": 1092,
+          "bytes": 16
+        },
+        {
+          "id": 1097,
+          "bytes": 4
+        },
+        {
+          "id": 1054,
+          "bytes": 4
+        },
+        {
+          "id": 1050,
+          "bytes": 865
+        },
+        {
+          "id": 1064,
+          "bytes": 12
+        },
+        {
+          "id": 1041,
+          "bytes": 1
+        },
+        {
+          "id": 1044,
+          "bytes": 4
+        },
+        {
+          "id": 1036,
+          "bytes": 801
+        },
+        {
+          "id": 1057,
+          "bytes": 87
+        },
+        {
+          "id": 1058,
+          "bytes": 306
+        }
+      ]
+    },
+    {
+      "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261103T210312Z-374-large-selection-files/photoshop-large-selection8.psb",
+      "fileSHA256": "982185ab6ce705f979559d5b19978a5231beb361b075e75f10175aaaac4cbcdc",
+      "version": 2,
+      "channels": 1,
+      "width": 4096,
+      "height": 2049,
+      "depth": 8,
+      "mode": 7,
+      "compression": 1,
+      "planeBytes": 8392704,
+      "planeSHA256": "87dee8bcbe13ead89f0207afd614864de51d1e75311cc1cf4a2f63a29855418e",
+      "resources": [
+        {
+          "id": 1028,
+          "bytes": 15
+        },
+        {
+          "id": 1061,
+          "bytes": 16
+        },
+        {
+          "id": 1060,
+          "bytes": 14776
+        },
+        {
+          "id": 1082,
+          "bytes": 229
+        },
+        {
+          "id": 1083,
+          "bytes": 557
+        },
+        {
+          "id": 1005,
+          "bytes": 16
+        },
+        {
+          "id": 1062,
+          "bytes": 14
+        },
+        {
+          "id": 1006,
+          "data": "154f776e6564206c617267652073656c656374696f6e"
+        },
+        {
+          "id": 1045,
+          "data": "00000016004f0077006e006500640020006c0061007200670065002000730065006c0065006300740069006f006e0000"
+        },
+        {
+          "id": 1077,
+          "data": "000000010000ffff000000000000003201"
+        },
+        {
+          "id": 1053,
+          "data": "00000002"
+        },
+        {
+          "id": 1010,
+          "bytes": 10
+        },
+        {
+          "id": 1037,
+          "bytes": 4
+        },
+        {
+          "id": 1049,
+          "bytes": 4
+        },
+        {
+          "id": 1011,
+          "bytes": 9
+        },
+        {
+          "id": 10000,
+          "bytes": 10
+        },
+        {
+          "id": 1012,
+          "bytes": 18
+        },
+        {
+          "id": 1015,
+          "bytes": 28
+        },
+        {
+          "id": 1032,
+          "bytes": 16
+        },
+        {
+          "id": 1092,
+          "bytes": 16
+        },
+        {
+          "id": 1097,
+          "bytes": 4
+        },
+        {
+          "id": 1054,
+          "bytes": 4
+        },
+        {
+          "id": 1050,
+          "bytes": 873
+        },
+        {
+          "id": 1064,
+          "bytes": 12
+        },
+        {
+          "id": 1041,
+          "bytes": 1
+        },
+        {
+          "id": 1044,
+          "bytes": 4
+        },
+        {
+          "id": 1036,
+          "bytes": 787
+        },
+        {
+          "id": 1057,
+          "bytes": 87
+        },
+        {
+          "id": 1058,
+          "bytes": 306
+        }
+      ]
+    }
+  ]
+}

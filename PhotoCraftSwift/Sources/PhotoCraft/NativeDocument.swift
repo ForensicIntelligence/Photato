@@ -396,6 +396,7 @@ import SwiftUI
         store.layerVisibilityDraft = nil
         store.layerVisibilityIsolation = nil
         store.alphaEditingID = nil
+        store.nonQuickMaskDocumentID = nil; store.nonQuickMaskID = nil
         store.alphaOverlay = false
         store.componentTarget = .composite; store.modeComponentTargets = []; store.modeComponentVisibility = nil
         store.channelView = RGBChannelView()
@@ -444,6 +445,7 @@ import SwiftUI
         store.layerVisibilityDraft = nil
         store.layerVisibilityIsolation = nil
         store.alphaEditingID = nil
+        store.nonQuickMaskDocumentID = nil; store.nonQuickMaskID = nil
         store.alphaOverlay = false
         store.componentTarget = .composite; store.modeComponentTargets = []; store.modeComponentVisibility = nil
         store.channelView = RGBChannelView()
@@ -517,6 +519,7 @@ import SwiftUI
     store.colorLookupDraft = nil
     store.classicAdjustmentDraft = nil
     store.shapedTypeDraft?.close();store.shapedTypeDraft=nil
+    store.textFindWorkspace?.task?.cancel();store.textFindWorkspace=nil
     store.typeEditingDraft = nil
     store.typeEditor?.delegate = nil
     store.typeEditor = nil
@@ -532,6 +535,7 @@ import SwiftUI
 }
 @MainActor final class CraftDocumentController: NSDocumentController {
   let documentWindows = DocumentWindows()
+  private(set) var paintPalette = PaintPalette()
   var movieFramesWorkspace: MovieFramesWorkspace?
   var movieFramesWindow: MovieFramesWindow?
   var scanCropOperationID: UUID?
@@ -561,12 +565,14 @@ import SwiftUI
   var pendingUntitledRequest = false
   convenience init(
     workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
-    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil
+    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil,
+    paintPalette: PaintPalette? = nil
   ) {
     self.init()
     // AppKit may return its existing document-controller singleton from init().
     // Configure the returned instance, not storage allocated before super.init().
     self.workspaces = workspaces
+    self.paintPalette = paintPalette ?? PaintPalette()
     self.recoveryPreferences = recoveryPreferences ?? RecoveryPreferencesStore()
     self.colorSettings = colorSettings ?? ColorSettingsStore()
     self.recoveryIndex = recoveryIndex ?? RecoveryIndexStore()
@@ -576,6 +582,7 @@ import SwiftUI
     autosavingDelay = self.recoveryPreferences.value.delay
     for case let document as CraftNSDocument in documents {
       document.store.workspaceLibrary = workspaces
+      document.store.adoptPaintPalette(self.paintPalette)
     }
   }
   override var currentDocument: NSDocument? {
@@ -609,6 +616,7 @@ import SwiftUI
     super.addDocument(document)
     (document as? CraftNSDocument)?.ownerController = self
     (document as? CraftNSDocument)?.store.documentController = self
+    (document as? CraftNSDocument)?.store.adoptPaintPalette(paintPalette)
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces
     (document as? CraftNSDocument)?.store.synchronizeLinkedArtwork()
   }
@@ -619,6 +627,7 @@ import SwiftUI
       document.store.linkedSourceController = nil
       document.ownerController = nil
       document.store.documentController = nil
+      document.store.detachPaintPalette()
     }
     super.removeDocument(document)
   }

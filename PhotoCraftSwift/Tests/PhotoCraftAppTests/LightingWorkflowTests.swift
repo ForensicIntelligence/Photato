@@ -99,7 +99,7 @@ final class LightingWorkflowTests:XCTestCase {
       XCTAssertTrue(try NativeArchive.decode(NativeArchive.encode(smart))==smart);XCTAssertTrue(try NativeArchive.decode(NativeArchive.encodeChunked(smart))==smart)
       let stack=try XCTUnwrap(smart.layers[0].smartFilters),stackAction=RecordedAction(name:"Lighting stack",steps:[.init(name:"Lighting stack",operation:.filters(.active,stack))]);XCTAssertEqual(try ActionLibraryFile.decode(ActionLibraryFile(actions:[stackAction]).encoded()).version,27)
       XCTAssertThrowsError(try DocumentIO.encode(smart,format:.psd));XCTAssertThrowsError(try DocumentIO.encode(smart,format:.psb));XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON:"[{\"_obj\":\"lightingEffects\"}]"))
-      let store=EditorStore(document:d,actions:ActionLibrary());defer{store.renderTask?.cancel()};XCTAssertTrue(store.canBeginFilterKind(.lightingEffects));XCTAssertEqual(store.actionState["supportedVersions"] as? [Int],Array(1...29))
+      let store=EditorStore(document:d,actions:ActionLibrary());defer{store.renderTask?.cancel()};XCTAssertTrue(store.canBeginFilterKind(.lightingEffects));XCTAssertEqual(store.actionState["supportedVersions"] as? [Int],Array(1...46))
     }
   }
   @MainActor func testOriginalCachedImportHTTPNoOpReeditAndSourceRetention()async throws {

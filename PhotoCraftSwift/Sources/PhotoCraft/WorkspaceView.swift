@@ -109,6 +109,7 @@ struct WorkspaceView: View {
     .sheet(item: $store.imageExportDraft) { ImageExportSheet(store: store, draft: $0) }
     .sheet(item:$store.selectionModifyDraft){SelectionModifySheet(store:store,draft:$0)}
     .sheet(item: $store.colorRangeDraft) { ColorRangeSheet(store: store, model: $0) }
+    .sheet(item:$store.textFindWorkspace,onDismiss:{store.closeTextFind()}) {workspace in TextFindSheet(store:store,workspace:workspace)}
     .sheet(item: $store.fileInfoDraft) { FileInfoSheet(store: store, draft: $0) }
     .sheet(item:$store.guideDraft) { GuideSheet(store:store,draft:$0) }
     .sheet(item: $store.artboardDraft) { ArtboardSheet(store: store, draft: $0) }
@@ -132,7 +133,11 @@ struct WorkspaceView: View {
     }
     .sheet(isPresented: $store.showGaps) { gapSheet }
     .sheet(isPresented: $store.showFeatherSelection) { FeatherSelectionSheet(store: store) }
-    .sheet(item: $store.geometrySheet) { kind in GeometrySheet(store: store, kind: kind) }
+    .sheet(item: $store.geometrySheet) { kind in
+      if kind == .fitImage {
+        if let draft = store.fitImageDraft { FitImageSheet(store: store, draft: draft) }
+      } else { GeometrySheet(store: store, kind: kind) }
+    }
     .sheet(item: $store.levelsDraft, onDismiss: { store.render() }) { _ in LevelsSheet(store: store)
     }
     .sheet(item: $store.curvesDraft, onDismiss: { store.render() }) { _ in CurvesSheet(store: store)

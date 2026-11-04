@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forensicintelligence.ca/photato/schemas/mask-target.json",
+  "title": "Photato mask editing target and channel.view parameters",
+  "description": "Documentation schema for checkpoint380. ID is an identifier; hosting is not claimed. Runtime command guards remain authoritative.",
+  "$ref": "#/$defs/maskEditingTarget",
+  "$defs": {
+    "maskEditingTarget": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "layerID"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "layerMask",
+                "smartFilterMask"
+              ]
+            },
+            "layerID": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        }
+      ]
+    },
+    "channelViewParameters": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target"
+          ],
+          "properties": {
+            "target": {
+              "const": "RGB"
+            },
+            "overlay": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target"
+          ],
+          "properties": {
+            "target": {
+              "const": "quickMask"
+            },
+            "overlay": {
+              "type": "boolean"
+            },
+            "visible": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target"
+          ],
+          "properties": {
+            "target": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            },
+            "overlay": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target",
+            "layerID"
+          ],
+          "properties": {
+            "target": {
+              "enum": [
+                "layerMask",
+                "smartFilterMask"
+              ]
+            },
+            "layerID": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

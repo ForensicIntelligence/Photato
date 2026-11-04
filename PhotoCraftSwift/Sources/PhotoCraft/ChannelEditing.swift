@@ -4,17 +4,64 @@ import PhotoCraftImaging
 
 extension EditorStore {
   static let hiddenQuickMaskBrushMessage = "Could not use the brush tool because the target channel is hidden."
+  static let hiddenQuickMaskFillMessage = "Could not complete the Fill command because the target channel is hidden."
+  static let hiddenQuickMaskInvertMessage = "Show the target channel before applying Invert."
+  func validateQuickMaskPaintingTarget(_ target: PaintTarget) throws {
+    if target == .channel(.quickMask), document.quickMask != nil, !isQuickMaskVisible {
+      throw CraftError.invalid(Self.hiddenQuickMaskBrushMessage)
+    }
+  }
+  /// Visibility is session state, so enforce it at both command entry and prepared commit.
+  /// Photoshop permits filtering a hidden Quick Mask; it does not permit painting or Fill.
+  func validateQuickMaskVisibility(_ command: Command) throws {
+    guard document.quickMask != nil, !isQuickMaskVisible else { return }
+    switch command {
+    case .channel(.stroke(.quickMask, _, _)):
+      throw CraftError.invalid(Self.hiddenQuickMaskBrushMessage)
+    case .channel(.fill(.quickMask, _, _)):
+      throw CraftError.invalid(Self.hiddenQuickMaskFillMessage)
+    case .channel(.invert(.quickMask)):
+      throw CraftError.invalid(Self.hiddenQuickMaskInvertMessage)
+    case .pixelPaint(let request) where request.target == .channel(.quickMask):
+      throw CraftError.invalid(request.kind == .fill ? Self.hiddenQuickMaskFillMessage : "Show the target channel before using Stroke.")
+    case .painting(let edit):
+      try validateQuickMaskPaintingTarget(edit.request.target)
+    default: break
+    }
+  }
+  var canInvertPixels: Bool {
+    if let target = editingChannel { return canEditChannels && (target != .quickMask || isQuickMaskVisible) }
+    guard document.inkMode == nil, !editingMask, !smartFilterMaskEditing else { return false }
+    if !modeComponentTargets.isEmpty { return canEditModeComponents }
+    return !editingComponent && canUseMenuPixelEdit
+  }
+  func invertPixels() {
+    guard canInvertPixels else { return }
+    if let target = editingChannel { performGeometry(.channel(.invert(target))) }
+    else if let layer = activeLayer { performGeometry(.applyAdjustment(layer.id, .invert)) }
+  }
   var hasHiddenQuickMaskEditingTarget: Bool { editingChannel == .quickMask && !isQuickMaskVisible }
   var editingChannel: ChannelPlaneTarget? {
     if let id = alphaEditingID, document.alphaChannels?.contains(where: { $0.id == id }) == true { return .alpha(id) }
-    return document.quickMask == nil ? nil : .quickMask
+    guard let mask = document.quickMask else { return nil }
+    return nonQuickMaskDocumentID == document.id && nonQuickMaskID == mask.id ? nil : .quickMask
   }
   var isQuickMaskVisible: Bool {
     guard let mask = document.quickMask else { return false }
     return hiddenQuickMaskDocumentID != document.id || hiddenQuickMaskID != mask.id
   }
   var displayedAuxiliaryChannel: ChannelPlaneTarget? {
-    editingChannel == .quickMask && !isQuickMaskVisible ? nil : editingChannel
+    if let target = editingChannel, target != .quickMask { return target }
+    return isQuickMaskVisible ? .quickMask : nil
+  }
+  /// Scope the override to this temporary plane, so a newly entered mask selects itself.
+  func deselectQuickMaskTarget() {
+    nonQuickMaskDocumentID = document.quickMask == nil ? nil : document.id
+    nonQuickMaskID = document.quickMask?.id
+  }
+  func selectQuickMaskChannel() throws {
+    guard document.quickMask != nil else { throw CraftError.invalid("Enter Quick Mask before selecting its channel.") }
+    try selectAlphaChannel(nil)
   }
   func setQuickMaskVisibility(_ visible: Bool) throws {
     guard canEditChannels, let mask = document.quickMask else {
@@ -29,6 +76,7 @@ extension EditorStore {
   func selectAlphaChannel(_ id: UUID?, overlay: Bool = false) throws {
     guard canEditChannels else { throw CraftError.invalid("Finish the current interaction first.") }
     if let id { _ = try document.channel(.alpha(id)) }
+    if id == nil { nonQuickMaskDocumentID = nil; nonQuickMaskID = nil } else { deselectQuickMaskTarget() }
     alphaEditingID = id; alphaOverlay = overlay; componentTarget = .composite; modeComponentTargets = []; modeComponentVisibility = nil
     maskEditingLayerID = nil; smartFilterMaskEditing = false; clearMaskView()
     channelView = RGBChannelView(); render()
@@ -36,13 +84,20 @@ extension EditorStore {
   func toggleQuickMask() {
     guard canEditChannels else { return }
     do {
+      let maskTarget=document.quickMask != nil ? selectedMaskPaintTarget:nil
       try executeEditorCommand(.channel(.quickMask(document.quickMask == nil,quickMaskOptions)))
-      resetQuickMaskEditingContext();render()
+      resetQuickMaskEditingContext(preserving:maskTarget);render()
     } catch {self.error=error.localizedDescription}
   }
-  func resetQuickMaskEditingContext() {
+  func resetQuickMaskEditingContext(preserving maskTarget:MaskPaintTarget? = nil) {
+    nonQuickMaskDocumentID = nil; nonQuickMaskID = nil
     alphaEditingID=document.isChannelOnly && document.quickMask == nil ? document.alphaChannels?.first?.id:nil;componentTarget = .composite;modeComponentTargets=[];modeComponentVisibility=nil
     maskEditingLayerID=nil;smartFilterMaskEditing=false;clearMaskView();channelView=RGBChannelView()
+    if document.quickMask==nil,let target=maskTarget,document.activeLayerID==target.layerID,
+      let layer=document.layers.first(where:{$0.id==target.layerID}),
+      target.smartFilter ? layer.smartFilters?.mask != nil:layer.mask != nil {
+      maskEditingLayerID=target.layerID;smartFilterMaskEditing=target.smartFilter
+    }
   }
   func reverseQuickMaskIndication() {
     guard canEditChannels else{return}
@@ -155,6 +210,7 @@ enum ChannelPresentation {
 }
 
 @MainActor extension AppDelegate {
+  @objc func invertPixels() { store?.invertPixels() }
   @objc func toggleQuickMask() { store?.toggleQuickMask() }
   @objc func saveSelectionChannel() { store?.beginChannelDialog(.save) }
   @objc func loadSelectionChannel() { store?.beginChannelDialog(.load) }

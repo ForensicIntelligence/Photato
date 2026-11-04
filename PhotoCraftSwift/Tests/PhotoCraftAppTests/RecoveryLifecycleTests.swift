@@ -10,13 +10,54 @@ final class RecoveryLifecycleTests: XCTestCase {
     return CraftDocumentController(workspaces: WorkspaceLibrary())
   }
 
+  @MainActor func testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory() async throws {
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    for depth in PixelDepth.allCases {
+      let helper = RecoveryIndexTests()
+      let index = RecoveryIndexStore(directoryURL: folder.appendingPathComponent(depth.rawValue))
+      let controller = helper.controller(index)
+      let original = try CraftNSDocument.blankModel(width: 4, height: 3, depth: depth)
+      let id = try XCTUnwrap(original.activeLayerID)
+      XCTAssertTrue(original.layers[0].isBackground)
+      var painted = original
+      try Command.fill(id, .black).apply(to: &painted)
+      let (context, backup, _) = try helper.seed(index, model: painted)
+      let savedBytes = try Data(contentsOf: backup)
+      try await controller.discoverIndexedRecovery(display: false)
+      let document = try XCTUnwrap(controller.documents.compactMap { $0 as? CraftNSDocument }
+        .first { $0.recoveryGroupID == context.recoveryID })
+      XCTAssertEqual(document.recoverySnapshotContext?.snapshotID, context.snapshotID)
+      defer { document.close() }
+      XCTAssertEqual(document.store.document, painted)
+      XCTAssertTrue(document.store.document.layers[0].isBackground)
+      XCTAssertTrue(document.isDocumentEdited)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+      try document.store.executeEditorCommand(.fill(id, .white))
+      let afterPaint = document.store.document
+      XCTAssertNotEqual(afterPaint, painted)
+      XCTAssertTrue(afterPaint.layers[0].isBackground)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      XCTAssertThrowsError(try document.store.executeEditorCommand(.renameLayer(id, "Invalid rename")))
+      XCTAssertEqual(document.store.document, afterPaint)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      let undone = await document.store.undo()
+      XCTAssertTrue(undone)
+      XCTAssertEqual(document.store.document, painted)
+      let redone = await document.store.redo()
+      XCTAssertTrue(redone)
+      XCTAssertEqual(document.store.document, afterPaint)
+      XCTAssertEqual(try Data(contentsOf: backup), savedBytes)
+    }
+  }
+
   @MainActor func testDefaultTimerAndNativeUntitledRecoveryFactory() throws {
     let controller = controller()
     XCTAssertEqual(controller.autosavingDelay, 600)
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let recovery = folder.appendingPathComponent("recovery-snapshot")
-    let model = try CraftNSDocument.blankModel(
+    let model = try EditableLifecycleModel.make(
       width: 5, height: 3, depth: .f32, background: Pixel(0.13, 0.27, 0.39, 0.52),
       name: "Recovered unsaved work")
     try NativeArchive.write(model, to: recovery)
@@ -38,7 +79,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     for format in DocumentIO.Format.allCases {
-      let original = try CraftNSDocument.blankModel(width: 4, height: 2)
+      let original = try EditableLifecycleModel.make(width: 4, height: 2)
       let source = folder.appendingPathComponent("original." + format.rawValue)
       let sourceBytes = try DocumentIO.encodeForPersistence(original, format: format)
       try sourceBytes.write(to: source)
@@ -65,7 +106,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let recovery = folder.appendingPathComponent("recovery.photato")
-    let model = try CraftNSDocument.blankModel(width: 3, height: 2)
+    let model = try EditableLifecycleModel.make(width: 3, height: 2)
     try NativeArchive.write(model, to: recovery)
     let source = folder.appendingPathComponent("missing.psb")
     let document = try XCTUnwrap(
@@ -86,7 +127,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let source = folder.appendingPathComponent("original.photato")
-    let original = try NativeArchive.encodeChunked(CraftNSDocument.blankModel(width: 2, height: 2))
+    let original = try NativeArchive.encodeChunked(EditableLifecycleModel.make(width: 2, height: 2))
     try original.write(to: source)
     let recovery = folder.appendingPathComponent("corrupt.photato")
     try Data(original.prefix(25)).write(to: recovery)
@@ -111,7 +152,7 @@ final class RecoveryLifecycleTests: XCTestCase {
 
   @MainActor func testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits() async throws {
     let controller = controller()
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 4, height: 3))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 4, height: 3))
     controller.addDocument(document)
     defer { document.close() }
     try document.store.executeEditorCommand(
@@ -189,7 +230,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let controller = controller()
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 3, height: 2))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 3, height: 2))
     controller.addDocument(document)
     defer { document.close() }
     let layer = try XCTUnwrap(document.store.document.activeLayerID)
@@ -230,7 +271,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let source = folder.appendingPathComponent("original.photato")
     let recovery = folder.appendingPathComponent("recovery.photato")
     let destination = folder.appendingPathComponent("reviewed.photato")
-    let original = try CraftNSDocument.blankModel(width: 4, height: 3)
+    let original = try EditableLifecycleModel.make(width: 4, height: 3)
     try NativeArchive.write(original, to: source)
     let originalBytes = try Data(contentsOf: source)
     var edited = EditorSession(document: original)

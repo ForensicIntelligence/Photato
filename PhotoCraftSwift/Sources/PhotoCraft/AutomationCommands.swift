@@ -36,6 +36,7 @@ struct AutomationCommand: Sendable {
     var schema: [String: Any] {
       var properties: [String: Any] = [:]
       for key in parameters.keys {
+        if TextFindAPI.commands.contains(name) {properties[key]=TextFindAPI.schema(key);continue}
         if AdvancedStyleAPI.commands.contains(name) {properties[key]=AdvancedStyleAPI.schema(key);continue}
         if LinkedArtworkAPI.commands.contains(name) {properties[key]=LinkedArtworkAPI.schema(key);continue}
         if ChannelArithmeticAPI.commands.contains(name) {properties[key]=ChannelArithmeticAPI.schema(key);continue}
@@ -133,7 +134,7 @@ struct AutomationCommand: Sendable {
           if key == "samplingChannelID" { properties[key] = ["type":"string","format":"uuid"]; continue }
         }
         if name == "channel.edit", let schema = ChannelAPI.parameterSchema(key) { properties[key] = schema; continue }
-        if name == "channel.view" { properties[key] = ["overlay","visible"].contains(key) ? ["type":"boolean"]:["type":"string","description":"RGB, quickMask, or alpha channel UUID"]; continue }
+        if name == "channel.view" {properties[key] = ["overlay","visible"].contains(key) ? ["type":"boolean"]:key=="layerID" ? ["type":"string","format":"uuid"]:["type":"string","description":"RGB, quickMask, auxiliary UUID, layerMask or smartFilterMask"];continue}
         if name == "layer.transform", key != "layerID" {
           properties[key] = ["type": "number", "minimum": -1_000_000, "maximum": 1_000_000]
           continue
@@ -144,7 +145,7 @@ struct AutomationCommand: Sendable {
         case "strokes": properties[key] = SelectionRefinement.strokeSchema
         case "output": properties[key] = ["type":"string","enum":SelectionRefinementOutput.allCases.map(\.rawValue),"default":"selection"]
         case "fromLayerMask": properties[key] = ["type":"boolean","default":false]
-        case "adjustment": properties[key] = ["oneOf": [ClassicAdjustment.apiSchema, ColorLookupAdjustment.apiSchema, ModernAdjustment.apiSchema, SourceAdjustment.apiSchema]]
+        case "adjustment": properties[key] = ["oneOf": [ClassicAdjustment.apiSchema, ColorLookupAdjustment.apiSchema, ModernAdjustment.apiSchema, SourceAdjustment.apiSchema] + (name == "adjustment.apply" ? [ClassicAdjustment.pixelInvertSchema] : [])]
         case "text": properties[key] = TextContent.apiTypeSchema
         case "stack": properties[key] = SmartFilterStack.apiSchema
         case "size": properties[key] = ["type": "number", "minimum": 0.5, "maximum": 2048]
@@ -238,7 +239,7 @@ struct AutomationCommand: Sendable {
     .init(name:"paint.configure",parameters:["tool":"Painting tool","options":"Partial tool options"],description:"Configure painting tools without changing pixels."),
     .init(name:"paint.tool",parameters:["tool":"Painting tool","points":"Stroke samples or Magic Eraser click","brush":"Partial brush override","presetID":"Optional brush preset UUID","options":"Partial tool options","patternID":"Pattern resource ID","target":"pixels, layerMask, smartFilterMask, alpha or quickMask","layerID":"Layer UUID","channelID":"Alpha UUID"],description:"Paint using Pencil, Mixer Brush, Color Replacement, Pattern Stamp or color-aware erasers with shared native preview/history.",optionalParameters:["brush","presetID","options","patternID","target","layerID","channelID"]),
     .init(name:"paint.mixer",parameters:["operation":"load, clean or sample","color":"Loaded color","x":"Sample x","y":"Sample y","size":"Sample diameter","layerID":"Source layer UUID","allLayers":"Sample composite","solid":"Load solid color only"],description:"Manage persistent Mixer Brush paint; changes tool state without document history.",optionalParameters:["color","x","y","size","layerID","allLayers","solid"]),
-    .init(name:"brush.configure",parameters:["brush":"Partial brush/tool settings"],description:"Patch the active brush settings without changing document pixels."),
+    .init(name:"brush.configure",parameters:["brush":"Partial brush/tool settings"],description:"Patch the active brush settings and foreground/background color context without changing document pixels."),
     .init(name:"brush.presets",parameters:["operation":"Preset operation","presetID":"Preset UUID","name":"Preset name","group":"Group name","includeSize":"Capture diameter","includeToolSettings":"Capture tool options","includeColor":"Capture colors","index":"Destination index","data":"Base64 brush file","format":"photatobrushes or abr"],description:"Manage reusable native brush presets and supported ABR files.",optionalParameters:["presetID","name","group","includeSize","includeToolSettings","includeColor","index","data","format"]),
     .init(name:"paint.stroke",parameters:["points":"Tablet/time stroke samples","brush":"Partial override of current brush","presetID":"Optional preset","target":"pixels, layerMask, smartFilterMask, alpha or quickMask","layerID":"Layer UUID","channelID":"Alpha UUID"],description:"Apply one undoable native brush stroke with deterministic settings.",optionalParameters:["brush","presetID","target","layerID","channelID"]),
     .init(name: "actions.manage", parameters: ["operation": "Library/recorder operation", "actionID": "Saved action UUID", "stepID": "Step UUID", "name": "Action name", "set": "Action set", "enabled": "Enable step", "index": "Destination step index", "data": "Base64 version 1–43 action library"], description: "List, record, stop, cancel, rename, delete, import/export and edit native action steps. Uses the shared local action library; no filesystem paths accepted.", optionalParameters: ["actionID", "stepID", "name", "set", "enabled", "index", "data"]),
@@ -274,6 +275,7 @@ struct AutomationCommand: Sendable {
     .init(name:"document.duplicate",parameters:["name":"Optional copy name", "merged":"Duplicate merged visible layers only"],description:"Create an independent new shared document; requires document transfers. Source history is unchanged.",optionalParameters:["name","merged"]),
     .init(name: "clipboard.newDocument", parameters: ["payloadBase64": "Native clipboard bytes", "name": "Optional new document name"], description: "Create a new shared document from a native clipboard payload; requires document transfers.", optionalParameters: ["name"]),
     .init(name: "document.resize", parameters: ["width": "Pixel width", "height": "Pixel height", "resolution": "Pixels per inch", "method": "Resampling method"], description: "Resize the document through native Image Size and history.", optionalParameters: ["resolution", "method"]),
+    .init(name:"document.fitImage",parameters:["width":"Maximum pixel width", "height":"Maximum pixel height", "dontEnlarge":"Keep images already inside the bounds at their current size", "method":"Resampling method"],description:"Fit the whole document proportionally inside a reusable pixel bounding box, preserving PPI, through native history and Actions.",optionalParameters:["dontEnlarge","method"]),
     .init(name: "document.canvasSize", parameters: ["width": "Pixel width", "height": "Pixel height", "anchor": "Position of original canvas", "fill": "Optional RGBA extension color"], description: "Change canvas extent while retaining document mode and history.", optionalParameters: ["anchor", "fill"]),
     .init(name: "document.rotate", parameters: ["turn": "Quarter turn, half turn or canvas flip"], description: "Rotate or flip the entire canvas with one Undo."),
     .init(name: "document.resolution", parameters: ["resolution": "Pixels per inch"], description: "Change print resolution without resampling pixels."),
@@ -281,7 +283,7 @@ struct AutomationCommand: Sendable {
     .init(name:"contentAware.scale",parameters:["layerID":"Ordinary raster layer UUID","width":"Output width in pixels","height":"Output height in pixels","x":"Output document x","y":"Output document y","amount":"Content-aware percentage","protectChannelID":"Saved alpha channel UUID","protectSkinTones":"Protect skin-tone regions"],description:"Scale the layer or selected pixels using native seam carving with preview-equivalent output and one undo transaction.",optionalParameters:["x","y","amount","protectChannelID","protectSkinTones"]),
     .init(name:"contentAware.fill",parameters:["layerID":"Raster layer UUID","settings":"Fill settings","output":"current, new or duplicate","strokes":"Sampling and selection edits","samplingChannelID":"Saved alpha sampling source"],description:"Fill the selected area through the native Content-Aware Fill engine, one prepared undo transaction.",optionalParameters:["settings","output","strokes","samplingChannelID"]),
     .init(name:"channel.edit",parameters:ChannelAPI.fields,description:"Manage alpha channels, save/load selections, edit Quick Mask, paint and filter through native history. Action-specific parameters are strict.",optionalParameters:Set(ChannelAPI.fields.keys).subtracting(["action"])),
-    .init(name:"channel.view",parameters:["target":"RGB, quickMask or auxiliary UUID","overlay":"View alpha/spot over image","visible":"Quick Mask overlay visibility; requires target quickMask and retains its editing mode"],description:"Select the shared desktop channel target and view.",optionalParameters:["overlay","visible"]),
+    .init(name:"channel.view",parameters:["target":"RGB, quickMask, auxiliary UUID, layerMask or smartFilterMask","layerID":"Mask owner UUID; required only for layerMask/smartFilterMask","overlay":"View alpha/spot over image","visible":"Quick Mask overlay visibility; requires target quickMask and retains the current editing target"],description:"Select the shared desktop channel/mask target and colour context; supplying visible changes only the Quick Mask eye.",optionalParameters:["layerID","overlay","visible"]),
     .init(name:"layer.background",parameters:["layerID":"Layer UUID","operation":"toLayer or fromLayer","name":"Converted regular layer name","mode":"Converted regular blend mode","opacity":"Converted opacity0–1","color":"Layer color label","backgroundColor":"Opaque RGBA canvas/transparency fill"],description:"Convert explicit Background identity through the native engine and one Undo transaction.",optionalParameters:["name","mode","opacity","color","backgroundColor"]),
     .init(name:"pixels.clear",parameters:["layerID":"Raster layer UUID","backgroundColor":"Opaque RGBA fill for Background"],description:"Clear selected pixels; Background uses its background color and remains opaque.",optionalParameters:["backgroundColor"]),
     .init(name:"pixels.fill",parameters:["layerID":"Raster layer or mask owner UUID","mask":"Edit its pixel mask","target":"Auxiliary channel UUID or quickMask instead of layerID","color":"RGBA0–1 instead of patternID","patternID":"Saved document/native-library pattern ID instead of color","placement":"Optional native pattern scale/angle/phase override","opacity":"Paint opacity0–1","mode":"Paint blend mode","preserveTransparency":"Retain raster alpha"],description:"Fill current selection or canvas with color or a saved pattern using the shared native paint engine and one Undo.",optionalParameters:["layerID","mask","target","color","patternID","placement","opacity","mode","preserveTransparency"]),
@@ -338,6 +340,8 @@ struct AutomationCommand: Sendable {
     .init(name:"tone.statistics",parameters:["layerID":"Source layer UUID; omit for merged","useSelection":"Calculate from selection"],description:"Read portable Match Color Lab statistics from this shared document.",optionalParameters:["layerID","useSelection"]),
     .init(name: "adjustment.apply", parameters: ["layerID": "Pixel layer UUID", "adjustment": "Classic, Color Lookup or modern adjustment"], description: "Apply to selected pixels with shared native Undo; composite RGB target only."),
     .init(name:"font.inspect",parameters:["font":"Installed PostScript font name","start":"First glyph ID","count":"Glyph page size"],description:"Inspect installed OpenType features, variable axes and glyphs.",optionalParameters:["start","count"]),
+    .init(name:"text.find",parameters:["find":"Literal text","layerID":"Single layer UUID; omitted searches all eligible type layers","caseSensitive":"Exact case","wholeWord":"Unicode whole word","start":"UTF-16 start in explicit layer","offset":"Match page offset","limit":"Match page size"],description:"Find text in visible editable type layers without changing document/history.",optionalParameters:["layerID","caseSensitive","wholeWord","start","offset","limit"]),
+    .init(name:"text.replace",parameters:["find":"Literal text","replacement":"New text; empty deletes matches","layerID":"Single layer UUID; omitted searches all eligible type layers","caseSensitive":"Exact case","wholeWord":"Unicode whole word","start":"UTF-16 start in explicit layer","replaceAll":"All matches or only the next match"],description:"Replace type text with formatting, native shaping, one Undo and semantic Actions.",optionalParameters:["layerID","caseSensitive","wholeWord","start","replaceAll"]),
     .init(name:"text.layout",parameters:["layerID":"Type layer UUID","settings":"Editable layout settings","enabled":"False removes layout","pathID":"Saved document path"],description:"Apply editable path, warp or Dynamic Text layout with Undo.",optionalParameters:["settings","enabled","pathID"]),
     .init(name:"text.glyph",parameters:["layerID":"Type layer UUID","font":"Installed font","glyphID":"Glyph table ID","location":"UTF-16 insertion offset","length":"UTF-16 replacement length"],description:"Insert a retained glyph in editable type, with Undo.",optionalParameters:["location","length"]),
     .init(name: "text.create", parameters: ["text": "Native type description", "x": "Pixel x", "y": "Pixel y", "name": "Layer name"], description: "Create editable point or paragraph text with native shaping and Undo.", optionalParameters: ["name"]),
@@ -605,7 +609,7 @@ struct AutomationCommand: Sendable {
     case "adjustment.create", "adjustment.set", "adjustment.apply": return try classicAdjustmentCommand(document: document, lookup: lookup)
     case "ink.channel.write", "ink.channel.edit", "ink.channel.manage": return try inkChannelCommand(in: document)
     case "mode.channel.edit": return try modeComponentEdit(in: document)
-    case "document.resize", "document.canvasSize", "document.rotate", "document.resolution", "selection.shape", "selection.inverse", "selection.feather": return try geometryCommand(in: document)
+    case "document.resize", "document.fitImage", "document.canvasSize", "document.rotate", "document.resolution", "selection.shape", "selection.inverse", "selection.feather": return try geometryCommand(in: document)
     case "document.convertDuotone", "document.convertMultichannel": return try inkModeRequest(in: document).command(in: document)
     case "document.convertIndexed", "document.convertBitmap", "indexed.colorTable.write": return try restrictedModeRequest(in: document).command(in: document)
     case "indexed.indices.write": return try indexedWrite(in: document)
@@ -664,6 +668,16 @@ struct AutomationCommand: Sendable {
     if name == "mode.channel.visibility" { try store.setModeComponentVisibility(modeComponents(in: store.document)); return true }
     if name == "channel.view" {
       let target = try string("target")
+      if target=="layerMask" || target=="smartFilterMask" {
+        guard parameters["overlay"]==nil,parameters["visible"]==nil else{throw AutomationFailure(status:400,message:"Mask editing targets do not accept overlay or visible.")}
+        let id=try actionUUID("layerID")
+        guard store.canSelectComponentTarget,store.canBeginLayerCreation else{throw AutomationFailure(status:409,message:"Finish the current interaction before selecting a mask.")}
+        guard let layer=store.document.layers.first(where:{$0.id==id}) else{throw AutomationFailure(status:404,message:"Mask owner not found.")}
+        guard target=="layerMask" ? layer.mask != nil:layer.smartFilters?.mask != nil else{throw AutomationFailure(status:422,message:"The requested mask is unavailable.")}
+        if target=="layerMask" {store.selectMask(id)}else{store.selectSmartFilterMask(id)}
+        return true
+      }
+      guard parameters["layerID"]==nil else{throw AutomationFailure(status:400,message:"layerID applies only to a layerMask or smartFilterMask target.")}
       var overlay = false
       if let raw = parameters["overlay"] { guard case .bool(let v) = raw else { throw AutomationFailure(status:400,message:"overlay must be boolean.") }; overlay = v }
       if let raw = parameters["visible"] {
@@ -673,12 +687,11 @@ struct AutomationCommand: Sendable {
         guard store.document.quickMask != nil else {
           throw AutomationFailure(status:422,message:"Enter Quick Mask before changing its overlay visibility.")
         }
-        if store.editingChannel != .quickMask { try store.selectAlphaChannel(nil) }
         try store.setQuickMaskVisibility(visible)
         return true
       }
       if target == "RGB" { try store.selectEditingChannel(.composite) }
-      else { let t = try channelTarget(); _ = try store.document.channel(t); if case .alpha(let id) = t { try store.selectAlphaChannel(id,overlay:overlay) } else { try store.selectAlphaChannel(nil) } }
+      else { let t = try channelTarget(); _ = try store.document.channel(t); if case .alpha(let id) = t { try store.selectAlphaChannel(id,overlay:overlay) } else { try store.selectQuickMaskChannel() } }
       return true
     }
     if name == "channel.fill" {

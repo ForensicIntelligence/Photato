@@ -7,7 +7,7 @@ import XCTest
 final class AsyncRecoveryWorkflowTests: XCTestCase {
   @MainActor func fixture() throws -> CraftNSDocument {
     let controller = RecoveryLifecycleTests().controller()
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 8, height: 5))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 8, height: 5))
     controller.addDocument(document)
     try document.store.executeEditorCommand(.fill(document.store.document.activeLayerID!, .black))
     return document
@@ -89,7 +89,7 @@ final class AsyncRecoveryWorkflowTests: XCTestCase {
     defer { gate.release() }
     document.recoveryEncoder = encoder(gate)
     let captured = document.store.document
-    let replacement = try CraftNSDocument.blankModel(width: 3, height: 2)
+    let replacement = try EditableLifecycleModel.make(width: 3, height: 2)
     let bytes = try NativeArchive.encodeChunked(replacement)
     let task = Task { try await document.writeRecoverySnapshot() }
     try await DocumentPersistenceTests().waitFor(gate)

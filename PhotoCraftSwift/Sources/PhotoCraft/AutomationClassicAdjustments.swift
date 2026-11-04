@@ -35,8 +35,9 @@ extension ClassicAdjustment {
       try result.validate(); return result
     } catch { throw AutomationFailure(status:400,message:error.localizedDescription) }
   }
+  static var pixelInvertSchema: [String: Any] { ["type":"object","additionalProperties":false,"required":["kind"],"properties":["kind":["const":"invert"]]] }
   static var apiCapabilities: [String: Any] {
-    ["commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":apiSchema,
+    ["commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":apiSchema,"pixelInvert":["command":"adjustment.apply","adjustment":pixelInvertSchema,"behavior":"Destructive RGB pixel inversion, selection-aware, no added layer, shared native CommandI and one Undo. Channels use channel.edit invert; masks/components retain their explicit operations. Complete Photoshop profile/HDR/output parity remains open."],
       "defaults":Kind.allCases.map { Self($0).apiObject },
       "units":"Exposure uses EV, normalized linear Offset and Gamma Correction; the other kinds use integer percentages. Mixer rows: Red, Green, Blue outputs; columns: Red, Green, Blue inputs, Constant. Selective Color rows: Reds, Yellows, Greens, Cyans, Blues, Magentas, Whites, Neutrals, Blacks; columns: Cyan, Magenta, Yellow, Black. Colors are opaque normalized RGB.",
       "persistence":"Native17 retains existing classic values/masks; complete Exposure requires Native67. Set replaces all settings of the existing kind; unspecified values use defaults. Apply bakes selected pixels as one Undo transaction.",
@@ -56,6 +57,12 @@ extension AutomationCommand {
       return .applyAdjustment(id,.colorLookup(lookup))
     }
     guard let raw = parameters["adjustment"] else { throw AutomationFailure(status:400,message:"Missing adjustment.") }
+    if let object=raw.jsonValue as? [String:Any], object["kind"] as? String == "invert" {
+      guard name == "adjustment.apply", Set(object.keys) == ["kind"] else { throw AutomationFailure(status:400,message:"Pixel Invert uses adjustment.apply with only kind: invert.") }
+      guard let id=UUID(uuidString:try string("layerID")), let layer=document.layers.first(where:{$0.id==id}) else { throw AutomationFailure(status:404,message:"Layer not found.") }
+      guard case .raster=layer.content, layer.smartObject == nil else { throw AutomationFailure(status:422,message:"Pixel Invert requires an ordinary pixel layer.") }
+      return .applyAdjustment(id,.invert)
+    }
     if let object=raw.jsonValue as? [String:Any],let kind=object["kind"] as? String,ModernAdjustment.Kind(rawValue:kind) != nil {return try modernAdjustmentCommand(document:document,raw:object)}
     if let object=raw.jsonValue as? [String:Any],object["kind"] as? String == "source" {return try sourceAdjustmentCommand(document:document,raw:object)}
     let value = try ClassicAdjustment.decodeAPI(raw.jsonValue)

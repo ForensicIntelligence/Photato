@@ -5,9 +5,11 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 44
+  static let maximumVersion = 46
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where:{$0.steps.contains{if case .replaceText=$0.operation{return true};return false}}){return 46}
+    if actions.contains(where:{$0.steps.contains{if case .fitImage=$0.operation{return true};return false}}){return 45}
     if actions.contains(where:{$0.steps.contains{if case .canvasEdges=$0.operation{return true};return false}}){return 44}
     if actions.contains(where:{$0.steps.contains{if case .flattenImage=$0.operation{return true};return false}}){return 43}
     if actions.contains(where:{$0.steps.contains{if case .patternPixelPaint=$0.operation{return true};return false}}){return 42}
@@ -87,7 +89,7 @@ struct ActionLibraryFile: Codable {
   }
   func encoded() throws -> Data {
     guard (1...Self.maximumVersion).contains(version), actions.count <= 128, Set(actions.map(\.id)).count == actions.count else {
-      throw CraftError.invalid("Invalid action library (versions 1–43, maximum 128 actions).")
+      throw CraftError.invalid("Invalid action library (versions 1–\(Self.maximumVersion), maximum 128 actions).")
     }
     for action in actions { try action.validate() }
     let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys, .prettyPrinted]

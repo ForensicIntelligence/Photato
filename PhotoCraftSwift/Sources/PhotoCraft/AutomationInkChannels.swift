@@ -29,6 +29,7 @@ enum InkChannelAPI {
   }
   static var capabilities: [String: Any] { [
     "commands": commands, "targets": target,
+    "storage": ["sampleBlockSize": ComponentPlane.blockSamples, "copyOnWriteLevels": 4, "rawSampleBits": true, "implicitUniformFill": true, "maximumPixels": InkPlane.maximumPixels, "limits": "Ink editing, rendering, native encoding and PSD/PSB routes retain the existing8,388,608pixel limit. The internal paged numeric-plane foundation does not lift application document limits."],
     "readResultSchema": BrushAPI.object([
       "target": target, "offset": schema("offset", command: ""), "values": schema("values", command: ""),
       "width": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true), "height": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true),

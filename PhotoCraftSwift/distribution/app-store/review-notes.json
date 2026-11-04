@@ -1,6 +1,6 @@
 {
-  "status": "LOCAL_DRAFT",
-  "notes": "Photato 0.3.0 (331) is an unfinished alpha of an independent native Swift image editor. Many planned features are not yet available, and complete PhotoCraft/Photoshop compatibility is not claimed. We understand App Review Guideline 2.2 directs beta software to TestFlight; this package is for validation and draft preparation, not an automatic public App Store submission.\n\nThe app is free, with no IAP, tips, subscriptions, login or paid unlocks. Ordinary editing runs locally. Optional Apple Intelligence uses system availability checks on eligible Apple Silicon/macOS26+ systems; image services may use Apple's Private Cloud Compute. An optional authenticated loopback API is disabled until enabled by the user; it shares the native editing engine. File access is user-selected and uses app-scoped bookmarks. The app is sandboxed in its AppStore configuration.\n\nThe build demonstrates AI-aided development, with a factual development diary and source attribution. The repository remains private until the software release date. All releases require the maintainer's manual approval. Do not enable automatic release, pre-orders or automatic TestFlight group distribution.",
+  "status": "PREPARED_LOCAL_378_PORTAL_SAVE_REJECTED_MISSING_REVIEW_CONTACT",
+  "notes": "Photato is an unfinished alpha of a completely free native Swift image editor. Many planned functions are not yet available. Complete professional-workflow coverage and file compatibility are not claimed. The listing describes its AI-aided development and known limitations.\n\nThis record is draft preparation. We understand App Review Guideline 2.2 directs unfinished beta software to TestFlight. No review submission, public release or automatic TestFlight distribution is requested by this metadata update. Every release requires the maintainer's manual approval.\n\nNo sign-in, purchases, subscriptions, tips or paid unlocks are required. Ordinary editing runs locally. Optional Apple Intelligence uses system availability checks on eligible Apple Silicon/macOS26+ systems; supported image services may use Apple's Private Cloud Compute. The authenticated loopback API is optional and disabled until enabled by the user.\n\nDraft media is captured from the actual 0.3.0 development build376 using original owned artwork. No build is selected in this App Store version. Reconcile media with the final selected and qualified build before submission. The earlier local App Store archive is332; it has not been uploaded or represented as376.\n\nSource attribution is retained. The GitHub repository remains private until software release day.",
   "knownGaps": [
     "Incomplete professional workflow and command coverage.",
     "Known strict numerical rendering/format comparison failures remain open.",
@@ -9,5 +9,7 @@
     "New sandboxed file persistence, optional AI and network workflows need runtime qualification."
   ],
   "signInRequired": false,
-  "submitForReview": false
+  "submitForReview": false,
+  "privateContactPending": true,
+  "lastSavedPortalNotesStep": 377
 }

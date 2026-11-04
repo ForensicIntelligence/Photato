@@ -39,6 +39,7 @@ enum PaintingAPI {
   static var capabilities:[String:Any] {
     ["commands":commands,"tools":PaintTool.allCases.map(\.rawValue),"options":Dictionary(uniqueKeysWithValues:PaintTool.allCases.map{($0.rawValue,options($0))}),
      "targets":["pixels","layerMask","smartFilterMask","alpha","quickMask"],
+    "hiddenQuickMask":"Painting a hidden Quick Mask is rejected422, matching native gesture entry. The real PaintingEdit request target is validated before preparing and again before commit; show the mask to paint. Other channel-filter operations keep their separate policy.",
      "targetLimits":"Color Replacement, Background Eraser and Magic Eraser require ordinary pixel layers. Other tools also support grayscale masks/channels. Brush/Pencil automatically create a layer above nonraster content where the document mode permits layers. Background conversion follows the current native representation.",
      "modeStorage":"Previews and commits reconcile RGB, Grayscale, CMYK and Lab components, Indexed palette indices or Bitmap bits before returning a prepared edit. Untouched native samples and duplicate palette indices are retained. Indexed and Bitmap remain flat; full Photoshop mode-dependent tool availability and numerical equivalence remain unqualified.",
      "mixer":"Load/Clean/Sample change session paint only; stroke commit updates remaining paint atomically. Option-click sampling and API sample share solid/varied source preparation.",

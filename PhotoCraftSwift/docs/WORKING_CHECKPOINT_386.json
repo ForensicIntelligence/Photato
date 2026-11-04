@@ -1,0 +1,29 @@
+{
+  "step": "dev-step-386",
+  "status": "All 16 new Find/Replace cases pass on Apple Silicon and translated Intel. Of 211 affected cases per architecture, 210 pass and one retained imported-text comparison fails with three assertions; there are no unexpected errors or crashes. A previous385run of the195existing cases reproduces that one failure with identical word counts. Independent checks cover 10 owned text/state outputs with 31 exact literal checks. The affected run fails; the current full suite has not been rerun.",
+  "goal_status": "active",
+  "previous_goal_turn": "progress:385 implemented native/API/Actions/Batch Fit Image with qualified focused tests and preserved independent oracle failures",
+  "run": "artifacts/runs/20261104T051853Z-386-major-workflows",
+  "previous_qualified_source": "385Source01",
+  "software_build": 386,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T051853Z-386-major-workflows/source03-source.json",
+  "source_inputs": 7141,
+  "production_swift_files": 1017,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/TEXT_FIND_REPLACE_386.json",
+  "diary_step": 386,
+  "next_work": [
+    "Complete full S05 native/live/reference requirements, then full C01; keep T01/AUT01/AUT02 scope and other original packages open."
+  ],
+  "history_receipt": "artifacts/development-history-audit/386-final-receipt01.json"
+}

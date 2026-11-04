@@ -42,8 +42,9 @@ public struct PreparedActionEdit: Sendable {
   public let source: CraftDocument
   public let result: CraftDocument
   public let title: String
-  public init(source: CraftDocument, result: CraftDocument, title: String) {
-    self.source = source; self.result = result; self.title = title
+  public let recording: ActionOperation?
+  public init(source: CraftDocument, result: CraftDocument, title: String, recording: ActionOperation? = nil) {
+    self.source = source; self.result = result; self.title = title; self.recording = recording
   }
   public func applied(to document: CraftDocument) throws -> CraftDocument {
     try Task.checkCancellation()

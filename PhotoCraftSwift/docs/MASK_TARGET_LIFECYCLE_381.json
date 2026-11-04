@@ -1,0 +1,129 @@
+{
+  "step": 381,
+  "source": "381Source03",
+  "previousQualifiedSource": "380Source04",
+  "status": "Implemented and focused-tested; current live UI pending unlock",
+  "qualification": "All 698 affected optimized tests pass on Apple Silicon and translated Intel, including six new mask-target lifecycle cases. There are no failed assertions, unexpected errors or crashes. Both architectures run the same ordered cases. All 7,127 frozen inputs and 1,011 production Swift files remain unchanged.",
+  "sourceInputs": 7127,
+  "productionSwift": 1011,
+  "affectedTestsEachArchitecture": 698,
+  "newTestsEachArchitecture": 6,
+  "fullCurrentSuitePassed": false,
+  "scopePreserved": true,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "nativeProcessStopped": true,
+  "API": {
+    "commands": 239,
+    "nativeArchive": 85,
+    "Actions": 44,
+    "newRoute": false,
+    "newCommand": false,
+    "newSchemaParameters": false,
+    "availability": "Existing channel.view RGB selection now clears stale Smart Filter mask mode so native/API image operations, including layer.merge, use the actual current image target. maskEditingTarget=null and brush.colors.context=image agree with the restored image target.",
+    "validation": "Busy rejection retains a valid real mask; supported prepared mask edits restore their captured valid target/view. Shared native history and stale/busy checks remain. No published Adobe mask-target route or action is invented."
+  },
+  "functionalChanges": [
+    "Central nil mask owner clears Smart Filter editing mode, covering RGB/preview/path/layer-selection/document transitions without duplicating reset sites",
+    "Returning to image restores Merge/Flatten/Calculations command availability; actual native/API Merge Down/selected merge completes with one Undo",
+    "Do not clear viewing state in the observer; prepared mask operations retain valid targets and views"
+  ],
+  "sourceChanges": [
+    "Sources/PhotoCraft/EditorStore.swift",
+    "Sources/PhotoCraft/AutomationBrushes.swift",
+    "scripts/Info.plist",
+    "Tests/PhotoCraftAppTests/MaskTargetLifecycleWorkflowTests.swift"
+  ],
+  "attempts": {
+    "Source01": "Exact380 production baseline:5/6 fail with21 assertions each architecture; document-read control passes; no unexpected errors/crashes",
+    "Source02": "Cancelled before tests for unsupported argument in new HTTP capture; exact process tree stopped, partial logs/frozen source/stale380 binaries preserved",
+    "Source03": "Corrected capture helper, same production repair; both698/698 pass"
+  },
+  "independent": {
+    "passed": true,
+    "reference": "Independent literal analytical uniform opaque red8x8RGBA8, not another production renderer. The test assertions independently require actual native/API merge and one Undo.",
+    "outputs": 4,
+    "RGBABytesCompared": 1024,
+    "allPlanesIdentical": true,
+    "actualHTTPStates": 2,
+    "states": [
+      {
+        "architecture": "arm",
+        "actualHTTPState": true,
+        "maskEditingTarget": null,
+        "paintContext": "image",
+        "layers": 1,
+        "canUndo": true,
+        "statuses": {
+          "layers": 1,
+          "merged": 200,
+          "rgb": 200,
+          "selected": 200,
+          "undoSteps": 1
+        }
+      },
+      {
+        "architecture": "intel",
+        "actualHTTPState": true,
+        "maskEditingTarget": null,
+        "paintContext": "image",
+        "layers": 1,
+        "canUndo": true,
+        "statuses": {
+          "layers": 1,
+          "merged": 200,
+          "rgb": 200,
+          "selected": 200,
+          "undoSteps": 1
+        }
+      }
+    ],
+    "planes": [
+      {
+        "architecture": "arm",
+        "route": "native",
+        "bytes": 256,
+        "sha256": "0d1b5807a072040df4aab5871837e4296ddafc56a83226a1d098e6e86961c001"
+      },
+      {
+        "architecture": "arm",
+        "route": "http",
+        "bytes": 256,
+        "sha256": "0d1b5807a072040df4aab5871837e4296ddafc56a83226a1d098e6e86961c001"
+      },
+      {
+        "architecture": "intel",
+        "route": "native",
+        "bytes": 256,
+        "sha256": "0d1b5807a072040df4aab5871837e4296ddafc56a83226a1d098e6e86961c001"
+      },
+      {
+        "architecture": "intel",
+        "route": "http",
+        "bytes": 256,
+        "sha256": "0d1b5807a072040df4aab5871837e4296ddafc56a83226a1d098e6e86961c001"
+      }
+    ],
+    "PhotoshopPixelParityClaim": false
+  },
+  "evidence": [
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/qualification01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/source02-cancellation01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/source02-terminal01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/qualification03.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/case-equivalence01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/independent-merge01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/native-live-status01.json",
+    "artifacts/runs/20261104T013201Z-381-mask-target-lifecycle/universal/staging01.json",
+    "artifacts/development-history-audit/381-final-receipt01.json"
+  ],
+  "referenceProvenance": "Functional invariant and regression repair within the owned native/API mask workflows. Earlier owned Photoshop mask/Quick Mask observations remain in380. No current Photoshop UI comparison or all-input pixel-equivalence claim; current Mac locked.",
+  "remaining": "S05 remains in progress against its full scope; C01 follows after S05 is complete and tested. Current native live UI awaits an unlocked Mac. General profile/custom-gray conversion, component colour contexts, Photoshop restart defaults, complete channel visibility/temporary rows/filter targets, full interoperability, the current full suite, exact all-input Photoshop output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained 60 fps remain open. Earlier strict comparison failures and ZIP PSB rejection are retained. Native Float32 standalone storage remains supported; 32-bit Multichannel output and full printing capacity remain unqualified or unavailable.",
+  "next": "Finish current native mask/palette/return-to-image acceptance after unlock, consolidate S05 functional acceptance; full C01 next.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false
+}

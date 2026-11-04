@@ -102,6 +102,8 @@ public enum ActionOperation: Codable, Sendable {
   case backgroundLayer(BackgroundLayerAction)
   case canvasSize(Int, Int, CanvasAnchor, Pixel?)
   case imageSize(Int, Int, Double, Resampling)
+  case fitImage(FitImageOptions)
+  case replaceText(RecordedTextReplacement)
   case resolution(Double)
   case rotate(CanvasTurn)
 
@@ -114,6 +116,7 @@ public enum ActionOperation: Codable, Sendable {
       return ids.sorted().compactMap{id in supplied.first{$0.id==id} ?? d.pattern(id)}
     }
     switch command {
+    case .preparedAction(let edit):self = edit.recording ?? .unsupported("\(command.label) is not yet recordable. Remove or disable this step before playback.")
     case .canvasEdges(let edit):self = .canvasEdges(edit.operation,edit.background)
     case .flattenImage:self = .flattenImage
     case .layerStyles(let edit):self = .layerStyles(RecordedStyleEdit(edit,in:d))
@@ -214,6 +217,7 @@ public enum ActionOperation: Codable, Sendable {
     case .backgroundLayer(let edit):self = .backgroundLayer(.init(edit,in:d))
     case .canvasSize(let w, let h, let anchor, let fill): self = .canvasSize(w, h, anchor, fill)
     case .imageSize(let w, let h, let dpi, let method): self = .imageSize(w, h, dpi, method)
+    case .fitImage(let options): self = .fitImage(options)
     case .resolution(let v): self = .resolution(v)
     case .rotateCanvas(let v): self = .rotate(v)
     default: self = .unsupported("\(command.label) is not yet recordable. Remove or disable this step before playback.")
@@ -226,6 +230,7 @@ public enum ActionOperation: Codable, Sendable {
     switch self {
     case .layerStyles(let edit):return .layerStyles(try edit.resolved(in:d))
     case .globalLight(let value):return .globalLight(value)
+    case .replaceText:throw CraftError.unsupported("Text replacement Actions require native shaping playback.")
     case .canvasEdges:
       throw CraftError.unsupported("Canvas edge Actions require native compositor playback.")
     case .flattenImage:
@@ -308,6 +313,7 @@ public enum ActionOperation: Codable, Sendable {
     case .backgroundLayer(let edit):return .backgroundLayer(try edit.edit(in:d))
     case .canvasSize(let w, let h, let a, let f): return .canvasSize(w, h, a, f)
     case .imageSize(let w, let h, let dpi, let r): return .imageSize(w, h, dpi, r)
+    case .fitImage(let options): return .fitImage(options)
     case .resolution(let v): return .resolution(v)
     case .rotate(let v): return .rotateCanvas(v)
     }
@@ -340,6 +346,8 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
     }
     for step in steps {
+      if case .fitImage(let options) = step.operation { try options.validate() }
+      if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}
       if case .globalLight(let value)=step.operation {try value.validate()}
       if case .retouch(let request) = step.operation { try request.validate() }

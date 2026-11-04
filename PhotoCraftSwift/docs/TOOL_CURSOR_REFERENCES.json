@@ -1050,5 +1050,38 @@
     "policy": "Overlay hiding preserves the editing target, brush selection/settings and existing modifier cursor policy; attempted hidden painting displays the reference warning.",
     "validation": "Existing all-tool/16-modifier cursor tests included in454 affected cases per architecture. This does not close full Photoshop cursor parity.",
     "reference": "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json"
+  },
+  "checkpoint371_review": {
+    "change": "Hidden Quick Mask Fill/Invert guards, retained hidden Gaussian filter, factory pixel Invert menu",
+    "new_tool_or_modifier": false,
+    "policy": "Existing effective canvas cursors remain unchanged. Hidden painting/Fill uses command validation; native sliders/text fields retain their own cursors. All-tool16-modifier regressions are included in planned affected qualification.",
+    "status": "Current Source02 native workflow and eight new cases pass on each architecture; broader failures/gates retained",
+    "reference": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+    "evidence": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json"
+  },
+  "quick_mask_target_transitions_372": {
+    "reference": "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+    "scope": "Existing target selection and temporary channel-number shortcut; no new tool or modifier action. Existing shared cursor policy and all-combination regression coverage retained. Complete C01 target wording/visibility and full Photoshop gates remain open.",
+    "API": "Actual alphaChannelTarget and independent eye changes use existing239 commands. No Adobe route added."
+  },
+  "auxiliary_paint_colors_373": {
+    "reference": "docs/AUXILIARY_PAINT_COLORS_373.json",
+    "scope": "Existing Q/channel targets change their paint palette; X/D and existing brush.configure retain their actions. No new tool/modifier/cursor/menu binding. Existing all-combination policy tests are retained. Application-global and remaining channel/mask contexts stay open.",
+    "API": "brush.colors and paintColorStateSchema; canonical brush background;239 commands/native85/Actions44 unchanged; no Adobe route."
+  },
+  "large_selection_files_374": {
+    "reference": "docs/LARGE_SELECTION_FILES_374.json",
+    "scope": "Existing file/open/save and channel tools use paged auxiliary imports; no new tool, modifier action, cursor, menu or shortcut. Existing ToolCursor all-combination tests are retained.",
+    "API": "Existing import/export/native85 and published composite executor; standaloneSelections capability geometry/storage/limits expanded.239 commands/native85/Actions44 unchanged; no Adobe route."
+  },
+  "PSB_tagged_blocks_375": {
+    "reference": "docs/PSB_TAGGED_BLOCKS_375.json",
+    "impact": "Shared file serializer repair; no menu, shortcut, tool or modifier action changes. Existing all-combination ToolCursor tests retained.",
+    "API": "Existing encoding capabilities describe corrected framing; no new command or route."
+  },
+  "shared_paint_palettes_376": {
+    "reference": "docs/SHARED_PAINT_PALETTES_376.json",
+    "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
+    "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route."
   }
 }

@@ -1,3 +1,15 @@
+**Copy update378:** App Store EnglishUS promotional text/description now use “If you know your way around a professional image editor, Photato will feel familiar.” Named comparisons are absent from public fields; the proposed private reviewer-note change remains blocked by required contact fields. Keywords use actual features and PSD/PSB; Apple’s current rules exclude competing app/company names, so Photoshop was not added. A fresh untouched tab confirms all three public strings and MANUAL. The same-tab four-field check was insufficient: private notes remain the saved377 version. Free/alpha disclosures and existing media remain. Native376Source03, archive332, full S05/C01 scopes, and prior pending declarations/contact/build gates are unchanged. No upload, submission or release.
+
+# App Store record — checkpoint377
+
+Photato AppleID6820338369 / ca.forensicintelligence.photato now has saved EnglishUS0.3.0 alpha copy, subtitle/categories, four real native screenshots and one27.478-second preview. Free pricing is verified across175storefronts, with MANUAL release and no pre-order. Apple is processing the preview. Privacy declaration, content rights and private review contact remain pending. No binary upload, review submission or software release. Native376Source03, archive332, S05 status and full C01 scope are unchanged.
+
+The browser is now authenticated with FI Forensic Intelligence, Ltd. Current portal metadata/media were saved and read back. The old account-access failure below is historical. Media comes from the separately identified current development build, not the old archive. All55 real source frames and824 decoded output frames were checked; no synthetic UI, private artwork or frame-rate claim is used. Local media, format proof and portal readbacks are preserved in the377 run. The four original planned shots are replaced by the four actual captures in `media-plan.json`; the earlier plan is retained in the before snapshot.
+
+Apple’s privacy publication confirmation explicitly requires agreement to accuracy/compliance/update obligations. It is not accepted without maintainer approval. The rights declaration and private reviewer contact are also pending. Public privacy wording applies to all FI apps but should name Photato/PCC/API network behaviour before software release. The app remains an unfinished alpha; App Review Guideline2.2/TestFlight distinction and manual-release policy remain in effect.
+
+## Historical preparation and access attempts
+
 # App Store preparation — checkpoint 333
 
 Photato 0.3.0 (332) has an updated universal Xcode archive for `ca.forensicintelligence.photato`, team `PATM9DNCLA`. The application is still an alpha. This is archive and draft-listing preparation, not a completed App Store submission or a Photoshop-parity milestone.

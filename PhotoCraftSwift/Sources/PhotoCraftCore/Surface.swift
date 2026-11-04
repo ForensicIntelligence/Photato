@@ -66,10 +66,38 @@ public struct Surface: Codable, Equatable, Sendable {
   // This value travels with COW storage; it is neither serialized nor semantic.
   private var tilesAreKnownFinite = false
   private var opaqueProof=SurfaceOpaqueProof()
+  /// Compare document sample bits, independent of implicit/mapped/owned layout.
+  /// Shared edit trees skip untouched branches; tile padding is not image data.
   public static func == (lhs: Surface, rhs: Surface) -> Bool {
-    lhs.width == rhs.width && lhs.height == rhs.height && lhs.depth == rhs.depth
-      && lhs.storedDefaultPixel == rhs.storedDefaultPixel
-      && lhs.colorEncoding == rhs.colorEncoding && lhs.tiles == rhs.tiles
+    guard lhs.width == rhs.width, lhs.height == rhs.height, lhs.depth == rhs.depth,
+      lhs.colorEncoding == rhs.colorEncoding else { return false }
+    func matches(_ key: Int) -> Bool {
+      let a = lhs.tiles[key], b = rhs.tiles[key]
+      if let a, let b {
+        let shared = a.withUnsafeBufferPointer { x in b.withUnsafeBufferPointer { y in x.baseAddress == y.baseAddress } }
+        if shared { return true }
+      }
+      let left = key % lhs.columns * Self.tileSide, top = key / lhs.columns * Self.tileSide
+      for y in top..<min(lhs.height, top + Self.tileSide) {
+        for x in left..<min(lhs.width, left + Self.tileSide) {
+          let offset = (y - top) * Self.tileSide + x - left
+          let p = a?[offset] ?? lhs.storedDefaultPixel, q = b?[offset] ?? rhs.storedDefaultPixel
+          if !p.hasSameBits(as: q) { return false }
+        }
+      }
+      return true
+    }
+    if lhs.storedDefaultPixel.hasSameBits(as: rhs.storedDefaultPixel) {
+      for key in lhs.tiles.candidateKeys(comparedTo: rhs.tiles) where !matches(key) { return false }
+      return true
+    }
+    var covered = 0
+    for key in lhs.tiles.unionKeys(with: rhs.tiles) {
+      if !matches(key) { return false }
+      let left = key % lhs.columns * Self.tileSide, top = key / lhs.columns * Self.tileSide
+      covered += min(Self.tileSide, lhs.width - left) * min(Self.tileSide, lhs.height - top)
+    }
+    return covered == lhs.width * lhs.height
   }
   /// Scan allocated samples once; proof survives writes whose alpha remains one.
   /// Virtual padding is not a document pixel, and implicit planes need no dense allocation.

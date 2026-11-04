@@ -97,7 +97,7 @@ final class ClassicAdjustmentWorkflowTests: XCTestCase {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service,shared in
       var doc = try CraftDocument(width:1,height:1)
-      doc.layers = (0..<64).map { Layer(name:"Layer \($0)",content:.fill(.white)) }; doc.activeLayerID = doc.layers[0].id
+      doc.layers = (0..<LayerLimits.maximumLayers).map { Layer(name:"Layer \($0)",content:.fill(.white)) }; doc.activeLayerID = doc.layers[0].id
       shared.store.session = EditorSession(document:doc); try service.share(shared)
       let reply = try await helper.edit(service,shared,"adjustment.create",["adjustment":["kind":"vibrance"]])
       XCTAssertEqual(reply,413); XCTAssertEqual(shared.store.document,doc); XCTAssertTrue(shared.store.session.undoStack.isEmpty)

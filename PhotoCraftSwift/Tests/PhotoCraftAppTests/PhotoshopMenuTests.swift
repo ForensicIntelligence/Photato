@@ -201,9 +201,9 @@ final class PhotoshopMenuTests: XCTestCase {
         try item("Layer > New > Layer Via Copy").action, #selector(AppDelegate.layerViaCopy))
       XCTAssertEqual(try item("Layer > New > Layer Via Copy").keyEquivalent, "j")
       XCTAssertTrue(try item("Layer > Duplicate Layer…").keyEquivalent.isEmpty)
-      XCTAssertNil(
-        try item("Image > Adjustments > Invert").action,
-        "Pixel Invert must not create an adjustment layer")
+      XCTAssertEqual(
+        try item("Image > Adjustments > Invert").action, #selector(AppDelegate.invertPixels),
+        "Pixel Invert must edit its target without creating an adjustment layer")
       XCTAssertEqual(
         try item("Layer > New Adjustment Layer > Invert…").action, #selector(AppDelegate.invert))
       XCTAssertNil(try item("Edit > Generative Fill…").action)

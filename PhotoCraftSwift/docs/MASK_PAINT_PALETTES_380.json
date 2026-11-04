@@ -1,0 +1,106 @@
+{
+  "step": 380,
+  "source": "380Source04",
+  "previousQualifiedSource": "379Source02",
+  "status": "Implemented and focused-tested; current live UI pending unlock",
+  "qualification": "All 545 affected optimized tests pass on Apple Silicon and translated Intel, including eight new mask-palette workflow cases. There are no failed assertions, unexpected errors or crashes. Both architectures run the same ordered cases. The run uses 7,126 unchanged frozen inputs and 1,011 production Swift files.",
+  "sourceInputs": 7126,
+  "productionSwift": 1011,
+  "affectedTestsEachArchitecture": 545,
+  "newTestsEachArchitecture": 8,
+  "fullCurrentSuitePassed": false,
+  "scopePreserved": true,
+  "S05Closed": false,
+  "fullGoalComplete": false,
+  "nativeLiveQualified": false,
+  "nativeProcessStopped": true,
+  "API": {
+    "commands": 239,
+    "nativeArchive": 85,
+    "Actions": 44,
+    "newRoute": false,
+    "newCommand": false,
+    "extensions": [
+      "channel.view target layerMask/smartFilterMask with layerID",
+      "maskEditingTarget state; brush.colors.mask and context=mask",
+      "bounded PaintPalette.v2 restores three pairs; legacy v1 image/auxiliary migration"
+    ],
+    "validation": "Native shared target selection and palette; stale/busy/missing/unavailable/irrelevant input guards and unchanged history. Existing published Adobe contract has no dedicated palette endpoint; no route/action invented."
+  },
+  "functionalChanges": [
+    "Shared independent layer/Smart Filter mask pair; white/black D defaults, X swap, image and auxiliary memory retained",
+    "Compute palette context from valid current target; deleted/inactive masks fall back immediately",
+    "Q entry selects auxiliary; Q exit from its own target returns image, while an independently selected valid mask survives Q removal",
+    "Existing native presets/brush controls/painting and API configuration use the same current pair",
+    "Supported API brush/channel preparations retain a valid selected mask target"
+  ],
+  "evidence": [
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/photoshop-palette-reference01.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/public-reference01.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/source01-cancel.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/qualification02.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/qualification03.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/qualification04.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/case-equivalence01.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/independent-http-mask01.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/native-live-attempt01.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/native-process-cleanup02.json",
+    "artifacts/runs/20261104T004737Z-380-mask-paint-contexts/universal/staging01.json"
+  ],
+  "attempts": {
+    "Source01": "Cancelled for known new test-helper/fixture defects before tests; retained executables are stale379",
+    "Source02": "Production linked; test bundle compile rejected private document setter, zero tests",
+    "Source03": "Both544/545 with two assertions in a new malformed RGBA-array payload; production correctly returned400",
+    "Source04": "Corrected test uses established RGBA object and actual black-pixel assertion; both545/545 pass, production binaries unchanged from Source02"
+  },
+  "independent": {
+    "passed": true,
+    "source": "380Source04",
+    "actualHTTPResponses": 4,
+    "independentFloat32Components": 128,
+    "maskSamples": 256,
+    "allMaskPlanesByteIdenticalAcrossTargetsAndArchitectures": true,
+    "scope": "Actual authenticated HTTP JSON compared with literal independent RGBA words; center/far-corner mask samples and full native/API/cross-architecture mask bytes. No CMM/Photoshop brush-kernel/physical-performance equivalence claim.",
+    "items": [
+      {
+        "architecture": "arm",
+        "target": "layerMask",
+        "stateSHA256": "9708db47bf52f7c352630df8007aeda1e32b756498db73b43a55b555838fdd29",
+        "maskPlaneSHA256": "2df5650bf2407d52fcea66aecb285e0c47be808fd5f18e6ed8be0af11f5d48c3",
+        "Float32Components": 32,
+        "maskSamples": 64
+      },
+      {
+        "architecture": "arm",
+        "target": "smartFilterMask",
+        "stateSHA256": "d843d32de5ca86d8fbcae2b554c013758745140021596341b15e743b70c163d6",
+        "maskPlaneSHA256": "2df5650bf2407d52fcea66aecb285e0c47be808fd5f18e6ed8be0af11f5d48c3",
+        "Float32Components": 32,
+        "maskSamples": 64
+      },
+      {
+        "architecture": "intel",
+        "target": "layerMask",
+        "stateSHA256": "bd5c3338d1122a794d8615a1e2f38c31f9e4c5a87c7ce130c28f3df945733d06",
+        "maskPlaneSHA256": "2df5650bf2407d52fcea66aecb285e0c47be808fd5f18e6ed8be0af11f5d48c3",
+        "Float32Components": 32,
+        "maskSamples": 64
+      },
+      {
+        "architecture": "intel",
+        "target": "smartFilterMask",
+        "stateSHA256": "994d16d7e5192f703a84bddbe6318642f8314167370fe8a1649eeac67a0668d1",
+        "maskPlaneSHA256": "2df5650bf2407d52fcea66aecb285e0c47be808fd5f18e6ed8be0af11f5d48c3",
+        "Float32Components": 32,
+        "maskSamples": 64
+      }
+    ]
+  },
+  "remaining": "S05 remains in progress against its full scope; C01 follows after S05 is complete and tested. Current-build live UI is pending an unlocked Mac. General profile/custom-gray conversion, component colour contexts, Photoshop restart defaults, complete channel visibility/temporary rows/filter targets, full interoperability, the current full suite, exact all-input Photoshop output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained 60 fps remain open. Earlier strict comparison failures and ZIP PSB rejection are retained. Native Float32 standalone storage remains supported; 32-bit Multichannel output and full printing capacity remain unqualified or unavailable.",
+  "next": "Complete current live check after unlock; audit remaining mask/component target transitions without narrowing S05/C01 scope.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false
+}

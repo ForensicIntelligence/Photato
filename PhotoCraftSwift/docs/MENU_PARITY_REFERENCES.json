@@ -2292,5 +2292,37 @@
     "factory_menu_order_titles_changed": false,
     "factory_menu_binding": "Existing Select > Edit in Quick Mask Mode, Save Selection, Load Selection",
     "shortcuts": "Q; Command-number selects auxiliary channels; Command-Option-number loads an auxiliary selection; thumbnail combinations retain documented modifiers. Component-source shortcut completion remains under S05/C01 review."
+  },
+  "checkpoint371_review": {
+    "reference": "Owned Photoshop371 ordinary RGB8/Quick Mask UI,3 November2026",
+    "observed": "Hidden Quick Mask Image Adjustments Invert disabled, Fill dialog commits reject, Gaussian Blur allowed with Undo; shown Invert/Levels/Curves enabled.",
+    "change": "Bind the existing factory Image Adjustments Invert/CommandI to pixel inversion rather than layer creation. Retain disabled unsupported mask/ink/RGB8 component contexts; auxiliary and composite RGB inversion use existing native engines/API. Hidden Stroke/Clear and channel-context Invert validation follow the captured context.",
+    "status": "Current Source02 native workflow and eight new cases pass on each architecture; broader failures/gates retained",
+    "evidence": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json"
+  },
+  "quick_mask_target_transitions_372": {
+    "reference": "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+    "scope": "Existing target selection and temporary channel-number shortcut; no new tool or modifier action. Existing shared cursor policy and all-combination regression coverage retained. Complete C01 target wording/visibility and full Photoshop gates remain open.",
+    "API": "Actual alphaChannelTarget and independent eye changes use existing239 commands. No Adobe route added."
+  },
+  "auxiliary_paint_colors_373": {
+    "reference": "docs/AUXILIARY_PAINT_COLORS_373.json",
+    "scope": "Existing Q/channel targets change their paint palette; X/D and existing brush.configure retain their actions. No new tool/modifier/cursor/menu binding. Existing all-combination policy tests are retained. Application-global and remaining channel/mask contexts stay open.",
+    "API": "brush.colors and paintColorStateSchema; canonical brush background;239 commands/native85/Actions44 unchanged; no Adobe route."
+  },
+  "large_selection_files_374": {
+    "reference": "docs/LARGE_SELECTION_FILES_374.json",
+    "scope": "Existing file/open/save and channel tools use paged auxiliary imports; no new tool, modifier action, cursor, menu or shortcut. Existing ToolCursor all-combination tests are retained.",
+    "API": "Existing import/export/native85 and published composite executor; standaloneSelections capability geometry/storage/limits expanded.239 commands/native85/Actions44 unchanged; no Adobe route."
+  },
+  "PSB_tagged_blocks_375": {
+    "reference": "docs/PSB_TAGGED_BLOCKS_375.json",
+    "impact": "Shared file serializer repair; no menu, shortcut, tool or modifier action changes. Existing all-combination ToolCursor tests retained.",
+    "API": "Existing encoding capabilities describe corrected framing; no new command or route."
+  },
+  "shared_paint_palettes_376": {
+    "reference": "docs/SHARED_PAINT_PALETTES_376.json",
+    "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
+    "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route."
   }
 }

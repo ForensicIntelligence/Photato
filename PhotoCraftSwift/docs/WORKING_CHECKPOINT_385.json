@@ -1,0 +1,30 @@
+{
+  "step": "dev-step-385",
+  "status": "All 220 affected optimized tests pass on Apple Silicon and translated Intel, including 10 new Fit Image cases. Both architectures execute the same cases with no failed assertions, unexpected errors or crashes. Independent checks cover 30 PNGs and 2,032 exact RGBA8 channel values. The current full inventory has not been rerun.",
+  "goal_status": "active",
+  "previous_goal_turn": "progress:384 product repair and qualified native/API evidence",
+  "run": "artifacts/runs/20261104T043545Z-385-fit-image-automation",
+  "previous_qualified_source": "384Source04",
+  "software_build": 385,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "work_reason": "While pending S05 live acceptance prevents closure, implement an existing missing phase1 automation dependency rather than numerical/cosmetic polishing. Preserve full S05/C01 and all original scope.",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T043545Z-385-fit-image-automation/source01-source.json",
+  "source_inputs": 7134,
+  "production_swift_files": 1013,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/FIT_IMAGE_AUTOMATION_385.json",
+  "diary_step": 385,
+  "next_work": [
+    "Complete pending full-scope S05 native/live/reference requirements, then C01. Do not infer complete AUT01/AUT02 from Fit Image."
+  ],
+  "history_receipt": "artifacts/development-history-audit/385-final-receipt01.json"
+}

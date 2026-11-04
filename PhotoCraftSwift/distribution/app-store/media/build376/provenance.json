@@ -1,0 +1,75 @@
+{
+  "source": "376Source03",
+  "appBundleID": "ca.forensicintelligence.photato.validation376",
+  "screenshots": [
+    {
+      "file": "distribution/app-store/media/build376/01-workspace.png",
+      "sha256": "7d14f78b749d742585badcaaa304aa19a9eac25849a88705ad3bc06f799af2c7",
+      "raw_capture": "artifacts/runs/20261103T232632Z-377-app-store-listing/raw-captures/01-workspace.jpg",
+      "raw_sha256": "3be590d193489a8ab1dc0e2406272276db95b015e86789d2d8a55382ff6b653e",
+      "size": [
+        1440,
+        900
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "distribution/app-store/media/build376/02-opacity.png",
+      "sha256": "e2eacf5140908cc9fde816e2f5208851210abebddf9b1ad7a25fe0ca39c10ae2",
+      "raw_capture": "artifacts/runs/20261103T232632Z-377-app-store-listing/raw-captures/02-opacity.jpg",
+      "raw_sha256": "b0215dd56240f9618154c8e36369d095b1edd4a7a6df4439ec2aa3b2a0a3f392",
+      "size": [
+        1440,
+        900
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "distribution/app-store/media/build376/03-painting.png",
+      "sha256": "2d486e53aad4b8b656c0dd7b7980df324226597fb91523a21d3d3e83fdb60bb0",
+      "raw_capture": "artifacts/runs/20261103T232632Z-377-app-store-listing/raw-captures/03-painting.jpg",
+      "raw_sha256": "67dd5b09f5ff3e215689605efb95ca8bc8fb1e2331635ed357955a7f27099720",
+      "size": [
+        1440,
+        900
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "distribution/app-store/media/build376/04-quick-mask.png",
+      "sha256": "8d78a70c3cc20bbf0a2891d2aabd0dc642bf097f582955048d186ac8bf6a9949",
+      "raw_capture": "artifacts/runs/20261103T232632Z-377-app-store-listing/raw-captures/04-quick-mask.jpg",
+      "raw_sha256": "5c0963e72ad8bef8b50936f6af46bf35659fe04e3ce28fd24cc8aa9b0209d7c8",
+      "size": [
+        1440,
+        900
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "preview": {
+    "file": "distribution/app-store/media/build376/Photato-alpha-preview.mp4",
+    "sha256": "785028c8a5380a10aac0549f136bd74557ba40854591740f7636b5f0f26e3ed9",
+    "bytes": 37534123,
+    "durationSeconds": 27.478,
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "encodedFPS": 30,
+    "actualCapturedFrames": 55,
+    "capture": "artifacts/runs/20261103T232632Z-377-app-store-listing/preview-capture01.json",
+    "captureCadenceIsNotPerformanceBenchmark": true,
+    "audio": "Silent stereo AAC; no music"
+  },
+  "processing": "Actual CUA app-window JPEG captures; uniform aspect-preserving scale and neutral padding only for screenshots. Preview repeats timestamped real frames, with editorial cuts and plain alpha/free captions. No synthetic UI or interpolated motion.",
+  "artwork": "artifacts/runs/20261103T232632Z-377-app-store-listing/owned-artwork02/provenance.json",
+  "uploadStatus": "UPLOADED_TO_APP_STORE_CONNECT_377",
+  "priorArchive332NotRepresentedAs376": true,
+  "portalAppID": "6820338369",
+  "portalVersion": "0.3.0",
+  "portalLocale": "en-US",
+  "previewProcessing": true,
+  "selectedBuild": null,
+  "mediaMustMatchFinalSelectedBuildBeforeSubmission": true
+}

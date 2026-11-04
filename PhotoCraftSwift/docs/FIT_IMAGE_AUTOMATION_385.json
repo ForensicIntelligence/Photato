@@ -1,0 +1,125 @@
+{
+  "step": 385,
+  "source": "385Source01",
+  "softwareBuild": 385,
+  "status": "Native/API/Actions Fit Image workflow; focused qualification",
+  "qualification": "All 220 affected optimized tests pass on Apple Silicon and translated Intel, including 10 new Fit Image cases. Both architectures execute the same cases with no failed assertions, unexpected errors or crashes. Independent checks cover 30 PNGs and 2,032 exact RGBA8 channel values. The current full inventory has not been rerun.",
+  "sourceInputs": 7134,
+  "productionSwift": 1013,
+  "testSwiftFiles": 691,
+  "affectedTestsEachArchitecture": 220,
+  "newTestsEachArchitecture": 10,
+  "currentInventoryEachArchitecture": 3862,
+  "fullCurrentSuitePassed": false,
+  "fullGoalComplete": false,
+  "S05Closed": false,
+  "nativeLiveQualified": false,
+  "changes": [
+    "File > Automate > Fit Image opens native pixel bounds/Don\u2019t Enlarge dialog; Cancel, invalid and stale drafts preserve the source. No factory shortcut is assigned.",
+    "Semantic FitImageOptions computes an aspect-preserving fit independently for each document and delegates resampling to native Image Size, retaining optional/effective PPI, IDs, masks, channels and the active editing target.",
+    "Actions45 records bounds and enlargement policy, including no-op fits without Undo; mixed-aspect native/API Batch resolves each input. Image Processor uses the same operation.",
+    "Photato API document.fitImage exposes strict bounds/boolean/method parameters, state/schema/capabilities and existing busy/stale/revocation/history guards. Whole-document typed preparation cannot authorize unrelated commands."
+  ],
+  "API": {
+    "commands": 240,
+    "nativeArchiveMaximum": 85,
+    "ActionsMaximum": 45,
+    "newCommand": "document.fitImage",
+    "newRoute": false,
+    "required": [
+      "width",
+      "height"
+    ],
+    "optional": [
+      "dontEnlarge",
+      "method"
+    ],
+    "state": "fitImage availability/dialogOpen/pendingOptions/sourceChanged",
+    "Adobe": "The pinned published Adobe v2 contract has no dedicated Fit Image route. No proprietary action descriptor or invented Adobe endpoint is advertised. Existing supported Adobe geometry adapters remain; generic actionJSON imageSize descriptors remain unqualified."
+  },
+  "workingDefaults": {
+    "width": 1024,
+    "height": 1024,
+    "dontEnlarge": false,
+    "resampling": "nearest for Indexed/Bitmap; bicubic otherwise",
+    "PhotoshopDefaultsQualified": false
+  },
+  "attempts": {
+    "source01": {
+      "firstCasesEach": 166,
+      "supplementCasesEach": 54,
+      "sourceUnchanged": true,
+      "allPassed": true
+    },
+    "retained": "Full frozen source tarball, complete ARM/Intel XCTest bundles, production binaries/resources, raw build/test streams and captured files under the run path."
+  },
+  "independent": {
+    "passed": true,
+    "PNGFiles": 30,
+    "RGBA8ChannelValues": 2032,
+    "reference": "artifacts/runs/20261104T043545Z-385-fit-image-automation/independent-fit03.json",
+    "provenance": "Authored dimensions/non-CMYK literal-white samples and independent public-CoreGraphics CMYK profile results, with independently emulated Float32 word quantization. No application planner or capture metadata used. Failed unprofiled/Float64 oracle attempts01/02 retained. Not a photographic interpolation or Photoshop pixel comparison.",
+    "nativeCMYKWordValues": 288,
+    "failedOraclesRetained": [
+      "independent-fit01.json",
+      "independent-fit02.json"
+    ],
+    "crossArchitectureColourQualified": false
+  },
+  "publicReferences": {
+    "recordedUTC": "2026-11-04T04:54:57.562142+00:00",
+    "provenance": "Public Adobe user/file-format documentation and owned native code only; no proprietary Adobe implementation inspected",
+    "sources": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/automate-tasks/process-a-batch-of-files/convert-files-with-the-image-processor.html",
+        "date": "2026-02-23",
+        "supports": "Resize to Fit uses width/height as bounds and retains original proportions; each source is processed independently."
+      },
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/change-pixel-dimensions-of-an-image.html",
+        "date": "2026-02-23",
+        "supports": "Pixel dimensions change through resampling; Photoshop supports automatic method selection."
+      },
+      {
+        "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+        "supports": "PSD/PSB planar compression framing; prior ZIP rejection is still not isolated or qualified."
+      }
+    ],
+    "unqualified": [
+      "Exact Fit Image default/remembered bounds and checkbox",
+      "Exact Photoshop rounding on half pixels",
+      "Automatic resampling variants and output words",
+      "Current live/native/physical supported-platform comparisons"
+    ],
+    "platform_fixture_oracle": {
+      "documentation": "https://developer.apple.com/documentation/coregraphics/cgcolor/converted(to:intent:options:)",
+      "web_access": "HTML required JavaScript; offered Markdown failed400unsupportedcontenttype. Local public SDK and independent helper are the executable evidence.",
+      "source": "cmyk-oracle01.swift",
+      "results": [
+        "cmyk-oracle01-arm64.json",
+        "cmyk-oracle01-x86_64.json"
+      ],
+      "purpose": "Independently predict profile colour and native word quantization without Photato imports, planner or resampler; not Photoshop equivalence."
+    }
+  },
+  "universalPackage": "artifacts/runs/20261104T043545Z-385-fit-image-automation/universal/staging01.json",
+  "nativeLive": {
+    "step": 385,
+    "nativeLiveQualified": false,
+    "attemptedThisCheckpoint": false,
+    "reason": "The fresh exact staged-app attempt at384 explicitly found the Mac locked and automatic unlock failed. Prior unlock request is pending; no unchanged retry/question and no385native live pass is inferred.",
+    "priorObservation": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions/native-live-status01.json",
+    "automatedEvidence": "Ten new core/native/API Fit Image cases plus existing affected regressions; offscreen native controls are not a live UI check.",
+    "S05Closed": false,
+    "newInstall": false,
+    "newUpload": false,
+    "newRelease": false
+  },
+  "remaining": "S05 remains in progress; C01 follows complete and tested S05. Current live UI awaits the previously requested unlock. Exact Photoshop Fit Image defaults/remembered settings, half-pixel rounding and Automatic resampling/output remain unqualified. Existing geometry mode/storage budgets and unsupported video/frame resizing remain. The public CMM/native CMYK16 output differs by one word across architectures; all-input exact colour remains open. Full382 failures remain recorded; this focused pass is not a current full-suite pass. Full Photoshop functionality/output/settings/shortcuts, all supported physical Macs, dense maximum capacity and sustained60fps remain open.",
+  "next": "Complete pending full-scope S05 native/live/reference requirements, then C01. Do not infer complete AUT01/AUT02 from Fit Image.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false
+}

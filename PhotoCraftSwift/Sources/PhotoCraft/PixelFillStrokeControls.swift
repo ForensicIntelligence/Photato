@@ -9,12 +9,14 @@ import PhotoCraftCore
     return editingMask ? .mask(id):.layer(id)
   }
   var canUsePixelPaint:Bool{guard canSelectComponentTarget,let target=nativePixelPaintTarget else{return false};return PixelFillStroke.available(document,target:target)}
+  var canUsePixelStroke:Bool { canUsePixelPaint && !hasHiddenQuickMaskEditingTarget }
   var pixelFillPatterns:[RasterPattern]{var seen=Set<String>();return ((document.patterns ?? [])+patterns.items).filter{seen.insert($0.id).inserted}}
   var canFillWithPattern:Bool{canUsePixelPaint && !patterns.busy && !pixelFillPatterns.isEmpty}
   func applyPixelPaint(_ kind:PixelPaintKind,settings:PixelPaintSettings,pattern:RasterPattern?=nil,placement:PatternPlacement?=nil){
     guard canUsePixelPaint,let target=nativePixelPaintTarget else{return}
     do{try settings.validate(kind)}catch{self.error=error.localizedDescription;return}
     let request=PixelPaintRequest(kind,target:target,settings:settings,pattern:pattern,placement:placement),prepare=pixelPaintPreparation,isChannel:Bool;if case .channel=target{isChannel=true}else{isChannel=false}
+    do { try validateQuickMaskVisibility(.pixelPaint(request)) } catch { self.error=error.localizedDescription; return }
     if kind == .stroke{lastPixelStroke=settings}else{lastPixelFill=settings;if let pattern{lastPixelFillContents="Pattern";lastPixelFillPatternID=pattern.id}}
     performPreparedGeometry(label:kind.title,allowAuxiliary:isChannel,prepare:{source in try PreparedEdit(command:prepare(source,request),document:source)},validateCommit:{[weak self] in guard self?.nativePixelPaintTarget==target else{throw CraftError.invalid("The Fill/Stroke target changed. Try again.")}})
   }

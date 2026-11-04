@@ -1,0 +1,25 @@
+{
+  "step": "dev-step-375",
+  "status": "Source02 PSB signature repair tested with current native and Photoshop workflow; S05 full scope retained",
+  "run": "artifacts/runs/20261103T220638Z-375-S05-native-palette",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "goal_status": "active",
+  "S05_closed": false,
+  "next_major": "C01 after S05 complete and tested",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_binary_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261103T220638Z-375-S05-native-palette/source02.json",
+  "source_inputs": 7120,
+  "production_swift_files": 1011,
+  "source_unchanged": true,
+  "reference": "docs/PSB_TAGGED_BLOCKS_375.json",
+  "next_work": [
+    "Complete shared application image/auxiliary paint palettes and remaining S05 workflow requirements; retain full scope",
+    "C01 component visibility and edit targeting after tested S05 completion",
+    "Retain general output/settings/full-suite/platform/dense-capacity/60fps qualification"
+  ]
+}

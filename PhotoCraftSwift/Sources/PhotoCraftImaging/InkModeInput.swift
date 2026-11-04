@@ -42,8 +42,8 @@ public enum InkModeInput {
       intent: document.modeDescriptor?.intent ?? .relativeColorimetric, sourceProfile: document.workingICC)
   }
   private static func plane(_ component: Int, in native: NativeModeRaster, inverted: Bool) throws -> InkPlane {
-    let source = try InkPlane(width: native.width, height: native.height, depth: native.depth, bytes: native.planes[component])
-    if native.planes[native.mode.componentCount].allSatisfy({ $0 == 255 }) {
+    let source = try InkPlane(width: native.width, height: native.height, depth: native.depth, bytes: native.planeBytes(component))
+    if native.isOpaque {
       return try source.converted(to: native.depth, inverted: inverted)
     }
     let white = try NativeModeRaster.converting(Surface(width: 1, height: 1, depth: native.depth, fill: .white),

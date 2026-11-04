@@ -6,21 +6,34 @@ public struct InkPlane: Codable, Equatable, Sendable {
   public let width: Int
   public let height: Int
   public let depth: PixelDepth
-  public private(set) var bytes: Data
+  private var storage: ComponentPlane
+  /// Portable legacy bytes; current ink/file workflows retain their explicit8MP cap.
+  public var bytes: Data {
+    var result = Data(count: count * stride)
+    for i in 0..<count { ComponentPlane.store(storage.word(at: i), in: &result, offset: i * stride, stride: stride) }
+    return result
+  }
+  public var residentSampleBytes: Int { storage.residentEditBytes }
   public var count: Int { width * height }
-  public var estimatedBytes: Int { bytes.count }
+  public var estimatedBytes: Int { count * stride }
   private var stride: Int { depth == .u8 ? 1 : 2 }
 
   public init(width: Int, height: Int, depth: PixelDepth = .u8, bytes: Data) throws {
-    self.width = width; self.height = height; self.depth = depth; self.bytes = Data(bytes)
-    try validate()
+    try Self.dimensions(width, height, depth)
+    guard bytes.count == width * height * (depth == .u8 ? 1 : 2) else { throw CraftError.invalid("Ink plane sample count differs from its dimensions.") }
+    self.width = width; self.height = height; self.depth = depth
+    storage = try ComponentPlane(width: width, height: height, depth: depth)
+    let bytes = Data(bytes)
+    for i in 0..<(width * height) {
+      if i % 4096 == 0 { try Task.checkCancellation() }
+      storage.setValidatedWord(ComponentPlane.load(bytes, offset: i * stride, stride: stride), at: i)
+    }
   }
   public init(width: Int, height: Int, depth: PixelDepth = .u8, value: Float = 0) throws {
     try Self.dimensions(width, height, depth)
     guard value.isFinite, (0...1).contains(value) else { throw CraftError.invalid("Ink samples must be between zero and one.") }
     self.width = width; self.height = height; self.depth = depth
-    bytes = Data(count: width * height * (depth == .u8 ? 1 : 2))
-    for i in 0..<count { if i % 4096 == 0 { try Task.checkCancellation() }; store(value, at: i) }
+    storage = try ComponentPlane(width: width, height: height, depth: depth, defaultWord: UInt32((value * (depth == .u8 ? 255 : 65535)).rounded()))
   }
   static func dimensions(_ width: Int, _ height: Int, _ depth: PixelDepth) throws {
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
@@ -30,19 +43,15 @@ public struct InkPlane: Codable, Equatable, Sendable {
   }
   public func validate() throws {
     try Self.dimensions(width, height, depth)
-    guard bytes.count == width * height * stride else { throw CraftError.invalid("Ink plane sample count differs from its dimensions.") }
+    guard storage.width == width, storage.height == height, storage.depth == depth else { throw CraftError.invalid("Ink plane sample storage differs from its dimensions.") }
   }
   public func value(at index: Int) -> Float {
     guard (0..<count).contains(index) else { return 0 }
-    if depth == .u8 { return Float(bytes[index]) / 255 }
-    return Float(UInt16(bytes[index * 2]) | UInt16(bytes[index * 2 + 1]) << 8) / 65535
+    return Float(storage.word(at: index)) / (depth == .u8 ? 255 : 65535)
   }
+  public func rawWord(at index: Int) -> UInt32 { storage.word(at: index) }
   private mutating func store(_ value: Float, at index: Int) {
-    if depth == .u8 { bytes[index] = UInt8((value * 255).rounded()) }
-    else {
-      let value = UInt16((value * 65535).rounded())
-      bytes[index * 2] = UInt8(value & 255); bytes[index * 2 + 1] = UInt8(value >> 8)
-    }
+    storage.setValidatedWord(UInt32((value * (depth == .u8 ? 255 : 65535)).rounded()), at: index)
   }
   public func replacing(offset: Int, values: [Float]) throws -> Self {
     guard offset >= 0, offset <= count, values.count <= count - offset,
@@ -56,7 +65,7 @@ public struct InkPlane: Codable, Equatable, Sendable {
     }
     return result
   }
-  /// Copy once, then edit scalar samples in place. Returning the original value
+  /// Share unchanged sample blocks, then edit scalar samples in place. Returning the original value
   /// preserves the original bytes without passing through a display surface.
   public func mapped(_ transform: (Int, Int, Float) throws -> Float) throws -> Self {
     var result = self
@@ -107,18 +116,19 @@ public struct InkPlane: Codable, Equatable, Sendable {
   private enum CodingKeys: String, CodingKey { case width, height, depth, bytes, blob }
   public init(from decoder: Decoder) throws {
     let c = try decoder.container(keyedBy: CodingKeys.self)
-    width = try c.decode(Int.self, forKey: .width); height = try c.decode(Int.self, forKey: .height)
-    depth = try c.decode(PixelDepth.self, forKey: .depth)
+    let width = try c.decode(Int.self, forKey: .width), height = try c.decode(Int.self, forKey: .height)
+    let depth = try c.decode(PixelDepth.self, forKey: .depth)
     try Self.dimensions(width, height, depth)
     let size = width * height * (depth == .u8 ? 1 : 2)
     try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?.reserve(tiles: (size + TileArchive.byteCount - 1) / TileArchive.byteCount)
+    let bytes: Data
     if c.contains(.blob) {
       guard !c.contains(.bytes), let context = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding else {
         throw CraftError.invalid("Ink plane blobs require their native archive context.")
       }
       bytes = try context.bytes(c.decode(String.self, forKey: .blob), maximumBytes: size)
     } else { bytes = try c.decode(Data.self, forKey: .bytes) }
-    try validate()
+    try self.init(width: width, height: height, depth: depth, bytes: bytes)
   }
   public func encode(to encoder: Encoder) throws {
     try validate(); var c = encoder.container(keyedBy: CodingKeys.self)

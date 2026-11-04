@@ -28,14 +28,14 @@ final class IndexedNativeWorkflowTests:XCTestCase {
       let stale=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":"stale","parameters":parameters]);XCTAssertEqual(stale.0.statusCode,409)
       let edit=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":service.revision(shared.store),"parameters":parameters]);XCTAssertEqual(edit.0.statusCode,200);XCTAssertNotEqual(shared.store.document,baseline)
       let undo=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"history.undo","revision":service.revision(shared.store),"parameters":[:]]);XCTAssertEqual(undo.0.statusCode,200);XCTAssertEqual(shared.store.document,baseline)
-      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...78))
-      for version in 64...78 {
+      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...85))
+      for version in 64...85 {
         download.setValue(String(version),forHTTPHeaderField:"X-Photato-Archive-Version")
         let(data,response)=try await URLSession.shared.data(for:download)
         XCTAssertEqual((response as? HTTPURLResponse)?.statusCode,200)
         XCTAssertEqual(try NativeArchive.decodePaged(data),baseline)
       }
-      download.setValue("79",forHTTPHeaderField:"X-Photato-Archive-Version");let(_,invalid)=try await URLSession.shared.data(for:download);XCTAssertEqual((invalid as? HTTPURLResponse)?.statusCode,400)
+      download.setValue("86",forHTTPHeaderField:"X-Photato-Archive-Version");let(_,invalid)=try await URLSession.shared.data(for:download);XCTAssertEqual((invalid as? HTTPURLResponse)?.statusCode,400)
     }
   }
 }

@@ -84,7 +84,7 @@ final class PSDMultichannelTests: XCTestCase {
     bad = data; bad[13] = 57; XCTAssertThrowsError(try PSDCodec.read(bad))
     var quick = source; quick.quickMask = quick.alphaChannels?.first
     // Use a distinct temporary channel identity to keep the source document valid.
-    quick.quickMask?.id = UUID(); XCTAssertThrowsError(try PSDCodec.writeRasterLayers(quick))
+    quick.quickMask?.id = UUID();XCTAssertNotNil(try PSDCodec.read(PSDCodec.writeRasterLayers(quick)).quickMask)
     XCTAssertThrowsError(try PSDInkChannels.display(Data([0,3])+Data(repeating:0,count:11)))
   }
   func testLegacyDisplayAndDefaultNamesAndOptionsEditsReplaceStaleResources() throws {

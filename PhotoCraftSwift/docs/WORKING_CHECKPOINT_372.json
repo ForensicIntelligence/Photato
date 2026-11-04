@@ -1,0 +1,28 @@
+{
+  "step": "dev-step-372",
+  "status": "Source01 native/API target transitions qualified within stated scope",
+  "run": "artifacts/runs/20261103T201700Z-372-S05-channel-transitions",
+  "previous_goal_turn": "progress:371 Source02 eight new cases pass each architecture;512 independent bytes/native workflow/diary/audit verified",
+  "source_inputs": 7089,
+  "source_unchanged": true,
+  "compiler_test_workers_live": false,
+  "goal_status": "active",
+  "goal_complete": false,
+  "S05_closed": false,
+  "next_major": "C01 after S05 complete and tested",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_binary_upload": false,
+  "new_release": false,
+  "workers": [],
+  "source_manifest": "artifacts/runs/20261103T201700Z-372-S05-channel-transitions/source01.json",
+  "production_swift_files": 1010,
+  "reference": "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+  "native_live": "artifacts/runs/20261103T201700Z-372-S05-channel-transitions/native-live01.json",
+  "next_work": [
+    "Complete remaining S05 full-scope audit; defer optional numerical refinements",
+    "Keep C01 full component visibility/edit targeting workflow queued after S05 complete and tested",
+    "Retain broader371 strict source failures and global Photoshop/platform/performance gates"
+  ]
+}

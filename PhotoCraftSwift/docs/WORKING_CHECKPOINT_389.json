@@ -1,0 +1,47 @@
+{
+  "step": "dev-step-389",
+  "status": "Native388source curated; staged verification/private push pending",
+  "goal_status": "active",
+  "previous_goal_turn": "progress:388 native component blocks/logical Surface equality and qualified broad/baseline results",
+  "run": "artifacts/runs/20261104T081304Z-389-private-source-backup",
+  "previous_qualified_source": "388Source03 (scoped qualification with reproduced retained failures)",
+  "software_build": 388,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T071157Z-388-native-component-blocks/source03-source.json",
+  "source_inputs": 7147,
+  "production_swift_files": 1020,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/SOURCE_PUBLICATION_389.json",
+  "diary_step": 388,
+  "next_work": [
+    "Commit/private-remote verify complete curated388Source03source; preserve honest qualification; then component streaming/admission."
+  ],
+  "history_receipt": "artifacts/development-history-audit/389-final-receipt01.json",
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  },
+  "staticEvidence": {
+    "currentBuildChecksPassed": true,
+    "historicalProtectionComplete": false,
+    "checks": 39,
+    "reference": "artifacts/runs/20261104T071157Z-388-native-component-blocks/static-verification02.json"
+  },
+  "source_snapshot": "docs/SOURCE_SNAPSHOT_389.json",
+  "included_qualified_inputs": 7113,
+  "excluded_qualified_inputs": 34,
+  "phase_ledger": "docs/FUNCTION_PHASES_389.json"
+}

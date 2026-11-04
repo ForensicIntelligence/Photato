@@ -6,6 +6,11 @@ import PhotoCraftImaging
 
 final class DocumentModeWorkflowTests: XCTestCase {
   @MainActor func testNative46HTTPNegotiationPreservesModePlanesAndEditingHistory() async throws {
+    let storage = try XCTUnwrap(DocumentModeAPI.capabilities["storage"] as? [String: Any])
+    XCTAssertEqual(storage["maximumPixels"] as? Int, 8_388_608)
+    XCTAssertEqual(storage["sampleBlockSize"] as? Int, 4096)
+    XCTAssertEqual(storage["rawSampleBits"] as? Bool, true)
+
     let helper = AutomationTests(), files = DocumentIOWorkflowTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
       try service.share(document); service.setDocumentTransfersEnabled(true)
@@ -39,7 +44,7 @@ final class DocumentModeWorkflowTests: XCTestCase {
       XCTAssertEqual(undone, 200)
       XCTAssertEqual(document.store.document, before)
       let formats = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...78))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...85))
       XCTAssertEqual(formats["documentModeVersion"] as? Int, 46)
       let psd = try DocumentIO.encode(before, format: .psd)
       XCTAssertEqual(try PSDCodec.read(psd).layers[0].nativeMode, before.layers[0].nativeMode)

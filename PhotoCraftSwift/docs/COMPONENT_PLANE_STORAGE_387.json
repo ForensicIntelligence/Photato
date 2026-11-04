@@ -1,0 +1,153 @@
+{
+  "step": 387,
+  "source": "387Source02",
+  "softwareBuild": 387,
+  "status": "Raw numeric storage dependency integrated into bounded InkPlane; full non-RGB capacity remains open",
+  "qualification": "All nine new numeric storage cases pass on Apple Silicon and translated Intel. Of 139 affected cases per architecture, 138 pass and one retained master-palette case reports an unexpected CancellationError; there are no crashes. Preserved build 386 test bundles reproduce that same cancellation. Two other retained test failures are repaired by updating obsolete command-count expectations. Independent Python packing verifies 40,136 raw bytes from eight owned outputs. The affected run fails; current full execution has not been rerun.",
+  "sourceInputs": 7145,
+  "productionSwift": 1020,
+  "testSwiftFiles": 695,
+  "affectedTestsEachArchitecture": 139,
+  "newTestsEachArchitecture": 9,
+  "affectedSuitePassed": false,
+  "featureTestsPassed": true,
+  "affectedPassedEachArchitecture": 138,
+  "retainedFailure": "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources",
+  "unexpectedEachArchitecture": 1,
+  "regressionClassification": "artifacts/runs/20261104T063327Z-387-component-plane-storage/regression-classification01.json",
+  "currentInventoryEachArchitecture": 3887,
+  "fullCurrentSuitePassed": false,
+  "fullGoalComplete": false,
+  "S05Closed": false,
+  "nativeLiveQualified": false,
+  "changes": [
+    "Raw8/16/Float32component words, implicit fills,4096sample blocks, exact negative zero/HDR bits, bounded atomic row transfers and four-level persistent edits.",
+    "Immutable private unlinked file snapshots with a mapped presence bitmap, checked stored-byte admission, cancellation/I/O/publication guards and retained ownership; no durable recovery or portable format change.",
+    "InkPlane uses shared raw blocks; uniform fill is implicit and sparse replacements preserve shared history. Legacy bytes/quantization/format/8MPlimit remain. Duotone rendering and Multichannel PSD export use rawWord rather than repeated whole-plane export.",
+    "API capability metadata describes backing facts and explicitly retains8MP. Native/API editing/history paths remain shared."
+  ],
+  "API": {
+    "commands": 242,
+    "nativeArchiveMaximum": 85,
+    "ActionsMaximum": 46,
+    "newCommands": [],
+    "newRoute": false,
+    "capability": "InkChannelAPI.storage",
+    "parametersAndResultsChanged": false,
+    "Adobe": "Internal storage plus backing metadata only. Existing shared jobs and published contracts retain separately qualified budgets. No new Adobe operation or descriptor is advertised.",
+    "cursors": "No new tool/modifier action or cursor policy change."
+  },
+  "independent": {
+    "passed": true,
+    "files": 8,
+    "bytesCompared": 40136,
+    "oracle": "Independent Python struct packing of literal integer and mathematical IEEE754 values; no application decoder. Owned numeric bytes only; no Photoshop-generated or rendered comparison.",
+    "checks": [
+      {
+        "architecture": "arm",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-arm-captures/component-plane/raw-float-row.bin",
+        "bytes": 28,
+        "exact": true,
+        "sha256": "50ff3888392cbe785820368dfe3e59e8643223a5fba9200f3f16654cc236134b"
+      },
+      {
+        "architecture": "arm",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-arm-captures/component-plane/raw-u16-row.bin",
+        "bytes": 10,
+        "exact": true,
+        "sha256": "4f3ea57d3e112113e9c972d20446f113cba44424f60ef5f7edd9e9b589ec56d6"
+      },
+      {
+        "architecture": "arm",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-arm-captures/component-plane/max-plane-last-row.bin",
+        "bytes": 16,
+        "exact": true,
+        "sha256": "0ea3bd882d07d9a552aa2805afa0e754eab5065d227406eebe2548e5a6578b42"
+      },
+      {
+        "architecture": "arm",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-arm-captures/component-plane/ink-legacy-u16.bin",
+        "bytes": 20014,
+        "exact": true,
+        "sha256": "87158418aaa6c3454220f5f5aa23a514c9a1a354839880ea360fb068f25154b1"
+      },
+      {
+        "architecture": "intel",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-intel-captures/component-plane/raw-float-row.bin",
+        "bytes": 28,
+        "exact": true,
+        "sha256": "50ff3888392cbe785820368dfe3e59e8643223a5fba9200f3f16654cc236134b"
+      },
+      {
+        "architecture": "intel",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-intel-captures/component-plane/raw-u16-row.bin",
+        "bytes": 10,
+        "exact": true,
+        "sha256": "4f3ea57d3e112113e9c972d20446f113cba44424f60ef5f7edd9e9b589ec56d6"
+      },
+      {
+        "architecture": "intel",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-intel-captures/component-plane/max-plane-last-row.bin",
+        "bytes": 16,
+        "exact": true,
+        "sha256": "0ea3bd882d07d9a552aa2805afa0e754eab5065d227406eebe2548e5a6578b42"
+      },
+      {
+        "architecture": "intel",
+        "file": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-intel-captures/component-plane/ink-legacy-u16.bin",
+        "bytes": 20014,
+        "exact": true,
+        "sha256": "87158418aaa6c3454220f5f5aa23a514c9a1a354839880ea360fb068f25154b1"
+      }
+    ]
+  },
+  "sourceManifest": "artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-source.json",
+  "qualificationFile": "artifacts/runs/20261104T063327Z-387-component-plane-storage/source02-qualification.json",
+  "sourceDelta": {
+    "added": [
+      "Sources/PhotoCraftCore/ComponentBlockMap.swift",
+      "Sources/PhotoCraftCore/ComponentPlane.swift",
+      "Sources/PhotoCraftCore/ComponentPlaneScratch.swift",
+      "Tests/PhotoCraftCoreTests/ComponentPlaneTests.swift"
+    ],
+    "removed": [],
+    "modified": [
+      "Sources/PhotoCraft/AutomationInkChannels.swift",
+      "Sources/PhotoCraftCore/InkModeRaster.swift",
+      "Sources/PhotoCraftCore/InkPlane.swift",
+      "Sources/PhotoCraftImaging/PSDMultichannelStorage.swift",
+      "Tests/PhotoCraftAppTests/InkChannelWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LargeSelectionFileWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/MultichannelQuickMaskWorkflowTests.swift",
+      "scripts/Info.plist"
+    ]
+  },
+  "universalPackage": "artifacts/runs/20261104T063327Z-387-component-plane-storage/universal/staging01.json",
+  "nativeLive": {
+    "attemptedThisIncrement": false,
+    "qualified": false,
+    "latestObservation": "docs/TEXT_FIND_REPLACE_386.json",
+    "reason": "Latest386native inventory confirms locked Mac. Pending unlock request retained without repetition; no current-source native live pass inferred."
+  },
+  "references": "artifacts/runs/20261104T063327Z-387-component-plane-storage/adobe-capacity-provenance01.json",
+  "remaining": "Ink and native non-RGB application workflows retain their 8,388,608 pixel limits. NativeModeRaster conversion/cache/rendering, streamed component/printing codecs and operations, admission/spill policy and recovery must still use the foundation before end-to-end300000square non-RGB documents are supported. Full dense physical capacity, supported Macs, current native live UI, sustained60fps and exact Photoshop output/settings/shortcuts remain unqualified. The full baseline from checkpoint 382 and retained imported-text failure from checkpoint 386 are not cleared by this focused run. S05 stays open; C01 follows complete and tested S05.",
+  "next": "Continue full S05 requirements then full C01; integrate raw component capacity through conversion/cache/codec/operations without reducing full package scope.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "attempts": {
+    "Source01": "Both compilers pass;136/139cases pass per architecture with two stale count assertions and one pre-existing unexpected cancellation.",
+    "previous386": "Exact130retained case IDs run127pass/3fail on each preserved386bundle; identical failure IDs and cancellation.",
+    "Source02": "Only two stale count assertions use the existing central242expectation.138/139pass; all9new cases pass; same unexpected cancellation retained. Production source and binary hashes identical toSource01."
+  },
+  "historicalEvidenceGap": {
+    "discoveredDuring": "final static verification02",
+    "record": "artifacts/runs/20261104T063327Z-387-component-plane-storage/static-verification02-failure.json",
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFilesUnchanged": 37,
+    "current387SourceBinariesAndBundlesRetained": true,
+    "cause": "Unknown; not inferred from the missing files. No original binary reconstructed or preservation gate waived."
+  }
+}

@@ -185,8 +185,7 @@ enum TIFFModeStorage {
           let value = (Double(native.value(component: c, index: i)) * 255 - 128) * (bits == 8 ? 1 : 256)
           output.append(file.order.bytes(Int(value.rounded()), native.bytesPerSample))
         } else {
-          let start = i * native.bytesPerSample, bytes = native.planes[c][start..<start + native.bytesPerSample]
-          output.append(file.order == .little ? Data(bytes) : Data(bytes.reversed()))
+          output.append(file.order.bytes(Int(native.rawWord(component: c, index: i)), native.bytesPerSample))
         }
       }
     }

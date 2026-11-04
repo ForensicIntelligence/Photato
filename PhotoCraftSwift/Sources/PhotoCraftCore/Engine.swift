@@ -141,6 +141,7 @@ public enum Command: Sendable {
   case transform(UUID, Transform2D, Resampling)
   case canvasSize(Int, Int, CanvasAnchor, Pixel?)
   case imageSize(Int, Int, Double, Resampling)
+  case fitImage(FitImageOptions)
   case resolution(Double)
   case rotateCanvas(CanvasTurn)
   public var label: String {
@@ -289,6 +290,7 @@ public enum Command: Sendable {
     case .applyAdjustment(_, .colorBalance): "Color Balance"
     case .applyAdjustment(_, .gradientMap): "Gradient Map"
     case .applyAdjustment(_, .tonalSteps(let settings)): settings.kind.rawValue
+    case .applyAdjustment(_, .invert): "Invert"
     case .desaturate: "Desaturate"
     case .autoCorrection(_, let kind): kind.rawValue
     case .applyAdjustment: "Adjustment"
@@ -298,11 +300,13 @@ public enum Command: Sendable {
     case .transform: "Free Transform"
     case .canvasSize: "Canvas Size"
     case .imageSize: "Image Size"
+    case .fitImage: "Fit Image"
     case .resolution: "Image Resolution"
     case .rotateCanvas: "Image Rotation"
     }
   }
   public func apply(to d: inout CraftDocument) throws {
+    if case .fitImage(let options) = self { try options.apply(to: &d); return }
     let linkEdit:Bool;switch self{case .pixelPaint,.layerLinks,.moveLayers:linkEdit=true;default:linkEdit=false}
     if linkEdit || d.requiresLayerLinkArchive || d.restrictedMode != nil || d.inkMode != nil || d.animation != nil || d.videoTimeline != nil || d.variables != nil || d.layerComps != nil || d.requiresSmartObjectLayerCompArchive {
       // A layer/geometry operation may be rejected by restricted-mode invariants.
@@ -401,7 +405,7 @@ public enum Command: Sendable {
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
-    case .preparedLayerMerge,.canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
+    case .fitImage,.preparedLayerMerge,.canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
     case .paste,.layerVia,.cut,.setGradientFill,.setPatternFill: try applyClipboardPrimitive(to:&d)
     case .addLayer,.newPixelLayer,.deleteLayers,.deleteLayer,.duplicateLayer,.duplicateLayers,.duplicateLayersFrom,.renameLayer,.layerColor,.layerVisibility,.visibility,.lock,.protection: try applyLayerStructurePrimitive(to:&d)
     case .opacity,.blend,.layoutLayers,.move,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
@@ -457,6 +461,10 @@ public struct HistoryEntry: Sendable {
   }
 }
 public struct PreparedEdit: Sendable {
+  public var isFitImageEdit: Bool { if case .fitImage = recordingCommand { return true }; return false }
+  public var channelCommand: ChannelCommand? { if case .channel(let command) = recordingCommand { return command }; return nil }
+  public var pixelPaintRequest: PixelPaintRequest? { if case .pixelPaint(let request) = recordingCommand { return request }; return nil }
+  public var paintingRequest: PaintToolRequest? { if case .painting(let edit) = recordingCommand { return edit.request }; return nil }
   public var isChannelOnlyEdit:Bool {if case .channel=recordingCommand{return true};return false}
   public var isSelectionOnly:Bool {switch recordingCommand {case .modifiedSelection,.reselectedSelection,.transformedSelection,.channel(.load(_,_,_)),.channel(.loadCoverage(_,_)):return true;default:return false}}
   public var linkedSmartObjectEdit:LinkedSmartObjectEdit? {if case .linkedSmartObject(let edit)=recordingCommand{return edit};return nil}
@@ -607,8 +615,12 @@ public struct EditorSession: Sendable {
     }
     let candidate = prepared.result
     guard candidate != document else {
-      if let command = prepared.recordingCommand, case .paste = command {
-        recordActionOperation(ActionOperation(recording: command, in: document), name: prepared.label)
+      if let command = prepared.recordingCommand {
+        switch command {
+        case .preparedAction(let edit): if let recording=edit.recording {recordActionOperation(recording,name:prepared.label)}
+        case .paste, .fitImage: recordActionOperation(ActionOperation(recording: command, in: document), name: prepared.label)
+        default: break
+        }
       }
       return
     }

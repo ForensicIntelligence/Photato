@@ -33,6 +33,16 @@ enum PSDAuxiliaryChannels {
     if names.isEmpty {return (0..<count).map{"Alpha \($0+1)"}}
     guard names.count==count,names.allSatisfy({!$0.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty && $0.utf8.count<=1024})else{throw CraftError.invalid("Auxiliary channel names disagree with the plane count.")};return names
   }
+  /// Resource1022 addresses a zero-based merged plane, including process/ink planes.
+  static func quickMaskInfo(_ blocks:[PSDImageResources.Block],first:Int,count:Int)throws->(index:Int?,initiallyEmpty:Bool?) {
+    let entries=blocks.filter{$0.id==1022}
+    guard entries.count<=1 else{throw CraftError.invalid("Duplicate Photoshop Quick Mask information.")}
+    guard let block=entries.first else{return(nil,nil)}
+    guard block.data.count==3 else{throw CraftError.invalid("Invalid Photoshop Quick Mask information.")}
+    var input=PSDReader(data:block.data);let index=try input.u16(),flag=try input.u8()
+    guard (first..<first+count).contains(index),flag<=1 else{throw CraftError.invalid("Quick Mask does not identify an auxiliary plane.")}
+    return(index-first,flag != 0)
+  }
   static func read(_ reader:PSDChannelReader,first:Int,count:Int,blocks:[PSDImageResources.Block],
     document:inout CraftDocument,paging:PSDRasterPaging.Context?)throws {
     if count==0 {
@@ -51,12 +61,7 @@ enum PSDAuxiliaryChannels {
       identifiers=try (0..<count).map{_ in UInt32(try input.u32())}
       guard Set(identifiers).count==identifiers.count else{throw CraftError.invalid("Duplicate Photoshop channel identifier.")}
     }
-    var quickIndex:Int?,initiallyEmpty:Bool?
-    if let block=blocks.first(where:{$0.id==1022}) {
-      guard block.data.count==3 else{throw CraftError.invalid("Invalid Photoshop Quick Mask information.")}
-      var input=PSDReader(data:block.data);let index=try input.u16(),flag=try input.u8()
-      guard (first..<first+count).contains(index),flag<=1 else{throw CraftError.invalid("Quick Mask does not identify an auxiliary plane.")};quickIndex=index-first;initiallyEmpty=flag != 0
-    }
+    let (quickIndex,initiallyEmpty)=try quickMaskInfo(blocks,first:first,count:count)
     guard count>0 else{return}
     let context=try paging ?? PSDRasterPaging.Context(heapByteLimit:512*1024*1024)
     var channels:[AlphaChannel]=[]

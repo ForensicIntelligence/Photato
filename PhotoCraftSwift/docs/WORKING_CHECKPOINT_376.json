@@ -1,0 +1,25 @@
+{
+  "step": "dev-step-376",
+  "status": "Source03 shared image/auxiliary palettes tested; full S05 scope retained",
+  "run": "artifacts/runs/20261103T223635Z-376-shared-paint-palettes",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "goal_status": "active",
+  "S05_closed": false,
+  "next_major": "C01 after S05 complete and tested",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261103T223635Z-376-shared-paint-palettes/source03.json",
+  "source_inputs": 7121,
+  "production_swift_files": 1011,
+  "source_unchanged": true,
+  "reference": "docs/SHARED_PAINT_PALETTES_376.json",
+  "next_work": [
+    "Consolidate the full S05 acceptance evidence; identify remaining functional requirements separately from broader final qualification without deleting any scope",
+    "C01 remains the next complete major function after S05 completes and is tested",
+    "Retain full output/settings/current-suite/platform/dense-capacity/60fps requirements"
+  ]
+}

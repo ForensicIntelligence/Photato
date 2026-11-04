@@ -38,6 +38,7 @@ enum DocumentModeAPI {
     ["commands": commands, "modes": Dictionary(uniqueKeysWithValues: DocumentColorMode.componentModes.map {
       ($0.rawValue, ["components": $0.componentNames, "depths": $0.depths.map(bits)] as [String: Any])
     }), "nativeArchive": 46, "maximumPixels": NativeModeRaster.maximumPixels, "maximumChannelSamples": 4096,
+      "storage": ["sampleBlockSize": ComponentPlane.blockSamples, "copyOnWriteLevels": 4, "implicitUniformFill": true, "rawSampleBits": true, "maximumPixels": NativeModeRaster.maximumPixels, "limits": "Native component samples, sparse conversions and display/channel caches share raw blocks. Application admission and legacy native/PSD/PSB/TIFF mode routes retain8,388,608pixels; streamed component encoding and full large-operation qualification remain open."],
       "componentFilters": ModeComponentEdit.filters.map(\.rawValue).sorted(),
       "componentEditing": "mode.channel.select selects UI editing components (empty means composite). Visibility is independent and must retain at least one component. mode.channel.edit supports selection-aware fill, stroke/erase, invert and listed filters with one Undo. Editing values are view-gray: zero is black/full CMYK ink; numerical read/write still exposes raw stored ink. Other planes and alpha are unchanged. Explicit edit targets must match any selected UI component target. The channel-preview.png endpoint matches the mode view.",
       "channelResultSchema": BrushAPI.object(["layerID": schema("layerID"), "component": schema("component"),

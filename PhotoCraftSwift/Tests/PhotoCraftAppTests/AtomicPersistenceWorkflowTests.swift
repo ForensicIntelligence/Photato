@@ -58,7 +58,7 @@ final class AtomicPersistenceWorkflowTests: XCTestCase {
   {
     _ = NSApplication.shared
     for failure in [Failure.write, .flush, .rename] {
-      let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 4, height: 3))
+      let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 4, height: 3))
       defer { document.close() }
       let layer = try XCTUnwrap(document.store.document.activeLayerID)
       try document.store.executeEditorCommand(.renameLayer(layer, "Previous backup"))

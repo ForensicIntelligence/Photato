@@ -190,7 +190,7 @@ final class UtilityPanelTests: XCTestCase {
   @MainActor func testHistoryRejectsDraftBusyAndInvalidTargetsWithoutCancellingTheDraft()
     async throws
   {
-    let store = EditorStore(document: try CraftNSDocument.blankModel(width: 3, height: 2))
+    let store = EditorStore(document: try EditableLifecycleModel.make(width: 3, height: 2))
     defer { store.renderTask?.cancel() }
     let id = try XCTUnwrap(store.activeLayer?.id)
     store.perform(.renameLayer(id, "Edited"))

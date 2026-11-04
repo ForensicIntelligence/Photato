@@ -22,7 +22,7 @@ final class RecoveryMemoryAdmissionTests: XCTestCase {
       let (_, url, model) = try helper.seed(index)
       backups[url] = try Data(contentsOf: url); ids.insert(model.id)
     }
-    let cost = RecoveryMemoryPolicy.documentCost(try CraftNSDocument.blankModel(width: 4, height: 3))
+    let cost = RecoveryMemoryPolicy.documentCost(try EditableLifecycleModel.make(width: 4, height: 3))
     c.recoveryDiscovery.memoryLimitBytes = cost * 2 + 65_536
     try await c.discoverIndexedRecovery(display: false)
     XCTAssertEqual(index.lastDiscovered, 2); XCTAssertEqual(index.lastDeferred, 3)

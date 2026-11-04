@@ -21,6 +21,8 @@ public enum RecordedActionRenderer {
     var lastIndexedPalette: [PaletteColor]?
     try action.apply(to: &result, resolve: { operation, document in
       switch operation {
+      case .replaceText(let request):
+        try TextReplacementPreparation.prepare(document,request:request).command.apply(to:&document)
       case .canvasEdges(let operation,let background):
         try CanvasEdgePreparation.command(document,operation:operation,background:background).apply(to:&document)
       case .merge(let targets,let operation):

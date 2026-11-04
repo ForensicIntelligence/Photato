@@ -35,7 +35,7 @@ enum PSDRasterPaging {
   /// Interleaved layer readers allow a64-row staging window. No full raster or
   /// whole strip of Float32 pixels is retained in heap memory, even at300000 px.
   static func layer(width:Int,height:Int,depth:PixelDepth,components:Int,
-    fill:Pixel = .clear,mask:Bool = false,sourceDepth:Int? = nil,clampMask:Bool = true,context:Context,
+    fill:Pixel = .clear,mask:Bool = false,sourceDepth:Int? = nil,clampMask:Bool = true,skipImplicitDefault:Bool = false,context:Context,
     rows:(Int)throws->[[UInt8]]) throws -> Surface {
     let bits=sourceDepth ?? (depth == .u8 ? 8:depth == .u16 ? 16:32)
     let encoding:SurfaceColorEncoding = depth == .f32 && !mask ? .linearRGB:.sRGB
@@ -48,7 +48,7 @@ enum PSDRasterPaging {
         guard values.count == components else {throw CraftError.invalid("Missing Photoshop staging plane.")}
         for c in 0..<components {try stripe.write(values[c],row:py,component:c)}
       }
-      try appendBand(stripe,to:builder,width:width,originY:y,storedY:0,height:h,depth:depth,fill:fill,mask:mask,merged:false,clampMask:clampMask)
+      try appendBand(stripe,to:builder,width:width,originY:y,storedY:0,height:h,depth:depth,fill:fill,mask:mask,merged:false,clampMask:clampMask,skipImplicitDefault:skipImplicitDefault)
     }
     return try builder.finish()
   }
@@ -67,7 +67,7 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
   private static func appendBand(_ planes:PSDPlaneScratch,to builder:Surface.PagedBuilder,
-    width:Int,originY:Int,storedY:Int,height:Int,depth:PixelDepth,fill:Pixel,mask:Bool,merged:Bool,clampMask:Bool = true) throws {
+    width:Int,originY:Int,storedY:Int,height:Int,depth:PixelDepth,fill:Pixel,mask:Bool,merged:Bool,clampMask:Bool = true,skipImplicitDefault:Bool = false) throws {
     let linear=depth == .f32 && !mask
     for x in stride(from:0,to:width,by:patchWidth) {
       var patch=try Surface(width:min(patchWidth,width-x),height:height,depth:depth,fill:fill,
@@ -82,6 +82,9 @@ enum PSDRasterPaging {
             let value=try Pixel(planes.sample(x:x+px,y:storedY+py,component:0),planes.sample(x:x+px,y:storedY+py,component:1),planes.sample(x:x+px,y:storedY+py,component:2),alpha)
             p=merged ? PSDMergedSample.decode(value):value
           }
+          // Keep uniform default regions implicit instead of creating redundant
+          // tiles. Bit comparison preserves signed-zero/HDR distinctions.
+          if skipImplicitDefault && p.hasSameBits(as: fill) { continue }
           if linear {patch.setLinearPixel(x:px,y:py,p)} else {patch.setPixel(x:px,y:py,p)}
         }
       }

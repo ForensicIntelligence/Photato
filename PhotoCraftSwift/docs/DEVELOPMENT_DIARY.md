@@ -18,20 +18,20 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:370 -->
-## Current status — 3 November2026 UTC
+<!-- current-status-step:388 -->
+## Current status — 4 November 2026 UTC
 
-The diary contains **370 development steps**. Latest tested source is **369 Source02**, now backed up in the private GitHub repository. **C01, Component visibility and edit targeting, is next after S05 completes and is tested.** S05, Quick Mask and saved selections, remains in progress.
+The diary contains **388 development steps**. The application is **build 388**.
 
-The next feature covers independent channel eyes and editing targets, component and mask display, actual brush/filter targets, Photoshop factory shortcuts, Undo/redo, persistence and API support. It builds on the Quick Mask work already tested. Its full scope remains in the plan.
+RGB, Gray, CMYK and Lab component storage now shares raw sample blocks. Uniform conversions and display/channel caches stay implicit, and local edits retain untouched components. Exact crop/reframe and TIFF sample access use raw words.
 
-All454 affected optimized tests pass on Apple Silicon and translated Intel, including five new Quick Mask visibility cases on each architecture. The current native visibility, hidden-brush, painting and Undo checks passed. These are checkpoint369 results; the source backup changed no application code or tested binaries and did not rerun native tests.
+All 14 new native-component and Surface-equality cases pass on Apple Silicon and translated Intel. The broadened run executes 1184 identical ordered cases per architecture; Apple Silicon passes 1182, translated Intel passes 1175. Six regressions from the earlier storage attempt now pass without changing their assertions. Independent Python packing checks 40,248 raw bytes from 14 owned outputs. Retained failures are listed in the evidence; this is not a passing full suite.
 
-The backup includes7051 qualified inputs. Its34 exclusions cover optional generated model/provenance files, Python caches and one externally restricted PSD. The Xcode project, code, tests, redistributable fixtures, build scripts, licenses and developer records are included. Original Rust files and existing history are preserved. The repository stays private until release day.
+The first attempt failed to compile two new test assertions. The next run passed the new component tests but exposed six existing document/history/codec/API failures: Surface equality compared storage layout. The repair compares logical sample bits, including hidden RGB and signed zero, and ignores padding outside the image. Existing assertions remain intact. Tests cover implicit, owned and mapped samples, full edge coverage, large sparse canvases, native round trips and stale guards.
 
-Remaining S05 contexts and full Photoshop output, the full current suite, physical supported-platform coverage, dense maximum capacity and sustained60fps remain open. Installed preview283 and store archive332 are unchanged. No new binary was uploaded or installed, and no software release was made.
+Component application and legacy codec limits remain at 8 megapixels. Complete large-document streaming, exact Photoshop output/defaults, current live UI, supported physical Macs and sustained 60 fps remain unqualified. S05 remains open; C01 follows completion/testing. Three missing older temporary candidate binaries remain documented; current source and full test/binary evidence are retained. No installation, source push, archive, upload or release.
 
-[Source delivery](SOURCE_PUBLICATION_370.json) · [Next major function](NEXT_MAJOR_C01.md) · [Development record](DEVLOG.md#dev-step-370)
+[Native component results](NATIVE_COMPONENT_BLOCKS_388.json) · [Storage guide](NATIVE_COMPONENT_BLOCKS.md) · [Full baseline](CURRENT_TEST_INVENTORY_382.json) · [S05 audit](S05_ACCEPTANCE_388.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -606,6 +606,25 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-02 | 367 | [Saved-selection documents; next major function selected](DEVLOG.md#dev-step-367) |
 | 2026-11-02 | 368 | [Quick Mask workflow checks; C01 next](DEVLOG.md#dev-step-368) |
 | 2026-11-03 | 369 | [Quick Mask visibility and hidden brush target](DEVLOG.md#dev-step-369) |
+| 2026-11-03 | 370 | [Private source backup and next major function](DEVLOG.md#dev-step-370) |
+| 2026-11-03 | 371 | [Hidden Quick Mask commands and pixel Invert](DEVLOG.md#dev-step-371) |
+| 2026-11-03 | 372 | [Quick Mask target transitions; C01 queued](DEVLOG.md#dev-step-372) |
+| 2026-11-03 | 373 | [Mask paint colors and S05 audit](DEVLOG.md#dev-step-373) |
+| 2026-11-03 | 374 | [Large saved-selection files](DEVLOG.md#dev-step-374) |
+| 2026-11-03 | 375 | [PSB file compatibility](DEVLOG.md#dev-step-375) |
+| 2026-11-03 | 376 | [Shared paint colours](DEVLOG.md#dev-step-376) |
+| 2026-11-03 | 377 | [App Store listing and media](DEVLOG.md#dev-step-377) |
+| 2026-11-04 | 378 | [App Store familiarity wording](DEVLOG.md#dev-step-378) |
+| 2026-11-04 | 379 | [Multichannel Quick Mask files](DEVLOG.md#dev-step-379) |
+| 2026-11-04 | 380 | [Mask paint-colour contexts](DEVLOG.md#dev-step-380) |
+| 2026-11-04 | 381 | [Mask target lifecycle](DEVLOG.md#dev-step-381) |
+| 2026-11-04 | 382 | [Current full test inventory](DEVLOG.md#dev-step-382) |
+| 2026-11-04 | 383 | [Document lifecycle regression repairs](DEVLOG.md#dev-step-383) |
+| 2026-11-04 | 384 | [Animated layer-style transactions](DEVLOG.md#dev-step-384) |
+| 2026-11-04 | 385 | [Fit Image and reusable batch constraints](DEVLOG.md#dev-step-385) |
+| 2026-11-04 | 386 | [Find and Replace Text](DEVLOG.md#dev-step-386) |
+| 2026-11-04 | 387 | [Numeric component-plane storage](DEVLOG.md#dev-step-387) |
+| 2026-11-04 | 388 | [Native component blocks](DEVLOG.md#dev-step-388) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -737,7 +756,7 @@ Validation found and fixed a missing shared const-schema rule, outdated command-
 
 Object Selection now supports rectangle/lasso initialization through native graph cut and clicked-object targeting through Apple's local Vision adapter. Quick Selection follows image boundaries from painted seeds. Selection Brush paints editable soft coverage with a colored overlay. The graph, mixture model, geodesic costs and boundary refinement were translated from the preserved MIT/Apache PhotoCraft sources into Swift, with attribution and native cancellation/work limits. Source images remain unchanged; existing masks, history and Select and Mask workflows consume the result.
 
-Four typed API commands expose configuration and all three tools through the same native transaction, with discoverable state/result schemas and request lifecycle guards. Actions version4 retains explicit coverage on its original canvas; replay does not silently redetect objects. Native archives remain32. Tests include independent exhaustive small-graph cuts, textured segmentation fixtures, reduced-resolution recut, offscreen/synthetic interaction, soft coverage at8/16/32-bit, current/composite sampling, cancellation and native/HTTP equality. No test attempt failed; one stale-context patch made no changes and was reapplied correctly. Validation also corrected stale overlays on tool changes and the API's omitted Object Selection mode fallback.
+Four typed API commands expose configuration and all three tools through the same native transaction, with discoverable state/result schemas and request lifecycle guards. Actions version4 retains explicit coverage on its original canvas; replay does not silently redetect objects. Native archives remain32. Tests include independent exhaustive small-graph cuts, textured segmentation fixtures, reduced-resolution recut, offscreen/synthetic interaction, soft coverage at 8/16/32-bit, current/composite sampling, cancellation and native/HTTP equality. No test attempt failed; one stale-context patch made no changes and was reapplied correctly. Validation also corrected stale overlays on tool changes and the API's omitted Object Selection mode fallback.
 
 All155 broad focused Debug checks,7 final dedicated workflow checks and1876 full optimized tests pass. The universal macOS14+ package verifies and includes191 Adjustment Brush. All1455 frozen inputs, four protected files and754 original Rust hashes verify. The Xcode project remains present and unchanged. Source deltas, build/signature evidence and prior attempts are retained. No live desktop qualification was possible because the last authoritative desktop state remains locked. Photoshop byte/model equivalence, broader finder/People workflows and platform qualification remain open. Continue major workflow breadth with Sky Selection and Sky Replacement.
 
@@ -1522,7 +1541,7 @@ Earlier checkpoints reduced preview preparation and redraw work, but did not mea
 
 Reports exclude artwork, coordinates and document names. Diagnostic buffers are bounded, overflow is explicit, stale stroke revisions are rejected and unique output is asynchronous. Apple documentation identified an incompatible pair of Foundation write flags while the first frozen candidate compiled; its test run confirmed the fatal precondition. The failed attempt and corrected atomic-write candidate are preserved. Tests cover correlation, bounds, stale previews, cancellation, API metadata, exact native painting pixels and Undo. Opt-in bounded timing now correlates brush/retouch input, preparation, accepted previews and AppKit draws, with display-link scheduling markers. Normal editing has no recorder or display probe. All35 focused optimized tests pass on2466 frozen inputs. The full run records2432 passing cases before interruption during prolonged native Save-panel waits in the locked session; it is not a full-suite pass. The isolated diagnostic app is signed and matches tested code. Live trace collection is pending because the Mac is locked; no physical60fps or new pacing improvement is claimed. Normal preview remains268.
 
-Live inspection could not start because the Mac was locked and the UI connector could not unlock it. Manual unlock was requested while the automated suite ran. The separate diagnostic app is ready for owned-fixture painting, history verification and trace collection after unlock. The full suite then encountered prolonged native Save-panel initialization waits; a stack sample was saved, and the owned test process was stopped. Its completed cases have no assertion failures, but the suite is incomplete and must be rerun after unlock. The existing normal preview and user artwork are unchanged. The overall feature and60fps goals remain open. [Detailed record](DEVLOG.md#dev-step-269).
+Live inspection could not start because the Mac was locked and the UI connector could not unlock it. Manual unlock was requested while the automated suite ran. The separate diagnostic app is ready for owned-fixture painting, history verification and trace collection after unlock. The full suite then encountered prolonged native Save-panel initialization waits; a stack sample was saved, and the owned test process was stopped. Its completed cases have no assertion failures, but the suite is incomplete and must be rerun after unlock. The existing normal preview and user artwork are unchanged. The overall feature and 60 fps goals remain open. [Detailed record](DEVLOG.md#dev-step-269).
 
 **Step269 availability follow-up:** The Mac remains locked across three consecutive goal turns. Native UI access and the remaining full-suite/painting trace are blocked until manual unlock; source02 and normal preview268 are unchanged. The interrupted full run and failed initial report writer remain preserved. This availability check is not a new implementation milestone; live frame pacing and the complete Photoshop goal remain unqualified.
 
@@ -1741,7 +1760,7 @@ Supported RGB PSD/PSB resource jobs now use the native paged reader instead of t
 
 The same source that could open natively still failed resource jobs at four megapixels. The job adapter now uses the paged Photoshop reader and checks geometry separately from stored/resident data. RGB blank documents keep implicit background samples; accepted jobs continue using the shared native command engine. Nonpaged formats, analysis and artboard flattening retain separate current limits. A bounded PSD serializer stops oversized output during writing instead of first constructing a much larger buffer.
 
-The regression suite verifies all40million layer samples from an authored RGB32 input, lossless native/job output bytes and a real5.4MP High Pass through both authenticated routes with untouched desktop history. These are native functional checks, not proof of Adobe algorithm or hosted-service equality. The current Adobe guide documents5GB resources; local transport still requires further work. Major modern Light/Color and vibrance/Clarity and dehaze/Grain layers remain outstanding after the official feature audit. [Detailed record](DEVLOG.md#dev-step-296) · [Evidence](LARGE_RESOURCE_JOB_REFERENCES.json).
+The regression suite verifies all 40 million layer samples from an authored RGB32 input, lossless native/job output bytes and a real5.4MP High Pass through both authenticated routes with untouched desktop history. These are native functional checks, not proof of Adobe algorithm or hosted-service equality. The current Adobe guide documents5GB resources; local transport still requires further work. Major modern Light/Color and vibrance/Clarity and dehaze/Grain layers remain outstanding after the official feature audit. [Detailed record](DEVLOG.md#dev-step-296) · [Evidence](LARGE_RESOURCE_JOB_REFERENCES.json).
 
 ## 2026-10-31 — Step297: modern editable adjustment layers
 
@@ -2473,7 +2492,7 @@ The maintainer asked for one major workflow to be completed and tested. S05 was 
 
 All 15 new cases and all 266 affected optimized tests pass, with 0 failed assertions, 0 unexpected errors and 0 crashes. The 491.43-second optimized build and 34.724-second affected run used 7,065 unchanged frozen inputs and 1,003 production Swift files.
 
-S05 is still in progress: finish the remaining Save/Load source/destination cases and live UI qualification before closure. C01 is preselected next. The full current suite, all-input Photoshop output, supported physical Macs and60fps qualification remain open. Installed preview283, private source backup363 and store archive332 are unchanged; no installation, source push, archive, binary upload or release. [Record](DEVLOG.md#dev-step-366).
+S05 is still in progress: finish the remaining Save/Load source/destination cases and live UI qualification before closure. C01 is preselected next. The full current suite, all-input Photoshop output, supported physical Macs and 60 fps qualification remain open. Installed preview283, private source backup363 and store archive332 are unchanged; no installation, source push, archive, binary upload or release. [Record](DEVLOG.md#dev-step-366).
 
 ## 2026-11-02 — Step367: Saved-selection documents; C01 queued
 
@@ -2483,7 +2502,7 @@ All17 new cases and all388 affected optimized tests pass, with0 failed assertion
 
 The next full major function is C01: separate channel viewing and editing targets, grayscale/color display, temporary mask rows, actual paint/filter targets, eye gestures and Photoshop shortcuts. It starts after S05 completes and is tested.
 
-S05 remains in progress pending native live UI and remaining qualification; C01 is preselected and starts after S05 completes and is tested. The full current suite, all-input Photoshop output, full supported-platform coverage, dense maximum capacity and60fps remain open. Installed preview283, private source backup363 and store archive332 are unchanged. No installation, source push, archive, binary upload or release. [Record](DEVLOG.md#dev-step-367).
+S05 remains in progress pending native live UI and remaining qualification; C01 is preselected and starts after S05 completes and is tested. The full current suite, all-input Photoshop output, full supported-platform coverage, dense maximum capacity and 60 fps remain open. Installed preview283, private source backup363 and store archive332 are unchanged. No installation, source push, archive, binary upload or release. [Record](DEVLOG.md#dev-step-367).
 
 ## 2026-11-02 — Step368: Quick Mask workflow checks; C01 next
 
@@ -2518,3 +2537,178 @@ The tested369 source is now backed up in the existing private repository. Every7
 The maintainer asked again which major feature follows S05. We confirmed C01: Component visibility and edit targeting. The plan covers independent viewing and editing, channel/mask rows, real painting/filter targets, factory shortcuts, history and API support. C01 starts after S05 is complete and tested; neither package is marked closed by this decision.
 
 The source retains checkpoint369's454 affected passing tests per architecture and its native Quick Mask check. No native tests were rerun for documentation and source-copy changes. The full current suite, complete Photoshop behaviour and supported-platform/performance gates remain open. GitHub's main ref and source tree were verified, and repository visibility remains private. [Record](DEVLOG.md#dev-step-370).
+
+## 2026-11-03 — Step371: Hidden Quick Mask commands and pixel Invert
+
+Photoshop treats hidden Quick Mask commands differently. Fill opens its dialog but rejects the commit; Invert is disabled. Gaussian Blur can still run on the hidden mask. We reproduced those rules in direct and prepared native/API commands, including the separate modern painting path. The factory Image Adjustments Invert command now changes supported pixels rather than adding a layer; RGB clients can use the existing adjustment.apply operation.
+
+The first run caught a bad test request: it sent saved-filter JSON instead of the public API’s kind/radius fields. We corrected the request without relaxing the decoder. Another test still expected the retired64-layer limit; it now checks the current8000-layer boundary and atomic admission. Strict source comparisons remain unchanged and open, including three additional Intel assertions.
+
+All eight new cases pass on both architectures. The affected totals are583/584 on Apple Silicon and582/584 through Rosetta, with no unexpected errors or crashes. Both source attempts and their raw executables survive. The first case-list inspector overlooked Intel stderr; reading both preserved streams proved that the same584 case IDs ran on each architecture.
+
+An owned Photoshop Invert output supplies the numeric reference. Independent parsing confirms192 RGB bytes and64 unchanged alpha bytes in each native PSD export. The current universal app also passes the native shortcut, hidden Fill warning, Gaussian preview/cancel/commit/Undo/Redo and reveal checks, then closes the disposable document and quits. The input file remains unchanged.
+
+S05 remains in progress; C01 stays next. Broader channel/filter contexts, exact profiles/kernels/defaults, the full current suite and physical platform/performance checks remain open. No binary was installed or uploaded and no software release was made. [Record](DEVLOG.md#dev-step-371).
+
+## 2026-11-03 — Step372: Quick Mask targets; next major feature
+
+C01, Component visibility and edit targeting, remains next after S05. Its scope includes independent channel eyes and editing targets, grayscale/color views, temporary mask rows, painting and filters, gestures and factory shortcuts. Native/API behavior, history and workflow tests are part of completion.
+
+An owned Photoshop document exposed a shared dependency. Command2 selects RGB while leaving Quick Mask present and visible; component and saved-alpha shortcuts choose their own editing targets. The temporary mask has the next numbered shortcut. Q exits the mode even when RGB is selected. Photato had inferred the target solely from the mask's presence, so it could send an intended RGB edit to the mask.
+
+The native target override is now scoped to the document and temporary mask. RGB and numerical components can receive edits without changing Quick Mask; alpha and temporary-row shortcuts share that state. API visibility changes only the eye, while API state reports the actual target. Native reopen and a new mask reset the session override. Full independent component/auxiliary visibility remains C01.
+
+All six new channel-transition cases and all 293 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. The exact same ordered case IDs run on both architectures. All7089 frozen inputs and1010 production Swift files remain unchanged. Current universal native checks are recorded separately. The371 broader strict source comparisons remain open; these focused runs do not replace them or prove full Photoshop output equality. No app was installed, source pushed or software released. [Record](DEVLOG.md#dev-step-372).
+
+## 2026-11-03 — Step373: Mask paint colors and remaining S05 work
+
+The image foreground color was carrying into Quick Mask. Photoshop keeps separate image and mask colors: mask painting starts black/white, X swaps that pair, and RGB restores the image colors. An owned Photoshop document confirmed that the mask pair survives Q exit and re-entry. Its original foreground was restored and the file closed without saving.
+
+Photato now remembers the image and auxiliary pairs when targets change. The API exposed another mismatch: changing a brush background did not change the native palette background. Both now agree, and included-color presets update it too. API state reports the active context and both pairs; no new command or Adobe route is added.
+
+The first builds failed before tests because old brush presets can omit a background. The repair keeps the current background when it is absent. The failed attempt and its source survive; its retained executables are correctly identified as the older372 binaries, since373 had not linked. All eight new paint-color workflow cases and all 347 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. Both architectures run the same ordered case IDs. All7091 frozen inputs and1011 production Swift files remain unchanged.
+
+The full S05 audit also identifies the next file-workflow gap: standalone Multichannel selections still pass through dense ink-plane storage and cannot reopen above8.4 megapixels. Auxiliary planes need the paged row decoder. That remains open along with application-global palette and full output/platform requirements. C01 stays queued. No app was installed, source pushed, uploaded or released. [Record](DEVLOG.md#dev-step-373).
+
+## 2026-11-03 — Step374: Large saved-selection files
+
+Standalone selections were still going through dense printing-plate storage when opening Multichannel PSD/PSB files. That imposed an8.4-megapixel limit even though native selections already supported paged storage. Auxiliary channels now use the bounded row decoder and paged tiles. Printing-plate capacity stays separate and remains open.
+
+Independent Python fixtures cover8/16-bit PSD/PSB, raw/RLE/ZIP/prediction encodings,40.5 megapixels, maximum PSB side and every16-bit word. Photoshop opened the owned RLE input and saved both PSD and PSB copies. An independent reader verified every numeric sample. It rejected both ZIP PSB probes, so those are not qualified for Photoshop interoperability. Channel Unicode terminators and identifiers also needed repairs to survive saving and reopening.
+
+The first native run passed269 of273 cases per architecture. The second passed272 of273, including every new case; its remaining version85 assertion compared against version11 bytes. The final test-only repair checks version85 bytes and decodes the response back to the model. All exported values were correct, but the new path allocated tiles for implicit black samples. The repair keeps those regions implicit without changing the pixel assertions. An older HTTP test also rejected native85 even though the format was already supported; it now positively checks85 and rejects86. All 11 new large-selection file cases and all 273 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,118 frozen inputs and 1,011 production Swift files remain unchanged.
+
+The live large-file check remains unqualified after unreliable chooser navigation; both test executables and resources are preserved. S05 stays open against its full requirements. C01 remains the next complete major function, covering independent channel visibility and real editing targets. No installation, source push, archive, upload or release. [Record](DEVLOG.md#dev-step-374).
+
+## 2026-11-03 — Step375: PSB file compatibility
+
+The large selection opened and painted correctly in Photato. Undo removed the stroke, and the saved file retained every original sample. Photoshop rejected that output. The problem was in the file structure: wide tagged blocks had8-byte lengths preceded by the ordinary8BIM signature. Photoshop used8B64 for those blocks. An owned probe changing only the two signatures opened successfully.
+
+The shared writer now pairs each supported block signature with its length width. The audit also found the same issue in16/32-bit layer-depth records, saved paths, mask-display records, embedded Smart Objects and Smart Filter caches. PSD and ordinary PSB block framing remain as before. Existing native/API saves use the same repair; no new route or format option is added.
+
+The first build failed before tests because a new test passed a URL to the Data reader. That attempt is preserved; its retained executables were still the previous374 build. The test now uses the file reader. All nine new cases and all 356 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,120 frozen inputs and 1,011 production Swift files remain unchanged. Independent output checks and the current native/Photoshop workflow are recorded separately.
+
+Shared image/mask paint palettes and other S05 requirements remain open. C01 stays next with its full scope. No installation, upload or release. [Record](DEVLOG.md#dev-step-375).
+
+## 2026-11-03 — Step376: Shared paint colours
+
+Photoshop carries foreground/background colours from one document to another. Its image and Quick Mask pairs are separate: a swap in Quick Mask survives a document change without replacing the image colours. Two owned RGB8 files confirmed that behaviour, including the exact d24a7e image foreground in the second picker. The probe files were closed without saving, and the entered original colours restored.
+
+Photato now keeps both pairs in the document controller. Editors select the appropriate pair while retaining their own brush settings. Old copies cannot overwrite the live palette when targets change. Closed editors detach a snapshot. Palette changes update API revisions in other documents, and in-progress native strokes retain the colour captured at their start. Normal application startup uses a bounded preference record; snapshots and test controllers stay isolated.
+
+The first candidate was cancelled after a test review found an impossible comparison of UUID-bearing layers from different documents. The corrected tests compare each document with its own original. The next diagnostic passed every new palette case but found an obsolete test expecting large Background clearing to be unsupported. That test now checks the working white clear and two-step Undo/Redo. The startup audit also found a second launch path needing explicit palette injection. All 11 new shared-palette cases and all 485 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,121 frozen inputs and 1,011 production Swift files remain unchanged.
+
+The current native workflow and preference restart are checked, with independent HTTP-state comparisons kept separate from pixel/CMM claims. S05 stays open against its full scope. C01 remains next. [Record](DEVLOG.md#dev-step-376).
+
+## 2026-11-03 — Step377: App Store listing and media
+
+The existing App Store Connect record was an empty1.0 draft. It now uses0.3.0, with copy describing the current editor, its alpha limitations, optional Apple AI and AI-aided development. The source-release policy and upstream attribution are included. Free pricing is saved across175storefronts, and automatic release has been changed to manual.
+
+Four screenshots show a real layered composition, the opacity slider, brush work and Quick Mask. The original CoastalLight artwork was made for these captures. Its lettering is raster artwork, so the screenshots do not claim editable type. A27.478-second preview shows actual layer, painting and selection actions. The capture service limits source cadence; the video makes no physical frame-rate claim.
+
+The first artwork candidate used the wrong layer order and was retained. Preview preparation also caught a timing overrun, an unavailable text filter and a full-range video-format mismatch. The passing export preserves real frame timings and uses separate caption cards. All824 output frames decode correctly. Four screenshots and one preview are uploaded; Apple is still processing the preview.
+
+The privacy label is saved as a draft. Apple’s agreement, the content-rights declaration and private review-contact details remain pending. There was no binary upload, review submission or software release. Native source376 is unchanged. [Record](DEVLOG.md#dev-step-377).
+
+## 2026-11-04 — Step378: App Store familiarity wording
+
+The App Store description and promotional text now say: “If you know your way around a professional image editor, Photato will feel familiar.” The early-alpha disclosure remains clear. Generic reviewer-note wording is prepared locally, but the portal still has its prior private notes because the required reviewer contact is missing.
+
+Apple’s keyword documentation explicitly excludes competing app and company names. The saved keywords therefore describe layers, masks, painting, retouching, colour, selections, PSD/PSB, brushes and open source. An initial same-tab reload appeared to show all four changes. The Save error then exposed missing contact fields; an untouched fresh tab confirmed only the three public changes persisted. The older private notes remain saved. Manual release remains selected; no build was submitted or released. [Record](DEVLOG.md#dev-step-378).
+
+
+## 2026-11-04 — Step379: Multichannel Quick Mask files
+
+Photoshop saves selection-only documents with Quick Mask active. Photato rejected them and required leaving the mode before saving. The shared Swift reader/writer now retains the temporary mask separately from saved selections and printing channels, including display options, identifiers and the initially-empty flag. Native SaveAs permits it, and standalone opening selects Quick Mask for editing.
+
+All nine new cases and all494 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. Both architectures execute the same ordered case IDs. All7125 frozen inputs and1011 production Swift files are unchanged. Independent readers verify78 files/4480 samples. Real native brush/Undo/Redo/SaveAs passes; Photoshop opens that8-bit output and a16-bit RLE output with Quick Mask active. The initial failed new test compared internal tile storage outside document bounds; the corrected test checks every document pixel exactly. Production binary hashes did not change. Both attempts remain recorded.
+
+The reused aggregate-report name and diary-format assumption were caught and corrected. Their initial helpers and failures remain. S05 remains in progress against its full scope; C01 follows after completion and testing. Cross-profile/custom-gray/layer-mask/component palette semantics, Photoshop restart defaults, full interoperability, current full suite, exact all-input output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained60fps remain unqualified. Prior371 broader strict comparison failures remain open. Native Float32 standalone selection storage remains supported;32-bit mode7 output remains unavailable after the observed Photoshop save failure. Printing plates retain their separate dense capacity limit. Prior ZIP PSB rejection is not cleared by native/independent decoder passes. No installation, source push, archive, upload or release. [Record](DEVLOG.md#dev-step-379).
+
+
+## 2026-11-04 — Step380: Mask paint-colour contexts
+
+Photoshop remembers a mask colour pair separately from its image and Quick Mask pairs. A layer-mask colour also appears when selecting a Smart Filter mask. D uses white/black for these masks. Q returns to image editing when its own target is selected; if another mask is selected while Q remains, removing Q keeps that mask target. These observations came from owned test artwork and normal Photoshop controls. Original palette values were restored and the artwork closed without saving.
+
+Photato now has the third shared palette, migration of the old preferences, target-aware D/X and the same native/API mask selection and painting path. Invalid or deleted mask targets fall back safely. The API retains the selected mask after supported brush/channel operations.
+
+All 545 affected optimized tests pass on Apple Silicon and translated Intel, including eight new mask-palette workflow cases. There are no failed assertions, unexpected errors or crashes. Both architectures run the same ordered cases. The run uses 7,126 unchanged frozen inputs and 1,011 production Swift files. Independent checks cover128 colour components and256 mask samples. The first candidate was cancelled for new test-helper defects. The next test build caught a private-setter misuse; the following run correctly rejected a malformed RGBA-array fixture. Those attempts remain. The corrected test sends the existing object format and checks actual black mask pixels. Production binaries were unchanged by the test-only repairs.
+
+The Mac locked before the current app could be inspected. Live acceptance remains pending; no successful screenshot is claimed. S05 remains in progress against its full scope; C01 follows after S05 is complete and tested. Current-build live UI is pending an unlocked Mac. General profile/custom-gray conversion, component colour contexts, Photoshop restart defaults, complete channel visibility/temporary rows/filter targets, full interoperability, the current full suite, exact all-input Photoshop output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained 60 fps remain open. Earlier strict comparison failures and ZIP PSB rejection are retained. Native Float32 standalone storage remains supported; 32-bit Multichannel output and full printing capacity remain unqualified or unavailable. [Record](DEVLOG.md#dev-step-380).
+
+
+## 2026-11-04 — Step381: Mask target lifecycle
+
+Returning from a Smart Filter mask had cleared its owner but left an editing flag set. Merge and Calculations still treated the document as a mask target, even after selecting RGB, previewing the composite or selecting all layers. Six new workflow cases reproduce five failures and21 assertions per architecture against unchanged build380. The document-read case passes as a control.
+
+The repair clears filter-mask editing whenever its owner is cleared. It preserves viewing state so supported prepared mask edits can restore their captured target. Native and HTTP Merge now produce a single layer and one Undo, and busy rejection keeps the original valid mask. API availability/state/capabilities describe the same behavior; existing contracts and command counts remain.
+
+All 698 affected optimized tests pass on Apple Silicon and translated Intel, including six new mask-target lifecycle cases. There are no failed assertions, unexpected errors or crashes. Both architectures run the same ordered cases. All 7,127 frozen inputs and 1,011 production Swift files remain unchanged. Independent analytical red8x8 comparisons verify1,024RGBAbytes across native/API and both architectures. The initial repaired attempt was stopped before tests after finding an invalid argument in the new HTTP capture helper; frozen source, partial logs, process cleanup and stale380 executables are retained. The corrected test uses the helper’s existing GET behavior.
+
+S05 remains in progress against its full scope; C01 follows after S05 is complete and tested. Current native live UI awaits an unlocked Mac. General profile/custom-gray conversion, component colour contexts, Photoshop restart defaults, complete channel visibility/temporary rows/filter targets, full interoperability, the current full suite, exact all-input Photoshop output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained 60 fps remain open. Earlier strict comparison failures and ZIP PSB rejection are retained. Native Float32 standalone storage remains supported; 32-bit Multichannel output and full printing capacity remain unqualified or unavailable. [Record](DEVLOG.md#dev-step-381).
+
+
+## 2026-11-04 — Step382: Current full test inventory
+
+The last complete test run was at checkpoint 332. This pass discovers 3,845 unique cases in both current compiled bundles and runs every case in 21 fresh processes per architecture. The app and test source stay frozen at build 381. No existing result is reused.
+
+All 3,845 discovered tests execute on each architecture in 21 fresh bounded groups. Apple Silicon: 3779 pass, 66 fail, 0 skip, 37 unexpected errors and 0 crashes. Translated Intel: 3771 pass, 74 fail, 0 skip, 37 unexpected errors and 0 crashes. This is a complete execution with failures, not a passing full suite. Raw logs retain every failed assertion, unexpected error and test identity. These test counts are not a measure of Photoshop functionality.
+
+The installed Xcode discovery helper is ARM-only, so it could not list the Intel bundle. A small test-only helper using public XCTest APIs lists the same 3,845 test IDs from both bundles. Its dependency/name-format repairs and failed discovery attempts are recorded. A generated environment diagnostic was sanitized immediately; raw environment values were not retained.
+
+The failures include old fixture assumptions and checks that still need functional diagnosis. The next repair pass starts with lifecycle/API failures and preserves the current Photoshop Background and mask-colour behavior. Strict Rust comparisons remain supporting diagnostics; Photoshop remains the reference. S05/C01 and the full original goal remain open. [Record](DEVLOG.md#dev-step-382).
+
+
+## 2026-11-04 — Step383: Document lifecycle regression repairs
+
+The complete baseline exposed generic fixtures that made invalid edits to protected Background layers. Those tests could not reach the recovery or closing behavior they were meant to check. They now use regular layers with the same factory pixels, dimensions, depth, profile and IDs. All original history, cancellation, permission and saved-byte checks remain. Production guards are unchanged.
+
+A new test uses actual indexed recovery for opaque Background layers at all three depths. It checks the restored model and snapshot identity, supported painting, rejected rename, one Undo/Redo and unchanged backup bytes. The first repaired run passed 715 of 718 cases on each architecture; its remaining failures were stale native-version expectations.
+
+The follow-up pins the existing native85/Actions44 inventories, extends positive indexed round-trips through85, and rejects86. It preserves minimum feature versions and corrupt-input/resource tests. The 40-million-pixel HDR/alpha fixture now uses a regular layer, and the layer-limit test checks 8,000 accepted/8,001 rejected instead of treating 65 as invalid.
+
+All 740 affected optimized tests pass on Apple Silicon and translated Intel, including the new all-depth indexed Background recovery case. There are no failed assertions, unexpected errors or crashes. Both architectures run the same ordered cases. In this focused run, 43 previously failing full-baseline cases pass per architecture. The full current inventory has not been rerun. Production executables are byte-identical to381. This does not erase the full382 baseline or prove complete Photoshop parity. S05/C01, current live UI and all original global gates remain open. [Record](DEVLOG.md#dev-step-383).
+
+
+## 2026-11-04 — Step384: Animated layer-style transactions
+
+A style edit changed a private candidate, then validated it against the old keyframe or animation-frame state. Validation rejected the edit before the outer engine could record the new value. An existing regression and new native/API checks reproduced this on both architectures. The unchanged-code run passed one of six cases; the other five failed. All failed runs and source snapshots remain in the record.
+
+The first repaired run passed 467 of 468 cases per architecture. The new 32-bit midpoint assertion had read an encoded display value; the renderer blends those pixels in linear RGB. The corrected test checks linear working values and independently checks encoded PNG output. The production blending path is unchanged.
+
+The style transaction checks its source composition, then records the changed temporal composition before final validation and assignment. It retains the existing key identity and interpolation when replacing a key, changes only the selected animation frame, preserves movie/source pixels, and keeps invalid edits atomic. The API uses this same path for replacement, patch and clear. No new endpoint or file-format version is required.
+
+All 476 affected optimized tests pass on Apple Silicon and translated Intel, including 6 new temporal-style regression cases. Both architectures run the same ordered cases with no failed assertions, unexpected errors or crashes. Independent checks cover 36 PNGs and 3,456 RGBA8 channel values. The full current test inventory has not been rerun. The independent samples check a red square with a blue overlay at authored times. They are regression evidence, not a claim of matching Photoshop pixels. Current live UI and full S05/C01 acceptance remain open. The store copy already followed the requested generic wording; no portal field was changed in this increment. [Record](DEVLOG.md#dev-step-384).
+
+
+## 2026-11-04 — Step385: Fit Image and reusable batch constraints
+
+The Automate menu listed Fit Image but had no implementation. Recording an absolute Image Size also failed to express a useful constraint for a batch with different aspect ratios. Fit Image now records the bounding box and enlargement policy, calculates each input’s dimensions independently and uses the existing native geometry engine. A fit that leaves a small image unchanged remains recordable without adding an Undo entry.
+
+The native dialog, API and Actions share the operation. Image Processor now uses it for its existing per-format resize settings. The checks cover portrait and landscape sources, small images, all three component depths, source preservation, target identities, error guards, persistence and history. All 220 affected optimized tests pass on Apple Silicon and translated Intel, including 10 new Fit Image cases. Both architectures execute the same cases with no failed assertions, unexpected errors or crashes. Independent checks cover 30 PNGs and 2,032 exact RGBA8 channel values. The current full inventory has not been rerun. Independent files check authored white pixels and dimensions; photographic interpolation and Photoshop output are still unqualified. The initial Photato bounds and resampling policy are documented working defaults, not verified Photoshop defaults. S05 remains open, with C01 next after completion and testing. [Record](DEVLOG.md#dev-step-385).
+
+
+## 2026-11-04 — Step386: Find and Replace Text
+
+The Edit menu listed Find and Replace Text without an implementation. It now opens a native dialog with search scope, caret direction, case and word options. Find Next highlights the matching context. Change, Change/Find and Change All use the same rich-text replacement and shaping path as the API, with one Undo per edit. Search itself leaves the document and history unchanged. On-canvas Photoshop-style selection remains unqualified.
+
+Replacements preserve untouched character/paragraph runs and use the first replaced character’s style for inserted text. Hidden or image-locked type layers, including inherited visibility/protection, are skipped. Native Actions46 retains the search policy, so Batch recalculates matches in each input rather than repeating previously baked text. Long Unicode layer names use the existing native capacity.
+
+The first compilers rejected combined observable-property declarations before any test ran; that failed source and logs remain. Separate declarations repaired the compiler error. Review also corrected a narrow target-name guard and the new caret test’s baseline after the existing TextKit draft commit. All 16 new Find/Replace cases pass on Apple Silicon and translated Intel. Of 211 affected cases per architecture, 210 pass and one retained imported-text comparison fails with three assertions; there are no unexpected errors or crashes. A previous385run of the195existing cases reproduces that one failure with identical word counts. Independent checks cover 10 owned text/state outputs with 31 exact literal checks. The affected run fails; the current full suite has not been rerun. Independent owned output checks compare literal text/counts/ranges; they do not establish Photoshop glyph/pixel or default equivalence. A fresh native attempt still found the Mac locked. S05 remains open and C01 stays next after completion and testing. [Record](DEVLOG.md#dev-step-386).
+
+
+## 2026-11-04 — Step387: Numeric component-plane storage
+
+The component/printing modes still have an 8 megapixel limit. Lifting it safely needs storage that can retain exact numeric values and history without allocating a complete plane per edit. We added raw blocks of 4,096 samples, implicit uniform fills, bounded row transfers and private immutable mapped snapshots. InkPlane now uses shared blocks; legacy file bytes and capacity guards remain. Rendering/export loops use exact sample reads to avoid repeatedly exporting whole planes. API metadata describes the backing and unchanged limit.
+
+All nine new numeric storage cases pass on Apple Silicon and translated Intel. Of 139 affected cases per architecture, 138 pass and one retained master-palette case reports an unexpected CancellationError; there are no crashes. Preserved build 386 test bundles reproduce that same cancellation. Two other retained test failures are repaired by updating obsolete command-count expectations. Independent Python packing verifies 40,136 raw bytes from eight owned outputs. The affected run fails; current full execution has not been rerun. Tests also cover cancellation, invalid ranges, admission/I/O failures, negative zero, snapshot ownership and concurrent history branches. The maximum-size sparse tests are sparse storage checks, not full-document rendering/save/performance qualification. All 104 package scopes and 651 menu identities stay intact. S05 remains open; C01 stays next. No installation, source push, archive, upload or release. [Record](DEVLOG.md#dev-step-387).
+
+
+During the final evidence check, three old temporary candidate binaries from builds 284–286 were missing. Their source, logs and recorded hashes survive, but the original binary bytes were not retained in those run folders. The remaining 37 protected files match. Build 387 source and complete test/binary evidence are retained; this does not recover the missing historical binaries. The final verification reports that preservation gap separately from current build checks.
+
+
+## 2026-11-04 — Step388: Native component blocks
+
+Native component storage now uses shared raw blocks. Uniform conversion and display/channel preparation no longer fill a dense plane. Local edits retain untouched sample words; geometry and TIFF access preserve raw order. Native85/Actions46and242API commands keep their existing contracts, with backing/limit metadata added.
+
+All 14 new native-component and Surface-equality cases pass on Apple Silicon and translated Intel. The broadened run executes 1184 identical ordered cases per architecture; Apple Silicon passes 1182, translated Intel passes 1175. Six regressions from the earlier storage attempt now pass without changing their assertions. Independent Python packing checks 40,248 raw bytes from 14 owned outputs. Retained failures are listed in the evidence; this is not a passing full suite. The first compiler failure and earlier six document/cache regressions remain in the evidence. Their existing assertions were not weakened; Surface equality now checks logical sample bits across implicit, owned and mapped storage. Broad qualification includes all Core cases because equality is shared. Application limits remain8MPuntil component file streaming and operation integration are complete. S05, full Photoshop/platform/performance requirements and historical binary gaps remain open. [Record](DEVLOG.md#dev-step-388).

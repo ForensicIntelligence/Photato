@@ -15,9 +15,10 @@ extension EditorStore {
   func selectModeComponents(_ components: Set<Int>) throws {
     finishNumericField(); finishLayerName()
     guard usesModeChannels, canSelectComponentTarget, historyOperation == nil,
-      components.isSubset(of: Set(0..<document.colorMode.componentCount)), document.quickMask == nil else {
+      components.isSubset(of: Set(0..<document.colorMode.componentCount)) else {
       throw CraftError.invalid("Finish the current interaction and choose valid color components.")
     }
+    deselectQuickMaskTarget()
     alphaEditingID = nil; componentTarget = .composite
     maskEditingLayerID = nil; smartFilterMaskEditing = false; clearMaskView()
     modeComponentTargets = components

@@ -16,6 +16,7 @@ import PhotoCraftCore
       "File > Print…": #selector(printDocument),
       "File > Print One Copy": #selector(printOneCopy),
       "Layer > Rasterize > Shape": #selector(rasterizeShape),
+      "Edit > Find and Replace Text…": #selector(findReplaceText),
       "Type > Warp Text…": #selector(warpType),
       "Window > Glyphs": #selector(showGlyphs),
       "Type > Panels > Glyphs Panel": #selector(showGlyphs),
@@ -60,6 +61,7 @@ import PhotoCraftCore
       "File > Export > Artboards to Files…": #selector(exportArtboardFiles),
       "File > Export > Artboards to PDF…": #selector(exportArtboardPDF),
       "File > Automate > Batch…": #selector(showBatch),
+      "File > Automate > Fit Image…": #selector(fitImage),
       "Layer > Video Layers > New Video Layer from File…": #selector(newVideoLayer),
       "Window > Timeline": #selector(showTimeline),
       "Window > Actions": #selector(showActions),
@@ -166,6 +168,7 @@ import PhotoCraftCore
       "Image > Adjustments > Threshold…": #selector(threshold),
       "Image > Adjustments > Gradient Map…": #selector(gradientMap),
       "Image > Adjustments > Desaturate": #selector(desaturate),
+      "Image > Adjustments > Invert": #selector(invertPixels),
       "Image > Auto Tone": #selector(autoTone),
       "Image > Auto Contrast": #selector(autoContrast),
       "Image > Auto Color": #selector(autoColor),
@@ -451,7 +454,7 @@ extension EditorStore {
     guard canCopyWholeLayerViaMenu else { return }
     duplicateLayer()
   }
-  var canUseMenuPixelEdit: Bool { (!editingComponent || editingChannel != nil || !modeComponentTargets.isEmpty) && canUseMenuFill }
+  var canUseMenuPixelEdit: Bool { !hasHiddenQuickMaskEditingTarget && (!editingComponent || editingChannel != nil || !modeComponentTargets.isEmpty) && canUseMenuFill }
   var canUseMenuFill: Bool {
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels }
     if editingChannel != nil { return canEditChannels }

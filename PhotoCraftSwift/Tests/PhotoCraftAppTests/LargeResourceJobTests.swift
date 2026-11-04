@@ -28,8 +28,11 @@ final class LargeResourceJobTests: XCTestCase {
       XCTAssertThrowsError(try AdobeActionAssets.checkDimensions(width:w,height:h))
     }
     var layers = maximum
-    layers.layers = (0..<65).map { Layer(name:"Layer \($0)",content:maximum.layers[0].content) }
+    XCTAssertEqual(LayerLimits.maximumLayers, 8_000)
+    layers.layers = (0..<LayerLimits.maximumLayers).map { Layer(name:"Layer \($0)",content:maximum.layers[0].content) }
     layers.activeLayerID = layers.layers[0].id
+    XCTAssertNoThrow(try AdobeActionAssets.check(layers))
+    layers.layers.append(Layer(name:"Beyond limit",content:maximum.layers[0].content))
     XCTAssertThrowsError(try AdobeActionAssets.check(layers))
     let metadata = try XCTUnwrap(AutomationService.capabilities["actionJobs"] as? [String:Any])
     let limits = try XCTUnwrap(metadata["largeDocuments"] as? [String:Any])
@@ -45,6 +48,8 @@ final class LargeResourceJobTests: XCTestCase {
   }
   func testActualFortyMillionRGB32SamplesDecodeThroughResourcePaging() throws {
     var d = try DocumentCreation.blank(width:8000,height:5000,depth:.f32)
+    // The authored HDR/half-alpha sample belongs to a regular pixel layer.
+    d.layers[0].background = nil
     var pixels = try Surface(width:d.width,height:d.height,depth:.f32,fill:.white,colorEncoding:.linearRGB)
     let changed = Pixel(2.25,-0.125,0.375,0.5)
     pixels.setLinearPixel(x:4097,y:1987,changed)

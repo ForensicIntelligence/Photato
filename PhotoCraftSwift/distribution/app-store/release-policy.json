@@ -5,7 +5,7 @@
     "amount": "0.00",
     "currency": "CAD",
     "appliesToAllAvailableTerritories": true,
-    "status": "REQUESTED_NOT_CONFIRMED_IN_PORTAL"
+    "status": "CONFIRMED_ZERO_IN_ALL_175_STOREFRONTS_377"
   },
   "releaseType": "MANUAL",
   "automaticRelease": false,
@@ -13,8 +13,18 @@
   "automaticTestFlightDistribution": false,
   "submitForReview": false,
   "releaseRequiresHumanApproval": true,
-  "portalSettingsVerified": false,
+  "portalSettingsVerified": true,
   "repositoryPublicOnReleaseDay": true,
   "repositoryVisibilityChangeAuthorizedNow": false,
-  "note": "This file records requested settings, not proof of remote configuration. Apply and verify MANUAL for every future version; no release endpoint/action is part of the build scripts."
+  "note": "Current0.3.0 release type and zero-price schedule were saved and read back in App Store Connect at377. This does not approve or perform release. Reverify MANUAL for every future version. No review/release endpoint or automatic TestFlight distribution was used.",
+  "currentPortalVersion": "0.3.0",
+  "portalAppID": "6820338369",
+  "portalVerification": {
+    "versionReleaseType": "MANUAL",
+    "allPricesZero": true,
+    "availabilityAfterRelease": 175,
+    "preOrder": false,
+    "futureVersionsRequireReverification": true,
+    "automaticTestFlightDistribution": "Not configured or changed; no build/groups distributed"
+  }
 }

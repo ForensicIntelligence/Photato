@@ -29,9 +29,10 @@ extension AutomationCommand {
 extension AutomationService {
   func executeSelectionChannel(_ command:AutomationCommand,document:CraftNSDocument,share:Share)async throws {
     let store=document.store,action=try command.string("action"),defaults=store.quickMaskOptions
-    if action == "stroke", case .string("quickMask") = command.parameters["target"],
+    let maskTarget=action=="quickMask" && store.document.quickMask != nil ? store.selectedMaskPaintTarget:nil
+    if ["stroke", "fill", "invert"].contains(action), case .string("quickMask") = command.parameters["target"],
       store.document.quickMask != nil, !store.isQuickMaskVisible {
-      throw AutomationFailure(status:422,message:EditorStore.hiddenQuickMaskBrushMessage)
+      try store.validateQuickMaskVisibility(command.channelEdit(document:store.document,defaults:defaults))
     }
     if action == "quickMaskOptions" {
       guard Set(command.parameters.keys).isSubset(of:["action","overlayColor","opacity","indicates"]) else{throw AutomationFailure(status:400,message:"Unknown Quick Mask option.")}
@@ -66,7 +67,7 @@ extension AutomationService {
     }) {original in
       try await prepare(command,original,defaults,capturedSource,colorSettings)
     }
-    if action == "quickMask" {store.resetQuickMaskEditingContext();store.render()}
+    if action == "quickMask" {store.resetQuickMaskEditingContext(preserving:maskTarget);store.render()}
   }
 }
 

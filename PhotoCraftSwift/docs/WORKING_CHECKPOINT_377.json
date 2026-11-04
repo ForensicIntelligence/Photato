@@ -1,0 +1,28 @@
+{
+  "step": "dev-step-377",
+  "status": "App Store copy/media/free/manual settings saved; declarations/contact/processing pending",
+  "run": "artifacts/runs/20261103T232632Z-377-app-store-listing",
+  "goal_status": "active",
+  "native_source": "376Source03",
+  "source_build_unchanged": 376,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "native_media_app_stopped": true,
+  "record": "docs/APP_STORE_RECORD_377.json",
+  "S05_closed": false,
+  "next_major": "C01 after S05 complete and tested",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_listing_media_upload": true,
+  "new_release": false,
+  "next_work": [
+    "Apple preview processing",
+    "Maintainer approval of privacy agreement and content-rights declaration",
+    "Private App Review contact details",
+    "Final selected/qualified binary and its app icon",
+    "Update public privacy policy network examples for Photato/PCC/API before release",
+    "App Store submission readiness and all software parity/qualification gates remain open"
+  ]
+}

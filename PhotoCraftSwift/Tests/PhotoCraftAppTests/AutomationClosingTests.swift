@@ -113,7 +113,7 @@ final class AutomationClosingTests: XCTestCase {
       let folder = try DocumentPersistenceTests().directory()
       defer { try? FileManager.default.removeItem(at: folder) }
       let url = folder.appendingPathComponent("saved.photato")
-      let original = try CraftNSDocument.blankModel(width: 3, height: 2)
+      let original = try EditableLifecycleModel.make(width: 3, height: 2)
       try NativeArchive.write(original, to: url)
       let doc = try XCTUnwrap(c.makeDocument(withContentsOf: url, ofType: CraftNSDocument.nativeType) as? CraftNSDocument)
       c.addDocument(doc)

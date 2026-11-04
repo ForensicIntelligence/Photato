@@ -1,10 +1,31 @@
 # Photato — native macOS image editor
 
+Build386 adds native Find and Replace Text, reusable Actions/Batch and paged query/replacement API commands. 211 affected tests pass per architecture; full-suite and Photoshop qualification remain open. [Results](docs/TEXT_FIND_REPLACE_386.json).
+
+Build385 adds Fit Image to the native Automate menu, Actions, mixed-aspect Batch and API. 220 affected tests pass per architecture; full-suite and Photoshop qualification remain open. [Results](docs/FIT_IMAGE_AUTOMATION_385.json).
+
+Build384 repairs animated layer-style edits in Timeline and Frame Animation. 476 affected tests pass per architecture; full-suite and Photoshop qualification remain open. [Results](docs/TEMPORAL_STYLE_TRANSACTIONS_384.json).
+
+Checkpoint383 repairs lifecycle fixtures and current native-protocol checks:740affected tests pass per architecture. Production build381 is unchanged; full-suite/Photoshop qualification remains open. [Results](docs/LIFECYCLE_REGRESSION_REPAIRS_383.json).
+
+
+Current full test inventory382: all 3,845 cases execute per architecture with failures retained. Software build 381 is unchanged; its698-case focused pass does not imply full-suite success. [Current results](docs/CURRENT_TEST_INVENTORY_382.json).
+
+
+Build381 fixes image-command availability after leaving a Smart Filter mask. Native/API merge and history now pass the new lifecycle regressions. 698 affected tests pass on both architectures; current live UI awaits unlock. [Evidence](docs/MASK_TARGET_LIFECYCLE_381.json).
+
+
+Build380 adds independent layer/Smart Filter mask paint colours, Photoshop target defaults and matching native/API target/state/history behavior. All545 affected tests pass on both architectures; current live UI awaits unlock. [Evidence](docs/MASK_PAINT_PALETTES_380.json).
+
+
+Build379: active Quick Mask can now be opened, edited and saved with8/16-bit standalone-selection and printing Multichannel PSD/PSB files. Native and API workflows share the codec;494 affected tests pass on both architectures. Full Photoshop parity remains in development. [Evidence](docs/MULTICHANNEL_QUICK_MASK_379.json).
+
+
 [Older private universal preview (checkpoint243)](https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-7bc5c587b82133536302) — universal macOS14+ preview at checkpoint243. Ad-hoc signed; not a production release. See [build qualification](docs/UNIVERSAL_TIMELINE_PREVIEW_REFERENCES.json).
 
-Current native source is checkpoint369Source02. All454 affected optimized cases pass on Apple Silicon and translated Intel, including five new Quick Mask visibility cases on each architecture. Current native hide/show, hidden-brush rejection, painting and Undo are verified. S05 remains in progress and C01 is next. Complete Photoshop parity, the full current suite, supported physical Macs, dense capacity and sustained60fps remain open. See [STATUS](docs/STATUS.md), [Quick Mask evidence](docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json) and the [portable source manifest](docs/SOURCE_SNAPSHOT_370.json). The older downloadable preview is a separate build.
+Current native source is checkpoint388Source03. Fourteen new native-component/equality cases pass on Apple Silicon and translated Intel. Of1184broadened cases per architecture,1182passARM and1175passIntel; every remaining failed case/count reproduces on preserved387source. The affected run fails, and the current full suite has not been rerun. S05 remains in progress and C01 stays queued. Full Photoshop/output/UI/platform/dense-capacity/60fps gates remain open. See [STATUS](docs/STATUS.md), [component evidence](docs/NATIVE_COMPONENT_BLOCKS_388.json) and the [portable source manifest](docs/SOURCE_SNAPSHOT_389.json). The older downloadable preview is a separate build.
 
-The source snapshot excludes generated models/caches, local runtime artifacts, signing material and one external PSD whose upstream license excludes image assets. All app/test code is included. See the [optional-reference instructions](Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md) before running tests that require that fixture. Native 85 / Actions 44 / 239 typed commands are current; full Photoshop equivalence remains the goal.
+The source snapshot excludes generated models/caches, local runtime artifacts, signing material and one external PSD whose upstream license excludes image assets. All app/test code is included. See the [optional-reference instructions](Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md) before running tests that require that fixture. Native 85 / Actions 46 / 242 typed commands are current; full Photoshop equivalence remains the goal.
 
 The dated notes below describe earlier checkpoints.
 

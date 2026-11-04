@@ -2,15 +2,34 @@ import Foundation
 import PhotoCraftCore
 
 enum GeometryAPI {
-  static let commands = ["document.resize", "document.canvasSize", "document.rotate", "document.resolution"]
+  static let commands = ["document.resize", "document.fitImage", "document.canvasSize", "document.rotate", "document.resolution"]
   static let preparedCommands = commands + SelectionGeometryAPI.commands
   static let methods: [String: Resampling] = ["nearest": .nearest, "bilinear": .bilinear, "bicubic": .bicubic]
   static let turns: [String: CanvasTurn] = ["clockwise": .clockwise, "counterclockwise": .counterclockwise, "half": .half, "horizontal": .horizontal, "vertical": .vertical]
+  @MainActor static func fitImageState(_ store: EditorStore) -> [String: Any] {
+    let draft = store.fitImageDraft
+    let options = draft.flatMap { try? $0.options() }
+    let pending: Any = options.map { value -> Any in
+      ["width":value.width,"height":value.height,"dontEnlarge":value.dontEnlarge,
+        "method":methodName(value.method)]
+    } ?? NSNull()
+    return ["available":store.canBeginFitImage,"dialogOpen":store.geometrySheet == .fitImage,
+      "pendingOptions":pending,"sourceChanged":draft.map{$0.source != store.document || $0.generation != store.layerPanelGeneration} ?? false]
+  }
+  static func methodName(_ value: Resampling) -> String {
+    switch value { case .nearest:"nearest"; case .bilinear:"bilinear"; case .bicubic:"bicubic" }
+  }
+  static var fitImageStateSchema: [String: Any] {
+    ["type":"object","required":["available","dialogOpen","pendingOptions","sourceChanged"],
+      "properties":["available":BrushAPI.flag,"dialogOpen":BrushAPI.flag,"sourceChanged":BrushAPI.flag,
+        "pendingOptions":["type":["object","null"],"properties":["width":schema("width"),"height":schema("height"),"dontEnlarge":schema("dontEnlarge"),"method":schema("method")]]]]
+  }
   static func schema(_ key: String) -> [String: Any] {
     switch key {
     case "width", "height": return ["type": "integer", "minimum": 1, "maximum": Surface.maxDimension]
     case "resolution": return ["type": "number", "minimum": 1, "maximum": 100000]
     case "method": return ["type": "string", "enum": methods.keys.sorted(), "description": "Defaults to nearest for Indexed/Bitmap; bicubic for component modes."]
+    case "dontEnlarge": return ["type":"boolean", "default":false]
     case "anchor": return ["type": "string", "enum": CanvasAnchor.allCases.map(\.rawValue), "default": "center"]
     case "turn": return ["type": "string", "enum": turns.keys.sorted()]
     case "fill": return ["type": "array", "minItems": 4, "maxItems": 4, "items": ["type": "number", "minimum": 0, "maximum": 1], "description": "RGBA; omitted uses transparency where supported, otherwise white quantized to the current palette."]
@@ -18,6 +37,10 @@ enum GeometryAPI {
     }
   }
   static var capabilities: [String: Any] { [
+    "fitImage":["command":"document.fitImage", "units":"pixels", "defaultWidth":1024, "defaultHeight":1024,
+      "defaultDontEnlarge":false, "actionsVersion":45,
+      "behavior":"Resolve the bounding box independently for each input; keep proportions, round the dependent pixel dimension half up with a minimum of1, and optionally leave smaller images unchanged. Retains PPI and uses the native Image Size engine. A no-op may be recorded in Actions without adding Undo. The whole document, including saved channels and masks, is resized regardless of the current editing target.",
+      "limits":"Existing geometry mode/storage budgets apply. Frame animation/video resizing is unsupported. Exact Photoshop rounding, Fit Image factory/remembered defaults, Automatic resampling and current live/physical-platform equivalence remain unqualified. No Adobe Fit Image route or action descriptor is advertised."],
     "largeRGB":["maximumDimension":Surface.maxDimension,"maximumPixels":Surface.maxPixels,
       "maximumPatchPixels":RasterGeometry.maximumPatchPixels,"sparseGridSourceTileFastPath":RasterGeometry.sparseGridSourceTileLimit,
       "pagedRasterOutput":true,"exactGridPermutations":true,"preservesSourceEncoding":true,"colouredCanvasExtensions":true,"pagedSavedChannels":true,
@@ -35,12 +58,16 @@ extension AutomationCommand {
   func geometryCommand(in document: CraftDocument) throws -> Command {
     switch name {
     case "selection.shape","selection.inverse","selection.feather":return try selectionGeometryCommand()
-    case "document.resize":
+    case "document.resize", "document.fitImage":
       let method: Resampling
       if parameters["method"] != nil {
         guard let parsed = GeometryAPI.methods[try string("method")] else { throw AutomationFailure(status: 400, message: "Unknown resampling method.") }
         method = parsed
       } else { method = document.colorMode.isRestricted ? .nearest : .bicubic }
+      if name == "document.fitImage" {
+        return .fitImage(FitImageOptions(width:try integer("width",range:1...Double(Surface.maxDimension)),
+          height:try integer("height",range:1...Double(Surface.maxDimension)),dontEnlarge:try pathFlag("dontEnlarge",false),method:method))
+      }
       return .imageSize(try integer("width", range: 1...Double(Surface.maxDimension)), try integer("height", range: 1...Double(Surface.maxDimension)), try parameters["resolution"].map { _ in try number("resolution", range: 1...100000) } ?? document.pixelsPerInch, method)
     case "document.canvasSize":
       let anchor: CanvasAnchor

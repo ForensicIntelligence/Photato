@@ -1,0 +1,117 @@
+{
+  "step": 388,
+  "source": "388Source03",
+  "softwareBuild": 388,
+  "status": "Native component storage and logical Surface equality; end-to-end maximum non-RGB capacity remains open",
+  "qualification": "All 14 new native-component and Surface-equality cases pass on Apple Silicon and translated Intel. The broadened run executes 1184 identical ordered cases per architecture; Apple Silicon passes 1182, translated Intel passes 1175. Six regressions from the earlier storage attempt now pass without changing their assertions. Independent Python packing checks 40,248 raw bytes from 14 owned outputs. Retained failures are listed in the evidence; this is not a passing full suite.",
+  "sourceInputs": 7147,
+  "productionSwift": 1020,
+  "testSwiftFiles": 697,
+  "newTestsEachArchitecture": 14,
+  "affectedTestsEachArchitecture": 1184,
+  "affectedPassedEachArchitecture": [
+    1182,
+    1175
+  ],
+  "affectedSuitePassed": false,
+  "featureTestsPassed": true,
+  "failedCasesEachArchitecture": [
+    [
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources"
+    ],
+    [
+      "PhotoCraftCoreTests.CloneStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels",
+      "PhotoCraftCoreTests.ContentAwareScaleTests/testSavedProtectionMaskGeometryAndLocks",
+      "PhotoCraftCoreTests.FocusStrokeSessionTests/testCompleteAndIncrementalPrefixesMatchPreOptimizationPixels",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+      "PhotoCraftCoreTests.GradientOracleTests/testExecutedRustGeometryInterpolationAndDither",
+      "PhotoCraftCoreTests.LightingTests/testIndependentOriginalFloat32LightingWordsExactly",
+      "PhotoCraftAppTests.RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources",
+      "PhotoCraftCoreTests.SourceAdjustmentTests/testAllIndependentOriginalSourceAdjustmentWordsExactly",
+      "PhotoCraftCoreTests.ToningStrokeSessionTests/testEveryPrefixMatchesPreservedPreOptimizationPixels"
+    ]
+  ],
+  "unexpectedEachArchitecture": [
+    2,
+    2
+  ],
+  "crashesEachArchitecture": [
+    0,
+    0
+  ],
+  "currentInventoryEachArchitecture": 3901,
+  "fullCurrentSuitePassed": false,
+  "fullGoalComplete": false,
+  "S05Closed": false,
+  "nativeLiveQualified": false,
+  "changes": [
+    "NativeModeRaster retains ComponentPlane raw blocks for all supported modes/depths/alpha. Same quantization, profiles, intent and legacy portable/native85/Actions46layout; legacy plane exports stay admitted at8MP.",
+    "Implicit uniform conversions/display/channel caches, ordered block/tile streaming, sharing of untargeted component bytes, sparse local reconciliation and exact crop/reframe row transfers. Linear cache defaults are compared in raw coordinates.",
+    "Surface equality compares exact logical image sample bits, independent of implicit/owned/mapped layout and padding, with shared-tree fast paths. Existing document/history/codec/API assertions remain intact.",
+    "TIFF sample loops emit exact raw words in file byte order; ink preparation exports only the requested plane and checks logical alpha. Document-mode API metadata describes the backing and unchanged application limit."
+  ],
+  "API": {
+    "commands": 242,
+    "nativeArchiveMaximum": 85,
+    "ActionsMaximum": 46,
+    "newCommands": [],
+    "newRoute": false,
+    "parametersAndResultSchemasChanged": false,
+    "capability": "DocumentModeAPI.storage",
+    "behavior": "Existing native/API/history/file routes share the same component storage and logical sample equality. Busy/stale/revocation and invalid input guards remain.",
+    "Adobe": "Internal representation and shared job codecs only; no new endpoint or unqualified action descriptor is advertised. Existing published contracts and budgets remain separately tracked.",
+    "cursors": "No new tool/modifier/cursor action."
+  },
+  "sourceManifest": "artifacts/runs/20261104T071157Z-388-native-component-blocks/source03-source.json",
+  "qualificationFile": "artifacts/runs/20261104T071157Z-388-native-component-blocks/source03-qualification.json",
+  "classification": "artifacts/runs/20261104T071157Z-388-native-component-blocks/regression-classification02.json",
+  "sourceDelta": {
+    "added": [
+      "Tests/PhotoCraftCoreTests/NativeComponentBlockTests.swift",
+      "Tests/PhotoCraftCoreTests/SurfaceLogicalEqualityTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationDocumentMode.swift",
+      "Sources/PhotoCraftCore/ComponentPlane.swift",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift",
+      "Sources/PhotoCraftCore/Surface.swift",
+      "Sources/PhotoCraftImaging/InkModeInput.swift",
+      "Sources/PhotoCraftImaging/TIFFModeStorage.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": []
+  },
+  "attempts": {
+    "Source01": "Both compilers fail before tests: two new assertion autoclosures omit try. Old387executables/bundles remain stale diagnostics.",
+    "Source02": "Both175/182pass with47assertions,1unexpected,0crashes. All8new component cases pass. Six existing document/history/codec/API comparisons regress because cache equality depended on representation; every assertion is retained.",
+    "Source03": "Surface equality repair plus6new equality cases; all Core and affected mode/native/API cases run with preserved raw streams. See actual per-architecture results/classification."
+  },
+  "independent": {
+    "passed": true,
+    "files": 14,
+    "bytesCompared": 40248,
+    "reference": "artifacts/runs/20261104T071157Z-388-native-component-blocks/independent-numeric02.json"
+  },
+  "universalPackage": "artifacts/runs/20261104T071157Z-388-native-component-blocks/universal/staging01.json",
+  "nativeLive": {
+    "attemptedThisIncrement": false,
+    "latestObservation": "docs/TEXT_FIND_REPLACE_386.json",
+    "qualified": false
+  },
+  "historicalEvidenceGap": {
+    "missingOlderTemporaryCandidateBinaries": 3,
+    "availableProtectedFiles": 37,
+    "reference": "docs/COMPONENT_PLANE_STORAGE_387.json",
+    "currentBuildEvidenceRetained": true
+  },
+  "remaining": "Component application admission remains8,388,608pixels. Streamed component native/PSD/PSB/TIFF encoding, large resampling/default-changing reconciliation, printing conversion, operation budgets and recovery still need full integration. Full dense physical capacity, sustained60fps, exact Photoshop profiles/rendering/defaults/shortcuts and supported physical Macs remain unqualified. Current native live acceptance awaits the existing unlock request. S05 remains open; C01 follows complete and tested S05. Three missing older temporary candidate binaries remain a historical preservation gap.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "retainedBaselineComparison": "artifacts/runs/20261104T071157Z-388-native-component-blocks/previous387-baseline01.json",
+  "baselineResult": "Exact1170retained IDs reproduce the same failed case IDs, assertion counts, unexpected counts and0crashes on each architecture; all fourteen added cases pass."
+}

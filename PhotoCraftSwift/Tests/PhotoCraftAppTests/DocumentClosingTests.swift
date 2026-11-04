@@ -14,7 +14,7 @@ final class DocumentClosingTests: XCTestCase {
   @MainActor func document(_ controller: CraftDocumentController, name: String = "Close test",
     dirty: Bool = false, visible: Bool = true) throws -> CraftNSDocument
   {
-    let doc = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 4, height: 3, name: name))
+    let doc = CraftNSDocument(model: try EditableLifecycleModel.make(width: 4, height: 3, name: name))
     controller.addDocument(doc)
     if visible { doc.makeWindowControllers() }
     if dirty { try doc.store.executeEditorCommand(.renameLayer(doc.store.document.layers[0].id, name + " edited")) }
@@ -109,7 +109,7 @@ final class DocumentClosingTests: XCTestCase {
     var docs: [CraftNSDocument] = [], expected: [(URL, CraftDocument)] = []
     for i in 0..<2 {
       let source = folder.appendingPathComponent("\(i).photato")
-      let model = try CraftNSDocument.blankModel(width: 3, height: 2)
+      let model = try EditableLifecycleModel.make(width: 3, height: 2)
       try NativeArchive.write(model, to: source)
       let doc = try XCTUnwrap(c.makeDocument(withContentsOf: source, ofType: CraftNSDocument.nativeType) as? CraftNSDocument)
       c.addDocument(doc); doc.makeWindowControllers()

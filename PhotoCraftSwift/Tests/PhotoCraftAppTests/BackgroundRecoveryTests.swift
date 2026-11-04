@@ -84,7 +84,7 @@ final class BackgroundRecoveryTests: XCTestCase {
     for format in [nil, DocumentIO.Format.native, .psd] {
       let index = RecoveryIndexStore(directoryURL: root.appendingPathComponent(UUID().uuidString))
       let c = helper.controller(index)
-      let model = try CraftNSDocument.blankModel(width: 3, height: 2)
+      let model = try EditableLifecycleModel.make(width: 3, height: 2)
       let source = format.map { root.appendingPathComponent("source." + $0.rawValue) }
       if let source, let format { try DocumentIO.encodeForPersistence(model, format: format).write(to: source) }
       let record = try source.map {

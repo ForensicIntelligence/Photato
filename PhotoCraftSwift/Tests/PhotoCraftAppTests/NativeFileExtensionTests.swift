@@ -39,7 +39,7 @@ final class NativeFileExtensionTests: XCTestCase {
     let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: folder) }
-    let original = try CraftNSDocument.blankModel(width: 4, height: 3)
+    let original = try EditableLifecycleModel.make(width: 4, height: 3)
     let bytes = try NativeArchive.encode(original)
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     for ext in ["photato", "PHOTATO", "pcswift", "PCSWIFT"] {

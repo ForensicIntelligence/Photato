@@ -10,9 +10,9 @@ final class ContactSheetWorkflowTests: XCTestCase {
     var s = ContactSheetSettings();s.units = .pixels;s.width = 24;s.height = 16;s.resolution = 72;s.columns = 1;s.rows = 1;s.autoSpacing = false;s.horizontal = 0;s.vertical = 0;s.caption = false;s.flatten = false;return s
   }
   @MainActor func setup(_ service: AutomationService,_ first: CraftNSDocument) throws -> [CraftNSDocument] {
-    first.store.session = EditorSession(document:try DocumentCreation.blank(width:2,height:2,background:Pixel(1,0,0),name:"Red.png"))
+    first.store.session = EditorSession(document:try EditableLifecycleModel.make(width:2,height:2,background:Pixel(1,0,0),name:"Red.png"))
     try service.share(first)
-    let second = CraftNSDocument(model:try DocumentCreation.blank(width:2,height:2,background:Pixel(0,0,1),name:"Blue.png"));service.controller.addDocument(second);try service.share(second)
+    let second = CraftNSDocument(model:try EditableLifecycleModel.make(width:2,height:2,background:Pixel(0,0,1),name:"Blue.png"));service.controller.addDocument(second);try service.share(second)
     return [first,second]
   }
   @MainActor func cleanup(_ service: AutomationService,_ first: CraftNSDocument) {service.controller.cancelContactSheet();HDRMergeWorkflowTests().cleanup(service.controller,except:first)}

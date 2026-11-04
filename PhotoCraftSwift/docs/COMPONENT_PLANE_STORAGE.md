@@ -1,0 +1,15 @@
+# Numeric component-plane storage
+
+Checkpoint 387 adds a raw numeric storage dependency for large non-RGB documents. It does **not** lift the current 8,388,608-pixel limits of native component modes or printing workflows.
+
+`ComponentPlane` stores unsigned 8-bit/16-bit or finite Float32 words. Samples have no RGB transfer function, implicit alpha, premultiplication or integer re-quantization. Negative zero, subnormal values, negative and HDR floating values retain their bits. Consumers remain responsible for interpreting those values and enforcing their own ranges.
+
+A constant fill needs no sample buffer. An edit copies 4,096-sample blocks and at most four bounded radix nodes, retaining other blocks for history. Rows transfer little-endian raw bytes, with range/depth validation and atomic cancellation. Logical equality compares sample bits even when defaults, padding or backing differ.
+
+A plane can publish a private, unlinked, immutable scratch snapshot. A mapped presence bitmap identifies stored blocks; sparse file holes never replace a nonzero implicit sample. Unchanged reads do not create a resident per-block index. Scratch admission counts index and stored sample bytes; virtual mapping extent, filesystem physical allocation, heap estimates and process RSS are different quantities. The OS manages mapped-page residency. Admission, I/O and cancellation failures leave the original plane intact. Snapshots are temporary process-local storage, not crash recovery or a portable file format.
+
+`InkPlane` now uses these shared blocks, retaining its existing quantization and legacy byte representation. Uniform construction no longer fills an entire dense buffer; an ordinary sparse sample replacement can retain the old blocks for Undo. Duotone lookup and Multichannel PSD access read exact raw samples without requesting a new whole-plane byte buffer per pixel. Existing desktop/API/Actions paths still use the same native model and history.
+
+The optional API discloses backing facts under the ink-channel capability's `storage` object: sample block size, four copy-on-write levels, raw-bit preservation, implicit fills, and the **unchanged** `maximumPixels` of 8,388,608. Existing parameter/result schemas, busy/stale/revocation behavior and six ink-channel commands are retained. No public large-document ink operation or Adobe endpoint is added. Existing Adobe jobs retain their published and separately qualified limits. No cursor/modifier behavior changes.
+
+Remaining work includes converting `NativeModeRaster` from dense Data, integrating bounded component/ink conversion and display caches, streamed native encoding and PSD/PSB/TIFF paths, operation scratch admission/spill policy, recovery, end-to-end large native/API workflows and physical platform/performance qualification. The 300,000-pixel side target follows [Adobe's file-format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/); focused sparse storage tests do not establish complete Photoshop capacity or functionality.

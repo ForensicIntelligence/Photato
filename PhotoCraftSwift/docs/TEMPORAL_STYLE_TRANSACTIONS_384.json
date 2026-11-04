@@ -1,0 +1,96 @@
+{
+  "step": 384,
+  "source": "384Source04",
+  "softwareBuild": 384,
+  "status": "Temporal layer-style transaction repair; focused qualification",
+  "qualification": "All 476 affected optimized tests pass on Apple Silicon and translated Intel, including 6 new temporal-style regression cases. Both architectures run the same ordered cases with no failed assertions, unexpected errors or crashes. Independent checks cover 36 PNGs and 3,456 RGBA8 channel values. The full current test inventory has not been rerun.",
+  "sourceInputs": 7130,
+  "productionSwift": 1011,
+  "testSwiftFiles": 689,
+  "affectedTestsEachArchitecture": 476,
+  "newTestsEachArchitecture": 6,
+  "fullCurrentSuitePassed": false,
+  "fullGoalComplete": false,
+  "S05Closed": false,
+  "nativeLiveQualified": false,
+  "changes": [
+    "Capture enabled Style keys and selected Frame Animation composition on the private candidate before final validation/assignment",
+    "Validate original temporal composition before capture; preserve existing key identity/interpolation, other frames, retained pixels and atomic invalid-edit rejection",
+    "Native style-panel preview/Cancel/commit, single Undo/Redo, actual HTTP replace/patch/clear, stale/busy/invalid guards and native persistence use the same Swift path"
+  ],
+  "API": {
+    "commands": 239,
+    "nativeArchiveMaximum": 85,
+    "ActionsMaximum": 44,
+    "newCommand": false,
+    "newRoute": false,
+    "newParameters": false,
+    "capability": "layerStyles.temporalEditing documents existing replace/patch/clear temporal semantics; JSON state already publishes the styles and keys",
+    "Adobe": "No dedicated Timeline endpoint or qualified animation action descriptor in the pinned Adobe v2 contract. Existing supported layer-effects adapters share the engine; temporal Adobe interchange remains open. No invented Adobe route."
+  },
+  "attempts": {
+    "baseline01": "Existing unchanged381 style-keyframe regression fails once per architecture with one unexpected validation error",
+    "baseline02": "Same six cases each: one pass, five failures,131 total XCTest failures including4unexpected; no crashes; production binaries exactly381",
+    "source03": "Both467/468pass, eight assertions in the new f32 midpoint test, zero unexpected/crashes. Its encoded accessor expectation is corrected in Source04; no production blending change.",
+    "qualified": "source04"
+  },
+  "independent": {
+    "passed": true,
+    "PNGFiles": 36,
+    "RGBA8ChannelValues": 3456,
+    "reference": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions/independent-style01.json",
+    "provenance": "Authored red-square/blue-overlay analytic samples. Public Adobe workflow documentation; no proprietary code/disassembly. Not a Photoshop numerical comparison."
+  },
+  "universalPackage": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions/universal/staging01.json",
+  "nativeLive": {
+    "recordedUTC": "2026-11-04T04:20:41.769940+00:00",
+    "source": "384Source04",
+    "app": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T034020Z-384-timeline-style-transactions/universal/Photato Validation 384.app",
+    "nativeLiveQualified": false,
+    "appInventoryAvailable": true,
+    "inventoryAloneProvesUnlocked": false,
+    "actualWindowAttempt": "getApp exact staged application path",
+    "error": "The Mac is locked and automatic unlock could not unlock it. Ask the user to unlock the Mac manually before continuing.",
+    "fixtureOpened": false,
+    "existingManualUnlockRequestPending": true,
+    "newUnlockQuestionSent": false,
+    "ownedValidationPIDs": [],
+    "ownedValidationStopSignal": "SIGTERM if exact executable identity matched",
+    "remainingOwnedPIDs": [],
+    "ownedValidationStopped": true,
+    "userApplicationsStopped": false
+  },
+  "remaining": "Full382 failures remain recorded; this focused pass is not a current full-suite pass. Full Photoshop numeric/output/UI equivalence, all supported physical Macs, dense capacity, sustained60fps and original S05/C01 acceptance remain open. Style preparation still has its existing8,388,608-pixel limit. Current native live acceptance is pending the previously requested unlock.",
+  "next": "Finish pending S05 native live acceptance and remaining functional diagnosis. Full C01 follows complete and tested S05.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false,
+  "compiledInventory": {
+    "casesEach": 3852,
+    "newCases": 6,
+    "removed": 0,
+    "fullExecution": false,
+    "reference": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions/inventory01-summary.json"
+  },
+  "sourceChanges": [
+    "Sources/PhotoCraftCore/LayerStyleEdit.swift",
+    "Sources/PhotoCraft/AutomationLayerStyles.swift",
+    "scripts/Info.plist",
+    "Tests/PhotoCraftCoreTests/TemporalStyleEditTests.swift",
+    "Tests/PhotoCraftAppTests/TemporalStyleWorkflowTests.swift"
+  ],
+  "instructionOnlyChange": "AGENTS.md public App Store wording preference",
+  "historyAuditFirstAttempt": {
+    "refreshExit": 0,
+    "checkExit": 1,
+    "missingExplicitReferences": 1,
+    "reason": "A documented failed file lookup was code-formatted as an existing-path reference",
+    "repair": "Keep failed filename as quoted prose; actual AUTOMATION_API.md reference remains. Audit script/product inputs unchanged.",
+    "logs": [
+      "artifacts/development-history-audit/384-auditfinal01.log",
+      "artifacts/development-history-audit/384-checkfinal01.log"
+    ]
+  }
+}

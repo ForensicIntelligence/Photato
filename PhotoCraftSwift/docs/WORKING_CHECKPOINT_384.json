@@ -1,0 +1,29 @@
+{
+  "step": "dev-step-384",
+  "status": "All 476 affected optimized tests pass on Apple Silicon and translated Intel, including 6 new temporal-style regression cases. Both architectures run the same ordered cases with no failed assertions, unexpected errors or crashes. Independent checks cover 36 PNGs and 3,456 RGBA8 channel values. The full current test inventory has not been rerun.",
+  "goal_status": "active",
+  "run": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions",
+  "previous_qualified_source": "383Source02",
+  "software_build": 384,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261104T034020Z-384-timeline-style-transactions/source04-source.json",
+  "source_inputs": 7130,
+  "production_swift_files": 1011,
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/TEMPORAL_STYLE_TRANSACTIONS_384.json",
+  "diary_step": 384,
+  "next_work": [
+    "Finish pending S05 native live acceptance and remaining functional diagnosis. Full C01 follows complete and tested S05."
+  ],
+  "history_receipt": "artifacts/development-history-audit/384-final-receipt01.json",
+  "current_compiled_inventory": 3852
+}

@@ -128,9 +128,22 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   public let depth:PixelDepth
   public let profile:Data
   public let intent:ModeRenderingIntent
-  public private(set) var planes:[Data]
+  private var componentStorage: [ComponentPlane]
+  /// Legacy portable planes; application/codec admission remains8MP.
+  public var planes: [Data] { componentStorage.map(\.legacyBytes) }
+  public var residentComponentEditBytes: Int { componentStorage.reduce(0) { $0 + $1.residentEditBytes } }
+  public func rawWord(component: Int, index: Int) -> UInt32 {
+    componentStorage.indices.contains(component) ? componentStorage[component].word(at: index) : 0
+  }
+  public func planeBytes(_ component: Int) throws -> Data {
+    guard componentStorage.indices.contains(component) else { throw CraftError.invalid("Native component not found.") }
+    return componentStorage[component].legacyBytes
+  }
+  public var isOpaque: Bool {
+    componentStorage[mode.componentCount].allWordsEqual(depth == .u8 ? 255 : depth == .u16 ? 65535 : Float(1).bitPattern)
+  }
   public var bytesPerSample:Int {depth == .u8 ? 1:depth == .u16 ? 2:4}
-  public var estimatedBytes:Int {planes.reduce(profile.count){$0+$1.count}}
+  public var estimatedBytes:Int {profile.count + width * height * bytesPerSample * (mode.componentCount + 1)}
   private static func dimensions(_ w:Int,_ h:Int,mode:DocumentColorMode,depth:PixelDepth)throws {
     guard w>0,h>0,w<=Surface.maxDimension,h<=Surface.maxDimension,w<=maximumPixels/h,mode.depths.contains(depth) else{throw CraftError.unsupported("Native mode storage supports up to8,388,608 pixels; CMYK/Lab require8 or16 bits.")}
   }
@@ -138,35 +151,68 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     try Self.dimensions(width,height,mode:mode,depth:depth)
     let profile=try profile ?? NativeModeProfile.standard(mode,depth:depth);try NativeModeProfile.validate(profile,mode:mode,depth:depth)
     self.width=width;self.height=height;self.mode=mode;self.depth=depth;self.profile=profile;self.intent=intent
-    planes=Array(repeating:Data(count:width*height*(depth == .u8 ? 1:depth == .u16 ? 2:4)),count:mode.componentCount+1)
+    componentStorage = try (0...mode.componentCount).map { _ in try ComponentPlane(width: width, height: height, depth: depth) }
   }
   /// Reinterpret identical component bytes; assignment never runs a color transform.
   public func assigning(profile: Data, intent: ModeRenderingIntent? = nil) throws -> Self {
     var result = try Self(width: width, height: height, mode: mode, depth: depth, profile: profile, intent: intent ?? self.intent)
-    result.planes = planes; return result
+    result.componentStorage = componentStorage; return result
   }
   public func validate()throws {
     try Self.dimensions(width,height,mode:mode,depth:depth);try NativeModeProfile.validate(profile,mode:mode,depth:depth)
-    guard planes.count==mode.componentCount+1,planes.allSatisfy({$0.count==width*height*bytesPerSample}) else{throw CraftError.invalid("Native mode plane dimensions do not match.")}
-    if depth == .f32 {for c in planes.indices {for i in 0..<width*height {if i%4096==0{try Task.checkCancellation()};let v=value(component:c,index:i);guard v.isFinite,c != mode.componentCount || (0...1).contains(v) else{throw CraftError.invalid("Invalid floating-point mode component.")}}}}
+    guard componentStorage.count == mode.componentCount + 1,
+      componentStorage.allSatisfy({ $0.width == width && $0.height == height && $0.depth == depth }) else { throw CraftError.invalid("Native mode plane dimensions do not match.") }
+    if depth == .f32 {
+      for c in componentStorage.indices {
+        func check(_ word: UInt32) throws {
+          let value = Float(bitPattern: word)
+          guard value.isFinite, c != mode.componentCount || (0...1).contains(value) else { throw CraftError.invalid("Invalid floating-point mode component.") }
+        }
+        try check(componentStorage[c].defaultWord)
+        for range in componentStorage[c].storedSampleRanges {
+          try Task.checkCancellation()
+          for i in range { try check(componentStorage[c].word(at: i)) }
+        }
+      }
+    }
   }
   public func value(component:Int,index:Int)->Float {
-    guard planes.indices.contains(component),(0..<width*height).contains(index) else{return 0}
-    let p=planes[component],i=index*bytesPerSample
-    switch depth {
-    case .u8:return Float(p[i])/255
-    case .u16:return Float(UInt16(p[i]) | UInt16(p[i+1])<<8)/65535
-    case .f32:return Float(bitPattern:UInt32(p[i]) | UInt32(p[i+1])<<8 | UInt32(p[i+2])<<16 | UInt32(p[i+3])<<24)
-    }
+    let word = rawWord(component: component, index: index)
+    return depth == .f32 ? Float(bitPattern: word) : Float(word) / (depth == .u8 ? 255 : 65535)
   }
   public func components(index:Int)->[Float] {(0...mode.componentCount).map{value(component:$0,index:index)}}
   public mutating func set(_ value:Float,component:Int,index:Int)throws {
-    guard planes.indices.contains(component),(0..<width*height).contains(index),value.isFinite,component != mode.componentCount || (0...1).contains(value) else{throw CraftError.invalid("Invalid native component write.")}
-    let i=index*bytesPerSample
-    switch depth {
-    case .u8:planes[component][i]=UInt8((unit(value)*255).rounded())
-    case .u16:let v=UInt16((unit(value)*65535).rounded());planes[component][i]=UInt8(truncatingIfNeeded:v);planes[component][i+1]=UInt8(truncatingIfNeeded:v>>8)
-    case .f32:let v=value.bitPattern;for b in 0..<4 {planes[component][i+b]=UInt8(truncatingIfNeeded:v>>(b*8))}
+    guard componentStorage.indices.contains(component),(0..<width*height).contains(index),value.isFinite,component != mode.componentCount || (0...1).contains(value) else{throw CraftError.invalid("Invalid native component write.")}
+    componentStorage[component].setValidatedWord(Self.word(value, depth: depth), at: index)
+  }
+  private static func word(_ value: Float, depth: PixelDepth) -> UInt32 {
+    depth == .f32 ? value.bitPattern : UInt32((unit(value) * (depth == .u8 ? 255 : 65535)).rounded())
+  }
+  private mutating func setDefaults(_ values: [Float]) throws {
+    guard values.count == mode.componentCount + 1, values.allSatisfy(\.isFinite), (0...1).contains(values[mode.componentCount]) else { throw CraftError.invalid("Invalid component defaults.") }
+    componentStorage = try values.map { try ComponentPlane(width: width, height: height, depth: depth, defaultWord: Self.word($0, depth: depth)) }
+  }
+  /// Merge at most five ordered block streams without a whole-plane key Set.
+  private func forEachStoredIndex(_ body: (Int) throws -> Void) throws {
+    try Task.checkCancellation()
+    var iterators = componentStorage.map { $0.storedSampleRanges.makeIterator() }
+    var ranges: [Range<Int>?] = iterators.indices.map { iterators[$0].next() }
+    while let start = ranges.compactMap({ $0?.lowerBound }).min() {
+      try Task.checkCancellation()
+      for i in start..<min(width * height, start + ComponentPlane.blockSamples) { try body(i) }
+      for c in ranges.indices where ranges[c]?.lowerBound == start { ranges[c] = iterators[c].next() }
+    }
+  }
+  private static func forEachStoredPixel(_ surfaces: [Surface], _ body: (Int, Int) throws -> Void) throws {
+    try Task.checkCancellation()
+    let source = surfaces[0], columns = (source.width + Surface.tileSide - 1) / Surface.tileSide
+    var iterators = surfaces.map { $0.storedTileKeys.makeIterator() }
+    var keys: [Int?] = iterators.indices.map { iterators[$0].next() }
+    while let key = keys.compactMap({ $0 }).min() {
+      try Task.checkCancellation()
+      let left = key % columns * Surface.tileSide, top = key / columns * Surface.tileSide
+      for y in top..<min(source.height, top + Surface.tileSide) { for x in left..<min(source.width, left + Surface.tileSide) { try body(x, y) } }
+      for c in keys.indices where keys[c] == key { keys[c] = iterators[c].next() }
     }
   }
   public static func converting(_ source:Surface,to mode:DocumentColorMode,depth:PixelDepth?=nil,profile:Data?=nil,intent:ModeRenderingIntent = .relativeColorimetric,sourceProfile:Data?=nil)throws->Self {
@@ -176,11 +222,14 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     let linear = source.depth == .f32 && source.colorEncoding == .linearRGB
     let inputDepth: PixelDepth = linear ? .f32 : source.depth == .f32 ? .u16 : source.depth
     let transform=try NativeModeTransform(mode:mode,depth:depth,profile:result.profile,intent:intent,rgbProfile:sourceProfile,rgbDepth:inputDepth)
-    for y in 0..<source.height {try Task.checkCancellation();for x in 0..<source.width {
-      let p=linear ? source.linearPixel(x:x,y:y):source.pixel(x:x,y:y)
-      let values=try transform.components(p),i=y*source.width+x
-      for c in values.indices{try result.set(values[c],component:c,index:i)}
-    }};return result
+    let fallback = linear ? try source.interpretingSamples(as: .sRGB).defaultPixel : source.defaultPixel
+    try result.setDefaults(transform.components(fallback))
+    try forEachStoredPixel([source]) { x, y in
+      let p = linear ? source.linearPixel(x: x, y: y) : source.pixel(x: x, y: y)
+      let values = try transform.components(p), i = y * source.width + x
+      for c in values.indices { try result.set(values[c], component: c, index: i) }
+    }
+    return result
   }
   /// Convert retained components directly; routing CMYK/Lab through an RGB display
   /// cache would lose out-of-gamut colors and independent ink separations.
@@ -191,17 +240,27 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     var result=try Self(width:width,height:height,mode:target,depth:outputDepth,profile:profile,intent:outputIntent)
     let from=try NativeModeTransform(mode:mode,depth:depth,profile:self.profile,intent:outputIntent)
     let to=try NativeModeTransform(mode:target,depth:outputDepth,profile:profile,intent:outputIntent)
-    for i in 0..<width*height {
-      if i%1024==0{try Task.checkCancellation()}
-      var values=components(index:i).map{CGFloat($0)}
+    func convert(_ input: [Float]) throws -> [Float] {
+      var output: [Float] = []
+      var values=input.map{CGFloat($0)}
       if mode == .lab {values[0]*=100;values[1]=values[1]*(255*255)/256-128;values[2]=values[2]*(255*255)/256-128}
       guard let color=CGColor(colorSpace:from.space,components:values),let converted=color.converted(to:to.space,intent:outputIntent.cgIntent,options:nil)?.components,converted.count==target.componentCount+1 else{throw CraftError.invalid("Native component conversion failed.")}
       for c in 0..<target.componentCount {
         var value=Float(converted[c]);if target == .lab{value=c==0 ? value/100:(value+128)*256/(255*255)}
-        try result.set(value,component:c,index:i)
+        output.append(value)
       }
-      try result.set(value(component:mode.componentCount,index:i),component:target.componentCount,index:i)
-    };return result
+      output.append(input[mode.componentCount])
+      return output
+    }
+    try result.setDefaults(convert(componentStorage.indices.map { c in
+      let word = componentStorage[c].defaultWord
+      return depth == .f32 ? Float(bitPattern: word) : Float(word) / (depth == .u8 ? 255 : 65535)
+    }))
+    try forEachStoredIndex { i in
+      let values = try convert(components(index: i))
+      for c in values.indices { try result.set(values[c], component: c, index: i) }
+    }
+    return result
   }
   /// Resample numerical channel values and shared coverage without RGB conversion.
   public func transformed(by transform:Transform2D,bounds:IntRect,method:Resampling,clampEdges:Bool=false)throws->Self {
@@ -219,32 +278,52 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
       }}
     };return result
   }
-  public func surface()throws->Surface {
-    try validate();let transform=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent)
-    var out=try Surface(width:width,height:height,depth:depth,colorEncoding:depth == .f32 ? .linearRGB:.sRGB)
-    for y in 0..<height {try Task.checkCancellation();for x in 0..<width {
-      let p=try transform.pixel(components(index:y*width+x))
-      if depth == .f32{out.setLinearPixel(x:x,y:y,p)}else{out.setPixel(x:x,y:y,p)}
-    }};return out
+  private func defaultComponents() -> [Float] {
+    componentStorage.map { depth == .f32 ? Float(bitPattern: $0.defaultWord) : Float($0.defaultWord) / (depth == .u8 ? 255 : 65535) }
   }
-  /// Mode channel planes are numeric; no RGB transfer function is applied.
-  public func channel(_ component:Int)throws->Surface {
-    guard (0..<mode.componentCount).contains(component) else{throw CraftError.invalid("Mode component not found.")}
-    var out=try Surface(width:width,height:height,depth:depth)
-    for y in 0..<height{try Task.checkCancellation();for x in 0..<width{let v=value(component:component,index:y*width+x);out.setPixel(x:x,y:y,Pixel(v,v,v))}}
+  public func surface()throws->Surface {
+    try validate(); let transform = try NativeModeTransform(mode: mode, depth: depth, profile: profile, intent: intent)
+    let fill = try transform.pixel(defaultComponents())
+    var out = try Surface(width: width, height: height, depth: depth, fill: fill)
+    if depth == .f32 { out = try out.interpretingSamples(as: .linearRGB) }
+    try forEachStoredIndex { i in
+      let p = try transform.pixel(components(index: i))
+      guard !p.hasSameBits(as: fill) else { return }
+      if depth == .f32 { out.setLinearPixel(x: i % width, y: i / width, p) }
+      else { out.setPixel(x: i % width, y: i / width, p) }
+    }
     return out
   }
-  /// Changing one native component must preserve every other plane byte-for-byte.
+  /// Numeric channels retain raw floating values without an RGB transfer.
+  public func channel(_ component:Int)throws->Surface {
+    try Task.checkCancellation()
+    guard (0..<mode.componentCount).contains(component) else{throw CraftError.invalid("Mode component not found.")}
+    let value = defaultComponents()[component]
+    var out = try Surface(width: width, height: height, depth: depth, fill: Pixel(value, value, value))
+    for range in componentStorage[component].storedSampleRanges {
+      try Task.checkCancellation()
+      for i in range { let v = self.value(component: component, index: i); if v.bitPattern != value.bitPattern { out.setPixel(x: i % width, y: i / width, Pixel(v, v, v)) } }
+    }
+    return out
+  }
   public func replacingChannel(_ component:Int,with pixels:Surface)throws->Self {
     guard (0..<mode.componentCount).contains(component),pixels.width==width,pixels.height==height,pixels.depth==depth else{throw CraftError.invalid("Mode channel layout differs.")}
-    var result=self
-    for y in 0..<height{try Task.checkCancellation();for x in 0..<width{try result.set(pixels.pixel(x:x,y:y).r,component:component,index:y*width+x)}}
+    var result = self
+    result.componentStorage[component] = try ComponentPlane(width: width, height: height, depth: depth, defaultWord: Self.word(pixels.defaultPixel.r, depth: depth))
+    try Self.forEachStoredPixel([pixels]) { x, y in
+      try result.set(pixels.pixel(x: x, y: y).r, component: component, index: y * width + x)
+    }
     return result
   }
   public func cropped(to area:IntRect)throws->Self {
     guard area.width>0,area.height>0,area==area.clipped(toWidth:width,height:height) else{throw CraftError.invalid("Native mode crop is outside its pixels.")}
     var result=try Self(width:area.width,height:area.height,mode:mode,depth:depth,profile:profile,intent:intent)
-    for c in planes.indices {for y in 0..<area.height {try Task.checkCancellation();let start=((area.y+y)*width+area.x)*bytesPerSample,to=y*area.width*bytesPerSample;result.planes[c].replaceSubrange(to..<to+area.width*bytesPerSample,with:planes[c][start..<start+area.width*bytesPerSample])}}
+    result.componentStorage = try componentStorage.map { try ComponentPlane(width: area.width, height: area.height, depth: depth, defaultWord: $0.defaultWord) }
+    try forEachStoredIndex { i in
+      let x = i % width, y = i / width
+      guard x >= area.x, x < area.x + area.width, y >= area.y, y < area.y + area.height else { return }
+      for c in componentStorage.indices { result.componentStorage[c].setValidatedWord(rawWord(component: c, index: i), at: (y - area.y) * area.width + x - area.x) }
+    }
     return result
   }
   /// Existing RGB algorithms may change their cache. Retain native samples for every
@@ -252,14 +331,22 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   public func reconciled(with edited:Surface,previous:Surface)throws->Self {
     guard edited.width==width,edited.height==height,previous.width==width,previous.height==height,edited.depth==depth,previous.depth==depth else{throw CraftError.invalid("Reconcile geometry before native mode samples.")}
     let transform=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent);var result=self
-    for y in 0..<height {try Task.checkCancellation();for x in 0..<width {
+    func reconcile(_ x: Int, _ y: Int) throws {
       let old=depth == .f32 ? previous.linearPixel(x:x,y:y):previous.pixel(x:x,y:y),p=depth == .f32 ? edited.linearPixel(x:x,y:y):edited.pixel(x:x,y:y)
-      if old.hasSameBits(as:p){continue};let i=y*width+x
+      if old.hasSameBits(as:p){return};let i=y*width+x
       if old.r.bitPattern != p.r.bitPattern || old.g.bitPattern != p.g.bitPattern || old.b.bitPattern != p.b.bitPattern {
         let values=try transform.components(p);for c in 0..<mode.componentCount {try result.set(values[c],component:c,index:i)}
       }
       if old.a.bitPattern != p.a.bitPattern{try result.set(p.a,component:mode.componentCount,index:i)}
-    }};return result
+    }
+    func cacheDefault(_ surface: Surface) throws -> Pixel {
+      if depth != .f32 { return surface.defaultPixel }
+      return surface.colorEncoding == .linearRGB ? try surface.interpretingSamples(as: .sRGB).defaultPixel : SRGBTransfer.linear(surface.defaultPixel)
+    }
+    let oldDefault = try cacheDefault(previous), newDefault = try cacheDefault(edited)
+    if oldDefault.hasSameBits(as: newDefault) { try Self.forEachStoredPixel([previous, edited], reconcile) }
+    else { for y in 0..<height { try Task.checkCancellation(); for x in 0..<width { try reconcile(x, y) } } }
+    return result
   }
   private enum CodingKeys:String,CodingKey {case width,height,mode,depth,profile,intent,planes,planeBlobs}
   public init(from decoder:Decoder)throws {
@@ -270,16 +357,25 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     try NativeModeProfile.validate(profile,mode:mode,depth:depth)
     let planeBytes=width*height*(depth == .u8 ? 1:depth == .u16 ? 2:4),total=planeBytes*(mode.componentCount+1)+profile.count
     try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?.reserve(tiles:(total+TileArchive.byteCount-1)/TileArchive.byteCount)
-    planes=[]
+    var decoded: [Data] = []
     if c.contains(.planeBlobs) {
       guard !c.contains(.planes),let context=decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding else{throw CraftError.invalid("Native mode blobs require their archive context.")}
       var values=try c.nestedUnkeyedContainer(forKey:.planeBlobs)
       guard values.count==mode.componentCount+1 else{throw CraftError.invalid("Invalid mode plane count.")}
-      while !values.isAtEnd{planes.append(try context.bytes(values.decode(String.self),maximumBytes:planeBytes))}
+      while !values.isAtEnd{decoded.append(try context.bytes(values.decode(String.self),maximumBytes:planeBytes))}
     }else{
       var values=try c.nestedUnkeyedContainer(forKey:.planes)
       guard values.count==mode.componentCount+1 else{throw CraftError.invalid("Invalid mode plane count.")}
-      while !values.isAtEnd{let p=try values.decode(Data.self);guard p.count==planeBytes else{throw CraftError.invalid("Invalid mode plane size.")};planes.append(p)}
+      while !values.isAtEnd{let p=try values.decode(Data.self);guard p.count==planeBytes else{throw CraftError.invalid("Invalid mode plane size.")};decoded.append(p)}
+    }
+    let w = width, h = height, d = depth, stride = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
+    componentStorage = try decoded.map { bytes in
+      guard bytes.count == planeBytes else { throw CraftError.invalid("Invalid mode plane size.") }
+      var plane = try ComponentPlane(width: w, height: h, depth: d)
+      for y in 0..<h {
+        try plane.writeRow(y, bytes: Data(bytes[(y * w * stride)..<((y + 1) * w * stride)]))
+      }
+      return plane
     }
     try validate()
   }
@@ -297,21 +393,15 @@ public extension NativeModeRaster {
     var result=try Self(width:bounds.width,height:bounds.height,mode:mode,depth:depth,profile:profile,intent:intent)
     if let background {
       let fill=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent).components(depth == .f32 ? SRGBTransfer.linear(background):background)
-      for c in result.planes.indices {
-        let value=fill[c];let bits:UInt32
-        switch depth {case .u8:bits=UInt32((max(0,min(1,value))*255).rounded());case .u16:bits=UInt32((max(0,min(1,value))*65535).rounded());case .f32:bits=value.bitPattern}
-        let sample=Data((0..<bytesPerSample).map{UInt8(truncatingIfNeeded:bits>>($0*8))})
-        var repeated=sample;let count=bounds.width*bounds.height*bytesPerSample
-        while repeated.count<count {let chunk=Data(repeated.prefix(min(repeated.count,count-repeated.count)));repeated.append(chunk)}
-        result.planes[c]=repeated
-      }
+      try result.setDefaults(fill)
     }
     let x0=max(0,bounds.x),y0=max(0,bounds.y),x1=min(width,bounds.x+bounds.width),y1=min(height,bounds.y+bounds.height)
     if x1>x0,y1>y0 {
-      for c in planes.indices {for y in y0..<y1 {
-        try Task.checkCancellation();let from=(y*width+x0)*bytesPerSample,to=((y-bounds.y)*bounds.width+x0-bounds.x)*bytesPerSample,count=(x1-x0)*bytesPerSample
-        result.planes[c].replaceSubrange(to..<to+count,with:planes[c][from..<from+count])
-      }}
+      for c in componentStorage.indices { for y in y0..<y1 {
+        try Task.checkCancellation()
+        try result.componentStorage[c].writeRow(y - bounds.y, x: x0 - bounds.x,
+          bytes: componentStorage[c].row(y, x: x0, count: x1 - x0))
+      } }
     }
     try result.validate();return result
   }

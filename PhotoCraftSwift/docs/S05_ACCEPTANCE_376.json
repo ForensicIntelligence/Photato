@@ -1,0 +1,114 @@
+{
+  "scope": "Editable Quick Mask color/opacity semantics, alpha selection storage, load/save/combine and channel shortcuts.",
+  "scope_preserved": true,
+  "status": "in_progress; shared-palette workflow tested, full scope retained",
+  "previous_qualified_source": "375Source02",
+  "working_source": "376Source03",
+  "requirements": [
+    {
+      "requirement": "Quick Mask entry/exit, numeric coverage and saved-alpha combinations",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json"
+      ],
+      "assessment": "Functional references and automated cases retained; general profile/HDR/output scope remains unqualified."
+    },
+    {
+      "requirement": "Color Indicates, overlay color/opacity, options cancellation and retained defaults",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json"
+      ],
+      "assessment": "Native/API/default/preferences subset tested; complete custom-color/profile/default equality remains open."
+    },
+    {
+      "requirement": "Painting with mask colors and restoring image colors",
+      "evidence": [
+        "artifacts/runs/20261103T203758Z-373-S05-workflow-closure/photoshop-paint-colors01.json",
+        "docs/AUXILIARY_PAINT_COLORS_373.json",
+        "docs/SHARED_PAINT_PALETTES_376.json"
+      ],
+      "assessment": "Controller-wide image/auxiliary pair sharing, X/D, presets, attach/detach, preferences/restart, native/API values, held-stroke snapshot and history tested at376Source03. Photoshop confirms separate shared image and Quick Mask pairs across two RGB8 documents. Full cross-profile/custom-gray/layer-mask/component semantics and Photoshop restart defaults remain unqualified."
+    },
+    {
+      "requirement": "Visible mask, independent active target and numbered alpha/temporary shortcuts",
+      "evidence": [
+        "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json",
+        "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "Recorded native/API core transitions, hidden command policy and focused tests pass; complete independent visibility/mask rows/filter targets stay with full C01 scope."
+    },
+    {
+      "requirement": "Save/Load source, destination and operation choices including New Document",
+      "evidence": [
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json"
+      ],
+      "assessment": "8/16-bit standalone PSD/PSB auxiliary reading now uses paged row storage through container geometry limits. Independent numeric words, names/IDs/display, native/API reopening and owned Photoshop RLE PSD/PSB references tested at374Source03. 32-bit/activeQ mode7 output and full interoperability remain open; actual Photoshop rejected owned ZIP PSB probes. Checkpoint375 qualifies the current owned8-bit large-PSB native open/paint/Undo/save and actual Photoshop reopen after repairing wide tagged-block signatures. General contexts remain open."
+    },
+    {
+      "requirement": "History, cancellation, saving/reopen and lifecycle validation",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json"
+      ],
+      "assessment": "Per-increment native/API/owned files supply scoped evidence. Global full-suite/platform/output/performance acceptance remains open. Checkpoint375 qualifies the current owned8-bit large-PSB native open/paint/Undo/save and actual Photoshop reopen after repairing wide tagged-block signatures. General contexts remain open."
+    },
+    {
+      "requirement": "Both API interfaces follow their contracts",
+      "evidence": [
+        "docs/AUTOMATION_API.md",
+        "docs/ADOBE_API_COMPATIBILITY.json"
+      ],
+      "assessment": "Photato native channel operations/state/schema use shared engine; published Adobe jobs preserve supported auxiliary data. No dedicated mask endpoint invented; unqualified actionJSON descriptors remain unsupported."
+    },
+    {
+      "requirement": "Universal macOS14+ functionality, Photoshop output/shortcuts/settings and sustained interaction",
+      "evidence": [
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "AppleSilicon and translatedIntel focused tests and minimum14 universal packaging are scoped proof. Full supported physical platforms, current full suite, exact all-input behavior and60fps are not proven."
+    }
+  ],
+  "next_major": "C01 after complete and tested S05; full original C01 scope unchanged",
+  "next_functional_gap": {
+    "title": "Large standalone selection PSD/PSB read",
+    "source": "Sources/PhotoCraftImaging/PSDMultichannelStorage.swift",
+    "finding": "All mode7 planes pass through dense InkPlane and its8,388,608-pixel guard, even auxiliary-only selections already supported by paged Surface. A larger valid selection document cannot reopen.",
+    "implementation_direction": "Separate auxiliary-only channel decoding from dense printing-plate storage; stream8/16-bit rows into paged Surface and preserve resources/numeric semantics. Keep complete Multichannel plate capacity requirements open under C02 instead of merely deleting the guard. Test PSD/PSB compression, raw plane samples, cancellation and malformed input, native/API reopen and maximum dimension admission.",
+    "not_implemented_in_this_increment": false,
+    "implemented_at": "374Source03",
+    "resolution": "Auxiliary rows now use shared paged Surface storage, caller budgets and implicit-default omission, retaining names, identifiers, display bytes and exact numeric samples. Printing plates still use explicitly limited dense storage; full prepress capacity stays open under C02."
+  },
+  "S05_closed": false,
+  "full_objective_complete": false,
+  "paint_color_increment": {
+    "qualification": "All eight new paint-color workflow cases and all 347 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. Both architectures run the same ordered case IDs. All7091 frozen inputs and1011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T203758Z-373-S05-workflow-closure/native-live01.json",
+    "API": "Existing brush.configure patches both native colors; brush.colors and exposed schema report active/image/auxiliary pairs. No Adobe route added."
+  },
+  "large_file_increment": {
+    "qualification": "All 11 new large-selection file cases and all 273 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,118 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T210312Z-374-large-selection-files/native-live01.json",
+    "independent_numeric_outputs": "artifacts/runs/20261103T210312Z-374-large-selection-files/independent-native-planes01.json",
+    "API": "Existing import/export, document.saveAs, native85 and published create-composite executor use the shared decoder. Capabilities report auxiliary geometry and separate printing/depth/Quick Mask limits. No new route/command/archive format."
+  },
+  "lineage_correction": "374 audit previous_qualified_source373Source03 was a helper replacement error; actual373 wasSource02. Preserved374 evidence is unchanged.",
+  "PSB_tagged_block_increment": {
+    "qualification": "All nine new cases and all 356 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,120 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "evidence": "docs/PSB_TAGGED_BLOCKS_375.json",
+    "native_live": "artifacts/runs/20261103T220638Z-375-S05-native-palette/native-live01.json",
+    "API": "Shared file, Data, Photato HTTP and published composite serializers; existing encoding capability reports block framing. No new route/option/command."
+  },
+  "shared_palette_increment": {
+    "qualification": "All 11 new shared-palette cases and all 485 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,121 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T223635Z-376-shared-paint-palettes/native-live01.json",
+    "API": "Existing brush.configure/state/schema reflect shared pairs. Brush-dependent revisions advance across attached documents, preserving stale/busy validation. No new command or Adobe route."
+  }
+}

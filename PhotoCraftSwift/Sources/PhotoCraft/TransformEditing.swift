@@ -281,7 +281,7 @@ extension EditorStore {
   }
   func performGeometry(_ command: Command, onSuccess: (() -> Void)? = nil) {
     let routed: Command
-    do { routed = routedMaskCommand(try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))) }
+    do { routed = routedMaskCommand(try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))); try validateQuickMaskVisibility(routed) }
     catch { self.error = error.localizedDescription; return }
     let auxiliary: Bool
     switch routed { case .transformChannel, .channel, .selection, .selectShape, .selectionCoverage, .invertSelection, .featherSelection: auxiliary = true; default: auxiliary = false }

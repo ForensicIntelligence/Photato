@@ -90,5 +90,11 @@
     "final_verification": "artifacts/runs/20261029T005145Z-234-video-keyframes/diary-browser08.json",
     "history_refresh": "artifacts/development-history-audit/keyframes234-refresh09.log",
     "history_check": "artifacts/development-history-audit/keyframes234-check09.log"
+  },
+  "transaction_repair_384": {
+    "reference": "docs/TEMPORAL_STYLE_TRANSACTIONS_384.json",
+    "qualification": "All 476 affected optimized tests pass on Apple Silicon and translated Intel, including 6 new temporal-style regression cases. Both architectures run the same ordered cases with no failed assertions, unexpected errors or crashes. Independent checks cover 36 PNGs and 3,456 RGBA8 channel values. The full current test inventory has not been rerun.",
+    "full_Photoshop_parity": false,
+    "current_live_qualified": false
   }
 }

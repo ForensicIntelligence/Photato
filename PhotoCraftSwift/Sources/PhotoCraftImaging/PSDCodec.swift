@@ -222,7 +222,7 @@ public enum PSDCodec {
     if mode == 7 {
       guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Multichannel Photoshop layer payloads are not used inside TIFF.") }
       return try PSDMultichannelStorage.read(r, width: width, height: height, depth: depth,
-        channels: channels, format: format, name: name)
+        channels: channels, format: format, name: name, paging: paging)
     }
     if mode == 0 || mode == 2 {
       guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Restricted Photoshop layer payloads are not used inside TIFF.") }
@@ -1129,7 +1129,7 @@ public enum PSDCodec {
     if depth != 8 {
       try output.n(0, format.sectionLengthBytes)
       try output.n(0, 4)
-      try output.text("8BIM")
+      try output.text(format.tagSignature(depth == 16 ? "Lr16" : "Lr32"))
       try output.text(depth == 16 ? "Lr16" : "Lr32")
     }
     let records = output
@@ -1370,7 +1370,7 @@ public enum PSDCodec {
         "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "expA", "thrs", "post", "grdm", "PtFl", "GdFl", "lfx2", "lmfx", "iOpa",
       ]
       .contains(tag) {
-        extra.text("8BIM")
+        extra.text(format.tagSignature(tag))
         extra.text(tag)
         extra.section(content, lengthBytes: format.tagLengthBytes(tag))
         if content.count % 2 != 0 { extra.n(0, 1) }
@@ -1435,14 +1435,14 @@ public enum PSDCodec {
     let layerMask = output
     let savedNames = (doc.paths ?? []).filter { !$0.isWorkPath }.map(\.name)
     for (key, data) in try PSDPatterns.exportBlocks(doc) {
-      try layerMask.text("8BIM")
+      try layerMask.text(format.tagSignature(key))
       try layerMask.text(key)
       try layerMask.section(data, lengthBytes: format.tagLengthBytes(key))
       for _ in 0..<((4 - data.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if !savedNames.isEmpty {
       let names = PSDPaths.writeNames(savedNames)
-      try layerMask.text("8BIM")
+      try layerMask.text(format.tagSignature("pths"))
       try layerMask.text("pths")
       try layerMask.section(names, lengthBytes: format.tagLengthBytes("pths"))
       for _ in 0..<((4 - names.count % 4) % 4) { try layerMask.n(0, 1) }
@@ -1451,19 +1451,19 @@ public enum PSDCodec {
       guard (13...16).contains(overlay.count), overlay[12] == 128 else {
         throw CraftError.unsupported("Unrecognized PSD user-mask display metadata.")
       }
-      try layerMask.text("8BIM")
+      try layerMask.text(format.tagSignature("LMsk"))
       try layerMask.text("LMsk")
       try layerMask.section(overlay, lengthBytes: format.tagLengthBytes("LMsk"))
       for _ in 0..<((4 - overlay.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if doc.requiresSmartObjectArchive {
       let linked = try PSDSmartObjects.linkedData(doc)
-      try layerMask.text("8BIMlnk2")
+      try layerMask.text(format.tagSignature("lnk2") + "lnk2")
       try layerMask.section(linked, lengthBytes: format.tagLengthBytes("lnk2"))
       for _ in 0..<((4 - linked.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if doc.layers.contains(where: { $0.smartFilters != nil }) {
-      try layerMask.text("8BIMFEid")
+      try layerMask.text(format.tagSignature("FEid") + "FEid")
       let width=format.tagLengthBytes("FEid"),mark=try layerMask.reserveLength(width),start=layerMask.count
       try PSDSmartFilters.writeCache(doc,to:layerMask)
       let length=layerMask.count-start;try layerMask.finishLength(mark,width:width)

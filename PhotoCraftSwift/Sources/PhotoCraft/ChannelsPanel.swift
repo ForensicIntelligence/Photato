@@ -174,7 +174,7 @@ struct AuxiliaryChannelRow: View {
         .accessibilityIdentifier(quick ? "channels.visibility.quickMask":"channels.visibility.\(channel.id.uuidString)")
         .help(quick ? "Show or hide Quick Mask overlay":"View channel over image")
       Button {
-        if quick { try? store.selectAlphaChannel(nil) }
+        if quick { try? store.selectQuickMaskChannel() }
         else { store.channelThumbnail(channel.id,modifiers:NSApp.currentEvent?.modifierFlags ?? []) }
       } label: {
         HStack {
@@ -199,7 +199,7 @@ struct AuxiliaryChannelRow: View {
           Button("Move Down") { move(1) }.disabled(index >= (store.document.alphaChannels?.count ?? 0)-1)
           Button("Delete Channel") { store.perform(.channel(.delete(channel.id))) }
         }
-        Button("Invert") { store.perform(.channel(.invert(target))) }
+        Button("Invert") { store.perform(.channel(.invert(target))) }.disabled(quick && !store.isQuickMaskVisible)
       }
       .alert("Rename Channel",isPresented:$renaming) {
         TextField("Name",text:$name)

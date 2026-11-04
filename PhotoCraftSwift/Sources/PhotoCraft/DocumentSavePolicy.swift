@@ -37,7 +37,7 @@ extension DocumentIO {
     if format == .native { return nil }
     if document.isChannelOnly {
       if format == .psd || format == .psb {
-        return document.depth == .f32 || document.quickMask != nil ? "Save this standalone32-bit or Quick Mask document as Photato to retain its channels.":nil
+        return document.depth == .f32 ? "Save this standalone32-bit document as Photato to retain its channels.":nil
       }
       return "Save this channel-only document as Photato, PSD or PSB. Load the mask into an image for ordinary image export."
     }
@@ -65,7 +65,6 @@ extension DocumentIO {
       guard document.colorMode == .multichannel, format == .psd || format == .psb else {
         return "Save as Photato to retain ink settings. Multichannel also supports PSD/PSB; use Save a Copy for rendered raster output."
       }
-      if document.quickMask != nil { return "Exit Quick Mask or save as Photato to retain the temporary ink selection." }
       let maximum = format == .psb ? PSDFileFormat.psb.maximumDimension : PSDFileFormat.psd.maximumDimension
       if document.width > maximum || document.height > maximum || document.pixelsPerInch >= 65536 {
         return "Dimensions or resolution exceed the selected Photoshop format's limits."

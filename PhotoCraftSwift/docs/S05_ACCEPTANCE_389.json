@@ -1,0 +1,186 @@
+{
+  "scope": "Editable Quick Mask color/opacity semantics, alpha selection storage, load/save/combine and channel shortcuts.",
+  "scope_preserved": true,
+  "status": "in_progress; source backup does not close workflow acceptance",
+  "previous_qualified_source": "380Source04",
+  "working_source": "388Source03",
+  "requirements": [
+    {
+      "requirement": "Quick Mask entry/exit, numeric coverage and saved-alpha combinations",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json"
+      ],
+      "assessment": "Functional references and automated cases retained; general profile/HDR/output scope remains unqualified."
+    },
+    {
+      "requirement": "Color Indicates, overlay color/opacity, options cancellation and retained defaults",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json"
+      ],
+      "assessment": "Native/API/default/preferences subset tested; complete custom-color/profile/default equality remains open."
+    },
+    {
+      "requirement": "Painting with mask colors and restoring image colors",
+      "evidence": [
+        "artifacts/runs/20261103T203758Z-373-S05-workflow-closure/photoshop-paint-colors01.json",
+        "docs/AUXILIARY_PAINT_COLORS_373.json",
+        "docs/SHARED_PAINT_PALETTES_376.json",
+        "docs/MASK_PAINT_PALETTES_380.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json"
+      ],
+      "assessment": "Three controller-wide remembered pairs now include shared layer/Smart Filter masks. D/X, valid-target fallback, v1/v2 preferences/detach, captured strokes, history and native/API target/painting/state equivalence pass focused checks. Actual Photoshop RGB8 verifies pair separation, shared layer/Smart Filter memory, mask D white/black and conditional Qexit. Current compiled live UI is blocked by the locked Mac; profile/custom-gray/component and restart-default qualification remain open. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock."
+    },
+    {
+      "requirement": "Visible mask, independent active target and numbered alpha/temporary shortcuts",
+      "evidence": [
+        "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json",
+        "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "Recorded native/API core transitions, hidden command policy and focused tests pass; complete independent visibility/mask rows/filter targets stay with full C01 scope."
+    },
+    {
+      "requirement": "Save/Load source, destination and operation choices including New Document",
+      "evidence": [
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/SELECTION_ACCEPTANCE_REFERENCES_368.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json",
+        "docs/MULTICHANNEL_QUICK_MASK_379.json"
+      ],
+      "assessment": "8/16-bit standalone and printing Multichannel PSD/PSB retains active Quick Mask alongside saved selections/inks. Native/API open, paint, history, SaveAs and reopen are tested; actual Photoshop opens the live8-bit PSB and captured16-bit RLE PSB. Full interoperable compression/metadata/output and32-bit mode7 qualification remain open. Prior ZIP rejection remains retained."
+    },
+    {
+      "requirement": "History, cancellation, saving/reopen and lifecycle validation",
+      "evidence": [
+        "docs/QUICK_MASK_SELECTION_REFERENCES.json",
+        "docs/SELECTION_DOCUMENTS_REFERENCES_367.json",
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+        "docs/LARGE_SELECTION_FILES_374.json",
+        "docs/PSB_TAGGED_BLOCKS_375.json",
+        "docs/MULTICHANNEL_QUICK_MASK_379.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json",
+        "docs/LIFECYCLE_REGRESSION_REPAIRS_383.json"
+      ],
+      "assessment": "Per-increment native/API/owned files supply scoped evidence. Global full-suite/platform/output/performance acceptance remains open. Checkpoint375 qualifies the current owned8-bit large-PSB native open/paint/Undo/save and actual Photoshop reopen after repairing wide tagged-block signatures. General contexts remain open. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock. Checkpoint383 repairs invalid generic Background-edit fixtures and stale protocol checks without weakening native guards;740affected tests and actual indexed Background recovery pass both architectures. Full baseline/UI requirements remain open."
+    },
+    {
+      "requirement": "Both API interfaces follow their contracts",
+      "evidence": [
+        "docs/AUTOMATION_API.md",
+        "docs/ADOBE_API_COMPATIBILITY.json",
+        "docs/MASK_PAINT_PALETTES_380.json",
+        "docs/MASK_TARGET_LIFECYCLE_381.json",
+        "docs/LIFECYCLE_REGRESSION_REPAIRS_383.json"
+      ],
+      "assessment": "Photato native channel operations/state/schema use shared engine; published Adobe jobs preserve supported auxiliary data. No dedicated mask endpoint invented; unqualified actionJSON descriptors remain unsupported. Existing channel.view now accepts layerMask/smartFilterMask with layerID and reports maskEditingTarget. Brush state/schema expose the third pair, preserving old image/auxiliary keys and shared history. Checkpoint381 clears stale filter-mask mode on returning to image/path/layer targets; actual native/API merge, one Undo, busy rejection and prior valid-mask preservation pass focused tests. Current native UI remains pending unlock. Checkpoint383 repairs invalid generic Background-edit fixtures and stale protocol checks without weakening native guards;740affected tests and actual indexed Background recovery pass both architectures. Full baseline/UI requirements remain open."
+    },
+    {
+      "requirement": "Universal macOS14+ functionality, Photoshop output/shortcuts/settings and sustained interaction",
+      "evidence": [
+        "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json"
+      ],
+      "assessment": "AppleSilicon and translatedIntel focused tests and minimum14 universal packaging are scoped proof. Full supported physical platforms, current full suite, exact all-input behavior and60fps are not proven."
+    }
+  ],
+  "next_major": "C01 after complete and tested S05; full original C01 scope unchanged",
+  "next_functional_gap": {
+    "title": "Current native palette and mask-to-image acceptance",
+    "implemented": false,
+    "finding": "Automated native/API lifecycle repair now passes. Current live mask palette, held stroke/history, Q transition and subsequent image operations still await an unlocked Mac; consolidate remaining full S05 requirements without numerical-polish detours.",
+    "scope": "Full S05 requirements retained; C01 next after complete and tested S05."
+  },
+  "S05_closed": false,
+  "full_objective_complete": false,
+  "paint_color_increment": {
+    "qualification": "All eight new paint-color workflow cases and all 347 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. Both architectures run the same ordered case IDs. All7091 frozen inputs and1011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T203758Z-373-S05-workflow-closure/native-live01.json",
+    "API": "Existing brush.configure patches both native colors; brush.colors and exposed schema report active/image/auxiliary pairs. No Adobe route added."
+  },
+  "large_file_increment": {
+    "qualification": "All 11 new large-selection file cases and all 273 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,118 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T210312Z-374-large-selection-files/native-live01.json",
+    "independent_numeric_outputs": "artifacts/runs/20261103T210312Z-374-large-selection-files/independent-native-planes01.json",
+    "API": "Existing import/export, document.saveAs, native85 and published create-composite executor use the shared decoder. Capabilities report auxiliary geometry and separate printing/depth/Quick Mask limits. No new route/command/archive format."
+  },
+  "lineage_correction": "374 audit previous_qualified_source373Source03 was a helper replacement error; actual373 wasSource02. Preserved374 evidence is unchanged.",
+  "PSB_tagged_block_increment": {
+    "qualification": "All nine new cases and all 356 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,120 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "evidence": "docs/PSB_TAGGED_BLOCKS_375.json",
+    "native_live": "artifacts/runs/20261103T220638Z-375-S05-native-palette/native-live01.json",
+    "API": "Shared file, Data, Photato HTTP and published composite serializers; existing encoding capability reports block framing. No new route/option/command."
+  },
+  "shared_palette_increment": {
+    "qualification": "All 11 new shared-palette cases and all 485 affected optimized cases pass on Apple Silicon and translated Intel, with 0 failed assertions, 0 unexpected errors and 0 crashes. Both architectures run the same ordered case IDs. All 7,121 frozen inputs and 1,011 production Swift files remain unchanged.",
+    "native_live": "artifacts/runs/20261103T223635Z-376-shared-paint-palettes/native-live01.json",
+    "API": "Existing brush.configure/state/schema reflect shared pairs. Brush-dependent revisions advance across attached documents, preserving stale/busy validation. No new command or Adobe route."
+  },
+  "multichannel_quick_mask_increment": {
+    "step": 379,
+    "workingSource": "379Source02",
+    "previousQualifiedSource": "376Source03",
+    "status": "Implemented and focused-tested; full S05 retained in_progress",
+    "qualification": "All nine new cases and all494 affected optimized cases pass on Apple Silicon and translated Intel, with0 failed assertions,0 unexpected errors and0 crashes. Both architectures execute the same ordered case IDs. All7125 frozen inputs and1011 production Swift files are unchanged.",
+    "sourceManifest": "artifacts/runs/20261104T001435Z-379-selection-workflow/source02.json",
+    "sourceInputs": 7125,
+    "productionSwift": 1011,
+    "newCases": 9,
+    "affectedCasesEachArchitecture": 494,
+    "fullCurrentSuitePassed": false,
+    "scopePreserved": true,
+    "S05Closed": false,
+    "nextMajor": "C01 after complete and tested S05",
+    "API": {
+      "commands": 239,
+      "nativeArchive": 85,
+      "Actions": 44,
+      "newRoute": false,
+      "newSchemaParameters": false,
+      "capability": "photoshopInterchange.standaloneSelections.quickMask=true",
+      "interfaces": "Native file paths, Photato import/download/SaveAs and published create-composite use one Swift codec; no invented Adobe channel action."
+    },
+    "implementation": [
+      "Mode7 temporary plane/resource1022 is separate from saved alphas and printing plates at8/16-bit; indexed before/middle/after planes with validation",
+      "Retain numeric samples, names, display/IDs and initially-empty flag; printing identifiers survive reorder/save",
+      "Native Save/SaveAs permits active Quick Mask and initial standalone open selects the temporary edit target",
+      "Same core history/paint/menu/shortcut/cursor behavior and native85 serialization; no new tools/modifiers"
+    ],
+    "tests": {
+      "source01": "Both493/494; one new test compared unrepresentable tile padding/defaults,48 assertions; exact in-document pixels independently passed",
+      "source02": "Both494/494; corrected new test uses every Pixel with no tolerance; no production input/binary changed from Source01",
+      "buildSeconds": 50.88,
+      "ARMseconds": 80.914,
+      "translatedIntelseconds": 122.635,
+      "independentOutputs": 78,
+      "independentSamples": 4480,
+      "liveNativeAndPhotoshop": true
+    },
+    "evidence": [
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/qualification01-reconstructed.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/qualification02.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/case-equivalence01.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/independent-photoshop01.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/independent-outputs02.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/independent-live-file01.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/native-live01.json",
+      "artifacts/runs/20261104T001435Z-379-selection-workflow/universal/staging01.json"
+    ],
+    "remaining": "S05 remains in progress against its full scope; C01 follows after completion and testing. Cross-profile/custom-gray/layer-mask/component palette semantics, Photoshop restart defaults, full interoperability, current full suite, exact all-input output/settings/shortcuts, supported physical Macs, dense maximum capacity and sustained60fps remain unqualified. Prior371 broader strict comparison failures remain open. Native Float32 standalone selection storage remains supported;32-bit mode7 output remains unavailable after the observed Photoshop save failure. Printing plates retain their separate dense capacity limit. Prior ZIP PSB rejection is not cleared by native/independent decoder passes.",
+    "newInstallation": false,
+    "newSourcePush": false,
+    "newArchive": false,
+    "newUpload": false,
+    "newRelease": false
+  },
+  "mask_palette_increment": "docs/MASK_PAINT_PALETTES_380.json",
+  "mask_target_lifecycle_increment": "docs/MASK_TARGET_LIFECYCLE_381.json",
+  "full_current_inventory": "docs/CURRENT_TEST_INVENTORY_382.json",
+  "full_current_suite_passed": false,
+  "lifecycle_requalification": "docs/LIFECYCLE_REGRESSION_REPAIRS_383.json",
+  "temporal_style_dependency": "docs/TEMPORAL_STYLE_TRANSACTIONS_384.json",
+  "fit_image_dependency": "docs/FIT_IMAGE_AUTOMATION_385.json",
+  "parallel_phase1_increment": "docs/NATIVE_COMPONENT_BLOCKS_388.json",
+  "source_backup_increment": "docs/SOURCE_SNAPSHOT_389.json"
+}

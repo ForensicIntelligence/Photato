@@ -1,0 +1,168 @@
+{
+  "source": "Actual Photoshop2026 owned SaveSelection New Multichannel8; Q entry; SaveAs; CommandI on QuickMask; Save; close. Initial all-white save was overwritten before preservation and is not claimed as retained reference.",
+  "sha256": "1bb5b760bced2950d9179f4ea5cfb1f1cafce2e43ac26f8351d6069a325e0782",
+  "bytes": 19078,
+  "header": [
+    1,
+    "000000000000",
+    2,
+    4,
+    16,
+    8,
+    7
+  ],
+  "resources": [
+    {
+      "id": 1028,
+      "bytes": 15,
+      "hex": null
+    },
+    {
+      "id": 1061,
+      "bytes": 16,
+      "hex": null
+    },
+    {
+      "id": 1060,
+      "bytes": 14776,
+      "hex": null
+    },
+    {
+      "id": 1082,
+      "bytes": 229,
+      "hex": null
+    },
+    {
+      "id": 1083,
+      "bytes": 557,
+      "hex": null
+    },
+    {
+      "id": 1005,
+      "bytes": 16,
+      "hex": null
+    },
+    {
+      "id": 1062,
+      "bytes": 14,
+      "hex": null
+    },
+    {
+      "id": 1006,
+      "bytes": 32,
+      "hex": null
+    },
+    {
+      "id": 1045,
+      "bytes": 72,
+      "hex": "00000015005300740061006e00640061006c006f006e0065002000730065006c0065006300740069006f006e00000000000b0051007500690063006b0020004d00610073006b0000"
+    },
+    {
+      "id": 1077,
+      "bytes": 30,
+      "hex": "000000010000ffff0000000000000032010000ffff000000000000003201"
+    },
+    {
+      "id": 1053,
+      "bytes": 8,
+      "hex": "0000000200000003"
+    },
+    {
+      "id": 1010,
+      "bytes": 10,
+      "hex": null
+    },
+    {
+      "id": 1037,
+      "bytes": 4,
+      "hex": null
+    },
+    {
+      "id": 1049,
+      "bytes": 4,
+      "hex": null
+    },
+    {
+      "id": 1011,
+      "bytes": 9,
+      "hex": null
+    },
+    {
+      "id": 10000,
+      "bytes": 10,
+      "hex": null
+    },
+    {
+      "id": 1012,
+      "bytes": 18,
+      "hex": null
+    },
+    {
+      "id": 1015,
+      "bytes": 28,
+      "hex": null
+    },
+    {
+      "id": 1022,
+      "bytes": 3,
+      "hex": "000101"
+    },
+    {
+      "id": 1032,
+      "bytes": 16,
+      "hex": null
+    },
+    {
+      "id": 1092,
+      "bytes": 16,
+      "hex": null
+    },
+    {
+      "id": 1097,
+      "bytes": 4,
+      "hex": null
+    },
+    {
+      "id": 1054,
+      "bytes": 4,
+      "hex": null
+    },
+    {
+      "id": 1050,
+      "bytes": 853,
+      "hex": null
+    },
+    {
+      "id": 1064,
+      "bytes": 12,
+      "hex": null
+    },
+    {
+      "id": 1041,
+      "bytes": 1,
+      "hex": null
+    },
+    {
+      "id": 1044,
+      "bytes": 4,
+      "hex": null
+    },
+    {
+      "id": 1036,
+      "bytes": 599,
+      "hex": null
+    },
+    {
+      "id": 1057,
+      "bytes": 87,
+      "hex": null
+    },
+    {
+      "id": 1058,
+      "bytes": 306,
+      "hex": null
+    }
+  ],
+  "reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "scope": "QuickMask index/empty flag and exact plane samples; no generic Photoshop equivalence."
+}

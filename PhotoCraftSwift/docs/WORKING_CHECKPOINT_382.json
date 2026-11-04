@@ -1,0 +1,31 @@
+{
+  "step": "dev-step-382",
+  "status": "All 3,845 discovered tests execute on each architecture in 21 fresh bounded groups. Apple Silicon: 3779 pass, 66 fail, 0 skip, 37 unexpected errors and 0 crashes. Translated Intel: 3771 pass, 74 fail, 0 skip, 37 unexpected errors and 0 crashes. This is a complete execution with failures, not a passing full suite.",
+  "goal_status": "active",
+  "run": "artifacts/runs/20261104T015501Z-382-current-full-inventory",
+  "previous_qualified_source": "381Source03",
+  "source_build": 381,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "S05_closed": false,
+  "next_major": "C01 after complete and tested S05",
+  "source_inputs": 7127,
+  "production_swift_files": 1011,
+  "worker_pid": null,
+  "source_manifest": "artifacts/runs/20261104T015501Z-382-current-full-inventory/source01.json",
+  "native_live_qualified": false,
+  "full_current_suite_passed": false,
+  "evidence": "docs/CURRENT_TEST_INVENTORY_382.json",
+  "diary_step": 382,
+  "next_work": [
+    "Diagnose current document lifecycle/native API failures first, preserve Photoshop Background guards and mask defaults, then repair actual product defects or stale fixtures with concrete evidence and focused native/API tests. Finish pending current S05 live acceptance after unlock; C01 remains next after complete and tested S05."
+  ],
+  "native_app_stopped": true,
+  "native_live_status": "artifacts/runs/20261104T015501Z-382-current-full-inventory/native-live-status01.json",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "history_receipt": "artifacts/development-history-audit/382-final-receipt01.json"
+}

@@ -188,7 +188,7 @@ public enum InkModeRaster: Codable, Equatable, Sendable {
     case .duotone(let raster):
       let lookup = try raster.settings.lookup()
       for y in region.y..<(region.y + region.height) { try Task.checkCancellation(); for x in region.x..<(region.x + region.width) {
-        result.setPixel(x: x, y: y, lookup[Int(raster.gray.bytes[y * width + x])])
+        result.setPixel(x: x, y: y, lookup[Int(raster.gray.rawWord(at: y * width + x))])
       } }
     case .multichannel(let raster):
       for y in region.y..<(region.y + region.height) { try Task.checkCancellation(); for x in region.x..<(region.x + region.width) {

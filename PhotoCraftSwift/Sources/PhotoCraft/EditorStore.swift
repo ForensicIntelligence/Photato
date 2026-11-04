@@ -192,7 +192,13 @@ import UniformTypeIdentifiers
   var maskViewImage: CGImage?
   var maskViewRegion: IntRect?
   var smartFilterMaskEditing = false
-  var maskEditingLayerID: UUID?
+  var maskEditingLayerID: UUID? {
+    didSet {
+      // Clearing the owner always leaves Smart Filter mask editing. Keep the
+      // viewing state: prepared mask edits may restore their captured target.
+      if maskEditingLayerID == nil { smartFilterMaskEditing = false }
+    }
+  }
   var editingMask: Bool { activeLayer?.id == maskEditingLayerID && activeLayer?.mask != nil }
   var selectionMode = SelectionMode.replace
   var selectionFeather: Double = 0
@@ -317,7 +323,10 @@ import UniformTypeIdentifiers
   var contentAwareScaleError: String?
   @ObservationIgnored var contentAwareScalePrepared: ContentAwareScaleEdit?
   @ObservationIgnored var contentAwareScaleTask: Task<Void,Never>?
-  var geometrySheet: GeometrySheetKind?
+  var fitImageDraft: FitImageDraft?
+  var geometrySheet: GeometrySheetKind? {
+    didSet { if geometrySheet != .fitImage { fitImageDraft = nil } }
+  }
   @ObservationIgnored var foregroundDetector: any ForegroundDetecting = VisionForegroundDetector()
   var subjectSampleAllLayers = false
   var levelsDraft: LevelsDraft?
@@ -343,7 +352,11 @@ import UniformTypeIdentifiers
   var animationExportWorker: Task<Data, Error>?
   var geometryBusy = false
   var geometryTask: Task<Void, Never>?
-  var backgroundColor: Pixel = .white
+  var paintPalette: PaintPalette
+  var backgroundColor: Pixel {
+    get { activePaintColorPair.background }
+    set { var pair = activePaintColorPair; pair.background = newValue; activePaintColorPair = pair }
+  }
   var colorTab: ColorPanelTab {
     get { workspaceLibrary.layout.colorTab }
     set { workspaceLibrary.selectPanel(WorkspacePanel(rawValue: newValue.rawValue)!) }
@@ -361,6 +374,9 @@ import UniformTypeIdentifiers
   var inkChannelOptions: InkChannelOptionsDraft?
   var alphaEditingID: UUID?
   var alphaOverlay = false
+  // A retained Quick Mask can be visible while a different channel receives edits.
+  var nonQuickMaskDocumentID: UUID?
+  var nonQuickMaskID: UUID?
   // Visibility belongs to this temporary mask, independently of its edit target.
   var hiddenQuickMaskDocumentID: UUID?
   var hiddenQuickMaskID: UUID?
@@ -388,8 +404,27 @@ import UniformTypeIdentifiers
   var measuredZoom: Double = 1
   var viewportSize = CGSize(width: 900, height: 700)
   var viewportBackingScale: Double = 1
-  var brushRevision = 0
-  var brush = Brush() { didSet { if oldValue != brush { brushRevision += 1 } } }
+  private var localBrushRevision = 0
+  var brushRevision: Int {
+    get { localBrushRevision + paintPalette.revision }
+    set { localBrushRevision = newValue - paintPalette.revision }
+  }
+  private var brushSettingsValue = Brush()
+  var brush: Brush {
+    get {
+      var value = brushSettingsValue
+      let pair = activePaintColorPair
+      value.color = pair.foreground; value.backgroundColor = pair.background
+      return value
+    }
+    set {
+      var value = newValue
+      value.backgroundColor = value.backgroundColor ?? backgroundColor
+      guard value != brush else { return }
+      brushSettingsValue = value; localBrushRevision += 1
+      activePaintColorPair = PaintColorPair(foreground: value.color, background: value.backgroundColor ?? backgroundColor)
+    }
+  }
   var zoom: Double = 0  // Zero requests the initial fit, resolved by the first canvas layout.
   var pan = CGSize.zero {
     didSet { if pan != oldValue, document.width * document.height > Surface.maximumDensePixels { render() } }
@@ -401,6 +436,8 @@ import UniformTypeIdentifiers
   var error: String?
   var status = "Ready"
   var rendering = false
+  var textSearchPreparation:@Sendable (CraftDocument,TextSearchSettings,UUID?,Int,Int,Int)throws->TextSearchResult = {try NativeTextSearch.scan($0,settings:$1,layerID:$2,start:$3,offset:$4,limit:$5)}
+  var textFindWorkspace: TextFindWorkspace?
   var typeEditingDraft: TypeEditingDraft?
   var shapedTypeDraft:ShapedTypeWorkspace?
   var typeSelectionRevision = 0
@@ -448,9 +485,10 @@ import UniformTypeIdentifiers
     document: CraftDocument, clipboard: (any ClipboardAccess)? = nil,
     cloneState: CloneSources? = nil, patterns: PatternLibrary? = nil,
     gradients: GradientLibrary? = nil, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
-    quickMaskPreferences:QuickMaskPreferences? = nil,
+    quickMaskPreferences:QuickMaskPreferences? = nil, paintPalette: PaintPalette? = nil,
     prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
+    self.paintPalette = paintPalette ?? PaintPalette()
     self.quickMaskPreferences=quickMaskPreferences ?? .shared
     self.shapes = shapes ?? .shared
     self.actions = actions ?? .shared
@@ -462,9 +500,8 @@ import UniformTypeIdentifiers
     self.gradients = gradients ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
-    if document.isChannelOnly {alphaEditingID=document.alphaChannels?.first?.id}
+    if document.isChannelOnly,document.quickMask == nil {alphaEditingID=document.alphaChannels?.first?.id}
     timelineVisible = document.animation != nil || document.videoTimeline != nil
-    brush.color = .black
     brush.settings = .init()
     brush.settings!.symmetry.center = .init(Double(document.width)/2,Double(document.height)/2)
     let library = self.gradients
@@ -499,9 +536,7 @@ import UniformTypeIdentifiers
     stopTimelinePlayback(render: false)
     guard historyOperation == nil else { throw HistoryNavigationConflict.busy }
     let command = try routeInkChannels(routeModeComponents(Self.routeChannel(command,target:editingChannel)))
-    if case .channel(.stroke(.quickMask, _, _)) = command, !isQuickMaskVisible {
-      throw CraftError.invalid(Self.hiddenQuickMaskBrushMessage)
-    }
+    try validateQuickMaskVisibility(command)
     try validateComponentContext(command)
     let before = session.document
     try session.execute(routedMaskCommand(command))
@@ -881,6 +916,7 @@ import UniformTypeIdentifiers
       componentTarget = .composite
       modeComponentTargets = []; modeComponentVisibility = nil
       maskEditingLayerID = id
+      deselectQuickMaskTarget()
       render()
     }
     if view?.layerID == id {
@@ -1118,10 +1154,12 @@ import UniformTypeIdentifiers
     }
     return true
   }
-  func swapColors() { swap(&brush.color, &backgroundColor) }
+  func swapColors() {
+    let pair = activePaintColorPair
+    activePaintColorPair = PaintColorPair(foreground: pair.background, background: pair.foreground)
+  }
   func resetColors() {
-    brush.color = .black
-    backgroundColor = .white
+    activePaintColorPair=paintColorContext.defaults
   }
   var activeLayerSize: CGSize {
     if let b = activeLayerBounds { return CGSize(width: b.width, height: b.height) }

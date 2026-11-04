@@ -17,7 +17,7 @@ final class RecoveryIndexTests: XCTestCase {
     model: CraftDocument? = nil, group: UUID = UUID(), ready: Bool = true)
     throws -> (RecoverySnapshotContext, URL, CraftDocument)
   {
-    let model = try model ?? CraftNSDocument.blankModel(width: 4, height: 3, name: "Recovered")
+    let model = try model ?? EditableLifecycleModel.make(width: 4, height: 3, name: "Recovered")
     let record = try source.map {
       RecoverySourceRecord.make(url: $0, format: .native, needsReview: false,
         fingerprint: try RecoverySourceReader.capture($0))
@@ -92,7 +92,7 @@ final class RecoveryIndexTests: XCTestCase {
     let root = try folder(), sourceFolder = root.appendingPathComponent("source")
     try FileManager.default.createDirectory(at: sourceFolder, withIntermediateDirectories: true)
     let source = sourceFolder.appendingPathComponent("original.photato")
-    let original = try CraftNSDocument.blankModel(width: 3, height: 2)
+    let original = try EditableLifecycleModel.make(width: 3, height: 2)
     try NativeArchive.write(original, to: source)
     let index = RecoveryIndexStore(directoryURL: root.appendingPathComponent("private"))
     let c = controller(index)
@@ -152,7 +152,7 @@ final class RecoveryIndexTests: XCTestCase {
   }
   @MainActor func testCollisionRecoversSeparateUnsavedDocumentAndPreservesOriginal() async throws {
     let root = try folder(), source = root.appendingPathComponent("original.photato")
-    let original = try CraftNSDocument.blankModel(width: 3, height: 2)
+    let original = try EditableLifecycleModel.make(width: 3, height: 2)
     try NativeArchive.write(original, to: source)
     let index = RecoveryIndexStore(directoryURL: root.appendingPathComponent("private"))
     var edited = original; edited.layers[0].name = "Uncommitted"
@@ -195,7 +195,7 @@ final class RecoveryIndexTests: XCTestCase {
         try data.write(to: url, options: .atomic)
       }
       let c = controller(index)
-      let doc = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 3, height: 2))
+      let doc = CraftNSDocument(model: try EditableLifecycleModel.make(width: 3, height: 2))
       c.addDocument(doc)
       defer { doc.close() }
       try doc.store.executeEditorCommand(.renameLayer(doc.store.document.activeLayerID!, "Edit"))

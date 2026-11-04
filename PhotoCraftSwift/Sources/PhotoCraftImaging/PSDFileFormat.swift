@@ -11,6 +11,12 @@ public enum PSDFileFormat: Int, Sendable, CaseIterable {
   var sectionLengthBytes: Int { self == .psd ? 4 : 8 }
   var rowLengthBytes: Int { self == .psd ? 2 : 4 }
 
+  /// Photoshop requires the64-bit signature for these wide PSB blocks.
+  /// A wide length preceded by8BIM can round-trip locally but is rejected by Photoshop.
+  func tagSignature(_ key: String) -> String {
+    tagLengthBytes(key) == 8 ? "8B64" : "8BIM"
+  }
+
   func tagLengthBytes(_ key: String) -> Int {
     // The Rust source includes eight additional observed Photoshop keys beyond
     // the thirteen listed by Adobe. In particular, pths/cinf must not shift the

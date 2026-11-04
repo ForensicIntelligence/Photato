@@ -512,7 +512,13 @@ extension DocumentIOWorkflowTests {
         XCTAssertEqual(currentOutput.0.statusCode, 200)
         XCTAssertEqual(currentOutput.1, bytes)
       }
-      for version in ["9", "85", "invalid"] {
+      let compatible85 = try await self.request(
+        service, path: "/v1/documents/\(id)/file.photato",
+        headers: ["X-Photato-Archive-Version": "85"])
+      XCTAssertEqual(compatible85.0.statusCode, 200)
+      XCTAssertEqual(compatible85.1, try NativeArchive.encodeChunked(document.store.document, minimumVersion: 85))
+      XCTAssertEqual(try NativeArchive.decodePaged(compatible85.1), document.store.document)
+      for version in ["9", "86", "invalid"] {
         let rejected = try await self.request(
           service, path: "/v1/documents/\(id)/file.photato",
           headers: ["X-Photato-Archive-Version": version])
@@ -540,7 +546,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...84))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...85))
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),
         type: "application/vnd.photato.document")

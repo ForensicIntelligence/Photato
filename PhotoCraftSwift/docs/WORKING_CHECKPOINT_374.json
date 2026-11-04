@@ -1,0 +1,27 @@
+{
+  "step": "dev-step-374",
+  "status": "Source03 large-selection file increment qualified within stated scope; full S05 audit retained",
+  "run": "artifacts/runs/20261103T210312Z-374-large-selection-files",
+  "source_inputs": 7118,
+  "source_unchanged": true,
+  "compiler_test_workers_live": false,
+  "goal_status": "active",
+  "goal_complete": false,
+  "S05_closed": false,
+  "next_major": "C01 after S05 complete and tested",
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_binary_upload": false,
+  "new_release": false,
+  "workers": [],
+  "source_manifest": "artifacts/runs/20261103T210312Z-374-large-selection-files/source03.json",
+  "production_swift_files": 1011,
+  "reference": "docs/LARGE_SELECTION_FILES_374.json",
+  "native_live": "artifacts/runs/20261103T210312Z-374-large-selection-files/native-live01.json",
+  "next_work": [
+    "Recheck current live large-file open/paint/Undo/save; complete remaining S05 workflow requirements without optional numerical refinement loops; retain 32-bit/active Quick Mask interchange and palette contexts",
+    "C01 component visibility and edit targeting remains the next complete major feature after S05 completes and is tested",
+    "Retain strict original-source comparison, full-suite/output/platform/dense-capacity/60fps gates"
+  ]
+}

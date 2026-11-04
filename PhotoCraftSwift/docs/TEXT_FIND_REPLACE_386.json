@@ -1,0 +1,100 @@
+{
+  "step": 386,
+  "source": "386Source03",
+  "softwareBuild": 386,
+  "status": "Find and replace editable type; native/API/Actions/Batch focused qualification",
+  "qualification": "All 16 new Find/Replace cases pass on Apple Silicon and translated Intel. Of 211 affected cases per architecture, 210 pass and one retained imported-text comparison fails with three assertions; there are no unexpected errors or crashes. A previous385run of the195existing cases reproduces that one failure with identical word counts. Independent checks cover 10 owned text/state outputs with 31 exact literal checks. The affected run fails; the current full suite has not been rerun.",
+  "sourceInputs": 7141,
+  "productionSwift": 1017,
+  "testSwiftFiles": 694,
+  "affectedTestsEachArchitecture": 211,
+  "affectedPassedEachArchitecture": 210,
+  "affectedSuitePassed": false,
+  "featureTestsPassed": true,
+  "newTestsEachArchitecture": 16,
+  "retainedFailure": "PhotoCraftImagingTests.PcraftTextImportTests/testUncachedSourceTextCompositeMatchesExactOriginalWords",
+  "regressionClassification": "artifacts/runs/20261104T051853Z-386-major-workflows/regression-classification01.json",
+  "currentInventoryEachArchitecture": 3878,
+  "fullCurrentSuitePassed": false,
+  "fullGoalComplete": false,
+  "S05Closed": false,
+  "nativeLiveQualified": false,
+  "changes": [
+    "Edit > Find and Replace Text opens native Find What/Change To, scope/Forward/case/whole-word controls and Find Next/Change/ChangeFind/ChangeAll. Done and close cancel active work; applied changes keep one Undo each.",
+    "Literal ICU Unicode search uses UTF16 scalar-safe offsets, hidden/ancestor/lock filtering, zero-opacity inclusion and bounded result paging. Replacement retains untouched formatting, inherits the first replaced character style, removes changed glyph overrides and uses existing shaping/anchor/mask/imported-cache transitions.",
+    "Reusable query/replacement settings record as native Actions46, including no-op recording without Undo; compositor playback and Batch resolve the current document and portable targets. Valid native Unicode layer-name capacity is retained.",
+    "Photato text.find is read-only with source/share/token/revision validation; text.replace uses shared native preparation/commit with counts, history, strict inputs and busy/stale behavior. State/schema/capabilities include pending options and current match."
+  ],
+  "API": {
+    "commands": 242,
+    "nativeArchiveMaximum": 85,
+    "ActionsMaximum": 46,
+    "newCommands": [
+      "text.find",
+      "text.replace"
+    ],
+    "newRoute": false,
+    "newState": "textFind",
+    "resultSchemas": [
+      "TextFindAPI.resultSchema",
+      "TextFindAPI.replacementResultSchema"
+    ],
+    "Adobe": "No dedicated Find/Replace endpoint/descriptor has been qualified in the pinned Adobe v2 contract. The current public schema link returns404, so new absence/support is not inferred. Existing create-composite text_layer add/edit uses the same native shaping; proprietary Find/Replace actionJSON/ATN semantics remain unqualified. No invented Adobe route."
+  },
+  "attempts": {
+    "source01": "Both compilers fail before test execution with cascading @Observable combined-property macro errors; source and stale385binaries/test bundles retained as diagnostic evidence, not386qualification.",
+    "source02": "Both209/210affected cases pass; all15new cases pass. One unchanged strict imported-text comparison has3assertions. Previous385reproduces the same result across all195existing cases.",
+    "source03": "Add only native all-layer traversal/control test; both210/211pass, all16new pass, same3retained assertions. Production binaries identical toSource02.",
+    "qualifiedFeatureScope": "source03",
+    "repairs": [
+      "Split observable property declarations",
+      "Align named targets with existing65535UTF16 native layer-name capacity; add direct/native long-Unicode case",
+      "New caret test captures baseline after legitimate existing TextKit draft commit, retaining exact no-change/history checks for search itself"
+    ]
+  },
+  "independent": {
+    "passed": true,
+    "JSONFiles": 10,
+    "checks": 31,
+    "reference": "artifacts/runs/20261104T051853Z-386-major-workflows/independent-text02.json",
+    "provenance": "Independent literal strings and numeric counts/ranges for owned cat/dog/bird, deletion, paging and changed-content Batch fixtures; no production search/replacement/shaping implementation imported.",
+    "limits": "Checks text/state/history outputs, not Photoshop glyph pixels, typography, source file bytes, Unicode boundary/default/live behavior, physical supported Macs or full performance."
+  },
+  "references": {
+    "catalogue": "https://www.adobe.com/products/photoshop/features/all.html",
+    "workflow": "https://helpx.adobe.com/photoshop/desktop/text-typography/get-started-with-text/find-and-replace-text.html",
+    "workflowUpdated": "2026-10-10",
+    "olderOfficial": "https://helpx.adobe.com/ie/photoshop/using/editing-text.html",
+    "olderDirectOpen": "404 after search result excerpt; no third-party implementation relied on",
+    "observedPhotoshopUI": false,
+    "noProprietaryImplementationRead": true,
+    "scope": "Clean-room native typed workflow from public controls/documentation; no parity inferred from documentation or native tests alone.",
+    "currentV2Review": {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/photoshopv2-api.json",
+      "fetchedAtUTC": "2026-11-04T06:12:30.271146+00:00",
+      "proprietaryImplementationRead": false,
+      "error": "HTTP Error 404: Not Found",
+      "textLayerGuide": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/text-layer-operations",
+      "assessment": "Public reference links its schema, but the current fetch returns404. Existing pinned native text-layer add/edit subset remains; no newly qualified dedicated Find/Replace route or generic descriptor is claimed. Full current Adobe conformance stays open."
+    }
+  },
+  "universalPackage": "artifacts/runs/20261104T051853Z-386-major-workflows/universal/staging01.json",
+  "nativeLive": {
+    "nativeLiveQualified": false,
+    "attemptedThisCheckpoint": true,
+    "firstError": "cgWindowNotFound",
+    "freshInventory": "Native apps: The Mac is locked and automatic unlock could not unlock it.",
+    "pendingUnlockQuestionRepeated": false,
+    "newInstall": false,
+    "ownedProcesses": [
+      "94555     1 /Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261104T043545Z-385-fit-image-automation/universal/Photato Validation 385.app/Contents/MacOS/Photato"
+    ]
+  },
+  "remaining": "S05 remains in progress; C01 follows complete and tested S05. Current native live UI awaits the pending unlock. Exact Photoshop Unicode/case/whole-word behavior, layer ordering, factory/remembered Find settings, on-canvas match selection, typography/pixel output, supported physical Macs and sustained60fps remain unqualified. Existing native type/layout/document/API budgets and wider text/import/export limits remain. Full382 failures remain recorded; focused passes do not establish a current full-suite pass. All original104package scopes and full objective remain open.",
+  "next": "Complete full S05 native/live/reference requirements, then full C01; keep T01/AUT01/AUT02 scope and other original packages open.",
+  "newInstall": false,
+  "newSourcePush": false,
+  "newArchive": false,
+  "newUpload": false,
+  "newRelease": false
+}

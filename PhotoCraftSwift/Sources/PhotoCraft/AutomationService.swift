@@ -440,6 +440,8 @@ import UniformTypeIdentifiers
       "crop":store.cropState,
       "photomerge": ["operationID":photomergeOperationID?.uuidString as Any? ?? NSNull(),"source":photomergeSourceIDs.contains(share.id)],
       "imageProcessor": ["operationID":imageProcessorOperationID?.uuidString as Any? ?? NSNull(),"source":imageProcessorSourceIDs.contains(share.id)],
+      "textFind":TextFindAPI.state(store),
+      "fitImage": GeometryAPI.fitImageState(store),
       "cropStraighten": ["operationID":scanCropOperationID?.uuidString as Any? ?? NSNull(),"source":scanCropSourceID == share.id],
       "contactSheet": ["operationID":contactSheetOperationID?.uuidString as Any? ?? NSNull(),"source":contactSheetSourceIDs.contains(share.id)],
       "imageStack": ["operationID":imageStackOperationID?.uuidString as Any? ?? NSNull(),"source":imageStackSourceIDs.contains(share.id)],
@@ -483,8 +485,9 @@ import UniformTypeIdentifiers
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
         "sampleAllLayers": store.subjectSampleAllLayers],
       "channelTarget": store.document.inkMode != nil ? store.effectiveInkTargets.map { store.inkChannelName($0) }.joined(separator: ", ") : store.document.colorMode.isRestricted ? store.document.colorMode.componentNames[0] : store.usesModeChannels ? (store.modeComponentTargets.isEmpty ? store.document.colorMode.title : store.modeComponentTargets.sorted().map { store.document.colorMode.componentNames[$0] }.joined(separator: ", ")) : store.componentTarget.title,
-      "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.document.quickMask == nil ? "RGB":"quickMask"),
+      "alphaChannelTarget": store.alphaEditingID?.uuidString ?? (store.editingChannel == .quickMask ? "quickMask":"RGB"),
       "alphaChannelOverlay": store.alphaOverlay,
+      "maskEditingTarget":store.maskEditingTargetState,
       "quickMaskVisible": store.isQuickMaskVisible,
       "channels": (store.document.alphaChannels ?? []).map(ChannelAPI.state),
       "channelOnly":store.document.isChannelOnly,
@@ -1104,6 +1107,7 @@ import UniformTypeIdentifiers
       }
       if command.name == "paint.tool" {
         let request=try command.paintingRequest(store:store)
+        try store.validateQuickMaskPaintingTarget(request.target)
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true) { original in .painting(try PaintingPreparation.prepare(request,in:original)) }
         return .json(state(share,document:document))
       }
@@ -1179,6 +1183,7 @@ import UniformTypeIdentifiers
       if try command.applyViewCommand(to: store) {
         return .json(state(share, document: document))
       }
+      if TextFindAPI.commands.contains(command.name) {return try await executeTextFind(command,document:document,share:share)}
       if CanvasEdgesAPI.commands.contains(command.name) {
         let operation=try command.canvasEdgeOperation()
         guard store.isCompositeColorTarget,!store.editingMask,!store.smartFilterMaskEditing else{throw AutomationFailure(status:422,message:"Choose the composite document target for canvas edges.")}
@@ -1195,6 +1200,9 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true) {source in try prepare(source)}
         store.selectedLayerIDs = Set(store.document.activeLayerID.map{[$0]} ?? [])
         return .json(state(share,document:document))
+      }
+      if command.name == "adjustment.create", store.document.layers.count >= LayerLimits.maximumLayers {
+        throw AutomationFailure(status:413,message:"Adding an adjustment would exceed API layer capacity.")
       }
       if command.name == "layer.new" {
         guard store.document.layers.count < LayerLimits.maximumLayers else {
@@ -1216,7 +1224,8 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if GeometryAPI.preparedCommands.contains(command.name) {
-        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in try command.geometryCommand(in: original) }
+        let fit = command.name == "document.fitImage"
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision, allowFitImage:fit, allowAuxiliary:fit) { original in try command.geometryCommand(in: original) }
         return .json(state(share, document: document))
       }
       if command.name == "document.crop" {
@@ -1274,6 +1283,7 @@ import UniformTypeIdentifiers
       if PixelPaintAPI.commands.contains(command.name){
         if command.parameters["patternID"] != nil,store.patterns.busy{throw AutomationFailure(status:409,message:"Wait for the pattern library to finish loading.")}
         let request=try command.pixelPaintRequest(patterns:store.pixelFillPatterns),prepare=store.pixelPaintPreparation
+        try store.validateQuickMaskVisibility(.pixelPaint(request))
         guard store.nativePixelPaintTarget==request.target,store.canUsePixelPaint else{throw AutomationFailure(status:422,message:"Choose the matching native raster, pixel-mask or channel target.")}
         let auxiliary:Bool;if case .channel=request.target{auxiliary=true}else{auxiliary=false}
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPixelPaint:true,allowAuxiliary:auxiliary,validateCommit:{guard store.nativePixelPaintTarget==request.target else{throw AutomationFailure(status:409,message:"The paint target changed.")}}){source in try prepare(source,request)}
@@ -1562,6 +1572,7 @@ import UniformTypeIdentifiers
       "layerStyles": LayerStyle.apiCapabilities,
       "linkedArtwork": LinkedArtworkAPI.capabilities,
       "smartObjects": SmartObject.apiCapabilities,
+      "textFind":TextFindAPI.capabilities,
       "text": TextContent.apiTypeCapabilities,
       "smartFilters": SmartFilterStack.apiCapabilities,
       "selectionRefinement": SelectionRefinement.apiCapabilities,
@@ -1626,6 +1637,8 @@ import UniformTypeIdentifiers
       "atomicPersistence": atomicPersistenceCapabilities,
       "documentSaving": documentSavingCapabilities,
       "stateSchemas": [
+        "textFind":TextFindAPI.stateSchema,
+        "fitImage":GeometryAPI.fitImageStateSchema,
         "shapes":ShapeAPI.stateSchema,
         "documentMode": DocumentModeAPI.stateSchema,
         "colorProfile": ColorProfileAPI.stateSchema,
@@ -1747,7 +1760,7 @@ import UniformTypeIdentifiers
         "sourceSaveNeedsReview": ["type": "boolean"],
         "alphaChannelTarget": ["type":"string","description":"RGB, quickMask, or alpha UUID"],
       "alphaChannelOverlay": ["type":"boolean"],
-      "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; hiding it retains Quick Mask editing and coverage."],
+      "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; changing it retains the current editing target and mask coverage."],
       "channels": ["type":"array","items":["type":"object","required":["id","name","opacity","indicates","color"],"properties":["id":["type":"string","format":"uuid"],"name":["type":"string"],"opacity":["type":"number"],"indicates":["type":"string"],"color":["type":"array","items":["type":"number"]]]]],
       "channelOnly":["type":"boolean","description":"Auxiliary channels only, without image layers or printing plates; requires native85."],
       "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha"],"properties":["workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],

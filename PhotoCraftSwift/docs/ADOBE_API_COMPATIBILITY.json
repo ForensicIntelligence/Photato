@@ -2655,5 +2655,30 @@
     "reference": "docs/QUICK_MASK_SELECTION_REFERENCES.json",
     "photato_interface": "Expanded existing channel.edit actions/options/source leases/state; no new route or typed command identity.",
     "adobe_interface": "No dedicated channel-selection route in the pinned contract. Existing resource jobs retain auxiliary PSD/PSB channels; actionJSON channel-selection events are still unsupported rather than guessed. Full Adobe conformance remains open."
+  },
+  "temporal_style_transaction_repair_384": {
+    "Photato": [
+      "layer.style",
+      "layer.style.patch"
+    ],
+    "engine": "Shared LayerStyleEdit captures enabled keys/selected composition before validation",
+    "Adobe": "No new route or descriptor. Existing supported layer-effects adapters use native edits; Timeline/Frame Animation Adobe transport remains unqualified.",
+    "qualification": "All 476 affected optimized tests pass on Apple Silicon and translated Intel, including 6 new temporal-style regression cases. Both architectures run the same ordered cases with no failed assertions, unexpected errors or crashes. Independent checks cover 36 PNGs and 3,456 RGBA8 channel values. The full current test inventory has not been rerun.",
+    "reference": "docs/TEMPORAL_STYLE_TRANSACTIONS_384.json"
+  },
+  "fit_image_automation_385": {
+    "Photato": "document.fitImage",
+    "engine": "Typed reusable bounds delegated to shared native Image Size; Actions45 and Image Processor reuse it.",
+    "Adobe": "No dedicated Fit Image endpoint in the pinned published contract. Existing Adobe geometry paths unchanged; generic imageSize actionJSON and proprietary Fit Image descriptors remain unqualified. No invented Adobe route.",
+    "reference": "docs/FIT_IMAGE_AUTOMATION_385.json"
+  },
+  "text_find_replace_386": {
+    "Photato": [
+      "text.find",
+      "text.replace"
+    ],
+    "engine": "Shared typed search, rich-text replacement, native shaping and one prepared Undo; reusable Actions46.",
+    "Adobe": "No dedicated Find/Replace operation qualified in the pinned contract; current schema retrieval404is retained. Existing create-composite text_layer add/edit uses native shaping. Proprietary search actionJSON/ATN descriptors remain unqualified; no invented endpoint.",
+    "reference": "docs/TEXT_FIND_REPLACE_386.json"
   }
 }

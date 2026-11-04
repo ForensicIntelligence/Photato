@@ -107,7 +107,7 @@ final class RecoveryPreferencesTests: XCTestCase {
   @MainActor func testChangingSettingsDoesNotChangeDocumentsHistoryOrExistingBackup() async throws {
     let preferences = RecoveryPreferencesStore()
     let controller = controller(preferences)
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 3, height: 2))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 3, height: 2))
     controller.addDocument(document)
     defer { document.close() }
     try document.store.executeEditorCommand(
@@ -137,7 +137,7 @@ final class RecoveryPreferencesTests: XCTestCase {
   @MainActor func testBusyControllerRejectsWithoutChangingSettings() throws {
     let preferences = RecoveryPreferencesStore()
     let controller = controller(preferences)
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 2, height: 2))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 2, height: 2))
     controller.addDocument(document)
     defer { document.close() }
     for recovery in [true, false] {
@@ -155,7 +155,7 @@ final class RecoveryPreferencesTests: XCTestCase {
   @MainActor func testQueuedAutomaticBackupRejectsAfterDisabling() async throws {
     let preferences = RecoveryPreferencesStore()
     let controller = controller(preferences)
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 2, height: 2))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 2, height: 2))
     controller.addDocument(document)
     defer { document.close() }
     try document.store.executeEditorCommand(
@@ -184,7 +184,7 @@ final class RecoveryPreferencesTests: XCTestCase {
     let preferences = RecoveryPreferencesStore()
     let controller = controller(preferences)
     try controller.setRecoveryPreferences(.init(enabled: false), revision: preferences.revision)
-    let document = CraftNSDocument(model: try CraftNSDocument.blankModel(width: 2, height: 2))
+    let document = CraftNSDocument(model: try EditableLifecycleModel.make(width: 2, height: 2))
     controller.addDocument(document)
     defer { document.close() }
     try document.store.executeEditorCommand(

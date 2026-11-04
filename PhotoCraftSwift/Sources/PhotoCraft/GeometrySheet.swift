@@ -2,7 +2,7 @@ import PhotoCraftCore
 import SwiftUI
 
 enum GeometrySheetKind: String, Identifiable {
-  case imageSize, canvasSize
+  case imageSize, canvasSize, fitImage
   var id: String { rawValue }
 }
 enum DimensionUnit: String, CaseIterable {

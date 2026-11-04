@@ -40,7 +40,8 @@ extension EditorStore {
       throw CraftError.unsupported("Component editing currently requires an RGB 8-bit document.")
     }
     let oldRevision = revision
-    let changed = alphaEditingID != nil || componentTarget != channel || editingMask || currentMaskView != nil
+    let changed = editingChannel != nil || componentTarget != channel || editingMask || currentMaskView != nil
+    deselectQuickMaskTarget()
     alphaEditingID = nil
     modeComponentTargets = []; modeComponentVisibility = nil
     componentTarget = channel
@@ -90,6 +91,12 @@ extension EditorStore {
   }
 
   func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false, allowLinkedSmartObject: Bool = false) throws {
+    // Fit Image always resizes the document and every retained channel/mask.
+    // Its typed prepared command cannot be repurposed as a selected-target edit.
+    if prepared.isFitImageEdit { try session.executePrepared(prepared); return }
+    if let command = prepared.channelCommand { try validateQuickMaskVisibility(.channel(command)) }
+    if let request = prepared.pixelPaintRequest { try validateQuickMaskVisibility(.pixelPaint(request)) }
+    if let request = prepared.paintingRequest { try validateQuickMaskPaintingTarget(request.target) }
     if prepared.isSelectionOnly || (allowAuxiliary && prepared.isChannelOnlyEdit) {try session.executePrepared(prepared);return}
     if allowLinkedSmartObject {
       guard let edit=prepared.linkedSmartObjectEdit,edit.source==document else {throw CraftError.invalid("Missing or stale linked artwork transaction.")}
@@ -117,6 +124,15 @@ extension EditorStore {
   }
 
   @discardableResult func handleComponentShortcut(_ event: NSEvent) -> Bool {
+    if document.quickMask != nil, event.type == .keyDown,
+      event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command],
+      let number = Int(event.charactersIgnoringModifiers ?? ""), (2...9).contains(number) {
+      let alphaStart = document.isChannelOnly || document.colorMode == .grayscale ? 3 : 3 + document.colorMode.componentCount
+      if number == alphaStart + (document.alphaChannels?.count ?? 0) {
+        do { try selectQuickMaskChannel() } catch { self.error = error.localizedDescription }
+        return true
+      }
+    }
     if event.type == .keyDown,event.modifierFlags.intersection([.command,.control,.option,.shift]) == [.command,.option],
       let number=Int(event.charactersIgnoringModifiers ?? ""),canEditChannels {
       let start=3+document.colorMode.componentCount

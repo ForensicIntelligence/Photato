@@ -13,7 +13,7 @@ final class RecoverySourceTests: XCTestCase {
     let folder = try DocumentPersistenceTests().directory()
     addTeardownBlock { try? FileManager.default.removeItem(at: folder) }
     let source = folder.appendingPathComponent("original." + format.rawValue)
-    let model = try CraftNSDocument.blankModel(width: 4, height: 3)
+    let model = try EditableLifecycleModel.make(width: 4, height: 3)
     try DocumentIO.encodeForPersistence(model, format: format).write(to: source)
     let opened = try XCTUnwrap(controller.makeDocument(withContentsOf: source,
       ofType: format.typeIdentifier) as? CraftNSDocument)
@@ -198,7 +198,7 @@ final class RecoverySourceTests: XCTestCase {
     let (controller, source, backup, _, _) = try fixture()
     let doc = try await restore(controller, source: source, backup: backup)
     defer { doc.close() }
-    var revised = try CraftNSDocument.blankModel(width: 4, height: 3)
+    var revised = try EditableLifecycleModel.make(width: 4, height: 3)
     revised.layers[0].name = "New original"
     try NativeArchive.write(revised, to: source)
     try await doc.revertDocument()

@@ -6,11 +6,11 @@ import SwiftUI
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
-  override convenience init() { self.init(workspaces: WorkspaceLibrary()) }
+  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard)) }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
-    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil) {
+    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil) {
     controller = CraftDocumentController(
-      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings)
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette)
     super.init()
   }
   let projectLinks = ProjectLinks.bundled()
@@ -256,7 +256,8 @@ import SwiftUI
       #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
       #selector(resetSmartObjectTransform)].contains(item.action) { return store?.canEditSmartObject == true }
     if item.action == #selector(fillDialog) { return store?.canUsePixelPaint == true || store?.canUseMenuFill == true }
-    if item.action == #selector(strokeSelectionDialog) { return store?.canUsePixelPaint == true }
+    if item.action == #selector(strokeSelectionDialog) { return store?.canUsePixelStroke == true }
+    if item.action == #selector(invertPixels) { return store?.canInvertPixels == true }
     if item.action == #selector(layerStyleMenu(_:)) {
       return store?.validateLayerStyleMenu(item.identifier?.rawValue ?? "") == true
     }
@@ -421,6 +422,8 @@ import SwiftUI
       if store?.transformDraft?.selection == true,item.action != #selector(freeTransform){return store?.geometryBusy == false}
       return store?.canTransformActiveLayer == true
     }
+    if item.action == #selector(findReplaceText) { return store?.canBeginTextFind == true }
+    if item.action == #selector(fitImage) { return store?.canBeginFitImage == true }
     if item.action == #selector(rulers) { item.state = store?.showRulers == true ? .on : .off }
     if [
       #selector(about), #selector(help), #selector(newFile), #selector(openFile), #selector(hide),
@@ -1345,7 +1348,8 @@ import SwiftUI
       recoveryIndex: isolatedSession
         ? RecoveryIndexStore() : .shared,
       colorSettings: isolatedSession
-        ? ColorSettingsStore() : .shared)
+        ? ColorSettingsStore() : .shared,
+      paintPalette: PaintPalette(defaults: isolatedSession ? nil : .standard))
     let app = NSApplication.shared
     app.setActivationPolicy(.regular)
     app.delegate = delegate

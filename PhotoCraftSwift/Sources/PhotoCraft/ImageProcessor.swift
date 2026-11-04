@@ -89,10 +89,10 @@ enum ImageProcessor {
       for (format,options) in settings.formats {
         try Task.checkCancellation();var output = document
         if options.resize {
-          var scale = min(Double(options.width)/Double(output.width),Double(options.height)/Double(output.height));if settings.dontEnlarge {scale = min(1,scale)}
-          let width = max(1,Int((Double(output.width)*scale).rounded())),height = max(1,Int((Double(output.height)*scale).rounded()))
-          guard width <= maximumPixels/height else {throw CraftError.unsupported("A resized image exceeds8,388,608 pixels.")}
-          try Command.imageSize(width,height,output.pixelsPerInch,.bicubic).apply(to:&output)
+          let fit = FitImageOptions(width:options.width,height:options.height,dontEnlarge:settings.dontEnlarge)
+          let size = try fit.dimensions(sourceWidth:output.width,sourceHeight:output.height)
+          guard size.width <= maximumPixels/size.height else {throw CraftError.unsupported("A resized image exceeds8,388,608 pixels.")}
+          try Command.fitImage(fit).apply(to:&output)
         }
         if format == .jpeg,settings.convertJPEGToSRGB {
           output = try converted(output,profile:NativeModeProfile.standard(.rgb,depth:output.depth))
