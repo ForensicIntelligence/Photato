@@ -1,0 +1,59 @@
+{
+  "recorded_checkpoint": 389,
+  "status": "Plan only; not an executable capability or new admission limit",
+  "target": "Full native component documents up to Photoshop2026dimension/workflow limits; do not narrow to the present8MPcap",
+  "current_evidence": "docs/NATIVE_COMPONENT_BLOCKS_388.json",
+  "current_sources": [
+    "Sources/PhotoCraftCore/ComponentPlane.swift",
+    "Sources/PhotoCraftCore/ComponentPlaneScratch.swift",
+    "Sources/PhotoCraftCore/NativeModeRaster.swift",
+    "Sources/PhotoCraftCore/RasterBlobCoding.swift",
+    "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+    "Sources/PhotoCraftCore/NativeArchiveMemoryLimit.swift",
+    "Sources/PhotoCraftCore/HistoryScratch.swift",
+    "Sources/PhotoCraftCore/DocumentCreation.swift",
+    "Sources/PhotoCraftImaging/DocumentModeInput.swift"
+  ],
+  "findings": [
+    "Indexed native blobs already authenticate arbitrary bounded Data by SHA256/ordinal; raw component bytes must not be reinterpreted as RGBA Pixel tiles.",
+    "Current NativeModeRaster encoder materializes legacy planes; its decoder reserves logical dense bytes and then reconstructs blocks. These paths still require8MPadmission.",
+    "ComponentPlane has exact raw blocks, implicit fills, immutable private mapped snapshots and a bounded presence map, but no portable streamed component codec.",
+    "Surface logical sample equality is now tested across implicit/owned/mapped layouts, enabling cache reconstruction without representation-driven false history/stale differences."
+  ],
+  "implementation_sequence": [
+    {
+      "order": 1,
+      "work": "Add bounded raw component block records and hierarchical pages with an implicit word, depth, dimensions, root and declared count; authenticate each page/sample blob through shared archive contexts.",
+      "why": "A flat all-block array grows with the full dense document; a hierarchy keeps each page bounded and the document manifest small."
+    },
+    {
+      "order": 2,
+      "work": "Decode bounded pages/blocks into validated immutable component scratch, with exact counts/order/unique keys, dimensions, finite words/alpha range, padding policy, cancellation, I/O/admission and ownership checks.",
+      "why": "Budget actual resident index/transfers separately from virtual/logical component bytes; reject malformed input atomically."
+    },
+    {
+      "order": 3,
+      "work": "Integrate native/history file versions and preserve legacy1\u201385read paths; explicitly bound Data/history fallbacks that still require dense memory.",
+      "why": "A format marker must distinguish new page semantics. A small working document need not be called a new semantic feature merely because file encoding improves."
+    },
+    {
+      "order": 4,
+      "work": "Integrate creation/conversion/cache/channel operations, document and recovery memory admission, save/reopen and optional native/API file jobs. Update parameter/result/capability/error metadata and version coverage in the same executable increment.",
+      "why": "Raise actual admission only with usable end-to-end paths; internal storage tests alone do not establish application capacity."
+    },
+    {
+      "order": 5,
+      "work": "Finish PSD/PSB/TIFF component streaming, resampling/reframe/default-change/printing and remaining large-operation policy; test exact numeric/file/native/API/history outcomes and actual Photoshop interoperability.",
+      "why": "Keep original full workflow/capacity acceptance open until every required operation is implemented and verified."
+    }
+  ],
+  "acceptance": [
+    "Native desktop and both applicable API interfaces share exact component/transaction implementations, truthful capability/schema/version/error behavior and undo/redo.",
+    "Owned independent raw byte and saved-file readers, malformed/oversized/cancelled/stale/revoked requests, persistence/history and bounded sparse maximum geometry checks.",
+    "Physical dense capacity, supported macOS14+/Intel/Apple Silicon, sustained60fps and exact Photoshop rendering/settings/shortcuts are separate required gates; no closure from module-only tests."
+  ],
+  "new_route": false,
+  "new_code_this_step": false,
+  "S05_closed": false,
+  "C01_schedule": "After full complete and tested S05; original scopes retained"
+}

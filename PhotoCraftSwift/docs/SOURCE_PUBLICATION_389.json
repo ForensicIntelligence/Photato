@@ -1,0 +1,55 @@
+{
+  "step": 389,
+  "source_step": 388,
+  "commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62",
+  "parent": "e1a970cf0924232060d461406581ea748eecdcea",
+  "repository_private_before": true,
+  "recorded_at_utc": "2026-11-04T08:21:25.006868+00:00",
+  "pushed": true,
+  "remote_commit_and_tree_verified": true,
+  "repository_private_after": true,
+  "verified_at_utc": "2026-11-04T08:21:30.711279+00:00",
+  "repository": "https://github.com/ForensicIntelligence/Photato",
+  "branch": "main",
+  "visibility": "private",
+  "source_manifest": "docs/SOURCE_SNAPSHOT_389.json",
+  "qualified_source": "388Source03",
+  "qualified_inputs": 7147,
+  "included_qualified_inputs": 7113,
+  "excluded_qualified_inputs": 34,
+  "all_included_inputs_matched": true,
+  "original_Rust_files_preserved": 1057,
+  "root_and_Rust_files_preserved": 1059,
+  "affected_tests_per_architecture": 1184,
+  "passed_tests_per_architecture": [
+    1182,
+    1175
+  ],
+  "new_feature_tests_per_architecture": 14,
+  "failed_assertions_per_architecture": [
+    2,
+    334
+  ],
+  "unexpected_errors_per_architecture": [
+    2,
+    2
+  ],
+  "crashes_per_architecture": [
+    0,
+    0
+  ],
+  "all_remaining_failed_cases_and_counts_reproduced_by387": true,
+  "affected_suite_passed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "S05_closed": false,
+  "historical_preservation_complete": false,
+  "next_work": "Component streaming/admission; full C01 follows complete and tested S05.",
+  "new_application_binary_upload": false,
+  "new_installation": false,
+  "App_Store_action": false,
+  "public_or_software_release": false,
+  "goal_complete": false,
+  "qualification_scope": "Exact included tested inputs are preserved. Architecture checks run on this Apple Silicon host, with Intel translated through Rosetta. Physical supported Macs/macOS14, current native live UI, full current suite, all-input Photoshop output, dense capacity and sustained60fps remain open. Three missing old temporary candidates284\u2013286remain a historical gap; current388evidence is retained."
+}

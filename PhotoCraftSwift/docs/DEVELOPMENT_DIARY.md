@@ -18,20 +18,18 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:388 -->
+<!-- current-status-step:389 -->
 ## Current status — 4 November 2026 UTC
 
-The diary contains **388 development steps**. The application is **build 388**.
+The diary contains **389 development steps**. The application remains **build 388**.
 
-RGB, Gray, CMYK and Lab component storage now shares raw sample blocks. Uniform conversions and display/channel caches stay implicit, and local edits retain untouched components. Exact crop/reframe and TIFF sample access use raw words.
+The complete native source is backed up in the private GitHub repository. All 7,113 included qualified inputs match build 388's tested snapshot. Another 34 generated model, cache and restricted-image inputs are excluded explicitly. The original Rust files and repository history are preserved.
 
-All 14 new native-component and Surface-equality cases pass on Apple Silicon and translated Intel. The broadened run executes 1184 identical ordered cases per architecture; Apple Silicon passes 1182, translated Intel passes 1175. Six regressions from the earlier storage attempt now pass without changing their assertions. Independent Python packing checks 40,248 raw bytes from 14 owned outputs. Retained failures are listed in the evidence; this is not a passing full suite.
+Fourteen new component/equality tests pass on Apple Silicon and translated Intel. The broader 1,184-case run passes 1,182 on Apple Silicon and 1,175 on Intel. Every remaining failed case and assertion count reproduces on the preserved previous build. This is not a passing full suite or complete Photoshop, platform, capacity or 60 fps qualification.
 
-The first attempt failed to compile two new test assertions. The next run passed the new component tests but exposed six existing document/history/codec/API failures: Surface equality compared storage layout. The repair compares logical sample bits, including hidden RGB and signed zero, and ignores padding outside the image. Existing assertions remain intact. Tests cover implicit, owned and mapped samples, full edge coverage, large sparse canvases, native round trips and stale guards.
+The next capacity work is streaming component files and integrating admission before lifting the application limit. S05 stays open; C01 follows complete/testing. Current native live acceptance still awaits the existing unlock request. Three missing older temporary candidate binaries remain documented. This source backup changes no installed app or App Store record, and it keeps the repository private. No software release is made.
 
-Component application and legacy codec limits remain at 8 megapixels. Complete large-document streaming, exact Photoshop output/defaults, current live UI, supported physical Macs and sustained 60 fps remain unqualified. S05 remains open; C01 follows completion/testing. Three missing older temporary candidate binaries remain documented; current source and full test/binary evidence are retained. No installation, source push, archive, upload or release.
-
-[Native component results](NATIVE_COMPONENT_BLOCKS_388.json) · [Storage guide](NATIVE_COMPONENT_BLOCKS.md) · [Full baseline](CURRENT_TEST_INVENTORY_382.json) · [S05 audit](S05_ACCEPTANCE_388.json)
+[Source commit](https://github.com/ForensicIntelligence/Photato/commit/16968a2485246f49c19789ab7a6c64c344abcffc) · [Source manifest](SOURCE_SNAPSHOT_389.json) · [Delivery receipt](SOURCE_PUBLICATION_389.json) · [Build 388 evidence](NATIVE_COMPONENT_BLOCKS_388.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -625,6 +623,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 386 | [Find and Replace Text](DEVLOG.md#dev-step-386) |
 | 2026-11-04 | 387 | [Numeric component-plane storage](DEVLOG.md#dev-step-387) |
 | 2026-11-04 | 388 | [Native component blocks](DEVLOG.md#dev-step-388) |
+| 2026-11-04 | 389 | [Private source backup](DEVLOG.md#dev-step-389) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -2712,3 +2711,10 @@ During the final evidence check, three old temporary candidate binaries from bui
 Native component storage now uses shared raw blocks. Uniform conversion and display/channel preparation no longer fill a dense plane. Local edits retain untouched sample words; geometry and TIFF access preserve raw order. Native85/Actions46and242API commands keep their existing contracts, with backing/limit metadata added.
 
 All 14 new native-component and Surface-equality cases pass on Apple Silicon and translated Intel. The broadened run executes 1184 identical ordered cases per architecture; Apple Silicon passes 1182, translated Intel passes 1175. Six regressions from the earlier storage attempt now pass without changing their assertions. Independent Python packing checks 40,248 raw bytes from 14 owned outputs. Retained failures are listed in the evidence; this is not a passing full suite. The first compiler failure and earlier six document/cache regressions remain in the evidence. Their existing assertions were not weakened; Surface equality now checks logical sample bits across implicit, owned and mapped storage. Broad qualification includes all Core cases because equality is shared. Application limits remain8MPuntil component file streaming and operation integration are complete. S05, full Photoshop/platform/performance requirements and historical binary gaps remain open. [Record](DEVLOG.md#dev-step-388).
+
+
+## 2026-11-04 — Step389: Private source backup
+
+We backed up native build 388 before changing component file storage. Every included tested input matches the frozen source. Generated models, caches, machine/signing/runtime files and an externally restricted PSD remain excluded. The original Rust source and existing Git history are preserved.
+
+The commit includes current native source, tests, Xcode project, assets, scripts and records. Its notes retain the actual test results: all 14 new cases pass; the broader run has two remaining ARM failures and nine Intel failures, all reproduced by the prior baseline. No new native test run is needed for this delivery because the tested code and configuration are unchanged. The repository remains private and no application binary is uploaded or released. Component streaming remains next; S05/C01 and full parity gates stay open. [Receipt](SOURCE_PUBLICATION_389.json).

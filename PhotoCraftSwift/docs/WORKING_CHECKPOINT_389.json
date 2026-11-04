@@ -1,6 +1,6 @@
 {
   "step": "dev-step-389",
-  "status": "Native388source curated; staged verification/private push pending",
+  "status": "Complete native source388Source03is backed up to private main. All7113included qualified inputs match the tested snapshot;34generated/model/cache/restricted-image inputs are explicitly excluded. Fourteen new cases pass on each architecture. The1184-case run passes1182ARM/1175translatedIntel; all remaining failed IDs/counts reproduce on prior387. The affected/full-suite and complete Photoshop/UI/platform/dense/60fps gates remain open.",
   "goal_status": "active",
   "previous_goal_turn": "progress:388 native component blocks/logical Surface equality and qualified broad/baseline results",
   "run": "artifacts/runs/20261104T081304Z-389-private-source-backup",
@@ -11,7 +11,7 @@
   "S05_closed": false,
   "next_major": "C01 after complete and tested S05",
   "new_install": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
@@ -21,9 +21,10 @@
   "native_live_qualified": false,
   "full_current_suite_passed": false,
   "evidence": "docs/SOURCE_PUBLICATION_389.json",
-  "diary_step": 388,
+  "diary_step": 389,
   "next_work": [
-    "Commit/private-remote verify complete curated388Source03source; preserve honest qualification; then component streaming/admission."
+    "Implement the bounded raw component archive/index/decode and history/admission work in docs/COMPONENT_STREAMING_PLAN_389.json; the private388source backup is complete, not a repeated next task.",
+    "Keep S05/fullC01and all original Photoshop/UI/API/output/platform/dense/60fps acceptance criteria open."
   ],
   "history_receipt": "artifacts/development-history-audit/389-final-receipt01.json",
   "historicalEvidenceGap": {
@@ -43,5 +44,8 @@
   "source_snapshot": "docs/SOURCE_SNAPSHOT_389.json",
   "included_qualified_inputs": 7113,
   "excluded_qualified_inputs": 34,
-  "phase_ledger": "docs/FUNCTION_PHASES_389.json"
+  "phase_ledger": "docs/FUNCTION_PHASES_389.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_389.json",
+  "source_commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+  "source_tree": "c873e17998d6f8faf0dffbfbb221c19246ff6b62"
 }

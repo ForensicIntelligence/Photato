@@ -7686,9 +7686,11 @@
   },
   "source_delivery_389": {
     "source": "388Source03",
-    "status": "Curated; not yet pushed",
+    "status": "Pushed and remote tree/privacy verified",
     "included_qualified_inputs": 7113,
     "excluded_qualified_inputs": 34,
-    "production_changes": false
+    "production_changes": false,
+    "commit": "16968a2485246f49c19789ab7a6c64c344abcffc",
+    "reference": "docs/SOURCE_PUBLICATION_389.json"
   }
 }

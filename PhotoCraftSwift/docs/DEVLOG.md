@@ -406,7 +406,7 @@ For a readable account of the project from the beginning, see [Photato developme
 
 <a id="dev-step-389"></a>
 
-## 2026-11-04 — Step 389: Private source backup (in progress)
+## 2026-11-04 — Step 389: Private source backup
 
 Started at 2026-11-04T08:13:04.105023+00:00. Previous388 is progress: native component blocks and logical Surface equality are implemented;14new cases pass on both architectures, six introduced regressions are repaired with existing assertions intact, and broadened1184-case results are1182passARM/1175passIntel. Exact1170-case preserved387baseline reproduces all remaining failed IDs and assertion counts. Full current suite, Photoshop output/UI/platform/performance and maximum-capacity gates remain open. All7147frozen388Source03inputs match and no compiler/test worker is live. Read AGENTS/contribution/status/plan/DEVLOG/108rules and current checkpoint. S05 stays open; full C01 follows complete and tested S05.
 
@@ -421,6 +421,26 @@ All delivery attempts remain under `artifacts/runs/20261104T081304Z-389-private-
 The existing delivery checkout is clean main at e1a970cf0924232060d461406581ea748eecdcea, matching live GitHub main. It is the370receipt commit after9dc8d7c's actual source369backup; do not invent a divergent parent. Reuse this checkout. Live repository read confirms private/main. Baseline1059root/upstream hashes include1057Rust files. Curate7113of7147frozen388inputs, with34explicit optional model/provenance/cache/restricted-image exclusions. Thirty changed fixture paths have nearest provenance. Bounded secret patterns find no matches. Preserve every source/hash and old source tree; no stale native file is removed in first curation.
 
 Prepare SOURCE_SNAPSHOT_389.json, full unchanged FUNCTION_PHASES_389/S05_ACCEPTANCE_389records, current root/native README and repository delivery record with actual1184-case/14new-pass/failure/baseline scope. Native85/Actions46/242API commands are explicit. This is documentation/source delivery only; production/tests/assets/config remain exact388Source03. No remote write yet. Legacy whole-plane component encode/budgets are the next implementation dependency; no application limit is raised by this backup.
+
+###389 exact staging and private source push
+
+Curation02selects8039source/document/asset files (330522883bytes),7113qualified frozen inputs included,34explicitly excluded. The largest selected asset is the owned App Store preview movie37534123bytes, below50MB; this is source/media preservation, not an application-binary upload. Stage verification hashes8041actual Git index blobs (native selection plus two root documents),256changed paths, and confirms1059root/Rust hashes, absent restricted PSD, no caches/signing/runtime inputs, no source changes. Fetch main before commit and reject a moved remote rather than force anything.
+
+Private source commit 16968a2485246f49c19789ab7a6c64c344abcffc with tree c873e17998d6f8faf0dffbfbb221c19246ff6b62 is pushed from parent e1a970cf0924232060d461406581ea748eecdcea. GitHub ref/commit/tree and continued private visibility are verified. All7113included inputs match388Source03; the fresh commit contains all source/tests/config/assets but keeps the documented34exclusions. No force push, history rewrite, binary/app upload, installation, App Store mutation, archive or software/public release. Both source and metadata/privacy commands/logs remain in the unique run.
+
+Create SOURCE_PUBLICATION_389.json with actual commit/tree and honest1184-case/14new-pass/2ARM/9Intel failure scope. Update source delivery ledger/checkpoint, readable diary, release plan/status and both offline editions. The post-push documentation receipt is committed separately, preserving the already verified source commit. All104full package records/651menu identities and native85/Actions46/242API contracts remain unchanged. Full current suite/Photoshop/platform/capacity/60fps and three old missing binary gates remain open; no unrelated native rerun or new parity claim is made.
+
+###389 next component streaming design
+
+Save COMPONENT_STREAMING_PLAN_389.json after reading actual raw-plane/native blob/index/budget/history/creation sources. The indexed archive authenticates arbitrary bounded bytes, while NativeModeRaster still serializes dense whole planes and reserves dense decode bytes. Plan hierarchical raw block pages with explicit defaults/counts/version, bounded authenticated decode into immutable component scratch, actual resident/admission accounting, legacy/history compatibility, and same-increment native/API/schema/guard/persistence coverage before raising application limits. A flat all-block array would not preserve bounded manifest memory at the full target. Full PSD/PSB/TIFF/operations/recovery/platform/output/performance acceptance stays open. This is a plan, not new executable capacity or a fabricated Adobe endpoint.
+
+Record the actual source commit in the repository's administration page. A second documentation-only commit includes the delivery receipt/diary and final surviving-evidence history index; its own hash is kept in the excluded final receipt to avoid a self-referential source commit. No additional permission is requested because the maintainer already authorized complete private source backups. Visibility and manual App Store release policy remain unchanged.
+
+###389 final source-delivery checks and handoff
+
+All34delivery/static checks pass:7147unchanged frozen388inputs,7113included/34excluded exact source hashes,8041source-commit Git index blobs and verified remote source tree/private visibility,1059preserved root/Rust hashes (1057Rust files), changed-fixture provenance/bounded secret scan, complete curated docs/assets/source copy, restricted PSD absence, honest1184-case/14new-pass retained-failure scope, original104full packages/651menu mappings/fullS05scope, saved free/manual/generic store policy, readable diary/both offline editions and current dashboard389. No new native execution is run for unchanged source/configuration. Software build remains388. Historical protection remains incomplete:37available protected identities match and three old temporary binaries remain missing.
+
+Finalize the delivery receipt as a documentation-only follow-up: refresh/check the surviving evidence inventory sequentially without indexed writes between, copy its final catalogue to the private source checkout, verify the staged full source/doc index again and push a normal non-force documentation commit. Keep the final commit hash only in the excluded [389 audit/delivery receipt](../artifacts/development-history-audit/389-final-receipt01.json). No source, menu/API behavior, installed app, archive, App Store setting, visibility or release change is implied. Current checkpoint now points directly to the saved component-streaming plan; do not repeat a completed backup as the next task.
 
 <a id="dev-step-388"></a>
 
