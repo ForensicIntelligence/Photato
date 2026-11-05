@@ -28,6 +28,8 @@ All 53 focused Debug tests pass. The normal builds execute the same 100 tests on
 The audit confirmed that current clipping/fill controls, Copy/Paste/Clear Layer Style and linked-file relinking/updating already exist. Channel, mask and path clipboard transfers need a new target-aware foundation and stay in stillneeded. Full advanced blending and all original package requirements remain open.
 
 Next is Color Range, Focus Area and Magnetic Lasso, followed by the object/subject selection package. There are 21 candidates left in the major quick-win sweep. [Step 414](DEVLOG.md#dev-step-414).
+The native source is backed up privately at commit `cb69f83e8b20aec2b5711ed2b38a21e52bd21da9`, including the Xcode project, tests, redistributable assets and development records. The backup records the retained alpha mismatch and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/cb69f83e8b20aec2b5711ed2b38a21e52bd21da9).
+
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

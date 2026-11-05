@@ -9976,7 +9976,7 @@
     "qualification": "260 affected and17 new optimized cases pass. No package closure; full Photoshop and supported-platform gates remain open."
   },
   "inventory_reconciliation_336": "Added the existing PDF export command; removed identical duplicate Keyboard Shortcuts rows from CSV and phase ledger; mapped the existing layer.smartObjects.embedAllLinked command to L05.651 distinct commands now match651 distinct phase records. Existing command implementation states and104 package scopes are preserved.",
-  "source_publication": "docs/SOURCE_PUBLICATION_412.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_414.json",
   "inventory_reconciliation_364": "Refresh stale copied command mapping from authoritative current CSV:439partial/212pending,651identities unchanged. No command promoted or complete package closed.",
   "linked_preview_precision_followup_365": {
     "strict_before_after_test_retained": true,
@@ -11209,5 +11209,18 @@
     "normal_suite_all_passed": false,
     "retained_failure": "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
     "full_package_closed": false
+  },
+  "source_delivery_414": {
+    "source": "414Source02",
+    "commit": "cb69f83e8b20aec2b5711ed2b38a21e52bd21da9",
+    "tree": "c1167d145ac31ac9fc7bdde832c60f41972b23ac",
+    "private": true,
+    "included_qualified_inputs": 7163,
+    "excluded_inputs": 34,
+    "root_Rust_preserved": 1061,
+    "normal_passed_each": 99,
+    "normal_cases_each": 100,
+    "retained_residual_open": true,
+    "reference": "docs/SOURCE_PUBLICATION_414.json"
   }
 }
