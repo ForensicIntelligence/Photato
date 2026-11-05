@@ -60,7 +60,7 @@
   "current_universal_qualified": true,
   "current_native_live_qualified": false,
   "physical_status": "Mac locked; one manual unlock request pending. Offscreen owned layout/native event tests are not physical UI proof.",
-  "new_source_push": false,
+  "new_source_push": true,
   "new_install": false,
   "new_Xcode_archive": false,
   "new_upload": false,
@@ -72,5 +72,6 @@
   "new_feature_methods_pass_each": 66,
   "universal": "artifacts/runs/20261105T225321Z-425-layer-group-filter/universal/staging01.json",
   "affected_suite_passed": false,
-  "current_normal_qualification_scope": "Selected feature and affected cases only; same395IDs each/393pass/all66new415\u2013425methods pass; exact424linkedalpha/masterpalette diagnostics; no crash. Debug clipboard crash method passes both normal architectures; no Debug cause/repair claimed."
+  "current_normal_qualification_scope": "Selected feature and affected cases only; same395IDs each/393pass/all66new415\u2013425methods pass; exact424linkedalpha/masterpalette diagnostics; no crash. Debug clipboard crash method passes both normal architectures; no Debug cause/repair claimed.",
+  "source_delivery": "docs/SOURCE_PUBLICATION_425.json"
 }
