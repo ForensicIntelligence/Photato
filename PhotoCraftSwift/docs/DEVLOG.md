@@ -477,6 +477,24 @@ Manual log review confirms both linkedPSD/PSBalpha failures exactly retain80vs81
 
 Isolated420universal candidate contains both slices, minmacOS14, privacy/license/model/imaging resources, ad-hoc app-sandbox signature and exact signed ZIP extraction. It is staged only, not launched/installed or an Xcode/AppStorearchive. Added RASTERIZATION_RESPONSIVENESS.md/_420.json; updated priority/phase/checkpoints/status/order/plan/README/AGENTS/API/menu/cursor/readable diary. Q03quickwin delivered, fullscopeopen. QueueQ04thenREL01, six major candidates;104original scopes/acceptance and651identities (445partial/206pending/0complete) retained. Human unlock and cumulative408–420physical checks remain pending. Standing authorization permits private full-source backup at this stable feature-scoped milestone, with both retained failures disclosed. No binary upload, Store action or public release.
 
+### Verified private full-source backup
+
+Curation01/02 includes all 7,176 redistributable qualified inputs, matching frozen420Source02. Thirty-four generated/cache/restricted inputs are excluded with acquisition/provenance retained; existing fixture provenance is retained, with no fixture changes in418–420. The 1,061 root/Rust files are unchanged. Stage01 verifies every curated native Git blob. Ordinary non-force main push verifies the GitHub ref, tree, privacy and clean clone: commit e076d4a1efcbdca29535fc4098f525f5f60900d8, tree cf14f3b1868913bb64c01a5cc679d653222ae5ec, parent 49638deb482b2b3a264da15df621e079e1657101. Source snapshot/publication and diary links record193/195normal per architecture, all18new methods passing, both exact baseline failures and open qualification gates. No binary upload/install/visibility/AppStore/public release. A documentation-only follow-up records final history/diary receipts without changing qualified software.
+
+### Retention and documentation checks
+
+A dedicated terminal retention manifest hashes all5320app/XCTest/resource files per normal architecture and verifies each against its completed build output. No workers were live. A read-only diagnostic initially treated an embedded array-valued resource manifest as a dictionary and raised AttributeError; narrowed manifest inspection corrected that diagnostic only. The attempt and correction are recorded in inspection-driver-note01.json; no product/test change or rerun. Source finalization ran to terminal after its first shell wait yielded during hashing; it was not restarted.
+
+Normal420qualification is added to current418–419delivery/pending-native records without removing physical checks. Source publication records private full-source commit e076d4a1efcbdca29535fc4098f525f5f60900d8, verified tree/ref/privacy/clean clone and all7176included qualified inputs/34exclusions/1061preservedroot-Rustfiles. Final generated diary, mirror, current dashboard and consistency checks follow. Only documentation/receipt changes remain; all7210frozen inputs stay unchanged.
+
+### Final consistency and diary
+
+All36consistency checks pass:7210frozen inputs/five bounded product-test-build paths, unchangedCore/imaging/fixtures/project/assets, actual old Debugprobe/profile and compile-failure retention,22Debugpasses/all3newfunctional methods/pre-existing crash reproduction, test-only Source02extension,195same normalIDs/193pass/all18newmethods, exact two residuals, populated performance reports,70independent words each,10640retained normal output hashes, universal signature/resources/ZIP,880cursor combinations, versions/build/Xcode, seven restored rolling outputs,104scopes/acceptance/three tracks/seven passes, six-candidateQ04/REL01queue, allpendingphysicalchecks,651unchangedidentities, private source/ref/tree/privacy/blob verification,37protectedfiles/three earlier missing files, standalone420diary/mirror/provenance/dashboard and no own compiler/test workers.
+
+Final diary regeneration includes this note, then a separate four-check frozen-source/mirror/provenance/dashboard verification. Consecutive final history refresh/check follows; no indexed writes occur between or after those calls. A documentation-only private commit copies the audited records and source receipt without changing qualified software. Final receipts/Gitfollow-up logs use the excluded development-history-audit directory. Goal remains active atQ04thenREL01; all full package requirements, physical checks and recorded failures remain open.
+
+The first final-documentation driver referenced the earlier checkpoint's source02-source.json filename;420normal uses release01-source.json. It stopped before verification with FileNotFoundError. The failed driver/report are preserved in the excluded audit directory; correcting that filename changes no software/tests. The diary/mirror are regenerated before the corrected four-check run. Final history has not started.
+
 <a id="dev-step-419"></a>
 
 ## 2026-11-05 — Step 419: Native sky-preset rename

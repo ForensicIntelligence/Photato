@@ -869,7 +869,8 @@
       "source": "418Source02",
       "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
       "qualification": "50focused Debugpass/3new methods;49existing normal baseline each architecture. Normal418/physical/fullscope open.",
-      "full_package_closed": false
+      "full_package_closed": false,
+      "later_normal_qualification": "All six new418\u2013419methods pass current420normalboth architectures; no full or physical closure."
     },
     {
       "package": "AI09",
@@ -877,7 +878,8 @@
       "source": "419Source02",
       "reference": "docs/SKY_PRESET_RENAME_419.json",
       "qualification": "57focused Debugpass/3new methods;26existing normal baseline each architecture. Normal419/physical/fullscope open.",
-      "full_package_closed": false
+      "full_package_closed": false,
+      "later_normal_qualification": "All six new418\u2013419methods pass current420normalboth architectures; no full or physical closure."
     },
     {
       "package": "Q03",
@@ -1174,14 +1176,16 @@
       "package": "SP01",
       "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
       "reason": "Normal universal batch and pending human unlock required; no418candidate or live claim.",
-      "scope": "Physical frame thumbnail dragging/insertion/selection/normal arrows/Cancel/stale/Undo/Redo/Quit, current Photoshop modifiers/defaults/auto-scroll and cumulative408-417checks."
+      "scope": "Physical frame thumbnail dragging/insertion/selection/normal arrows/Cancel/stale/Undo/Redo/Quit, current Photoshop modifiers/defaults/auto-scroll and cumulative408-417checks.",
+      "normal_batch420": "Recent native/API methods now pass normal420onboth architectures; physical acceptance stays pending."
     },
     {
       "step": 419,
       "package": "AI09",
       "reference": "docs/SKY_PRESET_RENAME_419.json",
       "reason": "Normal universal batch and human unlock pending; no419candidate/live claim.",
-      "scope": "Physical preset rename/name focus/Return/Escape/Cancel/error/retry/preview-name refresh/replacement cancellation/Quit and current Photoshop library hierarchy/defaults; cumulative prior checks retained."
+      "scope": "Physical preset rename/name focus/Return/Escape/Cancel/error/retry/preview-name refresh/replacement cancellation/Quit and current Photoshop library hierarchy/defaults; cumulative prior checks retained.",
+      "normal_batch420": "Recent native/API methods now pass normal420onboth architectures; physical acceptance stays pending."
     },
     {
       "step": 420,

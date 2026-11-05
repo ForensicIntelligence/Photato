@@ -117,10 +117,12 @@
   "full_package_closed": false,
   "full_current_suite_passed": false,
   "Photoshop_parity": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_install": false,
   "new_Xcode_archive": false,
   "new_upload": false,
   "new_release": false,
-  "next": "Q04 independent reference/corpus audit, then REL01 archive/sandbox audit."
+  "next": "Q04 independent reference/corpus audit, then REL01 archive/sandbox audit.",
+  "source_publication": "docs/SOURCE_PUBLICATION_420.json",
+  "source_commit": "e076d4a1efcbdca29535fc4098f525f5f60900d8"
 }

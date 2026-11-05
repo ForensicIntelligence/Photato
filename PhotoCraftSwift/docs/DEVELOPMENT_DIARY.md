@@ -28,6 +28,8 @@ In one optimized 24MP sample, the native call returned in 0.023ms on Apple Silic
 Both optimized architectures pass 193 of 195 checks, including all 18 new methods from steps415–420. The two failures match the recorded linked-preview alpha mismatch and master-palette cancellation. All three new functional rasterization checks pass; native/API documents, saved bytes and Undo match across RGB8/16/32. A Debug Shape API crash also reproduces on the retained419build; that case passes both current optimized runs. The crash remains unresolved.
 
 The universal candidate passes macOS14, signature, resources and ZIP extraction checks. It has not been launched or installed. Physical performance/UI and full Photoshop acceptance remain open. Next are independent reference coverage and archive/sandbox checks. Six candidates remain in the major quick-win sweep; the full requirements are unchanged. [Step420](DEVLOG.md#dev-step-420).
+The native source is backed up privately at commit `e076d4a1efcbdca29535fc4098f525f5f60900d8`, including the Xcode project, tests, redistributable assets and development records. The backup records the two retained failures and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/e076d4a1efcbdca29535fc4098f525f5f60900d8).
+
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
