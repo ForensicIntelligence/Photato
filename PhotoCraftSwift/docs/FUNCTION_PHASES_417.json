@@ -10002,7 +10002,7 @@
     "qualification": "260 affected and17 new optimized cases pass. No package closure; full Photoshop and supported-platform gates remain open."
   },
   "inventory_reconciliation_336": "Added the existing PDF export command; removed identical duplicate Keyboard Shortcuts rows from CSV and phase ledger; mapped the existing layer.smartObjects.embedAllLinked command to L05.651 distinct commands now match651 distinct phase records. Existing command implementation states and104 package scopes are preserved.",
-  "source_publication": "docs/SOURCE_PUBLICATION_414.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_417.json",
   "inventory_reconciliation_364": "Refresh stale copied command mapping from authoritative current CSV:439partial/212pending,651identities unchanged. No command promoted or complete package closed.",
   "linked_preview_precision_followup_365": {
     "strict_before_after_test_retained": true,
@@ -11347,5 +11347,18 @@
     "normal_universal_feature_qualified": true,
     "affected_suite_all_passed": false,
     "full_package_closed": false
+  },
+  "source_delivery_417": {
+    "source": "417Source02",
+    "commit": "b8952fd71a7f82f8326cfa8afbeb4846d864d9a8",
+    "tree": "1a2ae1155a2bc8b66539cbefbbd09c90db2733b9",
+    "private": true,
+    "included_qualified_inputs": 7171,
+    "excluded_inputs": 34,
+    "root_Rust_preserved": 1061,
+    "normal_passed_each": 157,
+    "normal_cases_each": 159,
+    "retained_residual_open": true,
+    "reference": "docs/SOURCE_PUBLICATION_417.json"
   }
 }

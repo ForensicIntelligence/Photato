@@ -28,6 +28,10 @@ Four new tests use independently calculated values, native float pixels, saved d
 The original licensed Rust fixture is unchanged. Its regression still covers the six formulas that match the current target. Earlier comparison results are preserved. These mathematical checks do not establish exact Photoshop rendering, scaling, binning, rounding or degenerate-input behavior.
 
 The color-mode and proofing audits found the represented controls already present. New color-blind proof transforms and other missing workflows remain in stillneeded. Next are a bounded original PhotoCraft migration audit and export/interchange. There are 13 candidates left in the major quick-win sweep; this is not a Photoshop completion percentage. [Step 417](DEVLOG.md#dev-step-417).
+The native source is backed up privately at commit `b8952fd71a7f82f8326cfa8afbeb4846d864d9a8`, including the Xcode project, tests, redistributable assets and development records. The backup records the two retained failures and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/b8952fd71a7f82f8326cfa8afbeb4846d864d9a8).
+
+The source backup is verified private, and 34 consistency checks pass. The standalone diary and its site copy carry the same content. Final history receipts retain the two baseline failures and remaining acceptance work.
+
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
