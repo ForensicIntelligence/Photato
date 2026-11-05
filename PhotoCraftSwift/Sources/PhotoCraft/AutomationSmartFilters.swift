@@ -37,6 +37,7 @@ extension SmartFilterStack {
   }
   static var apiCapabilities: [String: Any] {
     ["commands": ["filter.apply", "smartFilter.set", "smartFilter.maskStroke", "smartFilter.maskFill"],
+      "nativeDrag": SmartFilterDrag.apiCapabilities,
       "stackSchema": apiSchema, "layerStateSchema": apiStateSchema, "maximumFilters": maximumFilters,
       "largeRGBStacks":["kinds":RasterFilterEngine.pagedFilterKinds.map(\.rawValue),
         "maximumDimension":Surface.maxDimension,"logicalMaximumPixels":Surface.maxPixels,

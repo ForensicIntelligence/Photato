@@ -1,0 +1,112 @@
+{
+  "step": 413,
+  "recorded_at_utc": "2026-11-05T02:32:11.879958+00:00",
+  "status": "Eleven direct Brush Settings sidebar enable controls implemented and focused Debug qualified; full B01/live/normal413 acceptance open",
+  "source": "413Source02",
+  "software_build": 413,
+  "source_inputs": 7195,
+  "production_swift_files": 1035,
+  "run": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit",
+  "source_manifest": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source02-source.json",
+  "software_changes": true,
+  "new_regression_methods": 1,
+  "implementation": {
+    "native": "Eleven leading group enable checkboxes over existing settings; trailing preset Lock is independent. Existing section controls remain. No fake Tip Shape/Smoothing/Symmetry enable state.",
+    "API": "Existing brush.configure and brush-state flags; brushes.sectionToggles maps all sidebar rows to complete existing JSON paths. No new command/schema parameter.",
+    "guards": "No-op ignored; native setter rejects brush-gesture/geometry-busy changes. Existing API busy/stale/type validation retained. Started gestures capture settings.",
+    "history": "Group changes leave document pixels, dirty state and Undo unchanged. Next stroke uses native transaction and one Undo.",
+    "typed_commands": 245,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "new_Adobe_route_or_descriptor": false,
+    "new_tool_or_modifier": false,
+    "Core_or_imaging_kernel_change": false
+  },
+  "audit": {
+    "B01": "All current engine settings already exposed;18old normal tests pass each architecture. New sidebar enable controls are a presentation action, not new brush algorithms.",
+    "B02": "Pencil Auto Erase and represented painting options already present;9normal cases pass each architecture. Full Eraser modes/history and all original painting scope remain open.",
+    "B04": "Current renderer Clone Source controls already exposed;11normal Clone/retouch API cases pass each architecture. Complete source/sample/dynamics/tablet/output scope open.",
+    "B06": "Current/New/Duplicate Content-Aware output choices already exposed;12normal Fill/Scale cases pass each architecture. Full workflow/synthesis/crop/large document/output fidelity remains open.",
+    "B07": "Persistent Color Sampler has no native point model/tool/controller/Info/CRUD/API. Requires a new foundation; candidate moves to stillneeded. Averaged/source-mode Eyedropper also remains open."
+  },
+  "qualification": {
+    "baseline412_normal": {
+      "cases_each": 50,
+      "passed_each": 50,
+      "same_order": true,
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/baseline01-qualification.json"
+    },
+    "source01": {
+      "stage": "Compile failed before any test",
+      "error": "Missing try on second new test NativeArchive encoder; test-only correction",
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source01-summary.json"
+    },
+    "source02": {
+      "cases": 62,
+      "passed": 60,
+      "unexpected": 2,
+      "crashes": 0,
+      "build_seconds": 12.81,
+      "test_seconds": 16.198,
+      "error": "Two existing evidence-image writers point to a missing capture directory. Driver-only correction; no product/test changes.",
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source02-summary.json"
+    },
+    "capture_retry01": {
+      "source": "Same413Source02 preserved Debug test bundle; no recompile or source edit",
+      "cases": 62,
+      "passed": 62,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "same_order_as_source02": true,
+      "test_seconds": 15.273,
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/capture-retry01-summary.json"
+    },
+    "source_unchanged": true,
+    "source01_source02_production_equal": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "normal_optimized_413": false,
+    "universal_413": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/display-brush-panel-brush-options.html",
+      "updated": "2026-02-23",
+      "use": "Public instruction to enable/disable groups using sidebar checkboxes; no live2026/pixel equivalence claim."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/tool-techniques/eraser-tool.html",
+      "use": "Basic Size/Hardness workflow only; does not establish full mode matrix."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "use": "Historical Eraser mode context only."
+    }
+  ],
+  "native_UI": "No CUA/new413app staging or launch. Human unlock request from408still unanswered; physical checkbox/hit testing and cumulative408/410/411/412checks remain open.",
+  "normal_batch_policy": "Focused Debug during quick-win breadth; batch normal universal at next meaningful stable milestone. Latest normal/private source412; no new normal413claim.",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "D04 clipboard interoperability source audit, then L03.",
+  "normal_followup_414": {
+    "reference": "docs/SMART_FILTER_DRAG_414.json",
+    "source": "414Source02",
+    "new_sidebar_regression_passed_each": true,
+    "normal_cases_each": 100,
+    "normal_passed_each": 99,
+    "retained_unrelated_alpha_failure": true,
+    "physical_UI_qualified": false
+  }
+}

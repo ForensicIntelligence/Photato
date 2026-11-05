@@ -77,7 +77,7 @@ struct SmartFilterRows: View {
         }
         Text("Smart Filters").fontWeight(.medium)
         Spacer()
-      }.contextMenu {
+      }.modifier(SmartFilterDropTarget(store: store, layerID: layer.id)).contextMenu {
         Button(stack.enabled ? "Disable Smart Filters" : "Enable Smart Filters") { store.editSmartFilters(layer.id) { $0.enabled.toggle() } }
         Button("View Filter Mask") {
           store.selectSmartFilterMask(layer.id)
@@ -107,7 +107,12 @@ struct SmartFilterRows: View {
           }
           Spacer()
           Image(systemName: "slider.horizontal.3").foregroundStyle(.secondary)
-        }.padding(.leading, 18).contextMenu {
+        }.padding(.leading, 18)
+          .contentShape(Rectangle())
+          .onDrag { SmartFilterDrag.provider(store: store, layerID: layer.id, filterID: item.id) }
+          .modifier(SmartFilterDropTarget(store: store, layerID: layer.id, filterID: item.id))
+          .help("Drag to reorder; Option-drag to copy within this document")
+          .contextMenu {
           Button("Edit Filter…") { store.beginSmartFilter(layer.id, filterID: item.id) }
           Button("Move Up") { move(item.id, delta: 1) }.disabled(stack.filters.last?.id == item.id)
           Button("Move Down") { move(item.id, delta: -1) }.disabled(stack.filters.first?.id == item.id)

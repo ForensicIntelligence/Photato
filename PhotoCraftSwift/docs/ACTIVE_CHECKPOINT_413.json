@@ -1,0 +1,92 @@
+{
+  "step": "dev-step-413",
+  "goal_status": "active",
+  "status": "Eleven direct Brush Settings sidebar enable controls implemented and focused Debug qualified; full B01/live/normal413 acceptance open",
+  "software_build": 413,
+  "tested_source": "413Source02",
+  "run": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit",
+  "source_inputs": 7195,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "D04",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_413.json",
+  "priority_rule": "docs/WORK_PRIORITIES_413.json",
+  "previous_turn_classification": "Progress:412Gallery dragging and411LastFilter pass normal116main+2separate metadata each architecture, universal/signature/ZIP,30consistency/history checks and private source/docs backup. Full/live scope remains open.",
+  "next_work": [
+    "D04clipboard format source audit, thenL03.",
+    "Batch normal universal for413with next meaningful win; physical408/410/411/412/413checks still pending human unlock.",
+    "Keep all104original scopes/651identities and prior failures."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source02-source.json",
+  "production_swift_files": 1035,
+  "native_workflow_qualified": false,
+  "native_candidate_terminated": false,
+  "evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+  "tests": {
+    "baseline412_normal": {
+      "cases_each": 50,
+      "passed_each": 50,
+      "same_order": true,
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/baseline01-qualification.json"
+    },
+    "source01": {
+      "stage": "Compile failed before any test",
+      "error": "Missing try on second new test NativeArchive encoder; test-only correction",
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source01-summary.json"
+    },
+    "source02": {
+      "cases": 62,
+      "passed": 60,
+      "unexpected": 2,
+      "crashes": 0,
+      "build_seconds": 12.81,
+      "test_seconds": 16.198,
+      "error": "Two existing evidence-image writers point to a missing capture directory. Driver-only correction; no product/test changes.",
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/source02-summary.json"
+    },
+    "capture_retry01": {
+      "source": "Same413Source02 preserved Debug test bundle; no recompile or source edit",
+      "cases": 62,
+      "passed": 62,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "same_order_as_source02": true,
+      "test_seconds": 15.273,
+      "evidence": "artifacts/runs/20261105T022039Z-413-painting-quickwin-audit/capture-retry01-summary.json"
+    },
+    "source_unchanged": true,
+    "source01_source02_production_equal": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "normal_optimized_413": false,
+    "universal_413": false,
+    "actual_native_UI": false
+  },
+  "native_workflow_evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+  "increment_complete": true,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "62focused Debug pass after capture-directory correction;50prior normal baseline each architecture. Normal/live413open.",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "412Source01; physical native interaction pending",
+  "latest_private_source": "412Source01",
+  "source_publication": "docs/SOURCE_PUBLICATION_412.json",
+  "source_commit": "1a7845d308aae9ddffb0f81a4ad0dbd15bbaefe5",
+  "new_build": true,
+  "software_source_pending": null,
+  "actions_maximum": 47,
+  "typed_API_commands": 245,
+  "history_receipt": "artifacts/development-history-audit/413-final-receipt01.json"
+}

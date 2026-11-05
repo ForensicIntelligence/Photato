@@ -1,0 +1,112 @@
+{
+  "step": 414,
+  "goal_status": "active",
+  "status": "Smart Filter single-row copy/reorder implemented; new feature scope passes Debug/normal; retained linked-PSD alpha residual and physical/fullscope acceptance open",
+  "software_build": 414,
+  "tested_source": "414Source02",
+  "run": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins",
+  "source_inputs": 7197,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "S02",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_414.json",
+  "priority_rule": "docs/WORK_PRIORITIES_414.json",
+  "previous_turn_classification": "Progress:413eleven Brush Settings sidebar enable controls implemented;62focused Debug/28consistency/history checks pass,50old normal baseline each architecture. Normal413/live scope remains open.",
+  "next_work": [
+    "S02Color Range/Focus Area/Magnetic Lasso audit, then S03.",
+    "After unlock qualify414candidate and cumulative controls; preserve earlier candidates.",
+    "All104original scopes/651identities; retained linked alpha/full-suite/platform/performance/default/output gates remain."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/release01-source.json",
+  "production_swift_files": 1036,
+  "native_workflow_qualified": false,
+  "native_candidate_terminated": false,
+  "evidence": "docs/SMART_FILTER_DRAG_414.json",
+  "tests": {
+    "baseline412_normal": {
+      "cases_each": 53,
+      "passed_each": 52,
+      "failed_cases_each": 1,
+      "assertions_each": 2,
+      "unexpected_each": 0,
+      "same_order": true,
+      "evidence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/baseline01-qualification.json"
+    },
+    "source01": {
+      "stage": "Compile failed before tests",
+      "repair": "New test fixture radius helper only; production unchanged",
+      "evidence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/source01-summary.json"
+    },
+    "source02_Debug": {
+      "cases": 53,
+      "passed": 53,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "new414_methods": 3,
+      "new413_methods": 1,
+      "build_seconds": 12.07,
+      "test_seconds": 18.933,
+      "evidence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/source02-summary.json"
+    },
+    "release01": {
+      "cases_each": 100,
+      "passed_each": 99,
+      "failed_cases_each": 1,
+      "assertions_each": 2,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "same_order": true,
+      "new413_414_methods_pass_each": 4,
+      "normal_optimized": true,
+      "Debug_workaround_in_Release": false,
+      "build_seconds": [
+        391.75,
+        389.2
+      ],
+      "test_seconds": [
+        5.695,
+        8.436
+      ],
+      "affected_suite_passed": false,
+      "new_feature_scope_passed": true,
+      "evidence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/release01-qualification.json",
+      "case_equivalence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/case-equivalence01.json"
+    },
+    "source_unchanged": true,
+    "Debug_Release_inputs_equal": true,
+    "universal": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/universal/staging01.json",
+    "minimum_system": "14.0",
+    "signature_archive_extraction": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "panel_modifier_combinations": 16,
+    "actual_native_UI": false
+  },
+  "native_workflow_evidence": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/universal/staging01.json",
+  "increment_complete": true,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "53Debugpass; normal99/100each, all4new413\u2013414pass, one exact baseline linked PSD/PSB residual; universal/signature/ZIP pass. Physical/fullscope open.",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "414Source02 feature-scoped;99/100each with retained linked-preview residual; physical UI pending",
+  "latest_private_source": "412Source01",
+  "source_publication": "docs/SOURCE_PUBLICATION_412.json",
+  "source_commit": "1a7845d308aae9ddffb0f81a4ad0dbd15bbaefe5",
+  "new_build": true,
+  "software_source_pending": null,
+  "actions_maximum": 47,
+  "typed_API_commands": 245,
+  "history_receipt": "artifacts/development-history-audit/414-final-receipt01.json"
+}

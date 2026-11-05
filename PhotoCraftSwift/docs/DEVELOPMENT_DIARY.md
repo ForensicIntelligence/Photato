@@ -18,18 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:412 -->
+<!-- current-status-step:414 -->
 ## Current status — 5 November 2026
 
-Filter Gallery effects can now be reordered by dragging their rows. Dragging and the existing arrow buttons use the same operation. Each effect keeps its settings and visibility; Undo restores the old order. Cancel leaves the document unchanged. The API already accepts the full ordered effect array, and its capability information now explains the corresponding UI behavior.
+Smart Filters can now be dragged to reorder their stack. Holding Option when dropping copies one filter to another Smart Object in the same document. Copies retain their settings and get a new identity. Source bytes and existing target masks stay unchanged. The operation uses the existing API and prepared transaction, with one Undo and portable Actions recording.
 
-All 53focused Debug tests pass. The normal builds pass 116 main tests and two separate API metadata tests on each architecture, including all 16 new tests from Last Filter and Gallery dragging. The universal package passes signing, minimum-macOS 14 and ZIP extraction checks. The previously failing Adobe job also passes in both normal builds; its Debug crash remains recorded without a claimed repair.
+All 53 focused Debug tests pass. The normal builds execute the same 100 tests on each architecture: 99 pass, including all four new brush-sidebar and filter-drag tests. The remaining linked-PSD preview test fails exactly as it does on the preserved baseline: four alpha bytes are 80 rather than 81 in both PSD and PSB output. That fidelity issue remains open. The universal package passes signing, macOS 14 targeting and archive extraction checks. Physical dragging and exact Photoshop behavior remain unverified while the unlock request is pending.
 
-The ordinary filter, Blur Gallery, Liquify and manual Lens Correction controls selected for audit were already implemented. Their 59 selected tests pass on both architectures using the preserved normal build. We moved on without rewriting them. Calibrated lens profiles and other substantive omissions stay in stillneeded.
+The audit confirmed that current clipping/fill controls, Copy/Paste/Clear Layer Style and linked-file relinking/updating already exist. Channel, mask and path clipboard transfers need a new target-aware foundation and stay in stillneeded. Full advanced blending and all original package requirements remain open.
 
-Next is brush settings, followed by the next painting package. There are 31 candidates left in the major quick-win sweep. Full requirements, independent output comparisons, live pointer interaction and platform/performance checks remain open. The Mac unlock request is still pending. [Step 412](DEVLOG.md#dev-step-412).
-The stable source is backed up to the private GitHub repository. It includes the Swift code, Xcode project, redistributable assets, tests and development records. Generated models, signing files, runtime evidence and one restricted external test image are excluded with their provenance retained. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/1a7845d308aae9ddffb0f81a4ad0dbd15bbaefe5).
-
+Next is Color Range, Focus Area and Magnetic Lasso, followed by the object/subject selection package. There are 21 candidates left in the major quick-win sweep. [Step 414](DEVLOG.md#dev-step-414).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -647,6 +645,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 410 | [Gradient Fill API and Actions](DEVLOG.md#dev-step-410) |
 | 2026-11-05 | 411 | [Last Filter and Pattern Fill audit](DEVLOG.md#dev-step-411) |
 | 2026-11-05 | 412 | [Filter Gallery dragging](DEVLOG.md#dev-step-412) |
+| 2026-11-05 | 413 | [Brush Settings sidebar controls](DEVLOG.md#dev-step-413) |
+| 2026-11-05 | 414 | [Smart Filter dragging](DEVLOG.md#dev-step-414) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3105,3 +3105,19 @@ Eight new tests cover transfer, order/field retention, rejection, delayed callba
 The universal package passes signing, macOS 14 minimum and archive extraction. The windowless capture is layout evidence with material/thumbnail limitations. Physical dragging and system feedback remain unverified while the unlock request is pending. Full F06 and all original Photoshop requirements remain open. Next is the brush-settings source audit, then B02. [Detailed record](DEVLOG.md#dev-step-412).
 
 The private full-source backup is verified at commit `1a7845d308aae9ddffb0f81a4ad0dbd15bbaefe5`. All 7,160 included qualified inputs match the tested source. The 34 excluded inputs are generated/cache material or the restricted external PSD, with acquisition and provenance instructions preserved. All 1,061 original root/Rust files and prior history remain unchanged. This is a source backup; it does not release the software.
+
+## 2026-11-05 — Step 413: Brush Settings sidebar controls
+
+The painting audit found that current brush-model settings, Pencil Auto Erase, Clone Source transforms/overlays and Content-Aware output choices already had native controls and API paths. Their 50 selected regression tests pass on both architectures. We kept those implementations and preserved the larger gaps in their full work packages.
+
+One useful brush interaction was missing: enabling a group directly from the sidebar. Eleven checkboxes now use the existing setting flags, with preset locks kept separate. Tip Shape, Smoothing and Symmetry retain their existing controls without invented enable flags. Public Adobe guidance documents sidebar group checkboxes; this is not a new live Photoshop observation.
+
+One new end-to-end regression checks all checkbox mappings, no-op/history behavior, busy/stale/type guards and subsequent native/API stroke bytes and Undo. All 62 focused Debug tests pass after a test-only compile correction and a runner-only capture-directory correction. Failed attempts remain in the detailed record. No kernel or file format changed. Normal universal and actual pointer/layout checks remain open. Next is clipboard interoperability, then layer styles. [Detailed record](DEVLOG.md#dev-step-413).
+
+## 2026-11-05 — Step 414: Smart Filter dragging
+
+The layer-workflow audit found existing native/API controls for current clipping and fill settings, copying/pasting/clearing styles, and relinking/updating linked artwork. Clipboard support is still limited to composite image content; adding mask/channel/path targets needs new routing, transactions and API behavior. Those larger requirements remain in stillneeded.
+
+Smart Filter rows had arrow-menu reordering but no direct drag or copy interaction. A private process-local transfer now supports single-filter copying within one document and reordering within a stack. It carries a random token rather than document content and checks source identity, generations and document attachment again after loading. Option feedback and the dispatched operation share one resolver. The existing stack transaction preserves target masks and source bytes, validates rendering and supports Undo and portable Actions.
+
+Three new tests cover private transfer, copies across pixel depths and new/existing masks, desktop/API saved bytes, history/Actions, invalid and delayed transfers, limits and all modifier combinations. A test-fixture constructor mistake was corrected without production changes. All 53 focused Debug tests pass. Normal builds pass 99 of 100 cases on each architecture; the single linked-PSD/PSB alpha mismatch is unchanged from the earlier baseline and remains open. No tolerance was changed. The universal package passes signing and archive checks. Physical interaction, cross-document/group/mask transfers and full Photoshop acceptance remain open. [Detailed record](DEVLOG.md#dev-step-414).

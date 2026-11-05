@@ -1174,5 +1174,21 @@
     "step": 408,
     "qualification": "Existing55tools/880modifier matrix passes in current normal optimized156case batch each architecture; no new canvas modifier/action. Picker uses standard pointer. Actual408UI awaits unlock.",
     "reference": "docs/SHAPE_STROKE_PRESETS_408.json"
+  },
+  "smart_filter_drag_414": {
+    "step": 414,
+    "source": "414Source02",
+    "scope": "Panel drag/drop, not a new canvas EditorTool",
+    "resolver": "SmartFilterDrag.operation(modifiers): Option copies; plain drag reorders within one stack. DropProposal copy/move/cancel and dispatched action use the same resolver; action captured before asynchronous data completion.",
+    "modifier_combinations": 16,
+    "focused_test": "SmartFilterDragTests/testReorderNoopMalformedForeignLockedBudgetAndAllModifiers",
+    "focused_passed": true,
+    "existing_canvas_tools": 55,
+    "existing_canvas_combinations": 880,
+    "existing_canvas_policy_passed": true,
+    "API": "SmartFilterStack.apiCapabilities.nativeDrag maps existing smartFilter.set complete target stack.",
+    "physical_feedback_qualified": false,
+    "remaining": "Actual pointer hit testing/target-row positioning/live modifier timing and full cross-layer move/cross-document/group/mask transfer remain open.",
+    "reference": "docs/SMART_FILTER_DRAG.md"
   }
 }

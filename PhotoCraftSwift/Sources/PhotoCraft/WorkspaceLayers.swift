@@ -142,6 +142,7 @@ extension WorkspaceView {
           size: size, layer: layer,
           depth: store.layerPanelDocument.ancestors(of: layer.id).count, availableWidth: geometry.size.width))
     }.frame(height: size.controlHeight + 6)
+      .modifier(SmartFilterDropTarget(store: store, layerID: layer.id))
   }
   func layerRowContent(_ layer: Layer, metrics: LayerRowMetrics) -> some View {
     HStack(spacing: 6) {

@@ -17,6 +17,38 @@ struct BrushDynamicControl:View {
     }.padding(.vertical,4)
   }
 }
+/// Only sections with an existing enable flag get a sidebar toggle.
+/// Locks continue to control preset replacement independently of enable state.
+enum BrushSectionToggle: String, CaseIterable, Sendable {
+  case shape, scattering, texture, dual, colorDynamics, transfer, pose
+  case noise, wetEdges, buildUp, protectTexture
+  var keyPath: WritableKeyPath<BrushSettings, Bool> {
+    switch self {
+    case .shape: \.shape.enabled
+    case .scattering: \.scattering.enabled
+    case .texture: \.texture.enabled
+    case .dual: \.dual.enabled
+    case .colorDynamics: \.colorDynamics.enabled
+    case .transfer: \.transfer.enabled
+    case .pose: \.pose.enabled
+    case .noise: \.noise
+    case .wetEdges: \.wetEdges
+    case .buildUp: \.buildUp
+    case .protectTexture: \.protectTexture
+    }
+  }
+  var brushPath: String {
+    "settings." + rawValue + ([Self.noise, .wetEdges, .buildUp, .protectTexture].contains(self) ? "" : ".enabled")
+  }
+  static var apiCapabilities: [String: Any] {
+    ["sections": allCases.map { ["section": $0.rawValue, "brushPath": $0.brushPath] },
+     "command": "brush.configure", "state": "brush.brush.settings contains the same flags used by the native sidebar and section controls.",
+     "history": "Enabling a group changes tool settings only, with no document pixels, dirty state or Undo entry. Preset section locks remain independent; started strokes keep their captured Brush.",
+     "availability": "Native controls are disabled during a brush gesture or geometry work. API changes retain existing busy/stale/validation guards. Tip Shape, Smoothing and Symmetry have no new enable flag.",
+     "qualification": "Presentation controls over existing native settings; full brush kernels/defaults, physical UI/tablet behavior and Photoshop output remain unqualified."]
+  }
+}
+
 struct BrushSettingsPanel:View {
   @Bindable var store:EditorStore
   @State var section="tip"
@@ -25,12 +57,35 @@ struct BrushSettingsPanel:View {
     HStack { Text(title).frame(width:95,alignment:.leading);Slider(value:value,in:range);Text(percent ? "\(Int(value.wrappedValue*100))%":String(format:"%.1f",value.wrappedValue)).monospacedDigit().frame(width:52) }
   }
   func lock(_ name:String)->Binding<Bool> { .init(get:{store.brushOptions.lockedSections.contains(name)},set:{on in var b=store.brushOptions;b.lockedSections.removeAll{$0==name};if on { b.lockedSections.append(name) };store.brushOptions=b}) }
+  func sectionEnabled(_ key: String) -> Binding<Bool>? {
+    guard let section = BrushSectionToggle(rawValue: key) else { return nil }
+    return Binding(get: { store.brushOptions[keyPath: section.keyPath] }, set: { enabled in
+      guard store.brushGesture == nil, !store.geometryBusy else { return }
+      var settings = store.brushOptions
+      guard settings[keyPath: section.keyPath] != enabled else { return }
+      settings[keyPath: section.keyPath] = enabled
+      store.brushOptions = settings
+    })
+  }
   var body:some View {
     VStack(spacing:0) {
       HStack(alignment:.top,spacing:0) {
         List(selection:$section) {
           ForEach(BrushSettings.sections+["symmetry"],id:\.self) { key in
-            HStack { Text(Self.titles[key] ?? key);Spacer();if key != "symmetry" { Toggle("Lock",isOn:lock(key)).labelsHidden().toggleStyle(.checkbox).help("Preserve this section when choosing another brush") } }.tag(key)
+            HStack {
+              if let enabled = sectionEnabled(key) {
+                Toggle("Enable " + (Self.titles[key] ?? key), isOn: enabled)
+                  .labelsHidden().toggleStyle(.checkbox)
+                  .accessibilityIdentifier("brush.section." + key + ".enabled")
+                  .help("Enable or disable " + (Self.titles[key] ?? key))
+              }
+              Text(Self.titles[key] ?? key)
+              Spacer()
+              if key != "symmetry" {
+                Toggle("Lock",isOn:lock(key)).labelsHidden().toggleStyle(.checkbox)
+                  .help("Preserve this section when choosing another brush")
+              }
+            }.tag(key)
           }
         }.frame(width:180)
         ScrollView { controls.padding(14) }.frame(minWidth:300,maxWidth:.infinity)
