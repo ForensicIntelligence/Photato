@@ -578,7 +578,8 @@ import UniformTypeIdentifiers
   func select(_ id: UUID, modifiers: NSEvent.ModifierFlags = []) {
     finishNumericField()
     finishLayerName()
-    guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
+    guard canChangeLayerSelection, document.layers.contains(where: { $0.id == id }) else { return }
+    var target = id
     if modifiers.contains(.shift), let active = document.activeIndex,
       let destination = document.layers.firstIndex(where: { $0.id == id })
     {
@@ -591,6 +592,9 @@ import UniformTypeIdentifiers
       }
       if selectedLayerIDs.contains(id) {
         selectedLayerIDs.remove(id)
+        if selectedLayerIDs.isEmpty { _ = deselectLayers(); return }
+        target = document.activeLayerID.flatMap { selectedLayerIDs.contains($0) ? $0 : nil }
+          ?? document.layers.reversed().first { selectedLayerIDs.contains($0.id) }!.id
       } else {
         selectedLayerIDs.insert(id)
       }
@@ -598,11 +602,11 @@ import UniformTypeIdentifiers
       selectedLayerIDs = [id]
     }
     let wasAlpha = alphaEditingID != nil
-    let changedMaskOwner = document.activeLayerID != id && !visibleTemporaryMaskChannels.isEmpty
-    if document.activeLayerID != id {temporaryMaskChannelVisibility=nil}
+    let changedMaskOwner = document.activeLayerID != target && !visibleTemporaryMaskChannels.isEmpty
+    if document.activeLayerID != target {temporaryMaskChannelVisibility=nil}
     showColorChannelsKeepingAlphas()
     alphaEditingID = nil
-    session.selectLayer(id)
+    session.selectLayer(target)
     if case .vectorMask = pathTarget { selectPath(nil) }
     if case .shape = pathTarget { selectPath(nil) }
     maskEditingLayerID = nil

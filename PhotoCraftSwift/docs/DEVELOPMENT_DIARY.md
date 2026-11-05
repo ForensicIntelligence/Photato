@@ -18,16 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:424 -->
+<!-- current-status-step:425 -->
 ## Current status — 5 November 2026
 
-Empty and Not Empty now work in the Layers panel and the API. A background query checks stored alpha, supports sparse maximum-size canvases and can be cancelled. Changed or closed documents cannot publish old results. Painting updates the filter without locking editing.
+Layer deselection is now available from the Select menu, Command-clicking the final selected row, and clicking below the layer rows. The API uses the same selection path. Recorded selection-only Actions no longer create a pixel Undo step, and recording can start or stop with no active layer.
 
-The packaged app passed the native workflow: create an empty layer, filter it, paint, undo, change criteria and quit. Filtering out the active layer clears selection; returning rows stay deselected. A disposable Photoshop document confirmed those behaviors and the treatment of childless groups and transparent Smart Objects.
+All 127 focused tests pass, including 9 new methods. The hosted panel test checks the full blank hit area, accessibility action and native mouse events. Both optimized architectures pass 393 of the same 395 cases, including all 66 new feature methods from checkpoints 415–425. Two existing failures retain the same diagnostics as checkpoint 424. The universal package passes macOS14, signature and ZIP checks. The Mac is locked, so current physical UI/reference checks remain pending.
 
-All 91 focused tests pass. Apple Silicon and translated Intel each pass 358 of 360 optimized cases, including all 57 newer feature tests. The two remaining errors exactly match build 422. Broad testing also found an overlong API revision token; the repair keeps tokens at 64 characters and restores the affected stack and Smart Object operations. Earlier failed attempts are retained.
-
-Group filtering, Advanced Blending, library-linked artwork and the rest of L01 remain major stillneeded work. Full Photoshop, physical-platform and performance qualification remains open. [Step 424](DEVLOG.md#dev-step-424).
+Next is D01 document workflows. Group filtering, Advanced Blending, library artwork and other L01 gaps remain major stillneeded work for a later sweep. No package is being declared complete; the original 104 scopes and all earlier failures stay open. [Step425](DEVLOG.md#dev-step-425).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -657,6 +655,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 422 | [Arrange selected layers](DEVLOG.md#dev-step-422) |
 | 2026-11-05 | 423 | [Layer filtering and isolation](DEVLOG.md#dev-step-423) |
 | 2026-11-05 | 424 | [Asynchronous layer content filters](DEVLOG.md#dev-step-424) |
+| 2026-11-05 | 425 | [Layer selection and deselection](DEVLOG.md#dev-step-425) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3229,3 +3228,13 @@ This remains major stillneeded L01 work. Full library/Group/Advanced Blending/sp
 Later qualification caught an API compatibility defect: revision tokens had grown beyond the existing 256-character source-reference limit. A 64-character hash preserves all change tracking without increasing that limit. The affected stack and Smart Object tests now pass. Final source424Source05 passes91focused tests and358of360normal cases on each architecture, including all57new415–424methods. The two residual failures have the exact build422 diagnostics. Universal minimum14/signature/ZIP checks pass. In the packaged native app, an owned brush stroke left the Empty filter and cleared selection; one Undo restored the empty layer. Complementary filters and normal Quit passed. The owned document was discarded; no user document was edited. No physical60fps or full Photoshop qualification is claimed.
 
 The full native source backup is saved in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/ce9c535ef80b8ccfb8b8f6ce4bcc82bf8276bb41). The 7,196 included build inputs match the tested source; 34 generated, cache or restricted inputs are excluded with recorded reasons. All 1,061 original root/Rust files are unchanged. The repository stays private until release day. This was a source backup; no binary was uploaded and no app was released.
+
+## 2026-11-05 — Step 425: Layer selection and deselection
+
+Added Select > Deselect Layers, fixed Command-clicking the final selected row, and made the unused space below layer rows deselect on a plain click. The native blank-area control fills the available viewport, exposes an accessibility action and rejects drags and stale owners. The rows remain lazy and their eye/thumbnail controls remain separate. All Layers now keeps a selected layer as its active target.
+
+New `layers.selection` API operations share native behavior and expose selection and availability. User deselection can be recorded as a portable Actions 49 step. Pure selection recipes validate targets atomically, preserve pixel history/Redo and avoid scanning image buffers on the main actor. Mixed recipes still commit edits through one prepared Undo. Native archive 86 is unchanged. No unpublished Adobe selection endpoint or ATN compatibility is claimed.
+
+The new code passes 127 focused Debug tests, including nine new methods. Initial attempts exposed a test method-name error, an inaccessible offscreen SwiftUI control, and the empty native button's default accessibility role/return value. Sources, binaries and failed logs were retained before repairs. The expanded clipboard suite also stopped with signal10 in a method with earlier Debug crash evidence; current cause remains unproven and optimized testing includes it. These failures are recorded, not erased by the passing focused run. The first optimized run also found six catalog-count checks still expecting 248 after the new API raised the total to 249. Only those expectations were corrected; the app binary stayed unchanged. The expanded focused run passes 127 tests, and the full affected optimized set was repeated.
+
+Adobe's public selection instructions were used; the Mac locked again before a fresh owned Photoshop comparison. Offscreen native layout/event tests are not physical UI proof. Both optimized architectures pass 393 of the same 395 cases, including all 66 new methods from checkpoints 415–425 and the clipboard method that crashed in Debug. The two remaining linked-alpha/master-palette failures have exactly the424diagnostics; no Debug crash repair or full-suite pass is claimed. The universal package passes both macOS 14 slices, signature and ZIP checks. D01 document workflows follow. The substantive L01 remainder stays in major stillneeded, and no minor or cleanup pass begins. [Detailed record](DEVLOG.md#dev-step-425).

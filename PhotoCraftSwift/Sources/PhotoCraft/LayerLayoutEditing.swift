@@ -38,9 +38,15 @@ extension EditorStore {
   }
   func selectAllLayers() {
     finishNumericField(); finishLayerName()
-    guard !geometryBusy, !hasToneDraft, transformDraft == nil else { return }
+    guard canChangeLayerSelection else { return }
     let candidates = layerPanelFilter.isFiltering ? layersInPanel() : document.layers
     selectedLayerIDs = Set(candidates.filter { !$0.isBackground }.map(\.id))
+    if document.activeLayerID.map({ !selectedLayerIDs.contains($0) }) ?? true {
+      let target = candidates.reversed().first { selectedLayerIDs.contains($0.id) }?.id
+      layerContentFilter.publishingSelection = true
+      session.setFilteredLayerSelection(target)
+      layerContentFilter.publishingSelection = false
+    }
     maskEditingLayerID = nil
     if case .vectorMask = pathTarget { selectPath(nil) }
     if case .shape = pathTarget { selectPath(nil) }

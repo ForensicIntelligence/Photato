@@ -159,10 +159,10 @@ final class LayerFilterAPITests: XCTestCase {
         from: JSONSerialization.data(withJSONObject: try XCTUnwrap(state["layerFilter"])))
       XCTAssertNoThrow(try BrushAPI.merge(value, schema: LayerFilterAPI.stateSchema))
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual(AutomationTests.expectedCommandCount, 248)
+      XCTAssertEqual(AutomationTests.expectedCommandCount, 249)
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == LayerFilterAPI.command })
       XCTAssertEqual(definition.optionalParameters, ["filter"])
-      XCTAssertEqual(ActionLibraryFile.maximumVersion, 48)
+      XCTAssertEqual(ActionLibraryFile.maximumVersion, 49)
       XCTAssertTrue(JSONSerialization.isValidJSONObject(LayerFilterAPI.capabilities))
     }
   }

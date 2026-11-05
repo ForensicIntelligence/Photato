@@ -101,7 +101,7 @@ final class TextFindWorkflowTests:XCTestCase {
       let stale=try await helper.edit(service,shared,"text.replace",["find":"x","replacement":"y"],revision:"old");XCTAssertEqual(stale,409)
       shared.store.beginTextFind();let busy=try await helper.edit(service,shared,"text.find",["find":"x"]);XCTAssertEqual(busy,409);shared.store.closeTextFind()
       let caps=try await helper.request(service,path:"/v1/capabilities");let values=try XCTUnwrap(JSONSerialization.jsonObject(with:caps.1)as?[String:Any]);XCTAssertNotNil(values["textFind"]);XCTAssertNotNil((values["stateSchemas"]as?[String:Any])?["textFind"])
-      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,48)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,49)
       try capture(["texts":texts(shared.store.document),"undoStates":shared.store.session.undoStack.count],"api-delete")
     }
   }

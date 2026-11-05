@@ -5,9 +5,10 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 48
+  static let maximumVersion = 49
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where: { $0.steps.contains { if case .deselectLayers = $0.operation { return true }; return false } }) { return 49 }
     if actions.contains(where: { $0.steps.contains { if case .stackLayers = $0.operation { return true }; return false } }) { return 48 }
     if actions.contains(where: { $0.steps.contains { if case .gradientFill = $0.operation { return true }; return false } }) { return 47 }
     if actions.contains(where:{$0.steps.contains{if case .replaceText=$0.operation{return true};return false}}){return 46}
@@ -194,25 +195,35 @@ struct ActionLibraryFile: Codable {
     return try actions.duplicate(id, name: name, set: set)
   }
   var canUseActions: Bool { !geometryBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && numericEditor == nil && layerNameDraft == nil && clipboardTargetAvailable }
+  var canStartRecordingAction: Bool {
+    canUseActions || (document.activeLayerID == nil && canChangeLayerSelection && !editingComponent && !editingMask)
+  }
+  var canStopRecordingAction: Bool { canChangeLayerSelection && session.actionRecording != nil }
+  func canPlayAction(_ action: RecordedAction?) -> Bool {
+    guard let action, session.actionRecording == nil else { return false }
+    return action.isLayerSelectionOnly ? canChangeLayerSelection : canUseActions
+  }
   func startRecordingAction(name: String, set: String) throws {
-    guard canUseActions else { throw CraftError.invalid("Finish the current edit and choose the composite image before recording.") }
+    guard canStartRecordingAction else { throw CraftError.invalid("Finish the current edit and choose the composite image before recording.") }
     guard actions.loadError == nil else { throw CraftError.invalid(actions.loadError!) }
     try session.startActionRecording(name: name, set: set); actionRevision += 1
   }
   @discardableResult func stopRecordingAction(save: Bool = true) throws -> RecordedAction {
-    guard canUseActions, let action = session.actionRecording?.snapshot else { throw CraftError.invalid("There is no finished recording to stop.") }
+    guard canStopRecordingAction, let action = session.actionRecording?.snapshot else { throw CraftError.invalid("There is no finished recording to stop.") }
     if save { try actions.save(action) }
     session.stopActionRecording(); actionRevision += 1; return action
   }
   func playAction(_ action: RecordedAction) {
-    guard canUseActions, session.actionRecording == nil else { error = "Stop recording and finish the current edit before playback."; return }
+    guard canPlayAction(action) else { error = "Stop recording and finish the current edit before playback."; return }
     playPreparedAction(action)
   }
   var actionState: [String: Any] {
     ["format": "photatoactions", "version": actions.file.version, "supportedVersions": Array(1...ActionLibraryFile.maximumVersion), "libraryRevision": actions.revision,
-     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "adobeATN": false],
-     "canRecord": canUseActions && session.actionRecording == nil && actions.loadError == nil,
+     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
+     "canRecord": canStartRecordingAction && session.actionRecording == nil && actions.loadError == nil,
      "canPlay": canUseActions && session.actionRecording == nil,
+     "canPlaySelectionOnly": canChangeLayerSelection && session.actionRecording == nil,
+     "canStopRecording": canStopRecordingAction,
      "canDuplicate": canDuplicateAction, "duplication": ActionDuplicationAPI.capabilities,
      "recording": session.actionRecording.map { Self.actionInfo($0.snapshot) } as Any? ?? NSNull(),
      "library": actions.file.actions.map(Self.actionInfo),

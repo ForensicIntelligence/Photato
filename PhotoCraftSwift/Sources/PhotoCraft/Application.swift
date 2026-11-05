@@ -318,9 +318,8 @@ import SwiftUI
     {
       return store?.canLayout(.distribute(kind)) == true
     }
-    if item.action == #selector(selectAllLayers) {
-      return store.map { !$0.geometryBusy && !$0.hasToneDraft && $0.transformDraft == nil } ?? false
-    }
+    if item.action == #selector(deselectLayers) { return store?.canDeselectLayers == true }
+    if item.action == #selector(selectAllLayers) { return store?.canChangeLayerSelection == true }
     if item.action == #selector(gradientMap) { return store?.canBeginGradientMap == true }
     if item.action == #selector(newGradientMap) { return store?.canAddGradientMap == true }
     if item.action == #selector(newGradientFill) { return store?.canBeginGradientFill == true }

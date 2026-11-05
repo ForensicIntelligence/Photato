@@ -14,25 +14,28 @@ extension WorkspaceView {
       case .layers:
         layerControls
         ScrollViewReader { proxy in
-          ScrollView {
-            LazyVStack(spacing: 1) {
-              ForEach(filteredLayers) { layer in
-                VStack(spacing: 0) {
-                  layerRow(layer)
-                  if let stack = layer.smartFilters { SmartFilterRows(store: store, layer: layer, stack: stack) }
-                }.id(layer.id)
-              }
-            }.padding(.vertical, 3)
-              .background {
-                LayerRevealScrollBridge(
-                  store: store, tracker: layerReveal, eyes: layerEyeTracking,
-                  request: layerReveal.currentRequest, visibleIDs: filteredLayers.map(\.id),
-                  rowHeight: store.workspaceLibrary.layerPanelOptions.thumbnailSize.controlHeight
-                    + 6,
-                  approach: { proxy.scrollTo($0) }
-                )
-                .accessibilityHidden(true)
-              }
+          GeometryReader { viewport in
+            ScrollView {
+              VStack(spacing: 0) {
+                LazyVStack(spacing: 1) {
+                  ForEach(filteredLayers) { layer in
+                    VStack(spacing: 0) {
+                      layerRow(layer)
+                      if let stack = layer.smartFilters { SmartFilterRows(store: store, layer: layer, stack: stack) }
+                    }.id(layer.id)
+                  }
+                }.padding(.vertical, 3)
+                  .background {
+                    LayerRevealScrollBridge(
+                      store: store, tracker: layerReveal, eyes: layerEyeTracking,
+                      request: layerReveal.currentRequest, visibleIDs: filteredLayers.map(\.id),
+                      rowHeight: store.workspaceLibrary.layerPanelOptions.thumbnailSize.controlHeight + 6,
+                      approach: { proxy.scrollTo($0) }
+                    ).accessibilityHidden(true)
+                  }
+                LayerPanelEmptySelectionArea(store: store).frame(minHeight: 18, maxHeight: .infinity).layoutPriority(-1)
+              }.frame(minHeight: viewport.size.height, alignment: .top)
+            }
           }
         }
         .onAppear { _ = layerReveal.appear(store) }

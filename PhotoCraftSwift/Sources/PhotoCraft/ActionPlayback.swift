@@ -12,6 +12,7 @@ extension EditorStore {
   func playPreparedAction(_ action: RecordedAction) {
     do {
       try action.validate()
+      if try applyLayerSelectionAction(action) { status = "Play \(action.name)"; return }
       let original = document, generation = layerPanelGeneration
       let clipboardRevision = clipboard.changeCount
       let input = try action.requiresInitialClipboard ? clipboard.read() : nil

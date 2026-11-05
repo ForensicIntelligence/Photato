@@ -377,6 +377,7 @@ import UniformTypeIdentifiers
       "selectionTransform":store.selectionTransformState,
       "pixelPaint":store.pixelPaintState,
       "layerLinks":store.layerLinkState,
+      "layerSelection":store.layerSelectionState,
       "layerFilter":store.layerFilterState,
       "layerStackOrder":store.layerStackOrderState,
       "layerCollectionTransform":store.layerCollectionTransformState,
@@ -1329,6 +1330,10 @@ import UniformTypeIdentifiers
         if request.kind == .stroke{store.lastPixelStroke=request.settings}else{store.lastPixelFill=request.settings;if let pattern=request.pattern{store.lastPixelFillPatternID=pattern.id;store.lastPixelFillContents="Pattern"}}
         return .json(state(share,document:document))
       }
+      if command.name == LayerSelectionAPI.command {
+        try store.applyLayerSelectionAPI(command)
+        return .json(state(share,document:document))
+      }
       if command.name == LayerFilterAPI.command {
         let baseline = revision(store, includeFilterEvaluation: false), expectedToken = token
         try await store.applyLayerFilterAPI(command) { [self, weak document] in
@@ -1697,6 +1702,7 @@ import UniformTypeIdentifiers
       "layerMerge":LayerMergeAPI.capabilities,
       "emptyLayerDeletion":EmptyLayerDeletionAPI.capabilities,
       "layerLinks":LayerLinksAPI.capabilities,
+      "layerSelection":LayerSelectionAPI.capabilities,
       "layerFilter":LayerFilterAPI.capabilities,
       "layerStackOrder":LayerStackOrderAPI.capabilities,
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
@@ -1762,6 +1768,7 @@ import UniformTypeIdentifiers
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
+        "layerSelection":LayerSelectionAPI.stateSchema,
         "layerFilter":LayerFilterAPI.stateSchema,
         "layerStackOrder":LayerStackOrderAPI.stateSchema,
         "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,

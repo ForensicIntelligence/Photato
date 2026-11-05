@@ -577,6 +577,11 @@ public struct EditorSession: Sendable {
       document.activeLayerID = id
     }
   }
+  /// User-driven deselection is a portable view Action, independent of edit history.
+  public mutating func deselectLayers() {
+    recordActionOperation(.deselectLayers, name: "Deselect Layers")
+    document.activeLayerID = nil
+  }
   /// Filtering changes view selection without an edit, dirty event or Action step.
   public mutating func setFilteredLayerSelection(_ id: UUID?) {
     guard id == nil || document.layers.contains(where: { $0.id == id }) else { return }

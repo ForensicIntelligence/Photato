@@ -33,15 +33,15 @@ struct ActionsPanel: View {
         }
         HStack { TextField("Set", text: $set); TextField("Action name", text: $name) }
         HStack {
-          Button("Record", systemImage: "record.circle") { attempt { try store.startRecordingAction(name: name, set: set) } }.disabled(!store.canUseActions)
-          Button("Play", systemImage: "play.fill") { if let action { store.playAction(action) } }.disabled(action == nil || !store.canUseActions)
+          Button("Record", systemImage: "record.circle") { attempt { try store.startRecordingAction(name: name, set: set) } }.disabled(!store.canStartRecordingAction)
+          Button("Play", systemImage: "play.fill") { if let action { store.playAction(action) } }.disabled(!store.canPlayAction(action))
           Button("Rename") { attempt { if var action { action.name = name; action.set = set; try store.actions.save(action) } } }.disabled(action == nil)
         }
       } else {
         Label("Recording: \(recording!.name)", systemImage: "record.circle.fill").foregroundStyle(.red)
         HStack {
-          Button("Stop", systemImage: "stop.fill") { attempt { selected = try store.stopRecordingAction().id } }.disabled(!store.canUseActions)
-          Button("Discard Recording") { attempt { _ = try store.stopRecordingAction(save: false) } }.disabled(!store.canUseActions)
+          Button("Stop", systemImage: "stop.fill") { attempt { selected = try store.stopRecordingAction().id } }.disabled(!store.canStopRecordingAction)
+          Button("Discard Recording") { attempt { _ = try store.stopRecordingAction(save: false) } }.disabled(!store.canStopRecordingAction)
         }
       }
       List(selection: $stepID) {

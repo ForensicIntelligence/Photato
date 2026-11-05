@@ -66,7 +66,7 @@ final class RichMergeWorkflowTests:XCTestCase {
     XCTAssertNoThrow(try BrushAPI.merge(value,schema:LayerMergeAPI.stateSchema))
     XCTAssertTrue(s.canPerformLayerPanel(.merge));XCTAssertTrue(s.canPerformLayerPanel(.mergeVisible))
     s.smartFilterMaskEditing=true;XCTAssertFalse(s.canMerge(.down));s.smartFilterMaskEditing=false
-    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,48)
+    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,49)
   }
   @MainActor func testPublishedMergeEventsUseRichCompositorOnBothJobInterfaces()async throws {
     let transport=AutomationActionJobsTests.Transport(),jobs=AutomationActionJobsTests()

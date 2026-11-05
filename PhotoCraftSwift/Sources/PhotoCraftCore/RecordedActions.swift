@@ -51,6 +51,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case gradientFill(ActionLayerTarget,GradientFill)
   case unsupported(String)
   case select(ActionLayerTarget)
+  case deselectLayers
   case newLayer(NewPixelLayerOptions, below: Bool)
   case newGroup(NewLayerGroupOptions, children: [ActionLayerTarget], below: Bool)
   case addContent(String, LayerContent)
@@ -263,7 +264,7 @@ public enum ActionOperation: Codable, Sendable {
       guard let layer=d.layers.first(where:{$0.id==layerID}),case .adjustment=layer.content else{throw CraftError.invalid("Recorded adjustment replacement needs an adjustment layer.")}
       return .replaceContent(layerID,.adjustment(value))
     case .unsupported(let reason): throw CraftError.unsupported(reason)
-    case .select: return nil
+    case .select, .deselectLayers: return nil
     case .newLayer(let v, let below): return .newPixelLayer(v, below: below)
     case .newGroup(let v, let children, let below): return .newGroup(v, children: try children.map(id), below: below)
     case .addContent(let name, let content):
@@ -394,6 +395,34 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
     }
     return false
   }
+  public var isLayerSelectionOnly: Bool {
+    let enabled = steps.filter(\.enabled)
+    return !enabled.isEmpty && enabled.allSatisfy {
+      switch $0.operation { case .select, .deselectLayers: true; default: false }
+    }
+  }
+  /// Resolve only layer targets; never scan or rasterize the retained source pixels.
+  /// The original document is unchanged if any later target is invalid.
+  public func layerSelection(in source: CraftDocument) throws -> UUID? {
+    try validate()
+    guard isLayerSelectionOnly else { throw CraftError.invalid("Choose a layer-selection-only action.") }
+    var view = source
+    for (index, step) in steps.enumerated() where step.enabled {
+      try Task.checkCancellation()
+      do {
+        switch step.operation {
+        case .select(let target):
+          let id = try target.resolve(in: view)
+          guard source.layers.contains(where: { $0.id == id }) else { throw CraftError.invalid("Layer selection target no longer exists.") }
+          view.activeLayerID = id
+        case .deselectLayers: view.activeLayerID = nil
+        default: throw CraftError.invalid("The action contains a document edit.")
+        }
+      } catch is CancellationError { throw CancellationError() }
+      catch { throw CraftError.invalid("Action ‘\(name)’, step \(index + 1) (\(step.name)): \(error.localizedDescription)") }
+    }
+    return view.activeLayerID
+  }
   public var writesClipboard: Bool { steps.contains { step in
     guard step.enabled else { return false }
     switch step.operation { case .clipboardCopy, .clipboardCut: return true; default: return false }
@@ -412,6 +441,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       try Task.checkCancellation()
       do {
         if case .select(let target) = step.operation { result.activeLayerID = try target.resolve(in: result) }
+        else if case .deselectLayers = step.operation { result.activeLayerID = nil }
         else if try resolve?(step.operation, &result) != true, let command = try step.operation.command(in: result) { try command.apply(to: &result) }
         try result.validate()
         try validate(result)

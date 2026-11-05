@@ -262,6 +262,7 @@ import PhotoCraftCore
       "Layer > Mask All Objects": #selector(maskAllObjects),
       "Select > Subject": #selector(selectSubject),
       "Select > All Layers": #selector(selectAllLayers),
+      "Select > Deselect Layers": #selector(deselectLayers),
       "Select > Transform Selection": #selector(transformSelection),
       "Edit > Transform > Skew": #selector(transformSkewMode),
       "Layer > Link Layers":#selector(linkSelectedLayers),

@@ -38,6 +38,11 @@ extension AutomationService {
         inputs.append((id, expected, input))
       }
     }
+    if action.isLayerSelectionOnly {
+      if let initial { _ = try ClipboardAPI.decode(initial) }
+      _ = try store.applyLayerSelectionAction(action)
+      return .json(state(share, document: document))
+    }
     let captured = inputs, snapshots = inputs.map { $0.2.store.document }
     let playback: (Data?, [PaletteColor]?) = try await executePreparedResult(document: document, shareID: share.id, revision: command.revision, validateCommit: { [self] in
       for (index, input) in captured.enumerated() {
