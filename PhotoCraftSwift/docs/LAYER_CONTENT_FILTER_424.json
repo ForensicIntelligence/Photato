@@ -173,7 +173,7 @@
   "current_normal_qualified": true,
   "current_universal_qualified": true,
   "current_native_live_qualified": true,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_install": false,
   "new_Xcode_archive": false,
   "new_upload": false,
@@ -985,5 +985,6 @@
   "universal": "artifacts/runs/20261105T214555Z-424-content-filter/universal/staging01.json",
   "native_live": "artifacts/runs/20261105T214555Z-424-content-filter/native-live01.json",
   "software_build": 424,
-  "affected_suite_passed": false
+  "affected_suite_passed": false,
+  "source_delivery": "docs/SOURCE_PUBLICATION_424.json"
 }

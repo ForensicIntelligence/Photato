@@ -11668,5 +11668,15 @@
     "full_package_closed": false,
     "normal_universal_qualified": true,
     "native_live_filter_scope_qualified": true
+  },
+  "source_delivery_424": {
+    "source": "424Source05",
+    "commit": "ce9c535ef80b8ccfb8b8f6ce4bcc82bf8276bb41",
+    "tree": "e94865f23ace0e0144c09fc948691ce7b2ae1d57",
+    "private": true,
+    "included_qualified_inputs": 7196,
+    "excluded_inputs": 34,
+    "root_Rust_preserved": 1061,
+    "reference": "docs/SOURCE_PUBLICATION_424.json"
   }
 }

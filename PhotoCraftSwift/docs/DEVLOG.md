@@ -440,7 +440,17 @@ For a readable account of the project from the beginning, see [Photato developme
 <!-- history-index:end -->
 
 <a id="dev-step-424"></a>
+
 ## 2026-11-05 — Step 424: Asynchronous layer-content filtering
+
+**424 final consistency:** All29checks pass:7230frozen inputs/1050productionSwift/91focused cases, all current/new/retained failed binaries/resources,360same ordered normal IDs/all57newpass/exact422diagnostics,70independent words each, universal/archive/nativeQuit,104fullscope/651identity/7pass preservation,7,196private published inputs,26protected survivors/14historical gaps and424standalone exactmirror/provenance. No compiler/test/validation process remains. No full suite/package/Photoshop/platform/60fps or release claim. The old dashboard process on8766is not running after the session gap; the updated diary is an offline file and requires no server. Final diary provenance and consecutive history refresh/check receipts are retained outside the evidence index; documentation-only backup includes the refreshed inventory without changing tested source.
+
+
+**424 diary generation repair:** First standalone generator run exited1 before writing output because moving the424heading left one newline after the anchor; its established parser requires two. Current overview was correctly424, but parsed milestones ended423. Both before-repair records/diagnostic retained under diary01paths. Restored the exact anchor/blank-line/heading format; no app/test/source input changed. Source backup sourcecommit already verified; offline regeneration reruns separately.
+
+
+**424 private source delivery:** Curated full native source/tests/Xcode project/scripts/redistributable assets/records; all7,196included qualified inputs match424Source05,34generated/cache/restricted inputs excluded with reasons. Every8,333staged source blob verified;55paths changed, allnative subtree, original1,061root/Rust hashes unchanged. Fresh parent/ref/private checks preceded a non-force push. Source commit`ce9c535ef80b8ccfb8b8f6ce4bcc82bf8276bb41`, tree`e94865f23ace0e0144c09fc948691ce7b2ae1d57` and remote main match, clean clone/private visibility verified. No source test/production input changed, no binary upload/install/Xcodearchive/Store/public release. Final offline diary/evidence inventory and documentation-only backup follow without changing tested inputs.
+
 
 **424 final function qualification (5 November2026, UTC):** Source05passes91focused Debug;Release03runs identical360case IDs each architecture:358pass,all57new415–424methods pass,zero crashes. The same three error lines as422remain (linkedPSD/PSB1920-byte comparison/two assertions; master-palette CancellationError/one unexpected). Preserved10642current normal outputs/resources and exact residual comparison. Both independent stack checks pass70literalFloat32words; these are native analytical references, not Photoshop output proof. Universal424passes bothmin14slices/signature/ZIPextractcontent; isolated ad-hoc validation bundle only, no installation/Storearchive/release.
 
