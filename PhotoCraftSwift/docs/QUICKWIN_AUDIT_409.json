@@ -1,0 +1,121 @@
+{
+  "step": 409,
+  "recorded_at_utc": "2026-11-05T00:06:35.751988+00:00",
+  "status": "Four major quick-win candidates audited; existing controls verified, Curves Auto moved to stillneeded",
+  "source": "408Source01 normal Release; unchanged software",
+  "source_inputs": 7187,
+  "source_manifest": "artifacts/runs/20261104T232107Z-408-shape-stroke-presets/release01-source.json",
+  "run": "artifacts/runs/20261104T235842Z-409-pen-paths-quickwins",
+  "software_build": 408,
+  "software_changes": false,
+  "new_tests": 0,
+  "normal_optimized_tests": {
+    "groups": {
+      "paths": 13,
+      "typography": 20,
+      "tonal": 18
+    },
+    "distinct_passed_each_architecture": 51,
+    "identical_order_within_each_group": true,
+    "failed_assertions": 0,
+    "unexpected_errors": 0,
+    "crashes": 0,
+    "single_51_case_suite_claimed": false,
+    "results": {
+      "paths01": "artifacts/runs/20261104T235842Z-409-pen-paths-quickwins/paths01-qualification.json",
+      "type01": "artifacts/runs/20261104T235842Z-409-pen-paths-quickwins/type01-qualification.json",
+      "tonal01": "artifacts/runs/20261104T235842Z-409-pen-paths-quickwins/tonal01-qualification.json"
+    }
+  },
+  "audit": {
+    "G04": {
+      "status": "already_implemented_regression_verified",
+      "scope": "Brush-based Fill/Stroke Path in Paths panel context/footer and path.paint",
+      "source": [
+        "Sources/PhotoCraft/WorkspacePaths.swift",
+        "Sources/PhotoCraft/AdvancedPaths.swift",
+        "Sources/PhotoCraft/AutomationPaths.swift"
+      ],
+      "qualification": "13 existing normal optimized cases pass each architecture, including fill/stroke/pressure/depth/selection/protection, native history and API. No current live Photoshop or UI observation.",
+      "remaining": "Full pen modifiers/multi-anchor/fitting/clipping export, other stroke tools, advanced Fill Path options and all original G04 acceptance."
+    },
+    "T01": {
+      "status": "already_implemented_regression_verified",
+      "scope": "Controls represented by the existing rich-type model",
+      "source": [
+        "Sources/PhotoCraft/TypeControls.swift",
+        "Sources/PhotoCraft/RichTypeControls.swift",
+        "Sources/PhotoCraft/AdvancedTypeControls.swift",
+        "Sources/PhotoCraftCore/TextTypography.swift",
+        "Sources/PhotoCraftCore/RichTypeFormatting.swift"
+      ],
+      "qualification": "20 shared typography cases pass each architecture across this and T04, including native editing/history, API and supported Adobe text job paths. No claim that every Photoshop Character/Paragraph control exists.",
+      "remaining": "Window > Character/Paragraph and Type > Panels counterpart menus remain pending; proper separate/docked panels require workspace catalog migration/hosting, sectioning, state/API and lifecycle work. Full on-canvas/rich text/editable PSD/default/output scope stays open."
+    },
+    "T04": {
+      "status": "already_implemented_regression_verified",
+      "scope": "Existing shaped-text geometry parameters exposed in native sheet",
+      "source": [
+        "Sources/PhotoCraft/ShapedTypeWorkspace.swift",
+        "Sources/PhotoCraftCore/TextGeometry.swift",
+        "Sources/PhotoCraft/AutomationTextLayout.swift"
+      ],
+      "qualification": "Same20-case typography batch includes native shaped preview/Cancel/local history/commit and API/persistence checks. Every existing public TextGeometry control has a native path; exact Photoshop layout is unqualified.",
+      "remaining": "All original text path/warp/Dynamic Text fitting/reflow/parameters and independent output/platform acceptance."
+    },
+    "A01": {
+      "status": "moved_to_stillneeded",
+      "scope": "Presets/Levels Auto already present; Curves Auto is the missing candidate",
+      "source": [
+        "Sources/PhotoCraft/LevelsControls.swift",
+        "Sources/PhotoCraft/CurvesControls.swift",
+        "Sources/PhotoCraftCore/Histogram.swift",
+        "Sources/PhotoCraftCore/Curves.swift"
+      ],
+      "qualification": "18 existing normal optimized cases pass each architecture for histogram/Auto/presets/ALV/native preview/history. Curves lacks Auto; the existing estimator returns LevelsAdjustment, without a shared Curves Auto/options/default contract.",
+      "remaining": "Implement real Curves Auto and Auto Color Correction Options with independent Photoshop references, shared APIs/history, masks/HDR and full original A01 scope. Do not substitute destructive Auto Levels or an unqualified curve approximation."
+    }
+  },
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/stroke-paths-with-color.html",
+      "scope": "Paths panel stroke uses current painting tool/settings; pressure option. Photato current tested path uses Brush; broader tool selection remains open."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-and-tone-with-curves.html",
+      "updated": "2026-09-30",
+      "scope": "Curves has presets, Auto and Auto Color Correction Options; source confirms the latter are missing in current Curves UI/engine contract."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/adjusting-color-and-tone.html",
+      "result": "Not accessible through web tool; not used as evidence."
+    }
+  ],
+  "api_impact": {
+    "new_executable_capability": false,
+    "schemas_routes_and_typed_count_unchanged": true,
+    "typed_commands": 243,
+    "native_archive": 86,
+    "actions_maximum": 46,
+    "existing_native_and_Adobe_type_paths_tested_where_supported": true,
+    "no_new_Adobe_conformance_claim": true
+  },
+  "cursor_impact": {
+    "new_tool_or_modifier": false,
+    "tools": 55,
+    "combinations": 880,
+    "latest_matrix": "408 normal optimized batch; same software, no repeat required"
+  },
+  "native_UI": "No new UI action.408candidate/control/drawing/history/Quit pending human unlock after prior locked-Mac observation. Do not infer an answer.",
+  "full_current_suite_passed": false,
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "Photoshop_parity": false,
+  "new_build": false,
+  "new_archive": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "A04: Current2026 adjustment layers, then A05"
+}

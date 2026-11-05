@@ -418,10 +418,80 @@ For a readable account of the project from the beginning, see [Photato developme
 | 403 | 2026-11-04 | [Delete All Empty Layers](#dev-step-403) |
 | 404 | 2026-11-04 | [Single-pixel marquee and quick-win audits](#dev-step-404) |
 | 405 | 2026-11-04 | [Color Lookup export and quick-win audits](#dev-step-405) |
-| 2026-11-04 | 406 | [RGB8 multi-component selection](#dev-step-406) |
-| 2026-11-04 | 407 | [Duplicate saved actions](#dev-step-407) |
-| 2026-11-04 | 408 | [Shape stroke presets](#dev-step-408) |
+| 406 | 2026-11-04 | [RGB8 multi-component selection](#dev-step-406) |
+| 407 | 2026-11-04 | [Duplicate saved actions](#dev-step-407) |
+| 408 | 2026-11-04 | [Shape stroke presets](#dev-step-408) |
+| 409 | 2026-11-04 | [Paths, typography and tonal quick-win audit](#dev-step-409) |
+| 410 | 2026-11-05 | [Gradient Fill API and portable Actions](#dev-step-410) |
 <!-- history-index:end -->
+
+<a id="dev-step-410"></a>
+
+## 2026-11-05 — Step 410: Gradient Fill API and portable Actions
+
+Previous turn classification: progress. Four candidates audited,51existing normal optimized cases each architecture and18consistency checks pass,409diary/dashboard/history verified with no missing explicit reference. All7,187software inputs remain unchanged at408Source01 and no own compiler/test worker is live. Native408check remains pending human unlock, without an inferred answer.
+
+Continue major quickwins at A04, thenA05/A07. Audit actual controls before implementation. ModernAdjustmentEditor loops every declared control for each modern kind with sliders/numeric input, Reset and history coalescing; the optional grain seed is already serialized/API-exposed but is not evidence of a missing Photoshop UI control. Do not add an unrelated control to create a completion count. Inspect remaining candidates and current normal regression evidence. Preserve full original scope and acceptance.
+
+### Confirmed gradient automation gap and deterministic mask fixture
+
+A04's11existing cases pass on both preserved408normal architectures. Gradient native workflow batch is13/14each; retain failure at GradientToolWorkflowTests:155(0.98039216expected<0.1), with no unexpected error/crash. Source inspection explains the fixture assumption: PaintColorContext.mask defaults to white foreground/black background while image colours default black/white. The test uses foreground-to-background but assumes black-to-white after entering the mask. Preserve the old test/source/binaries. Pin its intended black-to-white ramp explicitly, keeping its original mask-direction predicate and every preview/history/cancel assertion. Add a separate literal default-palette/mask-rendering test so default behavior is not hidden by the fixture repair. No palette/gradient kernel change is proposed.
+
+A05native transform/preset controls exist, but source-wide API inspection finds no direct editable Gradient Fill setter. Shape paint schemas can encode a GradientFill, yet they do not edit a gradient-fill layer. Add one typed Photato `gradient.fill.patch` command over existing `.setGradientFill`, with required target UUID/nonempty fill patch, strict nested schema, current-value merge, shared native history and normal authorization/busy/stale/lock checks. Expose active fill/editability/state/result/capabilities. No new Adobe route/descriptor is invented; classic painting/creation/preset-library automation stays separately open. No new tool/modifier, archive or Actions format is needed. All workers are terminal before source edits.
+
+### Gradient Fill patch implementation
+
+Add AutomationGradientFills.swift: one strict nonempty fill patch with current-value merge for objects and complete replacement for arrays. Reuse ShapeAPI's captured-colour GradientFill schema and native `.setGradientFill` command. Publish request/state/result/capability schemas, active fill/editability and units/limits/remaining gaps. Register the command, common state and capability metadata; the typed catalog advances243to244. HTTP dispatch retains normal permissions/revision/busy guards and explicitly matches native component/lock availability. No new Adobe route, tool/cursor or serialization version. Local build410.
+
+Add eight GradientFillAPITests for partial-field/mask/placement preservation, native editor/API byte equality at RGB8/16/32 with one Undo/Redo, full stop-array replacement and nested retention, invalid/busy/stale/wrong/locked cases, discovery/active widget updates, nonactive explicit targets, native/Actions persistence/playback and isolated default-mask versus explicit black-white gradient rendering. Pin the old Classic mask test's gradient to blackToWhite without changing its original mask predicate. The new default-mask test checks the distinct white/black palette behavior explicitly. Update the shared expected catalog count; native archive86/Actions46 stay unchanged.
+
+### Source01 result and portable Gradient Fill Actions repair
+
+Source01 freezes7,189inputs, builds in110.44s and completes45focused Debug cases:44pass, one new playback case has two assertions,0unexpected errors/crashes. Seven of eight new cases pass, including native/API byte equality across RGB depths, guards, active widget/state, nonactive target and literal mask-default rendering. The earlier Classic mask fixture now passes with its explicit ramp. Preserve full failed source/archive/driver/logs and executable/test bundle/resources before repair.
+
+The failed action contains the existing unsupported sentinel, “Gradient Fill is not yet recordable”. Existing ActionOperation has no reusable GradientFill edit payload. Correct the earlier assumption that no Actions extension was needed: add a self-contained target+GradientFill operation, recording, validation and native playback. Require action-file47only for this new payload, leaving older operations' required versions intact; maximum becomes47and old1–46files remain readable. Previously saved unsupported steps have no recoverable fill payload and stay unsupported. Add version47roundtrip, downgrade/future rejection, malformed fill rejection, legacy46read and cross-document target remapping to the failing test; keep its original playback/Undo assertions.
+
+Update current-maximum assertions and two future-version fixtures, preserving genuine legacy45/46minimum checks. The source02metadata-delta record names every affected test; no existing pixel/source/fidelity assertion is removed. Broaden the focused rerun with recorded Actions, duplication and version/legacy checks because the native action model changes. Native archive86and typed catalog244remain; new Gradient Fill Actions use47. No gradient/palette/rendering kernel change.
+
+### Passing Source02 and normal-format qualification
+
+Source02 builds in135.28s and passes74/74focused Debug cases in4.337s, including all eight new cases, with0failed assertions/unexpected errors/crashes and all7,189inputs unchanged. Preserve complete binary/test bundle/resources and source/log evidence. Save the new Actions offscreen image separately and restore its original14abfaf4…bytes; no live screenshot is claimed. The added target remapping, format47roundtrip/downgrade/future/malformed checks and older46read pass.
+
+Because this increment introduces a persisted Actions47payload and changes its native recorder/reader, qualify the same source with normal optimized ARM and translated-Intel builds now. Select the passing74-case set plus every touched current-maximum metadata assertion, preserving genuine old minimum-version tests. This is a bounded affected set, not a full suite or new Photoshop equivalence claim. No source edit or CUA while compiler/test workers live.
+
+The initial current-maximum selector generator matched private Gate helpers before XCTest classes in several files. Preserve that first method list; correct extraction to the class ending Tests before executing the normal batch. No test run or product change occurred from the inaccurate selector list. The corrected12method list is saved separately and will be checked against executed IDs.
+
+### Normal optimized qualification and breadth handoff
+
+Release01 builds normal optimized ARM in626.58s and Intel test bundle in619.55s. ARM passes82/82cases in3.242s; translatedIntel passes the exact same82ordered IDs in4.716s. All8new GradientFillAPITests and all12touched current-maximum metadata selectors actually execute and pass. Zero assertions/unexpected errors/crashes. Source02Debug and Release01use identical7,189input hashes; preserve complete source, drivers, logs, binaries, resources and XCTest bundles. The55tool×16modifier matrix passes880combinations; no new tool or modifier introduced. Debug-only compiler workaround is absent from Release.
+
+Stage01creates an isolated ad-hoc-signed sandbox universal410candidate, using explicit /usr/bin/xattr after the older408PATH issue. Both slices declare macOS14. Strict deep signature checks, required imaging resource hash, optional local model copy and ZIP extraction/content equality pass. ZIP SHA256 b096634d062018901e71d1bb0bd7ee5491a9e710d7a12024e64b6952bcfcca41; universal binary41f0282ef92cca8e51f34e5a75bff6d516e8ac628cfbb5218ae5333ce2cb4ce7. No CUA/launch/install/Xcode archive/upload/release. Actual408stroke presets and410shared Gradient Fill interaction/history/playback/Quit remain pending the unanswered human unlock request. Do not claim these native checks passed.
+
+Update GRADIENT_FILL_API.md and GRADIENT_FILL_API_410.json, API guide, priority/phase/checkpoint/status/order/plan/README/AGENTS and readable diary. A04candidate is already implemented with11normal regression cases each architecture. Complete the selected A05API/Actions quick win and advance to A07Pattern fills/pixel fills/strokes, thenF01.38candidates remain; this is not a completion percentage. Preserve104original package scopes/acceptance,651command identities/statuses and all prior failures. New catalog244/native86/Actions47are separate from the command-parity inventory. No full package closes. Prepare a curated private source backup under the existing authorization, preserving1,061root/Rustfiles and current history; exclude generated models/cache/runtime/signing/restricted external image. Publication receipt and final offline-diary/history checks follow without retesting unchanged product source.
+
+<a id="dev-step-409"></a>
+
+## 2026-11-04 — Step 409: Paths, typography and tonal quick-win audit
+
+Previous turn classification: progress. Preset native/API implementation passes156normal optimized cases per architecture, including24new cumulative cases; strict universal packaging,25structural checks,408history/diary/dashboard and verified private source/docs backup pass. Live408control/drawing/history/Quit still awaits human unlock. All7,187frozen software inputs remain unchanged; authoritative process inspection finds no own compiler/test worker.
+
+Initial setup attempts: the first helper has a Python conditional spacing syntax error and never executes. The corrected helper creates the unique run, before-snapshots and409JSON records, then its guessed chronological-row prefix raises StopIteration before DEVLOG changes. Inspect actual index format:406–408had date/step columns reversed. Correct those three row column positions, preserve dates/anchors/content, and add409using actual end marker. No product input changes.
+
+Continue major quickwins at G04, thenT01. Source audit confirms Fill/Stroke Path already exist in PathsPanel context menus and footer, share paintSelectedPath/PathPainting with path.paint, and retain pressure, captured brush, validation and history. Test that existing path on preserved408normal binaries rather than rewrite it. Full G04and all original scopes/acceptance remain open; native408check remains pending, not answered by elapsed time.
+
+### Verified existing paths and remaining gaps
+
+Preserved408normal binaries execute13path,20typography and18tonal cases per architecture, each group with identical ordered IDs and no failed assertions/unexpected errors/crashes. The51IDs are distinct across three runs, not one51case full suite. Each command, existing source/binary SHA, stdout/stderr and summary is saved separately. No software, test, asset, build configuration, archive, installation or source push is introduced. All7,187qualified software inputs remain identical to private408source.
+
+G04Fill/Stroke Path already has native context/footer controls and path.paint, brush/pressure/depth/selection/lock/history tests. Other painting tools, advanced Fill options and full original scope stay open. T01model fields already have native Properties controls, plus API/native/Adobe type regressions; Window Character/Paragraph and Type Panels counterparts remain pending. WorkspacePanel catalog2and panel host persistence show these need proper integration/sectioning/lifecycle/API work, rather than a superficial menu binding. T04existing geometry parameters are exposed with preview/Cancel/local history/commit/API/persistence tests. Full text/default/output/Photoshop acceptance remains open.
+
+A01preset/ALV and Levels Auto/clipping controls already exist and pass the selected tests. Curves Auto is absent; the reusable histogram estimator returns LevelsAdjustment. Do not bind Auto Levels to Curves or invent an approximate transfer under a Photoshop name. Move the missing Curves Auto/options/defaults/API work to stillneeded. Public Adobe stroke guidance confirms painting-tool/pressure semantics; Curves guidance (updated30September2026) confirms Auto/options. A separate old adjustment URL is unavailable and is not evidence. Reference URLs and limited paraphrases are recorded in QUICKWIN_AUDIT_409.json; no Adobe code/assets copied. The next package is A04current2026adjustments, correcting an earlier commentary that mistakenly called it Hue/Saturation.
+
+Update priority/phase/checkpoint/status/plan/README/AGENTS/API notes and readable diary. Remove four processed candidates from the quick-win queue, leaving40; no full feature/package or completion-percentage claim. Every104original scope/acceptance and651command identity/status remains. No new API behavior or canvas/modifier action;243typed/native86/Actions46/55tools×16 remain. The408live check is still pending human unlock. Regenerate both standalone diaries and perform a bounded final consistency/history check; no application test repeat for documentation.
+
+### Final records
+
+Generate the standalone diary with `python3 scripts/build-diary.py` in nusite and mirror diary.html, diary.md and assets/diary-provenance.json. Validate unchanged software/source, three passing groups, all original scopes/acceptance, command inventory, seven-pass queue, explicit pending408native check and actual dashboard/diary provenance. Save final-verification01.json under this run. Refresh/check development history consecutively, with output and final receipt under excluded artifacts/development-history-audit/409-final-delivery. No new software build, app archive/install, source upload, App Store action or release.
 
 <a id="dev-step-408"></a>
 

@@ -1,0 +1,94 @@
+{
+  "step": "dev-step-410",
+  "goal_status": "active",
+  "status": "Gradient Fill patch API and portable Actions47 implemented; focused Debug and normal universal qualification pass; live native UI pending unlock",
+  "software_build": 410,
+  "tested_source": "410Source02",
+  "run": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins",
+  "source_inputs": 7189,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "A07",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_410.json",
+  "priority_rule": "docs/WORK_PRIORITIES_410.json",
+  "previous_turn_classification": "Progress:409audited four candidates without software changes.410audits A04and implements selected A05API/Actions quick win.",
+  "next_work": [
+    "A07: source-audit Pattern fills and pixel fills/strokes, then F01.",
+    "After human unlock qualify410candidate shared Gradient Fill editing/history/playback and cumulative408stroke presets; preserve older candidates.",
+    "Preserve all original scope/acceptance and prior failures; continue seven-pass order."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/release01-source.json",
+  "production_swift_files": 1032,
+  "native_workflow_qualified": false,
+  "native_candidate_terminated": false,
+  "evidence": "docs/GRADIENT_FILL_API_410.json",
+  "tests": {
+    "source01_debug": {
+      "passed": 44,
+      "cases": 45,
+      "failed_assertions": 2,
+      "new_passed": 7,
+      "new_cases": 8,
+      "unexpected": 0,
+      "crashes": 0,
+      "reason": "Existing recorder emitted unsupported Gradient Fill sentinel; source and full binaries retained before adding semantic Actions payload.",
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/source01-summary.json"
+    },
+    "source02_debug": {
+      "passed": 74,
+      "cases": 74,
+      "new_passed": 8,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 135.28,
+      "test_seconds": 4.337,
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/source02-summary.json"
+    },
+    "release01": {
+      "passed_each": 82,
+      "cases_each": 82,
+      "new_passed_each": 8,
+      "assertions_each": [
+        0,
+        0
+      ],
+      "unexpected_each": [
+        0,
+        0
+      ],
+      "crashes_each": [
+        0,
+        0
+      ],
+      "same_order": true,
+      "all_12_touched_metadata_selectors_executed": true,
+      "normal_optimized": true,
+      "Debug_workaround_in_Release": false,
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/release01-qualification.json"
+    }
+  },
+  "native_workflow_evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/universal/staging01.json",
+  "increment_complete": true,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "Strict Gradient Fill API/native transaction/portable Actions47;82affected normal cases per architecture and74Debug. Full A05/liveUI/current-suite/Photoshop gates remain open.",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "410Source02; live native UI pending",
+  "latest_private_source": "408Source01",
+  "source_publication": "docs/SOURCE_PUBLICATION_408.json",
+  "source_commit": "004b0f4625d99008f2bc3ae2e76a0d34f1074e50",
+  "new_build": true,
+  "software_source_pending": null,
+  "actions_maximum": 47,
+  "typed_API_commands": 244,
+  "history_receipt": "artifacts/development-history-audit/410-final-receipt01.json"
+}

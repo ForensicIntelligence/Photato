@@ -122,6 +122,8 @@ final class GradientToolWorkflowTests: XCTestCase {
     let store = EditorStore(document: try CraftDocument(width: 100, height: 80))
     defer { store.renderTask?.cancel() }
     store.chooseTool(WorkspaceCatalog.tool("gradient"))
+    // This fixture checks mask direction independently of target palette defaults.
+    store.gradientOptions.gradient = .blackToWhite
     store.gradientOptions.mode = .classic
     store.gradientOptions.dither = false
     let original = store.document

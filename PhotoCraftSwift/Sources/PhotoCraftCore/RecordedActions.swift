@@ -48,6 +48,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case selectionCoverage(SelectionMask?,SelectionMode)
   indirect case adjustmentBrush(RecordedAdjustmentBrush)
   indirect case replaceAdjustment(ActionLayerTarget,Adjustment)
+  indirect case gradientFill(ActionLayerTarget,GradientFill)
   case unsupported(String)
   case select(ActionLayerTarget)
   case newLayer(NewPixelLayerOptions, below: Bool)
@@ -145,6 +146,7 @@ public enum ActionOperation: Codable, Sendable {
       if edit.output == .selection{self = .selectionCoverage(edit.mask,.replace)}else{self = .unsupported("Focus Area mask/layer output is not yet recordable. Use selection output and a separate mask action.")}
     case .adjustmentBrush(let request):self = .adjustmentBrush(.init(request,in:d))
     case .replaceContent(let id, .adjustment(let value)):self = .replaceAdjustment(target(id),value)
+    case .setGradientFill(let id, let fill): self = .gradientFill(target(id), fill)
     case .newPixelLayer(let v, let below): self = .newLayer(v, below: below)
     case .newGroup(let v, let children, let below): self = .newGroup(v, children: children.map(target), below: below)
     case .addLayer(let layer) where layer.smartObject?.linkedSource != nil:
@@ -247,6 +249,13 @@ public enum ActionOperation: Codable, Sendable {
     case .setShape(let target,let definition,let patterns):return .shape(.configure(try id(target),definition,patterns:patterns))
     case .appendShape(let target,let component):return .shape(.append(try id(target),component))
     case .adjustmentBrush(let value):return try value.command(in:d)
+    case .gradientFill(let target, let fill):
+      let layerID = try id(target)
+      guard let layer = d.layers.first(where: { $0.id == layerID }),
+        case .gradientFill = layer.content, !d.isLocked(layerID)
+      else { throw CraftError.invalid("Recorded Gradient Fill needs an unlocked Gradient Fill layer.") }
+      try fill.validate()
+      return .setGradientFill(layerID, fill)
     case .replaceAdjustment(let target,let value):
       let layerID=try id(target)
       guard let layer=d.layers.first(where:{$0.id==layerID}),case .adjustment=layer.content else{throw CraftError.invalid("Recorded adjustment replacement needs an adjustment layer.")}
@@ -367,6 +376,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       }
       if case .adjustmentBrush(let value)=step.operation {try value.request.validate()}
       if case .replaceAdjustment(_,let value)=step.operation {try value.validate()}
+      if case .gradientFill(_, let fill) = step.operation { try fill.validate() }
       if case .adjustment(_,let value)=step.operation {try value.validate()}
       if case .editType(_,let text,let origin,_)=step.operation {try text.validate();guard origin.x.isFinite,origin.y.isFinite,abs(origin.x)<=1_000_000,abs(origin.y)<=1_000_000 else{throw CraftError.invalid("Invalid recorded type origin.")}}
       if case .addContent(_, .adjustment(.source(let value)))=step.operation {try value.validate()}

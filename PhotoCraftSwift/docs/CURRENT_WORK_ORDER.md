@@ -1,3 +1,7 @@
+**Checkpoint 410 — Gradient Fill API and Actions:** Live Gradient Fill settings now have a strict shared `gradient.fill.patch` API and portable Actions recording/playback. All 74 focused Debug tests and 82 normal optimized tests per architecture pass, including eight new cases. The universal package passes macOS 14/signature/ZIP checks. Typed catalog244, native archive86, Actions47. Full A05 and live UI/Photoshop/current-suite qualification remain open. **Next: A07 Pattern fills and pixel fills/strokes, then F01.** Human unlock for live408/410checks is still pending. [Guide](GRADIENT_FILL_API.md) · [Evidence](GRADIENT_FILL_API_410.json).
+
+**Checkpoint 409 — Quick-win audit:** Paths, existing typography controls and shaped-text parameters are already implemented. All 51 selected existing tests pass per architecture across three normal optimized groups. Curves Auto is confirmed missing and moves to stillneeded; separate Character/Paragraph panel menus remain open. Software is unchanged at 408 Source01. **Next: A04 current2026 adjustment layers, then A05.** The 408 live check still awaits human unlock. [Evidence](QUICKWIN_AUDIT_409.json).
+
 **Checkpoint 408 — Shape stroke presets:** Solid, Dashed and Dotted native controls/shared API are implemented. All 156focused normal optimized cases pass per architecture, including24 new across406–408 and eight new preset cases. The universal package passes macOS 14/signature/ZIP checks. **Actual408 native control/history/Quit awaits Mac unlock**; no live pass claimed. Full G03/Photoshop/current-suite qualification remains open. **G04 is next, then T01.** [Guide](SHAPE_STROKE_PRESETS.md) · [Evidence](SHAPE_STROKE_PRESETS_408.json).
 
 **Checkpoint 407 — Duplicate saved actions:** The native Actions panel menu and existing `actions.manage` API now make independent saved-action copies through the shared library transaction. All 34 focused Debug tests pass, including eight new cases. Actual sandbox duplication, saved IDs/payloads, playback/Undo and normal Quit pass; the existing shared library hash is unchanged. Full AUT01/Photoshop/normal universal qualification remains open. **G03 is next, then G04.** [Guide](ACTION_DUPLICATION.md) · [Evidence](ACTION_DUPLICATION_407.json).
@@ -26,13 +30,13 @@ Quick wins are small, useful changes that fit the current engine. Still needed c
 
 We sweep each package once per pass. A quick win gets one normal implementation checkpoint, including its UI, menu, API, history and focused tests. If it turns into a larger engine project, record the findings under still needed and move on. Fix safety and transaction failures before treating a path as delivered. Do not spend successive checkpoints exhausting one subsystem’s details.
 
-**Current: G04 — Pen and Paths.** Audit source and native controls before selecting one missing bounded quick win. T01 follows. G03's stroke preset implementation/API and normal optimized baseline pass;408 native UI awaits human unlock and stays explicitly pending. Full package scope and every original acceptance criterion remain. The table preserves the original candidate survey; the current machine-readable queue governs execution.
+**Current: A07 — Pattern fills and pixel fills/strokes.** Audit existing Fill/Stroke controls, placement and shared API before selecting a missing bounded option. F01 follows. A04 controls already work; the selected A05 editable-fill API/Actions quick win passes focused Debug and normal universal checks. Every full package remains open. There are 38 candidate packages in the major quick-win queue; this is a queue count, not a completion estimate. Live408/410checks still await human unlock.
 
 **S05 is parked, still open.** Its seven-file Photoshop reference matrix is complete. The selected-gray/initially-empty/explicit-full and PSD repair will resume during major still needed. A channel-row double-click candidate can be considered once when S05 is reached in the quick-win sweep. C01 no longer waits for S05 closure.
 
 Candidates below require a source audit before implementation unless evidence already confirms the gap. A blank quick-win cell means no honest small implementation was identified; that package skips the quick-win pass. Existing functionality will not be rewritten to create a completion count. Final-detail tracks stay inside pass7, in quick-win/still-needed/cleanup order.
 
-[Machine-readable priority](WORK_PRIORITIES_408.json) · [All scope, acceptance and tracks](FUNCTION_PHASES_408.json) · [S05 restart point](QUICK_MASK_GRAY_401.json)
+[Machine-readable priority](WORK_PRIORITIES_410.json) · [All scope, acceptance and tracks](FUNCTION_PHASES_410.json) · [S05 restart point](QUICK_MASK_GRAY_401.json)
 
 ## Major functions
 

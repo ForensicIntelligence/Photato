@@ -36,6 +36,7 @@ struct AutomationCommand: Sendable {
     var schema: [String: Any] {
       var properties: [String: Any] = [:]
       for key in parameters.keys {
+        if name == GradientFillAPI.command { properties[key] = GradientFillAPI.schema(key); continue }
         if TextFindAPI.commands.contains(name) {properties[key]=TextFindAPI.schema(key);continue}
         if AdvancedStyleAPI.commands.contains(name) {properties[key]=AdvancedStyleAPI.schema(key);continue}
         if LinkedArtworkAPI.commands.contains(name) {properties[key]=LinkedArtworkAPI.schema(key);continue}
@@ -205,6 +206,7 @@ struct AutomationCommand: Sendable {
     .init(name:"render.flame",parameters:["settings":"Procedural settings","layerID":"Raster target or new-layer insertion parent","newLayer":"Render on a new raster layer","pathID":"Saved path for Flame"],description:"Render flame through the native raster engine in one undoable transaction.",optionalParameters:["settings","layerID","newLayer","pathID"]),
     .init(name:"render.tree",parameters:["settings":"Procedural settings","layerID":"Raster target or new-layer insertion parent","newLayer":"Render on a new raster layer"],description:"Render tree through the native raster engine in one undoable transaction.",optionalParameters:["settings","layerID","newLayer"]),
     .init(name:"render.pictureFrame",parameters:["settings":"Procedural settings","layerID":"Raster target or new-layer insertion parent","newLayer":"Render on a new raster layer"],description:"Render pictureFrame through the native raster engine in one undoable transaction.",optionalParameters:["settings","layerID","newLayer"]),
+    .init(name: GradientFillAPI.command, parameters: ["layerID":"Existing Gradient Fill layer UUID", "fill":"Nonempty partial fill; omitted fields retain current values"], description: "Edit live Gradient Fill controls through the shared native transaction."),
     .init(name:"path.configure",parameters:["layerID":"Editable shape path target","tool":"Pen tool ID","tolerance":"Freeform/trace tolerance","combine":"Component operation","pathID":"Select saved path"],description:"Configure native Pen/Paths tools.",optionalParameters:["layerID","tool","tolerance","combine","pathID"]),
     .init(name:"path.draw",parameters:["points":"Document points","method":"freeform or curvature","closed":"Close contour","corners":"Curvature corner indices","tolerance":"Freeform fit tolerance","pathID":"Replace saved path","name":"Path name","workPath":"Work path flag"],description:"Fit Freeform or interpolate Curvature Pen geometry in one transaction.",optionalParameters:["method","closed","corners","tolerance","pathID","name","workPath"]),
     .init(name:"path.edit",parameters:["operation":"save, delete, selection or vectorMask","path":"Editable cubic geometry","pathID":"Saved path UUID","layerID":"Vector mask layer","name":"Path name","workPath":"Work path flag","selectionMode":"Selection combination","feather":"Selection feather","antiAlias":"Selection antialiasing"],description:"Edit retained paths or convert to selections/vector masks.",optionalParameters:["path","pathID","layerID","name","workPath","selectionMode","feather","antiAlias"]),
@@ -621,6 +623,7 @@ struct AutomationCommand: Sendable {
     case "tone.apply":return .toneAdjustment(try classicToneRequest(document))
     case "render.flame","render.tree","render.pictureFrame":return .proceduralRender(try proceduralRequest(document))
     case "filter.apply": return try filterCommand(document: document)
+    case GradientFillAPI.command: return try gradientFillCommand(document)
     case "text.layout":return try textLayoutCommand(document)
     case "text.glyph":return try insertTypeGlyph(document)
     case "text.create", "text.set": return try textCommand(document: document)

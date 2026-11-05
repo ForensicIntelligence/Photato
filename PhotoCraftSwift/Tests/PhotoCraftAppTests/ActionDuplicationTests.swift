@@ -55,11 +55,11 @@ final class ActionDuplicationTests: XCTestCase {
     try library.update { $0.version = ActionLibraryFile.maximumVersion }
     let copy = try library.duplicate(source.id)
     let restored = ActionLibrary(persistenceURL: url)
-    XCTAssertNil(restored.loadError); XCTAssertEqual(restored.file.version, 46)
+    XCTAssertNil(restored.loadError); XCTAssertEqual(restored.file.version, ActionLibraryFile.maximumVersion)
     XCTAssertEqual(try encoded(restored.action(source.id)), try encoded(source))
     XCTAssertEqual(try encoded(restored.action(copy.id)), try encoded(copy))
     let exported = try restored.exportFile(copy.id), decoded = try ActionLibraryFile.decode(exported)
-    XCTAssertEqual(decoded.version, 46); XCTAssertEqual(decoded.actions.count, 1)
+    XCTAssertEqual(decoded.version, ActionLibraryFile.maximumVersion); XCTAssertEqual(decoded.actions.count, 1)
     XCTAssertEqual(try encoded(decoded.actions[0]), try encoded(copy))
     let imported = ActionLibrary(); try imported.importFile(exported)
     XCTAssertEqual(imported.file.actions.count, 1); XCTAssertNotEqual(imported.file.actions[0].id, copy.id)

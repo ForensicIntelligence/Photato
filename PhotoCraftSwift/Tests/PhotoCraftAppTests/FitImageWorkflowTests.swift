@@ -102,7 +102,7 @@ final class FitImageWorkflowTests: XCTestCase {
       XCTAssertEqual(store.document,before);XCTAssertEqual(store.session.undoStack.count,count);store.cancelFitImage()
       let capability=try await helper.request(service,path:"/v1/capabilities");XCTAssertEqual(capability.0.statusCode,200)
       let json=try XCTUnwrap(JSONSerialization.jsonObject(with:capability.1)as?[String:Any]);XCTAssertNotNil((json["stateSchemas"]as?[String:Any])?["fitImage"])
-      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,46)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,47)
     }
   }
   @MainActor func testActionVersion45MixedBatchAndImageProcessorUseTheSameConstraint()async throws {
@@ -111,7 +111,7 @@ final class FitImageWorkflowTests: XCTestCase {
     let bytes=try ActionLibraryFile(actions:[action]).encoded();XCTAssertEqual(try ActionLibraryFile.decode(bytes).version,45)
     var old=try XCTUnwrap(JSONSerialization.jsonObject(with:bytes)as?[String:Any]);old["version"]=44
     XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)))
-    old["version"]=47;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)))
+    old["version"]=ActionLibraryFile.maximumVersion+1;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)))
     let legacy=RecordedAction(name:"Legacy",steps:[.init(name:"Resize",operation:.imageSize(2,1,72,.nearest))])
     for version in 1...44 {XCTAssertNoThrow(try ActionLibraryFile.decode(ActionLibraryFile(version:version,actions:[legacy]).encoded()))}
     let directory=try ActionBatchTests().folder();defer{try? FileManager.default.removeItem(at:directory)}

@@ -433,6 +433,7 @@ import UniformTypeIdentifiers
       "canRevert": documentTransfersEnabled && document.canRevertDocument && document.closeWorkflowID == nil,
       "selection": store.document.selection.map { ["x": $0.x, "y": $0.y, "width": $0.width, "height": $0.height] } as Any? ?? NSNull(),
       "selectionHasSoftCoverage": store.document.selectionMask != nil,
+      "gradientFills":store.gradientFillState,
       "shapes":store.shapeState,
       "paths":store.pathState,
       "frames": ["available": store.canEditFrames, "target": store.frameTarget.rawValue, "shape": store.frameShape.rawValue, "sides": store.frameSides],
@@ -1416,6 +1417,11 @@ import UniformTypeIdentifiers
             removeBackground: options.removeBackground, sampleAllLayers: options.all,
             mode: options.mode, detector: detector)
         }
+      } else if command.name == GradientFillAPI.command {
+        guard !store.editingComponent else {
+          throw AutomationFailure(status: 422, message: "Leave component editing before changing a Gradient Fill.")
+        }
+        try store.executeEditorCommand(command.gradientFillCommand(store.document))
       } else if let native = try command.nativeCommand(document: store.document, lookup: resolveColorLookup(command)) {
         if command.name == "layer.merge" || command.name == "filter.apply" || command.name.hasPrefix("adjustment.") || command.name.hasPrefix("smartFilter.") {
           try await executeMerge(
@@ -1616,6 +1622,7 @@ import UniformTypeIdentifiers
       "contactSheet": ContactSheetSettings.apiCapabilities,
       "imageStack": ImageStackSettings.apiCapabilities,
       "hdrMerge": HDRMergeSettings.apiCapabilities,
+      "gradientFills":GradientFillAPI.capabilities,
       "shapes":ShapeAPI.capabilities,
       "inkModes": InkModeAPI.capabilities,
       "inkChannels": InkChannelAPI.capabilities,
@@ -1670,6 +1677,7 @@ import UniformTypeIdentifiers
       "stateSchemas": [
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,
+        "gradientFills":GradientFillAPI.stateSchema,
         "shapes":ShapeAPI.stateSchema,
         "documentMode": DocumentModeAPI.stateSchema,
         "colorProfile": ColorProfileAPI.stateSchema,

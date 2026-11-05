@@ -1,0 +1,110 @@
+{
+  "step": 410,
+  "recorded_at_utc": "2026-11-05T00:52:12.070096+00:00",
+  "status": "Gradient Fill patch API and portable Actions47 implemented; focused Debug and normal universal qualification pass; live native UI pending unlock",
+  "source": "410Source02",
+  "software_build": 410,
+  "source_inputs": 7189,
+  "production_swift_files": 1032,
+  "run": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins",
+  "source_manifest": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/release01-source.json",
+  "software_changes": true,
+  "new_tests": 8,
+  "audit": {
+    "A04": "Modern editor already exposes all declared controls;11existing normal cases pass per architecture on preserved408. Full A04 open.",
+    "A05": "Native gradient controls/presets already exist; direct editable-fill API was missing. Add one strict shared transaction with active state/discovery and portable record/playback."
+  },
+  "implementation": {
+    "new_command": "gradient.fill.patch",
+    "merge": "Nested objects retain omitted fields; stop arrays replace whole arrays. Captured colors only.",
+    "native_transaction": "setGradientFill",
+    "guards": "Required UUID/nonempty strict patch; native fill validation; raster/wrong target, locked ancestor, component context, stale revision and busy rejection without mutation. Existing permissions/authentication/sharing retained.",
+    "history": "One native Undo/Redo; nonactive target retains selection and unrelated data.",
+    "actions": "Portable target plus complete validated fill. New payload requires47; old1\u201346files remain readable; older unsupported sentinels cannot be recovered.",
+    "typed_commands": 244,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "new_Adobe_route_or_descriptor": false,
+    "new_tool_or_modifier": false
+  },
+  "qualification": {
+    "source01_debug": {
+      "passed": 44,
+      "cases": 45,
+      "failed_assertions": 2,
+      "new_passed": 7,
+      "new_cases": 8,
+      "unexpected": 0,
+      "crashes": 0,
+      "reason": "Existing recorder emitted unsupported Gradient Fill sentinel; source and full binaries retained before adding semantic Actions payload.",
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/source01-summary.json"
+    },
+    "source02_debug": {
+      "passed": 74,
+      "cases": 74,
+      "new_passed": 8,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 135.28,
+      "test_seconds": 4.337,
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/source02-summary.json"
+    },
+    "release01": {
+      "passed_each": 82,
+      "cases_each": 82,
+      "new_passed_each": 8,
+      "assertions_each": [
+        0,
+        0
+      ],
+      "unexpected_each": [
+        0,
+        0
+      ],
+      "crashes_each": [
+        0,
+        0
+      ],
+      "same_order": true,
+      "all_12_touched_metadata_selectors_executed": true,
+      "normal_optimized": true,
+      "Debug_workaround_in_Release": false,
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/release01-qualification.json"
+    },
+    "source_unchanged": true,
+    "Debug_and_Release_inputs_identical": true,
+    "universal": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/universal/staging01.json",
+    "minimum_system": "14.0",
+    "signature_and_archive_extraction": true,
+    "tool_cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    }
+  },
+  "retained_failure": {
+    "preserved408_gradient_tests": "13/14 each architecture, one0.98039216<0.1 mask-direction assertion.",
+    "repair": "Pin old fixture to explicit blackToWhite while keeping its mask/history assertions. Add independent tests for actual white-foreground/black-background default and explicit reverse ramp. No palette or rendering-kernel change.",
+    "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/gradient01-qualification.json"
+  },
+  "native_UI": "No CUA this increment. Mac locked at408; human unlock request still unanswered.410isolated candidate staged but not launched; live shared Gradient Fill controls/history and408stroke presets still unqualified.",
+  "API_guide": "docs/GRADIENT_FILL_API.md",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_build": true,
+  "new_validation_ZIP": true,
+  "new_Xcode_archive": false,
+  "new_install": false,
+  "new_binary_upload": false,
+  "new_release": false,
+  "next": "A07 Pattern fills and pixel fills/strokes: source audit first; F01 follows.",
+  "remaining": [
+    "Full gradient controls/interpolation/dither/noise/GRD/preset/default and independent Photoshop acceptance.",
+    "Gradient creation, Classic Gradient painting and preset-library API remain gaps.",
+    "Actual native UI check, current full suite, physical Intel/macOS14 and optional AI/platform/performance qualification remain open.",
+    "All prior failures and all104package/651command original requirements remain."
+  ]
+}

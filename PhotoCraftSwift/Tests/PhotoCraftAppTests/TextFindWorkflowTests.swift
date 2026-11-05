@@ -101,7 +101,7 @@ final class TextFindWorkflowTests:XCTestCase {
       let stale=try await helper.edit(service,shared,"text.replace",["find":"x","replacement":"y"],revision:"old");XCTAssertEqual(stale,409)
       shared.store.beginTextFind();let busy=try await helper.edit(service,shared,"text.find",["find":"x"]);XCTAssertEqual(busy,409);shared.store.closeTextFind()
       let caps=try await helper.request(service,path:"/v1/capabilities");let values=try XCTUnwrap(JSONSerialization.jsonObject(with:caps.1)as?[String:Any]);XCTAssertNotNil(values["textFind"]);XCTAssertNotNil((values["stateSchemas"]as?[String:Any])?["textFind"])
-      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,46)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,47)
       try capture(["texts":texts(shared.store.document),"undoStates":shared.store.session.undoStack.count],"api-delete")
     }
   }
@@ -125,7 +125,7 @@ final class TextFindWorkflowTests:XCTestCase {
     XCTAssertEqual(store.document,source);XCTAssertTrue(store.session.undoStack.isEmpty);XCTAssertEqual(store.session.actionRecording?.snapshot.steps.count,1);store.closeTextFind()
     let request=RecordedTextReplacement(settings:.init(find:"cat"),replacement:"dog")
     let action=RecordedAction(name:"Update cats",steps:[.init(name:"Replace All Text",operation:.replaceText(request))]);let data=try ActionLibraryFile(actions:[action]).encoded();XCTAssertEqual(try ActionLibraryFile.decode(data).version,46)
-    var old=try XCTUnwrap(JSONSerialization.jsonObject(with:data)as?[String:Any]);old["version"]=45;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)));old["version"]=47;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)))
+    var old=try XCTUnwrap(JSONSerialization.jsonObject(with:data)as?[String:Any]);old["version"]=45;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)));old["version"]=ActionLibraryFile.maximumVersion+1;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:old)))
     let directory=try ActionBatchTests().folder();defer{try? FileManager.default.removeItem(at:directory)}
     let sources=try [fixture("cat"),fixture("catapult CAT")];let results=try await ActionBatch.run(sources:sources.map(ActionBatchSource.init(document:)),action:action,destination:directory,format:.native)
     var outputTexts:[[String]]=[]

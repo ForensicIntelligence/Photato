@@ -18,16 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:408 -->
-## Current status — 4 November 2026 UTC
+<!-- current-status-step:410 -->
+## Current status — 5 November 2026
 
-Shape Properties and Tool Settings now offer Solid, Dashed and Dotted stroke presets through the existing renderer. The API applies the same presets and reports the current style. Manual/custom values are retained. Exact Photoshop stroke spacing and defaults remain unqualified.
+Gradient Fill settings now have an API command. It shares the native edit transaction, preserves omitted settings and replaces supplied stop arrays as a whole. It checks the target, locks and document revision before changing anything. Recording and replaying these edits also works, including playback on another document. The new action payload uses format47; older action files remain readable.
 
-All 156 selected normal optimized tests pass on Apple Silicon and translated Intel with identical ordered IDs. These include24 new cases across RGB8 component selection, action duplication and stroke presets. The earlier maximum-CMYK HTTP timeout and clipboard crash cases pass in this build. Their Debug failures, plus a separate curved-stroke Rust mismatch, remain in the record. This is not a full-suite pass.
+All74focused Debug tests pass. The same source passes82normal optimized tests on Apple Silicon and translated Intel, including eight new cases. The universal package passes minimum-macOS, signing and archive-extraction checks. These are selected regression tests, not a full-suite or Photoshop-equivalence result. Live UI verification remains pending after the Mac was found locked.
 
-The universal package passes signing, both macOS 14 targets and ZIP extraction checks. The Mac is locked, so the408 native control/drawing/history/Quit check is pending. The user has been asked to unlock it; no live pass is claimed. G04 source audit follows, then T01, while that check remains recorded. All original feature requirements stay open. The repository stays private until release day. [Step 408](DEVLOG.md#dev-step-408).
-
-The complete native source is saved in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/004b0f4625d99008f2bc3ae2e76a0d34f1074e50). All 7,153 included tested inputs match, with 34 generated/model/cache/restricted inputs excluded. The 1,061 original root/Rust files are unchanged. This is a source backup; the app has not been released.
+The current adjustment-layer controls already existed and passed their selected tests. We skipped adding redundant controls and moved on. Next is Pattern fills and pixel fills/strokes, followed by ordinary filters. The major quick-win queue has38candidates. Every original requirement remains attached to its package; stillneeded and cleanup follow in the requested order. [Step410](DEVLOG.md#dev-step-410).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -641,6 +639,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 406 | [RGB8 component selection](DEVLOG.md#dev-step-406) |
 | 2026-11-04 | 407 | [Duplicate saved actions](DEVLOG.md#dev-step-407) |
 | 2026-11-04 | 408 | [Shape stroke presets](DEVLOG.md#dev-step-408) |
+| 2026-11-04 | 409 | [Quick-win source audit](DEVLOG.md#dev-step-409) |
+| 2026-11-05 | 410 | [Gradient Fill API and Actions](DEVLOG.md#dev-step-410) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3063,3 +3063,19 @@ Packaging first encountered a PATH conflict with a Python xattr utility. That fa
 The Mac locked before the live native check. The isolated candidate is retained, and its control/drawing/history/Quit validation awaits human unlock. This gate stays open while G04 source audit proceeds, followed by T01. Exact Photoshop defaults/output and all original G03 scope remain open. [Detailed record](DEVLOG.md#dev-step-408).
 
 The source backup is verified on [private main](https://github.com/ForensicIntelligence/Photato/commit/004b0f4625d99008f2bc3ae2e76a0d34f1074e50). All 7,153 included qualified inputs match the tested snapshot; the exclusions and pending live check are documented. Original root/Rust files and Git history are retained. No binary, App Store change or software release was uploaded.
+
+## 2026-11-04 — Step 409: Quick-win source audit
+
+Four candidates were checked against the source before choosing more implementation work. Paths already had Fill and Stroke controls and a shared API. The existing rich-text fields were already exposed, as were the shaped-text layout parameters. The selected 13 path, 20 typography and 18 tonal tests all pass on both architectures using the preserved optimized build. No new software or tests were needed for this audit.
+
+The audit also found two real gaps. Curves has no Auto operation or Auto Color Correction Options; the reusable estimator returns Levels settings. Window > Character and Paragraph remain pending even though their controls are available in Properties. Proper separate panels require integration with the retained workspace layout and native lifecycle. These gaps stay under stillneeded, with full original scope and independent compatibility requirements intact.
+
+The quick-win queue advances to A04, current 2026 adjustments, then A05. This is a source and regression audit, not four completed Photoshop features. The prior Debug failures, full-suite and physical-platform gates, and pending live stroke-preset check remain recorded. [Detailed record](DEVLOG.md#dev-step-409).
+
+## 2026-11-05 — Step 410: Gradient Fill API and Actions
+
+The source audit found that modern adjustment controls and native gradient transforms/presets were already exposed. A direct API for editing a live Gradient Fill was missing. The new command uses the existing native transaction and publishes its request, active state and capabilities. It preserves masks, transforms, selection and unrelated data, and supports one-step Undo/Redo.
+
+The first new test run exposed an older recorder limitation: Gradient Fill edits were saved as unsupported steps. A portable target-and-fill payload now records, validates, exports, imports and plays back those edits. New payloads require Actions47. A separate existing mask-gradient test assumed the image palette while editing a mask; it now selects its intended ramp explicitly, and a new test checks the actual default mask ramp independently. No rendering kernel or palette default changed.
+
+All74focused Debug tests and82normal optimized cases on each architecture pass, including eight new cases. Both Release runs execute the same ordered IDs. The universal package passes macOS14minimum, signature and ZIP extraction checks. Failed attempts remain in the detailed record. Actual native interaction, full Photoshop behavior, the current full suite and physical-platform/performance checks remain open. Next is the Pattern Fill/Fill/Stroke audit, then ordinary filters. [Detailed record](DEVLOG.md#dev-step-410).
