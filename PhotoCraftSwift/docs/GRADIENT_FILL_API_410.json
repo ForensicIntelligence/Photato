@@ -106,5 +106,8 @@
     "Gradient creation, Classic Gradient painting and preset-library API remain gaps.",
     "Actual native UI check, current full suite, physical Intel/macOS14 and optional AI/platform/performance qualification remain open.",
     "All prior failures and all104package/651command original requirements remain."
-  ]
+  ],
+  "new_source_push": true,
+  "source_publication": "docs/SOURCE_PUBLICATION_410.json",
+  "source_commit": "caeead31abade57e8474499c4ffdb82ecf1f5438"
 }
