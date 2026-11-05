@@ -18,18 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:420 -->
+<!-- current-status-step:422 -->
 ## Current status — 5 November 2026
 
-Rasterizing an ordinary layer used to render and convert it on the main thread. It now prepares the same command in a background worker, checks that its source is still current, and commits one Undo. Cancellation and stale documents discard the prepared work. The API already used this shared path.
+Arrange selected layers now works through the five existing menu commands and factory shortcuts. Complete groups move together, each parent has its own stack, Background stays at the bottom and one Undo restores the change. The desktop, Photato API, recorded Actions and supported Adobe layer-move jobs share native primitives.
 
-In one optimized 24MP sample, the native call returned in 0.023ms on Apple Silicon while preparation took about 6.94 seconds in the worker. Replaying the old synchronous expression in the same process took about 6.89 seconds and produced the same document. This improves UI availability; it is not a rendering-speed or sustained60fps claim. Initial and final previews were excluded from timing.
+All106focused Debug tests pass. The281-test optimized set passes279tests on each architecture, including all33new methods from415–422; known linked-alpha and master-palette failures remain. The owned layer-order reference covers310 sibling cases at each RGB depth. Native/API documents, archives and tested Adobe job bytes match. The universal package passes minimum-system, signature and ZIP checks. Physical Photoshop acceptance remains open.
 
-Both optimized architectures pass 193 of 195 checks, including all 18 new methods from steps415–420. The two failures match the recorded linked-preview alpha mismatch and master-palette cancellation. All three new functional rasterization checks pass; native/API documents, saved bytes and Undo match across RGB8/16/32. A Debug Shape API crash also reproduces on the retained419build; that case passes both current optimized runs. The crash remains unresolved.
-
-The universal candidate passes macOS14, signature, resources and ZIP extraction checks. It has not been launched or installed. Physical performance/UI and full Photoshop acceptance remain open. Next are independent reference coverage and archive/sandbox checks. Six candidates remain in the major quick-win sweep; the full requirements are unchanged. [Step420](DEVLOG.md#dev-step-420).
-The native source is backed up privately at commit `e076d4a1efcbdca29535fc4098f525f5f60900d8`, including the Xcode project, tests, redistributable assets and development records. The backup records the two retained failures and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/e076d4a1efcbdca29535fc4098f525f5f60900d8).
-
+The major quick-win sweep is finished. We are in major stillneeded work: L01 layer filtering/isolation and remaining substantive layer workflows come next, then D01. Minor work and final cleanup keep their later passes. All104original package scopes remain open. [Step422](DEVLOG.md#dev-step-422).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -655,6 +651,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 418 | [Frame Timeline dragging](DEVLOG.md#dev-step-418) |
 | 2026-11-05 | 419 | [Rename sky presets](DEVLOG.md#dev-step-419) |
 | 2026-11-05 | 420 | [Rasterization responsiveness](DEVLOG.md#dev-step-420) |
+| 2026-11-05 | 421 | [Channel thumbnail options and major quick-win sweep](DEVLOG.md#dev-step-421) |
+| 2026-11-05 | 422 | [Arrange selected layers](DEVLOG.md#dev-step-422) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3179,3 +3177,25 @@ The existing optimized brush benchmark retained all 240 samples in each of four 
 Native rasterization now uses the existing detached geometry preparation and shared API command. No image mathematics changed. Three functional regressions cover18depth/content combinations, exact native/API/old-command documents and archives, Undo/Redo, cancellation, source replacement and busy/locked/modal guards. The new tests passed before an unchanged Debug Shape API case crashed; the same case also crashes on retained419. Both optimized builds execute195identical cases with193passes and two exact recorded failures. All18new methods from415–420pass, including the actual opt-in performance measurement. Independent stack checks still match70Float32words per architecture.
 
 Optimized24MP submission takes0.023ms on Apple Silicon and0.046ms under translated Intel, with preparation about6.94s/12.25s in the worker. The pinned old expression replay is explicitly a same-process reference, not a measurement of an old optimized binary. Universal packaging checks pass. Physical/UI/performance/Photoshop output and full Q03 remain open. Next: Q04, then REL01. [Detailed record](DEVLOG.md#dev-step-420).
+
+## 2026-11-05 — Step 421: Channel thumbnail options
+
+The Channels panel had an Options context menu but no thumbnail double-click route. The new native control selects the captured alpha, spot or Quick Mask target and opens the same dialog. It preserves existing modifier clicks, validates document/session/channel identity, and leaves pixels and history unchanged on open or Cancel. Committing uses the existing native/API operation and Undo behavior.
+
+All 56 focused Debug tests pass. Three new methods cover nine depth/target combinations, exact native/API documents and archives, pixels and history, 64 modifier/click cases, a hosted native mouseDown event and stale/busy/modal/deleted/replaced contexts. The earlier 39-test reference/channel baseline and final 11-test warp/typography baseline pass on both retained optimized architectures. Independent statistics checks match 70 words each.
+
+Source review found existing independent fixtures, production identity/sandbox configuration, per-increment inventories, every represented warp preset and installed-font axis/OpenType control. Their broader gaps remain. The old step058package checker is already documented as historical; it was not counted as a new archive defect or rewritten. No current optimized build, native installation, source push, archive, Store action or release occurred in this checkpoint.
+
+The major quick-win sweep is finished. Major stillneeded work starts with L01 layer collection workflows and D01 document workflows. All original scope, byte/default/shortcut requirements and earlier failures remain. [Detailed record](DEVLOG.md#dev-step-421).
+
+The final filesystem audit found 11 additional older temporary build binaries missing, alongside three previously recorded gaps. All 26 surviving protected files retain their expected hashes. The current source, 5,320 retained Debug outputs and 10,640 retained optimized outputs remain intact; the latest420candidate and ZIP also match. The cause and disappearance time of the older files are unknown. Their expected hashes and missing paths are recorded, and historical preservation remains incomplete.
+
+## 2026-11-05 — Step 422: Arrange selected layers
+
+Layer > Arrange now has all five commands. They preserve selected sibling order when moving, reverse only selected positions, carry complete group subtrees and retain every stored layer field. The native operation prepares in the background and commits one history entry after checking its source and target. The Photato API has strict parameters, state and availability; Actions48 stores semantic targets. The supported Adobe MoveLayer placements run through the same primitives in isolated resource jobs.
+
+All106focused tests pass, including12new regressions. An owned Python rank reference supplies310 cases, checked at RGB8/16/32. The two first attempts each passed105tests and found one new test-fixture mistake: missing PSD IDs and an invalid translucent/masked Background. Both full attempts were retained before repair. Review also corrected the new adapter's bottom insertion index above Background. Source03 is test-only relative to Source02 and has the same app binary.
+
+Both normal optimized architectures execute the same281cases and pass279, including all33new415–422methods. Existing failures remain recorded and are not waived. The universal macOS14package passes signature and extracted-ZIP content checks. This is feature qualification, not a passing full suite or complete Photoshop parity. Current physical checks still await Mac unlock.
+
+The existing PSD writer omits regular layer-ID tags when no comp resources are active. The job fixture explicitly emits and verifies its IDs; a general ID-retention repair is not claimed. L01filter/isolation, extended-empty and remaining lock/group workflows stay in major stillneeded. No minor or cleanup pass has started. [Detailed record](DEVLOG.md#dev-step-422).

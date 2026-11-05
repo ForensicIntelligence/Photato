@@ -1,0 +1,4994 @@
+{
+  "license": "MIT OR Apache-2.0",
+  "origin": "Owned declarative selected-rank vectors, Python stdlib only; no production codec or permutation code imported.",
+  "reference": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/transform-manipulate-layers/reorder-and-move-layers.html",
+  "method": "Place selected items at their target rank coordinates, then fill remaining ranks with original unselected items. One-slot motion uses existence of an unselected sibling above/below.",
+  "scope": "Exhaustive five-layer sibling subsets with and without an anchored Background. Not a Photoshop-produced file or independent Photoshop pixel comparison.",
+  "cases": [
+    {
+      "background": false,
+      "selected": [
+        "A"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "C",
+        "D",
+        "E",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "reverse",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "D",
+        "E",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "C",
+        "B",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "C",
+        "E",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "D",
+        "E",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "C",
+        "E",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "D",
+        "A",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "D",
+        "C",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "E",
+        "A",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "C",
+        "D",
+        "A",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "C",
+        "E",
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "E",
+        "D",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "D",
+        "E",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "D",
+        "E",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "C",
+        "B",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "C",
+        "E",
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "C",
+        "D",
+        "A",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "E",
+        "A",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "D",
+        "A",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "C",
+        "E",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "D",
+        "E",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "D",
+        "C",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "C",
+        "A",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "C",
+        "E",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "A",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "D",
+        "E",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "C",
+        "D",
+        "E",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "B",
+        "E",
+        "D",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "D",
+        "C",
+        "B",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "C",
+        "B",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "D",
+        "C",
+        "B",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "B",
+        "D",
+        "C",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "A",
+        "E",
+        "D",
+        "C",
+        "B"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": false,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "E",
+        "D",
+        "C",
+        "B",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "C",
+        "D",
+        "E",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "D",
+        "E",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "C",
+        "B",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "E",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "E",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "E",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "D",
+        "A",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "C",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "E",
+        "A",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "C",
+        "D",
+        "A",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "C",
+        "E",
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "E",
+        "D",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "D",
+        "E",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "D",
+        "E",
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "C",
+        "B",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "C",
+        "E",
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "C",
+        "D",
+        "A",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "E",
+        "A",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "E",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "D",
+        "B",
+        "C",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "D",
+        "A",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "D",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "E",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "A",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "E",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "B",
+        "C",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "C",
+        "B",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "D",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "A",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "E",
+        "A",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "D",
+        "E",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "C",
+        "D",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "C",
+        "D",
+        "E",
+        "A",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "E",
+        "D",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "E",
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "D",
+        "C",
+        "B",
+        "A",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "D",
+        "A",
+        "B",
+        "C",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "E",
+        "D"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "C",
+        "B",
+        "D",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "C",
+        "A",
+        "B",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "D",
+        "E",
+        "C"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "B",
+        "A",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "C",
+        "D",
+        "E",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "B",
+        "D",
+        "C",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "B",
+        "C",
+        "D",
+        "E",
+        "A"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "A",
+        "E",
+        "D",
+        "C",
+        "B"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringToFront",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "bringForward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendBackward",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "sendToBack",
+      "order": [
+        "BG",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "background": true,
+      "selected": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "operation": "reverse",
+      "order": [
+        "BG",
+        "E",
+        "D",
+        "C",
+        "B",
+        "A"
+      ]
+    }
+  ]
+}

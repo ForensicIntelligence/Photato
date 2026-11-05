@@ -6,11 +6,13 @@ import PhotoCraftImaging
 enum AdobeCompositeEdit: Sendable {
   case background(AdobeBackgroundEdit)
   case properties(AdobeProtectionEdit)
+  case move(AdobeLayerMoveEdit)
   case smartObject(AdobeSmartObjectEdit)
   case text(AdobeTextEdit)
   case exposure(AdobeExposureEdit)
   init(_ raw: Any, path: String) throws {
-    if let object=raw as? [String:Any],object["type"] as? String=="background_layer"{self = .background(try AdobeBackgroundEdit(raw,path:path))
+    if let object=raw as? [String:Any], (object["operation"] as? [String:Any])?["type"] as? String == "move" { self = .move(try AdobeLayerMoveEdit(raw,path:path))
+    } else if let object=raw as? [String:Any],object["type"] as? String=="background_layer"{self = .background(try AdobeBackgroundEdit(raw,path:path))
     }else if let object = raw as? [String: Any], object["adjustments"] != nil { self = .exposure(try AdobeExposureEdit(raw,path:path))
     } else if let object = raw as? [String: Any], object["type"] as? String == "text_layer", object["text"] != nil { self = .text(try AdobeTextEdit(raw, path: path))
     } else if let object = raw as? [String: Any], object["smartObject"] != nil || (object["operation"] as? [String: Any])?["type"] as? String == "add" {
@@ -20,6 +22,7 @@ enum AdobeCompositeEdit: Sendable {
   var resource: URL? {switch self{case .smartObject(let edit):edit.url;case .background(let edit):edit.url;default:nil}}
   func apply(to session: inout EditorSession, resources: [URL: Data], fontOptions: AdobeTypeFontOptions = try! .init()) throws {
     switch self {
+    case .move(let edit):try edit.apply(to:&session)
     case .background(let edit):try edit.apply(to:&session,resources:resources)
     case .exposure(let edit): try edit.apply(to:&session)
     case .text(let edit): try edit.apply(to: &session, fontOptions: fontOptions)

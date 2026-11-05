@@ -84,6 +84,7 @@ struct AutomationCommand: Sendable {
         if name == FlattenImageAPI.name {properties[key]=BrushAPI.flag;continue}
         if BackgroundLayerAPI.commands.contains(name){properties[key]=BackgroundLayerAPI.schema(key);continue}
         if PixelPaintAPI.commands.contains(name){properties[key]=PixelPaintAPI.schema(key);continue}
+        if name == LayerStackOrderAPI.command { properties[key] = LayerStackOrderAPI.schema(key); continue }
         if LayerLinksAPI.commands.contains(name){properties[key]=LayerLinksAPI.schema(key);continue}
         if name == LayerCollectionTransformAPI.name{properties[key]=LayerCollectionTransformAPI.schema(key);continue}
         if name == ChannelTransformAPI.name{properties[key]=ChannelTransformAPI.schema(key);continue}
@@ -445,6 +446,7 @@ struct AutomationCommand: Sendable {
     .init(
       name: "layer.visibility", parameters: ["layerID": "uuid", "visible": "boolean"],
       description: "Set one layer's visibility."),
+    .init(name: LayerStackOrderAPI.command, parameters: ["layerIDs": "Distinct layer UUIDs", "operation": "bringToFront, bringForward, sendBackward, sendToBack or reverse"], description: "Arrange complete layer/group subtrees within each parent as one Undo transaction. Background stays at the bottom; Reverse exchanges selected slots. Portable Actions48."),
     .init(
       name: "layer.move",
       parameters: ["layerID": "uuid", "x": "integer, ±1000000", "y": "integer, ±1000000"],
@@ -509,6 +511,7 @@ struct AutomationCommand: Sendable {
     }
     if BackgroundLayerAPI.commands.contains(name) {for (key,value) in parameters {_ = try BrushAPI.merge(value,schema:BackgroundLayerAPI.schema(key),path:key)}}
     if PixelPaintAPI.commands.contains(name){for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PixelPaintAPI.schema(key),path:key)}}
+    if name == LayerStackOrderAPI.command { for(key,value) in parameters { _ = try BrushAPI.merge(value,schema:LayerStackOrderAPI.schema(key),path:key) } }
     if LayerLinksAPI.commands.contains(name){for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:LayerLinksAPI.schema(key),path:key)}}
     if name == LayerCollectionTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:LayerCollectionTransformAPI.schema(key),path:key)}}
     if name == ChannelTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:ChannelTransformAPI.schema(key),path:key)}}
@@ -634,6 +637,7 @@ struct AutomationCommand: Sendable {
     case "smartFilter.set", "smartFilter.maskStroke", "smartFilter.maskFill": return try smartFilterCommand(document: document)
     case "pixels.fill","pixels.stroke":return .pixelPaint(try pixelPaintRequest(patterns:document.patterns ?? []))
     case "layer.links":return .layerLinks(try layerLinkCommand())
+    case LayerStackOrderAPI.command: return .stackLayers(try layerStackOrderOptions())
     case "layers.move":return .moveLayers(try wholeLayerMoveOptions())
     case "layer.protection": return try protectionCommand(document: document)
     case "layer.rename": return .renameLayer(try id(), try string("name"))

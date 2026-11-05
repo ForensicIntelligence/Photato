@@ -169,7 +169,7 @@ final class MaskRemovalWorkflowTests: XCTestCase {
       let state = try JSONDecoder().decode(AutomationValue.self, from: JSONSerialization.data(withJSONObject: shared.store.maskManagementState))
       XCTAssertNoThrow(try BrushAPI.merge(state, schema: MaskManagementAPI.stateSchema))
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual(ActionLibraryFile.maximumVersion, 47)
+      XCTAssertEqual(ActionLibraryFile.maximumVersion, 48)
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: MaskManagementAPI.capabilities))
       status = try await helper.edit(service, shared, MaskManagementAPI.command, parameters)
       XCTAssertEqual(status, 200); XCTAssertNil(shared.store.document.layers[0].mask)

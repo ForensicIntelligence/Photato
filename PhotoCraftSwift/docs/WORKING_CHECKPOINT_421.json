@@ -1,0 +1,104 @@
+{
+  "step": 421,
+  "goal_status": "active",
+  "status": "Channel thumbnail options implemented and focused Debug qualified; major quick-win sweep finished, full scopes and current normal/physical qualification open",
+  "software_build": 421,
+  "tested_source": "421Source01",
+  "source_inputs": 7212,
+  "production_swift_files": 1041,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 2,
+  "current_major_workflow": "L01",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_421.json",
+  "priority_rule": "docs/WORK_PRIORITIES_421.json",
+  "previous_turn_classification": "progress",
+  "run": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit",
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_build": true,
+  "new_source_push": false,
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "latest_normal_qualified_universal": "420Source02:193/195each,all18new415\u2013420pass,twoexactretainedfailures;no physical qualification",
+  "latest_private_source": "420 source e076d4a1efcbdca29535fc4098f525f5f60900d8 / docs bf4f3756002b7a49c01ce39b0ed3c8178ed925ad; private verified",
+  "next_work": [
+    "Pass2 major stillneeded: L01 layer collection workflows, then D01 document workflows.",
+    "Batch current normal/universal/private source at next stable implementation milestone; human unlock/cumulativephysical and all earlier failures remain open.",
+    "Preserve104fullscopes/651identities. No minor/cleanup work before major stillneeded sweep."
+  ],
+  "software_source_pending": null,
+  "source_manifest": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-source.json",
+  "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+  "increment_complete": true,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "56focused Debugpass/3new methods;50existing normal baseline tests per architecture and70independent words each. Current421normal/physical/fullscope open.",
+  "tests": {
+    "baseline420_normal": {
+      "groups": [
+        39,
+        11
+      ],
+      "cases_each": 50,
+      "passed_each": 50,
+      "same_order_each": true,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "evidence": [
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-qualification.json",
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline02-qualification.json"
+      ],
+      "scope": "Preserved420normal binaries, audited unchanged reference/channel and Warp/Typography modules. Not current421normal."
+    },
+    "source01_Debug": {
+      "cases": 56,
+      "passed": 56,
+      "new_methods": 3,
+      "new_depth_target_contexts": 9,
+      "modifier_click_contexts": 64,
+      "failures": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 46.12,
+      "test_seconds": 5.2,
+      "evidence": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-summary.json",
+      "retention": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-binaries/manifest.json"
+    },
+    "independent_statistics": {
+      "cases_each": 14,
+      "exactFloat32Words_each": 70,
+      "evidence": [
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-arm64-independent.json",
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-x86_64-independent.json"
+      ],
+      "Photoshop_pixel_equivalence": false
+    },
+    "native_API": "Exact native/API documents and chunked archives, unchanged layer pixels/channel planes, Cancel and one options Undo/Redo over9RGB8/16/32alpha/spot/QuickMask contexts.64single/double-click/modifier contexts preserve old routing; hosted native mouseDown opens options; busy/modal/stale/deleted/replaced session/document/foreign context rejects.",
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "source_unchanged": true,
+    "normal_optimized421": false,
+    "universal421": false,
+    "actual_native_UI": false
+  },
+  "native_workflow_evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+  "history_receipt": "artifacts/development-history-audit/421-final-receipt01.json",
+  "typed_API_commands": 246,
+  "native_workflow_qualified": false,
+  "actions_maximum": 47,
+  "historical_preservation_421": {
+    "reference": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/protected-review01.json",
+    "available_unchanged": 26,
+    "missing": 14,
+    "newly_observed_missing": 11,
+    "complete": false,
+    "cause": "unknown",
+    "current_qualification_not_changed": true
+  }
+}

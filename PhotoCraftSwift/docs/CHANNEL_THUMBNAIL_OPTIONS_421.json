@@ -1,0 +1,128 @@
+{
+  "step": 421,
+  "recorded_at_utc": "2026-11-05T06:58:04.536206+00:00",
+  "source": "421Source01",
+  "software_build": 421,
+  "source_inputs": 7212,
+  "production_swift_files": 1041,
+  "status": "Channel thumbnail options implemented and focused Debug qualified; major quick-win sweep finished, full scopes and current normal/physical qualification open",
+  "run": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit",
+  "source_manifest": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-source.json",
+  "new_regression_methods": 3,
+  "implementation": {
+    "added": [
+      "Sources/PhotoCraft/AuxiliaryChannelActivation.swift",
+      "Tests/PhotoCraftAppTests/ChannelThumbnailOptionsTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/ChannelsPanel.swift",
+      "Sources/PhotoCraft/AutomationChannels.swift",
+      "scripts/Info.plist"
+    ],
+    "native": "Unmodified double-click on alpha/spot/temporary Quick Mask thumbnail selects its actual target and opens the existing options dialog. Context Options shares captured editor/document/session/channel identity and current interaction/owner admission. Existing name selection and thumbnail modifier routing retained.",
+    "shared_API": "Existing channel.view plus channel.edit configure/quickMaskOptions and prepared history semantics; nativeThumbnailOptions capability metadata added. No new operation/parameter/schema/Adobe route/descriptor/archive/Actions version.",
+    "guards": "No pixel/history edit on open/Cancel; busy/modal/deleted/stale/replaced document/session/foreign context rejects. Existing committed-option validation and source/Undo behavior unchanged.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "Actions": 47,
+    "new_canvas_tool_shortcut": false,
+    "core_imaging_kernel_change": false,
+    "new_capacity_limit": false
+  },
+  "audits": {
+    "Q04": "Independent Python-authored PSD/PSB framing/compression/sample fixtures, owned Photoshop-saved mask/selection documents and rational/Decimal statistics already exist, with separate pixel/structure checks and provenance. All13PSB/tagged-block and2statistics cases pass each preserved420normal architecture; independent70Float32words match each. New2026modes/profiles/default/output/malformed/real-document coverage and fresh controlled saves remain open; no new fixture or Photoshop-pixel equality is claimed.",
+    "REL01": "Existing project/scheme configure production FI identity, universal macOS14+AppStorearchive, sandbox file bookmarks/readwrite/network/print, privacy resources and manual-releasepolicy. Current420universal and older signed332archive local checks survive. The step058package checker is already explicitly historical/superseded. No new bounded archive/sandbox defect is confirmed. Reproducible productionCI is absent; current signedarchive/Applevalidation/disclosures/live sandbox remain stillneeded.",
+    "AUD01": "Current651command identities/445partial206pending, typed246/native86/Actions47 and factory menu/shortcut/cursor metadata are already synchronized incrementally. Current56Debug includes menu/discovery and880tool-modifier combinations; all original scopes retained. Full external2026inventory/tool/scenario/service reconciliation remains open.",
+    "G02": "WarpWorkspace already exposes all17represented WarpStyle cases plus orientation, interpolation, grids, splits and control-point operations. Seven existing native/API/history/geometry/retention tests pass each preserved420normal architecture with relevant module hashes unchanged. Additional Photoshop presets/pins/planes/nondestructive geometry, exact formulas/defaults and supported physical platforms remain open.",
+    "T02": "AdvancedTypeControls already exposes every installed-font axis and available supported OpenType toggle, language tag, orientation and Glyphs. Four existing native/API/archive/Actions/Adobe-job tests pass each preserved420normal architecture with relevant modules unchanged. Full composers/RTL/Indic/EastAsian/fallback/unsupported features/glyph metrics/antialias/pixel/platform fidelity remain open."
+  },
+  "qualification": {
+    "baseline420_normal": {
+      "groups": [
+        39,
+        11
+      ],
+      "cases_each": 50,
+      "passed_each": 50,
+      "same_order_each": true,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "evidence": [
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-qualification.json",
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline02-qualification.json"
+      ],
+      "scope": "Preserved420normal binaries, audited unchanged reference/channel and Warp/Typography modules. Not current421normal."
+    },
+    "source01_Debug": {
+      "cases": 56,
+      "passed": 56,
+      "new_methods": 3,
+      "new_depth_target_contexts": 9,
+      "modifier_click_contexts": 64,
+      "failures": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 46.12,
+      "test_seconds": 5.2,
+      "evidence": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-summary.json",
+      "retention": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/source01-binaries/manifest.json"
+    },
+    "independent_statistics": {
+      "cases_each": 14,
+      "exactFloat32Words_each": 70,
+      "evidence": [
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-arm64-independent.json",
+        "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/baseline01-x86_64-independent.json"
+      ],
+      "Photoshop_pixel_equivalence": false
+    },
+    "native_API": "Exact native/API documents and chunked archives, unchanged layer pixels/channel planes, Cancel and one options Undo/Redo over9RGB8/16/32alpha/spot/QuickMask contexts.64single/double-click/modifier contexts preserve old routing; hosted native mouseDown opens options; busy/modal/stale/deleted/replaced session/document/foreign context rejects.",
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "source_unchanged": true,
+    "normal_optimized421": false,
+    "universal421": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-alpha-channel-masks.html",
+      "read_UTC": "2026-11-05",
+      "use": "Public alpha-thumbnail double-click Options action. No Adobe code/assets copied."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-a-temporary-quick-mask.html",
+      "read_UTC": "2026-11-05",
+      "use": "Public Quick Mask options on mode-button double-click; that existing native mode-button path is retained. Exact2026temporary-channel-row interaction remains unqualified."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "read_UTC": "2026-11-05",
+      "use": "Public specification frames existing independent PSD/PSB vectors; this describes data layout, not pixel rendering equality."
+    }
+  ],
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_source_push": false,
+  "new_install": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "normal_batch_policy": "No numerical/core/project change. Batch current normal/universal/private source at next meaningful implementation milestone; latest420remains private and feature-scoped with two exact retained failures.",
+  "native_UI": "Fresh CUA confirms Mac locked. Prior human-unlock request pending. Hosted tests are not physical UI/Photoshop/platform acceptance.",
+  "next": "Pass2 major stillneeded: L01 layer collection workflows, then D01 document workflows.",
+  "historical_preservation_421": {
+    "reference": "artifacts/runs/20261105T063557Z-421-major-quickwin-audit/protected-review01.json",
+    "available_unchanged": 26,
+    "missing": 14,
+    "newly_observed_missing": 11,
+    "complete": false,
+    "cause": "unknown",
+    "current_qualification_not_changed": true
+  }
+}

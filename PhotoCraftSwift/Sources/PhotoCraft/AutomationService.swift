@@ -373,6 +373,7 @@ import UniformTypeIdentifiers
       "selectionTransform":store.selectionTransformState,
       "pixelPaint":store.pixelPaintState,
       "layerLinks":store.layerLinkState,
+      "layerStackOrder":store.layerStackOrderState,
       "layerCollectionTransform":store.layerCollectionTransformState,
       "channelTransform":store.channelTransformState,
       "pixelMaskTransform":store.pixelMaskTransformState,
@@ -1323,6 +1324,15 @@ import UniformTypeIdentifiers
         if request.kind == .stroke{store.lastPixelStroke=request.settings}else{store.lastPixelFill=request.settings;if let pattern=request.pattern{store.lastPixelFillPatternID=pattern.id;store.lastPixelFillContents="Pattern"}}
         return .json(state(share,document:document))
       }
+      if command.name == LayerStackOrderAPI.command {
+        let request = try command.layerStackOrderOptions(), prepare = store.layerStackOrderPreparation
+        guard store.canArrangeLayerContext else { throw AutomationFailure(status:422,message:"Choose an available whole-layer arrangement context.") }
+        guard Set(request.layerIDs).isSubset(of:Set(store.document.layers.map(\.id))) else { throw AutomationFailure(status:404,message:"Layer not found.") }
+        let target = store.selectedMaskPaintTarget
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowAuxiliary:true,
+          validateCommit:{ guard !store.editingComponent,store.selectedMaskPaintTarget == target else { throw AutomationFailure(status:409,message:"The layer arrangement target changed.") } }) { source in try await prepare(source,request) }
+        return .json(state(share,document:document))
+      }
       if command.name == LayerLinksAPI.linkCommand {
         let ids=try command.linkLayerIDs();guard Set(ids).isSubset(of:Set(store.document.layers.map(\.id))) else{throw AutomationFailure(status:404,message:"Layer not found.")}
         if try command.string("operation")=="select"{guard store.canChangeLayerLinks else{throw AutomationFailure(status:409,message:"Finish the current native edit.")};try store.selectLinkedLayers(ids)}
@@ -1670,6 +1680,7 @@ import UniformTypeIdentifiers
       "layerMerge":LayerMergeAPI.capabilities,
       "emptyLayerDeletion":EmptyLayerDeletionAPI.capabilities,
       "layerLinks":LayerLinksAPI.capabilities,
+      "layerStackOrder":LayerStackOrderAPI.capabilities,
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
       "channelTransform":ChannelTransformAPI.capabilities,
       "pixelMaskTransform":PixelMaskTransformAPI.capabilities,
@@ -1733,6 +1744,7 @@ import UniformTypeIdentifiers
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
+        "layerStackOrder":LayerStackOrderAPI.stateSchema,
         "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,
         "channelTransform":ChannelTransformAPI.stateSchema,
         "pixelMaskTransform":PixelMaskTransformAPI.stateSchema,

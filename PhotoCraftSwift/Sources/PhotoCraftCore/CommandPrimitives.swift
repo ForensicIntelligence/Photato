@@ -188,6 +188,7 @@ extension Command {
       let dx = x - d.layers[i].x
       let dy = y - d.layers[i].y
       try LayerLinks.move(.init(layerIDs:[id],dx:dx,dy:dy),in:&d)
+    case .stackLayers(let request): try LayerStackOrder.apply(request, to: &d)
     case .reorder(let id, let target):
       let i = try index(id)
       guard d.layers.indices.contains(target) else {

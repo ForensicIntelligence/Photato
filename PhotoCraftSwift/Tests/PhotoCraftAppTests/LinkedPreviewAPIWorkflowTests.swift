@@ -52,7 +52,7 @@ final class LinkedPreviewAPIWorkflowTests:XCTestCase {
       let bad=try await h.request(service,path:"/v1/documents/\(id)/file.psb",headers:["X-Photato-Export-Options":"invalid"]);XCTAssertEqual(bad.0.statusCode,400)
       XCTAssertEqual(doc.store.document,source);XCTAssertTrue(doc.store.session.undoStack.isEmpty)
       let preview=try XCTUnwrap(LinkedArtworkAPI.capabilities["previewExport"] as? [String:Any]);XCTAssertEqual(preview["formats"] as? [String],["psd","psb"])
-      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,47)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,48)
     }
   }
   @MainActor func testBothResourceJobInterfacesPreserveUnresolvedLinkedCacheOutput()async throws {

@@ -154,19 +154,19 @@ struct AuxiliaryChannelRow: View {
   @State private var name = ""
   private var target: ChannelPlaneTarget { quick ? .quickMask:.alpha(channel.id) }
   var body: some View {
-    HStack(spacing:6) {
+    let activation = AuxiliaryChannelActivation(store:store,channel:channel,quick:quick)
+    return HStack(spacing:6) {
       ChannelEyeControl(store:store,channel:quick ? .quickMask:.alpha(channel.id),tracking:eyeTracking,
         label:quick ? "Quick Mask visibility":"Visibility of \(channel.name) channel",
         identifier:quick ? "channels.visibility.quickMask":"channels.visibility.\(channel.id.uuidString)",height:40).frame(width:26,height:40)
+      if store.workspaceLibrary.channelPanelOptions.thumbnailSize != .none {
+        AuxiliaryChannelThumbnail(store:store,activation:activation,image:thumbnail,name:channel.name)
+          .frame(width:32,height:32)
+      }
       Button {
-        if quick { try? store.selectQuickMaskChannel() }
-        else { store.channelThumbnail(channel.id,modifiers:NSApp.currentEvent?.modifierFlags ?? []) }
+        activation.activate(in:store,clickCount:1,modifiers:NSApp.currentEvent?.modifierFlags ?? [])
       } label: {
         HStack {
-          if store.workspaceLibrary.channelPanelOptions.thumbnailSize != .none {
-            Group { if let thumbnail { Image(decorative:thumbnail,scale:1).resizable().scaledToFit() } else { Color.black } }
-              .frame(width:32,height:32).border(.black)
-          }
           if channel.spot != nil {Image(systemName:"drop.fill").help("Spot ink channel")}
           Text(channel.name).lineLimit(1); Spacer()
         }.contentShape(Rectangle())
@@ -176,7 +176,7 @@ struct AuxiliaryChannelRow: View {
       .disabled(!store.canEditChannels)
       .contextMenu {
         Button("Load Selection") { store.perform(.channel(.load(target,.replace,false))) }
-        Button(channel.spot == nil ? "Channel Options…":"Spot Channel Options…") { try? store.selectAlphaChannel(quick ? nil:channel.id); store.beginChannelDialog(quick ? .quickOptions:.options) }
+        Button(channel.spot == nil ? "Channel Options…":"Spot Channel Options…") { activation.openOptions(in:store) }
         if !quick {
           Button("Rename…") { name = channel.name; renaming = true }
           Button("Duplicate Channel") { store.perform(.channel(.duplicate(channel.id,nil))) }

@@ -88,6 +88,7 @@ public enum ActionOperation: Codable, Sendable {
   case crop(IntRect)
   case flip(ActionLayerTarget, Bool)
   case transform(ActionLayerTarget, Transform2D, Resampling)
+  case stackLayers([ActionLayerTarget],LayerStackOperation)
   case moveLayers([ActionLayerTarget],Int,Int,Bool)
   case layerLinks(String,[ActionLayerTarget],Bool?)
   case pixelPaint(PixelPaintKind,ActionPixelPaintTarget,PixelPaintSettings)
@@ -208,6 +209,7 @@ public enum ActionOperation: Codable, Sendable {
     case .flip(let id, let v): self = .flip(target(id), v)
     case .transform(let id, let matrix, let method): self = .transform(target(id), matrix, method)
     case .movePixels(let request):self = .movePixels(target(request.layerID),request.dx,request.dy,request.copy,request.constrain,request.backgroundColor)
+    case .stackLayers(let request): self = .stackLayers(request.layerIDs.map(target), request.operation)
     case .moveLayers(let request):self = .moveLayers(request.layerIDs.map(target),request.dx,request.dy,request.copy == true)
     case .pixelPaint(let request):if let pattern=request.pattern{self = .patternPixelPaint(.init(request.target,in:d),pattern,request.patternPlacement ?? .init(),request.settings)}else{self = .pixelPaint(request.kind,.init(request.target,in:d),request.settings)}
     case .layerLinks(let command):switch command{case .link(let ids):self = .layerLinks("link",ids.map(target),nil);case .unlink(let ids):self = .layerLinks("unlink",ids.map(target),nil);case .enabled(let ids,let value):self = .layerLinks("enabled",ids.map(target),value)}
@@ -307,6 +309,7 @@ public enum ActionOperation: Codable, Sendable {
     case .crop(let v): return .crop(v)
     case .flip(let t, let v): return .flip(try id(t), v)
     case .transform(let t, let m, let r): return .transform(try id(t), m, r)
+    case .stackLayers(let targets, let operation): return .stackLayers(.init(layerIDs: try targets.map(id), operation: operation))
     case .moveLayers(let targets,let dx,let dy,let copy):return .moveLayers(.init(layerIDs:try targets.map(id),dx:dx,dy:dy,copy:copy))
     case .patternPixelPaint(let target,let pattern,let placement,let settings):return .pixelPaint(.init(.fill,target:try target.resolve(in:d),settings:settings,pattern:pattern,placement:placement))
     case .pixelPaint(let kind,let target,let settings):return .pixelPaint(.init(kind,target:try target.resolve(in:d),settings:settings))
@@ -355,6 +358,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
     }
     for step in steps {
+      if case .stackLayers(let targets, _) = step.operation { guard !targets.isEmpty, targets.count <= LayerLimits.maximumLayers else { throw CraftError.invalid("Invalid recorded layer arrangement targets.") } }
       if case .fitImage(let options) = step.operation { try options.validate() }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}

@@ -543,6 +543,8 @@ import UniformTypeIdentifiers
     do { try executeEditorCommand(command) } catch { self.error = error.localizedDescription }
   }
   /// Shared native/API transaction: history, dirty state, selection and rendering stay together.
+  @ObservationIgnored var layerStackOrderPreparation: @Sendable (CraftDocument, LayerStackOrderRequest) async throws -> Command = { _, request in .stackLayers(request) }
+
   func executeEditorCommand(_ command: Command) throws {
     stopTimelinePlayback(render: false)
     guard historyOperation == nil else { throw HistoryNavigationConflict.busy }

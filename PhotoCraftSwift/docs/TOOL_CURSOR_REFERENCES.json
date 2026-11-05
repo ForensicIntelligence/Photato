@@ -1244,5 +1244,14 @@
     "passed": true,
     "physical_pointer_check": false,
     "native_control": "Existing Rasterize/menu/progress/Cancel path; no modifier/shortcut semantics change."
+  },
+  "channel_thumbnail_options_421": {
+    "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+    "new_canvas_tool_or_cursor": false,
+    "native": "Native thumbnail button uses normal control pointer; unmodified double-click Options, all16modified click combinations retain existing dispatch. No canvas tool/modifier action or shortcut added.",
+    "existing_tools": 55,
+    "existing_modifier_combinations": 880,
+    "passed": true,
+    "physical_pointer_check": false
   }
 }

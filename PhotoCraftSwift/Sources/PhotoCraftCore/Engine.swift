@@ -59,6 +59,7 @@ public enum Command: Sendable {
   case blend(UUID, BlendMode)
   case move(UUID, Int, Int)
   case layoutLayers([LayerTranslation], LayerLayoutOperation)
+  case stackLayers(LayerStackOrderRequest)
   case reorder(UUID, Int)
   case relocate(UUID, UUID?, Int)
   case groupLayers([UUID], String)
@@ -206,6 +207,7 @@ public enum Command: Sendable {
     case .blend: "Blend Mode"
     case .move: "Move Layer"
     case .layoutLayers(_, let operation): operation.label
+    case .stackLayers(let request): request.operation.title
     case .reorder, .relocate: "Arrange Layer"
     case .groupLayers: "Group Layers"
     case .ungroup: "Ungroup Layers"
@@ -408,7 +410,7 @@ public enum Command: Sendable {
     case .fitImage,.preparedLayerMerge,.canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
     case .paste,.layerVia,.cut,.setGradientFill,.setPatternFill: try applyClipboardPrimitive(to:&d)
     case .addLayer,.newPixelLayer,.deleteLayers,.deleteLayer,.duplicateLayer,.duplicateLayers,.duplicateLayersFrom,.renameLayer,.layerColor,.layerVisibility,.visibility,.lock,.protection: try applyLayerStructurePrimitive(to:&d)
-    case .opacity,.blend,.layoutLayers,.move,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
+    case .opacity,.blend,.layoutLayers,.move,.stackLayers,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
     case .importedType,.editType,.replaceContent,.rasterize,.embedSmartObject,.smartObjectStack,.replaceSmartObject,.resetSmartObjectTransform: try applyLayerContentPrimitive(to:&d)
     case .mask,.createMask,.applyMask,.deleteMask,.maskProperties,.vectorMask,.savePath,.deletePath,.selection,.selectShape,.selectionCoverage,.colorRange,.magneticSelection,.modifiedSelection,.reselectedSelection,.transformedSelection: try applyMaskPathPrimitive(to:&d)
     case .vanishingPoint,.maskAllObjects,.skyReplacement,.warp,.contentAwareScale,.photoAlign,.photoBlend,.adjustmentBrush,.painting,.regionRetouch,.contentAwareFill,.selectionRefinement,.focusArea,.selectSubject,.removeBackground: try applyPreparedRasterPrimitive(to:&d)

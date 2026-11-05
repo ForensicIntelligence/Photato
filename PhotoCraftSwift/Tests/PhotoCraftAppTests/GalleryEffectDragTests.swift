@@ -167,7 +167,7 @@ final class GalleryEffectDragTests: XCTestCase {
     XCTAssertEqual(m.settings.effects.count,32);XCTAssertEqual(m.settings.effects.last,full.effects.first)
     XCTAssertEqual(m.undoStates.count,before+1);m.undo();XCTAssertEqual(m.settings,full)
     XCTAssertFalse(m.moveEffect(from:0,to:0));XCTAssertFalse(m.moveEffect(from:0,to:32))
-    XCTAssertEqual(AutomationCommand.definitions.count,246);XCTAssertEqual(ActionLibraryFile.maximumVersion,47)
+    XCTAssertEqual(AutomationCommand.definitions.count,247);XCTAssertEqual(ActionLibraryFile.maximumVersion,48)
     let capabilities=try XCTUnwrap(RasterFilter.apiCapabilities["filterGallery"] as? [String:Any])
     XCTAssertNotNil(capabilities["effectReordering"])
     XCTAssertEqual((GalleryEffectTransfer.apiCapabilities["commands"] as? [String]),["filter.apply","smartFilter.set"])

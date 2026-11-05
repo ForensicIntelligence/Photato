@@ -2355,5 +2355,11 @@
     "factory_inventory_or_shortcut_change": false,
     "native": "Existing Rasterize uses asynchronous prepared geometry; menu/shortcut identities unchanged.",
     "qualification": "193/195same normal cases per architecture; all18new415\u2013420methods pass, including3new420functional methods and real benchmark. Two exact baseline failures retained. Universal min14/signature/ZIP pass; full/physical qualification open."
+  },
+  "channel_thumbnail_options_421": {
+    "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "Existing channel context Options now shares captured thumbnail target; no menu command/shortcut identity added.",
+    "qualification": "56focused Debugpass/3new methods;50existing normal baseline tests per architecture and70independent words each. Current421normal/physical/fullscope open."
   }
 }

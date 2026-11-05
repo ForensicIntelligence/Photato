@@ -157,7 +157,7 @@ final class GradientFillAPITests: XCTestCase {
       XCTAssertEqual(response.statusCode, 200)
       let capabilities = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: Any])
       XCTAssertNotNil(capabilities["gradientFills"])
-      XCTAssertEqual(AutomationCommand.definitions.count, 244)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
       XCTAssertEqual(AutomationCommand.definitions.first { $0.name == GradientFillAPI.command }?.optionalParameters, Set<String>())
       document.store.beginGradientFill(editing: id)
       XCTAssertEqual(document.store.gradientFillState["canEditActive"] as? Bool, false)
@@ -190,7 +190,7 @@ final class GradientFillAPITests: XCTestCase {
     XCTAssertEqual(action.steps.count, 1)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(edited)), edited)
     let saved = try ActionLibraryFile.decode(library.exportFile(action.id))
-    XCTAssertEqual(ActionLibraryFile.maximumVersion, 47)
+    XCTAssertEqual(ActionLibraryFile.maximumVersion, 48)
     XCTAssertEqual(saved.version, 47)
     var wire = try XCTUnwrap(JSONSerialization.jsonObject(with: library.exportFile(action.id)) as? [String: Any])
     wire["version"] = 46
