@@ -2337,5 +2337,23 @@
     "factory_inventory_or_shortcut_change": false,
     "native": "All eleven Statistics/Stack Mode routes already exist; five shared formulas corrected, no new action binding.",
     "qualification": "Normal menu/cursor regressions pass; full current Photoshop context/default/output/physical qualification remains open."
+  },
+  "animation_frame_drag_418": {
+    "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "Existing Timeline frame reorder gains direct thumbnail insertion, retaining arrows/menu/API meanings.",
+    "qualification": "50focused Debugpass; current Photoshop insertion/modifiers/default/physical acceptance remains open."
+  },
+  "sky_preset_rename_419": {
+    "reference": "docs/SKY_PRESET_RENAME_419.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "Sky Replacement preset Rename action follows current public Adobe function; exact preset hierarchy/dialog/default/physical qualification stays open.",
+    "qualification": "57focused Debugpass; native Rename and API use existing library operation."
+  },
+  "rasterization_responsiveness_420": {
+    "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "Existing Rasterize uses asynchronous prepared geometry; menu/shortcut identities unchanged.",
+    "qualification": "193/195same normal cases per architecture; all18new415\u2013420methods pass, including3new420functional methods and real benchmark. Two exact baseline failures retained. Universal min14/signature/ZIP pass; full/physical qualification open."
   }
 }

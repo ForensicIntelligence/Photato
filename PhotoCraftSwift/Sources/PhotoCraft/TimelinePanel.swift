@@ -122,7 +122,7 @@ struct TimelinePanel: View {
                     HStack { Text("\(index + 1)"); Spacer(); Text(frame.delay, format: .number.precision(.fractionLength(0...2))) + Text(" sec.") }
                   }.padding(4).background((store.timelinePreviewFrameID ?? animation.selectedFrameID) == frame.id ? StudioTheme.selected : StudioTheme.field)
                     .overlay(RoundedRectangle(cornerRadius: 3).stroke((store.timelinePreviewFrameID ?? animation.selectedFrameID) == frame.id ? StudioTheme.accent : .clear, lineWidth: 2))
-                }.buttonStyle(.plain).id(frame.id).accessibilityLabel("Frame \(index + 1), \(frame.delay) seconds")
+                }.buttonStyle(.plain).modifier(AnimationFrameDropTarget(store: store, frameID: frame.id)).id(frame.id).accessibilityLabel("Frame \(index + 1), \(frame.delay) seconds")
               }
             }.padding(3)
           }.frame(height: 92)
@@ -156,7 +156,7 @@ struct TimelinePanel: View {
       }
     }.padding(8).background(StudioTheme.panel).frame(height: animation == nil ? 150 : 166)
       .disabled(!store.canUseTimeline)
-      .onDisappear { store.stopTimelinePlayback() }
+      .onDisappear { AnimationFrameDrag.cancel(store: store); store.stopTimelinePlayback() }
       .popover(isPresented: $showTween) {
         VStack(alignment: .leading) {
           Text("Tween with Next Frame").font(.headline)

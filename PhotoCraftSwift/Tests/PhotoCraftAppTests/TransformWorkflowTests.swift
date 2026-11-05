@@ -123,6 +123,7 @@ final class TransformWorkflowTests: XCTestCase {
     s.renderTask?.cancel()
     let before = try Renderer.composite(s.document)
     s.rasterize()
+    await s.geometryTask?.value
     s.renderTask?.cancel()
     XCTAssertNil(s.error)
     XCTAssertNil(s.activeLayer?.affine)

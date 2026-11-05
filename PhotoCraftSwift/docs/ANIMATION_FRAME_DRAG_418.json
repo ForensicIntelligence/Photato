@@ -1,0 +1,108 @@
+{
+  "step": 418,
+  "recorded_at_utc": "2026-11-05T05:18:58.281073+00:00",
+  "source": "418Source02",
+  "software_build": 418,
+  "source_inputs": 7207,
+  "production_swift_files": 1039,
+  "status": "Single-frame native Timeline drag implemented and focused Debug qualified; full SP01, normal and physical acceptance remain open",
+  "run": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins",
+  "source_manifest": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/source02-source.json",
+  "new_regression_methods": 3,
+  "implementation": {
+    "added": [
+      "Sources/PhotoCraft/AnimationFrameDragging.swift",
+      "Tests/PhotoCraftAppTests/AnimationFrameDragTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/TimelinePanel.swift",
+      "Sources/PhotoCraft/AutomationAnimation.swift",
+      "scripts/Info.plist"
+    ],
+    "native": "Drag selects the source without content history, shows a before/after insertion edge, then invokes existing editTimeline(.reorder) with one Undo. Full frame IDs/delays/layer states/content and selected-frame appearance are retained.",
+    "transfer": "Own-process non-content token; weak store/controller ownership and captured document/session/panel lifetime. Reject stale, selected-source change, hidden/reopened, detached, superseded, cancelled, busy, playing, malformed/foreign/multiple-provider and no-op drops.",
+    "API": "animation.view frameID selects the source, then animation.edit operation=reorder/index uses the same existing command and native history. New nativeFrameDrag capability metadata describes projection, insertion edges and limits; schemas/state/commands unchanged. No corresponding pinned Adobe Timeline endpoint, so no invented route or descriptor.",
+    "modifiers": "All16combinations propose and dispatch move. No implicit duplicate or multi-frame action. Physical/current Photoshop modifier feedback remains unqualified.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "Actions": 47,
+    "new_tool_shortcut": false,
+    "core_imaging_kernel_change": false,
+    "new_capacity_limit": false,
+    "portable_Actions": "Existing animation semantic recording remains unavailable; no new format/version introduced."
+  },
+  "audits": {
+    "I03": "Existing XMP/EXIF/opaque resources/globals/raw manifest preservation already exists. Unrepresented comps/notes/timeline/variables/measurement/styles/links/blend-if/non-RGB need new adapters/fixtures; stillneeded, no Rust prerequisite for Photoshop.",
+    "I04": "All14represented encoder options have native Save/Copy controls and shared schemas; no duplicate option added. Missing formats/extended layouts/metadata/default/output fidelity remain open.",
+    "AI07": "No durable model/seed/provenance result record currently exists to expose. New source-bound request/lifecycle/provenance/API foundation is stillneeded; no invented Apple model identity or seed, no AI request made."
+  },
+  "qualification": {
+    "baseline417_normal": {
+      "cases_each": 49,
+      "passed_each": 49,
+      "same_order": true,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "evidence": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/baseline01-qualification.json"
+    },
+    "source01_Debug": {
+      "build_failed": true,
+      "tests_executed": 0,
+      "reason": "New test awaited provider data inside XCTest autoclosure; application linked but test compilation failed. Existing retained test bundle is not qualified as source01.",
+      "evidence": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/source01-summary.json",
+      "retention": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/source01-binaries/manifest.json"
+    },
+    "source02_Debug": {
+      "cases": 50,
+      "passed": 50,
+      "new_methods": 3,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 12.53,
+      "test_seconds": 4.639,
+      "evidence": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/source02-summary.json",
+      "retention": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/source02-binaries/manifest.json",
+      "production_and_app_equal_source01": true
+    },
+    "native_API": "RGB8/16/32, three independently specified orders each, exact document/archive/selected-render pixels and Undo/Redo. Every insertion edge/no-op checked,8 delayed stale/ownership/cancellation/playback scenarios, hosted bounds and capability discovery.",
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "source_unchanged": true,
+    "normal_optimized418": false,
+    "universal418": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/create-frame-based-animations.html",
+      "use": "Current frame Timeline context; does not prove exact drag insertion/modifier behavior."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/select-animation-frames.html",
+      "use": "Current frame selection context. Physical2026observations remain pending."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "use": "Redirected to current Help. No PDF or old/current direct-drag evidence claimed."
+    }
+  ],
+  "normal_batch_policy": "UI-only projection over existing reorder math; batch normal optimized/universal/private source at next meaningful stable breadth milestone. Latest normal/private417 retains exact linked-preview and master-palette failures.",
+  "native_UI": "No CUA/staging/launch/install. Pending human unlock from408; hosted fitting bounds are not physical drag/hit-test/feedback/auto-scroll/default/modifier acceptance.",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_source_push": false,
+  "new_install": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "AI09 sky-library audit, then B08 Adjustment Brush.",
+  "consistency_verification": "artifacts/runs/20261105T050655Z-418-import-export-AI-quickwins/final-verification01.json",
+  "consistency_checks_passed": 29
+}

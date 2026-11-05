@@ -40,6 +40,7 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   var importTask:Task<Void,Never>?
   var undoStates:[SkyState]=[]
   var redoStates:[SkyState]=[]
+  var renameDraft:SkyRenameDraft?
   var stroke:SkyMaskStroke?
   private var generation=0
   private var closed=false
@@ -47,7 +48,8 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   private var dragStart:SkyState?
   var hasRasterSource:Bool{if let layer=original.layers.first(where:{$0.id==original.activeLayerID}),case .raster=layer.content{return true};return false}
   var ready:Bool{input != nil && !loading && !committing && !closed}
-  var canCommit:Bool{ready && !rendering && edit != nil && error==nil && stroke==nil && dragStart==nil}
+  var canRenameSky:Bool{ready && renameDraft==nil && stroke==nil && dragStart==nil && library.loadError==nil && state.sourceLayerID==nil && library.skies.contains{$0.id==state.skyID}}
+  var canCommit:Bool{ready && renameDraft==nil && !rendering && edit != nil && error==nil && stroke==nil && dragStart==nil}
   init(document:CraftDocument,library:SkyLibrary){original=document;self.library=library;state.skyID=library.skies.first?.id}
   func prepare()async {
     loading=true
@@ -114,7 +116,7 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
     }
   }
   func removeSky(){guard ready,let id=state.skyID else{return};do{try library.remove(id);chooseSky(library.skies.first?.id)}catch{self.error=error.localizedDescription}}
-  func close(){closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel()}
+  func close(){renameDraft=nil;closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel()}
 }
 @MainActor extension EditorStore {
   var canSelectSky:Bool{canUseSelectionTools && !editingMask}

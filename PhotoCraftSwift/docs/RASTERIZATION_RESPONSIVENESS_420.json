@@ -1,0 +1,126 @@
+{
+  "step": 420,
+  "recorded_at_utc": "2026-11-05T06:21:16.629010+00:00",
+  "source": "420Source02",
+  "software_build": 420,
+  "source_inputs": 7210,
+  "production_swift_files": 1040,
+  "status": "Ordinary native rasterization preparation moved off the main actor; feature-scoped normal universal qualification complete, full Q03 and Photoshop acceptance open",
+  "run": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement",
+  "source_manifest": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/release01-source.json",
+  "new_regression_methods": 3,
+  "implementation": {
+    "added": [
+      "Tests/PhotoCraftAppTests/RasterizeResponsivenessTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "Tests/PhotoCraftAppTests/TransformWorkflowTests.swift",
+      "scripts/Info.plist"
+    ],
+    "native": "Capture active layer ID; use existing detached performGeometry and SmartObjectIO.rasterizationCommand, source/session validation and one prepared Undo commit. No rendering/conversion formula change.",
+    "shared_API": "Existing layer.rasterize stays shared. rasterizationPreparation capability metadata describes native/API preparation and existing geometry state. No operation/parameter/schema/Adobe descriptor/archive/Actions version change.",
+    "guards": "Cancellation before commit, changed/replaced source/session, busy/modal admission and locked target retain source and history.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "Actions": 47,
+    "new_tool_shortcut": false,
+    "core_imaging_kernel_change": false,
+    "new_capacity_limit": false
+  },
+  "qualification": {
+    "normal": {
+      "cases_each": 195,
+      "passed_each": 193,
+      "failed_cases_each": 2,
+      "assertions_each": 3,
+      "unexpected_each": 1,
+      "crashes_each": 0,
+      "same_order": true,
+      "new415_420_methods_passed_each": 18,
+      "new418_420_methods_passed_each": 10,
+      "new420_functional_methods_passed_each": 3,
+      "real_benchmark_methods_each": 1,
+      "evidence": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/qualified01.json",
+      "retained_failures": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/retained-residual01.json"
+    },
+    "focused_Debug": {
+      "passed_before_crash": 22,
+      "new420_functional_methods_passed": 3,
+      "full_selected_batch_passed": false,
+      "crash": "Signal10 in unchanged Shape API case; exact case also crashes on retained419Debug. No cause repair claimed.",
+      "evidence": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/source01-summary.json",
+      "reproduction": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/repro01-summary.json"
+    },
+    "independent_statistics": {
+      "cases_each": 14,
+      "exactFloat32Words_each": 70,
+      "evidence": [
+        "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/release01-arm-independent-check.json",
+        "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/release01-intel-independent-check.json"
+      ]
+    },
+    "measurements": {
+      "report": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/rasterization-normal-review01.json",
+      "scope": "Two individual RGB8 Gradient Fill samples each architecture. Current optimized native call and exact pinned old synchronous expression replayed in same process. Not old optimized binary timing/p95/physical presentation. Initial/final previews excluded.",
+      "arm64_24MP": {
+        "busy_at_return": true,
+        "commit_elapsed_ms": 6942.487792111933,
+        "height": 4000,
+        "history_entries": 1,
+        "legacy_sync_reference_ms": 6887.916583567858,
+        "main_actor_call": true,
+        "source_unchanged": true,
+        "submit_main_actor_ms": 0.0233333557844162,
+        "width": 6000
+      },
+      "translated_Intel_24MP": {
+        "busy_at_return": true,
+        "commit_elapsed_ms": 12251.991333905607,
+        "height": 4000,
+        "history_entries": 1,
+        "legacy_sync_reference_ms": 12350.890250410885,
+        "main_actor_call": true,
+        "source_unchanged": true,
+        "submit_main_actor_ms": 0.04620896652340889,
+        "width": 6000
+      },
+      "old_actual_Debug": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/probe02-rasterization.json",
+      "old_actual_profile": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/probe02-rasterize-sample01.txt",
+      "painting_baseline": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/baseline01-arm64-measurement.json"
+    },
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "universal": {
+      "evidence": "artifacts/runs/20261105T054555Z-420-responsiveness-measurement/universal/staging01.json",
+      "minimum_system": "14.0",
+      "both_slices": true,
+      "signature_and_ZIP_extract": true,
+      "live_UI": false
+    },
+    "source_unchanged": true,
+    "actual_native_UI": false,
+    "full_current_suite_passed": false
+  },
+  "retained_attempts": {
+    "probe01": "New diagnostic Thread.isMainThread noasync compile failure,0tests; existing5320output files crosslinked to retained419after exact hash verification.",
+    "probe02": "Actual unchanged419native Debug call measured0.96MP/24MP synchronously,1opt-in test/2populated cases. Source/application/XCTest/resources/profile preserved before product changes.",
+    "source01": "22Debugpasses including3newmethods, then pre-existing ShapeSIGBUS10; source/binaries/resources retained.",
+    "source02": "Test-only optional pinned legacy synchronous reference branch; production unchanged.195same normalIDs each run without Debug compiler workaround.",
+    "historical_reports": "Copied31October .ips are historical only; not420crash diagnostics."
+  },
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_source_push": false,
+  "new_install": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "Q04 independent reference/corpus audit, then REL01 archive/sandbox audit."
+}

@@ -1,0 +1,99 @@
+{
+  "step": 419,
+  "recorded_at_utc": "2026-11-05T05:37:15.024957+00:00",
+  "source": "419Source02",
+  "software_build": 419,
+  "source_inputs": 7209,
+  "production_swift_files": 1040,
+  "status": "Native sky-preset rename and shared API state implemented; focused Debug qualified, full AI09/normal/physical acceptance open",
+  "run": "artifacts/runs/20261105T052729Z-419-sky-library-rename",
+  "source_manifest": "artifacts/runs/20261105T052729Z-419-sky-library-rename/source02-source.json",
+  "new_regression_methods": 3,
+  "implementation": {
+    "added": [
+      "Sources/PhotoCraft/SkyRenameControls.swift",
+      "Tests/PhotoCraftAppTests/SkyRenameTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/SkyWorkspace.swift",
+      "Sources/PhotoCraft/SkySheet.swift",
+      "Sources/PhotoCraft/AutomationSky.swift",
+      "scripts/Info.plist"
+    ],
+    "native": "Rename selected sky with staged name/Cancel/Return/Escape, captured preset/state/library revision and inline validation/storage retry. Refresh prepared preview names after commit. Parent cannot commit replacement while Rename is open; closure clears intent.",
+    "shared": "Uses existing SkyLibrary.rename and sky.library operation=rename with skyID/name. IDs/order/image bytes preserved; persistent library edit has no document/local preview Undo and survives cancelling document replacement, matching existing import/remove.",
+    "guards": "Reject stale selection/settings/library/removal/closed/superseded intent. Invalid names and storage failures leave library/persistence unchanged; retry can succeed. Existing nonempty/255UTF16name validation retained.",
+    "API": "New libraryRenameOpen/canRenameSelectedSky state/result-schema fields and nativeLibraryManagement capability metadata. Explicit API requests do not open dialogs; validation/persistence operation unchanged. No new command or invented Adobe route/descriptor.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "Actions": 47,
+    "new_tool_shortcut": false,
+    "core_imaging_kernel_change": false,
+    "new_capacity_limit": false
+  },
+  "audits": {
+    "B08": "Current adjustment kinds, new/existing target, Add/Subtract, brush size/hardness/opacity/flow, Apply to Object, overlay, mask inversion/feather/density, Properties and Brush Settings controls already exist. Selected12core/app cases pass each preserved417normal architecture. Full adjustment presets/algorithms/default/interop/platform scope remains open."
+  },
+  "qualification": {
+    "baseline417_normal": {
+      "cases_each": 26,
+      "passed_each": 26,
+      "same_order": true,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "evidence": "artifacts/runs/20261105T052729Z-419-sky-library-rename/baseline01-qualification.json"
+    },
+    "source01_Debug": {
+      "build_failed": true,
+      "tests_executed": 0,
+      "reason": "New test called throwing photo() without try. Application linked; retained pre-existing XCTest bundle is not qualified as source01.",
+      "evidence": "artifacts/runs/20261105T052729Z-419-sky-library-rename/source01-summary.json",
+      "retention": "artifacts/runs/20261105T052729Z-419-sky-library-rename/source01-binaries/manifest.json"
+    },
+    "source02_Debug": {
+      "cases": 57,
+      "passed": 57,
+      "new_methods": 3,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 12.28,
+      "test_seconds": 13.086,
+      "production_and_app_equal_source01": true,
+      "evidence": "artifacts/runs/20261105T052729Z-419-sky-library-rename/source02-summary.json",
+      "retention": "artifacts/runs/20261105T052729Z-419-sky-library-rename/source02-binaries/manifest.json"
+    },
+    "native_API": "Exact native/API binary library files across RGB8/16/32; retained IDs/order/image data, document/preview pixels and history, persistence/Cancel, invalid UTF16names, failed atomic storage with retry, stale contexts and dialog/schema discovery. All3new419and3prior418methods pass.",
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "source_unchanged": true,
+    "normal_optimized419": false,
+    "universal419": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/select-and-manage-sky-presets.html",
+      "updated": "2026-02-23",
+      "read_UTC": "2026-11-05",
+      "use": "Current Rename Sky action. Exact native dialog/layout/default/physical acceptance remains open."
+    }
+  ],
+  "normal_batch_policy": "No numeric engine change; batch normal/universal/private source at next meaningful stable breadth milestone. Latest417normal/private retains linked-preview and master-palette exact baseline failures.",
+  "native_UI": "No CUA/staging/launch/install. Human unlock request from408still pending. Hosted bounds are not physical/current Photoshop acceptance.",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_source_push": false,
+  "new_install": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "Q03 measured responsiveness source/benchmark audit, then Q04 independent oracle/corpus.",
+  "consistency_verification": "artifacts/runs/20261105T052729Z-419-sky-library-rename/final-verification01.json",
+  "consistency_checks_passed": 29
+}

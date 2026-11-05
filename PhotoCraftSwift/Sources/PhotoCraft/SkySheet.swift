@@ -24,7 +24,7 @@ struct SkySheet:View {
                 Text(model.state.sourceLayerID==nil ? "Choose a sky…":"Selected layer").tag(UUID?.none)
                 ForEach(model.library.skies){Text($0.name).tag(Optional($0.id))}
               }
-              HStack{Button("Import…"){model.importSky()};Button("Remove"){model.removeSky()}.disabled(model.state.skyID==nil)}
+              HStack{Button("Import…"){model.importSky()};Button("Rename…"){model.beginSkyRename()}.disabled(!model.canRenameSky);Button("Remove"){model.removeSky()}.disabled(model.state.skyID==nil)}
               Button("Use Selected Layer"){if let id=model.original.activeLayerID{model.useLayer(id)}}
                 .disabled(!model.hasRasterSource)
               if model.library.skies.isEmpty{Text("Import a sky image to begin, or use a pixel layer from this document.").font(.caption).foregroundStyle(.secondary)}
@@ -48,6 +48,7 @@ struct SkySheet:View {
         Spacer();Button("Cancel"){store.cancelSkyReplacement()}.keyboardShortcut(.cancelAction);Button("OK"){store.commitSkyReplacement()}.keyboardShortcut(.defaultAction).disabled(!model.canCommit)
       }.padding(12)
     }.background(Color(nsColor:.windowBackgroundColor)).frame(minWidth:1000,idealWidth:1150,minHeight:640,idealHeight:740)
+      .sheet(item:$model.renameDraft){draft in SkyRenameSheet(model:model,draft:draft)}
       .onDisappear{model.close();if store.skyWorkspace === model{store.skyWorkspace=nil}}
   }
 }

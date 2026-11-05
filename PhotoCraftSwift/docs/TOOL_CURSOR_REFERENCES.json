@@ -1216,5 +1216,33 @@
     "existing_modifier_combinations": 880,
     "passed": true,
     "physical_pointer_check": false
+  },
+  "animation_frame_drag_418": {
+    "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
+    "new_canvas_tool_or_cursor": false,
+    "panel_modifier_combinations": 16,
+    "operation": "Move for all16combinations; no advertised duplicate. Native DropProposal follows dispatch; physical system feedback unqualified.",
+    "existing_tools": 55,
+    "existing_modifier_combinations": 880,
+    "passed": true,
+    "physical_pointer_check": false
+  },
+  "sky_preset_rename_419": {
+    "reference": "docs/SKY_PRESET_RENAME_419.json",
+    "new_canvas_tool_or_cursor": false,
+    "native_control": "Standard native text editing and buttons; Return/Escape in modal dialog. No alternate canvas/modifier action.",
+    "existing_tools": 55,
+    "existing_modifier_combinations": 880,
+    "passed": true,
+    "physical_pointer_check": false
+  },
+  "rasterization_responsiveness_420": {
+    "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json",
+    "new_canvas_tool_or_cursor": false,
+    "existing_tools": 55,
+    "existing_modifier_combinations": 880,
+    "passed": true,
+    "physical_pointer_check": false,
+    "native_control": "Existing Rasterize/menu/progress/Cancel path; no modifier/shortcut semantics change."
   }
 }

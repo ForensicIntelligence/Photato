@@ -18,20 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:417 -->
+<!-- current-status-step:420 -->
 ## Current status — 5 November 2026
 
-Image stacks already had eleven native rendering modes. The audit found that five used formulas different from Adobe’s published definitions. Variance and standard deviation now use the sample denominator. Skewness keeps its sign, kurtosis keeps its raw value, and entropy no longer merges values into 256 bins or normalizes the result. Native commands, the Photato API and the supported Adobe action jobs share the corrected Swift engine.
+Rasterizing an ordinary layer used to render and convert it on the main thread. It now prepares the same command in a background worker, checks that its source is still current, and commits one Undo. Cancellation and stale documents discard the prepared work. The API already used this shared path.
 
-Four new tests use independently calculated values, native float pixels, saved documents and Undo/Redo. All 41 focused Debug tests pass. Optimized Apple Silicon and translated Intel builds each pass 157 of 159 tests, including all eight new tests from the last three checkpoints. Both match all 70 independent Float32 expectations. The two failures exactly reproduce earlier linked-image alpha and master-palette cancellation failures; they remain open. The universal package passes macOS 14, signature and ZIP checks. Physical UI checks await the pending unlock request.
+In one optimized 24MP sample, the native call returned in 0.023ms on Apple Silicon while preparation took about 6.94 seconds in the worker. Replaying the old synchronous expression in the same process took about 6.89 seconds and produced the same document. This improves UI availability; it is not a rendering-speed or sustained60fps claim. Initial and final previews were excluded from timing.
 
-The original licensed Rust fixture is unchanged. Its regression still covers the six formulas that match the current target. Earlier comparison results are preserved. These mathematical checks do not establish exact Photoshop rendering, scaling, binning, rounding or degenerate-input behavior.
+Both optimized architectures pass 193 of 195 checks, including all 18 new methods from steps415–420. The two failures match the recorded linked-preview alpha mismatch and master-palette cancellation. All three new functional rasterization checks pass; native/API documents, saved bytes and Undo match across RGB8/16/32. A Debug Shape API crash also reproduces on the retained419build; that case passes both current optimized runs. The crash remains unresolved.
 
-The color-mode and proofing audits found the represented controls already present. New color-blind proof transforms and other missing workflows remain in stillneeded. Next are a bounded original PhotoCraft migration audit and export/interchange. There are 13 candidates left in the major quick-win sweep; this is not a Photoshop completion percentage. [Step 417](DEVLOG.md#dev-step-417).
-The native source is backed up privately at commit `b8952fd71a7f82f8326cfa8afbeb4846d864d9a8`, including the Xcode project, tests, redistributable assets and development records. The backup records the two retained failures and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/b8952fd71a7f82f8326cfa8afbeb4846d864d9a8).
-
-The source backup is verified private, and 34 consistency checks pass. The standalone diary and its site copy carry the same content. Final history receipts retain the two baseline failures and remaining acceptance work.
-
+The universal candidate passes macOS14, signature, resources and ZIP extraction checks. It has not been launched or installed. Physical performance/UI and full Photoshop acceptance remain open. Next are independent reference coverage and archive/sandbox checks. Six candidates remain in the major quick-win sweep; the full requirements are unchanged. [Step420](DEVLOG.md#dev-step-420).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -654,6 +650,9 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 415 | [Select Subject options](DEVLOG.md#dev-step-415) |
 | 2026-11-05 | 416 | [Selected-mask removal and API](DEVLOG.md#dev-step-416) |
 | 2026-11-05 | 417 | [Statistical image stacks](DEVLOG.md#dev-step-417) |
+| 2026-11-05 | 418 | [Frame Timeline dragging](DEVLOG.md#dev-step-418) |
+| 2026-11-05 | 419 | [Rename sky presets](DEVLOG.md#dev-step-419) |
+| 2026-11-05 | 420 | [Rasterization responsiveness](DEVLOG.md#dev-step-420) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3154,3 +3153,27 @@ The shared Swift engine now uses sample variance, its standard deviation, signed
 The first new action-job fixture requested PNG for RGB32, which the encoder correctly rejected. That failed attempt and its binaries are retained. Changing only the fixture to TIFF gave 41 passing Debug tests. Normal builds each ran the same 159 tests and passed 157, including all eight new tests from 415–417. The two failures match preserved baselines exactly: four alpha bytes in linked PSD/PSB previews and a master-palette CancellationError. Neither is waived or claimed fixed.
 
 Both architectures match the independent 70-word reference. Universal packaging, signature verification and extracted ZIP equality pass. Actual native interaction, complete Photoshop output and edge behavior remain unqualified. All original scopes and prior failures remain recorded. Next: I03 migration audit, then I04 export/interchange. [Detailed record](DEVLOG.md#dev-step-417).
+
+## 2026-11-05 — Step 418: Frame Timeline dragging
+
+The migration audit found the currently supported metadata already preserved. Adding nondefault notes, compositions, timelines and other source fields needs new adapters and reference files. Save/Copy already exposes the fourteen represented encoding options. AI generation currently has no durable model/seed result record to inspect; its lifecycle foundation remains stillneeded.
+
+The frame Timeline had reorder arrows but no thumbnail dragging. A private process-local transfer now selects the source frame, previews an insertion edge and invokes the same reorder command. Source/session/panel/ownership checks reject stale or foreign drops. Frame contents remain in the document, and one Undo reverses the move. API capability metadata explains the existing selection and reorder operations; no new route or format is introduced.
+
+All 49 selected baseline tests pass on both preserved normal architectures. After a test-only compile correction, all 50 focused Debug tests pass, including three new regressions. They compare native/API files, pixels and history across three depths, insertion positions and delayed-transfer rejection. Physical feedback, auto-scroll, multi-frame and modifier duplication, complete animation interchange and normal 418 acceptance remain open. Next are the Sky Replacement library and Adjustment Brush audits. [Detailed record](DEVLOG.md#dev-step-418).
+
+## 2026-11-05 — Step 419: Rename sky presets
+
+Sky import/removal and API rename already existed, but the native workspace had no rename action. Adobe’s current sky-preset instructions include Rename Sky. The new native dialog uses the existing library method, captures its source and revision, and preserves IDs, order, image bytes and document history. Preview names update after a successful save. Library changes persist independently of cancelling the document replacement, matching import and removal.
+
+All 26 selected baseline tests pass on both normal architectures. All 57 focused Debug tests pass after a test-only compile correction, including three new checks for native/API file equality, unchanged pixels/history, persistence, Cancel, invalid Unicode names, failed storage with retry and stale contexts. No generation model, rendering kernel, command or archive version changes. Existing Adjustment Brush controls were verified rather than rewritten.
+
+Normal 419 and physical/current Photoshop dialog/hierarchy/default behavior remain open, along with full Sky Replacement and Adjustment Brush workflows. Next: measured responsiveness, then independent references. [Detailed record](DEVLOG.md#dev-step-419).
+
+## 2026-11-05 — Step 420: Rasterization responsiveness
+
+The existing optimized brush benchmark retained all 240 samples in each of four cases. Its24MP input/render/offscreen-draw p95 values were about0.006ms,12.73ms and3.55ms. Those CPU measurements do not establish physical60fps. Source review instead found a synchronous native rasterization path. An unchanged419Debug probe and main-thread profile confirmed the blocker before product changes.
+
+Native rasterization now uses the existing detached geometry preparation and shared API command. No image mathematics changed. Three functional regressions cover18depth/content combinations, exact native/API/old-command documents and archives, Undo/Redo, cancellation, source replacement and busy/locked/modal guards. The new tests passed before an unchanged Debug Shape API case crashed; the same case also crashes on retained419. Both optimized builds execute195identical cases with193passes and two exact recorded failures. All18new methods from415–420pass, including the actual opt-in performance measurement. Independent stack checks still match70Float32words per architecture.
+
+Optimized24MP submission takes0.023ms on Apple Silicon and0.046ms under translated Intel, with preparation about6.94s/12.25s in the worker. The pinned old expression replay is explicitly a same-process reference, not a measurement of an old optimized binary. Universal packaging checks pass. Physical/UI/performance/Photoshop output and full Q03 remain open. Next: Q04, then REL01. [Detailed record](DEVLOG.md#dev-step-420).

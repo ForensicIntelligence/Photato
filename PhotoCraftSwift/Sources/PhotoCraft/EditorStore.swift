@@ -464,7 +464,8 @@ import UniformTypeIdentifiers
   var coalescedDirty = false
   var onChange: ((NSDocument.ChangeType) -> Void)?
   var timelinePreviewVideoFrame: Int?
-  var timelineVisible = false
+  var timelineVisible = false { didSet { if oldValue != timelineVisible { timelinePanelGeneration = UUID() } } }
+  @ObservationIgnored private(set) var timelinePanelGeneration = UUID()
   var timelineTask: Task<Void, Never>?
   var timelineAudioPlayer: (any TimelineAudioPlaying)?
   var timelineAudioFactory: (Data) throws -> any TimelineAudioPlaying = { try NativeTimelineAudioPlayer(data:$0) }
@@ -900,16 +901,13 @@ import UniformTypeIdentifiers
     perform(.replaceContent(id, .fill(Pixel(color.r, color.g, color.b))))
   }
   func rasterize() {
-    guard let layer = activeLayer else { return }
-    if layer.smartObject?.pdfSource != nil {
-      performGeometry(label:"Rasterize Layer",prepare:{ original in
-        guard let current = original.layers.first(where:{$0.id == layer.id}) else {throw CraftError.invalid("Layer unavailable.")}
-        return try SmartObjectIO.rasterizationCommand(current,in:original)
-      });return
-    }
-    do {
-      perform(.rasterize(layer.id, try Renderer.layerSurface(layer, in: document)))
-    } catch { self.error = error.localizedDescription }
+    guard let id = activeLayer?.id else { return }
+    performGeometry(label: "Rasterize Layer", prepare: { original in
+      guard let layer = original.layers.first(where: { $0.id == id }) else {
+        throw CraftError.invalid("Layer unavailable.")
+      }
+      return try SmartObjectIO.rasterizationCommand(layer, in: original)
+    })
   }
   func deleteLayer() {
     finishNumericField()
