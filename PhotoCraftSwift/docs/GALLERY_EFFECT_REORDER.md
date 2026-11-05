@@ -1,0 +1,11 @@
+# Reorder Filter Gallery effects
+
+Checkpoint412 adds effect-row dragging to the native Filter Gallery. All53focused Debug tests and116main plus two separate API metadata tests per architecture pass on412Source01. The universal package passes minimum-macOS14, signing and ZIP extraction checks. Physical pointer interaction remains unqualified. [Evidence](GALLERY_EFFECT_REORDER_412.json).
+
+Drag an effect onto another row to move it to that position. The list is shown from top to bottom while the stored effects array is processed from first to last: the top row runs last. Arrow buttons and row dragging share one move operation. Every effect keeps its parameters, colors and visibility, including independent duplicates and hidden effects. A changed order creates one local Undo step. The source document remains unchanged until OK; Cancel discards the preview. A commit uses the existing native filter transaction and portable Actions payload.
+
+The transfer uses a private, process-local provider with workspace, settings revision, drag generation and source-index checks. Superseded gestures, edits, Undo/Redo, workspace closure and invalid payloads cannot apply an old drop to a new state. Multiple providers and no-op/invalid destinations reject. The native drop proposal is a move, with a row target indicator. Actual physical pointer feedback and exact Photoshop modifier behavior remain unqualified.
+
+The optional API already represents Gallery order. Use `filter.apply` with `filter.kind=filterGallery` and the complete ordered `filter.artistic.effects` array. To edit an existing Smart Filter, use `smartFilter.set` with its complete stack and reordered `stack.filters[].filter.artistic.effects`. Preserve all other effect and filter fields. `filters.filterGallery.effectReordering` in capability discovery documents the UI/API mapping, order and guards. Request/state schemas and command count245 do not change; native archive86/Actions47 maxima remain.
+
+No new Adobe route or unqualified Gallery action descriptor is added. Existing supported Adobe operations keep their contracts. The full effect catalogue, kernels/defaults, texture loading, editable PSD, recent-state/modifier behavior and physical-platform/output acceptance remain open. The archived Adobe CS6reference documents dragging effect names; this is not a new live Photoshop2026observation.

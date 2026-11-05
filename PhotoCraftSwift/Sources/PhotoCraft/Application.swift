@@ -122,6 +122,10 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(repeatLastFilter(_:)) {
+      item.title = controller.filterRecall.filter?.kind.title ?? "Last Filter"
+      return store?.canRepeatFilter == true
+    }
     if item.action == #selector(deleteEmptyLayers) { return store?.canDeleteEmptyLayers == true }
     if item.action == #selector(exportLayersToFiles) { return store?.canExportLayerFiles == true }
     if [#selector(export), #selector(exportLayerAssets), #selector(quickExportAssets), #selector(quickExportLayerAssets), #selector(exportPreferences)].contains(item.action) {

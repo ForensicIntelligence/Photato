@@ -540,6 +540,7 @@ import SwiftUI
 @MainActor final class CraftDocumentController: NSDocumentController {
   let documentWindows = DocumentWindows()
   private(set) var paintPalette = PaintPalette()
+  let filterRecall = FilterRecall()
   var movieFramesWorkspace: MovieFramesWorkspace?
   var movieFramesWindow: MovieFramesWindow?
   var scanCropOperationID: UUID?
@@ -587,6 +588,7 @@ import SwiftUI
     for case let document as CraftNSDocument in documents {
       document.store.workspaceLibrary = workspaces
       document.store.adoptPaintPalette(self.paintPalette)
+      document.store.filterRecall = filterRecall
     }
   }
   override var currentDocument: NSDocument? {
@@ -621,6 +623,7 @@ import SwiftUI
     (document as? CraftNSDocument)?.ownerController = self
     (document as? CraftNSDocument)?.store.documentController = self
     (document as? CraftNSDocument)?.store.adoptPaintPalette(paintPalette)
+    (document as? CraftNSDocument)?.store.filterRecall = filterRecall
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces
     (document as? CraftNSDocument)?.store.synchronizeLinkedArtwork()
   }
@@ -631,6 +634,7 @@ import SwiftUI
       document.store.linkedSourceController = nil
       document.ownerController = nil
       document.store.documentController = nil
+      document.store.filterRecall = FilterRecall(document.store.filterRecall.filter)
       document.store.detachPaintPalette()
     }
     super.removeDocument(document)

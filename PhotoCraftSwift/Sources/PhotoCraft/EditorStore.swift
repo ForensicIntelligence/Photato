@@ -341,6 +341,8 @@ import UniformTypeIdentifiers
   var colorBalanceDraft: ColorBalanceDraft?
   var gradientMapDraft: GradientMapDraft?
   var filterDraft: FilterDraft?
+  var filterRecall = FilterRecall()
+  @ObservationIgnored var repeatFilterPreparation: @Sendable (CraftDocument, FilterRepeatRequest) throws -> Command = { try $1.command(in: $0) }
   var contentAwareDraft: ContentAwareWorkspace?
   var selectMaskDraft: SelectMaskWorkspace?
   var layerStyleDraft: LayerStyleDraft?
@@ -547,6 +549,7 @@ import UniformTypeIdentifiers
     try validateComponentContext(command)
     let before = session.document
     try session.execute(routedMaskCommand(command))
+    if let filter = command.filterRecallValue(in: before) { filterRecall.remember(filter) }
     if before != session.document {
       if before.activeLayerID != document.activeLayerID {
         selectedLayerIDs = Set(document.activeLayerID.map { [$0] } ?? [])

@@ -1,0 +1,123 @@
+{
+  "step": "dev-step-412",
+  "goal_status": "active",
+  "status": "Direct Filter Gallery effect dragging implemented; focused Debug and normal universal checks pass; live pointer interaction unqualified",
+  "software_build": 412,
+  "tested_source": "412Source01",
+  "run": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag",
+  "source_inputs": 7194,
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_pass": 1,
+  "current_major_workflow": "B01",
+  "major_workflow_closed": false,
+  "phase_ledger": "docs/FUNCTION_PHASES_412.json",
+  "priority_rule": "docs/WORK_PRIORITIES_412.json",
+  "previous_turn_classification": "Progress:411Last Filter native/API implemented;412 adds Gallery dragging and normal-qualifies both increments. Existing Debug crash retained.",
+  "next_work": [
+    "B01: source-audit brush settings; then B02.",
+    "After human unlock qualify412isolated candidate and cumulative408/410/411controls, history and Quit.",
+    "Preserve all104original scopes/acceptance and651command identities; continue seven-pass order."
+  ],
+  "full_current_suite_passed": false,
+  "goal_complete": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "source_manifest": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/release01-source.json",
+  "production_swift_files": 1035,
+  "native_workflow_qualified": false,
+  "native_candidate_terminated": false,
+  "evidence": "docs/GALLERY_EFFECT_REORDER_412.json",
+  "tests": {
+    "baseline410_normal": {
+      "cases_each": 59,
+      "passed_each": 59,
+      "same_order": true,
+      "groups": {
+        "F02": 35,
+        "F03": 7,
+        "F04": 7,
+        "F05": 7,
+        "F06": 3
+      },
+      "source": "410Source02 preserved normal; audited module inputs unchanged",
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json"
+    },
+    "source01_debug": {
+      "cases": 53,
+      "passed": 53,
+      "new411_412_passed": 16,
+      "build_seconds": 81.2,
+      "test_seconds": 9.001,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/source01-summary.json"
+    },
+    "release01": {
+      "cases_each": 116,
+      "passed_each": 116,
+      "new411_412_passed_each": 16,
+      "same_order": true,
+      "assertions_each": [
+        0,
+        0
+      ],
+      "unexpected_each": [
+        0,
+        0
+      ],
+      "crashes_each": [
+        0,
+        0
+      ],
+      "arm_build_seconds": 596.17,
+      "intel_build_seconds": 593.81,
+      "test_seconds": [
+        26.238,
+        33.924
+      ],
+      "normal_optimized": true,
+      "Debug_workaround_in_Release": false,
+      "previous_Debug_Adobe_job_passes_both_normal_architectures": true,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/release01-qualification.json",
+      "ordered_case_equivalence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/case-equivalence01.json"
+    },
+    "metadata01": {
+      "cases_each": 2,
+      "passed_each": 2,
+      "same_order": true,
+      "distinct_from_main116": true,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/metadata01-qualification.json",
+      "selector_correction": "Main Release selector omitted two AutomationTests that were in Debug53. Execute them separately on the same frozen normal binaries. Do not describe the two runs as a single118-case suite."
+    },
+    "source_unchanged": true,
+    "Debug_and_Release_inputs_identical": true,
+    "universal": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/universal/staging01.json",
+    "minimum_system": "14.0",
+    "signature_and_archive_extraction": true,
+    "tool_cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "actual_native_UI": false
+  },
+  "native_workflow_evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/universal/staging01.json",
+  "increment_complete": true,
+  "implementation_and_focused_qualification_complete": true,
+  "qualified_scope": "116main+2distinct metadata normal cases per architecture; all16new411\u2013412.53Debug. Physical native interaction pending.",
+  "full_workflow_complete": false,
+  "latest_normal_qualified_universal": "412Source01; physical native interaction pending",
+  "latest_private_source": "410Source02",
+  "source_publication": "docs/SOURCE_PUBLICATION_410.json",
+  "source_commit": "caeead31abade57e8474499c4ffdb82ecf1f5438",
+  "new_build": true,
+  "software_source_pending": null,
+  "actions_maximum": 47,
+  "typed_API_commands": 245,
+  "history_receipt": "artifacts/development-history-audit/412-final-receipt01.json"
+}

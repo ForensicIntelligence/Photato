@@ -63,7 +63,7 @@ extension RasterFilter {
      "lensBlur": LensBlurSettings.apiCapabilities,
      "smartSharpen": SmartSharpenSettings.apiCapabilities,
      "reduceNoise": ReduceNoiseSettings.apiCapabilities,
-     "filterGallery": ArtisticGallerySettings.apiCapabilities,
+     "filterGallery": ArtisticGallerySettings.apiCapabilities.merging(["effectReordering":GalleryEffectTransfer.apiCapabilities]) { _,value in value },
      "adaptiveWideAngle": WideAngleSettings.apiCapabilities,
      "lensCorrection": LensCorrectionSettings.apiCapabilities,
      "blurGallery": BlurGallerySettings.apiCapabilities,

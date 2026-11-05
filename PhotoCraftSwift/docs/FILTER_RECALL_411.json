@@ -1,0 +1,130 @@
+{
+  "step": 411,
+  "recorded_at_utc": "2026-11-05T01:23:02.546193+00:00",
+  "status": "Last Filter native menu/default shortcut and shared API implemented;42focused Debug cases pass,8new; full scope/normal/live qualification open",
+  "source": "411Source02",
+  "application_build": 411,
+  "run": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins",
+  "source_manifest": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/source02-source.json",
+  "source_inputs": 7192,
+  "production_swift_files": 1034,
+  "new_tests": 8,
+  "A07_audit": {
+    "status": "existing_controls_verified",
+    "normal_tests_each_architecture": 29,
+    "source": "410Source02 preserved normal Release",
+    "identical_order": true,
+    "evidence": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/pattern01-qualification.json",
+    "scope": "Existing declared Pattern Fill placement/link/origin/canvas controls and pixel Fill/Stroke locations are present; selected model/native/API/IO tests pass. Full A07remains open."
+  },
+  "implementation": {
+    "native_command": "Filter > Last Filter",
+    "shortcut": "Control+Command+F",
+    "selector": "repeatLastFilter:",
+    "API_command": "filter.repeat",
+    "API_parameters": {},
+    "state": "filterRecall.filter/name/canRepeat",
+    "target": "Current active layer, supported auxiliary/component/ink editing target and current selection; original source UUID is not recalled.",
+    "scope": "Controller-owned application-session RasterFilter recall, shared by attached documents and detached on source close. Publish only after successful direct/native/API commit; skip unrelated edits and Smart Filter toggle/reorder/blend-only changes. Preview/Cancel/failure/history do not replace recall.",
+    "history": "One existing native prepared command; self-contained portable filter Actions record, independent of later recall.",
+    "typed_commands": 245,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "new_Adobe_route": false,
+    "new_canvas_tool_or_modifier": false,
+    "new_preference_or_document_field": false
+  },
+  "qualification": {
+    "source01": {
+      "build_seconds": 134.27,
+      "selected": 51,
+      "completed": 41,
+      "passed": 39,
+      "failed_cases": 2,
+      "failed_assertions": 18,
+      "crashes": 1,
+      "reason": "Two new fixture/expectation errors, then existing Adobe Smart Filter action-job SIGBUS before cursor cases. Full failure/binary preserved.",
+      "evidence": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/source01-summary.json"
+    },
+    "source02": {
+      "build_seconds": 8.79,
+      "cases": 42,
+      "passed": 42,
+      "new_passed": 8,
+      "failed_assertions": 0,
+      "unexpected_errors": 0,
+      "crashes": 0,
+      "seconds": 3.383,
+      "workaround": "Debug-only -sil-disable-pass=predictable-deadalloc-elim; no new normal optimization claim.",
+      "evidence": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/source02-summary.json"
+    },
+    "production_Source01_Source02_equal": true,
+    "source_unchanged": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "normal_optimized_411": false,
+    "universal_411": false,
+    "actual_native_UI": false
+  },
+  "retained_failure": {
+    "case": "PhotoCraftAppTests.SmartFilterWorkflowTests/testPublishedExecuteActionsRetainsEditablePSDStack",
+    "prior410_Debug": -10,
+    "current411_Debug": -10,
+    "prior410_normal_Release": 0,
+    "evidence": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/adobe-job-reproduction01.json",
+    "cause_claimed": false,
+    "fixed_or_waived": false,
+    "Source02_exclusion": "This separately reproduced failing Debug job is not included in the passing42case set. It remains an open gate. Eight existing Large/Pcraft cases already pass on Source01and are not repeated after a test-only change."
+  },
+  "native_UI": "No CUA. Prior human unlock request remains unanswered. Live408/410checks are retained;411needs an isolated normal universal candidate before checking menu/shortcut/current target/preview/Cancel/history/Quit.",
+  "scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_build": true,
+  "new_install": false,
+  "new_Xcode_archive": false,
+  "new_source_push": false,
+  "new_upload": false,
+  "new_release": false,
+  "latest_normal_universal": "410Source02; live UI pending",
+  "latest_private_source": "410Source02",
+  "next": "F02 Distort/Pixelate/Stylize/Render/Other source audit, then F03 Blur Gallery",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/get-started-with-filters/apply-filters.html",
+      "scope": "Current ordinary filter/selection/Smart Object guidance; not independent pixel or repeat-dialog evidence."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/get-started-with-filters/filters-overview.html",
+      "scope": "Current native target/mode/applicability guidance; no blanket maximum dimension inferred."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/stroke-selection-layer-color.html",
+      "scope": "Stroke placement/blending/transparency controls already present."
+    },
+    {
+      "url": "https://helpx.adobe.com/content/dam/help/en/pdf/photoshop_reference.pdf",
+      "scope": "Archived2019shortcut table corroborates Control-Command-F; captured27.2menu/default fixtures remain the local factory evidence. Not a new live2026observation."
+    }
+  ],
+  "remaining": [
+    "Full original F01filter catalogue/kernel/defaults/dialog/selection/Smart Filter/output/platform/performance acceptance.",
+    "Procedural Render/non-RasterFilter recall, multi-step Actions/Batch updates to recall, isolated Adobe jobs, RAW-source development, plugins and exact recent-list/Smart Object/reopen/random-color policy remain open.",
+    "Normal optimized universal411, actual native UI and current full suite remain unqualified; all prior failures remain.",
+    "All104original package scopes/acceptance and651command identities retained."
+  ],
+  "normal_followup_412": {
+    "reference": "docs/GALLERY_EFFECT_REORDER_412.json",
+    "source": "412Source01",
+    "new_Last_Filter_cases_each": 8,
+    "main_cases_each": 116,
+    "additional_metadata_cases_each": 2,
+    "previous_Debug_Adobe_job_passes_normal_each": true,
+    "Debug_crash_fixed": false,
+    "actual_native_UI": false
+  }
+}

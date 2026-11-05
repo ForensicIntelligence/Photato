@@ -5,6 +5,7 @@ import PhotoCraftCore
   /// Bind only implemented operations. Unavailable commands remain visible and disabled.
   func installPhotoshopMenus() {
     var actions: [String: Selector] = [
+      "Filter > Last Filter": #selector(repeatLastFilter(_:)),
       "File > File Info…": #selector(fileInfoDialog),
       "Image > Apply Image…": #selector(applyImageDialog),
       "Image > Calculations…": #selector(calculationsDialog),

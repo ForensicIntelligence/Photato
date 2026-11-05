@@ -1,0 +1,129 @@
+{
+  "step": 412,
+  "recorded_at_utc": "2026-11-05T02:09:33.592503+00:00",
+  "status": "Direct Filter Gallery effect dragging implemented; focused Debug and normal universal checks pass; live pointer interaction unqualified",
+  "source": "412Source01",
+  "software_build": 412,
+  "source_inputs": 7194,
+  "production_swift_files": 1035,
+  "run": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag",
+  "source_manifest": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/release01-source.json",
+  "software_changes": true,
+  "new_tests": 8,
+  "prior_increment_new_tests_requalified": 8,
+  "implementation": {
+    "native": "Private process-local effect-row drag; arrows share the same move transaction. Every effect field/hidden state/duplicate retained; changed order gets one local Undo. Source document changes only at existing OK commit.",
+    "guards": "Owner/settings revision/fresh per-drag generation/source-index tokens; reject stale, superseded, foreign, malformed, oversize, closed, no-op and delayed-after-edit/Cancel transfers.",
+    "API": "Existing filter.apply and smartFilter.set complete ordered effects arrays; capability effectReordering documents native list versus processing order. No new command or schema parameter.",
+    "typed_commands": 245,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "new_Adobe_route_or_descriptor": false,
+    "new_canvas_tool_or_modifier": false,
+    "Core_or_imaging_kernel_change": false
+  },
+  "qualification": {
+    "baseline410_normal": {
+      "cases_each": 59,
+      "passed_each": 59,
+      "same_order": true,
+      "groups": {
+        "F02": 35,
+        "F03": 7,
+        "F04": 7,
+        "F05": 7,
+        "F06": 3
+      },
+      "source": "410Source02 preserved normal; audited module inputs unchanged",
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json"
+    },
+    "source01_debug": {
+      "cases": 53,
+      "passed": 53,
+      "new411_412_passed": 16,
+      "build_seconds": 81.2,
+      "test_seconds": 9.001,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/source01-summary.json"
+    },
+    "release01": {
+      "cases_each": 116,
+      "passed_each": 116,
+      "new411_412_passed_each": 16,
+      "same_order": true,
+      "assertions_each": [
+        0,
+        0
+      ],
+      "unexpected_each": [
+        0,
+        0
+      ],
+      "crashes_each": [
+        0,
+        0
+      ],
+      "arm_build_seconds": 596.17,
+      "intel_build_seconds": 593.81,
+      "test_seconds": [
+        26.238,
+        33.924
+      ],
+      "normal_optimized": true,
+      "Debug_workaround_in_Release": false,
+      "previous_Debug_Adobe_job_passes_both_normal_architectures": true,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/release01-qualification.json",
+      "ordered_case_equivalence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/case-equivalence01.json"
+    },
+    "metadata01": {
+      "cases_each": 2,
+      "passed_each": 2,
+      "same_order": true,
+      "distinct_from_main116": true,
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/metadata01-qualification.json",
+      "selector_correction": "Main Release selector omitted two AutomationTests that were in Debug53. Execute them separately on the same frozen normal binaries. Do not describe the two runs as a single118-case suite."
+    },
+    "source_unchanged": true,
+    "Debug_and_Release_inputs_identical": true,
+    "universal": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/universal/staging01.json",
+    "minimum_system": "14.0",
+    "signature_and_archive_extraction": true,
+    "tool_cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "actual_native_UI": false
+  },
+  "reference_provenance": [
+    {
+      "url": "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+      "use": "Archived Adobe reference explicitly describes dragging effect names. Not current Photoshop2026runtime evidence."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/correct-lens-distortion-and-perspective.html",
+      "use": "Current manual Lens Correction controls/profile distinction; mode/depth comparison remains unqualified."
+    }
+  ],
+  "retained_failure": "411Debug Adobe-job SIGBUS reproduces on410/411; current412normal passes both architectures. No cause or Debug repair claimed; prior failures retained.",
+  "native_UI": "No CUA this increment. Human unlock request from408still unanswered. Isolated412candidate staged, not launched; physical drag/hit testing/system feedback/modifiers/history/Quit unqualified.",
+  "API_guide": "docs/GALLERY_EFFECT_REORDER.md",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_build": true,
+  "new_validation_ZIP": true,
+  "new_Xcode_archive": false,
+  "new_install": false,
+  "new_binary_upload": false,
+  "new_release": false,
+  "next": "B01 brush settings source audit, then B02.",
+  "remaining": [
+    "Full F06catalogue/applicability/kernels/defaults/texture/editable PSD and independent Photoshop2026output acceptance.",
+    "Physical native interaction and current full suite; physical Intel/macOS14/optionalAI/performance/60fps checks.",
+    "All104original package scopes,651command identities and prior failures remain open."
+  ]
+}

@@ -332,7 +332,7 @@ import UniformTypeIdentifiers
   }
   func revision(_ store: EditorStore, includeBrush:Bool=true) -> String {
     let document="\(store.printRevision):\(store.layerPanelGeneration.uuidString):\(store.revision - store.timelinePlaybackRenderCount):\(store.timelinePlaybackRevision):\(store.timelineVisible):\(store.document.activeLayerID?.uuidString ?? "none"):\(store.actionRevision):\(store.actions.revision)"
-    let view=document+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"
+    let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"
     return includeBrush ? view+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision)":view
   }
   func state(_ share: Share, document: CraftNSDocument) -> [String: Any] {
@@ -433,6 +433,7 @@ import UniformTypeIdentifiers
       "canRevert": documentTransfersEnabled && document.canRevertDocument && document.closeWorkflowID == nil,
       "selection": store.document.selection.map { ["x": $0.x, "y": $0.y, "width": $0.width, "height": $0.height] } as Any? ?? NSNull(),
       "selectionHasSoftCoverage": store.document.selectionMask != nil,
+      "filterRecall": FilterRecallAPI.state(store),
       "gradientFills":store.gradientFillState,
       "shapes":store.shapeState,
       "paths":store.pathState,
@@ -1417,6 +1418,17 @@ import UniformTypeIdentifiers
             removeBackground: options.removeBackground, sampleAllLayers: options.all,
             mode: options.mode, detector: detector)
         }
+      } else if command.name == FilterRecallAPI.name {
+        guard store.canRepeatFilter else { throw AutomationFailure(status: 422, message: "No previous filter is available for this editing target.") }
+        let request = try store.filterRepeatRequest(), prepare = store.repeatFilterPreparation
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
+          allowAuxiliary: request.draft.channelTarget != nil,
+          allowModeComponents: !request.draft.modeComponents.isEmpty,
+          validateCommit: {
+            guard store.filterRepeatTarget == request.target else {
+              throw AutomationFailure(status: 409, message: "The filter editing target changed.")
+            }
+          }) { original in try prepare(original, request) }
       } else if command.name == GradientFillAPI.command {
         guard !store.editingComponent else {
           throw AutomationFailure(status: 422, message: "Leave component editing before changing a Gradient Fill.")
@@ -1622,6 +1634,7 @@ import UniformTypeIdentifiers
       "contactSheet": ContactSheetSettings.apiCapabilities,
       "imageStack": ImageStackSettings.apiCapabilities,
       "hdrMerge": HDRMergeSettings.apiCapabilities,
+      "filterRecall": FilterRecallAPI.capabilities,
       "gradientFills":GradientFillAPI.capabilities,
       "shapes":ShapeAPI.capabilities,
       "inkModes": InkModeAPI.capabilities,
@@ -1677,6 +1690,7 @@ import UniformTypeIdentifiers
       "stateSchemas": [
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,
+        "filterRecall": FilterRecallAPI.stateSchema,
         "gradientFills":GradientFillAPI.stateSchema,
         "shapes":ShapeAPI.stateSchema,
         "documentMode": DocumentModeAPI.stateSchema,

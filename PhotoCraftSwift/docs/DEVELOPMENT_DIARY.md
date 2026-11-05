@@ -18,16 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:410 -->
+<!-- current-status-step:412 -->
 ## Current status — 5 November 2026
 
-Gradient Fill settings now have an API command. It shares the native edit transaction, preserves omitted settings and replaces supplied stop arrays as a whole. It checks the target, locks and document revision before changing anything. Recording and replaying these edits also works, including playback on another document. The new action payload uses format 47; older action files remain readable.
+Filter Gallery effects can now be reordered by dragging their rows. Dragging and the existing arrow buttons use the same operation. Each effect keeps its settings and visibility; Undo restores the old order. Cancel leaves the document unchanged. The API already accepts the full ordered effect array, and its capability information now explains the corresponding UI behavior.
 
-All 74 focused Debug tests pass. The same source passes 82 normal optimized tests on Apple Silicon and translated Intel, including eight new cases. The universal package passes minimum-macOS, signing and archive-extraction checks. These are selected regression tests, not a full-suite or Photoshop-equivalence result. Live UI verification remains pending after the Mac was found locked.
+All53focused Debug tests pass. The normal builds pass116main tests and two separate API metadata tests on each architecture, including all16new tests from Last Filter and Gallery dragging. The universal package passes signing, minimum-macOS14and ZIP extraction checks. The previously failing Adobe job also passes in both normal builds; its Debug crash remains recorded without a claimed repair.
 
-The current adjustment-layer controls already existed and passed their selected tests. We skipped adding redundant controls and moved on. Next is Pattern fills and pixel fills/strokes, followed by ordinary filters. The major quick-win queue has 38 candidates. Every original requirement remains attached to its package; stillneeded and cleanup follow in the requested order. [Step 410](DEVLOG.md#dev-step-410).
+The ordinary filter, Blur Gallery, Liquify and manual Lens Correction controls selected for audit were already implemented. Their59selected tests pass on both architectures using the preserved normal build. We moved on without rewriting them. Calibrated lens profiles and other substantive omissions stay in stillneeded.
 
-The tested source has been backed up to the private [GitHub repository](https://github.com/ForensicIntelligence/Photato/commit/caeead31abade57e8474499c4ffdb82ecf1f5438). It will become public when the software is released.
+Next is brush settings, followed by the next painting package. There are31candidates left in the major quick-win sweep. Full requirements, independent output comparisons, live pointer interaction and platform/performance checks remain open. The Mac unlock request is still pending. [Step412](DEVLOG.md#dev-step-412).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -643,6 +643,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-04 | 408 | [Shape stroke presets](DEVLOG.md#dev-step-408) |
 | 2026-11-04 | 409 | [Quick-win source audit](DEVLOG.md#dev-step-409) |
 | 2026-11-05 | 410 | [Gradient Fill API and Actions](DEVLOG.md#dev-step-410) |
+| 2026-11-05 | 411 | [Last Filter and Pattern Fill audit](DEVLOG.md#dev-step-411) |
+| 2026-11-05 | 412 | [Filter Gallery dragging](DEVLOG.md#dev-step-412) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3081,3 +3083,21 @@ The source audit found that modern adjustment controls and native gradient trans
 The first new test run exposed an older recorder limitation: Gradient Fill edits were saved as unsupported steps. A portable target-and-fill payload now records, validates, exports, imports and plays back those edits. New payloads require Actions 47. A separate existing mask-gradient test assumed the image palette while editing a mask; it now selects its intended ramp explicitly, and a new test checks the actual default mask ramp independently. No rendering kernel or palette default changed.
 
 All 74 focused Debug tests and82normal optimized cases on each architecture pass, including eight new cases. Both Release runs execute the same ordered IDs. The universal package passes macOS 14 minimum, signature and ZIP extraction checks. Failed attempts remain in the detailed record. Actual native interaction, full Photoshop behavior, the current full suite and physical-platform/performance checks remain open. Next is the Pattern Fill/Fill/Stroke audit, then ordinary filters. [Detailed record](DEVLOG.md#dev-step-410).
+
+## 2026-11-05 — Step 411: Last Filter
+
+The Pattern Fill audit confirmed that the existing angle, scale, offsets, linking, origin and canvas controls were already present. Stroke already supported Inside, Center and Outside placement. Selected model, native, API and interchange checks pass on both architectures. Full pattern and fill/stroke compatibility remains open.
+
+The next package had a useful missing command: Last Filter was visible but unbound. It now recalls successful native filter settings, shares them between attached documents and repeats them with the current selection and target. Option invocation opens copied settings for preview or cancellation. The new API command publishes recall state and follows the same transaction and revision checks. Existing portable filter Actions handle recording; no document or action format change was needed.
+
+All eight new tests and 42 focused Debug cases pass. Failed attempts are retained, including two corrected test assumptions and an existing Adobe-job Debug signal-10 failure reproduced on the previous build. Release, actual UI and full Photoshop acceptance remain open. The quick-win queue continues at the ordinary filter catalogue, followed by Blur Gallery. [Detailed record](DEVLOG.md#dev-step-411).
+
+## 2026-11-05 — Step 412: Filter Gallery dragging
+
+The filter-workspace audit confirmed that the selected ordinary filter, Blur Gallery, Liquify and manual Lens Correction controls already existed. Their59regression tests pass on each architecture. Calibrated lens profiles, complete effect behavior and independent output/default comparisons remain open.
+
+Filter Gallery had arrow buttons for reordering effects but no direct row dragging. The new private drag transfer checks the workspace, settings revision and individual gesture before moving anything. It rejects delayed drops after an edit or Cancel, transfers from other workspaces and superseded gestures. All effect values and hidden states survive moves. The existing native transaction, local history, document commit, Actions payload and ordered-array APIs are retained.
+
+Eight new tests cover transfer, order/field retention, rejection, delayed callbacks, preview/Cancel/history/recording, desktop/API bytes, stack limits and modal cursor restoration. All53focused Debug tests pass. Normal builds pass116main cases and two additional metadata cases on each architecture, including all16new Last Filter/Gallery tests. The two metadata tests were omitted from the initial Release selector and then run separately on the same binaries; this was not a single118-case run.
+
+The universal package passes signing, macOS14minimum and archive extraction. The windowless capture is layout evidence with material/thumbnail limitations. Physical dragging and system feedback remain unverified while the unlock request is pending. Full F06and all original Photoshop requirements remain open. Next is the brush-settings source audit, then B02. [Detailed record](DEVLOG.md#dev-step-412).

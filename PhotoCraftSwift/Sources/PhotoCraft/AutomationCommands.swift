@@ -370,6 +370,7 @@ struct AutomationCommand: Sendable {
     .init(name:"raw.inspect",parameters:["layerID":"RAW Smart Object UUID"],description:"Read sensor/decoder capabilities and retained settings without mutation."),
     .init(name:"raw.develop",parameters:["layerID":"RAW Smart Object UUID","settings":"Partial RAW settings object","allInstances":"Optional boolean, default true"],description:"Redevelop original sensor bytes with shared native history.",optionalParameters:["allInstances"]),
     .init(name: "liquify.faces", parameters: ["layerID": "Raster or Smart Object UUID", "filterID": "Optional existing filter UUID; detect on its input"], description: "Read on-device face geometry for Liquify. Returns revision,width,height,faces; no document mutation or history.", optionalParameters: ["filterID"]),
+    .init(name: FilterRecallAPI.name, parameters: [:], description: "Repeat captured last-filter settings on the current native target in one Undo transaction; discover filterRecall state."),
     .init(name: "filter.apply", parameters: ["layerID": "uuid", "filter": "filter object: kind plus optional kind-specific parameters"],
       description: "Apply a native raster filter with selection, alpha protection and shared Undo. Requires RGB layer targeting. Discover parameters and limits in filters."),
     .init(name: "layer.protection", parameters: ["layerIDs": "one to8,000 unique layer UUIDs",

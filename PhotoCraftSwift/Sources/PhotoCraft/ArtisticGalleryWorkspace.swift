@@ -24,17 +24,22 @@ import SwiftUI
   private var closed=false
   private var generation=0
   private var gestureStart:ArtisticGallerySettings?
+  private let effectDragOwner = UUID()
+  private var effectDragRevision = UUID()
+  private var effectDragGeneration = UUID()
+  @ObservationIgnored private var effectDrag: String?
   var effect:GalleryEffect? { settings.effects.indices.contains(selected) ? settings.effects[selected]:nil }
   var ready:Bool { image != nil && !rendering && error == nil }
   var apiState:[String:Any] { ["settings":(try? JSONSerialization.jsonObject(with:JSONEncoder().encode(settings))) ?? NSNull(),"selectedEffect":selected,"category":category,"preview":preview,"zoom":zoom,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()] }
   func prepare(document:CraftDocument,draft:FilterDraft) async {
+    effectDragRevision = UUID(); effectDrag = nil
     self.document=document;self.draft=draft;settings=draft.filter.artistic ?? .init();selected=0;category=effect?.filter.category ?? "Artistic";closed=false
     refresh();prepareThumbnails();await task?.value
   }
   func remember(_ value:ArtisticGallerySettings) { undoStates.append(value);if undoStates.count>100 { undoStates.removeFirst() };redoStates=[] }
   func change(_ value:ArtisticGallerySettings,remember:Bool=true) {
     do { try value.validate() } catch { self.error=error.localizedDescription;return }
-    guard value != settings else { return };if remember && gestureStart==nil { self.remember(settings) };settings=value;selected=max(0,min(selected,value.effects.count-1));refresh()
+    guard value != settings else { return };if remember && gestureStart==nil { self.remember(settings) };effectDragRevision=UUID();effectDrag=nil;settings=value;selected=max(0,min(selected,value.effects.count-1));refresh()
   }
   func beginGesture() { if gestureStart==nil { gestureStart=settings } }
   func endGesture() { if let before=gestureStart,before != settings { remember(before) };gestureStart=nil }
@@ -48,7 +53,43 @@ import SwiftUI
   }
   func add() { guard settings.effects.count<32 else{return};var s=settings;s.effects.append(effect ?? .init(.coloredPencil));selected=s.effects.count-1;change(s) }
   func remove() { guard settings.effects.indices.contains(selected) else{return};var s=settings;s.effects.remove(at:selected);change(s) }
-  func move(_ delta:Int) { let target=selected+delta;guard settings.effects.indices.contains(selected),settings.effects.indices.contains(target) else{return};var s=settings;s.effects.swapAt(selected,target);selected=target;change(s) }
+  func move(_ delta:Int) { _ = moveEffect(from: selected, to: selected + delta) }
+  @discardableResult func moveEffect(from source: Int, to target: Int) -> Bool {
+    guard !closed, document != nil, source != target,
+      settings.effects.indices.contains(source), settings.effects.indices.contains(target) else { return false }
+    endGesture()
+    var value = settings
+    let effect = value.effects.remove(at: source)
+    value.effects.insert(effect, at: target)
+    selected = target
+    category = effect.filter.category
+    change(value)
+    return true
+  }
+  func beginEffectDrag(at index: Int) -> String? {
+    guard !closed, document != nil, settings.effects.indices.contains(index) else { effectDrag=nil;return nil }
+    endGesture()
+    effectDragGeneration = UUID()
+    let value = "photato-gallery-effect-v1:\(effectDragOwner):\(effectDragRevision):\(effectDragGeneration):\(index)"
+    effectDrag = value
+    return value
+  }
+  private func effectDragSource(_ value: String) -> Int? {
+    guard !closed, document != nil, value.utf8.count <= 160, value == effectDrag else { return nil }
+    let fields=value.split(separator: ":", omittingEmptySubsequences: false)
+    guard fields.count==5, fields[0]=="photato-gallery-effect-v1",
+      fields[1]==Substring(effectDragOwner.uuidString),fields[2]==Substring(effectDragRevision.uuidString),
+      fields[3]==Substring(effectDragGeneration.uuidString),let index=Int(fields[4]),settings.effects.indices.contains(index) else { return nil }
+    return index
+  }
+  func canAcceptEffectDrop(at target: Int) -> Bool {
+    guard let value=effectDrag,let source=effectDragSource(value) else { return false }
+    return source != target && settings.effects.indices.contains(target)
+  }
+  @discardableResult func receiveEffectDrop(_ value: String, at target: Int) -> Bool {
+    guard let source=effectDragSource(value) else { return false }
+    return moveEffect(from: source, to: target)
+  }
   func reset() { if let kind=effect?.filter { choose(kind) } }
   func refresh() {
     guard !closed,let document,var draft else{return};task?.cancel();generation+=1;let token=generation,needOriginal=originalImage==nil
@@ -78,12 +119,13 @@ import SwiftUI
       do { let images=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()};try Task.checkCancellation();guard let self,!self.closed else{return};self.thumbnails=images } catch { /* Main preview reports actionable render failures. */ }
     }
   }
-  func close() { closed=true;generation+=1;task?.cancel();thumbnailTask?.cancel();task=nil;thumbnailTask=nil;rendering=false }
+  func close() { closed=true;effectDrag=nil;effectDragRevision=UUID();generation+=1;task?.cancel();thumbnailTask?.cancel();task=nil;thumbnailTask=nil;rendering=false }
 }
 
 struct ArtisticGallerySheet:View {
   @Bindable var store:EditorStore
   @State private var model:ArtisticGalleryWorkspace
+  @State private var effectDropTarget: Int?
   init(store:EditorStore,model:ArtisticGalleryWorkspace?=nil) { self.store=store;_model=State(initialValue:model ?? ArtisticGalleryWorkspace()) }
   func value(_ p:GalleryParameter)->Binding<Double> { .init(get:{model.effect?.values[p.key] ?? p.defaultValue},set:{v in model.update{$0.values[p.key]=v}}) }
   func color(_ key:WritableKeyPath<GalleryEffect,Pixel>)->Binding<Color> { .init(get:{let p=model.effect?[keyPath:key] ?? .black;return Color(red:Double(p.r),green:Double(p.g),blue:Double(p.b))},set:{v in guard let c=NSColor(v).usingColorSpace(.sRGB) else{return};model.update{$0[keyPath:key]=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent))}}) }
@@ -165,6 +207,11 @@ struct ArtisticGallerySheet:View {
             Button { var s=model.settings;s.effects[i].visible.toggle();model.change(s) } label:{Image(systemName:model.settings.effects[i].visible ? "eye":"eye.slash")}.buttonStyle(.plain).accessibilityLabel("Toggle \(model.settings.effects[i].filter.title)")
             Button { model.selected=i;model.category=model.settings.effects[i].filter.category } label:{Text(model.settings.effects[i].filter.title).frame(maxWidth:.infinity,alignment:.leading)}.buttonStyle(.plain)
           }.padding(6).background(model.selected==i ? Color.accentColor.opacity(0.22):Color.clear).clipShape(RoundedRectangle(cornerRadius:4))
+            .contentShape(Rectangle())
+            .overlay(RoundedRectangle(cornerRadius:4).stroke(effectDropTarget==i && model.canAcceptEffectDrop(at:i) ? Color.accentColor:Color.clear,lineWidth:1.5))
+            .onDrag { GalleryEffectTransfer.provider(model:model,index:i) }
+            .onDrop(of:[GalleryEffectTransfer.identifier],delegate:GalleryEffectDropDelegate(model:model,target:i,highlighted:$effectDropTarget))
+            .help("Drag to reorder this effect. The top effect runs last.")
         }
       } }.frame(height:118)
       HStack {

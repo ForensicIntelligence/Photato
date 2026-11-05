@@ -84,5 +84,12 @@
   },
   "next": "Major photo finishing: Smart Sharpen and Reduce Noise, with native controls/preview, editable Smart Filters, history and both API interfaces where qualified; remaining minor filter variants/polish deferred.",
   "qualification": "All42 focused Debug and1973 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance.",
-  "source_manifest": "artifacts/runs/20261027T210315Z-203-filter-gallery/source01.json"
+  "source_manifest": "artifacts/runs/20261027T210315Z-203-filter-gallery/source01.json",
+  "effect_row_drag_412": {
+    "reference": "docs/GALLERY_EFFECT_REORDER_412.json",
+    "source": "412Source01",
+    "qualified_scope": "116main+2distinct metadata normal cases per architecture; all16new411\u2013412.53Debug. Physical native interaction pending.",
+    "full_F06_closed": false,
+    "current_Photoshop2026_live_observation": false
+  }
 }

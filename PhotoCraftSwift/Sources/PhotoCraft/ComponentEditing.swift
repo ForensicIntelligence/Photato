@@ -99,6 +99,13 @@ extension EditorStore {
   }
 
   func executeCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowChannelArithmetic: Bool = false, allowLinkedSmartObject: Bool = false) throws {
+    try publishCompositePreparedEdit(prepared, allowAuxiliary: allowAuxiliary,
+      allowModeComponents: allowModeComponents, allowChannelArithmetic: allowChannelArithmetic,
+      allowLinkedSmartObject: allowLinkedSmartObject)
+    if let filter = prepared.filterRecallValue { filterRecall.remember(filter) }
+  }
+
+  private func publishCompositePreparedEdit(_ prepared: PreparedEdit, allowAuxiliary: Bool, allowModeComponents: Bool, allowChannelArithmetic: Bool, allowLinkedSmartObject: Bool) throws {
     // Fit Image always resizes the document and every retained channel/mask.
     // Its typed prepared command cannot be repurposed as a selected-target edit.
     if prepared.isFitImageEdit { try session.executePrepared(prepared); return }
