@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "license": "MIT OR Apache-2.0; independently generated numerical data",
+  "reference": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/image-stack-rendering-modes.html",
+  "method": "Exact rational moments and 80-digit Decimal sqrt/log, rounded to Float32 words.",
+  "limits": "Empty/single/constant standardized moments return0 as an explicit Photato finite policy. Not Photoshop pixel/display/rounding/edge-case proof.",
+  "cases": [
+    {
+      "name": "empty",
+      "inputs": [],
+      "expectedWords": {
+        "variance": 0,
+        "standardDeviation": 0,
+        "skewness": 0,
+        "kurtosis": 0,
+        "entropy": 0
+      }
+    },
+    {
+      "name": "single",
+      "inputs": [
+        0.25
+      ],
+      "expectedWords": {
+        "variance": 0,
+        "standardDeviation": 0,
+        "skewness": 0,
+        "kurtosis": 0,
+        "entropy": 0
+      }
+    },
+    {
+      "name": "constant",
+      "inputs": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "expectedWords": {
+        "variance": 0,
+        "standardDeviation": 0,
+        "skewness": 0,
+        "kurtosis": 0,
+        "entropy": 0
+      }
+    },
+    {
+      "name": "symmetric",
+      "inputs": [
+        0.0,
+        0.5,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1048576000,
+        "standardDeviation": 1056964608,
+        "skewness": 0,
+        "kurtosis": 1065353216,
+        "entropy": 1070260237
+      }
+    },
+    {
+      "name": "positive",
+      "inputs": [
+        0.0,
+        0.0,
+        0.25,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1046828373,
+        "standardDeviation": 1056066771,
+        "skewness": 1062488706,
+        "kurtosis": 1070483242,
+        "entropy": 1069547520
+      }
+    },
+    {
+      "name": "negative",
+      "inputs": [
+        0.0,
+        0.75,
+        1.0,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1046828373,
+        "standardDeviation": 1056066771,
+        "skewness": 3209972354,
+        "kurtosis": 1070483242,
+        "entropy": 1069547520
+      }
+    },
+    {
+      "name": "balanced",
+      "inputs": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1051372203,
+        "standardDeviation": 1058262330,
+        "skewness": 0,
+        "kurtosis": 1061158912,
+        "entropy": 1065353216
+      }
+    },
+    {
+      "name": "hdr",
+      "inputs": [
+        -2.0,
+        0.0,
+        4.0,
+        8.0
+      ],
+      "expectedWords": {
+        "variance": 1100830037,
+        "standardDeviation": 1083042088,
+        "skewness": 1047957359,
+        "kurtosis": 1066863575,
+        "entropy": 1073741824
+      }
+    },
+    {
+      "name": "signedZero",
+      "inputs": [
+        -0.0,
+        0.0,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1051372203,
+        "standardDeviation": 1058262330,
+        "skewness": 1058262330,
+        "kurtosis": 1065353216,
+        "entropy": 1063982448
+      }
+    },
+    {
+      "name": "closeFloatValues",
+      "inputs": [
+        0.5,
+        0.5000000596046448,
+        0.5000001192092896
+      ],
+      "expectedWords": {
+        "variance": 662700032,
+        "standardDeviation": 864026624,
+        "skewness": 0,
+        "kurtosis": 1065353216,
+        "entropy": 1070260237
+      }
+    },
+    {
+      "name": "sixteen",
+      "inputs": [
+        0.0,
+        0.0625,
+        0.125,
+        0.1875,
+        0.25,
+        0.3125,
+        0.375,
+        0.4375,
+        0.5,
+        0.5625,
+        0.625,
+        0.6875,
+        0.75,
+        0.8125,
+        0.875,
+        0.9375
+      ],
+      "expectedWords": {
+        "variance": 1035294037,
+        "standardDeviation": 1050171833,
+        "skewness": 0,
+        "kurtosis": 1071046367,
+        "entropy": 1082130432
+      }
+    },
+    {
+      "name": "channelRed",
+      "inputs": [
+        0.0,
+        0.5,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1048576000,
+        "standardDeviation": 1056964608,
+        "skewness": 0,
+        "kurtosis": 1065353216,
+        "entropy": 1070260237
+      }
+    },
+    {
+      "name": "channelGreen",
+      "inputs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1051372203,
+        "standardDeviation": 1058262330,
+        "skewness": 1058262330,
+        "kurtosis": 1065353216,
+        "entropy": 1063982448
+      }
+    },
+    {
+      "name": "channelBlue",
+      "inputs": [
+        0.0,
+        0.75,
+        1.0
+      ],
+      "expectedWords": {
+        "variance": 1049275051,
+        "standardDeviation": 1057307140,
+        "skewness": 3202136834,
+        "kurtosis": 1065353216,
+        "entropy": 1070260237
+      }
+    }
+  ]
+}

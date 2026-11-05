@@ -1,6 +1,7 @@
 import Foundation
 
-/// Statistical stack operators translated from PhotoCraft algo/stack.rs (MIT OR Apache-2.0).
+/// Stack operators inspired by PhotoCraft algo/stack.rs (MIT OR Apache-2.0).
+/// Moments and entropy follow Adobe's published definitions; see STACK_STATISTICS_417.json.
 public enum ImageStackMode: String, CaseIterable, Codable, Sendable {
   case entropy, kurtosis, maximum, mean, median, minimum, range, skewness, standardDeviation, summation, variance
   public var title: String { switch self {
@@ -22,20 +23,30 @@ public enum ImageStackMode: String, CaseIterable, Codable, Sendable {
       return sorted.count % 2 == 0 ? (sorted[mid-1]+sorted[mid])/2 : sorted[mid]
     case .entropy:
       guard values.count > 1 else { return 0 }
-      var bins: [Int:Int] = [:]
-      for v in values { bins[Int((min(1,max(0,v))*255).rounded()), default:0] += 1 }
-      return -bins.values.reduce(Float(0)) { s,c in let p = Float(c)/n; return s+p*log2(p) } / log2(n)
-    case .variance, .standardDeviation, .skewness, .kurtosis:
-      let variance = values.reduce(Float(0)) { $0+pow($1-mean,2) }/n
-      if self == .variance { return variance }
-      let sd = sqrt(variance)
-      if self == .standardDeviation { return sd }
-      if self == .skewness {
-        guard sd >= 1e-6 else { return 0.5 }
-        return min(1,max(0,values.reduce(Float(0)) { $0+pow($1-mean,3) }/n/pow(sd,3)/4+0.5))
+      var bins: [UInt32:Int] = [:]
+      for value in values { bins[value == 0 ? 0 : value.bitPattern, default:0] += 1 }
+      // Sort counts so dictionary iteration cannot change the floating-point sum.
+      let entropy = -bins.values.sorted().reduce(0.0) { sum,count in
+        let probability = Double(count)/Double(values.count)
+        return sum + probability*log2(probability)
       }
-      guard variance >= 1e-12 else { return 0 }
-      return min(1,max(0,values.reduce(Float(0)) { $0+pow($1-mean,4) }/n/(variance*variance)/10))
+      return entropy == 0 ? 0 : Float(entropy)
+    case .variance, .standardDeviation, .skewness, .kurtosis:
+      guard values.count > 1 else { return 0 }
+      let samples = values.map(Double.init), denominator = Double(values.count - 1)
+      let center = samples.reduce(0,+)/Double(values.count)
+      let variance = samples.reduce(0.0) { sum,value in let delta = value-center; return sum+delta*delta }/denominator
+      if self == .variance { return Float(variance) }
+      let sd = sqrt(variance)
+      if self == .standardDeviation { return Float(sd) }
+      // Degenerate estimates have no defined standardized moment; keep native pixels finite.
+      guard variance > 0 else { return 0 }
+      if self == .skewness {
+        let third = samples.reduce(0.0) { sum,value in let delta = value-center; return sum+delta*delta*delta }
+        return Float(third/(denominator*sd*sd*sd))
+      }
+      let fourth = samples.reduce(0.0) { sum,value in let delta = value-center; let square = delta*delta; return sum+square*square }
+      return Float(fourth/(denominator*variance*variance))
     }
   }
 }

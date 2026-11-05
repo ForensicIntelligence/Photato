@@ -8,9 +8,9 @@ extension EditorStore {
       (try? ForegroundSelection.checkSize(document.width, document.height)) != nil else { return false }
     return !removeBackground || (!document.isLocked(layer.id) && layer.mask == nil)
   }
-  func detectSubject(removeBackground: Bool = false) {
+  func detectSubject(removeBackground: Bool = false, sampleAllLayers: Bool? = nil) {
     guard canDetectSubject(removeBackground: removeBackground), let id = activeLayer?.id else { return }
-    let detector = foregroundDetector, all = subjectSampleAllLayers
+    let detector = foregroundDetector, all = sampleAllLayers ?? subjectSampleAllLayers
     performGeometry(label: removeBackground ? "Remove Background" : "Select Subject", prepare: { original in
       try await ForegroundSelection.command(document: original, layerID: id,
         removeBackground: removeBackground, sampleAllLayers: all, detector: detector)

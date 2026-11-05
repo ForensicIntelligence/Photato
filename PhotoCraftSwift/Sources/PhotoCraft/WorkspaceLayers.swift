@@ -312,8 +312,8 @@ extension WorkspaceView {
         store.createPixelLayerFromFooter(modifiers: NSEvent.modifierFlags)
       }
       iconButton(
-        "trash", "Delete selected layers (Option-click to skip confirmation)",
-        enabled: store.canPerformLayerPanel(.delete)
+        "trash", store.layerFooterDeletionHelp,
+        enabled: store.canDeleteFromLayerFooter
       ) { store.deleteLayersFromFooter(modifiers: NSEvent.modifierFlags) }
     }.padding(.horizontal, 9).frame(height: 28).background(StudioTheme.panel).overlay(
       alignment: .top

@@ -10,6 +10,14 @@ extension EditorTool {
 }
 @MainActor extension EditorStore {
   var canUseSelectionTools:Bool {canUseBrush && !editingComponent && !aiBusy && document.width<=SelectionSegmentation.maximumPixels/max(1,document.height)}
+  var canSelectSubjectFromToolOptions:Bool {
+    [.objectSelection,.quickSelection].contains(tool) && canUseSelectionTools
+      && canDetectSubject() && brushGesture == nil
+  }
+  func selectSubjectFromToolOptions() {
+    guard canSelectSubjectFromToolOptions else{return}
+    detectSubject(sampleAllLayers:selectionSampleAllLayers)
+  }
   func selectionToolMode(modifiers:NSEvent.ModifierFlags)->SelectionMode {
     if modifiers.contains([.shift,.option]) {return .intersect}
     if modifiers.contains(.option){return .subtract};if modifiers.contains(.shift){return .add}
@@ -60,6 +68,12 @@ struct SelectionToolOptionsView:View {
             if store.objectFinder.busy {Button("Cancel Detection"){store.stopObjectFinder()}}
           } label: {Image(systemName:"gearshape")}.help(store.objectFinder.error ?? "Object Finder options")
         } else {Toggle("Enhance Edge",isOn:$store.selectionEnhanceEdge)}
+      }
+      if [.objectSelection,.quickSelection].contains(store.tool) {
+        Button("Select Subject"){store.selectSubjectFromToolOptions()}
+          .disabled(!store.canSelectSubjectFromToolOptions)
+          .accessibilityIdentifier("selection.options.subject")
+          .help("Select the main subjects using on-device processing.")
       }
       Button("Select and Mask…"){store.beginSelectMask()}.disabled(!store.canBeginSelectMask)
     }.toggleStyle(.checkbox).controlSize(.small).disabled(!store.canUseSelectionTools)

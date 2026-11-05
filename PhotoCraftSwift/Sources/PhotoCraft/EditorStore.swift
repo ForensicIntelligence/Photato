@@ -86,6 +86,7 @@ import UniformTypeIdentifiers
   var confirmingLayerDeletion = false
   @ObservationIgnored var layerDeletionConfirmation:
     ((LayerDeletionRequest) -> LayerDeletionChoice)?
+  @ObservationIgnored var maskRemovalConfirmation: ((MaskRemovalPrompt) -> MaskRemovalChoice)?
   var duplicateTask: Task<Void, Never>?
   @ObservationIgnored var linkedArtworkOperationID:UUID?
   var linkedSourceController: LinkedSourceController?

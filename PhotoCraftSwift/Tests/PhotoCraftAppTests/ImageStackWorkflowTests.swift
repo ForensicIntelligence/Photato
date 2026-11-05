@@ -23,10 +23,11 @@ final class ImageStackWorkflowTests: XCTestCase {
   func smart(_ depth: PixelDepth = .u8) throws -> CraftDocument {
     var d = try source(depth);try SmartObjectIO.convert(in:d,selected:Set(d.layers.map(\.id))).apply(to:&d);return d
   }
-  func testAllStatisticsAgainstOriginalRustAndAnalyticalValues() throws {
+  func testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues() throws {
     let data = try Data(contentsOf:Bundle.module.resourceURL!.appendingPathComponent("Fixtures/ImageStack/original.json"))
     let oracle = try JSONDecoder().decode([String:[[Float]]].self,from:data)
-    for mode in ImageStackMode.allCases {
+    // The five corrected moments/entropy use independent documented-math fixtures.
+    for mode: ImageStackMode in [.maximum,.mean,.median,.minimum,.range,.summation] {
       let key = mode == .standardDeviation ? "StandardDeviation":mode.title
       let expected = try XCTUnwrap(oracle[key])
       for x in 0..<2 { for c in 0..<3 {
@@ -40,7 +41,6 @@ final class ImageStackWorkflowTests: XCTestCase {
     }
     XCTAssertEqual(ImageStackMode.median.statistic([0.2,0.8]),0.5)
     XCTAssertEqual(ImageStackMode.mean.statistic([]),0)
-    XCTAssertEqual(ImageStackMode.skewness.statistic([1,1]),0.5)
   }
   func testDepthsNative23HistoryNoneAndSourceRetention() throws {
     for depth in PixelDepth.allCases {

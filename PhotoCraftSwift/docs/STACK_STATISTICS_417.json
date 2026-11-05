@@ -1,0 +1,155 @@
+{
+  "step": 417,
+  "recorded_at_utc": "2026-11-05T04:55:48.528674+00:00",
+  "source": "417Source02",
+  "software_build": 417,
+  "status": "Documented stack formulas implemented and feature-qualified in normal universal build; full Photoshop output and RAW02 remain open",
+  "source_inputs": 7205,
+  "production_swift_files": 1038,
+  "software_changes": true,
+  "run": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit",
+  "source_manifest": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/release01-source.json",
+  "new_regression_methods": 4,
+  "new_415_417_methods": 8,
+  "implementation": {
+    "changed": [
+      "Sources/PhotoCraftCore/ImageStackMode.swift",
+      "Sources/PhotoCraft/AutomationImageStack.swift",
+      "Tests/PhotoCraftAppTests/ImageStackWorkflowTests.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "scripts/check-stack-statistics.py",
+      "Tests/PhotoCraftCoreTests/Fixtures/ImageStack/documented-statistics.json",
+      "Tests/PhotoCraftCoreTests/ImageStackStatisticsTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentedStackWorkflowTests.swift"
+    ],
+    "math": "Double intermediate sample variance (n-1), its standard deviation, signed standardized third/raw fourth moments, and unnormalized Shannon entropy over equal stored finite Float values. Signed zero canonicalized; sorted frequency counts keep sums deterministic.",
+    "unchanged_modes": [
+      "maximum",
+      "minimum",
+      "mean",
+      "median",
+      "range",
+      "summation"
+    ],
+    "finite_degenerate_policy": "Empty/single samples and zero-variance standardized moments return zero. Explicit Photato policy, not Photoshop edge equivalence.",
+    "output_limits": "RGB32 retains signed/above-one values. Existing 8/16-bit storage clipping remains; Photoshop binning/rounding/scaling/precision/degenerate/rendered output remain unqualified.",
+    "Rust_fixture": "Original licensed fixture unchanged. Renamed regression covers the six matching modes; old full comparison and failures preserved. Photoshop target supersedes conflicting Rust mathematics.",
+    "API": "Existing Photato image.stack/smartObject.stackMode and installed Adobe renderer descriptors through both action-job routes use the same corrected Swift engine. State/capability prose documents formulas and limits; no invented endpoint/descriptor.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "Actions": 47,
+    "new_menu_shortcut_tool": false,
+    "new_capacity_limit": false
+  },
+  "audit": {
+    "COL02": "All represented mode/depth/restricted/ink menu routes and workspaces already exist. Full mode/palette/ink/interchange/defaults/output and reproduced master-palette CancellationError remain open.",
+    "COL03": "Represented CMYK/plates/sRGB/Monitor/custom ICC/proof/intent/BPC/paper/black/gamut/preset controls already exist. Color-blind transforms, legacy RGB, PSF/HDR/EDR/complete print remain substantive stillneeded.",
+    "RAW02": "All eleven Statistics/Stack Mode native menu modes already exist. Five formula discrepancies corrected rather than adding duplicate controls; full merging/alignment/deghosting/Photomerge/focus/HDR remains open."
+  },
+  "qualification": {
+    "baseline414_normal": {
+      "cases_each": 52,
+      "passed_each": 51,
+      "failed_each": 1,
+      "unexpected_each": 1,
+      "crashes_each": 0,
+      "same_order": true,
+      "test_seconds": [
+        5.22,
+        7.995
+      ],
+      "failure": "RestrictedModeWorkflowTests/testSharedMasterPaletteMatchesNativeAndRejectsStaleOrChangingSources; CancellationError() at AutomationHTTP.swift:228 before417edits",
+      "evidence": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/baseline01-qualification.json",
+      "omitted_historical_writers": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/baseline01-omitted-historical-writers.json"
+    },
+    "source01_Debug": {
+      "cases": 41,
+      "passed": 40,
+      "failed_cases": 1,
+      "assertions": 2,
+      "unexpected": 1,
+      "crashes": 0,
+      "build_seconds": 31.12,
+      "test_seconds": 8.908,
+      "repair": "New job fixture requested PNG for RGB32; existing encoder correctly rejects. Test-only output changed to TIFF; no product repair.",
+      "evidence": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/source01-summary.json"
+    },
+    "source02_Debug": {
+      "cases": 41,
+      "passed": 41,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 8.54,
+      "test_seconds": 8.087,
+      "production_equal_source01": true,
+      "evidence": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/source02-summary.json"
+    },
+    "normal_optimized": {
+      "cases_each": 159,
+      "passed_each": 157,
+      "failed_each": 2,
+      "XCTest_assertions_each": 3,
+      "unexpected_each": 1,
+      "crashes_each": 0,
+      "same_order": true,
+      "new_415_417_methods_pass_each": 8,
+      "normal_Debug_workaround": false,
+      "test_seconds": [
+        11.393,
+        16.352
+      ],
+      "evidence": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/release01-qualification.json",
+      "retained_residuals": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/retained-residual01.json",
+      "feature_passed": true,
+      "affected_suite_passed": false
+    },
+    "independent": {
+      "owned_cases": 14,
+      "exact_Float32_words_each": 70,
+      "native_rendered_RGB_words": 15,
+      "method": "Exact rational moments/80-digit Decimal sqrt and logarithm, no imported Swift/Rust code",
+      "Debug": true,
+      "normal_ARM": true,
+      "normal_translated_Intel": true,
+      "native_Photato_archive_history": true,
+      "both_Adobe_routes_exact_native_TIFF": true,
+      "Photoshop_pixel_equivalence": false
+    },
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "source_unchanged": true,
+    "universal": "artifacts/runs/20261105T041741Z-417-color-stack-quickwin-audit/universal/staging01.json",
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/create-layer-compositions/image-stack-rendering-modes.html",
+      "updated": "2026-10-06",
+      "read_UTC": "2026-11-05",
+      "use": "Public sample moment/entropy definitions; does not prove Photoshop rendered output, precision or degenerate policy."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/print/soft-proof-for-color-blindness.html",
+      "read_UTC": "2026-11-05",
+      "use": "RGB Protanopia/Deuteranopia proof workflow; missing substantive transform foundation, not enabled as a fake preset."
+    }
+  ],
+  "native_UI": "Isolated sandbox universal candidate staged but not launched. Human unlock from408 pending. No CUA/live/physical pass claimed. Cumulative408-417checks remain.",
+  "universal_candidate": "/private/tmp/photato-validation-417-stage01-25e4d91a/Photato Validation 417.app",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "I03 original PhotoCraft migration source audit, then I04 export/interchange; Photoshop remains gold standard and Rust migration is not a prerequisite."
+}

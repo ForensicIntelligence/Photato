@@ -18,18 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:414 -->
+<!-- current-status-step:417 -->
 ## Current status — 5 November 2026
 
-Smart Filters can now be dragged to reorder their stack. Holding Option when dropping copies one filter to another Smart Object in the same document. Copies retain their settings and get a new identity. Source bytes and existing target masks stay unchanged. The operation uses the existing API and prepared transaction, with one Undo and portable Actions recording.
+Image stacks already had eleven native rendering modes. The audit found that five used formulas different from Adobe’s published definitions. Variance and standard deviation now use the sample denominator. Skewness keeps its sign, kurtosis keeps its raw value, and entropy no longer merges values into 256 bins or normalizes the result. Native commands, the Photato API and the supported Adobe action jobs share the corrected Swift engine.
 
-All 53 focused Debug tests pass. The normal builds execute the same 100 tests on each architecture: 99 pass, including all four new brush-sidebar and filter-drag tests. The remaining linked-PSD preview test fails exactly as it does on the preserved baseline: four alpha bytes are 80 rather than 81 in both PSD and PSB output. That fidelity issue remains open. The universal package passes signing, macOS 14 targeting and archive extraction checks. Physical dragging and exact Photoshop behavior remain unverified while the unlock request is pending.
+Four new tests use independently calculated values, native float pixels, saved documents and Undo/Redo. All 41 focused Debug tests pass. Optimized Apple Silicon and translated Intel builds each pass 157 of 159 tests, including all eight new tests from the last three checkpoints. Both match all 70 independent Float32 expectations. The two failures exactly reproduce earlier linked-image alpha and master-palette cancellation failures; they remain open. The universal package passes macOS 14, signature and ZIP checks. Physical UI checks await the pending unlock request.
 
-The audit confirmed that current clipping/fill controls, Copy/Paste/Clear Layer Style and linked-file relinking/updating already exist. Channel, mask and path clipboard transfers need a new target-aware foundation and stay in stillneeded. Full advanced blending and all original package requirements remain open.
+The original licensed Rust fixture is unchanged. Its regression still covers the six formulas that match the current target. Earlier comparison results are preserved. These mathematical checks do not establish exact Photoshop rendering, scaling, binning, rounding or degenerate-input behavior.
 
-Next is Color Range, Focus Area and Magnetic Lasso, followed by the object/subject selection package. There are 21 candidates left in the major quick-win sweep. [Step 414](DEVLOG.md#dev-step-414).
-The native source is backed up privately at commit `cb69f83e8b20aec2b5711ed2b38a21e52bd21da9`, including the Xcode project, tests, redistributable assets and development records. The backup records the retained alpha mismatch and open qualification gates. The repository will become public on software release day. [Source backup](https://github.com/ForensicIntelligence/Photato/commit/cb69f83e8b20aec2b5711ed2b38a21e52bd21da9).
-
+The color-mode and proofing audits found the represented controls already present. New color-blind proof transforms and other missing workflows remain in stillneeded. Next are a bounded original PhotoCraft migration audit and export/interchange. There are 13 candidates left in the major quick-win sweep; this is not a Photoshop completion percentage. [Step 417](DEVLOG.md#dev-step-417).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -215,7 +213,7 @@ The first two compilations exposed test inference and initialization errors. Ful
 
 [Runtime development record](DEVLOG.md#dev-step-152), [checkpoint152](ACTIVE_CHECKPOINT_152.json)
 
-Step153 completes the first editable original-project migration subset. Source-generated RGB8/16/32 fixtures retain raster/group/mask/path/selection/protection data through native Open, API editing and Photato persistence. Empty-selection and file-registration regressions were reproduced and repaired; all 1,455 Debug/Release tests,13 Rosetta cases,universal packaging and an owned live workflow pass. Rich source features and all major gates remain open. See [the detailed step153 record](DEVLOG.md#dev-step-153).
+Step153 completes the first editable original-project migration subset. Source-generated RGB 8/16/32 fixtures retain raster/group/mask/path/selection/protection data through native Open, API editing and Photato persistence. Empty-selection and file-registration regressions were reproduced and repaired; all 1,455 Debug/Release tests,13 Rosetta cases,universal packaging and an owned live workflow pass. Rich source features and all major gates remain open. See [the detailed step153 record](DEVLOG.md#dev-step-153).
 
 Step154 adds independent source/Photoshop rendering comparisons and repairs off-canvas raster-mask edge handling. The first broad cropped-mask hypothesis was disproved by controls; the final change follows the measured layer-boundary distinction. All 1,460 Debug/Release tests, 14 Rosetta cases and native/UI/API/package checks pass. Gaussian/vector/full byte parity remains open. See [step154](DEVLOG.md#dev-step-154).
 
@@ -649,6 +647,9 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 412 | [Filter Gallery dragging](DEVLOG.md#dev-step-412) |
 | 2026-11-05 | 413 | [Brush Settings sidebar controls](DEVLOG.md#dev-step-413) |
 | 2026-11-05 | 414 | [Smart Filter dragging](DEVLOG.md#dev-step-414) |
+| 2026-11-05 | 415 | [Select Subject options](DEVLOG.md#dev-step-415) |
+| 2026-11-05 | 416 | [Selected-mask removal and API](DEVLOG.md#dev-step-416) |
+| 2026-11-05 | 417 | [Statistical image stacks](DEVLOG.md#dev-step-417) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3123,3 +3124,29 @@ The layer-workflow audit found existing native/API controls for current clipping
 Smart Filter rows had arrow-menu reordering but no direct drag or copy interaction. A private process-local transfer now supports single-filter copying within one document and reordering within a stack. It carries a random token rather than document content and checks source identity, generations and document attachment again after loading. Option feedback and the dispatched operation share one resolver. The existing stack transaction preserves target masks and source bytes, validates rendering and supports Undo and portable Actions.
 
 Three new tests cover private transfer, copies across pixel depths and new/existing masks, desktop/API saved bytes, history/Actions, invalid and delayed transfers, limits and all modifier combinations. A test-fixture constructor mistake was corrected without production changes. All 53 focused Debug tests pass. Normal builds pass 99 of 100 cases on each architecture; the single linked-PSD/PSB alpha mismatch is unchanged from the earlier baseline and remains open. No tolerance was changed. The universal package passes signing and archive checks. Physical interaction, cross-document/group/mask transfers and full Photoshop acceptance remain open. [Detailed record](DEVLOG.md#dev-step-414).
+
+## 2026-11-05 — Step415: Select Subject options
+
+The selection audit found that all settings represented by the current Color Range, Focus Area and Magnetic Lasso engines already had controls. Their41existing tests pass on both normal baseline architectures. Missing classifiers, gamut selection and Adobe preset semantics stay in stillneeded; full Photoshop acceptance remains open.
+
+Object/Quick Selection lacked the Select Subject action in its Options bar. The new button uses the existing on-device foreground-selection transaction and captures the tool’s visible sampling choice. It does not overwrite the separate Properties/Menu preference. The optional API uses the existing selection.subject operation; availability and capability metadata now explain the native action.
+
+One new regression checks both tools against input-dependent masks, including sampling capture, locked16-bit source preservation, replacement despite paint-mode settings, matching native/API documents and saved bytes, one Undo/Redo and guards. All81focused Debug tests pass. An initial baseline driver guessed three test paths incorrectly and was corrected before any worker launched; that failed attempt is preserved. No application/test repair was needed after compilation. Normal universal and actual pointer/layout checks remain open. Next: Select and Mask, then mask confirmations. [Detailed record](DEVLOG.md#dev-step-415).
+
+## 2026-11-05 — Step 416: Selected-mask removal and API
+
+The mask audit found all six Select and Mask outputs already wired to native/API transactions. Current alpha/spot rename, duplicate, reorder and options controls also exist. Those packages retain their larger missing workflows and fidelity requirements.
+
+Layers trash always requested layer deletion, even with a mask selected. It now routes pixel/vector/Smart Filter masks to their own operations, preserving the layer and compound masks. Native confirmation captures the source and editing context, blocks API edits and rejects stale replies. Properties trash shares the pixel-mask prompt; explicit menu commands keep their meaning. The new mask.manage operation fills the missing typed pixel/vector apply/delete API path and uses the same prepared engine/history.
+
+Three new regressions check RGB 8/16/32 results, exact native/API files, one Undo/Redo, existing pixel/filter Actions, all modifiers, invalid/stale/busy/locked contexts and native alert choices/bounds. All 102 focused Debug tests pass after one real API admission correction and two new-fixture corrections. Failed sources, binaries and logs remain. No imaging kernel, file format or capacity limit changed. Vector portable recording, current Photoshop dialog/default/physical fidelity and normal universal qualification remain open. [Detailed record](DEVLOG.md#dev-step-416).
+
+## 2026-11-05 — Step 417: Statistical image stacks
+
+The mode and proofing audits found existing controls rather than omitted menu actions. All eleven stack modes were also present, but five mathematical definitions differed from Adobe’s current public documentation. This was a useful correctness fix within RAW02; its larger photo-merging workflows stay open.
+
+The shared Swift engine now uses sample variance, its standard deviation, signed skewness, raw kurtosis and Shannon entropy without the earlier binning or normalization. Four owned tests include 14 rational and high-precision Decimal cases, 70 exact Float32 expectations, native RGB32 pixels, persistence, history and both API interfaces. The original Rust fixture remains intact; its differential check now covers the six unchanged operators. Photoshop behavior takes priority over conflicting Rust formulas.
+
+The first new action-job fixture requested PNG for RGB32, which the encoder correctly rejected. That failed attempt and its binaries are retained. Changing only the fixture to TIFF gave 41 passing Debug tests. Normal builds each ran the same 159 tests and passed 157, including all eight new tests from 415–417. The two failures match preserved baselines exactly: four alpha bytes in linked PSD/PSB previews and a master-palette CancellationError. Neither is waived or claimed fixed.
+
+Both architectures match the independent 70-word reference. Universal packaging, signature verification and extracted ZIP equality pass. Actual native interaction, complete Photoshop output and edge behavior remain unqualified. All original scopes and prior failures remain recorded. Next: I03 migration audit, then I04 export/interchange. [Detailed record](DEVLOG.md#dev-step-417).

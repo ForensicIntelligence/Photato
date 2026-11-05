@@ -6,7 +6,7 @@ enum SelectionToolAPI {
   static let commands=["selection.configure","selection.quick","selection.object","selection.brush"]
   static let modes:[String:SelectionMode]=["replace":.replace,"add":.add,"subtract":.subtract,"intersect":.intersect]
   static var stateSchema:[String:Any] {
-    let fields:[String:Any]=["available":BrushAPI.flag,"objectMode":schema("objectMode"),"objectSelectionMode":schema("mode"),"paintSelectionMode":schema("mode"),"sampleAllLayers":BrushAPI.flag,"enhanceEdge":BrushAPI.flag,"overlayColor":BrushAPI.color,"previewActive":BrushAPI.flag]
+    let fields:[String:Any]=["available":BrushAPI.flag,"canSelectSubject":BrushAPI.flag,"objectMode":schema("objectMode"),"objectSelectionMode":schema("mode"),"paintSelectionMode":schema("mode"),"sampleAllLayers":BrushAPI.flag,"enhanceEdge":BrushAPI.flag,"overlayColor":BrushAPI.color,"previewActive":BrushAPI.flag]
     return BrushAPI.object(fields,required:Array(fields.keys).sorted())
   }
   static var resultSchema:[String:Any] {
@@ -29,8 +29,17 @@ enum SelectionToolAPI {
     default:return BrushAPI.schema(key)
     }
   }
+  static var subjectSelectionCapability:[String:Any] {
+    ["command":"selection.subject","tools":["objectSelection","quickSelection"],
+      "availabilityField":"selectionTools.canSelectSubject",
+      "sampleAllLayersField":"selectionTools.sampleAllLayers",
+      "parameters":"Explicit active layerID, sampleAllLayers and mode replace reproduce the Options bar action. API defaults remain false/replace; it does not inherit tool settings.",
+      "native":"Captures the visible Sample All Layers setting at click; Properties/Menu sampling preference is retained independently. One selection Undo, source pixels retained.",
+      "limits":"See subjectDetection: Apple Vision, macOS14+, 8,388,608 pixels,6000 per side; composite RGB editing target and active raster layer. Busy/draft/active selection stroke disables the native action.",
+      "modifiers":"No alternate modifier action on this button; canvas cursors/gesture modes remain unchanged."]
+  }
   static var capabilities:[String:Any] {
-    ["commands":commands,"stateSchema":stateSchema,"resultSchema":resultSchema,"algorithms":["finder":"Cached local Vision foreground-instance masks, hover overlays and shared selection; see objectFinder capabilities.","quick":"Native Swift port of PhotoCraft GMM/geodesic seeded graph cut and full-resolution band refinement.","object":"Native rectangle/lasso GrabCut; point selection uses Apple's local Vision foreground instances.","brush":"Native grayscale mask painting with soft coverage and additive/subtractive strokes."],"limits":"16MP canvas;4096 stroke/polygon samples;160000 working graph pixels and192-pixel boundary tiles. Enhance Edge8,388,608 pixels. Point inference8,388,608 pixels and6000 per side. Requests4MiB; source image remains unmodified.","contexts":"RGB document target; active raster sampling includes placement/masks, or visible composite. Nonraster sources use composite. Locked layers can be sampled. No component/channel-specific analysis yet.","history":"One native selection transaction; frozen previews and cancellation. Action-library version4 saves explicit resulting coverage, with original canvas dimensions; detection is not rerun during replay.","qualification":"Photoshop pixel/model/default/complete Object Finder and physical/live parity remain open. No dedicated Adobe selection-tool route is invented."]
+    ["commands":commands,"stateSchema":stateSchema,"resultSchema":resultSchema,"subjectSelection":subjectSelectionCapability,"algorithms":["finder":"Cached local Vision foreground-instance masks, hover overlays and shared selection; see objectFinder capabilities.","quick":"Native Swift port of PhotoCraft GMM/geodesic seeded graph cut and full-resolution band refinement.","object":"Native rectangle/lasso GrabCut; point selection uses Apple's local Vision foreground instances.","brush":"Native grayscale mask painting with soft coverage and additive/subtractive strokes."],"limits":"16MP canvas;4096 stroke/polygon samples;160000 working graph pixels and192-pixel boundary tiles. Enhance Edge8,388,608 pixels. Point inference8,388,608 pixels and6000 per side. Requests4MiB; source image remains unmodified.","contexts":"RGB document target; active raster sampling includes placement/masks, or visible composite. Nonraster sources use composite. Locked layers can be sampled. No component/channel-specific analysis yet.","history":"One native selection transaction; frozen previews and cancellation. Action-library version4 saves explicit resulting coverage, with original canvas dimensions; detection is not rerun during replay.","qualification":"Photoshop pixel/model/default/complete Object Finder and physical/live parity remain open. No dedicated Adobe selection-tool route is invented."]
   }
 }
 extension AutomationCommand {
@@ -64,7 +73,7 @@ extension AutomationCommand {
 }
 @MainActor extension EditorStore {
   var selectionToolsState:[String:Any] {
-    ["available":canUseSelectionTools,"objectMode":objectSelectionMode.rawValue,"objectSelectionMode":SelectionToolAPI.modeName(selectionMode),"paintSelectionMode":SelectionToolAPI.modeName(selectionPaintMode),"sampleAllLayers":selectionSampleAllLayers,"enhanceEdge":selectionEnhanceEdge,"overlayColor":BrushAPI.json(selectionOverlayColor),"previewActive":brushGesture?.selection != nil]
+    ["available":canUseSelectionTools,"canSelectSubject":canSelectSubjectFromToolOptions,"objectMode":objectSelectionMode.rawValue,"objectSelectionMode":SelectionToolAPI.modeName(selectionMode),"paintSelectionMode":SelectionToolAPI.modeName(selectionPaintMode),"sampleAllLayers":selectionSampleAllLayers,"enhanceEdge":selectionEnhanceEdge,"overlayColor":BrushAPI.json(selectionOverlayColor),"previewActive":brushGesture?.selection != nil]
   }
 }
 extension AutomationService {

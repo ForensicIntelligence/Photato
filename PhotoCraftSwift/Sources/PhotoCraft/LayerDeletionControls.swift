@@ -83,7 +83,11 @@ extension EditorStore {
     }
   }
   func deleteLayersFromFooter(modifiers: NSEvent.ModifierFlags) {
-    requestLayerDeletion(bypassingConfirmation: modifiers.contains(.option))
+    if let target = footerMaskTarget, let id = activeLayer?.id {
+      requestMaskRemoval(target, layerID: id, bypassingConfirmation: modifiers.contains(.option))
+    } else {
+      requestLayerDeletion(bypassingConfirmation: modifiers.contains(.option))
+    }
   }
 }
 

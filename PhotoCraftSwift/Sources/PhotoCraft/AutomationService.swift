@@ -476,6 +476,7 @@ import UniformTypeIdentifiers
       "photoAlign": ["available":store.canBeginPhotoAlign,"previewOpen":store.photoAlignDraft != nil,"previewBusy":store.photoAlignDraft?.rendering ?? false],
       "photoBlend": ["available":store.canBeginPhotoBlend,"previewOpen":store.photoBlendDraft != nil,"previewBusy":store.photoBlendDraft?.rendering ?? false],
       "selectionTools":store.selectionToolsState,
+      "maskManagement":store.maskManagementState,
       "adjustmentBrush":store.adjustmentBrushState,
       "paintingTools":store.paintingState,
       "regionRetouch": ["available":store.canBeginRegionRetouch,"hasSelection":store.document.selection != nil,"previewOpen":store.regionRetouchDraft != nil,"previewBusy":store.regionRetouchBusy,"previewError":store.regionRetouchError as Any? ?? NSNull()],
@@ -1429,6 +1430,11 @@ import UniformTypeIdentifiers
               throw AutomationFailure(status: 409, message: "The filter editing target changed.")
             }
           }) { original in try prepare(original, request) }
+      } else if command.name == MaskManagementAPI.command {
+        let request = try command.maskManagementRequest(in: store.document)
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
+          allowAuxiliary: true) { try request.command(in: $0) }
+        store.finishMaskRemoval(request)
       } else if command.name == GradientFillAPI.command {
         guard !store.editingComponent else {
           throw AutomationFailure(status: 422, message: "Leave component editing before changing a Gradient Fill.")
@@ -1667,6 +1673,7 @@ import UniformTypeIdentifiers
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
       "channelTransform":ChannelTransformAPI.capabilities,
       "pixelMaskTransform":PixelMaskTransformAPI.capabilities,
+      "maskManagement":MaskManagementAPI.capabilities,
       "selectedPixelMove":SelectedPixelMoveAPI.capabilities,
       "selectedPixelTransform":SelectedPixelTransformAPI.capabilities,
       "backgroundLayer":BackgroundLayerAPI.capabilities,
@@ -1729,6 +1736,7 @@ import UniformTypeIdentifiers
         "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,
         "channelTransform":ChannelTransformAPI.stateSchema,
         "pixelMaskTransform":PixelMaskTransformAPI.stateSchema,
+        "maskManagement":MaskManagementAPI.stateSchema,
         "selectedPixelMove":SelectedPixelMoveAPI.stateSchema,
         "selectedPixelTransform":SelectedPixelTransformAPI.stateSchema,
         "backgroundLayer":BackgroundLayerAPI.stateSchema,

@@ -2324,5 +2324,18 @@
     "reference": "docs/SHARED_PAINT_PALETTES_376.json",
     "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
     "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route."
+  },
+  "mask_removal_416": {
+    "reference": "docs/MASK_REMOVAL_416.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "Layer footer/Properties trash routes selected masks to existing operations with native choices; explicit menu Apply/Delete semantics retained.",
+    "API": "New mask.manage,246typed commands; no invented Adobe descriptor.",
+    "qualification": "102focused Debugpass; exact current alert/default/physical/native artwork open."
+  },
+  "stack_statistics_417": {
+    "reference": "docs/STACK_STATISTICS_417.json",
+    "factory_inventory_or_shortcut_change": false,
+    "native": "All eleven Statistics/Stack Mode routes already exist; five shared formulas corrected, no new action binding.",
+    "qualification": "Normal menu/cursor regressions pass; full current Photoshop context/default/output/physical qualification remains open."
   }
 }

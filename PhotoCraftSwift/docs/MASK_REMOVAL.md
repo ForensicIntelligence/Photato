@@ -1,0 +1,15 @@
+# Removing a selected mask
+
+The Layers-panel trash button follows the selected pixel, vector or Smart Filter mask. Removing a mask retains its layer and other masks, including on the final remaining layer. Selecting image content restores whole-layer deletion.
+
+Pixel masks offer Apply, Delete and Cancel. Apply changes the pixel layer’s transparency through the existing mask renderer; Delete removes the mask without applying it. Apply is unavailable for Smart Objects and other unsupported content. Vector and Smart Filter masks offer Delete and Cancel. Option-click bypasses confirmation and deletes only the selected target. Properties’ mask trash uses the pixel-mask prompt. Explicit menu commands keep their distinct Apply/Delete behavior.
+
+The prompt captures the document, layer selection, mask target, session, panel generation and document attachment. It blocks API mutations while open and rejects a changed context. Cancel makes no edit; accepted removal prepares one native Undo transaction. Successful removal clears the removed mask’s editing presentation. No new mask algorithms, file formats or allocation limits are introduced.
+
+`mask.manage` takes `layerID`, `operation` (apply/delete) and optional `target` (layerMask/vectorMask/smartFilterMask; defaults to layerMask). It uses the same prepared Swift command as the native control. Requests are explicit and do not open desktop confirmation dialogs. Unsupported Apply targets, locked/missing masks, invalid parameters, busy/stale/revoked requests fail without a partial edit. `maskManagement` state and capability schemas expose the footer target, availability and confirmation barrier. This is a Photato operation; no Adobe endpoint or action descriptor is invented.
+
+Pixel apply/delete and full Smart Filter stack edits retain existing portable Actions support. Vector-mask deletion has native history and API support, but the existing portable recording format has no vectorMask command. That gap remains open; no new Actions version is claimed.
+
+Current Adobe instructions document selected-mask deletion through Layers trash and exclude applying a mask to a Smart Object: [Apply or delete layer masks](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/apply-or-delete-layer-masks.html), updated23February2026, read5November2026UTC. A search extraction of an Adobe-hosted2023educational PDF shows historical Apply/Delete/Cancel wording; the PDF has not been newly inspected visually and is not current2026proof. Exact dialogs, suppression preferences, modifier timing and physical pointer behavior remain unqualified.
+
+Tests cover native/API documents and archive bytes, other-mask/source preservation and Undo/Redo across RGB8/16/32; existing pixel/filter Actions; all16modifier routes; Cancel/busy/locked/stale context; request schemas and native alert layout. [Checkpoint416](MASK_REMOVAL_416.json) records the exact qualification. Full S06and Photoshop output/default/platform/performance acceptance remain open.

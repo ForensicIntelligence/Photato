@@ -43,7 +43,7 @@ struct MaskControls: View {
         .help("Apply Layer Mask").accessibilityLabel("Apply Layer Mask")
         .disabled(!store.canApplyMask(layer))
         Button {
-          store.deleteMask(layer.id)
+          store.requestMaskRemoval(.layerMask, layerID: layer.id)
         } label: {
           Image(systemName: "trash")
         }

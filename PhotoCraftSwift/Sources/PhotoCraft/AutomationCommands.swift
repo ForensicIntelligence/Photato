@@ -36,6 +36,7 @@ struct AutomationCommand: Sendable {
     var schema: [String: Any] {
       var properties: [String: Any] = [:]
       for key in parameters.keys {
+        if name == MaskManagementAPI.command { properties[key] = MaskManagementAPI.schema(key); continue }
         if name == GradientFillAPI.command { properties[key] = GradientFillAPI.schema(key); continue }
         if TextFindAPI.commands.contains(name) {properties[key]=TextFindAPI.schema(key);continue}
         if AdvancedStyleAPI.commands.contains(name) {properties[key]=AdvancedStyleAPI.schema(key);continue}
@@ -359,6 +360,7 @@ struct AutomationCommand: Sendable {
     .init(name:"sky.replace",parameters:["skyID":"Imported sky library UUID","sourceLayerID":"Existing raster source layer UUID instead of skyID","settings":"Replacement placement/blending/output settings","strokes":"Manual sky mask refinement strokes","useSelection":"Use current selection instead of sky detection"],description:"Replace the sky with editable native layers or a duplicate merged layer in one Undo transaction.",optionalParameters:["skyID","sourceLayerID","settings","strokes","useSelection"]),
     .init(name:"sky.library",parameters:["operation":"list, import, rename, delete or export","skyID":"Sky library UUID","name":"Sky name","data":"Base64 image for import"],description:"Manage the optional persistent sky image library without editing document pixels.",optionalParameters:["skyID","name","data"]),
     .init(name: "selection.subject", parameters: ["layerID": "pixel layer UUID", "sampleAllLayers": "boolean, default false", "mode": "replace (default), add, subtract or intersect"], description: "Find foreground subjects with Apple Vision on-device. Commits one undoable selection. May fail if the system model is unavailable or no subject is found.", optionalParameters: ["sampleAllLayers", "mode"]),
+    .init(name: MaskManagementAPI.command, parameters: ["layerID": "Mask owner UUID", "target": "layerMask, vectorMask or smartFilterMask; default layerMask", "operation": "apply or delete"], description: "Apply a supported pixel mask or delete a selected mask while retaining its layer, using native prepared history.", optionalParameters: ["target"]),
     .init(name: "layer.maskAllObjects", parameters: ["layerID": "Raster layer UUID"], description: "Create a separate editable masked group per detected object using the native local Vision model. Preserves the source and selection; returns createdGroupIDs in stacking order."),
     .init(name: "layer.removeBackground", parameters: ["layerID": "unlocked pixel layer UUID without an existing mask", "sampleAllLayers": "boolean, default false"], description: "Create an editable foreground layer mask using the same native on-device detector as Select Subject. Keeps original pixels and the selection.", optionalParameters: ["sampleAllLayers"]),
     .init(name: "layer.style", parameters: ["layerIDs": "one to8,000 unique UUIDs", "style": "LayerStyle object or null to clear", "globalLight":"Optional document shared light"], description: "Replace editable effects and optionally shared light atomically. Read layer state to copy styles.", optionalParameters:["globalLight"]),
@@ -609,6 +611,7 @@ struct AutomationCommand: Sendable {
       }
       _ = try LayerMergePlan(operation,layerIDs:Set(ids),in:document)
       return .mergeLayers(Set(ids), operation)
+    case MaskManagementAPI.command: return try maskManagementRequest(in: document).command(in: document)
     case "layer.style": return try layerStyleCommand(document: document)
     case "layer.style.patch", "document.globalLight": return try advancedStyleCommand(document:document)
     case "adjustment.create", "adjustment.set", "adjustment.apply": return try classicAdjustmentCommand(document: document, lookup: lookup)

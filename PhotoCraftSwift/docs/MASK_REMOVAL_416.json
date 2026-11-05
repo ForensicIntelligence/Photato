@@ -1,0 +1,115 @@
+{
+  "step": 416,
+  "recorded_at_utc": "2026-11-05T04:05:16.375535+00:00",
+  "source": "416Source03",
+  "software_build": 416,
+  "status": "Selected-mask footer removal and typed API implemented; focused Debug qualified, full S06/normal/live acceptance open",
+  "source_inputs": 7201,
+  "production_swift_files": 1038,
+  "software_changes": true,
+  "run": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins",
+  "source_manifest": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins/source03-source.json",
+  "new_regression_methods": 3,
+  "implementation": {
+    "native": "Layers trash follows selected pixel/vector/Smart Filter mask, including the sole remaining layer. Pixel Apply/Delete/Cancel, other masks Delete/Cancel; Option bypass deletes selected target. Content selection preserves existing whole-layer deletion. Properties trash uses pixel-mask prompt; explicit menus retain semantics.",
+    "shared": "MaskManagementRequest returns existing deleteMask/applyMask/vectorMask/smartFilters commands. Native and HTTP use prepared native transactions, one Undo, source/other-mask retention, same native bytes. Successful removal exits obsolete mask/path presentation.",
+    "guards": "Prompt captures document/selection/target/session/panel generation/owner attachment, blocks API mutation and rejects stale acceptance. Locked/missing/unsupported/busy/invalid/cancelled/revoked contexts retain native atomic preparation. API requests explicitly name layer/target independently of current auxiliary presentation.",
+    "API": "New mask.manage layerID/operation and optional target(default layerMask), strict schemas, state/result/capabilities and shared prepared execution. No invented Adobe route/action descriptor. Existing v2 document/job serializers retain supported changes; full descriptor parity remains open.",
+    "typed_commands": 246,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "portable_Actions": "Existing pixel apply/delete and complete Smart Filter-stack recording/playback pass. Vector mask deletion has native history/API but no existing portable recording case; remains open.",
+    "Core_or_imaging_kernel_change": false,
+    "new_capacity_limit": false,
+    "new_canvas_tool_or_shortcut": false,
+    "footer_modifier_combinations": 16
+  },
+  "audit": {
+    "S04": "All six refinement outputs already exposed and transacted through native/API.13existing Select and Mask/core cases pass each preserved414normal architecture and current Debug. Full refinements/hair/aware models/defaults/pixels stay open.",
+    "C02": "Current alpha/spot Rename/Duplicate/Move/Options/Delete controls already exist.8selected app workflow cases pass each normal baseline architecture/current Debug; source audit verifies represented controls, not complete CRUD/interchange acceptance."
+  },
+  "qualification": {
+    "baseline414_normal": {
+      "cases_each": 59,
+      "passed_each": 59,
+      "same_order": true,
+      "test_seconds": [
+        2.279,
+        3.371
+      ],
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "evidence": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins/baseline01-qualification.json"
+    },
+    "source01_Debug": {
+      "cases": 102,
+      "passed": 100,
+      "failed_cases": 2,
+      "XCTest_failures": 3,
+      "unexpected": 1,
+      "crashes": 0,
+      "build_seconds": 113.32,
+      "test_seconds": 14.21,
+      "repair": "New API selected-mask admission and new recording-fixture order; retained before repair.",
+      "evidence": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins/source01-summary.json"
+    },
+    "source02_Debug": {
+      "cases": 102,
+      "passed": 101,
+      "failed_cases": 1,
+      "XCTest_failures": 1,
+      "unexpected": 1,
+      "crashes": 0,
+      "build_seconds": 35.42,
+      "test_seconds": 14.057,
+      "repair": "New fixture resolves replacement Smart Object layer UUID; production unchanged inSource03.",
+      "evidence": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins/source02-summary.json"
+    },
+    "source03_Debug": {
+      "cases": 102,
+      "passed": 102,
+      "new_methods": 3,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 8.57,
+      "test_seconds": 13.479,
+      "same_order_as_failed_attempts": true,
+      "evidence": "artifacts/runs/20261105T034142Z-416-mask-workflow-quickwins/source03-summary.json"
+    },
+    "source_unchanged": true,
+    "source02_03_production_equal": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "footer_modifier_combinations": 16,
+    "normal_optimized_416": false,
+    "universal_416": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/apply-or-delete-layer-masks.html",
+      "updated": "2026-02-23",
+      "use": "Current selected-mask Layers trash workflow and Smart Object Apply exclusion; does not prove all dialog/default/modifier details."
+    },
+    {
+      "url": "https://cdn.edex.adobe.com/v3/uploads/resourceFile/2023/f3982527-8d87-49f5-9a4c-1c8a8da0ce72/189410e4-f9c5-4627-b124-4f491f433b00.pdf",
+      "use": "Search extraction only: historical educational Apply/Delete/Cancel wording. No new full PDF/visual inspection; not2026parity proof."
+    }
+  ],
+  "native_UI": "No CUA/staging/launch. Human unlock request from408 unanswered. NSAlert titles/choices/button bounds pass; offscreen content captures have incomplete native button text/art and folder test-host icon, so are not a visual/live pass. Physical current2026 dialogs/suppression/defaults remain open.",
+  "normal_batch_policy": "Batch optimized universal/private backup at next meaningful stable breadth milestone. Latest normal/private414Source02 retains known linked-preview alpha residual; not rerun/fixed here.",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "COL02document color modes/separations source audit, then COL03proofing/HDR/print."
+}

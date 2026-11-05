@@ -1,0 +1,93 @@
+{
+  "step": 415,
+  "recorded_at_utc": "2026-11-05T03:34:13.585705+00:00",
+  "source": "415Source01",
+  "software_build": 415,
+  "status": "Select Subject Options button implemented and focused Debug qualified; full S03/normal/live acceptance open",
+  "source_inputs": 7198,
+  "production_swift_files": 1036,
+  "software_changes": true,
+  "run": "artifacts/runs/20261105T032600Z-415-selection-quickwins",
+  "source_manifest": "artifacts/runs/20261105T032600Z-415-selection-quickwins/source01-source.json",
+  "new_regression_methods": 1,
+  "implementation": {
+    "native": "Object/Quick Options Select Subject captures visible selectionSampleAllLayers and replaces selection through the existing native foreground transaction. Properties/Menu subjectSampleAllLayers remains independent.",
+    "guards": "Existing selection-tool and subject-size/context availability plus no active selection stroke. Locked raster sources remain readable. Button disabled during geometry/draft/AI task.",
+    "history": "One native selection Undo, unchanged source pixels/layer properties, existing native persistence and resolved coverage Actions.",
+    "API": "Existing selection.subject explicit active layerID/sampleAllLayers/mode replace. selectionTools.canSelectSubject state/schema and capabilities.selectionTools.subjectSelection metadata added. API default false/replace retained.",
+    "typed_commands": 245,
+    "native_archive": 86,
+    "actions_maximum": 47,
+    "new_Adobe_route_or_descriptor": false,
+    "new_tool_shortcut_or_modifier": false,
+    "Core_or_imaging_kernel_change": false,
+    "capacity": {
+      "maximumPixels": 8388608,
+      "maximumDimension": 6000,
+      "changed": false
+    }
+  },
+  "audit": {
+    "S02": "All represented Color Range/Focus Area/Magnetic Lasso controls already exposed; 41 existing cases pass each normal baseline architecture. Skin Tones/Detect Faces, Out of Gamut/proof gamut, Adobe presets and full defaults/kernels/pixels stay stillneeded/cleanup."
+  },
+  "qualification": {
+    "baseline414_normal": {
+      "cases_each": 60,
+      "passed_each": 60,
+      "same_order": true,
+      "unexpected_each": 0,
+      "crashes_each": 0,
+      "source_unchanged": true,
+      "evidence": "artifacts/runs/20261105T032600Z-415-selection-quickwins/baseline01-qualification.json"
+    },
+    "driver00": {
+      "stage": "Failed before worker launch: three core test files guessed under ImagingTests",
+      "repair": "CoreTests discovery paths only; no product/test edit",
+      "evidence": "artifacts/runs/20261105T032600Z-415-selection-quickwins/baseline00-driver-failure.json"
+    },
+    "source01_Debug": {
+      "cases": 81,
+      "passed": 81,
+      "new_methods": 1,
+      "assertions": 0,
+      "unexpected": 0,
+      "crashes": 0,
+      "build_seconds": 39.83,
+      "test_seconds": 25.229,
+      "evidence": "artifacts/runs/20261105T032600Z-415-selection-quickwins/source01-summary.json"
+    },
+    "source_unchanged": true,
+    "cursor_matrix": {
+      "tools": 55,
+      "combinations": 880,
+      "passed": true
+    },
+    "normal_optimized_415": false,
+    "universal_415": false,
+    "actual_native_UI": false
+  },
+  "provenance": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/detect-subject-using-select-subject.html",
+      "updated": "2026-02-23",
+      "use": "Public Options-bar placement and refinement workflow; no current live Photoshop capture."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/select-objects-with-object-selection-tool.html",
+      "updated": "2026-02-23",
+      "use": "Object tool all-layer sampling and Hard Edge; does not qualify complete button/default/model parity."
+    }
+  ],
+  "native_UI": "No CUA/staging/launch this increment. Human unlock request from408 unanswered; physical/cumulative checks remain open.",
+  "normal_batch_policy": "Batch optimized universal at next meaningful stable breadth milestone. Latest normal universal/private source remains414Source02 with retained known linked-preview alpha residual; not newly tested or fixed here.",
+  "all_original_scope_preserved": true,
+  "full_package_closed": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "new_install": false,
+  "new_source_push": false,
+  "new_Xcode_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "next": "S04 Select and Mask output-choice source audit, then S06 mask workflow confirmations."
+}

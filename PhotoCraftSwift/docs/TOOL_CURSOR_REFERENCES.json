@@ -1190,5 +1190,31 @@
     "physical_feedback_qualified": false,
     "remaining": "Actual pointer hit testing/target-row positioning/live modifier timing and full cross-layer move/cross-document/group/mask transfer remain open.",
     "reference": "docs/SMART_FILTER_DRAG.md"
+  },
+  "subject_options_415": {
+    "reference": "docs/SUBJECT_OPTIONS_415.json",
+    "new_canvas_tool_or_modifier": false,
+    "button": "Ordinary native Select Subject button, no alternate modifier action. Captures sampling only.",
+    "existing_tools": 55,
+    "existing_combinations": 880,
+    "focused_Debug_matrix_passed": true,
+    "physical_pointer_check": false
+  },
+  "mask_removal_416": {
+    "reference": "docs/MASK_REMOVAL_416.json",
+    "new_canvas_tool_or_cursor": false,
+    "native_control": "Standard native button arrow. All16modifier combinations preserve selected footer target; Option skips prompt. No canvas mode changes.",
+    "panel_combinations_passed": 16,
+    "existing_tools": 55,
+    "existing_combinations_passed": 880,
+    "physical_pointer_check": false
+  },
+  "stack_statistics_417": {
+    "reference": "docs/STACK_STATISTICS_417.json",
+    "new_canvas_tool_or_cursor": false,
+    "existing_tools": 55,
+    "existing_modifier_combinations": 880,
+    "passed": true,
+    "physical_pointer_check": false
   }
 }
