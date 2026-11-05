@@ -465,11 +465,23 @@
   "full_package_closed": false,
   "full_current_suite_passed": false,
   "Photoshop_parity": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_install": false,
   "new_Xcode_archive": false,
   "new_upload": false,
   "new_release": false,
   "native_UI": "No physical current422 pass claimed; previously confirmed Mac locked and human unlock request remains pending",
-  "historical_preservation": "26 surviving protected files unchanged at421;14 older temporary binaries missing with unknown cause/time. Current attempts retained; no historical recovery claim."
+  "historical_preservation": "26 surviving protected files unchanged at421;14 older temporary binaries missing with unknown cause/time. Current attempts retained; no historical recovery claim.",
+  "source_delivery": "docs/SOURCE_PUBLICATION_422.json",
+  "normal_execution": {
+    "arm64": "Native Apple Silicon",
+    "x86_64": "Translated through Rosetta on this Apple Silicon Mac",
+    "physical_Intel_qualified": false,
+    "actual_macOS14_qualified": false
+  },
+  "final_consistency": {
+    "passed": true,
+    "checks": 32,
+    "reference": "artifacts/runs/20261105T072149Z-422-layer-arrange/final-verification02.json"
+  }
 }
