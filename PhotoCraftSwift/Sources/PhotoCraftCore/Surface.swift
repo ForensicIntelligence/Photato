@@ -124,6 +124,24 @@ public struct Surface: Codable, Equatable, Sendable {
   public var residentTileIndexEstimate: Int { tiles.residentIndexBytes }
   func accountHistoryTiles(_ seen: inout Set<UInt>) -> Int { tiles.accountHistory(&seen) }
   /// Nonzero-alpha extent, independent of hidden RGB and unused tile padding.
+  /// Tests retained alpha without computing bounds, converting samples or allocating a canvas.
+  public func hasPixelContent() throws -> Bool {
+    try Task.checkCancellation()
+    let rows = (height + Self.tileSide - 1) / Self.tileSide
+    if storedDefaultPixel.a > 0 && tiles.count < rows * columns { return true }
+    for key in tiles.keys {
+      try Task.checkCancellation()
+      let left = key % columns * Self.tileSide, top = key / columns * Self.tileSide
+      guard let tile = tiles[key] else { if storedDefaultPixel.a > 0 { return true }; continue }
+      for y in top..<min(height, top + Self.tileSide) {
+        try Task.checkCancellation()
+        for x in left..<min(width, left + Self.tileSide) {
+          if tile[(y - top) * Self.tileSide + x - left].a > 0 { return true }
+        }
+      }
+    }
+    return false
+  }
   public func contentBounds() throws -> IntRect? { try matchingBounds { $0.a > 0 } }
   /// Bounds of matching stored samples, including implicit defaults and paged tiles.
   public func matchingBounds(_ matches: (Pixel) -> Bool) throws -> IntRect? {

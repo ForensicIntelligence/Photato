@@ -146,6 +146,9 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     try requireDensePlanes()
     return componentStorage[component].legacyBytes
   }
+  public func hasAlphaContent() throws -> Bool {
+    try componentStorage[mode.componentCount].containsPositiveSample()
+  }
   public var isOpaque: Bool {
     componentStorage[mode.componentCount].allWordsEqual(depth == .u8 ? 255 : depth == .u16 ? 65535 : Float(1).bitPattern)
   }

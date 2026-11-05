@@ -5,6 +5,8 @@ import PhotoCraftCore
   /// Bind only implemented operations. Unavailable commands remain visible and disabled.
   func installPhotoshopMenus() {
     var actions: [String: Selector] = [
+      "Select > Find Layers": #selector(findLayers),
+      "Select > Isolate Layers": #selector(isolateLayers),
       "Layer > Arrange > Bring to Front": #selector(arrangeLayerStack(_:)),
       "Layer > Arrange > Bring Forward": #selector(arrangeLayerStack(_:)),
       "Layer > Arrange > Send Backward": #selector(arrangeLayerStack(_:)),

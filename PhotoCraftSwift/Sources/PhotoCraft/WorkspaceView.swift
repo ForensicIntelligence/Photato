@@ -36,8 +36,6 @@ struct WorkspaceView: View {
   }
   @State var layerEyeTracking = LayerEyeTracking()
   @State var layerReveal = LayerRevealTracker()
-  @State var layerSearch = ""
-  @State var layerKind = "All"
   @State var brushPopover = false
   @State var gradientPresetPopover = false
   @State var hue: Double = 0.64

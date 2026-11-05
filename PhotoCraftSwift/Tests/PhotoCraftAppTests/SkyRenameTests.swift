@@ -109,6 +109,6 @@ final class SkyRenameTests: XCTestCase {
     XCTAssertNotNil(properties["libraryRenameOpen"]); XCTAssertNotNil(properties["canRenameSelectedSky"])
     XCTAssertNotNil(SkyAPI.capabilities["nativeLibraryManagement"])
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: SkyAPI.capabilities))
-    XCTAssertEqual(AutomationCommand.definitions.count, 247)
+    XCTAssertEqual(AutomationCommand.definitions.count, 248)
   }
 }

@@ -330,10 +330,14 @@ import UniformTypeIdentifiers
       )
     }
   }
-  func revision(_ store: EditorStore, includeBrush:Bool=true) -> String {
+  func revision(_ store: EditorStore, includeBrush:Bool=true, includeFilterEvaluation:Bool=true) -> String {
     let document="\(store.printRevision):\(store.layerPanelGeneration.uuidString):\(store.revision - store.timelinePlaybackRenderCount):\(store.timelinePlaybackRevision):\(store.timelineVisible):\(store.document.activeLayerID?.uuidString ?? "none"):\(store.actionRevision):\(store.actions.revision)"
-    let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"
-    return includeBrush ? view+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision)":view
+    let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"+":\(store.layerFilterRevisionToken)"
+    let evaluated = view + (includeFilterEvaluation ? ":\(store.layerContentFilter.revision)" : "")
+    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision)":evaluated
+    // Multi-document source contracts accept at most256characters. Keep revision
+    // components private and bounded as view-state tracking grows.
+    return SHA256.hash(data: Data(opaque.utf8)).map { String(format: "%02x", $0) }.joined()
   }
   func state(_ share: Share, document: CraftNSDocument) -> [String: Any] {
     let store = document.store
@@ -373,6 +377,7 @@ import UniformTypeIdentifiers
       "selectionTransform":store.selectionTransformState,
       "pixelPaint":store.pixelPaintState,
       "layerLinks":store.layerLinkState,
+      "layerFilter":store.layerFilterState,
       "layerStackOrder":store.layerStackOrderState,
       "layerCollectionTransform":store.layerCollectionTransformState,
       "channelTransform":store.channelTransformState,
@@ -1324,6 +1329,18 @@ import UniformTypeIdentifiers
         if request.kind == .stroke{store.lastPixelStroke=request.settings}else{store.lastPixelFill=request.settings;if let pattern=request.pattern{store.lastPixelFillPatternID=pattern.id;store.lastPixelFillContents="Pattern"}}
         return .json(state(share,document:document))
       }
+      if command.name == LayerFilterAPI.command {
+        let baseline = revision(store, includeFilterEvaluation: false), expectedToken = token
+        try await store.applyLayerFilterAPI(command) { [self, weak document] in
+          prune()
+          guard let document, isRunning, token == expectedToken,
+            shares.contains(where: { $0.id == id && $0.document === document }),
+            revision(store, includeFilterEvaluation: false) == baseline else {
+            throw AutomationFailure(status: 409, message: "The layer filter request changed or sharing was revoked.")
+          }
+        }
+        return .json(state(share,document:document))
+      }
       if command.name == LayerStackOrderAPI.command {
         let request = try command.layerStackOrderOptions(), prepare = store.layerStackOrderPreparation
         guard store.canArrangeLayerContext else { throw AutomationFailure(status:422,message:"Choose an available whole-layer arrangement context.") }
@@ -1680,6 +1697,7 @@ import UniformTypeIdentifiers
       "layerMerge":LayerMergeAPI.capabilities,
       "emptyLayerDeletion":EmptyLayerDeletionAPI.capabilities,
       "layerLinks":LayerLinksAPI.capabilities,
+      "layerFilter":LayerFilterAPI.capabilities,
       "layerStackOrder":LayerStackOrderAPI.capabilities,
       "layerCollectionTransform":LayerCollectionTransformAPI.capabilities,
       "channelTransform":ChannelTransformAPI.capabilities,
@@ -1744,6 +1762,7 @@ import UniformTypeIdentifiers
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
+        "layerFilter":LayerFilterAPI.stateSchema,
         "layerStackOrder":LayerStackOrderAPI.stateSchema,
         "layerCollectionTransform":LayerCollectionTransformAPI.stateSchema,
         "channelTransform":ChannelTransformAPI.stateSchema,

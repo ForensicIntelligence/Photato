@@ -6,12 +6,18 @@ extension EditorStore {
   func layersInPanel(search: String = "", kind: String = "All") -> [Layer] {
     let document = layerPanelDocument
     let hierarchy = LayerHierarchyIndex(document)
-    return document.layers.reversed().filter { layer in
-      layer.id == layerNameDraft?.layerID
-        || ((search.isEmpty && kind == "All"
-          ? !hierarchy.ancestors(of: layer.id).contains { $0.group?.expanded == false } : true)
-          && (search.isEmpty || layer.name.localizedCaseInsensitiveContains(search))
+    // Retain the explicit legacy diagnostic arguments; normal panels share store state.
+    if !search.isEmpty || kind != "All" {
+      return document.layers.reversed().filter { layer in
+        layer.id == layerNameDraft?.layerID || ((search.isEmpty || layer.name.localizedCaseInsensitiveContains(search))
           && (kind == "All" || layer.content.label == kind))
+      }
+    }
+    let filter = layerPanelFilter, selected = groupSelectionIDs, statuses = layerFilterStatuses
+    let emptyIDs = layerContentFilter.resolvedIDs(in: self)
+    return document.layers.reversed().filter { layer in
+      layer.id == layerNameDraft?.layerID || (filter.matches(layer, hierarchy: hierarchy, selected: selected, linkedStatus: statuses, emptyLayerIDs: emptyIDs)
+        && (filter.isFiltering || !hierarchy.ancestors(of: layer.id).contains { $0.group?.expanded == false }))
     }
   }
 

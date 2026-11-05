@@ -137,7 +137,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var brushPreviewRenderMS = 0.0
   let actions: ActionLibrary
   var actionRevision = 0
-  var session: EditorSession { didSet { rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { savedChannelVisibility=nil; temporaryMaskChannelVisibility=nil; channelVisibilitySweep=nil; inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded() } }
+  var session: EditorSession { didSet { rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { layerPanelFilter = LayerPanelFilter(); layerFilterRevision = UUID(); layerFilterFocusRequest = 0; proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { savedChannelVisibility=nil; temporaryMaskChannelVisibility=nil; channelVisibilitySweep=nil; inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded(); layerContentFilter.sourceChanged(in: self) } }
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
   @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
@@ -183,6 +183,10 @@ import UniformTypeIdentifiers
   @ObservationIgnored var pixelPaintPreparation:@Sendable (CraftDocument,PixelPaintRequest)throws->Command = {_,request in .pixelPaint(request)}
   var showLayerBounds = false
   var selectedLayerIDs: Set<UUID> = []
+  let layerContentFilter = LayerContentFilterWorkspace()
+  var layerPanelFilter = LayerPanelFilter()
+  var layerFilterRevision = UUID()
+  var layerFilterFocusRequest = 0
   var layoutTarget = LayerLayoutTarget.selection
   var pathTarget: PathTarget?
   var pathAnchor: PathAnchorSelection?
@@ -580,6 +584,7 @@ import UniformTypeIdentifiers
     {
       selectedLayerIDs = Set(
         document.layers[min(active, destination)...max(active, destination)].map(\.id))
+      if layerPanelFilter.isFiltering { selectedLayerIDs.formIntersection(Set(layersInPanel().map(\.id))) }
     } else if modifiers.contains(.command) {
       if selectedLayerIDs.isEmpty, let active = document.activeLayerID {
         selectedLayerIDs.insert(active)
@@ -638,6 +643,7 @@ import UniformTypeIdentifiers
     }
   }
   func render(isAnimationPlayback: Bool = false) {
+    layerContentFilter.refreshIfNeeded(in: self)
     if let draft = layerOpacityDraft, !draft.matches(self) { layerOpacityDraft = nil }
 
     if let id = selectedAudioTrackID, document.videoTimeline?.audioTracks?.contains(where: { $0.id == id }) != true { selectedAudioTrackID = nil }

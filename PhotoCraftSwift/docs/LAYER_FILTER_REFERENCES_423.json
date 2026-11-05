@@ -1,0 +1,30 @@
+{
+  "step": 423,
+  "retrieved_at_utc": "2026-11-05T09:09:40.924126+00:00",
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/work-with-the-layers-panel.html",
+      "updated": "2026-02-23",
+      "scope": "Panel access/selection/general native behavior, not the full filter option list"
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/filter-the-layers-panel-by-smart-objects.html",
+      "updated": "2026-02-23",
+      "scope": "Library/local/modified/missing/embedded icons and enable switch"
+    },
+    {
+      "url": "https://jkost.com/blog/2018/03/select-and-filter-layer-options-in-photoshop-cc.html",
+      "published": "2018-03-20",
+      "scope": "First-hand guide to nine filter modes, multiple icons, enable switch, Find shortcut and Selected-mode isolation; historical behavior, not current UI capture"
+    }
+  ],
+  "current_native_reference_attempt": "getApp Photoshop: cgWindowNotFound; getState: no native app surface, Mac locked/manual unlock required. Prior human unlock request pending; no repeated prompt.",
+  "owned_layout": "artifacts/runs/20261105T083435Z-423-layer-filter/source03-captures/layer-filter-controls.png",
+  "owned_layout_compared_with_current_Photoshop": false,
+  "remaining": "Exact2026defaults/options/predicates/group/path-tool and physical-platform qualification remain open.",
+  "same_as_inspected_Source02_SHA256": "313a9cfef84a3932b0bb6a7a9b55193952aacbc619e9fde27831c9e22829906e",
+  "owned_layout_dimensions": [
+    334,
+    445
+  ]
+}

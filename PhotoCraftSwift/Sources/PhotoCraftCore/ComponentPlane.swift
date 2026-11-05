@@ -132,6 +132,24 @@ public struct ComponentPlane: Equatable, Sendable {
     for i in 0..<count { Self.store(word(at: i), in: &bytes, offset: i * sampleBytes, stride: sampleBytes) }
     return bytes
   }
+  /// Numeric positivity includes subnormal Float alpha and treats either zero sign as empty.
+  func containsPositiveSample() throws -> Bool {
+    try Task.checkCancellation()
+    func positive(_ word: UInt32) -> Bool { depth == .f32 ? Float(bitPattern: word) > 0 : word > 0 }
+    if positive(defaultWord) {
+      var covered = 0
+      for range in storedSampleRanges { try Task.checkCancellation(); covered += range.count }
+      if covered < count { return true }
+    }
+    for range in storedSampleRanges {
+      try Task.checkCancellation()
+      for i in range {
+        if i % Self.blockSamples == 0 { try Task.checkCancellation() }
+        if positive(word(at: i)) { return true }
+      }
+    }
+    return false
+  }
   func allWordsEqual(_ word: UInt32) -> Bool {
     var covered = 0
     for range in storedSampleRanges {

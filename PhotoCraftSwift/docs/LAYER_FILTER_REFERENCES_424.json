@@ -1,0 +1,59 @@
+{
+  "step": 424,
+  "source": "docs/LAYER_FILTER_REFERENCES_423.json",
+  "current_normal_UI_observations": {
+    "step": 424,
+    "observed_utc": "2026-11-05T21:57:57.551764+00:00",
+    "method": "Normal CUA interaction with Adobe Photoshop 2026; own 32x24 RGB8 transparent document; no proprietary code or scripts",
+    "document": "Photato owned filter reference 424",
+    "modes": [
+      "Kind",
+      "Name",
+      "Effect",
+      "Mode",
+      "Attribute",
+      "Color",
+      "Smart Object",
+      "Selected",
+      "Artboard",
+      "Group"
+    ],
+    "attributes": [
+      "Visible",
+      "Locked",
+      "Empty",
+      "Linked",
+      "Clipped",
+      "Layer Mask",
+      "Vector Mask",
+      "Layer Effects",
+      "Advanced Blending",
+      "Not Visible",
+      "Not Locked",
+      "Not Empty",
+      "Not Linked",
+      "Not Clipped",
+      "No Layer Mask",
+      "No Vector Mask",
+      "No Layer Effects",
+      "No Adv. Blending"
+    ],
+    "confirmed": [
+      "Transparent ordinary Layer1 matches Empty",
+      "Foreground fill makes Layer1 disappear from Empty and clears active selection",
+      "Childless Group1 is excluded from Empty and included in Not Empty",
+      "Switching filters does not automatically select visible rows",
+      "New transparent Layer2 excluded from Not Empty, included in Empty",
+      "Converting transparent Layer2 to an embedded Smart Object leaves it in Empty; switching to Not Empty excludes it and clears active selection"
+    ],
+    "unqualified": [
+      "Group filter membership/inheritance: observed two rows but hierarchy not independently established",
+      "Advanced Blending predicate/defaults",
+      "Non-RGB Photoshop comparison and special text/shape/video emptiness"
+    ],
+    "cleanup": "Closed owned document with Command-W and Don\u2019t Save; Photoshop home window verified",
+    "screenshots": "Displayed by CUA in conversation; no local PNG file claimed",
+    "withdrawn_prototype": "Childless groups empty and all Smart Objects nonempty. Replaced before first build with observed type policy."
+  },
+  "limitations": "Owned RGB8 behavioral reference only; no Photoshop output-pixel/cross-mode/full-filter equivalence claimed. Current Photato packaged live checks pending."
+}

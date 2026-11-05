@@ -110,7 +110,7 @@ final class AnimationFrameDragTests: XCTestCase {
     XCTAssertTrue(AnimationFrameDrag.provider(store: store, frameID: UUID()).registeredTypeIdentifiers.isEmpty)
     let view = NSHostingView(rootView: TimelinePanel(store: store)); view.frame = NSRect(x: 0, y: 0, width: 1100, height: 166); view.layoutSubtreeIfNeeded()
     XCTAssertLessThanOrEqual(view.fittingSize.width, 1100); XCTAssertLessThanOrEqual(view.fittingSize.height, 180)
-    XCTAssertNotNil(AnimationAPI.capabilities["nativeFrameDrag"]); XCTAssertEqual(AutomationCommand.definitions.count, 247)
+    XCTAssertNotNil(AnimationAPI.capabilities["nativeFrameDrag"]); XCTAssertEqual(AutomationCommand.definitions.count, 248)
   }
   @MainActor func testDelayedProvidersRejectChangedSelectionSourceSessionPanelOwnerAndCancellation() async throws {
     for mode in ["edit", "select", "session", "hide", "close", "supersede", "cancel", "playing"] {

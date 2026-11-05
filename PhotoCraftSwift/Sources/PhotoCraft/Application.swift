@@ -126,6 +126,11 @@ import SwiftUI
       item.title = controller.filterRecall.filter?.kind.title ?? "Last Filter"
       return store?.canRepeatFilter == true
     }
+    if item.action == #selector(findLayers) { return store?.canChangeLayerFilter == true }
+    if item.action == #selector(isolateLayers) {
+      item.state = store?.layerFilterIsolated == true ? .on : .off
+      return store.map { $0.canChangeLayerFilter && ($0.layerFilterIsolated || !$0.groupSelectionIDs.isEmpty) } ?? false
+    }
     if item.action == #selector(arrangeLayerStack(_:)) { return LayerStackOperation.allCases.first(where: { $0.title == item.title }).map { store?.canArrangeLayerStack($0) == true } ?? false }
     if item.action == #selector(deleteEmptyLayers) { return store?.canDeleteEmptyLayers == true }
     if item.action == #selector(exportLayersToFiles) { return store?.canExportLayerFiles == true }

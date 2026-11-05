@@ -140,6 +140,6 @@ final class ChannelThumbnailOptionsTests: XCTestCase {
     }
     XCTAssertNotNil(ChannelAPI.capabilities["nativeThumbnailOptions"])
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: ChannelAPI.capabilities))
-    XCTAssertEqual(AutomationCommand.definitions.count, 247)
+    XCTAssertEqual(AutomationCommand.definitions.count, 248)
   }
 }

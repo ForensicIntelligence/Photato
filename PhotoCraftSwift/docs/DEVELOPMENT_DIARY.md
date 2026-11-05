@@ -18,14 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:422 -->
+<!-- current-status-step:424 -->
 ## Current status — 5 November 2026
 
-Arrange selected layers now works through the five existing menu commands and factory shortcuts. Complete groups move together, each parent has its own stack, Background stays at the bottom and one Undo restores the change. The desktop, Photato API, recorded Actions and supported Adobe layer-move jobs share native primitives.
+Empty and Not Empty now work in the Layers panel and the API. A background query checks stored alpha, supports sparse maximum-size canvases and can be cancelled. Changed or closed documents cannot publish old results. Painting updates the filter without locking editing.
 
-All 106 focused Debug tests pass. The 281-test optimized set passes 279 tests on each architecture, including all 33 new methods from checkpoints 415–422; known linked-alpha and master-palette failures remain. The owned layer-order reference covers310 sibling cases at each RGB depth. Native/API documents, archives and tested Adobe job bytes match. The universal package passes minimum-system, signature and ZIP checks. Physical Photoshop acceptance remains open.
+The packaged app passed the native workflow: create an empty layer, filter it, paint, undo, change criteria and quit. Filtering out the active layer clears selection; returning rows stay deselected. A disposable Photoshop document confirmed those behaviors and the treatment of childless groups and transparent Smart Objects.
 
-The major quick-win sweep is finished. We are in major stillneeded work: L01 layer filtering/isolation and remaining substantive layer workflows come next, then D01. Minor work and final cleanup keep their later passes. All104original package scopes remain open. [Step422](DEVLOG.md#dev-step-422).
+All 91 focused tests pass. Apple Silicon and translated Intel each pass 358 of 360 optimized cases, including all 57 newer feature tests. The two remaining errors exactly match build 422. Broad testing also found an overlong API revision token; the repair keeps tokens at 64 characters and restores the affected stack and Smart Object operations. Earlier failed attempts are retained.
+
+Group filtering, Advanced Blending, library-linked artwork and the rest of L01 remain major stillneeded work. Full Photoshop, physical-platform and performance qualification remains open. [Step 424](DEVLOG.md#dev-step-424).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -653,6 +655,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 420 | [Rasterization responsiveness](DEVLOG.md#dev-step-420) |
 | 2026-11-05 | 421 | [Channel thumbnail options and major quick-win sweep](DEVLOG.md#dev-step-421) |
 | 2026-11-05 | 422 | [Arrange selected layers](DEVLOG.md#dev-step-422) |
+| 2026-11-05 | 423 | [Layer filtering and isolation](DEVLOG.md#dev-step-423) |
+| 2026-11-05 | 424 | [Asynchronous layer content filters](DEVLOG.md#dev-step-424) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3201,3 +3205,25 @@ Both optimized architectures execute the same 281 cases and pass 279, including 
 The existing PSD writer omits regular layer-ID tags when no comp resources are active. The job fixture explicitly emits and verifies its IDs; a general ID-retention repair is not claimed. L01 filter/isolation, extended-empty and remaining lock/group workflows stay in major stillneeded. No minor or cleanup pass has started. [Detailed record](DEVLOG.md#dev-step-422).
 
 The complete native source backup is saved in the [private repository](https://github.com/ForensicIntelligence/Photato/commit/9c9723749d107c98cdbe9871879115edc6dcfdfb). All 7,187 included qualified inputs match422Source03; 34 generated/cache/restricted inputs are excluded with provenance. The 1,061 original root/Rust files are unchanged. Repository visibility remains private until release day. No binary was uploaded and no software release occurred.
+
+## 2026-11-05 — Step 423: Layer filtering and isolation
+
+The old filter lived in each SwiftUI view, permitted only one kind and compared display labels. It missed specific adjustment types. A shared document-local filter now drives native panel rows, Find Layers, Isolate Layers and the API. Multiple kinds and known Smart Object statuses can be combined. Name, effect, blending mode, metadata attributes, color, selected layers and artboards are available. Selection ranges follow filtered rows. Filtering retains the document's pixels, visibility, stored bytes and content history.
+
+All 77 current focused tests pass, including the 13 new native/API methods. Final review corrected case-sensitive artboard UUID handling; lowercase references and idempotence now have regression coverage. The earlier 85-test affected run passed 83 cases. Its two capacity errors reproduce in the retained 422 Debug bundle and pass in 422 optimized ARM64/Rosetta. The first compile attempt failed on two overlapping accesses in the new linked-source fixture; the failed source and outputs were preserved before repair. Parameter review also corrected NUL/UTF16-limit errors to return400. No test tolerance was relaxed.
+
+The owned nine-mode native control image was rendered and inspected. Current Photoshop comparison remains unavailable while the Mac is locked. Exact defaults and the complete attribute/hierarchy/path-selection behavior are unqualified. Empty/NotEmpty requires asynchronous pixel scanning, and library-linked sources require integration that is not present. Those controls are unavailable and remain major stillneeded work. Background-only/no-active-layer selection and extended empty-layer behavior also remain open.
+
+Typed API inventory is 248; native archive86 and Actions48 stay unchanged. Configuration is presentation state and has no published Adobe panel-state counterpart. Current optimized/universal/private-source qualification is batched for the next meaningful milestone; latest packaged/private source remains422. No new install, archive, upload or release occurred. [Detailed record](DEVLOG.md#dev-step-423).
+
+## 2026-11-05 — Step424: Asynchronous layer content filters
+
+Added Empty and Not Empty to the native panel and optional API. A cancellable worker checks stored alpha without a full-canvas allocation. It retains source storage while running, rejects changed sessions and revoked shares, and refreshes after edits. Pixels, layer visibility, Undo/Redo and recorded Actions stay unchanged. View selection can change when the active layer is filtered out; earlier whole-archive-unchanged expectations were corrected to test that observed distinction.
+
+The owned Photoshop2026 document showed transparent raster and embedded Smart Object layers matching Empty, childless groups matching Not Empty, and no automatic selection when rows return. Group mode and the Advanced Blending attribute pair were observed but remain unimplemented. No proprietary code was inspected or executed as part of these comparisons.
+
+All88focused Debug tests pass, including11new methods. The first build rejected a new Core test's dependency on an Imaging helper. The next run passed86of87cases; the mapped fixture had requested less storage than the existing index requires. Both attempts were preserved before test-only repairs. Later review found a read/close hook defect; optimized compilation was deliberately stopped before delivery, corrected, and covered by an actual NSDocument read/re-query/close test. The corrected source passes88of88. Subsequent optimized and packaged results are recorded below.
+
+This remains major stillneeded L01 work. Full library/Group/Advanced Blending/special-content/default/platform qualification and all original104package scopes stay open. No installation, Xcode archive, AppStore upload or release was performed. [Detailed record](DEVLOG.md#dev-step-424).
+
+Later qualification caught an API compatibility defect: revision tokens had grown beyond the existing 256-character source-reference limit. A 64-character hash preserves all change tracking without increasing that limit. The affected stack and Smart Object tests now pass. Final source424Source05 passes91focused tests and358of360normal cases on each architecture, including all57new415–424methods. The two residual failures have the exact build422 diagnostics. Universal minimum14/signature/ZIP checks pass. In the packaged native app, an owned brush stroke left the Empty filter and cleared selection; one Undo restored the empty layer. Complementary filters and normal Quit passed. The owned document was discarded; no user document was edited. No physical60fps or full Photoshop qualification is claimed.

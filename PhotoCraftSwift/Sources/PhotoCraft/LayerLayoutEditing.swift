@@ -37,8 +37,10 @@ extension EditorStore {
       })
   }
   func selectAllLayers() {
+    finishNumericField(); finishLayerName()
     guard !geometryBusy, !hasToneDraft, transformDraft == nil else { return }
-    selectedLayerIDs = Set(document.layers.map(\.id))
+    let candidates = layerPanelFilter.isFiltering ? layersInPanel() : document.layers
+    selectedLayerIDs = Set(candidates.filter { !$0.isBackground }.map(\.id))
     maskEditingLayerID = nil
     if case .vectorMask = pathTarget { selectPath(nil) }
     if case .shape = pathTarget { selectPath(nil) }

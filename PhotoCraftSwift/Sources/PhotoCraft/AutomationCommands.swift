@@ -84,6 +84,7 @@ struct AutomationCommand: Sendable {
         if name == FlattenImageAPI.name {properties[key]=BrushAPI.flag;continue}
         if BackgroundLayerAPI.commands.contains(name){properties[key]=BackgroundLayerAPI.schema(key);continue}
         if PixelPaintAPI.commands.contains(name){properties[key]=PixelPaintAPI.schema(key);continue}
+        if name == LayerFilterAPI.command { properties[key] = LayerFilterAPI.schema(key); continue }
         if name == LayerStackOrderAPI.command { properties[key] = LayerStackOrderAPI.schema(key); continue }
         if LayerLinksAPI.commands.contains(name){properties[key]=LayerLinksAPI.schema(key);continue}
         if name == LayerCollectionTransformAPI.name{properties[key]=LayerCollectionTransformAPI.schema(key);continue}
@@ -446,6 +447,7 @@ struct AutomationCommand: Sendable {
     .init(
       name: "layer.visibility", parameters: ["layerID": "uuid", "visible": "boolean"],
       description: "Set one layer's visibility."),
+    .init(name: LayerFilterAPI.command, parameters: ["operation": "configure, enable, disable, find, isolate, selectAll or reset", "filter": "Partial document-local panel filter settings"], description: "Filter Layers panel rows without altering visibility, pixels or edit history. Shared native Find/Isolate and state.", optionalParameters: ["filter"]),
     .init(name: LayerStackOrderAPI.command, parameters: ["layerIDs": "Distinct layer UUIDs", "operation": "bringToFront, bringForward, sendBackward, sendToBack or reverse"], description: "Arrange complete layer/group subtrees within each parent as one Undo transaction. Background stays at the bottom; Reverse exchanges selected slots. Portable Actions48."),
     .init(
       name: "layer.move",
@@ -511,6 +513,7 @@ struct AutomationCommand: Sendable {
     }
     if BackgroundLayerAPI.commands.contains(name) {for (key,value) in parameters {_ = try BrushAPI.merge(value,schema:BackgroundLayerAPI.schema(key),path:key)}}
     if PixelPaintAPI.commands.contains(name){for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PixelPaintAPI.schema(key),path:key)}}
+    if name == LayerFilterAPI.command { for (key,value) in parameters { _ = try BrushAPI.merge(value,schema:LayerFilterAPI.schema(key),path:key) } }
     if name == LayerStackOrderAPI.command { for(key,value) in parameters { _ = try BrushAPI.merge(value,schema:LayerStackOrderAPI.schema(key),path:key) } }
     if LayerLinksAPI.commands.contains(name){for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:LayerLinksAPI.schema(key),path:key)}}
     if name == LayerCollectionTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:LayerCollectionTransformAPI.schema(key),path:key)}}

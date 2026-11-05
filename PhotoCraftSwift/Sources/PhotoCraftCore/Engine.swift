@@ -577,6 +577,11 @@ public struct EditorSession: Sendable {
       document.activeLayerID = id
     }
   }
+  /// Filtering changes view selection without an edit, dirty event or Action step.
+  public mutating func setFilteredLayerSelection(_ id: UUID?) {
+    guard id == nil || document.layers.contains(where: { $0.id == id }) else { return }
+    document.activeLayerID = id
+  }
   /// Persisted panel metadata, deliberately outside edit history and coalescing.
   /// Validate the complete request before changing any group; locks protect content,
   /// not whether its rows are expanded in the Layers panel.

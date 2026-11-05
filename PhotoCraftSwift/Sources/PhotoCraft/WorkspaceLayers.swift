@@ -5,7 +5,7 @@ import SwiftUI
 
 extension WorkspaceView {
   var filteredLayers: [Layer] {
-    store.layersInPanel(search: layerSearch, kind: layerKind)
+    store.layersInPanel()
   }
 
   func layersPanelContent(_ tab: LayersTab) -> some View {
@@ -52,32 +52,7 @@ extension WorkspaceView {
   }
   var layerControls: some View {
     VStack(spacing: 7) {
-      HStack(spacing: 6) {
-        HStack(spacing: 4) {
-          Image(systemName: "magnifyingglass").font(.system(size: 9))
-          TextField("Kind / name", text: $layerSearch).textFieldStyle(.plain).font(
-            .system(size: 10)
-          )
-          .frame(height: 12, alignment: .top)
-          .background {
-            WorkspaceFieldLayoutProbe(owner: store.identity, name: "Layer search", value: 0)
-          }
-        }.padding(4).background(StudioTheme.field).frame(maxWidth: 118)
-        ForEach(
-          [
-            ("All", "line.3.horizontal.decrease"), ("Pixel layer", "photo"),
-            ("Adjustment", "circle.lefthalf.filled"), ("Type layer", "textformat"),
-            ("Shape layer", "square"),
-          ], id: \.0
-        ) { kind, symbol in
-          Button {
-            layerKind = layerKind == kind ? "All" : kind
-          } label: {
-            Image(systemName: symbol).font(.system(size: 11)).frame(width: 19, height: 19)
-              .background(layerKind == kind && kind != "All" ? StudioTheme.selected : .clear)
-          }.buttonStyle(.plain).help("Filter layers: \(kind)")
-        }
-      }
+      LayerFilterControls(store: store)
       HStack(spacing: 7) {
         Picker(
           "Blend mode",
