@@ -25,6 +25,7 @@ import SwiftUI
   var shapesWindow: NSWindowController?
   var glyphsWindow: NSWindowController?
   var recoverySettingsWindow: RecoveryPreferencesWindowController?
+  var saveFormatsWindow: SaveDialogFormatsWindowController?
   var colorSettingsWindow: ColorSettingsWindowController?
   private(set) lazy var automation = AutomationService(controller: controller)
   var documentWindowMenu: NSMenu?
@@ -126,6 +127,7 @@ import SwiftUI
       item.title = controller.filterRecall.filter?.kind.title ?? "Last Filter"
       return store?.canRepeatFilter == true
     }
+    if item.action == #selector(customizeSaveDialogFileFormats) { return true }
     if item.action == #selector(findLayers) { return store?.canChangeLayerFilter == true }
     if item.action == #selector(isolateLayers) {
       item.state = store?.layerFilterIsolated == true ? .on : .off

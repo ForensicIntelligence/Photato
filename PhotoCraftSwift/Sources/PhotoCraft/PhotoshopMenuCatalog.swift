@@ -291,6 +291,7 @@ enum PhotoshopMenuCatalog {
         .item("Assign Profile…"),
         .item("Convert to Profile…"),
         .separator,
+        .item("Customize Save Dialog File Formats"),
         .item("Keyboard Shortcuts…", key: "k", modifiers: [.option, .shift, .command]),
         .item("Menus…", key: "m", modifiers: [.option, .shift, .command]),
         .item("Toolbar…"),

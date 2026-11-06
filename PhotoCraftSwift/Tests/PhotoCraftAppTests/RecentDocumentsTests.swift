@@ -28,7 +28,7 @@ final class RecentDocumentsTests: XCTestCase {
     XCTAssertEqual(reloaded.value, settings.value)
     XCTAssertEqual(reloaded.recentDocuments, settings.recentDocuments)
     let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any])
-    XCTAssertEqual(raw["version"] as? Int, 3)
+    XCTAssertEqual(raw["version"] as? Int, 4)
   }
   @MainActor func testOrderingDeduplicationTrimmingZeroAndClearPersistWithoutDeletingImages() throws {
     let (folder, settings, c) = try fixture()

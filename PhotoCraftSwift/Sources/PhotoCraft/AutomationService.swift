@@ -418,6 +418,9 @@ import UniformTypeIdentifiers
       "isModified": document.isDocumentEdited,
       "persistenceFormat": document.persistenceFormat.rawValue,
       "saveFormats": saveFormats.map(\.rawValue),
+      "saveDialogFormats": document.dialogSaveFormats.map(\.rawValue),
+      "copyDialogFormats": document.dialogCopyFormats.map(\.rawValue),
+      "fileHandlingPreferencesRevision": document.ownerController?.recoveryPreferences.revision.uuidString as Any? ?? NSNull(),
       "saveEncodingOptions": Dictionary(uniqueKeysWithValues: DocumentIO.Format.allCases.map {
         ($0.rawValue, DocumentEncodingOptions.json(document.rememberedEncodingOptions[$0] ?? .init()))
       }),
@@ -1843,6 +1846,9 @@ import UniformTypeIdentifiers
           "type": "array", "uniqueItems": true,
           "items": ["type": "string", "enum": DocumentIO.Format.allCases.map(\.rawValue)],
         ],
+        "saveDialogFormats": SaveDialogFormats.schema,
+        "copyDialogFormats": SaveDialogFormats.schema,
+        "fileHandlingPreferencesRevision": ["type": ["string", "null"], "format": "uuid"],
         "saveEncodingOptions": [
           "type": "object", "additionalProperties": false,
           "required": DocumentIO.Format.allCases.map(\.rawValue),

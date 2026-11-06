@@ -1,0 +1,24 @@
+{
+  "source": "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/customize-the-file-format-list.html",
+  "updated": "2026-08-28",
+  "kind": "Public Adobe instructions; supplementary to unchanged27.2normal-UI inventory",
+  "path": [
+    "Edit",
+    "Customize Save Dialog File Formats"
+  ],
+  "controls": [
+    "Restore Defaults",
+    "Clear Formats",
+    "Cancel",
+    "Done"
+  ],
+  "affects": [
+    "Save As",
+    "Save a Copy"
+  ],
+  "unqualified": [
+    "exact native placement/ellipsis/factory selections",
+    "zero-selected-format native behavior",
+    "current physical Photoshop comparison"
+  ]
+}

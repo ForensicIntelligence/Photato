@@ -18,16 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:425 -->
+<!-- current-status-step:426 -->
 ## Current status — 5 November 2026
 
-Layer deselection is now available from the Select menu, Command-clicking the final selected row, and clicking below the layer rows. The API uses the same selection path. Recorded selection-only Actions no longer create a pixel Undo step, and recording can start or stop with no active layer.
+The Save As and Save a Copy format lists can now be customized from Edit > Customize Save Dialog File Formats. The native dialog and File Handling API share the saved choices. Ordinary Save, recovery and explicit API output remain available when a format is hidden.
 
-All 127 focused tests pass, including 9 new methods. The hosted panel test checks the full blank hit area, accessibility action and native mouse events. Both optimized architectures pass 393 of the same 395 cases, including all 66 new feature methods from checkpoints 415–425. Two existing failures retain the same diagnostics as checkpoint 424. The universal package passes macOS 14, signature and ZIP checks. The Mac is locked, so current physical UI/reference checks remain pending.
+All 101 focused tests pass, including seven new tests covering all 64 combinations of the current six formats at RGB 8/16/32, migration, failed/stale writes, native/API behavior and unchanged output bytes. Both optimized architectures pass the same 101 selected cases, including all seven new methods, with no failures or crashes. The universal package passes minimum macOS 14, signature and ZIP checks. Physical reference checks await Mac unlock; exact Photoshop defaults and empty-list behavior remain unqualified.
 
-Next is D01 document workflows. Group filtering, Advanced Blending, library artwork and other L01 gaps remain major stillneeded work for a later sweep. No package is being declared complete; the original 104 package records and acceptance criteria are retained. Earlier failures stay open. [Step 425](DEVLOG.md#dev-step-425).
-The [complete source backup](https://github.com/ForensicIntelligence/Photato/commit/04a6f66b059366992ca6318a9113fdab73ecf4fb) is in the private repository. It will become public on software release day.
-
+L07 artboard workflows are next. The larger D01 and L01 gaps remain major stillneeded work. All original package scopes and acceptance criteria are retained. [Step 426](DEVLOG.md#dev-step-426).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -658,6 +656,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 423 | [Layer filtering and isolation](DEVLOG.md#dev-step-423) |
 | 2026-11-05 | 424 | [Asynchronous layer content filters](DEVLOG.md#dev-step-424) |
 | 2026-11-05 | 425 | [Layer selection and deselection](DEVLOG.md#dev-step-425) |
+| 2026-11-05 | 426 | [Customize Save Dialog File Formats](DEVLOG.md#dev-step-426) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3240,3 +3239,15 @@ New `layers.selection` API operations share native behavior and expose selection
 The new code passes 127 focused Debug tests, including nine new methods. Initial attempts exposed a test method-name error, an inaccessible offscreen SwiftUI control, and the empty native button's default accessibility role/return value. Sources, binaries and failed logs were retained before repairs. The expanded clipboard suite also stopped with signal10 in a method with earlier Debug crash evidence; current cause remains unproven and optimized testing includes it. These failures are recorded, not erased by the passing focused run. The first optimized run also found six catalog-count checks still expecting 248 after the new API raised the total to 249. Only those expectations were corrected; the app binary stayed unchanged. The expanded focused run passes 127 tests, and the full affected optimized set was repeated.
 
 Adobe's public selection instructions were used; the Mac locked again before a fresh owned Photoshop comparison. Offscreen native layout/event tests are not physical UI proof. Both optimized architectures pass 393 of the same 395 cases, including all 66 new methods from checkpoints 415–425 and the clipboard method that crashed in Debug. The two remaining linked-alpha/master-palette failures have the same diagnostics as checkpoint 424; no Debug crash repair or full-suite pass is claimed. The universal package passes both macOS 14 slices, signature and ZIP checks. D01 document workflows follow. The substantive L01 remainder stays in major stillneeded, and no minor or cleanup pass begins. [Detailed record](DEVLOG.md#dev-step-425).
+
+## 2026-11-05 — Step 426: Customize Save Dialog File Formats
+
+Added the Edit command documented by Adobe in August 2026. Its native dialog lets users select formats, restore defaults, clear the list, cancel or save the choices. Save As also respects the existing checks for preserving editable content; Save a Copy uses the selected supported encoders. This adds format visibility, rather than new codecs. Full Photoshop format support remains outstanding.
+
+Choices are saved with File Handling settings through the existing atomic writer. Older settings load without being rewritten; a later commit writes settings version 4. Unknown or duplicate formats, malformed current settings, failed storage, active file operations and stale/external changes retain the earlier settings. Other recovery, recent-file and compression values are preserved. An empty or incompatible list cancels native panel creation with guidance, without silently inserting a hidden format. Exact Photoshop empty-list behavior is still unqualified.
+
+The existing File Handling API accepts the same choices under its separate permission and revision guard. Document state exposes dialog choices separately from available encoders. Ordinary Save, recovery and explicit API output keep their existing behavior and bytes. Native archive 86 and Actions 49 are unchanged. The newly documented menu command supplements the earlier capture; all 651 tracked identities, captured hierarchy and factory shortcuts are retained. Exact placement, punctuation and default selections still need a live comparison.
+
+All 101 focused Debug tests pass, including seven new methods. The initial run passed 100 of 101: a new API test reinitialized AppKit's document-controller singleton during the service and compared an unnegotiated legacy download with current archive bytes. Failed sources, binaries and logs were preserved before test-only corrections. The app binary is unchanged between those attempts. A normal-build helper then failed before compilation because its hash helper had been dropped during adaptation; that diagnostic was preserved and the helper repaired. Both optimized architectures pass the same 101 selected cases, including all seven new methods. The universal package passes minimum macOS 14, signature and ZIP checks. Earlier full-suite and checkpoint 425 residual failures remain open; this is not a full-suite pass. The owned offscreen dialog capture checks fit, not physical UI or visual Photoshop equivalence.
+
+The Mac remains unavailable for live comparison pending the existing unlock request. L07 is next after this batch; remaining D01 and L01 functions stay in major stillneeded. No minor or cleanup pass starts, and no full package is declared complete. [Detailed record](DEVLOG.md#dev-step-426).

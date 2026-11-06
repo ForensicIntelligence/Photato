@@ -331,6 +331,7 @@ enum DocumentPersistenceConflict: LocalizedError {
 
   func showSaveCopy() {
     guard canRunFileCommand else { return }
+    guard !dialogCopyFormats.isEmpty else { explainUnavailableSaveFormats(); return }
     store.finishNumericField()
     store.finishLayerName()
     let panel = NSSavePanel()
@@ -342,7 +343,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     panel.canCreateDirectories = true
     let initial = persistenceFormat
     let accessory = DocumentCopyAccessory(panel: panel, initial: initial,
-      initialOptions: compatibleRememberedEncodingOptions,
+      availableFormats: dialogCopyFormats, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
         && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode)
     panel.accessoryView = accessory.view

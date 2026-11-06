@@ -155,7 +155,7 @@ final class AutomationTests: XCTestCase {
       let catalogue = try XCTUnwrap(
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 807)
+      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 808)
       XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")

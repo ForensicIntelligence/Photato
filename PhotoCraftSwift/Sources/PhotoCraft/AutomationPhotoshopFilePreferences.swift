@@ -6,6 +6,7 @@ extension AutomationService {
     return [
       "revision": preferences.revision.uuidString,
       "disablePSDCompression": preferences.value.disablePSDCompression,
+      "saveDialogFormats": SaveDialogFormats.ordered(preferences.value.saveDialogFormats).map(\.rawValue),
       "isPersistent": preferences.isPersistent,
       "canUpdate": photoshopPreferenceChangesEnabled && !controller.recoveryPreferencesBusy
         && preferences.loadError == nil,
@@ -29,15 +30,28 @@ extension AutomationService {
       throw AutomationFailure(status: 415, message: "Content-Type must be application/json.")
     }
     guard let fields = try? JSONDecoder().decode([String: AutomationValue].self, from: request.body),
-      Set(fields.keys) == ["revision", "disablePSDCompression"],
-      case .string(let revision) = fields["revision"], let expected = UUID(uuidString: revision),
-      case .bool(let disabled) = fields["disablePSDCompression"] else {
-      throw AutomationFailure(status: 400,
-        message: "Required: revision UUID and disablePSDCompression boolean.")
+      Set(fields.keys).isSubset(of: ["revision", "disablePSDCompression", "saveDialogFormats"]), fields.count >= 2,
+      case .string(let revision) = fields["revision"], let expected = UUID(uuidString: revision) else {
+      throw AutomationFailure(status: 400, message: "Provide a revision UUID and file preference changes.")
+    }
+    var next = controller.recoveryPreferences.value
+    if let value = fields["disablePSDCompression"] {
+      guard case .bool(let disabled) = value else {
+        throw AutomationFailure(status: 400, message: "disablePSDCompression must be boolean.")
+      }
+      next.disablePSDCompression = disabled
+    }
+    if let value = fields["saveDialogFormats"] {
+      guard case .array(let values) = value else {
+        throw AutomationFailure(status: 400, message: "saveDialogFormats must be an array.")
+      }
+      let strings = values.compactMap { if case .string(let value) = $0 { return value }; return nil }
+      guard strings.count == values.count, let formats = try? SaveDialogFormats.parse(strings) else {
+        throw AutomationFailure(status: 400, message: "Choose unique supported save formats.")
+      }
+      next.saveDialogFormats = formats
     }
     do {
-      var next = controller.recoveryPreferences.value
-      next.disablePSDCompression = disabled
       try controller.setRecoveryPreferences(next, revision: expected)
     } catch let failure as RecoveryPreferencesFailure {
       throw AutomationFailure(status: failure == .unreadable ? 422 : 409,
@@ -53,20 +67,22 @@ extension AutomationService {
     return [
       "path": "/v1/preferences/photoshop-file-handling", "readMethod": "GET", "updateMethod": "POST",
       "writePermission": "Separate native Allow Photoshop file preference changes; off on every API session.",
-      "default": ["disablePSDCompression": false],
+      "default": ["disablePSDCompression": false, "saveDialogFormats": DocumentIO.Format.allCases.map(\.rawValue)],
+      "nativeMenu": SaveDialogFormats.menuPath,
+      "saveDialogVisibility": "The saved list filters native Save As and Save a Copy only. Save As also applies existing editable-content eligibility. Explicit API outputs, ordinary Save, recovery, encoder capabilities and output bytes are unaffected. Empty choices persist; native panels explain how to select formats instead of silently restoring a hidden type.",
       "scope": "Persistent application-wide File Handling preference. No document content or Undo changes.",
       "effect": "For RGB16/32 PSD and PSB document Save/Save As/Copy and shared document downloads, omitted layer and composite compression choices resolve to raw when enabled. RGB8 and other formats are unaffected. Explicit per-output choices override each component independently. Disabling restores existing codec defaults for omitted fields.",
       "lifecycle": "Native and API saves remember requested choices, not resolved defaults. Later preference changes affect future default saves. Each output operation snapshots the preference before encoding. Busy native saves/recovery reject preference writes; downloads already encoding keep their snapshot.",
       "jobs": "Stateless Photato and Adobe resource jobs use their own explicit/default output contract and do not inherit application preferences.",
-      "storage": "Atomic version3 File Handling archive retains recovery and recent files; reads version1/2 with compression enabled. Older readers reject version3. Stale revision/external changes and unreadable settings reject writes.",
+      "storage": "Atomic version4 File Handling archive retains recovery, recent files, compression and the explicit format list. Versions1/2/3 migrate in memory with all supported formats visible; a version4 archive requires the list. Older readers reject version4. Stale revision/external changes and unreadable settings reject writes.",
       "adobe": "No desktop application-preference endpoint in the pinned Adobe v2 contract; no Adobe route or field is invented.",
       "limits": "Photato defaultfalse preserves prior output; Photoshop factory defaults, exact dialogs, Maximize Compatibility and whole-file equivalence remain unqualified.",
       "updateSchema": ["type": "object", "additionalProperties": false,
-        "required": ["revision", "disablePSDCompression"],
-        "properties": ["revision": revision, "disablePSDCompression": boolean]],
+        "required": ["revision"], "minProperties": 2,
+        "properties": ["revision": revision, "disablePSDCompression": boolean, "saveDialogFormats": SaveDialogFormats.schema]],
       "stateSchema": ["type": "object", "additionalProperties": false,
-        "required": ["revision", "disablePSDCompression", "isPersistent", "canUpdate", "isBusy", "loadError"],
-        "properties": ["revision": revision, "disablePSDCompression": boolean, "isPersistent": boolean,
+        "required": ["revision", "disablePSDCompression", "saveDialogFormats", "isPersistent", "canUpdate", "isBusy", "loadError"],
+        "properties": ["revision": revision, "disablePSDCompression": boolean, "saveDialogFormats": SaveDialogFormats.schema, "isPersistent": boolean,
           "canUpdate": boolean, "isBusy": boolean, "loadError": ["type": ["string", "null"]]]],
       "errors": ["400": "Invalid fields, boolean or revision", "401": "Authentication",
         "403": "Photoshop preference writes disabled", "404": "Unknown method",

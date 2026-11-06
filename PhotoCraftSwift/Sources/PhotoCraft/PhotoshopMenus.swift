@@ -80,6 +80,7 @@ import PhotoCraftCore
       "Photato > About Photato…": #selector(about),
       "Photato > Settings… > File Handling…": #selector(fileHandlingPreferences),
       "Edit > Color Settings…": #selector(colorSettingsDialog),
+      "Edit > Customize Save Dialog File Formats": #selector(customizeSaveDialogFileFormats),
       "Photato > Hide Photato": #selector(hide),
       "Photato > Hide Others": #selector(hideOthers),
       "Photato > Show All": #selector(showAllApplications),

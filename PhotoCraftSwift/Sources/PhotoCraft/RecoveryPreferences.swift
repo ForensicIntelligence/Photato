@@ -8,13 +8,15 @@ struct RecoveryPreferences: Codable, Equatable {
   var intervalMinutes = 10
   var recentFileLimit = 20
   var disablePSDCompression = false
+  var saveDialogFormats = SaveDialogFormats.defaults
   init(enabled: Bool = true, intervalMinutes: Int = 10, recentFileLimit: Int = 20,
-    disablePSDCompression: Bool = false) {
+    disablePSDCompression: Bool = false, saveDialogFormats: Set<DocumentIO.Format> = SaveDialogFormats.defaults) {
     self.enabled = enabled; self.intervalMinutes = intervalMinutes; self.recentFileLimit = recentFileLimit
     self.disablePSDCompression = disablePSDCompression
+    self.saveDialogFormats = saveDialogFormats
   }
   private enum CodingKeys: String, CodingKey {
-    case enabled, intervalMinutes, recentFileLimit, disablePSDCompression
+    case enabled, intervalMinutes, recentFileLimit, disablePSDCompression, saveDialogFormats
   }
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -22,6 +24,17 @@ struct RecoveryPreferences: Codable, Equatable {
     intervalMinutes = try values.decode(Int.self, forKey: .intervalMinutes)
     recentFileLimit = try values.decodeIfPresent(Int.self, forKey: .recentFileLimit) ?? 20
     disablePSDCompression = try values.decodeIfPresent(Bool.self, forKey: .disablePSDCompression) ?? false
+    if let formats = try values.decodeIfPresent([String].self, forKey: .saveDialogFormats) {
+      saveDialogFormats = try SaveDialogFormats.parse(formats)
+    }
+  }
+  func encode(to encoder: Encoder) throws {
+    var values = encoder.container(keyedBy: CodingKeys.self)
+    try values.encode(enabled, forKey: .enabled)
+    try values.encode(intervalMinutes, forKey: .intervalMinutes)
+    try values.encode(recentFileLimit, forKey: .recentFileLimit)
+    try values.encode(disablePSDCompression, forKey: .disablePSDCompression)
+    try values.encode(SaveDialogFormats.ordered(saveDialogFormats).map(\.rawValue), forKey: .saveDialogFormats)
   }
   var delay: TimeInterval { enabled ? TimeInterval(intervalMinutes * 60) : 0 }
   func validate() throws {
@@ -51,6 +64,24 @@ enum RecoveryPreferencesFailure: Error, LocalizedError, Equatable {
     let version: Int
     let recovery: RecoveryPreferences
     var recentDocuments: [RecentDocumentRecord]?
+    private enum CodingKeys: String, CodingKey { case version, recovery, recentDocuments }
+    private enum FormatKey: String, CodingKey { case saveDialogFormats }
+    init(version: Int, recovery: RecoveryPreferences, recentDocuments: [RecentDocumentRecord]?) {
+      self.version = version; self.recovery = recovery; self.recentDocuments = recentDocuments
+    }
+    init(from decoder: Decoder) throws {
+      let values = try decoder.container(keyedBy: CodingKeys.self)
+      version = try values.decode(Int.self, forKey: .version)
+      guard (1...4).contains(version) else { throw CraftError.invalid("Unsupported recovery settings version.") }
+      let settings = try values.superDecoder(forKey: .recovery)
+      recovery = try RecoveryPreferences(from: settings)
+      if version == 4 {
+        // Legacy settings may omit the list; a v4 archive must carry it explicitly.
+        let required = try settings.container(keyedBy: FormatKey.self)
+        _ = try required.decode([String].self, forKey: .saveDialogFormats)
+      }
+      recentDocuments = try values.decodeIfPresent([RecentDocumentRecord].self, forKey: .recentDocuments)
+    }
   }
   static let maximumBytes = 8 * 1024 * 1024
   static let shared = RecoveryPreferencesStore(
@@ -83,7 +114,7 @@ enum RecoveryPreferencesFailure: Error, LocalizedError, Equatable {
       originalBytes = try Self.read(url)
       if let originalBytes {
         let archive = try JSONDecoder().decode(Archive.self, from: originalBytes)
-        guard (1...3).contains(archive.version) else {
+        guard (1...4).contains(archive.version) else {
           throw CraftError.invalid("Unsupported recovery settings version.")
         }
         try archive.recovery.validate()
@@ -130,7 +161,7 @@ enum RecoveryPreferencesFailure: Error, LocalizedError, Equatable {
   private func persist(_ next: RecoveryPreferences, entries: [RecentDocumentRecord]) throws {
     try Self.validateRecent(entries, limit: next.recentFileLimit)
     let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
-    let data = try encoder.encode(Archive(version: 3, recovery: next, recentDocuments: entries))
+    let data = try encoder.encode(Archive(version: 4, recovery: next, recentDocuments: entries))
     guard data.count <= Self.maximumBytes else { throw CraftError.invalid("Recent-file list is too large.") }
     if let url { try writer(data, url) }
     originalBytes = data
@@ -178,7 +209,9 @@ extension CraftDocumentController {
     if value.recentFileLimit != recoveryPreferences.value.recentFileLimit, recentFilesBusy {
       throw RecoveryPreferencesFailure.busy
     }
+    let previousDelay = recoveryPreferences.value.delay
     try recoveryPreferences.commit(value, revision: revision)
+    guard previousDelay != recoveryPreferences.value.delay else { return }
     autosavingDelay = recoveryPreferences.value.delay
     // Updating the controller delay does not notify already-dirty documents.
     // Reschedule through AppKit without inventing a content/history change.

@@ -209,10 +209,11 @@ import SwiftUI
     return DispatchQueue.main.sync { saveAccessory?.format.typeIdentifier }
   }
   override func prepareSavePanel(_ panel: NSSavePanel) -> Bool {
+    guard !dialogSaveFormats.isEmpty else { saveAccessory = nil; explainUnavailableSaveFormats(); return false }
     if closeWorkflowID != nil { closeSavePanel = panel }
     let accessory = DocumentCopyAccessory(
       panel: panel, initial: persistenceFormat,
-      availableFormats: saveFormats, saving: true, initialOptions: compatibleRememberedEncodingOptions,
+      availableFormats: dialogSaveFormats, saving: true, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
         && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode)
     saveAccessory = accessory

@@ -2361,5 +2361,20 @@
     "factory_inventory_or_shortcut_change": false,
     "native": "Existing channel context Options now shares captured thumbnail target; no menu command/shortcut identity added.",
     "qualification": "56focused Debugpass/3new methods;50existing normal baseline tests per architecture and70independent words each. Current421normal/physical/fullscope open."
+  },
+  "save_dialog_formats_426": {
+    "source": "artifacts/runs/20261105T235537Z-426-save-dialog-formats/reference-audit01.json",
+    "primary_public_supplement": "Tests/PhotoCraftAppTests/Fixtures/photoshop-save-dialog-formats.json",
+    "path": [
+      "Edit",
+      "Customize Save Dialog File Formats"
+    ],
+    "current_static_entries": 808,
+    "tracked_commands": 652,
+    "original_651_identities_retained": true,
+    "original_captured_hierarchy_and_102primary_8alternate_shortcuts_unchanged": true,
+    "exact_current_menu_position_ellipsis_and_factory_selections_qualified": false,
+    "new_global_shortcut": null,
+    "reference": "docs/SAVE_DIALOG_FORMATS_426.json"
   }
 }

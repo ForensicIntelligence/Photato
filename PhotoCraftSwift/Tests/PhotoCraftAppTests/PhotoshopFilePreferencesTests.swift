@@ -45,7 +45,7 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       XCTAssertEqual(loaded.recentDocuments, preferences.recentDocuments)
       XCTAssertEqual(loaded.recentDocuments.count, 1)
       let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any])
-      XCTAssertEqual(raw["version"] as? Int, 3)
+      XCTAssertEqual(raw["version"] as? Int, 4)
       XCTAssertEqual(try NativeArchive.read(file), model)
     }
   }
