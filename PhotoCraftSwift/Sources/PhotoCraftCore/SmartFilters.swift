@@ -17,7 +17,7 @@ public struct SmartFilter: Codable, Equatable, Sendable, Identifiable {
 public struct SmartFilterStack: Codable, Equatable, Sendable {
   public static let maximumFilters = 32
   public var filters: [SmartFilter] = []
-  public var programBytes: Int { filters.reduce(0) { $0 + ($1.filter.distortion?.estimatedBytes ?? 0) + ($1.filter.wideAngle?.constraints.reduce(0) { $0 + $1.points.count*32 + $1.segmentCount*24 } ?? 0) + ($1.filter.perspective?.estimatedBytes ?? 0) + ($1.filter.puppet?.estimatedBytes ?? 0) + ($1.filter.liquify?.estimatedBytes ?? 0) + ($1.filter.cameraRaw == nil ? 0 : 4096) } }
+  public var programBytes: Int { filters.reduce(0) { $0 + ($1.filter.classicDetail?.kernel.map{$0.path.knotCount*64+$0.name.utf16.count*2} ?? 0) + ($1.filter.distortion?.estimatedBytes ?? 0) + ($1.filter.wideAngle?.constraints.reduce(0) { $0 + $1.points.count*32 + $1.segmentCount*24 } ?? 0) + ($1.filter.perspective?.estimatedBytes ?? 0) + ($1.filter.puppet?.estimatedBytes ?? 0) + ($1.filter.liquify?.estimatedBytes ?? 0) + ($1.filter.cameraRaw == nil ? 0 : 4096) } }
   public var enabled = true
   public var mask: Surface?
   /// Unlike layer masks, this transform maps directly into document coordinates.

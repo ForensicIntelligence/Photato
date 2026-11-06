@@ -14,6 +14,7 @@ struct FilterDraft: Identifiable, Sendable {
   var rawDevelopment: RawDevelopment?
   var opacity: Float = 1
   var blendMode: PhotoCraftCore.BlendMode = .normal
+  var saveMaskToChannels = false
   /// Geometry seen by a new filter, or the prefix before an edited Smart Filter.
   func inputLayer(in document:CraftDocument) throws -> Layer {
     guard var layer=document.layers.first(where:{$0.id==id}) else { throw CraftError.invalid("Missing filter target.") }
@@ -24,6 +25,10 @@ struct FilterDraft: Identifiable, Sendable {
     return layer
   }
   func command(in document: CraftDocument) throws -> Command {
+    if saveMaskToChannels {
+      guard filter.kind == .blurGallery,let settings=filter.gallery,channelTarget==nil,modeComponents.isEmpty,inkTargets.isEmpty,rawDevelopment==nil else {throw CraftError.invalid("Save Mask to Channels requires Blur Gallery on an RGB layer.")}
+      return .blurGalleryMask(.init(layerID:id,settings:settings,filterID:filterID,opacity:opacity,blendMode:blendMode))
+    }
     if var rawDevelopment {
       rawDevelopment.adjustments = filter.cameraRaw ?? .init()
       return try RawSourceIO.command(in:document,layerID:id,settings:rawDevelopment)

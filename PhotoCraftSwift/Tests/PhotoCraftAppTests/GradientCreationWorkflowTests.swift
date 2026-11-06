@@ -79,7 +79,7 @@ final class GradientCreationWorkflowTests:XCTestCase {
       let reset=try await h.edit(service,document,"gradient.tool.configure",["reset":true]);XCTAssertEqual(reset,200);XCTAssertEqual(store.gradientOptions,GradientToolOptions())
       let state=try XCTUnwrap(GradientToolAPI.state(store)["options"]as?[String:Any]);XCTAssertNotNil(state["gradient"])
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:GradientToolAPI.capabilities));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:GradientToolAPI.stateSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,255);XCTAssertEqual(ActionLibraryFile.maximumVersion,51)
+      XCTAssertEqual(AutomationCommand.definitions.count,255);XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
     }
   }
   @MainActor func testHTTPFillCreationParentMaskPlacementArchiveAndUndoAtAllDepths()async throws {

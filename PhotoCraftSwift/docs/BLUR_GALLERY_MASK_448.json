@@ -1,0 +1,188 @@
+{
+  "step": 448,
+  "recorded_at_utc": "2026-11-06T18:26:08.669930+00:00",
+  "package": "F03",
+  "track": "major stillneeded",
+  "status": "Selected native Save Mask to Channels workflow qualified; full Blur Gallery remains open.",
+  "application_build": 448,
+  "run": "artifacts/runs/20261106T173644Z-448-blur-gallery",
+  "source": "448Source03/Release01",
+  "source_manifest": "artifacts/runs/20261106T173644Z-448-blur-gallery/release01-source.json",
+  "source_inputs": 7383,
+  "source_matches_passed_Debug_and_optimized": true,
+  "production_implementation": [
+    "Shared BlurGalleryMask source-space numeric normalization, existing blur amounts and document-space inverse placement. Exact uniform positive Field proof avoids division residual. Sparse black outside the source.",
+    "Atomic BlurGalleryMaskEdit runs unchanged modular filter/Smart Filter and channel engines on a private candidate. Original protection validated; outer Command owns document bookkeeping once. Pixel edit and channel publish together or neither.",
+    "Native top Save Mask to Channels defaults off; shared mask preview, independent mask failure, local settings history, Cancel and one document Undo/Redo. Smart Filter prefix geometry respected.",
+    "filter.blurGallery.apply supports existing-layer application/re-edit with optional filterID and output flag, strict schema and standard prepared transaction/sharing/revision/busy/cancellation/revocation guards. State and capabilities reflect the output option.",
+    "Portable output Actions53 use semantic layer targeting and optional existing filter index. Old pixel recipes/settings and native document format87 remain unchanged. Existing alpha/native persistence reused.",
+    "No new tool/modifier/cursor/factory menu/shortcut or Adobe endpoint; unsupported Blur Gallery descriptors continue to reject. Typed catalogue258; maximum Actions53."
+  ],
+  "tests": {
+    "Debug_selected": 31,
+    "Debug_passed": 31,
+    "new_448_methods": 11,
+    "normal_selected_each": 57,
+    "normal_pass_each": [
+      57,
+      57
+    ],
+    "same_order": true,
+    "new_447_methods_pass_each": [
+      13,
+      13
+    ],
+    "new_448_methods_pass_each": [
+      11,
+      11
+    ],
+    "unexpected": 0,
+    "signals": 0,
+    "missing": 0,
+    "extra": 0,
+    "ARM_build_seconds": 572.61,
+    "Intel_build_seconds": 565.13,
+    "ARM_test_seconds": 6.078,
+    "Rosetta_test_seconds": 7.948,
+    "Debug_summary": "artifacts/runs/20261106T173644Z-448-blur-gallery/source03-summary.json",
+    "normal_qualification": "artifacts/runs/20261106T173644Z-448-blur-gallery/release01-qualification.json",
+    "case_equivalence": "artifacts/runs/20261106T173644Z-448-blur-gallery/case-equivalence01.json",
+    "retained_Debug_products": 5386,
+    "retained_optimized_products": 10772,
+    "optimized_output_manifest": "artifacts/runs/20261106T173644Z-448-blur-gallery/release01-output-manifest.json",
+    "full_current_suite_passed": false
+  },
+  "attempts": [
+    {
+      "source": 1,
+      "outcome": "Compile failure before tests: new modular case omitted from exhaustive primitive fallback. Retained cached app was prior447, not448.",
+      "summary": "artifacts/runs/20261106T173644Z-448-blur-gallery/source01-summary.json"
+    },
+    {
+      "source": 2,
+      "outcome": "Build171.07s. Eleven outcomes:10pass/1constant-normalization failure; then SIGBUS in new HTTP Smart workflow,20expected methods missing. Source and5386products retained.",
+      "summary": "artifacts/runs/20261106T173644Z-448-blur-gallery/source02-summary.json"
+    },
+    {
+      "source": 3,
+      "outcome": "Build30.37s; all31selected/all11new pass in4.832s after exact constant mask proof and removal of redundant nested transaction. No assertion or fixture weakened.",
+      "summary": "artifacts/runs/20261106T173644Z-448-blur-gallery/source03-summary.json"
+    }
+  ],
+  "owned_debugger_evidence": {
+    "first": "artifacts/runs/20261106T173644Z-448-blur-gallery/source02-lldb01/debugger.log",
+    "second": "artifacts/runs/20261106T173644Z-448-blur-gallery/source02-lldb02/debugger.log",
+    "finding": "Owned frozen test stops in BlurGallerySettings.validate under Smart Filter rendering/nestedCommand.apply/newMaskEdit/outerCommand.apply/PreparedEdit in detached API worker. SP is inside no-access stack-boundary region.",
+    "repair": "Preserve original protection checks in separate non-inlined helper; use same modular pixel and channel engines directly on candidate under one outer transaction.",
+    "limits": "Does not identify a general compiler defect or repair earlier unrelated SIGBUS cases. First debugger post-run backtrace skipped on crash; documented on-crash hooks captured second stack. Both attempts terminal."
+  },
+  "Photoshop_references": {
+    "workflow": "Normal UI only with own100px PNG. Iris15 mask and uniform Field5 captured, saved as new owned PSDs, closed. No user document/proprietary implementation/stock preset copied.",
+    "field5_mask_bytes": 10000,
+    "field5_all255": true,
+    "field5_mask_sha256": "2bf7158cb3d8f419f1e19ee71df61927cc17017f37ea8820f3bd719d2b4f88f8",
+    "first_name": "Blur Mask",
+    "second_name": "Blur Mask 2",
+    "duplicate_reference": "artifacts/runs/20261106T173644Z-448-blur-gallery/photoshop/duplicate-mask-observation.json",
+    "Iris_status": "Owned alpha captured for subsequent geometry/default comparison; no Iris byte parity claim.",
+    "original_owned_PNG_and_first_PSD_unchanged": true,
+    "CUA": "Input context refreshed after inactivity; one pipe closed after toggle. Re-observed actual checkbox before continuing, no blind repeat."
+  },
+  "native": {
+    "source": "448Source03/Release01",
+    "signed_universal_binary_sha256": "8ebc5e77a0a0eef94a3f4b10f1d56c11a11db23d3713f19048caa4b3343bc4b7",
+    "native_Menu_Field_Blur": true,
+    "default_output_checkbox_off": true,
+    "Field5_value_committed": true,
+    "output_checkbox_on": true,
+    "mask_preview_full_white": true,
+    "OK_one_Blur_Mask_alpha_hidden_RGB_still_selected": true,
+    "Undo_removes_mask_and_dirty_marker": true,
+    "Redo_restores_mask_and_dirty_marker": true,
+    "reopen_checkbox_default_off": true,
+    "Cancel_with_output_selected_no_second_channel": true,
+    "final_Undo_restores_original": true,
+    "owned_PNG_unchanged": true,
+    "normal_Quit_process_absent": true,
+    "physical_Intel_macOS14_qualified": false,
+    "full_Photoshop_parity": false
+  },
+  "universal": {
+    "app": "/private/tmp/photato-validation-448-stage01-e9e02987/Photato Validation 448.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T173644Z-448-blur-gallery/universal/Photato-Validation-448.zip",
+    "archive_sha256": "476930f152f901358bcc592414bc00d44d8f171171efd86adfdcf02b6a936bc5",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261106T173644Z-448-blur-gallery/release01-source.json",
+    "source_inputs": 7383,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation448",
+    "version": "0.3.0",
+    "build": 448,
+    "signed_universal_binary_sha256": "8ebc5e77a0a0eef94a3f4b10f1d56c11a11db23d3713f19048caa4b3343bc4b7",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10772,
+    "selected_pass_each": [
+      57,
+      57
+    ],
+    "new_methods_pass_each": [
+      24,
+      24
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false
+  },
+  "preservation": {
+    "evidence": "artifacts/runs/20261106T173644Z-448-blur-gallery/preservation01.json",
+    "old_test_files": 37,
+    "old_test_changes": "Only current catalogue257→258 and maximumActions52→53 counters. Old numerical assertions/fixtures unchanged.",
+    "old_Core_BlurGallery_pixel_engine_and_settings_unchanged": true,
+    "all_old_Imaging_unchanged": true,
+    "all_old_fixtures_unchanged": true
+  },
+  "remaining_functional": [
+    "Path endpoint speed/blur-shape controls and remaining unmodeled handles/interaction.",
+    "Selection Bleed, Focus and High Quality behavior and exact native control semantics.",
+    "Full-resolution processing beyond current8,388,608 source-pixel and new mask-footprint bounds; maximum sparse empty-canvas test is not dense/full-capacity proof.",
+    "Last Filter currently recalls pixel settings; independent Photoshop output-checkbox replay behavior and broader output-recipe retention are not qualified.",
+    "Editable PSD/PSB Blur Gallery descriptors, ActionJSON/ATN interchange and all original F03 scope."
+  ],
+  "remaining_fidelity": [
+    "Nonuniform Field, Iris/Tilt/Path/Spin, combined tools, subpixel/transformed/edge/selection/transparency mask output and exact Photoshop defaults still need independent references.",
+    "Original filter pixels/bokeh/noise/strobes and all-input byte parity remain unqualified.",
+    "Physical Intel/macOS14/currentOS matrix, tablet/held-gesture behavior, full regression and60fps remain open.",
+    "All earlier failures remain, including446ShapeBlur strict byte mismatches, priorDebugAdobe job crash, full-suite failures, old text/gradient/PSD/gray/capacity residuals."
+  ],
+  "scope_preserved": {
+    "packages": 104,
+    "original_commands": 652,
+    "command_status_counts": {
+      "partial": 458,
+      "pending": 194,
+      "complete": 0
+    },
+    "major_members": 81,
+    "passes": 7
+  },
+  "next": "F04, then F05. Curated source/build backup of this qualified checkpoint is authorized and follows before further feature work.",
+  "public_head": "e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "public_source_implementation_checkpoint": 443,
+  "source_pushed_this_checkpoint": false,
+  "software_release": false,
+  "goal_complete": false,
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/use-blur-gallery-depth-of-field-effects.html",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ]
+}

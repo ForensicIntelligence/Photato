@@ -2861,5 +2861,16 @@
       "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
       "All original A07 scope and acceptance criteria remain unchanged."
     ]
+  },
+  "custom_shape_blur_444": {
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_444.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "status": "development_not_qualified",
+    "typed_commands": 256,
+    "native_archive": 87,
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "cursor_impact": "No new tool/modifier action/factory menu/shortcut; native menu chooser uses system controls.",
+    "Debug": "42of43selected; independent triangle convolution mismatch remains."
   }
 }

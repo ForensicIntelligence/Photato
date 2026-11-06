@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 
 /// Licensed PhotoCraft blur.rs, blur2.rs, noise.rs and sharpen.rs translated to native Swift.
@@ -68,6 +69,7 @@ public enum ClassicDetailEngine {
     }
   }
   static func shape(_ input:Input,settings s:ClassicDetailSettings,area b:IntRect)throws->[Sample] {
+    if let kernel=s.kernel {return try customShape(input,kernel:kernel,radius:Int(s.radius),area:b)}
     let radius=Float(s.radius),r=Int(ceil(radius)),w=input.width,h=input.height
     var spans=[(dy:Int,lo:Int,hi:Int)](),count=0
     for dy in -r...r {try Task.checkCancellation();var start:Int?
@@ -86,6 +88,36 @@ public enum ClassicDetailEngine {
     }
     var result=input.pixels
     for y in b.y..<(b.y+b.height){try Task.checkCancellation();for x in b.x..<(b.x+b.width){var acc=SIMD4<Double>.zero;for span in spans {acc+=row(y+span.dy,x+span.lo,x+span.hi)};acc/=Double(count);result[y*w+x]=straight(Sample(Float(acc.x),Float(acc.y),Float(acc.z),Float(acc.w)))}}
+    return result
+  }
+  static func customShape(_ input:Input,kernel:ShapeBlurKernel,radius:Int,area b:IntRect)throws->[Sample] {
+    let side=2*radius+1,w=input.width,h=input.height
+    try budget(side*side*max(1,kernel.path.knotCount))
+    let coverage=try kernel.coverage(radius:radius)
+    var spans=[(dy:Int,lo:Int,hi:Int,weight:Double)](),total=0.0
+    for y in 0..<side {try Task.checkCancellation();var x=0
+      while x<side {
+        let value=coverage[y*side+x],start=x;x+=1
+        while x<side && coverage[y*side+x]==value{x+=1}
+        if value>0 {spans.append((y-radius,start-radius,x-1-radius,Double(value)));total+=Double(value)*Double(x-start)}
+      }
+    }
+    try budget(b.width*b.height*spans.count)
+    var prefix=[SIMD4<Double>](repeating:.zero,count:(w+1)*h)
+    for y in 0..<h {try Task.checkCancellation();for x in 0..<w {let p=premul(input.get(x,y));prefix[y*(w+1)+x+1]=prefix[y*(w+1)+x]+SIMD4<Double>(Double(p.x),Double(p.y),Double(p.z),Double(p.w))}}
+    func row(_ y:Int,_ lo:Int,_ hi:Int)->SIMD4<Double> {
+      let yy=min(h-1,max(0,y)),a=min(w,max(0,lo)),z=min(w,max(0,hi+1));var sum=prefix[yy*(w+1)+z]-prefix[yy*(w+1)+a]
+      if lo<0 {let p=premul(input.get(0,yy));sum+=SIMD4<Double>(Double(p.x),Double(p.y),Double(p.z),Double(p.w))*Double(max(0,min(hi+1,0)-lo))}
+      if hi>=w {let p=premul(input.get(w-1,yy));sum+=SIMD4<Double>(Double(p.x),Double(p.y),Double(p.z),Double(p.w))*Double(hi-max(lo,w)+1)}
+      return sum
+    }
+    var result=input.pixels
+    for y in b.y..<(b.y+b.height){try Task.checkCancellation();for x in b.x..<(b.x+b.width){
+      var acc=SIMD4<Double>.zero
+      // Convolution preserves the kernel's orientation around an impulse.
+      for span in spans {acc+=row(y-span.dy,x-span.hi,x-span.lo)*span.weight}
+      acc/=total;result[y*w+x]=straight(Sample(Float(acc.x),Float(acc.y),Float(acc.z),Float(acc.w)))
+    }}
     return result
   }
   static func smart(_ input:Input,settings s:ClassicDetailSettings,area b:IntRect)throws->[Sample] {

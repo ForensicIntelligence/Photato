@@ -15,18 +15,19 @@ This is independent implementation with black-box compatibility research. Resear
 
 <!-- process-note:end -->
 
-**Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
+**Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:443 -->
+<!-- current-status-step:448 -->
 ## Current development status — 6 November 2026
 
-The Patterns panel now has groups, multi-selection, moving/reordering, duplicate, rename and delete. PAT import/export retains folders, empty groups and repeated preset references. Existing pattern pixels and document-owned resources are retained. The optional API provides the same library operations and Define Pattern.
+Blur Gallery can now save its blur mask as an alpha channel. Preview and saved output share the same calculation. The filter and channel commit together, with one Undo/Redo; Cancel adds nothing. The optional API and saved Actions use the same workflow.
 
-All 54 focused Debug tests and the same 71 optimized methods on Apple Silicon and under Rosetta pass, including seventeen new methods. Tests cover migration, exact existing PAT pixel/byte checks, real provider transfers, HTTP operations, cancellation, revoked sharing, persistent-file retention and offscreen native UI. Universal macOS 14 packaging, signature and extracted ZIP verify. Wider-suite failures, independent Photoshop fidelity, physical platforms and 60 fps remain open.
+All 31 focused Debug tests and the same 57 optimized tests on Apple Silicon and Rosetta passed. That includes 24 new methods across the preset and mask work. Universal packaging and live native mask output, Cancel, Undo/Redo and Quit checks passed. Photoshop references confirm the uniform five-pixel Field mask and duplicate channel naming. Other mask geometry, defaults, full Blur Gallery functionality, broader regression, physical platforms and 60fps remain open.
 
-The major still-needed sweep moves to F01 filters, then F02. Full A07 remains open: History/scripted Fill, remaining pattern-application workflows, interchange/capacity and exact defaults/output. All 104 original scopes and acceptance criteria remain. [Step 443](DEVLOG.md#dev-step-443).
-The current source, including the Xcode project, is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/0f4c25b920f135ebb2fc637965e5b0a08fea73b8). This is a development checkpoint with the failures above retained.
+Next is the authorized source/build backup of this checkpoint, then F04 Liquify and F05. All 104 original scopes remain. Earlier Shape Blur exact-output and wider regression failures are still recorded. No source push or software release accompanied checkpoint 448. [Step 448](DEVLOG.md#dev-step-448).
+
+The public credential audit found no exposed real credentials across 69 commits and 10,680 historical file versions at the unchanged audited head. GitHub secret scanning and push protection are enabled. [Audit](SECRET_AUDIT.md).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3502,3 +3503,71 @@ The final result is 54 Debug tests and 71 identical ordered optimized methods pe
 This completes the selected pattern-library organization and transport workflows. History Fill still needs a shared source/snapshot mechanism. Scripted Fill, remaining application/drop semantics, arbitrary PAT metadata, capacity and exact Photoshop defaults/output remain open. Work continues with F01 under the seven-pass order; no minor or cleanup pass has begun.
 
 The private source checkpoint includes 7,319 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/0f4c25b920f135ebb2fc637965e5b0a08fea73b8) · [Receipt](SOURCE_PUBLICATION_443.json).
+
+## 2026-11-06 — Step 444: Public repository and filter development
+
+The maintainer asked to make GitHub public now. We changed the existing [ForensicIntelligence/Photato](https://github.com/ForensicIntelligence/Photato) repository from private to public and checked GitHub’s returned visibility and access without signing in. This exposes the existing repository and its history. No app binary, App Store release or live website deployment accompanied the change. Current source-availability wording is updated; earlier private-backup entries remain as dated history. [Visibility evidence](REPOSITORY_VISIBILITY_444.json).
+
+Before that request, work began on F01’s missing custom Shape Blur kernels. Native preset snapshots, the chooser, shared vector geometry, archive87/Actions52 and optional API schemas are implemented locally. The first attempt failed to compile a new HTTP fixture; the second passed40of43methods with seven new-test assertions failing. After correcting stored-alpha, linearRGB and generated-ID expectations in the new fixtures, Source03 passes42of43methods. The independent convolution oracle still fails at all three depths. No expected byte output or tolerance was relaxed. This feature remains in development; the public source checkpoint remains443 until a qualified source delivery. [Development evidence](CUSTOM_SHAPE_BLUR_444.json).
+
+A correction to step443’s narrative: its publication includes7,327frozen inputs, not7,319. The original curation receipt and source manifest already record7,327; the narrative number was a transcription error. Historical receipt data is unchanged.
+
+F01 remains current, followed byF02. All major, minor and final scope is retained.
+
+## 2026-11-06 — Step 445: Public repository credential audit
+
+At the maintainer’s request, checked the newly public [GitHub repository](https://github.com/ForensicIntelligence/Photato) for secrets. A fresh public mirror contains 69 commits and 10,680 unique historical file versions, totaling about 2.63 GB. Full history, every unique file version and commit metadata were scanned with Gitleaks 8.30.1. Its download was checked against the official release checksum. A separate byte scan checked provider-key formats, private keys, literal passwords and credential URLs; historical filenames were checked for credential files.
+
+No exposed real credentials were found. Every scanner candidate was reviewed. The history findings include 145 SHA256 digests that match actual committed file bytes; the remaining matches are prose, JSON property names and a TIFF metadata enum. The separate scan found only test inputs: passwords for owned encrypted-PDF fixtures, deliberately wrong passwords and synthetic credential URLs used in rejection tests. Fixture provenance explicitly documents the test-only password. No credential was sent to a service for validation.
+
+GitHub secret scanning and push protection were disabled and are now enabled. GitHub currently reports zero alerts; completion of its initial background scan is not inferred. Generic/non-provider scanning remains disabled on GitHub, so the independent scans also covered generic patterns. No public releases or Actions artifacts were present. The five existing prerelease drafts remain unpublished. Raw candidate values stay private, outside the repository. [Audit report](SECRET_AUDIT.md) · [Evidence](SECRET_AUDIT_445.json).
+
+This changed no app code, tests, API, menu, shortcut or cursor. No new build, source upload, history rewrite or software release was needed. Custom Shape Blur resumes from checkpoint 444’s retained numerical failure; F01 remains current, then F02.
+
+<a id="dev-step-446"></a>
+
+## 2026-11-06 — Step 446: Custom Shape Blur reference and native validation
+
+The first custom-kernel comparison assumed a binary shape mask. An owned Photoshop triangle and impulse image showed that assumption was wrong: edge cells receive fractional coverage, the footprint spans 2r+1 pixels, and convolution preserves the kernel’s orientation around an impulse. We saved 8-bit PNG and uncompressed 32-bit PSD outputs through Photoshop’s normal interface, checked the public PSD records, and retained the raw planes and provenance. No Adobe artwork or proprietary implementation was copied.
+
+The Swift custom path now uses antialiased coverage and weighted convolution. Original built-in kernel arithmetic and previous fixtures are unchanged. An independent square/direct-sum check passes at all three depths. Two new exact Photoshop byte tests remain red: one coverage rounding difference changes 3 bytes in the owned RGB8 output and 435 bytes in RGB32. We retained the incorrect earlier model with its frozen source, replaced that new expected model with observed references, and kept exact assertions without increasing tolerances or patching an individual sample.
+
+The original selector also expected 55 methods, rather than the 43 reported outcomes. Its process stopped after 43 with signal 10; earlier entries incorrectly omitted that failure. The same Adobe-job Debug method fails in preserved 443 and 446 binaries. We excluded only that reproduced method from focused Debug and kept it in normal optimized qualification, where it passes on both architectures. Debug executes 56 methods, with 54 passing; optimized builds execute the same 57 methods each, with 55 passing. The two strict Photoshop tests account for the failures. All nine new functional methods pass. Frozen inputs, 10,760 normal products, logs and failed attempts are retained. A postrun evidence-script syntax error and subsequent missing-proof rejection were repaired without rebuilding the app.
+
+Both architectures package into a universal app with macOS 14 deployment metadata. Signature and extracted ZIP checks pass. The first isolated validation signature omitted user-selected file access; AppKit’s error log identified it, and the project’s existing App Store entitlement already provided the correct permission. A second validation signature used that permission with the same compiled code and resources. In the running app we opened our PNG, defined an owned shape, chose it in Shape Blur, checked local Undo/Redo, committed, and checked document Undo/Redo. The file stayed unchanged; the app was quit normally. Early native path/popup observations lagged actual state, so failed attempts and the automation reset are recorded separately rather than counted as passes.
+
+F01’s remaining functions and exact output/default/platform/performance requirements remain open. Under the breadth order, F02 is next: Photoshop ACF Custom Kernel preset Load/Save, shared API conversion and retained JSON compatibility. Source inspection confirms the current controls are JSON-only; implementation has not started. All 104 original scopes and 652 command identities remain. No source upload, app installation, App Store change or software release accompanied this checkpoint. [Evidence](CUSTOM_SHAPE_BLUR_446.json).
+
+<a id="dev-step-447"></a>
+
+## 2026-11-06 — Step 447: Custom Filter ACF presets
+
+Custom Filter previously loaded and saved JSON only. It now supports Photoshop ACF files through the native Load/Save dialogs and optional API. We created an asymmetric preset in Photoshop with distinct values, including negative weights, and checked the file against the public format description. It contains 27 signed big-endian values: 25 kernel weights, Scale and Offset, in 54 bytes. No Adobe preset or implementation code was copied.
+
+The shared Swift codec rejects malformed lengths and out-of-range values. JSON remains available for existing presets and fractional Scale/Offset settings. ACF cannot represent those fractions, so Save selects JSON and disables ACF instead of rounding. The new `filter.custom.preset` API converts bounded base64 data or settings using the same codec. It returns the existing filter recipe without editing a document or history; `filter.apply` remains the editing path. Schemas, capabilities and error checks were added. The typed catalogue has 257 commands; native format 87 and portable Actions 52 are unchanged.
+
+Six preserved build attempts record the problems encountered. The first used an unavailable Save-panel property and failed compilation. The next two runs passed all new tests but found old catalogue counts; one rerun was unnecessary because its repair preparation failed before making a change. The corrected tests passed, but the actual native dialog exposed a doubled filename extension. Giving AppKit an extension-free name fixed that. Actual sandbox Save then failed despite passing ordinary unit writes. The small preset publisher now coordinates an atomic write to the selected file, using the existing production entitlement. The generic streaming writer and pixel math were left unchanged. Other native export paths require their own file-access audit; this does not claim they are all broken or repaired.
+
+The final source passed all 36 selected Debug tests, including 13 new tests, with no unexpected failures, signals, skips or missing cases. The app built in 43.33 seconds and tests ran in 8.479 seconds. We retained 7,378 frozen inputs and 5,384 Debug products. Changes to 20 old test files were confined to current command counts and one owned test window's lifetime flag; numerical assertions and old fixtures remain unchanged.
+
+In the actual sandboxed app, Load showed all 27 values correctly. Local Undo/Redo, ACF and JSON Save, filter commit, document Undo/Redo and normal Quit passed. Photoshop then loaded Photato's ACF and saved it again: the original, Photato export and Photoshop reexport are byte-identical. The original image stayed unchanged. These checks cover the selected preset workflow on this Apple Silicon host; no optimized, Intel, universal or full-suite checkpoint 447 result is claimed. Checkpoint 446 remains the latest optimized universal qualification, with its two strict Shape Blur failures still open.
+
+F02's remaining catalogue, capacity, depth, descriptor and exact-output requirements remain open. The breadth queue moves to F03 Blur Gallery, then F04. We also rechecked the unchanged public repository and private audit evidence: no exposed real credentials were found, GitHub reports zero alerts, and secret scanning and push protection remain enabled. No source upload or software release was made. [Preset evidence](CUSTOM_KERNEL_PRESETS_447.json) · [Credential recheck](SECRET_AUDIT_447_RECHECK.json).
+
+<a id="dev-step-448"></a>
+
+## 2026-11-06 — Step 448: Save Blur Gallery masks
+
+Photoshop's Blur Gallery can save a blur mask to the Channels panel. Photato had a mask preview but no reusable channel output. An owned five-pixel Field Blur reference also showed that our preview scaled coverage incorrectly: Photoshop saves full white for a uniform positive field. We added Save Mask to Channels and made preview and saved output share one calculation. Photoshop also confirmed the second channel name, Blur Mask 2. An Iris mask was captured for further comparison; its geometry and exact values are not yet qualified.
+
+The filter and channel are prepared on a private document copy and commit together. Existing channels and selection survive. Cancel, invalid inputs, protection, channel limits, cancellation and revoked API access leave neither half applied. Smart Filter re-editing uses the input before the edited filter. Large empty canvases retain sparse storage; the current source and transformed mask processing bounds are 8,388,608 pixels, so full dense maximum-size support remains unfinished.
+
+The native checkbox starts off. The optional `filter.blurGallery.apply` command offers the same output flag and Smart Filter re-editing, with schemas, availability and workspace state. Portable output Actions use format 53 and resolve layer targets and filter indexes at playback. Native document format 87 and ordinary filter recipes remain unchanged. No new Adobe endpoint or action descriptor was invented.
+
+The first build failed because the new command was missing from an exhaustive routing guard. The next build passed ten methods, failed an exact constant-normalization assertion, then crashed in the new HTTP Smart Object test. We retained both runs. Debugging our own frozen test binary showed a worker stack exhausted beneath a redundant nested command transaction. Keeping one outer transaction and calling the same modular pixel/channel engines directly repaired the selected case. Uniform Field coverage now has an exact constant proof; the assertion was kept. This does not identify or repair earlier unrelated crashes.
+
+The final source passed all 31 selected Debug methods, including 11 new ones. Optimized builds ran the same 57 methods each, covering 24 new methods across checkpoints 447–448; all passed on Apple Silicon and Rosetta. We retained 7,383 frozen inputs and 10,772 optimized products. Old filter math, settings, imaging code, fixtures and numerical assertions are unchanged. Changes to 37 old test files only update current command and maximum Actions counts.
+
+Both architectures package with macOS 14 deployment metadata. Signatures and extracted ZIP contents verify. In the actual sandboxed app we set Field Blur to five pixels, checked the white mask preview, enabled Save Mask to Channels and committed. One Undo removed both the edit and mask; Redo restored them. Reopening started with the output option off, and Cancel after enabling it created no extra channel. Final Undo restored the owned image, and the app quit normally without modifying the original file.
+
+Full F03 remains open: endpoint controls, Selection Bleed, Focus, High Quality, larger processing, editable Photoshop descriptors and remaining output-recipe behavior still need work. Nonuniform, combined, selection and transformed masks need independent comparisons, as do defaults and pixel outputs. Physical Intel/macOS14, full regression and 60fps remain unqualified. The next work is the authorized source/build backup of this qualified checkpoint, then Liquify and lens workspaces. No software release was published. [Evidence](BLUR_GALLERY_MASK_448.json).

@@ -360,5 +360,18 @@
       "testFloatingHostContainsOnlyItsCanvasAndFrameKeepsDockedCanvas"
     ],
     "same_document_live_handoff": "Pending manual Mac unlock; installed209 verified separately."
+  },
+  "custom_shape_blur_446": {
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "status": "Selected native custom-kernel workflow qualified; strict Photoshop RGB8/32 byte gates fail; full F01 remains open.",
+    "typed_commands": 256,
+    "native_archive": 87,
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "cursor_impact": "No new tool/modifier action/menu/shortcut. System-control chooser; original shared cursor matrix remains unchanged and selected FilterRecall modifier tests pass both optimized architectures.",
+    "reference": "Owned Photoshop2026 triangle and impulse image, normal UI/saved PNG/public PSD, strict raw-byte fixtures.",
+    "qualification": "54of56Debug;55of57sameordered normal each;9of11newpass;2strictPSgatesfail; universalmin14/signature/ZIP/live selected controls pass.",
+    "historical_444_count_correction": "Original expected55 methods,43outcomesbeforeSIGBUS; old summary was incomplete. See446 evidence."
   }
 }

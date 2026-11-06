@@ -9,6 +9,7 @@ extension Command {
       return filter
     case .modeComponents(let edit):
       if case .filter(let filter) = edit.operation { return filter }
+    case .blurGalleryMask(let edit):return edit.filter
     case .smartFilters(let id, let stack):
       guard let stack, stack.enabled else { return nil }
       let previous = source.layers.first { $0.id == id }?.smartFilters?.filters ?? []

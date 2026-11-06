@@ -1,0 +1,41 @@
+{
+  "file": "owned-asymmetric.acf",
+  "bytes": 54,
+  "sha256": "4be3b3ee189beda0aaae007f68075a4d2d0192a2bf71cbabfb21aa8b8c71a2f9",
+  "signed_big_endian_16_values": [
+    -999,
+    -11,
+    -10,
+    -9,
+    -8,
+    -7,
+    -6,
+    -5,
+    -4,
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    999,
+    37,
+    -11
+  ],
+  "observed_native_controls_match": true,
+  "source": "Owned100x100impulse document opened through Photoshop2026 normal UI; Custom grid entered row-major, Previewoff, SaveACF, Cancel filter, close own unchanged document. No Adobe binary implementation or stock preset copied.",
+  "references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/create-a-custom-filter.html"
+  ],
+  "recorded_utc": "2026-11-06T16:34:20.139737+00:00"
+}

@@ -1,0 +1,22 @@
+{
+  "step": 444,
+  "commit": "e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "url": "https://github.com/ForensicIntelligence/Photato/commit/e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "repository_public": true,
+  "remote_main_verified": true,
+  "checkout_clean": true,
+  "files": {
+    "PhotoCraftSwift/AGENTS.md": "3cba282e720e82d5d8b243ed8bdd1fc72f62a5dc3e40754c1a309066f89d1414",
+    "PhotoCraftSwift/README.md": "0efb4762637dea525380af6de961890f6dc52d9350e9ea7caa5a51861a446b8a",
+    "PhotoCraftSwift/docs/OPEN_SOURCE_RELEASE.md": "be4ebb2e8df5c86f5b7340146ceff5536eb878886246bb4ffbf3a6ba0bf21c04",
+    "PhotoCraftSwift/docs/REPOSITORY_VISIBILITY_444.json": "67883817195698bc78c33b7af77ca3d09214efcc33d11b673098060b0051ac67",
+    "README.md": "5d2e8dfddfb2e3eb125bd2561f6af4fb4caeb7916d8c4f80a5a3153774c0e6c7",
+    "REPOSITORY.md": "95b574f9a06d6bb7b9742e130d882385105e726c89fa43ecd4c5216df0d7c795"
+  },
+  "documentation_only": true,
+  "app_and_test_sources_changed": false,
+  "public_implementation_source_checkpoint": 443,
+  "unqualified_local_source_uploaded": false,
+  "software_release_published": false,
+  "verified_utc": "2026-11-06T14:52:37.676040+00:00"
+}

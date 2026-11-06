@@ -1,0 +1,90 @@
+{
+  "step": 446,
+  "recorded_at_utc": "2026-11-06T16:21:47.822056+00:00",
+  "package": "F01",
+  "current_pass": 2,
+  "status": "Selected native custom Shape Blur workflow qualified; two independent Photoshop byte gates fail; full F01 remains open.",
+  "application_build": 446,
+  "source": "446Source02/Release01",
+  "source_manifest": "artifacts/runs/20261106T152224Z-446-custom-shape-blur/release01-source.json",
+  "source_inputs": 7368,
+  "source_unchanged_at_qualification": true,
+  "run": "artifacts/runs/20261106T152224Z-446-custom-shape-blur",
+  "implementation": [
+    "Saved Shape-library preset becomes independent named vector snapshot; chooser, normalized preview, local Undo/Redo, Cancel, Smart Filter re-edit and history.",
+    "Native87 and portable Actions52 only for embedded custom kernel; ordinary detail filters retain44/17. Existing typed filter.apply/smartFilter.set share strict nested geometry schema; catalogue256 unchanged.",
+    "Shared vector geometry moved from Imaging to Core without old helper arithmetic changes. All old fixtures and original nine built-in Shape Blur kernels verified unchanged.",
+    "Owned Photoshop normal-UI references prove binary correlation model incorrect. Custom kernels now use antialiased odd2r+1footprint,32expanded coverage levels, weighted true convolution and exact division. One coverage rounding residual remains."
+  ],
+  "validation": {
+    "debug": {
+      "expected": 56,
+      "executed": 56,
+      "passed": 54,
+      "failed": 2,
+      "unexpected": 0,
+      "signals": 0,
+      "missing": 0,
+      "excluded_only": "One reproduced prior Adobe-job Debug SIGBUS test, retained unchanged and required in normal qualification."
+    },
+    "normal": {
+      "same_order_each_architecture": true,
+      "executed_each": 57,
+      "passed_each": 55,
+      "failed_each": 2,
+      "new_total": 11,
+      "new_pass_each": 9,
+      "unexpected_each": 0,
+      "signals_each": 0,
+      "missing_each": 0,
+      "extra_each": 0,
+      "old_Debug_Adobe_case_passes_both": true,
+      "retained_output_files": 10760,
+      "physical_Intel": false
+    },
+    "strict_reference_residuals": {
+      "arm": {
+        "RGB8": 3,
+        "RGB32": 435
+      },
+      "intel": {
+        "RGB8": 3,
+        "RGB32": 435
+      }
+    },
+    "universal_minimum14_signature_zip_verified": true,
+    "live_native_selected_workflow": true,
+    "affected_suite_passed": false,
+    "full_current_suite_passed": false,
+    "Photoshop_parity": false
+  },
+  "reference_provenance": "Only owned triangle/impulse artwork through Photoshop2026 normal UI and saved PNG/public PSD records. No Adobe artwork or proprietary implementation copied. Raw planes and provenance retained in Tests/PhotoCraftCoreTests/Fixtures/ShapeBlurOwned.",
+  "failure_preservation": [
+    "444Source01/02/03 and446Source01/02 frozen inputs, logs and binaries retained. Earlier444no-crash/complete43-case summaries corrected: originalselector55,43outcomes thenSIGBUS;12notexecuted.",
+    "Isolated same Adobe-job Debug test exitsSIGBUS on preserved443and446; no root cause or repair claimed. Normalbothpasses.",
+    "Withdrawn new binary-triangle expected model retained in Source01. New exact Photoshop8/32fixtures replace it; no tolerance relaxation, fixture byte change, skip of Photoshop gates or ad-hoc sample correction.",
+    "Postrun evidence Python syntax error and missing-proof packaging rejection retained; corrected driver without rebuilding.",
+    "Stage01 validation signature/Openpanel failure retained; Stage02 retains same compiled code/resources with correct user-selected access entitlements."
+  ],
+  "remaining_functional": [
+    "CSH import and in-dialog custom-shape library loading/organization.",
+    "Remaining ordinary filter/framework targets, capacity and workflows in original F01 scope.",
+    "Non-RasterFilter Last Filter/Actions/Batch/plugin/RAW/job/recent-list/dialog policies and independent Adobe descriptors/PSD exchange."
+  ],
+  "remaining_cleanup": [
+    "Exact custom coverage rounding, reference matrices at other shapes/radii/depths/alpha/edges, numerical/default/shortcut/output fidelity.",
+    "Full regression and earlier recorded failures, dense/large-operation performance/60fps, actual supported Intel/macOS14.",
+    "All original104 scopes/652command identities/81majorqueue members remain; no package complete."
+  ],
+  "next": {
+    "package": "F02",
+    "candidate": "Native Photoshop ACF Custom Kernel preset Load/Save with shared API encode/decode, existing apply/Actions/history, retained JSON compatibility",
+    "then": "F03",
+    "ACF_implementation_started": false
+  },
+  "software_release": false,
+  "source_upload": false,
+  "public_source_implementation_checkpoint": 443,
+  "public_source_head": "e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "goal_complete": false
+}

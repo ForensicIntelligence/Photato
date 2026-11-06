@@ -1,0 +1,45 @@
+{
+  "source": "Photoshop2026 normal native UI, owned analytic input and triangle; no Adobe artwork/code/presets copied.",
+  "capture_step": 446,
+  "input": "100x100opaque black RGB with one white pixel at50,50; new PNG generated with standard zlib.",
+  "path_UI_document_vertices": [
+    [
+      10,
+      23
+    ],
+    [
+      83,
+      10
+    ],
+    [
+      90,
+      90
+    ]
+  ],
+  "path_bounds": [
+    10,
+    10,
+    80,
+    80
+  ],
+  "preset_name": "Photato 446 owned triangle",
+  "filter": "Shape Blur",
+  "radius": 5,
+  "reference_depths": [
+    8,
+    32
+  ],
+  "RGB32": "Undo filter on owned RGB8document, convert to32Bits/Channel, repeat same retained filter, saveuncompressedPSD32 with linearRGB profile. Rawmerged planes independently extracted from public PSDlayout.",
+  "raw_reference_hashes": {
+    "owned-impulse-100.png": "e7962ae056bc4eaa546925b94c6ac43d6b22eb44838a9defb7d854e65ab1e7db",
+    "Photato 446 owned shape kernel.psd": "2a3c76c8419953f202f1e5713e445963be451c67b0ad477a92838127d1375983",
+    "owned-impulse-triangle-radius5.png": "f1c2ce1b7f4b488f59e19875c429727c2d94e126c0099563d8d47e3fcdc1a9e6",
+    "owned-impulse-triangle-radius5-f32.psd": "edaa08debc369018e287488b4a0691bd95cf8e219ce313e4a5e54112cb765b65"
+  },
+  "fixture_hashes": {
+    "triangle-radius5-rgb32.planar-be32": "d6570d0fd0d5cf62ddd30d343419756a9bf4f75e6bf22ae62c7f5ff877eecd3a",
+    "triangle-radius5-rgb8.rgba": "d47c6e6224c6af7d31eb5e5c1c83b26dce40aeaf2a72aa7898cfda89a8e666e2"
+  },
+  "license": "MIT OR Apache-2.0; original analytic project artwork.",
+  "qualification": "Strict independent output references. Not a claim the current renderer matches them; known native CoreGraphics coverage residual remains."
+}

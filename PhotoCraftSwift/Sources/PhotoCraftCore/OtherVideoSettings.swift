@@ -87,7 +87,7 @@ public struct OtherVideoSettings: Codable, Equatable, Sendable {
   public static var apiCapabilities:[String:Any] {
     ["kinds":RasterFilter.Kind.allCases.filter(\.isOtherVideo).map(\.rawValue),"nativeVersion":43,"actionsVersion":16,
      "algorithm":"PhotoCraft other.rs/other2.rs/video.rs translated to Swift. Exact Photoshop output/defaults and Adobe ActionJSON/PSD descriptor interchange remain unqualified.",
-     "customPreset":"UTF-8 Photato JSON containing kind:customFilter and otherVideo settings. Desktop Save/Load uses the same strict payload as filter.apply. Adobe ACF interchange remains open.",
+     "customPreset":"Native Load/Save and filter.custom.preset support54-byte ACF (25 signed big-endian weights, whole Scale/Offset) and retained UTF-8 Photato JSON. Fractional Scale/Offset export requires JSON; no silent rounding. Apply decoded settings through filter.apply; native43/Actions16 unchanged. Full Custom output/descriptor fidelity remains open.",
      "coordinates":"Document pixels. Offset wraps/repeats/clears within selection bounds or canvas. De-Interlace counts odd/even rows from that bounds top (one-based). Cropped storage expands while retaining mask placement and off-canvas pixels.",
      "limits":"8,388,608 pixels; Roundness work bounded to268,435,456 row-window samples. RGB8/16 encoded and RGB32 linear processing. HSB/HSL clamps input channels to0–1 as in original source; original all-zero Custom is a no-op."]
   }

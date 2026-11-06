@@ -1460,5 +1460,39 @@
       "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
       "All original A07 scope and acceptance criteria remain unchanged."
     ]
+  },
+  "custom_shape_blur_444": {
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_444.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "status": "development_not_qualified",
+    "typed_commands": 256,
+    "native_archive": 87,
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "cursor_impact": "No new tool/modifier action/factory menu/shortcut; native menu chooser uses system controls.",
+    "Debug": "42of43selected; independent triangle convolution mismatch remains."
+  },
+  "custom_shape_blur_446": {
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "status": "Selected native custom-kernel workflow qualified; strict Photoshop RGB8/32 byte gates fail; full F01 remains open.",
+    "typed_commands": 256,
+    "native_archive": 87,
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "cursor_impact": "No new tool/modifier action/menu/shortcut. System-control chooser; original shared cursor matrix remains unchanged and selected FilterRecall modifier tests pass both optimized architectures.",
+    "reference": "Owned Photoshop2026 triangle and impulse image, normal UI/saved PNG/public PSD, strict raw-byte fixtures.",
+    "qualification": "54of56Debug;55of57sameordered normal each;9of11newpass;2strictPSgatesfail; universalmin14/signature/ZIP/live selected controls pass.",
+    "historical_444_count_correction": "Original expected55 methods,43outcomesbeforeSIGBUS; old summary was incomplete. See446 evidence."
+  },
+  "custom_kernel_presets_447": {
+    "reference": "docs/CUSTOM_KERNEL_PRESETS_447.json",
+    "status": "Native ACF/JSON preset I/O and shared codec/API; no new tool, modifier action, cursor, factory menu or shortcut. Typed257; native87/Actions52 unchanged. Selected36 Debug/native/Photoshop preset roundtrip pass; full output/platform scope open."
+  },
+  "blur_gallery_mask_448": {
+    "reference": "docs/BLUR_GALLERY_MASK_448.json",
+    "scope": "Native output/shared API/Actions, no new tool/modifier/cursor/menu/shortcut. Uniform Field5 and duplicate naming PS reference only; original full-scope acceptance remains.",
+    "typed_commands": 258,
+    "maximum_Actions_version": 53
   }
 }

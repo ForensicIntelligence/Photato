@@ -44,7 +44,7 @@ final class DocumentModeWorkflowTests: XCTestCase {
       XCTAssertEqual(undone, 200)
       XCTAssertEqual(document.store.document, before)
       let formats = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...86))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...87))
       XCTAssertEqual(formats["documentModeVersion"] as? Int, 46)
       let psd = try DocumentIO.encode(before, format: .psd)
       XCTAssertEqual(try PSDCodec.read(psd).layers[0].nativeMode, before.layers[0].nativeMode)

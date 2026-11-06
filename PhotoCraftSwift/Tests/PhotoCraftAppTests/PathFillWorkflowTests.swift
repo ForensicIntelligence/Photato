@@ -91,7 +91,7 @@ final class PathFillWorkflowTests:XCTestCase {
       let stale=try await helper.edit(service,doc,"path.paint",["fill":[:]],revision:"stale");XCTAssertEqual(stale,409)
       doc.store.brush.color=Pixel(1,0,0);doc.store.brush.opacity=0.5
       let old=try await helper.edit(service,doc,"path.paint",[:]);XCTAssertEqual(old,200);guard case .raster(let p)=doc.store.document.layers[0].content else{return XCTFail("Missing raster")};XCTAssertEqual(p.pixel(x:3,y:3).a,128.0/255)
-      XCTAssertTrue(JSONSerialization.isValidJSONObject(PathFillAPI.schema));XCTAssertEqual(ActionLibraryFile.maximumVersion,51)
+      XCTAssertTrue(JSONSerialization.isValidJSONObject(PathFillAPI.schema));XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
     }
   }
 }

@@ -18,9 +18,11 @@ import SwiftUI
   var preview=true
   var showMask=false
   var showControls=true
+  var saveMaskToChannels=false
   var rendering=false
   var zoom=1.0
   var error:String?
+  var maskError:String?
   var undoStates=[BlurGallerySettings]()
   var redoStates=[BlurGallerySettings]()
   @ObservationIgnored var task:Task<Void,Never>?
@@ -30,13 +32,19 @@ import SwiftUI
   private var closed=false
   private var generation=0
   var ready:Bool { image != nil && !rendering && error == nil }
+  var canSaveMask:Bool {
+    guard let document else{return false}
+    return maskError==nil && (document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels && document.quickMask==nil && !document.colorMode.isRestricted && document.inkMode==nil
+  }
   var pins:[BlurGallerySettings.Pin] { settings.pins(mode) }
   var pin:BlurGallerySettings.Pin? { pins.indices.contains(selected) ? pins[selected]:nil }
   var path:BlurGallerySettings.MotionPath? { settings.paths.indices.contains(selected) ? settings.paths[selected]:nil }
   func prepare(document:CraftDocument,draft:FilterDraft) async {
     self.document=document;self.draft=draft;settings=draft.filter.gallery ?? .init();mode=settings.enabled.first ?? .field
     documentSize=CGSize(width:document.width,height:document.height)
-    if let layer=document.layers.first(where:{$0.id==draft.id}),case .raster(let pixels)=layer.content { sourceSize=CGSize(width:pixels.width,height:pixels.height);sourceTransform=layer.coordinateTransform }
+    let input=try? draft.inputLayer(in:document)
+    if let input,case .raster(let pixels)=input.content {sourceSize=CGSize(width:pixels.width,height:pixels.height);sourceTransform=input.coordinateTransform}
+    saveMaskToChannels=draft.saveMaskToChannels
     closed=false;refresh();await task?.value
   }
   func point(_ p:PathPoint)->PathPoint { p.transformed(.scale(sourceSize.width,sourceSize.height)).transformed(sourceTransform) }
@@ -65,29 +73,26 @@ import SwiftUI
   func remove() { var s=settings;if mode == .path { guard s.paths.indices.contains(selected) else { return };s.paths.remove(at:selected) } else { var p=s.pins(mode);guard p.indices.contains(selected) else { return };p.remove(at:selected);s.setPins(p,for:mode) };selected=0;selectedPoint=0;change(s) }
   func refresh() {
     guard !closed,let document,var draft else { return };task?.cancel();generation+=1;let token=generation,needOriginal=originalImage==nil,s=settings
-    draft.filter.gallery=s;let request=draft;rendering=true;error=nil
+    draft.filter.gallery=s;draft.saveMaskToChannels=false;let request=draft;rendering=true;error=nil;maskError=nil
     task=Task { [weak self] in
       do {
         try await Task.sleep(for:.milliseconds(80))
-        let worker=Task.detached(priority:.userInitiated) { () throws -> (CGImage,CGImage?,CGImage) in
+        let worker=Task.detached(priority:.userInitiated) { () throws -> (CGImage,CGImage?,CGImage?,String?) in
           var edited=document;try request.command(in:document).apply(to:&edited)
           let image=try ColorManagement.displayImage(Renderer.composite(edited),in:document)
           let original=needOriginal ? try ColorManagement.displayImage(Renderer.composite(document),in:document):nil
-          guard let layer=document.layers.first(where:{$0.id==request.id}),case .raster(let pixels)=layer.content else { throw CraftError.invalid("Choose a pixel layer for Blur Gallery.") }
-          var mask=try Surface(width:pixels.width,height:pixels.height,fill:.black)
-          for y in 0..<pixels.height { try Task.checkCancellation();for x in 0..<pixels.width {
-            var value=0.0
-            for mode in s.enabled {
-              let a=mode == .path ? (s.paths.map(\.speed).max() ?? 0):BlurGalleryEngine.amount(s,mode:mode,x:Double(x)+0.5,y:Double(y)+0.5,width:pixels.width,height:pixels.height)
-              value=max(value,min(1,a/15))
-            }
-            mask.setPixel(x:x,y:y,Pixel(Float(value),Float(value),Float(value)))
-          } }
-          var model=document;var target=Layer(name:"Blur mask",content:.raster(mask));target.x=layer.x;target.y=layer.y;target.affine=layer.affine;model.layers=[target];model.activeLayerID=target.id
-          return (image,original,try ColorManagement.displayImage(Renderer.composite(model),in:model))
+          do {
+            let layer=try request.inputLayer(in:document)
+            let mask=try BlurGalleryMask.surface(in:document,layer:layer,settings:s)
+            var model=document;let target=Layer(name:"Blur Mask",content:.raster(mask));model.layers=[target];model.activeLayerID=target.id
+            return (image,original,try ColorManagement.displayImage(Renderer.composite(model),in:model),nil)
+          } catch {
+            try Task.checkCancellation()
+            return (image,original,nil,error.localizedDescription)
+          }
         }
         let result=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()}
-        try Task.checkCancellation();guard let self,!self.closed,self.generation==token else { return };self.image=result.0;if let original=result.1 { self.originalImage=original };self.maskImage=result.2;self.rendering=false
+        try Task.checkCancellation();guard let self,!self.closed,self.generation==token else { return };self.image=result.0;if let original=result.1 { self.originalImage=original };self.maskImage=result.2;self.maskError=result.3;self.rendering=false
       } catch { guard let self,!self.closed,self.generation==token else { return };self.rendering=false;if !Task.isCancelled { self.error=error.localizedDescription } }
     }
   }
@@ -104,7 +109,7 @@ struct BlurGallerySheet:View {
   }
   var body:some View {
     VStack(spacing:12) {
-      HStack { Text("Blur Gallery").font(.headline);Spacer();if model.rendering { ProgressView().controlSize(.small) };Text(model.mode.title).foregroundStyle(.secondary) }
+      HStack { Text("Blur Gallery").font(.headline);Toggle("Save Mask to Channels",isOn:$model.saveMaskToChannels).controlSize(.small).disabled(!model.canSaveMask);Spacer();if model.rendering { ProgressView().controlSize(.small) };Text(model.mode.title).foregroundStyle(.secondary) }
       HStack(alignment:.top,spacing:16) {
         BlurGalleryPreview(model:model).frame(minWidth:500,minHeight:440).clipped()
         ScrollView { VStack(alignment:.leading,spacing:12) {
@@ -116,17 +121,18 @@ struct BlurGallerySheet:View {
           Text(model.mode == .path ? "Drag path nodes. Option-click adds a control point; click elsewhere adds a path.":"Click to add a pin. Drag centers or outer handles; use numeric controls for precision.").font(.caption).foregroundStyle(.secondary)
           Divider();effectsControls
           if let error=model.error { Text(error).font(.caption).foregroundStyle(.red) }
+          if let error=model.maskError {Text("Mask unavailable: "+error).font(.caption).foregroundStyle(.secondary)}
         }.frame(width:260) }.frame(width:275)
       }
       HStack {
         Toggle("Preview",isOn:$model.preview)
-        Toggle("Mask",isOn:$model.showMask).keyboardShortcut("m",modifiers:[])
+        Toggle("Mask",isOn:$model.showMask).keyboardShortcut("m",modifiers:[]).disabled(model.maskImage==nil)
         Toggle("Controls",isOn:$model.showControls).keyboardShortcut("h",modifiers:[])
         Button("−") { model.zoom=max(0.25,model.zoom/1.5) };Button("+") { model.zoom=min(4,model.zoom*1.5) };Button("Fit") { model.zoom=1 }
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty).keyboardShortcut("z",modifiers:.command)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty).keyboardShortcut("z",modifiers:[.command,.shift])
         Spacer();Button("Cancel") { model.close();store.cancelFilter() }.keyboardShortcut(.cancelAction)
-        Button("OK") { model.endGesture();store.filterDraft?.filter.gallery=model.settings;model.close();store.commitFilter() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
+        Button("OK") { model.endGesture();store.filterDraft?.filter.gallery=model.settings;store.filterDraft?.saveMaskToChannels=model.saveMaskToChannels;model.close();store.commitFilter() }.keyboardShortcut(.defaultAction).disabled(!model.ready || model.saveMaskToChannels && !model.canSaveMask)
       }.controlSize(.small)
     }.padding(18).frame(width:900,height:680)
     .task { store.blurGalleryWorkspace=model;guard model.image==nil,!model.rendering,let draft=store.filterDraft else { return };await model.prepare(document:store.document,draft:draft) }

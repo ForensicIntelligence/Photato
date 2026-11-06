@@ -85,6 +85,7 @@ public enum ActionOperation: Codable, Sendable {
   case style([ActionLayerTarget], LayerStyle?)
   case filters(ActionLayerTarget, SmartFilterStack?)
   case filter(ActionLayerTarget, RasterFilter)
+  indirect case blurGalleryMask(ActionLayerTarget,BlurGallerySettings,Int?,Float,BlendMode)
   case adjustment(ActionLayerTarget, Adjustment)
   case desaturate(ActionLayerTarget)
   case autoCorrection(ActionLayerTarget, AutoCorrection)
@@ -210,6 +211,9 @@ public enum ActionOperation: Codable, Sendable {
     case .layerStyle(let ids, let v): self = .style(targets(ids), v)
     case .smartFilters(let id, let v): self = .filters(target(id), v)
     case .applyFilter(let id, let v): self = .filter(target(id), v)
+    case .blurGalleryMask(let edit):
+      let index=edit.filterID.flatMap{id in d.layers.first{$0.id==edit.layerID}?.smartFilters?.filters.firstIndex{$0.id==id}}
+      self = .blurGalleryMask(target(edit.layerID),edit.settings,index,edit.opacity,edit.blendMode)
     case .applyAdjustment(let id, let v): self = .adjustment(target(id), v)
     case .desaturate(let id): self = .desaturate(target(id))
     case .autoCorrection(let id, let v): self = .autoCorrection(target(id), v)
@@ -315,6 +319,14 @@ public enum ActionOperation: Codable, Sendable {
     case .style(let t, let v): return .layerStyle(try ids(t), v)
     case .filters(let t, let v): return .smartFilters(try id(t), v)
     case .filter(let t, let v): return .applyFilter(try id(t), v)
+    case .blurGalleryMask(let target,let settings,let index,let opacity,let mode):
+      let layerID=try id(target)
+      var filterID:UUID?
+      if let index {
+        guard let filters=d.layers.first(where:{$0.id==layerID})?.smartFilters?.filters,filters.indices.contains(index),filters[index].filter.kind == .blurGallery else {throw CraftError.invalid("The recorded Blur Gallery filter index is unavailable.")}
+        filterID=filters[index].id
+      }
+      return .blurGalleryMask(.init(layerID:layerID,settings:settings,filterID:filterID,opacity:opacity,blendMode:mode))
     case .adjustment(let t, let v): return .applyAdjustment(try id(t), v)
     case .desaturate(let t): return .desaturate(try id(t))
     case .autoCorrection(let t, let v): return .autoCorrection(try id(t), v)
@@ -373,6 +385,10 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       throw CraftError.invalid("Invalid action name, set or steps (maximum 512).")
     }
     for step in steps {
+      if case .blurGalleryMask(_,let settings,let index,let opacity,_)=step.operation {
+        try settings.validate()
+        guard opacity.isFinite,(0...1).contains(opacity),index == nil || index!>=0 else {throw CraftError.invalid("Invalid recorded Blur Gallery output.")}
+      }
       if case .stackLayers(let targets, _) = step.operation { guard !targets.isEmpty, targets.count <= LayerLimits.maximumLayers else { throw CraftError.invalid("Invalid recorded layer arrangement targets.") } }
       if case .pathPixelPaint(_,let coverage,let settings,let pattern,let placement,_) = step.operation{try settings.validate(.fill);_ = try coverage.coverageSurface();if let pattern{try pattern.validate()};try placement?.validate()}
       if case .fitImage(let options) = step.operation { try options.validate() }

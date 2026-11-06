@@ -18,6 +18,7 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
     var quality:Quality = .high
     var mode:Mode = .normal
     var shape:Shape = .circle
+    var kernel:ShapeBlurKernel?
   }
   private indirect enum Storage:Equatable,Sendable {case value(Values)}
   private var storage:Storage = .value(Values())
@@ -39,10 +40,11 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
   public var quality:Quality {get{values.quality}set{var v=values;v.quality=newValue;values=v}}
   public var mode:Mode {get{values.mode}set{var v=values;v.mode=newValue;values=v}}
   public var shape:Shape {get{values.shape}set{var v=values;v.shape=newValue;values=v}}
+  public var kernel:ShapeBlurKernel? {get{values.kernel}set{var v=values;v.kernel=newValue;values=v}}
   public static func keys(_ kind:RasterFilter.Kind)->Set<String> {
     switch kind {
     case .radialBlur:["amount","method","radialQuality","centerX","centerY"]
-    case .shapeBlur:["radius","shape"]
+    case .shapeBlur:["radius","shape","kernel"]
     case .smartBlur:["radius","threshold","quality","mode"]
     case .surfaceBlur,.dustAndScratches:["radius","threshold"]
     case .median:["radius"]
@@ -65,6 +67,7 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
     case .dustAndScratches,.median:guard (1...(kind == .median ? 500:100)).contains(radius),radius.rounded()==radius,threshold.rounded()==threshold else {throw CraftError.invalid("Invalid Median or Dust & Scratches radius/threshold.")}
     default:break
     }
+    if let kernel {guard kind == .shapeBlur,shape == .circle else {throw CraftError.invalid("A custom kernel requires Shape Blur with no built-in shape override.")};try kernel.validate()}
     let decoded=try Self.decodeFields(apiParameters(kind:kind),kind:kind)
     guard self==decoded else {throw CraftError.invalid("Settings contain controls that do not apply to this filter.")}
   }
@@ -74,7 +77,8 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
     return try JSONDecoder().decode(Self.self,from:JSONSerialization.data(withJSONObject:base))
   }
   public static func decodeJSON(_ data:Data,kind:RasterFilter.Kind)throws->Self {
-    guard data.count<=16384,let fields=try JSONSerialization.jsonObject(with:data) as? [String:Any],Set(fields.keys).isSubset(of:keys(kind)) else {throw CraftError.invalid("Unknown Blur, Noise or Sharpen setting.")}
+    guard data.count<=(kind == .shapeBlur ? 2*1024*1024:16384),let fields=try JSONSerialization.jsonObject(with:data) as? [String:Any],Set(fields.keys).isSubset(of:keys(kind)) else {throw CraftError.invalid("Unknown Blur, Noise or Sharpen setting.")}
+    if let kernel=fields["kernel"],!(kernel is NSNull) {try ShapeBlurKernel.validateAPI(kernel)}
     let result=try decodeFields(fields,kind:kind);try result.validate(kind:kind);return result
   }
   public func apiParameters(kind:RasterFilter.Kind)->[String:Any] {
@@ -89,6 +93,7 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
       case "radialQuality":f=["type":"string","enum":RadialQuality.allCases.map(\.rawValue)]
       case "quality":f=["type":"string","enum":Quality.allCases.map(\.rawValue)]
       case "mode":f=["type":"string","enum":Mode.allCases.map(\.rawValue)]
+      case "kernel":f=["anyOf":[ShapeBlurKernel.apiSchema,["type":"null"]]]
       case "shape":f=["type":"string","enum":Shape.allCases.map(\.rawValue)]
       case "centerX","centerY":f=["type":"number","minimum":0,"maximum":1]
       case "amount":f=["type":"integer","minimum":1,"maximum":100]
@@ -99,10 +104,10 @@ public struct ClassicDetailSettings: Codable, Equatable, Sendable {
     return ["type":"object","additionalProperties":false,"properties":fields]
   }
   public static var apiCapabilities:[String:Any] {
-    ["kinds":RasterFilter.Kind.allCases.filter(\.isClassicDetail).map(\.rawValue),"nativeVersion":44,"actionsVersion":17,
+    ["kinds":RasterFilter.Kind.allCases.filter(\.isClassicDetail).map(\.rawValue),"nativeVersion":44,"actionsVersion":17,"customShapeNativeVersion":87,"customShapeActionsVersion":52,"customShapeKernels":true,"customShapeSnapshot":"Embedded vector geometry, independent of preset library after selection; aspect ratio retained, odd-sized antialiased coverage,32levels and true convolution. Core Graphics edge rounding has measured Photoshop residuals; exact sampling remains unqualified.",
      "depthsByKind":Dictionary(uniqueKeysWithValues:RasterFilter.Kind.allCases.filter(\.isClassicDetail).map{kind in (kind.rawValue,depths(kind).map{$0 == .u8 ? 8:$0 == .u16 ? 16:32})}),
      "algorithm":"Licensed PhotoCraft blur/noise/sharpen kernels in Swift; exact Photoshop output/defaults and Adobe descriptors remain unqualified. Radial Good/Draft reduce the source Best sample budget.",
-     "limits":"8,388,608 pixels and268,435,456 estimated neighborhood visits. Nine built-in Shape Blur kernels; imported Photoshop shape presets remain unsupported."]
+     "limits":"8,388,608 pixels and268,435,456 estimated neighborhood visits. Nine built-in Shape Blur kernels plus saved native custom vector shapes; Adobe CSH preset transport remains unsupported. Custom-kernel geometry sampling also uses the268,435,456work budget."]
   }
 }
 extension RasterFilter.Kind {

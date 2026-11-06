@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-446",
+  "run": "artifacts/runs/20261106T152224Z-446-custom-shape-blur",
+  "status": "Selected native custom Shape Blur workflow qualified; strict PSbytegatesfail; no live workers. Resume F02ACF, thenF03. Final history outcome is in artifacts/development-history-audit/446-final-delivery/receipt01.json.",
+  "current_pass": 2,
+  "current_major_workflow": "F02",
+  "next": "F03",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "444Source03",
+  "source_inputs_baseline": 7365,
+  "repository_visibility": "public",
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T152224Z-446-custom-shape-blur/release01-source.json",
+  "source_inputs": 7368,
+  "production_swift_files": 1093,
+  "next_action": "Validate owned Photoshop ACF file, implement native/API preset codec and Load/Save; preserve JSON and exact output/failure gates.",
+  "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json"
+}

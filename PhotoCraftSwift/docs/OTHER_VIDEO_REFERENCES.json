@@ -1,7 +1,7 @@
 {
-  "step": "dev-step-217",
+  "step": 447,
   "date": "2026-10-27",
-  "status": "Native implementation, focused/full regression and universal package verified. Exact Photoshop, Adobe descriptors and live/platform qualification remain open.",
+  "status": "Checkpoint447 selected ACF/JSON native preset workflow passes36 Debug/native/Photoshop byte-identical ACF roundtrip checks; full Other/Video/F02 and output/platform scope open.",
   "scope": [
     "filter.other.custom",
     "filter.other.hsbHsl",
@@ -23,7 +23,7 @@
     "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/create-a-custom-filter.html"
   ],
   "implementation": [
-    "Full5\u00d75 Custom with scale/offset and strict JSON presets",
+    "Full5×5 Custom with scale/offset and strict JSON presets",
     "RGB/HSB/HSL channel reinterpretation",
     "Square/disc Maximum and Minimum with running extrema",
     "Document-space Offset wrap/repeat/transparent within selection or canvas",
@@ -33,12 +33,13 @@
     "Editable Smart Filters/native43, portable Actions16; native/PSD raster persistence"
   ],
   "api": {
-    "typed_command_count": 110,
+    "typed_command_count": 257,
     "expanded": [
       "filter.apply",
       "smartFilter.set",
       "actions.manage",
-      "native document downloads"
+      "native document downloads",
+      "filter.custom.preset"
     ],
     "state": "otherVideo workspace metadata",
     "capabilities": "filters.otherVideo",
@@ -68,7 +69,7 @@
   },
   "remaining": [
     "Exact Photoshop output/default/control/color-mode/depth qualification",
-    "Adobe ACF preset import/export; native JSON presets are implemented",
+    "Broader ACF/JSON preset corpus, exact Photoshop defaults and invalid-input/control behavior beyond owned selected fixture",
     "ActionJSON/ATN and editable Photoshop Smart Filter descriptors",
     "Original-source fractional Roundness radius below1 is a no-op; native clamp/edge/selection behavior requires Adobe comparison",
     "Live modal workflows and physical Intel/macOS14/macOS26 checks",
@@ -334,5 +335,10 @@
     ],
     "limits": "124 focused Debug and2068 full optimized tests plus universal package on this host.44 synthetic original-Rust RGB8 fixtures match exactly; this is not Adobe output equivalence. Physical Intel/macOS14/macOS26, Photoshop defaults/depth behavior/descriptors and live Other/Video remain open. User handoff of verified209 is pending unlock. Xcode synchronized groups unchanged.",
     "retired_brand_matches_in_package": []
-  }
+  },
+  "custom_kernel_presets_447": {
+    "reference": "docs/CUSTOM_KERNEL_PRESETS_447.json",
+    "status": "Native ACF/JSON preset I/O and shared codec/API; no new tool, modifier action, cursor, factory menu or shortcut. Typed257; native87/Actions52 unchanged. Selected36 Debug/native/Photoshop preset roundtrip pass; full output/platform scope open."
+  },
+  "historical_validation_note": "The retained tests/oracle/package sections record checkpoint217, not a new full-suite run. Latest447 evidence is custom_kernel_presets_447."
 }

@@ -1,0 +1,19 @@
+{
+  "step": 445,
+  "run": "artifacts/runs/20261106T145807Z-445-custom-shape-blur-qualification",
+  "status": "Credential audit complete:0real exposed secrets; F01custom ShapeBlur444Source03still42of43Debug",
+  "current_pass": 2,
+  "current_major_workflow": "F01",
+  "next": "F02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "444Source03",
+  "source_inputs_baseline": 7365,
+  "repository_visibility": "public",
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T143455Z-444-custom-shape-blur/source03-source.json",
+  "source_inputs": 7365,
+  "evidence": "docs/SECRET_AUDIT_445.json",
+  "audited_public_head": "e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "source_publication": false
+}

@@ -133,6 +133,7 @@ public enum Command: Sendable {
   case smartFilters(UUID, SmartFilterStack?)
   indirect case smartFilterMask(UUID, Command)
   case applyFilter(UUID, RasterFilter)
+  indirect case blurGalleryMask(BlurGalleryMaskEdit)
   case applyAdjustment(UUID, Adjustment)
   case desaturate(UUID)
   case autoCorrection(UUID, AutoCorrection)
@@ -283,6 +284,7 @@ public enum Command: Sendable {
     case .smartFilters: "Smart Filters"
     case .smartFilterMask(_, let command): "Smart Filter Mask: " + command.label
     case .applyFilter(_, let filter): filter.kind.title
+    case .blurGalleryMask: "Blur Gallery"
     case .applyAdjustment(_, .levels): "Levels"
     case .applyAdjustment(_, .curves): "Curves"
     case .applyAdjustment(_, .hueSaturation): "Hue/Saturation"
@@ -356,6 +358,7 @@ public enum Command: Sendable {
     case .smartFilterMask(let id,let command):try SmartFilterEngine.editMask(command,on:id,in:&d)
     case .applyAdjustment(let id,let adjustment):try PixelCommandEngine.adjust(id,adjustment,in:&d)
     case .applyFilter(let id,let filter):try PixelCommandEngine.filter(id,filter,in:&d)
+    case .blurGalleryMask(let edit):d=try edit.applied(to:d)
     case .smartFilters(let id,let stack):try PixelCommandEngine.stack(id,stack,in:&d)
     case .mergeLayers,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate:try applyNestedPrimitive(to:&d)
     default:try applyPrimitive(to:&d)
@@ -403,7 +406,7 @@ public enum Command: Sendable {
         throw CraftError.invalid("Document metadata exceeds the native limit.")
       }
       d.sourceMetadata = value
-    case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters: throw CraftError.invalid("Unexpected nested command routing.")
+    case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters,.blurGalleryMask: throw CraftError.invalid("Unexpected nested command routing.")
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)

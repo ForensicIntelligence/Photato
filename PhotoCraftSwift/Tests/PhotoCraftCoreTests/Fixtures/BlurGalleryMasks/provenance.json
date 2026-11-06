@@ -1,0 +1,21 @@
+{
+  "source": "Owned100px PNG; Photoshop normal UI only; enabled tool/settings observed separately. Save Mask to Channels on; OK; Save As new owned PSD; close. No Adobe stock asset or user document.",
+  "dimensions": [
+    100,
+    100
+  ],
+  "channels": 4,
+  "depth": 8,
+  "mask_sha256": "2bf7158cb3d8f419f1e19ee71df61927cc17017f37ea8820f3bd719d2b4f88f8",
+  "psd_sha256": "0db1a8e59b73edcd7e99239954deccd84b931f8faf30b2c8f9ea779aae727746",
+  "alpha_names_pascal_hex": "09426c7572204d61736b",
+  "mask_range": [
+    255,
+    255
+  ],
+  "unique": 1,
+  "center": 255,
+  "edge": 255,
+  "settings": "Single Field Blur pin,5px; other tools disabled; Save Mask to Channels enabled; actual owned Photoshop UI.",
+  "scope": "Uniform Field5 RGB8 mask only; other modes, geometry, depth, selection and multi-tool fidelity remain open."
+}

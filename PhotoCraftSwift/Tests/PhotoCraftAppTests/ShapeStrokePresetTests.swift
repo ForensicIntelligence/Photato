@@ -145,7 +145,7 @@ final class ShapeStrokePresetTests: XCTestCase {
     let expected = s.document
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(expected)), expected)
     let decoded = try ActionLibraryFile.decode(library.exportFile(action.id))
-    XCTAssertGreaterThanOrEqual(decoded.version, 24); XCTAssertEqual(ActionLibraryFile.maximumVersion, 51)
+    XCTAssertGreaterThanOrEqual(decoded.version, 24); XCTAssertEqual(ActionLibraryFile.maximumVersion, 53)
     await s.undo(); XCTAssertEqual(s.document, original)
     s.playAction(decoded.actions[0]); await s.geometryTask?.value
     XCTAssertNil(s.error); XCTAssertEqual(s.document, expected)

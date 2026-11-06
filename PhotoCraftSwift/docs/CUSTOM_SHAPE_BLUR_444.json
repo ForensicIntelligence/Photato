@@ -1,0 +1,44 @@
+{
+  "step": 444,
+  "status": "in_progress_not_qualified",
+  "source": "Source03",
+  "run": "artifacts/runs/20261106T143455Z-444-custom-shape-blur",
+  "source_inputs": 7365,
+  "source_unchanged": true,
+  "Debug": {
+    "selected": 43,
+    "passed": 42,
+    "failed": [
+      "PhotoCraftCoreTests.ShapeBlurKernelTests/testIndependentTriangleConvolutionAllDepthsAndAlpha"
+    ],
+    "unexpected": 0,
+    "new_methods": 9,
+    "new_passed": 8
+  },
+  "normal_optimized_current": false,
+  "universal_current": false,
+  "last_qualified_selected_workflow": 443,
+  "native_archive": 87,
+  "custom_shape_actions": 52,
+  "old_ordinary_detail_archive": 44,
+  "old_ordinary_detail_actions": 17,
+  "typed_commands": 256,
+  "goal_complete": false,
+  "current": "F01",
+  "next": "F02",
+  "repository_visibility": "public",
+  "repository_visibility_evidence": "docs/REPOSITORY_VISIBILITY_444.json",
+  "remaining": [
+    "Resolve independent custom triangle convolution mismatch without weakening expected outputs; retain diagnostic before repair.",
+    "Normal optimized same ordered cases on both architectures for shared-vector/numerical change.",
+    "Custom chooser/current physical Photoshop behavior and actual native UI after human unlock.",
+    "CSH transport and library loading inside Shape Blur dialog, factory presets, exact Photoshop kernel/default parity.",
+    "Full original F01 and all earlier failures remain open."
+  ],
+  "original_scope_preserved": {
+    "packages": 104,
+    "major": 81,
+    "commands": 652
+  },
+  "updated_utc": "2026-11-06T14:50:31.681436+00:00"
+}

@@ -1,0 +1,309 @@
+{
+  "step": 447,
+  "recorded_at_utc": "2026-11-06T17:27:21.976254+00:00",
+  "package": "F02",
+  "track": "major stillneeded",
+  "status": "Selected ACF/JSON preset workflow implemented and qualified on ARM64 Debug; full F02 and Photoshop parity open.",
+  "application_build": 447,
+  "source": "447Source06",
+  "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-source.json",
+  "source_inputs": 7378,
+  "source_unchanged": true,
+  "run": "artifacts/runs/20261106T163212Z-447-acf-custom-presets",
+  "compiled_binary_sha256": "00749b27f2966b33b84c2c08c6337a58f3af5fa98f56880759750278e5286a57",
+  "retained_debug_products": 5384,
+  "implementation": [
+    "CustomKernelPreset strict shared ACF/legacy JSON codec; 54 bytes, 27 signed big-endian Int16 fields in row-major order. Weights -999...999, whole Scale 1...9999, whole Offset -9999...9999.",
+    "Fractional Scale/Offset remain lossless in JSON. ACF export rejects them without rounding; native Save selects JSON and disables unrepresentable ACF. JSON limit 16384 bytes.",
+    "Native Load/Save, explicit format accessory, extension ownership by AppKit, value snapshot, separate preset I/O error and bounded coordinated atomic publication to the selected URL.",
+    "filter.custom.preset encode/decode uses the same codec, strict schemas and canonical base64, standard revision/sharing/busy/revocation guards. Conversion does not change pixels, document/history/settings or files. Returned filter uses existing filter.apply.",
+    "No pixel math, old fixtures, archive schema, tool/cursor, factory menu or shortcut change. No invented Adobe endpoint. Native87/Actions52 unchanged; ordinary Custom native43/Actions16 unchanged. Typed command count 256 to 257."
+  ],
+  "production_files": [
+    "Sources/PhotoCraft/AutomationCommands.swift",
+    "Sources/PhotoCraft/AutomationService.swift",
+    "Sources/PhotoCraft/OtherVideoWorkspace.swift",
+    "Sources/PhotoCraftCore/OtherVideoSettings.swift",
+    "Sources/PhotoCraft/AutomationCustomKernelPreset.swift",
+    "Sources/PhotoCraft/CustomKernelPresetFile.swift",
+    "Sources/PhotoCraft/CustomKernelPresetSaveAccessory.swift",
+    "Sources/PhotoCraftCore/CustomKernelPreset.swift"
+  ],
+  "tests": {
+    "selected_debug": 36,
+    "passed": 36,
+    "failed": 0,
+    "unexpected": 0,
+    "signals": 0,
+    "missing": 0,
+    "skipped": 0,
+    "new_core": 6,
+    "new_app": 7,
+    "build_seconds": 43.33,
+    "test_seconds": 8.479,
+    "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-summary.json",
+    "command": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-command.json",
+    "log": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06.log",
+    "retained_binaries": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-binaries/manifest.json",
+    "development_compiler_workaround": "Debug only: -Xswiftc -Xllvm -Xswiftc -sil-disable-pass=predictable-deadalloc-elim; never in Release."
+  },
+  "attempts": [
+    {
+      "source": 1,
+      "outcome": "Compilation failed: NSSavePanel has no isAccessoryViewDisclosed; no tests ran. Retained app is prior446, not447.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source01-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source01-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source01-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 34,
+        "missing_cases": [
+          "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+          "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+          "PhotoCraftAppTests.CustomKernelPresetWorkflowTests/testDecodedPresetsPreserveSmartNative43Actions16AndHistoryAllDepths",
+          "PhotoCraftAppTests.CustomKernelPresetWorkflowTests/testHTTPStrictFieldsFractionsBusyStaleAndRevocation",
+          "PhotoCraftAppTests.CustomKernelPresetWorkflowTests/testNativeFilePanelsExposeACFAndRetainJSONFormat",
+          "PhotoCraftAppTests.CustomKernelPresetWorkflowTests/testNativeLoadLocalHistoryInvalidRecoveryAndCancel",
+          "PhotoCraftAppTests.CustomKernelPresetWorkflowTests/testRealHTTPCodecAndNativeApplyAgreeEveryDepthWithoutConversionHistory",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testAuxiliaryComponentAndSmartFilterEditsRetainResolvedPayloads",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testControllerSharesRecallAcrossTargetsAndClosingSourceDetachesIt",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testDiscoveryStateAndSharedRevisionDescribeTheCurrentRecall",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testHTTPInvalidBusyStaleUnavailableAndRevokedRequestsAreAtomic",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testHTTPRecallMatchesDesktopAndPortableRecordedFilterIsIndependent",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testImmediatePreviewCancelInvalidAndCancelledWorkRetainRecall",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testNativeMenuDefaultShortcutDynamicTitleAvailabilityAndAllModifierCursors",
+          "PhotoCraftAppTests.FilterRecallWorkflowTests/testNativeRecallUsesCurrentSelectionDepthAndOneUndo",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testAllSevenDepthsSelectionAlphaHistoryAndRasterPSD",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testFactoryMenuAvailabilityAndHostedDialogs",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testHTTPDesktopEquivalenceSmartReeditArchiveAndGuards",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testNativePreviewLocalHistoryCancelCommitAndReedit",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testPresetLoadingInvalidRecoveryGestureAndCancelledPreview",
+          "PhotoCraftAppTests.OtherVideoWorkflowTests/testSmartSourceNative43Actions16AndExplicitInterchangeLimits",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testCancellationPrecedesCodecWork",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testFractionsRemainLosslessJSONAndNeverRoundForACF",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testJSONCompatibilityAutoDetectionAndStrictExplicitFormats",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testMalformedLengthsAndEverySignedFieldRangeReject",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testPhotoshopOwnedLayoutAndByteIdenticalExport",
+          "PhotoCraftCoreTests.CustomKernelPresetTests/testSignedLimitsAndNonzeroDataSliceIndex",
+          "PhotoCraftCoreTests.OtherVideoTests/testCancellationAndRoundnessBudget",
+          "PhotoCraftCoreTests.OtherVideoTests/testCustomAlphaHighDepthAndNoop",
+          "PhotoCraftCoreTests.OtherVideoTests/testDeInterlaceUsesOneBasedBoundsAndPremultipliedInterpolation",
+          "PhotoCraftCoreTests.OtherVideoTests/testExtremaIndependentDirectWindowAndShape",
+          "PhotoCraftCoreTests.OtherVideoTests/testOffsetSelectionDomainCroppedExpansionMaskAndHistory",
+          "PhotoCraftCoreTests.OtherVideoTests/testOriginalRust44References",
+          "PhotoCraftCoreTests.OtherVideoTests/testStrictSettingsPresetAndAtomicGuards"
+        ],
+        "exit_code": 1,
+        "passed": 0,
+        "totals": null,
+        "build_seconds": null
+      }
+    },
+    {
+      "source": 2,
+      "outcome": "33/35 pass; all12 new pass; two old shared catalogue counts still256.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source02-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source02-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source02-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 35,
+        "missing_cases": [],
+        "exit_code": 1,
+        "passed": 33,
+        "totals": [
+          [
+            "35",
+            "2",
+            "0",
+            "9.427"
+          ]
+        ],
+        "build_seconds": [
+          "107.94"
+        ]
+      }
+    },
+    {
+      "source": 3,
+      "outcome": "Identical Source02 inputs/binary, same33/35; erroneous repair preparation failed before mutation but dependent launch was not gated.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source03-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source03-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source03-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 35,
+        "missing_cases": [],
+        "exit_code": 1,
+        "passed": 33,
+        "totals": [
+          [
+            "35",
+            "2",
+            "0",
+            "8.928"
+          ]
+        ],
+        "build_seconds": [
+          "0.87"
+        ]
+      }
+    },
+    {
+      "source": 4,
+      "outcome": "35/35, all12 new pass; native Load/local history pass. Actual native filename doubled .acf; cancelled without writing.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source04-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source04-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source04-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 35,
+        "missing_cases": [],
+        "exit_code": 0,
+        "passed": 35,
+        "totals": [
+          [
+            "35",
+            "0",
+            "0",
+            "8.196"
+          ]
+        ],
+        "build_seconds": [
+          "40.74"
+        ]
+      }
+    },
+    {
+      "source": 5,
+      "outcome": "35/35, single native suffix fixed; actual sandbox Save fails Operation not permitted, no file written; preview remains usable.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source05-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source05-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source05-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 35,
+        "missing_cases": [],
+        "exit_code": 0,
+        "passed": 35,
+        "totals": [
+          [
+            "35",
+            "0",
+            "0",
+            "8.077"
+          ]
+        ],
+        "build_seconds": [
+          "24.93"
+        ]
+      }
+    },
+    {
+      "source": 6,
+      "outcome": "36/36, all13 new pass. Native sandbox ACF/JSON Save, document history/Quit and Photoshop native import/reexport pass.",
+      "summary": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-summary.json",
+      "source_manifest": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-source.json",
+      "retained_products": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/source06-binaries/manifest.json",
+      "recorded_summary": {
+        "unexpected_signals": [],
+        "expected_count": 36,
+        "missing_cases": [],
+        "exit_code": 0,
+        "passed": 36,
+        "totals": [
+          [
+            "36",
+            "0",
+            "0",
+            "8.479"
+          ]
+        ],
+        "build_seconds": [
+          "43.33"
+        ]
+      }
+    }
+  ],
+  "native": {
+    "app": "/private/tmp/photato-validation-447-debug-stage03-ba7b3577/Photato Validation 447.app",
+    "architecture": "arm64",
+    "configuration": "Debug",
+    "minimum_system_metadata": "14.0",
+    "production_AppStore_entitlements_unchanged": true,
+    "signature_verified": true,
+    "signed_binary_sha256": "c40e742eef78b946cee176146b5489ad5127bf76d55fd40eae74fc1cf54bb995",
+    "ACF_load_all27_values": true,
+    "local_undo_redo": true,
+    "ACF_actual_selected_URL_save": true,
+    "JSON_format_switch_and_actual_save": true,
+    "single_filename_extension": true,
+    "OK_document_undo_redo": true,
+    "normal_Quit_process_absent": true,
+    "owned_image_unchanged": true,
+    "evidence": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/validation/live-ui03.json",
+    "later_Photoshop_result": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/photoshop/round-trip01.json"
+  },
+  "Photoshop": {
+    "source": "Normal Photoshop UI, owned 100px PNG and own authored asymmetric kernel only. Preview off, save preset, Cancel filter, close unchanged owned document. No Adobe stock preset/code copied.",
+    "kernel": [
+      -999,
+      -11,
+      -10,
+      -9,
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      999
+    ],
+    "scale": 37,
+    "offset": -11,
+    "acf_bytes": 54,
+    "original_Photato_export_Photoshop_reexport_byte_identical": true,
+    "all27_native_imported_controls_match": true,
+    "acf_sha256": "4be3b3ee189beda0aaae007f68075a4d2d0192a2bf71cbabfb21aa8b8c71a2f9",
+    "JSON_bytes": 358,
+    "JSON_sha256": "024dda3cd80e448edf8be57206a95bb0ea164997cfa76c3a03e2033e1e43aa26",
+    "evidence": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/photoshop/round-trip01.json"
+  },
+  "preservation": "artifacts/runs/20261106T163212Z-447-acf-custom-presets/preservation01.json",
+  "old_tests": "20 old files changed:19 catalogue-counter-only updates 256 to 257 (including shared constant), plus one OtherVideo owned-window lifecycle fix isReleasedWhenClosed=false. No old numerical assertion/fixture weakened; no old crash-cause inference.",
+  "sandbox_finding": "Source05 native Save failed Operation not permitted despite unsandboxed unit success. Parent/sibling temporary publication versus selected-file grant is an inference; exact denied syscall not traced. Source06 small preset publisher succeeds under unchanged full production entitlements. Generic AtomicFileWriter unchanged; no global native-export repair claim.",
+  "followup": "Audit other direct AtomicFileWriter Save-panel exports under D01/Q05 file lifecycle/runtime acceptance. Earlier 447.8 suggestion of Q02 was misassigned: Q02 is incremental rendering. No package scope changed.",
+  "qualification_limits": [
+    "No normal optimized, x86_64 or universal 447 qualification. Latest optimized universal selected workflow remains 446. No math/render changes require immediate numerical architecture run.",
+    "No current full-suite, physical Intel/macOS14, broad ACF corpus, Custom Filter pixel/default equivalence or 60fps claim.",
+    "Full F02 named-filter, target/depth/capacity, Adobe descriptor/ATN/editable PSD and platform/output requirements remain.",
+    "All earlier failures remain, including 446 strict Shape Blur differences and reproduced Adobe-job Debug SIGBUS.",
+    "All104 original scopes/acceptance tuples,652 IDs/status counts,81 queue members and seven passes preserved."
+  ],
+  "next": "F03 Blur Gallery source/reference audit, then F04. No candidate is yet declared missing.",
+  "source_publication": "Public implementation remains443 plus public-policy docs at e5f23cb; no447 upload or software release.",
+  "secret_audit_recheck": "docs/SECRET_AUDIT_447_RECHECK.json",
+  "references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/create-a-custom-filter.html",
+    "https://developer.apple.com/documentation/appkit/nssavepanel/allowedcontenttypes",
+    "https://developer.apple.com/documentation/appkit/nssavepanel/namefieldstringvalue",
+    "https://developer.apple.com/documentation/foundation/nsfilecoordinator",
+    "https://developer.apple.com/documentation/foundation/nsfilecoordinator/writingoptions/forreplacing"
+  ],
+  "goal_complete": false
+}

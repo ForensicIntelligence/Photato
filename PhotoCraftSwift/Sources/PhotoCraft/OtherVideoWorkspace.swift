@@ -14,6 +14,7 @@ import UniformTypeIdentifiers
   var fit=true
   var zoom=1.0
   var error:String?
+  var presetError:String?
   var undoStates=[RasterFilter]()
   var redoStates=[RasterFilter]()
   @ObservationIgnored var task:Task<Void,Never>?
@@ -24,7 +25,7 @@ import UniformTypeIdentifiers
   private var gestureStart:RasterFilter?
   var ready:Bool { image != nil && !rendering && error == nil }
   var apiState:[String:Any] {
-    ["filter":filter.apiState,"preview":preview,"zoom":zoom,"fit":fit,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()] }
+    ["filter":filter.apiState,"preview":preview,"zoom":zoom,"fit":fit,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull(),"presetError":presetError as Any? ?? NSNull()] }
   func prepare(document:CraftDocument,draft:FilterDraft) async { self.document=document;self.draft=draft;filter=draft.filter;closed=false;refresh();await task?.value }
   func remember(_ f:RasterFilter) { undoStates.append(f);if undoStates.count>100 { undoStates.removeFirst() };redoStates=[] }
   func change(_ f:RasterFilter,remember:Bool=true) {
@@ -54,27 +55,38 @@ import UniformTypeIdentifiers
   var documentHeight:Int {document?.height ?? 1}
   func loadPreset(_ data:Data) {
     guard !closed,filter.kind == .customFilter else{return}
-    do {let settings=try OtherVideoSettings.decodeCustomPreset(data);update{$0.otherVideo=settings}}
+    do {let settings=try CustomKernelPreset.decode(data);presetError=nil;update{$0.otherVideo=settings}}
     catch {self.error=error.localizedDescription}
   }
+  static func makePresetOpenPanel()->NSOpenPanel {
+    let panel=NSOpenPanel();panel.title="Load Custom Filter";panel.allowedContentTypes=[CustomKernelPresetSaveAccessory.acfType,.json];panel.allowsMultipleSelection=false;panel.canChooseDirectories=false
+    return panel
+  }
   func choosePreset() {
-    let panel=NSOpenPanel();panel.title="Load Custom Filter";panel.allowedContentTypes=[.json];panel.allowsMultipleSelection=false;panel.canChooseDirectories=false
+    guard !closed,filter.kind == .customFilter else{return}
+    let panel=Self.makePresetOpenPanel()
     panel.begin { [weak self] response in
       guard response == .OK,let self,!self.closed,let url=panel.url else{return}
-      do {let file=try FileHandle(forReadingFrom:url);defer{try? file.close()};self.loadPreset(try file.read(upToCount:16_385) ?? Data())}
-      catch {self.error=error.localizedDescription}
+      do {let file=try FileHandle(forReadingFrom:url);defer{try? file.close()};self.loadPreset(try file.read(upToCount:CustomKernelPreset.maximumBytes+1) ?? Data())}
+      catch {self.presetError=error.localizedDescription}
     }
   }
   func savePreset() {
-    guard filter.kind == .customFilter,let settings=filter.otherVideo else{return}
+    guard !closed,filter.kind == .customFilter,let settings=filter.otherVideo else{return}
+    presetError=nil
+    let panel=NSSavePanel();panel.title="Save Custom Filter"
+    let accessory=CustomKernelPresetSaveAccessory(panel:panel,canExportACF:(try? CustomKernelPreset.encode(settings,format:.acf)) != nil)
+    panel.begin { [weak self] response in
+      guard response == .OK,let self,!self.closed,let url=panel.url else{return}
+      self.writePreset(settings,format:accessory.format,to:url)
+    }
+  }
+  func writePreset(_ settings:OtherVideoSettings,format:CustomKernelPreset.Format,to url:URL) {
+    guard !closed,filter.kind == .customFilter else{return}
     do {
-      let data=try settings.encodedCustomPreset(),panel=NSSavePanel();panel.title="Save Custom Filter";panel.nameFieldStringValue="Custom Filter.json";panel.allowedContentTypes=[.json]
-      panel.begin { [weak self] response in
-        guard response == .OK,let self,!self.closed,let url=panel.url else{return}
-        do {let writer=try AtomicFileWriter(to:url,maximumBytes:16_384);try writer.append(data);try writer.commit()}
-        catch {self.error=error.localizedDescription}
-      }
-    } catch {self.error=error.localizedDescription}
+      let data=try CustomKernelPreset.encode(settings,format:format)
+      try CustomKernelPresetFile.write(data,to:url);presetError=nil
+    }catch{presetError=error.localizedDescription}
   }
   func close() { closed=true;generation+=1;task?.cancel();task=nil;rendering=false }
 }
@@ -102,6 +114,7 @@ struct OtherVideoSheet:View {
         Button("OK"){model.endGesture();store.filterDraft?.filter=model.filter;model.close();store.commitFilter()}.disabled(!model.ready).keyboardShortcut(.defaultAction)
       }.controlSize(.small)
       if let error=model.error {Text(error).foregroundStyle(.red).font(.caption)}
+      if let error=model.presetError {Text(error).foregroundStyle(.red).font(.caption)}
     }.padding(16).frame(width:840,height:620)
     .task {store.otherVideoWorkspace=model;guard model.image==nil,!model.rendering,let draft=store.filterDraft else{return};await model.prepare(document:store.document,draft:draft)}
     .onDisappear {model.close();if store.otherVideoWorkspace === model {store.otherVideoWorkspace=nil}}
@@ -139,7 +152,7 @@ struct OtherVideoSheet:View {
       number("Scale",choice(\.scale),1...9999)
       number("Offset",choice(\.offset),-9999...9999)
       HStack {Button("Load…"){model.choosePreset()};Button("Save…"){model.savePreset()}}
-      Text("Save and load Photato Custom filter presets.").font(.caption).foregroundStyle(.secondary)
+      Text("Load ACF or Photato JSON presets. Save offers either format.").font(.caption).foregroundStyle(.secondary)
     case .hsbHsl:
       Picker("Input Mode",selection:choice(\.inputMode)){ForEach(OtherVideoSettings.ColorModel.allCases,id:\.self){Text($0.rawValue.uppercased()).tag($0)}}.pickerStyle(.radioGroup)
       Picker("Row Order",selection:choice(\.outputMode)){ForEach(OtherVideoSettings.ColorModel.allCases,id:\.self){Text($0.rawValue.uppercased()).tag($0)}}.pickerStyle(.radioGroup)

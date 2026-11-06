@@ -493,7 +493,7 @@ import UniformTypeIdentifiers
       "relight":["available":store.canBeginFilterKind(.relight),"workspaceOpen":store.relightWorkspace != nil,"previewBusy":store.relightWorkspace?.rendering ?? false,"workspace":store.relightWorkspace?.apiState as Any? ?? NSNull()],
       "photoDetail": ["available":store.canBeginFilterKind(.smartSharpen),"workspaceOpen":store.photoDetailWorkspace != nil,"previewBusy":store.photoDetailWorkspace?.rendering ?? false,"workspace":store.photoDetailWorkspace?.apiState as Any? ?? NSNull()],
       "filterGallery": ["available":store.canBeginFilterKind(.filterGallery),"workspaceOpen":store.filterDraft?.filter.kind == .filterGallery,"previewBusy":store.artisticGalleryWorkspace?.rendering ?? false,"workspace":store.artisticGalleryWorkspace?.apiState as Any? ?? NSNull()],
-      "blurGallery": ["available":store.canBeginFilterKind(.blurGallery),"workspaceOpen":store.filterDraft?.filter.kind == .blurGallery,"previewBusy":store.blurGalleryWorkspace?.rendering ?? false],
+      "blurGallery": ["available":store.canBeginFilterKind(.blurGallery),"workspaceOpen":store.filterDraft?.filter.kind == .blurGallery,"previewBusy":store.blurGalleryWorkspace?.rendering ?? false,"saveMaskToChannels":store.blurGalleryWorkspace?.saveMaskToChannels ?? false,"maskOutputAvailable":store.blurGalleryWorkspace?.canSaveMask ?? (store.canBeginFilterKind(.blurGallery) && (store.document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels),"maskError":store.blurGalleryWorkspace?.maskError as Any],
       "perspectiveWarp": ["available":store.canBeginFilterKind(.perspectiveWarp),"workspaceOpen":store.filterDraft?.filter.kind == .perspectiveWarp,"previewBusy":store.perspectiveWorkspace?.rendering ?? false],
       "puppetWarp": ["available":store.canBeginFilterKind(.puppetWarp),"workspaceOpen":store.filterDraft?.filter.kind == .puppetWarp,"previewBusy":store.puppetWorkspace?.rendering ?? false],
       "warp": ["available":store.canBeginWarp,"previewOpen":store.warpDraft != nil,"previewBusy":store.warpDraft?.rendering ?? false],
@@ -861,6 +861,7 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       try preflight(document)
+      if command.name == CustomKernelPresetAPI.name {return .json(try CustomKernelPresetAPI.convert(command,revision:revision(store)))}
       if command.name == SmartObjectLayerCompAPI.name {
         try await executeSmartObjectComp(command, document: document, shareID: id)
         return .json(state(share, document: document))
@@ -1541,7 +1542,7 @@ import UniformTypeIdentifiers
         }
         try store.executeEditorCommand(command.gradientFillCommand(store.document))
       } else if let native = try command.nativeCommand(document: store.document, lookup: resolveColorLookup(command)) {
-        if command.name == "layer.merge" || command.name == "filter.apply" || command.name.hasPrefix("adjustment.") || command.name.hasPrefix("smartFilter.") {
+        if command.name == "layer.merge" || command.name == "filter.apply" || command.name == BlurGalleryOutputAPI.name || command.name.hasPrefix("adjustment.") || command.name.hasPrefix("smartFilter.") {
           try await executeMerge(
             native, document: document, shareID: id, revision: command.revision)
         } else {
@@ -1752,6 +1753,7 @@ import UniformTypeIdentifiers
       "documentModes": DocumentModeAPI.capabilities,
       "classicTone":ClassicToneAPI.capabilities,
       "histogram": HistogramAPI.capabilities,
+      "customKernelPreset":CustomKernelPresetAPI.capabilities,
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,

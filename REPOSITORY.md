@@ -97,3 +97,9 @@ Original1057Rust files and existing Git history are preserved. No external restr
 ## 2026-11-06 — Repository made public
 
 The maintainer explicitly requested public visibility, superseding the earlier release-day restriction. Verified ADMIN access, changed ForensicIntelligence/Photato to public with the GitHub CLI, then verified PUBLIC/isPrivate=false and unauthenticated HTTPS200. Existing commits/history remain intact. No app release, Store submission, binary upload or live website deployment accompanied this change. Current root/native README and source-availability wording now reflect public access. Dated private-backup records remain historical. The in-progress custom Shape Blur source is not included in this documentation-only publication; the source checkpoint remains443.
+
+## 2026-11-06 — Qualified build 448 source and draft build backup
+
+Checkpoint 449 backs up the full curated native source for build 448, including ACF/JSON Custom Filter presets and Blur Gallery mask output with shared APIs and Actions. The Xcode project, source, tests, licensed fixtures and documentation are included. All 57 selected optimized methods pass on each architecture; full-suite and full Photoshop qualification remain open. The original 1,057 Rust files are unchanged. Generated model/cache/runtime/signing material and the restricted external PSD remain excluded from source; optional model preparation instructions remain.
+
+The universal development ZIP is ad-hoc signed, not notarized or an App Store release. Its upload is an unpublished draft requiring manual approval; public source availability does not publish the app. The [source delivery receipt](PhotoCraftSwift/docs/SOURCE_PUBLICATION_449.json) records actual commit/tree, draft assets and verification after they complete. No repository history is rewritten.

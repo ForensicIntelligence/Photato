@@ -35,8 +35,10 @@ struct AutomationCommand: Sendable {
     var optionalParameters: Set<String> = []
     var schema: [String: Any] {
       if name == PatternLibraryAPI.command { return PatternLibraryAPI.parameterSchema }
+      if name == CustomKernelPresetAPI.name {return CustomKernelPresetAPI.commandSchema}
       var properties: [String: Any] = [:]
       for key in parameters.keys {
+        if name == BlurGalleryOutputAPI.name {properties[key]=BlurGalleryOutputAPI.schema(key);continue}
         if name == WorkspacePanelsAPI.name { properties[key] = WorkspacePanelsAPI.schema(key); continue }
         if name == TransformReferenceAPI.name { properties[key] = TransformReferenceAPI.schema(key); continue }
         if name == MaskManagementAPI.command { properties[key] = MaskManagementAPI.schema(key); continue }
@@ -215,7 +217,7 @@ struct AutomationCommand: Sendable {
       ]
     }
   }
-  static let definitions: [Definition] = [WorkspacePanelsAPI.definition, PatternLibraryAPI.definition] + [.init(name: TransformReferenceAPI.name, parameters: ["workspaceRevision": "Current transform workspace UUID", "point": "Current document-coordinate reference point", "anchor": "Nine-position preset", "visible": "Show reference point"], description: "Edit the active native transform reference point without a document transaction.", optionalParameters: ["point", "anchor", "visible"])] + LayerFilesAPI.definitions + ImageExportAPI.definitions + LayerCompsAPI.definitions + LinkedArtworkAPI.definitions + VariablesAPI.definitions + TimelineWorkspaceAPI.definitions + VideoRenderAPI.definitions + TimelineAudioAPI.definitions + [VideoKeyframeAPI.definition] + ImageSequenceAPI.definitions + VideoAPI.definitions + AnimationAPI.definitions + [
+  static let definitions: [Definition] = [WorkspacePanelsAPI.definition, PatternLibraryAPI.definition, CustomKernelPresetAPI.definition] + [.init(name: TransformReferenceAPI.name, parameters: ["workspaceRevision": "Current transform workspace UUID", "point": "Current document-coordinate reference point", "anchor": "Nine-position preset", "visible": "Show reference point"], description: "Edit the active native transform reference point without a document transaction.", optionalParameters: ["point", "anchor", "visible"])] + LayerFilesAPI.definitions + ImageExportAPI.definitions + LayerCompsAPI.definitions + LinkedArtworkAPI.definitions + VariablesAPI.definitions + TimelineWorkspaceAPI.definitions + VideoRenderAPI.definitions + TimelineAudioAPI.definitions + [VideoKeyframeAPI.definition] + ImageSequenceAPI.definitions + VideoAPI.definitions + AnimationAPI.definitions + [
     .init(name:"image.applyImage",parameters:["source":"Source document/layer/channel","mask":"Optional independent mask source","target":"Optional destination, defaults to current editing target","blending":"Channel blend","opacity":"Percent0–100","scale":"Add/Subtract1–2","offset":"Add/Subtract−255–255","preserveTransparency":"Retain destination alpha"],description:"Blend a source into pixels or a channel through native Apply Image, with one Undo.",optionalParameters:["source","mask","target","blending","opacity","scale","offset","preserveTransparency"]),
     .init(name:"image.calculations",parameters:["source1":"Top source","source2":"Base source","mask":"Optional independent mask source","blending":"Channel blend","opacity":"Percent0–100","scale":"Add/Subtract1–2","offset":"Add/Subtract−255–255","result":"newChannel, selection or newDocument","name":"Optional result name"],description:"Combine two source channels into an alpha channel, selection or shared grayscale document.",optionalParameters:["source1","source2","mask","blending","opacity","scale","offset","result","name"]),
     .init(name:"render.flame",parameters:["settings":"Procedural settings","layerID":"Raster target or new-layer insertion parent","newLayer":"Render on a new raster layer","pathID":"Saved path for Flame"],description:"Render flame through the native raster engine in one undoable transaction.",optionalParameters:["settings","layerID","newLayer","pathID"]),
@@ -393,6 +395,7 @@ struct AutomationCommand: Sendable {
     .init(name: FilterRecallAPI.name, parameters: [:], description: "Repeat captured last-filter settings on the current native target in one Undo transaction; discover filterRecall state."),
     .init(name: "filter.apply", parameters: ["layerID": "uuid", "filter": "filter object: kind plus optional kind-specific parameters"],
       description: "Apply a native raster filter with selection, alpha protection and shared Undo. Requires RGB layer targeting. Discover parameters and limits in filters."),
+    BlurGalleryOutputAPI.definition,
     .init(name: "layer.protection", parameters: ["layerIDs": "one to8,000 unique layer UUIDs",
       "protection": "none or all alone; or transparency, composite, position, artboard_autonest",
       "includeDescendants": "optional boolean, default false"],
@@ -651,6 +654,7 @@ struct AutomationCommand: Sendable {
     case "tone.apply":return .toneAdjustment(try classicToneRequest(document))
     case "render.flame","render.tree","render.pictureFrame":return .proceduralRender(try proceduralRequest(document))
     case "filter.apply": return try filterCommand(document: document)
+    case BlurGalleryOutputAPI.name:return try blurGalleryOutputCommand(in:document)
     case GradientFillAPI.command: return try gradientFillCommand(document)
     case "text.layout":return try textLayoutCommand(document)
     case "text.glyph":return try insertTypeGlyph(document)

@@ -1,0 +1,20 @@
+{
+  "step": 444,
+  "run": "artifacts/runs/20261106T143455Z-444-custom-shape-blur",
+  "status": "Public visibility verified; custom Shape Blur Source03inprogress42of43Debug; independent oracle mismatch; F01current",
+  "current_pass": 2,
+  "current_major_workflow": "F01",
+  "next": "F02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "443Source12/Release04",
+  "source_inputs_baseline": 7361,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T143455Z-444-custom-shape-blur/source03-source.json",
+  "source_inputs": 7365,
+  "evidence": "docs/CUSTOM_SHAPE_BLUR_444.json",
+  "source_publication": false,
+  "repository_visibility": "public",
+  "public_documentation_commit": "e5f23cb54a1161057b063fc04db99191cfd9ed23",
+  "public_source_checkpoint": 443
+}

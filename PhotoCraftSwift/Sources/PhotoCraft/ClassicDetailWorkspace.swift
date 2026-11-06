@@ -32,6 +32,15 @@ import UniformTypeIdentifiers
     guard f != filter else{if error != nil {refresh()};return};if remember && gestureStart==nil { self.remember(filter) };filter=f;refresh()
   }
   func update(_ edit:(inout RasterFilter)->Void) { var f=filter;edit(&f);change(f) }
+  func chooseShape(_ preset:ShapePreset)throws {
+    guard !closed,filter.kind == .shapeBlur else {throw CraftError.invalid("Open Shape Blur before choosing a kernel.")}
+    let snapshot=try ShapeBlurKernel(name:preset.name,path:preset.path)
+    update{$0.classicDetail?.shape = .circle;$0.classicDetail?.kernel=snapshot}
+  }
+  func chooseBuiltInShape(_ shape:ClassicDetailSettings.Shape) {
+    guard !closed,filter.kind == .shapeBlur else{return}
+    update{$0.classicDetail?.kernel=nil;$0.classicDetail?.shape=shape}
+  }
   func beginGesture() { if gestureStart==nil { gestureStart=filter } }
   func endGesture() { if let old=gestureStart,old != filter { remember(old) };gestureStart=nil }
   func undo() { endGesture();guard let f=undoStates.popLast() else{return};redoStates.append(filter);change(f,remember:false) }
@@ -119,7 +128,27 @@ struct ClassicDetailSheet:View {
       Text("Drag in the preview to set the blur center.").font(.caption).foregroundStyle(.secondary)
     case .shapeBlur:
       number("Radius (pixels)",choice(\.radius),5...1000)
-      Picker("Shape",selection:choice(\.shape)){ForEach(ClassicDetailSettings.Shape.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}
+      Menu {
+        Section("Built-in shapes") {
+          ForEach(ClassicDetailSettings.Shape.allCases,id:\.self){shape in
+            Button(shape.rawValue.capitalized){model.chooseBuiltInShape(shape)}
+          }
+        }
+        Section("Saved shapes") {
+          ForEach(store.shapes.shapes){preset in
+            Button {do{try model.chooseShape(preset)}catch{model.error=error.localizedDescription}} label:{
+              Label {Text(preset.name)} icon:{ShapeSwatch(path:preset.path)}
+            }
+          }
+          if store.shapes.shapes.isEmpty {Text("No saved custom shapes")}
+        }
+      } label:{
+        HStack {
+          if let kernel=settings.kernel {ShapeSwatch(path:(try? kernel.previewPath()) ?? kernel.path).frame(width:28,height:24)}
+          Text(settings.kernel?.name ?? settings.shape.rawValue.capitalized)
+        }
+      }.accessibilityLabel("Shape Blur kernel").accessibilityValue(settings.kernel?.name ?? settings.shape.rawValue.capitalized)
+      Text("Custom shapes come from the Shapes panel. The chosen shape is saved with this filter.").font(.caption).foregroundStyle(.secondary)
     case .smartBlur:
       number("Radius (pixels)",choice(\.radius),0.1...100,step:0.1)
       number("Threshold",choice(\.threshold),0.1...100,step:0.1)
