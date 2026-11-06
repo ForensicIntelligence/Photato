@@ -167,5 +167,6 @@
     "Current five u8cases have565/614/578/751/756different Floatwords and239/244/225/342/344changed pixels, alpha maximum1byte; straight RGB also differs. This is not merely a one-ULP normalization residual. Current cross-architecture byte identity is false."
   ],
   "goal_complete": false,
-  "distribution": "Isolated ad-hoc validation package only. Private development source backup planned; no install, launch, Xcodearchive, Store, binary upload, public release or stable/full-parity claim."
+  "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day.",
+  "private_source_backup": "docs/SOURCE_PUBLICATION_438.json"
 }

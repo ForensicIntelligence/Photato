@@ -2,7 +2,7 @@
   "step": "dev-step-438",
   "application_build": 438,
   "source": "438Source04/Release01",
-  "status": "Selected native point-anchor/caret/typing/formatting/commit/Undo and panel workflows pass both architectures. Exact-output tests retain two unresolved methods; not a completely green or fully stable-qualified build.",
+  "status": "438selected native workflow and private development source backup verified; exact-output failures retained; T04current",
   "reference": "docs/POINT_TEXT_LAYOUT_438.json",
   "software_changes": true,
   "qualification": "Debug132/133; same468optimized ARM467/Intel466; selected native workflows passboth. Imported reference and fiveRosettau8ordinary-output assertions remain; affected suites fail. Universal packaging/signature/ZIPpasses. Fullscope/fullsuite/physical/PSopen.",
@@ -33,6 +33,8 @@
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
-  "new_private_push": false,
-  "goal_complete": false
+  "new_private_push": true,
+  "goal_complete": false,
+  "source_publication": "docs/SOURCE_PUBLICATION_438.json",
+  "source_commit": "211a318af342788a705334992f7adb28f05f90fc"
 }
