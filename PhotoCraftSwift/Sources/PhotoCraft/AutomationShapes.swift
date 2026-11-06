@@ -27,6 +27,8 @@ enum ShapeAPI {
     case "path":return PathAPI.path
     case "definition":return definition
     case "component":return component
+    case "point":return ShapeCreationAPI.pointSchema
+    case "fromCenter":return BrushAPI.flag
     case "transform":return transform
     case "mode":return BrushAPI.enumeration(ShapeOutputMode.allCases.map(\.rawValue))
     case "strokePreset":return BrushAPI.enumeration(ShapeStrokePreset.selectable.map(\.rawValue))
@@ -37,11 +39,11 @@ enum ShapeAPI {
     default:return ["type":"string","minLength":1,"maxLength":255]
   }}
   static var stateSchema:[String:Any]{
-    let fields:[String:Any]=["available":BrushAPI.flag,"mode":schema("mode"),"combine":schema("combine"),"template":definition,"templateStrokePreset":BrushAPI.enumeration(ShapeStrokePreset.allCases.map(\.rawValue)),"activeStrokePreset":["anyOf":[BrushAPI.enumeration(ShapeStrokePreset.allCases.map(\.rawValue)),["type":"null"]]],"draftOpen":BrushAPI.flag,"gestureActive":BrushAPI.flag,"libraryRevision":BrushAPI.number(0,Double(Int32.max),integer:true),"library":array(BrushAPI.object(["id":schema("presetID"),"name":schema("name"),"path":path],required:["id","name","path"]),128),"selectedPresetID":["anyOf":[["type":"null"],schema("presetID")]],"libraryError":["anyOf":[["type":"null"],["type":"string"]]]]
+    let fields:[String:Any]=["available":BrushAPI.flag,"mode":schema("mode"),"combine":schema("combine"),"template":definition,"templateStrokePreset":BrushAPI.enumeration(ShapeStrokePreset.allCases.map(\.rawValue)),"activeStrokePreset":["anyOf":[BrushAPI.enumeration(ShapeStrokePreset.allCases.map(\.rawValue)),["type":"null"]]],"creationDraft":ShapeCreationAPI.draftSchema,"draftOpen":BrushAPI.flag,"gestureActive":BrushAPI.flag,"libraryRevision":BrushAPI.number(0,Double(Int32.max),integer:true),"library":array(BrushAPI.object(["id":schema("presetID"),"name":schema("name"),"path":path],required:["id","name","path"]),128),"selectedPresetID":["anyOf":[["type":"null"],schema("presetID")]],"libraryError":["anyOf":[["type":"null"],["type":"string"]]]]
     return BrushAPI.object(fields,required:Array(fields.keys))
   }
   static var sourceSchema:[String:Any]{BrushAPI.object(["cachePresent":BrushAPI.flag,"cacheIsPristine":BrushAPI.flag,"cacheX":BrushAPI.number(-1000000,1000000,integer:true),"cacheY":BrushAPI.number(-1000000,1000000,integer:true),"cacheWidth":BrushAPI.number(0,32768,integer:true),"cacheHeight":BrushAPI.number(0,32768,integer:true),"vectorRecordBytes":BrushAPI.number(0,4194304,integer:true)],required:["cachePresent","cacheIsPristine","cacheX","cacheY","cacheWidth","cacheHeight","vectorRecordBytes"])}
-  static var capabilities:[String:Any]{["strokePresets":strokePresetCapabilities,"layerSourceSchema":["anyOf":[sourceSchema,["type":"null"]]],"commands":commands,"definitionSchema":definition,"componentSchema":component,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","shapes"],"properties":["revision":["type":"string"],"shapes":stateSchema]],"libraryResultSchema":["type":"object","required":["revision","state"],"properties":["revision":["type":"string"],"state":stateSchema,"presetID":schema("presetID"),"data":["type":"string","contentEncoding":"base64","maxLength":22369624]]],"defaults":BrushAPI.json(ShapeDefinition(geometry:.init())),"nativeArchiveVersion":33,"extendedShapeVersion":68,"actionLibraryVersion":5,"extendedShapeActionVersion":24,"coordinates":"Physical local pixels. transform places the logical shape origin in document coordinates. Component transforms are local to that origin. Dash lengths/phase are local pixels, or multiples of stroke width when widthRelativeDashes is true. Gradients capture fixed colors; patterns reference embedded document or native preset IDs.","limits":"1–64 parametric components, 8MP shape rasterization budget. Native presets128/16MiB; API requests4MiB, preset import base64<=3000000 characters. API sharing4MP/8,000 layers/128MiB. Open contours, exact path overrides/live controls, opacity and path/outline strokes, width-relative dashes, inversion frames and source appearance require native68/Actions24. Source caches remain pristine until explicit shape editing. Complete components required; omitted top-level definition fields use native defaults.","qualification":"Native shape/path/pixels outputs and native presets. Editable PSD shapes, Adobe .csh transport, exact stroke/corner/pixel/default equivalence and live/platform checks remain open. The pinned Adobe v2 contract has no dedicated shape route; none is invented."]}
+  static var capabilities:[String:Any]{["preciseCreation":ShapeCreationAPI.capabilities,"strokePresets":strokePresetCapabilities,"layerSourceSchema":["anyOf":[sourceSchema,["type":"null"]]],"commands":commands,"definitionSchema":definition,"componentSchema":component,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","shapes"],"properties":["revision":["type":"string"],"shapes":stateSchema]],"libraryResultSchema":["type":"object","required":["revision","state"],"properties":["revision":["type":"string"],"state":stateSchema,"presetID":schema("presetID"),"data":["type":"string","contentEncoding":"base64","maxLength":22369624]]],"defaults":BrushAPI.json(ShapeDefinition(geometry:.init())),"nativeArchiveVersion":33,"extendedShapeVersion":68,"actionLibraryVersion":5,"extendedShapeActionVersion":24,"coordinates":"Physical local pixels. transform places the logical shape origin in document coordinates. Component transforms are local to that origin. Dash lengths/phase are local pixels, or multiples of stroke width when widthRelativeDashes is true. Gradients capture fixed colors; patterns reference embedded document or native preset IDs.","limits":"1–64 parametric components, 8MP shape rasterization budget. Native presets128/16MiB; API requests4MiB, preset import base64<=3000000 characters. API sharing4MP/8,000 layers/128MiB. Open contours, exact path overrides/live controls, opacity and path/outline strokes, width-relative dashes, inversion frames and source appearance require native68/Actions24. Source caches remain pristine until explicit shape editing. Complete components required; omitted top-level definition fields use native defaults.","qualification":"Native shape/path/pixels outputs and native presets. Editable PSD shapes, Adobe .csh transport, exact stroke/corner/pixel/default equivalence and live/platform checks remain open. The pinned Adobe v2 contract has no dedicated shape route; none is invented."]}
   static var strokePresetCapabilities: [String: Any] {
     ["parameter":"strokePreset", "commands":["shape.configure","shape.edit"], "values":ShapeStrokePreset.selectable.map(\.rawValue),
       "state":["template":"shapes.templateStrokePreset","activeLayer":"shapes.activeStrokePreset"],
@@ -68,35 +70,54 @@ extension AutomationCommand {
   func shapeDefinition()throws->ShapeDefinition{let result=try ShapeAPI.decode(ShapeDefinition.self,parameters["definition"],schema:ShapeAPI.definition,base:.init(geometry:.init()));try result.validate();return result}
   func shapeCommand(_ document:CraftDocument,patterns:[RasterPattern])throws->Command{
     let operation=try string("operation"),required:Set<String>,optional:Set<String>
-    switch operation{case "path":required=["path","layerID"];optional=[];case "create":required=["definition"];optional=["name","mode","transform","layerID","strokePreset"];case "configure":required=["layerID"];optional=["definition","strokePreset"];case "append":required=["component","layerID"];optional=[];default:throw AutomationFailure(status:400,message:"Unknown shape operation.")}
+    switch operation{case "path":required=["path","layerID"];optional=[];case "create":required=["definition"];optional=["name","mode","transform","layerID","strokePreset","point","fromCenter","combine"];case "configure":required=["layerID"];optional=["definition","strokePreset"];case "append":required=["component","layerID"];optional=[];default:throw AutomationFailure(status:400,message:"Unknown shape operation.")}
     let keys=Set(parameters.keys).subtracting(["operation"]);guard required.isSubset(of:keys),keys.isSubset(of:required.union(optional)) else{throw AutomationFailure(status:400,message:"Missing or irrelevant shape parameters.")}
-    if operation == "path" {
-      let id=try actionUUID("layerID")
-      guard let layer=document.layers.first(where:{$0.id==id}),layer.shape != nil else{throw AutomationFailure(status:404,message:"Shape layer not found.")}
-      let path=try ShapeAPI.decode(VectorPath.self,parameters["path"],schema:PathAPI.path,base:VectorPath())
-      return .shape(.configure(id,try layer.replacingShapePath(path,canvas:.init(x:0,y:0,width:document.width,height:document.height))))
+    switch operation {
+    case "path":return try shapePathCommand(document)
+    case "append":let value=try ShapeAPI.decode(ShapeComponent.self,parameters["component"],schema:ShapeAPI.component,base:.init(geometry:.init()));return .shape(.append(try actionUUID("layerID"),value))
+    case "configure":return try shapeConfigureCommand(document,patterns:patterns)
+    default:return try shapeCreateCommand(document,patterns:patterns)
     }
-    if operation == "append"{let value=try ShapeAPI.decode(ShapeComponent.self,parameters["component"],schema:ShapeAPI.component,base:.init(geometry:.init()));return .shape(.append(try actionUUID("layerID"),value))}
-    var definition: ShapeDefinition
-    if operation == "configure", parameters["definition"] == nil {
-      guard parameters["strokePreset"] != nil else { throw AutomationFailure(status:400,message:"Supply definition or strokePreset.") }
-      let id = try actionUUID("layerID")
-      guard let shape = document.layers.first(where: { $0.id == id })?.shape else { throw AutomationFailure(status:404,message:"Shape layer not found.") }
-      definition = shape.editableDefinition
-    } else { definition = try shapeDefinition() }
-    if let preset = try shapeStrokePreset() { definition.stroke = preset.applied(to: definition.stroke) }
+  }
+  // Keep Layer lookups in path/configure off the pixel-creation call stack.
+  @inline(never) private func shapePathCommand(_ document:CraftDocument)throws->Command {
+    let id=try actionUUID("layerID")
+    guard let layer=document.layers.first(where:{$0.id==id}),layer.shape != nil else{throw AutomationFailure(status:404,message:"Shape layer not found.")}
+    let path=try ShapeAPI.decode(VectorPath.self,parameters["path"],schema:PathAPI.path,base:VectorPath())
+    return .shape(.configure(id,try layer.replacingShapePath(path,canvas:.init(x:0,y:0,width:document.width,height:document.height))))
+  }
+  private func shapeResources(_ definition:ShapeDefinition,document:CraftDocument,patterns:[RasterPattern])->[RasterPattern] {
+    let ids=Set([definition.fill.pattern?.patternID,definition.stroke.paint.pattern?.patternID].compactMap{$0})
+    return patterns.filter{ids.contains($0.id) && document.pattern($0.id)==nil}
+  }
+  @inline(never) private func shapeConfigureCommand(_ document:CraftDocument,patterns:[RasterPattern])throws->Command {
+    var definition:ShapeDefinition
+    if parameters["definition"]==nil {
+      guard parameters["strokePreset"] != nil else{throw AutomationFailure(status:400,message:"Supply definition or strokePreset.")}
+      let id=try actionUUID("layerID")
+      guard let shape=document.layers.first(where:{$0.id==id})?.shape else{throw AutomationFailure(status:404,message:"Shape layer not found.")}
+      definition=shape.editableDefinition
+    }else{definition=try shapeDefinition()}
+    if let preset=try shapeStrokePreset(){definition.stroke=preset.applied(to:definition.stroke)}
     try definition.validate()
-    let ids=Set([definition.fill.pattern?.patternID,definition.stroke.paint.pattern?.patternID].compactMap{$0}),resources=patterns.filter{ids.contains($0.id) && document.pattern($0.id)==nil}
-    if operation == "configure"{return .shape(.configure(try actionUUID("layerID"),definition,patterns:resources))}
+    return .shape(.configure(try actionUUID("layerID"),definition,patterns:shapeResources(definition,document:document,patterns:patterns)))
+  }
+  private func shapeCreateCommand(_ document:CraftDocument,patterns:[RasterPattern])throws->Command {
+    var definition=try shapeDefinition()
+    if let preset=try shapeStrokePreset(){definition.stroke=preset.applied(to:definition.stroke)}
+    try definition.validate()
+    let resources=shapeResources(definition,document:document,patterns:patterns)
     let mode=try ShapeAPI.decode(ShapeOutputMode.self,parameters["mode"],schema:ShapeAPI.schema("mode"),base:.shape)
     let placement=try ShapeAPI.decode(Transform2D.self,parameters["transform"],schema:ShapeAPI.transform,base:.identity)
     let target=try parameters["layerID"].map{_ in try actionUUID("layerID")} ?? document.activeLayerID
     let name=try parameters["name"].map{_ in try string("name")} ?? "Shape"
+    if let precise=try preciseShapeCreation(definition,mode:mode,target:target,name:name){return try precise.command(in:document,patterns:resources)}
     return try ShapeRenderer.creation(definition,name:name,placement:placement,mode:mode,target:target,document:document,patterns:resources)
   }
 }
+
 extension EditorStore {
-  var shapeState:[String:Any]{["available":canDrawShapes,"mode":shapeMode.rawValue,"combine":shapeOperation?.rawValue as Any? ?? NSNull(),"template":BrushAPI.json(shapeTemplate),"templateStrokePreset":ShapeStrokePreset.matching(shapeTemplate.stroke).rawValue,"activeStrokePreset":activeLayer?.shape.map{ShapeStrokePreset.matching($0.editableDefinition.stroke).rawValue} as Any? ?? NSNull(),"draftOpen":shapeDraft != nil,"gestureActive":shapeGesture != nil,"libraryRevision":shapes.revision,"library":shapes.shapes.map{BrushAPI.json($0)},"selectedPresetID":selectedShapeID?.uuidString as Any? ?? NSNull(),"libraryError":shapes.loadError as Any? ?? NSNull()]}
+  var shapeState:[String:Any]{["available":canDrawShapes,"mode":shapeMode.rawValue,"combine":shapeOperation?.rawValue as Any? ?? NSNull(),"template":BrushAPI.json(shapeTemplate),"templateStrokePreset":ShapeStrokePreset.matching(shapeTemplate.stroke).rawValue,"activeStrokePreset":activeLayer?.shape.map{ShapeStrokePreset.matching($0.editableDefinition.stroke).rawValue} as Any? ?? NSNull(),"creationDraft":shapeCreationDraft.map{draft in ["kind":draft.definition.components[0].geometry.kind.rawValue,"point":["x":draft.point.x,"y":draft.point.y],"fromCenter":draft.fromCenter,"linkedCorners":draft.linkedCorners,"definition":BrushAPI.json(draft.definition),"mode":draft.mode.rawValue,"combine":draft.combine?.rawValue as Any? ?? NSNull()] as [String:Any]} as Any? ?? NSNull(),"draftOpen":shapeDraft != nil,"gestureActive":shapeGesture != nil,"libraryRevision":shapes.revision,"library":shapes.shapes.map{BrushAPI.json($0)},"selectedPresetID":selectedShapeID?.uuidString as Any? ?? NSNull(),"libraryError":shapes.loadError as Any? ?? NSNull()]}
   func configureShape(_ command:AutomationCommand)throws{
     var definition=shapeTemplate,mode=shapeMode,operation=shapeOperation,presetID=selectedShapeID
     if command.parameters["definition"] != nil{definition=try command.shapeDefinition();guard definition.components.count==1 else{throw AutomationFailure(status:400,message:"Tool settings use one primitive.")}}

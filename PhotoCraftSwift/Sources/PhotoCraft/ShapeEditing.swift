@@ -46,7 +46,7 @@ enum ShapeStrokePreset: String, CaseIterable, Sendable {
 struct ShapeGesture:Sendable {
   let original:CraftDocument,start:CGPoint,definition:ShapeDefinition,mode:ShapeOutputMode,target:UUID?,operation:PathOperation?
   var end:CGPoint
-  var square=false,center=false
+  var square=false,center=false,dragged=false
   func result()throws->(ShapeDefinition,Transform2D){
     var definition=definition,dx=end.x-start.x,dy=end.y-start.y
     if square{let size=max(abs(dx),abs(dy));dx=(dx<0 ? -1:1)*size;dy=(dy<0 ? -1:1)*size}

@@ -1,0 +1,84 @@
+{
+  "step": 433,
+  "recorded_at_utc": "2026-11-06T04:42:51.553491+00:00",
+  "application_build": 433,
+  "source": "433Source02",
+  "source_manifest": "artifacts/runs/20261106T043001Z-433-channel-footer/source02-source.json",
+  "source_inputs": 7257,
+  "production_swift_files": 1062,
+  "debug_app_sha256": "6a0fbbf81b1e997a5af72afa15a9bcd5c15b3dc02e7915abfc9de0b9380797b8",
+  "run": "artifacts/runs/20261106T043001Z-433-channel-footer",
+  "current_pass": 2,
+  "delivered_package": "C01",
+  "next_major_workflow": "AUT01",
+  "status": "Native Channels footer quick Save/direct Load, Option Save options and SmartFilter-mask selection source pass58focused Debug/all8new methods. Full C01 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Ordinary Save creates an automatically named alpha from current selection through the existing prepared channel command; Option Save opens the retained dialog. Capacity never silently overwrites an existing channel.",
+    "Load resolves the actual selected saved/QuickMask/component/composite/pixel/SmartFilter-mask or single ink source, without a dialog or arbitrary first-channel fallback. Partial ambiguous sets remain unavailable.",
+    "New SmartFilter-mask source projects the retained raw numeric plane through existing document mask geometry/outside sampling; display density/feather/enabled do not alter this numeric source. Source masks/layer data remain unchanged.",
+    "Native/API share existing Core Save/Load commands. Strict smartFilterMask kind+owner-id schema, source lists/titles and footer state/capabilities accompany the implementation; no new command/archive/Actions format.",
+    "Prepared source/session/workingColorSettings/busy/cancel/revision/revocation guards, Undo and edit/eye-state retention remain."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/save-and-load-selections.html",
+      "read": "2026-11-05",
+      "supports": "Quick save and direct selected-alpha footer load; does not establish all component/mask/multi-target or modifier contexts."
+    },
+    {
+      "url": "https://helpx.adobe.com/pdf/photoshop_reference.pdf",
+      "read": "2026-11-05 search text",
+      "supports": "Published Option-click Save Selection options; older/current table context not a new live factory-default check."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/mask-smart-filter-effects.html",
+      "read": "2026-11-05",
+      "supports": "SmartFilter masks as channels supporting selection workflows; exact current numeric/gesture equivalence unqualified."
+    }
+  ],
+  "debug": "artifacts/runs/20261106T043001Z-433-channel-footer/source02-summary.json",
+  "debug_cases": 58,
+  "new_methods": [
+    "PhotoCraftAppTests.ChannelFooterWorkflowTests/testCancelledNativeSourceReplacementAndRevokedAPIWorkNeverCommit",
+    "PhotoCraftAppTests.ChannelFooterWorkflowTests/testLoadUsesSelectedAlphaComponentAndBothTemporaryMasksWithoutDialogOrTargetChanges",
+    "PhotoCraftAppTests.ChannelFooterWorkflowTests/testNativeAndHTTPExistingCommandsMatchSaveLoadAndNewFilterSourceSchemaState",
+    "PhotoCraftAppTests.ChannelFooterWorkflowTests/testQuickSavePreservesTargetPixelsAndSelectionWithOneUndoAtAllDepthsAndMaximumCanvas",
+    "PhotoCraftAppTests.ChannelFooterWorkflowTests/testSaveModifierMatrixOptionsCancelNamingAndCapacity",
+    "PhotoCraftImagingTests.FilterMaskSelectionSourceTests/testFilterMaskUsesRawNumericPlaneDocumentTransformAndOutsideWithoutChangingSource",
+    "PhotoCraftImagingTests.FilterMaskSelectionSourceTests/testMaximumSparseCanvasFilterMaskSourceRetainsBoundedCoverage",
+    "PhotoCraftImagingTests.FilterMaskSelectionSourceTests/testMissingOwnersMasksAndCancellationDoNotReturnCoverage"
+  ],
+  "debug_build_seconds": 10.7,
+  "debug_test_seconds": 5.211,
+  "failed_attempts": [
+    {
+      "source": "433Source01",
+      "summary": "artifacts/runs/20261106T043001Z-433-channel-footer/source01-summary.json",
+      "description": "App compiled; test fixture called an internal Core rectangle helper. Source/logs/5322outputs preserved before only new test fixture used public sparse Surface/SelectionMask with identical2x2coverage. Prior linked XCTest not qualified; original manifest retained before note."
+    }
+  ],
+  "test_only_repair": "Source01/02app hashes identical. Only new ChannelFooterWorkflowTests.swift changed; no production/old fixture/expectation/tolerance change.",
+  "capture_qualification": "Controlled store/native prepared workflows and API tests, no screenshot or live/physical UI claim. Existing icon layout retained.",
+  "adobe_API": "Pinned Adobe v2 has no dedicated native Channels footer/selection source endpoint. Existing generic execute-actions does not qualify unknown channel descriptors; no endpoint or descriptor invented.",
+  "cursor": "Existing native button icons and AppKit arrow/control cursors retained. Option Save is a native button options action; no drawing tool/alternate canvas cursor added. All16Control/Command/Option/Shift Save policies tested; exact physical/Photoshop combined gestures open.",
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 432,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Full original C01 component visibility/edit targets, temporary mask/context, eye/thumbnail/factory-shortcut, paint/filter and multi-target functionality remains open wherever missing or unqualified.",
+    "Native partial multi-component/multi-ink footer Load is deliberately unavailable: no guessed combination or arbitrary first channel. Exact Photoshop combined-source and modified Load gestures need reference-driven implementation/qualification.",
+    "Native/API Save Selection retains existing alpha/new-document destination support. Layer-mask destinations, source dragging onto the Load footer and missing component/temporary-mask thumbnail Load gestures remain functional stillneeded. Public older guidance names broader destinations; current contextual behavior still needs qualification.",
+    "Source-specific limits, full profile/default/output fidelity, earlier Gray32one-ULP and full-suite/Debug residuals, dense maximum, supported physical platforms and60fps remain open. The tests establish selected sparse paths, not universal capacity/performance or Photoshop parity.",
+    "No current optimized universal/full-suite/live UI/Photoshop qualification. Last optimized/universal/private-source checkpoint432. Existing human Mac-unlock request remains pending; no CUA/browser workaround or repeated question."
+  ],
+  "distribution": "No new install/launch/archive/upload/Store/release/private push. Batch optimized/universal/private-source at next meaningful stable milestone after432."
+}

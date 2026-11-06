@@ -101,6 +101,8 @@ struct WorkspaceView: View {
     .sheet(item: $store.skyWorkspace) { SkySheet(store:store,model:$0) }
     .sheet(item: $store.vanishingWorkspace) { VanishingSheet(store:store,model:$0) }
     .sheet(item:$store.shapedTypeDraft,onDismiss:{store.cancelShapedType()}){ShapedTypeSheet(store:store,model:$0)}
+    .sheet(item:$store.pathFillDraft){PathFillSheet(store:store,draft:$0)}
+    .sheet(item:$store.shapeCreationDraft){ShapeCreationSheet(store:store,draft:$0)}
     .sheet(item: $store.shapeDraft,onDismiss:{store.shapePreview=nil;store.render()}) { ShapeSheet(store:store,draft:$0) }
     .sheet(item: $store.frameDraft) { FrameSheet(store: store, draft: $0) }
     .sheet(item: $store.layerFileDraft) { LayerFileSheet(store: store, draft: $0) }

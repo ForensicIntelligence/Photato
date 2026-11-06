@@ -17,6 +17,9 @@ public struct PixelPaintRequest:Codable,Equatable,Sendable{
   public var kind:PixelPaintKind,target:PixelPaintTarget,settings:PixelPaintSettings
   public var pattern:RasterPattern?
   public var patternPlacement:PatternPlacement?
+  /// Captured path coverage clips the current selection at execution; never replaces it.
+  public var pathCoverage:SelectionMask?
+  public var pathClear:Bool?
   public init(_ kind:PixelPaintKind,target:PixelPaintTarget,settings:PixelPaintSettings,pattern:RasterPattern?=nil,placement:PatternPlacement?=nil){self.kind=kind;self.target=target;self.settings=settings;self.pattern=pattern;self.patternPlacement=placement}
 }
 public enum PixelFillStroke{
@@ -32,12 +35,18 @@ public enum PixelFillStroke{
     try Task.checkCancellation();try request.settings.validate(request.kind)
     guard available(document,target:request.target) else{throw CraftError.unsupported("Choose an unlocked raster layer, pixel mask or auxiliary channel in a supported static document. Rasterize live content explicitly first.")}
     guard request.pattern==nil || request.kind == .fill,request.pattern != nil || request.patternPlacement==nil else{throw CraftError.invalid("Only Pattern Fill accepts a captured pattern and placement.")}
+    if let path=request.pathCoverage {
+      guard request.kind == .fill,case .layer(let id)=request.target,path.width==document.width,path.height==document.height else{throw CraftError.invalid("Path Fill requires canvas-sized coverage and a raster-layer target.")}
+      if request.pathClear == true,let index=document.layers.firstIndex(where:{$0.id==id}),document.layers[index].isBackground{throw CraftError.invalid("Clear is unavailable on a Background layer.")}
+    }else if request.pathClear != nil {throw CraftError.invalid("Path Clear requires path coverage.")}
+    let clipCoverage=request.pathCoverage == nil ? nil:try document.coverageSelection()?.coverageSurface()
     let sampler=try request.pattern.map{try PatternSampler($0,placement:request.patternPlacement ?? .init())}
     let uniformInk:Pixel?=request.pattern.flatMap{pattern in pattern.surface.tileCount==0 ? pattern.surface.defaultPixel:pattern.surface.width==1 && pattern.surface.height==1 ? pattern.surface.pixel(x:0,y:0):nil}
     if request.settings.opacity==0 || request.pattern==nil && request.settings.color.a==0{return}
     let canvas=IntRect(x:0,y:0,width:document.width,height:document.height),settings=request.settings
     var coverage:Surface
-    if let selection=try document.coverageSelection(){coverage=try selection.coverageSurface()}
+    if let path=request.pathCoverage{coverage=try path.coverageSurface()}
+    else if let selection=try document.coverageSelection(){coverage=try selection.coverageSurface()}
     else if request.kind == .stroke,case .layer(let id)=request.target,let layer=document.layers.first(where:{$0.id==id}),case .raster(let source)=layer.content{
       let alpha=try source.mappedStoredSamples(encoding:.sRGB){Pixel($0.a,$0.a,$0.a)}
       coverage=try ScalarPlaneProjection.render(alpha,placement:.init(layer.coordinateTransform),bounds:canvas,exterior:0,interpolation:.bilinear).quantizedCoverageStorage()
@@ -54,8 +63,8 @@ public enum PixelFillStroke{
     case .layer(let id),.mask(let id):
       let index=candidate.layers.firstIndex{$0.id==id}!,isMask:Bool;if case .mask=request.target{isMask=true}else{isMask=false};var layer=candidate.layers[index]
       let preserve = !isMask && (settings.preserveTransparency || document.isTransparencyLocked(id))
-      try ClonePainter.paintTarget(mask:isMask,bounds:bounds,on:&layer,clipping:canvas,preserveTransparency:preserve){pixels,transform,_ in
-        let original=pixels;try paint(&pixels,transform:transform,coverage:coverage,settings:settings,scalar:isMask,preserve:preserve,pattern:sampler,uniformInk:uniformInk);return pixels != original
+      try ClonePainter.paintTarget(mask:isMask,bounds:bounds,on:&layer,clipping:canvas,preserveTransparency:preserve || request.pathClear == true){pixels,transform,_ in
+        let original=pixels;try paint(&pixels,transform:transform,coverage:coverage,settings:settings,scalar:isMask,preserve:preserve,pattern:sampler,uniformInk:uniformInk,clip:clipCoverage,clear:request.pathClear == true);return pixels != original
       }
       candidate.layers[index]=layer
     }
@@ -73,7 +82,7 @@ public enum PixelFillStroke{
       return try a.combiningStoredSamples(with:b){x,y in let v=(x.r+y.r)/2;return Pixel(v,v,v)}
     }
   }
-  static func paint(_ pixels:inout Surface,transform:Transform2D,coverage:Surface,settings:PixelPaintSettings,scalar:Bool,preserve:Bool,invert:Bool=false,pattern:PatternSampler?=nil,uniformInk:Pixel?=nil)throws{
+  static func paint(_ pixels:inout Surface,transform:Transform2D,coverage:Surface,settings:PixelPaintSettings,scalar:Bool,preserve:Bool,invert:Bool=false,pattern:PatternSampler?=nil,uniformInk:Pixel?=nil,clip:Surface?=nil,clear:Bool=false)throws{
     let inverse=try transform.inverted(),old=pixels,canvas=IntRect(x:0,y:0,width:coverage.width,height:coverage.height),local=IntRect(x:0,y:0,width:pixels.width,height:pixels.height)
     let linear = !scalar && pixels.depth == .f32
     var constant=settings.color;if scalar{let gray=unit(0.2126*constant.r+0.7152*constant.g+0.0722*constant.b);constant=Pixel(gray,gray,gray,constant.a)}
@@ -82,6 +91,7 @@ public enum PixelFillStroke{
       var color=constant
       if let sampled=uniformInk ?? pattern?.sample(x:Double(x)+0.5,y:Double(y)+0.5){color=sampled;if scalar{let gray=unit(0.2126*sampled.r+0.7152*sampled.g+0.0722*sampled.b);color=Pixel(gray,gray,gray,sampled.a)}}
       guard color.a>0 else{return p}
+      if clear{if preserve{return p};return Pixel(p.r,p.g,p.b,p.a*(1-amount*settings.opacity*color.a))}
       if settings.mode == .normal,amount*settings.opacity==1,color.a==1{if scalar{let gray=unit(invert ? 1-color.r:color.r);return Pixel(gray,gray,gray)};return Pixel(color.r,color.g,color.b,preserve ? p.a:1)}
       let gray=unit(invert ? 1-p.r:p.r),base=scalar ? Pixel(gray,gray,gray):p,back=linear ? SRGBTransfer.linear(base):base,ink=linear ? SRGBTransfer.linear(color):color
       let value=preserve ? ProtectedPixels.composite(settings.mode,backdrop:back,source:ink,opacity:amount*settings.opacity,x:x,y:y):settings.mode.composite(backdrop:back,source:ink,opacity:amount*settings.opacity,x:x,y:y)
@@ -89,15 +99,15 @@ public enum PixelFillStroke{
       let out=unit(invert ? 1-result.r:result.r);return scalar ? Pixel(out,out,out):result
     }
     let placed=try transform.bounds(width:pixels.width,height:pixels.height)
-    if (pattern==nil || uniformInk != nil),coverage.tileCount==0,coverage.defaultPixel.r>0,settings.mode != .dissolve,placed.x>=0,placed.y>=0,placed.x+placed.width<=canvas.width,placed.y+placed.height<=canvas.height{
+    if clip==nil,(pattern==nil || uniformInk != nil),coverage.tileCount==0,coverage.defaultPixel.r>0,settings.mode != .dissolve,placed.x>=0,placed.y>=0,placed.x+placed.width<=canvas.width,placed.y+placed.height<=canvas.height{
       let encoding=pixels.colorEncoding,depth=pixels.depth
-      pixels=try pixels.mappedStoredSamples{stored in let p=encoding == .linearRGB ? SRGBTransfer.encoded(stored):stored,result=painted(p,coverage.defaultPixel.r,0,0);if result.hasSameBits(as:p){return stored};return encoding == .linearRGB ? SRGBTransfer.linear(result):result}.quantizedStoredDepth(depth);return
+      pixels=try pixels.mappedStoredSamples{stored in if clear{let alpha=uniformInk?.a ?? settings.color.a;return preserve ? stored:Pixel(stored.r,stored.g,stored.b,stored.a*(1-coverage.defaultPixel.r*settings.opacity*alpha))};let p=encoding == .linearRGB ? SRGBTransfer.encoded(stored):stored,result=painted(p,coverage.defaultPixel.r,0,0);if result.hasSameBits(as:p){return stored};return encoding == .linearRGB ? SRGBTransfer.linear(result):result}.quantizedStoredDepth(depth);return
     }
     let supports=coverage.defaultPixel.r==0 ? try coverage.projectedGeometrySupport(inverse,bounds:local,halo:1):[try inverse.bounds(width:coverage.width,height:coverage.height).clipped(toWidth:pixels.width,height:pixels.height)]
     for region in GeometryPatchRegions(width:pixels.width,height:pixels.height,rectangles:supports){
       for y in region.y..<region.y+region.height{try Task.checkCancellation();for x in region.x..<region.x+region.width{
         let q=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(q.x)),dy=Int(floor(q.y));guard canvas.contains(dx,dy) else{continue}
-        let k=unit(coverage.pixel(x:dx,y:dy).r);guard k>0 else{continue};let before=old.pixel(x:x,y:y),after=painted(before,k,dx,dy)
+        let k=unit(coverage.pixel(x:dx,y:dy).r)*(clip.map{unit($0.pixel(x:dx,y:dy).r)} ?? 1);guard k>0 else{continue};let before=old.pixel(x:x,y:y),after=painted(before,k,dx,dy)
         guard after.isFinite else{throw CraftError.invalid("Non-finite Fill/Stroke sample.")};if !after.hasSameBits(as:before){pixels.setPixel(x:x,y:y,after)}
       }}
     }

@@ -94,6 +94,7 @@ public enum ActionOperation: Codable, Sendable {
   case layerLinks(String,[ActionLayerTarget],Bool?)
   case pixelPaint(PixelPaintKind,ActionPixelPaintTarget,PixelPaintSettings)
   case patternPixelPaint(ActionPixelPaintTarget,RasterPattern,PatternPlacement,PixelPaintSettings)
+  indirect case pathPixelPaint(ActionLayerTarget,SelectionMask,PixelPaintSettings,RasterPattern?,PatternPlacement?,Bool)
   case projectLayers([ActionLayerTarget],ProjectiveTransform,Resampling)
   case transformLayers([ActionLayerTarget],Transform2D,Resampling)
   case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
@@ -212,7 +213,9 @@ public enum ActionOperation: Codable, Sendable {
     case .movePixels(let request):self = .movePixels(target(request.layerID),request.dx,request.dy,request.copy,request.constrain,request.backgroundColor)
     case .stackLayers(let request): self = .stackLayers(request.layerIDs.map(target), request.operation)
     case .moveLayers(let request):self = .moveLayers(request.layerIDs.map(target),request.dx,request.dy,request.copy == true)
-    case .pixelPaint(let request):if let pattern=request.pattern{self = .patternPixelPaint(.init(request.target,in:d),pattern,request.patternPlacement ?? .init(),request.settings)}else{self = .pixelPaint(request.kind,.init(request.target,in:d),request.settings)}
+    case .pixelPaint(let request):
+      if let coverage=request.pathCoverage,case .layer(let id)=request.target{self = .pathPixelPaint(.init(id,in:d),coverage,request.settings,request.pattern,request.patternPlacement,request.pathClear == true)}
+      else if let pattern=request.pattern{self = .patternPixelPaint(.init(request.target,in:d),pattern,request.patternPlacement ?? .init(),request.settings)}else{self = .pixelPaint(request.kind,.init(request.target,in:d),request.settings)}
     case .layerLinks(let command):switch command{case .link(let ids):self = .layerLinks("link",ids.map(target),nil);case .unlink(let ids):self = .layerLinks("unlink",ids.map(target),nil);case .enabled(let ids,let value):self = .layerLinks("enabled",ids.map(target),value)}
     case .transformLayers(let request):if let matrix=request.projection{self = .projectLayers(request.layerIDs.map(target),matrix,request.interpolation)}else{self = .transformLayers(request.layerIDs.map(target),request.matrix,request.interpolation)}
     case .transformChannel(let request):self = .transformChannel(.init(request.target,in:d),request.matrix,request.interpolation,request.backgroundValue,request.copy)
@@ -312,6 +315,9 @@ public enum ActionOperation: Codable, Sendable {
     case .transform(let t, let m, let r): return .transform(try id(t), m, r)
     case .stackLayers(let targets, let operation): return .stackLayers(.init(layerIDs: try targets.map(id), operation: operation))
     case .moveLayers(let targets,let dx,let dy,let copy):return .moveLayers(.init(layerIDs:try targets.map(id),dx:dx,dy:dy,copy:copy))
+    case .pathPixelPaint(let target,let coverage,let settings,let pattern,let placement,let clear):
+      var request=PixelPaintRequest(.fill,target:.layer(try target.resolve(in:d)),settings:settings,pattern:pattern,placement:placement)
+      request.pathCoverage=coverage;request.pathClear=clear;return .pixelPaint(request)
     case .patternPixelPaint(let target,let pattern,let placement,let settings):return .pixelPaint(.init(.fill,target:try target.resolve(in:d),settings:settings,pattern:pattern,placement:placement))
     case .pixelPaint(let kind,let target,let settings):return .pixelPaint(.init(kind,target:try target.resolve(in:d),settings:settings))
     case .layerLinks(let operation,let targets,let value):let ids=try targets.map(id);switch operation{case "link":return .layerLinks(.link(ids));case "unlink":return .layerLinks(.unlink(ids));case "enabled":guard let value else{throw CraftError.invalid("Missing recorded link participation.")};return .layerLinks(.enabled(ids,value));default:throw CraftError.invalid("Unknown recorded layer-link operation.")}
@@ -360,6 +366,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
     }
     for step in steps {
       if case .stackLayers(let targets, _) = step.operation { guard !targets.isEmpty, targets.count <= LayerLimits.maximumLayers else { throw CraftError.invalid("Invalid recorded layer arrangement targets.") } }
+      if case .pathPixelPaint(_,let coverage,let settings,let pattern,let placement,_) = step.operation{try settings.validate(.fill);_ = try coverage.coverageSurface();if let pattern{try pattern.validate()};try placement?.validate()}
       if case .fitImage(let options) = step.operation { try options.validate() }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}

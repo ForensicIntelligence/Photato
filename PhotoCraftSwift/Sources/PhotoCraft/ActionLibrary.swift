@@ -5,9 +5,10 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 49
+  static let maximumVersion = 50
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where:{$0.steps.contains{if case .pathPixelPaint=$0.operation{return true};return false}}){return 50}
     if actions.contains(where: { $0.steps.contains { if case .deselectLayers = $0.operation { return true }; return false } }) { return 49 }
     if actions.contains(where: { $0.steps.contains { if case .stackLayers = $0.operation { return true }; return false } }) { return 48 }
     if actions.contains(where: { $0.steps.contains { if case .gradientFill = $0.operation { return true }; return false } }) { return 47 }

@@ -20,6 +20,13 @@ import UniformTypeIdentifiers
   let shapes: ShapeLibrary
   var shapeRevision=0
   var selectedShapeID: UUID? {didSet{if oldValue != selectedShapeID{shapeRevision+=1}}}
+  var lastPathFill=PathFillOptions()
+  var pathFillDraft:PathFillDraft?
+  var pathFillEpoch=UUID()
+  @ObservationIgnored var pathFillPreparation:@Sendable(VectorPath,CraftDocument,UUID,PathFillOptions,PathFillContext)throws->Command = {try PathFill.command($0,document:$1,layerID:$2,options:$3,context:$4)}
+  var shapeCreationDraft:ShapeCreationDraft?
+  var shapeCreationEpoch=UUID()
+  @ObservationIgnored var shapeCreationPreparation:@Sendable(CraftDocument,ShapeCreationRequest,[RasterPattern])throws->PreparedEdit = {source,request,resources in try PreparedEdit(command:request.command(in:source,patterns:resources),document:source)}
   var shapeDraft: ShapeDraft?
   var shapePreview: CraftDocument?
   var shapeGesture: ShapeGesture?
@@ -158,7 +165,7 @@ import UniformTypeIdentifiers
       if oldValue != tool {
         cancelMagneticLasso()
         objectFinder.cancel(); peopleWorkspace.close()
-        artboardGesture = nil; artboardNeighborPress = nil; frameGesture = nil; shapeGesture = nil; _ = finishType()
+        artboardGesture = nil; artboardNeighborPress = nil; frameGesture = nil; shapeGesture = nil; cancelShapeCreation(); cancelPathFill(); _ = finishType()
         if oldValue == .crop { cancelCrop() }
         if oldValue.regionRetouchKind != nil { cancelRegionRetouch() }
         if oldValue.usesSelectionStroke {cancelBrush()}
@@ -295,6 +302,9 @@ import UniformTypeIdentifiers
   var photoAlignDraft: PhotoAlignWorkspace?
   var photoBlendDraft: PhotoBlendWorkspace?
   var regionRetouchSettings = RegionRetouchRequest(kind:.patch)
+  @ObservationIgnored var channelFooterPreparation: @Sendable (ChannelFooterRequest,CraftDocument,ColorSettings) throws -> Command = {
+    try ChannelFooterPreparation.prepare($0,document:$1,colorSettings:$2)
+  }
   var patchPatternID: String?
   @ObservationIgnored var patternPatchPreparation: @Sendable (RegionRetouchRequest,RasterPattern,CraftDocument,UUID) throws -> RegionRetouchEdit = {
     try PatternPatch.prepare($0,pattern:$1,document:$2,layerID:$3)

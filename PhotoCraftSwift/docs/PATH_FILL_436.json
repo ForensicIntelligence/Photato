@@ -1,0 +1,166 @@
+{
+  "step": 436,
+  "recorded_at_utc": "2026-11-06T06:38:01.502276+00:00",
+  "application_build": 436,
+  "source": "436Source04/Release02",
+  "source_manifest": "artifacts/runs/20261106T055206Z-436-fill-path/release02-source.json",
+  "source_inputs": 7271,
+  "production_swift_files": 1072,
+  "run": "artifacts/runs/20261106T055206Z-436-fill-path",
+  "current_pass": 2,
+  "delivered_package": "G04",
+  "next_major_workflow": "T01",
+  "status": "Extended native Fill Path and shared optional API/Actions50 pass60focused Debug and354sameordered optimized cases per architecture; full G04 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Added Core optional pathCoverage/pathClear to existing PixelPaintRequest. Existing fill kernel multiplies path coverage by current selection without replacing selection metadata; preserves geometry, masks, pattern resources, blending, protected alpha and hidden/linear RGB words. Old requests omit new fields.",
+    "Added Imaging PathFill options/context using existing vector AA/feather and Core pixel paint. Foreground/background/custom/black/gray/white/pattern, opacity/blend/Clear/preserve and explicit limits; History unavailable.",
+    "Added captured native PathFill draft/sheet, context-menu and Option-footer entry, numeric/slider opacity, Cancel/source/session/lifecycle/settings/target/epoch guards and one prepared Undo. Last successful options retained in session. Old quick fill retains legacy behavior.",
+    "Extended existing path.paint with strict optional fill and paths.fill state/schema/capabilities; native/API share command and guards. Explicit fill cannot mix brush/stroke/pressure; API captures resources before worker and updates session settings after successful commit only.",
+    "Added portable indirect pathPixelPaint Actions50; old41/42/49 minima retained. Native86/settings4/250typed commands and652menu identities retained. No Adobe endpoint/descriptor invented."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/fill-paths-with-color.html",
+      "supports": "Contents/mode/opacity/preserve/feather/AA/Clear and quickNormal100; updated4October2026. Exact output/defaults unqualified."
+    },
+    {
+      "url": "https://helpx.adobe.com/ph_en/photoshop/using/adding-color-paths.html",
+      "supports": "Option footer/options and older quick currentFillsettings. Default/persistence conflict retained pending current observation."
+    }
+  ],
+  "debug": "artifacts/runs/20261106T055206Z-436-fill-path/source04-summary.json",
+  "debug_cases": 60,
+  "new_methods": [
+    "PhotoCraftCoreTests.PathCoveragePaintTests/testClearPreservesStoredRGBWordsAndProtectedAlphaAtAllDepths",
+    "PhotoCraftCoreTests.PathCoveragePaintTests/testExpansionAndMasksRetainDocumentPlacementAndOutsideSamples",
+    "PhotoCraftCoreTests.PathCoveragePaintTests/testPathAndCurrentSelectionCoverageMultiplyWithoutReplacingSelection",
+    "PhotoCraftCoreTests.PathCoveragePaintTests/testPortablePathPaintResolvesNewLayerIDsAndClipsReplaySelection",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testAntiAliasFeatherAndClearBackgroundSafeguards",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testCancellationStaleSessionPathSettingsAndTargetGuards",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testContentsAllDepthsNativeUndoArchiveAndExactNativeAPIDocuments",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testContentsPatternsClearAndActions50KeepOlderVersions",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testFooterModifierMatrixLegacyOpacityCancelAndOffscreenBounds",
+    "PhotoCraftAppTests.PathFillWorkflowTests/testStrictHTTPInvalidHistoryBusyStaleLegacyAndRequestSchema"
+  ],
+  "debug_build_seconds": 10.18,
+  "debug_test_seconds": 3.696,
+  "debug_app_sha256": "0906dd0b82438a53c97ecf1eb821b835036dfba986cf1de38da8033093284502",
+  "optimized_results": [
+    {
+      "architecture": "arm64",
+      "cases": 354,
+      "passed": 354,
+      "test_seconds": 21.783,
+      "build_seconds": 119.64,
+      "binary_sha256": "ed13edb9cee8321f59871ef088f85cd3e822fc79f09e3812aff97c91362a1494"
+    },
+    {
+      "architecture": "x86_64 under Rosetta",
+      "cases": 354,
+      "passed": 354,
+      "test_seconds": 28.762,
+      "build_seconds": 119.8,
+      "binary_sha256": "03aefce57c47703c8c15be78c35ab906ee0766b7871db65b71f59b755589003e"
+    }
+  ],
+  "normal_cases_each": 354,
+  "new_426_to436_methods_each": 89,
+  "case_equivalence": "artifacts/runs/20261106T055206Z-436-fill-path/case-equivalence01.json",
+  "normal_qualification": "artifacts/runs/20261106T055206Z-436-fill-path/qualified01.json",
+  "universal": {
+    "app": "/private/tmp/photato-validation-436-stage01-6d9723be/Photato Validation 436.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T055206Z-436-fill-path/universal/Photato-Validation-436-stage01.zip",
+    "archiveSHA256": "62dc41e9bf8df2522fc0f8ac70f95efe17730db7a14ce77cae6f3916ebce7bf5",
+    "archiveExtractedApp": "/private/tmp/photato-validation-436-stage01-6d9723be/archive-extracted/Photato Validation 436.app",
+    "archiveExtractionSignatureVerified": true,
+    "sameExtractedContent": true,
+    "bundle_id": "ca.forensicintelligence.photato.validation436",
+    "version": "0.3.0",
+    "build": "436",
+    "source_manifest": "artifacts/runs/20261106T055206Z-436-fill-path/release02-source.json",
+    "architectures": "x86_64 arm64",
+    "minimum_system": "14.0",
+    "code_sign_verify": true,
+    "universal_binary_sha256": "249db9ba2efd6a126471fbce3224fec64d78b8a0d56ee7fd59964c264a5f2548",
+    "source_binaries": [
+      {
+        "binary": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T055206Z-436-fill-path/release02-binaries/arm64/Photato",
+        "sha256": "ed13edb9cee8321f59871ef088f85cd3e822fc79f09e3812aff97c91362a1494"
+      },
+      {
+        "binary": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T055206Z-436-fill-path/release02-binaries/x86_64/Photato",
+        "sha256": "03aefce57c47703c8c15be78c35ab906ee0766b7871db65b71f59b755589003e"
+      }
+    ],
+    "imaging_resource_sha256": "a0cada1e6af7bbb4c10532e45e220211e1991c0d59c6cc69616e3127465a5d91",
+    "people_model_present": true,
+    "isolated_app_sandbox": true,
+    "sandbox_bundle_data": "/Users/johnczlonka/Library/Containers/ca.forensicintelligence.photato.validation436/Data",
+    "new_install": false,
+    "new_release": false,
+    "live_UI_qualified": false,
+    "new_cases_pass_each_architecture": 89,
+    "affected_cases_each": 354,
+    "affected_passed": [
+      354,
+      354
+    ],
+    "feature_tests_passed": true,
+    "affected_suite_passed": true,
+    "unresolved_failed_cases": [
+      [],
+      []
+    ],
+    "full_current_suite_passed": false,
+    "Photoshop_parity": false
+  },
+  "failed_attempts": [
+    {
+      "source": "436Source01",
+      "summary": "artifacts/runs/20261106T055206Z-436-fill-path/source01-summary.json",
+      "description": "Parser local redeclaration before app link/tests; cached435app/XCTest explicitly distinguished, originalmanifest retained before note."
+    },
+    {
+      "source": "436Source02",
+      "summary": "artifacts/runs/20261106T055206Z-436-fill-path/source02-summary.json",
+      "description": "41/44methods pass; five assertions/three methods. New test incorrectly required same sparse storage enumeration; repaired only new probe to exact per-coordinate rawRGBbit equality. Two stale old current-version49ceilings updated50."
+    },
+    {
+      "source": "436Release01",
+      "summary": "artifacts/runs/20261106T055206Z-436-fill-path/release01-qualification.json",
+      "description": "338/340sameorderedcases each, two current-version50-versus49 ceiling failures each. All89new pass; no unexpected/crash. Source/outputs retained before correction."
+    }
+  ],
+  "passing_attempts": [
+    "artifacts/runs/20261106T055206Z-436-fill-path/source03-summary.json",
+    "artifacts/runs/20261106T055206Z-436-fill-path/source04-summary.json",
+    "artifacts/runs/20261106T055206Z-436-fill-path/qualified01.json"
+  ],
+  "old_tests_updated": "18current maximum Actions-version assertions updated49to50 (two afterSource02,16afterRelease01 audit). Old minimum/header/byte/pixel/fixture/tolerance assertions retained. New tests prove41and49readability and reject new50payload falsely labelled49. No claim all old tests were unchanged.",
+  "production_identity": "Source02/03/04 and Release01/02 production code/app identical per architecture; repairs afterSource02 are test/version-contract changes only. Core/Imaging genuinely changed for this feature beforeSource02.",
+  "capture_qualification": "Native420x460offscreen sheet bounds only; not live appearance/focus/gestures. Fresh CUA436 reports Mac locked.",
+  "adobe_API": "Pinned Adobe v2 has no dedicated Fill Path route; no proprietary action descriptor or endpoint invented. Both product interfaces remain tracked independently.",
+  "cursor": "No new canvas gesture/tool. Option-footer opens modal options; ordinary footer retains existing action.16modifier entry policies pass; native controls keep their control cursor. Existing all-tool880row artwork matrix passes selected optimized suite, no physical Photoshop gesture claim.",
+  "current_normal_qualified": true,
+  "current_universal_qualified": true,
+  "latest_normal_universal_checkpoint": 436,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Full original G04 remains major stillneeded wherever missing or unqualified: magnetic/multi-anchor editing, fitting, clipping-path export, path/selection/mask targeting and remaining Pen/Stroke workflows.",
+    "History Fill has no implemented history source and is explicitly unavailable in native/API. It remains missing functionality in pass2, not cleanup.",
+    "Extended fill currently requires RGB raster/mask targets and a canvas at most16MP; feather is0\u2013100px. Complete target/depth/mode support, large-document capacity and full professional workflow scope remain functional stillneeded.",
+    "Current and older Adobe guides disagree about quick-fill defaults/persistence. Ordinary footer and no-fill API preserve their legacy brush-opacity behavior. Option opens options and the context menu opens Fill Path. Exact current Photoshop defaults/persistence, gestures, pixels, AA/feather/rounding and blending remain unqualified.",
+    "Portable Actions capture coverage/settings/pattern and resolve the replay layer/current selection. Photoshop current-path/history-source recording semantics are not asserted.",
+    "All earlier full-suite, linked-alpha, Gray32 numerical and unrelated Debug crash/performance/physical-platform gaps remain open. Selected optimized passes are not full-suite or Photoshop parity.",
+    "Fresh436CUA binding after all workers terminal again reports Mac locked and automatic unlock failed. Existing human unlock request remains pending; no repeat question or browser/shell workaround, no current live UI/physical/60fps proof."
+  ],
+  "distribution": "Isolated ad-hoc-signed universal validation ZIP only. No install/launch/Xcodearchive/Store/upload/release. Private full-source backup pending standing authorization execution."
+}

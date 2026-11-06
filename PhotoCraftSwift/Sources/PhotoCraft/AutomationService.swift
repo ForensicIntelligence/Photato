@@ -115,6 +115,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var contactSheetSourceIDs = Set<UUID>()
   @ObservationIgnored var imageStackTask: Task<ImageStack.Result,Error>?
   @ObservationIgnored var actionBatchTask: Task<[ActionBatchResult], Error>?
+  var actionBatchNaming: BatchFileNaming?
   var actionBatchOperationID: UUID?
   var actionBatchSourceIDs = Set<UUID>()
   var actionBatchResults: [ActionBatchResult] = []
@@ -1021,9 +1022,12 @@ import UniformTypeIdentifiers
       if command.name == "font.inspect"{return .json(try inspectFont(command,store:store))}
       if command.name == "path.configure" {try store.configurePath(command);return .json(state(share,document:document))}
       if PathAPI.commands.contains(command.name) {
-        let selected=store.selectedVectorPath,brush=store.brush
+        let selected=store.selectedVectorPath,brush=store.brush,fillContext=store.pathFillContext
+        if command.parameters["fill"] != nil,store.editingMask || store.smartFilterMaskEditing || store.editingComponent{throw AutomationFailure(status:422,message:"Select RGB raster pixels before filling a path.")}
+        let fillOptions=try command.parameters["fill"].map{try PathFillAPI.parse($0,context:fillContext)},colorSettings=store.workingColorSettings
         let vectorMaskTarget:Bool;if case .vectorMask=store.pathTarget{vectorMaskTarget=true}else{vectorMaskTarget=false}
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true){original in try command.pathCommand(original,selected:selected,brush:brush,selectedIsVectorMask:vectorMaskTarget)}
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true,validateCommit:{if fillOptions != nil,store.workingColorSettings != colorSettings{throw AutomationFailure(status:409,message:"Color Settings changed during Path Fill.")}}){original in try command.pathCommand(original,selected:selected,brush:brush,selectedIsVectorMask:vectorMaskTarget,fillContext:fillContext,parsedFillOptions:fillOptions)}
+        if let fillOptions{store.lastPathFill=fillOptions}
         if ["path.draw","path.trace"].contains(command.name),let path=store.document.paths?.first(where: \.isWorkPath){store.selectPath(.saved(path.id))}
         return .json(state(share,document:document))
       }
@@ -1892,7 +1896,7 @@ import UniformTypeIdentifiers
       "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; changing it retains the current editing target and mask coverage."],
       "channels": ["type":"array","items":["type":"object","required":["id","name","opacity","indicates","color"],"properties":["id":["type":"string","format":"uuid"],"name":["type":"string"],"opacity":["type":"number"],"indicates":["type":"string"],"color":["type":"array","items":["type":"number"]]]]],
       "channelOnly":["type":"boolean","description":"Auxiliary channels only, without image layers or printing plates; requires native85."],
-      "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha"],"properties":["workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],
+      "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha","footer"],"properties":["footer":ChannelFooterAPI.stateSchema,"workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],
       "quickMaskOptions": ["type":"object","description":"Persistent Quick Mask display defaults; selection coverage is unchanged by display options."],
       "quickMask": ["type":["object","null"]],
       "channelTarget": ["type": "string", "description": "Composite color mode or selected component names; numerical indices are in documentMode.editingComponents."],

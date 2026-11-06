@@ -29,7 +29,7 @@ enum ActionBatch {
   /// and refuses existing destinations (including symbolic links).
   @MainActor static func run(sources: [ActionBatchSource], action: RecordedAction,
     destination: URL, format: DocumentIO.Format, options: RasterEncodingOptions = .init(),
-    suffix: String = "-processed", stopOnError: Bool = false, clipboard: ClipboardContent? = nil,
+    suffix: String = "-processed", naming: BatchFileNaming? = nil, stopOnError: Bool = false, clipboard: ClipboardContent? = nil,
     validateClipboard: @escaping @Sendable (ClipboardContent) throws -> Void = { _ in },
     validateOutput: @escaping @Sendable (CraftDocument) throws -> Void = { _ in },
     validatePublication: () throws -> Void = {},
@@ -37,7 +37,8 @@ enum ActionBatch {
     try action.validate()
     guard (1...256).contains(sources.count), destination.isFileURL,
       try destination.resourceValues(forKeys: [.isDirectoryKey]).isDirectory == true else { throw CraftError.invalid("Choose 1–256 sources and an output folder.") }
-    _ = try outputName("test", index: 0, suffix: suffix, format: format)
+    let filenames = try naming?.plan(sources:sources.map(\.name),format:format)
+    if naming == nil { _ = try outputName("test", index:0,suffix:suffix,format:format) }
     let masterWorker = Task.detached(priority: .userInitiated) { () throws -> [(UUID, CraftDocument)] in
       guard action.usesMasterPalette || action.usesExternalRetouchSources else { return [] }
       var documents: [(UUID, CraftDocument)] = [], pixels = 0, bytes = 0
@@ -63,7 +64,7 @@ enum ActionBatch {
       if Task.isCancelled || stopped {
         results.append(.init(id: source.id, source: source.name, output: nil, error: "Not processed.", cancelled: true)); progress(results); continue
       }
-      let filename = try outputName(source.name, index: index, suffix: suffix, format: format)
+      let filename = try filenames?[index] ?? outputName(source.name,index:index,suffix:suffix,format:format)
       let output = destination.appendingPathComponent(filename)
       let staged = destination.appendingPathComponent(".photato-batch-\(UUID().uuidString)")
       defer { try? FileManager.default.removeItem(at: staged) }
@@ -87,6 +88,7 @@ enum ActionBatch {
           let bytes = try DocumentIO.encode(document, format: format, options: options)
           let writer = try AtomicFileWriter(to: staged, maximumBytes: DocumentIO.maximumDownloadBytes)
           try writer.append(bytes); try writer.commit()
+          try naming?.validateAvailable(filename,in:destination)
         }
         try await withTaskCancellationHandler(operation: { try await worker.value }, onCancel: { worker.cancel() })
         try Task.checkCancellation()

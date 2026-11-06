@@ -102,7 +102,7 @@ final class FitImageWorkflowTests: XCTestCase {
       XCTAssertEqual(store.document,before);XCTAssertEqual(store.session.undoStack.count,count);store.cancelFitImage()
       let capability=try await helper.request(service,path:"/v1/capabilities");XCTAssertEqual(capability.0.statusCode,200)
       let json=try XCTUnwrap(JSONSerialization.jsonObject(with:capability.1)as?[String:Any]);XCTAssertNotNil((json["stateSchemas"]as?[String:Any])?["fitImage"])
-      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,49)
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,50)
     }
   }
   @MainActor func testActionVersion45MixedBatchAndImageProcessorUseTheSameConstraint()async throws {

@@ -12,7 +12,7 @@ struct PathsPanel: View {
           ForEach(store.document.paths ?? []) { saved in
             row(saved.name, path: saved.path, target: .saved(saved.id))
               .contextMenu {
-                Button("Fill Path") {store.selectPath(.saved(saved.id));store.paintSelectedPath(stroke:false)}
+                Button("Fill Path…") {store.selectPath(.saved(saved.id));store.beginPathFill()}
                 Button("Stroke Path…") {store.selectPath(.saved(saved.id));store.showStrokePath()}
                 Button("Make Selection") {store.selectPath(.saved(saved.id));store.pathToSelection()}
                 Divider()
@@ -75,7 +75,7 @@ struct PathsPanel: View {
       }
       Divider()
       HStack {
-        Button("Fill Path") {store.paintSelectedPath(stroke:false)}.disabled(store.selectedVectorPath == nil || store.activeLayer == nil)
+        Button("Fill Path") {store.fillPathFooter(modifiers:NSApp.currentEvent?.modifierFlags ?? [])}.disabled(!store.canBeginPathFill).help("Fill Path (Option-click for options)")
         Button("Stroke Path…") {store.showStrokePath()}.disabled(store.selectedVectorPath == nil || store.activeLayer == nil)
         Button("Make Work Path…") {store.showMakeWorkPath()}.disabled(store.document.selection == nil && store.document.selectionMask == nil)
       }.controlSize(.mini).padding(6)

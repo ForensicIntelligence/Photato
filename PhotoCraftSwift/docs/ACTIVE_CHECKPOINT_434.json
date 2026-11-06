@@ -1,0 +1,32 @@
+{
+  "step": 434,
+  "application_build": 434,
+  "source": "434Source03",
+  "status": "434selected Batch naming development-tested;27consistencychecks pass; G03next; final history/diary receipt excluded",
+  "reference": "docs/BATCH_FILE_NAMING_434.json",
+  "software_changes": true,
+  "qualification": "25focused Debug/all8new methods pass; production panel-height repair, no weakened expectations. No current normal/universal/full-suite/physical/Photoshop claim; latest432.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T045405Z-434-batch-naming",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "G03",
+  "source_manifest": "artifacts/runs/20261106T045405Z-434-batch-naming/source03-source.json",
+  "source_inputs": 7261,
+  "remaining": [
+    "Full AUT01 stays major stillneeded: conditions, interactive/dialog controls, Open/Save overrides, source/destination modes, recursive folders/import/Bridge, ATN, droplets and Image Processor wherever missing or unqualified.",
+    "Exact Photoshop date interpretation, serial overflow, letters after Z, Unicode/case behavior, sanitization, extension choice, UI/defaults/presets and compatibility semantics remain unqualified. Current names are validated, not silently rewritten. At most six fields, 256 native sources/eight shared API sources, 255 UTF-8 filename bytes and 128-byte literals.",
+    "Native starting fields Document Name+extension are chosen pending live reference. Starting serial1/all three compatibility flags true/six-field bound are supported by the installed public Photoshop2026 Batch dictionary. Native captures date at Run; API may pin ISO8601 date and time zone.",
+    "All outputs retain a safe single-file basename baseline regardless of compatibility checkboxes. Windows additionally rejects its reserved names/characters/trailing dots/spaces; macOS/Windows request canonical case-insensitive collision checks. UNIX flag is retained public metadata; disabling it cannot bypass mandatory safe-basename rules. This is not a general platform/Photoshop filename-equivalence claim.",
+    "Atomic hard-link publication protects the actual destination filename, including symlinks. Compatibility alias enumeration is best effort and not an all-files or cross-platform atomic transaction under an external case-alias race. Previously completed outputs are retained on cancellation/errors.",
+    "Existing action sampling/encoding/document capacity limits, full document bytes/defaults/settings/factory-menu/shortcut parity, earlier failures, physical macOS14/Intel/AppleSilicon checks and 60fps remain original acceptance. Offscreen geometry and HTTP tests are not physical/Photoshop proof.",
+    "Current optimized universal/full-suite/live UI/Photoshop qualification is unclaimed. Latest optimized/universal/private-source batch432; next batch at a meaningful milestone. Existing human Mac-unlock request remains pending; no CUA/browser/server workaround or repeated question."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "consistency": "artifacts/runs/20261106T045405Z-434-batch-naming/consistency01.json",
+  "latest_normal_private": 432
+}

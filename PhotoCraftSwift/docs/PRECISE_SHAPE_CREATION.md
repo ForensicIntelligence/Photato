@@ -1,0 +1,15 @@
+# Create rectangles and ellipses with dimensions
+
+Select Rectangle or Ellipse and click without moving the pointer. Create Rectangle/Ellipse opens with Width, Height and From Center. Rectangles also have four corner radii and a link control. Enter dimensions in pixels and choose OK, or Cancel to leave the document unchanged. Dragging still draws on the canvas. Option at mouse-down initializes From Center; exact Photoshop combined-modifier and click-threshold behavior remains unqualified.
+
+The dialog captures the clicked point, drawing mode, target, operation and pattern resources. Existing shape, work-path and pixel outputs use the same renderer and prepared history. A shape combination appends geometry in the target shape's coordinates, with its paint. Document/session/settings/tool changes and cancellation reject obsolete work. Templates remain unchanged; repeated-dialog defaults and persistence still need reference qualification.
+
+## Optional API
+
+Use existing `shape.edit` operation `create` with a complete `definition` from `shapes.template`/the definition schema. Add `point:{"x":100,"y":100}` and optional `fromCenter:true`; pass a name when matching a particular native layer/path name. For example, set the template geometry width320/height200, then send it with point and fromCenter. Shape mode may also specify combine and layerID.
+
+Point placement requires one parametric component with identity local transform and no path override. Its top-left or width/height center is placed at point. Supply either point or the original transform. fromCenter/combine require point. Existing transform clients and default API name Shape retain their contract. Native/API share command preparation, validation and Undo. State includes creationDraft while the native dialog is open; preciseCreation capabilities describe schemas, limits and qualification. No dedicated Adobe route or proprietary action descriptor is asserted.
+
+Checkpoint435 passes all30focused Debug tests, including eight new methods, the existing all-tool880-row cursor matrix and owned-source shape-path editing. Tests cover known placements, all depths/output modes, Undo/Redo/archive, linked radii/Cancel, captured patterns, rotated combinations, full native/API document material (only new independent UUIDs normalized), exact PNG bytes, invalid/busy/stale requests and source/settings/lifecycle/cancellation gates. Two new compilation failures and two stack crashes were retained before repair. Separating large Layer branches from common native/API creation frames repairs the selected crashes; Core/Imaging algorithms and old fixtures are unchanged. The offscreen image tests bounds, not physical appearance.
+
+Full G03 remains open, including other click dialogs, on-canvas widgets and the existing32768geometry/8MPraster limits. Exact Photoshop pixels/defaults/persistence, physical platforms and60fps remain unqualified. Latest optimized universal/private-source batch is432. [Evidence](PRECISE_SHAPE_CREATION_435.json).

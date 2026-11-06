@@ -11,6 +11,7 @@ enum PathAPI {
     return BrushAPI.object(["components":ShapeAPI.array(part,256),"fillRule":BrushAPI.enumeration(PathFillRule.allCases.map(\.rawValue)),"inverted":BrushAPI.flag],required:["components","fillRule","inverted"])
   }
   static func schema(_ key:String)->[String:Any]{switch key {
+    case "fill":return PathFillAPI.schema
     case "path":return path
     case "points":return ShapeAPI.array(point,4096,2)
     case "corners":return ShapeAPI.array(BrushAPI.number(0,4095,integer:true),4096)
@@ -28,15 +29,15 @@ enum PathAPI {
   }}
   static var stateSchema:[String:Any]{
     let named=BrushAPI.object(["id":schema("pathID"),"name":schema("name"),"isWorkPath":BrushAPI.flag,"path":path],required:["id","name","isWorkPath","path"])
-    let fields:[String:Any]=["paths":ShapeAPI.array(named,256),"selectedID":["anyOf":[["type":"null"],schema("pathID")]],"target":BrushAPI.enumeration(["none","saved","vectorMask","shape"]),"selectedPath":["anyOf":[["type":"null"],path]],"tolerance":schema("tolerance"),"operation":schema("combine"),"gestureActive":BrushAPI.flag,"editable":BrushAPI.flag,"tool":["type":"string"]]
+    let fields:[String:Any]=["fill":PathFillAPI.stateSchema,"paths":ShapeAPI.array(named,256),"selectedID":["anyOf":[["type":"null"],schema("pathID")]],"target":BrushAPI.enumeration(["none","saved","vectorMask","shape"]),"selectedPath":["anyOf":[["type":"null"],path]],"tolerance":schema("tolerance"),"operation":schema("combine"),"gestureActive":BrushAPI.flag,"editable":BrushAPI.flag,"tool":["type":"string"]]
     return BrushAPI.object(fields,required:Array(fields.keys))
   }
-  static var capabilities:[String:Any]{["commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, advanced Fill Path dialog options and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
+  static var capabilities:[String:Any]{["fill":PathFillAPI.capabilities,"commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, full Fill Path history/contents/capacity/defaults and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
 }
 extension AutomationCommand {
   func pathFlag(_ key:String,_ fallback:Bool)throws->Bool{guard let value=parameters[key] else{return fallback};guard case .bool(let flag)=value else{throw AutomationFailure(status:400,message:"\(key) must be boolean.")};return flag}
   func pathFields(_ required:Set<String>=[],_ optional:Set<String>)throws{let keys=Set(parameters.keys);guard required.isSubset(of:keys),keys.isSubset(of:required.union(optional)) else{throw AutomationFailure(status:400,message:"Missing or irrelevant path parameters.")}}
-  func pathCommand(_ document:CraftDocument,selected:VectorPath?,brush:Brush,selectedIsVectorMask:Bool=false)throws->Command {
+  func pathCommand(_ document:CraftDocument,selected:VectorPath?,brush:Brush,selectedIsVectorMask:Bool=false,fillContext:PathFillContext?=nil,parsedFillOptions:PathFillOptions?=nil)throws->Command {
     let tolerance=try parameters["tolerance"].map{_ in try number("tolerance",range:0.5...10)} ?? 2
     if name=="path.trace"{try pathFields([], ["tolerance"]);return try PathTracing.command(document,tolerance:tolerance)}
     func resolved()throws->VectorPath {
@@ -44,8 +45,12 @@ extension AutomationCommand {
       guard let selected else{throw AutomationFailure(status:400,message:"Choose a path or supply pathID.")};return selected
     }
     if name=="path.paint" {
-      try pathFields([], ["pathID","layerID","brush","stroke","simulatePressure"])
+      try pathFields([], ["pathID","layerID","brush","stroke","simulatePressure","fill"])
       guard let id=try parameters["layerID"].map({_ in try actionUUID("layerID")}) ?? document.activeLayerID else{throw AutomationFailure(status:400,message:"Choose a raster layer.")}
+      if let fill=parameters["fill"] {
+        guard parameters["brush"]==nil,parameters["stroke"]==nil,parameters["simulatePressure"]==nil,let context=fillContext else{throw AutomationFailure(status:400,message:"Explicit fill requires captured context and cannot mix brush/stroke parameters.")}
+        return try PathFill.command(resolved(),document:document,layerID:id,options:try parsedFillOptions ?? PathFillAPI.parse(fill,context:context),context:context)
+      }
       let stroke=try pathFlag("stroke",false),pressure=try pathFlag("simulatePressure",false)
       guard stroke || !pressure else{throw AutomationFailure(status:400,message:"Simulate Pressure requires Stroke Path.")}
       return try PathPainting.command(resolved(),document:document,layerID:id,brush:BrushAPI.decode(parameters["brush"],base:brush),stroke:stroke,simulatePressure:pressure)
@@ -88,7 +93,7 @@ extension EditorStore {
   var pathState:[String:Any]{
     let target:String,id:UUID?
     switch pathTarget{case .saved(let value):target="saved";id=value;case .vectorMask(let value):target="vectorMask";id=value;case .shape(let value):target="shape";id=value;case nil:target="none";id=nil}
-    return ["paths":(document.paths ?? []).map{BrushAPI.json($0)},"selectedID":id?.uuidString as Any? ?? NSNull(),"target":target,"selectedPath":selectedVectorPath.map{BrushAPI.json($0)} ?? NSNull(),"tolerance":pathCurveFit,"operation":pathOperation.rawValue,"gestureActive":freeformGesture != nil || pathGesture != nil,"editable":pathIsEditable,"tool":selectedTool.id]
+    return ["fill":pathFillState,"paths":(document.paths ?? []).map{BrushAPI.json($0)},"selectedID":id?.uuidString as Any? ?? NSNull(),"target":target,"selectedPath":selectedVectorPath.map{BrushAPI.json($0)} ?? NSNull(),"tolerance":pathCurveFit,"operation":pathOperation.rawValue,"gestureActive":freeformGesture != nil || pathGesture != nil,"editable":pathIsEditable,"tool":selectedTool.id]
   }
   func configurePath(_ command:AutomationCommand)throws{
     try command.pathFields([], ["tool","tolerance","combine","pathID","layerID"])

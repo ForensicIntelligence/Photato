@@ -1,0 +1,30 @@
+{
+  "step": 436,
+  "application_build": 436,
+  "source": "436Source04/Release02",
+  "status": "436selected normal/universal qualified; private source backup/final records pending; T01next",
+  "reference": "docs/PATH_FILL_436.json",
+  "software_changes": true,
+  "qualification": "60focused Debug/all10new,354sameordered optimized each/all89new426\u2013436methods, universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T055206Z-436-fill-path",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "T01",
+  "source_manifest": "artifacts/runs/20261106T055206Z-436-fill-path/release02-source.json",
+  "source_inputs": 7271,
+  "remaining": [
+    "Full original G04 remains major stillneeded wherever missing or unqualified: magnetic/multi-anchor editing, fitting, clipping-path export, path/selection/mask targeting and remaining Pen/Stroke workflows.",
+    "History Fill has no implemented history source and is explicitly unavailable in native/API. It remains missing functionality in pass2, not cleanup.",
+    "Extended fill currently requires RGB raster/mask targets and a canvas at most16MP; feather is0\u2013100px. Complete target/depth/mode support, large-document capacity and full professional workflow scope remain functional stillneeded.",
+    "Current and older Adobe guides disagree about quick-fill defaults/persistence. Ordinary footer and no-fill API preserve their legacy brush-opacity behavior. Option opens options and the context menu opens Fill Path. Exact current Photoshop defaults/persistence, gestures, pixels, AA/feather/rounding and blending remain unqualified.",
+    "Portable Actions capture coverage/settings/pattern and resolve the replay layer/current selection. Photoshop current-path/history-source recording semantics are not asserted.",
+    "All earlier full-suite, linked-alpha, Gray32 numerical and unrelated Debug crash/performance/physical-platform gaps remain open. Selected optimized passes are not full-suite or Photoshop parity.",
+    "Fresh436CUA binding after all workers terminal again reports Mac locked and automatic unlock failed. Existing human unlock request remains pending; no repeat question or browser/shell workaround, no current live UI/physical/60fps proof."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false
+}

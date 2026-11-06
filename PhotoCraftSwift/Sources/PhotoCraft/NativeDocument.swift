@@ -422,6 +422,8 @@ import SwiftUI
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
     store.layerContentFilter.reset()
+    store.cancelPathFill()
+    store.cancelShapeCreation()
     store.layerPanelGeneration = UUID()
         store.invalidateHistory()
         store.geometryTask?.cancel()
@@ -474,6 +476,8 @@ import SwiftUI
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
     store.layerContentFilter.reset()
+    store.cancelPathFill()
+    store.cancelShapeCreation()
     store.layerPanelGeneration = UUID()
         store.invalidateHistory()
         store.geometryTask?.cancel()
@@ -515,6 +519,8 @@ import SwiftUI
     store.stopBrushPreview();store.brushGesture = nil
     store.objectFinder.cancel(); store.peopleWorkspace.close()
     store.layerContentFilter.close()
+    store.cancelPathFill()
+    store.cancelShapeCreation()
     store.layerPanelGeneration = UUID()
     store.clearMaskView()
     store.maskEditingLayerID = nil

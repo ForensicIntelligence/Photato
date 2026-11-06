@@ -2701,5 +2701,33 @@
     "Photato": "retouch.patch patternID alternate; shared native Core preparation/state/schema/guards and exact native/API output",
     "Adobe": "Pinned Adobe v2 has no dedicated Patch/retouch endpoint. Existing generic execute-actions does not qualify unknown Patch descriptors; none is invented.",
     "scope_waived": false
+  },
+  "channel_footer_433": {
+    "step": 433,
+    "reference": "docs/CHANNEL_FOOTER_433.json",
+    "Photato": "Existing channel.edit save/load commands with strict smartFilterMask source and footer state/capability metadata share native prepared Core operations.",
+    "Adobe": "Pinned Adobe v2 has no dedicated native Channels footer/selection source endpoint. Existing generic execute-actions does not qualify unknown channel descriptors; no endpoint or descriptor invented.",
+    "scope_waived": false
+  },
+  "batch_file_naming_434": {
+    "step": 434,
+    "reference": "docs/BATCH_FILE_NAMING_434.json",
+    "Photato": "Existing actions.batch gains optional strict naming parameter, captured state and capabilities; same native planner/encoding/publication. No-naming clients unchanged.",
+    "Adobe": "The pinned published Adobe v2 contract has no dedicated native Batch File Naming endpoint. No Photoshop action descriptor or route invented. Existing generic execute-actions interoperability remains independently tracked.",
+    "scope_waived": false
+  },
+  "precise_shape_creation_435": {
+    "step": 435,
+    "reference": "docs/PRECISE_SHAPE_CREATION_435.json",
+    "Photato": "Existing shape.edit create optional point/fromCenter/combine plus captured draft state/schema/capability, same native builder/history and old transform clients retained.",
+    "Adobe": "Pinned Adobe v2 has no dedicated shape-creation route. No proprietary shape action descriptor or endpoint invented; existing generic action interoperability remains independently tracked.",
+    "scope_waived": false
+  },
+  "path_fill_436": {
+    "step": 436,
+    "reference": "docs/PATH_FILL_436.json",
+    "Photato": "path.paint optional fill with shared native engine/history/guards, paths.fillstate/schema/capability and Actions50. Old clients retained.",
+    "Adobe": "Pinned Adobe v2 has no dedicated Fill Path route; no proprietary action descriptor or endpoint invented. Both product interfaces remain tracked independently.",
+    "scope_waived": false
   }
 }

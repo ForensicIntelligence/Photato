@@ -12,6 +12,8 @@ import SwiftUI
   var format = DocumentIO.Format.png
   var quality = 0.9
   var suffix = "-processed"
+  var naming = BatchFileNaming()
+  var useLegacyNaming = false
   var stopOnError = false
   var busy = false
   var error: String?
@@ -47,6 +49,8 @@ import SwiftUI
     guard !busy, let selected, let destination else { return }
     do {
       let action = try library.action(selected), sources = sources, format = format, suffix = suffix, stop = stopOnError
+      var selectedNaming = useLegacyNaming ? nil:naming
+      selectedNaming?.date = Date()
       let options = RasterEncodingOptions(jpegQuality: format == .jpeg ? Int((quality * 12).rounded()) : nil)
       let input = try action.requiresInitialClipboard ? SystemClipboard.shared.read() : nil
       busy = true; results = []; error = nil
@@ -56,7 +60,7 @@ import SwiftUI
         do {
           let decoder = Task.detached(priority: .userInitiated) { try input?.decoded() }
           let clipboard = try await withTaskCancellationHandler { try await decoder.value } onCancel: { decoder.cancel() }
-          results = try await ActionBatch.run(sources: sources, action: action, destination: destination, format: format, options: options, suffix: suffix, stopOnError: stop, clipboard: clipboard, progress: { self.results = $0 }) }
+          results = try await ActionBatch.run(sources: sources, action: action, destination: destination, format: format, options: options, suffix: suffix, naming:selectedNaming, stopOnError: stop, clipboard: clipboard, progress: { self.results = $0 }) }
         catch { self.error = error.localizedDescription }
       }
     } catch { self.error = error.localizedDescription }
@@ -65,6 +69,7 @@ import SwiftUI
 struct BatchPanel: View {
   @Bindable var model: BatchWorkspace
   var body: some View {
+    ScrollView {
     VStack(alignment: .leading, spacing: 12) {
       Picker("Action", selection: $model.selected) { Text("Choose an action").tag(nil as UUID?); ForEach(model.library.file.actions) { Text("\($0.set) / \($0.name)").tag(Optional($0.id)) } }.disabled(model.busy)
       HStack { Button("Files…") { model.chooseSources(folder: false) }; Button("Folder…") { model.chooseSources(folder: true) }; Button("Opened Files") { model.addOpen() }; Button("Clear") { model.sources = []; model.results = [] } }.disabled(model.busy)
@@ -78,22 +83,25 @@ struct BatchPanel: View {
             } else if !model.busy { Button { model.sources.removeAll { $0.id == source.id } } label: { Image(systemName: "minus.circle") }.buttonStyle(.borderless) }
           }
         }
-      }.frame(minHeight: 180)
+      }.frame(height: 180)
       HStack { Button("Destination…") { model.chooseDestination() }; Text(model.destination?.lastPathComponent ?? "Choose an output folder") }.disabled(model.busy)
       HStack {
         Picker("Format", selection: $model.format) { ForEach(DocumentIO.Format.allCases, id: \.self) { Text($0.title).tag($0) } }
-        TextField("Filename suffix", text: $model.suffix)
+        Toggle("Numbered copies",isOn:$model.useLegacyNaming)
+        if model.useLegacyNaming {TextField("Filename suffix",text:$model.suffix)}
       }.disabled(model.busy)
+      if !model.useLegacyNaming {BatchNamingControls(model:model).disabled(model.busy)}
       if model.format == .jpeg { HStack { Text("JPEG quality"); Slider(value: $model.quality, in: 0...1); Text("\(Int(model.quality * 100))%") }.disabled(model.busy) }
       Text(model.format.copyDescription).font(.caption).foregroundStyle(.secondary)
       Toggle("Stop on first error", isOn: $model.stopOnError).disabled(model.busy)
-      Text("Creates numbered copies. Existing files and source documents are preserved; existing output names report an error.").font(.caption).foregroundStyle(.secondary)
+      Text("Existing output names report an error. Batch creates new files from source snapshots.").font(.caption).foregroundStyle(.secondary)
       if let error = model.error { Text(error).foregroundStyle(.red) }
       HStack {
         if model.busy { ProgressView(value: Double(model.results.count), total: Double(max(1, model.sources.count))); Button("Cancel") { model.task?.cancel() } }
         else { Text("\(model.results.filter { $0.output != nil }.count) completed · \(model.results.filter { $0.error != nil && !$0.cancelled }.count) errors"); Spacer(); Button("Run") { model.run() }.disabled(model.selected == nil || model.destination == nil || model.sources.isEmpty) }
       }
-    }.padding(18).frame(minWidth: 560, minHeight: 500)
+    }.padding(18)
+    }.frame(minWidth: 560, minHeight: 500, idealHeight: 620, maxHeight: .infinity)
   }
 }
 @MainActor final class BatchWindow: NSWindowController, NSWindowDelegate {

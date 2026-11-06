@@ -1,0 +1,95 @@
+{
+  "step": 434,
+  "recorded_at_utc": "2026-11-06T05:12:30.551373+00:00",
+  "application_build": 434,
+  "source": "434Source03",
+  "source_manifest": "artifacts/runs/20261106T045405Z-434-batch-naming/source03-source.json",
+  "source_inputs": 7261,
+  "production_swift_files": 1065,
+  "debug_app_sha256": "7714046ed3aa970339b38b76cb260d9ebeca9931f0e370e0e23e1f96b53f0ec1",
+  "run": "artifacts/runs/20261106T045405Z-434-batch-naming",
+  "current_pass": 2,
+  "delivered_package": "AUT01",
+  "next_major_workflow": "G03",
+  "status": "Native Batch File Naming and optional shared actions.batch naming pass25focused Debug/all8new methods; full AUT01 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "One shared immutable naming planner covers18public token types plus custom text, six ordered fields, case/extension transforms, serial and date fields, strict validation and preflight duplicate rejection.",
+    "Native controls offer field reorder/add/remove, serial start, compatibility flags and first-source example. Stable UI identifiers survive field moves/removal and are excluded from semantic JSON. Run captures naming/source/format/options before task suspension.",
+    "Optional actions.batch naming schema/state/capabilities use the same planner and atomic per-file path. Explicit suffix+naming is rejected. Omitting naming retains the old API numbered-source/suffix contract and bytes. No new endpoint/command/archive format.",
+    "Existing detached preparation, atomic nonoverwrite link, per-file errors, completed-output retention, stop/cancel/revocation and source guards remain. Best-effort case aliases are checked off the main actor.",
+    "The six-field native viewport now has a620-point ideal height and flexible maximum, repairing the preserved787-point Source01 fitting-height failure. Exact test bound unchanged."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/in/photoshop/desktop/automate-tasks/process-a-batch-of-files/batch-and-droplet-processing-options.html",
+      "read": "2026-11-05",
+      "supports": "Ordered menu/custom text fields, identifying name/serial, starting serial, alphabetic start and platform compatibility; no exact output proof."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/automate-tasks/process-a-batch-of-files/batch-process-files.html",
+      "read": "2026-11-05",
+      "supports": "Broader source/destination/subfolder/Open-Save override scope stays open."
+    },
+    {
+      "path": "artifacts/runs/20261106T045405Z-434-batch-naming/references/batch-options-public-metadata.json",
+      "supports": "Installed public declarative Scripting Dictionary;18naming enums, max6fields, start1 and defaulttrue platform flags. Historical2020public reference corroborates upper-name token ambiguity; no implementation extracted."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file",
+      "read": "2026-11-05",
+      "supports": "Windows reserved characters/device names including superscript digits and trailing dot/space restrictions."
+    }
+  ],
+  "debug": "artifacts/runs/20261106T045405Z-434-batch-naming/source03-summary.json",
+  "debug_cases": 25,
+  "new_methods": [
+    "PhotoCraftAppTests.BatchNamingTests/testAllPublicFieldKindsAgainstLiteralNamesAndDateZoneBoundary",
+    "PhotoCraftAppTests.BatchNamingTests/testHTTPMatchesNativeNamingAndRejectsInvalidOrStaleWithoutOutputs",
+    "PhotoCraftAppTests.BatchNamingTests/testNamedCancellationAndRevocationRetainCompletedOutputs",
+    "PhotoCraftAppTests.BatchNamingTests/testNamedCopiesHaveSameMaterialAsLegacyAndPreserveInputBytes",
+    "PhotoCraftAppTests.BatchNamingTests/testNativeBindingsSnapshotAndBoundedOffscreenPanel",
+    "PhotoCraftAppTests.BatchNamingTests/testPreflightCollisionsExistingAliasesSymlinksAndStopNumbering",
+    "PhotoCraftAppTests.BatchNamingTests/testStrictAPIParsingSchemasAndReproducibleNames",
+    "PhotoCraftAppTests.BatchNamingTests/testValidationCanonicalCollisionsDeviceNamesAndSerialization"
+  ],
+  "debug_build_seconds": 7.77,
+  "debug_test_seconds": 0.897,
+  "failed_attempts": [
+    {
+      "source": "434Source01",
+      "summary": "artifacts/runs/20261106T045405Z-434-batch-naming/source01-summary.json",
+      "description": "24/25pass, one native six-field fitting-height787>620 assertion. Source/logs/capture/all5322outputs retained before production-only scroll viewport repair. No expectation/fixture/tolerance weakened."
+    }
+  ],
+  "passing_attempts": [
+    "artifacts/runs/20261106T045405Z-434-batch-naming/source02-summary.json",
+    "artifacts/runs/20261106T045405Z-434-batch-naming/source03-summary.json"
+  ],
+  "source02_to03": "Only new HTTP test strengthened with occupied-batch409 and revoked-save403/no-output checks. Production app identical.",
+  "capture": "artifacts/runs/20261106T045405Z-434-batch-naming/source03-captures/434-batch-six-fields-offscreen.png",
+  "capture_qualification": "Offscreen native binding/snapshot and bounded geometry only. Glyph appearance, actual scrolling/focus and supported physical UI remain unqualified; not a live screenshot.",
+  "adobe_API": "The pinned published Adobe v2 contract has no dedicated native Batch File Naming endpoint. No Photoshop action descriptor or route invented. Existing generic execute-actions interoperability remains independently tracked.",
+  "cursor": "No canvas tool, gesture modifier or tool cursor added. Native controls retain AppKit cursor behavior; no Photoshop combined-modifier qualification claimed.",
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 432,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Full AUT01 stays major stillneeded: conditions, interactive/dialog controls, Open/Save overrides, source/destination modes, recursive folders/import/Bridge, ATN, droplets and Image Processor wherever missing or unqualified.",
+    "Exact Photoshop date interpretation, serial overflow, letters after Z, Unicode/case behavior, sanitization, extension choice, UI/defaults/presets and compatibility semantics remain unqualified. Current names are validated, not silently rewritten. At most six fields, 256 native sources/eight shared API sources, 255 UTF-8 filename bytes and 128-byte literals.",
+    "Native starting fields Document Name+extension are chosen pending live reference. Starting serial1/all three compatibility flags true/six-field bound are supported by the installed public Photoshop2026 Batch dictionary. Native captures date at Run; API may pin ISO8601 date and time zone.",
+    "All outputs retain a safe single-file basename baseline regardless of compatibility checkboxes. Windows additionally rejects its reserved names/characters/trailing dots/spaces; macOS/Windows request canonical case-insensitive collision checks. UNIX flag is retained public metadata; disabling it cannot bypass mandatory safe-basename rules. This is not a general platform/Photoshop filename-equivalence claim.",
+    "Atomic hard-link publication protects the actual destination filename, including symlinks. Compatibility alias enumeration is best effort and not an all-files or cross-platform atomic transaction under an external case-alias race. Previously completed outputs are retained on cancellation/errors.",
+    "Existing action sampling/encoding/document capacity limits, full document bytes/defaults/settings/factory-menu/shortcut parity, earlier failures, physical macOS14/Intel/AppleSilicon checks and 60fps remain original acceptance. Offscreen geometry and HTTP tests are not physical/Photoshop proof.",
+    "Current optimized universal/full-suite/live UI/Photoshop qualification is unclaimed. Latest optimized/universal/private-source batch432; next batch at a meaningful milestone. Existing human Mac-unlock request remains pending; no CUA/browser/server workaround or repeated question."
+  ],
+  "distribution": "No current install/launch/archive/upload/Store/release or private push. Latest optimized/private432."
+}

@@ -1,0 +1,108 @@
+{
+  "step": 435,
+  "recorded_at_utc": "2026-11-06T05:43:23.797284+00:00",
+  "application_build": 435,
+  "source": "435Source06",
+  "source_manifest": "artifacts/runs/20261106T051926Z-435-precise-shapes/source06-source.json",
+  "source_inputs": 7265,
+  "production_swift_files": 1068,
+  "debug_app_sha256": "f0104ec54c13c4873940386f520dfef6863cfb3932999b0ae155569101e4f1ac",
+  "run": "artifacts/runs/20261106T051926Z-435-precise-shapes",
+  "current_pass": 2,
+  "delivered_package": "G03",
+  "next_major_workflow": "G04",
+  "status": "Native precise rectangle/ellipse click creation and shared shape.edit point placement pass30focused Debug/all8new methods; full G03 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Exact no-movement rectangle/ellipse clicks open a captured native Create dialog instead of committing1x1geometry. Existing drag/other tool paths remain.",
+    "Dimensions, per-corner/linkable rectangle radii, From Center, invalid-value/Cancel/OK controls use existing geometry/rendering/append and one prepared Undo. Captured document/session/lifecycle/settings/tool revision/epoch/pattern guards reject obsolete work. Tool changes, read/revert/close invalidate drafts.",
+    "Existing shape.edit create accepts optional point/fromCenter/combine, with strict schemas/state/capabilities and mutual exclusion from transform. Old clients/default names stay unchanged. Native/API share the same command builder.",
+    "Separate large Layer lookup branches from ordinary creation/API caller frames. This repairs the two captured native/API pixel-mode Debug stack faults without changing Core/Imaging, validation, fixtures or expected bytes. Path/configure/preset/old-transform regression cases pass."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/draw-rectangles-with-the-rectangle-tool.html",
+      "read": "2026-11-05",
+      "supports": "Click-to-create rectangle dimensions, per-corner/linkable radii and From Center. No exact default/output proof."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/using/tool-techniques/ellipse-tool.html",
+      "read": "2026-11-05",
+      "supports": "Click to enter ellipse details; ordinary drag and Option/Shift contexts. Exact current dialog/default/modifiers unqualified."
+    }
+  ],
+  "unavailable_reference": "A guessed newer ellipse-doc URL returned inaccessible in web tool; used the existing official page, no bypass.",
+  "debug": "artifacts/runs/20261106T051926Z-435-precise-shapes/source06-summary.json",
+  "debug_cases": 30,
+  "new_methods": [
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testCapturedPatternAndRotatedShapeCombinationUseExistingMaterialAndOneUndo",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testHTTPStrictPointRulesBusyStaleAndDiscoverableDraftSchema",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testLinkedRadiiValidationCancelAndBoundedOffscreenSheet",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testLiteralPlacementAllDepthsModesUndoRedoAndArchive",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testNativeAndHTTPPrecisePlacementMatchAcrossModesWithoutChangingOldTransformClients",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testNoMovementClicksOpenDialogsForAllModifiersAndDragRemainsCaptured",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testRequestPlacementValidationAndSinglePrimitiveRules",
+    "PhotoCraftAppTests.PreciseShapeCreationTests/testSourceSessionLifecycleSettingsAndCancellationRejectStaleWork"
+  ],
+  "debug_build_seconds": 0.68,
+  "debug_test_seconds": 11.308,
+  "cursor_matrix_rows": 880,
+  "failed_attempts": [
+    {
+      "source": "435Source01",
+      "summary": "artifacts/runs/20261106T051926Z-435-precise-shapes/source01-summary.json",
+      "description": "Observation-tracked property access before full initialization; no app link/tests. Prior434outputs retained with explicit qualification note and original manifest."
+    },
+    {
+      "source": "435Source02",
+      "summary": "artifacts/runs/20261106T051926Z-435-precise-shapes/source02-summary.json",
+      "description": "App linked; new fixture helper visibility/ambiguous infinity stopped test compile. Only new fixture repaired; priorXCTest distinguished."
+    },
+    {
+      "source": "435Source03",
+      "summary": "artifacts/runs/20261106T051926Z-435-precise-shapes/source03-summary.json",
+      "description": "Eight cases pass before new all-depth native test signal10; retained LLDBlogs01/02 capture Layer copy/stack fault. New wrapper combination branch split before retry."
+    },
+    {
+      "source": "435Source04",
+      "summary": "artifacts/runs/20261106T051926Z-435-precise-shapes/source04-summary.json",
+      "description": "Native all-depth case now passes; nine cases complete before API pixel test signal10. LLDB03 captures ___chkstk_darwin. API path/configure Layer branches split from create, retaining validation."
+    }
+  ],
+  "passing_attempts": [
+    "artifacts/runs/20261106T051926Z-435-precise-shapes/source05-summary.json",
+    "artifacts/runs/20261106T051926Z-435-precise-shapes/source06-summary.json"
+  ],
+  "source05_to06": "All7265inputs and production app identical. Final selector adds correctly spelled full cursor matrix and existing source-shape HTTP path edit; no source/test/expectation change.",
+  "diagnostics": [
+    "artifacts/runs/20261106T051926Z-435-precise-shapes/debugger01.log",
+    "artifacts/runs/20261106T051926Z-435-precise-shapes/debugger02.log",
+    "artifacts/runs/20261106T051926Z-435-precise-shapes/debugger03.log"
+  ],
+  "diagnostic_qualification": "Debugger exit0 represents captured EXC_BAD_ACCESS, never a pass. First default batch did not execute post-fault backtrace; later on-crash commands capture stacks/registers. No matching new crash-report file found; logs are direct evidence. Faulted PIDs terminal before edits.",
+  "capture": "artifacts/runs/20261106T051926Z-435-precise-shapes/source06-captures/435-create-rectangle-offscreen.png",
+  "capture_qualification": "Offscreen sheet geometry only; native control appearance/live click/focus/scroll and physical UI unqualified.",
+  "adobe_API": "Pinned Adobe v2 has no dedicated shape-creation route. No proprietary shape action descriptor or endpoint invented; existing generic action interoperability remains independently tracked.",
+  "cursor": "Existing ToolCursor.geometry and canvas cursor region retain Option center/Shift constraint feedback for drawing. New precise-click context captures Option at mouse-down for From Center.32rectangle/ellipse modifier click policies and existing880-row all-tool cursor artwork matrix pass; exact physical/Photoshop gestures remain open.",
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 432,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Full original G03 remains major stillneeded wherever missing or unqualified: on-canvas live corner widgets/controls visibility, other primitive click dialogs, dimensions/options, custom shapes/presets, path/shape/pixel modes, booleans/arrangement/alignment and related workflows.",
+    "Existing geometry32768 and8MP shape rasterization limits remain functional stillneeded. Pixels mode still uses the existing raster renderer and its document/target/capacity limits; this does not qualify all operations on a maximum300000-square document.",
+    "Exact Photoshop corner/stroke/fitting/coverage/default/placement/rounding, modifier and pixel semantics, dialog layout/persistence and supported physical-platform/60fps checks remain open. No current Photoshop byte/default/gesture equivalence is claimed.",
+    "Native click dialogs currently cover rectangle/ellipse; exact no-movement/non-drag click is the chosen detection rule pending physical reference. Option at mouse-down initializes From Center; other modifiers retain the drawing cursor policy and add no precise-dialog setting. Templates remain unchanged by Apply/Cancel; exact repeated-dialog default persistence remains open.",
+    "Precise API point placement requires one parametric component, identity local transform and no path override. Existing transform clients retain full definitions and behavior. combine uses the target shape paint and transforms appended geometry to target-local coordinates. No general proprietary descriptor equivalence is asserted.",
+    "The two Source03/04Debug stack faults on the selected new native/API pixel paths are repaired in the unchanged final focused cases. Earlier unrelated Frame/clipboard/shape Debug crashes, full-suite failures, linked-alpha/gray numerical residuals and all other original acceptance remain open; no common cause or repair is inferred.",
+    "Latest optimized universal/private-source qualification remains432. No current normal/full-suite/physical/live Photoshop qualification, install/launch/archive/Store/release or private push. Existing human Mac-unlock request remains pending; no CUA/browser/server workaround or repeated question."
+  ],
+  "distribution": "No current install/launch/archive/upload/Store/release/private push; batch optimized qualification at meaningful milestone after432."
+}

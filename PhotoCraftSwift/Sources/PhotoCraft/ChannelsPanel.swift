@@ -86,8 +86,8 @@ struct ChannelsPanel: View {
           .foregroundStyle(.secondary).padding(8)
       }
       HStack {
-        Button { if store.document.inkMode != nil && store.editingChannel == nil { store.loadSelectedInkChannel() } else { store.beginChannelDialog(.load) } } label: { Image(systemName:"circle.dashed") }.help("Load channel as selection").disabled((store.document.alphaChannels ?? []).isEmpty && store.document.inkMode == nil)
-        Button { store.beginChannelDialog(.save) } label: { Image(systemName:"square.and.arrow.down") }.help("Save selection as channel")
+        Button { store.loadChannelFooter() } label: { Image(systemName:"circle.dashed") }.help("Load selected channel as selection").accessibilityLabel("Load selected channel as selection").accessibilityIdentifier("channels.footer.load").disabled(!store.canLoadChannelFooter)
+        Button { store.saveChannelFooter(modifiers:NSApp.currentEvent?.modifierFlags ?? []) } label: { Image(systemName:"square.and.arrow.down") }.help("Save selection as channel; Option-click for options").accessibilityLabel("Save selection as channel").accessibilityIdentifier("channels.footer.save").disabled(!store.canSaveSelectionChannel)
         Spacer()
         Button { if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else if NSApp.currentEvent?.modifierFlags.contains(.command)==true {store.beginChannelDialog(.newSpot)}else{store.newAlphaChannel()} } label: { Image(systemName:"plus.square") }.help("New channel (Command-click for New Spot Channel)")
         Button { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } else if store.effectiveInkTargets.count == 1, case .plate(let id) = store.effectiveInkTargets.first { store.performInkChannel(.delete(id)) } } label: { Image(systemName:"trash") }.help("Delete channel").disabled(store.alphaEditingID == nil && !(store.document.colorMode == .multichannel && store.effectiveInkTargets.count == 1 && store.document.inkChannelTargets.count > 1))

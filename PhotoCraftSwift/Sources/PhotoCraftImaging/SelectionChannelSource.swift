@@ -2,7 +2,7 @@ import Foundation
 import PhotoCraftCore
 
 public enum SelectionChannelSource:Hashable,Sendable {
-  case alpha(UUID),quickMask,composite,component(Int),transparency(UUID),layerMask(UUID),vectorMask(UUID),plate(UUID),duotone
+  case alpha(UUID),quickMask,composite,component(Int),transparency(UUID),layerMask(UUID),smartFilterMask(UUID),vectorMask(UUID),plate(UUID),duotone
   public func title(in document:CraftDocument)->String {
     func layer(_ id:UUID)->String {document.layers.first{$0.id==id}?.name ?? "Unavailable layer"}
     switch self {
@@ -12,6 +12,7 @@ public enum SelectionChannelSource:Hashable,Sendable {
     case .component(let n):return document.colorMode.componentNames.indices.contains(n) ? document.colorMode.componentNames[n]:"Unavailable component"
     case .transparency(let id):return layer(id)+" Transparency"
     case .layerMask(let id):return layer(id)+" Mask"
+    case .smartFilterMask(let id):return layer(id)+" Filter Mask"
     case .vectorMask(let id):return layer(id)+" Vector Mask"
     case .plate(let id):if case .multichannel(let raster)=document.inkMode {return raster.plates.first{$0.id==id}?.name ?? "Unavailable plate"};return "Unavailable plate"
     case .duotone:return "Duotone"
@@ -23,6 +24,7 @@ public enum SelectionChannelSource:Hashable,Sendable {
     if let layer=document.layers.first(where:{$0.id==document.activeLayerID}) {
       if !layer.isBackground {result.append(.transparency(layer.id))}
       if layer.mask != nil {result.append(.layerMask(layer.id))}
+      if layer.smartFilters?.mask != nil {result.append(.smartFilterMask(layer.id))}
       if layer.vectorMask != nil {result.append(.vectorMask(layer.id))}
     }
     if includingComponents {
@@ -39,6 +41,12 @@ public enum SelectionChannelSource:Hashable,Sendable {
       return try channel.selection(invert:(channel.spot != nil) != invert)
     }
     if case .quickMask=self {return try document.channel(.quickMask).selection(invert:invert)}
+    if case .smartFilterMask(let id)=self {
+      guard let index=document.layers.firstIndex(where:{$0.id==id}) else {throw CraftError.invalid("The source filter-mask owner is no longer available.")}
+      var proxy=document
+      proxy.layers[index]=try document.layers[index].filterMaskProjection()
+      return try SelectionChannelSource.layerMask(id).selection(in:proxy,invert:invert,colorSettings:colorSettings)
+    }
     var spec=ChannelArithmeticSource(documentID:document.id)
     switch self {
     case .composite:
@@ -51,7 +59,7 @@ public enum SelectionChannelSource:Hashable,Sendable {
     case .vectorMask(let id):spec.layerID=id;spec.channel = .vectorMask
     case .plate(let id):spec.channel = .ink(.plate(id))
     case .duotone:spec.channel = .ink(.duotone)
-    case .alpha,.quickMask:preconditionFailure("Handled numeric channels")
+    case .alpha,.quickMask,.smartFilterMask:preconditionFailure("Handled numeric channels")
     }
     if case .transparency(let id)=self,let index=document.layers.firstIndex(where:{$0.id==id}),document.layers[index].isGroup {
       var proxy=document;let ids=Set(document.subtreeIDs(id));proxy.layers=document.layers.filter{ids.contains($0.id)}

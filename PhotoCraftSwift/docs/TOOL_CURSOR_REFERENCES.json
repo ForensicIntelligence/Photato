@@ -1296,5 +1296,36 @@
     "tool_modifier_action_changed": false,
     "behavior": "No new canvas tool or alternate modifier action. Pattern is a native button/menu operation. Captured pattern preparation blocks transform drags/arrows and retains Escape/Cancel/Enter; native control cursors stay AppKit-owned.",
     "qualification": "No new tool/modifier matrix required for native menu/button; previous shared policy remains required. Current native physical appearance/input unqualified."
+  },
+  "channel_footer_433": {
+    "step": 433,
+    "reference": "docs/CHANNEL_FOOTER_433.json",
+    "tool_modifier_action_changed": false,
+    "behavior": "Existing native button icons and AppKit arrow/control cursors retained. Option Save is a native button options action; no drawing tool/alternate canvas cursor added. All16Control/Command/Option/Shift Save policies tested; exact physical/Photoshop combined gestures open.",
+    "qualification": "Controlled16Save policies; no live physical/Photoshop or new canvas cursor claim."
+  },
+  "batch_file_naming_434": {
+    "step": 434,
+    "reference": "docs/BATCH_FILE_NAMING_434.json",
+    "tool_modifier_action_changed": false,
+    "behavior": "No canvas tool, gesture modifier or tool cursor added. Native controls retain AppKit cursor behavior; no Photoshop combined-modifier qualification claimed.",
+    "qualification": "No canvas modifier action added; physical/native appearance and Photoshop checks open."
+  },
+  "precise_shape_creation_435": {
+    "step": 435,
+    "reference": "docs/PRECISE_SHAPE_CREATION_435.json",
+    "tool_modifier_action_changed": true,
+    "new_tool": false,
+    "shared_policy": "ToolCursor.geometry / existing canvas cursor region",
+    "behavior": "Existing ToolCursor.geometry and canvas cursor region retain Option center/Shift constraint feedback for drawing. New precise-click context captures Option at mouse-down for From Center.32rectangle/ellipse modifier click policies and existing880-row all-tool cursor artwork matrix pass; exact physical/Photoshop gestures remain open.",
+    "qualification": "32precise click policies and880all-tool matrix rows pass; no physical/Photoshop combined gesture/default claim."
+  },
+  "path_fill_436": {
+    "step": 436,
+    "reference": "docs/PATH_FILL_436.json",
+    "new_tool": false,
+    "tool_modifier_action_changed": true,
+    "behavior": "No new canvas gesture/tool. Option-footer opens modal options; ordinary footer retains existing action.16modifier entry policies pass; native controls keep their control cursor. Existing all-tool880row artwork matrix passes selected optimized suite, no physical Photoshop gesture claim.",
+    "qualification": "16footer entry policies and existing880row artwork matrix pass; live/Photoshop combined gestures open."
   }
 }
