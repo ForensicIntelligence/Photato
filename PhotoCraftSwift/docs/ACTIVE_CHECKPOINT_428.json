@@ -2,7 +2,7 @@
   "step": 428,
   "application_build": 428,
   "source": "428Source03",
-  "status": "428selectedfeaturequalified; private source backup and final records pending",
+  "status": "428Source03/Release01 qualified and source backed up privately; G01 major stillneeded next",
   "reference": "docs/SELECTION_BORDERS_428.json",
   "software_changes": true,
   "qualification": "82baseline Debug cases and8strengthened current methods, same production app.98sameorderednormalcases/23newmethods pass per architecture;universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
@@ -24,5 +24,14 @@
   "new_install": false,
   "new_archive": false,
   "new_upload": false,
-  "new_release": false
+  "new_release": false,
+  "source_commit": "dd9f86229b43d0989a6fa8dfd7e48fd19cb75087",
+  "source_tree": "a6bf3f4b3aa7f845ca6f13991a0ee008556622cb",
+  "private_source_push_verified": true,
+  "final_consistency_checks": 26,
+  "latest_normal_universal_checkpoint": 428,
+  "latest_private_source_checkpoint": 428,
+  "standalone_diary": "nusite/diary.html#latest",
+  "historical_preservation": "Fresh395baseline26unchanged/14historicallymissing/0changed; all428failed/pass outputs retained",
+  "final_receipt": "artifacts/development-history-audit/428-final-receipt01.json"
 }
