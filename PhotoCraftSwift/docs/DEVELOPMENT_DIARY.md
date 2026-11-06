@@ -26,6 +26,8 @@ The Save As and Save a Copy format lists can now be customized from Edit > Custo
 All 101 focused tests pass, including seven new tests covering all 64 combinations of the current six formats at RGB 8/16/32, migration, failed/stale writes, native/API behavior and unchanged output bytes. Both optimized architectures pass the same 101 selected cases, including all seven new methods, with no failures or crashes. The universal package passes minimum macOS 14, signature and ZIP checks. Physical reference checks await Mac unlock; exact Photoshop defaults and empty-list behavior remain unqualified.
 
 L07 artboard workflows are next. The larger D01 and L01 gaps remain major stillneeded work. All original package scopes and acceptance criteria are retained. [Step 426](DEVLOG.md#dev-step-426).
+The [complete native source backup](https://github.com/ForensicIntelligence/Photato/commit/4156da9b1791d9a15b85c0ede5d9c5115d4ebf99) is saved privately. The repository becomes public on software release day.
+
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

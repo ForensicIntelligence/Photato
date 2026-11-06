@@ -59,7 +59,7 @@
   "current_normal_qualified": true,
   "current_universal_qualified": true,
   "current_native_live_qualified": false,
-  "new_source_push": false,
+  "new_source_push": true,
   "new_install": false,
   "new_Xcode_archive": false,
   "new_upload": false,
@@ -71,5 +71,6 @@
   "new_feature_methods_pass_each": 7,
   "universal": "artifacts/runs/20261105T235537Z-426-save-dialog-formats/universal/staging01.json",
   "affected_suite_passed": true,
-  "current_normal_qualification_scope": "Selected newfunctionandaffected101cases only; botharchitecturespassall101/0failures/0crashes.425fullaffected395andearlierfull-suitefailuresstayopen; nofullcurrent-suite/Photoshop/platformclaim."
+  "current_normal_qualification_scope": "Selected newfunctionandaffected101cases only; botharchitecturespassall101/0failures/0crashes.425fullaffected395andearlierfull-suitefailuresstayopen; nofullcurrent-suite/Photoshop/platformclaim.",
+  "source_delivery": "docs/SOURCE_PUBLICATION_426.json"
 }
