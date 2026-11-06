@@ -131,5 +131,7 @@
       "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
       "supports": "Legacy brit structure; audited reference does not qualify missing2026modern descriptor mapping."
     }
-  ]
+  ],
+  "private_source_backup": "docs/SOURCE_PUBLICATION_441.json",
+  "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day."
 }

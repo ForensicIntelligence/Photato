@@ -15132,5 +15132,36 @@
         "supports": "Legacy brit structure; audited reference does not qualify missing2026modern descriptor mapping."
       }
     ]
+  },
+  "source_delivery_441": {
+    "step": 441,
+    "repository": "ForensicIntelligence/Photato",
+    "private": true,
+    "source_commit": "350101b8245a25386a9add2f5a25b2721196eb16",
+    "source_tree": "fd1616964a1c4a3bd6c8ebe3a7cc6388f294d7b0",
+    "source_parent": "a74b38455d0b43d522bc401c769160af2b3100bf",
+    "source_commit_url": "https://github.com/ForensicIntelligence/Photato/commit/350101b8245a25386a9add2f5a25b2721196eb16",
+    "source": "441Source05/Release01",
+    "qualified_inventory_inputs": 7348,
+    "included_qualified_inputs": 7314,
+    "excluded_qualified_inputs": 34,
+    "excluded_inputs_record": "artifacts/runs/20261106T105037Z-441-light-preview-pause/curation01.json",
+    "curated_native_files": 8566,
+    "changed_paths": 32,
+    "root_and_rust_unchanged": 1061,
+    "new_fixture_files": 0,
+    "stale_removals": 0,
+    "staged_index_blobs_verified": true,
+    "remote_commit_and_tree_verified": true,
+    "known_secret_signature_hits": 0,
+    "privacy_review_limit": "Known key/token signatures and explicit generated/runtime/signing/restricted inputs reviewed; not an exhaustive privacy proof. Runtime evidence excluded.",
+    "qualification": "43focused Debug and43sameordered optimized methods each, including9new; universalmin14/signature/extractedZIPpass. Selected analysis paths only; all earlier failures and fullscope remain open.",
+    "selected_native_workflow_qualified": true,
+    "affected_suite_passed": true,
+    "full_current_suite_passed": false,
+    "Photoshop_parity": false,
+    "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day.",
+    "documentation_finalization": "Separate docs-only backup follows consecutive history refresh/check; final excluded receipt records actual SHA without later indexed native writes.",
+    "recorded_at_utc": "2026-11-06T11:19:57.283534+00:00"
   }
 }

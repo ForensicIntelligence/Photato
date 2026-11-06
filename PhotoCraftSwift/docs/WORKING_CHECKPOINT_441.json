@@ -1,7 +1,7 @@
 {
   "step": "dev-step-441",
   "run": "artifacts/runs/20261106T105037Z-441-light-preview-pause",
-  "status": "441selected Light paint/retouch/nativeAPI qualification complete; private source/history/diary finalization follows",
+  "status": "441selected Light paint/retouch/private source verified; A05current,A07next; final excluded receipt records record finalization",
   "current_pass": 2,
   "current_major_workflow": "A05",
   "next": "A07",
@@ -13,5 +13,9 @@
   "source_manifest": "artifacts/runs/20261106T105037Z-441-light-preview-pause/release01-source.json",
   "source_inputs": 7348,
   "production_swift_files": 1083,
-  "evidence": "docs/LIGHT_EDITING_PREVIEW_441.json"
+  "evidence": "docs/LIGHT_EDITING_PREVIEW_441.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_441.json",
+  "source_commit": "350101b8245a25386a9add2f5a25b2721196eb16",
+  "new_private_push": true,
+  "record_finalization": "Final excluded receipt records actual history/standalone/mirror/docs backup results; no full-suite or Photoshop parity claim."
 }

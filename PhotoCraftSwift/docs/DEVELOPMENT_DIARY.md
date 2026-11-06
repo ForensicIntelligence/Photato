@@ -26,6 +26,7 @@ Light adjustment layers now pause their display effect while lower layers are pa
 All 43 focused Debug tests and the same 43 optimized tests on Apple Silicon and under Rosetta pass, including nine new methods. Tests cover paint/mask workflows, nine retouch tools, clipping, group scope, final pixels, Undo, Cancel and API state. Universal macOS 14 packaging, signature and extracted ZIP verify. These are selected checks; earlier failures, independent Photoshop fidelity, physical-platform tests and 60 fps remain open.
 
 The major still-needed sweep moves to A05 gradients, then A07. Full A04 remains open, including modern editable PSD descriptors, actual Light versions, larger spatial processing and other live-edit contexts. All 104 original scopes and acceptance criteria are retained. [Step 441](DEVLOG.md#dev-step-441).
+The current source is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/350101b8245a25386a9add2f5a25b2721196eb16), including the Xcode project. This is a development checkpoint, not a software release.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3463,3 +3464,5 @@ The first projection hid the Light layer. A new regression showed why that was w
 A fixture compilation failure and two incorrect fixture assumptions were preserved before repair: API revisions already include view renders, and a no-op mask stroke creates no Undo entry. The final run passes 43 Debug tests and the same 43 optimized methods on each architecture, including all nine new methods. Existing tests, fixtures, Core adjustment math and the Adobe API contract are unchanged. Universal macOS 14 packaging, signature and ZIP extraction also verify.
 
 This closes a selected A04 painting workflow, not the whole package. Modern PSD/PSB descriptors, actual Light version switching, larger neighborhood processing, other editing contexts and independent Photoshop/platform/performance qualification remain open. The major still-needed sweep moves to A05, then A07; no minor or cleanup pass has begun.
+
+The private source backup includes 7,314 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added; existing tests and Core math are unchanged. A final documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/350101b8245a25386a9add2f5a25b2721196eb16) · [Backup record](SOURCE_PUBLICATION_441.json).
