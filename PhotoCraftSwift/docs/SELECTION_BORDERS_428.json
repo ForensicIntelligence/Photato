@@ -1,0 +1,113 @@
+{
+  "step": 428,
+  "recorded_at_utc": "2026-11-06T01:31:41.339830+00:00",
+  "application_build": 428,
+  "source": "428Source03",
+  "source_manifest": "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-source.json",
+  "source_inputs": 7241,
+  "production_swift_files": 1056,
+  "debug_app_sha256": "e4c04cba83e9b8db89da98113dce76a2ef13e3dcea421273c621e8d4e733b26b",
+  "run": "artifacts/runs/20261106T010718Z-428-selection-border-animation",
+  "current_pass": 2,
+  "delivered_package": "S01",
+  "next_major_workflow": "G01",
+  "status": "Animated selection borders:82baseline Debug cases and8strengthened current methods pass with identical production binary;98sameordered normal cases/23new426-428methods pass per architecture;universalmin14/signature/ZIPpass. Full S01/physical/Photoshop acceptance open.",
+  "typed_commands": 249,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Native Core Animation white/black CAShapeLayer strokes and perpetual dash phase; no Swift display timer or per-frame source/render/contour work.",
+    "Existing half-coverage/hole and sparse/bounded contours; screen-space transforms cache by source path/viewport.",
+    "Separate committed/Transform Selection and image-clipped shape-preview layers; Selection Brush retains its mask overlay.",
+    "Window/application/key/occlusion/minimized/hide/detach/Reduce Motion lifecycle; no hit-testing/cursor or source-state mutation.",
+    "Existing API document state/capability/schema discovery adds selectionDisplay, reporting requested animation separately from native-window playback. No new editing command/menu/shortcut/archive/Actions/Adobe endpoint."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/selection-tools-overview.html",
+      "read": "2026-11-05",
+      "supports": "Moving selection boundary behavior; no measured timing/pixel/appearance claim."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/quartzcore/calayer/isgeometryflipped",
+      "read": "2026-11-05",
+      "supports": "View-managed backing-layer geometry; no speculative flip change after native alignment passed."
+    }
+  ],
+  "debug_baseline": "artifacts/runs/20261106T010718Z-428-selection-border-animation/source02-summary.json",
+  "debug_current_probe": "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-summary.json",
+  "production_identical_across_debug_attempts": true,
+  "new_methods": [
+    "PhotoCraftAppTests.SelectionAntsTests/testAPIReportsPresentationPolicyWithoutChangingRevisionArchiveOrMenus",
+    "PhotoCraftAppTests.SelectionAntsTests/testCoreAnimationRepeatsCachedScreenSpaceStrokesWithoutCanvasRedrawOrDocumentMutation",
+    "PhotoCraftAppTests.SelectionAntsTests/testCreationPreviewsUseSeparateImageClippedLayersAndEndWithoutStaleGeometry",
+    "PhotoCraftAppTests.SelectionAntsTests/testDeselectUndoAndTransformPreviewSwitchOnlyTheirExistingSelectionGeometry",
+    "PhotoCraftAppTests.SelectionAntsTests/testExistingHoleContourMapsThroughZoomPanAndBackingWithoutChangingCoverageAtAnyDepth",
+    "PhotoCraftAppTests.SelectionAntsTests/testLifecyclePolicyStopsAndRestoresWithoutLeakingAnimationOnDetach",
+    "PhotoCraftAppTests.SelectionAntsTests/testMaximumSparseCanvasBorderDoesNotAllocateFullCanvasOrReduceSourceExtent",
+    "PhotoCraftAppTests.SelectionAntsTests/testOwnedRasterSnapshotsShowMovingDashesAndKeepInteriorClear"
+  ],
+  "debug_failed_attempt": {
+    "source": "428Source01",
+    "summary": "artifacts/runs/20261106T010718Z-428-selection-border-animation/source01-summary.json",
+    "description": "81of82pass; one new zoom/contour test36assertions from a temporary-path fixture reset by zoom. Actual coverage fixture/await repaired; contour math/tolerances unchanged."
+  },
+  "captures": [
+    "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-captures/selection-ants-phase-0.png",
+    "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-captures/selection-ants-phase-4.png",
+    "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-captures/selection-ants-native-canvas.png",
+    "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-captures/selection-ants-native-geometry.json"
+  ],
+  "offscreen_alignment": {
+    "borderGeometryFlipped": false,
+    "darkPixelsAtRedTop": 48,
+    "redBounds": [
+      141,
+      120,
+      198,
+      157
+    ],
+    "rootGeometryFlipped": true,
+    "viewFlipped": true
+  },
+  "normal": "artifacts/runs/20261106T010718Z-428-selection-border-animation/qualified01.json",
+  "normal_cases_each": 98,
+  "normal_new_methods_each": 23,
+  "normal_results": [
+    {
+      "binary_sha256": "3e5d1edf2f8b9ec77d53764dc93c34bdf9f8bd2458cce26ae2d5414d43be3865",
+      "build_seconds": [
+        "374.70"
+      ],
+      "test_seconds": 7.337,
+      "cases": 98,
+      "passed": 98,
+      "exit_code": 0
+    },
+    {
+      "binary_sha256": "432f797267b740fa407de9d5685b5eaa7d0b9557fd178ce12ea5ad3032b8e35d",
+      "build_seconds": null,
+      "test_seconds": 11.615,
+      "cases": 98,
+      "passed": 98,
+      "exit_code": 0
+    }
+  ],
+  "universal": "artifacts/runs/20261106T010718Z-428-selection-border-animation/universal/staging01.json",
+  "current_normal_qualified": true,
+  "current_universal_qualified": true,
+  "current_physical_qualified": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Grow/Similar still require the new paged, reference-driven colour-selection engine and full native/API workflow. See SELECTION_GROW_SIMILAR_PLAN_428.json.",
+    "Complete Extras/Selection Edges controls, remaining selection options and contexts need further source/reference audit and implementation where absent.",
+    "Exact Photoshop kernels, coverage/anti-alias/feather/default/shortcut combinations, appearance/dash timing and physical supported-platform/performance qualification remain original S01 acceptance.",
+    "The earlier Frame Debug signal10 and full-suite numerical/lifecycle failures remain open; a passing optimized case is not a Debug cause or crash repair."
+  ],
+  "live_reference": "No428CUA. Existing human Mac-unlock request remains pending; all captures are owned offscreen model-layer evidence, not physical UI or compositor frame-rate measurements.",
+  "distribution": "Isolated ad-hoc sandboxed universal validation package, not installed/launched/Xcode-archived/Store-uploaded/released. Private source backup follows standing authorization."
+}

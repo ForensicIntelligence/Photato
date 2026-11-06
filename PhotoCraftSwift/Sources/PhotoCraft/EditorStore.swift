@@ -65,6 +65,7 @@ import UniformTypeIdentifiers
   var snappingEnabled=true
   var artboardDraft: ArtboardDraft?
   var artboardGesture: ArtboardGesture?
+  var artboardNeighborPress: ArtboardNeighborPress?
   var showArtboardNames = true
   var showArtboardGuides = true
   var trimDraft: TrimDraft?
@@ -154,7 +155,7 @@ import UniformTypeIdentifiers
       if oldValue != tool {
         cancelMagneticLasso()
         objectFinder.cancel(); peopleWorkspace.close()
-        artboardGesture = nil; frameGesture = nil; shapeGesture = nil; _ = finishType()
+        artboardGesture = nil; artboardNeighborPress = nil; frameGesture = nil; shapeGesture = nil; _ = finishType()
         if oldValue == .crop { cancelCrop() }
         if oldValue.regionRetouchKind != nil { cancelRegionRetouch() }
         if oldValue.usesSelectionStroke {cancelBrush()}

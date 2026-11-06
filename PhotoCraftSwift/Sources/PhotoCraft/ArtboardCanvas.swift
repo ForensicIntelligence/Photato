@@ -96,6 +96,7 @@ extension CraftCanvas {
         }
       }
     }
+    drawArtboardNeighbors(in: c)
     if let gesture = store.artboardGesture, gesture.changed {
       let r = gesture.current, p = viewPoint(.init(x: r.x, y: r.y))
       c.setStrokeColor(NSColor.controlAccentColor.cgColor); c.setLineDash(phase: 0, lengths: [5, 3]); c.setLineWidth(2)

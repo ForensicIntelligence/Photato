@@ -1,0 +1,32 @@
+{
+  "step": 427,
+  "application_build": 427,
+  "source": "427Source04",
+  "status": "427Source04:41focused Debug tests pass including8new; records complete; nextS01 major stillneeded; no427normal/universal/fullsuite/physical claim",
+  "reference": "docs/ARTBOARD_NEIGHBORS_427.json",
+  "software_changes": true,
+  "qualification": "41focused Debug tests/all8new pass. Source02 broader Frame crash retained and reproduced in426Debug. Current normal/universal/physical/fullsuite unqualified.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T004013Z-427-artboard-neighbors",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_manifest": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source04-source.json",
+  "source_inputs": 7238,
+  "next": "S01 major stillneeded source/reference audit",
+  "remaining": [
+    "Auto-nesting, drag/drop membership and position/nesting lock rules need further implementation and reference checks.",
+    "Public Ungroup Artboards dissolves into elements; current artboard.edit ungroup removes metadata but retains a group. Preserve the old API contract while designing complete native/API dissolve behavior.",
+    "Rich Properties/New Document integration and remaining coordinate/guide/export/Frame workflow coverage need source/reference audit and implementation where absent.",
+    "FrameIntegrationTests/testDrawOverImageEmbedsSourceInOneUndo exits signal10 in427Source02 Debug and retained426Source02 Debug. Cause, repair and current normal qualification remain open; this stays substantive L07/Q04 work.",
+    "Exact Photoshop spacing/naming/background inheritance, occupied-neighbor placement, button/cursor appearance and all physical reference/default comparisons remain unqualified.",
+    "Complete editable interchange, portable Actions coverage, independent output parity, full suite, physical Intel/macOS14 and editing performance remain original acceptance gates. Per-control accessibility/keyboard presentation also needs qualification."
+  ],
+  "current_major_workflow": "S01",
+  "current_delivered_package": "L07",
+  "consistency_checks": 20,
+  "latest_normal_universal_checkpoint": 426,
+  "latest_private_source_checkpoint": 426,
+  "standalone_diary": "nusite/diary.html#latest",
+  "final_receipt": "artifacts/development-history-audit/427-final-receipt01.json"
+}

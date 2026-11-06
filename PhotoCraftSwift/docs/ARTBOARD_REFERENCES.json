@@ -104,5 +104,12 @@
     "missing_explicit_references": 0,
     "final_repin": "refresh03/check03 after this metadata update"
   },
-  "final_source_verification": "All1383 source01 inputs match after documentation and package verification."
+  "final_source_verification": "All1383 source01 inputs match after documentation and package verification.",
+  "adjacent_controls_427": {
+    "source": "427Source04",
+    "reference": "docs/ARTBOARD_NEIGHBORS_427.json",
+    "native": "Four + controls, Option captured copy,16modifier contexts, lifecycle cancel and one prepared Undo.",
+    "api": "Existing artboard.edit adjacent plus strict schema/capability metadata; no new Adobe route.",
+    "qualification": "41focused Debug tests/all8new pass. Old Frame Debug crash retained; fullscope/default/physical/normal427 remain open."
+  }
 }

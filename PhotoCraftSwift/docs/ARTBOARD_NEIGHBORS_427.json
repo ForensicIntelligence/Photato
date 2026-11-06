@@ -1,0 +1,162 @@
+{
+  "step": 427,
+  "recorded_at_utc": "2026-11-06T00:53:22.281733+00:00",
+  "application_build": 427,
+  "source": "427Source04",
+  "source_manifest": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source04-source.json",
+  "source_inputs": 7238,
+  "production_swift_files": 1054,
+  "binary_sha256": "9985861aeed878879ee66e4e608a4da26135d4fd90308f2e93bb3e90b24ace3a",
+  "status": "Adjacent artboard native/API path:41focused Debug tests pass including8new methods; broader Debug Frame crash retained; full L07 and normal/physical qualification open",
+  "current_pass": 2,
+  "current_major_workflow": "L07",
+  "next_major_workflow": "S01",
+  "run": "artifacts/runs/20261106T004013Z-427-artboard-neighbors",
+  "typed_commands": 249,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "changes": [
+    "Native four selected-artboard + controls; Option captured at press duplicates all existing contents through existing ArtboardCommand.",
+    "Native/API share ArtboardNeighborRequest logical side/spacing placement, existing prepared transaction and Undo/Redo. New boards are empty and inherit source size/background.",
+    "Cancel on Escape/outside release/focus/tool/owner/session/selection/Space changes; maximum extent guarded without resampling or clamping.",
+    "Existing artboard.edit supports adjacent with side, duplicate, spacing and optional name. Native spacing100 logical pixels; API0...32768 default100.",
+    "Existing API bounds schema/parser now admit1...300000 per side; engine union/memory validation remains.",
+    "No new menu or shortcut, typed command, archive or Actions format. Existing Adobe create-artboard and toolbar duplicate retained."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/use-artboards-to-lay-out-designs.html",
+      "updated": "2026-10-06",
+      "read": "2026-11-05",
+      "supports": "Selected-board + controls and Option duplication of all contents; no exact spacing/default/cursor claim."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/layout-design-tools/artboard-properties.html",
+      "read": "2026-11-05",
+      "supports": "Broader L07 behavior audit including nesting/guides/ungroup; not full qualification."
+    }
+  ],
+  "debug": {
+    "exit_code": 0,
+    "inputs": 7238,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "cases": [
+      "PhotoCraftAppTests.AdobeArtboardTests/testContractBoundsNamesHorizontalAssemblyAndManifest",
+      "PhotoCraftAppTests.AdobeArtboardTests/testInvalidAndUnsupportedContractFieldsFailExplicitly",
+      "PhotoCraftAppTests.AdobeArtboardTests/testPublishedRouteJobStatusAndHostedOutputs",
+      "PhotoCraftAppTests.ArtboardIntegrationTests/testArtboardGradientExtractionMatchesOriginalComposite",
+      "PhotoCraftAppTests.ArtboardIntegrationTests/testExclusiveExportNeverOverwrites",
+      "PhotoCraftAppTests.ArtboardIntegrationTests/testExtractionAndImagePDFExportsPreserveSourceAndBounds",
+      "PhotoCraftAppTests.ArtboardIntegrationTests/testNativePropertiesGestureCancelAndUndo",
+      "PhotoCraftAppTests.ArtboardIntegrationTests/testPhotatoAPIHistoryBusyStaleAndExport",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testAllSidesCreateAndDuplicateAtAllDepthsPreservePixelsHistoryAndArchive",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testAPIAdjacentMatchesNativePixelsAndHistoryAndExposesStrictSchemas",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testAPIBoundsAcceptCurrentSparseMaximumAndRejectOverflow",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testAPIInvalidBusyStaleAndUnsharedDoNotMutate",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testLimitsLocksAndNegativeCoordinatesRejectAtomically",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testNativeCancelStaleFocusToolSpaceAndOutsideReleaseDoNotEdit",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testNativeClicksCaptureOptionAndCommitExactlyOnceWithUndo",
+      "PhotoCraftAppTests.ArtboardNeighborTests/testNativeControlsHitRegionsClippingAndOwnedOffscreenCapture",
+      "PhotoCraftAppTests.ArtboardWorkflowTests/testImageSizeAndQuarterTurnTransformBoardGeometry",
+      "PhotoCraftAppTests.ArtboardWorkflowTests/testNative27RoundTripAndInvalidHierarchyRollback",
+      "PhotoCraftAppTests.ArtboardWorkflowTests/testNegativeBoardsRebaseWithoutResamplingAndKeepLogicalCoordinates",
+      "PhotoCraftAppTests.ArtboardWorkflowTests/testOriginalRustClipBackgroundAndHalfOpenEdgeExpectationsAllDepths",
+      "PhotoCraftAppTests.ArtboardWorkflowTests/testResizeMoveDuplicateAndGuideProperties",
+      "PhotoCraftAppTests.AutomationTests/testLimitsAndMenuEntryAreExplicitProductAdditions",
+      "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+      "PhotoCraftAppTests.FrameIntegrationTests/testAPIConfigureMatchesNativeAndRejectsInvalidBusyStaleAndOldArchives",
+      "PhotoCraftAppTests.FrameIntegrationTests/testAPIPlacementFitContentTransformClearAndSourceGuards",
+      "PhotoCraftAppTests.FrameIntegrationTests/testCustomTextContourPreservesCounterAndSchemaAcceptsItsMetadata",
+      "PhotoCraftAppTests.FrameIntegrationTests/testNativePropertiesTargetsGestureCancellationAndHistory",
+      "PhotoCraftAppTests.FrameWorkflowTests/testClipsChildrenForAllDepthsAndShapes",
+      "PhotoCraftAppTests.FrameWorkflowTests/testIndependentGeometryReplacementRetainsSmartObjectAndHistory",
+      "PhotoCraftAppTests.FrameWorkflowTests/testOriginalRustBoundsGroupingAndSingleHistoryStep",
+      "PhotoCraftAppTests.FrameWorkflowTests/testStrokeOnEmptyFrameAndNative28RoundTrip",
+      "PhotoCraftAppTests.FrameWorkflowTests/testTypeAndShapeBecomeEmptyEditableFramesAndInvalidInputRollsBack",
+      "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+      "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+      "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+      "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+      "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+      "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+      "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+      "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+      "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+    ],
+    "passed": 41,
+    "failed_cases": [],
+    "totals": [
+      [
+        "41",
+        "0",
+        "0",
+        "1.576"
+      ]
+    ],
+    "build_seconds": [
+      "21.63"
+    ],
+    "finished_utc": "2026-11-06T00:51:00.029235+00:00"
+  },
+  "new_methods": [
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAllSidesCreateAndDuplicateAtAllDepthsPreservePixelsHistoryAndArchive",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIAdjacentMatchesNativePixelsAndHistoryAndExposesStrictSchemas",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIBoundsAcceptCurrentSparseMaximumAndRejectOverflow",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIInvalidBusyStaleAndUnsharedDoNotMutate",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testLimitsLocksAndNegativeCoordinatesRejectAtomically",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeCancelStaleFocusToolSpaceAndOutsideReleaseDoNotEdit",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeClicksCaptureOptionAndCommitExactlyOnceWithUndo",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeControlsHitRegionsClippingAndOwnedOffscreenCapture"
+  ],
+  "coverage": {
+    "placement_contexts": 24,
+    "modifier_press_contexts": 16,
+    "depths": [
+      "u8",
+      "u16",
+      "f32"
+    ],
+    "native_history_and_API": true,
+    "sparse_300000_metadata_only": true,
+    "not_claimed": "Full affected suite, normal427/universal427, physical UI/Photoshop pixel equivalence or 60fps"
+  },
+  "retained_binary_files": 5322,
+  "failed_attempts": [
+    {
+      "source": "427Source01",
+      "summary": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source01-summary.json",
+      "description": "Application compile failure: internal validator access; no current binary/tests. Preexisting426 app/resources retained and explicitly labeled."
+    },
+    {
+      "source": "427Source02",
+      "summary": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source02-summary.json",
+      "description": "25passed, one new method failed3schema test assertions, then preexisting Frame method signal10. Corrected only schema nesting assertion before Source03."
+    }
+  ],
+  "intermediate_pass": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source03-summary.json",
+  "visual_repair": "Source03 owned offscreen capture revealed small-board name/top-control overlap. Source04 adds16screen points above a visible name; same41tests pass and final PNG inspected.",
+  "offscreen_capture": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/source04-captures/artboard-neighbors.png",
+  "baseline_crash": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/old426-frame-debug01-summary.json",
+  "remaining": [
+    "Auto-nesting, drag/drop membership and position/nesting lock rules need further implementation and reference checks.",
+    "Public Ungroup Artboards dissolves into elements; current artboard.edit ungroup removes metadata but retains a group. Preserve the old API contract while designing complete native/API dissolve behavior.",
+    "Rich Properties/New Document integration and remaining coordinate/guide/export/Frame workflow coverage need source/reference audit and implementation where absent.",
+    "FrameIntegrationTests/testDrawOverImageEmbedsSourceInOneUndo exits signal10 in427Source02 Debug and retained426Source02 Debug. Cause, repair and current normal qualification remain open; this stays substantive L07/Q04 work.",
+    "Exact Photoshop spacing/naming/background inheritance, occupied-neighbor placement, button/cursor appearance and all physical reference/default comparisons remain unqualified.",
+    "Complete editable interchange, portable Actions coverage, independent output parity, full suite, physical Intel/macOS14 and editing performance remain original acceptance gates. Per-control accessibility/keyboard presentation also needs qualification."
+  ],
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 426,
+  "current_physical_qualified": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "live_reference": "Existing human unlock request pending; no427 CUA action or online dashboard/browser claim.",
+  "distribution": "No install, archive, Store change or release. Private source backup remains426; next normal/private batch follows a meaningful stable milestone.",
+  "consistency": "artifacts/runs/20261106T004013Z-427-artboard-neighbors/consistency02.json",
+  "consistency_checks": 20
+}

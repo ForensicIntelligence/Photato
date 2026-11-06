@@ -8,19 +8,22 @@ extension Artboard {
      "coordinates": "Bounds use logical document pixels; artboardOrigin maps physical canvas pixel0 to logical coordinates. Guides are local artboard offsets. Negative bounds expand and rebase the canvas without resampling layer pixels.",
      "behavior": "Top-level groups clip children and paint their background. Create, convert, configure, duplicate, clear guides and remove artboard metadata share native one-step Undo/Redo. Native files retain editable layers. Raster exports and multipage PDF use identical clipped rendering.",
      "limits": "Shared documents:300,000 pixels per side and8,000 layers within128MiB owned heap; exports128MiB. JSON/PNG/JPEG/TIFF Adobe create-artboard jobs are a bounded local subset. Editable PSD artboard interchange remains unavailable.",
-     "operations": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup"], "exportFormats": ArtboardExport.formats]
+     "operations": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup", "adjacent"], "adjacent": ["sides": ArtboardSide.allCases.map(\.rawValue), "defaultSpacing": 100, "spacingUnit": "logical pixels", "duplicate": "Option-click copies contents; API duplicate is explicit. New boards inherit size/background and start empty. Exact Photoshop defaults remain unqualified."], "exportFormats": ArtboardExport.formats]
   }
 }
 extension AutomationCommand {
   static func artboardSchema(_ key: String) -> [String: Any] {
     switch key {
-    case "operation": return ["type": "string", "enum": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup"]]
+    case "operation": return ["type": "string", "enum": ["create", "convert", "configure", "duplicate", "guides.clear", "ungroup", "adjacent"]]
+    case "side": return ["type": "string", "enum": ArtboardSide.allCases.map(\.rawValue)]
+    case "duplicate": return ["type": "boolean", "default": false]
+    case "spacing": return ["type": "integer", "minimum": 0, "maximum": 32768, "default": 100]
     case "layerID": return ["type": "string", "format": "uuid"]
     case "layerIDs": return ["type": "array", "maxItems": LayerLimits.maximumLayers, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
     case "name": return ["type": "string", "minLength": 1, "maxLength": 256]
     case "format": return ["type": "string", "enum": ArtboardExport.formats]
     case "moveContents": return ["type": "boolean", "default": true]
-    case "bounds": return ["type": "object", "additionalProperties": false, "required": ["x", "y", "width", "height"], "properties": ["x": ["type": "integer", "minimum": -1_000_000, "maximum": 1_000_000], "y": ["type": "integer", "minimum": -1_000_000, "maximum": 1_000_000], "width": ["type": "integer", "minimum": 1, "maximum": 32768], "height": ["type": "integer", "minimum": 1, "maximum": 32768]]]
+    case "bounds": return ["type": "object", "additionalProperties": false, "required": ["x", "y", "width", "height"], "properties": ["x": ["type": "integer", "minimum": -1_000_000, "maximum": 1_000_000], "y": ["type": "integer", "minimum": -1_000_000, "maximum": 1_000_000], "width": ["type": "integer", "minimum": 1, "maximum": 300000], "height": ["type": "integer", "minimum": 1, "maximum": 300000]]]
     case "background": return ["type": "object", "additionalProperties": false, "required": ["r", "g", "b", "a"], "properties": Dictionary(uniqueKeysWithValues: ["r", "g", "b", "a"].map { ($0, ["type": "number", "minimum": 0, "maximum": 1]) })]
     case "guides": return ["type": "array", "maxItems": 512, "items": ["type": "object", "additionalProperties": false, "required": ["axis", "position"], "properties": ["axis": ["type": "string", "enum": ["horizontal", "vertical"]], "position": ["type": "number", "minimum": -1_000_000, "maximum": 1_000_000]]]]
     default: return [:]
@@ -40,6 +43,7 @@ extension AutomationCommand {
     case "convert": required = ["layerID", "bounds"]; optional = ["background"]
     case "configure": required = ["layerID", "bounds"]; optional = ["name", "background", "guides", "moveContents"]
     case "duplicate": required = ["layerID", "bounds"]; optional = ["name"]
+    case "adjacent": required = ["layerID", "side"]; optional = ["duplicate", "spacing", "name"]
     case "guides.clear", "ungroup": required = ["layerID"]; optional = []
     default: throw fail("Unknown artboard operation.")
     }
@@ -48,13 +52,20 @@ extension AutomationCommand {
     let id = try parameters["layerID"].map { _ in try actionUUID("layerID") }
     let layer = id.flatMap { id in document.layers.first { $0.id == id } }
     if id != nil && layer == nil { throw AutomationFailure(status: 404, message: "Layer not found.") }
+    if operation == "adjacent" {
+      guard let side = ArtboardSide(rawValue: try string("side")) else { throw fail("Invalid artboard side.") }
+      var duplicate = false, spacing = 100
+      if let value = parameters["duplicate"] { guard case .bool(let b) = value else { throw fail("duplicate must be boolean.") }; duplicate = b }
+      if let value = parameters["spacing"] { guard case .number(let n) = value, n.isFinite, n.rounded() == n, (0...32768).contains(n) else { throw fail("Invalid artboard spacing.") }; spacing = Int(n) }
+      return try ArtboardNeighborRequest(layerID: id!, side: side, duplicate: duplicate, spacing: spacing, name: try parameters["name"].map { _ in try string("name") }).command(in: document)
+    }
     if operation == "guides.clear" { return .artboard(.clearGuides(id!)) }
     if operation == "ungroup" { return .artboard(.removeMetadata(id!)) }
     guard case .object(let rawBounds) = parameters["bounds"], Set(rawBounds.keys) == ["x", "y", "width", "height"] else { throw fail("bounds requires x,y,width,height.") }
     func integer(_ key: String, _ range: ClosedRange<Double>) throws -> Int {
       guard case .number(let n) = rawBounds[key], n.isFinite, n.rounded() == n, range.contains(n) else { throw fail("Invalid artboard \(key).") }; return Int(n)
     }
-    let bounds = try IntRect(x: integer("x", -1_000_000...1_000_000), y: integer("y", -1_000_000...1_000_000), width: integer("width", 1...32768), height: integer("height", 1...32768))
+    let bounds = try IntRect(x: integer("x", -1_000_000...1_000_000), y: integer("y", -1_000_000...1_000_000), width: integer("width", 1...300000), height: integer("height", 1...300000))
     var background = layer?.artboard?.background ?? .white
     if let raw = parameters["background"] {
       guard case .object(let fields) = raw, Set(fields.keys) == ["r", "g", "b", "a"] else { throw fail("Background requires RGBA components.") }

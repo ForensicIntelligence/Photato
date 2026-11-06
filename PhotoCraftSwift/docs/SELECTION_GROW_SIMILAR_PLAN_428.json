@@ -1,0 +1,39 @@
+{
+  "step": 428,
+  "work_package": "S01",
+  "track": "major stillneeded",
+  "status": "Missing function retained; implementation/reference plan, not a completed feature",
+  "source_audit": {
+    "menus": "Grow and Similar remain unbound and disabled; no menu promoted to complete.",
+    "existing_matcher": "Sources/PhotoCraftCore/ColorRegion.swift explicitly implements licensed PhotoCraft RGBA8 comparison and full-canvas pixels/marks/output arrays. It is not independent Photoshop numerical evidence and is not a suitable maximum-document implementation.",
+    "existing_other_selection_work": "Single row/column, Reselect, Modify and Transform Selection already exist;428adds animated presentation without changing their coverage math."
+  },
+  "primary_references": [
+    "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/expand-or-contract-selection.html",
+    "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/selection/"
+  ],
+  "documented_contract": {
+    "tolerance": "integer0\u2013255",
+    "grow": "adjacent matching pixels",
+    "similar": "matching pixels throughout the image",
+    "grow_anti_alias": "public UXP argument defaults true",
+    "unsupported": "Bitmap and32-bit RGB/Grayscale per public Adobe reference"
+  },
+  "unresolved_reference_cases": [
+    "Which selected colors seed each invocation, multi-color/partial coverage and repeated operation semantics.",
+    "Connectivity, transparency/hidden RGB, anti-alias coverage and8/16-bit thresholds in each supported mode.",
+    "Active layer versus composite, component/alpha/mask/Quick Mask source contexts and inherited Magic Wand options.",
+    "Current Photoshop native availability, disabled contexts, menu/default behavior and supported public action descriptors."
+  ],
+  "implementation_sequence": [
+    "Capture owned Photoshop fixtures for those cases through normal UI/public interfaces once access is available; retain sources, settings and exact outputs. No proprietary code or algorithms are copied.",
+    "Define one explicit native request with captured sampling target/options and shared availability/validation. Derive classification from independent reference evidence, not the existing Rust-distance rule.",
+    "Prepare source samples by bounded regions and construct paged GRAY8 coverage with a bounded multi-seed colour index/frontier. Do not allocate arrays proportional to full maximum canvas area. Audit existing Magic Wand allocation admission in the same engine work.",
+    "Connect existing Select menu entries without invented shortcuts, prepared native history/cancel/source/owner guards and corresponding Photato API schema/state/docs/tests. Add published Adobe-compatible action support only where the pinned contract/descriptors establish it.",
+    "Test all supported target/mode/depth paths, tolerance endpoints, holes, fractional coverage, alpha, repeated application, busy/stale/revoked/cancel/Undo/Redo/persistence/API equivalence and independent bytes. Preserve unsupported public modes.",
+    "Qualify maximum sparse/large tiled/dense capacity and normal architectures/platform/runtime performance. Unfinished implementation stays in pass2; numerical/default/physical qualification remains full original acceptance."
+  ],
+  "scope_waived": false,
+  "Photoshop_parity": false,
+  "recorded_at_utc": "2026-11-06T01:26:26.843333+00:00"
+}

@@ -18,16 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:426 -->
+<!-- current-status-step:428 -->
 ## Current status — 5 November 2026
 
-The Save As and Save a Copy format lists can now be customized from Edit > Customize Save Dialog File Formats. The native dialog and File Handling API share the saved choices. Ordinary Save, recovery and explicit API output remain available when a format is hidden.
+Selection borders now animate through Core Animation. They follow existing selection contours and previews without recompositing the image for each animation frame. Playback respects window visibility, application activity and Reduce Motion. Source pixels, coverage, history and output bytes are unchanged.
 
-All 101 focused tests pass, including seven new tests covering all 64 combinations of the current six formats at RGB 8/16/32, migration, failed/stale writes, native/API behavior and unchanged output bytes. Both optimized architectures pass the same 101 selected cases, including all seven new methods, with no failures or crashes. The universal package passes minimum macOS 14, signature and ZIP checks. Physical reference checks await Mac unlock; exact Photoshop defaults and empty-list behavior remain unqualified.
+All 98 selected optimized cases pass on Apple Silicon and Intel under Rosetta, including 23 feature tests from checkpoints 426–428. The universal package passes both macOS 14 slices, signature and ZIP checks. The earlier Frame case passes optimized; its Debug crash and earlier full-suite failures remain open. These results do not establish physical 60fps or complete Photoshop parity.
 
-L07 artboard workflows are next. The larger D01 and L01 gaps remain major stillneeded work. All original package scopes and acceptance criteria are retained. [Step 426](DEVLOG.md#dev-step-426).
-The [complete native source backup](https://github.com/ForensicIntelligence/Photato/commit/4156da9b1791d9a15b85c0ede5d9c5115d4ebf99) is saved privately. The repository becomes public on software release day.
-
+G01 geometry workflows follow. Grow/Similar needs a new sampling engine and remains in major stillneeded, along with unfinished S01, L07, L01 and D01 functions. All original scopes and acceptance criteria are retained. [Step 428](DEVLOG.md#dev-step-428).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3253,3 +3251,27 @@ The existing File Handling API accepts the same choices under its separate permi
 All 101 focused Debug tests pass, including seven new methods. The initial run passed 100 of 101: a new API test reinitialized AppKit's document-controller singleton during the service and compared an unnegotiated legacy download with current archive bytes. Failed sources, binaries and logs were preserved before test-only corrections. The app binary is unchanged between those attempts. A normal-build helper then failed before compilation because its hash helper had been dropped during adaptation; that diagnostic was preserved and the helper repaired. Both optimized architectures pass the same 101 selected cases, including all seven new methods. The universal package passes minimum macOS 14, signature and ZIP checks. Earlier full-suite and checkpoint 425 residual failures remain open; this is not a full-suite pass. The owned offscreen dialog capture checks fit, not physical UI or visual Photoshop equivalence.
 
 The Mac remains unavailable for live comparison pending the existing unlock request. L07 is next after this batch; remaining D01 and L01 functions stay in major stillneeded. No minor or cleanup pass starts, and no full package is declared complete. [Detailed record](DEVLOG.md#dev-step-426).
+
+## 2026-11-05 — Step 427: Adjacent artboards
+
+Added the canvas + controls described in Adobe's public artboard guide. A click adds an empty neighbour with the source dimensions and background; Option held when pressing copies the existing board and its contents. Releasing elsewhere or pressing Escape cancels. Tool, focus, document/session and selected-artboard changes also cancel the press. Temporary Hand does not create a board. Placement uses logical pixels and the existing sparse-canvas rebase without resampling source content.
+
+The existing artboard.edit API now accepts adjacent, a side and optional copy/spacing/name parameters. Both entry points use the same request and prepared editing engine, including one Undo/Redo transaction. The API's older32,768 dimension bound was corrected to match the current300,000-pixel engine extent. Canvas union and memory guards remain. Native spacing is100 logical pixels; the API accepts explicit spacing. Exact Photoshop spacing, naming, background inheritance and occupied-neighbour behavior still need live reference checks. No new menu, shortcut, typed command or file format was introduced. Native archive 86 and Actions 49 remain unchanged, including the outstanding artboard Action-recording coverage.
+
+The first build failed because the app called an internal Core validator. After preserving that attempt, it was changed to the existing public validation path. The second build passed the editing checks, but a new test looked at the wrong level of the API schema. The broader run then crashed in an existing Frame draw-over-image case. The retained previous 426 Debug binary reproduces the same signal10. This establishes an earlier reproduction, without identifying a cause or fixing the crash. The corrected focused selection retains the other Frame tests and explicitly excludes that one case.
+
+All 41 focused tests now pass, including all eight new methods, 24 side/depth/create-copy combinations and 16 modifier combinations. They check exact native/API rendered results, stored content, archive round trips, history, cancellation and invalid/busy/stale/unshared requests. Offscreen inspection found the top control overlapping the name on a small board; its spacing was corrected and the same tests rerun successfully. The final owned capture shows the controls clear of the label. This is layout evidence, not a physical Photoshop comparison. Failed attempts and binaries remain in the technical record.
+
+Normal/universal 427 and physical qualification remain batched. The prior Frame crash, exact defaults, nesting/dissolve and the remaining artboard/frame functions stay open. S01 is next in major stillneeded; all 104 original package scopes and acceptance criteria are retained. [Detailed record](DEVLOG.md#dev-step-427).
+
+## 2026-11-05 — Step 428: Animated selection borders
+
+The selection border was drawn with a fixed dash phase. It now uses native Core Animation layers for committed selections, Transform Selection and marquee previews. White strokes and black dashes stay the same screen width while zooming. Existing hole contours and bounded sparse-document geometry are reused. The layer animation does not request a Swift canvas redraw or recomposite the image for each frame.
+
+Inactive, hidden, occluded, minimized or detached windows stop playback. Reduce Motion retains a static border. Selection Brush keeps its coverage overlay. The API exposes the presentation policy and requested animation, rather than claiming to report the compositor's actual playback state. This adds no editing command, menu, shortcut, cursor action or file-format field. Native archive 86, Actions 49, typed commands 249 and settings 4 remain unchanged.
+
+The first focused run passed 81 of 82 tests. A new hole/zoom test installed a temporary path, then changed zoom, which correctly cleared that path. After preserving the failed source and outputs, the test was changed to use actual holed document coverage and await its render. The same 82 cases then passed. A further eight-method probe used asymmetric owned artwork to verify that the border follows the selected pixels in the native layer capture. The production binary was identical across those attempts. No selection algorithm or tolerance was changed to satisfy the test.
+
+Both optimized architectures pass the same 98 selected cases, including all 23 new methods from checkpoints 426–428. The old Frame draw-over-image case also passes optimized; this does not explain or fix its earlier Debug crash. The universal package passes minimum macOS 14, signature and ZIP checks. Exact Photoshop dash timing, physical refresh-rate performance, complete Extras controls and broader platform/full-suite qualification remain open. All captures are owned offscreen evidence; no live Photoshop interaction is claimed.
+
+The source audit confirmed that Grow and Similar are missing. The existing Magic Wand matcher uses the licensed PhotoCraft RGBA8 comparison and full-canvas buffers. The recorded plan calls for independent Photoshop fixtures, bounded sampling, paged coverage and shared native/API transactions. It remains a functional gap in major stillneeded. G01 is next; no major package is declared complete and no minor or cleanup pass begins. [Detailed record](DEVLOG.md#dev-step-428).

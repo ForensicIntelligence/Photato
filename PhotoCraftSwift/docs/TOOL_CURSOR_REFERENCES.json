@@ -1253,5 +1253,16 @@
     "existing_modifier_combinations": 880,
     "passed": true,
     "physical_pointer_check": false
+  },
+  "adjacent_controls_427": {
+    "source": "427Source04",
+    "reference": "docs/ARTBOARD_NEIGHBORS_427.json",
+    "native": "Four + controls, Option captured copy,16modifier contexts, lifecycle cancel and one prepared Undo.",
+    "api": "Existing artboard.edit adjacent plus strict schema/capability metadata; no new Adobe route.",
+    "qualification": "41focused Debug tests/all8new pass. Old Frame Debug crash retained; fullscope/default/physical/normal427 remain open."
+  },
+  "selection_borders_428": {
+    "reference": "docs/SELECTION_BORDERS_428.json",
+    "impact": "Presentation layers have no NSView input surface; no tool/modifier/cursor action or key-binding change. Existing full16modifier cursor/gesture regressions are in the98-case normal selection."
   }
 }

@@ -1,0 +1,28 @@
+{
+  "step": 428,
+  "application_build": 428,
+  "source": "428Source03",
+  "status": "428selectedfeaturequalified; private source backup and final records pending",
+  "reference": "docs/SELECTION_BORDERS_428.json",
+  "software_changes": true,
+  "qualification": "82baseline Debug cases and8strengthened current methods, same production app.98sameorderednormalcases/23newmethods pass per architecture;universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T010718Z-428-selection-border-animation",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "G01",
+  "current_delivered_package": "S01",
+  "source_manifest": "artifacts/runs/20261106T010718Z-428-selection-border-animation/source03-source.json",
+  "source_inputs": 7241,
+  "remaining": [
+    "Grow/Similar still require the new paged, reference-driven colour-selection engine and full native/API workflow. See SELECTION_GROW_SIMILAR_PLAN_428.json.",
+    "Complete Extras/Selection Edges controls, remaining selection options and contexts need further source/reference audit and implementation where absent.",
+    "Exact Photoshop kernels, coverage/anti-alias/feather/default/shortcut combinations, appearance/dash timing and physical supported-platform/performance qualification remain original S01 acceptance.",
+    "The earlier Frame Debug signal10 and full-suite numerical/lifecycle failures remain open; a passing optimized case is not a Debug cause or crash repair."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false
+}
