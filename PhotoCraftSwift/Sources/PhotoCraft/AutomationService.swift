@@ -340,7 +340,7 @@ import UniformTypeIdentifiers
     let document="\(store.printRevision):\(store.layerPanelGeneration.uuidString):\(store.revision - store.timelinePlaybackRenderCount):\(store.timelinePlaybackRevision):\(store.timelineVisible):\(store.document.activeLayerID?.uuidString ?? "none"):\(store.actionRevision):\(store.actions.revision)"
     let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"+":\(store.layerFilterRevisionToken)"
     let evaluated = view + (includeFilterEvaluation ? ":\(store.layerContentFilter.revision)" : "")
-    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision):\(store.gradientOptionsRevision)":evaluated
+    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision):\(store.gradientOptionsRevision):\(store.patterns.revision)":evaluated
     // Multi-document source contracts accept at most256characters. Keep revision
     // components private and bounded as view-state tracking grows.
     return SHA256.hash(data: Data(opaque.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -382,6 +382,7 @@ import UniformTypeIdentifiers
       "channelArithmetic":store.channelArithmeticState,
       "selectionTransform":store.selectionTransformState,
       "pixelPaint":store.pixelPaintState,
+      "patternLibrary":PatternLibraryAPI.state(store.patterns),
       "layerLinks":store.layerLinkState,
       "layerSelection":store.layerSelectionState,
       "layerFilter":store.layerFilterState,
@@ -1116,6 +1117,7 @@ import UniformTypeIdentifiers
       }
       if command.name == "actions.batch" { return try await executeActionBatch(command, anchorID:id) }
       if command.name.hasPrefix("brush.") { return .json(try await manageBrushes(command,store:store,shareID:id)) }
+      if command.name == PatternLibraryAPI.command {return .json(try await managePatterns(command,store:store,shareID:id))}
       if command.name == "sky.library" {return .json(try await manageSkies(command,store:store,shareID:id))}
       if command.name == "selection.sky" {
         guard store.canSelectSky else{throw AutomationFailure(status:422,message:"Select an available RGB document target.")}
@@ -1766,6 +1768,7 @@ import UniformTypeIdentifiers
       "channelArithmetic":ChannelArithmeticAPI.capabilities,
       "selectionTransform":SelectionTransformAPI.capabilities,
       "pixelPaint":PixelPaintAPI.capabilities,
+      "patternLibrary":PatternLibraryAPI.capabilities,
       "canvasEdges":CanvasEdgesAPI.capabilities,
       "documentDuplicate":DocumentDuplicateAPI.capabilities,
       "flattenImage":FlattenImageAPI.capabilities,
@@ -1837,6 +1840,7 @@ import UniformTypeIdentifiers
         "channelArithmetic":ChannelArithmeticAPI.stateSchema,
         "selectionTransform":SelectionTransformAPI.stateSchema,
         "pixelPaint":PixelPaintAPI.stateSchema,
+        "patternLibrary":PatternLibraryAPI.stateSchema,
         "crop":CropRequest.stateSchema,
         "canvasEdges":CanvasEdgesAPI.stateSchema,
         "documentDuplicate":DocumentDuplicateAPI.stateSchema,

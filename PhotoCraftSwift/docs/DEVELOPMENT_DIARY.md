@@ -18,15 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:442 -->
+<!-- current-status-step:443 -->
 ## Current development status — 6 November 2026
 
-Gradient Options and toolbar presets now configure the next gradient. Existing Gradient Fill layers retain canvas and Properties editing. The optional API can configure defaults, create live fills and paint Classic gradients through the same native commands. Recorded Actions can replay creation and painting with captured settings.
+The Patterns panel now has groups, multi-selection, moving/reordering, duplicate, rename and delete. PAT import/export retains folders, empty groups and repeated preset references. Existing pattern pixels and document-owned resources are retained. The optional API provides the same library operations and Define Pattern.
 
-All 69 focused Debug tests pass. The same 99 optimized methods run on Apple Silicon and under Rosetta: 99 pass on Apple Silicon and 98 under Rosetta. All eleven new tests pass on both. The remaining Intel interpolation assertion reproduces exactly on the preserved checkpoint 441 binary. Its fixture and expectation are unchanged. Universal macOS 14 packaging, signature and extracted ZIP verify; full-suite, physical-platform, independent Photoshop and 60 fps qualification remain open.
+All 54 focused Debug tests and the same 71 optimized methods on Apple Silicon and under Rosetta pass, including seventeen new methods. Tests cover migration, exact existing PAT pixel/byte checks, real provider transfers, HTTP operations, cancellation, revoked sharing, persistent-file retention and offscreen native UI. Universal macOS 14 packaging, signature and extracted ZIP verify. Wider-suite failures, independent Photoshop fidelity, physical platforms and 60 fps remain open.
 
-The major still-needed sweep moves to A07 pattern fills and pixel Fill/Stroke, then filters. Full A05 remains open, including canvas opacity, complete preset/noise/GRD behavior, remaining transforms and output/default fidelity. All 104 original scopes and acceptance criteria remain. [Step 442](DEVLOG.md#dev-step-442).
-The current source, including the Xcode project, is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e). This is a development checkpoint with the failures above retained.
+The major still-needed sweep moves to F01 filters, then F02. Full A07 remains open: History/scripted Fill, remaining pattern-application workflows, interchange/capacity and exact defaults/output. All 104 original scopes and acceptance criteria remain. [Step 443](DEVLOG.md#dev-step-443).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3483,3 +3482,20 @@ The rendering math and old image fixtures are unchanged. Older tests changed onl
 This completes the selected creation, painting, API and recording paths. The full gradient package remains open, including canvas opacity, preset/noise/GRD cases, remaining transforms, numerical/default fidelity, platform and performance checks. Work moves to A07 under the seven-pass order; no minor or cleanup pass has begun.
 
 The private source checkpoint includes 7,319 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e) · [Receipt](SOURCE_PUBLICATION_442.json).
+
+
+## 2026-11-06 — Step 443: Pattern groups and PAT folders
+
+The Patterns panel previously stored a flat list. Its PAT reader recognized folder metadata but discarded the grouping. The native library now keeps a flat node graph with parent links, and the panel shows groups with preset grids. Shift selects ranges, Command toggles selection, and private native dragging moves groups or presets with insertion feedback. Duplication creates independent resources; renamed or deleted presets do not alter resources already captured in documents.
+
+PAT import and export retain nested and empty groups and repeated preset occurrences. Existing pixel records and compression are unchanged. Native user-library format 2 stores the hierarchy; format 1 loads without rewriting the original file. Selection and disclosure changes stay in memory until the next persisted mutation. Candidate data is prepared in a worker, authorized before atomic replacement and then published to matching memory.
+
+The optional pattern.library API shares native selection, organization, import/export and Define Pattern. It publishes operation-specific schemas and shared library revisions. Initial document revisions still reject stale requests. Accepted work checks document/session/library/lifecycle, token and sharing at completion, allowing harmless display redraws while rejecting real document changes or revoked sharing.
+
+Early constructor and actor-type compilation errors, followed by two test-fixture errors, were retained before repair. An offscreen panel test initially over-released its AppKit window. An own-binary NSZombie diagnostic identified release after deallocation; the fixture now keeps Swift ownership through normal teardown and retains its original view check. Product code was unchanged for that test repair.
+
+Optimized tests then exposed valid HTTP library edits returning 409. A paused real import proved that a view redraw alone could invalidate accepted work. Removing that extra view comparison fixed the controlled Debug case, but did not finish optimized qualification. An explicit short-lived request lease now holds accepted inputs and checks each relevant server-side predicate separately. The final optimized runs pass on both architectures. No compiler or ARC root cause is asserted, and all failed attempts remain recorded.
+
+The final result is 54 Debug tests and 71 identical ordered optimized methods per architecture passing, including all seventeen new methods. Existing image kernels, PAT pixel writer, version 1 encoder, image fixtures and numeric expectations remain unchanged. Older tests changed only for catalogue counts, optional library injection and the intended retained-folder behavior. The actual SwiftUI panel was rendered offscreen; live Photoshop and physical-platform checks remain pending.
+
+This completes the selected pattern-library organization and transport workflows. History Fill still needs a shared source/snapshot mechanism. Scripted Fill, remaining application/drop semantics, arbitrary PAT metadata, capacity and exact Photoshop defaults/output remain open. Work continues with F01 under the seven-pass order; no minor or cleanup pass has begun.

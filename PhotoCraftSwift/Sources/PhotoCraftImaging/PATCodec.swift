@@ -6,6 +6,7 @@ import PhotoCraftCore
 public enum PATCodec {
   public struct Library: Sendable {
     public let patterns: [RasterPattern]
+    public let nodes: [PatternLibraryNode]
     public let foldersFlattened: Bool
     public let duplicateRecordsMerged: Int
   }
@@ -223,7 +224,7 @@ public enum PATCodec {
       }
       patterns.append(try RasterPattern(name: name, surface: surface, id: id))
     }
-    var foldersFlattened = false
+    var nodes: [PatternLibraryNode] = []
     if r.remaining > 0 {
       // Photoshop's installed modern libraries append a folder-order descriptor.
       // Accept only the observed, validated layout; unknown metadata still rejects.
@@ -234,7 +235,7 @@ public enum PATCodec {
       guard descriptor.classID.text == "null", descriptor.items.count == 1,
         case .list(let entries) = descriptor["hierarchy"]
       else { throw CraftError.unsupported("Unsupported PAT folder hierarchy.") }
-      var nesting = 0
+      var groups: [UUID] = []
       var presets = 0
       for entry in entries {
         guard case .object(let item) = entry else {
@@ -242,29 +243,34 @@ public enum PATCodec {
         }
         switch item.classID.text {
         case "Grup":
-          guard item.items.count == 1, case .text = item["Nm  "], nesting < 64 else {
+          guard item.items.count == 1, case .text(let units) = item["Nm  "], groups.count < 64 else {
             throw CraftError.unsupported("Unsupported PAT folder settings.")
           }
-          nesting += 1
-          foldersFlattened = true
+          let name=String(decoding:units,as:UTF16.self)
+          guard Array(name.utf16)==units else{throw CraftError.invalid("Invalid PAT group name encoding.")}
+          try PatternLibraryState.validateName(name)
+          let node=PatternLibraryNode(parentID:groups.last,name:name)
+          nodes.append(node);groups.append(node.id)
         case "groupEnd":
-          guard item.items.isEmpty, nesting > 0 else {
+          guard item.items.isEmpty, !groups.isEmpty else {
             throw CraftError.invalid("Unbalanced PAT folders.")
           }
-          nesting -= 1
+          groups.removeLast()
         case "preset":
           guard item.items.isEmpty else {
             throw CraftError.unsupported("Unsupported PAT preset settings.")
           }
-          presets += 1
+          guard presets<patterns.count else{throw CraftError.invalid("PAT folder preset count is too large.")}
+          nodes.append(PatternLibraryNode(parentID:groups.last,patternID:patterns[presets].id));presets += 1
         default: throw CraftError.unsupported("Unknown PAT folder entry.")
         }
       }
-      guard nesting == 0, presets == patterns.count else {
+      guard groups.isEmpty, presets == patterns.count else {
         throw CraftError.invalid("PAT folders do not match the preset list.")
       }
     }
     guard r.remaining == 0 else { throw CraftError.invalid("Unexpected trailing PAT data.") }
+    if nodes.isEmpty {nodes=patterns.map{PatternLibraryNode(patternID:$0.id)}}
     var unique: [RasterPattern] = []
     var indices: [String: Int] = [:]
     for pattern in patterns {
@@ -281,13 +287,45 @@ public enum PATCodec {
       }
     }
     try PatternArchive.validate(unique)
+    try PatternLibraryState(patterns:unique,nodes:nodes).validate()
     return Library(
-      patterns: unique, foldersFlattened: foldersFlattened,
+      patterns: unique, nodes: nodes, foldersFlattened: false,
       duplicateRecordsMerged: patterns.count - unique.count)
   }
 
   public static func write(_ patterns: [RasterPattern]) throws -> Data {
     try PatternArchive.validate(patterns)
+    return try writeRecords(patterns)
+  }
+  /// Retains folder order and repeated references without changing the pixel codec.
+  public static func writeLibrary(_ state:PatternLibraryState,selected:Set<UUID>?=nil)throws->Data {
+    let state=try state.subset(selected);try state.validate()
+    let assets=Dictionary(uniqueKeysWithValues:state.patterns.map{($0.id,$0)})
+    let ordered=try state.orderedNodes(),records=ordered.compactMap{$0.patternID.flatMap{assets[$0]}}
+    let tileBytes=records.reduce(0){$0+(($1.surface.width+63)/64)*(($1.surface.height+63)/64)*65_536}
+    guard tileBytes<=1_073_741_824 else{throw CraftError.invalid("PAT repeated references exceed the decoded tile budget.")}
+    var data=try writeRecords(records)
+    if ordered.contains(where: { $0.isGroup }) {
+      var entries=[PSDValue]()
+      func append(_ parent:UUID?)throws {
+        for node in state.children(of:parent) {
+          try Task.checkCancellation()
+          if node.isGroup {
+            entries.append(.object(PSDDescriptor("Grup",items:[.init("Nm  ",.text(Array(node.name.utf16)))])))
+            try append(node.id);entries.append(.object(PSDDescriptor("groupEnd")))
+          }else{entries.append(.object(PSDDescriptor("preset")))}
+        }
+      }
+      try append(nil)
+      var trailer=PSDWriter();trailer.text("8BIM");trailer.text("phry")
+      trailer.section(try PSDDescriptor("null",items:[.init("hierarchy",.list(entries))]).encoded())
+      data.append(trailer.data)
+    }
+    guard data.count<=PatternArchive.maxBytes else{throw CraftError.invalid("PAT export exceeds the file budget.")}
+    return data
+  }
+  private static func writeRecords(_ patterns:[RasterPattern])throws->Data {
+    guard patterns.count<=PatternArchive.maxCount else{throw CraftError.invalid("PAT contains too many preset references.")}
     var out = PSDWriter()
     out.text("8BPT")
     out.n(1, 2)

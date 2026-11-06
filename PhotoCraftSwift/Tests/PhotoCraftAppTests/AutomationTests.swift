@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 255
+  static let expectedCommandCount = 256
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -42,7 +42,7 @@ final class AutomationTests: XCTestCase {
   }
 
   @MainActor func withService(
-    actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
+    actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil, patterns:PatternLibrary? = nil,
     pressedMouseButtons: @escaping @MainActor () -> Int = { NSEvent.pressedMouseButtons },
     resourceTransport: any AdobeResourceTransport = NativeAdobeResourceTransport(),
     foregroundDetector: any ForegroundDetecting = VisionForegroundDetector(),
@@ -59,7 +59,7 @@ final class AutomationTests: XCTestCase {
     let controller = CraftDocumentController(
       workspaces: WorkspaceLibrary(), recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex)
     let document = CraftNSDocument(
-      model: try CraftNSDocument.blankModel(width: 4, height: 3, background: .clear), actions: actions, brushes: brushes, skies:skies, shapes:shapes,
+      model: try CraftNSDocument.blankModel(width: 4, height: 3, background: .clear), actions: actions, brushes: brushes, skies:skies, shapes:shapes, patterns:patterns,
       prepareHistory: prepareHistory)
     controller.addDocument(document)
     let service = AutomationService(

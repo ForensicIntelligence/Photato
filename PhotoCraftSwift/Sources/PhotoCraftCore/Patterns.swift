@@ -203,6 +203,10 @@ public enum PatternArchive {
   public static func decodeState(_ data: Data) throws -> (
     patterns: [RasterPattern], selectedID: String?
   ) {
+    if try libraryVersion(data) == PatternLibraryState.version {
+      let state = try decodeLibraryState(data)
+      return (state.patterns, state.selectedID)
+    }
     guard data.count <= maxBytes else {
       throw CraftError.invalid("Pattern library file is too large.")
     }

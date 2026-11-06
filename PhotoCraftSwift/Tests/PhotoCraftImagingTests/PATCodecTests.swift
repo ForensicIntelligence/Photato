@@ -85,7 +85,9 @@ final class PATCodecTests: XCTestCase {
       return original + trailer.data
     }
     XCTAssertEqual(try PATCodec.read(library(entries)), try PATCodec.read(original))
-    XCTAssertTrue(try PATCodec.readLibrary(library(entries)).foldersFlattened)
+    // The legacy read() list stays flat; readLibrary() now retains these groups.
+    XCTAssertFalse(try PATCodec.readLibrary(library(entries)).foldersFlattened)
+    XCTAssertEqual(try PATCodec.readLibrary(library(entries)).nodes.filter(\.isGroup).map(\.name), ["Original tiles"])
     XCTAssertFalse(try PATCodec.readLibrary(original).foldersFlattened)
     XCTAssertThrowsError(try PATCodec.read(library(entries, tag: "????")))
     XCTAssertThrowsError(try PATCodec.read(library(Array(entries.dropLast()))))

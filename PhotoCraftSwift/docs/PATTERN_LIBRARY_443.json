@@ -1,0 +1,175 @@
+{
+  "step": 443,
+  "recorded_at_utc": "2026-11-06T14:18:20.022570+00:00",
+  "application_build": 443,
+  "source": "443Source12/Release04",
+  "source_manifest": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/release04-source.json",
+  "source_inputs": 7361,
+  "run": "artifacts/runs/20261106T123917Z-443-pattern-library-groups",
+  "package": "A07",
+  "current_pass": 2,
+  "status": "Native pattern-library organization, hierarchy-preserving PAT transport and shared API selected workflows qualified; full A07 remains open.",
+  "implementation": [
+    "Flat bounded native node graph, groups, multi-selection, move/reorder, independent duplicate assets, rename/delete, captured sources and private own-process drag tokens.",
+    "PAT readLibrary retains observed phry groups, empty groups and repeated occurrences; legacy read returns flat assets. Pixel record writer and packing remain unchanged.",
+    "Native user-library format2 with non-destructive format1 migration, worker preparation, authorization before atomic replacement and matching memory publication.",
+    "pattern.library operations/state/strict schemas/discovery share native management, import/export/Define paths; all attached document revisions include library revision.",
+    "Accepted API request lease owns inputs until completion while validating token, exact share/store binding, document/session/lifecycle and library identity/revision. Display-only render does not invalidate accepted work; initial stale admission remains."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/source12-summary.json",
+    "cases": 54,
+    "passed": 54,
+    "new443": 17,
+    "failures": 0,
+    "unexpected": 0,
+    "test_seconds": 3.306,
+    "app_sha256": "78807b7606b11210060e015f5e12e72c5abaa886525e2e5b8a89ec427ece6614"
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/release04-qualification.json",
+    "equivalence": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/case-equivalence01.json",
+    "cases_each": 71,
+    "passed": [
+      71,
+      71
+    ],
+    "new443_passed": [
+      17,
+      17
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "test_seconds": [
+      2.49,
+      3.523
+    ],
+    "build_seconds": [
+      348.42,
+      346.93
+    ]
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/universal/staging01.json",
+    "app": "/private/tmp/photato-validation-443-stage01-dac8a4b0/Photato Validation 443.app",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "binary_sha256": "d6cca6087868a9c7e9e8a59fbc55f0ff2b8503c002eddb2da013d112fda39310",
+    "archive_sha256": "ace13180d71af64434e943e456d5a4c689d486ebf8ece19b0a43459065b17b57",
+    "signature_and_extracted_ZIP_verified": true,
+    "installed_or_launched": false
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "kind": "Core constructor closure captured partially initialized self; cached outputs explicitly unqualified."
+    },
+    {
+      "attempt": "source03",
+      "kind": "Actor closure type whitespace compilation error; retained before repair."
+    },
+    {
+      "attempt": "source04",
+      "kind": "New private Gate/helper visibility and non-Sendable test Task result compilation errors; fixture-only repair."
+    },
+    {
+      "attempt": "source05",
+      "kind": "27cases pass before offscreen NSWindow over-release/SIGSEGV; crash report and NSZombie own-binary diagnostic retained. Desired UI test kept; Swift-owned test window isReleasedWhenClosed=false."
+    },
+    {
+      "attempt": "release01/release02",
+      "kind": "70cases each67pass/6assertions both, three valid HTTP library workflows rejected409; all outputs retained. Diagnostic-only test change leaves production apps identical."
+    },
+    {
+      "attempt": "source09",
+      "kind": "53/54pass, desired paused HTTP render-only regression fails409vs200 while all data/scope predicates remain true; real document edit correctly rejects."
+    },
+    {
+      "attempt": "release03",
+      "kind": "71cases each67pass/7assertions both after transient view comparison removal. Debug repair alone did not qualify optimized path; no root compiler cause inferred."
+    },
+    {
+      "attempt": "source11",
+      "kind": "Request lease optional token type compilation error, corrected to existing String? semantics before Source12."
+    }
+  ],
+  "authorization_repair_limits": "Explicit short-lived request ownership and sequential data/scope predicates pass both optimized architectures. No claim of a proven compiler/ARC root cause for the previous weak multi-capture discrepancy.",
+  "integrity": {
+    "report": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/source-integrity01.json",
+    "old_fixtures_pixel_assertions_tolerances_unchanged": true,
+    "all_old_tests_unchanged": false,
+    "old_test_changes": "18current catalogue files255\u2192256; AutomationTests optional pattern injection; one PAT folder semantic expectation true\u2192false plus retained-group assertion.",
+    "Core_pixel_math_renderer_old_PAT_pixel_writer_v1_encoder_validation_unchanged": true,
+    "protected_present_unchanged": 26,
+    "protected_previously_missing": 14
+  },
+  "typed_commands": 256,
+  "native_archive": 86,
+  "Actions": 51,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "pattern_library_format": 2,
+  "tracked_command_identities": 652,
+  "original_scopes": 104,
+  "major_queue_members": 81,
+  "API": {
+    "command": "pattern.library",
+    "operations": [
+      "list",
+      "select",
+      "group.create",
+      "rename",
+      "move",
+      "duplicate",
+      "delete",
+      "collapse",
+      "import",
+      "export",
+      "define",
+      "reset.builtins"
+    ],
+    "state": "patternLibrary",
+    "schema": "PatternLibraryAPI.stateSchema",
+    "Adobe_endpoint_added": false,
+    "history": "No document pixels, dirty state or Undo; immutable captured document resources retained.",
+    "transport": "Base64<=3000000characters inside existing4MiB HTTP; no filesystem paths.",
+    "revision": "Current document revision at acceptance plus libraryRevision exceptlist; completion data/scope fences, not transient view render count."
+  },
+  "remaining_functional": [
+    "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
+    "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
+    "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
+    "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
+    "All original A07 scope and acceptance criteria remain unchanged."
+  ],
+  "next_major_workflow": "F01, thenF02; full A07 remains open.",
+  "selected_native_workflow_qualified": true,
+  "current_focused_suite_passed": true,
+  "current_normal_qualified": true,
+  "affected_suite_passed": true,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "live_UI_reference": "Last442CUA locked; existing human unlock question pending. No repeated question/workaround or new443 live UI observation. Own SwiftUI snapshot is offscreen only.",
+  "reference_provenance": "Existing licensed native/PAT implementation, public Adobe workflow docs and new owned synthetic library/UI/API tests. No new image fixtures or Adobe artwork.",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/create-fill-with-patterns/manage-patterns-in-the-patterns-panel.html",
+      "updated": "2026-10-04",
+      "supports": "Pattern groups and Shift multi-selection dragging; not complete output/default/capacity specification."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/content-aware-fills.html",
+      "updated": "2026-02-23",
+      "supports": "History Fill is remaining source/snapshot work, not implemented here."
+    }
+  ]
+}

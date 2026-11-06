@@ -62,10 +62,10 @@ import SwiftUI
     self.init(model: try! CraftDocument(width: 1, height: 1))
   }
   init(
-    model: CraftDocument, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
+    model: CraftDocument, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil, patterns:PatternLibrary? = nil,
     prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
-    store = EditorStore(document: model, actions: actions, brushes: brushes, skies:skies, shapes:shapes, prepareHistory: prepareHistory)
+    store = EditorStore(document: model, patterns:patterns, actions: actions, brushes: brushes, skies:skies, shapes:shapes, prepareHistory: prepareHistory)
     super.init()
     fileType = Self.nativeType
     hasUndoManager = false

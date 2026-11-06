@@ -1,3 +1,5 @@
+**Checkpoint443:** Adds `pattern.library` for shared groups/presets, selection, organization, PAT import/export and Define, with `patternLibrary` state and operation-specific schemas.256typed/native86/Actions51/settings4; native user-library2 migrates1 read-only. No Adobe endpoint invented. [Guide](PATTERN_LIBRARY.md) · [Evidence](PATTERN_LIBRARY_443.json).
+
 **Checkpoint442:** Adds `gradient.tool.configure`, `gradient.fill.create`, `gradient.paint` and `gradientTool` state/schemas through shared native factories and prepared history. Options defaults are session-only; portable creation/paint Actions require51.255typed/native86/settings4. No Adobe endpoint invented. [Guide](GRADIENT_CREATION.md) · [Evidence](GRADIENT_CREATION_442.json).
 
 **Checkpoint441:** Read-only `lightPreview` state/schema and `modernAdjustments.interactivePreview` report native paint/retouch pause/resume without changing saved settings, final results or command/format versions. Existing revision tokens include view changes.252typed/native86/Actions50/settings4; no Adobe endpoint added. [Guide](LIGHT_EDITING_PREVIEW.md) · [Evidence](LIGHT_EDITING_PREVIEW_441.json).

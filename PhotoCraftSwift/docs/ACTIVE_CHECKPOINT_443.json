@@ -1,0 +1,20 @@
+{
+  "step": "dev-step-443",
+  "run": "artifacts/runs/20261106T113051Z-442-gradient-tool-api",
+  "status": "443selected pattern-library workflows qualified; private source/history/diary finalization follows",
+  "current_pass": 2,
+  "current_major_workflow": "F01",
+  "next": "F02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "441Source05/Release01",
+  "source_inputs_baseline": 7348,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T123917Z-443-pattern-library-groups/release04-source.json",
+  "source_inputs": 7361,
+  "production_swift_files": 1091,
+  "evidence": "docs/PATTERN_LIBRARY_443.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_442.json",
+  "source_commit": "4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e",
+  "new_private_push": true
+}

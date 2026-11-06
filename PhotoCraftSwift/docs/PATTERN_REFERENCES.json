@@ -40,5 +40,25 @@
   "live_photoshop_reference": "Fresh CUA access reported locked Mac and failed auto-unlock. No prior timed-out AppleEvent was retried.",
   "parity_status": "Partial source/workflow compatibility. Source-exact vectors and native import/export do not establish Photoshop rendering or arbitrary byte-exact PAT round trips.",
   "installed_library_check": "../artifacts/pattern-installed-library-check.json",
-  "pattern_fill_evidence": "PATTERN_FILL_REFERENCES.json"
+  "pattern_fill_evidence": "PATTERN_FILL_REFERENCES.json",
+  "pattern_library_443": {
+    "evidence": "docs/PATTERN_LIBRARY_443.json",
+    "guide": "docs/PATTERN_LIBRARY.md",
+    "command": "pattern.library",
+    "state": "patternLibrary",
+    "typed_commands": 256,
+    "native_archive": 86,
+    "Actions": 51,
+    "pattern_library_format": 2,
+    "Adobe_endpoint_added": false,
+    "cursor_impact": "Native panel selection and platform drag-move proposal; all16modifier dispatch states tested. No new editing tool/factory menu/shortcut/cursor override.",
+    "qualification": "54Debug/71sameordered normal each/all17new; ownoffscreenUI only.",
+    "remaining": [
+      "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
+      "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
+      "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
+      "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
+      "All original A07 scope and acceptance criteria remain unchanged."
+    ]
+  }
 }

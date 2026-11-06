@@ -69,8 +69,8 @@ extension EditorStore {
     patternFillDraft = nil
     performGeometry(draft.command) { [weak self] in self?.propertiesTab = .properties }
   }
-  func choosePattern(_ pattern: RasterPattern) {
-    patterns.selectedID = pattern.id
+  func choosePattern(_ pattern: RasterPattern, preservingLibrarySelection: Bool = false) {
+    if !preservingLibrarySelection { patterns.selectedID = pattern.id }
     if patternFillDraft != nil {
       patternFillDraft?.pattern = pattern
       patternFillDraft?.fill.patternID = pattern.id

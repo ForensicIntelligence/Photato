@@ -134,7 +134,7 @@ extension RasterizeResponsivenessTests {
       XCTAssertEqual(document.store.document, original); XCTAssertTrue(document.store.session.undoStack.isEmpty)
       XCTAssertNotNil(SmartObject.apiCapabilities["rasterizationPreparation"])
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: SmartObject.apiCapabilities))
-      XCTAssertEqual(AutomationCommand.definitions.count, 255)
+      XCTAssertEqual(AutomationCommand.definitions.count, 256)
     }
   }
 }

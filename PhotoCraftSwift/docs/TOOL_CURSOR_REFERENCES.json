@@ -1440,5 +1440,25 @@
       "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
       "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
     ]
+  },
+  "pattern_library_443": {
+    "evidence": "docs/PATTERN_LIBRARY_443.json",
+    "guide": "docs/PATTERN_LIBRARY.md",
+    "command": "pattern.library",
+    "state": "patternLibrary",
+    "typed_commands": 256,
+    "native_archive": 86,
+    "Actions": 51,
+    "pattern_library_format": 2,
+    "Adobe_endpoint_added": false,
+    "cursor_impact": "Native panel selection and platform drag-move proposal; all16modifier dispatch states tested. No new editing tool/factory menu/shortcut/cursor override.",
+    "qualification": "54Debug/71sameordered normal each/all17new; ownoffscreenUI only.",
+    "remaining": [
+      "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
+      "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
+      "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
+      "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
+      "All original A07 scope and acceptance criteria remain unchanged."
+    ]
   }
 }
