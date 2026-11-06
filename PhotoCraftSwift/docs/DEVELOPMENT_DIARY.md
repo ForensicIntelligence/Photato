@@ -26,6 +26,7 @@ Gradient Options and toolbar presets now configure the next gradient. Existing G
 All 69 focused Debug tests pass. The same 99 optimized methods run on Apple Silicon and under Rosetta: 99 pass on Apple Silicon and 98 under Rosetta. All eleven new tests pass on both. The remaining Intel interpolation assertion reproduces exactly on the preserved checkpoint 441 binary. Its fixture and expectation are unchanged. Universal macOS 14 packaging, signature and extracted ZIP verify; full-suite, physical-platform, independent Photoshop and 60 fps qualification remain open.
 
 The major still-needed sweep moves to A07 pattern fills and pixel Fill/Stroke, then filters. Full A05 remains open, including canvas opacity, complete preset/noise/GRD behavior, remaining transforms and output/default fidelity. All 104 original scopes and acceptance criteria remain. [Step 442](DEVLOG.md#dev-step-442).
+The current source, including the Xcode project, is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e). This is a development checkpoint with the failures above retained.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3480,3 +3481,5 @@ The selected Debug run passes 69 tests, including eleven new methods and older A
 The rendering math and old image fixtures are unchanged. Older tests changed only for current API/Actions counts or to request existing-fill edits explicitly while keeping their numeric assertions. Universal macOS 14 packaging, signature and ZIP extraction verify. The Mac remains locked for live reference checks; no live pass, install, archive or store release is claimed.
 
 This completes the selected creation, painting, API and recording paths. The full gradient package remains open, including canvas opacity, preset/noise/GRD cases, remaining transforms, numerical/default fidelity, platform and performance checks. Work moves to A07 under the seven-pass order; no minor or cleanup pass has begun.
+
+The private source checkpoint includes 7,319 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e) · [Receipt](SOURCE_PUBLICATION_442.json).

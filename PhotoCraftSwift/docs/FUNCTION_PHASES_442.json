@@ -15363,5 +15363,36 @@
         "supports": "Existing on-canvas gradient edit workflow. Does not establish all default/numerical/platform behavior."
       }
     ]
+  },
+  "source_delivery_442": {
+    "step": 442,
+    "repository": "ForensicIntelligence/Photato",
+    "private": true,
+    "source_commit": "4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e",
+    "source_tree": "1cd84f1a8ad5c0106f4ebc815904471e81cd05c9",
+    "source_parent": "a61eb0cb1f01cc5ef906750d7baba2f38cb8f7ea",
+    "source_commit_url": "https://github.com/ForensicIntelligence/Photato/commit/4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e",
+    "source": "442Source05/Release02",
+    "qualified_inventory_inputs": 7353,
+    "included_qualified_inputs": 7319,
+    "excluded_qualified_inputs": 34,
+    "excluded_inputs_record": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/curation01.json",
+    "curated_native_files": 8578,
+    "changed_paths": 68,
+    "root_and_rust_unchanged": 1061,
+    "new_fixture_files": 0,
+    "stale_removals": 0,
+    "staged_index_blobs_verified": true,
+    "remote_commit_and_tree_verified": true,
+    "known_secret_signature_hits": 0,
+    "privacy_review_limit": "Explicit runtime/generated/signing/restricted exclusions and known key/token patterns reviewed; not an exhaustive privacy proof.",
+    "qualification": "69Debugpass;99sameordered optimized methods each:99ARM98Intel,all11newboth. Exact oldIntelRustinterpolationfailure reproduces preserved441. Universalmin14/signature/extractedZIPverify. Fullscope and earlier failures remain open.",
+    "selected_native_workflow_qualified": true,
+    "affected_suite_passed": false,
+    "full_current_suite_passed": false,
+    "Photoshop_parity": false,
+    "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day.",
+    "documentation_finalization": "Separate docs-only backup follows consecutive history refresh/check. Final excluded receipt holds actual SHA; no later indexed native writes.",
+    "recorded_at_utc": "2026-11-06T12:27:01.993295+00:00"
   }
 }

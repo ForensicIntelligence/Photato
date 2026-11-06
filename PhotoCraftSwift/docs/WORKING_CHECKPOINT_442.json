@@ -1,7 +1,7 @@
 {
   "step": "dev-step-442",
   "run": "artifacts/runs/20261106T113051Z-442-gradient-tool-api",
-  "status": "442selected gradient native/API/recording qualification complete; old Intel residual retained; private source/history/diary finalization follows",
+  "status": "442selected gradient workflows and private source verified; A07current, final history/diary follows; old Intel residual retained",
   "current_pass": 2,
   "current_major_workflow": "A07",
   "next": "F01",
@@ -13,5 +13,8 @@
   "source_manifest": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/release02-source.json",
   "source_inputs": 7353,
   "production_swift_files": 1086,
-  "evidence": "docs/GRADIENT_CREATION_442.json"
+  "evidence": "docs/GRADIENT_CREATION_442.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_442.json",
+  "source_commit": "4f7c736d74f1bf276e1fc5674dee2b2ec4f53c7e",
+  "new_private_push": true
 }

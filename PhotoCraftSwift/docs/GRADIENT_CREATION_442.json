@@ -154,5 +154,7 @@
       "updated": "2026-08-18",
       "supports": "Existing on-canvas gradient edit workflow. Does not establish all default/numerical/platform behavior."
     }
-  ]
+  ],
+  "private_source_backup": "docs/SOURCE_PUBLICATION_442.json",
+  "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day."
 }
