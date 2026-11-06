@@ -62,7 +62,7 @@ extension EditorStore {
       } catch { self?.error = error.localizedDescription }
     }
   }
-  func chooseGradientPreset(_ id: UUID, modifiers: NSEvent.ModifierFlags = []) {
+  func chooseGradientPreset(_ id: UUID, modifiers: NSEvent.ModifierFlags = [], creationOnly: Bool = false) {
     guard !gradients.busy, let node = gradients.state.node(id) else { return }
     var ids = Set([id])
     if modifiers.contains(.shift), let anchor = gradientSelectionAnchor {
@@ -83,6 +83,9 @@ extension EditorStore {
     let activeID = activeLayer?.id
     let fillDraftID = gradientFillDraft?.sessionID
     let mapDraftID = gradientMapDraft?.sessionID
+    let optionRevision = gradientOptionsRevision
+    let ownerSession = sessionGeneration
+    let ownerTool = tool
     let colors = (brush.color, backgroundColor)
     let selected = ids
     let active = node.children == nil && ids.contains(id) ? id : nil
@@ -93,6 +96,13 @@ extension EditorStore {
       guard let gradient = preset.gradient else {
         self.status =
           preset.unavailableReason ?? "This gradient is preserved but cannot yet be rendered."
+        return
+      }
+      if creationOnly {
+        guard self.sessionGeneration==ownerSession,self.tool==ownerTool,self.gradientOptionsRevision==optionRevision,
+          self.canConfigureGradientCreation else{return}
+        var options=self.gradientOptions;options.gradient=gradient
+        try self.setGradientCreationOptions(options)
         return
       }
       // A delayed disk write must not apply a preset to a different layer or a later draft.
@@ -231,6 +241,7 @@ struct GradientNameSheet: View {
 struct GradientsPanel: View {
   @Bindable var store: EditorStore
   var compact = false
+  var creationOnly = false
   @State private var search = ""
   @State private var collapsed: Set<UUID> = []
   private struct Row: Identifiable {
@@ -370,8 +381,10 @@ struct GradientsPanel: View {
     )
     .background(store.gradients.state.selected.contains(node.id) ? StudioTheme.selected : .clear)
     .contentShape(Rectangle())
-    .onTapGesture(count: 2) { store.activateGradientPreset(node.id) }
-    .onTapGesture { store.chooseGradientPreset(node.id, modifiers: NSEvent.modifierFlags) }
+    .onTapGesture(count: 2) {
+      if creationOnly {store.chooseGradientPreset(node.id,creationOnly:true)}else{store.activateGradientPreset(node.id)}
+    }
+    .onTapGesture { store.chooseGradientPreset(node.id, modifiers: NSEvent.modifierFlags, creationOnly: creationOnly) }
     .help(preset?.unavailableReason ?? store.gradients.state.name(node.id) ?? "Gradient group")
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(.isButton)

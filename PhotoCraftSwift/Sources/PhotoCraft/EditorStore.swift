@@ -241,7 +241,8 @@ import UniformTypeIdentifiers
   var bucketPatternPlacement = PatternPlacement()
   var patternNameDraft: PatternNameDraft?
   var gradientFillDraft: GradientFillDraft?
-  var gradientOptions = GradientToolOptions()
+  var gradientOptionsRevision = UUID()
+  var gradientOptions = GradientToolOptions() { didSet { if oldValue != gradientOptions { gradientOptionsRevision = UUID() } } }
   var gradientGesture: GradientGesture?
   var gradientSelectedStop: (id: UUID, index: Int)?
   var gradientStopColorDraft: GradientStopColorDraft?

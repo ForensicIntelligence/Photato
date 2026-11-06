@@ -18,15 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:441 -->
+<!-- current-status-step:442 -->
 ## Current development status — 6 November 2026
 
-Light adjustment layers now pause their display effect while lower layers are painted or retouched when Highlights or Shadows are active. A notice in the tabs and Properties reports the pause. Finishing or cancelling restores the full adjustment. Stroke sampling, saved settings and committed pixels use the original document; clipped layers remain visible. The optional API reports the same pause state.
+Gradient Options and toolbar presets now configure the next gradient. Existing Gradient Fill layers retain canvas and Properties editing. The optional API can configure defaults, create live fills and paint Classic gradients through the same native commands. Recorded Actions can replay creation and painting with captured settings.
 
-All 43 focused Debug tests and the same 43 optimized tests on Apple Silicon and under Rosetta pass, including nine new methods. Tests cover paint/mask workflows, nine retouch tools, clipping, group scope, final pixels, Undo, Cancel and API state. Universal macOS 14 packaging, signature and extracted ZIP verify. These are selected checks; earlier failures, independent Photoshop fidelity, physical-platform tests and 60 fps remain open.
+All 69 focused Debug tests pass. The same 99 optimized methods run on Apple Silicon and under Rosetta: 99 pass on Apple Silicon and 98 under Rosetta. All eleven new tests pass on both. The remaining Intel interpolation assertion reproduces exactly on the preserved checkpoint 441 binary. Its fixture and expectation are unchanged. Universal macOS 14 packaging, signature and extracted ZIP verify; full-suite, physical-platform, independent Photoshop and 60 fps qualification remain open.
 
-The major still-needed sweep moves to A05 gradients, then A07. Full A04 remains open, including modern editable PSD descriptors, actual Light versions, larger spatial processing and other live-edit contexts. All 104 original scopes and acceptance criteria are retained. [Step 441](DEVLOG.md#dev-step-441).
-The current source is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/350101b8245a25386a9add2f5a25b2721196eb16), including the Xcode project. This is a development checkpoint, not a software release.
+The major still-needed sweep moves to A07 pattern fills and pixel Fill/Stroke, then filters. Full A05 remains open, including canvas opacity, complete preset/noise/GRD behavior, remaining transforms and output/default fidelity. All 104 original scopes and acceptance criteria remain. [Step 442](DEVLOG.md#dev-step-442).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3466,3 +3465,18 @@ A fixture compilation failure and two incorrect fixture assumptions were preserv
 This closes a selected A04 painting workflow, not the whole package. Modern PSD/PSB descriptors, actual Light version switching, larger neighborhood processing, other editing contexts and independent Photoshop/platform/performance qualification remain open. The major still-needed sweep moves to A05, then A07; no minor or cleanup pass has begun.
 
 The private source backup includes 7,314 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added; existing tests and Core math are unchanged. A final documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/350101b8245a25386a9add2f5a25b2721196eb16) · [Backup record](SOURCE_PUBLICATION_441.json).
+
+
+## 2026-11-06 — Step 442: Gradient creation and recorded Actions
+
+The Gradient tool previously applied several Options settings to the selected fill. Adobe’s current guide says these controls configure new gradients. Options and toolbar preset selection now keep creation defaults separate; canvas and Properties controls continue to edit existing fills. Delayed presets, drags and colour-stop changes reject a replaced document or tool context.
+
+Three optional API commands configure the defaults, create a live Gradient Fill, or paint a captured Classic Gradient. They use the same native factories and prepared history. Tool configuration changes only session defaults and the view revision. Creation and painting use their usual Undo transactions. Tests compare native and HTTP documents and saved bytes across RGB8/16/32, five gradient shapes and pixel/mask targets.
+
+A new recording test found that creation and painting still produced unsupported Action entries. Portable recipes now preserve their settings and layer references without saving document UUIDs or raster snapshots. Actions format 51 gates the new operations; older operations keep their minimum versions. Custom creation templates containing unsupported metadata still reject instead of silently losing it.
+
+The selected Debug run passes 69 tests, including eleven new methods and older Actions workflows. Both architectures run the same 99 optimized methods: 99 pass on Apple Silicon and 98 under Rosetta. The first optimized run also caught an old catalogue assertion fixed at 251; it now checks the current 255 commands. The remaining Intel Rust interpolation assertion reports 15,580 of 15,633 exact samples and reproduces exactly in the preserved checkpoint 441 bundle. It remains selected, with its original expectation and fixture. No numerical cause or Photoshop equivalence is claimed.
+
+The rendering math and old image fixtures are unchanged. Older tests changed only for current API/Actions counts or to request existing-fill edits explicitly while keeping their numeric assertions. Universal macOS 14 packaging, signature and ZIP extraction verify. The Mac remains locked for live reference checks; no live pass, install, archive or store release is claimed.
+
+This completes the selected creation, painting, API and recording paths. The full gradient package remains open, including canvas opacity, preset/noise/GRD cases, remaining transforms, numerical/default fidelity, platform and performance checks. Work moves to A07 under the seven-pass order; no minor or cleanup pass has begun.

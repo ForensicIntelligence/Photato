@@ -1,12 +1,12 @@
 import AppKit
 import PhotoCraftCore
 
-enum GradientToolMode: String, CaseIterable {
+enum GradientToolMode: String, CaseIterable, Codable, Sendable {
   case live = "Gradient"
   case classic = "Classic Gradient"
 }
 
-struct GradientToolOptions {
+struct GradientToolOptions: Codable, Equatable, Sendable {
   var mode = GradientToolMode.live
   var gradient = GradientDefinition.foregroundToBackground
   var style = GradientStyle.linear
@@ -79,6 +79,7 @@ struct GradientWidget {
 }
 
 struct GradientGesture {
+  var source: GradientInteractionSource?
   let down: PathPoint
   let zoom: Double
   let clickCount: Int
@@ -106,6 +107,7 @@ struct GradientGesture {
 }
 
 struct GradientStopColorDraft: Identifiable {
+  var source: GradientInteractionSource?
   let id: UUID
   var fill: GradientFill
   let index: Int
@@ -190,9 +192,8 @@ extension EditorStore {
             dither: gradientOptions.dither)
           fill.placement.style = gradientOptions.style
           fill.placement.reverse = gradientOptions.reverse
-          var layer = Layer(name: "Gradient Fill", content: .gradientFill(fill))
-          layer.opacity = gradientOptions.opacity
-          layer.blendMode = gradientOptions.blend
+          let layer = try GradientToolCommands.layer(fill: fill, in: document,
+            parentID: parent, opacity: gradientOptions.opacity, blend: gradientOptions.blend)
           gradientGesture = .init(
             down: point, zoom: zoom, clickCount: clickCount, original: nil, grip: nil,
             layer: layer, fill: fill, frame: canvas, creating: true,
@@ -209,20 +210,16 @@ extension EditorStore {
         } else if !editingMask {
           throw CraftError.unsupported("Rasterize this layer before using Classic Gradient.")
         }
-        var stroke = GradientStroke(
-          gradient: try gradientOptions.gradient.resolved(
-            foreground: brush.color, background: backgroundColor), start: point, end: point)
-        stroke.style = gradientOptions.style
-        stroke.reverse = gradientOptions.reverse
-        stroke.dither = gradientOptions.dither
-        stroke.transparency = gradientOptions.transparency
-        stroke.opacity = gradientOptions.opacity
-        stroke.mode = gradientOptions.blend
-        stroke.mask = editingMask
+        let stroke = try GradientToolCommands.stroke(
+          gradient: gradientOptions.gradient.resolved(foreground: brush.color, background: backgroundColor),
+          start: point, end: point, style: gradientOptions.style, reverse: gradientOptions.reverse,
+          dither: gradientOptions.dither, transparency: gradientOptions.transparency,
+          opacity: gradientOptions.opacity, blend: gradientOptions.blend, mask: editingMask)
         gradientGesture = .init(
           down: point, zoom: zoom, clickCount: clickCount, original: nil, grip: nil,
           layer: layer, stroke: stroke, frame: canvas)
       }
+      gradientGesture?.source = GradientInteractionSource(self)
       status = "Gradient · Shift constrains angle · Esc cancels"
     } catch { self.error = error.localizedDescription }
   }
@@ -230,6 +227,7 @@ extension EditorStore {
     guard var draft = gradientGesture,
       [point.x, point.y].allSatisfy({ $0.isFinite && abs($0) <= 1_000_000 })
     else { return }
+    guard draft.source?.matches(self) == true else { cancelGradientGesture(); return }
     do {
       draft.moved = hypot(point.x - draft.down.x, point.y - draft.down.y) * draft.zoom >= 2
       if var stroke = draft.stroke {
@@ -289,6 +287,7 @@ extension EditorStore {
   func finishGradient() {
     guard let draft = gradientGesture else { return }
     gradientGesture = nil
+    guard draft.source?.matches(self) == true else { render(); return }
     if let command = draft.command {
       gradientSelectedStop = draft.stopIndex.map { (draft.layer.id, $0) }
       performGeometry(command)
@@ -327,7 +326,7 @@ extension EditorStore {
     guard widget.fill.gradient.colors.indices.contains(index) else { return }
     gradientSelectedStop = (widget.layer.id, index)
     if edit {
-      gradientStopColorDraft = .init(id: widget.layer.id, fill: widget.fill, index: index)
+      gradientStopColorDraft = .init(source: GradientInteractionSource(self), id: widget.layer.id, fill: widget.fill, index: index)
     }
   }
   func editSelectedGradientStop() {
@@ -354,42 +353,14 @@ extension EditorStore {
   func finishGradientStopColor(apply: Bool) {
     guard let draft = gradientStopColorDraft else { return }
     gradientStopColorDraft = nil
-    if apply { performGeometry(draft.command) } else { render() }
+    if apply, draft.source?.matches(self) == true { performGeometry(draft.command) } else { render() }
   }
   func changeGradientOption<T>(_ key: WritableKeyPath<GradientToolOptions, T>, _ value: T) {
-    guard !geometryBusy, !hasToneDraft else { return }
-    gradientOptions[keyPath: key] = value
-    guard key != \GradientToolOptions.mode, let widget = activeGradientWidget else { return }
-    var fill = widget.fill
-    do {
-      switch key {
-      case \GradientToolOptions.gradient:
-        fill.gradient = try gradientOptions.gradient.resolved(
-          foreground: brush.color, background: backgroundColor)
-        gradientSelectedStop = nil
-      case \GradientToolOptions.style:
-        fill.placement.style = gradientOptions.style
-        try fill.placement.setHandles(start: widget.start, end: widget.end, in: widget.frame)
-      case \GradientToolOptions.reverse: fill.placement.reverse = gradientOptions.reverse
-      case \GradientToolOptions.dither: fill.dither = gradientOptions.dither
-      case \GradientToolOptions.opacity:
-        performGeometry(.opacity(widget.layer.id, gradientOptions.opacity))
-        return
-      case \GradientToolOptions.blend:
-        performGeometry(.blend(widget.layer.id, gradientOptions.blend))
-        return
-      default: return
-      }
-      performGeometry(.setGradientFill(widget.layer.id, fill))
-    } catch { self.error = error.localizedDescription }
+    var options=gradientOptions;options[keyPath:key]=value
+    do {try setGradientCreationOptions(options)} catch {self.error=error.localizedDescription}
   }
   func changeGradientMethod(_ method: GradientMethod) {
-    guard !geometryBusy, !hasToneDraft else { return }
-    gradientOptions.gradient.method = method
-    if let widget = activeGradientWidget {
-      var fill = widget.fill
-      fill.gradient.method = method
-      performGeometry(.setGradientFill(widget.layer.id, fill))
-    }
+    var options=gradientOptions;options.gradient.method=method
+    do {try setGradientCreationOptions(options)} catch {self.error=error.localizedDescription}
   }
 }

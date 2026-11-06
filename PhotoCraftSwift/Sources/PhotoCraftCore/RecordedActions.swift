@@ -49,6 +49,8 @@ public enum ActionOperation: Codable, Sendable {
   indirect case adjustmentBrush(RecordedAdjustmentBrush)
   indirect case replaceAdjustment(ActionLayerTarget,Adjustment)
   indirect case gradientFill(ActionLayerTarget,GradientFill)
+  indirect case createGradientFill(RecordedGradientFill)
+  indirect case paintGradient(RecordedGradientStroke)
   case unsupported(String)
   case select(ActionLayerTarget)
   case deselectLayers
@@ -150,6 +152,10 @@ public enum ActionOperation: Codable, Sendable {
     case .adjustmentBrush(let request):self = .adjustmentBrush(.init(request,in:d))
     case .replaceContent(let id, .adjustment(let value)):self = .replaceAdjustment(target(id),value)
     case .setGradientFill(let id, let fill): self = .gradientFill(target(id), fill)
+    case .addGradientFill(let layer,let mask):
+      self = RecordedGradientFill(layer:layer,maskFromSelection:mask,in:d).map(Self.createGradientFill)
+        ?? .unsupported("This Gradient Fill creation template contains metadata not supported by portable recording.")
+    case .paintGradient(let id,let stroke):self = .paintGradient(.init(layerID:id,stroke:stroke,in:d))
     case .newPixelLayer(let v, let below): self = .newLayer(v, below: below)
     case .newGroup(let v, let children, let below): self = .newGroup(v, children: children.map(target), below: below)
     case .addLayer(let layer) where layer.smartObject?.linkedSource != nil:
@@ -255,6 +261,8 @@ public enum ActionOperation: Codable, Sendable {
     case .setShape(let target,let definition,let patterns):return .shape(.configure(try id(target),definition,patterns:patterns))
     case .appendShape(let target,let component):return .shape(.append(try id(target),component))
     case .adjustmentBrush(let value):return try value.command(in:d)
+    case .createGradientFill(let recipe):return try recipe.command(in:d)
+    case .paintGradient(let recipe):return try recipe.command(in:d)
     case .gradientFill(let target, let fill):
       let layerID = try id(target)
       guard let layer = d.layers.first(where: { $0.id == layerID }),
@@ -389,6 +397,8 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .adjustmentBrush(let value)=step.operation {try value.request.validate()}
       if case .replaceAdjustment(_,let value)=step.operation {try value.validate()}
       if case .gradientFill(_, let fill) = step.operation { try fill.validate() }
+      if case .createGradientFill(let recipe)=step.operation{try recipe.validate()}
+      if case .paintGradient(let recipe)=step.operation{try recipe.validate()}
       if case .adjustment(_,let value)=step.operation {try value.validate()}
       if case .editType(_,let text,let origin,_)=step.operation {try text.validate();guard origin.x.isFinite,origin.y.isFinite,abs(origin.x)<=1_000_000,abs(origin.y)<=1_000_000 else{throw CraftError.invalid("Invalid recorded type origin.")}}
       if case .addContent(_, .adjustment(.source(let value)))=step.operation {try value.validate()}

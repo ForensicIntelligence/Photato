@@ -340,7 +340,7 @@ import UniformTypeIdentifiers
     let document="\(store.printRevision):\(store.layerPanelGeneration.uuidString):\(store.revision - store.timelinePlaybackRenderCount):\(store.timelinePlaybackRevision):\(store.timelineVisible):\(store.document.activeLayerID?.uuidString ?? "none"):\(store.actionRevision):\(store.actions.revision)"
     let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"+":\(store.layerFilterRevisionToken)"
     let evaluated = view + (includeFilterEvaluation ? ":\(store.layerContentFilter.revision)" : "")
-    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision)":evaluated
+    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision):\(store.gradientOptionsRevision)":evaluated
     // Multi-document source contracts accept at most256characters. Keep revision
     // components private and bounded as view-state tracking grows.
     return SHA256.hash(data: Data(opaque.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -457,6 +457,7 @@ import UniformTypeIdentifiers
       "selectionHasSoftCoverage": store.document.selectionMask != nil,
       "filterRecall": FilterRecallAPI.state(store),
       "gradientFills":store.gradientFillState,
+      "gradientTool":GradientToolAPI.state(store),
       "shapes":store.shapeState,
       "paths":store.pathState,
       "frames": ["available": store.canEditFrames, "target": store.frameTarget.rawValue, "shape": store.frameShape.rawValue, "sides": store.frameSides],
@@ -1058,6 +1059,18 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true,validateCommit:{if fillOptions != nil,store.workingColorSettings != colorSettings{throw AutomationFailure(status:409,message:"Color Settings changed during Path Fill.")}}){original in try command.pathCommand(original,selected:selected,brush:brush,selectedIsVectorMask:vectorMaskTarget,fillContext:fillContext,parsedFillOptions:fillOptions)}
         if let fillOptions{store.lastPathFill=fillOptions}
         if ["path.draw","path.trace"].contains(command.name),let path=store.document.paths?.first(where: \.isWorkPath){store.selectPath(.saved(path.id))}
+        return .json(state(share,document:document))
+      }
+      if command.name == "gradient.tool.configure" {
+        guard store.canConfigureGradientCreation else{throw AutomationFailure(status:409,message:"Finish the current interaction before configuring Gradient creation defaults.")}
+        let options=try command.gradientToolOptions(store)
+        try store.setGradientCreationOptions(options)
+        return .json(state(share,document:document))
+      }
+      if command.name == "gradient.fill.create" || command.name == "gradient.paint" {
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision){original in
+          try command.name == "gradient.fill.create" ? command.gradientCreateCommand(in:original):command.gradientPaintCommand(in:original)
+        }
         return .json(state(share,document:document))
       }
       if command.name == "shape.configure" {try store.configureShape(command);return .json(state(share,document:document))}
@@ -1729,6 +1742,7 @@ import UniformTypeIdentifiers
       "hdrMerge": HDRMergeSettings.apiCapabilities,
       "filterRecall": FilterRecallAPI.capabilities,
       "gradientFills":GradientFillAPI.capabilities,
+      "gradientTool":GradientToolAPI.capabilities,
       "shapes":ShapeAPI.capabilities,
       "inkModes": InkModeAPI.capabilities,
       "inkChannels": InkChannelAPI.capabilities,
@@ -1794,6 +1808,7 @@ import UniformTypeIdentifiers
         "fitImage":GeometryAPI.fitImageStateSchema,
         "filterRecall": FilterRecallAPI.stateSchema,
         "gradientFills":GradientFillAPI.stateSchema,
+        "gradientTool":GradientToolAPI.stateSchema,
         "shapes":ShapeAPI.stateSchema,
         "documentMode": DocumentModeAPI.stateSchema,
         "colorProfile": ColorProfileAPI.stateSchema,

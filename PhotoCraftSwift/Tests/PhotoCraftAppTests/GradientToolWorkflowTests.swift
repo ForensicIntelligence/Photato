@@ -197,7 +197,9 @@ final class GradientToolWorkflowTests: XCTestCase {
     XCTAssertEqual(
       try XCTUnwrap(store.activeGradientWidget?.fill.gradient.colors[1].midpoint), 0.2,
       accuracy: 1e-5)
-    store.changeGradientOption(\.reverse, true)
+    var reversed = try XCTUnwrap(store.activeGradientWidget).fill
+    reversed.placement.reverse = true
+    store.performGeometry(.setGradientFill(try XCTUnwrap(store.activeLayer).id, reversed))
     await store.geometryTask?.value
     widget = try XCTUnwrap(store.activeGradientWidget)
     XCTAssertEqual(widget.hit(widget.point(0.8), tolerance: 1), .color(2))
@@ -216,7 +218,10 @@ final class GradientToolWorkflowTests: XCTestCase {
     XCTAssertEqual(widget.fill.placement.angle, -45, accuracy: 1e-5)
     let oldStart = widget.start
     let oldEnd = widget.end
-    store.changeGradientOption(\.style, .radial)
+    var radial = try XCTUnwrap(store.activeGradientWidget).fill
+    radial.placement.style = .radial
+    try radial.placement.setHandles(start: oldStart, end: oldEnd, in: try XCTUnwrap(store.activeGradientWidget).frame)
+    store.performGeometry(.setGradientFill(try XCTUnwrap(store.activeLayer).id, radial))
     await store.geometryTask?.value
     widget = try XCTUnwrap(store.activeGradientWidget)
     XCTAssertEqual(widget.start.x, oldStart.x, accuracy: 1e-4)

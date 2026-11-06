@@ -124,7 +124,7 @@ final class SmartFilterDragTests: XCTestCase {
     XCTAssertFalse(SmartFilterDrag.canReceive(store: store, layerID: target.id, filterID: nil, copying: true))
     store.session = EditorSession(document: original)
     XCTAssertTrue(SmartFilterDrag.provider(store: store, layerID: source.id, filterID: UUID()).registeredTypeIdentifiers.isEmpty)
-    XCTAssertNotNil(SmartFilterStack.apiCapabilities["nativeDrag"]); XCTAssertEqual(AutomationCommand.definitions.count, 252)
+    XCTAssertNotNil(SmartFilterStack.apiCapabilities["nativeDrag"]); XCTAssertEqual(AutomationCommand.definitions.count, 255)
   }
   @MainActor func testDelayedCompletionRejectsEditCancellationSupersededGestureAndClosedDocument() async throws {
     for mode in ["edit", "cancel", "supersede", "close"] {

@@ -1,0 +1,158 @@
+{
+  "step": 442,
+  "recorded_at_utc": "2026-11-06T12:25:22.646769+00:00",
+  "application_build": 442,
+  "source": "442Source05/Release02",
+  "source_manifest": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/release02-source.json",
+  "source_inputs": 7353,
+  "run": "artifacts/runs/20261106T113051Z-442-gradient-tool-api",
+  "package": "A05",
+  "current_pass": 2,
+  "status": "Selected native gradient creation/Classic painting/API/portable Actions workflows qualified; full A05 and one pre-existing Intel oracle failure remain open.",
+  "implementation": [
+    "Options controls and toolbar presets configure future gradients only; Properties/canvas/sidebar explicit applying paths retain existing-fill editing.",
+    "Shared native/API layer and stroke factories; captured session/document/tool/option fences reject delayed replacements.",
+    "Three typed commands with gradientTool state, strict parameter/result/state schemas and shared prepared one-Undo editing. Tool configuration is session-only with revision changes, no pixels/history/tool activation.",
+    "Portable Actions51 records fresh fill recipes and captured Classic strokes, without document UUIDs or raster snapshots. Unsupported additional creation metadata remains explicitly unsupported."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/source05-summary.json",
+    "cases": 69,
+    "passed": 69,
+    "new442": 11,
+    "failures": 0,
+    "unexpected": 0,
+    "test_seconds": 19.255,
+    "app_sha256": "f4993e2c703c06a9627344558952f9582f3b23aef4eb929d6f873f74be86af95",
+    "Source04_05_same_app": true
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/release02-qualification.json",
+    "equivalence": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/case-equivalence01.json",
+    "cases_each": 99,
+    "passed": [
+      99,
+      98
+    ],
+    "new442_passed": [
+      11,
+      11
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "test_seconds": [
+      4.742,
+      8.493
+    ],
+    "build_seconds": [
+      [
+        "130.71"
+      ],
+      [
+        "130.37"
+      ]
+    ],
+    "affected_suite_passed": false,
+    "unresolved_failed_cases": [
+      [],
+      [
+        "PhotoCraftCoreTests.GradientOracleTests/testExecutedRustGeometryInterpolationAndDither"
+      ]
+    ],
+    "prior441_exact_Intel_failure_reproduced": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/retained441-intel-gradient01-summary.json",
+    "Release01_02_apps_identical": true
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/universal/staging01.json",
+    "app": "/private/tmp/photato-validation-442-stage01-87a99d30/Photato Validation 442.app",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "binary_sha256": "fa228c10c5edcfed42b82426835298473bf002fd9f41d8a629a4927a7d1fb2d4",
+    "archive_sha256": "4fa65762a66b1177f27e0e81bb75c563f8f2835e19f69aeed46939d4d9b1a3bb",
+    "signature_and_extracted_ZIP_verified": true,
+    "installed_or_launched": false
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source02",
+      "kind": "54/55pass; new portable recording test reveals real unsupported create/paint Action entries, repaired with portable recipes rather than weakened test."
+    },
+    {
+      "attempt": "source03",
+      "kind": "58/58pass, but nonexistent old-suite names supplied no coverage; Source04 corrects selector and actually runs ten old Actions methods."
+    },
+    {
+      "attempt": "release01",
+      "kind": "99cases each:98ARM/97Intel. Stale old catalogue251 assertion corrected to255; old Intel numerical assertion unchanged. All original logs/source/binaries retained."
+    }
+  ],
+  "integrity": {
+    "report": "artifacts/runs/20261106T113051Z-442-gradient-tool-api/source-integrity01.json",
+    "old_fixtures_pixel_assertions_tolerances_unchanged": true,
+    "all_old_tests_unchanged": false,
+    "old_test_changes": "33old current-catalogue/Actions-ceiling consumer files only; one old GradientToolWorkflow setup now uses explicit existing-fill edit, preserving numeric assertions.",
+    "Core_gradient_Imaging_math_validation_Adobe_contract_unchanged": true,
+    "Core_recording_registry_expanded": true,
+    "protected_present_unchanged": 26,
+    "protected_previously_missing": 14
+  },
+  "typed_commands": 255,
+  "native_archive": 86,
+  "Actions": 51,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_command_identities": 652,
+  "original_scopes": 104,
+  "major_queue_members": 81,
+  "API": {
+    "commands": [
+      "gradient.tool.configure",
+      "gradient.fill.create",
+      "gradient.paint"
+    ],
+    "state": "gradientTool",
+    "schema": "GradientToolAPI.stateSchema",
+    "Adobe_endpoint_added": false,
+    "colors": "Explicit editing payloads capture colors; native dynamic foreground/background references survive partial tool patches unless their colors array is supplied.",
+    "history": "Tool options no Undo/pixels/dirty state; create/paint use existing prepared commands and portable Actions51."
+  },
+  "remaining_functional": [
+    "On-canvas opacity controls and complete modern gradient interaction/preset behavior.",
+    "Complete noise gradients, GRD edge cases/interchange, remaining interpolation/dither/default and Gradient Fill transforms; preserve old bounded references.",
+    "Preset-library automation remains open; creation/configuration/Classic painting do not complete that library interface.",
+    "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
+    "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
+  ],
+  "next_major_workflow": "A07, thenF01; full A05 remains open.",
+  "queue_rotation": "A05toend; same81members/sevenpasses/104originalscopes and acceptance.",
+  "selected_native_workflow_qualified": true,
+  "current_focused_suite_passed": true,
+  "current_normal_qualified": false,
+  "selected_normal_workflows_qualified": true,
+  "affected_suite_passed": false,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "live_UI_reference": "442CUA Mac locked; existing human unlock question pending. No repeat or workaround/live UI claim.",
+  "reference_provenance": "Public Adobe workflow documentation and existing native/Core implementation; new synthetic native/API recipe tests. No new image fixtures, Adobe source or artwork.",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/apply-gradient-fill.html",
+      "updated": "2026-04-28",
+      "supports": "Options bar applies to new gradients; existing edits through canvas/Properties."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-effects-techniques/edit-a-gradient.html",
+      "updated": "2026-08-18",
+      "supports": "Existing on-canvas gradient edit workflow. Does not establish all default/numerical/platform behavior."
+    }
+  ]
+}

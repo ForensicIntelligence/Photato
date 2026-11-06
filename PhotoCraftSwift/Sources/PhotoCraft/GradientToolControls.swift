@@ -4,11 +4,10 @@ import SwiftUI
 
 extension WorkspaceView {
   private func gradientBinding<T>(
-    _ key: WritableKeyPath<GradientToolOptions, T>,
-    current: T? = nil
+    _ key: WritableKeyPath<GradientToolOptions, T>
   ) -> Binding<T> {
     Binding(
-      get: { current ?? store.gradientOptions[keyPath: key] },
+      get: { store.gradientOptions[keyPath: key] },
       set: { store.changeGradientOption(key, $0) })
   }
   var gradientOptions: some View {
@@ -20,18 +19,18 @@ extension WorkspaceView {
         gradientPresetPopover.toggle()
       } label: {
         HStack(spacing: 5) {
-          GradientSwatch(gradient: store.toolGradient).frame(width: 95, height: 19)
+          GradientSwatch(gradient: store.creationToolGradient).frame(width: 95, height: 19)
           Image(systemName: "chevron.down").font(.system(size: 9))
         }
       }.buttonStyle(.plain).fixedSize().help("Gradient presets")
         .accessibilityLabel("Gradient presets")
         .popover(isPresented: $gradientPresetPopover) {
-          GradientsPanel(store: store, compact: true).frame(width: 320, height: 310)
+          GradientsPanel(store: store, compact: true, creationOnly: true).frame(width: 320, height: 310)
         }
       HStack(spacing: 2) {
         ForEach(GradientStyle.allCases, id: \.self) { style in
           let selected =
-            (store.activeGradientWidget?.fill.placement.style ?? store.gradientOptions.style)
+            store.gradientOptions.style
             == style
           Button {
             store.changeGradientOption(\.style, style)
@@ -47,26 +46,26 @@ extension WorkspaceView {
       Picker(
         "Method",
         selection: Binding(
-          get: { store.toolGradient.method },
+          get: { store.gradientOptions.gradient.method },
           set: { store.changeGradientMethod($0) })
       ) {
         ForEach(GradientMethod.allCases, id: \.self) { Text($0.rawValue).tag($0) }
       }.frame(width: 145)
       Picker(
         "Mode",
-        selection: gradientBinding(\.blend, current: store.activeGradientWidget?.layer.blendMode)
+        selection: gradientBinding(\.blend)
       ) {
         ForEach(BlendMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
       }.frame(width: 150)
       percentField(
         "Opacity:",
-        value: gradientBinding(\.opacity, current: store.activeGradientWidget?.layer.opacity))
+        value: gradientBinding(\.opacity))
       Toggle(
         "Reverse",
         isOn: gradientBinding(
-          \.reverse, current: store.activeGradientWidget?.fill.placement.reverse))
+          \.reverse))
       Toggle(
-        "Dither", isOn: gradientBinding(\.dither, current: store.activeGradientWidget?.fill.dither))
+        "Dither", isOn: gradientBinding(\.dither))
       if !store.liveGradientMode {
         Toggle("Transparency", isOn: gradientBinding(\.transparency))
       }
@@ -78,7 +77,7 @@ extension WorkspaceView {
             .disabled(store.document.isLocked(widget.layer.id))
         }
       }
-    }.controlSize(.small).disabled(store.geometryBusy || store.hasToneDraft)
+    }.controlSize(.small).disabled(!store.canConfigureGradientCreation)
   }
   private func gradientStyleSymbol(_ style: GradientStyle) -> String {
     switch style {

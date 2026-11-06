@@ -65,5 +65,29 @@
     "On-canvas opacity, Gradient Map, gradient effects/strokes and complete preferences/shortcuts remain pending",
     "Intel and macOS14/26 runtime matrix; universal compilation is not runtime qualification"
   ],
-  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone."
+  "subsequent_gradient_map_milestone": "See GRADIENT_MAP_REFERENCES.json for native pixel/layer workflows, presets and grdm support plus current Photoshop comparisons. Remaining lists here describe this earlier milestone.",
+  "gradient_creation_442": {
+    "evidence": "docs/GRADIENT_CREATION_442.json",
+    "guide": "docs/GRADIENT_CREATION.md",
+    "commands": [
+      "gradient.tool.configure",
+      "gradient.fill.create",
+      "gradient.paint"
+    ],
+    "state": "gradientTool",
+    "typed_commands": 255,
+    "native_archive": 86,
+    "Actions": 51,
+    "Adobe_endpoint_added": false,
+    "cursor_impact": "No new tool, modifier action, cursor, factory menu or shortcut. Existing G/ShiftG and captured gesture constraints remain.",
+    "qualification": "69Debug/99sameordered normal each:99ARM98Intel,all11newboth; previousInteloraclefailure retained.",
+    "correction": "Historical selected-fill edits from Options describe the old implementation. Public Adobe workflow docs drive creation-only defaults; historical bounded pixel oracles are retained unchanged.",
+    "remaining": [
+      "On-canvas opacity controls and complete modern gradient interaction/preset behavior.",
+      "Complete noise gradients, GRD edge cases/interchange, remaining interpolation/dither/default and Gradient Fill transforms; preserve old bounded references.",
+      "Preset-library automation remains open; creation/configuration/Classic painting do not complete that library interface.",
+      "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
+      "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
+    ]
+  }
 }
