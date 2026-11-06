@@ -771,6 +771,34 @@ public struct Surface: Codable, Equatable, Sendable {
 
 
 extension Surface {
+  /// Same-grid histogram traversal. Each allocated union tile is inspected once;
+  /// the rest of the logical plane contributes one weighted default sample.
+  /// Padding outside width/height is never counted. No whole-grid key array.
+  func visitHistogramSamples(mask: Surface?, _ consume: (Pixel, Int) -> Void) throws {
+    guard mask == nil || (mask?.width == width && mask?.height == height && mask?.colorEncoding == .sRGB)
+    else { throw CraftError.invalid("Histogram coverage must use the same scalar grid.") }
+    var implicit = width * height
+    let keys = mask.map { tiles.unionKeys(with: $0.tiles) } ?? tiles.unionKeys(with: tiles)
+    for key in keys {
+      try Task.checkCancellation()
+      let left = key % columns * Self.tileSide, top = key / columns * Self.tileSide
+      let w = min(Self.tileSide, width-left), h = min(Self.tileSide, height-top)
+      implicit -= w*h
+      let a = tiles[key], b = mask?.tiles[key]
+      for y in 0..<h {
+        try Task.checkCancellation()
+        for x in 0..<w {
+          let offset = y*Self.tileSide+x
+          if let mask, !((b?[offset] ?? mask.storedDefaultPixel).r > 0) { continue }
+          consume(encodedSample(a?[offset] ?? storedDefaultPixel), 1)
+        }
+      }
+    }
+    try Task.checkCancellation()
+    if implicit > 0, mask == nil || mask!.storedDefaultPixel.r > 0 {
+      consume(encodedSample(storedDefaultPixel), implicit)
+    }
+  }
   /// Count only visible raster cells, coalescing implicit samples instead of
   /// enumerating missing tiles. Mask > 0 selects statistics, matching Equalize.
   func equalizeHistogram(mask: Surface?) throws -> [Double] {

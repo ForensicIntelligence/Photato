@@ -1,0 +1,17 @@
+{
+  "step": "dev-step-440",
+  "run": "artifacts/runs/20261106T100711Z-440-curves-sampling",
+  "status": "440selected paged histogram/nativeAPI qualification complete; private source/history/diary finalization pending",
+  "current_pass": 2,
+  "current_major_workflow": "A04",
+  "next": "A05",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "439Source05/Release01",
+  "source_inputs_baseline": 7341,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T100711Z-440-curves-sampling/release02-source.json",
+  "source_inputs": 7344,
+  "production_swift_files": 1081,
+  "evidence": "docs/PAGED_HISTOGRAM_440.json"
+}

@@ -30,6 +30,6 @@ extension Renderer {
     _ id: UUID, in document: CraftDocument, luminance: Bool = false
   ) throws -> RGBHistogram {
     let input = try adjustmentInput(id, in: document)
-    return try RGBHistogram.analyze(input, depth: document.depth, luminance: luminance)
+    return try RGBHistogram.paged(input, depth: document.depth, luminance: luminance)
   }
 }

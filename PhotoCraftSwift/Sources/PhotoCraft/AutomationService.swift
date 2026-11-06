@@ -936,6 +936,18 @@ import UniformTypeIdentifiers
       }
       if PrintAPI.commands.contains(command.name) { return try executePrint(command, share: share, document: document) }
       if ClipboardAPI.commands.contains(command.name) { return try await executeClipboard(command, document: document, share: share) }
+      if command.name == HistogramAPI.name {
+        let snapshot = try command.histogramRequest(in: store.document)
+        guard !previewBusy else { throw AutomationFailure(status: 429, message: "A preview or statistics operation is already running.") }
+        previewBusy = true; defer { previewBusy = false }; let expectedGeneration = generation
+        let worker = Task.detached(priority: .userInitiated) { try snapshot.analyze() }
+        let histogram = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        prune()
+        guard !Task.isCancelled, generation == expectedGeneration, shares.contains(where: { $0.id == id }), command.revision == revision(store) else {
+          throw AutomationFailure(status: 409, message: "The histogram source changed or sharing ended. Refresh and retry.")
+        }
+        return .json(["histogram": HistogramAPI.json(histogram), "revision": revision(store), "sourceDepth": snapshot.document.depth.rawValue, "layerID": snapshot.layerID.uuidString, "luminance": snapshot.luminance])
+      }
       if command.name == "tone.statistics" {
         let snapshot=store.document,layer=try command.parameters["layerID"].map{_ in try command.actionUUID("layerID")},selected=try command.pathFlag("useSelection",false)
         if let layer,!snapshot.layers.contains(where:{$0.id==layer}) {throw AutomationFailure(status:404,message:"Statistics layer not found.")}
@@ -1722,6 +1734,7 @@ import UniformTypeIdentifiers
       "restrictedModes": RestrictedModeAPI.capabilities,
       "documentModes": DocumentModeAPI.capabilities,
       "classicTone":ClassicToneAPI.capabilities,
+      "histogram": HistogramAPI.capabilities,
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,

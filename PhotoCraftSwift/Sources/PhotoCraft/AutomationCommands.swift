@@ -65,6 +65,7 @@ struct AutomationCommand: Sendable {
         if InkModeAPI.commands.contains(name) { properties[key] = InkModeAPI.schema(key); continue }
         if RestrictedModeAPI.commands.contains(name) { properties[key] = RestrictedModeAPI.schema(key, command: name); continue }
         if DocumentModeAPI.commands.contains(name) { properties[key] = DocumentModeAPI.schema(key); continue }
+        if name == HistogramAPI.name {properties[key]=HistogramAPI.schema(key);continue}
         if ClassicToneAPI.commands.contains(name){properties[key]=ClassicToneAPI.schema(key);continue}
         if let kind=ProceduralAPI.kind(name) {properties[key]=ProceduralAPI.schema(key,kind:kind);continue}
         if AdjustmentBrushAPI.commands.contains(name) {properties[key]=AdjustmentBrushAPI.schema(key);continue}
@@ -351,6 +352,7 @@ struct AutomationCommand: Sendable {
     .init(name: "mode.channel.visibility", parameters: ["components": "Visible component indices"], description: "Set independent color component visibility without changing stored pixels."),
     .init(name: "mode.channel.edit", parameters: ["layerID": "Raster layer UUID", "components": "Component indices", "action": "fill, stroke, invert or filter", "value": "Gray fill value", "opacity": "Fill opacity", "brush": "Brush settings", "points": "Document-coordinate stroke samples", "filter": "Native raster filter"], description: "Edit retained components with selection, alpha preservation and one Undo.", optionalParameters: ["value", "opacity", "brush", "points", "filter"]),
     .init(name:"tone.apply",parameters:["kind":"Adjustment kind","settings":"Tone/color settings","layerID":"Pixel layer UUID"],description:"Apply native tone/color adjustment with shared preview and Undo semantics.",optionalParameters:["settings","layerID"]),
+    .init(name:HistogramAPI.name,parameters:["layerID":"Pixel or adjustment layer UUID","luminance":"Count scalar luminance instead of RGB","useSelection":"Pixel-layer selection inclusion; default true"],description:"Read exact histogram counts through the native Curves/Levels analysis request without modifying the document.",optionalParameters:["luminance","useSelection"]),
     .init(name:"tone.statistics",parameters:["layerID":"Source layer UUID; omit for merged","useSelection":"Calculate from selection"],description:"Read portable Match Color Lab statistics from this shared document.",optionalParameters:["layerID","useSelection"]),
     .init(name: "adjustment.apply", parameters: ["layerID": "Pixel layer UUID", "adjustment": "Classic, Color Lookup or modern adjustment"], description: "Apply to selected pixels with shared native Undo; composite RGB target only."),
     .init(name:"font.inspect",parameters:["font":"Installed PostScript font name","start":"First glyph ID","count":"Glyph page size"],description:"Inspect installed OpenType features, variable axes and glyphs.",optionalParameters:["start","count"]),

@@ -13,27 +13,28 @@ public struct RGBHistogram: Equatable, Sendable {
   public private(set) var shadows: [UInt64] = [0, 0, 0]
   public private(set) var highlights: [UInt64] = [0, 0, 0]
   public init() {}
-  public mutating func add(_ pixel: Pixel) {
+  public mutating func add(_ pixel: Pixel) { add(pixel, count: 1) }
+  private mutating func add(_ pixel: Pixel, count: UInt64) {
     guard pixel.a.isFinite else {
-      invalid += 1
+      invalid += count
       return
     }
     guard pixel.a > 0 else {
-      transparent += 1
+      transparent += count
       return
     }
     guard pixel.isFinite else {
-      invalid += 1
+      invalid += count
       return
     }
-    samples += 1
+    samples += count
     for c in 0..<3 {
       let value = pixel.rgb[c]
-      if value <= 0 { shadows[c] += 1 }
-      if value >= 1 { highlights[c] += 1 }
-      if value < 0 { underflow[c] += 1 }
-      if value > 1 { overflow[c] += 1 }
-      channels[c][Int(unit(value) * 255 + 0.5)] += 1
+      if value <= 0 { shadows[c] += count }
+      if value >= 1 { highlights[c] += count }
+      if value < 0 { underflow[c] += count }
+      if value > 1 { overflow[c] += count }
+      channels[c][Int(unit(value) * 255 + 0.5)] += count
     }
   }
   public func bins(_ channel: LevelsAdjustment.Channel) -> [UInt64] {
@@ -66,6 +67,22 @@ public struct RGBHistogram: Equatable, Sendable {
     }
     return result
   }
+  /// Exact sample counts with implicit pixels coalesced. A same-grid scalar mask
+  /// includes cells above zero, matching the original per-cell selection rule.
+  public static func paged(
+    _ surface: Surface, depth: PixelDepth, luminance: Bool = false, mask: Surface? = nil
+  ) throws -> Self {
+    var result = Self()
+    try surface.visitHistogramSamples(mask: mask) { p, count in
+      let sample = depth == .f32 ? SRGBTransfer.linear(p) : p
+      if luminance {
+        var gray = TonalStepsTransfer.luminance(sample)
+        if depth == .u8 { gray = (gray * 255).rounded(.toNearestOrEven) / 255 }
+        result.add(Pixel(gray, gray, gray, sample.a), count: UInt64(count))
+      } else { result.add(sample, count: UInt64(count)) }
+    }
+    return result
+  }
   public static func pixelLayer(_ id: UUID, in document: CraftDocument, luminance: Bool = false)
     throws -> Self
   {
@@ -76,6 +93,31 @@ public struct RGBHistogram: Equatable, Sendable {
       throw CraftError.invalid("Select a pixel layer to analyze its tones.")
     }
     let matrix = layer.coordinateTransform
+    // A unit grid translated by whole cells needs no resampling. Work only on
+    // its intersection with canvas and selection; arbitrary affine transforms
+    // retain the original centre-sampling implementation below.
+    if matrix.a == 1, matrix.b == 0, matrix.c == 0, matrix.d == 1,
+      matrix.tx.isFinite, matrix.ty.isFinite,
+      matrix.tx.rounded(.towardZero) == matrix.tx, matrix.ty.rounded(.towardZero) == matrix.ty {
+      let selected = document.selectionMask?.bounds ?? document.selection
+      if document.selectionMask != nil, selected == nil { return Self() }
+      let region = (selected ?? IntRect(x: 0, y: 0, width: document.width, height: document.height))
+        .clipped(toWidth: document.width, height: document.height)
+      func edge(_ value: Double, _ maximum: Int) -> Int { Int(min(Double(maximum), max(0, value))) }
+      let x0 = edge(Double(region.x) - matrix.tx, surface.width)
+      let y0 = edge(Double(region.y) - matrix.ty, surface.height)
+      let x1 = edge(Double(region.x + region.width) - matrix.tx, surface.width)
+      let y1 = edge(Double(region.y + region.height) - matrix.ty, surface.height)
+      guard x1 > x0, y1 > y0 else { try Task.checkCancellation(); return Self() }
+      let bounds = IntRect(x: x0, y: y0, width: x1-x0, height: y1-y0)
+      let samples = try surface.cropped(to: bounds)
+      let mask: Surface?
+      if let selection = document.selectionMask {
+        let world = IntRect(x: x0 + Int(matrix.tx), y: y0 + Int(matrix.ty), width: bounds.width, height: bounds.height)
+        mask = try selection.coverageSurface().cropped(to: world)
+      } else { mask = nil }
+      return try paged(samples, depth: document.depth, luminance: luminance, mask: mask)
+    }
     return try analyze(surface, depth: document.depth, luminance: luminance) { x, y in
       let p = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
       let dx = Int(floor(p.x))

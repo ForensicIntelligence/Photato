@@ -18,15 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:439 -->
+<!-- current-status-step:440 -->
 ## Current development status — 6 November 2026
 
-The Horizontal Type tool can now create text directly on a selected path. Typing, caret placement, selection, marked input and formatting follow the curve. Existing Path, Circle, Arch and Bow text layers use the same native editor. Cancel retains the original document; commit is one Undo. The optional API shares the engine and reports native path-editing state.
+Curves and Levels can now analyze very large sparse pixel layers without scanning every implicit canvas cell. Histogram counts use stored image and selection tiles, plus exact counts for their defaults. Whole-cell translations and selection holes are included. The optional tone.histogram query uses the same native analysis request and leaves pixels, revision and Undo history untouched.
 
-All six new native workflow tests pass in both optimized architectures. The affected Debug run passes 158 of 159 tests; optimized runs pass 484 of 485 on Apple Silicon and 482 under Rosetta. Both retain the imported-source mismatch. Rosetta also retains the older 8-bit point-text failure and differs in thirteen Float32 alpha words across three path images, each by one ULP. Exact tests and fixed references remain intact. This is not a completely green suite or cross-architecture byte-identity claim. Universal macOS 14 packaging, signature and extracted ZIP verify; live Photoshop, physical-platform and 60 fps checks remain open.
+All 27focused Debug tests and the same 61optimized tests on Apple Silicon and under Rosetta pass, including all eight new tests. Maximum-size tests cover 300,000×300,000logical pixels, sparse edge samples, translated selection coverage and archive round trips. Universal macOS 14 packaging, signature and extracted ZIP verify. Dense maximum-size editing, arbitrary-transform large statistics, physical-platform checks and 60 fps remain unqualified. Earlier full-suite and text-output failures are still recorded; these runs do not repair them.
 
-Major still-needed work advances to A01: Auto Color Correction Options for Curves, then A04. T04's vertical, inside/warp inline editing, delimiters, composited editing appearance, fitting, PSD and fidelity scope remains open. Minor work and cleanup have not begun. [Step 439](DEVLOG.md#dev-step-439).
-The current development source is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/1e138cfb64a0851c90396e198049836dfa6bec66), including the Xcode project and records. Known test failures are recorded; this is not a software release.
+This completes an A01 analysis dependency. Curves Auto, complete Auto Color Correction Options, point sampling and the rest of A01 remain major work. The major still-needed sweep moves to A04's nondestructive adjustments, then A05. All 104original scopes and acceptance criteria are retained. [Step 440](DEVLOG.md#dev-step-440).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3434,3 +3433,18 @@ The final Debug run passes 158 of 159 methods, including all ten new methods and
 The isolated universal validation package verifies its macOS 14 target, both architectures, signature and extracted ZIP. It has not been installed, launched for a live test, archived in Xcode, uploaded to the store or released. The selected native path workflow is tested; full T04 is still open. Vertical/inside/warped inline editing, delimiters and flip/drag gestures, fully composited mask/opacity/effect appearance during typing, full fitting/composers/affinity, PSD and maximum capacity remain functional work. Exact defaults/output, platforms and performance remain unqualified. The next major item is Auto Color Correction Options for Curves; the current Curves UI lacks Auto/Options, while Levels provides some supporting foundation. [Detailed record](DEVLOG.md#dev-step-439) · [Path typing guide](DIRECT_PATH_TYPE.md).
 
 The full source checkpoint is verified in the private repository: 7,307 frozen inputs included, 34 generated/cache/restricted inputs excluded, and all 1,061 root/Rust files unchanged. Thirty-eight new fixture/provenance files contain owned generated text data. A final documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/1e138cfb64a0851c90396e198049836dfa6bec66) · [Backup record](SOURCE_PUBLICATION_439.json).
+
+
+## 2026-11-06 — Step 440: Histograms for large sparse documents
+
+The Curves and Levels histograms still visited every pixel. A document could use sparse storage successfully and then spend an impractical amount of time on statistics. The new traversal examines stored image and coverage tiles and counts the remaining cells in bulk. UInt64 bins retain exact counts at the 90-gigapixel logical limit. Tile padding is excluded, and the existing depth, alpha and selection rules are preserved.
+
+Ordinary layers translated by whole cells are clipped to the canvas and selection. Their image and mask are cropped into the same sample grid using existing paged storage. Fractional and rotated affine layers retain the previous sampling path. Adjustment layers use the same paged histogram reader after their existing input composition. This change does not establish maximum-size capacity for every compositor or editing operation.
+
+The optional tone.histogram API shares the native Curves/Levels request. It exposes three 256-bin channels and the sample, transparency, invalid and endpoint counters, with strict parameter/result schemas. It rejects invalid, stale, busy or unavailable sources. Successful queries do not change pixels, document revision or Undo history. No Adobe endpoint or document-format version was added.
+
+Two new-fixture compile failures were preserved and repaired. A first runnable test attempt caught two stale catalogue counts and an incorrect expectation for the existing revoked-share response. The first optimized selector also named seven helper classes instead of their test classes. All 54actuallyselected methods passed, but that run failed qualification for missing intended tests. The corrected selector ran all 61methods on the same source and binaries; both architectures passed. All old fixture bytes and numerical assertions are unchanged. Fifteen existing test files only update their current API catalogue count from 251 to 252.
+
+The final focused run passes 27 Debug tests, including eight new methods. The same 61optimized methods pass on Apple Silicon and under Rosetta; universal macOS 14 packaging, strict signature and ZIP extraction also verify. These are selected tests. Existing full-suite failures, cross-architecture text-output differences, Photoshop fidelity, physical-platform qualification and 60 fps remain open.
+
+The original A01 Auto Options candidate needs further work, including independent Photoshop references and native point-sampling transactions. It is not marked complete. This checkpoint delivers its statistics dependency, records the remaining scope and moves the major still-needed sweep to A04, then A05. The seven-pass order and every original acceptance criterion remain in force.

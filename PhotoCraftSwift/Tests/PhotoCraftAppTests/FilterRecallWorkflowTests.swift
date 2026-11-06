@@ -240,7 +240,7 @@ final class FilterRecallWorkflowTests: XCTestCase {
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == FilterRecallAPI.name })
       XCTAssertTrue(definition.parameters.isEmpty)
       XCTAssertEqual(definition.schema["additionalProperties"] as? Bool, false)
-      XCTAssertEqual(AutomationCommand.definitions.count, 251)
+      XCTAssertEqual(AutomationCommand.definitions.count, 252)
       XCTAssertEqual(ActionLibraryFile.maximumVersion, 50)
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: FilterRecallAPI.capabilities))
       let share = try XCTUnwrap(service.shares.first?.id)

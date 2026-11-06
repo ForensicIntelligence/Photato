@@ -1730,5 +1730,23 @@
       "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
       "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
     ]
+  },
+  "paged_histogram_440": {
+    "evidence": "docs/PAGED_HISTOGRAM_440.json",
+    "guide": "docs/PAGED_HISTOGRAM.md",
+    "command": "tone.histogram",
+    "typed_commands": 252,
+    "native_archive": 86,
+    "Actions": 50,
+    "Adobe_endpoint_added": false,
+    "cursor_impact": "Existing Curves/Levels analysis only; no new gesture, modifier action, menu, shortcut or cursor.",
+    "qualified": "27Debug/61normal each including8new; selected paged/statistics paths only.",
+    "remaining": [
+      "Complete Curves Auto and Auto Color Correction Options/algorithms/defaults; existing Levels Auto Color remains an unqualified approximation.",
+      "Native black/gray/white point sampling and editable targets, requiring modeless/captured-source editing.",
+      "Clipping previews, freehand/targeted/multipoint Curves, persistent presets, mask channels and HDR; all original A01 scope and acceptance.",
+      "Generic affine maximum-size statistics, dense performance and rich adjustment composition capacity remain unqualified.",
+      "Independent Photoshop/ICC/output/default fidelity, physical Intel/macOS14 and60fps; all earlier strict/full-suite failures remain recorded."
+    ]
   }
 }

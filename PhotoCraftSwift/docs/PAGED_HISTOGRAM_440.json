@@ -1,0 +1,143 @@
+{
+  "step": 440,
+  "recorded_at_utc": "2026-11-06T10:39:57.092748+00:00",
+  "application_build": 440,
+  "source": "440Source04/Release02",
+  "source_manifest": "artifacts/runs/20261106T100711Z-440-curves-sampling/release02-source.json",
+  "source_inputs": 7344,
+  "run": "artifacts/runs/20261106T100711Z-440-curves-sampling",
+  "package": "A01",
+  "current_pass": 2,
+  "status": "Paged exact-count histogram dependency qualified on selected native/API paths; Auto Options candidate and full A01 remain open.",
+  "implementation": [
+    "Surface lazily inspects union tiles and coalesces implicit samples into UInt64 counts; excludes tile padding.",
+    "Ordinary integral translations crop exact source and world coverage to matching grids; arbitrary affine sampling retains the existing per-cell path.",
+    "Curves/Levels share LevelsAnalysisRequest; adjustment input uses the same paged statistics.",
+    "Read-only required-layer tone.histogram adds schemas/capabilities and shared detached/revision/session/busy guards; no Undo or document mutation."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T100711Z-440-curves-sampling/source04-summary.json",
+    "cases": 27,
+    "passed": 27,
+    "new440": 8,
+    "failures": 0,
+    "unexpected": 0,
+    "test_seconds": 3.295,
+    "app_sha256": "ef5bb5c70e1b8df26c61079adeec2fb27cef59129f270ab3e56f6867ea8aabc2"
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T100711Z-440-curves-sampling/release02-qualification.json",
+    "equivalence": "artifacts/runs/20261106T100711Z-440-curves-sampling/case-equivalence01.json",
+    "cases_each": 61,
+    "passed": [
+      61,
+      61
+    ],
+    "new440_passed": [
+      8,
+      8
+    ],
+    "test_seconds": [
+      1.565,
+      2.348
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "source_and_apps_identical_to_release01": true
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T100711Z-440-curves-sampling/universal/staging01.json",
+    "app": "/private/tmp/photato-validation-440-stage01-457d972e/Photato Validation 440.app",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "binary_sha256": "f2640887a4b3f43a8128753bf9a40d05afb702669bc2e1c10104877deab3965e",
+    "archive_sha256": "3aaa35fb41fc609978af3ac551d8f6b63597a059b5b6b938150a137c47b37159",
+    "signature_and_extracted_ZIP_verified": true,
+    "installed_or_launched": false
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "kind": "New fixture compilation errors; no tests ran, cached439 outputs explicitly unqualified."
+    },
+    {
+      "attempt": "source02",
+      "kind": "My fixture replacement also corrupted .reduce; exact test expression repaired, no tests ran."
+    },
+    {
+      "attempt": "source03",
+      "kind": "24/27pass; two stale current catalogue counts and new revoked-share expectation mismatched existing404contract; preserved before repair."
+    },
+    {
+      "attempt": "release01",
+      "kind": "54actuallyselected methods pass both; selector names7helper classes, missing intended methods. Qualification failed. Corrected selector only; Release02passesall61."
+    }
+  ],
+  "integrity": {
+    "report": "artifacts/runs/20261106T100711Z-440-curves-sampling/source-integrity01.json",
+    "old_assertions": "artifacts/runs/20261106T100711Z-440-curves-sampling/old-test-assertions01.json",
+    "old_fixtures_unchanged": true,
+    "old_test_file_changes": "15files only current executable catalogue251\u2192252; no other old assertion change.",
+    "protected_present_unchanged": 26,
+    "protected_previously_missing": 14
+  },
+  "typed_commands": 252,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_command_identities": 652,
+  "original_scopes": 104,
+  "major_queue_members": 81,
+  "API": {
+    "command": "tone.histogram",
+    "schema": "HistogramAPI",
+    "required_layer": true,
+    "query_read_only": true,
+    "Adobe_endpoint_added": false,
+    "native_request": "LevelsAnalysisRequest",
+    "source_domain": "Existing encoded8/16 and linear32 conversion, round-even luminance8; positive alpha/coverage count once."
+  },
+  "capacity": {
+    "maximum_paged_raster_dimension": 300000,
+    "maximum_paged_raster_pixels": 90000000000,
+    "tested": "Uniform/sparse/canvas intersection/selection holes/translated selection/all-depth archive and counters.",
+    "all_operations_maximum_qualified": false,
+    "dense_performance_qualified": false
+  },
+  "remaining_functional": [
+    "Complete Curves Auto and Auto Color Correction Options/algorithms/defaults; existing Levels Auto Color remains an unqualified approximation.",
+    "Native black/gray/white point sampling and editable targets, requiring modeless/captured-source editing.",
+    "Clipping previews, freehand/targeted/multipoint Curves, persistent presets, mask channels and HDR; all original A01 scope and acceptance.",
+    "Generic affine maximum-size statistics, dense performance and rich adjustment composition capacity remain unqualified.",
+    "Independent Photoshop/ICC/output/default fidelity, physical Intel/macOS14 and60fps; all earlier strict/full-suite failures remain recorded."
+  ],
+  "original_A01_Auto_Options_candidate_complete": false,
+  "next_major_workflow": "A04, thenA05; A01 remains major stillneeded.",
+  "queue_rotation": "A01toend; same81members/sevenpasses/all104scopes/acceptance.",
+  "selected_native_workflow_qualified": true,
+  "current_focused_suite_passed": true,
+  "current_normal_qualified": true,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "live_UI_reference": "Mac locked at440start, prior human unlock question pending. No repeat question or workaround. No live UI pass.",
+  "historical_failures_retained": "439 imported-source, point/path cross-architecture exactness and all earlier full-suite/crash/capacity residuals are not repaired or rerun by this increment.",
+  "reference_provenance": [
+    "Existing licensed histogram math, retained old dense implementation and unchanged Rust histogram fixtures; new paged traversal is native Swift.",
+    "New generated sample/coverage tests and analytical counts; no Adobe artwork or algorithm source.",
+    "Public Adobe Auto/eyedropper documentation supports remaining-work audit, not numerical qualification."
+  ],
+  "primary_reference_urls": [
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-auto-tone-auto-contrast-and-auto-color.html",
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-tone-levels-curves-eyedroppers.html"
+  ]
+}

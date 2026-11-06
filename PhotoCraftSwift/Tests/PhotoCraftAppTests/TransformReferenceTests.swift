@@ -175,7 +175,7 @@ final class TransformReferenceTests: XCTestCase {
       let state = try JSONDecoder().decode(AutomationValue.self, from: JSONSerialization.data(withJSONObject: store.transformReferenceState)); XCTAssertNoThrow(try BrushAPI.merge(state, schema: TransformReferenceAPI.stateSchema))
       let route = "/v1/documents/\(try XCTUnwrap(service.shares.first?.id))/commands"; service.revoke(try XCTUnwrap(service.shares.first?.id))
       let missing = try await helper.request(service, path: route, body: ["command": "transform.reference", "revision": revision, "parameters": ["workspaceRevision": store.transformReferenceRevision.uuidString, "visible": false]]); XCTAssertEqual(missing.0.statusCode, 404)
-      XCTAssertEqual(store.document, original); XCTAssertEqual(AutomationCommand.definitions.count, 251)
+      XCTAssertEqual(store.document, original); XCTAssertEqual(AutomationCommand.definitions.count, 252)
     }
   }
   @MainActor func testContentAwareReadyPreviewSurvivesReferenceOnlyEditsAndOptionsFit() async throws {
