@@ -1,0 +1,19 @@
+{
+  "step": 444,
+  "verified_utc": "2026-11-06T14:44:19.373804+00:00",
+  "request": "Make the existing GitHub repository public now; supersedes earlier release-day-only visibility policy.",
+  "repository": {
+    "isPrivate": false,
+    "nameWithOwner": "ForensicIntelligence/Photato",
+    "url": "https://github.com/ForensicIntelligence/Photato",
+    "visibility": "PUBLIC"
+  },
+  "commands": [
+    "gh repo edit ForensicIntelligence/Photato --visibility public --accept-visibility-change-consequences",
+    "gh repo view ForensicIntelligence/Photato --json nameWithOwner,url,isPrivate,visibility",
+    "unauthenticated HTTPS repository page returned200"
+  ],
+  "software_release_published": false,
+  "code_or_git_history_rewritten": false,
+  "in_progress_filter_source_uploaded": false
+}
