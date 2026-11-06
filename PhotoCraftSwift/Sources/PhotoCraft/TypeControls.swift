@@ -3,8 +3,11 @@ import PhotoCraftCore
 import PhotoCraftImaging
 import SwiftUI
 
+enum TypeControlScope { case all, character, paragraph }
+
 struct TypeControls: View {
   var store: EditorStore
+  var scope: TypeControlScope = .all
   private var current: (TypeStyle, TypeParagraph) {
     _ = store.typeSelectionRevision
     if let editor = store.typeEditor {
@@ -30,6 +33,7 @@ struct TypeControls: View {
   }
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
+      if scope != .paragraph {
       HStack {
         Text("Character").fontWeight(.semibold)
         Spacer()
@@ -61,9 +65,11 @@ struct TypeControls: View {
         Toggle("Strike", isOn: Binding(get: { current.0.strikethrough }, set: { v in store.formatType { s, _ in s.strikethrough = v } }))
       }
       AdvancedTypeControls(store:store,style:current.0)
-      RichTypeControls(store:store,style:current.0,paragraph:current.1)
+      RichTypeControls(store:store,style:current.0,paragraph:current.1,scope:scope)
       Menu("Shaped Text…"){Button("Edit Layout…"){store.beginShapedType()};ForEach(TextGeometry.Mode.allCases,id:\.self){mode in Button(mode.rawValue.capitalized){store.beginShapedType(mode)}}}
-      Divider()
+      }
+      if scope == .all { Divider() }
+      if scope != .character {
       Text("Paragraph").fontWeight(.semibold)
       Picker("Alignment", selection: Binding(get: { current.1.alignment }, set: { v in store.formatType(paragraph: true) { _, p in p.alignment = v } })) {
         ForEach(TypeParagraph.Alignment.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) }
@@ -96,10 +102,12 @@ struct TypeControls: View {
           Label("Text overflows the box", systemImage: "plus.square").foregroundStyle(.orange)
         }
       }
+      if scope == .paragraph { RichTypeControls(store:store,style:current.0,paragraph:current.1,scope:.paragraph) }
+      }
       if store.typeEditingDraft != nil {
         HStack { Button("Cancel") { store.finishType(cancel: true) }; Button("Commit") { store.finishType() }.keyboardShortcut(.return, modifiers: .command) }
         Text("Esc or ⌘Return commits. Typing Undo stays in this edit.").font(.caption).foregroundStyle(.secondary)
       }
-    }.controlSize(.small).disabled(!store.canEditType)
+    }.controlSize(.small).disabled(!store.canEditType || store.editableType == nil)
   }
 }

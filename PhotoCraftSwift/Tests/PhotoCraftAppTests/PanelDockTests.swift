@@ -316,7 +316,7 @@ final class PanelDockTests: XCTestCase {
     let buttons = descendants(host, PanelDockTabButton.self)
     XCTAssertEqual(
       Set(buttons.map(\.title).filter { !$0.isEmpty }),
-      Set(WorkspacePanel.allCases.filter { $0 != .cloneSource }.map(\.rawValue))
+      Set(WorkspacePanel.allCases.filter { ![WorkspacePanel.cloneSource, .character, .paragraph].contains($0) }.map(\.rawValue))
     )
     let gradients = try XCTUnwrap(buttons.first { $0.title == "Gradients" })
     XCTAssertEqual(gradients.accessibilityLabel(), "Gradients panel")

@@ -105,16 +105,27 @@ extension EditorStore {
   }
 }
 
-@MainActor final class CanvasTypeEditor: NSTextView, NSTextViewDelegate {
+@MainActor final class CanvasTypeEditor: NSTextView, NSTextViewDelegate, @preconcurrency NSLayoutManagerDelegate {
   weak var store: EditorStore?
   let draftID: UUID
   private let nativeStorage: NSTextStorage
   private let typingUndo = UndoManager()
+  private var pointDrawingOrigin = NSPoint.zero
+  private var applyingParagraphLayout = false
+  override var textContainerOrigin:NSPoint {
+    // NSTextView centres/right-aligns its oversized container against the view.
+    // Point layout already anchors each line, so applying that offset again
+    // would move the insertion point outside the visible editor.
+    if (textContainer as? NativeTypeTextContainer)?.pointAnchored == true {
+      return NSPoint(x:-pointDrawingOrigin.x,y:-pointDrawingOrigin.y)
+    }
+    return super.textContainerOrigin
+  }
   override var undoManager: UndoManager? { typingUndo }
   func undoManager(for view: NSTextView) -> UndoManager? { typingUndo }
   init(store: EditorStore, draft: TypeEditingDraft) throws {
     self.store = store; draftID = draft.id
-    let storage = NSTextStorage(), layout = NSLayoutManager(), container = NSTextContainer(size: NSSize(width: 32768, height: 32768))
+    let storage = NSTextStorage(), layout = NSLayoutManager(), container = NativeTypeTextContainer(size: NSSize(width: 32768, height: 32768))
     nativeStorage = storage
     storage.addLayoutManager(layout); layout.addTextContainer(container)
     super.init(frame: .zero, textContainer: container)
@@ -125,10 +136,17 @@ extension EditorStore {
     textContainerInset = .zero; textContainer?.lineFragmentPadding = 0
     textStorage?.setAttributedString(try NativeTextLayout.attributed(draft.content, dpi: store.document.pixelsPerInch))
     typingAttributes = try NativeTextLayout.attributes(draft.content.typography!.defaultStyle, paragraph: draft.content.typography!.defaultParagraph, dpi: store.document.pixelsPerInch,orientation:draft.content.typography!.writingOrientation)
-    delegate = self; configureContainer()
+    delegate = self; layout.delegate = self; configureContainer()
     setAccessibilityLabel("Edit type on canvas")
   }
   required init?(coder: NSCoder) { nil }
+  func layoutManager(_ layoutManager:NSLayoutManager,didCompleteLayoutFor textContainer:NSTextContainer?,atEnd layoutFinishedFlag:Bool) {
+    guard !applyingParagraphLayout,let textContainer,let storage=layoutManager.textStorage,
+      let store else{return}
+    applyingParagraphLayout = true
+    defer{applyingParagraphLayout = false}
+    NativeTextLayout.applyParagraphFormatting(storage:storage,manager:layoutManager,container:textContainer,dpi:store.document.pixelsPerInch)
+  }
   func configureContainer() {
     guard let draft = store?.typeEditingDraft, draft.id == draftID else { return }
     let vertical=draft.content.typography?.writingOrientation == .vertical
@@ -139,14 +157,22 @@ extension EditorStore {
     let paragraph=draft.content.typography?.kind == .paragraph,frame=draft.content.typography?.sourceFrame
     let width=paragraph ? (frame?.kind == .box ? frame!.width:Double(draft.content.layoutWidth ?? 1)):32768
     let height=paragraph ? (frame?.kind == .box ? frame!.height:Double(draft.content.layoutHeight ?? 1)):32768
-    textContainer?.containerSize = NSSize(width:vertical ? height:width,height:vertical ? width:height)
+    let anchored=NativeTextLayout.usesPointAnchoring(draft.content)
+    if let container=textContainer as?NativeTypeTextContainer {
+      container.pointAnchored=anchored;container.verticalWriting=vertical
+      container.fallbackAlignment=(typingAttributes[.paragraphStyle]as?NSParagraphStyle)?.alignment
+        ?? NativeTextLayout.pointAlignment(draft.content.typography?.defaultParagraph ?? .init())
+    }
+    textContainer?.containerSize = NSSize(width:anchored ? 65536:(vertical ? height:width),height:vertical ? width:height)
+    let metrics=anchored ? try?NativeTextLayout.editingMetrics(draft.content,dpi:store?.document.pixelsPerInch ?? 72):nil
+    pointDrawingOrigin=NSPoint(x:metrics?.layoutOrigin.x ?? 0,y:metrics?.layoutOrigin.y ?? 0)
   }
   @discardableResult func updateDraft() -> Bool {
     guard let store, let draft = store.typeEditingDraft, draft.id == draftID, let textStorage else { return false }
     do { draft.content = try NativeTextLayout.content(textStorage, template: draft.content, dpi: store.document.pixelsPerInch); return true }
     catch { store.error = error.localizedDescription; return false }
   }
-  func textDidChange(_ notification: Notification) { updateDraft(); superview?.needsLayout = true }
+  func textDidChange(_ notification: Notification) { if updateDraft() { configureContainer() }; superview?.needsLayout = true }
   func textViewDidChangeSelection(_ notification: Notification) { store?.typeSelectionRevision += 1 }
   override func shouldChangeText(in affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let replacementString else { return super.shouldChangeText(in: affectedCharRange, replacementString: nil) }
@@ -162,7 +188,8 @@ extension EditorStore {
   }
   func format(paragraph: Bool, _ change: (inout TypeStyle, inout TypeParagraph) -> Void) {
     guard let store, let textStorage else { return }
-    var range = selectedRange()
+    let selection = selectedRange()
+    var range = selection
     if paragraph, textStorage.length > 0 { range = (string as NSString).paragraphRange(for: range) }
     do {
       if range.length == 0 {
@@ -183,6 +210,7 @@ extension EditorStore {
         if let failure { throw failure }
         if shouldChangeText(in: range, replacementString: replacement.string) {
           textStorage.replaceCharacters(in: range, with: replacement); didChangeText()
+          setSelectedRange(selection)
         }
       }
       store.typeSelectionRevision += 1
@@ -208,7 +236,12 @@ extension CraftCanvas {
     let width = draft.content.typography?.kind == .paragraph ? draft.content.layoutWidth ?? 1 : max(400, (metrics?.width ?? 1) + 100)
     let height = draft.content.typography?.kind == .paragraph ? draft.content.layoutHeight ?? 1 : max(100, (metrics?.height ?? 1) + 60)
     let sourceTransform=try? draft.layer.sourceTypeTransform()
-    let origin = sourceTransform.map{$0.point(metrics?.origin.x ?? 0,metrics?.origin.y ?? 0)} ?? draft.layer.coordinateTransform.point(0,0)
+    let origin:(x:Double,y:Double)
+    if let sourceTransform { origin=sourceTransform.point(metrics?.origin.x ?? 0,metrics?.origin.y ?? 0) }
+    else {
+      let oldOrigin=draft.layer.typeContent.flatMap{try?NativeTextLayout.metrics($0,dpi:store.document.pixelsPerInch).origin} ?? .init(0,0)
+      origin=draft.layer.coordinateTransform.point((metrics?.origin.x ?? 0)-oldOrigin.x,(metrics?.origin.y ?? 0)-oldOrigin.y)
+    }
     editor.frame = NSRect(origin: viewPoint(CGPoint(x: origin.x, y: origin.y)), size: NSSize(width: Double(width) * scale, height: Double(height) * scale))
     let vertical=draft.content.typography?.writingOrientation == .vertical
     editor.bounds = NSRect(x: 0, y: 0, width: vertical ? height:width, height: vertical ? width:height)

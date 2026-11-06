@@ -12,9 +12,14 @@ extension PanelDock {
     columns = try values.decodeIfPresent([PanelDockColumn].self, forKey: .columns)
     if catalogVersion == 1 {
       // Validate before migration: a missing old panel is corruption, not an upgrade.
-      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.history, .cloneSource]))
+      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.history, .cloneSource, .character, .paragraph]))
       addUtilityPanels()
       catalogVersion = 2
+    }
+    if catalogVersion == 2 {
+      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.character, .paragraph]))
+      addTypographyPanels()
+      catalogVersion = 3
     }
     try validate()
   }
@@ -33,4 +38,13 @@ extension PanelDock {
     }
     hidden.insert(.cloneSource)
   }
+  mutating func addTypographyPanels() {
+    let column = groups.first { $0.panels.contains(.history) }?.dockColumnID
+      ?? PanelDockColumn.primaryID
+    let id = groups.contains { $0.id == "typography" } ? UUID().uuidString : "typography"
+    groups.append(.init(id: id, panels: [.character, .paragraph], selected: .character,
+      preferredHeight: 360, columnID: column == PanelDockColumn.primaryID ? nil : column))
+    hidden.formUnion([.character, .paragraph])
+  }
+
 }

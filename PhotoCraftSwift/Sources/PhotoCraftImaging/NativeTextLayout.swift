@@ -4,10 +4,6 @@ import PhotoCraftCore
 
 /// TextKit owns shaping, Unicode input attributes and paragraph layout. Each
 /// offscreen call owns its storage/layout manager; no UI objects are shared.
-private final class NativeTypeContainer:NSTextContainer {
-  var verticalWriting=false
-  override var layoutOrientation:NSLayoutManager.TextLayoutOrientation{verticalWriting ? .vertical:.horizontal}
-}
 public enum NativeTextLayout {
   private static let optionsKey=NSAttributedString.Key("PhotatoFontOptions")
   private static let glyphKey=NSAttributedString.Key("PhotatoGlyphOverride")
@@ -140,6 +136,8 @@ public enum NativeTextLayout {
     public var firstBaseline: Double
     public var overset: Bool
     public var origin:PathPoint = .init(0,0)
+    /// TextKit coordinate at the raster/editor origin; not document placement.
+    public var layoutOrigin:PathPoint = .init(0,0)
   }
   private static func layout(_ text: TextContent, dpi: Double) throws -> (NSTextStorage, NSLayoutManager, NSTextContainer, Metrics) {
     let storage = NSTextStorage(attributedString: try attributed(text, dpi: dpi,rendering:true))
@@ -151,12 +149,15 @@ public enum NativeTextLayout {
     let height = paragraph ? text.layoutHeight ?? 1 : 32768
     let frameWidth=paragraph && sourceFrame?.kind == .box ? sourceFrame!.width:Double(width)
     let frameHeight=paragraph && sourceFrame?.kind == .box ? sourceFrame!.height:Double(height)
-    let container = NativeTypeContainer(containerSize: NSSize(width: isVertical ? frameHeight:frameWidth, height: isVertical ? frameWidth:frameHeight))
+    let anchored=usesPointAnchoring(text)
+    let container = NativeTypeTextContainer(containerSize: NSSize(width: anchored ? 65536:(isVertical ? frameHeight:frameWidth), height: isVertical ? frameWidth:frameHeight))
+    container.pointAnchored=anchored
+    container.fallbackAlignment=pointAlignment(text.typography?.runs.last?.paragraph ?? text.typography?.defaultParagraph ?? .init())
     container.verticalWriting=isVertical
     container.lineFragmentPadding = 0
     manager.addTextContainer(container); storage.addLayoutManager(manager)
     manager.ensureLayout(for: container)
-    try NativeParagraphFormatting.apply(storage:storage,manager:manager,container:container,dpi:dpi)
+    applyParagraphFormatting(storage:storage,manager:manager,container:container,dpi:dpi)
     let used = manager.usedRect(for: container)
     let range = manager.glyphRange(for: container)
     let baseline = range.length > 0 ? manager.location(forGlyphAt: range.location).y : 0
@@ -164,6 +165,23 @@ public enum NativeTextLayout {
       height: paragraph ? height : max(1, Int(ceil(isVertical ? used.maxX:used.maxY)) + 2), firstBaseline: baseline,
       overset: NSMaxRange(range) < manager.numberOfGlyphs)
     if let frame=sourceFrame {metrics.origin=frame.kind == .point ? .init(frame.x,frame.y-baseline):.init(frame.x,frame.y)}
+    if anchored {
+      // Newline control glyphs cover the unused virtual line tail. They are not artwork.
+      // Read final glyph positions after extended paragraph alignment has been applied.
+      var glyphBounds=CGRect.null
+      let string=storage.string as NSString
+      for glyph in range.location..<NSMaxRange(range) {
+        let character=manager.characterIndexForGlyph(at:glyph)
+        if manager.propertyForGlyph(at:glyph).contains(.controlCharacter),character<string.length,
+          let scalar=UnicodeScalar(Int(string.character(at:character))),CharacterSet.newlines.contains(scalar){continue}
+        glyphBounds=glyphBounds.union(manager.boundingRect(forGlyphRange:NSRange(location:glyph,length:1),in:container))
+      }
+      let crop=glyphBounds.isNull ? NativeTypeTextContainer.pointExtent:floor(glyphBounds.minX)
+      let inlineExtent=glyphBounds.isNull ? 2:max(1,Int(ceil(glyphBounds.maxX)-crop)+2)
+      metrics.layoutOrigin = .init(crop,0)
+      if isVertical {metrics.height=inlineExtent;metrics.origin.y += crop-NativeTypeTextContainer.pointExtent}
+      else {metrics.width=inlineExtent;metrics.origin.x += crop-NativeTypeTextContainer.pointExtent}
+    }
     guard paragraph || !metrics.overset else { throw CraftError.unsupported("Point text exceeds the native layout extent. Use a paragraph frame or a shorter text layer.") }
     guard metrics.width <= 32768, metrics.height <= 32768, metrics.width * metrics.height <= 16_777_216 else {
       throw CraftError.unsupported("This text frame exceeds the 16 megapixel type rendering limit.")
@@ -178,7 +196,6 @@ public enum NativeTextLayout {
     if text.typography?.geometry?.isActive==true{return try ShapedTextLayout.outline(text,dpi:dpi)}
     let (storage, manager, container, metrics) = try layout(text, dpi: dpi)
     guard text.typography?.writingOrientation != .vertical else{throw CraftError.unsupported("Vertical type outline conversion is not qualified yet; retain editable type or rasterize it.")}
-    _ = metrics
     let range = manager.glyphRange(for: container), path = CGMutablePath()
     for index in range.location..<(range.location + range.length) {
       try Task.checkCancellation()
@@ -193,7 +210,7 @@ public enum NativeTextLayout {
       let line = manager.lineFragmentRect(forGlyphAt: index, effectiveRange: nil)
       let position = manager.location(forGlyphAt: index)
       let baseline = (storage.attribute(.baselineOffset, at: character, effectiveRange: nil) as? NSNumber)?.doubleValue ?? 0
-      let transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: line.minX + position.x, ty: line.minY + position.y - baseline)
+      let transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: line.minX + position.x - metrics.layoutOrigin.x, ty: line.minY + position.y - baseline - metrics.layoutOrigin.y)
       path.addPath(outline, transform: transform)
     }
     guard !path.isEmpty else { throw CraftError.unsupported("This text has no supported vector glyph outlines.") }
@@ -213,7 +230,7 @@ public enum NativeTextLayout {
     if text.typography?.writingOrientation == .vertical {context.translateBy(x:CGFloat(metrics.width),y:0);context.rotate(by:.pi/2)}
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: true)
-    manager.drawGlyphs(forGlyphRange: manager.glyphRange(for: container), at: .zero)
+    manager.drawGlyphs(forGlyphRange: manager.glyphRange(for: container), at: NSPoint(x:-metrics.layoutOrigin.x,y:-metrics.layoutOrigin.y))
     NSGraphicsContext.restoreGraphicsState()
     withExtendedLifetime(storage) {}
     guard let image = context.makeImage() else { throw CraftError.invalid("Could not render text.") }

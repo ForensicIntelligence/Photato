@@ -283,6 +283,15 @@ extension WorkspaceView {
   }
 
   @ViewBuilder func dockContent(_ panel: WorkspacePanel) -> some View {
+    if panel == .character || panel == .paragraph {
+      TypographyPanel(store: store, panel: panel)
+    } else {
+      nonTypographyDockContent(panel)
+        .disabled(floatingPanelGroup != nil && workspace?.owner?.canChangeDocument == false)
+    }
+  }
+
+  @ViewBuilder private func nonTypographyDockContent(_ panel: WorkspacePanel) -> some View {
     if panel == .history {
       HistoryPanel(store: store)
     } else if panel == .cloneSource {

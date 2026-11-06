@@ -1,0 +1,211 @@
+{
+  "cases": [
+    {
+      "depthIndex": 0,
+      "file": "legacy-0-point-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 46,
+      "kind": "point-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 47,
+      "sha256": "9f7b7e350c24f950929e895d3c88b7e28e70a8ba1f86b6b98420742f2de89f9f"
+    },
+    {
+      "depthIndex": 0,
+      "file": "legacy-0-box-center.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-center",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "dee4feb5fc1bdb7b2674abd210ab45e0207761520a30ae3a02de5488247bc3c6"
+    },
+    {
+      "depthIndex": 0,
+      "file": "legacy-0-box-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "f8d47dcda8dca441fc15c79c751106b70c625d88bb3c99c5e00698b6362710d6"
+    },
+    {
+      "depthIndex": 0,
+      "file": "legacy-0-point-vertical-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 47,
+      "kind": "point-vertical-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 52,
+      "sha256": "cb2ca33b184bd7573cd11ff86a0d07f32c224de408050b85f2bc10658e3b3129"
+    },
+    {
+      "depthIndex": 0,
+      "file": "legacy-0-box-vertical-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-vertical-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "b8b7122e18c9487e1f05fabc5e2acbd88c48ed869002981ad28db3175c55266c"
+    },
+    {
+      "depthIndex": 1,
+      "file": "legacy-1-point-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 46,
+      "kind": "point-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 47,
+      "sha256": "038c593b4dafcd0d649ea2298d599f76007bd4545d3c819556bbbff9d63e6371"
+    },
+    {
+      "depthIndex": 1,
+      "file": "legacy-1-box-center.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-center",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "42f45293eac09256bcf2269c15b53a346880614b46a43dd4c77891bd108ef188"
+    },
+    {
+      "depthIndex": 1,
+      "file": "legacy-1-box-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "c462be30000c0c100cab63c9bf8e4c8e51e83f83a60f5b1949ed45a41aa7e176"
+    },
+    {
+      "depthIndex": 1,
+      "file": "legacy-1-point-vertical-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 47,
+      "kind": "point-vertical-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 52,
+      "sha256": "0e557175e8c3e97fdccbb99dcddfa0fd89641b4e59c2de95ae98a5b4c38c3ac2"
+    },
+    {
+      "depthIndex": 1,
+      "file": "legacy-1-box-vertical-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-vertical-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "0631a685e65683a2f837331adf136888c37839ea1d9d79fcb362c40413ffb18a"
+    },
+    {
+      "depthIndex": 2,
+      "file": "legacy-2-point-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 46,
+      "kind": "point-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 47,
+      "sha256": "6e1b789b5e18cca5e3f3d93f35c95de672fdf55c8a4e610db6c21530a467e152"
+    },
+    {
+      "depthIndex": 2,
+      "file": "legacy-2-box-center.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-center",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "957814126120e283afa08f72dd1874c1118c7ec63e01ab8501fde544d5c3e30d"
+    },
+    {
+      "depthIndex": 2,
+      "file": "legacy-2-box-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "b5f3aeba2e127939696215b06bd153d4b7574cc502a5144596d16c0533fe98b7"
+    },
+    {
+      "depthIndex": 2,
+      "file": "legacy-2-point-vertical-left.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 47,
+      "kind": "point-vertical-left",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 52,
+      "sha256": "916f6f93cb08f544da3bd6e84f1fd9b2bbcf3642134d711e27990d8d74325f63"
+    },
+    {
+      "depthIndex": 2,
+      "file": "legacy-2-box-vertical-right.rgba-f32le",
+      "firstBaseline": 15,
+      "height": 110,
+      "kind": "box-vertical-right",
+      "origin": [
+        0,
+        0
+      ],
+      "width": 120,
+      "sha256": "214a43103f2dd5711500eb61244e47211b8d2cf4695cf3098c03ade44d4e44f7"
+    }
+  ],
+  "dpi": 72,
+  "samples": "Surface.pixel RGBA Float32 little-endian words; output regression only, not Photoshop proof",
+  "provenance": {
+    "owner": "FI Forensic Intelligence owned procedural text inputs",
+    "captured_before_engine_changes": true,
+    "baseline": "437Source08production in438legacy01",
+    "source_manifest": "artifacts/runs/20261106T073658Z-438-point-type-layout/legacy01-source.json",
+    "app_sha256": "3fb4d4f641e807c833c2f5aa47c70aa790761d1a6b6e7565b1708ea9baa5230e",
+    "purpose": "Exact prior-native output regression; not Photoshop equivalence",
+    "formats": "logical RGBA Float32 words little-endian, not raw stored tile bytes",
+    "license": "CC0-1.0 for these owned generated sample data"
+  }
+}

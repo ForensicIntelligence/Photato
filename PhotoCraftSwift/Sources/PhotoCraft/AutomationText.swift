@@ -91,6 +91,7 @@ extension TextContent {
       "layerSourceSchema":["anyOf":[RichTypeAPI.sourceState,["type":"null"]]],"extendedTypeVersion":69,"extendedTypeActionVersion":25,
       "units": "Font size, leading, baseline and paragraph distances are points at document resolution. Frame dimensions and positions are pixels. Tracking is thousandths of an em. Run lengths count UTF-16 code units and must cover the string without splitting Unicode scalars.",
       "persistence": "Native69/Actions25 retain extended formatting/source appearance and semantic type edits. Native35 retains shaped text; Native34 retains advanced typography; Native16 retains legacy rich text. text.set replaces the complete type description; omitted formatting uses the documented defaults.",
+      "pointAnchoring":PointTextAPI.capabilities,
       "fonts":FontAPI.capabilities,"layout":TextLayoutAPI.capabilities,"limitations": "Uses installed fonts, native vertical TextKit shaping, OpenType and variation descriptors. Imported missing faces retain identity and source cache, and use a native editing fallback when no unsupported variation axis is requested. Named style libraries and complete live caps/optical/caret behavior remain open. Adobe glyph/pixel/composer equality, path and warped text remain unqualified."]
   }
 }

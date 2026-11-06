@@ -96,6 +96,12 @@ struct AutomationView: View {
         )
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
+        Toggle("Allow workspace panel changes", isOn: Binding(
+          get: { service.workspacePanelChangesEnabled }, set: { service.setWorkspacePanelChangesEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to show, hide and arrange panels in the shared saved workspace. This affects all open documents and turns off when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
         Toggle("Allow Color Settings changes", isOn: Binding(
           get: { service.colorSettingsChangesEnabled }, set: { service.setColorSettingsChangesEnabled($0) }
         )).disabled(!service.isRunning)

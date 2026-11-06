@@ -49,7 +49,7 @@ final class ColorLookupMultiExportTests:XCTestCase {
       let subset=try await helper.request(service,path:prefix+"zip",headers:selected);XCTAssertEqual(subset.0.statusCode,200);XCTAssertEqual(subset.1,try ColorLookupExport.archive(native.filter{[ColorLookupFileFormat.csp,.icc].contains($0.format)}))
       XCTAssertEqual(document.store.document,original);XCTAssertEqual(service.revision(document.store),revision);XCTAssertTrue(document.store.session.undoStack.isEmpty);XCTAssertFalse(document.isDocumentEdited)
       let state=service.colorLookupExportState(document.store),value=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:state));XCTAssertNoThrow(try BrushAPI.merge(value,schema:AutomationService.colorLookupExportStateSchema))
-      let cap=try XCTUnwrap(AutomationService.colorLookupCapabilities["stackExport"]as?[String:Any]);XCTAssertEqual(cap["formats"]as?[String],ColorLookupFileFormat.allCases.map(\.rawValue));XCTAssertEqual(AutomationCommand.definitions.count,250)
+      let cap=try XCTUnwrap(AutomationService.colorLookupCapabilities["stackExport"]as?[String:Any]);XCTAssertEqual(cap["formats"]as?[String],ColorLookupFileFormat.allCases.map(\.rawValue));XCTAssertEqual(AutomationCommand.definitions.count,251)
     }
   }
   @MainActor func testNewMetadataAndFormatGuardsRejectInvalidStaleDisabledAndRevokedTransfers()async throws {

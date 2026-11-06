@@ -162,13 +162,16 @@ private struct DocumentWorkspaceRoot: View {
 
   private var deferredPresentations: [CraftNSDocument] = []
 
-  var canChangeDocument: Bool {
+  var canChangeDocument: Bool { canChangePresentation(allowTypeEditing: false) }
+  var canUseTypographyPanels: Bool { canChangePresentation(allowTypeEditing: true) }
+
+  private func canChangePresentation(allowTypeEditing: Bool) -> Bool {
     // AppKit's attachedSheet is not observable. In particular, SwiftUI can clear a draft
     // before its native sheet detaches; panel/menu/drag validation must refresh afterward.
     _ = sheetStateRevision
     guard groups.allSatisfy({ $0.window?.attachedSheet == nil }) else { return false }
     guard let store = activeDocument?.store else { return true }
-    return !store.hasToneDraft && store.transformDraft == nil && !store.geometryBusy
+    return !(allowTypeEditing ? store.hasToneDraftExceptTypeEditing : store.hasToneDraft) && store.transformDraft == nil && !store.geometryBusy
       && store.geometrySheet == nil && !store.showAI && !store.showGaps
       && !store.showFeatherSelection && store.gradientNameDraft == nil
       && store.patternNameDraft == nil && store.error == nil

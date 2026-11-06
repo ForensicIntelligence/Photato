@@ -1,0 +1,171 @@
+{
+  "step": 438,
+  "recorded_at_utc": "2026-11-06T08:46:23.900058+00:00",
+  "application_build": 438,
+  "source": "438Source04/Release01",
+  "source_manifest": "artifacts/runs/20261106T073658Z-438-point-type-layout/release01-source.json",
+  "source_inputs": 7296,
+  "run": "artifacts/runs/20261106T073658Z-438-point-type-layout",
+  "current_pass": 2,
+  "package": "T01",
+  "next_major_workflow": "T04 \u2014 direct Type-tool creation on a path candidate; thenA01",
+  "status": "Selected native point-anchor/caret/typing/formatting/commit/Undo and panel workflows pass both architectures. Exact-output tests retain two unresolved methods; not a completely green or fully stable-qualified build.",
+  "typed_commands": 251,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Positive TextKit line fragments share one insertion coordinate for non-left point text. Only final non-newline glyph bounds allocate the raster; no raised capacity constant.",
+    "Shared nonserialized layoutOrigin drives drawing, outlines, native textContainerOrigin/caret/hit testing and frame placement. Edited-layer placement accounts for old raster origin and retained logical source transform.",
+    "Avoid duplicate NSTextView container alignment. Reuse rich paragraph formatting after fresh editor layout, with reentrancy guard and matching shifted line-used rects. Selected range, Cancel and prepared document Undo retained.",
+    "Existing text.create/text.set/Actions/supported Adobe text jobs share native engine. Readonly textGeometry state/schema/capabilities added; no new command/route/serialized version."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/source04-summary.json",
+    "cases": 133,
+    "passed": 132,
+    "assertions": 3,
+    "unexpected": 0,
+    "crashes": 0,
+    "new438_passed": 10,
+    "new437_passed": 11,
+    "build_seconds": 11.2,
+    "test_seconds": 95.087,
+    "app_sha256": "d2f5d5452f65bb9ad097e47a57920b3a0beaa8f1f3cc2cc5bebffb5e653c8487"
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/release01-qualification.json",
+    "same_order": "artifacts/runs/20261106T073658Z-438-point-type-layout/case-equivalence01.json",
+    "cases_each": 468,
+    "passed": [
+      467,
+      466
+    ],
+    "assertions": [
+      3,
+      8
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "new426_through438_each": 110,
+    "new_passed": [
+      110,
+      109
+    ],
+    "new437_passed_each": 11,
+    "new438_passed": [
+      10,
+      9
+    ],
+    "selected_native_workflow_tests_passed_both": true,
+    "affected_suite_passed": false,
+    "intel_runtime": "Rosetta on this Apple Silicon macOS27.2host, not physical Intel/macOS14"
+  },
+  "legacy_baseline": {
+    "source": "unchanged437production plus new owned capture test",
+    "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/legacy01-summary.json",
+    "cases": 34,
+    "passed": 33,
+    "assertions": 3,
+    "outputs": 15,
+    "provenance": "Tests/PhotoCraftImagingTests/Fixtures/PointTextLegacy/manifest.json",
+    "ownership": "Owned generated text data, CC0. No redistributed font or Adobe artwork. Regression evidence, not Photoshop output."
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/source01-summary.json",
+      "description": "New editor local tuple/PathPoint compile error. Cached437app/legacy01XCTest explicitly marked unqualified, all outputs retained."
+    },
+    {
+      "attempt": "source02",
+      "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/source02-summary.json",
+      "description": "129/132pass; duplicate NSTextView origin offset causes native caret failures, plus unchanged imported source mismatch."
+    },
+    {
+      "attempt": "source03",
+      "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/source03-summary.json",
+      "description": "131/133pass; standard caret/typing repaired, rich-last-line used rectangles remain stale. All48new assertions retained before source repair."
+    },
+    {
+      "attempt": "source04",
+      "summary": "artifacts/runs/20261106T073658Z-438-point-type-layout/source04-summary.json",
+      "description": "132/133pass; native workflow repaired, unchanged source mismatch remains."
+    }
+  ],
+  "frozen_output_exactness": {
+    "ARM": true,
+    "Rosetta": false,
+    "diagnostic": "artifacts/runs/20261106T073658Z-438-point-type-layout/cross-architecture-text-words01.json",
+    "pixel_diagnostic": "artifacts/runs/20261106T073658Z-438-point-type-layout/cross-architecture-text-u8-quantified01.json",
+    "original_exact_tests_unchanged": true,
+    "old_Intel_baseline_rerun": false,
+    "cause_proven": false
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T073658Z-438-point-type-layout/universal/staging01.json",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "signature_and_extracted_ZIP_verified": true,
+    "app": "/private/tmp/photato-validation-438-stage01-54e2a0cb/Photato Validation 438.app",
+    "binary_sha256": "01b967309d207a7e02a534d5e97408a50e625ad02ebef273d3724f95ecb8f1db",
+    "live_UI_qualified": false
+  },
+  "api": "Root Photato state textGeometry describes active/draft type metrics, model-local raster origin, separate internal TextKit crop origin, availability/error and pointAnchored. Existing requests/transactions/Actions and Adobe jobs retained. 251typed commands unchanged.",
+  "cursor": "No new tool/modifier gesture in438; native text/control cursors and existing shared tool policy retained. Direct path-hover cursor is a futureT04candidate, not implemented here.",
+  "primary_references": [
+    {
+      "url": "https://developer.apple.com/documentation/appkit/nstextcontainer/linefragmentrect(forproposedrect:at:writingdirection:remaining:)",
+      "supports": "Public container geometry; local SDK documents validity and text layout contracts."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/characters-glyphs/format-paragraphs.html",
+      "supports": "Paragraph alignment workflows; exact defaults/pixels unqualified."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/text-on-paths-shapes/add-text-along-paths-or-inside-shapes.html",
+      "updated": "2026-02-23",
+      "supports": "Next candidate Type-tool hover/click entry on paths/inside shapes, not current implementation."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/work-with-dynamic-text/dynamic-text-overview.html",
+      "updated": "2026-08-28",
+      "supports": "Dynamic fit on custom paths and presets for next package audit."
+    }
+  ],
+  "current_focused_suite_passed": false,
+  "current_normal_qualified": false,
+  "current_universal_packaging_verified": true,
+  "selected_native_workflow_qualified": true,
+  "latest_fully_green_selected_normal_checkpoint": 436,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining_functional": [
+    "T01 remains open: typing defaults before a layer exists, mixed-value states, dynamic Character/Paragraph formatting menus/shortcuts, full paragraph composition/hyphenation/justification and editable PSD/type coverage.",
+    "Type raster limits remain32768side/16MP and100000UTF16units. Large type, point wrapping/whitespace/composer and arbitrary affine native editing require further implementation and qualification.",
+    "Older centred-point documents without logical source metadata can retain ambiguous placement from the former layout bug. Fifteen ordinary output baselines do not qualify that migration.",
+    "Physical Intel/macOS14/live Photoshop/defaults/output, full current suite and60fps are unqualified; existing human unlock request remains pending.",
+    "All prior failures and original104scope/652command requirements remain. This selected path does not close T01 or the overall goal."
+  ],
+  "remaining_fidelity": [
+    "Current optimized ARM467/468 and Rosetta466/468; imported source mismatch5937/4243/5773remains in both. The exact frozen ordinary-output method additionally fails five u8cases under Rosetta; all10u16/f32planes match. Keep tests/fixtures unchanged. No cause, oldIntelbaseline reproduction or regression-introduction claim.",
+    "Current five u8cases have565/614/578/751/756different Floatwords and239/244/225/342/344changed pixels, alpha maximum1byte; straight RGB also differs. This is not merely a one-ULP normalization residual. Current cross-architecture byte identity is false."
+  ],
+  "goal_complete": false,
+  "distribution": "Isolated ad-hoc validation package only. Private development source backup planned; no install, launch, Xcodearchive, Store, binary upload, public release or stable/full-parity claim."
+}

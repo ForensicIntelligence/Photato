@@ -16,6 +16,8 @@ extension WorkspacePanel {
     case .paths: return "point.topleft.down.curvedto.point.bottomright.up"
     case .history: return "clock.arrow.circlepath"
     case .cloneSource: return "seal"
+    case .character: return "textformat"
+    case .paragraph: return "text.alignleft"
     }
   }
 }

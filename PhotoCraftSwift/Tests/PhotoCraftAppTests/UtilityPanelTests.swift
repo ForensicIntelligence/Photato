@@ -23,12 +23,12 @@ final class UtilityPanelTests: XCTestCase {
       from: JSONSerialization.data(withJSONObject: original["groups"]!))
     let dock = try JSONDecoder().decode(PanelDock.self, from: data)
     XCTAssertEqual(Array(dock.groups.prefix(3)), groups)
-    XCTAssertEqual(dock.hidden, [.swatches, .cloneSource])
+    XCTAssertEqual(dock.hidden, [.swatches, .cloneSource, .character, .paragraph])
     XCTAssertEqual(dock.orderedColumns.map(\.id), ["left", "utility", "main"])
     XCTAssertEqual(dock.orderedColumns[0].width, 410)
     XCTAssertEqual(dock.orderedColumns[0].iconWidth, 140)
-    XCTAssertEqual(dock.catalogVersion, 2)
-    XCTAssertEqual(dock.groups.suffix(2).map(\.panels), [[.history], [.cloneSource]])
+    XCTAssertEqual(dock.catalogVersion, 3)
+    XCTAssertEqual(dock.groups.dropFirst(3).map(\.panels), [[.history], [.cloneSource], [.character, .paragraph]])
     XCTAssertEqual(try JSONDecoder().decode(PanelDock.self, from: JSONEncoder().encode(dock)), dock)
     var noColumns = original
     noColumns.removeValue(forKey: "columns")
@@ -83,7 +83,7 @@ final class UtilityPanelTests: XCTestCase {
     XCTAssertEqual(dock.orderedColumns[0].id, "utility")
     XCTAssertEqual(dock.orderedColumns[0].width, 410)
     XCTAssertEqual(Set(dock.groups.map(\.id)).count, dock.groups.count)
-    let utilities = dock.groups.suffix(2)
+    let utilities = dock.groups.filter { $0.panels.contains(.history) || $0.panels.contains(.cloneSource) }
     XCTAssertTrue(utilities.allSatisfy { $0.dockColumnID != "utility" })
     XCTAssertEqual(try JSONDecoder().decode(PanelDock.self, from: JSONEncoder().encode(dock)), dock)
   }

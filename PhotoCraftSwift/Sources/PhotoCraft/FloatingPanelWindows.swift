@@ -126,6 +126,12 @@ import SwiftUI
 private struct FloatingPanelRoot: View {
   var owner: DocumentWindows
   let groupID: String
+  var allowsTypeEditing: Bool {
+    guard owner.canUseTypographyPanels, let store = owner.activeDocument?.store else { return false }
+    let dock = store.workspaceLibrary.panelDock
+    let panels = dock.floatingGroups(groupID).flatMap { dock.visiblePanels(in: $0, visibility: store.workspace) }
+    return panels.contains { $0 == .character || $0 == .paragraph }
+  }
   var body: some View {
     if let document = owner.activeDocument {
       WorkspaceView(
@@ -133,7 +139,7 @@ private struct FloatingPanelRoot: View {
         floatingPanelGroup: groupID
       )
       .id(ObjectIdentifier(document))
-      .disabled(!owner.canChangeDocument || document.store.workspaceLibrary.error != nil)
+      .disabled(!(owner.canChangeDocument || allowsTypeEditing) || document.store.workspaceLibrary.error != nil)
     }
   }
 }

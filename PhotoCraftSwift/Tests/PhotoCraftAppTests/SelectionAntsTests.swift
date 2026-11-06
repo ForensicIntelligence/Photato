@@ -168,7 +168,7 @@ final class SelectionAntsTests: XCTestCase {
       XCTAssertTrue((SelectionAntsAPI.capabilities["adobe"] as? String)?.contains("No published") == true)
       XCTAssertEqual(service.revision(document.store), revision); XCTAssertEqual(document.store.document, source)
       XCTAssertEqual(try NativeArchive.encodeChunked(document.store.document, minimumVersion: 86), bytes)
-      XCTAssertEqual(AutomationCommand.definitions.count, 250)
+      XCTAssertEqual(AutomationCommand.definitions.count, 251)
     }
   }
   @MainActor func testOwnedRasterSnapshotsShowMovingDashesAndKeepInteriorClear() async throws {

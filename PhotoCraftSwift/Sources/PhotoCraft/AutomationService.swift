@@ -60,6 +60,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var printingGeneration = UUID()
   @ObservationIgnored var ownedPrints: [UUID: UUID] = [:]
   private(set) var preferenceChangesEnabled = false
+  private(set) var workspacePanelChangesEnabled = false
   private(set) var photoshopPreferenceChangesEnabled = false
   private(set) var colorSettingsChangesEnabled = false
   private(set) var recoveryManagementEnabled = false
@@ -202,6 +203,7 @@ import UniformTypeIdentifiers
     setDocumentSavesEnabled(false)
     setPrintingEnabled(false)
     setPreferenceChangesEnabled(false)
+    setWorkspacePanelChangesEnabled(false)
     setPhotoshopPreferenceChangesEnabled(false)
     setColorSettingsChangesEnabled(false)
     setRecoveryManagementEnabled(false)
@@ -239,6 +241,9 @@ import UniformTypeIdentifiers
     documentSaveGeneration = UUID()
     documentSavesEnabled = enabled && isRunning
     if !documentSavesEnabled { actionBatchTask?.cancel() }
+  }
+  func setWorkspacePanelChangesEnabled(_ enabled: Bool) {
+    workspacePanelChangesEnabled = enabled && isRunning
   }
   func setPreferenceChangesEnabled(_ enabled: Bool) {
     preferenceChangesEnabled = enabled && isRunning
@@ -389,6 +394,8 @@ import UniformTypeIdentifiers
       "backgroundLayer":store.backgroundLayerState,
       "selectionModify":store.selectionModifyState,
       "selectionDisplay":store.selectionAntsState,
+      "textGeometry":PointTextAPI.state(store),
+      "workspacePanels":WorkspacePanelsAPI.state(store.workspaceLibrary, allowed: workspacePanelChangesEnabled),
       "transformReference":store.transformReferenceState,
       "magneticLasso":store.magneticLassoState,
       "colorRange":store.colorRangeState,
@@ -568,7 +575,7 @@ import UniformTypeIdentifiers
       },
     ]
   }
-  func preflight(_ document: CraftNSDocument, allowTransformReference: Bool = false) throws {
+  func preflight(_ document: CraftNSDocument, allowTransformReference: Bool = false, allowTypeEditing: Bool = false) throws {
     let store = document.store
     // NSEvent reports buttons across the whole Mac. A click in another app or document
     // cannot be an in-progress pointer edit of this shared document. Gesture/draft guards
@@ -578,7 +585,7 @@ import UniformTypeIdentifiers
       && document.windowForSheet?.isKeyWindow == true
     guard document.closeWorkflowID == nil, document.recoverySourceStatus != .checking,
       !document.fileOperationBusy, !document.recoveryWriteBusy, document.copyPanel == nil,
-      !store.geometryBusy, !store.aiBusy, !store.hasToneDraft, store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
+      !store.geometryBusy, !store.aiBusy, !(allowTypeEditing ? store.hasToneDraftExceptTypeEditing : store.hasToneDraft), store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
       store.numericEditor == nil, store.layerNameDraft == nil, store.layerProtectionDraft == nil, !store.coalescingChanges,
       store.pathGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
       store.patternNameDraft == nil, store.gradientNameDraft == nil, !store.showAI,
@@ -835,6 +842,14 @@ import UniformTypeIdentifiers
         let operation = try command.actionUUID("operationID")
         guard store.layerCompExportID == operation else { throw AutomationFailure(status:409,message:"No matching comp export is active.") }
         store.layerCompExportWorker?.cancel(); return .json(["operationID":operation.uuidString,"cancellationRequested":true])
+      }
+      if command.name == WorkspacePanelsAPI.name {
+        guard workspacePanelChangesEnabled else { throw AutomationFailure(status: 403, message: "Allow workspace panel changes in the native API window first.") }
+        let typePanel = WorkspacePanelsAPI.isTypographyVisibility(command)
+        try preflight(document, allowTypeEditing: typePanel)
+        guard typePanel ? controller.documentWindows.canUseTypographyPanels : controller.documentWindows.canChangeDocument else { throw AutomationFailure(status: 409, message: "Finish the active document interaction first.") }
+        try WorkspacePanelsAPI.apply(command, library: store.workspaceLibrary)
+        return .json(state(share, document: document))
       }
       if command.name == TransformReferenceAPI.name {
         try preflight(document, allowTransformReference: true)
@@ -1684,6 +1699,7 @@ import UniformTypeIdentifiers
       "smartObjects": SmartObject.apiCapabilities,
       "textFind":TextFindAPI.capabilities,
       "text": TextContent.apiTypeCapabilities,
+      "pointText":PointTextAPI.capabilities,
       "smartFilters": SmartFilterStack.apiCapabilities,
       "selectionRefinement": SelectionRefinement.apiCapabilities,
       "alphaChannels": ChannelAPI.capabilities,
@@ -1738,6 +1754,7 @@ import UniformTypeIdentifiers
       "backgroundLayer":BackgroundLayerAPI.capabilities,
       "selectionModify":SelectionModifyAPI.capabilities,
       "selectionDisplay":SelectionAntsAPI.capabilities,
+      "workspacePanels":WorkspacePanelsAPI.capabilities,
       "transformReference":TransformReferenceAPI.capabilities,
       "magneticLasso":MagneticLassoAPI.capabilities,
       "colorRange":ColorRangeAPI.capabilities,
@@ -1806,6 +1823,8 @@ import UniformTypeIdentifiers
         "backgroundLayer":BackgroundLayerAPI.stateSchema,
         "selectionModify":SelectionModifyAPI.stateSchema,
         "selectionDisplay":SelectionAntsAPI.stateSchema,
+        "textGeometry":PointTextAPI.stateSchema,
+        "workspacePanels":WorkspacePanelsAPI.stateSchema,
         "transformReference":TransformReferenceAPI.stateSchema,
         "magneticLasso":MagneticLassoAPI.stateSchema,
         "colorRange":ColorRangeAPI.stateSchema,

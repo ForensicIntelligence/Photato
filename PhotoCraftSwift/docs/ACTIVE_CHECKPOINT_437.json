@@ -1,0 +1,29 @@
+{
+  "step": "dev-step-437",
+  "application_build": 437,
+  "source": "437Source08",
+  "status": "437development94/95focused; pointalignment stillfails; T01current",
+  "reference": "docs/TYPOGRAPHY_PANELS_437.json",
+  "software_changes": true,
+  "qualification": "Focused95methods:94pass/onefail/fiveassertions/0unexpected/crash;10of11new pass. All94previouscases+actualmixedfloatingregression retained. Currentfocused/normal/fullsuite/physical/Photoshopunqualified; latest436.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T065022Z-437-typography-panels",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_manifest": "artifacts/runs/20261106T065022Z-437-typography-panels/source08-source.json",
+  "source_inputs": 7274,
+  "current_major_workflow": "T01",
+  "remaining": [
+    "Current95case focused suite is FAIL:94pass, one desired selected-range/right-point/commit method fails with five assertions. All original94cases and new mixed-floating native-control regression retained. No green qualification or easier input substituted.",
+    "Next within T01: fix point-text anchor/layout/render/editor semantics coherently. Owned ten-character two-line diagnostic uses32768container, usedRect[0,0,32768,40.89599609375], padded width32770/height43; existing32768dimension guard throws the misleading16MPmessage. Whole-plane capacity relaxation alone is not a faithful fix. Preserve ordinary left-point and paragraph output, selection, source frames/transforms, masks/effects/history and both APIs; test owned literal anchors/bounds and independent Photoshop output when available.",
+    "Full original T01 remains open: typing defaults before a text layer exists, mixed-value state, dynamic Character/Paragraph panel formatting menus/shortcuts, detailed paragraph composition/hyphenation/justification, typography/PSD and remaining full scope. Panel placement, no-document behavior and Photoshop exact defaults/pixels remain unqualified.",
+    "No current normal optimized/universal or private-source qualification; latest436remains. No physical Intel/macOS14/live Photoshop/60fps/full-current-suite proof. Fresh437CUAagainlocked; existing human unlock request pending, no repeat question or workaround.",
+    "All prior numerical/linked-alpha/full-suite/Debugcrash and original104scope acceptance remain open. Current selection retention and shared panel workflow evidence do not close package parity. T04follows after this substantive T01path is made usable; minor/cleanup passes remain queued."
+  ],
+  "new_private_push": false,
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false
+}

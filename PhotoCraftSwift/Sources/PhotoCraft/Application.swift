@@ -123,6 +123,7 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if let result = validateTypographyPanel(item) { return result }
     if item.action == #selector(repeatLastFilter(_:)) {
       item.title = controller.filterRecall.filter?.kind.title ?? "Last Filter"
       return store?.canRepeatFilter == true

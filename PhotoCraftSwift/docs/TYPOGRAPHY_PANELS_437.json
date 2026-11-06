@@ -1,0 +1,130 @@
+{
+  "step": 437,
+  "recorded_at_utc": "2026-11-06T07:16:22.456081+00:00",
+  "application_build": 437,
+  "source": "437Source08",
+  "source_manifest": "artifacts/runs/20261106T065022Z-437-typography-panels/source08-source.json",
+  "source_inputs": 7274,
+  "production_swift_files": 1074,
+  "run": "artifacts/runs/20261106T065022Z-437-typography-panels",
+  "current_pass": 2,
+  "current_package": "T01",
+  "next_major_workflow": "T01point-text alignment repair, thenT04",
+  "status": "Development: native Character/Paragraph panels and workspace API added;94/95focused cases pass, one point-text alignment workflow fails. Not stable-qualified.",
+  "typed_commands": 251,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Real Character/Paragraph tabs reuse existing docking, multiple columns, collapsed icons, floating stacks, retained close/reveal and saved workspaces. Four existing factory menu paths bind without hierarchy/key changes. Scoped shared controls retain combined Properties path; no new renderer.",
+    "Strict catalog3 migration validates exact old1/2sets before adding hidden-by-default Character/Paragraph group; retains old layout/order/selection/hidden/frames/columns and handles groupIDcollision. Corrupt/future catalogs reject; load does not rewrite old files. WorkspaceState1 retained.",
+    "Native/API shared atomic panel layout/visibility setter persists before state publication. Independent workspace UUID changes on layout or workspace state changes, retaining no-op revisions. Failed writes keep memory/revision/disk.",
+    "Optional workspace.panels show/hide or full validated layout exposes current state/schema/capabilities, topology/order/frames/stacks/columns/dimensions and source guards. New explicit native global workspace permission is off each API session. Image bytes/history/Actions and existing API clients retain their contracts.",
+    "Narrow except-type-editor presentation guards allow Character/Paragraph reveal and their floating controls while typing; other document switching/layout/modal/gesture guards remain. Actual CanvasTypeEditor.format now restores selected range after attributed replacement, including paragraph expansion. Selected native numeric input through real field editor passes. Mixed floating stacks allow visible type tabs/controls during typing while original non-type interaction guards apply per content; actual hosted Size control availability passes."
+  ],
+  "debug": "artifacts/runs/20261106T065022Z-437-typography-panels/source08-summary.json",
+  "focused_cases": 95,
+  "focused_passed": 94,
+  "focused_failed_methods": [
+    "PhotoCraftAppTests.TypographyPanelTests/testScopedControlsFitOffscreenAndPreserveSelectedRangeCancelAndUndo"
+  ],
+  "focused_assertion_failures": 5,
+  "focused_unexpected": 0,
+  "focused_crashes": 0,
+  "new_methods": [
+    "PhotoCraftAppTests.TypographyPanelTests/testCatalogTwoMigrationPreservesEveryOldPlacementAndIsIdempotent",
+    "PhotoCraftAppTests.TypographyPanelTests/testCorruptOldAndCurrentCatalogsRejectWithoutHealingMissingPanels",
+    "PhotoCraftAppTests.TypographyPanelTests/testExistingTextAPIAndPanelFormattingRetainExactDocumentsAtEveryDepth",
+    "PhotoCraftAppTests.TypographyPanelTests/testHTTPPresentationAndCompleteNativeLayoutHaveExactStateAndNoImageEffects",
+    "PhotoCraftAppTests.TypographyPanelTests/testHTTPStrictStaleBusyLockTypingAndRevokedGuards",
+    "PhotoCraftAppTests.TypographyPanelTests/testMigrationLoadSaveResetReopenRevisionAndWriteFailureAreAtomic",
+    "PhotoCraftAppTests.TypographyPanelTests/testMixedFloatingStackKeepsTypeControlsAvailableDuringTyping",
+    "PhotoCraftAppTests.TypographyPanelTests/testNativeCharacterNumericControlChangesOnlyTheSelectedRange",
+    "PhotoCraftAppTests.TypographyPanelTests/testNativeMenuPathsRevealSamePanelsDuringTypeEditingAndRetainFactoryKeys",
+    "PhotoCraftAppTests.TypographyPanelTests/testPanelDockFloatLockVisibilityAndDocumentSwitchRetainContent",
+    "PhotoCraftAppTests.TypographyPanelTests/testScopedControlsFitOffscreenAndPreserveSelectedRangeCancelAndUndo"
+  ],
+  "new_methods_passed": 10,
+  "debug_build_seconds": 7.49,
+  "debug_test_seconds": 11.939,
+  "debug_app_sha256": "3fb4d4f641e807c833c2f5aa47c70aa790761d1a6b6e7565b1708ea9baa5230e",
+  "failed_attempts": [
+    {
+      "source": "437Source01",
+      "description": "App linked, new asyncRunLoop/nestedactor fixture errors prevent test compile; prior436XCTest explicitly distinguished.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source01-summary.json"
+    },
+    {
+      "source": "437Source02",
+      "description": "75/79pass18assertions; three old default-visibility setup failures plus new selected-range/AXprobe/point limit.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source02-summary.json"
+    },
+    {
+      "source": "437Source03",
+      "description": "78/79pass7assertions in same new method; real selection restoration and all old workspace cases pass.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source03-summary.json"
+    },
+    {
+      "source": "437Source04",
+      "description": "78/80pass6assertions; correct placeholder probe passes, original point limit and manual unedited field-editor stimulus remain.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source04-summary.json"
+    },
+    {
+      "source": "437Source05",
+      "description": "79/80pass5assertions; real native numeric field editor/Return changes exactly selected range. Original point-right commit/Undo desired assertions remain failing.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source05-summary.json"
+    },
+    {
+      "source": "437Source06",
+      "description": "93/94pass5assertions; all14added contract methods pass; same point-right desired workflow stillfails. Production unchanged.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source06-summary.json"
+    },
+    {
+      "source": "437Source07",
+      "description": "93/95pass6assertions; new mixed fixture looked up pre-stack rather than current shared-stack ID, plus unchanged point failure.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source07-summary.json"
+    },
+    {
+      "source": "437Source08",
+      "description": "94/95pass5assertions; actual mixed Character/Layers floating control is enabled during typing, same desired point workflow stillfails.",
+      "summary": "artifacts/runs/20261106T065022Z-437-typography-panels/source08-summary.json"
+    }
+  ],
+  "old_tests_updated": "UtilityPanelTests and PanelDockColumnTests current catalog/default-hidden expectations changed2to3 and include new hidden panels; reveal-all transfer/compact setup now explicitly reveals all14panels. PanelDockTests default-visible expectation excludes all three initially hidden panels. AutomationTests current typed count250to251. Frozen old fixture bytes and pixel/byte/tolerance assertions retained. AfterSource05,14additional exact current command-count assertions250to251 corrected and every affected method added, preserving all original80cases.",
+  "production_identity": "Production app Source01/02identical. Actual selection restoration changes03; Source03/04/05/06production apps identical. All528Core/Imaging source files identical to436; raw point-right diagnostic is new evidence, not an old-binary rerun. Source07changes only mixed-floating content gating; Source07/08appidentical after fixture hostID correction.",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/characters-glyphs/format-characters.html",
+      "updated": "2026-10-10",
+      "supports": "Window Character and selected/whole-layer character formatting; exact defaults/output/dynamic shortcuts unqualified."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/characters-glyphs/format-paragraphs.html",
+      "updated": "2026-10-10",
+      "supports": "Window Paragraph and paragraph alignment/indents/spacing/hyphenation; full composition controls remain open."
+    }
+  ],
+  "adobe_API": "No dedicated native workspace-panels route in pinned Adobe v2; none invented. Existing text.set and supported Adobe text jobs share the native engine; existing selected Adobe/native type tests pass, not full conformance or Photoshop output.",
+  "cursor": "No canvas tool or new modifier gesture. Existing panel controls/tab/drag system retained. Formatting preserves selected range; controls use native control/text cursors. Factory menu keys/order unchanged in selected independent menu regressions. Current880matrix notrerun; last436.",
+  "capture": "artifacts/runs/20261106T065022Z-437-typography-panels/source05-captures/437-paragraph-offscreen.png",
+  "capture_qualification": "Owned offscreen controls/layout only; corrected darkAqua fixture. Native numeric field editor and direct native menu invocation are programmatic/offscreen, not physical click or live Photoshop qualification. Final darkAqua offscreen raster inspected: chiefly the Paragraph title is visible; control appearance is not established by that image. Cause of incomplete capture is unverified; no live/presentation pass is inferred. Native numeric/control metadata and layout probes are separate evidence.",
+  "current_focused_suite_passed": false,
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_private_checkpoint": 436,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Current95case focused suite is FAIL:94pass, one desired selected-range/right-point/commit method fails with five assertions. All original94cases and new mixed-floating native-control regression retained. No green qualification or easier input substituted.",
+    "Next within T01: fix point-text anchor/layout/render/editor semantics coherently. Owned ten-character two-line diagnostic uses32768container, usedRect[0,0,32768,40.89599609375], padded width32770/height43; existing32768dimension guard throws the misleading16MPmessage. Whole-plane capacity relaxation alone is not a faithful fix. Preserve ordinary left-point and paragraph output, selection, source frames/transforms, masks/effects/history and both APIs; test owned literal anchors/bounds and independent Photoshop output when available.",
+    "Full original T01 remains open: typing defaults before a text layer exists, mixed-value state, dynamic Character/Paragraph panel formatting menus/shortcuts, detailed paragraph composition/hyphenation/justification, typography/PSD and remaining full scope. Panel placement, no-document behavior and Photoshop exact defaults/pixels remain unqualified.",
+    "No current normal optimized/universal or private-source qualification; latest436remains. No physical Intel/macOS14/live Photoshop/60fps/full-current-suite proof. Fresh437CUAagainlocked; existing human unlock request pending, no repeat question or workaround.",
+    "All prior numerical/linked-alpha/full-suite/Debugcrash and original104scope acceptance remain open. Current selection retention and shared panel workflow evidence do not close package parity. T04follows after this substantive T01path is made usable; minor/cleanup passes remain queued."
+  ],
+  "distribution": "No current install/launch/archive/Store/upload/release/privatepush; stable private source436retained. Failed frozen source/logs/binaries kept locally."
+}

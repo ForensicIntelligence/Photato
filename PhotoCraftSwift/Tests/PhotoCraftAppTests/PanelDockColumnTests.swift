@@ -39,7 +39,7 @@ final class PanelDockColumnTests: XCTestCase {
     for side in PanelDockSide.allCases {
       for panel in WorkspacePanel.allCases {
         let library = WorkspaceLibrary()
-        library.selectPanel(.cloneSource, reveal: true)
+        for visiblePanel in WorkspacePanel.allCases { library.selectPanel(visiblePanel, reveal: true) }
         XCTAssertTrue(library.movePanels(.panel(panel), to: .newColumn(side, before: nil)))
         let group = try XCTUnwrap(library.panelDock.groups.first { $0.panels == [panel] })
         let target = try XCTUnwrap(
@@ -146,7 +146,7 @@ final class PanelDockColumnTests: XCTestCase {
 
   @MainActor func testCompactPresentationKeepsColumnsReachableWithoutRewritingLayout() throws {
     let library = WorkspaceLibrary()
-    library.selectPanel(.cloneSource, reveal: true)
+    for panel in WorkspacePanel.allCases { library.selectPanel(panel, reveal: true) }
     for (index, panel) in WorkspacePanel.allCases.enumerated() {
       XCTAssertTrue(
         library.movePanels(
@@ -221,10 +221,10 @@ final class PanelDockColumnTests: XCTestCase {
     let old = PanelDock(layout: WorkspaceLayout())
     let oldData = try JSONEncoder().encode(old)
     let decoded = try JSONDecoder().decode(PanelDock.self, from: oldData)
-    XCTAssertEqual(decoded.catalogVersion, 2)
+    XCTAssertEqual(decoded.catalogVersion, 3)
     XCTAssertEqual(decoded.orderedColumns.map(\.id), ["utility", PanelDockColumn.primaryID])
     XCTAssertTrue(
-      decoded.groups.filter { !$0.panels.contains(.history) && !$0.panels.contains(.cloneSource) }
+      decoded.groups.filter { !$0.panels.contains(where: \.isUtility) }
         .allSatisfy { $0.columnID == nil })
   }
 
@@ -324,7 +324,7 @@ final class PanelDockColumnTests: XCTestCase {
     let icons = descendants(host, PanelDockTabButton.self).filter { $0.image != nil }
     XCTAssertEqual(
       Set(icons.map(\.title)),
-      Set(WorkspacePanel.allCases.filter { $0 != .cloneSource }.map(\.rawValue)))
+      Set(WorkspacePanel.allCases.filter { ![WorkspacePanel.cloneSource, .character, .paragraph].contains($0) }.map(\.rawValue)))
     let swatches = try XCTUnwrap(icons.first { $0.title == "Swatches" })
     XCTAssertEqual(swatches.imagePosition, .imageOnly)
     XCTAssertEqual(swatches.accessibilityLabel(), "Swatches panel")

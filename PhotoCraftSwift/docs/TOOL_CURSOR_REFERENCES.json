@@ -1327,5 +1327,36 @@
     "tool_modifier_action_changed": true,
     "behavior": "No new canvas gesture/tool. Option-footer opens modal options; ordinary footer retains existing action.16modifier entry policies pass; native controls keep their control cursor. Existing all-tool880row artwork matrix passes selected optimized suite, no physical Photoshop gesture claim.",
     "qualification": "16footer entry policies and existing880row artwork matrix pass; live/Photoshop combined gestures open."
+  },
+  "typography_panels_437": {
+    "step": 437,
+    "reference": "docs/TYPOGRAPHY_PANELS_437.json",
+    "new_tool": false,
+    "new_modifier_action": false,
+    "behavior": "No canvas tool or new modifier gesture. Existing panel controls/tab/drag system retained. Formatting preserves selected range; controls use native control/text cursors. Factory menu keys/order unchanged in selected independent menu regressions. Current880matrix notrerun; last436.",
+    "physical_qualified": false
+  },
+  "point_text_layout_438": {
+    "evidence": "docs/POINT_TEXT_LAYOUT_438.json",
+    "guide": "docs/POINT_TEXT_LAYOUT.md",
+    "source": "438Source04/Release01",
+    "typed_commands": 251,
+    "native_archive": 86,
+    "Actions": 50,
+    "settings": 4,
+    "selected_native_workflow_qualified": true,
+    "affected_suite_passed": false,
+    "api_state": "textGeometry",
+    "adobe": "Existing shared supported text jobs; no new endpoint/descriptor. Full compatibility unqualified.",
+    "cursor": "No new tool/modifier gesture in438; native text/control cursors and existing shared tool policy retained. Direct path-hover cursor is a futureT04candidate, not implemented here.",
+    "remaining": [
+      "T01 remains open: typing defaults before a layer exists, mixed-value states, dynamic Character/Paragraph formatting menus/shortcuts, full paragraph composition/hyphenation/justification and editable PSD/type coverage.",
+      "Type raster limits remain32768side/16MP and100000UTF16units. Large type, point wrapping/whitespace/composer and arbitrary affine native editing require further implementation and qualification.",
+      "Older centred-point documents without logical source metadata can retain ambiguous placement from the former layout bug. Fifteen ordinary output baselines do not qualify that migration.",
+      "Physical Intel/macOS14/live Photoshop/defaults/output, full current suite and60fps are unqualified; existing human unlock request remains pending.",
+      "All prior failures and original104scope/652command requirements remain. This selected path does not close T01 or the overall goal.",
+      "Current optimized ARM467/468 and Rosetta466/468; imported source mismatch5937/4243/5773remains in both. The exact frozen ordinary-output method additionally fails five u8cases under Rosetta; all10u16/f32planes match. Keep tests/fixtures unchanged. No cause, oldIntelbaseline reproduction or regression-introduction claim.",
+      "Current five u8cases have565/614/578/751/756different Floatwords and239/244/225/342/344changed pixels, alpha maximum1byte; straight RGB also differs. This is not merely a one-ULP normalization residual. Current cross-architecture byte identity is false."
+    ]
   }
 }

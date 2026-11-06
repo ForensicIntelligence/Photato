@@ -7,9 +7,11 @@ struct RichTypeControls:View {
   let store:EditorStore
   let style:TypeStyle
   let paragraph:TypeParagraph
+  var scope:TypeControlScope = .all
   private var character:TypeCharacterFormatting{style.characterFormatting ?? .init()}
   private func binding<T>(_ key:WritableKeyPath<TypeCharacterFormatting,T>)->Binding<T>{Binding(get:{character[keyPath:key]},set:{value in store.formatType{s,_ in var extra=s.characterFormatting ?? .init();extra[keyPath:key]=value;s.characterFormatting=extra}})}
   var body:some View {
+    if scope != .paragraph {
     DisclosureGroup("Character options") {
       HStack{Text("Weight");TextField("Weight",value:binding(\.weight),format:.number).textFieldStyle(.roundedBorder)}
       Toggle("Italic",isOn:binding(\.italic))
@@ -21,11 +23,14 @@ struct RichTypeControls:View {
       Toggle("Discretionary ligatures",isOn:binding(\.discretionaryLigatures))
       if NSFont(name:style.font,size:12)==nil{Text("The requested font is missing. Source type uses a native fallback while editing; its font identity is retained.").font(.caption).foregroundStyle(.secondary)}
     }
+    }
+    if scope != .character {
     DisclosureGroup("Paragraph options") {
       Picker("Last line",selection:Binding(get:{paragraph.formatting?.lastLine ?? .left},set:{value in store.formatType(paragraph:true){_,p in var extra=p.formatting ?? .init();extra.lastLine=value;p.formatting=extra}})){ForEach(TypeParagraphFormatting.LastLine.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}.disabled(paragraph.alignment != .justified)
       HStack{Text("Auto leading ×");TextField("Auto leading",value:Binding(get:{paragraph.formatting?.autoLeading ?? 1.2},set:{value in store.formatType(paragraph:true){_,p in var extra=p.formatting ?? .init();extra.autoLeading=value;p.formatting=extra}}),format:.number).textFieldStyle(.roundedBorder)}
     }
-    if let type=store.editableType?.typography {
+    }
+    if scope != .paragraph, let type=store.editableType?.typography {
       Picker("Anti-alias",selection:Binding(get:{type.antialiasMode ?? (type.antialias ? .smooth:.none)},set:{store.setTypeAntialias($0)})){ForEach(TypeAntialias.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}
     }
   }

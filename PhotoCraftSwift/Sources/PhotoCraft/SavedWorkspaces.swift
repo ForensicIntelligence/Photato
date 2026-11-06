@@ -85,6 +85,7 @@ struct WorkspaceState: Codable, Equatable {
       .first?.appendingPathComponent("Photato/Workspaces.json"))
 
   private(set) var state = WorkspaceState()
+  private(set) var panelRevision = UUID()
   var error: String?
   var expandedDockColumnID: String?
   @ObservationIgnored let persistenceURL: URL?
@@ -134,6 +135,7 @@ struct WorkspaceState: Codable, Equatable {
         return
       }
       state.workspaces[activeIndex].lastUsed = newValue
+      panelRevision = UUID()
       saveTask?.cancel()
       guard persistenceURL != nil else { return }
       saveTask = Task { [weak self] in
@@ -141,6 +143,26 @@ struct WorkspaceState: Codable, Equatable {
         try? self?.flush()
       }
     }
+  }
+
+  func setPanelLayout(_ value: WorkspaceLayout) throws {
+    try value.validate()
+    guard value != layout else { return }
+    var canonical = layout
+    if canonical.panelDock == nil { canonical.panelDock = panelDock }
+    guard value != canonical else { return }
+    var next = state
+    next.workspaces[activeIndex].lastUsed = value
+    try commit(next)
+  }
+
+  func setPanelVisible(_ panel: WorkspacePanel, _ visible: Bool) throws {
+    let draft = WorkspaceLibrary()
+    draft.layout = layout
+    if visible { draft.selectPanel(panel, reveal: true) }
+    else { draft.closePanels([panel]) }
+    try setPanelLayout(draft.layout)
+    if visible { expandedDockColumnID = draft.expandedDockColumnID }
   }
 
   func resizeDock(to width: Double) {
@@ -236,6 +258,7 @@ struct WorkspaceState: Codable, Equatable {
     try persist(next)
     saveTask?.cancel()
     saveTask = nil
+    if state != next { panelRevision = UUID() }
     state = next
   }
 
