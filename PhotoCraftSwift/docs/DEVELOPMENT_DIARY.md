@@ -18,16 +18,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:448 -->
+<!-- current-status-step:449 -->
 ## Current development status — 6 November 2026
 
-Blur Gallery can now save its blur mask as an alpha channel. Preview and saved output share the same calculation. The filter and channel commit together, with one Undo/Redo; Cancel adds nothing. The optional API and saved Actions use the same workflow.
+Build 448 source is now [backed up on public GitHub](https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3). The universal app, input hashes, provenance and checksums are saved in an unpublished development draft. All four files were downloaded again and verified; the extracted app signature and contents match the packaged copy. It is ad-hoc signed and not notarized. No software release was published or App Store setting changed.
 
-All 31 focused Debug tests and the same 57 optimized tests on Apple Silicon and Rosetta passed. That includes 24 new methods across the preset and mask work. Universal packaging and live native mask output, Cancel, Undo/Redo and Quit checks passed. Photoshop references confirm the uniform five-pixel Field mask and duplicate channel naming. Other mask geometry, defaults, full Blur Gallery functionality, broader regression, physical platforms and 60fps remain open.
+The latest software work adds Custom Filter preset exchange and Blur Gallery mask-channel output. All31focused Debug tests and the same 57 optimized methods per architecture passed, including 24 new across 447–448. The selected native workflows passed. Earlier Shape Blur output mismatches, wider regression failures, physical-platform, large-document and60fps qualification remain open.
 
-Next is the authorized source/build backup of this checkpoint, then F04 Liquify and F05. All 104 original scopes remain. Earlier Shape Blur exact-output and wider regression failures are still recorded. No source push or software release accompanied checkpoint 448. [Step 448](DEVLOG.md#dev-step-448).
+Credential scans found no exposed real credentials in the new source/build. Scanner candidates were reviewed; intentional test data remains. GitHub secret scanning and push protection are enabled. The previous full-history audit is retained.
 
-The public credential audit found no exposed real credentials across 69 commits and 10,680 historical file versions at the unchanged audited head. GitHub secret scanning and push protection are enabled. [Audit](SECRET_AUDIT.md).
+Next is F04 Liquify, then F05 lens/perspective workspaces. All 104 original package scopes remain. [Backup record](SOURCE_PUBLICATION_449.json) · [Step 449](DEVLOG.md#dev-step-449).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -659,6 +659,29 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-05 | 424 | [Asynchronous layer content filters](DEVLOG.md#dev-step-424) |
 | 2026-11-05 | 425 | [Layer selection and deselection](DEVLOG.md#dev-step-425) |
 | 2026-11-05 | 426 | [Customize Save Dialog File Formats](DEVLOG.md#dev-step-426) |
+| 2026-11-05 | 427 | [Adjacent artboard controls](DEVLOG.md#dev-step-427) |
+| 2026-11-05 | 428 | [Animated selection borders](DEVLOG.md#dev-step-428) |
+| 2026-11-05 | 429 | [Transform reference point](DEVLOG.md#dev-step-429) |
+| 2026-11-05 | 430 | [Large-document Equalize](DEVLOG.md#dev-step-430) |
+| 2026-11-05 | 431 | [Color Lookup output formats](DEVLOG.md#dev-step-431) |
+| 2026-11-05 | 432 | [Pattern Patch](DEVLOG.md#dev-step-432) |
+| 2026-11-05 | 433 | [Channels footer Save/Load](DEVLOG.md#dev-step-433) |
+| 2026-11-05 | 434 | [Batch file naming](DEVLOG.md#dev-step-434) |
+| 2026-11-05 | 435 | [Precise shape creation](DEVLOG.md#dev-step-435) |
+| 2026-11-05 | 436 | [Extended Fill Path](DEVLOG.md#dev-step-436) |
+| 2026-11-06 | 437 | [Character and Paragraph panels — development](DEVLOG.md#dev-step-437) |
+| 2026-11-06 | 438 | [Point-text layout and native editing](DEVLOG.md#dev-step-438) |
+| 2026-11-06 | 439 | [Direct native path typing](DEVLOG.md#dev-step-439) |
+| 2026-11-06 | 440 | [Paged Curves and Levels histograms](DEVLOG.md#dev-step-440) |
+| 2026-11-06 | 441 | [Light painting and retouch previews](DEVLOG.md#dev-step-441) |
+| 2026-11-06 | 442 | [Gradient creation and portable Actions](DEVLOG.md#dev-step-442) |
+| 2026-11-06 | 443 | [Pattern groups and PAT hierarchy](DEVLOG.md#dev-step-443) |
+| 2026-11-06 | 444 | [Public repository and Shape Blur development](DEVLOG.md#dev-step-444) |
+| 2026-11-06 | 445 | [Public Git history credential audit](DEVLOG.md#dev-step-445) |
+| 2026-11-06 | 446 | [Custom Shape Blur numerical investigation](DEVLOG.md#dev-step-446) |
+| 2026-11-06 | 447 | [Custom Kernel ACF preset interchange](DEVLOG.md#dev-step-447) |
+| 2026-11-06 | 448 | [Blur Gallery mask output](DEVLOG.md#dev-step-448) |
+| 2026-11-06 | 449 | [Public source and unpublished build backup](DEVLOG.md#dev-step-449) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
@@ -3571,3 +3594,19 @@ The final source passed all 31 selected Debug methods, including 11 new ones. Op
 Both architectures package with macOS 14 deployment metadata. Signatures and extracted ZIP contents verify. In the actual sandboxed app we set Field Blur to five pixels, checked the white mask preview, enabled Save Mask to Channels and committed. One Undo removed both the edit and mask; Redo restored them. Reopening started with the output option off, and Cancel after enabling it created no extra channel. Final Undo restored the owned image, and the app quit normally without modifying the original file.
 
 Full F03 remains open: endpoint controls, Selection Bleed, Focus, High Quality, larger processing, editable Photoshop descriptors and remaining output-recipe behavior still need work. Nonuniform, combined, selection and transformed masks need independent comparisons, as do defaults and pixel outputs. Physical Intel/macOS14, full regression and 60fps remain unqualified. The next work is the authorized source/build backup of this qualified checkpoint, then Liquify and lens workspaces. No software release was published. [Evidence](BLUR_GALLERY_MASK_448.json).
+
+<a id="dev-step-449"></a>
+
+## 2026-11-06 — Step 449: source and unpublished build backup
+
+The qualified build 448 source is on public GitHub, including the Xcode project, tests and development records. Every one of the 7,349 included frozen inputs matches the tested snapshot. Thirty-four generated/model/cache/restricted inputs are explicitly excluded, and all 1,057 original Rust files are unchanged. Existing Git history is preserved. A documentation-only follow-up records delivery verification.
+
+The universal app uses the retained optimized Apple Silicon and Intel binaries, production bundle identifier and unchanged sandbox entitlements. It includes the verified optional model with its Apache license, credit and conversion notice. This package was not launched in the production container. It is ad-hoc signed and not notarized. No application code or tests changed during this backup.
+
+All four draft files were uploaded, downloaded and compared by hash. The downloaded app signature and all 18 packaged file contents match. The five earlier drafts are unchanged. This remains an unpublished alpha backup; software releases require manual approval and Photato remains completely free.
+
+Before upload, full source/build scans and an independent byte/name scan found no exposed real credentials. Every scanner finding was reviewed as a verified digest, existing prose/key or intentional test input. Raw candidates stay private. GitHub secret scanning and push protection remain enabled, with no alerts at recheck. This is evidence for the pinned revision and assets, rather than a guarantee for future changes.
+
+The readable diary's index had stopped at 426 although later entries existed. Its missing 427–449 rows now come from the recorded milestone dates/titles. The standalone diary and website mirror are regenerated from these records.
+
+The software remains 448: 31 focused Debug and 57 identical ordered optimized methods per architecture passed, including 24 new across 447–448. Earlier numerical and wider-suite failures remain open, as do all 104 full scopes. Next is F04 Liquify, then F05. No new API operation, Adobe route, menu, shortcut or modifier cursor was introduced. [Source](https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3) · [Delivery record](SOURCE_PUBLICATION_449.json).

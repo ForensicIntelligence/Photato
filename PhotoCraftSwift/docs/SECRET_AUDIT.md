@@ -1,5 +1,7 @@
 # Public source credential audit
 
+**Update449 — 6 November2026:** The new [public source](https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3) and unpublished448build were scanned before upload. All9,709curated source files, final assets and metadata were covered; all175source and18asset findings are reviewed noncredentials. A separate source/uncompressed-app scan found9unchanged intentional test literals. No exposed real credentials/private keys or unresolved candidates found. The full historical audit below covers the unchanged69commit parent. Scanning and push protection remain enabled;0GitHubalerts at recheck. Final documentation receives a separate exact-byte check; see [delivery record](SOURCE_PUBLICATION_449.json).
+
 6 November 2026. Audited public commit `e5f23cb54a1161057b063fc04db99191cfd9ed23` of [ForensicIntelligence/Photato](https://github.com/ForensicIntelligence/Photato). The advertised public refs were unchanged when verification finished.
 
 **No exposed real credentials were found.** A fresh public mirror contains one branch, no public tags, 69 reachable commits and 10,680 unique historical file blobs (2,630,062,448 bytes).
