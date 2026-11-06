@@ -1,0 +1,17 @@
+{
+  "step": "dev-step-441",
+  "run": "artifacts/runs/20261106T105037Z-441-light-preview-pause",
+  "status": "441selected Light paint/retouch/nativeAPI qualification complete; private source/history/diary finalization follows",
+  "current_pass": 2,
+  "current_major_workflow": "A05",
+  "next": "A07",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_baseline": "440Source04/Release02",
+  "source_inputs_baseline": 7344,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T105037Z-441-light-preview-pause/release01-source.json",
+  "source_inputs": 7348,
+  "production_swift_files": 1083,
+  "evidence": "docs/LIGHT_EDITING_PREVIEW_441.json"
+}

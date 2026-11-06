@@ -13,6 +13,7 @@ struct ModernAdjustmentEditor: View {
     if let value {
       VStack(alignment:.leading,spacing:12) {
         Text(value.kind.title).font(.headline)
+        if store.lightEditingPreview.pausedLayerIDs.contains(layerID) { LightPreviewNotice(count: 1) }
         ForEach(ModernAdjustment.controls(for:value.kind)) {control in
           let title=control.key == "grainAmount" ? "Amount":control.key == "grainSize" ? "Size":control.key == "grainRoughness" ? "Roughness":control.title
           let binding=Binding<Double>(get:{Double(self.value?.values[control.key] ?? control.initial)},set:{number in

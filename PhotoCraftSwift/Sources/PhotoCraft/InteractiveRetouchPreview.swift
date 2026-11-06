@@ -28,7 +28,7 @@ actor InteractiveRetouchPreview {
     case .focus(let id, var stroke): stroke.points = points; command = .focus(id, stroke)
     default: throw CraftError.unsupported("This command uses complete preparation.")
     }
-    renderer = try IncrementalRetouchRenderer(document: original, command: command)
+    renderer = try IncrementalRetouchRenderer(document: original, command: command, pausingLightWhileEditing: true)
   }
   func snapshot(base: CraftDocument, points: [StrokePoint], previous: RenderSnapshot?) throws -> RenderSnapshot? {
     try Task.checkCancellation()

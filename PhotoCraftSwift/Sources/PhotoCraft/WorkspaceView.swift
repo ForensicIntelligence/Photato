@@ -194,6 +194,8 @@ struct WorkspaceView: View {
         }
         .onChange(of: store.identity) { _, id in proxy.scrollTo(id) }
       }
+      let pausedLights = store.lightEditingPreview.pausedLayerIDs.count
+      if pausedLights > 0 { LightPreviewNotice(count: pausedLights).padding(.horizontal, 8).allowsHitTesting(false) }
       // During a live stroke, the canvas itself is the feedback. Do not observe
       // the per-frame busy toggle and rebuild the workspace twice per preview.
       if store.brushGesture == nil && store.cloneDraft == nil && store.rendering {

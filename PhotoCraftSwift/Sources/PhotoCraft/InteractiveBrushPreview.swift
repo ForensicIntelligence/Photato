@@ -29,7 +29,7 @@ actor InteractiveBrushPreview {
       }
       throw CancellationError()
     }
-    if renderer == nil { renderer = try IncrementalBrushRenderer(document: original, layerID: layerID, brush: brush) }
+    if renderer == nil { renderer = try IncrementalBrushRenderer(document: original, layerID: layerID, brush: brush, pausingLightWhileEditing: true) }
     guard renderer!.hasInputPrefix(points) else { throw CraftError.invalid("The brush preview source changed.") }
     do {
       let snapshot = try renderer!.append(Array(points.dropFirst(renderer!.sampleCount)), reusing: previous, includingReleaseTail: false)
@@ -40,7 +40,7 @@ actor InteractiveBrushPreview {
   func prepareCommit(base: CraftDocument, points: [StrokePoint]) throws -> PreparedEdit? {
     try Task.checkCancellation(); guard base == original else { return nil }
     guard !committed else { throw CraftError.invalid("The brush stroke has already finished.") }
-    if renderer == nil { renderer = try IncrementalBrushRenderer(document: original, layerID: layerID, brush: brush) }
+    if renderer == nil { renderer = try IncrementalBrushRenderer(document: original, layerID: layerID, brush: brush, pausingLightWhileEditing: true) }
     let prepared = try renderer!.prepareEdit(points: points)
     acceptedPoints = points; committed = true
     return prepared

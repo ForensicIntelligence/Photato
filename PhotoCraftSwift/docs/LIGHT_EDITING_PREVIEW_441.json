@@ -1,0 +1,135 @@
+{
+  "step": 441,
+  "recorded_at_utc": "2026-11-06T11:18:27.470032+00:00",
+  "application_build": 441,
+  "source": "441Source05/Release01",
+  "source_manifest": "artifacts/runs/20261106T105037Z-441-light-preview-pause/release01-source.json",
+  "source_inputs": 7348,
+  "run": "artifacts/runs/20261106T105037Z-441-light-preview-pause",
+  "package": "A04",
+  "current_pass": 2,
+  "status": "Selected native Light painting/retouch pause-resume workflow qualified; full A04 remains open.",
+  "implementation": [
+    "Structural input plan follows visible stack/group/pass-through/isolation/clipping relationships.",
+    "Presentation substitutes identity Light and Normal blend while preserving visibility/clipping topology; no source or final edit mutation.",
+    "Native incremental brush/retouch opt in; fallback projects only after true command preparation. Core sampling and prepared commits use originals.",
+    "Passive native tabs/Properties notice; read-only lightPreview state/schema/capabilities. No new command/shortcut/cursor/archive/preference."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T105037Z-441-light-preview-pause/source05-summary.json",
+    "cases": 43,
+    "passed": 43,
+    "new441": 9,
+    "failures": 0,
+    "unexpected": 0,
+    "test_seconds": 37.285,
+    "app_sha256": "8404efba0750948c24caa0dbaf7617b851d1d2a1f464cc0c445b6c4d6949bb31",
+    "source04_and05_same_app": true
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T105037Z-441-light-preview-pause/release01-qualification.json",
+    "equivalence": "artifacts/runs/20261106T105037Z-441-light-preview-pause/case-equivalence01.json",
+    "cases_each": 43,
+    "passed": [
+      43,
+      43
+    ],
+    "new441_passed": [
+      9,
+      9
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "test_seconds": [
+      2.898,
+      4.845
+    ],
+    "build_seconds": [
+      427.98,
+      425.68
+    ]
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T105037Z-441-light-preview-pause/universal/staging01.json",
+    "app": "/private/tmp/photato-validation-441-stage01-6e139c8f/Photato Validation 441.app",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "binary_sha256": "8766d7770e2199d038976407c6fc914f46962049c295c86010f5c3fb31b137ce",
+    "archive_sha256": "9de3ac0ecffba510e4bdd2f6f3b9e01df865e8a9c96570f86fe80d7a746d32b5",
+    "signature_and_extracted_ZIP_verified": true,
+    "installed_or_launched": false
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "kind": "New fixture compilation errors before any tests. Retained cached440 outputs explicitly unqualified."
+    },
+    {
+      "attempt": "source02",
+      "kind": "22/24pass;3new fixture assertions: existing API revision includes render/view state;2mask noop strokes create0Undo. Corrected only new fixture assumptions."
+    },
+    {
+      "attempt": "source03",
+      "kind": "25/26pass; desired clipped-red regression proves hiding Light suppresses attached clips. Production repaired to identity/Normal preserving visibility; new alpha oracle corrected to retained0.8base coverage, exact redRGB kept."
+    }
+  ],
+  "integrity": {
+    "report": "artifacts/runs/20261106T105037Z-441-light-preview-pause/source-integrity01.json",
+    "all_old_tests_and_fixtures_unchanged": true,
+    "Core_math_validation_Adobe_contract_unchanged": true,
+    "protected_present_unchanged": 26,
+    "protected_previously_missing": 14
+  },
+  "typed_commands": 252,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_command_identities": 652,
+  "original_scopes": 104,
+  "major_queue_members": 81,
+  "API": {
+    "state": "lightPreview",
+    "schema": "LightPreviewAPI.stateSchema",
+    "capability": "modernAdjustments.interactivePreview",
+    "read_only": true,
+    "Adobe_endpoint_added": false,
+    "revision_note": "Existing token includes native render/view changes; passive read does not create an edit."
+  },
+  "remaining_functional": [
+    "Editable modern PSD/PSB descriptors and independent Photoshop output/default/ICC references. No invented tags or silent flattening as editable support.",
+    "Actual Light version switching, including legacy versions. Existing Use legacy Brightness/Contrast resets/replaces layer type; it is not the version menu.",
+    "Spatial Light/Clarity/Dehaze remains8,388,608pixels; current Light8/16. General maximum-size spatial processing remains functional work.",
+    "Transform/type/other live-edit contexts, Timeline/auxiliary/adjustment-brush pause behavior, exact Photoshop timing/visuals/occlusion/zero-mask rules.",
+    "All original A04scope/acceptance, physical Intel/macOS14,60fps and broader regression. Prior full-suite, strict text-output, crash and capacity failures remain unresolved."
+  ],
+  "next_major_workflow": "A05, thenA07; A04 remains major stillneeded.",
+  "queue_rotation": "A04toend; same81members/sevenpasses/104originalscopes and acceptance.",
+  "selected_native_workflow_qualified": true,
+  "current_focused_suite_passed": true,
+  "current_normal_qualified": true,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "live_UI_reference": "441CUA Mac locked; earlier human unlock pending. No repeat or workaround; no live UI pass.",
+  "reference_provenance": "Public Adobe workflow docs, original native compositor/stroke owners and generated sample tests. No Adobe source/artwork copied; no new fixture assets.",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/adjust-image-lighting-with-light.html",
+      "updated": "2026-09-09",
+      "supports": "Light sliders, legacy-version workflow and pause during editing below with Highlights/Shadows. Not a numerical/descriptor/every-context specification."
+    },
+    {
+      "url": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+      "supports": "Legacy brit structure; audited reference does not qualify missing2026modern descriptor mapping."
+    }
+  ]
+}

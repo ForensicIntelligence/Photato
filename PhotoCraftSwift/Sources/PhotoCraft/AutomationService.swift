@@ -396,6 +396,7 @@ import UniformTypeIdentifiers
       "selectionDisplay":store.selectionAntsState,
       "textGeometry":PointTextAPI.state(store),
       "pathTypeEditing":PathTypeAPI.state(store),
+      "lightPreview": LightPreviewAPI.state(store),
       "workspacePanels":WorkspacePanelsAPI.state(store.workspaceLibrary, allowed: workspacePanelChangesEnabled),
       "transformReference":store.transformReferenceState,
       "magneticLasso":store.magneticLassoState,
@@ -1788,6 +1789,7 @@ import UniformTypeIdentifiers
       "atomicPersistence": atomicPersistenceCapabilities,
       "documentSaving": documentSavingCapabilities,
       "stateSchemas": [
+        "lightPreview": LightPreviewAPI.stateSchema,
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,
         "filterRecall": FilterRecallAPI.stateSchema,

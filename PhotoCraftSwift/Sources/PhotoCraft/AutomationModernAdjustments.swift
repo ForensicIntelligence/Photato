@@ -27,6 +27,7 @@ extension ModernAdjustment {
   }
   static var apiCapabilities:[String:Any] {
     ["commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":apiSchema,"defaults":Kind.allCases.map {Self($0).apiObject},
+     "interactivePreview": LightPreviewAPI.capabilities,
      "nativeArchiveVersion":65,"actionsVersion":22,
      "coordinates":"Document-pixel grain coordinates; stored seed, stable across regions and reopen. Layer masks/opacity/blends share native composition.",
      "limits":"RGB. Current Light8/16; Color and vibrance/Grain and native Clarity work-alikes additionally accept32-bit. Active Clarity/Dehaze or Light Highlights/Shadows use the current8,388,608-pixel neighborhood engine. Pointwise and tiled grain composition retain native logical canvas admission; dense output, selection/apply and physical resource/performance gates remain independent.",

@@ -18,15 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:440 -->
+<!-- current-status-step:441 -->
 ## Current development status — 6 November 2026
 
-Curves and Levels can now analyze very large sparse pixel layers without scanning every implicit canvas cell. Histogram counts use stored image and selection tiles, plus exact counts for their defaults. Whole-cell translations and selection holes are included. The optional tone.histogram query uses the same native analysis request and leaves pixels, revision and Undo history untouched.
+Light adjustment layers now pause their display effect while lower layers are painted or retouched when Highlights or Shadows are active. A notice in the tabs and Properties reports the pause. Finishing or cancelling restores the full adjustment. Stroke sampling, saved settings and committed pixels use the original document; clipped layers remain visible. The optional API reports the same pause state.
 
-All 27focused Debug tests and the same 61optimized tests on Apple Silicon and under Rosetta pass, including all eight new tests. Maximum-size tests cover 300,000×300,000logical pixels, sparse edge samples, translated selection coverage and archive round trips. Universal macOS 14 packaging, signature and extracted ZIP verify. Dense maximum-size editing, arbitrary-transform large statistics, physical-platform checks and 60 fps remain unqualified. Earlier full-suite and text-output failures are still recorded; these runs do not repair them.
+All 43 focused Debug tests and the same 43 optimized tests on Apple Silicon and under Rosetta pass, including nine new methods. Tests cover paint/mask workflows, nine retouch tools, clipping, group scope, final pixels, Undo, Cancel and API state. Universal macOS 14 packaging, signature and extracted ZIP verify. These are selected checks; earlier failures, independent Photoshop fidelity, physical-platform tests and 60 fps remain open.
 
-This completes an A01 analysis dependency. Curves Auto, complete Auto Color Correction Options, point sampling and the rest of A01 remain major work. The major still-needed sweep moves to A04's nondestructive adjustments, then A05. All 104original scopes and acceptance criteria are retained. [Step 440](DEVLOG.md#dev-step-440).
-The current source is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a), including the Xcode project. This is a development checkpoint, not a software release.
+The major still-needed sweep moves to A05 gradients, then A07. Full A04 remains open, including modern editable PSD descriptors, actual Light versions, larger spatial processing and other live-edit contexts. All 104 original scopes and acceptance criteria are retained. [Step 441](DEVLOG.md#dev-step-441).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3451,3 +3450,16 @@ The final focused run passes 27 Debug tests, including eight new methods. The sa
 The original A01 Auto Options candidate needs further work, including independent Photoshop references and native point-sampling transactions. It is not marked complete. This checkpoint delivers its statistics dependency, records the remaining scope and moves the major still-needed sweep to A04, then A05. The seven-pass order and every original acceptance criterion remain in force.
 
 The private source backup includes 7,310 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A final documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a) · [Backup record](SOURCE_PUBLICATION_440.json).
+
+
+## 2026-11-06 — Step 441: Pause Light while painting below
+
+Light's Highlights and Shadows require neighborhood processing. Previously, that processing stayed in the live painting path. The editor now pauses the affected Light layers during native paint and retouch gestures and restores them at release or Cancel. Exposure, Contrast, Whites and Blacks remain live when no neighborhood controls are used. A passive notice in the document tabs and Properties explains the temporary appearance; the API exposes the same state.
+
+The pause belongs to display snapshots. Stroke sampling and prepared edits keep the original document and full Light parameters. The structural plan follows visible layer order, isolated/pass-through groups and clipping boundaries. No command, shortcut, cursor, preference or document-format version was added.
+
+The first projection hid the Light layer. A new regression showed why that was wrong: it also hid layers clipped to Light. The repair substitutes identity Light settings and Normal blending while preserving visibility and clipping topology. An independent red-clip assertion retains the base's exact alpha. Final brush and retouch results still match the full original commands, with their usual Undo and Cancel behavior.
+
+A fixture compilation failure and two incorrect fixture assumptions were preserved before repair: API revisions already include view renders, and a no-op mask stroke creates no Undo entry. The final run passes 43 Debug tests and the same 43 optimized methods on each architecture, including all nine new methods. Existing tests, fixtures, Core adjustment math and the Adobe API contract are unchanged. Universal macOS 14 packaging, signature and ZIP extraction also verify.
+
+This closes a selected A04 painting workflow, not the whole package. Modern PSD/PSB descriptors, actual Light version switching, larger neighborhood processing, other editing contexts and independent Photoshop/platform/performance qualification remain open. The major still-needed sweep moves to A05, then A07; no minor or cleanup pass has begun.

@@ -723,6 +723,7 @@ import UniformTypeIdentifiers
     let interactiveRetouch = interactiveRetouchPreview
     let selectionTool = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.selectionRequest:nil }
     let selectionOverlay = tool == .selectionBrush ? selectionOverlayColor:nil
+    let lightPreview = lightEditingPreview
     let painting = brushPreviewCommand
     let paintTools = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.paintingPreviewRequest:nil }
     let gradientFill = gradientFillDraft.flatMap { $0.preview ? $0.command : nil }
@@ -813,7 +814,7 @@ import UniformTypeIdentifiers
         if let gradientGesture { try gradientGesture.apply(to: &doc) }
         if let gradientStopColor { try gradientStopColor.apply(to: &doc) }
         if let patternFill { try patternFill.apply(to: &doc) }
-        let snapshot = try brushSnapshot ?? retouchSnapshot ?? Renderer.render(doc, reusing: previous)
+        let snapshot = try brushSnapshot ?? retouchSnapshot ?? Renderer.render(lightPreview.project(doc), reusing: previous)
         let displayComposite: Surface
         if proofComposite, let onionSource { displayComposite = try OnionSkinRenderer.render(onionSource, base: snapshot.surface) }
         else { displayComposite = snapshot.surface }
