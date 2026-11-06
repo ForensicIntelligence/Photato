@@ -43,9 +43,10 @@ import PhotoCraftImaging
     if var draft=filterDraft {draft.filter.tone=request.settings;return try draft.command(in:source)}
     return try ClassicToneInput.command(request,in:source)
   }
+  var previewIsOverview:Bool { image.map { $0.width != source.width || $0.height != source.height } ?? false }
   var ready:Bool {image != nil && !rendering && !committing && !closed && !sourceBusy && error==nil}
   var apiState:[String:Any] {
-    ["kind":request.settings.kind.rawValue,"settings":request.settings.apiParameters,"preview":preview,"zoom":zoom,"fit":fit,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()]
+    ["overviewOnly":previewIsOverview,"kind":request.settings.kind.rawValue,"settings":request.settings.apiParameters,"preview":preview,"zoom":zoom,"fit":fit,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()]
   }
   func remember(_ value:ClassicToneRequest) {undoStates.append(value);if undoStates.count>100{undoStates.removeFirst()};redoStates=[]}
   func change(_ value:ClassicToneRequest,remember:Bool=true) {
@@ -79,7 +80,13 @@ import PhotoCraftImaging
             for y in 0..<source.height {try Task.checkCancellation();for x in 0..<source.width {let v=mask[y*source.width+x];image.setPixel(x:x,y:y,Pixel(v,v,v))}}
             maskImage=try RasterIO.displayImage(image)
           }
-          return (try ColorManagement.displayImage(Renderer.composite(edited),in:edited),needOriginal ? try ColorManagement.displayImage(Renderer.composite(source),in:source):nil,maskImage,sampling)
+          func display(_ document:CraftDocument)throws->CGImage {
+            if request.settings.kind == .equalize,document.width>ClassicToneEngine.maximumPixels/document.height {
+              return try ColorManagement.displayImage(ClassicToneInput.equalizeOverview(in:document),in:document)
+            }
+            return try ColorManagement.displayImage(Renderer.composite(document),in:document)
+          }
+          return (try display(edited),needOriginal ? try display(source):nil,maskImage,sampling)
         }
         let result=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()};try Task.checkCancellation()
         guard let self,!self.closed,self.generation==token else{return};self.image=result.0;if let image=result.1{self.originalImage=image};self.maskImage=result.2;self.samplingSurface=result.3;self.rendering=false

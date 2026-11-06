@@ -5,7 +5,7 @@ import PhotoCraftImaging
 extension EditorStore {
   func canBeginClassicTone(_ kind:ClassicToneSettings.Kind)->Bool {
     guard !geometryBusy,!aiBusy,!hasToneDraft,!coalescingChanges,transformDraft==nil,!editingComponent,!editingMask,!smartFilterMaskEditing,
-      document.width<=ClassicToneEngine.maximumPixels/document.height else{return false}
+      document.width<=ClassicToneEngine.maximumPixels(for:kind)/document.height else{return false}
     if kind == .hdrToning{return !document.layers.isEmpty}
     guard let layer=activeLayer,selectedLayerIDs.isEmpty || selectedLayerIDs==[layer.id] else{return false}
     return (try? ClassicToneEngine.validateTarget(.init(.init(kind),layerID:layer.id),in:document)) != nil

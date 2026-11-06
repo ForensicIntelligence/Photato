@@ -7,9 +7,8 @@ extension WorkspaceView {
   }
   func scaleDimension(_ key: WritableKeyPath<TransformDraft,Double>) -> Binding<Double> {
     Binding(get:{ store.transformDraft?[keyPath:key] ?? 100 },set:{ value in
-      guard value.isFinite,value > 0,var d = store.transformDraft else { return };let point = d.referencePoint,old = d[keyPath:key];d[keyPath:key] = value
-      if d.proportional,old > 0 { if key == \.scaleX { d.scaleY *= value/old } else { d.scaleX *= value/old } }
-      let f = d.referenceAnchor.fractions;d.centerX = point.x-(f.0-0.5)*Double(d.bounds.width)*d.scaleX/100;d.centerY = point.y-(f.1-0.5)*Double(d.bounds.height)*d.scaleY/100;store.updateTransform(d)
+      guard value.isFinite, value > 0, let draft = store.transformDraft else { return }
+      store.updateTransform(draft.transformNumeric(key, value))
     })
   }
   func scalePosition(horizontal: Bool) -> Binding<Double> {
@@ -20,10 +19,7 @@ extension WorkspaceView {
   var contentAwareScaleOptions: some View {
     Group {
       Text("Content-Aware Scale").fontWeight(.medium)
-      Grid(horizontalSpacing:2,verticalSpacing:2) { ForEach(0..<3) { row in GridRow { ForEach(0..<3) { col in
-        let anchor = CanvasAnchor.allCases[row*3+col]
-        Button { if var d = store.transformDraft { d.referenceAnchor = anchor;store.updateTransform(d) } } label: { Image(systemName:store.transformDraft?.referenceAnchor == anchor ? "square.fill":"square").font(.system(size:6)) }.buttonStyle(.plain).accessibilityLabel("Reference point \(anchor.rawValue)")
-      } } } }
+      TransformReferenceOptions(store: store)
       numberField("X",value:scalePosition(horizontal:true),range:-1_000_000...1_000_000,suffix:"px")
       numberField("Y",value:scalePosition(horizontal:false),range:-1_000_000...1_000_000,suffix:"px")
       numberField("W",value:scaleDimension(\.scaleX),range:0.01...10000,suffix:"%")

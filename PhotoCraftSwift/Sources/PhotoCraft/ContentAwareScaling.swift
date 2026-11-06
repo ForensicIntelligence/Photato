@@ -3,6 +3,7 @@ import PhotoCraftCore
 
 extension TransformDraft {
   var referencePoint: CGPoint {
+    if customReferencePoint != nil || selection || angle != 0 { let p = transformReferencePoint; return CGPoint(x: p.x, y: p.y) }
     let f = referenceAnchor.fractions
     return CGPoint(x:centerX+(f.0-0.5)*Double(bounds.width)*scaleX/100,y:centerY+(f.1-0.5)*Double(bounds.height)*scaleY/100)
   }
@@ -39,9 +40,9 @@ extension EditorStore {
         let request = try draft.scaleRequest()
         let worker = Task.detached(priority:.userInitiated) { let edit = try ContentAwareScaleEdit.prepare(original,layerID:draft.layerID,request:request);return (edit,try edit.applied(to:original)) }
         let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
-        try Task.checkCancellation();guard let self,self.transformDraft == draft,self.document == original else { return }
-        self.contentAwareScalePrepared = result.0;self.contentAwareScalePreview = result.1;self.contentAwareScaleReadyDraft = draft;self.contentAwareScaleBusy = false;self.render()
-      } catch { guard !Task.isCancelled,let self,self.transformDraft == draft else { return };self.contentAwareScaleBusy = false;self.contentAwareScaleError = error.localizedDescription }
+        try Task.checkCancellation();guard let self,let current = self.transformDraft,current.sameReferenceGeometry(as: draft),self.document == original else { return }
+        self.contentAwareScalePrepared = result.0;self.contentAwareScalePreview = result.1;self.contentAwareScaleReadyDraft = current;self.contentAwareScaleBusy = false;self.render()
+      } catch { guard !Task.isCancelled,let self,let current = self.transformDraft,current.sameReferenceGeometry(as: draft) else { return };self.contentAwareScaleBusy = false;self.contentAwareScaleError = error.localizedDescription }
     }
   }
 }

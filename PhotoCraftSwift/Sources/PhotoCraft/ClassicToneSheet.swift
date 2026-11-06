@@ -39,14 +39,15 @@ struct ClassicToneSheet:View {
       }
       HStack {
         Toggle("Preview",isOn:$model.preview)
-        Button("−"){model.fit=false;model.zoom=max(0.125,model.zoom/1.5)}
-        Button("+"){model.fit=false;model.zoom=min(8,model.zoom*1.5)}
-        Button("100%"){model.fit=false;model.zoom=1};Button("Fit"){model.fit=true}
+        Button("−"){model.fit=false;model.zoom=max(0.125,model.zoom/1.5)}.disabled(model.previewIsOverview)
+        Button("+"){model.fit=false;model.zoom=min(8,model.zoom*1.5)}.disabled(model.previewIsOverview)
+        Button("100%"){model.fit=false;model.zoom=1}.disabled(model.previewIsOverview);Button("Fit"){model.fit=true}
         Button("Undo"){model.undo()}.disabled(model.undoStates.isEmpty || model.committing).keyboardShortcut("z",modifiers:.command)
         Button("Redo"){model.redo()}.disabled(model.redoStates.isEmpty || model.committing).keyboardShortcut("z",modifiers:[.command,.shift])
         Spacer();Button("Cancel"){cancel()}.keyboardShortcut(.cancelAction)
         Button("OK"){commit()}.disabled(!model.ready).keyboardShortcut(.defaultAction)
       }.controlSize(.small)
+      if model.previewIsOverview {Text("Overview preview. Full-resolution pixels are applied; inspect at 100% in the document after applying.").font(.caption).foregroundStyle(.secondary)}
       if let error=model.error {Text(error).foregroundStyle(.red).font(.caption).fixedSize(horizontal:false,vertical:true)}
     }.padding(16).frame(width:900,height:680)
     .onDisappear {

@@ -771,6 +771,38 @@ public struct Surface: Codable, Equatable, Sendable {
 
 
 extension Surface {
+  /// Count only visible raster cells, coalescing implicit samples instead of
+  /// enumerating missing tiles. Mask > 0 selects statistics, matching Equalize.
+  func equalizeHistogram(mask: Surface?) throws -> [Double] {
+    guard mask == nil || (mask?.width == width && mask?.height == height && mask?.colorEncoding == .sRGB)
+    else { throw CraftError.invalid("Invalid Equalize statistics mask grid.") }
+    var histogram = [Double](repeating: 0, count: 256), implicit = width * height
+    func count(_ raw: Pixel, _ coverage: Pixel?, _ multiplicity: Int) throws {
+      let p = encodedSample(raw)
+      guard p.isFinite, max(abs(p.r), abs(p.g), abs(p.b)) <= 1e12,
+        coverage.map({ $0.isFinite && (0...1).contains($0.r) }) != false
+      else { throw CraftError.invalid("Tone input exceeds the supported numeric range.") }
+      guard p.a > 0, coverage == nil || coverage!.r > 0 else { return }
+      for c in [p.r, p.g, p.b] {
+        histogram[Int((min(1, max(0, c)) * 255).rounded())] += Double(multiplicity)
+      }
+    }
+    let keys = mask.map { tiles.unionKeys(with: $0.tiles) } ?? tiles.unionKeys(with: tiles)
+    for key in keys {
+      try Task.checkCancellation()
+      let left = key % columns * Self.tileSide, top = key / columns * Self.tileSide
+      let w = min(Self.tileSide, width-left), h = min(Self.tileSide, height-top)
+      implicit -= w*h
+      let a = tiles[key], b = mask?.tiles[key]
+      for y in 0..<h { for x in 0..<w {
+        let offset = y*Self.tileSide+x
+        try count(a?[offset] ?? storedDefaultPixel, mask.map { b?[offset] ?? $0.storedDefaultPixel }, 1)
+      } }
+    }
+    try Task.checkCancellation()
+    if implicit > 0 { try count(storedDefaultPixel, mask?.storedDefaultPixel, implicit) }
+    return histogram
+  }
   /// Evaluate a coordinate-independent operation on implicit samples and allocated tiles.
   /// No missing tile is materialized. Used by large-canvas composition, not spatial filters.
   public func mappedStoredSamples(
@@ -883,6 +915,15 @@ extension Surface {
     let implicit = try projection?(storedDefaultPixel) ?? storedDefaultPixel
     guard implicit.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
     let area = sx * sy, background = pm(implicit)
+    if tileCount == 0 {
+      // Same area/premultiplication and final Float conversion as every entry
+      // of the array below, without materializing identical output pixels.
+      let sum = background * area
+      let pixel = sum.w > 0 ? Pixel(Float(sum.x / sum.w), Float(sum.y / sum.w), Float(sum.z / sum.w), Float(min(1, max(0, sum.w / area)))) : .clear
+      var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: encoding)
+      result.storedDefaultPixel = pixel
+      return result
+    }
     var sums = [SIMD4<Double>](repeating: background * area, count: outWidth * outHeight)
     for (key, tile) in tilesIntersecting(region) {
       try Task.checkCancellation()

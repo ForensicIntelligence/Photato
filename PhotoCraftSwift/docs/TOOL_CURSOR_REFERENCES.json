@@ -1264,5 +1264,23 @@
   "selection_borders_428": {
     "reference": "docs/SELECTION_BORDERS_428.json",
     "impact": "Presentation layers have no NSView input surface; no tool/modifier/cursor action or key-binding change. Existing full16modifier cursor/gesture regressions are in the98-case normal selection."
+  },
+  "transform_reference_429": {
+    "reference": "docs/TRANSFORM_REFERENCE_429.json",
+    "cursor": "Visible pivot scope cursor in all16modifiers. Captured reference drag retains action/cursor; Space before press Hand. Escape/focus/tool/session/owner/source/detach/deinit cleanup.",
+    "tests": [
+      "PhotoCraftAppTests.TransformReferenceTests/testAffineAndProjectiveCustomOriginsRetainTheirGeometryAndAnchorMath",
+      "PhotoCraftAppTests.TransformReferenceTests/testAPIReferenceMatchesNativeAndRejectsInvalidBusyStaleAndRevokedWorkspace",
+      "PhotoCraftAppTests.TransformReferenceTests/testContentAwareReadyPreviewSurvivesReferenceOnlyEditsAndOptionsFit",
+      "PhotoCraftAppTests.TransformReferenceTests/testEscapeFocusToolOwnerAndSourceChangesNeverRestoreOverOtherWork",
+      "PhotoCraftAppTests.TransformReferenceTests/testEveryExistingTargetUsesSharedMetadataWithoutPreviewOrDocumentChanges",
+      "PhotoCraftAppTests.TransformReferenceTests/testNativePivotDragAllSixteenModifiersKeepsCapturedCursorAndNoPixelHistory",
+      "PhotoCraftAppTests.TransformReferenceTests/testOutsidePivotNativeCommitMatchesExistingMatrixEngineWithUndoAtAllDepths"
+    ],
+    "qualification": "Controlled native NSWindow events and owned offscreen capture; physical/live Photoshop visual/modifier equivalence open."
+  },
+  "large_equalize_430": {
+    "reference": "docs/LARGE_EQUALIZE_430.json",
+    "impact": "Existing menu/modal processing and preview overview; no new pointer/modifier action. Existing all16cursor/gesture tests remain in the127-case normal batch, including429pivot capture. No physical modifier claim."
   }
 }

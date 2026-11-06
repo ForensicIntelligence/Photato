@@ -18,14 +18,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 28 October 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository stays private during development and becomes public on release day. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:428 -->
+<!-- current-status-step:430 -->
 ## Current status — 5 November 2026
 
-Selection borders now animate through Core Animation. They follow existing selection contours and previews without recompositing the image for each animation frame. Playback respects window visibility, application activity and Reduce Motion. Source pixels, coverage, history and output bytes are unchanged.
+Equalize no longer rejects a document above 8.4 megapixels. Its histogram and editing now work with paged pixels and implicit raster values at the native 300,000-pixel canvas limit. Maximum-size implicit rasters and sparse selections are tested at every native depth. Other tone adjustments retain their existing preparation limit.
 
-All 98 selected optimized cases pass on Apple Silicon and Intel under Rosetta, including 23 feature tests from checkpoints 426–428. The universal package passes both macOS 14 slices, signature and ZIP checks. The earlier Frame case passes optimized; its Debug crash and earlier full-suite failures remain open. These results do not establish physical 60fps or complete Photoshop parity.
+All 30 focused development tests and the same 127 selected optimized cases pass on Apple Silicon and Intel under Rosetta. The batch includes all 38 new methods from checkpoints 426–430. The universal package passes both macOS 14 slices, signature and ZIP extraction checks. These results do not establish dense maximum performance, physical 60fps, a full-suite pass or Photoshop pixel equivalence.
 
-G01 geometry workflows follow. Grow/Similar needs a new sampling engine and remains in major stillneeded, along with unfinished S01, L07, L01 and D01 functions. All original scopes and acceptance criteria are retained. [Step 428](DEVLOG.md#dev-step-428).
+Large dialog previews are labelled as overviews. Full-resolution dialog viewport inspection remains unfinished. Brightness/Contrast and the rest of A03 stay major stillneeded; I05 color lookup/export is next. All original package scopes remain open where incomplete. [Step 430](DEVLOG.md#dev-step-430).
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3277,3 +3277,29 @@ Both optimized architectures pass the same 98 selected cases, including all 23 n
 The source audit confirmed that Grow and Similar are missing. The existing Magic Wand matcher uses the licensed PhotoCraft RGBA8 comparison and full-canvas buffers. The recorded plan calls for independent Photoshop fixtures, bounded sampling, paged coverage and shared native/API transactions. It remains a functional gap in major stillneeded. G01 is next; no major package is declared complete and no minor or cleanup pass begins. [Detailed record](DEVLOG.md#dev-step-428).
 
 The full native source was backed up to the existing private [GitHub repository](https://github.com/ForensicIntelligence/Photato/commit/dd9f86229b43d0989a6fa8dfd7e48fd19cb75087). All 7,207 included qualified inputs match the tested snapshot; 34 generated, cached or restricted inputs are excluded with provenance. The original 1,061 root/Rust files are unchanged. The repository remains private until release day. This backup does not publish or release a binary.
+
+## 2026-11-05 — Step 429: Transform reference point
+
+The transform reference point can now be shown and moved freely, including outside the transform bounds. A shared nine-position locator remains available in Options. Rotation, numeric scaling and Option scaling use the chosen point. X and Y show its coordinates. The existing transform engine still prepares and applies the final matrix.
+
+This works with the existing selection, pixel, mask, saved-channel, layer and Content-Aware Scale drafts. Moving the point or changing its visibility does not alter document bytes, add Undo, record an Action or request another preview. A Content-Aware Scale worker can finish after a reference-only change. Escape, focus or tool changes cancel a captured pivot drag, while owner/session/source checks prevent it restoring over later work. The scope cursor stays with the captured action for all 16 modifier combinations; Space before press retains Hand.
+
+The API adds transform.reference and observable workspace state. It requires the current document revision plus a separate workspace UUID, preventing an old request from changing a newer transform. Ordinary editing commands remain blocked during the native transform. Typed commands total 250; native archive 86, Actions 49, settings 4, menu identities and shortcuts are unchanged. No Adobe route is invented for an operation outside the published contract.
+
+The first attempt failed compilation because a cancellation call was placed before super.init. Its source, diagnostics and pre-existing outputs were retained before the call was moved to the tool-change lifecycle. The second attempt passed 123 of 125 tests, including every new method; two shared catalogue assertions still expected 249 commands. After preserving that run, only the two genuine count expectations were updated. The final run passes all 130 focused Debug tests in 41.571 seconds, including the additional affected layer-filter API checks. Production app bytes are identical between the last two attempts. Existing pixel fixtures and tolerances were not changed. The owned offscreen control capture shows the toggle and full locator grid; it is not a live Photoshop or performance test.
+
+Transform Again still needs retained transform state across targets and commits. Remaining transform/crop functionality, exact Photoshop defaults, persistence, pixels and broader platform/performance checks are open. A03 classic adjustments follow in major stillneeded. [Detailed record](DEVLOG.md#dev-step-429).
+
+## 2026-11-05 — Step 430: Large-document Equalize
+
+The source audit found that the classic tone processors stopped at 8,388,608 pixels. Match Color's source-document/layer pickers and tone preset files were already present. Brightness/Contrast still needs a properly referenced modern transfer and native workflow; its menu was not connected to the licensed approximation. The selected capacity work is Equalize.
+
+The histogram now counts paged and implicit samples without allocating a full image array. Edge-tile padding is excluded. The existing 256-bin CDF, depth quantization, selection blending and transform/storage rules are retained. Native controls, API and portable Actions share one prepared edit and Undo. Maximum 300,000 × 300,000 implicit rasters and sparse selections pass at every native depth. This does not prove dense maximum throughput or exact Photoshop bins and output.
+
+The first run passed 23 of 26 tests. It exposed an unrelated Smart Filter size gate in the reused bounds helper. The failed source and outputs were retained before Equalize received its own equivalent ordinary-pixel bounds calculation. All 26 then passed, but profiling found that the selected-area preview composed a whole 11-megapixel image before reducing it. The preview path now reuses exact sparse composition where eligible and paged composition otherwise, then reduces a bounded overview. A later memory assertion caught identical pixels being materialized in a constant overview. That source was retained before an exact implicit constant path was added. Expected pixels and tolerances were not relaxed.
+
+The final 30 focused tests pass, including eight new methods. They include analytical CDF bytes, the frozen pre-change array engine, six canonical display-byte comparisons, implicit-versus-stored HDR/alpha comparisons, maximum sparse capacity, native/API/Actions/archive/Undo and preview/cancellation/source guards. Both optimized architectures pass the same 127 selected cases, including all 38 new methods from checkpoints 426–430. The universal package passes minimum macOS 14, signature and ZIP checks. Current source and binary hashes are recorded. Earlier full-suite and Debug failures remain open.
+
+The large dialog labels its overview and disables controls that would falsely imply full-resolution inspection. A full-resolution interactive dialog viewport is still needed; full-resolution output can be inspected in the document after Apply. Other large classic tone families, Brightness/Contrast, presets/interoperability and independent Photoshop fidelity remain A03 work. The API advertises per-kind limits and overview state; its existing operation and archive/menu/shortcut identities are unchanged. Adobe Equalize descriptor coverage is not claimed. Photoshop remains behind the locked Mac screen; no live check or physical refresh-rate result is invented.
+
+I05 color lookup/export follows. No major package is declared complete and no minor or cleanup pass begins. The private source backup follows the standing request after this optimized batch. [Detailed record](DEVLOG.md#dev-step-430).

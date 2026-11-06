@@ -2,6 +2,19 @@ import Foundation
 import PhotoCraftCore
 
 public enum ClassicToneInput {
+  /// Exact existing composition, retained as sparse/paged pixels before display
+  /// reduction. This never creates a whole-canvas resident preview buffer.
+  public static func equalizeOverview(in document: CraftDocument) throws -> Surface {
+    try document.validate()
+    let request = try RasterPreviewRequest.overview(width: document.width, height: document.height)
+    let composite: Surface
+    if document.colorMode == .rgb, let sparse = try SparseCanvasRenderer.composite(document) {
+      composite = sparse
+    } else {
+      composite = try Renderer.compositeValidated(document, preferPaged: true)
+    }
+    return try request.reducing(composite)
+  }
   public static func statistics(in source:CraftDocument,layerID:UUID?=nil,useSelection:Bool=false)throws->ToneColorStatistics {
     guard source.width<=ClassicToneEngine.maximumPixels/source.height else{throw CraftError.unsupported("Statistics source exceeds8,388,608 pixels.")}
     var document=source

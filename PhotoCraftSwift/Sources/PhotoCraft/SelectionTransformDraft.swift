@@ -10,6 +10,7 @@ extension TransformDraft {
     return try SelectionTransform.projection(bounds:bounds,corners:selectionCorners)
   }}
   var selectionReferencePoint:PathPoint {
+    if let point = customReferencePoint, let mapped = try? selectionProjection.point(point.x, point.y) { return mapped }
     let q=selectionCorners
     switch referenceAnchor {case .topLeft:return q[0];case .topRight:return q[1];case .bottomRight:return q[2];case .bottomLeft:return q[3];default:break}
     let f=referenceAnchor.fractions;return (try? selectionProjection.point(Double(bounds.x)+Double(bounds.width)*f.0,Double(bounds.y)+Double(bounds.height)*f.1)) ?? .init(centerX,centerY)

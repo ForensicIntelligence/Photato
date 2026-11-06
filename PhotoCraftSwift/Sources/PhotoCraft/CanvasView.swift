@@ -51,9 +51,11 @@ struct CanvasHost: NSViewRepresentable {
 @MainActor final class CraftCanvas: ModifierCursorView {
   override func clearCursorInput() {
     if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
+    cancelTransformReference()
     store.artboardNeighborPress = nil; needsDisplay = true
     super.clearCursorInput()
   }
+  var transformReferenceGesture: TransformReferenceGesture?
   var selectionAnts: SelectionAntsOverlay?
   var magneticPrecision=false
   override func updateCursorModifiers(_ flags:NSEvent.ModifierFlags) {
@@ -66,6 +68,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   override var toolCursor: ToolCursor {
     if !spaceHeld, !panningGesture, store.unavailableToolID == nil, store.tool == .artboard, let cursor = artboardNeighborCursor { return cursor }
+    if (transformReferenceGesture != nil || (!spaceHeld && cursorLocationInView.map(transformReferenceHit) == true)), !panningGesture { return .transformReference(available: store.canEditTransformReference) }
     if !spaceHeld, let point=cursorLocationInView,let axis=guideAxis(at:point) {return ToolCursor.guide(axis,modifiers:cursorModifiers,selection:guideCursorSelection(at:point))}
     guard store.unavailableToolID == nil else { return .unavailable }
     if (panningGesture && cursorPointerDown) || (spaceHeld && !cursorPointerDown) || store.tool == .hand {
@@ -187,7 +190,7 @@ struct CanvasHost: NSViewRepresentable {
     selectionAnts = SelectionAntsOverlay(self)
     registerForDraggedTypes([.string])
   }
-  isolated deinit { frameProbe?.invalidate(); airbrushTimer?.invalidate() }
+  isolated deinit { cancelTransformReference(); frameProbe?.invalidate(); airbrushTimer?.invalidate() }
   required init?(coder: NSCoder) { return nil }
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
@@ -210,6 +213,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
+    cancelTransformReference()
     gestureToolID = store.selectedTool.id
     if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil,(store.tool != .move || store.unavailableToolID != nil){store.cancelTransform()}
     drawingEvents.end()
@@ -523,7 +527,8 @@ struct CanvasHost: NSViewRepresentable {
       c.fill(box)
       c.stroke(box)
     }
-    let pivot=draft.selection ? draft.selectionReferencePoint:PathPoint(draft.centerX,draft.centerY)
+    if store.transformDraft != nil, !store.showTransformReferencePoint { return }
+    let pivot=draft.transformReferencePoint
     let center = viewPoint(CGPoint(x:pivot.x,y:pivot.y))
     c.move(to: CGPoint(x: center.x - 5, y: center.y))
     c.addLine(to: CGPoint(x: center.x + 5, y: center.y))
@@ -622,6 +627,7 @@ struct CanvasHost: NSViewRepresentable {
     window?.makeFirstResponder(self)
     guard !store.geometryBusy else { return }
     if magneticDown(event) {return}
+    if beginTransformReference(event) { return }
     if beginArtboardNeighbor(event) { return }
     if beginGuideGesture(event) {return}
     guard spaceHeld || store.canUseComponentCanvasTool else {
@@ -799,6 +805,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   override func mouseDragged(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
+    if dragTransformReference(event) { return }
     if store.artboardNeighborPress != nil { needsDisplay = true; return }
     if magneticMotion(event,dragging:true) {return}
     if dragGuideGesture(event) {return}
@@ -892,6 +899,7 @@ struct CanvasHost: NSViewRepresentable {
       needsDisplay = true
     }
     if store.tool == .magneticLasso,store.magneticDraft != nil,!panningGesture {return}
+    if endTransformReference(event) { return }
     if endArtboardNeighbor(event) { return }
     if endGuideGesture(event) {return}
     if endShapeGesture(event) { return }
@@ -1029,6 +1037,7 @@ struct CanvasHost: NSViewRepresentable {
   override func keyDown(with event: NSEvent) {
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
+    if event.keyCode == 53, transformReferenceGesture != nil { cancelTransformReference(); return }
     if store.transformDraft?.movingPixels == true || store.transformDraft?.movingLayers == true {if event.keyCode==53{store.cancelTransform()}else if [36,76].contains(event.keyCode){store.commitTransform()};return}
     if event.keyCode == 53, store.artboardNeighborPress != nil { store.artboardNeighborPress = nil; needsDisplay = true; return }
     if event.keyCode==53,store.guideGesture != nil {store.guideGesture=nil;needsDisplay=true;return}

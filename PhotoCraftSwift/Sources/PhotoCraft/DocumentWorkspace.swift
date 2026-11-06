@@ -230,6 +230,7 @@ private struct DocumentWorkspaceRoot: View {
     document.store.selectionEnhanceEdge=previous.store.selectionEnhanceEdge
     document.store.selectionOverlayColor=previous.store.selectionOverlayColor
     document.store.selectionAntiAlias = previous.store.selectionAntiAlias
+    document.store.showTransformReferencePoint = previous.store.showTransformReferencePoint
     document.store.wandOptions = previous.store.wandOptions
     document.store.wandSampleAllLayers = previous.store.wandSampleAllLayers
     document.store.bucketOptions = previous.store.bucketOptions

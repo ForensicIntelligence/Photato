@@ -1,0 +1,89 @@
+{
+  "step": 429,
+  "recorded_at_utc": "2026-11-06T02:17:34.083731+00:00",
+  "application_build": 429,
+  "source": "429Source03",
+  "source_manifest": "artifacts/runs/20261106T015446Z-429-transform-reference-point/source03-source.json",
+  "source_inputs": 7244,
+  "production_swift_files": 1058,
+  "debug_app_sha256": "25115f4e72855a2d0c4af8d55f29d0e7d97837dae2780ef08227e87359409a25",
+  "run": "artifacts/runs/20261106T015446Z-429-transform-reference-point",
+  "current_pass": 2,
+  "delivered_package": "G01",
+  "next_major_workflow": "A03",
+  "status": "Movable transform reference point and native/API controls pass130focused Debug cases/all7new methods. Full G01 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Initially hidden Show Reference Point control and shared nine-position locator in existing transform Options. Custom pivot can be dragged inside or outside transform bounds.",
+    "Affine/projective draft-local pivot follows existing placement. Numeric rotation/scaling and Option scaling use it. Native affine rotate/flip commands update the active draft around its chosen pivot.",
+    "Reference-only changes retain document/native archive bytes, Undo, Actions, document revision and existing preview preparation. Content-Aware Scale accepts finishing work when only pivot metadata changed.",
+    "Captured pointer/session/owner/source guards; Escape, focus, tool change, detach and deinit cleanup. Scope cursor for all16Control/Command/Option/Shift combinations; Space before press retains Hand.",
+    "Photato transform.reference requires both the existing document revision and a separate workspaceRevision. Strict point/preset/visibility schemas, state/capabilities and pointer/stale/busy/revoked errors share the native setter."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/move-reference-point-for-transformations.html",
+      "read": "2026-11-05",
+      "supports": "Reference visibility and dragging inside/outside transform bounds; no measured live default/persistence/output equivalence claimed."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/transformation-options-in-adobe-photoshop.html",
+      "read": "2026-11-05",
+      "supports": "Native transform options and reference point."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/apply-transformations.html",
+      "read": "2026-11-05",
+      "supports": "Transform Again remains a distinct operation requiring retained transform state."
+    }
+  ],
+  "failed_reference": "Historical /uk/photoshop/using/free-transformations-images-shapes-paths.html returned404, not a successful reference.",
+  "debug": "artifacts/runs/20261106T015446Z-429-transform-reference-point/source03-summary.json",
+  "debug_cases": 130,
+  "new_methods": [
+    "PhotoCraftAppTests.TransformReferenceTests/testAffineAndProjectiveCustomOriginsRetainTheirGeometryAndAnchorMath",
+    "PhotoCraftAppTests.TransformReferenceTests/testAPIReferenceMatchesNativeAndRejectsInvalidBusyStaleAndRevokedWorkspace",
+    "PhotoCraftAppTests.TransformReferenceTests/testContentAwareReadyPreviewSurvivesReferenceOnlyEditsAndOptionsFit",
+    "PhotoCraftAppTests.TransformReferenceTests/testEscapeFocusToolOwnerAndSourceChangesNeverRestoreOverOtherWork",
+    "PhotoCraftAppTests.TransformReferenceTests/testEveryExistingTargetUsesSharedMetadataWithoutPreviewOrDocumentChanges",
+    "PhotoCraftAppTests.TransformReferenceTests/testNativePivotDragAllSixteenModifiersKeepsCapturedCursorAndNoPixelHistory",
+    "PhotoCraftAppTests.TransformReferenceTests/testOutsidePivotNativeCommitMatchesExistingMatrixEngineWithUndoAtAllDepths"
+  ],
+  "debug_build_seconds": 22.4,
+  "debug_test_seconds": 41.571,
+  "failed_attempts": [
+    {
+      "source": "429Source01",
+      "summary": "artifacts/runs/20261106T015446Z-429-transform-reference-point/source01-summary.json",
+      "description": "Compile failure before tests: pivot cancellation accidentally inserted before super.init. Source/log/output retained before moving it to synchronizeTool. Retained app is pre-existing428, not429."
+    },
+    {
+      "source": "429Source02",
+      "summary": "artifacts/runs/20261106T015446Z-429-transform-reference-point/source02-summary.json",
+      "description": "123of125pass/all7new pass; two catalogue-count assertions expect249instead of250. Full source/outputs retained before two count-only test edits. Production app identical toSource03."
+    }
+  ],
+  "captures": [
+    "artifacts/runs/20261106T015446Z-429-transform-reference-point/source03-captures/transform-reference-options.png"
+  ],
+  "capture_qualification": "Owned offscreen AppKit/SwiftUI locator capture, not live Photoshop or physical performance evidence. Visual inspection shows both toggle and full nine-position grid.",
+  "adobe_API": "Pinned Firefly Photoshop v2 has no native transform workspace pivot endpoint. No Adobe route invented; existing explicit matrix contracts unchanged.",
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 428,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Transform Again and repeat/duplicate transforms need retained relative/reference/target state shared by native and API commits. The command stays pending; no guessed repeat operation is bound.",
+    "The original multi-target/mask/snapping/nondestructive crop/straighten/perspective crop and resize scope remains open wherever not yet implemented or qualified.",
+    "Exact Photoshop defaults, pivot visibility/persistence, appearance, modifier behavior, sampling/output bytes, uncommon combinations and supported physical-platform/performance qualification remain open.",
+    "Earlier Debug crashes and full-suite numerical/lifecycle failures remain open. This focused development run is not an optimized universal, full-suite or Photoshop-parity result."
+  ],
+  "distribution": "No install/launch/Xcodearchive/upload/Store/release or new private push. Last normal universal/private source qualification428. Batch optimized/universal/source backup at the next meaningful stable milestone."
+}

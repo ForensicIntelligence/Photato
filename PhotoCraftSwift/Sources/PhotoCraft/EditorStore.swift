@@ -312,7 +312,10 @@ import UniformTypeIdentifiers
   var selectedPixelTransformPreparation:@Sendable(CraftDocument,SelectedPixelTransformRequest)throws->Command = {_,request in .transformPixels(request)}
   var selectionTransform:SelectionTransformSession?
   var selectionTransformPreparation:@Sendable(CraftDocument,ProjectiveTransform,Resampling)throws->Command = {try SelectionTransform.command(in:$0,projection:$1,interpolation:$2)}
-  var transformDraft: TransformDraft?
+  var transformReferenceRevision = UUID()
+  var transformReferenceGestureID: UUID?
+  var showTransformReferencePoint = false { didSet { if oldValue != showTransformReferencePoint { transformReferenceRevision = UUID() } } }
+  var transformDraft: TransformDraft? { didSet { if oldValue != transformDraft { transformReferenceRevision = UUID() }; if transformDraft == nil { transformReferenceGestureID = nil } } }
   var embeddedPlacement: EmbeddedPlacementDraft?
   var embeddedPlacementSourceName: String?
   var embeddedPlacementIsPDF = false

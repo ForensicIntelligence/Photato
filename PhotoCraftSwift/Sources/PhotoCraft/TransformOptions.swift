@@ -4,24 +4,17 @@ import SwiftUI
 extension WorkspaceView {
   func transformBinding(_ key: WritableKeyPath<TransformDraft, Double>) -> Binding<Double> {
     Binding(
-      get: {guard let draft=store.transformDraft else{return 0};if draft.selection && key == \TransformDraft.centerX{return draft.selectionReferencePoint.x};if draft.selection && key == \TransformDraft.centerY{return draft.selectionReferencePoint.y};return draft[keyPath:key]},
+      get: {guard let draft=store.transformDraft else{return 0};if key == \TransformDraft.centerX{return draft.transformReferencePoint.x};if key == \TransformDraft.centerY{return draft.transformReferencePoint.y};return draft[keyPath:key]},
       set: { value in
-        guard value.isFinite, var draft = store.transformDraft else { return }
-        if draft.selection {store.updateTransform(draft.selectionNumeric(key,value));return}
-        let old = draft[keyPath: key]
-        draft[keyPath: key] = value
-        if draft.proportional && old != 0 {
-          if key == \TransformDraft.scaleX { draft.scaleY *= value / old }
-          if key == \TransformDraft.scaleY { draft.scaleX *= value / old }
-        }
-        store.updateTransform(draft)
+        guard value.isFinite, let draft = store.transformDraft else { return }
+        store.updateTransform(draft.transformNumeric(key, value))
       })
   }
   var transformOptions: some View {
     Group {
       if store.transformDraft?.contentAware == true { contentAwareScaleOptions } else {
       Text(store.transformDraft?.selection == true && store.transformDraft?.selectedPixels != true ? "Transform Selection":"Free Transform").fontWeight(.medium)
-      if store.transformDraft?.selection == true {selectionTransformModeOptions}
+      if store.transformDraft?.selection == true {selectionTransformModeOptions} else {TransformReferenceOptions(store: store)}
       numberField(
         "X", value: transformBinding(\.centerX), range: -1_000_000...1_000_000, suffix: "px")
       numberField(

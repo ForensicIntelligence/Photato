@@ -1,0 +1,30 @@
+{
+  "step": 430,
+  "application_build": 430,
+  "source": "430Source04/Release01",
+  "status": "430selectedfeaturequalified; I05next; private source backup and final records pending",
+  "reference": "docs/LARGE_EQUALIZE_430.json",
+  "software_changes": true,
+  "qualification": "30focused Debug/127sameordered optimized each/all38new426\u2013430methods pass;universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T022904Z-430-large-equalize",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "I05",
+  "current_delivered_package": "A03",
+  "source_manifest": "artifacts/runs/20261106T022904Z-430-large-equalize/source04-source.json",
+  "source_inputs": 7248,
+  "remaining": [
+    "Modern/legacy Brightness/Contrast, ranges, Auto, defaults and independently pinned Photoshop output remain substantive implementation/reference work; menus stay unbound to the licensed approximation.",
+    "Other classic tone families still require their paged preparation: Shadows/Highlights, Match Color/statistics, Replace Color and HDR Toning retain the8,388,608pixel gate.",
+    "Large Equalize dialog previews currently provide a labelled bounded overview. Full-resolution interactive viewport/100% dialog inspection remains functional stillneeded; document viewing after Apply uses the existing canvas.",
+    "Equalize and other classic kernels, Photoshop bins/rounding/depth/mode/default/ICC/alpha/preset/descriptor fidelity and complete native controls remain unqualified where not established by independent reference evidence.",
+    "Adobe Equalize ActionJSON/UXP operation mapping, semantic HDR Actions and remaining interoperability/presets remain open; existing published v2 route coverage is not expanded by this capacity change.",
+    "Earlier Debug crashes/full-suite numerical/lifecycle failures, dense maximum disk/resource/performance, actual macOS14/physical Intel and physical60fps remain open."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false
+}

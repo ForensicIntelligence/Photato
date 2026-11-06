@@ -4,6 +4,9 @@ import Foundation
 public enum ClassicToneEngine {
   public typealias Sample=SIMD4<Float>
   public static let maximumPixels=8_388_608
+  public static func maximumPixels(for kind: ClassicToneSettings.Kind) -> Int {
+    kind == .equalize ? Surface.maxPixels : maximumPixels
+  }
   static func unit(_ x:Float)->Float {min(1,max(0,x))}
   static func luma(_ p:Sample)->Float {0.299*p.x+0.587*p.y+0.114*p.z}
   static func smooth(_ a:Float,_ b:Float,_ x:Float)->Float {let t=unit((x-a)/(b-a));return t*t*(3-2*t)}
@@ -137,11 +140,12 @@ public enum ClassicToneEngine {
     for y in 0..<h {try Task.checkCancellation();for x in 0..<w {let i=y*w+x,q=output[i];if q==input[i]{continue};let p=Pixel(q.x,q.y,q.z,q.w);guard p.isFinite else{throw CraftError.invalid("Tone result exceeds supported numeric limits.")};result.setPixel(x:x,y:y,p)}};return result
   }
   public static func validateTarget(_ request:ClassicToneRequest,in d:CraftDocument)throws->Int {
-    try request.validate();guard d.width<=maximumPixels/d.height else{throw CraftError.unsupported("Tone adjustments support up to8,388,608 canvas pixels.")}
+    try request.validate();guard d.width<=maximumPixels(for:request.settings.kind)/d.height else{throw CraftError.unsupported("This tone adjustment supports up to8,388,608 canvas pixels.")}
     guard request.settings.kind != .hdrToning,let id=request.layerID ?? d.activeLayerID,let i=d.layers.firstIndex(where:{$0.id==id}),case .raster=d.layers[i].content,!d.isLocked(id),!d.isImageLocked(id) else{throw CraftError.invalid("Choose an unlocked pixel layer for this adjustment.")}
     guard d.layers[i].smartObject==nil || request.settings.kind == .shadowsHighlights else{throw CraftError.unsupported("This adjustment requires ordinary pixels; rasterize the Smart Object first.")};return i
   }
   static func apply(_ request:ClassicToneRequest,to document:inout CraftDocument)throws {
+    if request.settings.kind == .equalize { try PagedEqualize.apply(request, to: &document); return }
     let i=try validateTarget(request,in:document),s=request.settings,id=document.layers[i].id
     if document.layers[i].smartObject != nil {var f=RasterFilter(.shadowsHighlights);f.tone=s;try SmartFilterEngine.append(f,to:id,in:&document);return}
     guard case .raster(let source)=document.layers[i].content else{return}

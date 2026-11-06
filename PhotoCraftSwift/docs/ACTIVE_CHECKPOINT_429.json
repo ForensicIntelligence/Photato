@@ -1,0 +1,29 @@
+{
+  "step": 429,
+  "application_build": 429,
+  "source": "429Source03",
+  "status": "429selectedfeaturedevelopment-tested; A03next; final history/diary receipts under excluded429-final-delivery",
+  "reference": "docs/TRANSFORM_REFERENCE_429.json",
+  "software_changes": true,
+  "qualification": "130focused Debug cases/all7new pass. No current normal/universal/full-suite/physical/Photoshop claim. Last normal/private428.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T015446Z-429-transform-reference-point",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "A03",
+  "current_delivered_package": "G01",
+  "source_manifest": "artifacts/runs/20261106T015446Z-429-transform-reference-point/source03-source.json",
+  "source_inputs": 7244,
+  "remaining": [
+    "Transform Again and repeat/duplicate transforms need retained relative/reference/target state shared by native and API commits. The command stays pending; no guessed repeat operation is bound.",
+    "The original multi-target/mask/snapping/nondestructive crop/straighten/perspective crop and resize scope remains open wherever not yet implemented or qualified.",
+    "Exact Photoshop defaults, pivot visibility/persistence, appearance, modifier behavior, sampling/output bytes, uncommon combinations and supported physical-platform/performance qualification remain open.",
+    "Earlier Debug crashes and full-suite numerical/lifecycle failures remain open. This focused development run is not an optimized universal, full-suite or Photoshop-parity result."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "consistency": "artifacts/runs/20261106T015446Z-429-transform-reference-point/consistency01.json"
+}

@@ -36,6 +36,7 @@ struct TransformDraft: Equatable {
   var protectChannelID: UUID?
   var protectSkinTones = false
   var referenceAnchor = CanvasAnchor.center
+  var customReferencePoint: PathPoint?
   init(layerID: UUID, bounds: IntRect) {
     self.layerID = layerID
     self.bounds = bounds
@@ -67,15 +68,28 @@ struct TransformDraft: Equatable {
     }
     if handle == 8 {
       if contentAware { return self }
-      let a = atan2(start.y - centerY, start.x - centerX)
-      let b = atan2(end.y - centerY, end.x - centerX)
-      result.angle += (b - a) * 180 / .pi
-      if shift { result.angle = (result.angle / 15).rounded() * 15 }
-      return result
+      let pivot = transformReferencePoint
+      let a = atan2(start.y - pivot.y, start.x - pivot.x)
+      let b = atan2(end.y - pivot.y, end.x - pivot.x)
+      var nextAngle = angle + (b - a) * 180 / .pi
+      if shift { nextAngle = (nextAngle / 15).rounded() * 15 }
+      return transformNumeric(\.angle, nextAngle)
     }
     guard (0..<8).contains(handle) else { return result }
     let direction = [(-1.0, -1.0), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)][
       handle]
+    if option, customReferencePoint != nil || referenceAnchor != .center {
+      let pivot = transformReferencePoint, inverse = Transform2D.rotation(-angle)
+      let a = inverse.point(start.x - pivot.x, start.y - pivot.y), b = inverse.point(end.x - pivot.x, end.y - pivot.y)
+      var sx = direction.0 == 0 || abs(a.x) < 1e-9 ? 1 : b.x / a.x
+      var sy = direction.1 == 0 || abs(a.y) < 1e-9 ? 1 : b.y / a.y
+      if proportional != shift { let factor = direction.0 == 0 ? sy : direction.1 == 0 ? sx : abs(sx) > abs(sy) ? sx : sy; sx = factor; sy = factor }
+      guard abs(sx) > 1e-6, abs(sy) > 1e-6, !contentAware || (sx > 0 && sy > 0), allowsFlips || (sx > 0 && sy > 0) else { return self }
+      result.scaleX *= sx; result.scaleY *= sy
+      let changed = result.transformReferencePoint
+      result.centerX += pivot.x - changed.x; result.centerY += pivot.y - changed.y
+      return result
+    }
     let local = Transform2D.rotation(-angle).point(end.x - centerX, end.y - centerY)
     let width = Double(bounds.width) * scaleX / 100
     let height = Double(bounds.height) * scaleY / 100
@@ -262,6 +276,17 @@ extension EditorStore {
     if wantsLayerCollectionTransform,transformDraft==nil,!editingMask,!editingComponent{transformLayerCollection(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if editingMask,transformDraft==nil{transformPixelMask(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if var draft=transformDraft,draft.selection {let p=draft.selectionReferencePoint;draft=draft.selectionApplying(.translation(p.x,p.y) * .rotation(angle) * .scale(horizontal ? -1:1,vertical ? -1:1) * .translation(-p.x,-p.y));updateTransform(draft);return}
+    if var draft = transformDraft {
+      guard !draft.contentAware else { return }
+      let pivot = draft.transformReferencePoint
+      let turn = Transform2D.translation(pivot.x, pivot.y) * .rotation(angle) * .scale(horizontal ? -1:1, vertical ? -1:1) * .translation(-pivot.x, -pivot.y)
+      let center = turn.point(draft.centerX, draft.centerY)
+      draft.centerX = center.x; draft.centerY = center.y
+      if horizontal { draft.scaleX = -draft.scaleX }
+      if vertical { draft.scaleY = -draft.scaleY }
+      draft.angle = (horizontal != vertical ? -draft.angle:draft.angle) + angle
+      updateTransform(draft); return
+    }
     if document.selection != nil {
       guard canBeginSelectedPixelTransform,let layer=activeLayer,let bounds=document.selection else{return}
       let x=Double(bounds.x)+Double(bounds.width)/2,y=Double(bounds.y)+Double(bounds.height)/2

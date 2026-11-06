@@ -1,0 +1,122 @@
+{
+  "step": 430,
+  "recorded_at_utc": "2026-11-06T02:58:37.244269+00:00",
+  "application_build": 430,
+  "source": "430Source04/Release01",
+  "run": "artifacts/runs/20261106T022904Z-430-large-equalize",
+  "source_manifest": "artifacts/runs/20261106T022904Z-430-large-equalize/source04-source.json",
+  "source_inputs": 7248,
+  "production_swift_files": 1059,
+  "debug_app_sha256": "7b1114abb3f54d0636fd17562e8c1100c7c1fe59bbae7157e9295eea54d6a1df",
+  "current_pass": 2,
+  "delivered_package": "A03",
+  "next_major_workflow": "I05",
+  "status": "Paged Equalize capacity/native/API/Actions and bounded overview:30focused Debug and127sameordered optimized cases per architecture/all38new426\u2013430methods pass. Full A03/Photoshop acceptance open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "256bin existing CDF histogram streams real tile cells and exact implicit multiplicities, ignoring tile padding and zero-alpha/unselected statistics.",
+    "Existing encoded-depth quantization/linear component retention and ClonePainter expansion/geometry/coverage preserve small-engine bytes. Native/API/portable Actions share the existing prepared transaction.",
+    "Equalize capacity300000pixels per side/90gigapixels; other tone families retain8,388,608pixel limit. No whole-canvas sample or coverage arrays in the selected Equalize path.",
+    "Large selected-area dialog uses exact existing sparse/paged composition before bounded2048-side display reduction. Overview quality is explicit; false100%/zoom controls disabled for that preview.",
+    "Constant reduced previews keep implicit storage using the identical premultiplied-area/Float expression. Implicit versus fully stored representation tests include linear HDR and zero/partial/full alpha.",
+    "API maximumPixelsByKind and overviewOnly state/schema expose limits/quality; typed250/native86/Actions49/settings4/menu/shortcuts unchanged."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/equalize-brightness-values-in-an-image.html",
+      "read": "2026-11-05",
+      "supports": "Current-layer command and selection-only versus whole-image-from-selection workflows; not an exact transfer/bin/output reference."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-brightness-and-contrast-adjustment.html",
+      "read": "2026-11-05",
+      "supports": "Brightness/Contrast ranges/Legacy controls; no full modern transfer specification."
+    },
+    {
+      "url": "https://developer.adobe.com/firefly-services/docs/photoshop/guides/execute-actions/",
+      "read": "2026-11-05",
+      "supports": "Existing generic action execution contract, not a qualified Equalize descriptor."
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+      "read": "2026-11-05",
+      "supports": "Retrieved reference has no applyEqualize text; no new depth restriction or UXP mapping inferred."
+    }
+  ],
+  "debug": "artifacts/runs/20261106T022904Z-430-large-equalize/source04-summary.json",
+  "debug_cases": 30,
+  "new_methods": [
+    "PhotoCraftCoreTests.LargeEqualizeTests/testAnalyticalCDFAndPagedEdgesMatchRetainedArrayEngineAtEveryDepthAndEncoding",
+    "PhotoCraftCoreTests.LargeEqualizeTests/testCancelledPreparationAndOtherToneAreaLimitsRemainAtomic",
+    "PhotoCraftCoreTests.LargeEqualizeTests/testImplicitOverviewRetainsExactPixelsOfFullyStoredEquivalentIncludingLinearHDRAndZeroAlpha",
+    "PhotoCraftCoreTests.LargeEqualizeTests/testMaximumConstantAndSparseCoverageUseImplicitStorageWithoutReducingDimensions",
+    "PhotoCraftCoreTests.LargeEqualizeTests/testWholeCommandsRetainLegacySelectionAffineAlphaStorageMasksAndMetadata",
+    "PhotoCraftAppTests.LargeEqualizeWorkflowTests/testNativeMaximumEqualizeMatchesHTTPArchiveActionsAndSingleUndoAtAllDepths",
+    "PhotoCraftAppTests.LargeEqualizeWorkflowTests/testSelectedLargePreviewIsBoundedAndCancelCommitSourceChangeAreAtomic",
+    "PhotoCraftImagingTests.LargeTonePreviewTests/testOverviewUsesExistingExactCompositionAndBoundedSparseMaximumExtent"
+  ],
+  "failed_attempts": [
+    {
+      "source": "430Source01",
+      "summary": "artifacts/runs/20261106T022904Z-430-large-equalize/source01-summary.json",
+      "reason": "23of26pass; unrelated SmartFilter bounds family gate rejects large ordinary Equalize. Preserved before own bounds calculation."
+    },
+    {
+      "source": "430Source02",
+      "summary": "artifacts/runs/20261106T022904Z-430-large-equalize/source02-summary.json",
+      "reason": "All26pass;138.129s native preview lifecycle test. Retained sample proves full dense composition before reduction; performance repair followed. Process finished naturally; termination precheck found absent PID, no signal sent.",
+      "profile": "artifacts/runs/20261106T022904Z-430-large-equalize/source02-live-profile01.txt"
+    },
+    {
+      "source": "430Source03",
+      "summary": "artifacts/runs/20261106T022904Z-430-large-equalize/source03-summary.json",
+      "reason": "26of27pass; all canonical display bytes pass, constant maximum overview allocates64MB and fails new1MBbound. Retained before exact implicit fast path; assertion/tolerances unchanged."
+    }
+  ],
+  "baseline_comparisons": "Frozen pre430 array/ClonePainter expression and owned analytical CDF, representation and canonical display-byte comparisons. Licensed PhotoCraft supporting evidence, not independent Photoshop pixel qualification.",
+  "normal": "artifacts/runs/20261106T022904Z-430-large-equalize/qualified01.json",
+  "normal_cases_each": 127,
+  "normal_new_methods_each": 38,
+  "normal_results": [
+    {
+      "binary_sha256": "ae57153114d7bc5895aa07b6d4788a528656e4e31d69fca76abc701c03cfa346",
+      "build_seconds": [
+        "535.91"
+      ],
+      "test_seconds": 9.677,
+      "cases": 127,
+      "passed": 127,
+      "exit_code": 0
+    },
+    {
+      "binary_sha256": "9ed8190b03ae8d0139a69dc364cbc57057977ddc9f34b5bd3cab6c753ad8c279",
+      "build_seconds": null,
+      "test_seconds": 13.971,
+      "cases": 127,
+      "passed": 127,
+      "exit_code": 0
+    }
+  ],
+  "normal_same_order": true,
+  "universal": "artifacts/runs/20261106T022904Z-430-large-equalize/universal/staging01.json",
+  "current_normal_qualified": true,
+  "current_universal_qualified": true,
+  "current_physical_qualified": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Modern/legacy Brightness/Contrast, ranges, Auto, defaults and independently pinned Photoshop output remain substantive implementation/reference work; menus stay unbound to the licensed approximation.",
+    "Other classic tone families still require their paged preparation: Shadows/Highlights, Match Color/statistics, Replace Color and HDR Toning retain the8,388,608pixel gate.",
+    "Large Equalize dialog previews currently provide a labelled bounded overview. Full-resolution interactive viewport/100% dialog inspection remains functional stillneeded; document viewing after Apply uses the existing canvas.",
+    "Equalize and other classic kernels, Photoshop bins/rounding/depth/mode/default/ICC/alpha/preset/descriptor fidelity and complete native controls remain unqualified where not established by independent reference evidence.",
+    "Adobe Equalize ActionJSON/UXP operation mapping, semantic HDR Actions and remaining interoperability/presets remain open; existing published v2 route coverage is not expanded by this capacity change.",
+    "Earlier Debug crashes/full-suite numerical/lifecycle failures, dense maximum disk/resource/performance, actual macOS14/physical Intel and physical60fps remain open."
+  ],
+  "live_reference": "One430CUA bind confirms Mac locked; existing human unlock request pending. No430live editing/Photoshop/physical verification. No browser/server workaround.",
+  "distribution": "Isolated ad-hoc sandboxed universal package, not installed/launched/Xcode-archived/Store-uploaded/released. Private source backup follows standing authorization."
+}

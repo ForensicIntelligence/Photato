@@ -388,6 +388,7 @@ import UniformTypeIdentifiers
       "backgroundLayer":store.backgroundLayerState,
       "selectionModify":store.selectionModifyState,
       "selectionDisplay":store.selectionAntsState,
+      "transformReference":store.transformReferenceState,
       "magneticLasso":store.magneticLassoState,
       "colorRange":store.colorRangeState,
       "focusArea":store.focusAreaState,
@@ -563,7 +564,7 @@ import UniformTypeIdentifiers
       },
     ]
   }
-  func preflight(_ document: CraftNSDocument) throws {
+  func preflight(_ document: CraftNSDocument, allowTransformReference: Bool = false) throws {
     let store = document.store
     // NSEvent reports buttons across the whole Mac. A click in another app or document
     // cannot be an in-progress pointer edit of this shared document. Gesture/draft guards
@@ -573,7 +574,7 @@ import UniformTypeIdentifiers
       && document.windowForSheet?.isKeyWindow == true
     guard document.closeWorkflowID == nil, document.recoverySourceStatus != .checking,
       !document.fileOperationBusy, !document.recoveryWriteBusy, document.copyPanel == nil,
-      !store.geometryBusy, !store.aiBusy, !store.hasToneDraft, store.channelVisibilitySweep == nil, store.transformDraft == nil,
+      !store.geometryBusy, !store.aiBusy, !store.hasToneDraft, store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
       store.numericEditor == nil, store.layerNameDraft == nil, store.layerProtectionDraft == nil, !store.coalescingChanges,
       store.pathGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
       store.patternNameDraft == nil, store.gradientNameDraft == nil, !store.showAI,
@@ -830,6 +831,11 @@ import UniformTypeIdentifiers
         let operation = try command.actionUUID("operationID")
         guard store.layerCompExportID == operation else { throw AutomationFailure(status:409,message:"No matching comp export is active.") }
         store.layerCompExportWorker?.cancel(); return .json(["operationID":operation.uuidString,"cancellationRequested":true])
+      }
+      if command.name == TransformReferenceAPI.name {
+        try preflight(document, allowTransformReference: true)
+        try command.applyTransformReference(store)
+        return .json(state(share, document: document))
       }
       try preflight(document)
       if command.name == SmartObjectLayerCompAPI.name {
@@ -1718,6 +1724,7 @@ import UniformTypeIdentifiers
       "backgroundLayer":BackgroundLayerAPI.capabilities,
       "selectionModify":SelectionModifyAPI.capabilities,
       "selectionDisplay":SelectionAntsAPI.capabilities,
+      "transformReference":TransformReferenceAPI.capabilities,
       "magneticLasso":MagneticLassoAPI.capabilities,
       "colorRange":ColorRangeAPI.capabilities,
       "focusArea":FocusAreaAPI.capabilities,
@@ -1785,6 +1792,7 @@ import UniformTypeIdentifiers
         "backgroundLayer":BackgroundLayerAPI.stateSchema,
         "selectionModify":SelectionModifyAPI.stateSchema,
         "selectionDisplay":SelectionAntsAPI.stateSchema,
+        "transformReference":TransformReferenceAPI.stateSchema,
         "magneticLasso":MagneticLassoAPI.stateSchema,
         "colorRange":ColorRangeAPI.stateSchema,
         "focusArea":FocusAreaAPI.stateSchema,

@@ -2680,5 +2680,12 @@
     "engine": "Shared typed search, rich-text replacement, native shaping and one prepared Undo; reusable Actions46.",
     "Adobe": "No dedicated Find/Replace operation qualified in the pinned contract; current schema retrieval404is retained. Existing create-composite text_layer add/edit uses native shaping. Proprietary search actionJSON/ATN descriptors remain unqualified; no invented endpoint.",
     "reference": "docs/TEXT_FIND_REPLACE_386.json"
+  },
+  "large_equalize_430": {
+    "step": 430,
+    "reference": "docs/LARGE_EQUALIZE_430.json",
+    "Photato": "Existing tone.apply gains paged Equalize capacity/per-kind metadata; native/API/Actions exact regression paths pass.",
+    "Adobe": "Existing v2 execute-actions route retained. Equalize ActionJSON/UXP mapping/output/defaults remain unsupported/unqualified; public generic route docs alone do not prove the missing descriptor. No invented endpoint.",
+    "scope_waived": false
   }
 }
