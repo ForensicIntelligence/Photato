@@ -26,6 +26,7 @@ The Patterns panel now has groups, multi-selection, moving/reordering, duplicate
 All 54 focused Debug tests and the same 71 optimized methods on Apple Silicon and under Rosetta pass, including seventeen new methods. Tests cover migration, exact existing PAT pixel/byte checks, real provider transfers, HTTP operations, cancellation, revoked sharing, persistent-file retention and offscreen native UI. Universal macOS 14 packaging, signature and extracted ZIP verify. Wider-suite failures, independent Photoshop fidelity, physical platforms and 60 fps remain open.
 
 The major still-needed sweep moves to F01 filters, then F02. Full A07 remains open: History/scripted Fill, remaining pattern-application workflows, interchange/capacity and exact defaults/output. All 104 original scopes and acceptance criteria remain. [Step 443](DEVLOG.md#dev-step-443).
+The current source, including the Xcode project, is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/0f4c25b920f135ebb2fc637965e5b0a08fea73b8). This is a development checkpoint with the failures above retained.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3499,3 +3500,5 @@ Optimized tests then exposed valid HTTP library edits returning 409. A paused re
 The final result is 54 Debug tests and 71 identical ordered optimized methods per architecture passing, including all seventeen new methods. Existing image kernels, PAT pixel writer, version 1 encoder, image fixtures and numeric expectations remain unchanged. Older tests changed only for catalogue counts, optional library injection and the intended retained-folder behavior. The actual SwiftUI panel was rendered offscreen; live Photoshop and physical-platform checks remain pending.
 
 This completes the selected pattern-library organization and transport workflows. History Fill still needs a shared source/snapshot mechanism. Scripted Fill, remaining application/drop semantics, arbitrary PAT metadata, capacity and exact Photoshop defaults/output remain open. Work continues with F01 under the seven-pass order; no minor or cleanup pass has begun.
+
+The private source checkpoint includes 7,319 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/0f4c25b920f135ebb2fc637965e5b0a08fea73b8) · [Receipt](SOURCE_PUBLICATION_443.json).

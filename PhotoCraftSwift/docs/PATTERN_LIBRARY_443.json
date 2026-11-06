@@ -171,5 +171,7 @@
       "updated": "2026-02-23",
       "supports": "History Fill is remaining source/snapshot work, not implemented here."
     }
-  ]
+  ],
+  "private_source_backup": "docs/SOURCE_PUBLICATION_443.json",
+  "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day."
 }
