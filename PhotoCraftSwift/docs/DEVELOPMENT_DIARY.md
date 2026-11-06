@@ -26,6 +26,8 @@ Normal Patch now has a saved-pattern picker and Use Pattern. Native controls and
 All40focused development tests and the same199selected optimized tests pass on Apple Silicon and Intel under Rosetta. The batch includes all55new methods from426–432. Universal macOS14slices, signature and ZIP checks pass. Earlier attempts and repairs are recorded. Full B05, larger solve regions, other retouch capacity, exact Photoshop output and full-suite/physical performance remain open. The Mac is still locked.
 
 C01Channels workflows are next, followed byAUT01. The source audit found footer Save/Load using dialogs where Adobe documents quick-save/direct-load behavior. All original scopes remain intact; unfinished functionality stays major stillneeded. No minor or cleanup pass begins. [Step432](DEVLOG.md#dev-step-432).
+
+The current qualified source is backed up in the private repository. [Source commit](https://github.com/ForensicIntelligence/Photato/commit/315a12121fd1fc8f323a242316d1a60ef21ade67) · [Backup record](SOURCE_PUBLICATION_432.json). It will become public on software release day.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3330,4 +3332,4 @@ The final run passes40focused tests, including nine new methods. They cover anal
 
 The stable batch also includes431's Color Lookup formats. Both optimized architectures pass the same199selected tests, including all55new methods from426–432. All eight current normal LUT files match the independently checked431files. Universal macOS14slices, signature and ZIP extraction checks pass. A packaging helper initially corrupted a pinned resource-hash literal while replacing a test count; its original script/output were retained and the original oracle restored, without changing any resource or app bytes. No install, launch, Store action or software release occurred. After workers finished, a fresh Photoshop binding confirmed the Mac is still locked. The earlier unlock request remains pending.
 
-C01is next, with Channels quick-save/direct-load identified for source/reference audit. Full B05, mask/channel and projected targets, larger solve regions, exact Photoshop behavior and all broader platform/performance acceptance stay open. [Detailed record](DEVLOG.md#dev-step-432).
+C01is next, with Channels quick-save/direct-load identified for source/reference audit. Full B05, mask/channel and projected targets, larger solve regions, exact Photoshop behavior and all broader platform/performance acceptance stay open. The private source backup includes7,220qualified inputs and preserves1,061original root/Rust files; generated/cache/restricted inputs are excluded with provenance. No test fixture changed. [Source commit](https://github.com/ForensicIntelligence/Photato/commit/315a12121fd1fc8f323a242316d1a60ef21ade67). [Detailed record](DEVLOG.md#dev-step-432).

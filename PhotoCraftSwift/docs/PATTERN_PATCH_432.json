@@ -609,5 +609,14 @@
     "Exact Photoshop pattern phase/scale, alpha/diffusion/solver/profile/output/defaults, all native contextual variations/persistence and unsupported Adobe action descriptors remain open. Portable semantic retouch Actions remain unimplemented.",
     "Physical/native appearance and input, full supported-platform/performance/60fps, dense maximum and complete current-suite/Photoshop parity are not established. Mac is still locked; the existing human unlock request remains pending. Earlier numerical/Debug/full-suite residuals remain recorded."
   ],
-  "distribution": "Isolated ad-hoc app-sandbox universal/min14/signature/ZIP verified; no install/launch/Xcodearchive/Store/release. Private full-source backup follows standing authorization."
+  "distribution": "Isolated ad-hoc app-sandbox universal/min14/signature/ZIP verified; no install/launch/Xcodearchive/Store/release. Private full-source backup follows standing authorization.",
+  "source_publication": {
+    "reference": "docs/SOURCE_PUBLICATION_432.json",
+    "commit": "315a12121fd1fc8f323a242316d1a60ef21ade67",
+    "tree": "608a508f729b314d8b751477c409a6e5ead99c6f",
+    "private": true,
+    "remote_verified": true,
+    "included_qualified_inputs": 7220,
+    "root_and_Rust_unchanged": 1061
+  }
 }
