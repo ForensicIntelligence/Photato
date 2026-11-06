@@ -2,7 +2,7 @@
   "step": 430,
   "application_build": 430,
   "source": "430Source04/Release01",
-  "status": "430selectedfeaturequalified; I05next; private source backup and final records pending",
+  "status": "430selectedfeaturequalified; I05next; final history/diary/private-docs receipts under excluded430-final-delivery",
   "reference": "docs/LARGE_EQUALIZE_430.json",
   "software_changes": true,
   "qualification": "30focused Debug/127sameordered optimized each/all38new426\u2013430methods pass;universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
@@ -26,5 +26,7 @@
   "new_install": false,
   "new_archive": false,
   "new_upload": false,
-  "new_release": false
+  "new_release": false,
+  "consistency": "artifacts/runs/20261106T022904Z-430-large-equalize/consistency01.json",
+  "source_backup": "docs/SOURCE_PUBLICATION_430.json"
 }

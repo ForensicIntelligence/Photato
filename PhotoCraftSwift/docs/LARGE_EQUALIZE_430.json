@@ -118,5 +118,13 @@
     "Earlier Debug crashes/full-suite numerical/lifecycle failures, dense maximum disk/resource/performance, actual macOS14/physical Intel and physical60fps remain open."
   ],
   "live_reference": "One430CUA bind confirms Mac locked; existing human unlock request pending. No430live editing/Photoshop/physical verification. No browser/server workaround.",
-  "distribution": "Isolated ad-hoc sandboxed universal package, not installed/launched/Xcode-archived/Store-uploaded/released. Private source backup follows standing authorization."
+  "distribution": "Isolated ad-hoc sandboxed universal package, not installed/launched/Xcode-archived/Store-uploaded/released. Private source backup follows standing authorization.",
+  "source_delivery_430": {
+    "reference": "docs/SOURCE_PUBLICATION_430.json",
+    "commit": "8400eb8e3bddc8bbbfeb9bd8e9e4e644d29daa39",
+    "tree": "6c958dcc9a1d48acf8a340eb5ea8da7d12600c8c",
+    "repository_private": true,
+    "source_inputs_included": 7214,
+    "root_Rust_unchanged": 1061
+  }
 }

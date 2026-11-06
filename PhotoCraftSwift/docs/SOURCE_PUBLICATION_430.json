@@ -1,0 +1,166 @@
+{
+  "step": 430,
+  "status": "private full-source backup pushed and remote commit/tree verified",
+  "qualified_source": "430Source04/Release01",
+  "source_commit": "8400eb8e3bddc8bbbfeb9bd8e9e4e644d29daa39",
+  "source_tree": "6c958dcc9a1d48acf8a340eb5ea8da7d12600c8c",
+  "parent": "eb5ebdd94dfcff271680aee3fcf233062cd5d3be",
+  "url": "https://github.com/ForensicIntelligence/Photato/commit/8400eb8e3bddc8bbbfeb9bd8e9e4e644d29daa39",
+  "repository": "ForensicIntelligence/Photato",
+  "repository_private": true,
+  "qualified_inventory_inputs": 7248,
+  "published_qualified_inputs": 7214,
+  "excluded_qualified_inputs": {
+    "Assets/GeneratedModels/PeopleParts.mlmodelc/analytics/coremldata.bin": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18"
+    },
+    "Assets/GeneratedModels/PeopleParts.mlmodelc/coremldata.bin": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d"
+    },
+    "Assets/GeneratedModels/PeopleParts.mlmodelc/metadata.json": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202"
+    },
+    "Assets/GeneratedModels/PeopleParts.mlmodelc/model.mil": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98"
+    },
+    "Assets/GeneratedModels/PeopleParts.mlmodelc/weights/weight.bin": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133"
+    },
+    "Assets/GeneratedModels/PeopleParts.provenance.json": {
+      "reason": "Optional generated model/provenance output; not source distribution",
+      "sha256": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+    },
+    "Tests/PhotoCraftImagingTests/Fixtures/layer-comps/ag-psd-layer-comps.psd": {
+      "reason": "External PSD image excluded by upstream asset license exception; local qualification used the pinned file; acquisition instructions included",
+      "sha256": "d6b4daeed5856d1fcfd6f4ae72cf10c9ac91a415d6e9db26da483027b6ded366"
+    },
+    "scripts/__pycache__/analyze-smooth-gradient.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "b358beb1e97f28252681b4f40e2ef19e3ca7fbeffdc54d2ccab089f2c49d9ed5"
+    },
+    "scripts/__pycache__/analyze-smooth-neighbors.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "8117a8fcb30babb32a1fa04c2499a905816784b873f530030222079bcb0156b2"
+    },
+    "scripts/__pycache__/audit-development-history.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "4c50b3e009fe4eb2cae48dfa19c302a1dcfdd858871581489567c6919c5180b6"
+    },
+    "scripts/__pycache__/fetch-gradient-fixtures.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "878f8eec44ed872da428f1fd8112a7f9c5faad26fbc7ed2346e442a1e5edf3d7"
+    },
+    "scripts/__pycache__/fetch-layer-comp-reference.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "80b384687e092fa1bdc6790fb980d9b15e238fde0dfc8b890265d4f9846ce916"
+    },
+    "scripts/__pycache__/fetch-pattern-fixtures.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "2660cdcdf6559522846ede3a5335b12f4c00587a5563e729eea1113f3042a7a5"
+    },
+    "scripts/__pycache__/generate-gradient-map-probe.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "a46d5f90a2a12936dddd06be16305028528ea5dcf3e3c01a7a92947cc5c1b2ac"
+    },
+    "scripts/__pycache__/generate-gradient-method-probes.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "5d61f3763b5a8e4f5c4c6392b438b8eafff25ffd10bce63d9b6f1db260d653b3"
+    },
+    "scripts/__pycache__/generate-gradient-oracle.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "ab68fa1ded8a6923e506e7978d8445f36ffc89f3fe35d062b9408cb031b0f15d"
+    },
+    "scripts/__pycache__/generate-gradient-preset-oracle.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "dc4e3763e551ee77aabe067fb0e8fea2867016fe46d571bbc07ae1920286452f"
+    },
+    "scripts/__pycache__/generate-gradient-tool-oracle.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "5b48198854372e35645eff852d813d1810b48bd46f6fa1e85e68b9298f9b37f9"
+    },
+    "scripts/__pycache__/generate-smooth-gradient-probes.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "010fea0263f659e26092aff896921530b084b1a06188b63f672817c4b1894387"
+    },
+    "scripts/__pycache__/inspect-gradient-map-limits.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "e7bf2d84c3452de5c0e823a655864e0180817e3fdb744aff7390a8a30cbcbe22"
+    },
+    "scripts/__pycache__/inspect-gradient-map-reference.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "0c16c1ea3c0a4ef3a08b528fe8fb4e5b49b299d95bd5a0f5e03633b2d5265e14"
+    },
+    "scripts/__pycache__/inspect-gradient-method-reference.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "87321b15808c260e47d38636eeef34ed78bd89187ab92691bfcc255246050993"
+    },
+    "scripts/__pycache__/inspect-rgb16-matte-reference.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "6b8bb38851b8caa580f352b355f48b72d01c5f1d6d1283c82a169f9f97823ad0"
+    },
+    "scripts/__pycache__/inspect-smooth-gradient-probes.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "86be153e3135c5753ad9ab8c9ffaa171b5906b336670ea293dcad5201d142503"
+    },
+    "scripts/__pycache__/prepare-people-model.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "38e48119289a3562dd4bef92bf32ba2f0e8c7dbfd1525d16d9cf757d679d97e9"
+    },
+    "scripts/__pycache__/verify-app-package.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "885dd5ded5aa12430205e64692bd8675b020162c36b9c29b1019acb7b845a8c0"
+    },
+    "scripts/__pycache__/verify-gradient-fill.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "112e6f9e164bb0cc7d0e37a9b9d8c46be4ba1c378641119b9f7264c3c23f5e28"
+    },
+    "scripts/__pycache__/verify-gradient-library.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "bccd623b94c147fbc733562f8f0f841805c5677acaf96f7d432fe9c2536b9925"
+    },
+    "scripts/__pycache__/verify-gradient-map.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "7ac7b07e806bd0c2a10fdacb56918422cb44c86f0c7f32d03dcf9a59d312fbb9"
+    },
+    "scripts/__pycache__/verify-gradient-stripes.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "529a7ed7b5167138d45eadace27e30692e701e9df63f1ef158ee815f4693437a"
+    },
+    "scripts/__pycache__/verify-gradient-tool.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "c58c767b4c26873688d5ed14d340bdc176b9eebf8a6d97064de51ab7dcffebfd"
+    },
+    "scripts/__pycache__/verify-people-model.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "b968da8be8ed2ba1518aae7e9ed39385eadc1bb9bd2edf8ba8a9b6ca9d0e0632"
+    },
+    "scripts/people-model/__pycache__/convert.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "7d4945ac8409cf18d2f93c1a7b94f7a94b6dd96d651617d79e92efa1b1337e23"
+    },
+    "scripts/people-model/__pycache__/validate.cpython-314.pyc": {
+      "reason": "Generated Python bytecode/cache",
+      "sha256": "4733e2b4cbec956972983a869bb1694c69bfcf49acb60745bb77e72a19ee107a"
+    }
+  },
+  "root_and_Rust_unchanged": 1061,
+  "normal_cases_passed_each": 127,
+  "new_methods_passed_each": 38,
+  "debug_cases_passed": 30,
+  "universal_min14_signature_ZIP_passed": true,
+  "evidence": "artifacts/runs/20261106T022904Z-430-large-equalize/source-push01.json",
+  "curation": "artifacts/runs/20261106T022904Z-430-large-equalize/curation01.json",
+  "staged_verification": "artifacts/runs/20261106T022904Z-430-large-equalize/staged-verification01.json",
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false,
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "final_documentation_backup": "Final docs-only commit follows the consecutive history refresh/check; receipt is in the excluded430-final-delivery folder."
+}
