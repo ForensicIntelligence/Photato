@@ -162,5 +162,6 @@
     "All earlier full-suite, linked-alpha, Gray32 numerical and unrelated Debug crash/performance/physical-platform gaps remain open. Selected optimized passes are not full-suite or Photoshop parity.",
     "Fresh436CUA binding after all workers terminal again reports Mac locked and automatic unlock failed. Existing human unlock request remains pending; no repeat question or browser/shell workaround, no current live UI/physical/60fps proof."
   ],
-  "distribution": "Isolated ad-hoc-signed universal validation ZIP only. No install/launch/Xcodearchive/Store/upload/release. Private full-source backup pending standing authorization execution."
+  "distribution": "Private source commit/tree verified, repository private. Isolated ad-hoc universal validation ZIP only; no install/launch/Xcodearchive/Store/upload/release.",
+  "private_source_backup": "docs/SOURCE_PUBLICATION_436.json"
 }

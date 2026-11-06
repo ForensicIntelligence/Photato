@@ -12556,5 +12556,32 @@
     "qualification": "60focused Debug/all10new,354sameordered optimized each/all89new426\u2013436methods, universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
     "full_current_suite_passed": false,
     "Photoshop_parity": false
+  },
+  "source_delivery_436": {
+    "step": 436,
+    "repository": "ForensicIntelligence/Photato",
+    "private": true,
+    "source_commit": "76527a7b791685b21fc9248ef6e50cfdb8c21a05",
+    "source_tree": "bb8fa289ed3d41f7d62e6d0e53bcbacaac3731b1",
+    "source_parent": "ddd6f715f77d82cb4fcc7656d909a16b527f35c8",
+    "source_commit_url": "https://github.com/ForensicIntelligence/Photato/commit/76527a7b791685b21fc9248ef6e50cfdb8c21a05",
+    "source": "436Source04/Release02",
+    "qualified_inventory_inputs": 7271,
+    "included_qualified_inputs": 7237,
+    "excluded_qualified_count": 34,
+    "excluded_inputs_record": "artifacts/runs/20261106T055206Z-436-fill-path/curation01.json",
+    "curated_native_files": 8455,
+    "changed_paths": 92,
+    "old_root_and_rust_unchanged": 1061,
+    "changed_fixtures": 0,
+    "stale_removals": 0,
+    "staged_index_blobs_verified": true,
+    "remote_commit_and_tree_verified": true,
+    "known_secret_signature_hits": 0,
+    "privacy_review_limit": "Known key/token signatures, explicit generated/runtime/signing exclusions and fixture provenance checked; not an exhaustive privacy proof. Local runtime evidence and restricted external PSD excluded.",
+    "qualification": "60focused Debug/all10new and354sameordered optimized each/all89new426\u2013436methods pass;universalmin14/signature/ZIPpass. Fullsuite/physical/Photoshopopen.",
+    "distribution": "Private source backup only; no binary upload/install/launch/Xcodearchive/AppStore/release. Private until software release day.",
+    "documentation_finalization": "Separate docs-only backup follows consecutive history refresh/check; excluded final receipt records actualSHA, no later indexed native writes.",
+    "recorded_at_utc": "2026-11-06T06:40:36.998129+00:00"
   }
 }

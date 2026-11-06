@@ -2,7 +2,7 @@
   "step": 436,
   "application_build": 436,
   "source": "436Source04/Release02",
-  "status": "436selected normal/universal qualified; private source backup/final records pending; T01next",
+  "status": "436selected normal/universal and private source backup verified; final diary/docs-only backup follows; T01next",
   "reference": "docs/PATH_FILL_436.json",
   "software_changes": true,
   "qualification": "60focused Debug/all10new,354sameordered optimized each/all89new426\u2013436methods, universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/Photoshopopen.",
@@ -26,5 +26,7 @@
   "new_install": false,
   "new_archive": false,
   "new_upload": false,
-  "new_release": false
+  "new_release": false,
+  "source_publication": "docs/SOURCE_PUBLICATION_436.json",
+  "source_commit": "76527a7b791685b21fc9248ef6e50cfdb8c21a05"
 }
