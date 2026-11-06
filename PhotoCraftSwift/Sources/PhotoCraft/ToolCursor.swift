@@ -5,10 +5,11 @@ import SwiftUI
 /// Cursor semantics follow the operation actually dispatched, including the mode captured at stroke start.
 enum ToolCursor: Hashable {
   enum Badge: String { case add, subtract, intersect, constrain, center, constrainCenter, copy, constrainCopy }
-  case arrow, text, crosshair, openHand, closedHand, unavailable
+  case arrow, text, pathText, crosshair, openHand, closedHand, unavailable
   case symbol(String, Badge? = nil)
   case selectedPixels(copy:Bool,constrained:Bool,unsnapped:Bool)
 
+  static func pathType(available:Bool)->Self{available ? .pathText:.unavailable}
   static func selection(_ symbol: String, _ mode: SelectionMode) -> Self {
     .symbol(symbol, mode == .add ? .add : mode == .subtract ? .subtract : mode == .intersect ? .intersect : nil)
   }
@@ -20,6 +21,14 @@ enum ToolCursor: Hashable {
     switch self {
     case .arrow: return .arrow
     case .text: return .iBeam
+    case .pathText:
+      if let value=Self.cache[self]{return value}
+      let image=NSImage(size:NSSize(width:32,height:32),flipped:false){_ in
+        NSCursor.iBeam.image.draw(in:NSRect(x:8,y:10,width:14,height:20))
+        let path=NSBezierPath();path.move(to:.init(x:3,y:7));path.curve(to:.init(x:29,y:7),controlPoint1:.init(x:11,y:18),controlPoint2:.init(x:21,y:-4))
+        NSColor.black.setStroke();path.lineWidth=3;path.stroke();NSColor.white.setStroke();path.lineWidth=1;path.stroke();return true
+      }
+      let value=NSCursor(image:image,hotSpot:.init(x:15,y:12));Self.cache[self]=value;return value
     case .crosshair: return .crosshair
     case .openHand: return .openHand
     case .closedHand: return .closedHand

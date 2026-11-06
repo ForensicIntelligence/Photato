@@ -2,142 +2,116 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Photato</string>
 	<key>CFBundleDisplayName</key>
 	<string>Photato</string>
-	<key>CFBundleIdentifier</key>
-	<string>ca.forensicintelligence.photato</string>
-	<key>CFBundleExecutable</key>
-	<string>Photato</string>
-	<key>CFBundleIconFile</key>
-	<string>Photato</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.3.0</string>
-	<key>CFBundleVersion</key>
-	<string>438</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.graphics-design</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>LSMinimumSystemVersion</key>
-	<string>14.0</string>
-	<key>NSHighResolutionCapable</key>
-	<true/>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Photato Document</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>local.photocraft.swift.document</string>
-			</array>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>photato</string>
 				<string>pcswift</string>
 			</array>
+			<key>CFBundleTypeName</key>
+			<string>Photato Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>local.photocraft.swift.document</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>PDF</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.adobe.pdf</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Photoshop</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.adobe.photoshop-image</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Large Document Format</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.adobe.photoshop-large-image</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>PNG</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.png</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>JPEG</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.jpeg</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>TIFF</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.tiff</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Camera RAW</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
@@ -145,14 +119,14 @@
 				<string>public.camera-raw-image</string>
 				<string>com.adobe.raw-image</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Raster Image</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.quicktime-movie</string>
@@ -162,33 +136,59 @@
 				<string>com.microsoft.bmp</string>
 				<string>com.compuserve.gif</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>PhotoCraft Project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-			<key>NSDocumentClass</key>
-			<string>PhotoCraft.CraftNSDocument</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.photocraft.project</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>PhotoCraft.CraftNSDocument</string>
 		</dict>
 	</array>
+	<key>CFBundleExecutable</key>
+	<string>Photato</string>
+	<key>CFBundleIconFile</key>
+	<string>Photato</string>
+	<key>CFBundleIdentifier</key>
+	<string>ca.forensicintelligence.photato</string>
+	<key>CFBundleName</key>
+	<string>Photato</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.3.0</string>
+	<key>CFBundleVersion</key>
+	<string>439</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.graphics-design</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>local.photocraft.swift.document</string>
-			<key>UTTypeDescription</key>
-			<string>Photato Document</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>Photato Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>local.photocraft.swift.document</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -202,15 +202,15 @@
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>com.adobe.photoshop-large-image</string>
-			<key>UTTypeDescription</key>
-			<string>Large Document Format</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.image</string>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>Large Document Format</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.adobe.photoshop-large-image</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -222,14 +222,14 @@
 			</dict>
 		</dict>
 		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>org.photocraft.project</string>
-			<key>UTTypeDescription</key>
-			<string>PhotoCraft Project</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>PhotoCraft Project</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.photocraft.project</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

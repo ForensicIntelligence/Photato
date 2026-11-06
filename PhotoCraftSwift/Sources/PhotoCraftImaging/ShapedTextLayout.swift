@@ -90,24 +90,17 @@ public enum ShapedTextLayout {
     let attributed=try NativeTextLayout.attributed(text,dpi:dpi)
     var marks:[Mark]=[],overset=false,baseline=0.0,visits=0,frameBounds:CGRect?
     if [.path,.circle,.arch,.bow].contains(geometry.mode) {
-      var points=try PathConstruction.flattened(geometry.baselinePath(),tolerance:0.05);if geometry.reverse{points.reverse()}
-      var distances=[Double](repeating:0,count:points.count)
-      for i in 1..<points.count{distances[i]=distances[i-1]+hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y)}
-      guard let total=distances.last,total>0.001 else{throw CraftError.invalid("Text baseline path has no length.")}
-      let lineText=NSMutableAttributedString(attributedString:adjusted(attributed,scale:1,geometry:geometry))
-      for i in 0..<lineText.length where (lineText.string as NSString).character(at:i)==10{lineText.replaceCharacters(in:NSRange(location:i,length:1),with:" ")}
-      let line=CTLineCreateWithAttributedString(lineText),width=CTLineGetTypographicBounds(line,nil,nil,nil),available=total*(geometry.end-geometry.start)
-      let scale=geometry.fit && width>0 ? min(64,available/width):1
-      let alignment=type.defaultParagraph.alignment,align=alignment == .center ? max(0,(available-width*scale)/2):alignment == .right ? max(0,available-width*scale):0
-      overset=width*scale>available+0.01
+      let prepared=try PathTextLine(text,dpi:dpi)
+      let total=prepared.baseline.length,lineText=prepared.attributed,line=prepared.line
+      let scale=prepared.scale,align=prepared.align,available=prepared.available
+      overset=prepared.overset
       let glyphs=try glyphs(line,origin:.zero,string:lineText.string as NSString)
       var clusters:[Int:(Double,Double)]=[:]
       for g in glyphs{let old=clusters[g.cluster] ?? (g.position.x,g.position.x+g.advance);clusters[g.cluster]=(min(old.0,g.position.x),max(old.1,g.position.x+g.advance))}
-      func locate(_ distance:Double)->(CGPoint,Double){var lo=0,hi=distances.count-1;while hi-lo>1{let m=(hi+lo)/2;if distances[m]<=distance{lo=m}else{hi=m}};let a=points[lo],b=points[hi],length=max(1e-12,distances[hi]-distances[lo]),t=max(0,min(1,(distance-distances[lo])/length));return (CGPoint(x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t),atan2(b.y-a.y,b.x-a.x))}
       for glyph in glyphs {
         let cluster=clusters[glyph.cluster]!,middle=(cluster.0+cluster.1)/2,s=geometry.start*total+align+middle*scale
         guard align+cluster.0*scale>=0,align+cluster.1*scale<=available+0.01 else{continue}
-        let (p,angle)=locate(s),c=cos(angle),v=sin(angle),dx=(glyph.position.x-middle)*scale,dy=geometry.offset-glyph.position.y*scale
+        let (p,angle)=prepared.baseline.locate(s),c=cos(angle),v=sin(angle),dx=(glyph.position.x-middle)*scale,dy=geometry.offset-glyph.position.y*scale
         var transform=CGAffineTransform(a:c*scale,b:v*scale,c:v*scale,d:-c*scale,tx:p.x+c*dx-v*dy,ty:p.y+v*dx+c*dy)
         if let path=glyph.path.copy(using:&transform){marks.append(.init(path:path,color:glyph.color))}
       }

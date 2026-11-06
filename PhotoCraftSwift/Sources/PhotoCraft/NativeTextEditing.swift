@@ -34,12 +34,7 @@ extension EditorStore {
   func beginType(at start: CGPoint, end: CGPoint) {
     guard canBeginLayerCreation, !editingComponent, !editingMask else { return }
     if hypot(end.x - start.x, end.y - start.y) < 4 {
-      for layer in document.layers.reversed() where layer.visible && layer.group == nil {
-        guard case .text(let text) = layer.content, let inverse = try? layer.coordinateTransform.inverted(),
-          let size = try? NativeTextLayout.metrics(text, dpi: document.pixelsPerInch) else { continue }
-        let p = inverse.point(start.x, start.y)
-        if p.x >= 0, p.y >= 0, p.x < Double(size.width), p.y < Double(size.height) { beginType(layer); return }
-      }
+      if let layer=typeLayer(at:start){beginType(layer);return}
     }
     var text = TextContent(text: "", fontName: fontName, size: fontSize, color: brush.color)
     var type = TextTypography();if tool == .verticalText{type.orientation = .vertical};type.defaultStyle.font = fontName
@@ -74,6 +69,7 @@ extension EditorStore {
   private func retireTypeEditor() {
     guard let editor = typeEditor else { return }
     if editor.window?.firstResponder === editor { editor.window?.makeFirstResponder(editor.superview) }
+    (editor as?CanvasPathTypeEditor)?.stopPathPreview()
     editor.delegate = nil; editor.isEditable = false
     editor.undoManager?.removeAllActions(); typeEditor = nil
   }
@@ -105,7 +101,7 @@ extension EditorStore {
   }
 }
 
-@MainActor final class CanvasTypeEditor: NSTextView, NSTextViewDelegate, @preconcurrency NSLayoutManagerDelegate {
+@MainActor class CanvasTypeEditor: NSTextView, NSTextViewDelegate, @preconcurrency NSLayoutManagerDelegate {
   weak var store: EditorStore?
   let draftID: UUID
   private let nativeStorage: NSTextStorage
@@ -223,15 +219,26 @@ extension CraftCanvas {
     guard let draft = store.typeEditingDraft else {
       typeOverlay?.delegate = nil; typeOverlay?.removeFromSuperview(); typeOverlay = nil; store.typeEditor = nil; return
     }
-    if typeOverlay?.draftID != draft.id {
+    let pathEditing=CanvasPathTypeEditor.supports(draft.content)
+    if typeOverlay?.draftID != draft.id || (typeOverlay is CanvasPathTypeEditor) != pathEditing {
       typeOverlay?.delegate = nil; typeOverlay?.removeFromSuperview()
       do {
-        let editor = try CanvasTypeEditor(store: store, draft: draft)
+        let editor:CanvasTypeEditor = pathEditing ? try CanvasPathTypeEditor(store:store,draft:draft):try CanvasTypeEditor(store:store,draft:draft)
         typeOverlay = editor; store.typeEditor = editor; addSubview(editor)
         window?.makeFirstResponder(editor)
       } catch { store.error = error.localizedDescription; _ = store.finishType(cancel: true); return }
     }
     guard let editor = typeOverlay else { return }
+    if let pathEditor=editor as?CanvasPathTypeEditor {
+      let logical:Transform2D
+      if draft.isNew{logical=draft.layer.coordinateTransform}
+      else if let source=try?draft.layer.sourceTypeTransform(){logical=source}
+      else{let old=draft.layer.typeContent.flatMap{try?NativeTextLayout.metrics($0,dpi:store.document.pixelsPerInch).origin} ?? .init(0,0);logical=draft.layer.coordinateTransform * .translation(-old.x,-old.y)}
+      let transform=Transform2D.translation(imageRect.minX,imageRect.minY) * .scale(Double(scale),Double(scale)) * logical
+      pathEditor.frame=bounds;pathEditor.bounds=NSRect(origin:.zero,size:bounds.size)
+      pathEditor.sourceToView=CGAffineTransform(a:transform.a,b:transform.b,c:transform.c,d:transform.d,tx:transform.tx,ty:transform.ty)
+      pathEditor.configureContainer();return
+    }
     let metrics = try? NativeTextLayout.editingMetrics(draft.content, dpi: store.document.pixelsPerInch)
     let width = draft.content.typography?.kind == .paragraph ? draft.content.layoutWidth ?? 1 : max(400, (metrics?.width ?? 1) + 100)
     let height = draft.content.typography?.kind == .paragraph ? draft.content.layoutHeight ?? 1 : max(100, (metrics?.height ?? 1) + 60)

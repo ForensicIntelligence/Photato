@@ -1,0 +1,176 @@
+{
+  "step": 439,
+  "recorded_at_utc": "2026-11-06T09:46:46.075941+00:00",
+  "application_build": 439,
+  "source": "439Source05/Release01",
+  "source_manifest": "artifacts/runs/20261106T090059Z-439-direct-path-type/release01-source.json",
+  "source_inputs": 7341,
+  "run": "artifacts/runs/20261106T090059Z-439-direct-path-type",
+  "current_pass": 2,
+  "package": "T04",
+  "next_major_workflow": "A01 \u2014 Auto Color Correction Options for Curves, thenA04",
+  "status": "Direct horizontal Type-tool path entry and native Path/Circle/Arch/Bow editing pass both optimized architectures; strict output failures retained, fullT04stillopen.",
+  "typed_commands": 251,
+  "native_archive": 86,
+  "Actions": 50,
+  "settings_archive": 4,
+  "workspace_state_version": 1,
+  "panel_catalog": 3,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "Shared PathTextBaseline/PathTextLine prepares the same flattened baseline/CoreText line/fitting/alignment for renderer and value caret/selection geometry; grapheme-safe UTF16 indices and source normal positions.36prior-render output references captured before edit.",
+    "Native CanvasPathTypeEditor keeps NSTextView rich storage/IME/localUndo/keycommands, custom curve/caret/selection/IMEwindow/hit geometry and transformed placement. Async preview validates generation/draft and cancels safely; reattachment invalidates cancelled cache. Native straightcaret suppressed.",
+    "Selected connected path hover and wavy cursor, copied path/start fraction and captured document/tool/motion barriers create editable type as one final native transaction. Cancel retains source; full16modifier nativepath contexts and unsupportedvertical guard. Existing horizontal baseline modes share editor.",
+    "Existing text.create/set/layout and supported Adobe text jobs share renderer/model. Readonly pathTypeEditing state/schema/capabilities expose cached editor status, mode, UTF16range/caret count/overset/error. No new command, route, request field, keybinding or serialized version."
+  ],
+  "debug": {
+    "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/source05-summary.json",
+    "cases": 159,
+    "passed": 158,
+    "assertions": 3,
+    "unexpected": 0,
+    "crashes": 0,
+    "new439": 10,
+    "new_passed": 10,
+    "build_seconds": 22.31,
+    "test_seconds": 97.509,
+    "app_sha256": "1e46edb055ddeb58315fdac8b50cd33ac79f1a5a082fe856a9ec942b92fc78c2"
+  },
+  "normal": {
+    "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/release01-qualification.json",
+    "equivalence": "artifacts/runs/20261106T090059Z-439-direct-path-type/case-equivalence01.json",
+    "cases_each": 485,
+    "passed": [
+      484,
+      482
+    ],
+    "assertions": [
+      3,
+      11
+    ],
+    "unexpected": [
+      0,
+      0
+    ],
+    "crashes": [
+      0,
+      0
+    ],
+    "new439_passed": [
+      10,
+      9
+    ],
+    "new426_through439": 120,
+    "new_passed": [
+      120,
+      118
+    ],
+    "selected_native_workflow_tests_passed_both": true,
+    "affected_suite_passed": false,
+    "runtime": "Intel executes under Rosetta on macOS27.2ARM, not physical Intel/macOS14"
+  },
+  "baseline": {
+    "source": "unchanged438production plus new capture harness",
+    "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/legacy01-summary.json",
+    "cases": 8,
+    "passed": 8,
+    "planes": 36,
+    "app_sha256": "d2f5d5452f65bb9ad097e47a57920b3a0beaa8f1f3cc2cc5bebffb5e653c8487",
+    "fixture_manifest": "Tests/PhotoCraftImagingTests/Fixtures/PathTextLegacy/manifest.json",
+    "provenance": "Owned generated CC0text data; installedfont notredistributed. Regression reference, notAdobeoutput/oldIntelbaseline."
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/source01-summary.json",
+      "description": "Swift6mutable preview capture compile failure; immutable explicit snapshots repaired. Cachedlegacyapp/XCTest markednotqualified."
+    },
+    {
+      "attempt": "source04",
+      "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/source04-summary.json",
+      "description": "New explicit tool-switch capture assertion fails; initial insertion had matched initializer, repaired actual synchronizeTool hook. Desiredassertion retained."
+    }
+  ],
+  "intermediate_attempts": [
+    {
+      "attempt": "source02",
+      "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/source02-summary.json",
+      "passed": 157,
+      "cases": 158,
+      "notes": "All9new pass; native preview life/straight-caret source review follows."
+    },
+    {
+      "attempt": "source03",
+      "summary": "artifacts/runs/20261106T090059Z-439-direct-path-type/source03-summary.json",
+      "passed": 158,
+      "cases": 159,
+      "notes": "All10new pass; reattachment/Cancel and whitecanvascapture added. Source03/04apps identical;04addsdesiredtool-switchassertion."
+    }
+  ],
+  "cross_architecture": {
+    "diagnostic": "artifacts/runs/20261106T090059Z-439-direct-path-type/path-cross-architecture-words01.json",
+    "ULP": "artifacts/runs/20261106T090059Z-439-direct-path-type/path-cross-architecture-ULP01.json",
+    "exact_path_planes_each": [
+      36,
+      33
+    ],
+    "remaining": [
+      "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
+      "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
+    ],
+    "old_Intel_baseline_rerun": false,
+    "cause_proven": false
+  },
+  "universal": {
+    "report": "artifacts/runs/20261106T090059Z-439-direct-path-type/universal/staging01.json",
+    "packaging_verified": true,
+    "minimum_system": "14.0",
+    "signature_and_extracted_ZIP_verified": true,
+    "app": "/private/tmp/photato-validation-439-stage01-3b829f6a/Photato Validation 439.app",
+    "binary_sha256": "a82dbcf2e135e9ecb3afb5689e81987b143944fd53cd55ce3299ab0044441b93",
+    "archive_sha256": "83ef74996d3969c7c39a61682efc6bc86fd9a33411712e24cc678f8911a4c1c8",
+    "live_UI_qualified": false
+  },
+  "capture": "artifacts/runs/20261106T090059Z-439-direct-path-type/source05-captures/439-path-editor-offscreen.png",
+  "capture_qualification": "Owned native canvas/editor offscreen screenshot visuallyinspected; showscompletecurvedOffice\u00c1\u00e9,selection/underline/baseline. Programmatic, notlivewindow/Photoshopcomparison. Source02transparentcapture explicitlylimited; source03actualcanvas capture correct.",
+  "api_state": "pathTypeEditing",
+  "api_schema": "PathTypeAPI.stateSchema",
+  "cursor": "Wavy cursor onselected connectedpath; actual16modifier nativecapture/dispatch/unavailablevertical/toolchange behavior tested. ExistingToolCursorTests also run; fullPSalternates/artwork unqualified.",
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/text-on-paths-shapes/add-text-along-paths-or-inside-shapes.html",
+      "updated": "2026-02-23",
+      "supports": "Public native Type-tool hover/click and curve/inside workflows; only selectedhorizontalbaseline entry deliveredhere."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/work-with-dynamic-text/dynamic-text-overview.html",
+      "updated": "2026-08-28",
+      "supports": "Preset/custompath fit workflows; completePSfitting unqualified."
+    },
+    {
+      "source": "Installed macOS SDK public CoreText/AppKit headers",
+      "supports": "NSTextView override/input and CTLine stringoffset APIs; no Adobeimplementation inspected."
+    }
+  ],
+  "remaining_functional": [
+    "Full originalT04scope remains open: vertical/inside-path/warped inline editing, live start/end delimiters/flip/drag, complete fitting/reflow, font/composer/IME/affinity, editable PSD and maximum capacity. Current path bounds16384UTF16/2000000outlinepoints/16MP remain below complete Photoshop requirements.",
+    "Existing-layer draft preview draws text separately from layer masks/opacity/effects; fully composited editing appearance remains functionalstillneeded. Current affine caret/source preservation does not qualify complete preview appearance.",
+    "Closed full-circle start/end may coincide geometrically; full delimiter and affinity behavior is open. Current16modifier dispatch/cursor matches itself; exact Photoshop alternates/defaults/hotspot/artwork remain unobserved.",
+    "No physical Intel/macOS14, live Photoshop/currentworkspace/VoiceOver or60fpsproof; Maclocked again439, existing humanunlockpending. All prior failures and original104scope acceptance remain."
+  ],
+  "remaining_fidelity": [
+    "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
+    "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
+  ],
+  "selected_native_workflow_qualified": true,
+  "current_focused_suite_passed": false,
+  "current_normal_qualified": false,
+  "current_universal_packaging_verified": true,
+  "latest_fully_green_selected_normal_checkpoint": 436,
+  "full_current_suite_passed": false,
+  "physical_qualified": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "distribution": "Isolated ad-hoc universalvalidation package. Private development sourcebackup follows; currentstrict failures documented. No install/launch/Xcodearchive/Store/binaryupload/publicrelease."
+}

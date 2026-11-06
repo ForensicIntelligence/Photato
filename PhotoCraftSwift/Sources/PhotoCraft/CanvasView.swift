@@ -51,6 +51,7 @@ struct CanvasHost: NSViewRepresentable {
 @MainActor final class CraftCanvas: ModifierCursorView {
   override func clearCursorInput() {
     if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
+    pathTypePress=nil
     cancelTransformReference()
     store.artboardNeighborPress = nil; needsDisplay = true
     super.clearCursorInput()
@@ -74,6 +75,8 @@ struct CanvasHost: NSViewRepresentable {
     if (panningGesture && cursorPointerDown) || (spaceHeld && !cursorPointerDown) || store.tool == .hand {
       return cursorPointerDown ? .closedHand : .openHand
     }
+    if pathTypePress != nil{return ToolCursor.pathType(available:true)}
+    if !spaceHeld,pathTypeHit != nil{return ToolCursor.pathType(available:pathTypeAvailable)}
     if store.tool == .magneticLasso {
       let draft=store.magneticDraft
       return ToolCursor.magnetic(modifiers:cursorModifiers,mode:draft?.mode ?? store.selectionMode(modifiers:cursorModifiers),active:draft != nil,alternateReady:draft?.alternateReady ?? true,nearStart:magneticNearStart,precision:magneticPrecision)
@@ -144,6 +147,9 @@ struct CanvasHost: NSViewRepresentable {
 
   var store: EditorStore
   var typeOverlay: CanvasTypeEditor?
+  var pathTypePress:PathTypePress?
+  var typeBaselinePath:VectorPath?
+  var typeBaseline:PathTextBaseline?
   var activateDocument: () -> Bool = { true }
   var viewportUpdateQueued = false
   var cloneHover: CGPoint?
@@ -213,6 +219,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
+    pathTypePress=nil
     cancelTransformReference()
     gestureToolID = store.selectedTool.id
     if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil,(store.tool != .move || store.unavailableToolID != nil){store.cancelTransform()}
@@ -646,6 +653,7 @@ struct CanvasHost: NSViewRepresentable {
     }
     guard store.unavailableToolID == nil else { return }
     let p = docPoint(event)
+    if beginPathTypePress(event){return}
     if beginShapeGesture(event,at:p) { return }
     if beginFrameGesture(event, at: p) { return }
     if beginArtboardGesture(event, at: p) { return }
@@ -899,6 +907,7 @@ struct CanvasHost: NSViewRepresentable {
       needsDisplay = true
     }
     if store.tool == .magneticLasso,store.magneticDraft != nil,!panningGesture {return}
+    if endPathTypePress(event){return}
     if endTransformReference(event) { return }
     if endArtboardNeighbor(event) { return }
     if endGuideGesture(event) {return}
