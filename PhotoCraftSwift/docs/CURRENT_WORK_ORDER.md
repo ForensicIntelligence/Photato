@@ -84,7 +84,7 @@ Quick wins are small, useful changes that fit the current engine. Still needed c
 
 We sweep each package once per pass. A quick win gets one normal implementation checkpoint, including its UI, menu, API, history and focused tests. If it turns into a larger engine project, record the findings under still needed and move on. Fix safety and transaction failures before treating a path as delivered. Do not spend successive checkpoints exhausting one subsystem’s details.
 
-**Current: A04 — 2026 nondestructive adjustments and editable PSD behavior, major stillneeded (pass2).** Next A05. A01's paged histogram dependency is qualified; complete Auto Options and sampling remain open. Same81major members and all104original scopes/acceptance are preserved. [Priority](WORK_PRIORITIES_440.json) · [Original scope](FUNCTION_PHASES_440.json)
+**Current: A04 — 2026 nondestructive adjustments and editable PSD behavior, major stillneeded (pass2).** Next A05. A01's paged histogram dependency is qualified; complete Auto Options and sampling remain open. Same81major members and all104original scopes/acceptance are preserved. [Priority](WORK_PRIORITIES_440.json) · [Original scope](FUNCTION_PHASES_440.json) [Private development source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a); selected tests pass, no release.
 
 **S05 is parked, still open.** Its seven-file Photoshop reference matrix is complete. The selected-gray/initially-empty/explicit-full and PSD repair will resume during major still needed. A channel-row double-click candidate can be considered once when S05 is reached in the quick-win sweep. C01 no longer waits for S05 closure.
 

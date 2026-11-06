@@ -1,7 +1,7 @@
 {
   "step": "dev-step-440",
   "run": "artifacts/runs/20261106T100711Z-440-curves-sampling",
-  "status": "440selected paged histogram/nativeAPI qualification complete; private source/history/diary finalization pending",
+  "status": "440selected histogram dependency/private source verified; A04current, A05next; final excluded delivery receipt records finalization",
   "current_pass": 2,
   "current_major_workflow": "A04",
   "next": "A05",
@@ -13,5 +13,9 @@
   "source_manifest": "artifacts/runs/20261106T100711Z-440-curves-sampling/release02-source.json",
   "source_inputs": 7344,
   "production_swift_files": 1081,
-  "evidence": "docs/PAGED_HISTOGRAM_440.json"
+  "evidence": "docs/PAGED_HISTOGRAM_440.json",
+  "source_publication": "docs/SOURCE_PUBLICATION_440.json",
+  "source_commit": "097bf4ddf55224176fe85066d51d95600a1bd65a",
+  "new_private_push": true,
+  "record_finalization": "Final excluded receipt records actual history/standalone/mirror/docs backup results; no full-suite or Photoshop parity claim."
 }

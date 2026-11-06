@@ -26,6 +26,7 @@ Curves and Levels can now analyze very large sparse pixel layers without scannin
 All 27focused Debug tests and the same 61optimized tests on Apple Silicon and under Rosetta pass, including all eight new tests. Maximum-size tests cover 300,000×300,000logical pixels, sparse edge samples, translated selection coverage and archive round trips. Universal macOS 14 packaging, signature and extracted ZIP verify. Dense maximum-size editing, arbitrary-transform large statistics, physical-platform checks and 60 fps remain unqualified. Earlier full-suite and text-output failures are still recorded; these runs do not repair them.
 
 This completes an A01 analysis dependency. Curves Auto, complete Auto Color Correction Options, point sampling and the rest of A01 remain major work. The major still-needed sweep moves to A04's nondestructive adjustments, then A05. All 104original scopes and acceptance criteria are retained. [Step 440](DEVLOG.md#dev-step-440).
+The current source is [backed up privately](https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a), including the Xcode project. This is a development checkpoint, not a software release.
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -3448,3 +3449,5 @@ Two new-fixture compile failures were preserved and repaired. A first runnable t
 The final focused run passes 27 Debug tests, including eight new methods. The same 61optimized methods pass on Apple Silicon and under Rosetta; universal macOS 14 packaging, strict signature and ZIP extraction also verify. These are selected tests. Existing full-suite failures, cross-architecture text-output differences, Photoshop fidelity, physical-platform qualification and 60 fps remain open.
 
 The original A01 Auto Options candidate needs further work, including independent Photoshop references and native point-sampling transactions. It is not marked complete. This checkpoint delivers its statistics dependency, records the remaining scope and moves the major still-needed sweep to A04, then A05. The seven-pass order and every original acceptance criterion remain in force.
+
+The private source backup includes 7,310 frozen inputs, excludes 34 generated/cache/restricted inputs and preserves all 1,061 root/Rust files. No new image fixtures were added. A final documentation-only backup follows the history and standalone diary checks. [Source checkpoint](https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a) · [Backup record](SOURCE_PUBLICATION_440.json).

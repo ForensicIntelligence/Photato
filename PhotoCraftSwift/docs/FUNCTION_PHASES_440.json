@@ -14929,5 +14929,36 @@
       "affected_suites_green": true,
       "full_suite_green": false
     }
+  },
+  "source_delivery_440": {
+    "step": 440,
+    "repository": "ForensicIntelligence/Photato",
+    "private": true,
+    "source_commit": "097bf4ddf55224176fe85066d51d95600a1bd65a",
+    "source_tree": "9a367f04513548cc1bca394886d263696cabbefb",
+    "source_parent": "301956de5cd5d90a2c0c6c43497a2f99e50c0031",
+    "source_commit_url": "https://github.com/ForensicIntelligence/Photato/commit/097bf4ddf55224176fe85066d51d95600a1bd65a",
+    "source": "440Source04/Release02",
+    "qualified_inventory_inputs": 7344,
+    "included_qualified_inputs": 7310,
+    "excluded_qualified_inputs": 34,
+    "excluded_inputs_record": "artifacts/runs/20261106T100711Z-440-curves-sampling/curation01.json",
+    "curated_native_files": 8555,
+    "changed_paths": 41,
+    "root_and_rust_unchanged": 1061,
+    "new_fixture_files": 0,
+    "stale_removals": 0,
+    "staged_index_blobs_verified": true,
+    "remote_commit_and_tree_verified": true,
+    "known_secret_signature_hits": 0,
+    "privacy_review_limit": "Known key/token signatures and explicit generated/runtime/signing/restricted inputs reviewed; not an exhaustive privacy proof. Runtime evidence excluded.",
+    "qualification": "27focused Debug and61sameordered optimized methods each, including8new; universalmin14/signature/extractedZIPpass. Selected analysis paths only; all earlier failures and fullscope remain open.",
+    "selected_native_workflow_qualified": true,
+    "affected_suite_passed": true,
+    "full_current_suite_passed": false,
+    "Photoshop_parity": false,
+    "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day.",
+    "documentation_finalization": "Separate docs-only backup follows consecutive history refresh/check; final excluded receipt records actual SHA without later indexed native writes.",
+    "recorded_at_utc": "2026-11-06T10:41:44.875349+00:00"
   }
 }

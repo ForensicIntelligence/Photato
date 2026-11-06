@@ -139,5 +139,7 @@
   "primary_reference_urls": [
     "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-auto-tone-auto-contrast-and-auto-color.html",
     "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-tone-levels-curves-eyedroppers.html"
-  ]
+  ],
+  "private_source_backup": "docs/SOURCE_PUBLICATION_440.json",
+  "distribution": "Private development source backup only; no binary upload/install/launch/Xcodearchive/AppStore/publicrelease. Private until software release day."
 }
