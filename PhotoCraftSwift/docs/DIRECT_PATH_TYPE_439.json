@@ -172,5 +172,6 @@
   "physical_qualified": false,
   "Photoshop_parity": false,
   "goal_complete": false,
-  "distribution": "Isolated ad-hoc universalvalidation package. Private development sourcebackup follows; currentstrict failures documented. No install/launch/Xcodearchive/Store/binaryupload/publicrelease."
+  "distribution": "Private development sourcebackup only; no binaryupload/install/launch/Xcodearchive/AppStore/publicrelease. Privateuntilsoftwarereleaseday.",
+  "private_source_backup": "docs/SOURCE_PUBLICATION_439.json"
 }

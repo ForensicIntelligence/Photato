@@ -3,7 +3,7 @@
   "application_build": 439,
   "source": "439Source05/Release01",
   "reference": "docs/DIRECT_PATH_TYPE_439.json",
-  "status": "Direct horizontal Type-tool path entry and native Path/Circle/Arch/Bow editing pass both optimized architectures; strict output failures retained, fullT04stillopen.",
+  "status": "439nativepathworkflow/private development sourcebackupverified; strictfailuresretained; A01current",
   "software_changes": true,
   "qualification": "Debug158/159/all10new. Same485optimized ARM484/Intel482; selectednativeworkflowspassboth, imported/Point8bit/Path32bitstrictfailures retained. Universalmin14/signature/ZIPpass. Fullscope/fullsuite/physical/PSopen.",
   "selected_native_workflow_qualified": true,
@@ -26,10 +26,12 @@
     "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
     "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
   ],
-  "new_private_push": false,
+  "new_private_push": true,
   "new_install": false,
   "new_archive": false,
   "new_upload": false,
   "new_release": false,
-  "goal_complete": false
+  "goal_complete": false,
+  "source_publication": "docs/SOURCE_PUBLICATION_439.json",
+  "source_commit": "1e138cfb64a0851c90396e198049836dfa6bec66"
 }
