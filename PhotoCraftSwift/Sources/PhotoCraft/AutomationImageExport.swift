@@ -83,6 +83,6 @@ enum ImageExportPreparation {
   }
   func cancelSharedImageExport(_ share: Share) {
     if imageExportShares.contains(share.id) { share.document?.store.imageExportWorker?.cancel() }
-    if colorLookupExportShares.contains(share.id) { share.document?.store.colorLookupExportWorker?.cancel() }
+    if colorLookupExportShares.contains(share.id) { share.document?.store.colorLookupExportWorker?.cancel(); share.document?.store.colorLookupFilesWorker?.cancel() }
   }
 }

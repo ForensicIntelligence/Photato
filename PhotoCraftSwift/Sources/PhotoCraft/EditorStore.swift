@@ -40,6 +40,9 @@ import UniformTypeIdentifiers
   var colorLookupExportDraft: ColorLookupExportDraft?
   var colorLookupExportID: UUID?
   @ObservationIgnored var colorLookupExportWorker: Task<Data, Error>?
+  @ObservationIgnored var colorLookupFilesWorker: Task<[ColorLookupEncodedFile], Error>?
+  var colorLookupExportActiveFormats: [ColorLookupFileFormat] = []
+  @ObservationIgnored var colorLookupFilesPreparation: @Sendable (CraftDocument, ColorLookupExportRequest) throws -> [ColorLookupEncodedFile] = { try ColorLookupExport.files($0,request:$1) }
   @ObservationIgnored var colorLookupExportPreparation: @Sendable (CraftDocument, Int, String) throws -> Data = { try ColorLookupExport.cube($0, size: $1, title: $2) }
   var imageExportID: UUID?
   @ObservationIgnored var imageExportWorker: Task<ImageExportOutput, Error>?
@@ -292,6 +295,10 @@ import UniformTypeIdentifiers
   var photoAlignDraft: PhotoAlignWorkspace?
   var photoBlendDraft: PhotoBlendWorkspace?
   var regionRetouchSettings = RegionRetouchRequest(kind:.patch)
+  var patchPatternID: String?
+  @ObservationIgnored var patternPatchPreparation: @Sendable (RegionRetouchRequest,RasterPattern,CraftDocument,UUID) throws -> RegionRetouchEdit = {
+    try PatternPatch.prepare($0,pattern:$1,document:$2,layerID:$3)
+  }
   var regionRetouchTransformOnDrop = true
   var regionRetouchDraft: RegionRetouchDraft?
   var regionRetouchReady: RegionRetouchDraft?

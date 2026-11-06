@@ -192,15 +192,21 @@ struct AutomationCommand: Sendable {
         default: properties[key] = ["type": "number", "minimum": 0, "maximum": 1]
         }
       }
+      var parameterSchema: [String:Any] = ["type":"object","additionalProperties":false,
+        "properties":properties,"required":parameters.keys.filter { !optionalParameters.contains($0) }.sorted()]
+      if name == "retouch.patch" {
+        let forbidden = ["dx","dy","mode","type","structure","color","sampleAllLayers","seed"]
+        parameterSchema["oneOf"] = [
+          ["required":["dx","dy"],"not":["required":["patternID"]]],
+          ["required":["patternID"],"not":["anyOf":forbidden.map{["required":[$0]]}]]
+        ] as [[String:Any]]
+      }
       return [
         "type": "object", "additionalProperties": false,
         "required": ["command", "revision", "parameters"],
         "properties": [
           "command": ["const": name], "revision": ["type": "string", "minLength": 1],
-          "parameters": [
-            "type": "object", "additionalProperties": false, "properties": properties,
-            "required": parameters.keys.filter { !optionalParameters.contains($0) }.sorted(),
-          ],
+          "parameters": parameterSchema,
         ],
       ]
     }
@@ -271,7 +277,7 @@ struct AutomationCommand: Sendable {
     .init(name:"photo.autoAlign",parameters:["layerIDs":"Two to sixteen unique pixel-layer UUIDs","settings":"Optional projection, reference and focal length"],description:"Register overlapping layers by image content and warp their pixels and masks in one undoable transaction.",optionalParameters:["settings"]),
     .init(name:"photo.autoBlend",parameters:["layerIDs":"Two to sixteen unique pixel-layer UUIDs","settings":"Optional Auto-Blend settings"],description:"Blend aligned layers as a panorama or focus stack with editable masks, optional multiband result and transparent-area fill.",optionalParameters:["settings"]),
     .init(name:"retouch.stroke",parameters:["tool":"One of nine native retouch tools","points":"Document-space stroke samples","layerID":"Target layer UUID","target":"pixels or layerMask","brush":"Partial native retouch brush settings","mapping":"Clone/Healing source and optional anchor/transform","source":"Optional explicit shared source id/revision","sourceLayerID":"Source layer UUID","sampling":"Current Layer, Current & Below or All Layers","ignoreAdjustments":"Ignore adjustment layers when sampling","toning":"Dodge/Burn/Sponge settings","focus":"Blur/Sharpen/Smudge settings","foreground":"Smudge finger-paint colour","spotType":"Spot Healing algorithm"],description:"Apply one native retouch stroke, including semantic Actions and atomic history.",optionalParameters:["layerID","target","brush","mapping","source","sourceLayerID","sampling","ignoreAdjustments","toning","focus","foreground","spotType"]),
-    .init(name:"retouch.patch",parameters:["layerID":"Raster layer UUID","dx":"Integer horizontal drag offset","dy":"Integer vertical drag offset","mode":"source or destination","type":"normal or contentAware","diffusion":"Normal blending 1–7","transparent":"Respect sampled transparency","structure":"Structure retention 1–7","color":"Color adaptation 0–10","sampleAllLayers":"Sample visible composite","seed":"Deterministic variation"],description:"Repair a selected area using a dragged source or destination through native Patch and history.",optionalParameters:["mode","type","diffusion","transparent","structure","color","sampleAllLayers","seed"]),
+    .init(name:"retouch.patch",parameters:["layerID":"Raster layer UUID","dx":"Integer horizontal drag offset","dy":"Integer vertical drag offset","patternID":"Saved pattern ID instead of dx/dy; Normal Use Pattern","mode":"source or destination","type":"normal or contentAware","diffusion":"Normal blending 1–7","transparent":"Respect sampled transparency","structure":"Structure retention 1–7","color":"Color adaptation 0–10","sampleAllLayers":"Sample visible composite","seed":"Deterministic variation"],description:"Repair a selected area using a dragged source/destination or a saved pattern through native Patch and history.",optionalParameters:["dx","dy","patternID","mode","type","diffusion","transparent","structure","color","sampleAllLayers","seed"]),
     .init(name:"retouch.move",parameters:["layerID":"Raster layer UUID","dx":"Horizontal center offset","dy":"Vertical center offset","mode":"move or extend","scaleX":"Horizontal percentage","scaleY":"Vertical percentage","angle":"Clockwise degrees","structure":"Structure retention 1–7","color":"Color adaptation 0–10","sampleAllLayers":"Sample visible composite","seed":"Deterministic fill variation"],description:"Move/extend selected pixels, adapt the destination and fill the original hole in Move mode.",optionalParameters:["mode","scaleX","scaleY","angle","structure","color","sampleAllLayers","seed"]),
     .init(name:"retouch.redEye",parameters:["layerID":"Raster layer UUID","x":"Search left","y":"Search top","width":"Search width","height":"Search height","pupilSize":"Pupil extent percentage","darken":"Correction darkness percentage"],description:"Correct red pupils within a bounded region while preserving neutral highlights and selection coverage.",optionalParameters:["pupilSize","darken"]),
     .init(name: "clipboard.copy", parameters: ["layerIDs": "Optional copied layer IDs", "merged": "Copy visible merged pixels"], description: "Return an explicit native clipboard payload without changing the system clipboard or history.", optionalParameters: ["layerIDs", "merged"]),

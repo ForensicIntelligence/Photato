@@ -98,6 +98,11 @@ public enum ColorLUTFile {
     var rows = [[Float]](), grid: [Float]?, outputBits: Int?
     for (lineNumber,line) in lines(text).enumerated() {
       if lineNumber % 1024 == 0 { try Task.checkCancellation() }
+      let raw = line.trimmingCharacters(in:.whitespacesAndNewlines)
+      if raw.hasPrefix("# PHOTATO_OUTPUT_BITS ") {
+        guard rows.isEmpty,outputBits==nil,let bits=Int(raw.dropFirst("# PHOTATO_OUTPUT_BITS ".count)),[8,10,12,14,16].contains(bits) else {throw CraftError.invalid("Invalid3DL declared precision.")}
+        outputBits=bits;continue
+      }
       let line = clean(line); if line.isEmpty { continue }
       let tokens = line.split(whereSeparator: \.isWhitespace)
       if tokens[0] == "3DMESH" { guard rows.isEmpty, tokens.count == 1 else { throw CraftError.invalid("Invalid3DMESH header.") }; continue }

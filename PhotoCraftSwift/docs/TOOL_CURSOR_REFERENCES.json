@@ -1282,5 +1282,19 @@
   "large_equalize_430": {
     "reference": "docs/LARGE_EQUALIZE_430.json",
     "impact": "Existing menu/modal processing and preview overview; no new pointer/modifier action. Existing all16cursor/gesture tests remain in the127-case normal batch, including429pivot capture. No physical modifier claim."
+  },
+  "color_lookup_formats_431": {
+    "step": 431,
+    "tool_modifier_action_changed": false,
+    "cursor": "Native dialog text, checkboxes and save controls retain AppKit-owned cursors; no drawing gesture or modifier action added.",
+    "qualification": "No new modifier matrix needed for metadata/export UI. Existing shared tool policy remains required. Offscreen controls only; physical save-panel behavior open.",
+    "reference": "docs/COLOR_LOOKUP_FORMATS_431.json"
+  },
+  "pattern_patch_432": {
+    "step": 432,
+    "reference": "docs/PATTERN_PATCH_432.json",
+    "tool_modifier_action_changed": false,
+    "behavior": "No new canvas tool or alternate modifier action. Pattern is a native button/menu operation. Captured pattern preparation blocks transform drags/arrows and retains Escape/Cancel/Enter; native control cursors stay AppKit-owned.",
+    "qualification": "No new tool/modifier matrix required for native menu/button; previous shared policy remains required. Current native physical appearance/input unqualified."
   }
 }

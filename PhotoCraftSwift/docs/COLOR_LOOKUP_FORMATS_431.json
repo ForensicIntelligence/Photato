@@ -1,0 +1,111 @@
+{
+  "step": 431,
+  "recorded_at_utc": "2026-11-06T03:43:00.236142+00:00",
+  "application_build": 431,
+  "source": "431Source02",
+  "source_manifest": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source02-source.json",
+  "source_inputs": 7251,
+  "production_swift_files": 1060,
+  "debug_app_sha256": "2d9882756cc9941dfb5e54830f60d9bc8ea266294dfef2de6b4188164f3ca746",
+  "run": "artifacts/runs/20261106T031856Z-431-color-lookup-formats",
+  "current_pass": 2,
+  "delivered_package": "I05",
+  "next_major_workflow": "B05",
+  "status": "Native multiple-format RGB Color Lookup export and shared single/ZIP API pass34focused Debug cases/all8new methods; independent OCIO/LittleCMS/ColorSync checks pass. Full I05 remains open.",
+  "typed_commands": 250,
+  "native_archive": 86,
+  "Actions": 49,
+  "settings_archive": 4,
+  "tracked_commands": 652,
+  "menu_entries": 808,
+  "implementation": [
+    "One existing global RGB stack bake supplies CUBE, Flame-style 12-bit 3DL, CineSpace CSP and ICC4.4 RGB device-link files. Empty-copyright CUBE bytes are retained.",
+    "Native sheet exposes Description, Copyright, base filename and multiple format checkboxes. Named FileDocument wrappers use the SwiftUI native multiple-document exporter.",
+    "Single/bundle preparations share native cancellation/owner/source/busy/dirty/history guards. Explicit operation cancellation, transfer revocation and stale source cannot deliver old files.",
+    "Photato GET color-lookup.cube/.3dl/.csp/.icc/.zip, strict metadata/format/filename/date headers, schemas and capability/state discovery share native preparation. Existing CUBE clients remain supported.",
+    "ICC/3DL integer outputs reject values outside0\u20131; CUBE/CSP retain extended output. ICC creation time uses the request time unless explicitly pinned. No working-profile assignment or non-Swift app dependency."
+  ],
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-color-lookup-tables.html",
+      "read": "2026-11-05",
+      "supports": "Metadata, grid/quality and multiple3DL/CUBE/CSP/ICC output; does not qualify exact Photoshop bytes/preset grid mappings."
+    },
+    {
+      "url": "https://www.color.org/specification/ICC.1-2022-05.pdf",
+      "read": "2026-11-05",
+      "supports": "Public web text for ICC device-link header/tag/lut16 specifications. Direct urllib downloadHTTP403 retained and not retried; no local PDF visual claim."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/OpenColorIO/v2.4.2/src/OpenColorIO/fileformats/FileFormatCSP.cpp",
+      "supports": "Pinned public BSD format-reader reference; no implementation copied."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/OpenColorIO/v2.4.2/src/OpenColorIO/fileformats/FileFormat3DL.cpp",
+      "supports": "Pinned public BSD format-reader reference; no implementation copied."
+    }
+  ],
+  "reference_provenance": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/references/provenance.json",
+  "debug": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source02-summary.json",
+  "debug_cases": 34,
+  "new_methods": [
+    "PhotoCraftImagingTests.ColorLookupFormatsTests/testAllBakedFormatsShareCanonicalSamplingAndPreserveDocumentAtEveryDepth",
+    "PhotoCraftImagingTests.ColorLookupFormatsTests/testAllFourFormatsHaveIndependentAxesAndICCStructureAndRetainLegacyCubeBytes",
+    "PhotoCraftImagingTests.ColorLookupFormatsTests/testDeclared3DLPrecisionPreservesDarkTablesAndSmallGrids",
+    "PhotoCraftImagingTests.ColorLookupFormatsTests/testMetadataShapeExtendedRangeIntegerLimitsAndCancelledEncodingAreExplicit",
+    "PhotoCraftAppTests.ColorLookupMultiExportTests/testEveryHTTPFormatAndSelectedZIPMatchNativeWithPinnedMetadataAndNoDocumentChanges",
+    "PhotoCraftAppTests.ColorLookupMultiExportTests/testNativeMultiFormatControlsAndNamedFileWrappersPublishExactFilesWithoutHistory",
+    "PhotoCraftAppTests.ColorLookupMultiExportTests/testNativeSetAndHTTPBundleCancellationAndChangedSourceDiscardEveryFormat",
+    "PhotoCraftAppTests.ColorLookupMultiExportTests/testNewMetadataAndFormatGuardsRejectInvalidStaleDisabledAndRevokedTransfers"
+  ],
+  "debug_build_seconds": 10.63,
+  "debug_test_seconds": 4.528,
+  "failed_attempts": [
+    {
+      "source": "431Source01",
+      "summary": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source01-summary.json",
+      "description": "Test-module compile failure: internal method accepted a private test gate. Full source/logs/5322 outputs retained before making only that test helper private; prior linked XCTest outputs not qualified."
+    },
+    {
+      "summary": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source02-external-readers01-failure.json",
+      "driver": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/drivers/readers431-attempt01.py",
+      "description": "Isolated test-reader library discovery found no LittleCMS; preserved before using the observed installed absolute library path. No app/test/expected-value change."
+    }
+  ],
+  "external_readers": {
+    "report": "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source02-external-readers02.json",
+    "owned_samples": 30,
+    "OCIO_version": "2.4.2",
+    "cube_csp_max_absolute_error": 4.196166991654593e-08,
+    "threeDL_max_absolute_error": 0.0001221299171447754,
+    "ICC_LittleCMS_max_absolute_error": 1.2737274169921653e-05,
+    "bounds_defined_before_checks": true,
+    "ColorSync": {
+      "usable": true,
+      "error": null,
+      "warnings": null
+    },
+    "qualification": "Owned asymmetric transform vertices/interiors; independent standards-reader semantics, not Adobe output or Photoshop equivalence. OCIO installed only in a disposable test environment."
+  },
+  "captures": [
+    "artifacts/runs/20261106T031856Z-431-color-lookup-formats/source02-captures/color-lookup-multiple-options.png"
+  ],
+  "capture_qualification": "Owned offscreen NSHostingView capture visually checked: metadata fields, all four format choices, copyright line and Export button visible. Controlled named FileWrapper directory writes pass. No live Save Panel/Photoshop claim.",
+  "adobe_API": "Pinned Adobe v2 has no dedicated Color Lookup export route. General execute-actions does not qualify an unknown export descriptor; none is invented.",
+  "current_normal_qualified": false,
+  "current_universal_qualified": false,
+  "latest_normal_universal_checkpoint": 430,
+  "full_current_suite_passed": false,
+  "current_physical_qualified": false,
+  "Photoshop_parity": false,
+  "remaining": [
+    "Full I05 scope remains open: Export As/Quick Export settings, Save for Web, slices, layers/artboards/comps to files/PDF, asset naming/scales, LUT/export presets and image-asset generation wherever not already implemented and qualified.",
+    "Full 256-point grid support and streaming output remain functional stillneeded. This implementation retains 2\u2013129 grid points, 64MiB per file and 256MiB+8192 bytes per ZIP.",
+    "LAB abstract profiles, CMYK device links and corresponding color conversion remain functional stillneeded; this increment exports global RGB only. General CSP/ICC native import and Photoshop interchange descriptors remain unsupported.",
+    "Exact Photoshop quality-preset grid mappings, zero/one-grid behavior, output/default/interpolation/ICC fidelity and all original independent acceptance remain open. No guessed presets or Adobe action descriptors are bound.",
+    "Live native multi-document save-panel filenames, destination/overwrite/partial-error behavior and supported physical-platform/performance qualification remain unverified; controlled FileWrapper output is not an atomic multiple-file transaction claim.",
+    "Some legacy 3DL readers infer output bit depth from the maximum stored value, making dark tables ambiguous. Native Photato scale metadata preserves its own tables, but does not prove compatibility with every external reader.",
+    "Existing global-stack restrictions on spatial masks, groups, pixel overlays, clipping, dither/Dissolve, Grain and neighborhood effects remain. Current full-suite failures and prior Debug crashes remain recorded; no current optimized/universal/full-suite/physical/Photoshop qualification is claimed."
+  ],
+  "distribution": "No install/launch/archive/upload/Store/release or new private push. Last normal/universal/private-source batch430; optimized/universal/private-source testing remains batched at meaningful stable milestones."
+}

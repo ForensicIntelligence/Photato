@@ -2687,5 +2687,19 @@
     "Photato": "Existing tone.apply gains paged Equalize capacity/per-kind metadata; native/API/Actions exact regression paths pass.",
     "Adobe": "Existing v2 execute-actions route retained. Equalize ActionJSON/UXP mapping/output/defaults remain unsupported/unqualified; public generic route docs alone do not prove the missing descriptor. No invented endpoint.",
     "scope_waived": false
+  },
+  "color_lookup_formats_431": {
+    "step": 431,
+    "reference": "docs/COLOR_LOOKUP_FORMATS_431.json",
+    "Photato": "Native RGB LUT files and single/ZIP transfer routes share preparation, metadata/state/schemas, cancellation/revocation/source guards. Existing CUBE preserved.",
+    "Adobe": "Pinned Adobe v2 has no dedicated Color Lookup export route. General execute-actions does not qualify an unknown export descriptor; none is invented.",
+    "scope_waived": false
+  },
+  "pattern_patch_432": {
+    "step": 432,
+    "reference": "docs/PATTERN_PATCH_432.json",
+    "Photato": "retouch.patch patternID alternate; shared native Core preparation/state/schema/guards and exact native/API output",
+    "Adobe": "Pinned Adobe v2 has no dedicated Patch/retouch endpoint. Existing generic execute-actions does not qualify unknown Patch descriptors; none is invented.",
+    "scope_waived": false
   }
 }

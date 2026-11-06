@@ -124,5 +124,17 @@
     },
     "original_build_project_user_state_and_rust": "All four protected state hashes and 754 upstream Rust file hashes verified unchanged.",
     "runtime_qualification": "Focused native Debug/Release evidence and universal build metadata; current full suite, physical Intel, macOS14/26 and live Photato/Photoshop qualification remain open."
+  },
+  "pattern_patch_432": {
+    "step": 432,
+    "reference": "docs/PATTERN_PATCH_432.json",
+    "status": "Normal Patch Use Pattern through native saved-pattern controls and shared API:40focused Debug/all9new plus199sameordered optimized cases per architecture/all55new426\u2013432methods pass. Full B05 remains open.",
+    "remaining": [
+      "Full B05 remains open: Patch source/destination/adaptation, Content-Aware Move/Extend, Red Eye and full-resolution protected-region behavior wherever missing or unqualified.",
+      "Pattern Patch currently bounds the selected solve window including its two-pixel border and transformed output to4,194,304pixels each. Tiled/unbounded solving/output remains functional stillneeded. Other Patch/Move/RedEye paths retain16,777,216canvas/4,194,304region limits and require paged expansion.",
+      "Ordinary RGB raster image target only; Smart Objects, projected source storage, mask/channel targets and other color modes remain substantive functional work. Saved pattern asset limits remain16MP.",
+      "Exact Photoshop pattern phase/scale, alpha/diffusion/solver/profile/output/defaults, all native contextual variations/persistence and unsupported Adobe action descriptors remain open. Portable semantic retouch Actions remain unimplemented.",
+      "Physical/native appearance and input, full supported-platform/performance/60fps, dense maximum and complete current-suite/Photoshop parity are not established. Mac is still locked; the existing human unlock request remains pending. Earlier numerical/Debug/full-suite residuals remain recorded."
+    ]
   }
 }

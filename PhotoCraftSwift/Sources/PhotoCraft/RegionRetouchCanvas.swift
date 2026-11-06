@@ -7,6 +7,7 @@ extension CraftCanvas {
     start = p;end = p;regionRetouchSelecting = false;regionRetouchStart = nil
     if kind == .redEye { regionRetouchSelecting = true;return true }
     if let draft = store.regionRetouchDraft {
+      guard draft.pattern == nil else { return true }
       regionRetouchStart = draft
       let nearest = draft.frame.handles.enumerated().min { hypot($0.element.x-p.x,$0.element.y-p.y) < hypot($1.element.x-p.x,$1.element.y-p.y) }
       if kind == .move,let nearest,hypot(nearest.element.x-p.x,nearest.element.y-p.y)*scale < 10 { regionRetouchHandle = nearest.offset }
@@ -59,7 +60,7 @@ extension CraftCanvas {
     return true
   }
   func drawRegionRetouch(in c: CGContext) {
-    if let d = store.regionRetouchDraft { drawTransform(d.frame,in:c) }
+    if let d = store.regionRetouchDraft, d.pattern == nil { drawTransform(d.frame,in:c) }
     if store.tool == .redEye,regionRetouchSelecting,let a = start,let b = end {
       let p = viewPoint(a),q = viewPoint(b)
       outline(CGRect(x:min(p.x,q.x),y:min(p.y,q.y),width:abs(q.x-p.x),height:abs(q.y-p.y)),in:c)
@@ -71,6 +72,7 @@ extension CraftCanvas {
     }
     guard var d = store.regionRetouchDraft else { return false }
     if [36,76].contains(event.keyCode) { store.commitRegionRetouch();return true }
+    guard d.pattern == nil else { return true }
     let amount = event.modifierFlags.contains(.shift) ? 10.0:1.0
     switch event.keyCode {
     case 123:d.frame.centerX -= amount

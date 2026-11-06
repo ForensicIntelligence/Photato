@@ -27,12 +27,12 @@ extension AutomationService {
   static var colorLookupExportStateSchema: [String: Any] {
     BrushAPI.object(["available": BrushAPI.flag, "workspaceOpen": BrushAPI.flag,
       "operationID": ["type": ["string", "null"], "format": "uuid"],
-      "busy": BrushAPI.flag], required: ["available", "workspaceOpen", "operationID", "busy"])
+      "formats": ["type":"array","items":BrushAPI.enumeration(ColorLookupFileFormat.allCases.map(\.rawValue))], "busy": BrushAPI.flag], required: ["available", "workspaceOpen", "operationID", "busy"])
   }
   func colorLookupExportState(_ store: EditorStore) -> [String: Any] {
     ["available": store.canExportColorLookup, "workspaceOpen": store.colorLookupExportDraft != nil,
       "operationID": store.colorLookupExportID?.uuidString as Any? ?? NSNull(),
-      "busy": store.colorLookupExportID != nil]
+      "formats": (store.colorLookupExportID != nil ? store.colorLookupExportActiveFormats : store.colorLookupExportDraft?.formats ?? []).map(\.rawValue), "busy": store.colorLookupExportID != nil]
   }
   static var colorLookupCapabilities: [String:Any] {
     ["commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":ColorLookupAdjustment.apiSchema,
@@ -45,13 +45,17 @@ extension AutomationService {
      "download":["method":"GET","path":"/v1/documents/{id}/layers/{layerID}/lut",
        "revisionHeader":"Optional X-Photato-Revision","result":"original LUT bytes or generated Cube; filename in layer colorLookup.lut.sourceFile"],
      "stackExport":["method":"GET","path":"/v1/documents/{id}/color-lookup.cube",
+       "paths":ColorLookupFileFormat.allCases.map{"/v1/documents/{id}/color-lookup."+$0.rawValue}+["/v1/documents/{id}/color-lookup.zip"],
+       "formats":ColorLookupFileFormat.allCases.map(\.rawValue),
+       "bundleHeaders":"ZIP: X-Photato-LUT-Formats optional comma-separated unique formats (default all); X-Photato-LUT-Filename optional percent-encoded safe base filename,120UTF8bytes. Single-file suffix selects one format; formats header is rejected there.",
+       "metadataHeaders":"X-Photato-LUT-Copyright optional percent-encoded text,1024UTF8bytes/no controls; prefix © Copyright plus UTC creation year. X-Photato-LUT-Created optional ISO8601 timestamp, default request time; pins ICC creation metadata for reproducible exports.",
        "cancelCommand":"image.export.cancel with operationID from colorLookupExport state",
        "gridHeader":"X-Photato-LUT-Grid-Points: integer2–129, default32",
        "titleHeader":"X-Photato-LUT-Description: optional percent-encoded UTF-8, maximum1024bytes, no control characters; default Color Lookup",
        "revisionHeader":"Optional X-Photato-Revision", "contentType":"application/octet-stream",
        "stateSchema":colorLookupExportStateSchema,
        "behavior":"Bake the visible global RGB adjustment stack above Background through the shared native compositor. No document/history/dirty change. Native File > Export > Color Lookup Tables shares this preparation. Transfer/revision/busy/source/revocation/cancellation checks apply.",
-       "limits":"CUBE only;2–129grid points/64MiB. Spatial masks, groups/pixel overlays, clipping, dither/Dissolve, Grain and neighborhood effects reject rather than silently change their meaning. Current working RGB sample space/depth is retained; no ICC profile is embedded in CUBE. Exact Photoshop tables/defaults, other formats/full Photoshop grid ranges, full export and platform qualification remain open. No published dedicated Adobe v2 LUT-export route or unqualified action descriptor is invented."],
+       "limits":"CUBE/3DL/CSP/RGBdevice-link ICC;2–129grid points/64MiB per file,256MiB+8192bytes per ZIP. 3DL12-bit integer and ICC16-bit integer output require0–1samples; CUBE/CSP retain extended values. CSP/ICC native import/profile classes, full256grid/streaming and exact Photoshop files/defaults remain open. Some legacy3DL readers infer output scale for dark tables; declared Photato scale is retained by native3DL import.  Spatial masks, groups/pixel overlays, clipping, dither/Dissolve, Grain and neighborhood effects reject rather than silently change their meaning. Current working RGB sample space/depth is retained; no ICC profile is embedded in CUBE. Exact Photoshop tables/defaults, other formats/full Photoshop grid ranges, full export and platform qualification remain open. No published dedicated Adobe v2 LUT-export route or unqualified action descriptor is invented."],
      "permission":"documentTransfersEnabled; disabling clears the session LUT cache",
      "limits":["maximumCachedTables":16,"maximumCacheBytes":64*1024*1024,"maximumTableEdge":ColorLUT.maximumSize],
      "presets":ColorLUTPreset.allCases.map { ["id":$0.rawValue,"title":$0.title] },
@@ -82,7 +86,7 @@ extension AutomationService {
     let collection = request.path == "/v1/luts"
     let clear = request.method == "POST" && request.path == "/v1/luts/clear"
     let download = request.method == "GET" && parts.count == 6 && parts[0] == "v1" && parts[1] == "documents" && parts[3] == "layers" && parts[5] == "lut" && request.path == "/"+parts.joined(separator:"/")
-    let stackExport = request.method == "GET" && parts.count == 4 && parts[0] == "v1" && parts[1] == "documents" && parts[3] == "color-lookup.cube" && request.path == "/"+parts.joined(separator:"/")
+    let stackExport = request.method == "GET" && parts.count == 4 && parts[0] == "v1" && parts[1] == "documents" && (["color-lookup.zip"]+ColorLookupFileFormat.allCases.map{"color-lookup."+$0.rawValue}).contains(parts[3]) && request.path == "/"+parts.joined(separator:"/")
     guard collection || clear || download || stackExport else { return nil }
     guard documentTransfersEnabled else { throw AutomationFailure(status:403,message:"Enable document uploads and downloads in the native API window.") }
     if collection && request.method == "GET" {
@@ -128,17 +132,40 @@ extension AutomationService {
           !value.unicodeScalars.contains(where:{$0.value < 32}) else { throw AutomationFailure(status:400,message:"Invalid LUT description.") }
         title = value
       } else { title = "Color Lookup" }
+      let archive = parts[3] == "color-lookup.zip"
+      let formats:[ColorLookupFileFormat]
+      if archive {
+        if let raw=request.headers["x-photato-lut-formats"] {
+          let names=raw.split(separator:",",omittingEmptySubsequences:false).map{$0.trimmingCharacters(in:.whitespaces)}
+          let parsed=names.compactMap(ColorLookupFileFormat.init(rawValue:))
+          guard parsed.count==names.count,!parsed.isEmpty,Set(parsed).count==parsed.count else {throw AutomationFailure(status:400,message:"Choose unique LUT formats:3dl,cube,csp,icc.")}
+          formats=parsed
+        }else {formats=ColorLookupFileFormat.allCases}
+      }else {
+        guard request.headers["x-photato-lut-formats"]==nil,let format=ColorLookupFileFormat(rawValue:String(parts[3].dropFirst("color-lookup.".count))) else {throw AutomationFailure(status:400,message:"The single-file path selects its LUT format.")}
+        formats=[format]
+      }
+      func textHeader(_ key:String,_ fallback:String)throws->String {
+        guard let raw=request.headers[key] else{return fallback}
+        guard let value=raw.removingPercentEncoding else{throw AutomationFailure(status:400,message:"Invalid percent-encoded LUT metadata.")};return value
+      }
+      let date:Date
+      if let raw=request.headers["x-photato-lut-created"] {
+        guard let value=ISO8601DateFormatter().date(from:raw)else {throw AutomationFailure(status:400,message:"Supply an ISO8601 ICC creation date.")};date=value
+      }else {date=Date()}
+      let options=ColorLookupExportRequest(size:size,title:title,copyright:try textHeader("x-photato-lut-copyright",""),formats:formats,baseName:try textHeader("x-photato-lut-filename","Color Lookup"),created:date)
+      do{try options.validate()}catch{throw AutomationFailure(status:400,message:error.localizedDescription)}
       let expectedRevision = revision(document.store)
       guard request.headers["x-photato-revision"] == nil || request.headers["x-photato-revision"] == expectedRevision else { throw AutomationFailure(status:409,message:"Stale document revision.") }
       guard document.canRunFileCommand, document.closeWorkflowID == nil, document.store.canExportImages else { throw AutomationFailure(status:409,message:"Finish the current edit or export first.") }
       _ = try ColorLookupExport.adjustments(in:document.store.document)
       let source = document.store.document
       colorLookupExportShares.insert(shareID); defer { colorLookupExportShares.remove(shareID) }
-      let data = try await document.store.encodedColorLookup(size:size,title:title)
+      let data = try await document.store.encodedColorLookupData(options,archive:archive)
       try validate(); prune()
       guard shares.contains(where:{$0.id == shareID && $0.document === document}), document.closeWorkflowID == nil,
         document.store.document == source, revision(document.store) == expectedRevision else { throw AutomationFailure(status:409,message:"Document changed during LUT export.") }
-      return .init(status:200,contentType:"application/octet-stream",body:data)
+      return .init(status:200,contentType:archive ? "application/zip":"application/octet-stream",body:data)
     }
     guard let shareID = UUID(uuidString:parts[2]), let layerID = UUID(uuidString:parts[4]), let share = shares.first(where:{ $0.id == shareID }), let document = share.document,
       case .adjustment(.colorLookup(let value)) = document.store.document.layers.first(where:{ $0.id == layerID })?.content, let lut = value.lut else { throw AutomationFailure(status:404,message:"Shared Color Lookup layer not found.") }

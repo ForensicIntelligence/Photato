@@ -491,7 +491,10 @@ import UniformTypeIdentifiers
       "maskManagement":store.maskManagementState,
       "adjustmentBrush":store.adjustmentBrushState,
       "paintingTools":store.paintingState,
-      "regionRetouch": ["available":store.canBeginRegionRetouch,"hasSelection":store.document.selection != nil,"previewOpen":store.regionRetouchDraft != nil,"previewBusy":store.regionRetouchBusy,"previewError":store.regionRetouchError as Any? ?? NSNull()],
+      "regionRetouch": ["available":store.canBeginRegionRetouch,"hasSelection":store.document.selection != nil,"previewOpen":store.regionRetouchDraft != nil,"previewBusy":store.regionRetouchBusy,"previewError":store.regionRetouchError as Any? ?? NSNull(),
+        "canUsePattern":store.canUsePatternPatch,"selectedPatternID":store.selectedPatchPattern?.id as Any? ?? NSNull(),
+        "patternCaptured":store.regionRetouchDraft?.pattern?.id as Any? ?? NSNull(),
+        "patterns":store.patchPatterns.map{["id":$0.id,"name":$0.displayName,"width":$0.surface.width,"height":$0.surface.height,"depth":$0.surface.depth.rawValue] as [String:Any]}],
       "pdfPlacement":store.pdfPlacementState,
       "embeddedPlacement":store.embeddedPlacementState,
       "pdfSourceEditing":store.pdfSourceEditingState,
@@ -820,7 +823,7 @@ import UniformTypeIdentifiers
       }
       if command.name == "image.export.cancel" {
         let operation = try command.actionUUID("operationID")
-        if store.colorLookupExportID == operation { store.colorLookupExportWorker?.cancel() }
+        if store.colorLookupExportID == operation { store.colorLookupExportWorker?.cancel(); store.colorLookupFilesWorker?.cancel() }
         else {
           guard store.imageExportID == operation else { throw AutomationFailure(status: 409, message: "No matching image or color lookup export is active.") }
           store.imageExportWorker?.cancel()
@@ -1267,9 +1270,16 @@ import UniformTypeIdentifiers
         return .json(state(share, document: document))
       }
       if RegionRetouchAPI.commands.contains(command.name) {
-        let options = try command.regionRetouchOptions()
+        if command.parameters["patternID"] != nil, store.patterns.busy {
+          throw AutomationFailure(status:409,message:"Wait for the pattern library operation to finish.")
+        }
+        let options = try command.regionRetouchOptions(patterns: store.patchPatterns)
+        let patternPrepare = store.patternPatchPreparation
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in
-          .regionRetouch(try RegionRetouchPreparation.prepare(options.request,document:original,layerID:options.id))
+          if let pattern = options.pattern {
+            return .regionRetouch(try patternPrepare(options.request,pattern,original,options.id))
+          }
+          return .regionRetouch(try RegionRetouchPreparation.prepare(options.request,document:original,layerID:options.id))
         }
         return .json(state(share,document:document))
       }

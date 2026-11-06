@@ -1,0 +1,28 @@
+{
+  "step": 432,
+  "application_build": 432,
+  "source": "432Source04/Release01",
+  "status": "432selected PatternPatch and431\u2013432batch qualified; C01next; private backup/final records pending",
+  "reference": "docs/PATTERN_PATCH_432.json",
+  "software_changes": true,
+  "qualification": "40focused Debug/all9new;199sameordered optimized each/all55new426\u2013432methods pass. Universalmin14/signature/ZIP pass. Fullscope/fullsuite/physical/Photoshopopen.",
+  "full_current_suite_passed": false,
+  "Photoshop_parity": false,
+  "run": "artifacts/runs/20261106T035012Z-432-pattern-patch",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "C01",
+  "source_manifest": "artifacts/runs/20261106T035012Z-432-pattern-patch/source04-source.json",
+  "source_inputs": 7254,
+  "remaining": [
+    "Full B05 remains open: Patch source/destination/adaptation, Content-Aware Move/Extend, Red Eye and full-resolution protected-region behavior wherever missing or unqualified.",
+    "Pattern Patch currently bounds the selected solve window including its two-pixel border and transformed output to4,194,304pixels each. Tiled/unbounded solving/output remains functional stillneeded. Other Patch/Move/RedEye paths retain16,777,216canvas/4,194,304region limits and require paged expansion.",
+    "Ordinary RGB raster image target only; Smart Objects, projected source storage, mask/channel targets and other color modes remain substantive functional work. Saved pattern asset limits remain16MP.",
+    "Exact Photoshop pattern phase/scale, alpha/diffusion/solver/profile/output/defaults, all native contextual variations/persistence and unsupported Adobe action descriptors remain open. Portable semantic retouch Actions remain unimplemented.",
+    "Physical/native appearance and input, full supported-platform/performance/60fps, dense maximum and complete current-suite/Photoshop parity are not established. Mac is still locked; the existing human unlock request remains pending. Earlier numerical/Debug/full-suite residuals remain recorded."
+  ],
+  "new_install": false,
+  "new_archive": false,
+  "new_upload": false,
+  "new_release": false
+}

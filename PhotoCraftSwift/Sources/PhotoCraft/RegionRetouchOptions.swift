@@ -21,6 +21,7 @@ extension WorkspaceView {
           Picker("Patch",selection:retouchOption(\.patchType)) { Text("Normal").tag(RegionRetouchRequest.PatchType.normal);Text("Content-Aware").tag(RegionRetouchRequest.PatchType.contentAware) }.frame(width:175)
           Picker("Mode",selection:retouchOption(\.patchMode)) { Text("Source").tag(RegionRetouchRequest.PatchMode.source);Text("Destination").tag(RegionRetouchRequest.PatchMode.destination) }.frame(width:165)
           if store.regionRetouchSettings.patchType == .normal {
+            patchPatternControls
             Toggle("Transparent",isOn:retouchOption(\.transparent)).toggleStyle(.checkbox)
             numberField("Diffusion",value:retouchInteger(\.diffusion),range:1...7,suffix:"")
           }
@@ -46,5 +47,24 @@ extension WorkspaceView {
         Button("Apply") { store.commitRegionRetouch() }.keyboardShortcut(.defaultAction).disabled(store.regionRetouchPrepared == nil || store.regionRetouchBusy)
       } else { Text(store.tool == .redEye ? "Click or drag around an eye" : "Select an area, then drag inside it").foregroundStyle(.secondary) }
     }.controlSize(.small)
+  }
+}
+
+extension WorkspaceView {
+  var patchPatternControls: some View {
+    HStack(spacing: 4) {
+      if let pattern = store.selectedPatchPattern { PatternSwatch(pattern: pattern).frame(width: 24,height: 24) }
+      Menu {
+        ForEach(store.patchPatterns) { pattern in
+          Button(pattern.displayName) { store.patchPatternID = pattern.id }
+        }
+        Divider()
+        Button("Open Patterns Panel") { store.colorTab = .patterns }
+        Button("Import Patterns…") { store.importPatterns() }
+      } label: {
+        Text(store.selectedPatchPattern?.displayName ?? "Choose Pattern").lineLimit(1).frame(maxWidth: 120)
+      }.menuStyle(.borderlessButton).disabled(store.patterns.busy || store.regionRetouchDraft != nil)
+      Button("Use Pattern") { store.usePatternPatch() }.disabled(!store.canUsePatternPatch)
+    }
   }
 }

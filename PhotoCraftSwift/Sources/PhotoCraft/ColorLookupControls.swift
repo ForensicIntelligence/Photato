@@ -77,11 +77,13 @@ struct ColorLookupControls: View {
 struct LUTDocument: FileDocument {
   static var readableContentTypes: [UTType] { [.data] }
   var data: Data
-  init(data: Data) { self.data = data }
+  var filename: String?
+  init(data: Data,filename:String?=nil) { self.data = data; self.filename=filename }
   init(configuration: ReadConfiguration) throws {
     guard let data = configuration.file.regularFileContents else { throw CraftError.invalid("Invalid LUT file.") }; self.data = data
   }
-  func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper { FileWrapper(regularFileWithContents:data) }
+  func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper { outputWrapper() }
+  func outputWrapper()->FileWrapper { let file=FileWrapper(regularFileWithContents:data);file.preferredFilename=filename;return file }
   static func load(_ url: URL) throws -> ColorLUT {
     let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
     let file = try FileHandle(forReadingFrom:url); defer { try? file.close() }
