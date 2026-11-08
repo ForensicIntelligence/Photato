@@ -8,11 +8,16 @@ public protocol ForegroundDetecting: Sendable {
   func mask(for image: Surface) async throws -> SelectionMask
 }
 
+/// Distinguishes a valid image with no foreground subject from a failed model request.
+public protocol OptionalForegroundDetecting: ForegroundDetecting {
+  func maskIfPresent(for image: Surface) async throws -> SelectionMask?
+}
+
 public protocol ObjectDetecting: Sendable {
   func mask(for image:Surface,at point:PathPoint) async throws -> SelectionMask
 }
 
-public struct VisionForegroundDetector: ForegroundDetecting, ObjectDetecting, AllObjectsDetecting {
+public struct VisionForegroundDetector: OptionalForegroundDetecting, ObjectDetecting, AllObjectsDetecting {
   public init() {}
   // Vision explicitly supports cancelling requests while perform is in progress.
   private final class Request: @unchecked Sendable {
@@ -21,7 +26,10 @@ public struct VisionForegroundDetector: ForegroundDetecting, ObjectDetecting, Al
   public func mask(for image: Surface) async throws -> SelectionMask {try await detect(image, point:nil, allObjects:false)[0].mask}
   public func mask(for image:Surface,at point:PathPoint) async throws -> SelectionMask {try await detect(image, point:point, allObjects:false)[0].mask}
   public func masks(for image:Surface) async throws -> [DetectedObjectMask] {try await detect(image,point:nil,allObjects:true)}
-  private func detect(_ image:Surface,point:PathPoint?,allObjects:Bool) async throws -> [DetectedObjectMask] {
+  public func maskIfPresent(for image: Surface) async throws -> SelectionMask? {
+    try await detect(image, point: nil, allObjects: false, allowEmpty: true).first?.mask
+  }
+  private func detect(_ image:Surface,point:PathPoint?,allObjects:Bool,allowEmpty:Bool = false) async throws -> [DetectedObjectMask] {
     try ForegroundSelection.checkSize(image.width, image.height)
     if let point {guard point.x.isFinite,point.y.isFinite,point.x>=0,point.y>=0,point.x<Double(image.width),point.y<Double(image.height) else {throw CraftError.invalid("Click inside the image to select an object.")}}
     let request = Request()
@@ -34,6 +42,7 @@ public struct VisionForegroundDetector: ForegroundDetecting, ObjectDetecting, Al
       }
       try Task.checkCancellation()
       guard let observation = request.value.results?.first, !observation.allInstances.isEmpty else {
+        if allowEmpty { return [DetectedObjectMask]() }
         throw CraftError.invalid("No foreground subject was found. Try an image with a distinct subject.")
       }
       let instances:IndexSet

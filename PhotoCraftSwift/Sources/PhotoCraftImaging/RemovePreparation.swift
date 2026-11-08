@@ -3,7 +3,7 @@ import PhotoCraftCore
 
 public enum RemovePreparation {
   public static let maximumCanvasPixels = ContentAwareInput.maximumCanvasPixels
-  public static func coverage(_ request: RemoveRequest, in document: CraftDocument) throws -> SelectionMask {
+  public static func markCoverage(_ request: RemoveRequest, in document: CraftDocument) throws -> SelectionMask {
     try request.validate()
     guard document.width > 0, document.height > 0,
       document.width <= Surface.maxDimension, document.height <= Surface.maxDimension else {
@@ -12,9 +12,16 @@ public enum RemovePreparation {
     guard document.width <= maximumCanvasPixels/document.height else {
       throw CraftError.unsupported("Native Remove currently supports canvases up to 16 megapixels. Larger Remove preparation is not implemented yet.")
     }
-    var mask = try SelectionMask(width:document.width,height:document.height,
+    if let initial = request.initialCoverage {
+      guard initial.width == document.width, initial.height == document.height else { throw CraftError.invalid("Detected removal coverage dimensions differ from the canvas.") }
+    }
+    var mask = try request.initialCoverage ?? SelectionMask(width:document.width,height:document.height,
       bytes:Array(repeating:0,count:document.width*document.height))
     for stroke in request.strokes { try Task.checkCancellation(); mask = try stroke.applying(to:mask) }
+    return mask
+  }
+  public static func coverage(_ request: RemoveRequest, in document: CraftDocument) throws -> SelectionMask {
+    var mask = try markCoverage(request, in: document)
     if document.selection != nil || document.selectionMask != nil {
       var bytes = try mask.bytes
       for y in 0..<document.height {

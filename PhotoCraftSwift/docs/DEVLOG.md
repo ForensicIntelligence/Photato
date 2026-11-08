@@ -1,4 +1,4 @@
-> Source delivery500 includes the qualified native build500 source and working records through500. The canonical local historical-evidence refresh/check and queued promotion remain pending. Raw local artifacts are intentionally absent from this source repository; this is not a claim that their public paths resolve or that the full suite passes.
+> Source delivery 503 includes the current native source and working diary through 503. The focused suite passes 114 methods per configuration. The full suite, Photoshop parity and canonical historical-evidence/website promotion remain open; see SOURCE_PUBLICATION_503.md.
 
 # Development log
 
@@ -515,7 +515,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 498 | 2026-11-08 | [Large colour-mode files](#dev-step-498) |
 | 499 | 2026-11-08 | [Paths to Illustrator](#dev-step-499) |
 | 500 | 2026-11-08 | [Repair native asset export](#dev-step-500) |
+| 501 | 2026-11-08 | [Select People on large documents](#dev-step-501) |
+| 502 | 2026-11-08 | [Report Apple text-service availability](#dev-step-502) |
+| 503 | 2026-11-08 | [Review people before removal](#dev-step-503) |
 <!-- history-index:end -->
+
+<a id="dev-step-503"></a>
+
+## 2026-11-08 — Review people before removal
+
+Integrated on 8 November 2026 from retained working records. Remove > Find distractions > People stages reviewable marks, protects foreground people and shares the native transaction with the API. Current Debug and optimized ARM/translated-Intel runs each pass 114 focused methods, including all 31 new 501–503 cases. Full AI03 and earlier gaps remain open.
+
+[Detailed checkpoint 503 record](pending-updates/step503.md). [Source validation and limitations](SOURCE_PUBLICATION_503.md).
+
+<a id="dev-step-502"></a>
+
+## 2026-11-08 — Report Apple text-service availability
+
+Integrated on 8 November 2026 from retained working records. Optional Apple text services report actionable availability, including the actual signed PCC entitlement. Ordinary signing is unchanged; a separate managed-capability template is optional. Its eight new methods pass in the current suite. Real inference remains unqualified.
+
+[Detailed checkpoint 502 record](pending-updates/step502.md). [Source validation and limitations](SOURCE_PUBLICATION_503.md).
+
+<a id="dev-step-501"></a>
+
+## 2026-11-08 — Select People on large documents
+
+Integrated on 8 November 2026 from retained working records. Large-document person analysis uses a bounded grid while retaining document-resolution coverage and native/API history. Its ten new target methods pass again on current 503 binaries. Broad model quality and full capacity remain open.
+
+[Detailed checkpoint 501 record](pending-updates/step501.md). [Source validation and limitations](SOURCE_PUBLICATION_503.md).
 
 <a id="dev-step-500"></a>
 

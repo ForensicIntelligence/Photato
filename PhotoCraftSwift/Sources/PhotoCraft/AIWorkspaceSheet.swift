@@ -25,7 +25,8 @@ extension WorkspaceView {
       .onDisappear { store.cancelReviewedEditPlan() }
   }
   var aiImageSheet: some View {
-    VStack(alignment: .leading, spacing: 18) {
+    let imageCapability = LocalAI.imageCapability, textCapability = LocalAI.textCapability
+    return VStack(alignment: .leading, spacing: 18) {
       HStack {
         Image(systemName: "sparkles").font(.title2).foregroundStyle(StudioTheme.accent)
         Text("Create with Apple Intelligence").font(.title2.weight(.semibold))
@@ -68,13 +69,13 @@ extension WorkspaceView {
       }
       TextEditor(text: $store.prompt).font(.body).frame(height: 110).padding(8).background(
         .quaternary, in: RoundedRectangle(cornerRadius: 8))
-      Label(LocalAI.imageCapability.message, systemImage: "photo").font(.caption)
+      Label(imageCapability.message, systemImage: "photo").font(.caption)
         .foregroundStyle(.secondary)
-      Label(LocalAI.textCapability.message, systemImage: "text.bubble").font(.caption)
+      Label(textCapability.message, systemImage: "text.bubble").font(.caption)
         .foregroundStyle(.secondary)
       HStack {
         Button("Refine prompt") { store.refinePrompt() }.disabled(
-          store.aiBusy || !LocalAI.textCapability.available || store.prompt.isEmpty)
+          store.aiBusy || !textCapability.available || store.prompt.isEmpty)
         Button("Saved Results…") {NSApp.sendAction(#selector(AppDelegate.generatedResults),to:nil,from:nil)}
         Spacer()
         if store.aiBusy {
@@ -84,7 +85,7 @@ extension WorkspaceView {
         } else {
           Button("Done") { store.showAI = false }
           Button("Generate") { store.beginImageCreation() }.buttonStyle(.borderedProminent)
-            .disabled(!LocalAI.imageCapability.available || store.prompt.isEmpty || !store.canStartSelectedImageGeneration)
+            .disabled(!imageCapability.available || store.prompt.isEmpty || !store.canStartSelectedImageGeneration)
         }
       }
       if let layer=store.activeLayer,let record=try? GeneratedImageStorage.record(layer) {
@@ -110,7 +111,7 @@ extension WorkspaceView {
       ).foregroundStyle(.tertiary)
     }.padding(26).frame(maxWidth: .infinity)
       .sheet(isPresented: $store.showImagePlayground) {
-        if #available(macOS 26.0, *), LocalAI.imageCapability.available,let job=store.imageGenerationJob {
+        if #available(macOS 26.0, *), imageCapability.available,let job=store.imageGenerationJob {
           SystemImagePlayground(store: store,job:job).frame(width: 700, height: 650)
         }
       }

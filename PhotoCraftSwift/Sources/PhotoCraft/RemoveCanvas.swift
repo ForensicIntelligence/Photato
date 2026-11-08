@@ -39,6 +39,10 @@ extension CraftCanvas {
     context.saveGState(); context.clip(to:imageRect)
     // Isolate subtract's Clear blend so it only erases the marking overlay.
     context.setAlpha(0.45); context.beginTransparencyLayer(auxiliaryInfo:nil)
+    if let overlay = draft?.initialOverlay {
+      context.saveGState(); context.translateBy(x: imageRect.minX, y: imageRect.maxY); context.scaleBy(x: 1, y: -1)
+      context.draw(overlay, in: CGRect(origin: .zero, size: imageRect.size)); context.restoreGState()
+    }
     for stroke in strokes {
       let points = stroke.points.map { viewPoint(CGPoint(x:$0[0],y:$0[1])) }
       guard let first = points.first else { continue }

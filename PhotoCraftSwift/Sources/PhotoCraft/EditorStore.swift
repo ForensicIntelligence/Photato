@@ -324,6 +324,9 @@ import UniformTypeIdentifiers
   var removeStroke: RemoveStroke?
   var removeApplying: RemoveDraft?
   var removeRevision = UUID()
+  var removeDetectionID: UUID?
+  @ObservationIgnored var removeDetectionTask: Task<Void, Never>?
+  @ObservationIgnored var removePreviewPreparation: @Sendable (RemoveRequest,CraftDocument) throws -> String = { try RemoveMarkPreview.encode($0,$1) }
   @ObservationIgnored var removeCompletionTask: Task<Void,Never>?
   @ObservationIgnored var removePreparation: @Sendable (RemoveRequest,CraftDocument) throws -> RegionRetouchEdit = { try RemovePreparation.prepare($0,document:$1) }
   var regionRetouchSettings = RegionRetouchRequest(kind:.patch)

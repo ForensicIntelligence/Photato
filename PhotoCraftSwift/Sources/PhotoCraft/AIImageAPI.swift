@@ -63,8 +63,8 @@ enum AIImageAPI {
       ["type":"object","additionalProperties":false,"required":["operation","revision","requestID"],"properties":["operation":["const":"cancel"],"revision":["type":"string"],"requestID":["type":"string","format":"uuid"]]]]]
   }
   static var stateSchema:[String:Any] {
-    ["type":"object","additionalProperties":false,"required":["available","message","requiresNativeApproval","canStart","busy","intent","reference","referenceImportRequestID","selectedReference","background","selectedBackground","promptRefinementRequestID","authorizedSavedResultIDs","resultLayerIDs","selectedResult","job"],
-     "properties":["available":["type":"boolean"],"message":["type":"string"],"requiresNativeApproval":["const":true],"canStart":["type":"boolean"],"busy":["type":"boolean"],"promptRefinementRequestID":["anyOf":[["type":"string","format":"uuid"],["type":"null"]]],
+    ["type":"object","additionalProperties":false,"required":["available","message","reason","textModel","requiresNativeApproval","canStart","busy","intent","reference","referenceImportRequestID","selectedReference","background","selectedBackground","promptRefinementRequestID","authorizedSavedResultIDs","resultLayerIDs","selectedResult","job"],
+     "properties":["available":["type":"boolean"],"message":["type":"string"],"reason":AICapabilityAPI.reasonSchema,"textModel":AICapabilityAPI.schema,"requiresNativeApproval":["const":true],"canStart":["type":"boolean"],"busy":["type":"boolean"],"promptRefinementRequestID":["anyOf":[["type":"string","format":"uuid"],["type":"null"]]],
        "intent":["type":"string","enum":["image","background"]],
        "reference":["anyOf":[referenceRecordSchema,["type":"null"]]],
        "selectedReference":["anyOf":[referenceRecordSchema,["type":"null"]]],
@@ -132,7 +132,7 @@ enum AIImageAPI {
   }
   @MainActor static func state(_ store:EditorStore)->[String:Any] {
     let capability=LocalAI.imageCapability
-    var result:[String:Any]=["available":capability.available,"message":capability.message,"requiresNativeApproval":true,"canStart":capability.available && store.canStartSelectedImageGeneration,"busy":store.aiBusy,"intent":store.imageGenerationIntent.rawValue,
+    var result:[String:Any]=["available":capability.available,"message":capability.message,"reason":capability.reason.rawValue,"textModel":AICapabilityAPI.state(LocalAI.textCapability),"requiresNativeApproval":true,"canStart":capability.available && store.canStartSelectedImageGeneration,"busy":store.aiBusy,"intent":store.imageGenerationIntent.rawValue,
       "reference":store.imageReference.map { referenceRecord($0.record) } as Any? ?? NSNull(),
       "referenceImportRequestID":store.imageReferenceImportID?.uuidString as Any? ?? NSNull(),"selectedReference":NSNull(),
       "background":["eligibleForegroundLayerID":GeneratedBackground.foreground(in:store.document)?.id.uuidString as Any? ?? NSNull(),"canStart":capability.available && store.canStartBackgroundGeneration],

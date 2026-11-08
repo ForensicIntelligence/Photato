@@ -28,7 +28,11 @@ import PhotoCraftImaging
 }
 
 extension EditorStore {
-  var canSelectPeople: Bool { canFindObjects }
+  var canSelectPeople: Bool {
+    clipboardTargetAvailable && canUseBrush && !editingComponent && !aiBusy
+      && SelectionToolPreparation.canSample(document,layerID:activeLayer?.id,allLayers:selectionSampleAllLayers)
+      && (try? PeopleAnalysis.checkSize(document.width,document.height)) != nil
+  }
   func invalidatePeopleIfNeeded() {
     if let source = peopleWorkspace.source, source != objectFinderSource { peopleWorkspace.cancel() }
   }
@@ -72,7 +76,7 @@ extension EditorStore {
     clearObjectHover()
     let cacheID = workspace.cacheID, overlayID = workspace.overlayID, color = objectFinderColor
     workspace.overlayTask = Task { [weak self] in
-      let worker = Task.detached(priority:.userInitiated) { try SelectionToolPreparation.overlay(scene.coverage(instanceIDs:[id],hardEdge:false,features:[feature]),color:color) }
+      let worker = Task.detached(priority:.userInitiated) { try SelectionToolPreparation.overlay(scene.hoverCoverage(instanceIDs:[id],features:[feature]),color:color) }
       do {
         let image = try await withTaskCancellationHandler(operation:{try await worker.value},onCancel:{worker.cancel()})
         guard !Task.isCancelled, let self, self.peopleWorkspace.cacheID == cacheID, self.peopleWorkspace.overlayID == overlayID else { return }

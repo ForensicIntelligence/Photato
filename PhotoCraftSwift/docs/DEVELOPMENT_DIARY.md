@@ -1,3 +1,15 @@
+## Source update — 8 November 2026, build 503
+
+People selection now works beyond the former small-image admission limit. Apple text-service readiness explains missing device, system, model or signed-capability requirements. The Remove tool can mark background people for review before an explicit apply.
+
+The current source passes 114 focused methods in Debug and each optimized architecture, including all 31 new 501–503 methods. The diary records the failed attempts and the portrait-classification correction. Full Photoshop functionality and output parity remain unfinished.
+
+- [501 — Select People on large documents](DEVLOG.md#dev-step-501)
+- [502 — Report Apple text-service availability](DEVLOG.md#dev-step-502)
+- [503 — Review people before removal](DEVLOG.md#dev-step-503)
+
+[Source delivery, validation and remaining gaps](SOURCE_PUBLICATION_503.md). The standalone website and canonical historical-evidence pipeline remain separately pending.
+
 ## Source update — 8 November2026
 
 Build500 passes its42 focused Debug tests and the same42 optimized tests on Apple Silicon and translated Intel. Actual sandboxed export, Cancel/history and normal Quit checks pass. This source snapshot includes the work through500; it does not establish full Photoshop parity or a full-suite pass.

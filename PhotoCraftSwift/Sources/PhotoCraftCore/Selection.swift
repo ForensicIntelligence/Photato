@@ -69,6 +69,17 @@ public struct SelectionMask: Equatable, Sendable, Codable {
     width=rawWidth;self.height=height;storage=SelectionCoverageStorage(dense:dense,paged:paged);self.bounds=bounds
   }
   public init(coverage surface:Surface)throws {try self.init(paged:PagedSelectionCoverage(surface:surface))}
+  /// Assemble quantized document-space coverage through bounded, deduplicated
+  /// patches. Unlisted regions are zero; no logical full-canvas byte array is made.
+  public static func sampledCoverage(width: Int, height: Int, regions: [IntRect],
+    sample: (Int, Int) throws -> UInt8) throws -> Self {
+    _ = try Surface(width: width, height: height); try Task.checkCancellation()
+    guard regions.allSatisfy({ r in
+      r.x >= 0 && r.y >= 0 && r.x <= width && r.y <= height && r.width >= 0 && r.height >= 0
+        && r.width <= width - r.x && r.height <= height - r.y
+    }) else { throw CraftError.invalid("Selection sampling regions must lie inside the canvas.") }
+    return try Self(paged: PagedSelectionCoverage.assemble(width: width, height: height, regions: regions, sample: sample))
+  }
   public func coverageSurface()throws->Surface {
     if let paged {return paged.surface}
     return try PagedSelectionCoverage(width:width,height:height,bytes:dense!).surface

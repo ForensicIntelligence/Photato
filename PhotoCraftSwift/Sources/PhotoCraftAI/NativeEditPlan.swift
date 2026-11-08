@@ -44,17 +44,7 @@ public enum EditPlanProvider: String, CaseIterable, Sendable {
   case onDevice, privateCloudCompute
   public var title: String { self == .onDevice ? "On-device" : "Private Cloud Compute" }
   public var capability: AICapability {
-    guard LocalAI.platform.available else { return LocalAI.platform }
-    if self == .onDevice { return LocalAI.textCapability }
-    #if canImport(FoundationModels)
-    if #available(macOS 27.0, *) {
-      let model = PrivateCloudComputeLanguageModel()
-      return AICapability(available: model.isAvailable, message: model.isAvailable
-        ? "Apple's Private Cloud Compute language model is ready. Your instruction is sent to Apple's service. No image pixels are sent."
-        : "Apple's Private Cloud Compute language model is unavailable on this Mac.")
-    }
-    #endif
-    return AICapability(available: false, message: "Private Cloud Compute text planning requires macOS 27 or later on Apple Silicon.")
+    self == .onDevice ? LocalAI.textCapability : LocalAI.privateCloudComputeCapability
   }
 }
 

@@ -110,3 +110,7 @@ Build448 source is verified at [77b14d5eedf8](https://github.com/ForensicIntelli
 ## 2026-11-08 — Native build500 source snapshot
 
 This source delivery includes all qualified distributable build500inputs and the developer working records through500. All originalRustsource and existing Git history are retained. The current selected export workflow passes42focused tests in Debug and each optimized architecture; the repository remains an unfinished alpha with earlier failed acceptance targets explicitly retained. Generated models, caches, signing material, restricted external image fixtures and raw local evidence are excluded. Canonical historical-evidence processing is still pending. Source availability does not publish an app or authorize an automatic release. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_500.md.
+
+## 2026-11-08 — Native build 503 source snapshot
+
+Adds the distributable source and developer records through 503 while preserving all original Rust files and Git history. Current focused qualification passes 114 methods in Debug and each optimized architecture. This remains an unfinished development alpha. No binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_503.md.

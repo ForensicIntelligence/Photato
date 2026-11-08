@@ -484,7 +484,9 @@ struct CanvasHost: NSViewRepresentable {
       }
       c.restoreGState()
     }
-    if store.tool == .objectSelection, store.canFindObjects, let overlay = store.peopleWorkspace.image ?? (store.objectFinderEnabled ? store.objectFinder.image:nil) {
+    if store.tool == .objectSelection,
+      let overlay = (store.canSelectPeople ? store.peopleWorkspace.image:nil)
+        ?? (store.canFindObjects && store.objectFinderEnabled ? store.objectFinder.image:nil) {
       c.saveGState();c.translateBy(x:r.minX,y:r.maxY);c.scaleBy(x:1,y:-1)
       c.draw(overlay,in:CGRect(origin:.zero,size:r.size));c.restoreGState()
     }

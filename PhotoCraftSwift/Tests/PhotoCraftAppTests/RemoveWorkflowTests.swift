@@ -118,7 +118,7 @@ final class RemoveWorkflowTests: XCTestCase {
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == RemoveToolAPI.name })
       let fields = try XCTUnwrap(definition.schema["properties"] as? [String:Any])
       let parameters = try XCTUnwrap(fields["parameters"] as? [String:Any])
-      XCTAssertEqual((parameters["oneOf"] as? [[String:Any]])?.count,5)
+      XCTAssertEqual((parameters["oneOf"] as? [[String:Any]])?.count,7)
       XCTAssertEqual(AutomationCommand.definitions.count,267)
       XCTAssertTrue(JSONSerialization.isValidJSONObject(RemoveToolAPI.capabilities))
       let share = try XCTUnwrap(service.shares.first)

@@ -26,7 +26,7 @@ struct PagedSelectionCoverage: Equatable, Sendable {
     for y in 0..<height {try Task.checkCancellation();for x in 0..<width {result[y*width+x]=byte(x:x,y:y)}}
     return result
   }
-  private static func assemble(width:Int,height:Int,regions:[IntRect],sample:(Int,Int)throws->UInt8)throws->Self {
+  static func assemble(width:Int,height:Int,regions:[IntRect],sample:(Int,Int)throws->UInt8)throws->Self {
     let builder=try Surface.PagedBuilder(width:width,height:height,depth:.u8,fill:.black)
     for region in GeometryPatchRegions(width:width,height:height,rectangles:regions) {
       var patch=try Surface(width:region.width,height:region.height,depth:.u8,fill:.black)

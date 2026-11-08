@@ -11,9 +11,11 @@ import Foundation
 public struct AICapability: Equatable, Sendable {
   public var available: Bool
   public var message: String
-  public init(available: Bool, message: String) {
+  public var reason: AICapabilityReason
+  public init(available: Bool, message: String, reason: AICapabilityReason? = nil) {
     self.available = available
     self.message = message
+    self.reason = reason ?? (available ? .ready : .unknown)
   }
 }
 public enum LocalAIError: Error, LocalizedError, Sendable {
@@ -35,10 +37,10 @@ public enum LocalAI {
   }
   public static func platformCapability(majorVersion: Int, isAppleSilicon: Bool) -> AICapability {
     guard isAppleSilicon else {
-      return AICapability(available: false, message: "Apple Intelligence requires Apple Silicon.")
+      return AICapability(available: false, message: "Apple Intelligence requires Apple Silicon.", reason: .deviceNotEligible)
     }
     guard majorVersion >= 26 else {
-      return AICapability(available: false, message: "Photato AI requires macOS 26 or later.")
+      return AICapability(available: false, message: "Photato AI requires macOS 26 or later.", reason: .unsupportedSystem)
     }
     return AICapability(
       available: true,
@@ -82,22 +84,22 @@ public enum LocalAI {
           switch reason {
           case .deviceNotEligible:
             return AICapability(
-              available: false, message: "This Mac is not eligible for Apple Intelligence.")
+              available: false, message: "This Mac is not eligible for Apple Intelligence.", reason: .deviceNotEligible)
           case .appleIntelligenceNotEnabled:
             return AICapability(
               available: false,
-              message: "Enable Apple Intelligence in System Settings to use local AI.")
+              message: "Enable Apple Intelligence in System Settings to use local AI.", reason: .appleIntelligenceNotEnabled)
           case .modelNotReady:
             return AICapability(
-              available: false, message: "Apple's local model is still downloading or preparing.")
+              available: false, message: "Apple's local model is still downloading or preparing.", reason: .modelNotReady)
           @unknown default:
-            return AICapability(available: false, message: "Apple's local model is unavailable.")
+            return AICapability(available: false, message: "Apple's local model is unavailable.", reason: .unknown)
           }
         }
       }
     #endif
     return AICapability(
-      available: false, message: "Foundation Models is unavailable on this system.")
+      available: false, message: "Foundation Models is unavailable on this system.", reason: .frameworkUnavailable)
   }
   public static func refinePrompt(_ prompt: String) async throws -> String {
     let p = try validatePrompt(prompt)
@@ -136,6 +138,6 @@ public enum LocalAI {
       }
     #endif
     return AICapability(
-      available: false, message: "Image Playground is unavailable on this system.")
+      available: false, message: "Image Playground is unavailable on this system.", reason: .frameworkUnavailable)
   }
 }

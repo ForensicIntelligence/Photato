@@ -46,7 +46,7 @@ struct SelectionToolOptionsView:View {
     HStack(spacing:10) {
       Picker("Selection",selection:mode){ForEach(SelectionMode.allCases,id:\.self){Text($0.rawValue).tag($0)}}.frame(width:140)
       if store.tool == .objectSelection {
-        Picker("Mode:",selection:$store.objectSelectionMode){ForEach(ObjectSelectionMode.allCases,id:\.self){Text($0.rawValue).tag($0)}}.frame(width:160)
+        Picker("Mode:",selection:$store.objectSelectionMode){ForEach(ObjectSelectionMode.allCases,id:\.self){Text($0.rawValue).tag($0)}}.frame(width:160).disabled(!store.canUseSelectionTools)
       } else {
         number("Size:",$store.brush.size,1...2048)
         if store.tool == .selectionBrush {
@@ -58,16 +58,16 @@ struct SelectionToolOptionsView:View {
       if store.tool != .selectionBrush {
         Toggle("Sample All Layers",isOn:$store.selectionSampleAllLayers)
         if store.tool == .objectSelection {
-          Button("Select People"){store.openPeoplePicker()}.popover(isPresented:Binding(get:{store.peopleWorkspace.presented},set:{store.peopleWorkspace.presented=$0})){PeoplePickerView(store:store)}
+          Button("Select People"){store.openPeoplePicker()}.disabled(!store.canSelectPeople).accessibilityIdentifier("selection.options.people").popover(isPresented:Binding(get:{store.peopleWorkspace.presented},set:{store.peopleWorkspace.presented=$0})){PeoplePickerView(store:store)}
           Toggle("Hard Edge",isOn:$store.objectFinderHardEdge)
-          Toggle("Object Finder",isOn:$store.objectFinderEnabled)
-          Button {store.requestObjectFinder(force:true)} label: {Image(systemName:"arrow.clockwise")}.help("Refresh detected objects")
+          Toggle("Object Finder",isOn:$store.objectFinderEnabled).disabled(!store.canFindObjects)
+          Button {store.requestObjectFinder(force:true)} label: {Image(systemName:"arrow.clockwise")}.help("Refresh detected objects").disabled(!store.canFindObjects)
           if store.objectFinder.busy {ProgressView().controlSize(.small)}
           Menu {
             ColorPicker("Highlight Color",selection:Binding(get:{Color(red:Double(store.objectFinderColor.r),green:Double(store.objectFinderColor.g),blue:Double(store.objectFinderColor.b),opacity:Double(store.objectFinderColor.a))},set:{v in guard let c=NSColor(v).usingColorSpace(.sRGB) else{return};store.objectFinderColor=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent),Float(c.alphaComponent))}))
             if let error=store.objectFinder.error {Text(error)}
             if store.objectFinder.busy {Button("Cancel Detection"){store.stopObjectFinder()}}
-          } label: {Image(systemName:"gearshape")}.help(store.objectFinder.error ?? "Object Finder options")
+          } label: {Image(systemName:"gearshape")}.help(store.objectFinder.error ?? "Object Finder options").disabled(!store.canFindObjects)
         } else {Toggle("Enhance Edge",isOn:$store.selectionEnhanceEdge)}
       }
       if [.objectSelection,.quickSelection].contains(store.tool) {
@@ -77,7 +77,7 @@ struct SelectionToolOptionsView:View {
           .help("Select the main subjects using on-device processing.")
       }
       Button("Select and Mask…"){store.beginSelectMask()}.disabled(!store.canBeginSelectMask)
-    }.toggleStyle(.checkbox).controlSize(.small).disabled(!store.canUseSelectionTools)
+    }.toggleStyle(.checkbox).controlSize(.small).disabled(!store.canUseSelectionTools && !(store.tool == .objectSelection && store.canSelectPeople))
   }
   private func number(_ title:String,_ value:Binding<Double>,_ range:ClosedRange<Double>)->some View {
     HStack(spacing:3){Text(title);TextField(title,value:Binding(get:{value.wrappedValue},set:{if $0.isFinite{value.wrappedValue=min(range.upperBound,max(range.lowerBound,$0))}}),format:.number.precision(.fractionLength(0...1))).labelsHidden().textFieldStyle(.roundedBorder).frame(width:50)}

@@ -8052,6 +8052,27 @@
       "link": "DEVLOG.md#dev-step-500",
       "section_sha256": "705329bfa8f01dacec30b145d474ffbf965a81020f4d235736f5508df05cffc7",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-501",
+      "title": "2026-11-08 \u2014 Select People on large documents",
+      "link": "DEVLOG.md#dev-step-501",
+      "section_sha256": "23532cb53cb78b0e5d6962c8d93fb2e98e0996553b03d2a5a0baecd7c9f6d14b",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-502",
+      "title": "2026-11-08 \u2014 Report Apple text-service availability",
+      "link": "DEVLOG.md#dev-step-502",
+      "section_sha256": "4c4d5e8649c4172748c42c4f34ee084ed04d4f05e6f0258a410ef6eb30c07930",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-503",
+      "title": "2026-11-08 \u2014 Review people before removal",
+      "link": "DEVLOG.md#dev-step-503",
+      "section_sha256": "e4d72c785c374d06a2b5c31453de5dd237c82e95cd533a2af0242b1ce2d43743",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10583,8 +10604,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "98efe5ee13e83bb1151aa57e6a50fe061d4e872d0ceea3ef4b8c9e19c36d5c34",
-      "bytes": 111032,
+      "sha256": "aa573b137a790c44eea86404765013fa0ee4a7551dc46db3d7874f49046ff85f",
+      "bytes": 111916,
       "rolling_current_snapshot": false
     },
     {
@@ -10595,8 +10616,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "6b3330687e587e001e9bf5fc43fc46c28c54227dd36f6fd8d7a880136ca16dd4",
-      "bytes": 113261,
+      "sha256": "089bbae0ffa17a564a09c7021d3df66fe5578607e7f0e278971b4713af231e35",
+      "bytes": 113365,
       "rolling_current_snapshot": false
     },
     {
@@ -12178,6 +12199,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/APPLE_TEXT_RUNTIME.md",
+      "sha256": "a838db0e73ad4862880f16bc9e0c66bb4db94ff507108d87332dadae4afedbd0",
+      "bytes": 3879,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/APPLICATION_FRAME_REFERENCES.json",
       "sha256": "8f847b94191b17cc6af477699088f624a72ce41b992b35dfd17329c16dee5eec",
       "bytes": 3811,
@@ -12767,8 +12794,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "834ec75a8b910d297225602b0d37bce58595e01240bb3faa9a9509e79d5b70ab",
-      "bytes": 76893,
+      "sha256": "0ad3ca21962bfe935a421238464803866b60fa8d34886aa86ac2931dbfe31074",
+      "bytes": 77312,
       "rolling_current_snapshot": false
     },
     {
@@ -12809,14 +12836,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "72c14bcf281867da02723c4599dd3e945cbfaab57d4c7f690bb74a1772881d85",
-      "bytes": 798711,
+      "sha256": "18a76de81cbbc6c400683d3bf652fdba83dd6db88aa5f738203907b95cca1a0b",
+      "bytes": 799676,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "faf9e2bc740c9d616c6c1995647bf363e45a945324bbc80fe3171ce6c76c2dd5",
-      "bytes": 4455765,
+      "sha256": "6221d2f0b801076c2102787e36981ec3a6e6e4a6bda685b3e090c3e04350ead3",
+      "bytes": 4457525,
       "rolling_current_snapshot": false
     },
     {
@@ -16234,6 +16261,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/REMOVE_PEOPLE.md",
+      "sha256": "2390d02d1f2e186bf4684ba77e8600e184f8d320df25511198d83d1c13661c24",
+      "bytes": 3382,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/RENDER_PERFORMANCE_REFERENCES.json",
       "sha256": "7678283a24ad5fc1f79be8c88be88a2293926ca25bbb5e394267965219c60466",
       "bytes": 2356,
@@ -17110,6 +17143,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_503.md",
+      "sha256": "8873f58da2b38acafa1e63833ef36b609342220258054ae3cba3d43821c1d400",
+      "bytes": 4484,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17272,6 +17311,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_503.json",
+      "sha256": "ba8d89d65a8a1985cd0a452c0f16944a44c99b54c0dac3b123f412b1a0131838",
+      "bytes": 1144379,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17297,8 +17342,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "a018b6dea9537ba79e39b6b1b097b5d0ac01961ae9f23c90d8fa8d5753b069c7",
-      "bytes": 399174,
+      "sha256": "994119cbd077061d70d1699e523bd3ace646ddfb73961c9433109fd5952b99ae",
+      "bytes": 399278,
       "rolling_current_snapshot": false
     },
     {
@@ -19601,8 +19646,8 @@
     }
   ],
   "counts": {
-    "milestones": 500,
-    "evidence_files": 1503,
+    "milestones": 503,
+    "evidence_files": 1507,
     "logs": 0,
     "missing_explicit_references": 631
   }

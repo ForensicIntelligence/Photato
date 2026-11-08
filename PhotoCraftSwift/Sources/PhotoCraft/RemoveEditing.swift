@@ -9,7 +9,11 @@ struct RemoveDraft: Sendable {
   let layerID: UUID
   let settings: RemoveToolSettings
   var strokes: [RemoveStroke] = []
-  var request: RemoveRequest { .init(layerID:layerID,settings:settings,strokes:strokes) }
+  var initialCoverage: SelectionMask?
+  var initialOverlay: CGImage?
+  var detectedPeople = 0
+  var hasMarks: Bool { initialCoverage?.bounds != nil || !strokes.isEmpty }
+  var request: RemoveRequest { .init(layerID:layerID,settings:settings,strokes:strokes,initialCoverage:initialCoverage) }
 }
 
 extension EditorStore {
@@ -68,7 +72,7 @@ extension EditorStore {
     guard let stroke = removeStroke else { return }; removeStroke = nil
     do {
       try appendRemoveStroke(stroke)
-      if removeDraft?.settings.removeAfterEachStroke == true { applyRemove() }
+      if removeDraft?.settings.removeAfterEachStroke == true, removeDraft?.initialCoverage == nil { applyRemove() }
     } catch { status = error.localizedDescription }
   }
   func appendRemoveStroke(_ stroke: RemoveStroke) throws {
@@ -85,17 +89,21 @@ extension EditorStore {
     removeDraft = draft; removeRevision = UUID()
   }
   func cancelRemove() {
+    if removeDetectionID != nil {
+      removeDetectionTask?.cancel(); removeDetectionTask = nil
+      geometryTask?.cancel(); geometryTask = nil; geometryBusy = false; removeDetectionID = nil
+    }
     if removeApplying != nil { geometryTask?.cancel() }
     removeDraft = nil; removeStroke = nil; removeApplying = nil; removeRevision = UUID()
   }
   func cancelRemoveGesture() {
     guard removeStroke != nil else { return }
     removeStroke = nil
-    if removeDraft?.strokes.isEmpty == true { removeDraft = nil }
+    if removeDraft?.hasMarks == false { removeDraft = nil }
     removeRevision = UUID()
   }
   func applyRemove() {
-    guard removeStroke == nil, let draft = removeDraft, !draft.strokes.isEmpty else { return }
+    guard removeStroke == nil, let draft = removeDraft, draft.hasMarks else { return }
     guard canUseRemove, removeSourceMatches(draft) else {
       status = "The Remove source changed or is unavailable. Clear the pending strokes first."; return
     }

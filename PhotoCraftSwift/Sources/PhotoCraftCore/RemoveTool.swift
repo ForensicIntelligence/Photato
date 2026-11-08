@@ -66,12 +66,13 @@ public struct RemoveRequest: Equatable, Sendable {
   public let layerID: UUID
   public let settings: RemoveToolSettings
   public let strokes: [RemoveStroke]
-  public init(layerID: UUID, settings: RemoveToolSettings, strokes: [RemoveStroke]) {
-    self.layerID = layerID; self.settings = settings; self.strokes = strokes
+  public let initialCoverage: SelectionMask?
+  public init(layerID: UUID, settings: RemoveToolSettings, strokes: [RemoveStroke], initialCoverage: SelectionMask? = nil) {
+    self.layerID = layerID; self.settings = settings; self.strokes = strokes; self.initialCoverage = initialCoverage
   }
   public func validate() throws {
     try settings.validate()
-    guard !strokes.isEmpty, strokes.count <= 256,
+    guard (!strokes.isEmpty || initialCoverage?.bounds != nil), strokes.count <= 256,
       strokes.reduce(0, { $0+$1.points.count }) <= 16384 else {
       throw CraftError.invalid("Remove accepts up to 256 strokes and 16384 points per operation.")
     }

@@ -6,6 +6,7 @@ struct EditPlanControls: View {
   @State private var inputError: String?
   @State private var showJSON = false
   var body: some View {
+    let capability = store.editPlanProvider.capability
     VStack(alignment: .leading, spacing: 12) {
       Text("Review an Edit Plan").font(.headline)
       Text("Suggest edits to the selected pixel layer, inspect the preview, then apply them together. Your document stays unchanged until you choose Apply.")
@@ -16,13 +17,13 @@ struct EditPlanControls: View {
         }.frame(maxWidth: 350)
         Spacer()
       }.disabled(store.editPlanBusy)
-      Text(store.editPlanProvider.capability.message).font(.caption).foregroundStyle(.secondary)
+      Text(capability.message).font(.caption).foregroundStyle(.secondary)
       Text("Instruction")
       TextEditor(text: $store.editPlanPrompt).frame(height: 55).border(.quaternary)
         .accessibilityLabel("Edit instruction").disabled(store.editPlanBusy)
       HStack {
         Button("Suggest and Preview") { inputError = nil; Task { await store.proposeReviewedEditPlan() } }
-          .disabled(!store.canReviewEditPlan || !store.editPlanProvider.capability.available || store.editPlanPrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+          .disabled(!store.canReviewEditPlan || !capability.available || store.editPlanPrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         Text("Auto Tone, Auto Contrast, Auto Color, Desaturate and Invert").font(.caption).foregroundStyle(.secondary)
       }
       DisclosureGroup("Review a supplied plan", isExpanded: $showJSON) {

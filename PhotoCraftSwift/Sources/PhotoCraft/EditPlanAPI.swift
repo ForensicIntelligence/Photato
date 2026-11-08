@@ -21,7 +21,7 @@ enum EditPlanAPI {
       "origin": ["anyOf": [["type": "string", "enum": ["supplied", "onDevice", "privateCloudCompute"]], ["type": "null"]]],
       "plan": ["anyOf": [planSchema, ["type": "null"]]], "canPrepare": ["type": "boolean"], "canApply": ["type": "boolean"],
       "error": ["anyOf": [["type": "string"], ["type": "null"]]], "revision": ["type": "string"],
-      "providers": ["type": "array", "items": BrushAPI.object(["id": ["type": "string", "enum": EditPlanProvider.allCases.map(\.rawValue)], "available": ["type": "boolean"], "message": ["type": "string"]], required: ["id", "available", "message"])],
+      "providers": ["type": "array", "items": BrushAPI.object(["id": ["type": "string", "enum": EditPlanProvider.allCases.map(\.rawValue)], "available": ["type": "boolean"], "message": ["type": "string"], "reason": AICapabilityAPI.reasonSchema], required: ["id", "available", "message", "reason"])],
       "workspaceSection": ["type": "string", "enum": ["image", "editPlan"]], "workspacePresented": ["type": "boolean"]],
       required: ["requestID", "phase", "origin", "plan", "canPrepare", "canApply", "error", "providers", "workspaceSection", "workspacePresented"])
   }
@@ -31,7 +31,7 @@ enum EditPlanAPI {
       "controlSchema": controlSchema, "stateSchema": stateSchema, "planSchema": planSchema,
       "operations": NativeEditOperation.allCases.map(\.rawValue),
       "presentation": "Native segmented Workflow selector in the existing Apple Intelligence sheet. Each presentation starts in Create Image. Section and presentation state are observable and included in the opaque revision; switching is disabled until current AI work finishes or is cancelled. Supplied-plan HTTP operations do not open a modal or run a model.",
-      "generation": "Native Edit > Create with Apple Intelligence > Edit Plan explicitly selects on-device26+ or Private Cloud Compute27+ text planning. Only the instruction is sent; no pixels, file paths, document/layer names or arbitrary tools. Runtime availability applies. HTTP accepts supplied typed plans; it never starts inference or labels supplied plans as model output.",
+      "generation": "Native Edit > Create with Apple Intelligence > Edit Plan explicitly selects on-device26+ or Private Cloud Compute27+ text planning. Only the instruction is sent; no pixels, file paths, document/layer names or arbitrary tools. The running app must carry Apple's managed PCC entitlement for direct cloud text use; runtime availability still applies. Discovery reports stable reason codes. HTTP accepts supplied typed plans; it never starts inference or labels supplied plans as model output.",
       "transaction": "Prepare computes actual before/after previews and a retained native Actions transaction without changing document/history. Apply requires the matching requestID/current revision and exact source session/lifecycle/target. One Undo/Redo transaction; a no-op adds no history. Cancel discards retained work; no clipboard, files, scripts, selection or layer-target code is supplied by the plan.",
       "authorization": "Prepare/apply/cancel require native Allow workspace panel changes, a current bearer token and shared document revision. Preview PNG downloads also require document transfers and X-Photato-Revision. Sharing/token/permissions/source are checked again after detached work.",
       "preview": "SDR color-managed full-canvas overview, maximum2048 per side; native editing values retain their original depth. Existing renderer/operation capacity limits still apply.",
@@ -44,7 +44,9 @@ enum EditPlanAPI {
     return ["requestID": review?.id.uuidString as Any? ?? NSNull(), "phase": review?.phase ?? "idle",
       "origin": review?.origin.rawValue as Any? ?? NSNull(), "plan": plan as Any? ?? NSNull(),
       "canPrepare": store.canReviewEditPlan, "canApply": store.canApplyEditPlan, "error": review?.error as Any? ?? NSNull(),
-      "providers": EditPlanProvider.allCases.map { ["id": $0.rawValue, "available": $0.capability.available, "message": $0.capability.message] as [String: Any] },
+      "providers": EditPlanProvider.allCases.map { provider in
+        var value = AICapabilityAPI.state(provider.capability); value["id"] = provider.rawValue; return value
+      },
       "workspaceSection": store.aiWorkspaceSection.rawValue, "workspacePresented": store.showAI]
   }
 }
